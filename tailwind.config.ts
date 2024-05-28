@@ -1,4 +1,4 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
 const config = {
   darkMode: ["class"],
@@ -15,6 +15,8 @@ const config = {
     extend: {
       colors: {
         "primary-green": "#034737",
+        "primary-light-gray": "#F4F4F4",
+        "primary-light-green": "#A9FF9B",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -73,4 +75,4 @@ const config = {
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
 
-export default config
+export default config;

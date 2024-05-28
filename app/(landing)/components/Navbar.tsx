@@ -14,7 +14,7 @@ export default function Navbar() {
 
   return (
     <header className="absolute top-0 w-full px-4 py-4 z-[5]">
-      <div className="max-w-[1560px] mx-auto">
+      <div className="max-w-[1480px] mx-auto">
         <nav className="w-full flex items-center justify-between">
           <Logo />
           <div className="w-10 grid place-content-center ml-6 xl:hidden">
