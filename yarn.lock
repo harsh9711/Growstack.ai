@@ -571,6 +571,13 @@ nanoid@^3.3.6, nanoid@^3.3.7:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.7.tgz#d0c301a691bc8d54efa0a2226ccf3fe2fd656bd8"
   integrity sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==
 
+next-nprogress-bar@^2.3.12:
+  version "2.3.12"
+  resolved "https://registry.yarnpkg.com/next-nprogress-bar/-/next-nprogress-bar-2.3.12.tgz#ecc8426946d7635cfb60e22b2dc71d8b6d91a6b4"
+  integrity sha512-BCsmNmssPY4QfYKux7cGYm/JmsM/n9TGMJJDyYPt7ckWyK8l43hMgi7g9d7u/IxCaEAx3pbzfg7Ity0zdlDnGA==
+  dependencies:
+    nprogress "^0.2.0"
+
 next@14.2.3:
   version "14.2.3"
   resolved "https://registry.yarnpkg.com/next/-/next-14.2.3.tgz#f117dd5d5f20c307e7b8e4f9c1c97d961008925d"
@@ -598,6 +605,11 @@ normalize-path@^3.0.0, normalize-path@~3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/normalize-path/-/normalize-path-3.0.0.tgz#0dcd69ff23a1c9b11fd0978316644a0388216a65"
   integrity sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==
+
+nprogress@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/nprogress/-/nprogress-0.2.0.tgz#cb8f34c53213d895723fcbab907e9422adbcafb1"
+  integrity sha512-I19aIingLgR1fmhftnbWWO3dXc0hSxqHQHQb3H8m+K3TnEn/iSeTZZOyvKXWqQESMwuUVnatlCnZdLBZZt2VSA==
 
 object-assign@^4.0.1:
   version "4.1.1"
@@ -726,6 +738,11 @@ react-dom@^18:
   dependencies:
     loose-envify "^1.1.0"
     scheduler "^0.23.2"
+
+react-fast-marquee@^1.6.4:
+  version "1.6.4"
+  resolved "https://registry.yarnpkg.com/react-fast-marquee/-/react-fast-marquee-1.6.4.tgz#ac0bed0faee63e4d97e9b8cd03f3bea9f242fab3"
+  integrity sha512-LAgvhRmHdqaUQ8R5jCUwzEGFUIjnCCt3T3W8X7j7wF6DWe0SATlpP0JX1V0pp2qX3DYUezmn1Iz5AtRFdL2EWQ==
 
 react-icons@^5.2.1:
   version "5.2.1"
@@ -885,6 +902,11 @@ supports-preserve-symlinks-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
+
+swiper@^11.1.3:
+  version "11.1.3"
+  resolved "https://registry.yarnpkg.com/swiper/-/swiper-11.1.3.tgz#ff5cbeea349d207a2423c4106b1905cb12804a19"
+  integrity sha512-80MSxonyTxrGcaWj9YgvvhD8OG0B9/9IVZP33vhIEvyWvmKjnQDBieO+29wKvMx285sAtvZyrWBdkxaw6+D3aw==
 
 tailwind-merge@^2.3.0:
   version "2.3.0"
