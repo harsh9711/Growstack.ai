@@ -44,7 +44,7 @@ export default function Slider() {
                 <p className="w-full max-w-lg leading-loose">
                   Lorem ipsum dolor sit amet consectetur. Enim feugiat scelerisque ullamcorper dictumst aliquet lectus sed.
                 </p>
-                <button className="bg-transparent ring-1 ring-primary-green ring-inset hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
+                <button className="bg-transparent border border-primary-green hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
                   Learn More{" "}
                 </button>
               </div>
@@ -60,7 +60,7 @@ export default function Slider() {
                 <p className="w-full max-w-lg leading-loose">
                   Lorem ipsum dolor sit amet consectetur. Enim feugiat scelerisque ullamcorper dictumst aliquet lectus sed.
                 </p>
-                <button className="bg-transparent ring-1 ring-primary-green ring-inset hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
+                <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
                   Learn More{" "}
                 </button>
               </div>
@@ -76,7 +76,7 @@ export default function Slider() {
                 <p className="w-full max-w-lg leading-loose">
                   Lorem ipsum dolor sit amet consectetur. Enim feugiat scelerisque ullamcorper dictumst aliquet lectus sed.
                 </p>
-                <button className="bg-transparent ring-1 ring-primary-green ring-inset hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
+                <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
                   Learn More{" "}
                 </button>
               </div>
@@ -92,7 +92,7 @@ export default function Slider() {
                 <p className="w-full max-w-lg leading-loose">
                   Lorem ipsum dolor sit amet consectetur. Enim feugiat scelerisque ullamcorper dictumst aliquet lectus sed.
                 </p>
-                <button className="bg-transparent ring-1 ring-primary-green ring-inset hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
+                <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
                   Learn More{" "}
                 </button>
               </div>
@@ -108,7 +108,7 @@ export default function Slider() {
                 <p className="w-full max-w-lg leading-loose">
                   Lorem ipsum dolor sit amet consectetur. Enim feugiat scelerisque ullamcorper dictumst aliquet lectus sed.
                 </p>
-                <button className="bg-transparent ring-1 ring-primary-green ring-inset hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
+                <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
                   Learn More{" "}
                 </button>
               </div>
@@ -124,7 +124,7 @@ export default function Slider() {
                 <p className="w-full max-w-lg leading-loose">
                   Lorem ipsum dolor sit amet consectetur. Enim feugiat scelerisque ullamcorper dictumst aliquet lectus sed.
                 </p>
-                <button className="bg-transparent ring-1 ring-primary-green ring-inset hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
+                <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
                   Learn More{" "}
                 </button>
               </div>

@@ -57,14 +57,12 @@ export default function Navbar() {
             </div>
             <div className="flex gap-x-4 items-center">
               <div className="bg-[#C9C9C9] h-8 w-[1px]" />
-              <Link href="/auth/login">
-                <button className="py-3 px-8 rounded-xl hover:bg flex justify-center items-center">SIgn in</button>
+              <Link href="/auth/login" className="py-3 px-8 rounded-xl hover:bg flex justify-center items-center">
+                SIgn in
               </Link>
-              <Link href="/auth/signup">
-                <button className="sheen bg-primary-green text-white py-3.5 px-9 rounded-xl flex gap-2 items-center justify-center">
-                  Sign up
-                  <MdArrowOutward size={22} />
-                </button>
+              <Link href="/auth/signup" className="sheen bg-primary-green text-white py-3.5 px-9 rounded-xl flex gap-2 items-center justify-center">
+                Sign up
+                <MdArrowOutward size={22} />
               </Link>
             </div>
           </div>

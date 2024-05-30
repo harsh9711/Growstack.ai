@@ -119,7 +119,7 @@ export default function Home() {
                     Automate multiple scenarios
                   </li>
                 </ul>
-                <button className="bg-transparent ring-1 ring-primary-green ring-inset hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
+                <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
                   Get Started <ArrowRight />
                 </button>
               </div>
@@ -155,7 +155,7 @@ export default function Home() {
                     Automate multiple scenarios
                   </li>
                 </ul>
-                <button className="bg-transparent ring-1 ring-primary-green ring-inset hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
+                <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
                   Get Started <ArrowRight />
                 </button>
               </div>
@@ -191,7 +191,7 @@ export default function Home() {
                     Automate multiple scenarios
                   </li>
                 </ul>
-                <button className="bg-transparent ring-1 ring-primary-green ring-inset hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
+                <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
                   Get Started <ArrowRight />
                 </button>
               </div>
@@ -227,7 +227,7 @@ export default function Home() {
                     Automate multiple scenarios
                   </li>
                 </ul>
-                <button className="bg-transparent ring-1 ring-primary-green ring-inset hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
+                <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
                   Get Started <ArrowRight />
                 </button>
               </div>
@@ -263,7 +263,7 @@ export default function Home() {
                     Automate multiple scenarios
                   </li>
                 </ul>
-                <button className="bg-transparent ring-1 ring-primary-green ring-inset hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
+                <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
                   Get Started <ArrowRight />
                 </button>
               </div>
@@ -445,7 +445,7 @@ export default function Home() {
                 <span className="font-semibold">Don’t take our words </span>
                 <br /> for it listen to our customers
               </h1>
-              <button className="bg-transparent ring-1 ring-primary-green ring-inset hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
+              <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
                 See all stories <ArrowRight />
               </button>
             </div>

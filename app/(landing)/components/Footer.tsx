@@ -13,7 +13,7 @@ export default function Footer() {
           <button className="bg-white hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-10 py-5 rounded-xl font-semibold">
             View Demo
           </button>
-          <button className="bg-transparent ring-1 ring-primary-green ring-inset hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-5 py-5 rounded-xl font-semibold">
+          <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-5 py-5 rounded-xl font-semibold">
             Get 14-day free trial
           </button>
         </div>
@@ -79,7 +79,7 @@ export default function Footer() {
               <div className="w-full lg:max-w-[380px]">
                 <h1 className="font-semibold text-lg">Newsletter</h1>
                 <p className="mt-12">Subscribe to our newsletter</p>
-                <div className="bg-transparent ring-1 ring-[white]/80 p-2 flex rounded-2xl gap-2 mt-6">
+                <div className="bg-transparent border border-[white]/80 p-2 flex rounded-2xl gap-2 mt-6">
                   <Image src="/icons/sms.svg" alt="sms" width={22} height={22} className="ml-4" />
                   <input
                     type="text"
@@ -99,25 +99,25 @@ export default function Footer() {
               <Link
                 href="https://instagram.com"
                 target="_blank"
-                className="bg-transparent hover:bg-white text-white hover:text-primary-green ring-1 ring-[white]/80 p-4 flex justify-center items-center rounded-full hover:bg-primary-blue transition duration-300">
+                className="bg-transparent hover:bg-white text-white hover:text-primary-green border border-[white]/80 p-4 flex justify-center items-center rounded-full hover:bg-primary-blue transition duration-300">
                 <RiTwitterXLine size={20} />
               </Link>
               <Link
                 href="https://facebook.com"
                 target="_blank"
-                className="bg-transparent hover:bg-white text-white hover:text-primary-green ring-1 ring-[white]/80 p-4 flex justify-center items-center rounded-full hover:bg-primary-blue transition duration-300">
+                className="bg-transparent hover:bg-white text-white hover:text-primary-green border border-[white]/80 p-4 flex justify-center items-center rounded-full hover:bg-primary-blue transition duration-300">
                 <RiFacebookLine size={20} />
               </Link>
               <Link
                 href="https://x.com"
                 target="_blank"
-                className="bg-transparent hover:bg-white text-white hover:text-primary-green ring-1 ring-[white]/80 p-4 flex justify-center items-center rounded-full hover:bg-primary-blue transition duration-300">
+                className="bg-transparent hover:bg-white text-white hover:text-primary-green border border-[white]/80 p-4 flex justify-center items-center rounded-full hover:bg-primary-blue transition duration-300">
                 <RiLinkedinLine size={20} />
               </Link>
               <Link
                 href="https://linkedin.com"
                 target="_blank"
-                className="bg-transparent hover:bg-white text-white hover:text-primary-green ring-1 ring-[white]/80 p-4 flex justify-center items-center rounded-full hover:bg-primary-blue transition duration-300">
+                className="bg-transparent hover:bg-white text-white hover:text-primary-green border border-[white]/80 p-4 flex justify-center items-center rounded-full hover:bg-primary-blue transition duration-300">
                 <RiPinterestLine size={20} />
               </Link>
             </div>

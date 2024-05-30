@@ -93,3 +93,14 @@
 .custom-transition {
   transition: left cubic-bezier(0.4, 0, 0.2, 1) 0.5s;
 }
+
+* {
+  outline: none;
+}
+
+*:focus {
+  --tw-outline-offset-shadow: var(--tw-outline-inset) 0 0 0 var(--tw-outline-offset-width) var(--tw-outline-offset-color);
+  --tw-outline-shadow: var(--tw-outline-inset) 0 0 0 calc(3px + var(--tw-outline-offset-width)) var(--tw-outline-color);
+  box-shadow: var(--tw-outline-offset-shadow), var(--tw-outline-shadow), var(--tw-shadow, 0 0 #0000);
+  --tw-outline-color: #00203021;
+}

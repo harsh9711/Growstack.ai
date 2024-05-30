@@ -9,7 +9,7 @@ type Props = {
 export default function Progressbar({ children }: Props) {
   return (
     <Fragment>
-      <ProgressBar height="2px" color="#034737" options={{ showSpinner: true }} shallowRouting />
+      <ProgressBar height="4px" color="#034737" options={{ showSpinner: true }} shallowRouting />
       {children}
     </Fragment>
   );

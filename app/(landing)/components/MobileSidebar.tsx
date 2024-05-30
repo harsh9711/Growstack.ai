@@ -69,14 +69,12 @@ export default function MobileSidebar({ onClose, isOpen }: Props) {
           ))}
         </div>
         <div className="flex gap-x-4 items-center w-full">
-          <Link href="/auth/login" className="w-4/5">
-            <button className="py-3 px-4 rounded-xl whitespace-nowrap w-full flex justify-center items-center">SIgn in</button>
+          <Link href="/auth/login" className="py-3 px-8 rounded-xl hover:bg flex justify-center items-center">
+            SIgn in
           </Link>
-          <Link href="/auth/signup" className="w-full">
-            <button className="sheen bg-primary-green text-white py-3.5 px-4 w-full rounded-xl flex gap-2 justify-center items-center whitespace-nowrap">
-              Sign up
-              <MdArrowOutward size={22} />
-            </button>
+          <Link href="/auth/signup" className="sheen bg-primary-green text-white py-3.5 px-9 rounded-xl flex gap-2 items-center justify-center">
+            Sign up
+            <MdArrowOutward size={22} />
           </Link>
         </div>
       </div>
