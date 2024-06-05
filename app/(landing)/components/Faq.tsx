@@ -25,9 +25,7 @@ export default function Faq() {
               setCurrentItem(index);
             }}
             className={`w-full cursor-pointer flex gap-20 items-center justify-between  ${isOpen && currentItem === index && "!ring-0"}`}>
-            <h1 className="font-semibold text-lg sm:text-xl cursor-pointer leading-relaxed sm:leading-loose flex gap-x-2 sm:gap-x-3">
-              <span>{index + 1}.</span> {faq.question}
-            </h1>
+            <h1 className="font-semibold text-lg sm:text-xl cursor-pointer leading-relaxed sm:leading-loose flex gap-x-2 sm:gap-x-3">{faq.question}</h1>
             <div
               className={`p-3 rounded-full bg-white shadow-xl shadow-primary-light-gray transition-all duration-500 ${
                 isOpen && currentItem === index && "!bg-primary-green shadow-none"

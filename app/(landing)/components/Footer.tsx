@@ -21,7 +21,7 @@ export default function Footer() {
       <div className="max-w-[1860px] mx-auto bg-primary-green rounded-t-[50px] text-white">
         <div className="max-w-[1480px] mx-auto pt-20">
           <div className="w-full flex flex-col lg:flex-row gap-10 justify-between mt-6">
-            <div className="w-full flex justify-between">
+            <div className="w-full flex flex-wrap justify-between">
               <h1 className="text-2xl w-full max-w-[200px]">
                 Grow<span className="font-semibold">Stack</span>
               </h1>

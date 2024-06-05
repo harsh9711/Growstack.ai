@@ -46,8 +46,8 @@ export default function Navbar() {
                       }`}>
                       <h1 className="whitespace-nowrap">{link.label}</h1>
                       <div
-                        className={`w-full h-1 rounded-full bg-primary-green absolute mt-10 transition duration-300 ${
-                          pathname === link.href ? "visible" : "invisible"
+                        className={`w-0 h-1 rounded-full bg-primary-green absolute left-0 mt-10 transition-all duration-300 ${
+                          pathname === link.href ? "!w-full" : "w-0"
                         }`}
                       />
                     </div>

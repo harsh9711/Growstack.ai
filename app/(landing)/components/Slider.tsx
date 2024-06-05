@@ -37,7 +37,7 @@ export default function Slider() {
           <SwiperSlide className="cursor-grab active:cursor-grabbing">
             <div className="w-full flex items-center gap-10 bg-[#EED7A1] px-16 pt-10 pb-16 rounded-3xl">
               <div className="w-full relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[20px] before:right-[20px] before:rounded-xl">
-                <Image src="/assets/full-dashboard-preview.png" alt="" width={700} height={700} className="!rounded-xl custom-shadow-box relative z-[1]" />
+                <Image src="/assets/full-dashboard-preview.png" alt="" width={700} height={700} className="!rounded-xl shadow-box relative z-[1]" />
               </div>
               <div className="space-y-5 w-3/4">
                 <h1 className="leading-relaxed text-[34px] max-w-md font-semibold !mt-2">Create posts & content</h1>
@@ -53,7 +53,7 @@ export default function Slider() {
           <SwiperSlide className="cursor-grab active:cursor-grabbing">
             <div className="w-full flex items-center gap-10 bg-[#CD8B62] px-16 pt-10 pb-16 rounded-3xl">
               <div className="w-full relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[20px] before:right-[20px] before:rounded-xl">
-                <Image src="/assets/full-dashboard-preview.png" alt="" width={700} height={700} className="!rounded-xl custom-shadow-box relative z-[1]" />
+                <Image src="/assets/full-dashboard-preview.png" alt="" width={700} height={700} className="!rounded-xl shadow-box relative z-[1]" />
               </div>
               <div className="space-y-5 w-3/4">
                 <h1 className="leading-relaxed text-[34px] max-w-md font-semibold !mt-2">Create posts & content</h1>
@@ -69,7 +69,7 @@ export default function Slider() {
           <SwiperSlide className="cursor-grab active:cursor-grabbing">
             <div className="w-full flex items-center gap-10 bg-[#C6BC94] px-16 pt-10 pb-16 rounded-3xl">
               <div className="w-full relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[20px] before:right-[20px] before:rounded-xl">
-                <Image src="/assets/full-dashboard-preview.png" alt="" width={700} height={700} className="!rounded-xl custom-shadow-box relative z-[1]" />
+                <Image src="/assets/full-dashboard-preview.png" alt="" width={700} height={700} className="!rounded-xl shadow-box relative z-[1]" />
               </div>
               <div className="space-y-5 w-3/4">
                 <h1 className="leading-relaxed text-[34px] max-w-md font-semibold !mt-2">Create posts & content</h1>
@@ -85,7 +85,7 @@ export default function Slider() {
           <SwiperSlide className="cursor-grab active:cursor-grabbing">
             <div className="w-full flex items-center gap-10 bg-[#FAE8F1] px-16 pt-10 pb-16 rounded-3xl">
               <div className="w-full relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[20px] before:right-[20px] before:rounded-xl">
-                <Image src="/assets/full-dashboard-preview.png" alt="" width={700} height={700} className="!rounded-xl custom-shadow-box relative z-[1]" />
+                <Image src="/assets/full-dashboard-preview.png" alt="" width={700} height={700} className="!rounded-xl shadow-box relative z-[1]" />
               </div>
               <div className="space-y-5 w-3/4">
                 <h1 className="leading-relaxed text-[34px] max-w-md font-semibold !mt-2">Create posts & content</h1>
@@ -101,7 +101,7 @@ export default function Slider() {
           <SwiperSlide className="cursor-grab active:cursor-grabbing">
             <div className="w-full flex items-center gap-10 bg-[#9AEEE7] px-16 pt-10 pb-16 rounded-3xl">
               <div className="w-full relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[20px] before:right-[20px] before:rounded-xl">
-                <Image src="/assets/full-dashboard-preview.png" alt="" width={700} height={700} className="!rounded-xl custom-shadow-box relative z-[1]" />
+                <Image src="/assets/full-dashboard-preview.png" alt="" width={700} height={700} className="!rounded-xl shadow-box relative z-[1]" />
               </div>
               <div className="space-y-5 w-3/4">
                 <h1 className="leading-relaxed text-[34px] max-w-md font-semibold !mt-2">Create posts & content</h1>
@@ -117,7 +117,7 @@ export default function Slider() {
           <SwiperSlide className="cursor-grab active:cursor-grabbing">
             <div className="w-full flex items-center gap-10 bg-[#C1B1E4] px-16 pt-10 pb-16 rounded-3xl">
               <div className="w-full relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[20px] before:right-[20px] before:rounded-xl">
-                <Image src="/assets/full-dashboard-preview.png" alt="" width={700} height={700} className="!rounded-xl custom-shadow-box relative z-[1]" />
+                <Image src="/assets/full-dashboard-preview.png" alt="" width={700} height={700} className="!rounded-xl shadow-box relative z-[1]" />
               </div>
               <div className="space-y-5 w-3/4">
                 <h1 className="leading-relaxed text-[34px] max-w-md font-semibold !mt-2">Create posts & content</h1>

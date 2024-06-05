@@ -69,7 +69,7 @@ export default function Home() {
           <p className="max-w-2xl leading-loose text-center">
             Our sales success platform integrates with your sales team’s workflow. So, every sales rep is equipped to convert pipeline more effectively.
           </p>
-          <div className="bg-[#F9F9F9] p-5 rounded-[30px] custom-shadow-box">
+          <div className="bg-[#F9F9F9] p-5 rounded-[30px] shadow-box">
             <Image src="/assets/ui-solutions-preview.png" alt="" width={1000} height={1000} />
           </div>
         </div>
