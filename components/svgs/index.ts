@@ -1,0 +1,9 @@
+export { default as AnalyseIcon } from "@/public/svgs/analyse.svg";
+export { default as CreateIcon } from "@/public/svgs/create.svg";
+export { default as DashboardIcon } from "@/public/svgs/dashboard.svg";
+export { default as EngageIcon } from "@/public/svgs/engage.svg";
+export { default as IntegrationIcon } from "@/public/svgs/integration.svg";
+export { default as PlanIcon } from "@/public/svgs/plan.svg";
+export { default as PublishIcon } from "@/public/svgs/publish.svg";
+export { default as BotIcon } from "@/public/svgs/bot.svg";
+export { default as TridentIcon } from "@/public/svgs/trident.svg";
