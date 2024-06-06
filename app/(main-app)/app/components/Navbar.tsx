@@ -1,6 +1,30 @@
 "use client";
 
-import { AnalyseIcon, BotIcon, CreateIcon, DashboardIcon, EngageIcon, IntegrationIcon, PlanIcon, PublishIcon, TridentIcon } from "@/components/svgs";
+import {
+  AnalyseIcon,
+  BotIcon,
+  CreateIcon,
+  DashboardIcon,
+  EngageIcon,
+  IntegrationIcon,
+  PlanIcon,
+  PublishIcon,
+  TridentIcon,
+  LayoutIcon,
+  MailIcon,
+  MessageIcon,
+  ShapeIcon,
+  TextResizeIcon,
+  UserIcon,
+  SchedulerIcon,
+  AffiliateMarketingIcon,
+  SquareShapeIcon,
+  BusinessIcon,
+  DocumentIcon,
+  PresentationAnalyticsIcon,
+  ReputationIcon,
+  AutomationWheelIcon,
+} from "@/components/svgs";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import clsx from "clsx";
 import { ChevronRight, Search } from "lucide-react";
@@ -36,7 +60,7 @@ export default function Navbar() {
               {link.sublinks && (
                 <DropdownMenuContent>
                   {link.sublinks.map((item, index) => (
-                    <DropdownMenuItem key={index}>
+                    <DropdownMenuItem inset key={index}>
                       <div className="flex flex-row w-[300px] justify-between">
                         <div className="flex gap-3">
                           {React.cloneElement(item.icon, { className: clsx(pathname === "#" && "text-primary-green") })}
@@ -94,13 +118,33 @@ const navLinks = [
     icon: <CreateIcon />,
     sublinks: [
       {
-        icon: <BotIcon />,
-        name: "AI chatbot (all LLM)",
+        icon: <LayoutIcon />,
+        name: "AI website builder",
         href: "#",
       },
       {
-        icon: <TridentIcon />,
-        name: "GMB web scrapping tool",
+        icon: <MailIcon />,
+        name: "AI email builder",
+        href: "#",
+      },
+      {
+        icon: <TextResizeIcon />,
+        name: "Text to video",
+        href: "#",
+      },
+      {
+        icon: <MessageIcon />,
+        name: "Custom marketing GPT apps",
+        href: "#",
+      },
+      {
+        icon: <ShapeIcon />,
+        name: "AI workflow builder",
+        href: "#",
+      },
+      {
+        icon: <UserIcon />,
+        name: "Contact",
         href: "#",
       },
     ],
@@ -110,13 +154,8 @@ const navLinks = [
     icon: <PublishIcon />,
     sublinks: [
       {
-        icon: <BotIcon />,
-        name: "AI chatbot (all LLM)",
-        href: "#",
-      },
-      {
-        icon: <TridentIcon />,
-        name: "GMB web scrapping tool",
+        icon: <SchedulerIcon />,
+        name: "Scheduler",
         href: "#",
       },
     ],
@@ -126,13 +165,23 @@ const navLinks = [
     icon: <EngageIcon />,
     sublinks: [
       {
-        icon: <BotIcon />,
-        name: "AI chatbot (all LLM)",
+        icon: <AffiliateMarketingIcon />,
+        name: "Marketing and sales assistants",
         href: "#",
       },
       {
-        icon: <TridentIcon />,
-        name: "GMB web scrapping tool",
+        icon: <SquareShapeIcon />,
+        name: "Social media conversation hub",
+        href: "#",
+      },
+      {
+        icon: <BusinessIcon />,
+        name: "AI marketing and sales apps",
+        href: "#",
+      },
+      {
+        icon: <DocumentIcon />,
+        name: "Social advocacy",
         href: "#",
       },
     ],
@@ -142,13 +191,23 @@ const navLinks = [
     icon: <AnalyseIcon />,
     sublinks: [
       {
-        icon: <BotIcon />,
-        name: "AI chatbot (all LLM)",
+        icon: <PresentationAnalyticsIcon />,
+        name: "Social media analytics",
         href: "#",
       },
       {
-        icon: <TridentIcon />,
-        name: "GMB web scrapping tool",
+        icon: <ReputationIcon />,
+        name: "Reputation mgmt. system",
+        href: "#",
+      },
+      {
+        icon: <PresentationAnalyticsIcon />,
+        name: "Ads analytics",
+        href: "#",
+      },
+      {
+        icon: <MailIcon />,
+        name: "Email & SMS Analytics",
         href: "#",
       },
     ],
@@ -156,18 +215,18 @@ const navLinks = [
   },
   {
     icon: <IntegrationIcon />,
-    // sublinks: [
-    //   {
-    //     icon: <BotIcon />,
-    //     name: "AI chatbot (all LLM)",
-    //     href: "#",
-    //   },
-    //   {
-    //     icon: <TridentIcon />,
-    //     name: "GMB web scrapping tool",
-    //     href: "#",
-    //   },
-    // ],
+    sublinks: [
+      {
+        icon: <AutomationWheelIcon />,
+        name: "WhatsApp and telegram automation with our apps",
+        href: "#",
+      },
+      {
+        icon: <PresentationAnalyticsIcon />,
+        name: "Social Planner Hub",
+        href: "#",
+      },
+    ],
     title: "Integration",
   },
 ];
