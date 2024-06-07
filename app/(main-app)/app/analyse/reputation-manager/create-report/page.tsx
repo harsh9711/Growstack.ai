@@ -15,7 +15,7 @@ export default function CreateReputationReport() {
           <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">Add report</p>
         </div>
         <div className="">
-          <Link href="/app/reputation-manager">
+          <Link href="/app/analyse/reputation-manager">
             <button className="text-primary-green hover:bg-primary-green/10 flex gap-2 px-3.5 py-2.5 rounded-full font-semibold items-center">
               <ArrowLeft size={20} /> Back
             </button>
