@@ -1,0 +1,10 @@
+.swiper-pagination{
+  position: absolute !important;
+  left: 0 !important;
+  bottom: 0 !important;
+  max-width: fit-content !important;
+}
+
+.swiper-pagination-bullet-active{
+  background-color: #034737;
+}

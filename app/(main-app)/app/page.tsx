@@ -5,9 +5,9 @@ import { DataTable } from "./components/Table";
 
 export default function Dashboard() {
   return (
-    <main className="text-[14px]">
+    <main className="">
       <div className="bg-[#EBF0F6] h-80 w-full max-w-[95%] mx-auto absolute top-0 left-0 right-0 rounded-b-[60px]" />
-      <div className="max-w-[85%] mx-auto relative z-[1]">
+      <div className="relative z-[1]">
         <div className="flex justify-between items-center mt-8">
           <div className="space-y-2">
             <h1 className="text-2xl font-semibold">Dashboard</h1>

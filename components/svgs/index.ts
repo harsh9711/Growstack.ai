@@ -21,3 +21,4 @@ export { default as DocumentIcon } from "@/public/svgs/document.svg";
 export { default as PresentationAnalyticsIcon } from "@/public/svgs/presentation-analytics.svg";
 export { default as ReputationIcon } from "@/public/svgs/reputation.svg";
 export { default as AutomationWheelIcon } from "@/public/svgs/wheel.svg";
+export { default as MultipleStarsIcon } from "@/public/svgs/multiple-stars.svg";

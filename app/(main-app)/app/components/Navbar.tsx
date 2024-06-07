@@ -1,30 +1,5 @@
 "use client";
 
-import {
-  AnalyseIcon,
-  BotIcon,
-  CreateIcon,
-  DashboardIcon,
-  EngageIcon,
-  IntegrationIcon,
-  PlanIcon,
-  PublishIcon,
-  TridentIcon,
-  LayoutIcon,
-  MailIcon,
-  MessageIcon,
-  ShapeIcon,
-  TextResizeIcon,
-  UserIcon,
-  SchedulerIcon,
-  AffiliateMarketingIcon,
-  SquareShapeIcon,
-  BusinessIcon,
-  DocumentIcon,
-  PresentationAnalyticsIcon,
-  ReputationIcon,
-  AutomationWheelIcon,
-} from "@/components/svgs";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import clsx from "clsx";
 import { ChevronRight, Search } from "lucide-react";
@@ -33,6 +8,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
 import { IoIosNotificationsOutline } from "react-icons/io";
+import navLinks from "./constants/nav";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -45,30 +21,28 @@ export default function Navbar() {
         <div className="flex gap-3">
           {navLinks.map((link, index) => (
             <DropdownMenu key={index}>
-              <DropdownMenuTrigger>
-                <div
-                  className={clsx(
-                    "flex justify-center items-center p-3 pr-6 rounded-2xl gap-4 text-[15px] transition-all duration-500",
-                    pathname === "#" ? "bg-primary-green text-white !hover:bg-primary-green hover:bg-opacity-90" : "hover:bg-[#F1F1F1]"
-                  )}>
-                  <div className="bg-[#FAFAFB] p-2.5 rounded-lg">
-                    {React.cloneElement(link.icon, { className: clsx(pathname === "#" && "text-primary-green") })}
-                  </div>
-                  {!link.sublinks && link.href ? <Link href={link.href}>{link.title}</Link> : <h2>{link.title}</h2>}
-                </div>
-              </DropdownMenuTrigger>
+              {!link.sublinks && link.href ? (
+                <Link href={link.href}>
+                  <NavLinkBtn link={link} pathname={pathname} />
+                </Link>
+              ) : (
+                <DropdownMenuTrigger>
+                  <NavLinkBtn link={link} pathname={pathname} />
+                </DropdownMenuTrigger>
+              )}
+
               {link.sublinks && (
                 <DropdownMenuContent>
                   {link.sublinks.map((item, index) => (
-                    <DropdownMenuItem inset key={index}>
-                      <div className="flex flex-row w-[300px] justify-between">
+                    <Link href={item.href} key={index}>
+                      <DropdownMenuItem inset className="min-w-[300px] flex justify-between items-center">
                         <div className="flex gap-3">
                           {React.cloneElement(item.icon, { className: clsx(pathname === "#" && "text-primary-green") })}
                           <h2>{item.name}</h2>
                         </div>
                         <ChevronRight className="text-gray-500" />
-                      </div>
-                    </DropdownMenuItem>
+                      </DropdownMenuItem>
+                    </Link>
                   ))}
                 </DropdownMenuContent>
               )}
@@ -92,141 +66,15 @@ export default function Navbar() {
   );
 }
 
-const navLinks = [
-  {
-    icon: <DashboardIcon />,
-    href: "/app",
-    title: "Dashboard",
-  },
-  {
-    icon: <PlanIcon />,
-    sublinks: [
-      {
-        icon: <BotIcon />,
-        name: "AI chatbot (all LLM)",
-        href: "#",
-      },
-      {
-        icon: <TridentIcon />,
-        name: "GMB web scrapping tool",
-        href: "#",
-      },
-    ],
-    title: "Plan",
-  },
-  {
-    icon: <CreateIcon />,
-    sublinks: [
-      {
-        icon: <LayoutIcon />,
-        name: "AI website builder",
-        href: "#",
-      },
-      {
-        icon: <MailIcon />,
-        name: "AI email builder",
-        href: "#",
-      },
-      {
-        icon: <TextResizeIcon />,
-        name: "Text to video",
-        href: "#",
-      },
-      {
-        icon: <MessageIcon />,
-        name: "Custom marketing GPT apps",
-        href: "#",
-      },
-      {
-        icon: <ShapeIcon />,
-        name: "AI workflow builder",
-        href: "#",
-      },
-      {
-        icon: <UserIcon />,
-        name: "Contact",
-        href: "#",
-      },
-    ],
-    title: "Create",
-  },
-  {
-    icon: <PublishIcon />,
-    sublinks: [
-      {
-        icon: <SchedulerIcon />,
-        name: "Scheduler",
-        href: "#",
-      },
-    ],
-    title: "Publish",
-  },
-  {
-    icon: <EngageIcon />,
-    sublinks: [
-      {
-        icon: <AffiliateMarketingIcon />,
-        name: "Marketing and sales assistants",
-        href: "#",
-      },
-      {
-        icon: <SquareShapeIcon />,
-        name: "Social media conversation hub",
-        href: "#",
-      },
-      {
-        icon: <BusinessIcon />,
-        name: "AI marketing and sales apps",
-        href: "#",
-      },
-      {
-        icon: <DocumentIcon />,
-        name: "Social advocacy",
-        href: "#",
-      },
-    ],
-    title: "Engage",
-  },
-  {
-    icon: <AnalyseIcon />,
-    sublinks: [
-      {
-        icon: <PresentationAnalyticsIcon />,
-        name: "Social media analytics",
-        href: "#",
-      },
-      {
-        icon: <ReputationIcon />,
-        name: "Reputation mgmt. system",
-        href: "#",
-      },
-      {
-        icon: <PresentationAnalyticsIcon />,
-        name: "Ads analytics",
-        href: "#",
-      },
-      {
-        icon: <MailIcon />,
-        name: "Email & SMS Analytics",
-        href: "#",
-      },
-    ],
-    title: "Analyse",
-  },
-  {
-    icon: <IntegrationIcon />,
-    sublinks: [
-      {
-        icon: <AutomationWheelIcon />,
-        name: "WhatsApp and telegram automation with our apps",
-        href: "#",
-      },
-      {
-        icon: <PresentationAnalyticsIcon />,
-        name: "Social Planner Hub",
-        href: "#",
-      },
-    ],
-    title: "Integration",
-  },
-];
+const NavLinkBtn = ({ pathname, link }: { pathname: string; link: NavLink }) => {
+  return (
+    <div
+      className={clsx(
+        "flex justify-center items-center p-[9px] pr-6 rounded-2xl gap-4 text-[15px] transition-all duration-500",
+        pathname === "#" ? "bg-primary-green text-white !hover:bg-primary-green hover:bg-opacity-90" : "hover:bg-[#F1F1F1]"
+      )}>
+      <div className="bg-[#FAFAFB] p-2.5 rounded-lg">{React.cloneElement(link.icon, { className: clsx(pathname === "#" && "text-primary-green") })}</div>
+      <h2>{link.title}</h2>
+    </div>
+  );
+};
