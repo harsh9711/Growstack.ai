@@ -12,7 +12,7 @@ export default function MainSection() {
           Set up your first review tracking report to start monitoring your reputation across the web. Get alerts for new reviews, respond to them quickly, and
           track changes to your reputation score over time.
         </p>
-        <Link href="/app/reputation-manager/create-report">
+        <Link href="/app/analyse/reputation-manager/create-report">
           <button className="py-4 px-6 bg-primary-green hover:bg-opacity-90 rounded-xl text-white mt-6">Create reputation manager report</button>
         </Link>
         <div className="mx-auto max-h-[430px] mt-10 max-w-fit relative">

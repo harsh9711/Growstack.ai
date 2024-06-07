@@ -99,8 +99,8 @@ const navLinks: NavLink[] = [
     sublinks: [
       {
         icon: <AffiliateMarketingIcon />,
-        name: "Marketing and sales assistants",
-        href: "#",
+        name: "AI Marketing and sales assistants",
+        href: "/app/engage/ai-marketing-and-sales-assistant",
       },
       {
         icon: <SquareShapeIcon />,
@@ -131,7 +131,7 @@ const navLinks: NavLink[] = [
       {
         icon: <ReputationIcon />,
         name: "Reputation mgmt. system",
-        href: "/app/reputation-manager",
+        href: "/app/analyse/reputation-manager",
       },
       {
         icon: <PresentationAnalyticsIcon />,
