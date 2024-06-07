@@ -1,8 +1,15 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import RatingStars from "@/components/ui/rating";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Review } from "@/types/reviews";
 import {
   ColumnDef,
   ColumnFiltersState,
+  PaginationState,
   SortingState,
   VisibilityState,
   flexRender,
@@ -12,126 +19,86 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import * as React from "react";
-
-import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { ArrowUpDown, ChevronDown, Plus } from "lucide-react";
-
-import { MultipleStarsIcon } from "@/components/svgs";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger
-} from "@/components/ui/dropdown-menu";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import clsx from "clsx";
+import { ChevronDown, Download } from "lucide-react";
 import Image from "next/image";
-import { BsStarFill } from "react-icons/bs";
+import { sampleReviews } from "./data/reviews";
 import RespondDialog from "./dialogs/RespondDialog";
+import { useState } from "react";
+import { MdOutlineRefresh } from "react-icons/md";
 
-const data: Payment[] = [
+export const columns: ColumnDef<Review>[] = [
   {
-    id: "m5gr84i9",
-    amount: 316,
-    status: "success",
-    email: "ken99@yahoo.com",
+    id: "date",
+    accessorKey: "date",
+    header: () => <div>Date</div>,
+    cell: ({ row }) => <div>{row.original.date}</div>,
   },
   {
-    id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@gmail.com",
-  },
-  {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@gmail.com",
-  },
-  {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@gmail.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@hotmail.com",
-  },
-];
-
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
-
-export const columns: ColumnDef<Payment>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-        onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
+    accessorKey: "source",
+    header: "Source",
+    cell: ({ row }) => (
+      <div className="capitalize flex items-center gap-3">
+        <Image src="/icons/google.svg" alt="" width={30} height={30} />
+        {row.getValue("source")}
+      </div>
     ),
-    cell: ({ row }) => <Checkbox checked={row.getIsSelected()} onCheckedChange={(value: any) => row.toggleSelected(!!value)} aria-label="Select row" />,
-    enableSorting: false,
-    enableHiding: false,
+  },
+  {
+    accessorKey: "rating",
+    header: "Rating",
+    cell: ({ row }) => (
+      <div className="flex items-center gap-1">
+        <RatingStars rating={row.getValue("rating")} />
+        <span className="ml-2 text-[15px] font-medium">{row.getValue("rating")}</span>
+      </div>
+    ),
+  },
+  {
+    accessorKey: "review",
+    header: () => "Review",
+    cell: ({ row }) => (
+      <div className="space-y-1">
+        <p>{row.getValue("review")}</p>
+        <span className="text-xs text-primary-black text-opacity-50">Reviewer: {row.original.reviewer}</span>
+      </div>
+    ),
   },
   {
     accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => <div className="capitalize">{row.getValue("status")}</div>,
-  },
-  {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Email
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
-  },
-  {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
+    header: () => "Status",
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
+      const status = row.getValue("status") as "pending" | "approved" | "rejected";
+      const statusClasses = {
+        pending: "text-yellow-500",
+        approved: "text-green-500",
+        rejected: "text-red-500",
+      };
 
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-
-      return <div className="text-right font-medium">{formatted}</div>;
+      return <div className={`text-left font-medium ${statusClasses[status] || ""}`}>{status}</div>;
     },
   },
   {
     id: "actions",
-    header: () => <div>Actions</div>,
-    cell: () => <RespondDialog/>,
+    header: "Actions",
+    cell: ({ row }) => {
+      return <RespondDialog reviewData={row.original} />;
+    },
   },
 ];
 
 export function ReviewsTable() {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = useState({});
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
   const table = useReactTable({
-    data,
+    data: sampleReviews,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -141,7 +108,10 @@ export function ReviewsTable() {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    onPaginationChange: setPagination,
+
     state: {
+      pagination,
       sorting,
       columnFilters,
       columnVisibility,
@@ -149,38 +119,94 @@ export function ReviewsTable() {
     },
   });
 
+  const paginationButtons = [];
+  for (let i = 0; i < table.getPageCount(); i++) {
+    paginationButtons.push(
+      <button
+        key={i}
+        onClick={() => table.setPageIndex(i)}
+        className={clsx(
+          "w-12 h-[47px] rounded-lg mx-1 bg-[#4B465C14] transition-all duration-300",
+          i === table.getState().pagination.pageIndex ? "!bg-primary-green hover:bg-opacity-50 text-white" : "hover:bg-[#4B465C29]"
+        )}>
+        {i + 1}
+      </button>
+    );
+  }
+
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) => column.toggleVisibility(!!value)}>
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
+      <div className="flex items-center justify-between gap-5">
+        <h1 className="text-xl font-semibold">Reviews</h1>
+        <div className="flex items-center justify-end py-4 gap-2">
+          <Select
+            onValueChange={(value) => {
+              if (value === "All Sources") return table.resetColumnFilters();
+              table.getColumn("source")?.setFilterValue(value);
+            }}>
+            <SelectTrigger className="w-full h-12 rounded-lg max-w-[132px] border border-primary-green bg-white text-primary-green">
+              <SelectValue placeholder="All Sources" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="All Sources">All Sources</SelectItem>
+              <SelectItem value="Google">Google</SelectItem>
+              <SelectItem value="Facebook">Facebook</SelectItem>
+              <SelectItem value="Others">Others</SelectItem>
+              <SelectItem value="Yelp">Yelp</SelectItem>
+              <SelectItem value="TripAdvisor">TripAdvisor</SelectItem>
+            </SelectContent>
+          </Select>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild className="w-full h-12 rounded-lg max-w-[132px] border border-primary-green bg-white text-primary-green">
+              <Button variant="outline" className="px-2 font-normal">
+                Columns <ChevronDown className="ml-4 h-5 w-5 opacity-70" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {table
+                .getAllColumns()
+                .filter((column) => column.getCanHide())
+                .map((column) => {
+                  return (
+                    <DropdownMenuCheckboxItem
+                      key={column.id}
+                      className="capitalize"
+                      checked={column.getIsVisible()}
+                      onCheckedChange={(value) => column.toggleVisibility(!!value)}>
+                      {column.id}
+                    </DropdownMenuCheckboxItem>
+                  );
+                })}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <Select>
+            <SelectTrigger className="w-full h-12 rounded-lg max-w-[132px] border border-primary-green bg-white text-primary-green">
+              <SelectValue placeholder="All Time" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="All Time">All Time</SelectItem>
+              <SelectItem value="2024s">2024</SelectItem>
+              <SelectItem value="2023">2023</SelectItem>
+              <SelectItem value="2022">2022</SelectItem>
+              <SelectItem value="2021">2021</SelectItem>
+              <SelectItem value="2020">2020</SelectItem>
+            </SelectContent>
+          </Select>
+          <button className="h-12 bg-transparent border border-primary-green hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-5 py-3 rounded-lg flex items-center gap-2 whitespace-nowrap">
+            Reset
+            <MdOutlineRefresh size={20} />
+          </button>
+          <button className="h-12 bg-transparent border border-primary-green hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-5 py-3 rounded-lg flex items-center gap-2 whitespace-nowrap">
+            <Download size={20} />
+            CSV
+          </button>
+        </div>
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-2xl border overflow-hidden">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow key={headerGroup.id} className="bg-[#0347370D] rounded-t-2xl">
                 {headerGroup.headers.map((header) => {
                   return <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>;
                 })}
@@ -207,14 +233,24 @@ export function ReviewsTable() {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
-        <div className="space-x-2">
-          <Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+        <div className="space-x-2 flex">
+          <Button
+            variant="outline"
+            size="sm"
+            className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[47px]"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}>
             Previous
           </Button>
-          <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+          <div>
+            <div>{paginationButtons.map((u) => u)}</div>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[47px] px-4"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}>
             Next
           </Button>
         </div>

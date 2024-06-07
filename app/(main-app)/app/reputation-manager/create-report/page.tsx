@@ -223,8 +223,8 @@ export default function CreateReputationReport() {
               Connect your business profile listing and Facebook page to get daily review updates and to respond to those reviews from within your report.
             </p>
           </div>
-          <button className="py-4 px-6 bg-primary-green hover:bg-opacity-90 rounded-xl text-white mt-6 flex gap-3">
-            Connect <FaGoogle size={20} /> <FaFacebook size={20} />
+          <button className="py-4 px-6 bg-primary-green sheen rounded-xl text-white mt-6 flex gap-3">
+            Connect <FaGoogle size={24} /> <FaFacebook size={24} />
           </button>
         </div>
         <div className="border-t border-[#EBEBEB] py-8 flex gap-10">

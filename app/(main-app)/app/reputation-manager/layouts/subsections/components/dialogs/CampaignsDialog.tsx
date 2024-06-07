@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function CampaignsDialog() {
   return (
     <Dialog>
-      <DialogTrigger>
+      <DialogTrigger asChild>
         <button className="py-4 px-6 bg-primary-green sheen rounded-xl text-white flex gap-3">Respond</button>
       </DialogTrigger>
       <DialogContent>

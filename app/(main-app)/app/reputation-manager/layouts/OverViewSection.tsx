@@ -29,7 +29,10 @@ export default function OverViewSection() {
             <div
               key={index}
               onClick={() => setSelectedTab(tab)}
-              className={clsx("pt-5 pb-3 px-8 rounded-t-3xl cursor-pointer", selectedTab === tab && "bg-white border-t border-x border-[#E4E4E4] text-primary-green font-medium")}>
+              className={clsx(
+                "pt-5 pb-3 px-8 rounded-t-3xl cursor-pointer",
+                selectedTab === tab && "bg-white border-t border-x border-[#E4E4E4] text-primary-green font-medium"
+              )}>
               {tab}
             </div>
           ))}

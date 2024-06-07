@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { Transition, Variants, motion } from "framer-motion";
+import clsx from "clsx";
 interface Props {
   children: React.ReactNode;
   transition: Transition;
@@ -15,7 +16,7 @@ const Motion: React.FC<Props> = ({ children, transition, variants, classNames, .
       whileInView="visible"
       variants={variants}
       transition={transition}
-      className={`w-full ${classNames && classNames}`}>
+      className={clsx("w-full ", !!classNames && classNames)}>
       {children}
     </motion.div>
   );

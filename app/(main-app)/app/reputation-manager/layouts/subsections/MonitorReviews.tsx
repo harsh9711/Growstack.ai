@@ -4,6 +4,7 @@ import Motion from "@/components/Motion";
 import { useState } from "react";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { ReviewsTable } from "./components/ReviewsTable";
+import OverviewGraphs from "./components/OverviewGraphs";
 
 export default function MonitorReviewsSection() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
@@ -46,10 +47,10 @@ export default function MonitorReviewsSection() {
                 style={{ left: `calc(${tabUnderlineLeft}%)` }}></div>
             </div>
           </div>
-          <div className="flex items-center gap-3">
-            <span>Enable review responses: </span>
-            <button className="py-4 px-6 bg-primary-green sheen rounded-xl text-white flex gap-3">
-              Connect <FaGoogle size={20} /> <FaFacebook size={20} />
+          <div className="flex items-center gap-x-3">
+            <span className="text-sm">Enable review responses: </span>
+            <button className="py-3 px-5 bg-primary-green sheen rounded-xl text-white flex gap-3 text-sm">
+              Connect <FaGoogle size={18} /> <FaFacebook size={18} />
             </button>
           </div>
         </div>
@@ -62,7 +63,7 @@ export default function MonitorReviewsSection() {
 const Overview = () => {
   return (
     <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
-      <div>Overview</div>
+      <OverviewGraphs />
     </Motion>
   );
 };
@@ -70,10 +71,7 @@ const Overview = () => {
 const Reviews = () => {
   return (
     <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
-      <div>
-        <h1 className="text-xl font-semibold">Reviews</h1>
-        <ReviewsTable />
-      </div>
+      <ReviewsTable />
     </Motion>
   );
 };

@@ -1,6 +1,7 @@
 import Motion from "@/components/Motion";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import CreateTemplateDialog from "./components/dialogs/CreateTemplateDialog";
+import EmailCompaignDialog from "./components/dialogs/EmailCompaignDialog";
 
 export default function GetReviewsSection() {
   return (
@@ -66,12 +67,20 @@ export default function GetReviewsSection() {
             request URL for use in in-store kiosks, online sharing, or somewhere else.{" "}
           </p>
           <div className="flex gap-4">
-            <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-3 rounded-xl font-semibold flex items-center gap-2 whitespace-nowrap">
-              Email campaign
-            </button>
-            <button className="bg-transparent border border-primary-green hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-5 py-3 rounded-xl font-semibold flex items-center gap-2 whitespace-nowrap">
-              SMS campaign
-            </button>
+            <EmailCompaignDialog
+              trigger={
+                <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-3 rounded-xl font-semibold flex items-center gap-2 whitespace-nowrap">
+                  Email campaign
+                </button>
+              }
+            />
+            <EmailCompaignDialog
+              trigger={
+                <button className="bg-transparent border border-primary-green hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-5 py-3 rounded-xl font-semibold flex items-center gap-2 whitespace-nowrap">
+                  SMS campaign
+                </button>
+              }
+            />
           </div>
         </div>
       </div>

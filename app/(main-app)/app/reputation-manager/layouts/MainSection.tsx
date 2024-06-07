@@ -1,4 +1,5 @@
 import Motion from "@/components/Motion";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -14,6 +15,13 @@ export default function MainSection() {
         <Link href="/app/reputation-manager/create-report">
           <button className="py-4 px-6 bg-primary-green hover:bg-opacity-90 rounded-xl text-white mt-6">Create reputation manager report</button>
         </Link>
+        <div className="mx-auto max-h-[430px] mt-10 max-w-fit relative">
+          <div className="bg-black bg-opacity-70 absolute inset-0 w-full h-full z-[1] rounded-3xl"></div>
+          <button className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-[2] hover:scale-110 transition-all duration-150">
+            <Image src="/icons/play-btn.svg" alt="" width={100} height={100} />
+          </button>
+          <Image src="/assets/reputation-vid.png" alt="" width={1000} height={2000} />
+        </div>
       </div>
     </Motion>
   );
