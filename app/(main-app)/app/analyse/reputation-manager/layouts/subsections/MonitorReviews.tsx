@@ -3,7 +3,7 @@
 import Motion from "@/components/Motion";
 import { useState } from "react";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
-import { ReviewsTable } from "./components/ReviewsTable";
+import ReviewsTable from "./components/ReviewsTable";
 import OverviewGraphs from "./components/OverviewGraphs";
 
 export default function MonitorReviewsSection() {

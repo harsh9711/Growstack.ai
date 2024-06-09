@@ -30,7 +30,7 @@ export default function Dashboard() {
               Seeking that perfect content? Look no further! Get ready to explore our fantastic lineup of templates
             </p>
           </div>
-          <div className="w-full max-w-[620px] bg-white shadow-2xl shadow-primary-light-gray px-3 py-2 rounded-xl">
+          <div className="w-full max-w-[620px] bg-white shadow-2xl shadow-gray-200 px-3 py-2 rounded-xl">
             <div className="w-full flex relative">
               {tabs.map((tab, index) => (
                 <div

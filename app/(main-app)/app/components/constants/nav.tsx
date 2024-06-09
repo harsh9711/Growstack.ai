@@ -24,7 +24,6 @@ import {
   AutomationWheelIcon,
 } from "@/components/svgs";
 
-
 const navLinks: NavLink[] = [
   {
     icon: <DashboardIcon />,
@@ -78,7 +77,7 @@ const navLinks: NavLink[] = [
       {
         icon: <UserIcon />,
         name: "Contact",
-        href: "#",
+        href: "/app/create/contacts",
       },
     ],
     title: "Create",

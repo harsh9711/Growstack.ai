@@ -159,7 +159,7 @@ export default function ReviewInboxSection() {
         key={i}
         onClick={() => table.setPageIndex(i)}
         className={clsx(
-          "w-12 h-[47px] rounded-lg mx-1 bg-[#4B465C14] transition-all duration-300",
+          "w-12 h-[45px] rounded-lg mx-1 bg-[#4B465C14] transition-all duration-300",
           i === table.getState().pagination.pageIndex ? "!bg-primary-green hover:bg-opacity-50 text-white" : "hover:bg-[#4B465C29]"
         )}>
         {i + 1}
@@ -203,7 +203,7 @@ export default function ReviewInboxSection() {
           <h1 className="text-2xl font-semibold">All my documents</h1>
           <div className="border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
             <Search className="text-gray-500" size={20} />
-            <input type="search" className="bg-transparent outline-none h-[40px]" placeholder="Search" />
+            <input type="search" className="bg-transparent outline-none h-[40px] w-full" placeholder="Search" />
           </div>
         </div>
         <div className="rounded-2xl border overflow-hidden mt-8">
@@ -243,7 +243,7 @@ export default function ReviewInboxSection() {
             <Button
               variant="outline"
               size="sm"
-              className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[47px]"
+              className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px]"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}>
               Previous
@@ -254,7 +254,7 @@ export default function ReviewInboxSection() {
             <Button
               variant="outline"
               size="sm"
-              className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[47px] px-4"
+              className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px] px-4"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}>
               Next

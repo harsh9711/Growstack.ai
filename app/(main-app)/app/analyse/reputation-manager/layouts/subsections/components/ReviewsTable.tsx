@@ -87,7 +87,7 @@ export const columns: ColumnDef<Review>[] = [
   },
 ];
 
-export function ReviewsTable() {
+export default function ReviewsTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -126,7 +126,7 @@ export function ReviewsTable() {
         key={i}
         onClick={() => table.setPageIndex(i)}
         className={clsx(
-          "w-12 h-[47px] rounded-lg mx-1 bg-[#4B465C14] transition-all duration-300",
+          "w-12 h-[45px] rounded-lg mx-1 bg-[#4B465C14] transition-all duration-300",
           i === table.getState().pagination.pageIndex ? "!bg-primary-green hover:bg-opacity-50 text-white" : "hover:bg-[#4B465C29]"
         )}>
         {i + 1}
@@ -216,7 +216,7 @@ export function ReviewsTable() {
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="bg-white">
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                   ))}
@@ -237,7 +237,7 @@ export function ReviewsTable() {
           <Button
             variant="outline"
             size="sm"
-            className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[47px]"
+            className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px]"
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}>
             Previous
@@ -248,7 +248,7 @@ export function ReviewsTable() {
           <Button
             variant="outline"
             size="sm"
-            className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[47px] px-4"
+            className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px] px-4"
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}>
             Next
