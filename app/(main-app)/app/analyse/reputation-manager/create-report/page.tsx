@@ -22,7 +22,7 @@ export default function CreateReputationReport() {
           </Link>
         </div>
       </div>
-      <div className="bg-white border border-[#E4E4E4] rounded-3xl p-10 mt-5 mb-20">
+      <div className="bg-white border border-[#E4E4E4] rounded-3xl p-10 mt-5">
         <div className="space-y-5">
           <h1 className="text-2xl font-semibold">General settings</h1>
           <div className="grid grid-cols-2 gap-y-8 gap-x-10 border-t border-[#EBEBEB] pb-4 pt-8">

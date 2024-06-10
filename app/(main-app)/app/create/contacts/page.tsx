@@ -2,17 +2,14 @@
 
 import { SettingsIcon } from "lucide-react";
 import { Fragment, useState } from "react";
-import ContactsTable from "./components/ContactsTable";
-import Motion from "@/components/Motion";
-import CompanyTable from "./components/CompanyTable";
-import RestoreTable from "./components/RestoreTable";
 import BulkActionsTable from "./components/BulkActionsTable";
+import CompanyTable from "./components/CompanyTable";
+import ContactsTable from "./components/ContactsTable";
+import RestoreTable from "./components/RestoreTable";
 import TasksTable from "./components/TasksTable";
-// import MainSection from "./layouts/MainSection";
-// import OverViewSection from "./layouts/OverViewSection";
-// import ReviewInboxSection from "./layouts/ReviewInboxSection";
+import Link from "next/link";
 
-export default function Dashboard() {
+export default function ContactsDashboard() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
   const tabs = ["Smart list", "Bulk actions", "Restore", "Tasks", "Company"];
@@ -108,9 +105,11 @@ export default function Dashboard() {
                   style={{ left: `calc(${tabUnderlineLeft}%)` }}></div>
               </div>
             </div>
-            <button className="border Fborder-[#EBEBEB] rounded-lg p-3 hover:bg-primary-light-gray text-primary-black">
-              <SettingsIcon size={20} />
-            </button>
+            <Link href="/app/create/contacts/settings">
+              <button className="border Fborder-[#EBEBEB] rounded-lg p-3 hover:bg-primary-light-gray text-primary-black">
+                <SettingsIcon size={20} />
+              </button>
+            </Link>
           </div>
         </div>
         <div className="mt-5">{renderContent(selectedTabIndex)}</div>

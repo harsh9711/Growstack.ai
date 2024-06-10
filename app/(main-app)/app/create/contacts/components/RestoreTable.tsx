@@ -19,13 +19,10 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ChevronDown, Download, MailIcon, Phone, Search } from "lucide-react";
+import { MailIcon, Phone, Search } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { contacts } from "./data/contacts";
-import { MdOutlineRefresh } from "react-icons/md";
 
 export const columns: ColumnDef<Contact>[] = [
   {
@@ -136,7 +133,7 @@ export default function RestoreTable() {
             <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" />
           </div>
         </div>
-        <div className="rounded-lg border overflow-hidden mt-5 bg-white min-h-[60vh]">
+        <div className="rounded-lg border overflow-hidden mt-5 bg-white min-h-[50vh]">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (

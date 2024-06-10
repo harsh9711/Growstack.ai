@@ -88,7 +88,7 @@ const navLinks: NavLink[] = [
       {
         icon: <SchedulerIcon />,
         name: "Scheduler",
-        href: "#",
+        href: "/app/publish/scheduler",
       },
     ],
     title: "Publish",
