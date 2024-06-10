@@ -12,6 +12,17 @@ import navLinks from "./constants/nav";
 
 export default function Navbar() {
   const pathname = usePathname();
+
+  const isLinkActive = (link: NavLink): boolean => {
+    if (link.href && link.href.includes(pathname)) {
+      return true;
+    }
+    if (link.sublinks) {
+      return link.sublinks.some((sublink) => sublink.href === pathname);
+    }
+    return false;
+  };
+
   return (
     <header className="bg-white shadow-2xl shadow-primary-green/10 py-4 px-10 rounded-[24px] w-full max-w-[90%] mx-auto relative z-[5]">
       <nav className="flex justify-between items-center">
@@ -23,11 +34,11 @@ export default function Navbar() {
             <DropdownMenu key={index}>
               {!link.sublinks && link.href ? (
                 <Link href={link.href}>
-                  <NavLinkBtn link={link} pathname={pathname} />
+                  <NavLinkBtn link={link} isActive={isLinkActive(link)} />
                 </Link>
               ) : (
                 <DropdownMenuTrigger>
-                  <NavLinkBtn link={link} pathname={pathname} />
+                  <NavLinkBtn link={link} isActive={isLinkActive(link)} />
                 </DropdownMenuTrigger>
               )}
 
@@ -66,14 +77,14 @@ export default function Navbar() {
   );
 }
 
-const NavLinkBtn = ({ pathname, link }: { pathname: string; link: NavLink }) => {
+const NavLinkBtn = ({ link, isActive }: { link: NavLink; isActive?: boolean }) => {
   return (
     <div
       className={clsx(
-        "flex justify-center items-center p-[9px] pr-6 rounded-2xl gap-4 text-[15px] transition-all duration-500",
-        pathname === "#" ? "bg-primary-green text-white !hover:bg-primary-green hover:bg-opacity-90" : "hover:bg-[#F1F1F1]"
+        "flex justify-center items-center p-[8px] pr-6 rounded-2xl gap-4 text-[15px] transition-all duration-300",
+        isActive ? "bg-primary-green text-white !hover:bg-primary-green hover:bg-opacity-90" : "hover:bg-[#F1F1F1]"
       )}>
-      <div className="bg-[#FAFAFB] p-2.5 rounded-lg">{React.cloneElement(link.icon, { className: clsx(pathname === "#" && "text-primary-green") })}</div>
+      <div className="bg-[#FAFAFB] p-2.5 rounded-lg">{React.cloneElement(link.icon, { className: clsx(isActive && "text-primary-green") })}</div>
       <h2>{link.title}</h2>
     </div>
   );

@@ -1,12 +1,12 @@
 type NavLink = {
-  icon: JSX.Element;
+  icon: React.ReactElement;
   href?: string;
   title: string;
   sublinks?: Sublink[];
 };
 
 type Sublink = {
-  icon: JSX.Element;
+  icon: React.ReactElement;
   name: string;
   href: string;
 };
