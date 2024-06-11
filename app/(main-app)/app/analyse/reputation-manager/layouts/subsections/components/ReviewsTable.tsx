@@ -159,7 +159,7 @@ export default function ReviewsTable() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild className="w-full h-12 rounded-lg max-w-[132px] border border-primary-green bg-white text-primary-green">
               <Button variant="outline" className="px-2 font-normal">
-                Columns <ChevronDown className="ml-4 h-5 w-5 opacity-70" />
+                Columns <ChevronDown className="ml-4 h-4 w-4 opacity-50" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">

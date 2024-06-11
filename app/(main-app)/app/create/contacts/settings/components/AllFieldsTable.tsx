@@ -3,10 +3,10 @@
 import Motion from "@/components/Motion";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Contact } from "@/types/contact";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Field } from "@/types/fields";
+import { HiFolderPlus } from "react-icons/hi2";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -21,13 +21,11 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { ChevronDown, Download, MailIcon, Phone, Search } from "lucide-react";
-import Image from "next/image";
+import { Copy, Search } from "lucide-react";
 import { useState } from "react";
-import { MdOutlineRefresh } from "react-icons/md";
-import { contacts } from "./data/contacts";
+import { fields } from "./data/fields";
 
-export const columns: ColumnDef<Contact>[] = [
+export const columns: ColumnDef<Field>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -51,36 +49,47 @@ export const columns: ColumnDef<Contact>[] = [
   },
   {
     accessorKey: "name",
-    header: "NAME",
+    header: () => <div className="uppercase">Field name</div>,
+    cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("name")}</div>,
+  },
+  {
+    accessorKey: "object",
+    header: () => <div className="uppercase">Object</div>,
+    cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("object")}</div>,
+  },
+  {
+    accessorKey: "folder",
+    header: () => <div className="uppercase">Folder</div>,
     cell: ({ row }) => (
-      <div className="capitalize flex items-center gap-3">
-        <Image src={row.original.profile_image} alt="" width={100} height={100} className="h-[40px] w-[40px] object-cover rounded-full" />
-        {row.getValue("name")}
-      </div>
+      <button className="px-4 py-2.5 rounded-lg border border-primary-green text-primary-green flex items-center gap-2 hover:text-white hover:bg-primary-green transition-all duration-300">
+        <HiFolderPlus size={20} className="w-full max-w-fit" /> Contact
+      </button>
     ),
   },
   {
-    accessorKey: "phone",
-    header: "PHONE",
+    accessorKey: "unique_key",
+    header: () => <div className="uppercase">Unique Key</div>,
     cell: ({ row }) => (
-      <div className="flex items-center gap-2">
-        <Phone size={20} className="text-primary-green" /> <span>{row.getValue("phone")}</span>
-      </div>
-    ),
-  },
-  {
-    accessorKey: "email",
-    header: () => "EMAIL",
-    cell: ({ row }) => (
-      <div className="flex gap-2 items-center">
-        <MailIcon size={20} className="text-primary-green" />
-        <p>{row.getValue("email")}</p>
+      <div className="flex items-center justify-between gap-2">
+        <span>{row.getValue("unique_key")}</span>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button className="cursor-pointer">
+                <Copy size={18} />
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Copy to clipboard</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
     ),
   },
   {
     accessorKey: "created_on",
-    header: () => "CREATED",
+    header: () => <div className="uppercase">Created On</div>,
     cell: ({ row }) => (
       <div className="flex gap-3">
         <span>{row.original.created_on.date}</span>
@@ -88,27 +97,9 @@ export const columns: ColumnDef<Contact>[] = [
       </div>
     ),
   },
-  {
-    accessorKey: "last_activity",
-    header: () => "LAST ACTIVITY",
-    cell: ({ row }) => <div>{row.getValue("last_activity")}</div>,
-  },
-  {
-    id: "tags",
-    header: "TAGS",
-    cell: ({ row }) => {
-      return (
-        <div className="flex gap-2">
-          {row.original.tags.map((tag) => (
-            <div className="px-3 py-2 bg-[#0347370D] rounded-md">{tag}</div>
-          ))}
-        </div>
-      );
-    },
-  },
 ];
 
-export default function CompanyTable() {
+export default function AllFieldsTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -119,7 +110,7 @@ export default function CompanyTable() {
   });
 
   const table = useReactTable({
-    data: contacts,
+    data: fields,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -158,72 +149,13 @@ export default function CompanyTable() {
   return (
     <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
       <div className="w-full">
-        <div className="flex justify-between gap-10 items-center mt-5">
+        <div className="flex justify-end gap-10 items-center mt-5">
           <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
             <Search className="text-gray-500" size={20} />
             <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" />
           </div>
-          <div className="flex items-center justify-end gap-2">
-            <Select>
-              <SelectTrigger className="w-full h-12 rounded-lg max-w-[132px] border border-primary-green bg-white text-primary-green">
-                <SelectValue placeholder="All Sources" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="All Sources">All Sources</SelectItem>
-                <SelectItem value="Google">Google</SelectItem>
-                <SelectItem value="Facebook">Facebook</SelectItem>
-                <SelectItem value="Others">Others</SelectItem>
-                <SelectItem value="Yelp">Yelp</SelectItem>
-                <SelectItem value="TripAdvisor">TripAdvisor</SelectItem>
-              </SelectContent>
-            </Select>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild className="w-full h-12 rounded-lg max-w-[132px] border border-primary-green bg-white text-primary-green">
-                <Button variant="outline" className="px-2 font-normal">
-                  Columns <ChevronDown className="ml-4 h-4 w-4 opacity-50" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                {table
-                  .getAllColumns()
-                  .filter((column) => column.getCanHide())
-                  .map((column) => {
-                    return (
-                      <DropdownMenuCheckboxItem
-                        key={column.id}
-                        className="capitalize"
-                        checked={column.getIsVisible()}
-                        onCheckedChange={(value) => column.toggleVisibility(!!value)}>
-                        {column.id}
-                      </DropdownMenuCheckboxItem>
-                    );
-                  })}
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <Select>
-              <SelectTrigger className="w-full h-12 rounded-lg max-w-[132px] border border-primary-green bg-white text-primary-green">
-                <SelectValue placeholder="All Time" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="All Time">All Time</SelectItem>
-                <SelectItem value="2024s">2024</SelectItem>
-                <SelectItem value="2023">2023</SelectItem>
-                <SelectItem value="2022">2022</SelectItem>
-                <SelectItem value="2021">2021</SelectItem>
-                <SelectItem value="2020">2020</SelectItem>
-              </SelectContent>
-            </Select>
-            <button className="h-12 bg-transparent border border-primary-green hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-5 py-3 rounded-lg flex items-center gap-2 whitespace-nowrap">
-              Reset
-              <MdOutlineRefresh size={20} />
-            </button>
-            <button className="h-12 bg-transparent border border-primary-green hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-5 py-3 rounded-lg flex items-center gap-2 whitespace-nowrap">
-              <Download size={20} />
-              CSV
-            </button>
-          </div>{" "}
         </div>
-        <div className="rounded-lg border overflow-hidden mt-5">
+        <div className="rounded-lg border overflow-hidden mt-5 bg-white min-h-[50vh]">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
