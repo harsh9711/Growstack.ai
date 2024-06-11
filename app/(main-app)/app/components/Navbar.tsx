@@ -14,11 +14,14 @@ export default function Navbar() {
   const pathname = usePathname();
 
   const isLinkActive = (link: NavLink): boolean => {
-    if (link.href && link.href.includes(pathname)) {
+    if (pathname === "/app" && link.href === "/app") {
+      return true;
+    }
+    if (link.href && link.href !== "/app" && pathname.includes(link.href)) {
       return true;
     }
     if (link.sublinks) {
-      return link.sublinks.some((sublink) => sublink.href === pathname);
+      return link.sublinks.some((sublink) => pathname.startsWith(sublink.href));
     }
     return false;
   };
@@ -81,7 +84,7 @@ const NavLinkBtn = ({ link, isActive }: { link: NavLink; isActive?: boolean }) =
   return (
     <div
       className={clsx(
-        "flex justify-center items-center p-[8px] pr-6 rounded-2xl gap-4 text-[15px] transition-all duration-300",
+        "flex justify-center items-center p-[9px] pr-6 rounded-2xl gap-4 text-[15px] transition-all duration-200",
         isActive ? "bg-primary-green text-white !hover:bg-primary-green hover:bg-opacity-90" : "hover:bg-[#F1F1F1]"
       )}>
       <div className="bg-[#FAFAFB] p-2.5 rounded-lg">{React.cloneElement(link.icon, { className: clsx(isActive && "text-primary-green") })}</div>
