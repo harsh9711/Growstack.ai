@@ -1,5 +1,5 @@
 import React from "react";
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog"; // Adjust the import path based on your project structure
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog";
 import Image from "next/image";
 
 export default function CampaignsDialog() {

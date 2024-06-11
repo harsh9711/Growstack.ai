@@ -2,11 +2,10 @@
 
 import Motion from "@/components/Motion";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Field } from "@/types/fields";
-import { HiFolderPlus } from "react-icons/hi2";
+
+import { Folder } from "@/types/folder";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -21,36 +20,22 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { Copy, Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { useState } from "react";
-import { fields } from "./data/fields";
+import { HiOutlineFolderPlus } from "react-icons/hi2";
+import { IoIosMenu } from "react-icons/io";
+import { folders } from "./data/folders";
+import NewFieldDialog from "./NewFieldDialog";
 
-export const columns: ColumnDef<Field>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-        onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-        className="w-[18px] h-[18px]"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value: any) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="w-[18px] h-[18px]"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
+export const columns: ColumnDef<Folder>[] = [
   {
     accessorKey: "name",
     header: () => <div className="uppercase">Field name</div>,
-    cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("name")}</div>,
+    cell: ({ row }) => (
+      <div className="capitalize flex items-center gap-3">
+        <IoIosMenu size={18} className="cursor-grab active:cursor-grabbing" /> {row.getValue("name")}
+      </div>
+    ),
   },
   {
     accessorKey: "object",
@@ -58,35 +43,11 @@ export const columns: ColumnDef<Field>[] = [
     cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("object")}</div>,
   },
   {
-    accessorKey: "folder",
-    header: () => <div className="uppercase">Folder</div>,
-    cell: ({ row }) => (
-      <button className="px-4 py-2.5 rounded-lg border border-primary-green text-primary-green flex items-center gap-2 hover:text-white hover:bg-primary-green transition-all duration-300">
-        <HiFolderPlus size={20} className="w-full max-w-fit" /> Contact
-      </button>
-    ),
+    accessorKey: "fields",
+    header: () => <div className="uppercase">Fields</div>,
+    cell: ({ row }) => <div>{row.getValue("fields")}</div>,
   },
-  {
-    accessorKey: "unique_key",
-    header: () => <div className="uppercase">Unique Key</div>,
-    cell: ({ row }) => (
-      <div className="flex items-center justify-between gap-2">
-        <span>{row.getValue("unique_key")}</span>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button className="cursor-pointer">
-                <Copy size={18} />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Copy to clipboard</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </div>
-    ),
-  },
+
   {
     accessorKey: "created_on",
     header: () => <div className="uppercase">Created On</div>,
@@ -99,7 +60,7 @@ export const columns: ColumnDef<Field>[] = [
   },
 ];
 
-export default function AllFieldsTable() {
+export default function FoldersTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -110,7 +71,7 @@ export default function AllFieldsTable() {
   });
 
   const table = useReactTable({
-    data: fields,
+    data: folders,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -149,10 +110,30 @@ export default function AllFieldsTable() {
   return (
     <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
       <div className="w-full">
-        <div className="flex justify-end gap-10 items-center mt-5">
+        <div className="flex justify-between gap-10 items-center mt-5">
           <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
             <Search className="text-gray-500" size={20} />
             <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" />
+          </div>
+          <div className="flex items-center gap-3">
+            <Select>
+              <SelectTrigger className="w-[140px] h-12 rounded-lg border border-primary-green bg-primary-green text-white">
+                <SelectValue placeholder="Contacts" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="All Contacts">All Contacts</SelectItem>
+                <SelectItem value="Google">Google</SelectItem>
+                <SelectItem value="Facebook">Facebook</SelectItem>
+                <SelectItem value="Others">Others</SelectItem>
+                <SelectItem value="Yelp">Yelp</SelectItem>
+                <SelectItem value="TripAdvisor">TripAdvisor</SelectItem>
+              </SelectContent>
+            </Select>
+            <button className="border border-primary-green whitespace-nowrap text-primary-green px-4 py-2.5 sheen hover:bg-primary-green hover:text-white transition-all duration-300 rounded-lg flex gap-2">
+              <HiOutlineFolderPlus size={20} />
+              Add folder
+            </button>
+            <NewFieldDialog />
           </div>
         </div>
         <div className="rounded-lg border overflow-hidden mt-5 bg-white min-h-[50vh]">

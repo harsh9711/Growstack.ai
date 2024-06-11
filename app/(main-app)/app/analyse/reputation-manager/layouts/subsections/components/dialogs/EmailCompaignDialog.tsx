@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"; // Adjust the import path based on your project structure
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { User2, Users2 } from "lucide-react";
 import Image from "next/image";
 import ImportContactsDialog from "./ImportContactsDialog";

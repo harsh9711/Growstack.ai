@@ -1,6 +1,86 @@
-import { Field } from "@/types/fields";
+import { Field } from "@/types/field";
 
 export const fields: Field[] = [
+  {
+    name: "First name",
+    object: "Contact",
+    folder: "Contact",
+    unique_key: "{{ contact.first_name }}",
+    created_on: {
+      date: "May 02 2024",
+      time: "01:53 AM",
+    },
+  },
+  {
+    name: "First name",
+    object: "Contact",
+    folder: "Contact",
+    unique_key: "{{ contact.first_name }}",
+    created_on: {
+      date: "May 02 2024",
+      time: "01:53 AM",
+    },
+  },
+  {
+    name: "First name",
+    object: "Contact",
+    folder: "Contact",
+    unique_key: "{{ contact.first_name }}",
+    created_on: {
+      date: "May 02 2024",
+      time: "01:53 AM",
+    },
+  },
+  {
+    name: "First name",
+    object: "Contact",
+    folder: "Contact",
+    unique_key: "{{ contact.first_name }}",
+    created_on: {
+      date: "May 02 2024",
+      time: "01:53 AM",
+    },
+  },
+  {
+    name: "First name",
+    object: "Contact",
+    folder: "Contact",
+    unique_key: "{{ contact.first_name }}",
+    created_on: {
+      date: "May 02 2024",
+      time: "01:53 AM",
+    },
+  },
+  {
+    name: "First name",
+    object: "Contact",
+    folder: "Contact",
+    unique_key: "{{ contact.first_name }}",
+    created_on: {
+      date: "May 02 2024",
+      time: "01:53 AM",
+    },
+  },
+  {
+    name: "First name",
+    object: "Contact",
+    folder: "Contact",
+    unique_key: "{{ contact.first_name }}",
+    created_on: {
+      date: "May 02 2024",
+      time: "01:53 AM",
+    },
+  },
+  {
+    name: "First name",
+    object: "Contact",
+    folder: "Contact",
+    unique_key: "{{ contact.first_name }}",
+    created_on: {
+      date: "May 02 2024",
+      time: "01:53 AM",
+    },
+  },
   {
     name: "First name",
     object: "Contact",

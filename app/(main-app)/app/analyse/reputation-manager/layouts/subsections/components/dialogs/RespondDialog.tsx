@@ -1,6 +1,6 @@
 // RespondDialog.js
-import { MultipleStarsIcon } from "@/components/svgs"; // Adjust the import path based on your project structure
-import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"; // Adjust the import path based on your project structure
+import { MultipleStarsIcon } from "@/components/svgs";
+import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import Image from "next/image";
 import { BsStarFill } from "react-icons/bs";
 import CreateTemplateDialog from "./CreateTemplateDialog";

@@ -3,7 +3,8 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
-import AllFieldsTable from "./components/AllFieldsTable";
+import FieldsTable from "./components/FieldsTable";
+import FoldersTable from "./components/FoldersTable";
 
 export default function SettingsPage() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
@@ -13,7 +14,7 @@ export default function SettingsPage() {
   const renderContent = (selectedTabIndex: number) => {
     switch (selectedTabIndex) {
       case 0:
-        return <AllFieldsSection />;
+        return <FieldsSection />;
       case 1:
         return <FoldersSection />;
     }
@@ -67,14 +68,18 @@ export default function SettingsPage() {
   );
 }
 
-const AllFieldsSection = () => {
+const FieldsSection = () => {
   return (
     <div>
-      <AllFieldsTable />
+      <FieldsTable />
     </div>
   );
 };
 
 const FoldersSection = () => {
-  return <div>Folders Section</div>;
+  return (
+    <div>
+      <FoldersTable />
+    </div>
+  );
 };
