@@ -221,8 +221,8 @@ export function DataTable() {
                 </TableRow>
               ))
             ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+              <TableRow className="hover:bg-white">
+                <TableCell colSpan={columns.length} className="h-24 text-center font-semibold text-lg hover:bg-white">
                   No results.
                 </TableCell>
               </TableRow>

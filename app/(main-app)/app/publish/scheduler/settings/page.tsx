@@ -1,0 +1,87 @@
+"use client";
+
+import { Fragment, useState } from "react";
+import BloggerSection from "./sections/BloggerSection";
+import FacebookSection from "./sections/FacebookSection";
+import GeneralSection from "./sections/GeneralSection";
+import GoogleSection from "./sections/GoogleSection";
+import InstagramSection from "./sections/InstagramSection";
+import LinkedInSection from "./sections/LinkedInSection";
+import PinterestSection from "./sections/PinterestSection";
+import RedditSection from "./sections/RedditSection";
+import TumblrSection from "./sections/TumblrSection";
+import TwitterSection from "./sections/TwitterSection";
+
+export default function page() {
+  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+  const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
+  const tabs = ["General", "Facebook", "Twitter", "Linkedin", "Tumblr", "Pinterest", "Google my business", "Reddit", "Instagram", "Blogger"];
+
+  const renderContent = () => {
+    switch (selectedTabIndex) {
+      case 0:
+        return <GeneralSection />;
+      case 1:
+        return <FacebookSection />;
+      case 2:
+        return <TwitterSection />;
+      case 3:
+        return <LinkedInSection />;
+      case 4:
+        return <TumblrSection />;
+      case 5:
+        return <PinterestSection />;
+      case 6:
+        return <GoogleSection />;
+      case 7:
+        return <RedditSection />;
+      case 8:
+        return <InstagramSection />;
+      case 9:
+        return <BloggerSection />;
+    }
+  };
+
+  return (
+    <Fragment>
+      <main>
+        <div className="flex justify-between items-center mt-8">
+          <div className="space-y-2 w-full">
+            <h1 className="text-2xl font-semibold">Scheduler</h1>
+            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[16px]">Settings </p>
+          </div>
+        </div>
+        <section>
+          <div className="translate-y-10 max-w-[1320px] mx-auto bg-[#FBFBFB] p-3.5 rounded-2xl">
+            <div className="w-full flex relative">
+              {tabs.map((tab, index) => (
+                <div
+                  key={index}
+                  className={`w-full h-[45px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 whitespace-nowrap ${
+                    selectedTabIndex === index ? "!text-white" : "!text-primary-grey"
+                  }`}
+                  onClick={() => {
+                    const totalTabs = tabs.length;
+                    const percentage = (index / totalTabs) * 100;
+                    setSelectedTabIndex(index);
+                    setTabUnderlineLeft(percentage);
+                  }}>
+                  {tab}
+                </div>
+              ))}
+              <div
+                className="absolute bottom-0 h-[45px] bg-primary-green custom-transition rounded-lg"
+                style={{ left: `calc(${tabUnderlineLeft}%)`, width: `${100 / tabs.length}%` }}></div>
+            </div>
+          </div>
+          <div className="bg-white rounded-3xl border border-[#EDEFF0] pb-10 px-20 pt-16">
+            {renderContent()}
+            <div className="flex justify-end gap-4 mt-10">
+              <button className="py-3.5 px-4 w-full max-w-[120px] bg-primary-green sheen rounded-xl text-white">Add</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </Fragment>
+  );
+}

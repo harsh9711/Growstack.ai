@@ -88,7 +88,7 @@ export default function ContactsDashboard() {
                 {tabs.map((tab, index) => (
                   <div
                     key={index}
-                    className={`w-1/3 h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
+                    className={`w-full h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
                       selectedTabIndex === index ? "!text-white" : "!text-primary-grey"
                     }`}
                     onClick={() => {
@@ -100,9 +100,10 @@ export default function ContactsDashboard() {
                     {tab}
                   </div>
                 ))}
+
                 <div
-                  className="absolute bottom-0 w-1/5 h-[48px] bg-primary-green custom-transition rounded-lg"
-                  style={{ left: `calc(${tabUnderlineLeft}%)` }}></div>
+                  className="absolute bottom-0 h-[48px] bg-primary-green custom-transition rounded-lg"
+                  style={{ left: `calc(${tabUnderlineLeft}%)`, width: `${100 / tabs.length}%` }}></div>
               </div>
             </div>
             <Link href="/app/create/contacts/settings">

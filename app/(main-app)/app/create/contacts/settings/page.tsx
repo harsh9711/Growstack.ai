@@ -57,8 +57,8 @@ export default function SettingsPage() {
                 </div>
               ))}
               <div
-                className="absolute bottom-0 w-1/2 h-[48px] bg-primary-green custom-transition rounded-lg"
-                style={{ left: `calc(${tabUnderlineLeft}%)` }}></div>
+                className="absolute bottom-0 h-[48px] bg-primary-green custom-transition rounded-lg"
+                style={{ left: `calc(${tabUnderlineLeft}%)`, width: `${100 / tabs.length}%` }}></div>
             </div>
           </div>
         </div>

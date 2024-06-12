@@ -14,14 +14,24 @@ export default function Navbar() {
   const pathname = usePathname();
 
   const isLinkActive = (link: NavLink): boolean => {
-    if (pathname === "/app" && link.href === "/app") {
+    if (link.href && pathname === link.href) {
       return true;
     }
-    if (link.href && link.href !== "/app" && pathname.includes(link.href)) {
+    if (link.href && pathname.startsWith(link.href) && link.href !== "/app") {
       return true;
     }
     if (link.sublinks) {
-      return link.sublinks.some((sublink) => pathname.startsWith(sublink.href!));
+      return link.sublinks.some((sublink) => checkSublinkActive(sublink));
+    }
+    return false;
+  };
+
+  const checkSublinkActive = (sublink: Sublink): boolean => {
+    if (sublink.href && pathname.startsWith(sublink.href)) {
+      return true;
+    }
+    if (sublink.subItems) {
+      return sublink.subItems.some((subItem) => checkSublinkActive(subItem));
     }
     return false;
   };
@@ -42,14 +52,14 @@ export default function Navbar() {
               <ChevronRight className="text-gray-500" />
             </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="ml-32">{renderDropdownItems(item.subItems!)}</DropdownMenuContent>
+          <DropdownMenuContent className="ml-28">{renderDropdownItems(item.subItems!)}</DropdownMenuContent>
         </DropdownMenu>
       ) : (
         <Link href={item.href!} key={index}>
-          <DropdownMenuItem inset className="min-w-[300px] flex justify-between gap-8 items-center">
+          <DropdownMenuItem inset className={clsx("min-w-[300px] flex justify-between gap-8 items-center", pathname === item.href && "bg-gray-100/50")}>
             <div className="flex gap-3">
               {React.cloneElement(item.icon, { className: clsx(pathname === item.href && "text-primary-green") })}
-              <h2 className={clsx(pathname === item.href && "text-primary-green font-medium")}>{item.name}</h2>
+              <h2 className={clsx(pathname === item.href && "text-primary-green")}>{item.name}</h2>
             </div>
             {item.href && <ChevronRight className="text-gray-500" />}
           </DropdownMenuItem>

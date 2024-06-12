@@ -1,9 +1,10 @@
 "use client";
 
+import Motion from "@/components/Motion";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Contact } from "@/types/contact";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -18,95 +19,82 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { FilterIcon, MailIcon, Phone, Search } from "lucide-react";
+import { MoreVertical, Search } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-import { contacts } from "./data/contacts";
-import FilterSheet from "./FilterSheet";
-import Motion from "@/components/Motion";
+import { MdOutlineRefresh } from "react-icons/md";
+import { logs } from "./data/logs";
 
-export const columns: ColumnDef<Contact>[] = [
+type Logs = {
+  content: string;
+  social_type: string;
+  date: string;
+};
+
+export const columns: ColumnDef<Logs>[] = [
   {
-    id: "select",
+    accessorKey: "content",
     header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-        onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-        className="w-[18px] h-[18px]"
-      />
+      <div className="uppercase flex gap-3">
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+          onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+          className="w-[18px] h-[18px]"
+        />
+        <span>Content</span>
+      </div>
     ),
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value: any) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="w-[18px] h-[18px]"
-      />
+      <div className="capitalize flex items-center gap-3">
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value: any) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+          className="w-[18px] h-[18px]"
+        />
+        <span>{row.getValue("content")}</span>
+      </div>
     ),
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "name",
-    header: () => <div className="uppercase">Name</div>,
-    cell: ({ row }) => (
-      <div className="capitalize flex items-center gap-3">
-        <Image src={row.original.profile_image} alt="" width={100} height={100} className="h-[40px] w-[40px] object-cover rounded-full" />
-        {row.getValue("name")}
-      </div>
-    ),
+    accessorKey: "social_type",
+    header: () => <div className="uppercase">Social Type</div>,
+    cell: ({ row }) => <span>{row.getValue("social_type")}</span>,
   },
   {
-    accessorKey: "phone",
-    header: () => <div className="uppercase">Phone</div>,
-    cell: ({ row }) => (
-      <div className="flex items-center gap-2">
-        <Phone size={20} className="text-primary-green" /> <span>{row.getValue("phone")}</span>
-      </div>
-    ),
+    accessorKey: "status",
+    header: () => <div className="uppercase">Status</div>,
+    cell: ({ row }) => <span>{row.getValue("status")}</span>,
   },
   {
-    accessorKey: "email",
-    header: () => <div className="uppercase">Email</div>,
-    cell: ({ row }) => (
-      <div className="flex gap-2 items-center">
-        <MailIcon size={20} className="text-primary-green" />
-        <p>{row.getValue("email")}</p>
-      </div>
-    ),
-  },
-  {
-    accessorKey: "created_on",
-    header: () => <div className="uppercase">Created</div>,
-    cell: ({ row }) => (
-      <div className="flex gap-3">
-        <span>{row.original.created_on.date}</span>
-        <span>{row.original.created_on.time}</span>
-      </div>
-    ),
-  },
-  {
-    accessorKey: "last_activity",
-    header: () => "LAST ACTIVITY",
-    cell: ({ row }) => <div>{row.getValue("last_activity")}</div>,
-  },
-  {
-    id: "tags",
-    header: "TAGS",
+    id: "actions",
+    header: () => <div className="uppercase">Action</div>,
     cell: ({ row }) => {
       return (
         <div className="flex gap-2">
-          {row.original.tags.map((tag) => (
-            <div className="px-3 py-2 bg-[#0347370D] rounded-md">{tag}</div>
-          ))}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="px-2 hover:bg-gray-200 h-10 w-10 rounded-full">
+                <MoreVertical />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem className="gap-2 w-[250px]">
+                <MdOutlineRefresh size={20} />
+                Restore
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       );
     },
   },
 ];
 
-export default function ContactsTable() {
+export default function MultiPostsTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -117,7 +105,7 @@ export default function ContactsTable() {
   });
 
   const table = useReactTable({
-    data: contacts,
+    data: logs,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -156,14 +144,7 @@ export default function ContactsTable() {
   return (
     <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
       <div className="w-full">
-        <div className="flex justify-between gap-10 items-center mt-5">
-          <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
-            <Search className="text-gray-500" size={20} />
-            <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" />
-          </div>
-          <FilterSheet />
-        </div>
-        <div className="rounded-lg border overflow-hidden mt-5">
+        <div className="rounded-lg border overflow-hidden mt-5 bg-white min-h-[50vh]">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -188,7 +169,7 @@ export default function ContactsTable() {
               ) : (
                 <TableRow className="hover:bg-white">
                   <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
-                    No results.
+                    No logs found.
                   </TableCell>
                 </TableRow>
               )}

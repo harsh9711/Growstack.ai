@@ -30,7 +30,7 @@ export default function MonitorReviewsSection() {
               {tabs.map((tab, index) => (
                 <div
                   key={index}
-                  className={`w-1/3 h-[42px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
+                  className={`w-full h-[42px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
                     selectedTabIndex === index ? "!text-white" : "!text-primary-green"
                   }`}
                   onClick={() => {
@@ -43,8 +43,8 @@ export default function MonitorReviewsSection() {
                 </div>
               ))}
               <div
-                className="absolute bottom-0 w-1/3 h-[42px] bg-primary-green custom-transition rounded-xl"
-                style={{ left: `calc(${tabUnderlineLeft}%)` }}></div>
+                className="absolute bottom-0 h-[42px] bg-primary-green custom-transition rounded-lg"
+                style={{ left: `calc(${tabUnderlineLeft}%)`, width: `${100 / tabs.length}%` }}></div>
             </div>
           </div>
           <div className="flex items-center gap-x-3">

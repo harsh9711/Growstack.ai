@@ -48,7 +48,7 @@ export const columns: ColumnDef<Contact>[] = [
   },
   {
     accessorKey: "name",
-    header: "NAME",
+    header: () => <div className="uppercase">Name</div>,
     cell: ({ row }) => (
       <div className="capitalize flex items-center gap-3">
         <Image src={row.original.profile_image} alt="" width={100} height={100} className="h-[40px] w-[40px] object-cover rounded-full" />
@@ -58,7 +58,7 @@ export const columns: ColumnDef<Contact>[] = [
   },
   {
     accessorKey: "email",
-    header: () => "EMAIL",
+    header: () => <div className="uppercase">Email</div>,
     cell: ({ row }) => (
       <div className="flex gap-2 items-center">
         <MailIcon size={20} className="text-primary-green" />
@@ -68,7 +68,7 @@ export const columns: ColumnDef<Contact>[] = [
   },
   {
     accessorKey: "phone",
-    header: "PHONE",
+    header: () => <div className="uppercase">Phone</div>,
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
         <Phone size={20} className="text-primary-green" /> <span>{row.getValue("phone")}</span>
@@ -156,8 +156,8 @@ export default function RestoreTable() {
                   </TableRow>
                 ))
               ) : (
-                <TableRow>
-                  <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableRow className="hover:bg-white">
+                  <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
                     No results.
                   </TableCell>
                 </TableRow>
@@ -165,29 +165,31 @@ export default function RestoreTable() {
             </TableBody>
           </Table>
         </div>
-        <div className="flex items-center justify-end space-x-2 py-4">
-          <div className="space-x-2 flex">
-            <Button
-              variant="outline"
-              size="sm"
-              className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px]"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}>
-              Previous
-            </Button>
-            <div>
-              <div>{paginationButtons.map((u) => u)}</div>
+        {table.getRowModel().rows?.length && (
+          <div className="flex items-center justify-end space-x-2 py-4">
+            <div className="space-x-2 flex">
+              <Button
+                variant="outline"
+                size="sm"
+                className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px]"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}>
+                Previous
+              </Button>
+              <div>
+                <div>{paginationButtons.map((u) => u)}</div>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px] px-4"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}>
+                Next
+              </Button>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px] px-4"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}>
-              Next
-            </Button>
           </div>
-        </div>
+        )}
       </div>
     </Motion>
   );

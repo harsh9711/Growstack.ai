@@ -50,7 +50,7 @@ export const columns: ColumnDef<BulkAction>[] = [
   },
   {
     accessorKey: "name",
-    header: "NAME",
+    header: () => <div className="uppercase">Name</div>,
     cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("name")}</div>,
   },
   {
@@ -70,7 +70,7 @@ export const columns: ColumnDef<BulkAction>[] = [
   },
   {
     accessorKey: "created_on",
-    header: () => "CREATED",
+    header: () => <div className="uppercase">Created</div>,
     cell: ({ row }) => (
       <div className="flex gap-3">
         <span>{row.original.created_on.date}</span>
@@ -100,7 +100,7 @@ export const columns: ColumnDef<BulkAction>[] = [
   },
   {
     id: "actions",
-    header: "ACTIONS",
+    header: () => <div className="uppercase">Action</div>,
     cell: ({ row }) => {
       return (
         <div className="flex gap-2">
@@ -113,7 +113,7 @@ export const columns: ColumnDef<BulkAction>[] = [
             <DropdownMenuContent>
               <DropdownMenuItem className="gap-2 w-[250px]">
                 <MdOutlineRefresh size={20} />
-                Refresh
+                Restore
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -270,8 +270,8 @@ export default function BulkActionsTable() {
                   </TableRow>
                 ))
               ) : (
-                <TableRow>
-                  <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableRow className="hover:bg-white">
+                  <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
                     No results.
                   </TableCell>
                 </TableRow>
@@ -279,29 +279,31 @@ export default function BulkActionsTable() {
             </TableBody>
           </Table>
         </div>
-        <div className="flex items-center justify-end space-x-2 py-4">
-          <div className="space-x-2 flex">
-            <Button
-              variant="outline"
-              size="sm"
-              className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px]"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}>
-              Previous
-            </Button>
-            <div>
-              <div>{paginationButtons.map((u) => u)}</div>
+        {table.getRowModel().rows?.length && (
+          <div className="flex items-center justify-end space-x-2 py-4">
+            <div className="space-x-2 flex">
+              <Button
+                variant="outline"
+                size="sm"
+                className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px]"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}>
+                Previous
+              </Button>
+              <div>
+                <div>{paginationButtons.map((u) => u)}</div>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px] px-4"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}>
+                Next
+              </Button>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px] px-4"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}>
-              Next
-            </Button>
           </div>
-        </div>
+        )}
       </div>
     </Motion>
   );
