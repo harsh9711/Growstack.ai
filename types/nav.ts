@@ -8,5 +8,6 @@ type NavLink = {
 type Sublink = {
   icon: React.ReactElement;
   name: string;
-  href: string;
+  href?: string;
+  subItems?: Sublink[];
 };

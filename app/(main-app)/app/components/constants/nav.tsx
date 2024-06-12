@@ -22,6 +22,18 @@ import {
   PresentationAnalyticsIcon,
   ReputationIcon,
   AutomationWheelIcon,
+  QuickPostingIcon,
+  MultiPostingIcon,
+  SettingsIcon,
+  PostingLogsIcon,
+  DebugIcon,
+  WhatsappIcon,
+  TelegramIcon,
+  CampaignIcon,
+  AiAssistantIcon,
+  AutomationIcon,
+  AdsAnalyticsIcon,
+  ReportAnalyticsIcon,
 } from "@/components/svgs";
 
 const navLinks: NavLink[] = [
@@ -88,7 +100,33 @@ const navLinks: NavLink[] = [
       {
         icon: <SchedulerIcon />,
         name: "Scheduler",
-        href: "/app/publish/scheduler",
+        subItems: [
+          {
+            icon: <QuickPostingIcon />,
+            name: "Quick posting",
+            href: "/app/publish/scheduler/quick-posting",
+          },
+          {
+            icon: <MultiPostingIcon />,
+            name: "Multi Posting",
+            href: "/app/publish/scheduler/multi-posting",
+          },
+          {
+            icon: <SettingsIcon />,
+            name: "Settings",
+            href: "/app/publish/scheduler/settings",
+          },
+          {
+            icon: <PostingLogsIcon />,
+            name: "Posting Logs",
+            href: "/app/publish/scheduler/posting-logs",
+          },
+          {
+            icon: <DebugIcon />,
+            name: "Posting debug logs",
+            href: "/app/publish/scheduler/debug-logs",
+          },
+        ],
       },
     ],
     title: "Publish",
@@ -96,19 +134,14 @@ const navLinks: NavLink[] = [
   {
     icon: <EngageIcon />,
     sublinks: [
-      {
-        icon: <AffiliateMarketingIcon />,
-        name: "AI Marketing and sales assistants",
-        href: "/app/engage/ai-marketing-and-sales-assistant",
-      },
+      // {
+      //   icon: <AffiliateMarketingIcon />,
+      //   name: "AI Marketing and sales assistants",
+      //   href: "/app/engage/ai-marketing-and-sales-assistant",
+      // },
       {
         icon: <SquareShapeIcon />,
         name: "Social media conversation hub",
-        href: "#",
-      },
-      {
-        icon: <BusinessIcon />,
-        name: "AI marketing and sales apps",
         href: "#",
       },
       {
@@ -133,12 +166,12 @@ const navLinks: NavLink[] = [
         href: "/app/analyse/reputation-manager",
       },
       {
-        icon: <PresentationAnalyticsIcon />,
+        icon: <AdsAnalyticsIcon />,
         name: "Ads analytics",
         href: "#",
       },
       {
-        icon: <MailIcon />,
+        icon: <ReportAnalyticsIcon />,
         name: "Email & SMS Analytics",
         href: "#",
       },
@@ -149,12 +182,38 @@ const navLinks: NavLink[] = [
     icon: <IntegrationIcon />,
     sublinks: [
       {
-        icon: <AutomationWheelIcon />,
+        icon: <AutomationIcon />,
         name: "WhatsApp and telegram automation with our apps",
-        href: "#",
+        subItems: [
+          {
+            icon: <WhatsappIcon />,
+            name: "WhatsApp overview",
+            href: "#",
+          },
+          {
+            icon: <TelegramIcon />,
+            name: "Telegram overview",
+            href: "#",
+          },
+          {
+            icon: <CampaignIcon />,
+            name: "Campaign",
+            href: "#",
+          },
+          {
+            icon: <AiAssistantIcon />,
+            name: "AI assistant",
+            href: "#",
+          },
+          {
+            icon: <SettingsIcon />,
+            name: "Settings",
+            href: "#",
+          },
+        ],
       },
       {
-        icon: <PresentationAnalyticsIcon />,
+        icon: <SchedulerIcon />,
         name: "Social Planner Hub",
         href: "#",
       },

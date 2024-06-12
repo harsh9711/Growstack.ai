@@ -22,3 +22,15 @@ export { default as PresentationAnalyticsIcon } from "@/public/svgs/presentation
 export { default as ReputationIcon } from "@/public/svgs/reputation.svg";
 export { default as AutomationWheelIcon } from "@/public/svgs/wheel.svg";
 export { default as MultipleStarsIcon } from "@/public/svgs/multiple-stars.svg";
+export { default as QuickPostingIcon } from "@/public/svgs/quick.svg";
+export { default as MultiPostingIcon } from "@/public/svgs/multi-direction.svg";
+export { default as SettingsIcon } from "@/public/svgs/settings.svg";
+export { default as PostingLogsIcon } from "@/public/svgs/posting.svg";
+export { default as DebugIcon } from "@/public/svgs/debugging.svg";
+export { default as CampaignIcon } from "@/public/svgs/rocket.svg";
+export { default as TelegramIcon } from "@/public/svgs/brand-telegram.svg";
+export { default as WhatsappIcon } from "@/public/svgs/brand-whatsapp.svg";
+export { default as AiAssistantIcon } from "@/public/svgs/ai-assistant.svg";
+export { default as AutomationIcon } from "@/public/svgs/automation.svg";
+export { default as AdsAnalyticsIcon } from "@/public/svgs/presentation.svg";
+export { default as ReportAnalyticsIcon } from "@/public/svgs/report-analytics.svg";

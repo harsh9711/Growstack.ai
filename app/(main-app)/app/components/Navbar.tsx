@@ -21,9 +21,41 @@ export default function Navbar() {
       return true;
     }
     if (link.sublinks) {
-      return link.sublinks.some((sublink) => pathname.startsWith(sublink.href));
+      return link.sublinks.some((sublink) => pathname.startsWith(sublink.href!));
     }
     return false;
+  };
+
+  const renderDropdownItems = (items: Sublink[]) => {
+    if (!items) return;
+    return items.map((item, index) => {
+      const hasSubItems = item.subItems && item.subItems.length > 0;
+
+      return hasSubItems ? (
+        <DropdownMenu key={index}>
+          <DropdownMenuTrigger asChild>
+            <div className="min-w-[300px] flex justify-between gap-8 items-center cursor-pointer px-3 py-2 outline-none hover:bg-accent hover:text-accent-foreground">
+              <div className="flex gap-3 items-center text-sm">
+                {React.cloneElement(item.icon)}
+                <h2>{item.name}</h2>
+              </div>
+              <ChevronRight className="text-gray-500" />
+            </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="ml-32">{renderDropdownItems(item.subItems!)}</DropdownMenuContent>
+        </DropdownMenu>
+      ) : (
+        <Link href={item.href!} key={index}>
+          <DropdownMenuItem inset className="min-w-[300px] flex justify-between gap-8 items-center">
+            <div className="flex gap-3">
+              {React.cloneElement(item.icon, { className: clsx(pathname === item.href && "text-primary-green") })}
+              <h2 className={clsx(pathname === item.href && "text-primary-green font-medium")}>{item.name}</h2>
+            </div>
+            {item.href && <ChevronRight className="text-gray-500" />}
+          </DropdownMenuItem>
+        </Link>
+      );
+    });
   };
 
   return (
@@ -45,21 +77,7 @@ export default function Navbar() {
                 </DropdownMenuTrigger>
               )}
 
-              {link.sublinks && (
-                <DropdownMenuContent>
-                  {link.sublinks.map((item, index) => (
-                    <Link href={item.href} key={index}>
-                      <DropdownMenuItem inset className="min-w-[300px] flex justify-between items-center">
-                        <div className="flex gap-3">
-                          {React.cloneElement(item.icon, { className: clsx(pathname === "#" && "text-primary-green") })}
-                          <h2>{item.name}</h2>
-                        </div>
-                        <ChevronRight className="text-gray-500" />
-                      </DropdownMenuItem>
-                    </Link>
-                  ))}
-                </DropdownMenuContent>
-              )}
+              {link.sublinks && <DropdownMenuContent>{renderDropdownItems(link.sublinks)}</DropdownMenuContent>}
             </DropdownMenu>
           ))}
         </div>
