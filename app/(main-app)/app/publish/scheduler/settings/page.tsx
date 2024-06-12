@@ -15,7 +15,7 @@ import TwitterSection from "./sections/TwitterSection";
 export default function page() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
-  const tabs = ["General", "Facebook", "Twitter", "Linkedin", "Tumblr", "Pinterest", "Google my business", "Reddit", "Instagram", "Blogger"];
+  const tabs = ["General", "Facebook", "Twitter", "Linkedin", "Tumblr", "Pinterest", "GMB", "Reddit", "Instagram", "Blogger"];
 
   const renderContent = () => {
     switch (selectedTabIndex) {
