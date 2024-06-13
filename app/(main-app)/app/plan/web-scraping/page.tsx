@@ -16,14 +16,14 @@ export default function WebScapping() {
             <h1 className="text-xl font-semibold">Search Terms</h1>
             <div className="flex items-center gap-4 mt-5">
               <span className="text-lg font-semibold">1.</span>
-              <input type="text" className="h-12 bg-[#F2F2F2] rounded-xl px-5 w-full" placeholder="Restaurants" />
+              <input type="text" className="h-12 bg-[#F2F2F2] rounded-xl text-primary-black px-5 w-full" placeholder="Restaurants" />
               <button className="bg-[#F2F2F2] p-3 rounded-full grid place-content-center">
                 <X className="text-[#FF0000]" />
               </button>
             </div>
             <div className="flex items-center gap-4 mt-6">
               <span className="text-lg font-semibold">2.</span>
-              <input type="text" className="h-12 bg-[#F2F2F2] rounded-xl px-5 w-full" placeholder="Search terms" />
+              <input type="text" className="h-12 bg-[#F2F2F2] rounded-xl text-primary-black px-5 w-full" placeholder="Search terms" />
               <button className="bg-[#F2F2F2] p-3 rounded-full grid place-content-center">
                 <X className="text-[#FF0000]" />
               </button>
