@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "../styles/globals.css";
 import Progressbar from "@/providers/Progressbar";
+import { Suspense } from "react";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -23,7 +24,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <Progressbar>{children}</Progressbar>
+        <Suspense fallback={<div>Loading...</div>}>
+          <Progressbar>{children}</Progressbar>
+        </Suspense>
       </body>
     </html>
   );
