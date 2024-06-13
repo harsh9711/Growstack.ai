@@ -20,7 +20,7 @@ export default function CreateAssistantPage() {
         </div>
         <div className="">
           <Link href="/app/engage/ai-marketing-and-sales-assistant">
-            <button className="text-primary-green hover:bg-primary-green/10 flex gap-2 px-3.5 py-2.5 rounded-full font-semibold items-center">
+            <button className="text-primary-green hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-2.5 rounded-full font-semibold items-center">
               <ArrowLeft size={20} /> Back
             </button>
           </Link>
@@ -124,7 +124,7 @@ export default function CreateAssistantPage() {
       <section className="bg-white border border-[#E4E4E4] rounded-3xl p-10 mt-7">
         <AssistantsTable />
       </section>
-      <input type="month"/>
+      <input type="month" />
     </div>
   );
 }

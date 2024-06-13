@@ -30,7 +30,7 @@ import {
   TextResizeIcon,
   TridentIcon,
   UserIcon,
-  WhatsappIcon
+  WhatsappIcon,
 } from "@/components/svgs";
 
 const navLinks: NavLink[] = [
@@ -49,8 +49,8 @@ const navLinks: NavLink[] = [
       },
       {
         icon: <TridentIcon />,
-        name: "GMB web scrapping tool",
-        href: "/app/plan/web-scrapping",
+        name: "GMB web scraping tool",
+        href: "/app/plan/web-scraping",
       },
     ],
     title: "Plan",
