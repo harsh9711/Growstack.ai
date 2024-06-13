@@ -44,7 +44,7 @@ export default function Navbar() {
       return hasSubItems ? (
         <DropdownMenu key={index}>
           <DropdownMenuTrigger asChild>
-            <div className="min-w-[300px] flex justify-between gap-8 items-center cursor-pointer px-3 py-2 outline-none hover:bg-accent hover:text-accent-foreground">
+            <div className="min-w-[300px] flex justify-between gap-8 items-center cursor-pointer px-3 py-2 outline-none hover:bg-accent hover:text-accent-foreground rounded-lg my-1">
               <div className="flex gap-3 items-center text-sm">
                 {React.cloneElement(item.icon)}
                 <h2>{item.name}</h2>
@@ -56,12 +56,14 @@ export default function Navbar() {
         </DropdownMenu>
       ) : (
         <Link href={item.href!} key={index}>
-          <DropdownMenuItem inset className={clsx("min-w-[300px] flex justify-between gap-8 items-center", pathname === item.href && "bg-gray-100/50")}>
+          <DropdownMenuItem
+            inset
+            className={clsx("min-w-[300px] flex justify-between gap-8 items-center my-1", pathname === item.href && "bg-primary-green hover:!bg-primary-green")}>
             <div className="flex gap-3">
-              {React.cloneElement(item.icon, { className: clsx(pathname === item.href && "text-primary-green") })}
-              <h2 className={clsx(pathname === item.href && "text-primary-green")}>{item.name}</h2>
+              {React.cloneElement(item.icon, { className: clsx(pathname === item.href && "text-white") })}
+              <h2 className={clsx(pathname === item.href && "text-white")}>{item.name}</h2>
             </div>
-            {item.href && <ChevronRight className="text-gray-500" />}
+            {item.href && <ChevronRight className={clsx("text-gray-500", pathname === item.href && "text-white")} />}
           </DropdownMenuItem>
         </Link>
       );

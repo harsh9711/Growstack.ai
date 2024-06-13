@@ -104,7 +104,7 @@ const navLinks: NavLink[] = [
           {
             icon: <QuickPostingIcon />,
             name: "Quick posting",
-            href: "/app/publish/scheduler/quick-posting",
+            href: "/app/publish/scheduler/quick-posting/profiles",
           },
           {
             icon: <MultiPostingIcon />,

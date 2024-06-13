@@ -52,7 +52,7 @@ export default function page() {
           </div>
         </div>
         <section>
-          <div className="translate-y-10 max-w-[1320px] mx-auto bg-[#FBFBFB] p-3.5 rounded-2xl">
+          <div className="settings-inset-border translate-y-10 max-w-[1320px] mx-auto bg-[#FBFBFB] p-3 rounded-2xl">
             <div className="w-full flex relative">
               {tabs.map((tab, index) => (
                 <div

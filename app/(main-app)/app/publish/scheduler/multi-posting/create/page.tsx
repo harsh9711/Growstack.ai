@@ -9,7 +9,7 @@ import { BsQuestion } from "react-icons/bs";
 export default function CreateNewMultiPost() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
-  const tabs = ["Facebook", "Twitter", "Linkedin", "Tumblr", "Pinterest", "Reddit", "Instagram"];
+  const tabs = ["General", "Facebook", "Twitter", "Linkedin", "Tumblr", "Pinterest", "GMB", "Reddit", "Instagram", "Blogger"];
 
   return (
     <Fragment>
@@ -25,13 +25,13 @@ export default function CreateNewMultiPost() {
         <section className="bg-white rounded-3xl border border-[#EDEFF0] px-10 py-6 pb-10 mt-6">
           <div className="flex gap-8">
             <div className="w-full">
-              <div className="space-y-2 w-full">
+              <div className="space-y-3 w-full">
                 <label className="font-medium">
                   Add content <span className="text-[#F00]">*</span>
                 </label>
                 <textarea placeholder="write something here..." className="h-[129px] w-full bg-[#F2F2F2] rounded-2xl p-3 resize-none" />
               </div>
-              <div className="space-y-2 mt-3">
+              <div className="space-y-3 mt-3">
                 <label className="font-medium">Link </label>
                 <Input type="url" placeholder="Content share link" />
               </div>
@@ -51,7 +51,7 @@ export default function CreateNewMultiPost() {
           </div>
         </section>
         <section>
-          <div className="translate-y-10 max-w-[1120px] mx-auto bg-[#FBFBFB] p-3.5 rounded-2xl">
+          <div className="settings-inset-border translate-y-10 max-w-[1320px] mx-auto bg-[#FBFBFB] p-3 rounded-2xl">
             <div className="w-full flex relative">
               {tabs.map((tab, index) => (
                 <div

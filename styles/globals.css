@@ -114,3 +114,12 @@
   box-shadow: var(--tw-outline-offset-shadow), var(--tw-outline-shadow), var(--tw-shadow, 0 0 #0000);
   --tw-outline-color: #00203021;
 }
+
+.settings-inset-border {
+  background:
+    linear-gradient(#FBFBFB, #FBFBFB) padding-box,
+    linear-gradient(#EDEFF0, #EDEFF0) bottom left/10000px 40px border-box;
+  background-repeat: no-repeat;
+  border-radius: 12px;
+  border: 2px solid transparent;
+}
