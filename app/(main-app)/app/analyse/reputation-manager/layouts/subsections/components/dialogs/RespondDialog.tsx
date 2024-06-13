@@ -1,11 +1,10 @@
 // RespondDialog.js
 import { MultipleStarsIcon } from "@/components/svgs";
 import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import Image from "next/image";
-import { BsStarFill } from "react-icons/bs";
-import CreateTemplateDialog from "./CreateTemplateDialog";
-import { Review } from "@/types/reviews";
 import RatingStars from "@/components/ui/rating";
+import { Review } from "@/types/reviews";
+import Image from "next/image";
+import CreateTemplateDialog from "./CreateTemplateDialog";
 
 const RespondDialog = ({ reviewData }: { reviewData: Review }) => {
   return (

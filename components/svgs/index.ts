@@ -34,3 +34,7 @@ export { default as AiAssistantIcon } from "@/public/svgs/ai-assistant.svg";
 export { default as AutomationIcon } from "@/public/svgs/automation.svg";
 export { default as AdsAnalyticsIcon } from "@/public/svgs/presentation.svg";
 export { default as ReportAnalyticsIcon } from "@/public/svgs/report-analytics.svg";
+export { default as BrowserCheckIcon } from "@/public/svgs/browser-check.svg";
+export { default as FormsIcon } from "@/public/svgs/forms.svg";
+export { default as SurveyIcon } from "@/public/svgs/survey.svg";
+export { default as MasterCardIcon } from "@/public/svgs/brand-mastercard.svg";
