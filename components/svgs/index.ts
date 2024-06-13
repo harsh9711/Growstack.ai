@@ -37,4 +37,6 @@ export { default as ReportAnalyticsIcon } from "@/public/svgs/report-analytics.s
 export { default as BrowserCheckIcon } from "@/public/svgs/browser-check.svg";
 export { default as FormsIcon } from "@/public/svgs/forms.svg";
 export { default as SurveyIcon } from "@/public/svgs/survey.svg";
-export { default as MasterCardIcon } from "@/public/svgs/brand-mastercard.svg";
+export { default as AiAppsIcon } from "@/public/svgs/brand-asana.svg";
+export { default as ChatgptIcon } from "@/public/svgs/chat-gpt.svg";
+export { default as TextToVideoIcon } from "@/public/svgs/text-to-video.svg";

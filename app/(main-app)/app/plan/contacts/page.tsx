@@ -106,7 +106,7 @@ export default function ContactsDashboard() {
                   style={{ left: `calc(${tabUnderlineLeft}%)`, width: `${100 / tabs.length}%` }}></div>
               </div>
             </div>
-            <Link href="/app/create/contacts/settings">
+            <Link href="/app/plan/contacts/settings">
               <button className="border Fborder-[#EBEBEB] rounded-lg p-3 hover:bg-primary-light-gray text-primary-black">
                 <SettingsIcon size={20} />
               </button>

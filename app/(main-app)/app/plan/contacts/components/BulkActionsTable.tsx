@@ -21,7 +21,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { ChevronDown, Download, MoreVertical, Search } from "lucide-react";
+import { ChevronDown, MoreVertical, Search } from "lucide-react";
 import { useState } from "react";
 import { MdOutlineRefresh } from "react-icons/md";
 import { bulkdata } from "./data/bulkdata";

@@ -1,10 +1,12 @@
 import {
   AdsAnalyticsIcon,
+  AiAppsIcon,
   AiAssistantIcon,
   AnalyseIcon,
   AutomationIcon,
   BotIcon,
   CampaignIcon,
+  ChatgptIcon,
   CreateIcon,
   DashboardIcon,
   DebugIcon,
@@ -28,6 +30,7 @@ import {
   SquareShapeIcon,
   TelegramIcon,
   TextResizeIcon,
+  TextToVideoIcon,
   TridentIcon,
   UserIcon,
   WhatsappIcon,
@@ -44,13 +47,38 @@ const navLinks: NavLink[] = [
     sublinks: [
       {
         icon: <BotIcon />,
-        name: "AI chatbot (all LLM)",
+        name: "AI chat",
+        href: "#",
+      },
+      {
+        icon: <AiAppsIcon />,
+        name: "AI apps",
+        href: "#",
+      },
+      {
+        icon: <AiAssistantIcon />,
+        name: "AI assistant",
+        href: "#",
+      },
+      {
+        icon: <ChatgptIcon />,
+        name: "AI custom GPT",
+        href: "#",
+      },
+      {
+        icon: <TextToVideoIcon />,
+        name: "Text to video",
         href: "#",
       },
       {
         icon: <TridentIcon />,
-        name: "GMB web scraping tool",
+        name: "Web scraping",
         href: "/app/plan/web-scraping",
+      },
+      {
+        icon: <UserIcon />,
+        name: "Contact",
+        href: "/app/plan/contacts",
       },
     ],
     title: "Plan",
@@ -69,24 +97,9 @@ const navLinks: NavLink[] = [
         href: "#",
       },
       {
-        icon: <TextResizeIcon />,
-        name: "Text to video",
-        href: "#",
-      },
-      {
-        icon: <MessageIcon />,
-        name: "Custom marketing GPT apps",
-        href: "#",
-      },
-      {
         icon: <ShapeIcon />,
         name: "AI workflow builder",
         href: "#",
-      },
-      {
-        icon: <UserIcon />,
-        name: "Contact",
-        href: "/app/create/contacts",
       },
     ],
     title: "Create",
