@@ -3,8 +3,8 @@
 import Motion from "@/components/Motion";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { QuickPost } from "@/types/quickposts";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -19,21 +19,13 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { MoreVertical, Search } from "lucide-react";
-import Image from "next/image";
+import { Search, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { MdOutlineRefresh } from "react-icons/md";
-import { posts } from "./data/posts";
-type Post = {
-  content: string;
-  image: string;
-  status: string;
-  date: string;
-};
+import { quickposts } from "./data/posts";
 
-export const columns: ColumnDef<Post>[] = [
+export const columns: ColumnDef<QuickPost>[] = [
   {
-    accessorKey: "content",
+    accessorKey: "name",
     header: ({ table }) => (
       <div className="uppercase flex gap-3">
         <Checkbox
@@ -42,7 +34,7 @@ export const columns: ColumnDef<Post>[] = [
           aria-label="Select all"
           className="w-[18px] h-[18px]"
         />
-        <span>Content</span>
+        <span>Name</span>
       </div>
     ),
     cell: ({ row }) => (
@@ -53,63 +45,51 @@ export const columns: ColumnDef<Post>[] = [
           aria-label="Select row"
           className="w-[18px] h-[18px]"
         />
-        <span>{row.getValue("content")}</span>
+        <span>{row.getValue("name")}</span>
       </div>
     ),
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "image",
-    header: () => <div className="uppercase">Image</div>,
+    accessorKey: "created_on",
+    header: () => <div>Updated</div>,
     cell: ({ row }) => (
-      <div className="flex gap-2 items-center">
-        <Image src={row.original.image} alt="" width={100} height={100} className="rounded-full h-[48px] w-[48px] object-cover" />
+      <div className="flex gap-3">
+        <span>
+          {row.original.created_on.date} at {row.original.created_on.time}
+        </span>
       </div>
     ),
   },
-  {
-    accessorKey: "status",
-    header: () => <div className="uppercase">Status</div>,
-    cell: ({ row }) => <span>{row.getValue("status")}</span>,
-  },
+
   {
     id: "actions",
-    header: () => <div className="uppercase">Action</div>,
+    header: () => <div>Action</div>,
     cell: ({ row }) => {
       return (
         <div className="flex gap-2">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button className="px-2 hover:bg-gray-200 h-10 w-10 rounded-full">
-                <MoreVertical />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent>
-              <DropdownMenuItem className="gap-2 w-[250px]">
-                <MdOutlineRefresh size={20} />
-                Restore
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <span className="hover:bg-gray-200 p-1.5 transition-all rounded-lg cursor-pointer">
+            <Trash2 size={18} />
+          </span>
         </div>
       );
     },
   },
 ];
 
-export default function MultiPostsTable() {
+export default function QuickPostsTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: 5,
   });
 
   const table = useReactTable({
-    data: posts,
+    data: quickposts,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -146,9 +126,13 @@ export default function MultiPostsTable() {
   }
 
   return (
-    <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion transition={{ duration: 0.4 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
       <div className="w-full">
-        <div className="rounded-lg border overflow-hidden mt-5 bg-white min-h-[50vh]">
+        <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full">
+          <Search className="text-gray-500" size={20} />
+          <input type="search" className="outline-none h-[35px] w-full" placeholder="Search" />
+        </div>
+        <div className="rounded-lg border overflow-hidden mt-5 bg-white min-h-[30vh]">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -171,16 +155,16 @@ export default function MultiPostsTable() {
                   </TableRow>
                 ))
               ) : (
-                <TableRow>
-                  <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg">
-                    No posts found.
+                <TableRow className="hover:bg-white">
+                  <TableCell colSpan={columns.length} className="h-[30vh] text-center font-semibold text-lg hover:bg-white">
+                    No logs found.
                   </TableCell>
                 </TableRow>
               )}
             </TableBody>
           </Table>
         </div>
-        {table.getRowModel().rows?.length && (
+        {table.getRowModel().rows?.length ? (
           <div className="flex items-center justify-end space-x-2 py-4">
             <div className="space-x-2 flex">
               <Button
@@ -204,7 +188,7 @@ export default function MultiPostsTable() {
               </Button>
             </div>
           </div>
-        )}
+        ) : null}
       </div>
     </Motion>
   );

@@ -123,3 +123,22 @@
   border-radius: 12px;
   border: 2px solid transparent;
 }
+
+.scrollbar-primary::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+.scrollbar-primary::-webkit-scrollbar-track {
+  background: #EEEEEE;
+  border-radius: 9px;
+}
+
+.scrollbar-primary::-webkit-scrollbar-thumb {
+  background: #034737;
+  border-radius: 9px;
+}
+
+.scrollbar-primary::-webkit-scrollbar-thumb:hover {
+  background: #034737d5;
+}

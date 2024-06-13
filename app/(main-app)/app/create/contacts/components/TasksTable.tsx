@@ -195,7 +195,7 @@ export default function TasksTable() {
             </TableBody>
           </Table>
         </div>
-        {table.getRowModel().rows?.length && (
+        {table.getRowModel().rows?.length ? (
           <div className="flex items-center justify-end space-x-2 py-4">
             <div className="space-x-2 flex">
               <Button
@@ -219,7 +219,7 @@ export default function TasksTable() {
               </Button>
             </div>
           </div>
-        )}
+        ) : null}
       </div>
     </Motion>
   );

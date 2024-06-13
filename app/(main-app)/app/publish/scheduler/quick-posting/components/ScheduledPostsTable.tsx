@@ -4,7 +4,7 @@ import Motion from "@/components/Motion";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Contact } from "@/types/contact";
+import { QuickPost } from "@/types/quickposts";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -19,76 +19,77 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { MailIcon, Phone, Search } from "lucide-react";
-import Image from "next/image";
+import { Search, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { contacts } from "./data/contacts";
+import { quickposts } from "./data/posts";
 
-export const columns: ColumnDef<Contact>[] = [
+export const columns: ColumnDef<QuickPost>[] = [
   {
-    id: "select",
+    accessorKey: "name",
     header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-        onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-        className="w-[18px] h-[18px]"
-      />
+      <div className="uppercase flex gap-3">
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+          onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+          className="w-[18px] h-[18px]"
+        />
+        <span>Name</span>
+      </div>
     ),
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value: any) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="w-[18px] h-[18px]"
-      />
+      <div className="capitalize flex items-center gap-3">
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value: any) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+          className="w-[18px] h-[18px]"
+        />
+        <span>{row.getValue("name")}</span>
+      </div>
     ),
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "name",
-    header: () => <div className="uppercase">Name</div>,
+    accessorKey: "created_on",
+    header: () => <div>Updated</div>,
     cell: ({ row }) => (
-      <div className="capitalize flex items-center gap-3">
-        <Image src={row.original.profile_image} alt="" width={100} height={100} className="h-[40px] w-[40px] object-cover rounded-full" />
-        {row.getValue("name")}
+      <div className="flex gap-3">
+        <span>
+          {row.original.created_on.date} at {row.original.created_on.time}
+        </span>
       </div>
     ),
   },
+
   {
-    accessorKey: "email",
-    header: () => <div className="uppercase">Email</div>,
-    cell: ({ row }) => (
-      <div className="flex gap-2 items-center">
-        <MailIcon size={20} className="text-primary-green" />
-        <p>{row.getValue("email")}</p>
-      </div>
-    ),
-  },
-  {
-    accessorKey: "phone",
-    header: () => <div className="uppercase">Phone</div>,
-    cell: ({ row }) => (
-      <div className="flex items-center gap-2">
-        <Phone size={20} className="text-primary-green" /> <span>{row.getValue("phone")}</span>
-      </div>
-    ),
+    id: "actions",
+    header: () => <div>Action</div>,
+    cell: ({ row }) => {
+      return (
+        <div className="flex gap-2">
+          <span className="hover:bg-gray-200 p-1.5 transition-all rounded-lg cursor-pointer">
+            <Trash2 size={18} />
+          </span>
+        </div>
+      );
+    },
   },
 ];
 
-export default function RestoreTable() {
+export default function ScheduledPostsTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: 5,
   });
 
   const table = useReactTable({
-    data: contacts.slice(0, 4),
+    data: quickposts,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -125,15 +126,13 @@ export default function RestoreTable() {
   }
 
   return (
-    <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion transition={{ duration: 0.4 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
       <div className="w-full">
-        <div className="flex justify-end gap-10 items-center mt-5">
-          <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
-            <Search className="text-gray-500" size={20} />
-            <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" />
-          </div>
+        <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full">
+          <Search className="text-gray-500" size={20} />
+          <input type="search" className="outline-none h-[35px] w-full" placeholder="Search" />
         </div>
-        <div className="rounded-lg border overflow-hidden mt-5 bg-white min-h-[50vh]">
+        <div className="rounded-lg border overflow-hidden mt-5 bg-white min-h-[30vh]">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -157,8 +156,8 @@ export default function RestoreTable() {
                 ))
               ) : (
                 <TableRow className="hover:bg-white">
-                  <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
-                    No results.
+                  <TableCell colSpan={columns.length} className="h-[30vh] text-center font-semibold text-lg hover:bg-white">
+                    No logs found.
                   </TableCell>
                 </TableRow>
               )}

@@ -58,7 +58,10 @@ export default function Navbar() {
         <Link href={item.href!} key={index}>
           <DropdownMenuItem
             inset
-            className={clsx("min-w-[300px] flex justify-between gap-8 items-center my-1", pathname === item.href && "bg-primary-green hover:!bg-primary-green")}>
+            className={clsx(
+              "min-w-[300px] flex justify-between gap-8 items-center my-1",
+              pathname === item.href && "bg-primary-green hover:!bg-primary-green"
+            )}>
             <div className="flex gap-3">
               {React.cloneElement(item.icon, { className: clsx(pathname === item.href && "text-white") })}
               <h2 className={clsx(pathname === item.href && "text-white")}>{item.name}</h2>
