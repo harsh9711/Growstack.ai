@@ -16,17 +16,15 @@ export default function MarketingPage() {
       <main className="">
         <div className="flex justify-between items-center mt-8">
           <div className="space-y-2 w-full">
-            <h1 className="text-2xl font-semibold">AI marketing and sales assistant</h1>
-            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
-              Seeking that perfect content? Look no further! Get ready to explore our fantastic lineup of templates{" "}
-            </p>
+            <h1 className="text-2xl font-semibold">AI apps</h1>
+            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">AI marketing and sales assistant </p>
           </div>
           <div className="w-full flex justify-end gap-2">
             <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
               <Search className="text-gray-500" size={20} />
               <input type="search" className="outline-none h-[40px] w-full" placeholder="Search for articles and contents" />
             </div>
-            <Link href="/app/engage/ai-marketing-and-sales-assistant/create-assistant">
+            <Link href="/app/plan/ai-apps/create-assistant">
               <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
                 <Plus size={20} />
                 Create your own assistant
@@ -54,7 +52,7 @@ export default function MarketingPage() {
             .items.map((assistant, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between gap-5 bg-white border border-[#EEF0F4] rounded-2xl p-6 shadow-xl shadow-gray-100 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-200 cursor-pointer">
+                className="flex items-center justify-between gap-5 bg-white border border-[#EEF0F4] rounded-2xl p-6 shadow-xl shadow-gray-100 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer">
                 <div className="flex gap-4 items-start">
                   <Image src={assistant.icon} alt="" width={80} height={80} className="w-[64px] h-[64px]" />
                   <div className="space-y-2">

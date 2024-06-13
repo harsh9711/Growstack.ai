@@ -53,7 +53,7 @@ const navLinks: NavLink[] = [
       {
         icon: <AiAppsIcon />,
         name: "AI apps",
-        href: "#",
+        href: "/app/plan/ai-apps",
       },
       {
         icon: <AiAssistantIcon />,
@@ -144,11 +144,6 @@ const navLinks: NavLink[] = [
   {
     icon: <EngageIcon />,
     sublinks: [
-      // {
-      //   icon: <AffiliateMarketingIcon />,
-      //   name: "AI Marketing and sales assistants",
-      //   href: "/app/engage/ai-marketing-and-sales-assistant",
-      // },
       {
         icon: <SquareShapeIcon />,
         name: "Social media conversation hub",

@@ -12,14 +12,14 @@ export default function CreateAssistantPage() {
       <div className="flex justify-between items-center mt-8">
         <div className="space-y-2">
           <p className="flex items-center gap-2 text-[#4B465C] text-opacity-50 text-[15px]">
-            <Link href="/app/engage/ai-marketing-and-sales-assistant" className="hover:text-gray-600 transition-all">
+            <Link href="/app/plan/ai-apps" className="hover:text-gray-600 transition-all">
               Ai marketing and sales assistant
             </Link>{" "}
             <ChevronRight size={20} /> <span className="text-[#3D817B]">Create your own assistant</span>
           </p>
         </div>
         <div className="">
-          <Link href="/app/engage/ai-marketing-and-sales-assistant">
+          <Link href="/app/plan/ai-apps">
             <button className="text-primary-green hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-2.5 rounded-full font-semibold items-center">
               <ArrowLeft size={20} /> Back
             </button>
