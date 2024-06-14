@@ -53,7 +53,7 @@ export const data = {
       data: generateRandomData(months.length, 0, 200000), // Random data between 0 and 5
       borderColor: "#034737",
       backgroundColor: "#034737",
-      tension: 0.5,
+      tension: 0.4,
     },
   ],
 };

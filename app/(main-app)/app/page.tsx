@@ -1,7 +1,8 @@
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowRight, Plus } from "lucide-react";
 import Image from "next/image";
-import { DataTable } from "./components/Table";
+import { CampaignTable } from "./components/CompaignTable";
+import RevenueGraph from "./components/RevenueGraph";
 
 export default function Dashboard() {
   return (
@@ -56,7 +57,7 @@ export default function Dashboard() {
           </div>
           <div className="bg-white py-7 px-8 rounded-3xl flex justify-between items-center shadow-2xl shadow-gray-200">
             <div className="space-y-3">
-              <p className="text-[#4B4B4B]">Total tokens</p>
+              <p className="text-[#4B4B4B]">Token used</p>
               <h1 className="text-[40px] font-semibold">85,000</h1>
               <p className="text-[#1D8F6D]">+ 21%</p>
             </div>
@@ -64,7 +65,7 @@ export default function Dashboard() {
           </div>
           <div className="bg-white py-7 px-8 rounded-3xl flex justify-between items-center shadow-2xl shadow-gray-200">
             <div className="space-y-3">
-              <p className="text-[#4B4B4B]">Total tokens</p>
+              <p className="text-[#4B4B4B]">Money used</p>
               <h1 className="text-[40px] font-semibold">$300.00</h1>
               <p className="text-[#1D8F6D]">+ 21%</p>
             </div>
@@ -74,80 +75,96 @@ export default function Dashboard() {
         <div className="w-full flex gap-6 mt-10">
           <div className="w-full space-y-6">
             <div className="w-full bg-white border border-[#E8E8E8] rounded-3xl p-6">
-              <h1 className="text-lg font-semibold">Revenue Distribution</h1>
-              <DataTable />
+              <div className="flex justify-between">
+                <h1 className="text-lg font-semibold">Revenue Distribution</h1>
+                <Select>
+                  <SelectTrigger className="bg-white h-12">
+                    <SelectValue placeholder="Show by Month" />
+                  </SelectTrigger>
+                  <SelectContent defaultValue={"Show by Month"}>
+                    <SelectGroup>
+                      <SelectItem value="Show by Month">Show by Month</SelectItem>
+                      <SelectItem value="Show by Week">Show by Week</SelectItem>
+                      <SelectItem value="Show by Day">Show by Day</SelectItem>
+                      <SelectItem value="Show by Month">Show by Year</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="w-full h-[342px] mt-5">
+                <RevenueGraph />
+              </div>
             </div>
             <div className="w-full bg-white border border-[#E8E8E8] rounded-3xl p-6">
-              <h1 className="text-lg font-semibold">Campaigns activity</h1>
-              <DataTable />
+              <CampaignTable />
             </div>
           </div>
-          <div className="w-3/5 bg-white p-6 rounded-3xl border borer-[#E8E8E8] space-y-5">
+          <div className="w-[50%] bg-white p-6 rounded-3xl border borer-[#E8E8E8] space-y-5">
             <div className="space-y-3">
               <h1 className="text-2xl font-semibold text-center">Unlock the power of AI</h1>
               <p className="text-[#6C7275] text-center">Chat with the smartest AI - Experience the power of AI with us</p>
             </div>
-            <div className="!mt-6 bg-white border border-[#E8ECEF] rounded-3xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-2xl hover:shadow-primary-green/10">
+            <div className="!mt-6 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
               <div className="flex gap-4 items-center">
-                <Image src="/icons/media.svg" alt="" width={80} height={80} />
-                <h2 className="text-[17px]">Text to video </h2>
+                <Image src="/icons/media.svg" alt="" width={60} height={60} />
+                <h2 className="font-medium">Text to video </h2>
               </div>
               <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
-                <ArrowRight className="text-gray-500" />
+                <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
               </button>
             </div>
-            <div className="bg-white border border-[#E8ECEF] rounded-3xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-2xl hover:shadow-primary-green/10">
+            <div className="group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
               <div className="flex gap-4 items-center">
-                <Image src="/icons/chatbot.svg" alt="" width={80} height={80} />
-                <h2 className="text-[17px]">Chatbot & virtual assistant</h2>
+                <Image src="/icons/chatbot.svg" alt="" width={60} height={60} />
+                <h2 className="font-medium">Chatbot & virtual assistant</h2>
               </div>
               <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
-                <ArrowRight className="text-gray-500" />
+                <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
               </button>
             </div>
-            <div className="bg-white border border-[#E8ECEF] rounded-3xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-2xl hover:shadow-primary-green/10">
+            <div className="group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
               <div className="flex gap-4 items-center">
-                <Image src="/icons/social.svg" alt="" width={80} height={80} />
-                <h2 className="text-[17px]">Social planner hub </h2>
+                <Image src="/icons/social.svg" alt="" width={60} height={60} />
+                <h2 className="font-medium">Social planner hub </h2>
               </div>
               <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
-                <ArrowRight className="text-gray-500" />
+                <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
               </button>
             </div>
-            <div className="bg-white border border-[#E8ECEF] rounded-3xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-2xl hover:shadow-primary-green/10">
+            <div className="group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
               <div className="flex gap-4 items-center">
-                <Image src="/icons/web-builder.svg" alt="" width={80} height={80} />
-                <h2 className="text-[17px]">AI website landing builder</h2>
+                <Image src="/icons/web-builder.svg" alt="" width={60} height={60} />
+                <h2 className="font-medium">AI website landing builder</h2>
               </div>
               <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
-                <ArrowRight className="text-gray-500" />
+                <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
               </button>
             </div>
-            <div className="bg-white border border-[#E8ECEF] rounded-3xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-2xl hover:shadow-primary-green/10">
+            <div className="group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
               <div className="flex gap-4 items-center">
-                <Image src="/icons/audio.svg" alt="" width={80} height={80} />
-                <h2 className="text-[17px]">AI marketing and sales </h2>
+                <Image src="/icons/audio.svg" alt="" width={60} height={60} />
+                <h2 className="font-medium">AI marketing and sales </h2>
               </div>
               <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
-                <ArrowRight className="text-gray-500" />
+                <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
               </button>
             </div>
-            <div className="bg-white border border-[#E8ECEF] rounded-3xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-2xl hover:shadow-primary-green/10">
+            <div className="group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
               <div className="flex gap-4 items-center">
-                <Image src="/icons/custom-gpts.svg" alt="" width={80} height={80} />
-                <h2 className="text-[17px]">Custom GPT apps </h2>
+                <Image src="/icons/custom-gpts.svg" alt="" width={60} height={60} />
+                <h2 className="font-medium">Custom GPT apps </h2>
               </div>
               <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
-                <ArrowRight className="text-gray-500" />
+                <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
               </button>
             </div>
-            <div className="bg-white border border-[#E8ECEF] rounded-3xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-2xl hover:shadow-primary-green/10">
+            <div className="group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
               <div className="flex gap-4 items-center">
-                <Image src="/icons/workflow-builder.svg" alt="" width={80} height={80} />
-                <h2 className="text-[17px]">Workflow builder</h2>
+                <Image src="/icons/workflow-builder.svg" alt="" width={60} height={60} />
+                <h2 className="font-medium">Workflow builder</h2>
               </div>
               <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
-                <ArrowRight className="text-gray-500" />
+                <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
               </button>
             </div>
           </div>
