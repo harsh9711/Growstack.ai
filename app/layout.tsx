@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "../styles/globals.css";
 import Progressbar from "@/providers/Progressbar";
 import { Suspense } from "react";
+import { Toaster } from "react-hot-toast";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -26,6 +27,7 @@ export default function RootLayout({
       <body className={poppins.className}>
         <Suspense fallback={<div style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>Loading...</div>}>
           <Progressbar>{children}</Progressbar>
+          <Toaster />
         </Suspense>
       </body>
     </html>
