@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <Suspense fallback={<div style={{ height: "100vh", display: "flex", alignContent: "center", justifyContent: "center" }}>Loading...</div>}>
+        <Suspense fallback={<div style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>Loading...</div>}>
           <Progressbar>{children}</Progressbar>
         </Suspense>
       </body>

@@ -89,17 +89,17 @@ const navLinks: NavLink[] = [
       {
         icon: <LayoutIcon />,
         name: "AI website builder",
-        href: "#",
+        href: "/app/create/website-builder",
       },
       {
         icon: <MailIcon />,
         name: "AI email builder",
-        href: "#",
+        href: "/app/create/email-builder",
       },
       {
         icon: <ShapeIcon />,
         name: "AI workflow builder",
-        href: "#",
+        href: "/app/create/workflow-builder",
       },
     ],
     title: "Create",
