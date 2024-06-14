@@ -63,7 +63,7 @@ const navLinks: NavLink[] = [
       {
         icon: <ChatgptIcon />,
         name: "AI custom GPT",
-        href: "#",
+        href: "/app/plan/custom-gpts",
       },
       {
         icon: <TextToVideoIcon />,

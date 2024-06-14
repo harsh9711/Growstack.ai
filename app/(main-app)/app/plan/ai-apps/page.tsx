@@ -1,12 +1,11 @@
 "use client";
 
+import clsx from "clsx";
 import { Plus, Search, StarIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { Fragment, useState } from "react";
 import aiAssistantsData from "./components/data/data";
-import clsx from "clsx";
-import ScrollToTopButton from "./components/ScrollToTopButton";
-import Link from "next/link";
 
 export default function MarketingPage() {
   const [selectedTag, setSelectedTag] = useState(tags[0].name);
