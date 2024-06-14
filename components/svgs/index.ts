@@ -40,3 +40,4 @@ export { default as SurveyIcon } from "@/public/svgs/survey.svg";
 export { default as AiAppsIcon } from "@/public/svgs/brand-asana.svg";
 export { default as ChatgptIcon } from "@/public/svgs/chat-gpt.svg";
 export { default as TextToVideoIcon } from "@/public/svgs/text-to-video.svg";
+export { default as MasterCardIcon } from "@/public/svgs/brand-mastercard.svg";

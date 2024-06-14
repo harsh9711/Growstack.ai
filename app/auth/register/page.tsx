@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function Register() {
   return (
     <main>
-      <div className="flex flex-col-reverse xl:flex-row-reverse h-screen overflow-y-auto gap-10 pt-10">
+      <div className="flex flex-col-reverse xl:flex-row-reverse h-screen overflow-y-auto gap-10">
         <section className="w-full h-full flex justify-center items-center bg-white">
           <div className="w-full max-w-2xl max-h-[900px] h-full p-14 bg-[#F7FAFC] rounded-[30px]">
             <div className="w-full h-full max-w-[460px] mx-auto flex flex-col justify-between items-center space-y-10">

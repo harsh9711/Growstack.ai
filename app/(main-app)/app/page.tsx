@@ -21,7 +21,7 @@ export default function Dashboard() {
           </div>
           <div className="flex items-center gap-2 relative">
             <Select>
-              <SelectTrigger className="w-[150px]">
+              <SelectTrigger className="w-[150px] bg-white">
                 <SelectValue placeholder="Select" />
               </SelectTrigger>
               <SelectContent defaultValue={"daily"}>

@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import navLinks from "./constants/nav";
+import { ProfileButton } from "./ProfileButton";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -104,9 +105,7 @@ export default function Navbar() {
           <button className="cursor-pointer bg-[#F4F4F4] py-3 px-3 rounded-xl">
             <IoIosNotificationsOutline size={26} />
           </button>
-          <button>
-            <Image src="/dummy/person-0.png" alt="" width={100} height={100} className="w-[50px] h-[50px] object-cover rounded-xl" />
-          </button>
+          <ProfileButton />
         </div>
       </nav>
     </header>
