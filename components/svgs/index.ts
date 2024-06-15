@@ -41,3 +41,7 @@ export { default as AiAppsIcon } from "@/public/svgs/brand-asana.svg";
 export { default as ChatgptIcon } from "@/public/svgs/chat-gpt.svg";
 export { default as TextToVideoIcon } from "@/public/svgs/text-to-video.svg";
 export { default as MasterCardIcon } from "@/public/svgs/brand-mastercard.svg";
+export { default as DollarExachangeIcon } from "@/public/svgs/dollar-exchange.svg";
+export { default as VideoMedia } from "@/public/svgs/video-media.svg";
+export { default as GenerateAi } from "@/public/svgs/ai-video-generate.svg";
+export { default as Ppt } from "@/public/svgs/ppt.svg";

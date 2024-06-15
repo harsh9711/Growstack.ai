@@ -15,7 +15,6 @@ import {
   IntegrationIcon,
   LayoutIcon,
   MailIcon,
-  MessageIcon,
   MultiPostingIcon,
   PlanIcon,
   PostingLogsIcon,
@@ -29,11 +28,10 @@ import {
   ShapeIcon,
   SquareShapeIcon,
   TelegramIcon,
-  TextResizeIcon,
   TextToVideoIcon,
   TridentIcon,
   UserIcon,
-  WhatsappIcon,
+  WhatsappIcon
 } from "@/components/svgs";
 
 const navLinks: NavLink[] = [
@@ -68,7 +66,7 @@ const navLinks: NavLink[] = [
       {
         icon: <TextToVideoIcon />,
         name: "Text to video",
-        href: "#",
+        href: "/app/plan/text-to-video",
       },
       {
         icon: <TridentIcon />,
@@ -163,7 +161,7 @@ const navLinks: NavLink[] = [
       {
         icon: <PresentationAnalyticsIcon />,
         name: "Social media analytics",
-        href: "#",
+        href: "/app/analyse/social-media",
       },
       {
         icon: <ReputationIcon />,
@@ -173,7 +171,7 @@ const navLinks: NavLink[] = [
       {
         icon: <AdsAnalyticsIcon />,
         name: "Ads analytics",
-        href: "#",
+        href: "/app/analyse/ads-analytics",
       },
       {
         icon: <ReportAnalyticsIcon />,
