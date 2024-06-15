@@ -72,7 +72,7 @@ export default function MobileSidebar({ onClose, isOpen }: Props) {
           <Link href="/auth/login" className="py-3 px-8 rounded-xl hover:bg flex justify-center items-center">
             SIgn in
           </Link>
-          <Link href="/auth/signup" className="sheen bg-primary-green text-white py-3.5 px-9 rounded-xl flex gap-2 items-center justify-center">
+          <Link href="/auth/register" className="sheen bg-primary-green text-white py-3.5 px-9 rounded-xl flex gap-2 items-center justify-center">
             Sign up
             <MdArrowOutward size={22} />
           </Link>
