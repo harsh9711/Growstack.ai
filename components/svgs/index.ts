@@ -45,3 +45,5 @@ export { default as DollarExachangeIcon } from "@/public/svgs/dollar-exchange.sv
 export { default as VideoMedia } from "@/public/svgs/video-media.svg";
 export { default as GenerateAi } from "@/public/svgs/ai-video-generate.svg";
 export { default as Ppt } from "@/public/svgs/ppt.svg";
+export { default as MessageDotsIcon } from "@/public/svgs/message-dots.svg";
+export { default as CancelIcon } from "@/public/svgs/cancel.svg";

@@ -1,9 +1,9 @@
 "use client";
 
+import Motion from "@/components/Motion";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Contact } from "@/types/contact";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -18,58 +18,90 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { FilterIcon, MailIcon, Phone, Search } from "lucide-react";
-import Image from "next/image";
+import { Edit3, Search, Trash2, Users } from "lucide-react";
 import { useState } from "react";
-import { contacts } from "./data/contacts";
-import FilterSheet from "./FilterSheet";
-import Motion from "@/components/Motion";
+import { TbUsersPlus } from "react-icons/tb";
+import AddContactDialog from "../dialogs/AddContactDialog";
+import AddSegment from "../dialogs/AddSegment";
+import { Switch } from "@/components/ui/switch";
+
+type Contact = {
+  no: number;
+  segments: string;
+};
+
+const data: Contact[] = [
+  {
+    no: 1,
+    segments: "Default",
+  },
+  {
+    no: 2,
+    segments: "Default",
+  },
+  {
+    no: 3,
+    segments: "Default",
+  },
+];
 
 export const columns: ColumnDef<Contact>[] = [
   {
-    id: "select",
+    accessorKey: "no",
     header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-        onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-        className="w-[18px] h-[18px]"
-      />
+      <div className="uppercase flex items-center gap-4">
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+          onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+          className="w-[18px] h-[18px]"
+        />
+        #
+      </div>
     ),
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value: any) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="w-[18px] h-[18px]"
-      />
+      <div className="capitalize flex items-center gap-3">
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value: any) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+          className="w-[18px] h-[18px]"
+        />
+        {row.getValue("no")}
+      </div>
     ),
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "name",
-    header: () => <div className="uppercase">Name</div>,
-    cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("name")}</div>,
+    accessorKey: "segments",
+    header: () => <div className="uppercase">Segments</div>,
+    cell: ({ row }) => <p className="flex gap-2 items-center">{row.getValue("segments")}</p>,
   },
   {
-    accessorKey: "email",
-    header: () => <div className="uppercase">Email</div>,
+    accessorKey: "status",
+    header: () => <div className="uppercase">Status</div>,
     cell: ({ row }) => (
-      <div className="flex gap-2 items-center">
-        <MailIcon size={20} className="text-primary-green" />
-        <p>{row.getValue("email")}</p>
-      </div>
+      <p className="flex gap-2 items-center">
+        <Switch />
+      </p>
     ),
   },
   {
-    accessorKey: "phone",
-    header: () => <div className="uppercase">Phone</div>,
+    id: "actions",
+    header: () => <div className="uppercase">Action</div>,
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
-        <Phone size={20} className="text-primary-green" /> <span>{row.getValue("phone")}</span>
+        <button className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300">
+          <Edit3 size={20} className="text-gray-800 cursor-pointer" />
+        </button>
+        <button className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300">
+          <Trash2 size={20} className="text-gray-800 cursor-pointer" />
+        </button>
       </div>
     ),
+    enableSorting: false,
+    enableHiding: false,
   },
 ];
 
@@ -84,7 +116,7 @@ export default function RestoreContactsTable() {
   });
 
   const table = useReactTable({
-    data: contacts,
+    data,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -122,15 +154,18 @@ export default function RestoreContactsTable() {
 
   return (
     <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
-      <div className="w-full">
-        <div className="flex justify-between gap-10 items-center mt-5">
-          <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
-            <Search className="text-gray-500" size={20} />
-            <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" />
+      <div className="w-full bg-white mt-10 rounded-3xl border border-[#E4E4E4]">
+        <div className="flex justify-between items-center px-7 pt-5">
+          <h1 className="text-2xl font-semibold">Segments list</h1>
+          <div className="flex justify-end gap-3 items-center w-full max-w-xl">
+            <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full">
+              <Search className="text-gray-500" size={20} />
+              <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" />
+            </div>
+            <AddSegment />
           </div>
-          <FilterSheet />
         </div>
-        <div className="bg-white rounded-lg border overflow-hidden mt-5 min-h-[50vh]">
+        <div className=" overflow-hidden mt-5 min-h-[50vh]">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -162,31 +197,6 @@ export default function RestoreContactsTable() {
             </TableBody>
           </Table>
         </div>
-        {table.getRowModel().rows?.length ? (
-          <div className="flex items-center justify-end space-x-2 py-4">
-            <div className="space-x-2 flex">
-              <Button
-                variant="outline"
-                size="sm"
-                className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px]"
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}>
-                Previous
-              </Button>
-              <div>
-                <div>{paginationButtons.map((u) => u)}</div>
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px] px-4"
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}>
-                Next
-              </Button>
-            </div>
-          </div>
-        ) : null}
       </div>
     </Motion>
   );

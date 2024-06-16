@@ -32,7 +32,7 @@ export default function Dashboard() {
                 </SelectGroup>
               </SelectContent>
             </Select>
-            <button className="bg-primary-green py-4 pl-4 pr-5 flex items-center gap-3 rounded-xl text-white">
+            <button className="bg-primary-green py-4 pl-4 pr-5 flex items-center gap-3 rounded-xl text-white sheen">
               <Plus size={22} />
               Create social planner
             </button>

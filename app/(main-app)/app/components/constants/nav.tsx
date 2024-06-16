@@ -31,7 +31,7 @@ import {
   TextToVideoIcon,
   TridentIcon,
   UserIcon,
-  WhatsappIcon
+  WhatsappIcon,
 } from "@/components/svgs";
 
 const navLinks: NavLink[] = [
@@ -191,27 +191,27 @@ const navLinks: NavLink[] = [
           {
             icon: <WhatsappIcon />,
             name: "WhatsApp overview",
-            href: "#",
+            href: "/app/integration/whatsapp-automation",
           },
           {
             icon: <TelegramIcon />,
             name: "Telegram overview",
-            href: "#",
+            href: "/app/integration/telegram-automation",
           },
           {
             icon: <CampaignIcon />,
-            name: "Campaign",
-            href: "#",
+            name: "Campaigns",
+            href: "/app/integration/campaigns",
           },
           {
             icon: <AiAssistantIcon />,
             name: "AI assistant",
-            href: "#",
+            href: "/app/integration/ai-assistant",
           },
           {
             icon: <SettingsIcon />,
             name: "Settings",
-            href: "#",
+            href: "/app/integration/settings",
           },
         ],
       },
