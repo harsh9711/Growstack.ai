@@ -16,8 +16,8 @@ function Dropzone({ onFileDrop: onFileDrop }: { onFileDrop: () => void }) {
   });
 
   return (
-    <div className="border border-[#DFDFDF] p-4 rounded-3xl">
-      <Image src="/icons/crown.svg" alt="" width={35} height={35} className="absolute top-2 right-2 z-[2]" />
+    <div className="border border-[#DFDFDF] p-4 rounded-3xl relative">
+      <Image src="/icons/crown.svg" alt="" width={35} height={35} className="absolute top-3 right-3 z-[2]" />
       <div {...getRootProps()} className="outline-none w-full flex justify-center items-center h-[246px] cursor-pointer relative z-[1]">
         <input {...getInputProps()} accept="images/*" />
         {isDragActive ? (
