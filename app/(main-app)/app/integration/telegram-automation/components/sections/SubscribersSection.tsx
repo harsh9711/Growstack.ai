@@ -18,36 +18,22 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { Edit3, Search, Trash2, Users } from "lucide-react";
+import { Search } from "lucide-react";
 import { useState } from "react";
-import { TbUsersPlus } from "react-icons/tb";
-import AddContactDialog from "../dialogs/AddContactDialog";
-import AddSegment from "../dialogs/AddSegment";
-import { Switch } from "@/components/ui/switch";
+import { data } from "../data/subscribers";
+import FiltersDialog from "../dialogs/FiltersDialog";
 
-type Contact = {
-  no: number;
-  segments: string;
+type Subscriber = {
+  title: string;
+  username: string;
+  group: string;
+  is_block: "yes" | "no";
+  is_left: "yes" | "no";
 };
 
-const data: Contact[] = [
+export const columns: ColumnDef<Subscriber>[] = [
   {
-    no: 1,
-    segments: "Default",
-  },
-  {
-    no: 2,
-    segments: "Default",
-  },
-  {
-    no: 3,
-    segments: "Default",
-  },
-];
-
-export const columns: ColumnDef<Contact>[] = [
-  {
-    accessorKey: "no",
+    accessorKey: "title",
     header: ({ table }) => (
       <div className="uppercase flex items-center gap-4">
         <Checkbox
@@ -56,7 +42,7 @@ export const columns: ColumnDef<Contact>[] = [
           aria-label="Select all"
           className="w-[18px] h-[18px]"
         />
-        #
+        Title
       </div>
     ),
     cell: ({ row }) => (
@@ -67,45 +53,35 @@ export const columns: ColumnDef<Contact>[] = [
           aria-label="Select row"
           className="w-[18px] h-[18px]"
         />
-        {row.getValue("no")}
+        {row.getValue("title")}
       </div>
     ),
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "segments",
-    header: () => <div className="uppercase">Segments</div>,
-    cell: ({ row }) => <p className="flex gap-2 items-center">{row.getValue("segments")}</p>,
+    accessorKey: "username",
+    header: () => <div className="uppercase">Username</div>,
+    cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("username")}</div>,
   },
   {
-    accessorKey: "status",
-    header: () => <div className="uppercase">Status</div>,
-    cell: ({ row }) => (
-      <p className="flex gap-2 items-center">
-        <Switch />
-      </p>
-    ),
+    accessorKey: "group",
+    header: () => <div className="uppercase">Group</div>,
+    cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("group")}</div>,
   },
   {
-    id: "actions",
-    header: () => <div className="uppercase">Action</div>,
-    cell: ({ row }) => (
-      <div className="flex items-center gap-2">
-        <button className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300">
-          <Edit3 size={20} className="text-gray-800 cursor-pointer" />
-        </button>
-        <button className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300">
-          <Trash2 size={20} className="text-gray-800 cursor-pointer" />
-        </button>
-      </div>
-    ),
-    enableSorting: false,
-    enableHiding: false,
+    accessorKey: "is_block",
+    header: () => <div className="uppercase">Is block</div>,
+    cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("is_block")}</div>,
+  },
+  {
+    accessorKey: "is_left",
+    header: () => <div className="uppercase">Is left</div>,
+    cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("is_left")}</div>,
   },
 ];
 
-export default function RestoreContactsTable() {
+export default function SubscribersSection() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -156,13 +132,13 @@ export default function RestoreContactsTable() {
     <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
       <div className="w-full bg-white mt-10 rounded-3xl border border-[#E4E4E4]">
         <div className="flex justify-between items-center px-7 pt-5">
-          <h1 className="text-2xl font-semibold">Segments list</h1>
+          <h1 className="text-2xl font-semibold">Subscriber management</h1>
           <div className="flex justify-end gap-3 items-center w-full max-w-xl">
             <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full">
               <Search className="text-gray-500" size={20} />
               <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" />
             </div>
-            <AddSegment />
+            <FiltersDialog />
           </div>
         </div>
         <div className="rounded-b-3xl overflow-hidden mt-5 min-h-[50vh]">
@@ -198,6 +174,31 @@ export default function RestoreContactsTable() {
           </Table>
         </div>
       </div>
+      {table.getRowModel().rows?.length ? (
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <div className="space-x-2 flex">
+            <Button
+              variant="outline"
+              size="sm"
+              className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px]"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}>
+              Previous
+            </Button>
+            <div>
+              <div>{paginationButtons.map((u) => u)}</div>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px] px-4"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}>
+              Next
+            </Button>
+          </div>
+        </div>
+      ) : null}
     </Motion>
   );
 }

@@ -175,7 +175,7 @@ export default function RestoreContactsTable() {
             <AddContactDialog />
           </div>
         </div>
-        <div className=" overflow-hidden mt-5 min-h-[50vh]">
+        <div className="rounded-b-3xl overflow-hidden mt-5 min-h-[50vh]">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (

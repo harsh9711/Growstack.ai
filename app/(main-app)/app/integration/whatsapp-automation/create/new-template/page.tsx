@@ -18,50 +18,7 @@ export default function AddProspect() {
         </button>
       </Link>
 
-      <div className="flex-1 h-full w-full flex justify-center items-center mt-5">
-        <div className="w-full max-w-2xl !bg-white border border-[#EDEFF0] rounded-3xl shadow-box p-10">
-          <h1 className="text-xl font-semibold border-b border-[#EDEFF0] pb-4">Add new contact</h1>
-          <div className="mt-4 flex flex-col gap-5">
-            <div className="space-y-2">
-              <label className="font-medium">Name </label>
-              <Input type="text" placeholder="Name" />
-            </div>
-            <div className="space-y-2">
-              <label className="font-medium">
-                Phone <span className="text-primary-black text-opacity-50">(with country phone code)</span> <span className="text-[#F00]">*</span>
-              </label>
-              <Input type="text" placeholder="Phone" />
-            </div>
-            <div className="space-y-2">
-              <label className="font-medium">Contact lists </label>
-              <Input type="text" placeholder="-" />
-            </div>
-            <div className="space-y-2">
-              <label className="font-medium">Segments </label>
-              <Input type="text" placeholder="-" />
-            </div>
-            <div className="space-y-2">
-              <label className="font-medium">Country</label>
-              <Input type="text" placeholder="-" />
-            </div>
-            <div className="space-y-2">
-              <label className="font-medium">Contact photo</label>
-              <div className="flex items-center gap-2">
-                <Input type="file" id="contact_image" className="flex items-center" />
-                <label htmlFor="contact_image" className="bg-[#F2F2F2] h-12 px-4 py-3 text-primary-black text-opacity-80 min-w-fit rounded-lg">
-                  Choose file
-                </label>
-              </div>
-            </div>
-
-            <div className="flex justify-end gap-4 w-full">
-              <button className="py-3.5 h-14 w-full max-w-[200px] px-6 bg-primary-green sheen rounded-xl text-white mt-6 flex items-center justify-center gap-3 whitespace-nowrap">
-                Submit
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div className="flex-1 h-full w-full flex justify-center items-center mt-5">Create New template page</div>
     </div>
   );
 }

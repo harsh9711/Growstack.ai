@@ -205,7 +205,7 @@ export default function RestoreContactsTable() {
             <button className="flex items-center gap-2 bg-primary-green text-white px-6 py-2 h-12 rounded-xl sheen w-full max-w-fit">Import</button>
           </div>
         </div>
-        <div className=" overflow-hidden mt-5 min-h-[50vh]">
+        <div className="rounded-b-3xl overflow-hidden mt-5 min-h-[50vh]">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
