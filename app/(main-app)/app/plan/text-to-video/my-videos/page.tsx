@@ -1,20 +1,16 @@
-"use client";
-
 import { Search } from "lucide-react";
 import Link from "next/link";
-import { Fragment } from "react";
-import CreateVideoDialog from "./components/CreateVideoDialog";
-import VideoTemplateCard from "./components/VideoTemplateCard";
-import { ai_video_templates } from "./components/data/templates";
+import React, { Fragment } from "react";
+import { HiOutlineFolderPlus } from "react-icons/hi2";
 
-export default function TextToVideoPage() {
+export default function MyVideos() {
   return (
     <Fragment>
       <main className="">
         <div className="flex justify-between items-center mt-8">
           <div className="space-y-2 w-full">
             <h1 className="text-2xl font-semibold">Text to video</h1>
-            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">Featured template</p>
+            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">My videos</p>
           </div>
           <div className="w-full flex justify-end gap-2">
             <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
@@ -22,15 +18,12 @@ export default function TextToVideoPage() {
               <input type="search" className="outline-none h-[40px] w-full" placeholder="Search template" />
             </div>
             <Link href="/app/plan/text-to-video/my-videos">
-              <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">My videos</button>
+              <button className="text-primary-green bg-transparent border border-primary-green h-12 sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
+                <HiOutlineFolderPlus size={20} />
+                New Folder
+              </button>
             </Link>
-            <CreateVideoDialog />
           </div>
-        </div>
-        <div className="grid grid-cols-4 gap-5 mt-8">
-          {ai_video_templates.map((data, index) => (
-            <VideoTemplateCard {...data} key={index} />
-          ))}
         </div>
       </main>
     </Fragment>
