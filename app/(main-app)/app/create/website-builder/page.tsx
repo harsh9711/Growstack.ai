@@ -3,6 +3,8 @@
 import { Plus, Search } from "lucide-react";
 import Link from "next/link";
 import { Fragment } from "react";
+import ProjectCard from "../email-builder/components/ProjectCard";
+import { projects } from "../email-builder/components/data";
 
 export default function WebsiteBuilder() {
   return (
@@ -18,13 +20,18 @@ export default function WebsiteBuilder() {
               <Search className="text-gray-500" size={20} />
               <input type="search" className="outline-none h-[40px] w-full" placeholder="Search GPTs" />
             </div>
-            <Link href="/app/plan/custom-gpts/new">
+            <Link href="/app/create/website-builder/new-website">
               <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
                 <Plus size={20} />
                 Create new AI Website
               </button>
             </Link>
           </div>
+        </div>
+        <div className="grid grid-cols-4 gap-4 mt-6">
+          {projects.map((data, index) => (
+            <ProjectCard {...data} key={index} />
+          ))}
         </div>
       </main>
     </Fragment>

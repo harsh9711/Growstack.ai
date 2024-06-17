@@ -48,3 +48,4 @@ export { default as Ppt } from "@/public/svgs/ppt.svg";
 export { default as MessageDotsIcon } from "@/public/svgs/message-dots.svg";
 export { default as CancelIcon } from "@/public/svgs/cancel.svg";
 export { default as UploadIcon } from "@/public/icons/upload.svg";
+export { default as SendIcon } from "@/public/svgs/send.svg";
