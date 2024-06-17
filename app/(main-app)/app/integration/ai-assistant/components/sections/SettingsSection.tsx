@@ -1,9 +1,10 @@
+import Motion from "@/components/Motion";
 import { Input } from "@/components/ui/input";
 import React from "react";
 
 export default function SettingsSection() {
   return (
-    <div>
+    <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
       <div className="!bg-white shadow-box p-7 rounded-3xl max-w-3xl mx-auto mt-20">
         <h1 className="text-xl font-semibold">AI writer setting</h1>
         <div className="space-y-2 mt-8">
@@ -21,6 +22,6 @@ export default function SettingsSection() {
           </button>
         </div>
       </div>
-    </div>
+    </Motion>
   );
 }
