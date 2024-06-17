@@ -17,11 +17,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       <div className="w-full flex items-start gap-8 mt-5">
         <div className="!bg-white shadow-box p-5 !rounded-3xl w-full max-w-[350px]">
-          <Link href="/app/engage/settings/">
+          <Link href="/account/billings/settings/">
             <div
               className={clsx(
                 "w-full flex justify-between p-3 hover:bg-gray-50 rounded-xl cursor-pointer transition mt-3",
-                pathname === "/app/engage/settings" && "bg-primary-green text-white hover:bg-primary-green/90"
+                pathname === "/account/billings/settings" && "bg-primary-green text-white hover:bg-primary-green/90"
               )}>
               <div className="flex items-center gap-2">
                 <BrowserCheckIcon />
@@ -30,11 +30,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <ChevronRight size={20} />
             </div>
           </Link>
-          <Link href="/app/engage/settings/credits">
+          <Link href="/account/billings/settings/credits">
             <div
               className={clsx(
                 "w-full flex justify-between p-3 hover:bg-gray-50 rounded-xl cursor-pointer transition mt-3",
-                pathname === "/app/engage/settings/credits" && "bg-primary-green text-white hover:bg-primary-green/90"
+                pathname === "/account/billings/settings/credits" && "bg-primary-green text-white hover:bg-primary-green/90"
               )}>
               <div className="flex items-center gap-2">
                 <FormsIcon />
@@ -43,11 +43,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <ChevronRight size={20} />
             </div>
           </Link>
-          <Link href="/app/engage/settings/integrations">
+          <Link href="/account/billings/settings/integrations">
             <div
               className={clsx(
                 "w-full flex justify-between p-3 hover:bg-gray-50 rounded-xl cursor-pointer transition mt-3",
-                pathname === "/app/engage/settings/integrations" && "bg-primary-green text-white hover:bg-primary-green/90"
+                pathname === "/account/billings/settings/integrations" && "bg-primary-green text-white hover:bg-primary-green/90"
               )}>
               <div className="flex items-center gap-2">
                 <SurveyIcon />

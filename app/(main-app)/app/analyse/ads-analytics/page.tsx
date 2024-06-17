@@ -185,7 +185,7 @@ export default function AdsAnalyticsPage() {
               </div>
               <div className="relative w-full !bg-white shadow-box p-5 rounded-2xl border border-[#EBEBEB] space-y-3">
                 <h1 className="text-xl font-semibold">Top performing Ad</h1>
-                <Image src="/dummy/facebook-ad.png" alt="" width={800} height={800} />
+                <Image src="/dummy/facebook-ad.png" alt="" width={800} height={800} className="max-h-[560px]" />
                 <div className="flex divide-x-2 divide-primary-green !mt-7">
                   <div className="w-full flex justify-center items-center gap-2 text-primary-green text-lg">
                     <BsEye size={25} />

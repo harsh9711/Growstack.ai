@@ -9,6 +9,7 @@ import {
 import { Info, LogOut, Settings, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { TbReportMoney } from "react-icons/tb";
 
 export function ProfileButton() {
   return (
@@ -28,14 +29,24 @@ export function ProfileButton() {
         </div>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem className="flex gap-3 px-4">
-            <User size={22} />
-            My profile
-          </DropdownMenuItem>
-          <DropdownMenuItem className="flex gap-3 px-4">
-            <Settings size={22} />
-            My saved documents
-          </DropdownMenuItem>
+          <Link href="/account/profile">
+            <DropdownMenuItem className="flex gap-3 px-4">
+              <User size={22} />
+              My profile
+            </DropdownMenuItem>
+          </Link>
+          <Link href="/account/saved-documents">
+            <DropdownMenuItem className="flex gap-3 px-4">
+              <Settings size={22} />
+              Saved documents
+            </DropdownMenuItem>
+          </Link>
+          <Link href="/account/billings/settings">
+            <DropdownMenuItem className="flex gap-3 px-4">
+              <TbReportMoney size={22} />
+              Billings
+            </DropdownMenuItem>
+          </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <Link href="#">
