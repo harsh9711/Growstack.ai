@@ -180,7 +180,7 @@ export default function BulkActionsTable() {
           </div>
           <div className="flex items-center justify-end gap-2">
             <Select>
-              <SelectTrigger className="w-full h-12 rounded-lg border border-primary-green bg-white text-primary-green">
+              <SelectTrigger className="h-12 rounded-lg border border-primary-green bg-white text-primary-green">
                 <SelectValue placeholder="All Actions" />
               </SelectTrigger>
               <SelectContent>
@@ -191,7 +191,7 @@ export default function BulkActionsTable() {
               </SelectContent>
             </Select>
             <Select>
-              <SelectTrigger className="w-full h-12 rounded-lg border border-primary-green bg-white text-primary-green">
+              <SelectTrigger className="h-12 rounded-lg border border-primary-green bg-white text-primary-green">
                 <SelectValue placeholder="All Users" />
               </SelectTrigger>
               <SelectContent>
@@ -202,7 +202,7 @@ export default function BulkActionsTable() {
               </SelectContent>
             </Select>
             <Select>
-              <SelectTrigger className="w-full h-12 rounded-lg border border-primary-green bg-white text-primary-green">
+              <SelectTrigger className="h-12 rounded-lg border border-primary-green bg-white text-primary-green">
                 <SelectValue placeholder="Status" />
               </SelectTrigger>
               <SelectContent>
@@ -213,7 +213,7 @@ export default function BulkActionsTable() {
               </SelectContent>
             </Select>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild className="w-full h-12 rounded-lg border border-primary-green bg-white text-primary-green">
+              <DropdownMenuTrigger asChild className="h-12 rounded-lg border border-primary-green bg-white text-primary-green">
                 <Button variant="outline" className="px-2 font-normal">
                   Columns <ChevronDown className="ml-4 h-4 w-4 opacity-50" />
                 </Button>
@@ -236,13 +236,13 @@ export default function BulkActionsTable() {
               </DropdownMenuContent>
             </DropdownMenu>
             <Select>
-              <SelectTrigger className="w-full h-12 rounded-lg border border-primary-green bg-white text-primary-green">
+              <SelectTrigger className="h-12 rounded-lg border border-primary-green bg-white text-primary-green">
                 <SelectValue placeholder="All Time" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="Sun, Apr 14th - Thu, Jub 13th">Sun, Apr 14th - Thu, Jub 13th</SelectItem>
-                <SelectItem value="Sun, Apr 14th - Thu, Jub 13th">Sun, Apr 14th - Thu, Jub 13th</SelectItem>
-                <SelectItem value="Sun, Apr 14th - Thu, Jub 13th">Sun, Apr 14th - Thu, Jub 13th</SelectItem>
+                <SelectItem value="Sun, Apr 15th - Thu, Jub 12th">Sun, Apr 14th - Thu, Jub 13th</SelectItem>
+                <SelectItem value="Sun, Apr 16th - Thu, Jub 11th">Sun, Apr 14th - Thu, Jub 13th</SelectItem>
               </SelectContent>
             </Select>
           </div>{" "}
