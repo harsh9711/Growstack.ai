@@ -26,15 +26,3 @@
     transform: rotateZ(60deg) translate(1em, -9em);
   }
 }
-
-.ds {
-  list-style: armenian;
-  list-style: circle;
-  list-style: decimal-leading-zero;
-  list-style: disc;
-  list-style: georgian;
-  list-style: inside;
-  list-style: lower-greek;
-  list-style: lower-latin;
-  list-style: lower-roman;
-}
