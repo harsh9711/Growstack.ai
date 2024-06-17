@@ -22,9 +22,8 @@ import {
 import clsx from "clsx";
 import { Edit3, Plus, Search, Trash2 } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
-import AddContactDialog from "../dialogs/AddContactDialog";
 import Link from "next/link";
+import { useState } from "react";
 
 type Contact = {
   no: number;
@@ -139,7 +138,7 @@ export const columns: ColumnDef<Contact>[] = [
   },
 ];
 
-export default function RestoreContactsTable() {
+export default function ContactsSection() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -202,7 +201,9 @@ export default function RestoreContactsTable() {
               </button>
             </Link>
             <button className="flex items-center gap-2 bg-primary-green text-white px-6 py-2 h-12 rounded-xl sheen w-full max-w-fit">Segments</button>
-            <button className="flex items-center gap-2 bg-primary-green text-white px-6 py-2 h-12 rounded-xl sheen w-full max-w-fit">Import</button>
+            <Link href="/app/integration/whatsapp-automation/contacts/import">
+              <button className="flex items-center gap-2 bg-primary-green text-white px-6 py-2 h-12 rounded-xl sheen w-full max-w-fit">Import</button>
+            </Link>
           </div>
         </div>
         <div className="rounded-b-3xl overflow-hidden mt-5 min-h-[50vh]">

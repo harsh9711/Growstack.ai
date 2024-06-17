@@ -18,11 +18,10 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { Edit3, Plus, Search, Trash2, Users } from "lucide-react";
+import { Edit3, Plus, Search, Trash2 } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import { TbUsersPlus } from "react-icons/tb";
-import AddContactDialog from "../dialogs/AddContactDialog";
-import Link from "next/link";
 
 type BotReply = {
   name: string;
@@ -102,7 +101,7 @@ export const columns: ColumnDef<BotReply>[] = [
   },
 ];
 
-export default function RestoreContactsTable() {
+export default function BotRepliesSection() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});

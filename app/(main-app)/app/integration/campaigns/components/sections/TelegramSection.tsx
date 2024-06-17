@@ -1,6 +1,8 @@
 "use client";
 
 import Motion from "@/components/Motion";
+import { CancelIcon, MessageDotsIcon } from "@/components/svgs";
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -18,33 +20,26 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { Edit3, Search, Trash2 } from "lucide-react";
+import { Edit3, Plus, Search, Trash2 } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
-import AddSegment from "../dialogs/AddSegment";
+import FilterDialog from "../dialogs/TelegramFilterDialog";
 
 type Contact = {
-  no: number;
-  segments: string;
+  name: string;
+  total_contact: number;
+  created_on: {
+    date: string;
+    time: string;
+  };
+  statistics: string;
 };
 
-const data: Contact[] = [
-  {
-    no: 1,
-    segments: "Default",
-  },
-  {
-    no: 2,
-    segments: "Default",
-  },
-  {
-    no: 3,
-    segments: "Default",
-  },
-];
+const data: Contact[] = [];
 
 export const columns: ColumnDef<Contact>[] = [
   {
-    accessorKey: "no",
+    accessorKey: "name",
     header: ({ table }) => (
       <div className="uppercase flex items-center gap-4">
         <Checkbox
@@ -53,7 +48,7 @@ export const columns: ColumnDef<Contact>[] = [
           aria-label="Select all"
           className="w-[18px] h-[18px]"
         />
-        #
+        Name
       </div>
     ),
     cell: ({ row }) => (
@@ -64,25 +59,37 @@ export const columns: ColumnDef<Contact>[] = [
           aria-label="Select row"
           className="w-[18px] h-[18px]"
         />
-        {row.getValue("no")}
+        {row.getValue("name")}
       </div>
     ),
     enableSorting: false,
     enableHiding: false,
   },
+
   {
-    accessorKey: "segments",
-    header: () => <div className="uppercase">Segments</div>,
-    cell: ({ row }) => <p className="flex gap-2 items-center">{row.getValue("segments")}</p>,
+    accessorKey: "total_contact",
+    header: () => <div className="uppercase">total contact</div>,
+    cell: ({ row }) => <p className="flex gap-2 items-center">{row.getValue("total_contact")}</p>,
   },
   {
-    accessorKey: "status",
-    header: () => <div className="uppercase">Status</div>,
+    accessorKey: "created_on",
+    header: () => <div className="uppercase">Created At</div>,
     cell: ({ row }) => (
-      <p className="flex gap-2 items-center">
-        <Switch />
-      </p>
+      <div className="flex gap-3">
+        <span>{row.original.created_on.date}</span>
+        <span>{row.original.created_on.time}</span>
+      </div>
     ),
+  },
+  {
+    accessorKey: "statistics",
+    header: () => <div className="uppercase">Statistics</div>,
+    cell: ({ row }) => <p className="flex gap-2 items-center">{row.getValue("statistics")}</p>,
+  },
+  {
+    id: "status",
+    header: () => <div className="uppercase">Status</div>,
+    cell: ({ row }) => <Switch />,
   },
   {
     id: "actions",
@@ -90,10 +97,16 @@ export const columns: ColumnDef<Contact>[] = [
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
         <button className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300">
+          <MessageDotsIcon size={20} className="text-gray-800 cursor-pointer" />
+        </button>
+        <button className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300">
           <Edit3 size={20} className="text-gray-800 cursor-pointer" />
         </button>
         <button className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300">
           <Trash2 size={20} className="text-gray-800 cursor-pointer" />
+        </button>
+        <button className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300">
+          <CancelIcon size={20} className="text-gray-800 cursor-pointer" />
         </button>
       </div>
     ),
@@ -102,7 +115,7 @@ export const columns: ColumnDef<Contact>[] = [
   },
 ];
 
-export default function SegmentsSection() {
+export default function TelegramSection() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -153,13 +166,19 @@ export default function SegmentsSection() {
     <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
       <div className="w-full bg-white mt-10 rounded-3xl border border-[#E4E4E4]">
         <div className="flex justify-between items-center px-7 pt-5">
-          <h1 className="text-2xl font-semibold">Segments list</h1>
-          <div className="flex justify-end gap-3 items-center w-full max-w-xl">
+          <h1 className="text-xl font-semibold">Telegram campaigns</h1>
+          <div className="flex justify-end gap-3 items-center w-full max-w-5xl">
             <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full">
               <Search className="text-gray-500" size={20} />
               <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" />
             </div>
-            <AddSegment />
+            <FilterDialog />
+            <Link href="/app/integration/campaigns/create/new-telegram-campaign">
+              <button className="flex items-center gap-2 bg-primary-green text-white px-6 py-2 h-12 rounded-xl sheen w-full max-w-fit whitespace-nowrap">
+                <Plus size={20} />
+                New campaign
+              </button>
+            </Link>
           </div>
         </div>
         <div className="rounded-b-3xl overflow-hidden mt-5 min-h-[50vh]">
@@ -186,8 +205,8 @@ export default function SegmentsSection() {
                 ))
               ) : (
                 <TableRow className="hover:bg-white">
-                  <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
-                    No results.
+                  <TableCell colSpan={columns.length} className="h-[50vh] text-center font-medium text-lg hover:bg-white">
+                    No data available in table
                   </TableCell>
                 </TableRow>
               )}
@@ -195,6 +214,31 @@ export default function SegmentsSection() {
           </Table>
         </div>
       </div>
+      {table.getRowModel().rows?.length ? (
+        <div className="flex items-center justify-end space-x-2 py-4">
+          <div className="space-x-2 flex">
+            <Button
+              variant="outline"
+              size="sm"
+              className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px]"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}>
+              Previous
+            </Button>
+            <div>
+              <div>{paginationButtons.map((u) => u)}</div>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px] px-4"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}>
+              Next
+            </Button>
+          </div>
+        </div>
+      ) : null}
     </Motion>
   );
 }

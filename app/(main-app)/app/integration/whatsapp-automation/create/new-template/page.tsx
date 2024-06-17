@@ -1,9 +1,8 @@
 "use client";
 
-import { Input } from "@/components/ui/input";
 import Link from "next/link";
 
-export default function AddProspect() {
+export default function NewTemplatePage() {
   return (
     <div className="mt-8 flex-1 h-full w-full flex flex-col">
       <Link href="/app/integration/whatsapp-automation">

@@ -18,7 +18,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { Edit3, Search, Trash2, Users } from "lucide-react";
+import { Edit3, Search, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { TbUsersPlus } from "react-icons/tb";
 import AddContactDialog from "../dialogs/AddContactDialog";
@@ -115,7 +115,7 @@ export const columns: ColumnDef<Contact>[] = [
   },
 ];
 
-export default function RestoreContactsTable() {
+export default function ContactsListSection() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
