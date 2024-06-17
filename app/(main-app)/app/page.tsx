@@ -74,7 +74,7 @@ export default function Dashboard() {
         </div>
         <div className="w-full flex gap-6 mt-10">
           <div className="w-full space-y-6">
-            <div className="w-full bg-white border border-[#E8E8E8] rounded-3xl p-6">
+            <div className="w-full bg-white border border-[#E8E8E8] rounded-3xl p-7">
               <div className="flex justify-between">
                 <h1 className="text-lg font-semibold">Revenue Distribution</h1>
                 <Select>
@@ -93,6 +93,16 @@ export default function Dashboard() {
               </div>
               <div className="w-full h-[342px] mt-5">
                 <RevenueGraph />
+              </div>
+              <div className="flex justify-center gap-6 mt-6">
+                <div className="flex gap-2 items-center">
+                  <div className="w-2 h-2 rounded-full bg-[#8A5CFF]"></div>
+                  <span className="text-primary-black text-opacity-70">Revenue this year</span>
+                </div>
+                <div className="flex gap-2 items-center">
+                  <div className="w-2 h-2 rounded-full bg-[#48C884]"></div>
+                  <span className="text-primary-black text-opacity-70">Revenue this year</span>
+                </div>
               </div>
             </div>
             <div className="w-full bg-white border border-[#E8E8E8] rounded-3xl p-6">

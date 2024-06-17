@@ -11,7 +11,7 @@ const options = {
   maintainAspectRatio: false,
   plugins: {
     legend: {
-      position: "bottom" as const,
+      display: false,
     },
   },
   scales: {
