@@ -101,7 +101,7 @@ export default function Dashboard() {
                 </div>
                 <div className="flex gap-2 items-center">
                   <div className="w-2 h-2 rounded-full bg-[#48C884]"></div>
-                  <span className="text-primary-black text-opacity-70">Revenue this year</span>
+                  <span className="text-primary-black text-opacity-70">Revenue last year</span>
                 </div>
               </div>
             </div>
