@@ -1,36 +1,71 @@
-import { Checkbox } from "@/components/ui/checkbox";
+"use client"
+import { useState } from "react";
+import axios from "axios";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, ChevronRight, Plus } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
 import AssistantsTable from "../components/AssistantsDataTable";
-import ScrollToTopButton from "../components/ScrollToTopButton";
+import { API_URL } from "@/lib/api";
+import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
+import { z } from "zod";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Plus } from "lucide-react";
+
 export default function CreateAssistantPage() {
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    category: "",
+    icon: "",
+    custom_prompt: "",
+  });
+  const ValidationSchema = z.object({
+    name: z.string().email("Please enter a valid email address"),
+    description: z.string().min(8, "Password must be at least 8 characters").max(20, "Password can't exceed 20 characters"),
+  });
+  const [isPending, setIsPending] = useState(false);
+
+  type ValidationSchemaType = z.infer<typeof ValidationSchema>;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ValidationSchemaType>({ resolver: zodResolver(ValidationSchema) });
+  
+  const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
+    setIsPending(true);
+    try {
+      const { name,description } = data;
+      const response = await axios.post(API_URL + "/ai/api/v1/chat-template/create", {  name,description  });
+      toast.success(response.data.message);
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error("Login failed:", error);
+    } finally {
+      setIsPending(false);
+    }
+  };
+
+  const handleChange = (e: { target: { name: any; value: any; }; }) => {
+    const { name, value } = e.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
   return (
     <div>
-      <div className="flex justify-between items-center mt-8">
-        <div className="space-y-2">
-          <p className="flex items-center gap-2 text-[#4B465C] text-opacity-50 text-[15px]">
-            <Link href="/app/plan/ai-apps" className="hover:text-gray-600 transition-all">
-              Ai marketing and sales assistant
-            </Link>{" "}
-            <ChevronRight size={20} /> <span className="text-[#3D817B]">Create your own assistant</span>
-          </p>
-        </div>
-        <div className="">
-          <Link href="/app/plan/ai-apps">
-            <button className="text-primary-green hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-2.5 rounded-full font-semibold items-center">
-              <ArrowLeft size={20} /> Back
-            </button>
-          </Link>
-        </div>
-      </div>
       <h1 className="text-2xl font-semibold mt-5">Create your own assistant</h1>
       <section className="bg-white border border-[#E4E4E4] rounded-3xl p-10 mt-5">
+       
         <div className="space-y-5">
           <h1 className="text-xl font-semibold flex items-center gap-2">
-            <Image src="/icons/template.svg" alt="" width={25} height={25} className="select-none" />
             Own assistant generator
           </h1>
           <div className="grid grid-cols-2 gap-8 border-t border-[#EBEBEB] pb-4 pt-8">
@@ -38,13 +73,25 @@ export default function CreateAssistantPage() {
               <label className="font-medium">
                 Template name<span className="text-[#F00]">*</span>
               </label>
-              <Input type="text" placeholder="Type template name" />
+              <Input
+                type="text"
+                placeholder="Type template name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+              />
             </div>
             <div className="space-y-2">
               <label className="font-medium">
                 Template description <span className="text-[#F00]">*</span>
               </label>
-              <Input type="text" placeholder="Type template description" />
+              <Input
+                type="text"
+                placeholder="Type template description"
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+              />
             </div>
 
             <div className="space-y-2">
@@ -66,7 +113,13 @@ export default function CreateAssistantPage() {
               <label className="font-medium">
                 Template icon <span className="text-[#F00]">*</span>
               </label>
-              <Input type="text" placeholder="ex:<i class=’fa-solid fa-books’></i>" />
+              <Input
+                type="text"
+                placeholder="ex:<i class=’fa-solid fa-books’></i>"
+                name="icon"
+                value={formData.icon}
+                onChange={handleChange}
+              />
             </div>
           </div>
           <div className="space-y-2">
@@ -110,21 +163,32 @@ export default function CreateAssistantPage() {
               </button>
             </div>
           </div>
-          <div className="space-y-2 !mt-8">
+          <div className="space-y-2">
             <label className="font-medium">
               Custom prompt <span className="text-[#F00]">*</span>
             </label>
-            <textarea placeholder="Type your custom prompt" className="h-[200px] w-full bg-[#F2F2F2] rounded-2xl p-3 resize-none" />
+            <textarea
+              placeholder="Type your custom prompt"
+              className="h-[200px] w-full bg-[#F2F2F2] rounded-2xl p-3 resize-none"
+              name="custom_prompt"
+              value={formData.custom_prompt}
+              onChange={handleChange}
+            />
           </div>
         </div>
+  
         <div className="flex justify-end gap-4">
-          <button className="py-3.5 px-6 bg-primary-green sheen rounded-xl text-white mt-6">Create your own assistant</button>
+          <button
+            className="py-3.5 px-6 bg-primary-green sheen rounded-xl text-white mt-6"
+            onSubmit={handleSubmit(onSubmit)}   
+          >
+            Create your own assistant
+          </button>
         </div>
       </section>
       <section className="bg-white border border-[#E4E4E4] rounded-3xl p-10 mt-7">
         <AssistantsTable />
       </section>
-      <input type="month" />
     </div>
   );
 }

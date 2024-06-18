@@ -77,7 +77,7 @@ const EmailForm: React.FC<EmailFormProps> = ({ onEmailSubmitted }) => {
                 <input
                   id="email"
                   autoComplete="email"
-                  className="text-sm peer focus:ring-0 h-[60px] w-full"
+                  className="text-sm  focus:ring-0 h-[60px] w-full"
                   placeholder="Enter your email..."
                   {...register("email")}
                 />
