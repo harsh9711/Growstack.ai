@@ -20,13 +20,13 @@ export default function NewWebsite() {
       </div>
       <h2 className="text-sm text-primary-black text-opacity-60">Describe your business</h2>
       <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2 bg-white border border-[#EBEBEB] py-3 px-4 rounded-xl text-sm">
+        <div className="cursor-pointer hover:shadow-lg hover:shadow-gray-200 transition duration-300 flex items-center gap-2 bg-white border border-[#EBEBEB] py-3 px-4 rounded-xl text-sm">
           A digital agency landing page <TbArrowUpRight size={22}/>
         </div>
-        <div className="flex items-center gap-2 bg-white border border-[#EBEBEB] py-3 px-4 rounded-xl text-sm">
+        <div className="cursor-pointer hover:shadow-lg hover:shadow-gray-200 transition duration-300 flex items-center gap-2 bg-white border border-[#EBEBEB] py-3 px-4 rounded-xl text-sm">
           A fashion design landing page <TbArrowUpRight size={22}/>
         </div>
-        <div className="flex items-center gap-2 bg-white border border-[#EBEBEB] py-3 px-4 rounded-xl text-sm">
+        <div className="cursor-pointer hover:shadow-lg hover:shadow-gray-200 transition duration-300 flex items-center gap-2 bg-white border border-[#EBEBEB] py-3 px-4 rounded-xl text-sm">
           A tech company landing page <TbArrowUpRight size={22}/>
         </div>
       </div>
