@@ -6,6 +6,7 @@ import { API_URL } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import clsx from "clsx";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -47,11 +48,15 @@ export default function Login() {
   };
 
   return (
-    <main>
-      <div className="flex flex-col xl:flex-row h-screen overflow-y-auto gap-10">
+    <motion.main
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    transition={{ duration: 0.3 }}
+  >      <div className=" flex flex-col xl:flex-row h-screen overflow-y-auto gap-10">
         <section className="w-full h-full flex justify-center items-center bg-white">
           <div className="w-full max-w-2xl max-h-[840px] h-full p-14 bg-[#F7FAFC] rounded-[30px]">
-            <div className="w-full h-full max-w-[460px] mx-auto flex flex-col justify-between items-center md:items-start space-y-10">
+            <div className="slide-reveal w-full h-full max-w-[460px] mx-auto flex flex-col justify-between items-center md:items-start space-y-10">
               <Image src={"/logo/growstack.svg"} alt="growstack" height={180} width={180} className="max-h-14" />
               <div className="space-y-6 w-full">
                 <div className="space-y-3">
@@ -167,6 +172,6 @@ export default function Login() {
           <Image src="/assets/auth-stats.png" alt="" width={550} height={550} />
         </section>
       </div>
-    </main>
+      </motion.main>
   );
 }

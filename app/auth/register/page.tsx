@@ -62,7 +62,7 @@ export default function Register() {
       <div className="flex flex-col-reverse xl:flex-row-reverse h-screen overflow-y-auto gap-10">
         <section className="w-full h-full flex justify-center items-center bg-white">
           <div className="w-full max-w-2xl max-h-[900px] h-full p-14 bg-[#F7FAFC] rounded-[30px]">
-            <div className="w-full h-full max-w-[460px] mx-auto flex flex-col justify-between items-center md:items-start space-y-10">
+            <div className="slide-reveal w-full h-full max-w-[460px] mx-auto flex flex-col justify-between items-center md:items-start space-y-10">
               <Image src={"/logo/growstack.svg"} alt="growstack" height={180} width={180} className="max-h-14" />
               <div className="space-y-6 w-full">
                 <div className="space-y-3">
