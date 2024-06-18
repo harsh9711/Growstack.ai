@@ -187,14 +187,14 @@ export default function Register() {
                   <div className="h-[2px] w-full bg-[#EFEFF4]" />
                 </div>
                 <div className="space-y-3">
-                  <button className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021]">
+                  <Link href={`${API_URL}/users/api/v1/auth/facebook`} className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021]">
                     <Image src="/icons/facebook.svg" alt="" width={20} height={20} />
                     Continue with Facebook
-                  </button>
-                  <button className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021]">
+                  </Link>
+                  <Link href={`${API_URL}/users/api/v1/auth/google`} className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021]">
                     <Image src="/icons/google.svg" alt="" width={20} height={20} />
                     Continue with Google
-                  </button>
+                  </Link>
                 </div>
                 <p className="text-center text-[#667085]">
                   Already have an account?{" "}
