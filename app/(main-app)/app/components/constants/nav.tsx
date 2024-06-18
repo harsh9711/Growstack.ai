@@ -1,6 +1,7 @@
 import {
   AdsAnalyticsIcon,
   AiAppsIcon,
+  AiArticleIcon,
   AiAssistantIcon,
   AnalyseIcon,
   AutomationIcon,
@@ -98,6 +99,11 @@ const navLinks: NavLink[] = [
         icon: <ShapeIcon />,
         name: "AI workflow builder",
         href: "/app/create/workflow-builder",
+      },
+      {
+        icon: <AiArticleIcon />,
+        name: "AI workflow builder",
+        href: "/app/create/ai-articles",
       },
     ],
     title: "Create",

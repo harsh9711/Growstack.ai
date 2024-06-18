@@ -45,7 +45,7 @@ const PasswordUpdate: React.FC<PasswordUpdateProps> = ({ email, otp, setStep }) 
       toast.success(response.data.message);
     } catch (error: any) {
       if (error.response) {
-        toast.error(error.response.data.error);
+        toast.error(error.response.data.error || error.response.data);
       } else {
         toast.error(error.message);
       }

@@ -31,7 +31,7 @@ const OtpVerification: React.FC<OtpVerificationProps> = ({ email, onOtpVerified,
       onOtpVerified(data.otp); // Call the callback function to proceed to password update
     } catch (error: any) {
       if (error.response) {
-        toast.error(error.response.data.error);
+        toast.error(error.response.data.error || error.response.data);
       } else {
         toast.error(error.message);
       }

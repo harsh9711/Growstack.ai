@@ -1,11 +1,9 @@
-import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ArrowLeft, ChevronRight, Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import AssistantsTable from "../components/AssistantsDataTable";
-import ScrollToTopButton from "../components/ScrollToTopButton";
 export default function CreateAssistantPage() {
   return (
     <div>
