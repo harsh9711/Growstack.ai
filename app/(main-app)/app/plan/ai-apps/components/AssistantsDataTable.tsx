@@ -122,7 +122,7 @@
     const fetchAssistants = async () => {
       setIsPending(true);
       try {
-        const response = await axios.get(`${API_URL}/ai/api/v1/chat-template`);
+        const response = await axios.get(`${API_URL}/ai/api/v1/chat-template/user`);
         console.log("API response:", response.data); // Debugging log
         if (response.data.data && response.data.data.chatTemplates) {
           const formattedAssistants = response.data.data.chatTemplates.map((assistant: any) => ({
