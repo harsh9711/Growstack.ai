@@ -6,6 +6,7 @@ import { API_URL } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import clsx from "clsx";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -47,11 +48,15 @@ export default function Login() {
   };
 
   return (
-    <main>
-      <div className="flex flex-col xl:flex-row h-screen overflow-y-auto gap-10">
+    <motion.main
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    transition={{ duration: 0.3 }}
+  >      <div className=" flex flex-col xl:flex-row h-screen overflow-y-auto gap-10">
         <section className="w-full h-full flex justify-center items-center bg-white">
           <div className="w-full max-w-2xl max-h-[840px] h-full p-14 bg-[#F7FAFC] rounded-[30px]">
-            <div className="w-full h-full max-w-[460px] mx-auto flex flex-col justify-between items-center md:items-start space-y-10">
+            <div className="slide-reveal w-full h-full max-w-[460px] mx-auto flex flex-col justify-between items-center md:items-start space-y-10">
               <Image src={"/logo/growstack.svg"} alt="growstack" height={180} width={180} className="max-h-14" />
               <div className="space-y-6 w-full">
                 <div className="space-y-3">
@@ -78,7 +83,7 @@ export default function Login() {
                         <input
                           id="email"
                           autoComplete="email"
-                          className="text-sm peer focus:ring-0 h-[60px] w-full"
+                          className="text-sm peer bg-white focus:ring-0 h-[60px] w-full"
                           placeholder="Enter your email..."
                           {...register("email")}
                         />
@@ -142,14 +147,14 @@ export default function Login() {
                   <div className="h-[2px] w-full bg-[#EFEFF4]" />
                 </div>
                 <div className="space-y-3">
-                  <button className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021]">
+                  <Link href={`${API_URL}/users/api/v1/auth/facebook`} className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021]">
                     <Image src="/icons/facebook.svg" alt="" width={20} height={20} />
                     Continue with Facebook
-                  </button>
-                  <button className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021]">
+                  </Link>
+                  <Link href={`${API_URL}/users/api/v1/auth/google`} className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021]">
                     <Image src="/icons/google.svg" alt="" width={20} height={20} />
                     Continue with Google
-                  </button>
+                  </Link>
                 </div>
 
                 <p className="text-center text-[#667085]">
@@ -167,6 +172,6 @@ export default function Login() {
           <Image src="/assets/auth-stats.png" alt="" width={550} height={550} />
         </section>
       </div>
-    </main>
+      </motion.main>
   );
 }

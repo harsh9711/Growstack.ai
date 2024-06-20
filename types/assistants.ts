@@ -1,4 +1,5 @@
 export interface Assistant {
+  
   name: string;
   description: string;
   status: "active" | "inactive" | "disabled";
