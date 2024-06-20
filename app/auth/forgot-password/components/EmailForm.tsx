@@ -41,7 +41,7 @@ const EmailForm: React.FC<EmailFormProps> = ({ onEmailSubmitted }) => {
       onEmailSubmitted(data.email); // Call the callback function to proceed to OTP verification
     } catch (error: any) {
       if (error.response) {
-        toast.error(error.response.data.error);
+        toast.error(error.response.data.error || error.response.data);
       } else {
         toast.error(error.message);
       }

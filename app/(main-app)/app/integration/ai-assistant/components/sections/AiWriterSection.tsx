@@ -1,6 +1,7 @@
 import Motion from "@/components/Motion";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import TextEditor from "../Editor";
+import Editor from "@/app/(main-app)/app/plan/ai-apps/[appId]/components/Editor";
 
 export default function AiWriterSection() {
   return (
@@ -60,8 +61,11 @@ export default function AiWriterSection() {
             </div>
           </div>
         </div>
-        <div className="w-full !bg-white border border-[#EDEFF0] rounded-3xl shadow-box p-10">
-          <TextEditor />
+        <div className="w-full !bg-white border border-[#EDEFF0] rounded-3xl shadow-box p-10 space-y-5 flex flex-col">
+          <h1 className="text-xl font-semibold">Generate AI Content</h1>
+          <div className="flex-1 flex flex-col">
+            <Editor />
+          </div>
         </div>
       </div>
     </Motion>

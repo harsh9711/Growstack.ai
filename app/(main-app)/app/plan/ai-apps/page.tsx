@@ -49,20 +49,22 @@ export default function MarketingPage() {
           {aiAssistantsData
             .filter((data) => data.category === selectedTag)[0]
             .items.map((assistant, index) => (
-              <div
-                key={index}
-                className="flex items-center justify-between gap-5 bg-white border border-[#EEF0F4] rounded-2xl p-6 shadow-xl shadow-gray-100 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer">
-                <div className="flex gap-4 items-start">
-                  <Image src={assistant.icon} alt="" width={80} height={80} className="w-[64px] h-[64px]" />
-                  <div className="space-y-2">
-                    <h1 className="text-lg font-semibold">{assistant.title}</h1>
-                    <p className="text-primary-black text-opacity-70 text-[14px] leading-relaxed">{assistant.description}</p>
+              <Link href={`/app/plan/ai-apps/${assistant.title}`} key={index}>
+                <div
+                  key={index}
+                  className="flex items-center justify-between gap-5 bg-white border border-[#EEF0F4] rounded-2xl p-6 shadow-xl shadow-gray-100 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer">
+                  <div className="flex gap-4 items-start">
+                    <Image src={assistant.icon} alt="" width={80} height={80} className="w-[64px] h-[64px]" />
+                    <div className="space-y-2">
+                      <h1 className="text-lg font-semibold">{assistant.title}</h1>
+                      <p className="text-primary-black text-opacity-70 text-[14px] leading-relaxed">{assistant.description}</p>
+                    </div>
+                  </div>
+                  <div className="cursor-pointer w-full max-w-fit hover:bg-gray-50 p-1 rounded transition">
+                    <StarIcon className="text-[#ADADAD]" />
                   </div>
                 </div>
-                <div className="cursor-pointer w-full max-w-fit hover:bg-gray-50 p-1 rounded transition">
-                  <StarIcon className="text-[#ADADAD]" />
-                </div>
-              </div>
+              </Link>
             ))}
         </div>
       </main>

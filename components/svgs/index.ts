@@ -49,3 +49,4 @@ export { default as MessageDotsIcon } from "@/public/svgs/message-dots.svg";
 export { default as CancelIcon } from "@/public/svgs/cancel.svg";
 export { default as UploadIcon } from "@/public/icons/upload.svg";
 export { default as SendIcon } from "@/public/svgs/send.svg";
+export { default as AiArticleIcon } from "@/public/svgs/ai-text-generator.svg";

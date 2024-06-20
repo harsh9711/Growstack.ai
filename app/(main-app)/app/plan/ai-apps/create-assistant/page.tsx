@@ -1,42 +1,9 @@
-"use client";
-
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Assistant } from "@/types/assistants";
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  PaginationState,
-  SortingState,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
-import clsx from "clsx";
-import { Check, Edit2, Search, Trash2, XIcon } from "lucide-react";
-import { useState } from "react";
-import axios from "axios"; // Added axios import
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import AssistantsTable from "../components/AssistantsDataTable"; // Updated import path for AssistantsTable
-import { API_URL } from "@/lib/api";
-import { zodResolver } from "@hookform/resolvers/zod";
-import toast from "react-hot-toast";
-import { z } from "zod";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { Plus } from "lucide-react";
-
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ArrowLeft, ChevronRight, Plus } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import AssistantsTable from "../components/AssistantsDataTable";
 export default function CreateAssistantPage() {
   const [formData, setFormData] = useState({
     name: "",
