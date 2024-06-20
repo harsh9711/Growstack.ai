@@ -1,9 +1,16 @@
+"use client";
+import { Assistant } from "@/types/assistants";
+import { useState } from "react";
+import axios from "axios"; // Added axios import
+import AssistantsTable from "../components/AssistantsDataTable"; // Updated import path for AssistantsTable
+import { API_URL } from "@/lib/api";
+import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
+import { z } from "zod";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, ChevronRight, Plus } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import AssistantsTable from "../components/AssistantsDataTable";
+import { Plus } from "lucide-react";
 export default function CreateAssistantPage() {
   const [formData, setFormData] = useState({
     name: "",
@@ -148,7 +155,7 @@ export default function CreateAssistantPage() {
                 <Select onValueChange={handleCategoryChange}>
                   <SelectTrigger className="w-full border-none h-14">
                     <SelectValue placeholder={category ? category : "Select a category"} />
-                  </SelectTrigger>
+                  </SelectTrigger>Z
                   <SelectContent>
                     <SelectItem value="Articles And Contents">Articles And Contents</SelectItem>
                     <SelectItem value="Blogs Posts">Blogs Posts</SelectItem>
