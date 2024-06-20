@@ -183,10 +183,15 @@ export default function CreateAssistantPage() {
                     <SelectValue placeholder={category ? category : "Select a category"} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="light">Light</SelectItem>
-                    <SelectItem value="dark">Dark</SelectItem>
-                    <SelectItem value="system">System</SelectItem>
-                  </SelectContent>
+                    <SelectItem value="Articles And Contents">Articles And Contents</SelectItem>
+                    <SelectItem value="Blogs Posts">Blogs Posts</SelectItem>
+                    <SelectItem value="Commerce">Commerce</SelectItem>
+                    <SelectItem value="Emails">Emails</SelectItem>
+                    <SelectItem value="Frameworks">Frameworks</SelectItem>
+                    <SelectItem value="Marketing">Marketing</SelectItem>  
+                    <SelectItem value="Social Media">Social Media</SelectItem>
+                    <SelectItem value="Social Media">Websites</SelectItem>
+   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-2">
