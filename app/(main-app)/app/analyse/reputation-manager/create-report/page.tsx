@@ -263,7 +263,7 @@ export default function CreateReputationReport() {
           </div>
         </div>
         <div className="flex justify-end gap-4">
-          <button className="py-3.5 px-6 bg-white border border-[#CF0000] text-[#CF0000] hover:bg-[#cf0000ab]/10 rounded-xl mt-6">Cancel</button>
+          <button className="py-3.5 px-6 bg-white border border-[#CF0000] text-[#CF0000] hover:bg-[#cf000009] rounded-xl mt-6">Cancel</button>
           <button className="py-3.5 px-6 bg-primary-green sheen rounded-xl text-white mt-6">Run report</button>
         </div>
       </div>

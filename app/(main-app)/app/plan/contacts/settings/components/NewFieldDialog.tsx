@@ -243,7 +243,7 @@ export default function NewFieldDialog() {
             <div className="flex justify-end gap-4">
               <button
                 onClick={() => setIsNext(false)}
-                className="h-12 py-3 px-3 w-full max-w-[180px] bg-white border border-[#CF0000] text-[#CF0000] hover:bg-[#cf0000ab]/10 rounded-xl mt-6">
+                className="h-12 py-3 px-3 w-full max-w-[180px] bg-white border border-[#CF0000] text-[#CF0000] hover:bg-[#cf000009] rounded-xl mt-6">
                 Cancel
               </button>
               <button className="h-12 py-3 px-3 w-full max-w-[180px] bg-primary-green sheen rounded-xl text-white mt-6">Save</button>

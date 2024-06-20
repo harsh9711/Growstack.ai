@@ -20,7 +20,7 @@ export default function BulkDialog() {
         </div>
         <div className="flex gap-3">
           <DialogClose className="w-full">
-            <button className="w-full py-3.5 px-4 bg-white border border-[#CF0000] text-[#CF0000] hover:bg-[#cf0000ab]/10 rounded-xl mt-6">Cancel</button>
+            <button className="w-full py-3.5 px-4 bg-white border border-[#CF0000] text-[#CF0000] hover:bg-[#cf000009] rounded-xl mt-6">Cancel</button>
           </DialogClose>
           <button className="w-full py-3.5 px-4 bg-primary-green sheen rounded-xl text-white mt-6">Add</button>
         </div>
