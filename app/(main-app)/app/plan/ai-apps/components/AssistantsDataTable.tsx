@@ -21,7 +21,17 @@
   import clsx from "clsx";
   import { Check, Edit2, Search, Trash2, XIcon } from "lucide-react";
   import { API_URL } from "@/lib/api";
-
+ 
+  const handleDelete = async (templateId: string) => {
+    try {
+      await axios.delete(`${API_URL}/ai/api/v1/chat-template/${templateId}`);
+      // After successful deletion, fetch updated assistants
+      await fetchAssistants();
+    } catch (error) {
+      console.error("Error deleting assistant:", error);
+    }
+  };
+  
   export const columns: ColumnDef<any>[] = [
 
     {
@@ -90,9 +100,12 @@
           <button className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300">
             <Edit2 size={15} />
           </button>
-          <button className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300">
-            <Trash2 size={15} />
-          </button>
+          <button
+          className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300"
+          onClick={() => { console.log(row); handleDelete(row.original._id)}}
+        >
+          <Trash2 size={15} />
+        </button>
           <button className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300">
             <XIcon size={15} />
           </button>
@@ -105,6 +118,7 @@
   ];
 
   export default function AssistantsTable() {
+    
     const [assistants, setAssistants] = useState<Assistant[]>([]);
 
     useEffect(() => {
@@ -123,9 +137,11 @@
       setIsPending(true);
       try {
         const response = await axios.get(`${API_URL}/ai/api/v1/chat-template/user`);
+        
         console.log("API response:", response.data); // Debugging log
         if (response.data.data && response.data.data.chatTemplates) {
           const formattedAssistants = response.data.data.chatTemplates.map((assistant: any) => ({
+            "_id": assistant["_id"],
             "ASSISTANT NAME": assistant["ASSISTANT NAME"],
             "ASSISTANT DESCRIPTION": assistant["ASSISTANT DESCRIPTION"],
             "STATUS": assistant["STATUS"],
@@ -279,3 +295,7 @@
       </div>
     );
   }
+function fetchAssistants() {
+  throw new Error("Function not implemented.");
+}
+
