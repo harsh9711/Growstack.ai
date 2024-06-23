@@ -149,7 +149,7 @@ export default function AssistantsTable() {
   const fetchAssistants = async () => {
     setIsPending(true);
     try {
-      const response = await axios.get(`${API_URL}/ai/api/v1/chat-template/user`);
+      const response = await axios.get(`${API_URL}/ai/api/v1/chat-template/user?page=1&limit=20`);
       if (response.data.data && response.data.data.chatTemplates) {
       const formattedAssistants = response.data.data.chatTemplates.map((assistant: any) => ({
   _id: assistant._id,
@@ -178,10 +178,14 @@ export default function AssistantsTable() {
       toast.error(`Error updating ${assistant["ASSISTANT NAME"]} status.`);
     }
   },
-}));
+})); 
+formattedAssistants.forEach((assistant: { _id: any; }) => {
+          console.log("Assistant ID:", assistant._id);
+        });
         setAssistants(formattedAssistants);
       } else {
         console.error("Unexpected API response format:", response.data);
+
       }
     } catch (error) {
       console.error("Error fetching assistants:", error);

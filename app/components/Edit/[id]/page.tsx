@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { API_URL } from '@/lib/api';
@@ -29,9 +29,9 @@ const ValidationSchema = z.object({
 
 type ValidationSchemaType = z.infer<typeof ValidationSchema>;
 
-const EditAssistant = () => {
+const EditAssistant = ({ params: { id } }: { params: { id: string } }) => {
   const router = useRouter();
-  const { id } = router.query;
+//   const { id } = router.query;
   const [assistant, setAssistant] = useState<Assistant | null>(null);
   const [userInputs, setUserInputs] = useState<UserInput[]>([]);
   const [isPending, setIsPending] = useState(false);
