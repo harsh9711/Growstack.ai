@@ -160,12 +160,19 @@ console.log(assistantData);
                   <SelectTrigger className="w-full border-none h-14">
                     <SelectValue>{assistant.category}</SelectValue>
                   </SelectTrigger>
-                  <SelectContent>
-                    {/* Assuming categories are fetched from API or predefined */}
-                    <SelectItem value="Category 1">Category 1</SelectItem>
-                    <SelectItem value="Category 2">Category 2</SelectItem>
-                    <SelectItem value="Category 3">Category 3</SelectItem>
-                    {/* Add more categories as needed */}
+                   <SelectContent>
+                    <SelectItem value="Articles And Contents">
+                      Articles And Contents
+                    </SelectItem>
+                    <SelectItem value="Blogs Posts">Blogs Posts</SelectItem>
+                    <SelectItem value="Commerce">Commerce</SelectItem>
+                    <SelectItem value="Emails">Emails</SelectItem>
+                    <SelectItem value="Frameworks">Frameworks</SelectItem>
+                    <SelectItem value="Marketing">Marketing</SelectItem>
+                    <SelectItem value="Social Media">
+                      Social Media
+                    </SelectItem>
+                    <SelectItem value="Websites">Websites</SelectItem>
                   </SelectContent>
                 </Select>
                 {errors.category && <p>{errors.category.message}</p>}
