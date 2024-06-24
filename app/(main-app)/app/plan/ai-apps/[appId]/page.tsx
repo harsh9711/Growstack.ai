@@ -1,13 +1,17 @@
 // pages/ai/[appId].tsx
+"use client"
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { ArrowLeft, ChevronLeft, ChevronRight, Download, Info, Save } from "lucide-react";
+import { ArrowLeft, ChevronRight, Download, Info, Save } from "lucide-react";
 import Link from "next/link";
 import { Fragment } from "react";
 import { BsStarFill } from "react-icons/bs";
 import { TbTemplate } from "react-icons/tb";
 import Editor from "./components/Editor";
 import { Input } from "@/components/ui/input";
+import { API_URL } from "@/lib/api";
 
 const Dropdown = ({ label, items, infoIcon, hideLabel }: any) => (
   <div className="space-y-3">
@@ -30,7 +34,32 @@ const Dropdown = ({ label, items, infoIcon, hideLabel }: any) => (
     </Select>
   </div>
 );
+
 export default function AiAppPage({ params: { appId } }: { params: { appId: string } }) {
+  const [assistantName, setAssistantName] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAssistant = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/ai/api/v1/chat-template/6673d7f8b49c40913e030129`);
+        const assistant = response.data.data;
+        setAssistantName(assistant["ASSISTANT NAME"]);      console.log("Assistant Name:", assistant["ASSISTANT NAME"]); // Logging the assistant name
+
+      } catch (error) {
+        console.error("Error fetching assistant data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAssistant();
+  }, [appId]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Fragment>
       <div className="flex items-center justify-between mt-10">
@@ -38,7 +67,7 @@ export default function AiAppPage({ params: { appId } }: { params: { appId: stri
           <Link href="/app/plan/ai-apps" className="hover:text-gray-600 transition-all">
             All apps
           </Link>
-          <ChevronRight size={20} /> <span className="text-[#3D817B] font-medium">Newsletter generator</span>
+          <ChevronRight size={20} /> <span className="text-[#3D817B] font-medium">{assistantName}</span>
         </p>
         <Link href="/app/plan/ai-apps">
           <button className="text-primary-green hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-2.5 rounded-full font-semibold items-center">
@@ -50,7 +79,8 @@ export default function AiAppPage({ params: { appId } }: { params: { appId: stri
         <div className="w-full max-w-[600px] p-8 bg-white rounded-2xl border border-[#EDEFF0] space-y-4">
           <div className="flex items-center justify-between mb-5 border-b border-[#EDEFF0] pb-5">
             <div className="flex items-center gap-3">
-              <TbTemplate size={26} className="text-primary-green" /> <h2 className="text-lg font-semibold">Newsletter generator</h2>
+              <TbTemplate size={26} className="text-primary-green" />
+               <h2 className="text-lg font-semibold">{assistantName}</h2>
             </div>
             <BsStarFill size={24} className="text-yellow-300" />
           </div>
