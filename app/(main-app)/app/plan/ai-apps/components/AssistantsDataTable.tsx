@@ -69,7 +69,7 @@ const columns = (
     header: () => <div className="uppercase">Assistant Name</div>,
     cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("ASSISTANT NAME")}</div>,
   },
-   {
+  {
     accessorKey: "ASSISTANT DESCRIPTION",
     header: () => <div className="uppercase">Assistant Description</div>,
     cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("ASSISTANT DESCRIPTION")}</div>,
@@ -122,7 +122,6 @@ const columns = (
           className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300"
           onClick={() => {
             row.original.handleStatusChange(row.original._id, "inactive");
-            toast.info(`${row.original["ASSISTANT NAME"]} deactivated successfully!`);
           }}
         >
           <XIcon size={15} />
@@ -131,7 +130,6 @@ const columns = (
           className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300"
           onClick={() => {
             row.original.handleStatusChange(row.original._id, "active");
-            toast.info(`${row.original["ASSISTANT NAME"]} activated successfully!`);
           }}
         >
           <Check size={15} />
@@ -149,36 +147,35 @@ export default function AssistantsTable() {
   const fetchAssistants = async () => {
     setIsPending(true);
     try {
-      const response = await axios.get(`${API_URL}/ai/api/v1/chat-template/user`);
+      const response = await axios.get(`${API_URL}/ai/api/v1/chat-template/user?page=1&limit=20`);
       if (response.data.data && response.data.data.chatTemplates) {
-      const formattedAssistants = response.data.data.chatTemplates.map((assistant: any) => ({
-  _id: assistant._id,
-  "ASSISTANT NAME": assistant["ASSISTANT NAME"],
-  "ASSISTANT DESCRIPTION": assistant["ASSISTANT DESCRIPTION"],
-  "STATUS": assistant["STATUS"],
-  "CREATED": assistant["CREATED"] || new Date().toISOString(),
-  handleStatusChange: async (id: string, status: string) => {
-    try {
-      await axios.put(`${API_URL}/ai/api/v1/chat-template/${id}`, { STATUS: status });
-      await fetchAssistants();
-      const message = `${assistant["ASSISTANT NAME"]} ${status === "active" ? "activated" : "deactivated"} successfully!`;
-      toast(`🦄 ${message}`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-        transition: Slide,
-      });
-    } catch (error) {
-      console.error("Error updating status:", error);
-      toast.error(`Error updating ${assistant["ASSISTANT NAME"]} status.`);
-    }
-  },
-}));
+        const formattedAssistants = response.data.data.chatTemplates.map((assistant: any) => ({
+          _id: assistant._id,
+          "ASSISTANT NAME": assistant["ASSISTANT NAME"],
+          "ASSISTANT DESCRIPTION": assistant["ASSISTANT DESCRIPTION"],
+          "STATUS": assistant["STATUS"],
+          "CREATED": assistant["CREATED"] || new Date().toISOString(),
+          handleStatusChange: async (id: string, status: string) => {
+            try {
+              await axios.put(`${API_URL}/ai/api/v1/chat-template/${id}`, { STATUS: status });
+              await fetchAssistants();
+              const message = `${assistant["ASSISTANT NAME"]} ${status === "active" ? "activated" : "deactivated"} successfully!`;
+              toast.success(message, {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                transition: Slide,
+              });
+            } catch (error) {
+              console.error("Error updating status:", error);
+              toast.error(`Error updating ${assistant["ASSISTANT NAME"]} status.`);
+            }
+          },
+        }));
         setAssistants(formattedAssistants);
       } else {
         console.error("Unexpected API response format:", response.data);
@@ -294,6 +291,17 @@ export default function AssistantsTable() {
           </div>
         </div>
       )}
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        // progress={undefined}
+        transition={Slide}
+        theme="light"
+      />
     </div>
   );
 }

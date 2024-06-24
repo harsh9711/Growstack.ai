@@ -1,5 +1,7 @@
 export interface Assistant {
+  category: string | undefined;
   id: string;
+  icon:string;
   name: string;
   description: string;
   status: 'disabled' | 'active' | 'inactive';
@@ -11,6 +13,7 @@ export interface Assistant {
   userInputs: UserInput[]; // Ensure userInputs is part of the type
 }
 export interface UserInput {
+  icon:string;
   title: string;
   description: string;
   type: string;
