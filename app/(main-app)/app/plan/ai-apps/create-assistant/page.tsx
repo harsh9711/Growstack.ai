@@ -1,6 +1,5 @@
-"use client";
-import { Assistant } from "@/types/assistants";
-import { useState } from "react";
+"use client"
+import { useEffect, useState } from "react";
 import axios from "axios"; // Added axios import
 import { API_URL } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,33 +7,44 @@ import toast from "react-hot-toast";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Minus, Plus } from "lucide-react";
 import AssistantsTable from "../components/AssistantsDataTable";
+import { Assistant } from "@/types/assistants";
+
 export default function CreateAssistantPage() {
   type UserInput = {
     title: string;
     description: string;
     type: string;
     required: string;
-    };
-    const [userInputs, setUserInputs] = useState<UserInput[]>([
-      { title: "", description: "", type: "", required: "Optional" },
-      ]);
-      const addUserInput = () => {
-      setUserInputs((prevInputs) => [
+  };
+
+  const [userInputs, setUserInputs] = useState<UserInput[]>([
+    { title: "", description: "", type: "", required: "Optional" },
+  ]);
+
+  const addUserInput = () => {
+    setUserInputs((prevInputs) => [
       ...prevInputs,
       { title: "", description: "", type: "", required: "Optional" },
-      ]);
-      };
-      
-      const removeUserInput = (index: number) => {
-      setUserInputs((prevInputs) => {
+    ]);
+  };
+
+  const removeUserInput = (index: number) => {
+    setUserInputs((prevInputs) => {
       const updatedInputs = [...prevInputs];
       updatedInputs.splice(index, 1);
       return updatedInputs;
-      });
-      };
+    });
+  };
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -71,6 +81,14 @@ export default function CreateAssistantPage() {
     try {
       const { name, description, icon, custom_prompt } = formData;
 
+      // Prepare userInputs to be sent with the POST request
+      const userInputFields = userInputs.map((input) => ({
+        title: input.title,
+        description: input.description,
+        type: input.type,
+        required: input.required === "Required", // Assuming 'required' is a boolean field in your API
+      }));
+
       const response = await axios.post(
         `${API_URL}/ai/api/v1/chat-template/create`,
         {
@@ -79,26 +97,13 @@ export default function CreateAssistantPage() {
           icon,
           custom_prompt,
           category,
+          userInputs: userInputFields, // Include userInputs in the request body
         }
       );
 
       toast.success(response.data.message);
 
-      // Update assistants state after successful creation
-      setAssistants((prevAssistants) => [
-        ...prevAssistants,
-        {
-          name,
-          description,
-          status: "active", // Assuming default status
-          created_on: {
-            date: new Date().toLocaleDateString(),
-            time: new Date().toLocaleTimeString(),
-          },
-        },
-      ]);
-
-      // Clear form data after submission
+      // Clear form data after successful submission
       setFormData({
         name: "",
         description: "",
@@ -106,6 +111,10 @@ export default function CreateAssistantPage() {
         custom_prompt: "",
       });
       setCategory(""); // Clear category after submission
+      setUserInputs([{ title: "", description: "", type: "", required: "Optional" }]); // Reset userInputs
+
+      // Log userInputs to the console
+      console.log("User Inputs:", userInputFields);
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
@@ -129,17 +138,19 @@ export default function CreateAssistantPage() {
   const handleCategoryChange = (selectedCategory: string) => {
     setCategory(selectedCategory);
   };
-const handleInputChange = (
-index: number,
-key: keyof UserInput,
-value: string
-) => {
-setUserInputs((prevInputs) => {
-const updatedInputs = [...prevInputs];
-updatedInputs[index][key] = value;
-return updatedInputs;
-});
-};
+
+  const handleInputChange = (
+    index: number,
+    key: keyof UserInput,
+    value: string
+  ) => {
+    setUserInputs((prevInputs) => {
+      const updatedInputs = [...prevInputs];
+      updatedInputs[index][key] = value;
+      return updatedInputs;
+    });
+  };
+
   return (
     <div>
       <h1 className="text-2xl font-semibold mt-5">Create your own assistant</h1>
@@ -152,7 +163,8 @@ return updatedInputs;
             <div className="grid grid-cols-2 gap-8 border-t border-[#EBEBEB] pb-4 pt-8">
               <div className="space-y-2">
                 <label className="font-medium">
-                  Template name<span className="text-[#F00]">*</span>
+                  Template name
+                  <span className="text-[#F00]">*</span>
                 </label>
                 <Input
                   type="text"
@@ -187,18 +199,24 @@ return updatedInputs;
                 </label>
                 <Select onValueChange={handleCategoryChange}>
                   <SelectTrigger className="w-full border-none h-14">
-                    <SelectValue placeholder={category ? category : "Select a category"} />
-                  </SelectTrigger>Z
+                    <SelectValue
+                      placeholder={category ? category : "Select a category"}
+                    />
+                  </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Articles And Contents">Articles And Contents</SelectItem>
+                    <SelectItem value="Articles And Contents">
+                      Articles And Contents
+                    </SelectItem>
                     <SelectItem value="Blogs Posts">Blogs Posts</SelectItem>
                     <SelectItem value="Commerce">Commerce</SelectItem>
                     <SelectItem value="Emails">Emails</SelectItem>
                     <SelectItem value="Frameworks">Frameworks</SelectItem>
-                    <SelectItem value="Marketing">Marketing</SelectItem>  
-                    <SelectItem value="Social Media">Social Media</SelectItem>
-                    <SelectItem value="Social Media">Websites</SelectItem>
-   </SelectContent>
+                    <SelectItem value="Marketing">Marketing</SelectItem>
+                    <SelectItem value="Social Media">
+                      Social Media
+                    </SelectItem>
+                    <SelectItem value="Websites">Websites</SelectItem>
+                  </SelectContent>
                 </Select>
               </div>
               <div className="space-y-2">
@@ -216,133 +234,94 @@ return updatedInputs;
               </div>
             </div>
             <div className="space-y-2 !mt-8">
-            <label className="font-medium">
+              <label className="font-medium">
                 User input fields{" "}
                 <span className="text-[#F00]">*</span>
               </label>
-              {/* <div className="flex gap-4 items-center">
-                <div className="w-full space-y-2">
-                  <Input
-                    type="text"
-                    placeholder="Type input field title (required)"
-                  />
-                </div>
-                <div className="w-full space-y-2">
-                  <Input
-                    type="text"
-                    placeholder="Type input field description (required)"
-                  />
-                </div>
-                <div className="w-full space-y-2">
-                  <Select>
-                    <SelectTrigger className="w-full border-none h-14">
-                      <SelectValue placeholder="Input field" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Input field">
-                        Input field
-                      </SelectItem>
-                      <SelectItem value="Textarea field">
-                        Textarea field
-                      </SelectItem>
-                      <SelectItem value="Select list field">
-                        Select list field
-                      </SelectItem>
-                      <SelectItem value="Checkbox list field">
-                        Checkbox list field
-                      </SelectItem>
-                      <SelectItem value="Radio buttons field">
-                        Radio buttons field
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="w-full space-y-2">
-                  <Select>
-                    <SelectTrigger className="w-full border-none h-14">
-                      <SelectValue placeholder="Optional" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Optional">
-                        Optional
-                      </SelectItem>
-                      <SelectItem value="Required">
-                        Required
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <button className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg">
-                  <Plus />
-                </button>
-              </div> */}
               {userInputs.map((input, index) => (
-          <div key={index} className="flex gap-4 items-center">
-            <div className="w-full space-y-2">
-              <Input
-                type="text"
-                placeholder="Type input field title (required)"
-                value={input.title}
-                onChange={(e) => handleInputChange(index, "title", e.target.value)}
-              />
-            </div>
-            <div className="w-full space-y-2">
-              <Input
-                type="text"
-                placeholder="Type input field description (required)"
-                value={input.description}
-                onChange={(e) => handleInputChange(index, "description", e.target.value)}
-              />
-            </div>
-            <div className="w-full space-y-2">
-              <Select
-                value={input.type}
-                onValueChange={(value) => handleInputChange(index, "type", value)}
-              >
-                <SelectTrigger className="w-full border-none h-14">
-                  <SelectValue placeholder="Input field" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Input field">Input field</SelectItem>
-                  <SelectItem value="Textarea field">Textarea field</SelectItem>
-                  <SelectItem value="Select list field">Select list field</SelectItem>
-                  <SelectItem value="Checkbox list field">Checkbox list field</SelectItem>
-                  <SelectItem value="Radio buttons field">Radio buttons field</SelectItem>
-                </SelectContent>
-              </Select>{" "}
-            </div>
-            <div className="w-full space-y-2">
-              <Select
-                value={input.required}
-                onValueChange={(value) => handleInputChange(index, "required", value)}
-              >
-                <SelectTrigger className="w-full border-none h-14">
-                  <SelectValue placeholder="Optional" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Optional">Optional</SelectItem>
-                  <SelectItem value="Required">Required</SelectItem>
-                </SelectContent>
-              </Select>{" "}
-            </div>
-            {index === userInputs.length - 1 ? (
-              <button
-                className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
-                onClick={addUserInput}
-              >
-                <Plus />
-              </button>
-            ) : (
-              <button
-                className="bg-red-500 text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
-                onClick={() => removeUserInput(index)}
-              >
-                <Minus />
-              </button>
-            )}
-          </div>
-        ))}
-  
+                <div key={index} className="flex gap-4 items-center">
+                  <div className="w-full space-y-2">
+                    <Input
+                      type="text"
+                      placeholder="Type input field title (required)"
+                      value={input.title}
+                      onChange={(e) =>
+                        handleInputChange(index, "title", e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="w-full space-y-2">
+                    <Input
+                      type="text"
+                      placeholder="Type input field description (required)"
+                      value={input.description}
+                      onChange={(e) =>
+                        handleInputChange(index, "description", e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="w-full space-y-2">
+                    <Select
+                      value={input.type}
+                      onValueChange={(value) =>
+                        handleInputChange(index, "type", value)
+                      }
+                    >
+                      <SelectTrigger className="w-full border-none h-14">
+                        <SelectValue placeholder="Input field" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Input field">
+                          Input field
+                        </SelectItem>
+                        <SelectItem value="Textarea field">
+                          Textarea field
+                        </SelectItem>
+                        <SelectItem value="Select list field">
+                          Select list field
+                        </SelectItem>
+                        <SelectItem value="Checkbox list field">
+                          Checkbox list field
+                        </SelectItem>
+                        <SelectItem value="Radio buttons field">
+                          Radio buttons field
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>{" "}
+                  </div>
+                  <div className="w-full space-y-2">
+                    <Select
+                      value={input.required}
+                      onValueChange={(value) =>
+                        handleInputChange(index, "required", value)
+                      }
+                    >
+                      <SelectTrigger className="w-full border-none h-14">
+                        <SelectValue placeholder="Optional" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Optional">Optional</SelectItem>
+                        <SelectItem value="Required">Required</SelectItem>
+                      </SelectContent>
+                    </Select>{" "}
+                  </div>
+                  {index === userInputs.length - 1 ? (
+                    <button
+                      className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                      onClick={addUserInput}
+                    >
+                      <Plus />
+                    </button>
+                  ) : (
+                    <button
+                      className="bg-red-500 text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                      onClick={() => removeUserInput(index)}
+                    >
+                      <Minus />
+                    </button>
+                  )}
+                </div>
+              ))}
             </div>
             <div className="space-y-2">
               <label className="font-medium">
