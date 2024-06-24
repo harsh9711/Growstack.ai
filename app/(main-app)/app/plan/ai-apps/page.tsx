@@ -3,12 +3,59 @@
 import clsx from "clsx";
 import { Plus, Search, StarIcon } from "lucide-react";
 import Image from "next/image";
+import { Fragment, useState, useEffect } from "react";
+import axios from "axios";
+import { API_URL } from "@/lib/api";
 import Link from "next/link";
-import { Fragment, useState } from "react";
-import aiAssistantsData from "./components/data/data";
+
+interface Assistant {
+  _id: string;
+  "ASSISTANT NAME": string;
+  "ASSISTANT DESCRIPTION": string;
+  "icon": string;
+  "CATEGORY": string;
+}
 
 export default function MarketingPage() {
   const [selectedTag, setSelectedTag] = useState(tags[0].name);
+  const [assistants, setAssistants] = useState<Assistant[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isPending, setIsPending] = useState(false);
+
+  const fetchAssistants = async () => {
+    setIsPending(true);
+    try {
+      const response = await axios.get(`${API_URL}/ai/api/v1/chat-template/user?page=1&limit=20`);
+      if (response.data.data && response.data.data.chatTemplates) {
+        console.log(response.data);
+        const formattedAssistants = response.data.data.chatTemplates.map((assistant: any) => ({
+          _id: assistant._id,
+          "ASSISTANT NAME": assistant["ASSISTANT NAME"],
+          "ASSISTANT DESCRIPTION": assistant["ASSISTANT DESCRIPTION"],
+          "icon": assistant["icon"],
+          "CATEGORY": assistant["CATEGORY"],
+        }));
+        setAssistants(formattedAssistants);
+      } else {
+        console.error("Unexpected API response format:", response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching assistants:", error);
+    } finally {
+      setIsPending(false);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAssistants();
+  }, []);
+
+  // Function to filter assistants based on selected category
+  const filteredAssistants = assistants.filter(
+    (assistant) => selectedTag === "Others" || assistant.CATEGORY === selectedTag
+  );
 
   return (
     <Fragment>
@@ -16,12 +63,18 @@ export default function MarketingPage() {
         <div className="flex justify-between items-center mt-8">
           <div className="space-y-2 w-full">
             <h1 className="text-2xl font-semibold">AI apps</h1>
-            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">AI marketing and sales assistant </p>
+            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">AI marketing and sales assistant</p>
           </div>
           <div className="w-full flex justify-end gap-2">
             <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
               <Search className="text-gray-500" size={20} />
-              <input type="search" className="outline-none h-[40px] w-full" placeholder="Search for articles and contents" />
+              <input
+                type="search"
+                className="outline-none h-[40px] w-full"
+                placeholder="Search for articles and contents"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
             </div>
             <Link href="/app/plan/ai-apps/create-assistant">
               <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
@@ -46,18 +99,18 @@ export default function MarketingPage() {
           ))}
         </div>
         <div className="grid grid-cols-3 gap-5 mt-9">
-          {aiAssistantsData
-            .filter((data) => data.category === selectedTag)[0]
-            .items.map((assistant, index) => (
-              <Link href={`/app/plan/ai-apps/${assistant.title}`} key={index}>
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            filteredAssistants.map((assistant, index) => (
+              <Link href={`/app/plan/ai-apps/${assistant._id}`} key={assistant._id}>
                 <div
-                  key={index}
                   className="flex items-center justify-between gap-5 bg-white border border-[#EEF0F4] rounded-2xl p-6 shadow-xl shadow-gray-100 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer">
                   <div className="flex gap-4 items-start">
-                    <Image src={assistant.icon} alt="" width={80} height={80} className="w-[64px] h-[64px]" />
+                    <img src={assistant["icon"]} alt={assistant["ASSISTANT NAME"]} width={80} height={80} className="w-[64px] h-[64px]" />
                     <div className="space-y-2">
-                      <h1 className="text-lg font-semibold">{assistant.title}</h1>
-                      <p className="text-primary-black text-opacity-70 text-[14px] leading-relaxed">{assistant.description}</p>
+                      <h1 className="text-lg font-semibold">{assistant["ASSISTANT NAME"]}</h1>
+                      <p className="text-primary-black text-opacity-70 text-[14px] leading-relaxed">{assistant["ASSISTANT DESCRIPTION"]}</p>
                     </div>
                   </div>
                   <div className="cursor-pointer w-full max-w-fit hover:bg-gray-50 p-1 rounded transition">
@@ -65,7 +118,8 @@ export default function MarketingPage() {
                   </div>
                 </div>
               </Link>
-            ))}
+            ))
+          )}
         </div>
       </main>
     </Fragment>
@@ -104,5 +158,9 @@ const tags = [
   {
     icon: "/icons/websites.svg",
     name: "Websites",
+  },
+  {
+    icon: "/icons/all.svg",
+    name: "Others",
   },
 ];

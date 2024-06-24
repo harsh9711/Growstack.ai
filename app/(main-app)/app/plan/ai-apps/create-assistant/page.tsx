@@ -58,7 +58,7 @@ export default function CreateAssistantPage() {
     name: z.string().min(3, "Name must be at least 3 characters long"),
     description: z
       .string()
-      .min(10, "Description must be at least 10 characters")
+      .min(2, "Description must be at least 10 characters")
       .max(200, "Description can't exceed 200 characters"),
   });
 
@@ -85,8 +85,8 @@ export default function CreateAssistantPage() {
       const userInputFields = userInputs.map((input) => ({
         title: input.title,
         description: input.description,
-        type: input.type,
-        required: input.required === "Required", // Assuming 'required' is a boolean field in your API
+        field_type: input.type,
+        requirement: input.required === "Required", // Assuming 'required' is a boolean field in your API
       }));
 
       const response = await axios.post(
@@ -97,7 +97,7 @@ export default function CreateAssistantPage() {
           icon,
           custom_prompt,
           category,
-          userInputs: userInputFields, // Include userInputs in the request body
+          inputs: userInputFields, // Include userInputs in the request body
         }
       );
 

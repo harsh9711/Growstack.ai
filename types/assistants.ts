@@ -1,6 +1,7 @@
 export interface Assistant {
   category: string | undefined;
   id: string;
+  title:string;
   icon:string;
   name: string;
   description: string;
