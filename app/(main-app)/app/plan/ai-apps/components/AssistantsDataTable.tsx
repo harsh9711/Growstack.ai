@@ -1,23 +1,23 @@
 "use client";
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { API_URL } from "@/lib/api";
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import axios from "axios";
 import clsx from "clsx";
 import { Check, Edit2, Search, Trash2, XIcon } from "lucide-react";
-import { API_URL } from "@/lib/api";
 import { useRouter } from 'next/navigation';
-import { toast, Slide, ToastContainer } from 'react-toastify';
+import { useEffect, useState } from "react";
+import { Slide, ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 interface Assistant {
