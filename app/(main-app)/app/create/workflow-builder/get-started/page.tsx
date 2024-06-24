@@ -24,7 +24,7 @@ export default function GetStarted() {
               You don't have any workflows yet. Explore our template library to get started or build your own from scratch.
             </p>
             <div className="flex gap-4">
-              <Link href="/app/create/workflow-builder/create-workflow">
+              <Link href="/app/create/workflow-builder/workflows">
                 <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
                   <Plus size={20} />
                   Create workflow

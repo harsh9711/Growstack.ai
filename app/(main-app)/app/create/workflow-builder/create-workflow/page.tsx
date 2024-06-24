@@ -4,7 +4,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { Code, Copy, Database, HelpCircle, History, Play, Send } from "lucide-react";
 import Link from "next/link";
 import { Fragment, useState } from "react";
-import WorkFlowBuilderComponent from "./WorkFlowBuilderComponent";
+import WorkFlowBuilderComponent from "./components/WorkFlowBuilderComponent";
 
 export default function CreateWorkflowPage() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);

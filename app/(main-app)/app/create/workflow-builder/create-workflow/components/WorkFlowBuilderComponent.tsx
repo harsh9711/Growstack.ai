@@ -5,8 +5,8 @@ import { InputIcon2, OutputIcon2 } from "@/components/svgs";
 import clsx from "clsx";
 import { Plus } from "lucide-react";
 import { useState } from "react";
-import InputSection from "./components/InputSection";
-import OutputSection from "./components/OutputSection";
+import InputSection from "./InputSection";
+import OutputSection from "./OutputSection";
 
 export default function WorkFlowBuilderComponent() {
   const [activeTag, setActiveTag] = useState<"Input" | "Output">("Input");
