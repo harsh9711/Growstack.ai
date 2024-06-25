@@ -63,6 +63,7 @@ export default function CreateAssistantPage() {
   });
 
   const [isPending, setIsPending] = useState(false);
+  const [refreshAssistantsTable, setRefreshAssistantsTable] = useState(true)
 
   type ValidationSchemaType = z.infer<typeof ValidationSchema>;
 
@@ -112,7 +113,7 @@ export default function CreateAssistantPage() {
       });
       setCategory(""); // Clear category after submission
       setUserInputs([{ title: "", description: "", type: "", required: "Optional" }]); // Reset userInputs
-
+      setRefreshAssistantsTable(true)
       // Log userInputs to the console
       console.log("User Inputs:", userInputFields);
     } catch (error: any) {
@@ -150,6 +151,7 @@ export default function CreateAssistantPage() {
       return updatedInputs;
     });
   };
+  
 
   return (
     <div>
@@ -347,7 +349,7 @@ export default function CreateAssistantPage() {
         </form>
       </section>
       <section className="bg-white border border-[#E4E4E4] rounded-3xl p-10 mt-7">
-        <AssistantsTable />
+        <AssistantsTable refreshAssistantsTable={refreshAssistantsTable} setRefreshAssistantsTable={setRefreshAssistantsTable} />
       </section>
     </div>
   );

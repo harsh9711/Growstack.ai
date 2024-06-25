@@ -49,7 +49,7 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
         console.log(response.data);
         const assistantData = response.data.data;
         setAssistant(assistantData)
-console.log(assistantData)
+        console.log(assistantData)
         setAssistant(assistantData);
         console.log("Assistant Name:", assistantData.name); // Logging the assistant name
 
@@ -75,6 +75,7 @@ console.log(assistantData)
             All apps
           </Link>
           <ChevronRight size={20} /> <span className="text-[#3D817B] font-medium">{assistant.name}</span>
+         
         </p>
         <Link href="/app/plan/ai-apps">
           <button className="text-primary-green hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-2.5 rounded-full font-semibold items-center">
@@ -84,17 +85,19 @@ console.log(assistantData)
       </div>
       <div className="flex gap-5 mt-6">
         <div className="w-full max-w-[600px] p-8 bg-white rounded-2xl border border-[#EDEFF0] space-y-4">
-          <div className="flex items-center justify-between mb-5 border-b border-[#EDEFF0] pb-5">
-            <div className="flex items-center gap-3">
-              {/* <TbTemplate size={26} className="text-primary-green" /> */}
-           <img
-                      src={assistant.icon}
-                      alt=""
-                      className="w-[64px] h-[64px]"
-                    />
-               <h2 className="text-lg font-semibold">{assistant.name}</h2>
+          <div className="mb-5 border-b border-[#EDEFF0]">
+            <div className="flex items-center justify-between  pb-5">
+              <div className="flex items-center gap-3">
+                <img
+                  src={assistant.icon}
+                  alt=""
+                  className="rounded w-[34px] h-[34px]"
+                />
+                <h2 className="text-2xl font-semibold capitalize">{assistant.name}</h2>
+              </div>                    
+              <BsStarFill size={24} className="text-yellow-300" />
             </div>
-            <BsStarFill size={24} className="text-yellow-300" />
+            <p className="mb-5 text-md ">{assistant.description}</p>
           </div>
           <div className="mb-5 space-y-6">
             <p className="flex items-center gap-2 bg-[#F2F2F2] p-4 rounded-lg">
@@ -124,13 +127,14 @@ console.log(assistantData)
           </div>
           <div className="space-y-3">
             <label className="font-medium flex justify-between" htmlFor="newsletter-description">
-              Newsletter Description *<span className="text-primary-black text-opacity-50 text-sm">0/2000</span>
+             {assistant.inputs[0].title}<span className="text-primary-black text-opacity-50 text-sm">0/2000</span>
             </label>
             <textarea
               id="newsletter-description"
               rows={4}
               className="w-full p-4 rounded-xl resize-none bg-[#F2F2F2]"
-              placeholder="Describe what it should be about..."></textarea>
+              placeholder={assistant.inputs  
+              [0].description}></textarea>
           </div>
           <div>
             <Dropdown label="AI Model" items={["GPT 3.5 Turbo", "GPT 3", "GPT 2.5"]} />

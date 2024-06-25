@@ -14,11 +14,17 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
+import React, { Dispatch, SetStateAction } from 'react';
 import { Check, Edit2, Search, Trash2, XIcon } from "lucide-react";
 import { API_URL } from "@/lib/api";
 import { useRouter } from 'next/navigation';
 import { toast, Slide, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+type AssistantsTableProps = {
+  refreshAssistantsTable: boolean;
+  setRefreshAssistantsTable: Dispatch<SetStateAction<boolean>>;
+};
 
 interface Assistant {
   _id: string;
@@ -139,7 +145,7 @@ const columns = (
   },
 ];
 
-export default function AssistantsTable() {
+const AssistantsTable: React.FC<AssistantsTableProps> = ({ refreshAssistantsTable, setRefreshAssistantsTable }) => {
   const router = useRouter();
   const [assistants, setAssistants] = useState<Assistant[]>([]);
   const [isPending, setIsPending] = useState(false);
@@ -156,27 +162,35 @@ export default function AssistantsTable() {
           "STATUS": assistant["STATUS"],
           "CREATED": assistant["CREATED"] || new Date().toISOString(),
           handleStatusChange: async (id: string, status: string) => {
-            try {
-              await axios.put(`${API_URL}/ai/api/v1/chat-template/${id}`, { STATUS: status });
-              await fetchAssistants();
-              const message = `${assistant["ASSISTANT NAME"]} ${status === "active" ? "activated" : "deactivated"} successfully!`;
-              toast.success(message, {
-                position: "top-center",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                transition: Slide,
-              });
-            } catch (error) {
-              console.error("Error updating status:", error);
-              toast.error(`Error updating ${assistant["ASSISTANT NAME"]} status.`);
-            }
+            const updateAssistantStatus = async () => {
+              try {
+                await axios.put(`${API_URL}/ai/api/v1/chat-template/${id}`, { STATUS: status });
+                await fetchAssistants();
+                const message = `${assistant["ASSISTANT NAME"]} ${status === "active" ? "activated" : "deactivated"} successfully!`;
+                toast.success(message, {
+                  position: "top-center",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  transition: Slide,
+                });
+              } catch (error) {
+                console.error("Error updating status:", error);
+                toast.error(`Error updating ${assistant["ASSISTANT NAME"]} status.`);
+              }
+            };
+
+            setAssistants((prevAssistants) =>
+              prevAssistants.map((a) => (a._id === id ? { ...a, STATUS: status } : a))
+            );
+            await updateAssistantStatus();
           },
         }));
         setAssistants(formattedAssistants);
+        setRefreshAssistantsTable(false)
       } else {
         console.error("Unexpected API response format:", response.data);
       }
@@ -188,8 +202,10 @@ export default function AssistantsTable() {
   };
 
   useEffect(() => {
-    fetchAssistants();
-  }, []);
+    if(refreshAssistantsTable){
+      fetchAssistants();
+    }
+  }, [refreshAssistantsTable]);
 
   const handleEdit = (id: string) => {
     router.push(`/components/Edit/${id}`);
@@ -305,3 +321,5 @@ export default function AssistantsTable() {
     </div>
   );
 }
+
+export default AssistantsTable;
