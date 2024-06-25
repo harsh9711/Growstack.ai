@@ -12,6 +12,7 @@ import { TbTemplate } from "react-icons/tb";
 import Editor from "./components/Editor";
 import { Input } from "@/components/ui/input";
 import { API_URL } from "@/lib/api";
+import Image from "next/image";
 
 const Dropdown = ({ label, items, infoIcon, hideLabel }: any) => (
   <div className="space-y-3">
@@ -35,6 +36,7 @@ const Dropdown = ({ label, items, infoIcon, hideLabel }: any) => (
   </div>
 );
 
+
 export default function AiAppPage({ params: { assistantId } }: { params: { assistantId: string } }) {
   const [assistant, setAssistant] = useState<any>({});
   const [loading, setLoading] = useState(true);
@@ -42,12 +44,14 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
   useEffect(() => {
     const fetchAssistant = async () => {
       try {
-        const response = await axios.get(`${API_URL}/ai/api/v1/chat-template/${assistantId}`);
+        let assistId = window.location.href.split('/').pop()
+        const response = await axios.get(`${API_URL}/ai/api/v1/chat-template/${assistId}`);
         console.log(response.data);
         const assistantData = response.data.data;
+        setAssistant(assistantData)
 console.log(assistantData)
         setAssistant(assistantData);
-        console.log("Assistant Name:", assistantData["ASSISTANT NAME"]); // Logging the assistant name
+        console.log("Assistant Name:", assistantData.name); // Logging the assistant name
 
       } catch (error) {
         console.error("Error fetching assistant data:", error);
@@ -70,7 +74,7 @@ console.log(assistantData)
           <Link href="/app/plan/ai-apps" className="hover:text-gray-600 transition-all">
             All apps
           </Link>
-          <ChevronRight size={20} /> <span className="text-[#3D817B] font-medium"></span>
+          <ChevronRight size={20} /> <span className="text-[#3D817B] font-medium">{assistant.name}</span>
         </p>
         <Link href="/app/plan/ai-apps">
           <button className="text-primary-green hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-2.5 rounded-full font-semibold items-center">
@@ -82,8 +86,13 @@ console.log(assistantData)
         <div className="w-full max-w-[600px] p-8 bg-white rounded-2xl border border-[#EDEFF0] space-y-4">
           <div className="flex items-center justify-between mb-5 border-b border-[#EDEFF0] pb-5">
             <div className="flex items-center gap-3">
-              <TbTemplate size={26} className="text-primary-green" />
-               <h2 className="text-lg font-semibold"></h2>
+              {/* <TbTemplate size={26} className="text-primary-green" /> */}
+           <img
+                      src={assistant.icon}
+                      alt=""
+                      className="w-[64px] h-[64px]"
+                    />
+               <h2 className="text-lg font-semibold">{assistant.name}</h2>
             </div>
             <BsStarFill size={24} className="text-yellow-300" />
           </div>
