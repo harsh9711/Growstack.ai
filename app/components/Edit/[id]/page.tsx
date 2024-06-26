@@ -37,7 +37,7 @@
   const EditAssistant = ({ params: { id } }: { params: { id: string } }) => {
     const router = useRouter();
     const [assistant, setAssistant] = useState<Assistant | null>(null);
-    const [userInputs, setUserInputs] = useState<UserInput[]>([]);
+    const [inputs, setinputs] = useState<UserInput[]>([]);
     const [isPending, setIsPending] = useState(false);
     const [title, setTitle] = useState('');
     const [idescription, setIdescription] = useState('');
@@ -53,9 +53,9 @@
             const assistantData = response.data.data;
             console.log(assistantData.inputs[0].title);
 
-            // Set assistant and userInputs states
+            // Set assistant and inputs states
             setAssistant(assistantData);
-            setUserInputs(assistantData.userInputs || []);
+            setinputs(assistantData.inputs || []);
     
             // Reset form with fetched data
             reset({
@@ -79,14 +79,14 @@
     
 
     const addUserInput = () => {
-      setUserInputs((prevInputs) => [
+      setinputs((prevInputs) => [
         ...prevInputs,
         { title: '', description: '', type: '', required: 'Optional',icon:'' },
       ]);
     };
 
     const removeUserInput = (index: number) => {
-      setUserInputs((prevInputs) => {
+      setinputs((prevInputs) => {
         const updatedInputs = [...prevInputs];
         updatedInputs.splice(index, 1);
         return updatedInputs;
@@ -94,7 +94,7 @@
     };
 
     const handleInputChange = (index: number, key: keyof UserInput, value: string) => {
-      setUserInputs((prevInputs) => {
+      setinputs((prevInputs) => {
         const updatedInputs = [...prevInputs];
         updatedInputs[index][key] = value;
         return updatedInputs;
@@ -111,7 +111,7 @@
           custom_prompt: data.custom_prompt,
           category: data.category,
           title: data.title, // Include title in changedFields
-          userInputs, // Ensure userInputs are included
+          inputs, // Ensure inputs are included
         };
         await axios.put(`${API_URL}/ai/api/v1/chat-template/${id}`, changedFields);
         toast.success('Assistant updated successfully');
@@ -203,7 +203,7 @@
                   <label className="font-medium">
                     Template Icon <span className="text-[#F00]">*</span>
                   </label>
-                  <Input
+                    <Input
                     type="text"
                     placeholder="Type assistant icon"
                     {...register('icon')}
@@ -280,7 +280,7 @@
                     <Plus />
                   </button>
                 </div>
-                {userInputs.map((input, index) => (
+                {inputs.map((input, index) => (
   <div key={index} className="flex gap-4 items-center">
     <div className="w-full space-y-2">
       <Input
@@ -329,7 +329,7 @@
         </SelectContent>
       </Select>{" "}
     </div>
-    {index === userInputs.length - 1 ? (
+    {index === inputs.length - 1 ? (
       <button
         className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
         onClick={addUserInput}
