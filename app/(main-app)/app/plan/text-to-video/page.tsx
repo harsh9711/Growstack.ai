@@ -1,16 +1,38 @@
-"use client";
-
-import { Search } from "lucide-react";
-import Link from "next/link";
-import { Fragment } from "react";
-import CreateVideoDialog from "./components/CreateVideoDialog";
+"use client"
+import { Fragment, useEffect, useState } from "react";
+import axios from "axios";
 import VideoTemplateCard from "./components/VideoTemplateCard";
-import { ai_video_templates } from "./components/data/templates";
+import { API_URL } from "@/lib/api";
+import { Search, Link } from "lucide-react";
+import CreateVideoDialog from "./components/CreateVideoDialog";
+
+interface Template {
+  id: string;
+  image_url: string;
+  title: string;
+}
 
 export default function TextToVideoPage() {
+  const [templates, setTemplates] = useState<Template[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const url = `${API_URL}/ai/api/v1/video/templates`;
+        console.log("Fetching data from:", url); // Log the constructed URL for debugging
+        const response = await axios.get<{ data: { templates: Template[] } }>(url);
+        console.log("Response data:", response.data.data.templates); // Log the response data
+        setTemplates(response.data.data.templates);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <Fragment>
-      <main className="">
+      <main>
         <div className="flex justify-between items-center mt-8">
           <div className="space-y-2 w-full">
             <h1 className="text-2xl font-semibold">Text to video</h1>
@@ -28,8 +50,8 @@ export default function TextToVideoPage() {
           </div>
         </div>
         <div className="grid grid-cols-4 gap-5 mt-8">
-          {ai_video_templates.map((data, index) => (
-            <VideoTemplateCard {...data} key={index} />
+          {templates.map((template) => (
+            <VideoTemplateCard key={template.id} image_url={template.image_url} title={template.title} />
           ))}
         </div>
       </main>
