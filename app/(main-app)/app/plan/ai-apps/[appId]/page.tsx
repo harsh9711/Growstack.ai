@@ -35,11 +35,14 @@ const Dropdown = ({ label, items, infoIcon, hideLabel, value, onChange }: any) =
 
 export default function AiAppPage({ params: { assistantId } }: { params: { assistantId: string } }) {
   const [assistant, setAssistant] = useState<any>({});
+  const [userPrompts, setUserPrompts] = useState<string[]>([]); // Initialize as empty array
+
   const [loading, setLoading] = useState(true);
+  const [generatedContent, setGeneratedContent] = useState<string>("");
   const [userInput, setUserInput] = useState({
     user_prompt: "",
     language:"english",
-    model: "gpt-3.5",
+    model: "gpt-3.5-turbo",
     creativity: "Original",
     tone_of_voice: "Casual",
     number_of_results: 1,
@@ -52,7 +55,11 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
         const assistId = window.location.href.split('/').pop();
         const response = await axios.get(`${API_URL}/ai/api/v1/chat-template/${assistId}`);
         const assistantData = response.data.data;
+        console.log("check repsonse",response.data.data.inputs[0].field_type)
+        console.log(assistantData)
         setAssistant(assistantData);
+        setUserPrompts(assistantData.inputs.map(() => ''));
+
       } catch (error) {
         console.error("Error fetching assistant data:", error);
       } finally {
@@ -63,30 +70,89 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
     fetchAssistant();
   }, [assistantId]);
 
+
   const handleSubmit = async () => {
-    console.log(userInput);
     try {
-      const response = await axios.get(
+      const formattedUserPrompt = assistant.inputs.map((input: any, index: number) => `${input.title}:${userPrompts[index]}`).join(".");
+
+      const response = await axios.post(
         `${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`,
         {
-          params: userInput, // Pass userInput as query parameters
+          ...userInput,
+          user_prompt: formattedUserPrompt,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          },
         }
       );
       console.log("Generated Data:", response.data);
+      setGeneratedContent(response.data); // Assuming API response has a 'generated_content' field
+
       // Handle response data, display results, etc.
     } catch (error) {
       console.error("Error generating template:", error);
     }
   };
+;  
+  
+  
 
-  const handleChange = (e: { target: { name: any; value: any; }; }) => {
-    const { name, value } = e.target;
-    setUserInput((prev) => ({ ...prev, [name]: value }));
-  };
+const handleChange = (e: { target: { name: any; value: any; }; }) => {
+  const { name, value } = e.target;
+  setUserInput((prev) => ({ ...prev, [name]: value }));
+};
 
-  const handleDropdownChange = (name: any, value: any) => {
-    setUserInput((prev) => ({ ...prev, [name]: value }));
-  };
+const handleEditorChange = (content: string) => {
+  setGeneratedContent(content); // Update generated content state
+};
+
+const handleDropdownChange = (name: any, value: any) => {
+  setUserInput((prev) => ({ ...prev, [name]: value }));
+};
+
+const handleUserPromptChange = (e: React.ChangeEvent<HTMLTextAreaElement>, index: number) => {
+  const { value } = e.target;
+  setUserPrompts((prevPrompts) => {
+    const updatedPrompts = [...prevPrompts];
+    updatedPrompts[index] = value;
+    return updatedPrompts;
+  });
+};
+
+const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+  const option = e.target.value.trim();
+  setUserPrompts((prevPrompts) => {
+    const updatedPrompts = [...prevPrompts];
+    if (e.target.checked) {
+      if (!updatedPrompts[index].includes(option)) {
+        updatedPrompts[index] += `${option},`;
+      }
+    } else {
+      updatedPrompts[index] = updatedPrompts[index].replace(`${option},`, '');
+    }
+    return updatedPrompts;
+  });
+};
+
+const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+  setUserPrompts((prevPrompts) => {
+    const updatedPrompts = [...prevPrompts];
+    updatedPrompts[index] = e.target.value.trim();
+    return updatedPrompts;
+  });
+};
+
+const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>, index: number) => {
+  const { value } = e.target;
+  setUserPrompts((prevPrompts) => {
+    const updatedPrompts = [...prevPrompts];
+    updatedPrompts[index] = value.trim();
+    return updatedPrompts;
+  });
+};
+
 
   if (loading) {
     return <div>Loading...</div>;
@@ -151,20 +217,73 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
             />
           </div>
           <div className="space-y-3">
-            <label className="font-medium flex justify-between" htmlFor="newsletter-description">
-              {assistant.inputs[0]?.title}
-              <span className="text-primary-black text-opacity-50 text-sm">0/2000</span>
+  {assistant.inputs.map((input: any, index: number) => (
+    
+    <div key={index}>
+      <label className="font-medium flex justify-between" htmlFor={`user-prompt-${index}`}>
+        {input.title}
+        <span className="text-primary-black text-opacity-50 text-sm">0/2000</span>
+      </label>
+      {input.field_type === "Checkbox list field" ? (
+        // Render checkboxes
+        <div className="flex flex-col space-y-2">
+          {input.description.split(",").map((option: string, optionIndex: number) => (
+            <label key={optionIndex} className="flex items-center mt-4">
+              <input
+                type="checkbox"
+                value={option.trim()}
+                checked={userPrompts[index]?.includes(option.trim())}
+                onChange={(e) => handleCheckboxChange(e, index)}
+              />
+              <span className="ml-2">{option.trim()}</span>
             </label>
-            <textarea
-              id="newsletter-description"
-              rows={4}
-              className="w-full p-4 rounded-xl resize-none bg-[#F2F2F2]"
-              placeholder={assistant.inputs[0]?.description}
-              name="user_prompt"
-              value={userInput.user_prompt}
-              onChange={handleChange}
-            ></textarea>
-          </div>
+          ))}
+        </div>
+      ):null}
+      {input.field_type === "Radio buttons field" && (
+        // Render radio buttons
+        <div className="flex flex-col space-y-2">
+          {input.description.split(",").map((option: string, optionIndex: number) => (
+            <label key={optionIndex} className="flex items-center mt-4">
+              <input
+                type="radio"
+                value={option.trim()}
+                checked={userPrompts[index] === option.trim()}
+                onChange={(e) => handleRadioChange(e, index)}
+              />
+              <span className="ml-2">{option.trim()}</span>
+            </label>
+          ))}
+        </div>
+      )}
+      {input.field_type === "Select list field" && (
+        // Render select options using your custom Dropdown component
+        <Dropdown
+          label={input.title}
+          items={input.description.split(",").map((option: string) => option.trim())}
+          value={userPrompts[index]}
+          onChange={(value: any) => handleSelectChange(value, index)}
+        />
+      )}
+      {/* Remove the textarea rendering */}
+      {input.field_type !== "Checkbox list field" &&
+        input.field_type !== "Radio buttons field" &&
+        input.field_type !== "Select list field" && (
+          <textarea
+            id={`user-prompt-${index}`}
+            rows={4}
+            className="w-full p-4 rounded-xl resize-none bg-[#F2F2F2]"
+            placeholder={input.description}
+            value={userPrompts[index]}
+            onChange={(e) => handleUserPromptChange(e, index)}
+          ></textarea>
+        )}
+    </div>
+  ))}
+</div>
+
+
+
           <div>
             <Dropdown
               label="AI Model"
@@ -252,7 +371,7 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
             </div>
           </div>
           <div className="flex-1">
-            <Editor />
+          <Editor content={generatedContent} onChange={handleEditorChange} />
           </div>
         </div>
       </div>

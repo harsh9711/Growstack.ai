@@ -11,9 +11,9 @@ export interface Assistant {
     time: string;
   };
   custom_prompt: string; // Add this line
-  userInputs: UserInput[]; // Ensure userInputs is part of the type
+  inputs: inputs[]; // Ensure userInputs is part of the type
 }
-export interface UserInput {
+export interface inputs {
   icon:string;
   title: string;
   description: string;
