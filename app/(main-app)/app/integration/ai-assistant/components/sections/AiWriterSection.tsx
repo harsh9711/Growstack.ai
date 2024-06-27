@@ -64,7 +64,7 @@ export default function AiWriterSection() {
         <div className="w-full !bg-white border border-[#EDEFF0] rounded-3xl shadow-box p-10 space-y-5 flex flex-col">
           <h1 className="text-xl font-semibold">Generate AI Content</h1>
           <div className="flex-1 flex flex-col">
-            <Editor />
+            <Editor content="" onChange={() => {}}/>
           </div>
         </div>
       </div>
