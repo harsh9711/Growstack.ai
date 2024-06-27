@@ -1,10 +1,11 @@
-"use client"
-import { Fragment, SetStateAction, useEffect, useState } from "react";
+"use client";
+import { Fragment, useEffect, useState } from "react";
 import { Plus, X } from "lucide-react";
 import BulkDialog from "./components/BulkDialog";
 import axios from "axios";
 import { API_URL } from "@/lib/api";
 import LocationMap from "./Location";
+import Table from "./Table";
 
 export default function WebScapping() {
   const [fields, setFields] = useState([{ id: 1, value: "" }]);
@@ -12,6 +13,7 @@ export default function WebScapping() {
   const [bulkInput, setBulkInput] = useState(""); // State for bulk input
   const [countryCode, setCountryCode] = useState(""); // State for user's country code
   const [places, setPlaces] = useState([]); // State for places
+  const [showTable, setShowTable] = useState(false); // State to control table visibility
 
   useEffect(() => {
     // Fetch user's country code on component mount
@@ -62,8 +64,17 @@ export default function WebScapping() {
     setFields(updatedFields);
   };
 
-  const handleBulkAdd = async (terms: string[]) => {
-    const allTerms = [...terms, ...fields.map((field) => field.value)];
+  const handleBulkAdd = (terms: string[]) => {
+    setBulkInput(terms.join(",")); // Combine terms into a comma-separated string for bulk input
+  };
+
+  const handleBulkSubmit = async () => {
+    // Combine bulk input and individual fields into a single array of terms
+    const allTerms = [
+      ...bulkInput.split(",").map((term) => term.trim()).filter(Boolean),
+      ...fields.map((field) => field.value.trim()).filter(Boolean),
+    ];
+
     console.log("All terms:", allTerms); // Log combined terms
 
     try {
@@ -75,30 +86,25 @@ export default function WebScapping() {
 
       // Send POST request to API
       const response = await axios.post(`${API_URL}/ai/api/v1/webscrape`, postData);
-      console.log("Response from API:", response.data.data[0].places[0].pl);
+      console.log("Response from API:", response.data.data[0].places);
 
       // Update places state with response data
-      setPlaces(response.data.data[0].places.map((place: any) => ({
-        title: place.name,
-        address: place.formatted_address,
-        latitude: place.geometry.location.lat,
-        longitude: place.geometry.location.lng,
-      })));
+      setPlaces(
+        response.data.data[0].places.map((place: any) => ({
+          title: place.name,
+          address: place.formatted_address,
+          latitude: place.geometry.location.lat,
+          longitude: place.geometry.location.lng,
+        }))
+      );
 
+      setShowTable(true); // Show the table after successful API response
     } catch (error) {
       console.error("Error sending data to API:", error);
       // Handle error
     }
   };
 
-  const handleBulkSubmit = () => {
-    const terms = bulkInput.split(",").map((term) => term.trim()).filter(Boolean); // Split by comma and trim whitespace
-    console.log("Bulk input terms:", terms); // Log terms from bulk input
-    setBulkInput(""); // Clear the input after adding
-
-    // Call function to handle bulk addition
-    handleBulkAdd(terms);
-  };
   return (
     <Fragment>
       <div className="flex flex-col h-full flex-1">
@@ -148,12 +154,13 @@ export default function WebScapping() {
             </div>
           </section>
           <LocationMap places={places} />
+          {showTable }
           <div className="flex justify-center mt-10">
             <button
               className="bg-primary-green h-14 text-white sheen w-full max-w-[200px] mx-auto rounded-xl"
               onClick={handleBulkSubmit}
             >
-             Start
+              Start
             </button>
           </div>
         </div>

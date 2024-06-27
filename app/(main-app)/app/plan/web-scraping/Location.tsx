@@ -1,6 +1,7 @@
-import { Fragment, SetStateAction, useState } from "react";
+import { Fragment, SetStateAction, useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import Link from "next/link";
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
 interface Place {
   title: string;
@@ -19,7 +20,18 @@ const containerStyle = {
 };
 
 const LocationMap: React.FC<Props> = ({ places }) => {
-  const [location, setLocation] = useState("delhi"); // Initial location state
+  const [center, setCenter] = useState<{ lat: number; lng: number }>({
+    lat: 39.0997,
+    lng: -94.5786,
+  }); // Initial center for Kansas City, MO
+  const [location, setLocation] = useState("Kansas City, MO"); // Initial location state
+
+  useEffect(() => {
+    if (places.length > 0) {
+      setLocation(`${places[0].title}, ${places[0].address}`); // Set initial location based on first place
+      setCenter({ lat: places[0].latitude, lng: places[0].longitude }); // Set initial map center based on first place
+    }
+  }, [places]);
 
   const handleLocationChange = (e: { target: { value: SetStateAction<string> } }) => {
     setLocation(e.target.value); // Update location state on input change
@@ -57,45 +69,23 @@ const LocationMap: React.FC<Props> = ({ places }) => {
         </div>
       </section>
       <div className="mt-8">
-        <div id="map_canvas" style={containerStyle}></div>
+        <LoadScript googleMapsApiKey="YOUR_GOOGLE_MAPS_API_KEY">
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={center}
+            zoom={10}
+          >
+            {/* Render markers for each place */}
+            {places.map((place, index) => (
+              <Marker
+                key={index}
+                position={{ lat: place.latitude, lng: place.longitude }}
+                title={place.title}
+              />
+            ))}
+          </GoogleMap>
+        </LoadScript>
       </div>
-      {/* Google Maps initialization script */}
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            function initialize() {
-              var mapOptions = {
-                zoom: 8,
-                center: { lat: ${places.length > 0 ? places[0].latitude : 39.0997}, lng: ${places.length > 0 ? places[0].longitude : -94.5786} },
-                mapTypeId: google.maps.MapTypeId.ROADMAP
-              };
-              var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-              ${
-                places.length > 0 &&
-                places
-                  .map(
-                    (place) =>
-                      `new google.maps.Marker({
-                        position: { lat: ${place.latitude}, lng: ${place.longitude} },
-                        map: map,
-                        title: "${place.title}"
-                      });`
-                  )
-                  .join("\n")
-              }
-            }
-
-            function loadScript() {
-              var script = document.createElement("script");
-              script.type = "text/javascript";
-              script.src = "https://maps.google.com/maps/api/js?key=YOUR_API_KEY&callback=initialize";
-              document.body.appendChild(script);
-            }
-
-            window.onload = loadScript;
-          `,
-        }}
-      />
     </Fragment>
   );
 };
