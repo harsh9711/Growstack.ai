@@ -19,7 +19,7 @@ export default function DeleteAssistantDialog({
         </button>
       </DialogTrigger>
       <DialogContent className="max-w-[520px]">
-        <DialogTitle>Are you sure you want to delete this assistant</DialogTitle>
+        <DialogTitle>Are you sure you want to delete this template</DialogTitle>
         <div className="flex justify-center gap-x-3 mt-4">
           <DialogClose>
             <button className="border text-primary-black px-8 py-3 rounded-xl flex items-center gap-2">Cancel</button>

@@ -266,10 +266,10 @@ const EditAssistantDialog = ({ id }: { id: string }) => {
                     <label className="font-medium">
                       Custom Prompt <span className="text-[#F00]">*</span>
                     </label>
-                    <Input type="text" placeholder="Type custom prompt" {...register("custom_prompt")} />
+                    <Input type="text" placeholder="Type custom prompt" className="h-14" {...register("custom_prompt")} />
                     {errors.custom_prompt && <p className="text-rose-600">{errors.custom_prompt.message}</p>}
                   </div>
-                  <div className="flex justify-center gap-x-3 mt-4">
+                  <div className="flex justify-end gap-x-3 !mt-8">
                     <DialogClose>
                       <button className="border text-primary-black px-8 py-4 rounded-xl flex items-center gap-2">Cancel</button>
                     </DialogClose>
