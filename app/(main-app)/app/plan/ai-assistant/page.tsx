@@ -35,7 +35,7 @@ export default function AiAssistants() {
       <main className="">
         <div className="flex justify-between items-center mt-8">
           <div className="space-y-2 w-full">
-            <h1 className="text-2xl font-semibold">AI custom GPT</h1>
+            <h1 className="text-2xl font-semibold">AI assistant</h1>
             <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">Chat with our AI team</p>
           </div>
           <Select>
@@ -44,10 +44,18 @@ export default function AiAssistants() {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="all" onClick={() => setSelectedRole("")}>All</SelectItem>
-                <SelectItem value="daily" onClick={() => setSelectedRole("daily")}>Daily</SelectItem>
-                <SelectItem value="monthly" onClick={() => setSelectedRole("monthly")}>Monthly</SelectItem>
-                <SelectItem value="yearly" onClick={() => setSelectedRole("yearly")}>Yearly</SelectItem>
+                <SelectItem value="all" onClick={() => setSelectedRole("")}>
+                  All
+                </SelectItem>
+                <SelectItem value="daily" onClick={() => setSelectedRole("daily")}>
+                  Daily
+                </SelectItem>
+                <SelectItem value="monthly" onClick={() => setSelectedRole("monthly")}>
+                  Monthly
+                </SelectItem>
+                <SelectItem value="yearly" onClick={() => setSelectedRole("yearly")}>
+                  Yearly
+                </SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>

@@ -190,3 +190,11 @@
 .slide-reveal {
   animation: slideIn 0.5s ease forwards;
 }
+
+.hidden-scrollbar {
+  scrollbar-width: none;
+}
+
+.hidden-scrollbar::-webkit-scrollbar {
+  display: none;
+}

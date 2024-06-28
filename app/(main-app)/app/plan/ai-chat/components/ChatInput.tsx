@@ -1,0 +1,60 @@
+import { MicrophoneIcon, SendIcon2 } from "@/components/svgs"; // Assuming you have these icons
+import autosize from "autosize";
+import Image from "next/image";
+import React, { useEffect, useRef, useState } from "react";
+import ToolsDialog from "./ToolsDialog";
+
+const ChatInput: React.FC<{ onSend: (message: string) => void }> = ({ onSend }) => {
+  const [input, setInput] = useState("");
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      autosize(textareaRef.current);
+    }
+  }, []);
+
+  const handleSend = () => {
+    if (input.trim()) {
+      onSend(input);
+      setInput("");
+      if (textareaRef.current) {
+        autosize.update(textareaRef.current);
+      }
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSend();
+    }
+  };
+
+  return (
+    <div className="flex p-2 border gap-2 rounded-xl items-end">
+      <Image src="/logo/growstack-mini.svg" alt="" width={25} height={25} draggable={false} className="select-none ml-2 mb-3" />
+      <textarea
+        ref={textareaRef}
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyDown={handleKeyDown}
+        rows={1}
+        className="w-full flex-1 p-2 bg-transparent resize-none overflow-hidden min-h-11 max-h-[300px]"
+        placeholder="What's in your mind?"
+      />
+      <ToolsDialog />
+      <button
+        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
+        <MicrophoneIcon />
+      </button>
+      <button
+        onClick={handleSend}
+        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
+        <SendIcon2 />
+      </button>
+    </div>
+  );
+};
+
+export default ChatInput;

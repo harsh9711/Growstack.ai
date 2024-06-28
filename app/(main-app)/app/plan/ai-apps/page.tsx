@@ -12,8 +12,8 @@ interface Assistant {
   _id: string;
   "ASSISTANT NAME": string;
   "ASSISTANT DESCRIPTION": string;
-  "icon": string;
-  "CATEGORY": string;
+  icon: string;
+  CATEGORY: string;
 }
 
 export default function MarketingPage() {
@@ -33,8 +33,8 @@ export default function MarketingPage() {
           _id: assistant._id,
           "ASSISTANT NAME": assistant["ASSISTANT NAME"],
           "ASSISTANT DESCRIPTION": assistant["ASSISTANT DESCRIPTION"],
-          "icon": assistant["icon"],
-          "CATEGORY": assistant["CATEGORY"],
+          icon: assistant["icon"],
+          CATEGORY: assistant["CATEGORY"],
         }));
         setAssistants(formattedAssistants);
       } else {
@@ -53,9 +53,7 @@ export default function MarketingPage() {
   }, []);
 
   // Function to filter assistants based on selected category
-  const filteredAssistants = assistants.filter(
-    (assistant) => selectedTag === "Others" || assistant.CATEGORY === selectedTag
-  );
+  const filteredAssistants = assistants.filter((assistant) => selectedTag === "Others" || assistant.CATEGORY === selectedTag);
 
   return (
     <Fragment>
@@ -101,11 +99,12 @@ export default function MarketingPage() {
         <div className="grid grid-cols-3 gap-5 mt-9">
           {loading ? (
             <p>Loading...</p>
+          ) : filteredAssistants.length < 1 ? (
+            <div>No assistants found</div>
           ) : (
             filteredAssistants.map((assistant, index) => (
               <Link href={`/app/plan/ai-apps/${assistant._id}`} key={assistant._id}>
-                <div
-                  className="flex items-center justify-between gap-5 bg-white border border-[#EEF0F4] rounded-2xl p-6 shadow-xl shadow-gray-100 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer">
+                <div className="flex items-center justify-between gap-5 bg-white border border-[#EEF0F4] rounded-2xl p-6 shadow-xl shadow-gray-100 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer">
                   <div className="flex gap-4 items-start">
                     <img src={assistant["icon"]} alt={assistant["ASSISTANT NAME"]} width={80} height={80} className="w-[64px] h-[64px]" />
                     <div className="space-y-2">
