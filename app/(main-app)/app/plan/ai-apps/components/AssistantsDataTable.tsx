@@ -3,23 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { API_URL } from "@/lib/api";
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
 import axios from "axios";
 import clsx from "clsx";
-import React, { Dispatch, SetStateAction } from 'react';
-import { Check, Edit2, Search, Trash2, XIcon } from "lucide-react";
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from "react";
-import { Slide, ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Check, Search, XIcon } from "lucide-react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import "react-toastify/dist/ReactToastify.css";
+import DeleteAssistantDialog from "./DeleteAssistantDialog";
+import EditAssistantDialog from "./EditDialogAssistantDialog";
+import toast from "react-hot-toast";
 
 type AssistantsTableProps = {
   refreshAssistantsTable: boolean;
@@ -30,8 +22,8 @@ interface Assistant {
   _id: string;
   "ASSISTANT NAME": string;
   "ASSISTANT DESCRIPTION": string;
-  "STATUS": string;
-  "CREATED"?: string;
+  STATUS: string;
+  CREATED?: string;
   handleStatusChange: (id: string, status: string) => void;
 }
 
@@ -44,11 +36,7 @@ const handleDelete = async (templateId: string, fetchAssistants: () => Promise<v
   }
 };
 
-const columns = (
-  handleEdit: (id: string) => void,
-  handleDelete: (id: string, fetchAssistants: () => Promise<void>) => void,
-  fetchAssistants: () => Promise<void>
-): ColumnDef<Assistant>[] => [
+const columns = (handleDelete: (id: string, fetchAssistants: () => Promise<void>) => void, fetchAssistants: () => Promise<void>): ColumnDef<Assistant>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -112,32 +100,20 @@ const columns = (
     header: () => <div className="uppercase">Action</div>,
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
-        <button
-          className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300"
-          onClick={() => handleEdit(row.original._id)}
-        >
-          <Edit2 size={15} />
-        </button>
-        <button
-          className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300"
-          onClick={() => handleDelete(row.original._id, fetchAssistants)}
-        >
-          <Trash2 size={15} />
-        </button>
+        <EditAssistantDialog id={row.original._id} />
+        <DeleteAssistantDialog id={row.original._id} handleDelete={handleDelete} fetchAssistants={fetchAssistants} />
         <button
           className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300"
           onClick={() => {
             row.original.handleStatusChange(row.original._id, "inactive");
-          }}
-        >
+          }}>
           <XIcon size={15} />
         </button>
         <button
           className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300"
           onClick={() => {
             row.original.handleStatusChange(row.original._id, "active");
-          }}
-        >
+          }}>
           <Check size={15} />
         </button>
       </div>
@@ -146,7 +122,6 @@ const columns = (
 ];
 
 const AssistantsTable: React.FC<AssistantsTableProps> = ({ refreshAssistantsTable, setRefreshAssistantsTable }) => {
-  const router = useRouter();
   const [assistants, setAssistants] = useState<Assistant[]>([]);
   const [isPending, setIsPending] = useState(false);
 
@@ -159,38 +134,27 @@ const AssistantsTable: React.FC<AssistantsTableProps> = ({ refreshAssistantsTabl
           _id: assistant._id,
           "ASSISTANT NAME": assistant["ASSISTANT NAME"],
           "ASSISTANT DESCRIPTION": assistant["ASSISTANT DESCRIPTION"],
-          "STATUS": assistant["STATUS"],
-          "CREATED": assistant["CREATED"] || new Date().toISOString(),
+          STATUS: assistant["STATUS"],
+          CREATED: assistant["CREATED"] || new Date().toISOString(),
           handleStatusChange: async (id: string, status: string) => {
             const updateAssistantStatus = async () => {
               try {
                 await axios.put(`${API_URL}/ai/api/v1/chat-template/${id}`, { STATUS: status });
                 await fetchAssistants();
                 const message = `${assistant["ASSISTANT NAME"]} ${status === "active" ? "activated" : "deactivated"} successfully!`;
-                toast.success(message, {
-                  position: "top-center",
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  transition: Slide,
-                });
+                toast.success(message);
               } catch (error) {
                 console.error("Error updating status:", error);
                 toast.error(`Error updating ${assistant["ASSISTANT NAME"]} status.`);
               }
             };
 
-            setAssistants((prevAssistants) =>
-              prevAssistants.map((a) => (a._id === id ? { ...a, STATUS: status } : a))
-            );
+            setAssistants((prevAssistants) => prevAssistants.map((a) => (a._id === id ? { ...a, STATUS: status } : a)));
             await updateAssistantStatus();
           },
         }));
         setAssistants(formattedAssistants);
-        setRefreshAssistantsTable(false)
+        setRefreshAssistantsTable(false);
       } else {
         console.error("Unexpected API response format:", response.data);
       }
@@ -202,18 +166,14 @@ const AssistantsTable: React.FC<AssistantsTableProps> = ({ refreshAssistantsTabl
   };
 
   useEffect(() => {
-    if(refreshAssistantsTable){
+    if (refreshAssistantsTable) {
       fetchAssistants();
     }
   }, [refreshAssistantsTable]);
 
-  const handleEdit = (id: string) => {
-    router.push(`/components/Edit/${id}`);
-  };
-
   const table = useReactTable({
     data: assistants,
-    columns: columns(handleEdit, handleDelete, fetchAssistants),
+    columns: columns(handleDelete, fetchAssistants),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -250,9 +210,7 @@ const AssistantsTable: React.FC<AssistantsTableProps> = ({ refreshAssistantsTabl
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className="bg-[#0347370D]">
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                  </TableHead>
+                  <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>
                 ))}
               </TableRow>
             ))}
@@ -260,7 +218,7 @@ const AssistantsTable: React.FC<AssistantsTableProps> = ({ refreshAssistantsTabl
           <TableBody>
             {isPending ? (
               <TableRow className="hover:bg-white">
-                <TableCell colSpan={columns.length} className="h-24 text-center font-semibold text-lg hover:bg-white">
+                <TableCell colSpan={columns.length + 20} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
                   Loading...
                 </TableCell>
               </TableRow>
@@ -274,7 +232,7 @@ const AssistantsTable: React.FC<AssistantsTableProps> = ({ refreshAssistantsTabl
               ))
             ) : (
               <TableRow className="hover:bg-white">
-                <TableCell colSpan={columns.length} className="h-24 text-center font-semibold text-lg hover:bg-white">
+                <TableCell colSpan={columns.length + 20} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
                   No results.
                 </TableCell>
               </TableRow>
@@ -282,7 +240,7 @@ const AssistantsTable: React.FC<AssistantsTableProps> = ({ refreshAssistantsTabl
           </TableBody>
         </Table>
       </div>
-      {table.getRowModel().rows?.length && (
+      {table.getRowModel().rows?.length ? (
         <div className="flex items-center justify-end space-x-2 py-4">
           <div className="space-x-2 flex">
             <Button
@@ -306,20 +264,9 @@ const AssistantsTable: React.FC<AssistantsTableProps> = ({ refreshAssistantsTabl
             </Button>
           </div>
         </div>
-      )}
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        closeOnClick
-        pauseOnHover
-        draggable
-        // progress={undefined}
-        transition={Slide}
-        theme="light"
-      />
+      ) : null}
     </div>
   );
-}
+};
 
 export default AssistantsTable;

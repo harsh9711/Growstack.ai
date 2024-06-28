@@ -1,5 +1,6 @@
 "use client";
 
+import Motion from "@/components/Motion";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -18,12 +19,10 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { FilterIcon, MailIcon, Phone, Search } from "lucide-react";
-import Image from "next/image";
+import { MailIcon, Phone, Search } from "lucide-react";
 import { useState } from "react";
-import { contacts } from "./data/contacts";
 import FilterSheet from "./FilterSheet";
-import Motion from "@/components/Motion";
+import { contacts } from "./data/contacts";
 
 export const columns: ColumnDef<Contact>[] = [
   {
