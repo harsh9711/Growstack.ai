@@ -215,71 +215,7 @@
                   User input fields{" "}
                   <span className="text-[#F00]">*</span>
                 </label>
-                <div className="flex gap-4 items-center">
-                  <div className="w-full space-y-2">
-                    <Input
-                      type="text"
-                      placeholder="Type input field title (required)"
-                      {...register('title')}
-                      value={title}
-                      onChange={handleTitleChange}
-                    />      {errors.title && <p>{errors.title.message}</p>} {/* Display validation error */}
 
-                  </div>
-                  <div className="w-full space-y-2">
-                    <Input
-                      type="text"
-                      placeholder="Type input field description (required)"
-                      {...register('idescription')}
-                      value={idescription}
-                      onChange={handleIdescriptionChange} // Update idescription state as user types
-                    />
-                              {errors.idescription && <p>{errors.idescription.message}</p>}
-
-                  </div>
-                  <div className="w-full space-y-2">
-                    <Select>
-                      <SelectTrigger className="w-full border-none h-14">
-                      <SelectValue></SelectValue>
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Input field">
-                          Input field
-                        </SelectItem>
-                        <SelectItem value="Textarea field">
-                          Textarea field
-                        </SelectItem>
-                        <SelectItem value="Select list field">
-                          Select list field
-                        </SelectItem>
-                        <SelectItem value="Checkbox list field">
-                          Checkbox list field
-                        </SelectItem>
-                        <SelectItem value="Radio buttons field">
-                          Radio buttons field
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="w-full space-y-2">
-                    <Select>
-                      <SelectTrigger className="w-full border-none h-14">
-                        <SelectValue placeholder="Optional" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Optional">
-                          Optional
-                        </SelectItem>
-                        <SelectItem value="Required">
-                          Required
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <button className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg">
-                    <Plus />
-                  </button>
-                </div>
                 {inputs.map((input, index) => (
   <div key={index} className="flex gap-4 items-center">
     <div className="w-full space-y-2">
@@ -299,22 +235,22 @@
       />
     </div>
     <div className="w-full space-y-2">
-      <Select
-        value={input.type}
-        onValueChange={(value) => handleInputChange(index, "type", value)}
-      >
-        <SelectTrigger className="w-full border-none h-14">
-          <SelectValue placeholder="Input field" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="Input field">Input field</SelectItem>
-          <SelectItem value="Textarea field">Textarea field</SelectItem>
-          <SelectItem value="Select list field">Select list field</SelectItem>
-          <SelectItem value="Checkbox list field">Checkbox list field</SelectItem>
-          <SelectItem value="Radio buttons field">Radio buttons field</SelectItem>
-        </SelectContent>
-      </Select>{" "}
-    </div>
+                    <Select
+                      value={input.type}
+                      onValueChange={(value) => handleInputChange(index, 'type', value)}
+                    >
+                      <SelectTrigger className="w-full border-none h-14">
+                        <SelectValue placeholder="Input field" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Input field">Input field</SelectItem>
+                        <SelectItem value="Textarea field">Textarea field</SelectItem>
+                        <SelectItem value="Select list field">Select list field</SelectItem>
+                        <SelectItem value="Checkbox list field">Checkbox list field</SelectItem>
+                        <SelectItem value="Radio buttons field">Radio buttons field</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
     <div className="w-full space-y-2">
       <Select
         value={input.required}

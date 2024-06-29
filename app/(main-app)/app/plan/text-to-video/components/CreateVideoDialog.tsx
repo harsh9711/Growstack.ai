@@ -112,7 +112,7 @@ const CreateVideoDialog = () => {
           <main className="flex-1 h-full w-full px-10 pb-10 mx-auto relative overflow-y-auto">
             <section className="grid grid-cols-4 gap-6">
               {ai_video_templates.map((data, i: number) => (
-                <VideoTemplateCard {...data} />
+                <VideoTemplateCard title={""} {...data} />
               ))}
             </section>
           </main>
