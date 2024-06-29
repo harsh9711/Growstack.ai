@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import VideoTemplateCard from "./components/VideoTemplateCard";
@@ -51,7 +51,7 @@ export default function TextToVideoPage() {
         </div>
         <div className="grid grid-cols-4 gap-5 mt-8">
           {templates.map((template) => (
-            <VideoTemplateCard key={template.id} image_url={template.image_url} name={template.title} />
+            <VideoTemplateCard key={template.id} image_url={template.image_url} title={template.title} />
           ))}
         </div>
       </main>

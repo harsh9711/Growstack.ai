@@ -1,7 +1,7 @@
 "use client";
 
-import { GenerateAi, Ppt, VideoMedia } from "@/components/svgs";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { VideoMedia } from "@/components/svgs";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ChevronRight, Plus } from "lucide-react";
 import { useState } from "react";
 import { TbTemplate } from "react-icons/tb";
@@ -112,7 +112,7 @@ const CreateVideoDialog = () => {
           <main className="flex-1 h-full w-full px-10 pb-10 mx-auto relative overflow-y-auto">
             <section className="grid grid-cols-4 gap-6">
               {ai_video_templates.map((data, i: number) => (
-                <VideoTemplateCard title={""} {...data} />
+                <VideoTemplateCard {...data} key={i} />
               ))}
             </section>
           </main>

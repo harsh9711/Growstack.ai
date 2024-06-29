@@ -3,10 +3,10 @@ import React, { FC } from "react";
 
 interface Props {
   image_url: string;
-  name: string;
+  title: string;
 }
 
-const VideoTemplateCard: FC<Props> = ({ image_url, name }) => {
+const VideoTemplateCard: FC<Props> = ({ image_url, title: name }) => {
   return (
     <div>
       <div className="p-5 space-y-4 bg-white rounded-3xl hover:shadow-xl hover:shadow-[#dddddd94] transition duration-500 cursor-pointer border border-[#D6D6D6] min-w-[274px]">
