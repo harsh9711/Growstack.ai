@@ -1,12 +1,18 @@
-import { MicrophoneIcon, SendIcon2 } from "@/components/svgs"; // Assuming you have these icons
+import { MicrophoneIcon, SendIcon2 } from "@/components/svgs"; 
 import autosize from "autosize";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import ToolsDialog from "./ToolsDialog";
-
-const ChatInput: React.FC<{ onSend: (message: string) => void }> = ({ onSend }) => {
+import axios from 'axios';
+import { API_URL } from "@/lib/api";
+interface ChatInputProps {
+  onSend: (message: string) => void;
+  selectedModel: string;
+}
+const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel }) => {
   const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [messages, setMessages] = React.useState<string[]>([]);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -14,12 +20,40 @@ const ChatInput: React.FC<{ onSend: (message: string) => void }> = ({ onSend }) 
     }
   }, []);
 
-  const handleSend = () => {
+  const handleSend = async () => {
+    setMessages(prevMessages => [...prevMessages, `You: ${messages}`]);
     if (input.trim()) {
-      onSend(input);
-      setInput("");
-      if (textareaRef.current) {
-        autosize.update(textareaRef.current);
+      console.log("Sending API requests...");
+
+      try {
+        // First API 
+        const createResponse = await axios.get(`${API_URL}/ai/api/v1/conversation/create`);
+        console.log("Create Conversation API response:", createResponse.data.data.conversation_id);
+
+        // Second API call 
+        const chatResponse = await axios.post(
+          `${API_URL}/ai/api/v1/conversation/chat`,
+          {
+            user_prompt: input,
+          },
+          {
+            params: {
+              conversation_id:  createResponse.data.data.conversation_id,
+              chat_id:  createResponse.data.data._id,
+              model: selectedModel,
+            },
+          }
+        );  
+        console.log("Chat API response:", chatResponse.data);
+
+        onSend(chatResponse.data);
+        setInput("");
+
+        if (textareaRef.current) {
+          autosize.update(textareaRef.current);
+        }
+      } catch (error) {
+        console.error('Error calling APIs:', error);
       }
     }
   };

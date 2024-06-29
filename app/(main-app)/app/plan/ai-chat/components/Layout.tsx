@@ -1,25 +1,60 @@
 "use client";
 
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import React, { useState } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select";
+import React, { useEffect, useState } from "react";
 import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
 import SidebarItem from "./SidebarItem";
 import { Search } from "lucide-react";
 import { AnthropicClaude, ChatGptIcon2, GoogleGemini } from "@/components/svgs";
 import clsx from "clsx";
+import axios from "axios";
+import { API_URL } from "@/lib/api";
+
+interface SidebarItem {
+  title: string;
+  selected: boolean;
+}
 
 const Layout: React.FC = () => {
-  const [messages, setMessages] = React.useState<string[]>([]);
+  const [messages, setMessages] = useState<string[]>([]);
   const [showNewChatInput, setShowNewChatInput] = useState(false);
+  const [selectedModel, setSelectedModel] = useState<string>("gpt-3.5-turbo");
+  const [sidebarItems, setSidebarItems] = useState<SidebarItem[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${API_URL}ai/api/v1/conversation/`);
+        console.log("API Response:", response.data);
+        // Adjust the response based on your API's structure
+        const items = response.data.map((item: any) => ({
+          title: item.title,
+          selected: item.selected
+        }));
+        setSidebarItems(items);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleSend = (message: string) => {
-    setMessages([...messages, message]);
+    setMessages(prevMessages => [...prevMessages, `You: ${message}`]);
   };
 
   const options = [
-    { label: "ChatGPT 3.5", value: "chatgpt-3.5", icon: <ChatGptIcon2 /> },
-    { label: "ChatGPT 3.5 Turbo", value: "chatgpt-3.5-turbo", icon: <ChatGptIcon2 /> },
+    { label: "ChatGPT 3.5", value: "gpt-3.5", icon: <ChatGptIcon2 /> },
+    { label: "ChatGPT 3.5 Turbo", value: "gpt-3.5-turbo", icon: <ChatGptIcon2 /> },
     { label: "GPT 4", value: "gpt-4", icon: <ChatGptIcon2 /> },
     { label: "GPT 4 Turbo", value: "gpt-4-turbo", icon: <ChatGptIcon2 /> },
     { label: "GPT 4o", value: "gpt-4o", icon: <ChatGptIcon2 /> },
@@ -48,6 +83,7 @@ const Layout: React.FC = () => {
     { label: "Mistral 8x7B", value: "mistral-8x7b", icon: <ChatGptIcon2 /> },
     { label: "Mistral 8x7B Groq", value: "mistral-8x7b-groq", icon: <ChatGptIcon2 /> },
   ];
+
   const [selectedOption, setSelectedOption] = useState(options[0].value);
   const selectedOptionLabel = options.find((option) => option.value === selectedOption)?.label;
 
@@ -95,27 +131,9 @@ const Layout: React.FC = () => {
           </button>
         </div>
         <div className="flex-1 h-full max-h-[68vh] overflow-x-hidden overflow-y-auto hidden-scrollbar pb-8">
-          <div className="space-y-2 p-4 pl-3 pr-0">
-            <SidebarItem title="Create Html Game Environ..." />
-            <SidebarItem title="Apply To Leave For Emergency Leave For Emergency" />
-            <SidebarItem title="What Is UI UX Design?" />
-            <SidebarItem title="Create POS System" />
-            <SidebarItem title="What Is UX Audit?" />
-            <SidebarItem title="Create Chatbot GPT..." selected />
-            <SidebarItem title="How Chat GPT Work?" />
-          </div>
-          <div className="border-y border-[#EFEFEF] flex items-center justify-between py-4 px-6">
-            <h2 className="font-semibold">Last 7 Days</h2>
-          </div>
-          <div className="space-y-2 p-4 pl-3 pr-0">
-            <SidebarItem title="Create Html Game Environ..." />
-            <SidebarItem title="Apply To Leave For Emergency Leave For Emergency" />
-            <SidebarItem title="What Is UI UX Design?" />
-            <SidebarItem title="Create POS System" />
-            <SidebarItem title="What Is UX Audit?" />
-            <SidebarItem title="Create Chatbot GPT..." />
-            <SidebarItem title="How Chat GPT Work?" />
-          </div>
+          {sidebarItems.map((item, index) => (
+            <SidebarItem key={index} title={item.title} selected={item.selected} />
+          ))}
         </div>
         <div className="h-20 w-full bg-gradient-to-b from-transparent via-white to-white absolute bottom-0 rounded-b-3xl" />
       </aside>
@@ -125,7 +143,7 @@ const Layout: React.FC = () => {
             <ChatMessage key={idx} message={message} isUser={idx % 2 === 0} />
           ))}
         </div>
-        <ChatInput onSend={handleSend} />
+        {showNewChatInput && <ChatInput onSend={handleSend} selectedModel={selectedModel} />}
       </main>
     </div>
   );
