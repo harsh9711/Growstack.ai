@@ -3,23 +3,15 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { API_URL } from "@/lib/api";
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
 import axios from "axios";
 import clsx from "clsx";
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction } from "react";
 import { Check, Edit2, Search, Trash2, XIcon } from "lucide-react";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Slide, ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Slide, ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type AssistantsTableProps = {
   refreshAssistantsTable: boolean;
@@ -30,8 +22,8 @@ interface Assistant {
   _id: string;
   "ASSISTANT NAME": string;
   "ASSISTANT DESCRIPTION": string;
-  "STATUS": string;
-  "CREATED"?: string;
+  STATUS: string;
+  CREATED?: string;
   handleStatusChange: (id: string, status: string) => void;
 }
 
@@ -44,108 +36,100 @@ const handleDelete = async (templateId: string, fetchAssistants: () => Promise<v
   }
 };
 
-  const columns = (
-    handleEdit: (id: string) => void,
-    handleDelete: (id: string, fetchAssistants: () => Promise<void>) => void,
-    fetchAssistants: () => Promise<void>
-  ): ColumnDef<Assistant>[] => [
-    {
-      id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-          onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-          className="w-[18px] h-[18px]"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value: any) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-          className="w-[18px] h-[18px]"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
-    {
-      accessorKey: "ASSISTANT NAME",
-      header: () => <div className="uppercase">Assistant Name</div>,
-      cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("ASSISTANT NAME")}</div>,
-    },
-    {
-      accessorKey: "ASSISTANT DESCRIPTION",
-      header: () => <div className="uppercase">Assistant Description</div>,
-      cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("ASSISTANT DESCRIPTION")}</div>,
-    },
-    {
-      accessorKey: "STATUS",
-      header: () => <div className="uppercase">Status</div>,
-      cell: ({ row }) => {
-        const status = row.getValue("STATUS") as "active" | "inactive" | "disabled";
-        const statusClasses = {
-          active: "text-green-500",
-          inactive: "text-yellow-500",
-          disabled: "text-red-500",
-        };
+const columns = (
+  handleEdit: (id: string) => void,
+  handleDelete: (id: string, fetchAssistants: () => Promise<void>) => void,
+  fetchAssistants: () => Promise<void>
+): ColumnDef<Assistant>[] => [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+        onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+        className="w-[18px] h-[18px]"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value: any) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+        className="w-[18px] h-[18px]"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: "ASSISTANT NAME",
+    header: () => <div className="uppercase">Assistant Name</div>,
+    cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("ASSISTANT NAME")}</div>,
+  },
+  {
+    accessorKey: "ASSISTANT DESCRIPTION",
+    header: () => <div className="uppercase">Assistant Description</div>,
+    cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("ASSISTANT DESCRIPTION")}</div>,
+  },
+  {
+    accessorKey: "STATUS",
+    header: () => <div className="uppercase">Status</div>,
+    cell: ({ row }) => {
+      const status = row.getValue("STATUS") as "active" | "inactive" | "disabled";
+      const statusClasses = {
+        active: "text-green-500",
+        inactive: "text-yellow-500",
+        disabled: "text-red-500",
+      };
 
-        return <div className={`text-left font-medium capitalize ${statusClasses[status] || ""}`}>{status}</div>;
-      },
+      return <div className={`text-left font-medium capitalize ${statusClasses[status] || ""}`}>{status}</div>;
     },
-    {
-      accessorKey: "CREATED",
-      header: () => <div className="uppercase">Created</div>,
-      cell: ({ row }) => {
-        const createdDate = new Date(row.getValue("CREATED"));
-        return (
-          <div className="flex gap-3">
-            <span>{createdDate.toLocaleDateString()}</span>
-            <span>{createdDate.toLocaleTimeString()}</span>
-          </div>
-        );
-      },
-    },
-    {
-      id: "actions",
-      header: () => <div className="uppercase">Action</div>,
-      cell: ({ row }) => (
-        <div className="flex items-center gap-2">
-          <button
-            className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300"
-            onClick={() => handleEdit(row.original._id)}
-          >
-            <Edit2 size={15} />
-          </button>
-          <button
-            className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300"
-            onClick={() => handleDelete(row.original._id, fetchAssistants)}
-          >
-            <Trash2 size={15} />
-          </button>
-          <button
-            className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300"
-            onClick={() => {
-              row.original.handleStatusChange(row.original._id, "inactive");
-            }}
-          >
-            <XIcon size={15} />
-          </button>
-          <button
-            className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300"
-            onClick={() => {
-              row.original.handleStatusChange(row.original._id, "active");
-            }}
-          >
-            <Check size={15} />
-          </button>
+  },
+  {
+    accessorKey: "CREATED",
+    header: () => <div className="uppercase">Created</div>,
+    cell: ({ row }) => {
+      const createdDate = new Date(row.getValue("CREATED"));
+      return (
+        <div className="flex gap-3">
+          <span>{createdDate.toLocaleDateString()}</span>
+          <span>{createdDate.toLocaleTimeString()}</span>
         </div>
-      ),
+      );
     },
-  ];
+  },
+  {
+    id: "actions",
+    header: () => <div className="uppercase">Action</div>,
+    cell: ({ row }) => (
+      <div className="flex items-center gap-2">
+        <button className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300" onClick={() => handleEdit(row.original._id)}>
+          <Edit2 size={15} />
+        </button>
+        <button className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300" onClick={() => handleDelete(row.original._id, fetchAssistants)}>
+          <Trash2 size={15} />
+        </button>
+        <button
+          className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300"
+          onClick={() => {
+            row.original.handleStatusChange(row.original._id, "inactive");
+          }}>
+          <XIcon size={15} />
+        </button>
+        <button
+          className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300"
+          onClick={() => {
+            row.original.handleStatusChange(row.original._id, "active");
+          }}>
+          <Check size={15} />
+        </button>
+      </div>
+    ),
+  },
+];
 
-const Table: React.FC<AssistantsTableProps> = ({ refreshAssistantsTable, setRefreshAssistantsTable }) => {
+const AssistantsTable: React.FC<AssistantsTableProps> = ({ refreshAssistantsTable, setRefreshAssistantsTable }) => {
   const router = useRouter();
   const [assistants, setAssistants] = useState<Assistant[]>([]);
   const [isPending, setIsPending] = useState(false);
@@ -159,8 +143,8 @@ const Table: React.FC<AssistantsTableProps> = ({ refreshAssistantsTable, setRefr
           _id: assistant._id,
           "ASSISTANT NAME": assistant["ASSISTANT NAME"],
           "ASSISTANT DESCRIPTION": assistant["ASSISTANT DESCRIPTION"],
-          "STATUS": assistant["STATUS"],
-          "CREATED": assistant["CREATED"] || new Date().toISOString(),
+          STATUS: assistant["STATUS"],
+          CREATED: assistant["CREATED"] || new Date().toISOString(),
           handleStatusChange: async (id: string, status: string) => {
             const updateAssistantStatus = async () => {
               try {
@@ -183,14 +167,12 @@ const Table: React.FC<AssistantsTableProps> = ({ refreshAssistantsTable, setRefr
               }
             };
 
-            setAssistants((prevAssistants) =>
-              prevAssistants.map((a) => (a._id === id ? { ...a, STATUS: status } : a))
-            );
+            setAssistants((prevAssistants) => prevAssistants.map((a) => (a._id === id ? { ...a, STATUS: status } : a)));
             await updateAssistantStatus();
           },
         }));
         setAssistants(formattedAssistants);
-        setRefreshAssistantsTable(false)
+        setRefreshAssistantsTable(false);
       } else {
         console.error("Unexpected API response format:", response.data);
       }
@@ -202,7 +184,7 @@ const Table: React.FC<AssistantsTableProps> = ({ refreshAssistantsTable, setRefr
   };
 
   useEffect(() => {
-    if(refreshAssistantsTable){
+    if (refreshAssistantsTable) {
       fetchAssistants();
     }
   }, [refreshAssistantsTable]);
@@ -250,9 +232,7 @@ const Table: React.FC<AssistantsTableProps> = ({ refreshAssistantsTable, setRefr
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className="bg-[#0347370D]">
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                  </TableHead>
+                  <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>
                 ))}
               </TableRow>
             ))}
@@ -320,6 +300,6 @@ const Table: React.FC<AssistantsTableProps> = ({ refreshAssistantsTable, setRefr
       />
     </div>
   );
-}
+};
 
-export default Table;
+export default AssistantsTable;

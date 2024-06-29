@@ -1,7 +1,8 @@
+import { API_URL } from "@/lib/api";
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://127.0.0.1:5000/",
+  baseURL: API_URL,
 });
 
 instance.interceptors.request.use(
