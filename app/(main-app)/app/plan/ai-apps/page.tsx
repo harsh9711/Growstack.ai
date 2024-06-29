@@ -13,7 +13,7 @@ interface Assistant {
   "ASSISTANT NAME": string;
   "ASSISTANT DESCRIPTION": string;
   icon: string;
-  CATEGORY: string;
+  category: string;
 }
 
 export default function MarketingPage() {
@@ -26,19 +26,25 @@ export default function MarketingPage() {
   const fetchAssistants = async () => {
     setIsPending(true);
     try {
-      var url = `${API_URL}/ai/api/v1/chat-template?page=1&limit=20`
-      if(selectedTag=="Others"){
-        url = `${API_URL}/ai/api/v1/chat-template/user?page=1&limit=20`
+      let apiUrl = `${API_URL}/ai/api/v1/chat-template?page=1&limit=20`;
+console.log("selectedtag",selectedTag);
+      if (selectedTag === "Others") {
+        apiUrl = `${API_URL}/ai/api/v1/chat-template/user?page=1&limit=20&search=${searchQuery}`;
       }
-      const response = await axios.get(url);
+
+      console.log("API URL:", apiUrl);
+
+      const response = await axios.get(apiUrl); 
+
+      console.log("API Response:", response.data); 
+
       if (response.data.data && response.data.data.chatTemplates) {
-        console.log(response.data);
         const formattedAssistants = response.data.data.chatTemplates.map((assistant: any) => ({
           _id: assistant._id,
           "ASSISTANT NAME": assistant["ASSISTANT NAME"],
           "ASSISTANT DESCRIPTION": assistant["ASSISTANT DESCRIPTION"],
           icon: assistant["icon"],
-          CATEGORY: assistant["CATEGORY"],
+          category: assistant["category"],
         }));
         setAssistants(formattedAssistants);
       } else {
@@ -54,10 +60,16 @@ export default function MarketingPage() {
 
   useEffect(() => {
     fetchAssistants();
-  }, [assistants]);
+  }, [selectedTag, searchQuery]);
 
-  // Function to filter assistants based on selected category
-  const filteredAssistants = assistants.filter((assistant) => selectedTag === "Others" || assistant.CATEGORY === selectedTag);
+  const filteredAssistants = assistants.filter((assistant) => {
+    if (selectedTag === "Others") {
+      return true; 
+    } else {
+      return assistant.category === selectedTag; 
+    }
+  });
+  
 
   return (
     <Fragment>
@@ -65,7 +77,9 @@ export default function MarketingPage() {
         <div className="flex justify-between items-center mt-8">
           <div className="space-y-2 w-full">
             <h1 className="text-2xl font-semibold">AI apps</h1>
-            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">AI marketing and sales assistant</p>
+            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
+              AI marketing and sales assistant
+            </p>
           </div>
           <div className="w-full flex justify-end gap-2">
             <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
@@ -94,7 +108,8 @@ export default function MarketingPage() {
               className={clsx(
                 "py-3.5 px-6 rounded-lg cursor-pointer flex items-center gap-2 transition duration-300",
                 selectedTag === tag.name ? "bg-primary-green text-white" : "bg-[#E9E9E9] text-primary-green"
-              )}>
+              )}
+            >
               <Image src={tag.icon} alt="" width={20} height={20} />
               <span>{tag.name}</span>
             </div>
@@ -110,10 +125,18 @@ export default function MarketingPage() {
               <Link href={`/app/plan/ai-apps/${assistant._id}`} key={assistant._id}>
                 <div className="flex items-center justify-between gap-5 bg-white border border-[#EEF0F4] rounded-2xl p-6 shadow-xl shadow-gray-100 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer">
                   <div className="flex gap-4 items-start">
-                    <img src={assistant["icon"]} alt={assistant["ASSISTANT NAME"]} width={80} height={80} className="w-[64px] h-[64px]" />
+                    <img
+                      src={assistant["icon"]}
+                      alt={assistant["ASSISTANT NAME"]}
+                      width={80}
+                      height={80}
+                      className="w-[64px] h-[64px]"
+                    />
                     <div className="space-y-2">
                       <h1 className="text-lg font-semibold">{assistant["ASSISTANT NAME"]}</h1>
-                      <p className="text-primary-black text-opacity-70 text-[14px] leading-relaxed">{assistant["ASSISTANT DESCRIPTION"]}</p>
+                      <p className="text-primary-black text-opacity-70 text-[14px] leading-relaxed">
+                        {assistant["ASSISTANT DESCRIPTION"]}
+                      </p>
                     </div>
                   </div>
                   <div className="cursor-pointer w-full max-w-fit hover:bg-gray-50 p-1 rounded transition">
