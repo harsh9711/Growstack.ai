@@ -204,7 +204,7 @@ const WebScraping: React.FC = () => {
               <button className=" h-12 px-7 rounded-xl text-primary-green flex items-center gap-3 font-medium">
                 {/* Functionality for the first button */}
               </button>
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 relative z-[20]">
                 <BulkDialog onBulkAdd={handleBulkAdd} />
                 <button className="bg-white h-12 px-8 rounded-xl text-primary-green flex items-center gap-3 font-medium" onClick={addField}>
                   <Plus size={23} />
@@ -233,7 +233,7 @@ const WebScraping: React.FC = () => {
             </div>
           </div>
 
-          <div className="mt-8">
+          <div className="mt-8 relative z-[10]">
             <MapContainer center={center} zoom={zoom} style={{ width: "100%", height: "600px" }}>
               <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
               {places.map((place, index) => (
