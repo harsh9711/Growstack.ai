@@ -118,10 +118,10 @@ console.log("selectedtag",selectedTag);
         <div className="grid grid-cols-3 gap-5 mt-9">
           {loading ? (
             <p>Loading...</p>
-          ) : filteredAssistants.length < 1 ? (
+          ) : assistants.length < 1 ? (
             <div>No assistants found</div>
           ) : (
-            filteredAssistants.map((assistant, index) => (
+            assistants.map((assistant, index) => (
               <Link href={`/app/plan/ai-apps/${assistant._id}`} key={assistant._id}>
                 <div className="flex items-center justify-between gap-5 bg-white border border-[#EEF0F4] rounded-2xl p-6 shadow-xl shadow-gray-100 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer">
                   <div className="flex gap-4 items-start">
