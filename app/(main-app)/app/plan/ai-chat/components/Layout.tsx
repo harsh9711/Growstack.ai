@@ -12,14 +12,16 @@ import clsx from "clsx";
 const Layout: React.FC = () => {
   const [messages, setMessages] = React.useState<string[]>([]);
   const [showNewChatInput, setShowNewChatInput] = useState(false);
+  const [selectedModel, setSelectedModel] = useState<string>("gpt-3.5-turbo");
 
   const handleSend = (message: string) => {
-    setMessages([...messages, message]);
+    setMessages(prevMessages => [...prevMessages, `You: ${message}`]);
+    
   };
 
   const options = [
-    { label: "ChatGPT 3.5", value: "chatgpt-3.5", icon: <ChatGptIcon2 /> },
-    { label: "ChatGPT 3.5 Turbo", value: "chatgpt-3.5-turbo", icon: <ChatGptIcon2 /> },
+    { label: "ChatGPT 3.5", value: "gpt-3.5", icon: <ChatGptIcon2 /> },
+    { label: "ChatGPT 3.5 Turbo", value: "gpt-3.5-turbo", icon: <ChatGptIcon2 /> },
     { label: "GPT 4", value: "gpt-4", icon: <ChatGptIcon2 /> },
     { label: "GPT 4 Turbo", value: "gpt-4-turbo", icon: <ChatGptIcon2 /> },
     { label: "GPT 4o", value: "gpt-4o", icon: <ChatGptIcon2 /> },
@@ -83,7 +85,7 @@ const Layout: React.FC = () => {
             onClick={() => setShowNewChatInput(true)}
             className="text-white bg-primary-green hover:bg-primary-green/90 flex gap-2 justify-center items-center h-12 px-6 font-medium rounded-xl transition-all duration-300 text-sm">
             New
-          </button>
+          </button> 
           <button className="text-white bg-primary-black rounded-full h-12 w-12 grid place-content-center">
             <Search size={20} />
           </button>
@@ -125,7 +127,7 @@ const Layout: React.FC = () => {
             <ChatMessage key={idx} message={message} isUser={idx % 2 === 0} />
           ))}
         </div>
-        <ChatInput onSend={handleSend} />
+        {showNewChatInput && <ChatInput onSend={handleSend} selectedModel={selectedModel} />}
       </main>
     </div>
   );
