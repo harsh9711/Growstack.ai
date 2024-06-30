@@ -181,7 +181,7 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({ currentStep, setCurre
                 ))}
               </ul>
               <div className="flex justify-end">
-                <button onClick={generateArticle} className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px] flex gap-2">
+                <button onClick={generateArticle} className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px] flex gap-2 items-center justify-center">
                   {isArticlePending ? <Spinner /> : "Generate Article"}
                 </button>
               </div>

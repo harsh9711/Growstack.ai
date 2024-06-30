@@ -7,9 +7,9 @@ const StepIndicator = ({ steps, currentStep, setCurrentStep }: { steps: string[]
       {steps.map((step, index) => (
         <div key={index} className={`flex items-start gap-5 ${index <= currentStep ? "active" : ""}`}>
           <span
-            onClick={() => index <= currentStep && setCurrentStep(index)} 
+            // onClick={() => index <= currentStep && setCurrentStep(index)} 
             className={clsx(
-              "cursor-pointer h-12 w-12 bg-gray-100 grid place-content-center rounded-full transition-all duration-300",
+              "h-12 w-12 bg-gray-100 grid place-content-center rounded-full transition-all duration-300",
               index <= currentStep && "bg-primary-green text-white",
               index > currentStep && "!cursor-default opacity-50" 
             )}>
