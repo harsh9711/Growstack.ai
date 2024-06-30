@@ -70,3 +70,5 @@ export { default as EditIcon } from "@/public/svgs/edit.svg";
 export { default as ChatGptIcon2 } from "@/public/icons/chat-gpt2.svg";
 export { default as AnthropicClaude } from "@/public/icons/anthropic-claude.svg";
 export { default as GoogleGemini } from "@/public/icons/google-gemini.svg";
+export { default as CheckIcon2 } from "@/public/svgs/check2.svg";
+export { default as Draggable } from "@/public/svgs/draggable.svg";
