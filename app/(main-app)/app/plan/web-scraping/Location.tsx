@@ -5,7 +5,6 @@ import BulkDialog from "./components/BulkDialog";
 import axios from "axios";
 import { API_URL } from "@/lib/api";
 // import LocationMap from "./Location";
-import AssistantsTable from "./Table";
 import { LoadScript, GoogleMap, Marker } from "@react-google-maps/api";
 import Link from "next/link";
 

@@ -1,24 +1,22 @@
 import Image from "next/image";
+import Link from "next/link";
+import { Assistant } from "../types";
 
-interface AssistantCardProps {
-  avatar: string;
-  name: string;
-  expertise: string;
-}
-
-export default function AssistantCard({ avatar, name, expertise }: AssistantCardProps) {
+export default function AssistantCard({ avatar, name, role, id }: Assistant) {
   return (
     <div className="bg-white border border-[#E8E8E8] rounded-2xl p-4">
       <div className="group relative rounded-2xl overflow-hidden group shadow-box">
-        <img src={avatar} alt={name}  className="group-hover:scale-110 transition-all duration-300 min-h-[255px] w-full object-cover max-h-[255px]" />
+        <img src={avatar} alt={name} className="group-hover:scale-110 transition-all duration-300 min-h-[255px] w-full object-cover max-h-[255px]" />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black z-[1] flex flex-col justify-end text-white p-4 gap-2">
           <h1 className="text-xl font-semibold text-center">{name}</h1>
-          <p className="text-center text-white text-opacity-80 text-sm">{expertise}</p>
+          <p className="text-center text-white text-opacity-80 text-sm">{role}</p>
         </div>
       </div>
-      <button className="bg-[#CECECE] text-[#7C7C7C] h-12 w-full rounded-xl mt-3 hover:bg-primary-green hover:text-white transition-all duration-300">
-        Chat now
-      </button>
+      <Link href={`/app/plan/ai-assistant/chat/${id}`}>
+        <button className="bg-[#CECECE] text-[#7C7C7C] h-12 w-full rounded-xl mt-3 hover:bg-primary-green hover:text-white transition-all duration-300">
+          Chat now
+        </button>
+      </Link>
     </div>
   );
 }
