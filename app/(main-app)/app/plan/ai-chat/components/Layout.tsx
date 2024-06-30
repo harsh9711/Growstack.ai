@@ -19,25 +19,68 @@ import axios from "axios";
 import { API_URL } from "@/lib/api";
 
 interface SidebarItem {
+  _id: string;
   title: string;
-  selected: boolean;
+  createdDate: string;
+  updatedDate?: string;
+  selected:boolean;
+  onRename: (_id: string, newTitle: string) => void;
+  onSelect: () => void;
+
 }
 
+const groupByDate = (items: SidebarItem[]) => {
+  const grouped: { [date: string]: SidebarItem[] } = {};
+
+  items.forEach(item => {
+    const date = item.updatedDate ? item.updatedDate?.split('T')[0] : item.createdDate?.split('T')[0];
+    if (!grouped[date]) {
+      grouped[date] = [];
+    }
+    grouped[date].push(item);
+  });
+
+  return grouped;
+};
 const Layout: React.FC = () => {
   const [messages, setMessages] = useState<string[]>([]);
   const [showNewChatInput, setShowNewChatInput] = useState(false);
   const [selectedModel, setSelectedModel] = useState<string>("gpt-3.5-turbo");
   const [sidebarItems, setSidebarItems] = useState<SidebarItem[]>([]);
+  const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
 
-  useEffect(() => {
+ 
+
+   const fetchMessages = async (_id: string) => {
+    try {
+      const response = await axios.get(`${API_URL}/ai/api/v1/conversation/${_id}`);
+      console.log("Fetch Messages API Response:", response.data.data.chats[0].thread[0].user_prompt);
+            console.log("Fetch Messages API Response:", response.data.data.chats[0].thread[0].response);
+      const chatData = response.data.data.chats[0].thread;
+
+       const messages = chatData.flatMap((thread: any) => [
+        `User: ${thread.user_prompt}`,
+        `Assistant: ${thread.response}`,
+      ]);
+      setMessages(messages);
+      setSelectedConversation(_id); 
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    }
+  };
+    useEffect(() => {
+    console.log("useEffect executed");
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${API_URL}ai/api/v1/conversation/`);
-        console.log("API Response:", response.data);
-        // Adjust the response based on your API's structure
-        const items = response.data.map((item: any) => ({
+        console.log("Fetching data from API...");
+        const response = await axios.get(`${API_URL}/ai/api/v1/conversation/`);
+        console.log("API Response:", response.data.data[0]);
+        const items = response.data.data.map((item: any) => ({
+          _id: item._id,
           title: item.title,
-          selected: item.selected
+          selected: item.selected,
+          createdDate: item.createdAt,
+          updatedDate: item.updatedAt,
         }));
         setSidebarItems(items);
       } catch (error) {
@@ -47,10 +90,24 @@ const Layout: React.FC = () => {
 
     fetchData();
   }, []);
+    const handleRename = async (_id: string, newTitle: string) => {
+    try {
+    const response = await axios.put(`${API_URL}/ai/api/v1/conversation/${_id}`, { title: newTitle });
+    console.log(response)
+      setSidebarItems(prevItems =>
+        prevItems.map(item =>
+          item._id === _id ? { ...item, title: newTitle, updatedDate: new Date().toISOString() } : item
+        )
+      );
+    } catch (error) {
+      console.error("Error renaming chat:", error);
+    }
+  };
 
   const handleSend = (message: string) => {
     setMessages(prevMessages => [...prevMessages, `You: ${message}`]);
   };
+  const groupedSidebarItems = groupByDate(sidebarItems);
 
   const options = [
     { label: "ChatGPT 3.5", value: "gpt-3.5", icon: <ChatGptIcon2 /> },
@@ -130,9 +187,22 @@ const Layout: React.FC = () => {
             Clear all
           </button>
         </div>
-        <div className="flex-1 h-full max-h-[68vh] overflow-x-hidden overflow-y-auto hidden-scrollbar pb-8">
-          {sidebarItems.map((item, index) => (
-            <SidebarItem key={index} title={item.title} selected={item.selected} />
+ <div className="relative p-5 flex-1 overflow-y-auto max-h-[calc(100vh-280px)]">
+          {Object.entries(groupedSidebarItems).map(([date, items]) => (
+            <div key={date}>
+              <h3 className="text-lg font-semibold">{date}</h3>
+              {items.map((item) => (
+            <SidebarItem
+                  key={item._id}
+                  _id={item._id}
+                  title={item.title}
+                  onSelect={() => fetchMessages(item._id)}
+                  onRename={handleRename} setSidebarItems={function (value: React.SetStateAction<any[]>): void {
+                    throw new Error("Function not implemented.");
+                  } }                
+                />
+              ))}
+            </div>
           ))}
         </div>
         <div className="h-20 w-full bg-gradient-to-b from-transparent via-white to-white absolute bottom-0 rounded-b-3xl" />
