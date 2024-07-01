@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Assistant } from "../types";
+import { Assistant } from "./types";
 
 export default function AssistantCard({ avatar, name, role, id }: Assistant) {
   return (
