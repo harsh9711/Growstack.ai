@@ -78,7 +78,7 @@ export default function Navbar() {
     <header className="bg-white shadow-2xl shadow-primary-green/10 py-4 px-10 rounded-[24px] w-full max-w-[90%] mx-auto relative z-[5]">
       <nav className="flex justify-between items-center">
         <div className="border-r border-[#DEDEDE] pr-10">
-          <Image src="/logo/growstack.svg" alt="" width={150} height={40} draggable={false} className="select-none max-h-14" />
+          <Image src="/logo/growstack.svg" alt="" width={150} height={40} draggable={false} className="select-none max-h-14" priority />
         </div>
         <div className="flex gap-3">
           {navLinks.map((link, index) => (

@@ -3,6 +3,7 @@ import { InputIcon2 } from "@/components/svgs";
 import { ArrowRight, Plus } from "lucide-react";
 import React, { Fragment, useState } from "react";
 import AddInput from "./layout/AddInput";
+import ProvidersDrawer from "./ProvidersDrawer";
 
 export default function InputSection() {
   const [addNewInput, setAddNewInput] = useState(false);
@@ -36,10 +37,14 @@ export default function InputSection() {
                 Add Input
               </button>
               <span className="text-center block">Or</span>
-              <button className="w-full text-center border border-[#E8E8E8] text-primary-green hover:bg-primary-green/10 transition duration-500 px-5 py-4 rounded-xl flex items-center justify-center gap-2">
-                <ArrowRight size={20} />
-                Continue without inputs
-              </button>
+              <ProvidersDrawer
+                trigger={
+                  <button className="w-full text-center border border-[#E8E8E8] text-primary-green hover:bg-primary-green/10 transition duration-500 px-5 py-4 rounded-xl flex items-center justify-center gap-2">
+                    <ArrowRight size={20} />
+                    Continue without inputs
+                  </button>
+                }
+              />
             </div>
           </div>
         </Fragment>

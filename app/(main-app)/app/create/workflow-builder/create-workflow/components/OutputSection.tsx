@@ -4,6 +4,7 @@ import { Plus, Send } from "lucide-react";
 import { useState } from "react";
 import AddOutput from "./layout/AddOutput";
 import { Fragment } from "react";
+import ProvidersDrawer from "./ProvidersDrawer";
 export default function OutputSection() {
   const [addNewOutput, setAddNewOutput] = useState(false);
 
@@ -35,10 +36,14 @@ export default function OutputSection() {
                 Add Output
               </button>
               <span className="text-center block">Or</span>
-              <button className="w-full text-center border border-[#E8E8E8] text-primary-green hover:bg-primary-green/10 transition duration-500 px-5 py-4 rounded-xl flex items-center justify-center gap-2">
-                <Send size={20} />
-                Publish
-              </button>
+              <ProvidersDrawer
+                trigger={
+                  <button className="w-full text-center border border-[#E8E8E8] text-primary-green hover:bg-primary-green/10 transition duration-500 px-5 py-4 rounded-xl flex items-center justify-center gap-2">
+                    <Send size={20} />
+                    Publish
+                  </button>
+                }
+              />
             </div>
           </div>
         </Fragment>

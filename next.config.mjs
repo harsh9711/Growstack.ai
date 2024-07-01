@@ -25,6 +25,20 @@ const nextConfig = {
 
     return config;
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "oaidalleapiprodscus.blob.core.windows.net",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "aixperts.net",
+        port: "",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

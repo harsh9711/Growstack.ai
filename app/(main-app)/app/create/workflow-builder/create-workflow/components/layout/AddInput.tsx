@@ -3,7 +3,7 @@
 import Motion from "@/components/Motion";
 import { FileUpload, LongText, NumberHashtag, ShortText, Switch as SwitchIcon } from "@/components/svgs";
 import clsx from "clsx";
-import { Edit, Plus, Trash2 } from "lucide-react";
+import { ArrowRight, Edit, Plus, Trash2 } from "lucide-react";
 import React, { useState } from "react";
 import ProvidersDrawer from "../ProvidersDrawer";
 import FileUploadInputSection from "./sections/input/FileUploadInputSection";
@@ -99,7 +99,14 @@ export default function AddInput() {
             <Plus />
             Add input
           </button>
-          <ProvidersDrawer />
+          <ProvidersDrawer
+            trigger={
+              <button className="w-full text-center bg-primary-green text-white hover:bg-primary-green/90 transition duration-500 px-5 py-4 rounded-xl flex items-center justify-center gap-2">
+                <ArrowRight size={20} />
+                Continue
+              </button>
+            }
+          />
         </div>
       </div>
     </Motion>
