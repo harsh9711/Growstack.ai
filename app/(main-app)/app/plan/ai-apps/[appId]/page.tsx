@@ -10,6 +10,11 @@ import { BsStarFill } from "react-icons/bs";
 import Editor from "./components/Editor";
 import { Input } from "@/components/ui/input";
 import { API_URL } from "@/lib/api";
+import { EditorState, convertToRaw } from "draft-js";
+import { saveAs } from "file-saver"; // Import file-saver library for downloading files
+import { jsPDF } from "jspdf";
+import "jspdf-autotable";
+
 
 const Dropdown = ({ label, items, infoIcon, hideLabel, value, onChange }: any) => (
   <div className="space-y-3">
@@ -36,7 +41,8 @@ const Dropdown = ({ label, items, infoIcon, hideLabel, value, onChange }: any) =
 export default function AiAppPage({ params: { assistantId } }: { params: { assistantId: string } }) {
   const [assistant, setAssistant] = useState<any>({});
   const [userPrompts, setUserPrompts] = useState<string[]>([]); // Initialize as empty array
-
+  const [editorState, setEditorState] = useState(EditorState.createEmpty()); // Example state for editor content
+  const [fileName, setFileName] = useState(""); // State for file name input
   const [loading, setLoading] = useState(true);
   const [generatedContent, setGeneratedContent] = useState<string>("");
   const [userInput, setUserInput] = useState({
@@ -48,7 +54,11 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
     number_of_results: 1,
     estimated_result_length: 400,
   });
-
+  const stripHtmlTags = (html: string) => {
+    const temp = document.createElement("div");
+    temp.innerHTML = html;
+    return temp.textContent || temp.innerText || "";
+  };
   useEffect(() => {
     const fetchAssistant = async () => {
       try {
@@ -69,8 +79,70 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
 
     fetchAssistant();
   }, [assistantId]);
+ 
 
-
+  const handleDownload = (selectedOption: string) => {
+    const contentState = editorState.getCurrentContent();
+    const rawContentState = convertToRaw(contentState);
+    const formattedContent = generatedContent;
+    let plainTextContent = stripHtmlTags(formattedContent);
+  
+    // Prepare different formats
+    const formats = {
+      "Copy as Text": plainTextContent,
+      "Copy as HTML": formattedContent,
+      "Download as DOC": plainTextContent, // Adjust content as needed for DOC format
+      "Download as TXT": plainTextContent, // Adjust content as needed for TXT format
+      "Download as PDF": plainTextContent, // Adjust content as needed for PDF format
+    };
+  
+    // Helper function to add text to PDF
+    const addTextToPdf = (content: string) => {
+      const pdfDoc = new jsPDF();
+      let yPos = 10;
+      const pageHeight = pdfDoc.internal.pageSize.height;
+  
+      const lines = pdfDoc.splitTextToSize(content, 180);
+      lines.forEach((line: string | string[]) => {
+        if (yPos + 10 > pageHeight) {
+          pdfDoc.addPage();
+          yPos = 10;
+        }
+        pdfDoc.text(line, 10, yPos);
+        yPos += 10;
+      });
+  
+      return pdfDoc;
+    };
+  
+    // Handle different download options based on selectedOption
+    switch (selectedOption) {
+      case "Copy as Text":
+        navigator.clipboard.writeText(formats["Copy as Text"]);
+        alert("Text copied to clipboard!");
+        break;
+      case "Copy as HTML":
+        navigator.clipboard.writeText(formats["Copy as HTML"]);
+        alert("HTML copied to clipboard!");
+        break;
+        case "Download as DOC":
+          const docContent = formats["Download as DOC"];
+          const docBlob = new Blob([docContent], { type: "application/msword;charset=utf-8" });
+          saveAs(docBlob, `${fileName}.doc`);
+          break;
+      case "Download as TXT":
+        const txtBlob = new Blob([formats["Download as TXT"]], { type: "text/plain;charset=utf-8" });
+        saveAs(txtBlob, `${fileName}.txt`);
+        break;
+      case "Download as PDF":
+        const pdfDoc = addTextToPdf(formats["Download as PDF"]);
+        pdfDoc.save(`${fileName}.pdf`);
+        break;
+      default:
+        console.error("Unsupported download option");
+    }
+  };
+  
   const handleSubmit = async () => {
     try {
       const formattedUserPrompt = assistant.inputs.map((input: any, index: number) => `${input.title}:${userPrompts[index]}`).join(".");
@@ -341,7 +413,12 @@ const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>, index: numb
         <div className="w-full p-8 bg-white rounded-2xl border border-[#EDEFF0] flex flex-col">
           <div className="flex items-center justify-between mb-5 border-b pb-5">
             <div className="flex items-center gap-2 w-full max-w-fit">
-              <Input placeholder="New Document" />
+            <input
+          type="text"
+          placeholder="Enter file name"
+          value={fileName}
+          onChange={(e) => setFileName(e.target.value)}
+        />
               <Select>
                 <SelectTrigger className="w-full border-none">
                   <SelectValue placeholder="All Workbooks" />
@@ -361,9 +438,47 @@ const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>, index: numb
             </div>
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
-                <button className="p-2 bg-gray-100 border rounded-lg">
-                  <Download size={20} className="text-gray-600" />
-                </button>
+              {/* <button
+        className="p-2 bg-gray-100 border rounded-lg"
+        onClick={handleDownload}
+        disabled={!fileName.trim() || editorState.getCurrentContent().hasText()}
+      > */}
+        {/* <Download size={20} className="text-gray-600" /> */}
+      {/* </button> */}
+      <Dropdown
+              label="Download"
+              items={["Copy as Text", "Copy as HTML", "Download as DOC", "Download as TXT", "Download as PDF"]}
+              hideLabel
+              value="Copy as Text"
+              onChange={(value: any) => handleDownload(value)}
+            />
+     
+          {/* <button
+            className="py-3.5 px-7 w-full bg-[#3D817B] text-white rounded-xl text-lg font-semibold hover:bg-[#329a82] transition-all"
+            onClick={handleDownload}
+          >
+            <Save size={20} className="mr-2" /> Download
+          </button>
+          <button
+            className="py-3.5 px-7 mt-3.5 w-full bg-[#3D817B] text-white rounded-xl text-lg font-semibold hover:bg-[#329a82] transition-all"
+            onClick={handleDownload}
+          >
+            <Save size={20} className="mr-2" /> Download
+          </button>
+          <button
+            className="py-3.5 px-7 mt-3.5 w-full bg-[#3D817B] text-white rounded-xl text-lg font-semibold hover:bg-[#329a82] transition-all"
+            onClick={handleDownload}
+          >
+            <Save size={20} className="mr-2" /> Download
+          </button>
+          <button
+            className="py-3.5 px-7 mt-3.5 w-full bg-[#3D817B] text-white rounded-xl text-lg font-semibold hover:bg-[#329a82] transition-all"
+            onClick={handleDownload}
+          >
+            <Save size={20} className="mr-2" /> Download
+          </button> */}
+    
+ 
                 <button className="p-2 bg-gray-100 border rounded-lg">
                   <Save size={20} className="text-gray-600" />
                 </button>
