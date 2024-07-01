@@ -20,11 +20,12 @@ export default function WorkflowBuilder() {
         </div>
         <div className="mt-10">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <Card
+           <Link href="/app/create/workflow-builder/seo-blog-writer"> 
+           <Card
               title="SEO blog writer"
               description="Automate the entire process from keyword research to content creation, you can produce high-quality, search engine-friendly ..."
               imageSrc="/assets/workflow-assets1.svg"
-            />
+            /></Link>
             <Card
               title="Research lead & generate personalized email"
               description="Personalize outreach of a new lead. This workflow uses GPT, Google Search, and LinkedIn ..."

@@ -8,7 +8,7 @@ const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 interface EditorProps {
   content: string;
-  onChange: (content: string) => void; // Add onChange handler to update parent component
+  onChange: (content: string) => void;
 }
 
 const Editor = ({ content, onChange }: EditorProps) => {
@@ -51,12 +51,18 @@ const Editor = ({ content, onChange }: EditorProps) => {
 
   const handleChange = (content: string) => {
     setValue(content);
-    onChange(content); // Propagate change back to parent component
+    onChange(content);
   };
 
   return (
     <div className="flex-1 h-full rounded-lg">
-      <ReactQuill value={value} onChange={handleChange} modules={modules} formats={formats} className="h-[calc(100%-40px)]" />
+      <ReactQuill
+        value={value}
+        onChange={handleChange}
+        modules={modules}
+        formats={formats}
+        className="h-[calc(100%-40px)]" 
+      />
     </div>
   );
 };
