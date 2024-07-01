@@ -38,8 +38,8 @@ console.log("selectedtag",selectedTag);
 
       console.log("API Response:", response.data); 
 
-      if (response.data.data && response.data.data.chatTemplates) {
-        const formattedAssistants = response.data.data.chatTemplates.map((assistant: any) => ({
+      if (response.data.data && response.data.data) {
+        const formattedAssistants = response.data.data.map((assistant: any) => ({
           _id: assistant._id,
           "ASSISTANT NAME": assistant["ASSISTANT NAME"],
           "ASSISTANT DESCRIPTION": assistant["ASSISTANT DESCRIPTION"],

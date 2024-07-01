@@ -129,8 +129,8 @@ const AssistantsTable: React.FC<AssistantsTableProps> = ({ refreshAssistantsTabl
     setIsPending(true);
     try {
       const response = await axios.get(`${API_URL}/ai/api/v1/chat-template/user?page=1&limit=20`);
-      if (response.data.data && response.data.data.chatTemplates) {
-        const formattedAssistants = response.data.data.chatTemplates.map((assistant: any) => ({
+      if (response.data.data && response.data.data.data) {
+        const formattedAssistants = response.data.data.data.map((assistant: any) => ({
           _id: assistant._id,
           "ASSISTANT NAME": assistant["ASSISTANT NAME"],
           "ASSISTANT DESCRIPTION": assistant["ASSISTANT DESCRIPTION"],
