@@ -213,7 +213,7 @@ const Layout: React.FC = () => {
             <ChatMessage key={idx} message={message} isUser={idx % 2 === 0} />
           ))}
         </div>
-        {showNewChatInput && <ChatInput onSend={handleSend} selectedModel={selectedModel} />}
+        {showNewChatInput && <ChatInput  onSend={handleSend} selectedModel={selectedModel} />}
       </main>
     </div>
   );

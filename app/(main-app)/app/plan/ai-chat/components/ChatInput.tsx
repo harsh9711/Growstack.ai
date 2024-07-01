@@ -1,4 +1,4 @@
-import { MicrophoneIcon, SendIcon2 } from "@/components/svgs"; 
+import { MicrophoneIcon, SendIcon2 } from "@/components/svgs";
 import autosize from "autosize";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
@@ -9,11 +9,13 @@ import { API_URL } from "@/lib/api";
 interface ChatInputProps {
   onSend: (message: string) => void;
   selectedModel: string;
+ 
 }
 
 const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel }) => {
   const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [chatId, setChatId] = useState("");
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -26,39 +28,41 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel }) => {
       console.log("Sending API requests...");
 
       try {
-        // First API call to create a conversation
-        const createResponse = await axios.get(`${API_URL}/ai/api/v1/conversation/create`);
-        console.log("Create Conversation API response:", createResponse.data.data._id);
-
-        // Second API call to send a message to the created conversation
-        const chatResponse = await axios.post(
-          `${API_URL}/ai/api/v1/conversation/chat`,
-          {
-            user_prompt: input,
-          },
-          {
-            params: {
-              conversation_id: createResponse.data.data._id,
-              // chat_id: createResponse.data.data._id,
-              model: selectedModel,
-            },
-          }
-        );
-
-        console.log("Chat API response:", chatResponse.data);
-
-      
-        onSend(input);
-
-        setTimeout(() => {
-          onSend(chatResponse.data);
-        }, 1000);
-
-        setInput(""); 
-
-        if (textareaRef.current) {
-          autosize.update(textareaRef.current);
+        // Check if chatId is not set and toCall is true
+        if (!chatId) {
+          const createResponse = await axios.get(`${API_URL}/ai/api/v1/conversation/create`);
+          console.log("Create Conversation API response:", createResponse.data.data._id);
+          setChatId(createResponse.data.data._id);
         }
+
+        // if (chatId) {
+          // Second API call to send a message to the created conversation
+          const chatResponse = await axios.post(
+            `${API_URL}/ai/api/v1/conversation/chat`,
+            {
+              user_prompt: input,
+            },
+            {
+              params: {
+                conversation_id: chatId,
+                model: selectedModel,
+              },
+            }
+          );
+
+          console.log("Chat API response:", chatResponse.data);
+          onSend(input);
+
+          setTimeout(() => {
+            onSend(chatResponse.data);
+          }, 1000);
+
+          setInput("");
+
+          if (textareaRef.current) {
+            autosize.update(textareaRef.current);
+          }
+        // }
       } catch (error) {
         console.error('Error calling APIs:', error);
       }
@@ -89,7 +93,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel }) => {
         className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
         <MicrophoneIcon />
       </button>
-     <button
+      <button
         onClick={handleSend}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
