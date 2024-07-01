@@ -91,12 +91,11 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
     const formats = {
       "Copy as Text": plainTextContent,
       "Copy as HTML": formattedContent,
-      "Download as DOC": plainTextContent, // Adjust content as needed for DOC format
-      "Download as TXT": plainTextContent, // Adjust content as needed for TXT format
-      "Download as PDF": plainTextContent, // Adjust content as needed for PDF format
+      "Download as DOC": plainTextContent,
+      "Download as TXT": plainTextContent,
+      "Download as PDF": plainTextContent,
     };
   
-    // Helper function to add text to PDF
     const addTextToPdf = (content: string) => {
       const pdfDoc = new jsPDF();
       let yPos = 10;
@@ -115,7 +114,6 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
       return pdfDoc;
     };
   
-    // Handle different download options based on selectedOption
     switch (selectedOption) {
       case "Copy as Text":
         navigator.clipboard.writeText(formats["Copy as Text"]);
@@ -160,9 +158,8 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
         }
       );
       console.log("Generated Data:", response.data);
-      setGeneratedContent(response.data); // Assuming API response has a 'generated_content' field
+      setGeneratedContent(response.data);
 
-      // Handle response data, display results, etc.
     } catch (error) {
       console.error("Error generating template:", error);
     }
@@ -177,7 +174,7 @@ const handleChange = (e: { target: { name: any; value: any; }; }) => {
 };
 
 const handleEditorChange = (content: string) => {
-  setGeneratedContent(content); // Update generated content state
+  setGeneratedContent(content);
 };
 
 const handleDropdownChange = (name: any, value: any) => {
@@ -297,7 +294,6 @@ const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>, index: numb
         <span className="text-primary-black text-opacity-50 text-sm">0/2000</span>
       </label>
       {input.field_type === "Checkbox list field" ? (
-        // Render checkboxes
         <div className="flex flex-col space-y-2">
           {input.description.split(",").map((option: string, optionIndex: number) => (
             <label key={optionIndex} className="flex items-center mt-4">
@@ -313,7 +309,6 @@ const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>, index: numb
         </div>
       ):null}
       {input.field_type === "Radio buttons field" && (
-        // Render radio buttons
         <div className="flex flex-col space-y-2">
           {input.description.split(",").map((option: string, optionIndex: number) => (
             <label key={optionIndex} className="flex items-center mt-4">
@@ -329,7 +324,6 @@ const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>, index: numb
         </div>
       )}
       {input.field_type === "Select list field" && (
-        // Render select options using your custom Dropdown component
         <Dropdown
           label={input.title}
           items={input.description.split(",").map((option: string) => option.trim())}
@@ -337,7 +331,6 @@ const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>, index: numb
           onChange={(value: any) => handleSelectChange(value, index)}
         />
       )}
-      {/* Remove the textarea rendering */}
       {input.field_type !== "Checkbox list field" &&
         input.field_type !== "Radio buttons field" &&
         input.field_type !== "Select list field" && (
@@ -438,13 +431,7 @@ const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>, index: numb
             </div>
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
-              {/* <button
-        className="p-2 bg-gray-100 border rounded-lg"
-        onClick={handleDownload}
-        disabled={!fileName.trim() || editorState.getCurrentContent().hasText()}
-      > */}
-        {/* <Download size={20} className="text-gray-600" /> */}
-      {/* </button> */}
+             
       <Dropdown
               label="Download"
               items={["Copy as Text", "Copy as HTML", "Download as DOC", "Download as TXT", "Download as PDF"]}
@@ -452,33 +439,7 @@ const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>, index: numb
               value="Copy as Text"
               onChange={(value: any) => handleDownload(value)}
             />
-     
-          {/* <button
-            className="py-3.5 px-7 w-full bg-[#3D817B] text-white rounded-xl text-lg font-semibold hover:bg-[#329a82] transition-all"
-            onClick={handleDownload}
-          >
-            <Save size={20} className="mr-2" /> Download
-          </button>
-          <button
-            className="py-3.5 px-7 mt-3.5 w-full bg-[#3D817B] text-white rounded-xl text-lg font-semibold hover:bg-[#329a82] transition-all"
-            onClick={handleDownload}
-          >
-            <Save size={20} className="mr-2" /> Download
-          </button>
-          <button
-            className="py-3.5 px-7 mt-3.5 w-full bg-[#3D817B] text-white rounded-xl text-lg font-semibold hover:bg-[#329a82] transition-all"
-            onClick={handleDownload}
-          >
-            <Save size={20} className="mr-2" /> Download
-          </button>
-          <button
-            className="py-3.5 px-7 mt-3.5 w-full bg-[#3D817B] text-white rounded-xl text-lg font-semibold hover:bg-[#329a82] transition-all"
-            onClick={handleDownload}
-          >
-            <Save size={20} className="mr-2" /> Download
-          </button> */}
-    
- 
+
                 <button className="p-2 bg-gray-100 border rounded-lg">
                   <Save size={20} className="text-gray-600" />
                 </button>
