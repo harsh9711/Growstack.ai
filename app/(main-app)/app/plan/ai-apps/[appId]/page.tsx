@@ -287,7 +287,7 @@ const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>, index: numb
           <div>
             <Dropdown
               label="AI Model"
-              items={["GPT 3.5 Turbo", "GPT 3", "GPT 2.5"]}
+              items={["gpt-3.5-turbo","gpt-3.5-turbo-instruct","gpt-4","gpt-4-turbo","gpt-4o"]}
               value={userInput.model}
               onChange={(value: any) => handleDropdownChange("model", value)}
             />
