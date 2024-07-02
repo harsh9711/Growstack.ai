@@ -37,6 +37,11 @@ const nextConfig = {
         hostname: "aixperts.net",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "growstackai.s3.amazonaws.com",
+        port: "",
+      },
     ],
   },
 };
