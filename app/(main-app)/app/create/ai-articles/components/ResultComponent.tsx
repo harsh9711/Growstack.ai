@@ -79,8 +79,8 @@ const ResultComponent: React.FC<ResultComponentProps> = ({ articleData }) => {
         <Image src="/logo/growstack-mini.svg" alt="Growstack logo" width={40} height={40} />
         <h1 className="text-xl font-semibold">Successfully generated</h1>
         <p className="text-primary-black text-opacity-50 text-base !mt-4">You can edit your article in documents once it is generated.</p>
-        <Link href="/app/create/ai-articles">
-          <button className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px]">Create New</button>
+        <Link href="/app/create/ai-articles" className="w-full max-w-[150px] mx-auto">
+          <button className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl">Create New</button>
         </Link>
       </div>
       <section className="max-w-6xl mx-auto">
