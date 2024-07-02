@@ -9,13 +9,12 @@ import { API_URL } from "@/lib/api";
 interface ChatInputProps {
   onSend: (message: string) => void;
   selectedModel: string;
- 
 }
 
 const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel }) => {
   const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [chatId, setChatId] = useState("");
+  const [chatId, setChatId] = useState<string | null>(null); // Initialize chatId as null
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -28,15 +27,15 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel }) => {
       console.log("Sending API requests...");
 
       try {
-        // Check if chatId is not set and toCall is true
+        // Check if chatId is not set, fetch a new chatId
         if (!chatId) {
           const createResponse = await axios.get(`${API_URL}/ai/api/v1/conversation/create`);
           console.log("Create Conversation API response:", createResponse.data.data._id);
-          setChatId(createResponse.data.data._id);
+          setChatId(createResponse.data.data._id); // Set chatId from API response
         }
 
-        // if (chatId) {
-          // Second API call to send a message to the created conversation
+        // Send message only if chatId is set
+        if (chatId) {
           const chatResponse = await axios.post(
             `${API_URL}/ai/api/v1/conversation/chat`,
             {
@@ -54,7 +53,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel }) => {
           onSend(input);
 
           setTimeout(() => {
-            onSend(chatResponse.data);
+            onSend(chatResponse.data); // Assuming this is the appropriate way to handle onSend
           }, 1000);
 
           setInput("");
@@ -62,7 +61,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel }) => {
           if (textareaRef.current) {
             autosize.update(textareaRef.current);
           }
-        // }
+        }
       } catch (error) {
         console.error('Error calling APIs:', error);
       }
@@ -90,17 +89,15 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel }) => {
       />
       <ToolsDialog />
       <button
-        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
+        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
+        onClick={() => setChatId(null)} // Reset chatId to fetch new conversation when clicked
+      >
         <MicrophoneIcon />
       </button>
       <button
         onClick={handleSend}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            handleSend();
-          }
-        }}
-        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
+        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
+      >
         <SendIcon2 />
       </button>
     </div>

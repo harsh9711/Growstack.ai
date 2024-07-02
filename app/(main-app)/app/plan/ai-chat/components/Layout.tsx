@@ -64,6 +64,15 @@ const Layout: React.FC = () => {
       ]);
       setMessages(messages);
       setSelectedConversation(_id); 
+
+      const firstFewWords = chatData[0].user_prompt.split(' ').slice(0, 5).join(' ');
+      setSidebarItems(prevItems =>
+        prevItems.map(item =>
+          item._id === _id ? { ...item, title: firstFewWords } : item
+        )
+      );
+    setShowNewChatInput(true);
+
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
@@ -105,7 +114,7 @@ const Layout: React.FC = () => {
   };
 
   const handleSend = (message: string) => {
-    setMessages(prevMessages => [...prevMessages, `You: ${message}`]);
+    setMessages(prevMessages => [...prevMessages, `${message}`]);
   };
   const groupedSidebarItems = groupByDate(sidebarItems);
 
