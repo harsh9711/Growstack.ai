@@ -10,7 +10,10 @@ export default function BulkDialog({ onBulkAdd }: BulkDialogProps) {
 
   const handleAdd = () => {
     if (bulkInput.trim() === "") return;
-    const terms = bulkInput.split(",").map((term) => term.trim()).filter(Boolean); // Split by comma and trim whitespace
+    const terms = bulkInput
+      .split(",")
+      .map((term) => term.trim())
+      .filter(Boolean); // Split by comma and trim whitespace
 
     onBulkAdd(terms); // Pass the terms back to the parent component
     setBulkInput(""); // Clear the input after adding
@@ -33,21 +36,17 @@ export default function BulkDialog({ onBulkAdd }: BulkDialogProps) {
           <textarea
             className="h-[200px] bg-[#F2F2F2] rounded-2xl w-full resize-none p-4"
             value={bulkInput}
-            onChange={(e) => setBulkInput(e.target.value)}
-          ></textarea>
+            onChange={(e) => setBulkInput(e.target.value)}></textarea>
         </div>
         <div className="flex gap-3">
           <DialogClose className="w-full">
-            <button className="w-full py-3.5 px-4 bg-white border border-[#CF0000] text-[#CF0000] hover:bg-[#cf000009] rounded-xl mt-6">
-              Cancel
+            <button className="w-full py-3.5 px-4 bg-white border border-[#CF0000] text-[#CF0000] hover:bg-[#cf000009] rounded-xl mt-6">Cancel</button>
+          </DialogClose>
+          <DialogClose className="w-full">
+            <button className="w-full py-3.5 px-4 bg-primary-green sheen rounded-xl text-white mt-6" onClick={handleAdd}>
+              Add
             </button>
           </DialogClose>
-          <button
-            className="w-full py-3.5 px-4 bg-primary-green sheen rounded-xl text-white mt-6"
-            onClick={handleAdd}
-          >
-            Add
-          </button>
         </div>
       </DialogContent>
     </Dialog>

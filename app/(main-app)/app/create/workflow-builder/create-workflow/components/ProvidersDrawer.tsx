@@ -1,13 +1,13 @@
 //@ts-nocheck
 "use client";
-import { ArrowRight, ChevronRight, X } from "lucide-react";
+import { ChevronRight, X } from "lucide-react";
 
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import Image from "next/image";
 import { useState } from "react";
 import { tools } from "./data/tools";
 
-export default function ProvidersDrawer() {
+export default function ProvidersDrawer({ trigger }: { trigger: React.ReactNode }) {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
   const categories = ["All", "Text", "Image", "Stable diffusion", "Audio", "Music", "Video", "Integrations", "Utilities", "Email", "Workflows"];
@@ -16,12 +16,7 @@ export default function ProvidersDrawer() {
 
   return (
     <Drawer>
-      <DrawerTrigger asChild>
-        <button className="w-full text-center bg-primary-green text-white hover:bg-primary-green/90 transition duration-500 px-5 py-4 rounded-xl flex items-center justify-center gap-2">
-          <ArrowRight size={20} />
-          Continue
-        </button>
-      </DrawerTrigger>
+      <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerContent className="h-full max-h-[85vh]">
         <div className="mx-auto max-w-[90%] w-full relative h-full pb-40">
           <DrawerHeader>

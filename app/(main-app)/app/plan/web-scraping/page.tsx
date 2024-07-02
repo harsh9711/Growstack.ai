@@ -9,6 +9,10 @@ import BulkDialog from "./components/BulkDialog";
 import Link from "next/link";
 import { Table, TableBody, TableCell, TableHeader, TableHead, TableRow } from "@/components/ui/table";
 import dynamic from "next/dynamic";
+import Motion from "@/components/Motion";
+import Spinner from "@/components/Spinner";
+import { toast } from "react-hot-toast";
+import clsx from "clsx";
 
 const MapContainer = dynamic(() => import("react-leaflet").then((module) => module.MapContainer), { ssr: false });
 const TileLayer = dynamic(() => import("react-leaflet").then((module) => module.TileLayer), { ssr: false });
@@ -24,6 +28,7 @@ interface Place {
   rating: number;
   ratingCount: number;
   website: string;
+  category: string;
 }
 
 const WebScraping: React.FC = () => {
@@ -36,11 +41,13 @@ const WebScraping: React.FC = () => {
   const [showTable, setShowTable] = useState(false);
   const [center, setCenter] = useState<LatLngExpression>([39.0997, -94.5786]);
   const [zoom, setZoom] = useState(6); // Default zoom level
+  const [isPending, setIsPending] = useState(false);
 
   useEffect(() => {
     if (places.length > 0) {
       setCenter([places[0].latitude, places[0].longitude]);
-      setZoom(10); // Adjust zoom level if needed
+      console.log(center);
+      setZoom(20); // Adjust zoom level if needed
     }
   }, [places]);
 
@@ -59,10 +66,8 @@ const WebScraping: React.FC = () => {
         let data = response.data;
         if (countryName) {
           data = data[0];
-          console.log("Fetched country code by country name:", data);
-          setCountryCode(data.cca3);
-          setCenter([data.latlng[0], data.latlng[1]]); // Update map center based on fetched coordinates
-          setZoom(6); // Adjust zoom level if needed
+          setCenter([data.latitude, data.longitude]); // Update map center based on fetched coordinates
+          setZoom(100); // Adjust zoom level if needed
         } else {
           console.log("Fetched country code by IP:", data);
           setCountryCode(data.country_code);
@@ -112,9 +117,7 @@ const WebScraping: React.FC = () => {
       ...fields.map((field) => field.value.trim()).filter(Boolean),
     ];
 
-    console.log("All terms:", allTerms);
-    console.log("Country code:", countryCode);
-
+    setIsPending(true);
     try {
       const postData = {
         queries: allTerms,
@@ -122,11 +125,9 @@ const WebScraping: React.FC = () => {
         location: inputCountry, // Include inputCountry in the payload
       };
 
-      console.log("Post data:", postData);
-
       const response = await axios.post(`${API_URL}/ai/api/v1/webscrape`, postData);
       setPlaces(
-        response.data.data[0].places.map((place: any) => ({
+        response.data.data[0].places.map((place: Place) => ({
           title: place.title,
           address: place.address,
           phoneNumber: place.phoneNumber,
@@ -137,35 +138,21 @@ const WebScraping: React.FC = () => {
           longitude: place.longitude,
         }))
       );
-      console.log("address:", response.data.data[0].places[0].address);
-      console.log("title:", response.data.data[0].places[0].title);
-      console.log("phoneNumber:", response.data.data[0].places[0].phoneNumber);
-      console.log("rating:", response.data.data[0].places[0].rating);
-      console.log("ratingCount:", response.data.data[0].places[0].ratingCount);
-      console.log("website:", response.data.data[0].places[0].website);
-
-      setPlaces(
-        response.data.data[0].places.map((place: any) => ({
-          title: place.name,
-          address: place.formatted_address,
-          latitude: place.geometry.location.lat,
-          longitude: place.geometry.location.lng,
-        }))
-      );
-
+      toast.success("Your data has been scrapped!");
       setShowTable(true);
     } catch (error) {
       console.error("Error sending data to API:", error);
+      toast.error("There was an error processing your request!");
+    } finally {
+      setIsPending(false);
     }
   };
-  const showTableHandler = () => {
-    setShowTable(true);
-  };
+
   const renderRatingStars = (rating: number) => {
     const stars = [];
     for (let i = 0; i < 5; i++) {
       stars.push(
-        <span key={i} style={{ color: i < rating ? "#FFD700" : "gray", fontSize: "20px" }}>
+        <span key={i} style={{ color: i < rating ? "#FFD700" : "#E0E0E0", fontSize: "25px" }}>
           ★
         </span>
       );
@@ -215,10 +202,11 @@ const WebScraping: React.FC = () => {
           </section>
           <div className="mt-6">
             <h2 className="text-lg font-semibold">Location</h2>
-            <div className="flex items-center gap-4 mt-2">
+            <div className="flex items-center gap-4 mt-2 bg-[#F2F2F2] p-2 rounded-xl">
+              <Search className="text-primary-green/80 ml-4" />
               <input
                 type="text"
-                className="h-12 bg-[#F2F2F2] rounded-xl text-primary-black px-5 w-full"
+                className="h-12 bg-transparent text-primary-black w-full"
                 placeholder="Enter country name"
                 value={inputCountry}
                 onChange={handleCountryInputChange}
@@ -243,44 +231,62 @@ const WebScraping: React.FC = () => {
               ))}
             </MapContainer>
           </div>
+          <button
+            onClick={handleBulkSubmit}
+            disabled={isPending}
+            className={clsx(
+              "mx-auto mt-4 w-[200px] h-14 flex items-center justify-center bg-primary-green rounded-xl sheen text-white",
+              isPending && "bg-opacity-90"
+            )}>
+            {isPending ? <Spinner /> : "Start"}
+          </button>
 
           {showTable && (
-            <div className="rounded-lg border overflow-hidden mt-5 bg-white">
-              <h2 className="text-3xl font-semibold mb-4 text-center p-4">Scraped Places</h2>
+            <Motion
+              transition={{ duration: 0.2 }}
+              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+              classNames="rounded-lg border overflow-hidden mt-5 bg-white">
+              <h2 className="text-xl font-semibold mb-4 text-center p-4">Scraped Places</h2>
               <Table>
                 <TableHeader>
                   <TableRow className="bg-[#0347370D]">
-                    <TableHead className="text-xl">Business</TableHead>
-                    <TableHead className="text-xl">Rating</TableHead>
-                    <TableHead className="text-xl">Contact</TableHead>
-                    <TableHead className="text-xl">URL</TableHead>
+                    <TableHead>Business</TableHead>
+                    <TableHead>Rating</TableHead>
+                    <TableHead>Contact</TableHead>
+                    <TableHead>URL</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {places.map((place, index) => (
                     <TableRow key={index}>
                       <TableCell className="flex flex-col">
-                        <div className="text-xl font-semibold">{place?.title || "-"}</div>
-                        <div className="text-lg">{place?.address || "-"}</div>
+                        <div className="text-base font-semibold">{place?.title || "-"}</div>
+                        <div className="mt-1">{place?.address || "-"}</div>
                       </TableCell>
                       <TableCell>
                         <div>{renderRatingStars(place?.rating || 0)}</div>
-                        <div className="flex flex-row gap-4 text-md">
-                          <h2 className=" font-semibold">{place?.rating || "-"} </h2> {"  "} {"  "} {"  "} {"  "}
-                          <h2 className="text-sky-500">{place?.ratingCount || "-"}</h2>
+                        <div className="flex flex-row justify-between gap-4 text-md mt-1">
+                          <h2 className=" font-semibold">{place?.rating || "-"} </h2>
+                          <h2 className="text-sky-500 mr-20">{place?.ratingCount ? place.ratingCount.toLocaleString() + " Ratings" : "-"}</h2>
                         </div>
                       </TableCell>
                       <TableCell>
-                        <div className="text-lg">{place?.phoneNumber || "-"}</div>
+                        <div>{place?.phoneNumber || "-"}</div>
                       </TableCell>
                       <TableCell>
-                        <div className="text-lg">{place?.website || "-"}</div>
+                        {place.website ? (
+                          <Link href={place?.website} target="_blank" rel="noopener noreferrer" className="underline text-blue-600">
+                            {place?.website}
+                          </Link>
+                        ) : (
+                          "-"
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
-            </div>
+            </Motion>
           )}
         </div>
       </div>
