@@ -1,5 +1,6 @@
 import React from "react";
 import clsx from "clsx";
+import { Check } from "lucide-react";
 
 const StepIndicator = ({ steps, currentStep, setCurrentStep }: { steps: string[]; currentStep: number; setCurrentStep: (value: number) => void }) => {
   return (
@@ -7,13 +8,12 @@ const StepIndicator = ({ steps, currentStep, setCurrentStep }: { steps: string[]
       {steps.map((step, index) => (
         <div key={index} className={`flex items-start gap-5 ${index <= currentStep ? "active" : ""}`}>
           <span
-            // onClick={() => index <= currentStep && setCurrentStep(index)} 
             className={clsx(
               "h-12 w-12 bg-gray-100 grid place-content-center rounded-full transition-all duration-300",
               index <= currentStep && "bg-primary-green text-white",
-              index > currentStep && "!cursor-default opacity-50" 
+              index > currentStep && "!cursor-default opacity-50"
             )}>
-            {index + 1}
+            {index < currentStep ? <Check /> : index + 1}
           </span>
           <div className="space-y-2 flex flex-col items-center">
             <h1 className={clsx("text-base text-gray-400", index <= currentStep && "!text-primary-green")}>{step}</h1>

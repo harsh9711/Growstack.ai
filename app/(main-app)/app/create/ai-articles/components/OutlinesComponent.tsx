@@ -5,10 +5,10 @@ import Spinner from "@/components/Spinner";
 import axios from "@/config/axios.config";
 import clsx from "clsx";
 import { AnimatePresence } from "framer-motion";
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import toast from "react-hot-toast";
 import { creativityOptions, languageOptions, povOptions, writingToneOptions } from "../constants/options";
-import { IOutline, TKeyword } from "../types";
+import { IOutline } from "../types";
 import AdvancedOptions from "./AdvancedOptions";
 
 interface OutlinesComponentProps {
@@ -16,10 +16,14 @@ interface OutlinesComponentProps {
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   selectedOutlines: IOutline;
   setSelectedOutlines: React.Dispatch<React.SetStateAction<IOutline>>;
-  keywords: TKeyword;
-  setKeywords: React.Dispatch<React.SetStateAction<TKeyword>>;
-  title: string;
-  setTitle: React.Dispatch<React.SetStateAction<string>>;
+  keywords: string[];
+  setKeywords: React.Dispatch<React.SetStateAction<string[]>>;
+  articleTitle: string;
+  setArticleTitle: React.Dispatch<React.SetStateAction<string>>;
+  outlines: IOutline[];
+  setOutlines: React.Dispatch<React.SetStateAction<IOutline[]>>;
+  keywordInputValue: string;
+  setKeywordInputValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
@@ -29,17 +33,17 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
   setSelectedOutlines,
   keywords,
   setKeywords,
-  title,
-  setTitle,
+  articleTitle,
+  setArticleTitle,
+  outlines,
+  setOutlines,
+  keywordInputValue,
+  setKeywordInputValue,
 }) => {
-  const [isKeywordPending, setIsKeywordPending] = useState(false);
   const [isPending, setIsPending] = useState(false);
 
-  const [outlines, setOutlines] = useState<IOutline[]>([]);
   const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
-  const [generatedKeywords, setGeneratedKeywords] = useState<Array<string>>([]);
 
-  const [keywordsInput, setKeywordsInput] = useState<string>("");
   const [numOutlines, setNumOutlines] = useState<number>(3);
   const [numSubtitles, setNumSubtitles] = useState<number>(10);
 
@@ -51,7 +55,7 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
 
   const generateOutlines = () => {
     const data = {
-      title: title,
+      title: articleTitle,
       keywords: keywords,
       no_of_outlines: numOutlines,
       no_of_subtitles: numSubtitles,
@@ -68,35 +72,25 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
       .then(({ data: { data } }) => {
         setOutlines(data.outlines);
       })
-      .catch((error) => {
-        toast.error("Failed to generate outlines. Please try again.");
-        console.error("Error generating outlines:", error);
+      .catch((err) => {
+        if (err.response) {
+          toast.error(err.response.data.message);
+        } else {
+          toast.error(err.message);
+        }
+        console.log(err);
       })
       .finally(() => setIsPending(false));
   };
 
-  const generateKeywords = () => {
-    setGeneratedKeywords([]);
-    setIsKeywordPending(true);
-    axios
-      .post("/ai/api/v1/wizard/keywords", {
-        topic: title,
-        no_of_keywords: 5,
-        model: aiModel,
-        creativity: creativity,
-        tone: writingTone,
-        langauge: language,
-      })
-      .then(({ data: { data, message } }) => {
-        setGeneratedKeywords(data.keywords);
-        setKeywordsInput(generatedKeywords as any);
-        toast.success(message);
-      })
-      .catch((err) => {
-        toast.error("Something went wrong!!");
-        console.log(err);
-      })
-      .finally(() => setIsKeywordPending(false));
+  const handleKeywordInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setKeywordInputValue(value);
+    const splitKeywords = value
+      .split(",")
+      .map((kw) => kw.trim())
+      .filter((kw) => kw);
+    setKeywords(splitKeywords);
   };
 
   const toggleAdvancedOptions = () => {
@@ -117,8 +111,8 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
             <input
               type="text"
               id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={articleTitle}
+              onChange={(e) => setArticleTitle(e.target.value)}
               placeholder="Enter the title"
               className="flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2"
             />
@@ -130,8 +124,8 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
             <input
               type="text"
               id="keywords"
-              value={keywords}
-              onChange={(e) => setKeywordsInput(e.target.value)}
+              value={keywordInputValue}
+              onChange={handleKeywordInputChange}
               placeholder="Enter keywords separated by commas"
               className="flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2"
             />
@@ -160,24 +154,6 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
               className="flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2"
             />
           </div>
-          <button
-            disabled={isKeywordPending}
-            onClick={generateKeywords}
-            className={clsx(
-              "w-full p-2 h-14 !mt-8 text-white bg-black rounded-xl flex justify-center items-center",
-              isKeywordPending && "opacity-80 cursor-not-allowed"
-            )}>
-            {isKeywordPending ? <Spinner /> : "Generate keywords"}
-          </button>
-          {generatedKeywords.length > 0 && (
-            <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
-              <div className="flex flex-wrap gap-2 mt-3">
-                {generatedKeywords.map((generatedKeyword) => (
-                  <div className="bg-gray-100 text-gray-600 p-2 rounded first-letter:uppercase">{generatedKeyword}</div>
-                ))}
-              </div>
-            </Motion>
-          )}
 
           <div className="flex gap-4 items-center !mt-8">
             <div className="bg-gray-200 w-full h-0.5" />
@@ -216,28 +192,33 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
         <div className="w-full">
           <div className="bg-primary-green rounded-2xl py-5 px-7 flex items-center gap-4">
             <span className="bg-white h-12 w-12 grid place-content-center rounded-full">{currentStep + 1}</span>
-            <h2 className="text-lg font-semibold text-white">Outlines list</h2>
+            <h2 className="text-lg font-semibold text-white">Outline list</h2>
           </div>
           {isPending && outlines.length < 1 && <div className="h-40 grid place-content-center">Please hang on as we generate outlines for you...</div>}
           {outlines.length > 0 && (
             <div>
-              <ul className="mt-4 space-y-2">
+              <div className={clsx("mt-4 space-y-2")}>
                 {outlines.map((outline, index) => (
-                  <li
+                  <ul
                     key={index}
-                    className="py-5 px-7 mb-3 border rounded-2xl bg-white flex flex-col gap-4 cursor-pointer"
+                    className={clsx(
+                      "py-7 px-12 mb-3 border rounded-2xl bg-white flex flex-col gap-4 cursor-pointer list-disc transition-all duration-300",
+                      selectedOutlines === outline && "border border-primary-green text-primary-green"
+                    )}
                     onClick={() => setSelectedOutlines(outlines[index])}>
                     {outline.subtitles.map((subtitle, index) => (
-                      <div key={index}>{subtitle}</div>
+                      <li key={index}>{subtitle}</li>
                     ))}
-                  </li>
+                  </ul>
                 ))}
-              </ul>
-              <div className="flex justify-end">
-                <button onClick={() => setCurrentStep(2)} className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px]">
-                  Next step
-                </button>
               </div>
+              {selectedOutlines.subtitles && (
+                <div className="flex justify-end">
+                  <button onClick={() => setCurrentStep(2)} className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px]">
+                    Next step
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>

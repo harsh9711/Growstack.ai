@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { Assistant, Conversation } from "../../components/types";
 import Topbar from "./components/Topbar";
 import ChatSection from "./components/ChatSection";
+import Sidebar from "./components/Sidebar";
 
 interface PageProps {
   params: {
@@ -18,6 +19,7 @@ const AssistantsChats: React.FC<PageProps> = ({ params: { assistant_id } }: Page
   const [assistantConversation, setAssistantConversation] = useState<Conversation | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchAssistantConversation = async () => {
@@ -42,8 +44,12 @@ const AssistantsChats: React.FC<PageProps> = ({ params: { assistant_id } }: Page
       try {
         const response = await axios.get("/ai/api/v1/assistant");
         setAssistantData(response.data.data.filter((assistant: Assistant) => assistant.id === assistant_id)[0]);
-      } catch (error) {
-        console.error("Error fetching data:", error);
+      } catch (error: any) {
+        if (error.response) {
+          toast.error(error.response.data.error);
+        } else {
+          toast.error(error.message);
+        }
       }
     };
 
@@ -61,9 +67,12 @@ const AssistantsChats: React.FC<PageProps> = ({ params: { assistant_id } }: Page
 
   return (
     <div className="flex-1 flex flex-col h-full w-full">
-      <div className="flex-1 flex flex-col h-full !bg-white shadow-box mt-8 border">
-        <Topbar assistant={assistantData!} />
-        <ChatSection conversation={assistantConversation} assistant={assistantData} />
+      <div className="flex-1 flex h-full !bg-white shadow-box mt-8 border">
+        <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} assistant_id={assistant_id}/>
+        <div className="flex-1 flex flex-col h-full">
+          <Topbar assistant={assistantData!} isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+          <ChatSection conversation={assistantConversation} assistant={assistantData} />
+        </div>
       </div>
     </div>
   );

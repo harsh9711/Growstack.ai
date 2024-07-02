@@ -10,22 +10,30 @@ import toast from "react-hot-toast";
 import { creativityOptions, languageOptions, povOptions, writingToneOptions } from "../constants/options";
 import AdvancedOptions from "./AdvancedOptions";
 import ImageDialog from "./dialogs/ImageDialog";
-import { IOutline, ISubtitleTalkingPoints, TKeyword } from "../types";
+import { IOutline, ISubtitleTalkingPoints } from "../types";
 
 interface ImagesComponentProps {
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
-  keywords: TKeyword;
-  title: string;
+  keywords: string[];
+  articleTitle: string;
+  setArticleTitle: React.Dispatch<React.SetStateAction<string>>;
   talkingPoints: ISubtitleTalkingPoints[];
   setArticleData: React.Dispatch<React.SetStateAction<any>>;
 }
 
-const ImagesComponent: React.FC<ImagesComponentProps> = ({ currentStep, setCurrentStep, keywords, title, talkingPoints, setArticleData }) => {
+const ImagesComponent: React.FC<ImagesComponentProps> = ({
+  currentStep,
+  setCurrentStep,
+  keywords,
+  articleTitle,
+  setArticleTitle,
+  talkingPoints,
+  setArticleData,
+}) => {
   const [isArticlePending, setIsArticlePending] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const [images, setImages] = useState<Array<{ revised_prompt: string; url: string }>>([]);
-  const [imagetitle, setImageTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
   const [aiModel, setAiModel] = useState<string>("gpt-4o");
@@ -36,7 +44,7 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({ currentStep, setCurre
 
   const generateImage = () => {
     const data = {
-      title: imagetitle,
+      title: articleTitle,
       image_description: description,
       model: aiModel,
       creativity: creativity,
@@ -52,9 +60,13 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({ currentStep, setCurre
         const { data } = response;
         setImages(data.data);
       })
-      .catch((error) => {
-        toast.error("Failed to generate image. Please try again.");
-        console.error("Error generating image:", error);
+      .catch((err) => {
+        if (err.response) {
+          toast.error(err.response.data.message);
+        } else {
+          toast.error(err.message);
+        }
+        console.log(err);
       })
       .finally(() => {
         setIsPending(false);
@@ -63,8 +75,8 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({ currentStep, setCurre
 
   const generateArticle = () => {
     const data = {
-      title: title,
-      subtitles_talking_points: talkingPoints,
+      title: articleTitle,
+      subtitles_with_talking_points: talkingPoints,
       keywords: keywords,
       model: aiModel,
       creativity: creativity,
@@ -82,9 +94,13 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({ currentStep, setCurre
         setCurrentStep(currentStep + 1);
         setImages([]);
       })
-      .catch((error) => {
-        toast.error("Failed to generate article. Please try again.");
-        console.error("Error generating article:", error);
+      .catch((err) => {
+        if (err.response) {
+          toast.error(err.response.data.message);
+        } else {
+          toast.error(err.message);
+        }
+        console.log(err);
       })
       .finally(() => {
         setIsArticlePending(false);
@@ -108,8 +124,8 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({ currentStep, setCurre
             <input
               type="text"
               id="title"
-              value={imagetitle}
-              onChange={(e) => setImageTitle(e.target.value)}
+              value={articleTitle}
+              onChange={(e) => setArticleTitle(e.target.value)}
               placeholder="Enter the title"
               className="flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2"
             />
@@ -151,15 +167,26 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({ currentStep, setCurre
               />
             )}
           </AnimatePresence>
-          <button
-            onClick={generateImage}
-            disabled={isPending}
-            className={clsx(
-              "w-full p-2 h-14 !mt-8 text-white bg-primary-green rounded-xl hover:bg-opacity-90 flex justify-center items-center",
-              isPending && "opacity-50 cursor-not-allowed"
-            )}>
-            {isPending ? <Spinner /> : "Generate Image"}
-          </button>
+          <div className="flex gap-3">
+            <button
+              onClick={generateImage}
+              disabled={isPending}
+              className={clsx(
+                "w-full p-2 h-14 !mt-8 text-white bg-primary-green rounded-xl hover:bg-opacity-90 flex justify-center items-center",
+                isPending && "opacity-50 cursor-not-allowed"
+              )}>
+              {isPending ? <Spinner /> : "Generate Image"}
+            </button>
+            <button
+              onClick={generateArticle}
+              disabled={isArticlePending}
+              className={clsx(
+                "w-full p-2 h-14 !mt-8 text-white bg-primary-green rounded-xl hover:bg-opacity-90 flex justify-center items-center",
+                isArticlePending && "opacity-50 cursor-not-allowed"
+              )}>
+              {isArticlePending ? <Spinner /> : "Skip this step"}
+            </button>
+          </div>
         </div>
         <div className="w-full">
           <div className="bg-primary-green rounded-2xl py-5 px-7 flex items-center gap-4">
@@ -181,7 +208,10 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({ currentStep, setCurre
                 ))}
               </ul>
               <div className="flex justify-end">
-                <button onClick={generateArticle} className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px] flex gap-2 items-center justify-center">
+                <button
+                  onClick={generateArticle}
+                  disabled={isArticlePending}
+                  className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px] flex gap-2 items-center justify-center">
                   {isArticlePending ? <Spinner /> : "Generate Article"}
                 </button>
               </div>

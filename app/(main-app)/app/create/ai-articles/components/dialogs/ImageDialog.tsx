@@ -6,13 +6,15 @@ export default function ImageDialog({ imageSrc }: { imageSrc: string }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Image src={imageSrc} alt="" width={300} height={300} className="rounded-2xl cursor-pointer" />
+        <img src={imageSrc} alt="" width={300} height={300} className="rounded-2xl cursor-pointer" />
+        {/* <Image src={imageSrc} alt="" width={300} height={300} className="rounded-2xl cursor-pointer" /> */}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Image preview</DialogTitle>
         </DialogHeader>
-        <Image src={imageSrc} alt="" width={1000} height={1000} className="rounded-2xl" />
+        <img src={imageSrc} alt="" width={1000} height={1000} className="rounded-2xl" />
+        {/* <Image src={imageSrc} alt="" width={1000} height={1000} className="rounded-2xl" /> */}
       </DialogContent>
     </Dialog>
   );

@@ -7,54 +7,75 @@ import OutlinesComponent from "./components/OutlinesComponent";
 import StepIndicator from "./components/StepIndicator";
 import TalkingPointsComponent from "./components/TalkingPointsComponent";
 import ResultComponent from "./components/ResultComponent";
-import { IOutline, ISubtitleTalkingPoints, TKeyword } from "./types";
+import { IOutline, ISubtitleTalkingPoints } from "./types";
 
 export default function AiArticles() {
   const [currentStep, setCurrentStep] = useState(0);
 
   const steps = ["Get ideas", "Outlines", "Talking points", "Images"];
   const [selectedOutlines, setSelectedOutlines] = useState<IOutline | any>({});
-  const [title, setTitle] = useState("");
-  const [keywords, setKeywords] = useState<TKeyword>([]);
+  const [keywords, setKeywords] = useState<string[]>([]);
+  const [keywordInputValue, setKeywordInputValue] = useState<string>("");
   const [talkingPoints, setTalkingPoints] = useState<ISubtitleTalkingPoints[]>([]);
   const [articleData, setArticleDate] = useState<any>();
+  const [articleTitle, setArticleTitle] = useState<string>("");
+  const [outlines, setOutlines] = useState<IOutline[]>([]);
 
   const renderComponent = () => {
     switch (currentStep) {
       case 0:
-        return <IdeasComponent currentStep={currentStep} setCurrentStep={setCurrentStep} />;
+        return (
+          <IdeasComponent
+            currentStep={currentStep}
+            setCurrentStep={setCurrentStep}
+            keywordInputValue={keywordInputValue}
+            setKeywordInputValue={setKeywordInputValue}
+            keywords={keywords}
+            setKeywords={setKeywords}
+            articleTitle={articleTitle}
+            setArticleTitle={setArticleTitle}
+          />
+        );
       case 1:
         return (
           <OutlinesComponent
             keywords={keywords}
-            title={title}
-            setTitle={setTitle}
+            articleTitle={articleTitle}
+            setArticleTitle={setArticleTitle}
             setKeywords={setKeywords}
             selectedOutlines={selectedOutlines}
             setSelectedOutlines={setSelectedOutlines}
             currentStep={currentStep}
             setCurrentStep={setCurrentStep}
+            outlines={outlines}
+            setOutlines={setOutlines}
+            keywordInputValue={keywordInputValue}
+            setKeywordInputValue={setKeywordInputValue}
           />
         );
       case 2:
         return (
           <TalkingPointsComponent
             keywords={keywords}
-            title={title}
-            setTitle={setTitle}
+            articleTitle={articleTitle}
+            setArticleTitle={setArticleTitle}
             setKeywords={setKeywords}
             selectedOutlines={selectedOutlines}
+            setSelectedOutlines={setSelectedOutlines}
             currentStep={currentStep}
             setCurrentStep={setCurrentStep}
             talkingPoints={talkingPoints}
             setTalkingPoints={setTalkingPoints}
+            keywordInputValue={keywordInputValue}
+            setKeywordInputValue={setKeywordInputValue}
           />
         );
       case 3:
         return (
           <ImagesComponent
             keywords={keywords}
-            title={title}
+            articleTitle={articleTitle}
+            setArticleTitle={setArticleTitle}
             currentStep={currentStep}
             setCurrentStep={setCurrentStep}
             talkingPoints={talkingPoints}
@@ -62,7 +83,7 @@ export default function AiArticles() {
           />
         );
       case 4:
-        return <ResultComponent articleData={articleData}/>;
+        return <ResultComponent articleData={articleData} />;
     }
   };
 

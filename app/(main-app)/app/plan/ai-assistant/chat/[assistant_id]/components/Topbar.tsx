@@ -4,11 +4,15 @@ import clsx from "clsx";
 import { Settings, Share2, UserCircle } from "lucide-react";
 import { useState } from "react";
 import { Assistant } from "../../../components/types";
-
-export default function Topbar({ assistant }: { assistant: Assistant }) {
+interface IProps {
+  assistant: Assistant;
+  isSidebarOpen: boolean;
+  setIsSidebarOpen: (isSidebarOpen: boolean) => void;
+}
+export default function Topbar({ assistant, isSidebarOpen, setIsSidebarOpen }: IProps) {
   const [selectedAiModel, setSelectedAiModel] = useState(aiModelOptions[0].value);
   return (
-    <div className="border-b px-10 py-6">
+    <div className="border-b px-10 py-5">
       <div className="flex justify-between">
         <div className="flex items-center gap-4">
           {/* <Image src={assistant.avatar} alt="" width={50} height={50} className="rounded-xl object-cover shadow-xl" /> */}
@@ -24,10 +28,10 @@ export default function Topbar({ assistant }: { assistant: Assistant }) {
           <div className="bg-primary-green/10 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
             <Share2 />
           </div>
-          <div className="bg-primary-green/10 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
+          <div onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="bg-primary-green/10 hover:text-white hover:bg-primary-green transition-all duration-300 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
             <UserCircle />
           </div>
-          <div className="bg-primary-green/10 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
+          <div className="bg-primary-green/10 hover:text-white hover:bg-primary-green transition-all duration-300 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
             <Settings />
           </div>
           <Select value={selectedAiModel} onValueChange={setSelectedAiModel}>
