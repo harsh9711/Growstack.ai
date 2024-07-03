@@ -1,12 +1,29 @@
 "use client";
 
 import { WorkflowsIcon, WorkflowsIcon2 } from "@/components/svgs";
+import { API_URL } from "@/lib/api";
+import axios from "axios";
 import { Plus, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Fragment } from "react";
+import { useRouter } from "next/navigation";
+import { Fragment, useState } from "react";
 
 export default function WorkflowBuilder() {
+  const [workflowId, setWorkflowId] = useState(null);
+  const router = useRouter();
+  const createWorkflow = async () => {
+    try {
+      const response = await axios.post(`${API_URL}/workflow/api/v1`);
+      const newWorkflowId = response.data.data.workflow_id;
+      console.log('Workflow created successfully:', newWorkflowId);
+      setWorkflowId(newWorkflowId);
+      router.push(`/app/create/workflow-builder/create-workflow?workflow_id=${newWorkflowId}`);
+    } catch (error) {
+      console.error('Error creating workflow:', error);
+      // Handle error (e.g., show an error message)
+    }
+  };
   return (
     <Fragment>
       <main className="">
@@ -57,8 +74,9 @@ export default function WorkflowBuilder() {
                     <h1 className="text-xl font-semibold">New blank workflow</h1>
                     <p>Design a new workflow from scratch.</p>
                   </div>
-                  <Link href="/app/create/workflow-builder/get-started">
-                    <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
+                  <Link href="/app/create/workflow-builder/create-workflow">
+                    <button
+                     onClick={createWorkflow} className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
                       <Plus size={20} />
                       Create workflow
                     </button>
