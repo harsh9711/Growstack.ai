@@ -141,32 +141,76 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
     }
   };
   
-  const handleSubmit = async () => {
-    try {
-      const formattedUserPrompt = assistant.inputs.map((input: any, index: number) => `${input.title}:${userPrompts[index]}`).join(".");
+  // const handleSubmit = async () => {
+  //   try {
+  //     const formattedUserPrompt = assistant.inputs.map((input: any, index: number) => `${input.title}:${userPrompts[index]}`).join(".");
 
-      const response = await axios.post(
-        `${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`,
-        {
-          ...userInput,
-          user_prompt: formattedUserPrompt,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json'
-          },
-        }
-      );
-      console.log("Generated Data:", response.data);
-      setGeneratedContent(response.data);
+  //     const response = await axios.post(
+  //       `${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`,
+  //       {
+  //         ...userInput,
+  //         user_prompt: formattedUserPrompt,
+  //       },
+  //       {
+  //         headers: {
+  //           'Content-Type': 'application/json'
+  //         },
+  //       }
+  //     );
+  //     console.log("Generated Data Article:", response.data);
+  //     setGeneratedContent(response.data);
 
-    } catch (error) {
-      console.error("Error generating template:", error);
+  //   } catch (error) {
+  //     console.error("Error generating template:", error);
+  //   }
+  // };
+// ;  
+const handleSubmit = async () => {
+  try {
+    const formattedUserPrompt = assistant.inputs
+      .map((input: { title: any; }, index:number) => `${input.title}: ${userPrompts[index]}`)
+      .join(" "); // <-- Changed to join with a space between each part
+
+    const response = await fetch(`${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        ...userInput,
+        user_prompt: formattedUserPrompt,
+      }),
+    });
+
+    if (!response.body) {
+      throw new Error('ReadableStream not supported in this browser.');
     }
-  };
-;  
-  
-  
+
+    const reader = response.body.getReader();
+
+    console.log("HERE:   ", response.body);
+    const decoder = new TextDecoder();
+    let content = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      const chunk = decoder.decode(value);
+
+      const cleanedChunk = chunk.split("\n").map(line => line.replace(/^data:\s*/, '')).join('');
+      content += cleanedChunk;
+
+      if (content.includes('.')) {
+        setGeneratedContent(content);
+      }
+    }
+  } catch (error) {
+    console.error("Error generating template:", error);
+  }
+};
+
+
 
 const handleChange = (e: { target: { name: any; value: any; }; }) => {
   const { name, value } = e.target;
