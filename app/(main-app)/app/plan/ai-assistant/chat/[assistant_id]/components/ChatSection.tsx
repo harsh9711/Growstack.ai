@@ -25,12 +25,12 @@ const ChatSection: React.FC<ChatSectionProps> = ({ conversation, assistant }) =>
 
   return (
     <div className="flex-1 h-full flex flex-col px-8 pb-8">
-      <div className="flex-1 h-full max-h-[55vh] overflow-y-auto">
+      <div className="flex-1 flex flex-col h-full max-h-[55vh] overflow-y-auto">
         <ChatMessages conversation={{ ...conversation, chats: messages }} assistant={assistant} />
       </div>
       <div className="space-y-4">
         <ChatOptions />
-        <ChatInput assistant_id={conversation.assistant_id} addMessage={addMessage} />
+        <ChatInput assistant_id={assistant.id} addMessage={addMessage} />
       </div>
     </div>
   );

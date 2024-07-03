@@ -1,18 +1,20 @@
-import { MicrophoneIcon, SendIcon2 } from "@/components/svgs"; 
+import { MicrophoneIcon, SendIcon2 } from "@/components/svgs";
 import autosize from "autosize";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import ToolsDialog from "./ToolsDialog";
 import axios from 'axios';
 import { API_URL } from "@/lib/api";
+
 interface ChatInputProps {
   onSend: (message: string) => void;
   selectedModel: string;
 }
+
 const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel }) => {
   const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [messages, setMessages] = React.useState<string[]>([]);
+  const [chatId, setChatId] = useState<string | null>(null); // Initialize chatId as null
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -21,36 +23,44 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel }) => {
   }, []);
 
   const handleSend = async () => {
-    setMessages(prevMessages => [...prevMessages, `You: ${messages}`]);
     if (input.trim()) {
       console.log("Sending API requests...");
 
       try {
-        // First API 
-        const createResponse = await axios.get(`${API_URL}/ai/api/v1/conversation/create`);
-        console.log("Create Conversation API response:", createResponse.data.data.conversation_id);
+        // Check if chatId is not set, fetch a new chatId
+        if (!chatId) {
+          const createResponse = await axios.get(`${API_URL}/ai/api/v1/conversation/create`);
+          console.log("Create Conversation API response:", createResponse.data.data._id);
+          setChatId(createResponse.data.data._id); // Set chatId from API response
+        }
 
-        // Second API call 
-        const chatResponse = await axios.post(
-          `${API_URL}/ai/api/v1/conversation/chat`,
-          {
-            user_prompt: input,
-          },
-          {
-            params: {
-              conversation_id:  createResponse.data.data.conversation_id,
-              chat_id:  createResponse.data.data._id,
-              model: selectedModel,
+        // Send message only if chatId is set
+        if (chatId) {
+          const chatResponse = await axios.post(
+            `${API_URL}/ai/api/v1/conversation/chat`,
+            {
+              user_prompt: input,
             },
+            {
+              params: {
+                conversation_id: chatId,
+                model: selectedModel,
+              },
+            }
+          );
+
+          console.log("Chat API response:", chatResponse.data);
+          onSend(input);
+
+          setTimeout(() => {
+            onSend(chatResponse.data); // Assuming this is the appropriate way to handle onSend
+          }, 1000);
+
+          setInput("");
+
+          if (textareaRef.current) {
+            autosize.update(textareaRef.current);
           }
-        );  
-        console.log("Chat API response:", chatResponse.data);
-
-        onSend(chatResponse.data);
-        setInput("");
-
-        if (textareaRef.current) {
-          autosize.update(textareaRef.current);
         }
       } catch (error) {
         console.error('Error calling APIs:', error);
@@ -79,12 +89,15 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel }) => {
       />
       <ToolsDialog />
       <button
-        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
+        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
+        onClick={() => setChatId(null)} // Reset chatId to fetch new conversation when clicked
+      >
         <MicrophoneIcon />
       </button>
       <button
         onClick={handleSend}
-        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
+        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
+      >
         <SendIcon2 />
       </button>
     </div>

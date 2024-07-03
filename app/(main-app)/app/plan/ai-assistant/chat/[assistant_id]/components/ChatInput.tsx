@@ -35,11 +35,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage }) => {
       });
 
       const { data } = response;
-      console.log(data)
+      console.log(data);
       addMessage(user_prompt, data);
     } catch (error: any) {
-      console.error("Error sending prompt:", error);
-      toast.error("Something went wrong sending the prompt.");
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
     }
   };
 

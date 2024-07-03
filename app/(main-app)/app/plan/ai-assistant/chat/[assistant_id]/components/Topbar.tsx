@@ -1,9 +1,19 @@
 import { aiModelOptions } from "@/app/(main-app)/app/create/ai-articles/constants/options";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import clsx from "clsx";
-import { Settings, Share2, UserCircle } from "lucide-react";
+import { Download, Settings, Share2, UserCircle } from "lucide-react";
 import { useState } from "react";
 import { Assistant } from "../../../components/types";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 interface IProps {
   assistant: Assistant;
   isSidebarOpen: boolean;
@@ -28,12 +38,33 @@ export default function Topbar({ assistant, isSidebarOpen, setIsSidebarOpen }: I
           <div className="bg-primary-green/10 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
             <Share2 />
           </div>
-          <div onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="bg-primary-green/10 hover:text-white hover:bg-primary-green transition-all duration-300 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
+          <div
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="bg-primary-green/10 hover:text-white hover:bg-primary-green transition-all duration-300 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
             <UserCircle />
           </div>
-          <div className="bg-primary-green/10 hover:text-white hover:bg-primary-green transition-all duration-300 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
-            <Settings />
-          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <div className="bg-primary-green/10 hover:text-white hover:bg-primary-green transition-all duration-300 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
+                <Settings />
+              </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem className="flex items-center gap-2">
+                <Download size={18}/>
+                Download chat (.txt)
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center gap-2">
+                <Download size={18}/>
+                Download chat (.pdf)
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center gap-2">
+                <Download size={18}/>
+                Download chat (.docx)
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <Select value={selectedAiModel} onValueChange={setSelectedAiModel}>
             <SelectTrigger className="min-w-[200px] h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4">
               <SelectValue placeholder="Select an option" />

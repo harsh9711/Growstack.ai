@@ -72,3 +72,4 @@ export { default as AnthropicClaude } from "@/public/icons/anthropic-claude.svg"
 export { default as GoogleGemini } from "@/public/icons/google-gemini.svg";
 export { default as CheckIcon2 } from "@/public/svgs/check2.svg";
 export { default as DraggableIcon } from "@/public/svgs/draggable.svg";
+export { default as OpenTabIcon } from "@/public/icons/open.svg";
