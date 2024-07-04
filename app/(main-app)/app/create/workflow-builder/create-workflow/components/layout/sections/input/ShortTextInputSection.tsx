@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 
 interface ShortTextInputSectionProps {
   onParamsChange: (params: ShortTextParams) => void;
+  inputParams: ShortTextParams | {};
 }
 
 interface ShortTextParams {
@@ -16,14 +17,14 @@ interface ShortTextParams {
   variable_name: string;
 }
 
-export default function ShortTextInputSection({ onParamsChange }: ShortTextInputSectionProps) {
+export default function ShortTextInputSection({ onParamsChange,inputParams }: ShortTextInputSectionProps) {
   const [params, setParams] = useState<ShortTextParams>({
-    display_name: "",
-    placeholder: "",
-    default_value: "",
-    description: "",
-    required: false,
-    variable_name: "",
+    display_name: (inputParams as ShortTextParams).display_name || "",
+    placeholder:  (inputParams as ShortTextParams).placeholder || "",
+    default_value: (inputParams as ShortTextParams).default_value || "",
+    description: (inputParams as ShortTextParams).description || "",
+    required: (inputParams as ShortTextParams).required || false,
+    variable_name: (inputParams as ShortTextParams).variable_name || "",
   });
 
   useEffect(() => {

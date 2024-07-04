@@ -33,7 +33,7 @@ export default function WorkFlowBuilderComponent() {
           </div>
           <div className="space-y-1 flex flex-col items-start">
             <h3 className="text-[17px] font-medium">Input</h3>
-            <p className="text-sm text-primary-black text-opacity-50">Click to add outputs</p>
+            <p className="text-sm text-primary-black text-opacity-50">Click to add inputs</p>
           </div>
         </button>
 

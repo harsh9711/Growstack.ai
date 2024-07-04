@@ -4,6 +4,7 @@ import Motion from "@/components/Motion";
 import { FileUpload, LongText, NumberHashtag, ShortText, Switch as SwitchIcon } from "@/components/svgs";
 import clsx from "clsx";
 import { ArrowRight, Edit, Plus, Trash2 } from "lucide-react";
+import toast from "react-hot-toast";
 import React, { useEffect, useState } from "react";
 import ProvidersDrawer from "../ProvidersDrawer";
 import FileUploadInputSection from "./sections/input/FileUploadInputSection";
@@ -14,14 +15,19 @@ import YesOrNoInputSection from "./sections/input/YesOrNoInputSection";
 import axios from "axios";
 import { API_URL } from "@/lib/api";
 
-export default function AddInput() {
+interface AddInputProps {
+  setAddNewInput: (params:boolean) => void;
+}
+
+export default function AddInput({ setAddNewInput }: AddInputProps) {
   const [inputType, setInputType] = useState("Short text");
   const [viewAllInputs, setViewAllInputs] = useState(false);
   const [inputParams, setInputParams] = useState<{ variable_name?: string }>({});
   const [workflowId, setWorkflowId] = useState<string | null>(null);
   const [existingInputs, setExistingInputs] = useState<{
-    _id: string; variable_name?: string 
-}[]>([]);
+    _id: string; variable_name?: string, required: boolean, placeholder: string, display_name: string, description: string, default_value: string, type: string
+  }[]>([]);
+  const [editID, setEditID] = useState("");
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -56,13 +62,13 @@ export default function AddInput() {
   const renderInputSection = () => {
     switch (inputType) {
       case "SHORT TEXT":
-        return <ShortTextInputSection onParamsChange={setInputParams} />;
+        return <ShortTextInputSection onParamsChange={setInputParams} inputParams={inputParams} />;
       case "Long text":
-        return <LongTextInputSection onParamsChange={setInputParams} />;
+        return <LongTextInputSection onParamsChange={setInputParams} inputParams={inputParams} />;
       case "Yes/No":
-        return <YesOrNoInputSection onParamsChange={setInputParams}/>;
+        return <YesOrNoInputSection onParamsChange={setInputParams} inputParams={inputParams} />;
       case "Number":
-        return <NumberInputSection onParamsChange={setInputParams} />;
+        return <NumberInputSection onParamsChange={setInputParams} inputParams={inputParams} />;
       case "File Upload":
         return <FileUploadInputSection onParamsChange={setInputParams}  />;
     }
@@ -99,7 +105,7 @@ export default function AddInput() {
       
     }
   };
-  const handleEditInput = async (inputId: string, updatedInputType: string) => {
+  const handleEditClick = async (inputId : string) => {
     try {
       // Find the input to update
       const inputToUpdate = existingInputs.find(input => input._id === inputId);
@@ -107,22 +113,39 @@ export default function AddInput() {
         console.error(`Input with id ${inputId} not found.`);
         return;
       }
-      
-      // Optimistically update the UI
-      const updatedInputs = existingInputs.map(input =>
-        input._id === inputId ? { ...input, type: updatedInputType } : input
-      );
-      setExistingInputs(updatedInputs);
-
-      // Send PUT request to update input type
-      await axios.put(`${API_URL}/workflow/api/v1/${workflowId}/inputconfig/${inputId}`, { type: updatedInputType });
-
+      setEditID(inputId);
+      setInputParams(inputToUpdate)
     } catch (error) {
       console.error('Error updating input:', error);
       // fetchExistingInputs(workflowId); // Re-fetch inputs to revert UI state on error
     }
   };
-  return !viewAllInputs ? (
+
+  const updateInput = async () => {
+    try {
+      const updatedInputs = existingInputs.map(input =>
+        input._id === editID ? { ...input, ...inputParams } : input
+      );
+      setExistingInputs(updatedInputs);
+      const payload = updatedInputs.find((input) => input._id === editID)
+      const response = await axios.put(`${API_URL}/workflow/api/v1/${workflowId}/inputconfig/${editID}`, {
+        'input_configs.$.type': payload?.type,
+        'input_configs.$.variable_name': payload?.variable_name,
+        'input_configs.$.required': payload?.required,
+        'input_configs.$.placeholder': payload?.placeholder,
+        'input_configs.$.display_name': payload?.display_name,
+        'input_configs.$.description': payload?.description,
+        'input_configs.$.default_value': payload?.default_value,
+      });
+      setEditID("");
+      toast.success('Input updated successfully');
+    } catch (error) {
+      console.log(error)
+      toast.error('Error updating input');
+    }
+  }
+
+  return !viewAllInputs || editID ? (
     <div className="space-y-4 mt-5">
       <h1 className="text-lg font-semibold">Input type</h1>
       <div className="grid grid-cols-3 gap-3 !mb-6">
@@ -142,11 +165,17 @@ export default function AddInput() {
       {renderInputSection()}
 
       <div className="flex justify-end gap-4">
-        <button className="py-3 px-6 bg-white border border-[#CF0000] text-[#CF0000] hover:bg-[#cf000009] rounded-xl mt-6">Cancel</button>
+        <button className="py-3 px-6 bg-white border border-[#CF0000] text-[#CF0000] hover:bg-[#cf000009] rounded-xl mt-6"
+          onClick={existingInputs.length ? () => { setViewAllInputs(true), setEditID("") } : () => setAddNewInput(false)}
+        >
+          Cancel
+        </button>
         <button
-          onClick={handleAddClick}
-          className="py-3 px-6 bg-primary-green rounded-xl text-white mt-6 hover:bg-primary-green/90 transition-all duration-300">
-          Add
+          onClick={editID ? updateInput :  handleAddClick}
+          className="py-3 px-6 bg-primary-green rounded-xl text-white mt-6 hover:bg-primary-green/90 transition-all duration-300"
+          disabled={!inputParams?.variable_name}
+        >
+          {editID ? 'Save' : 'Add'}
         </button>
       </div>
     </div>
@@ -158,7 +187,7 @@ export default function AddInput() {
           <div key={index} className="bg-[#F5F5F5] h-14 w-full rounded-xl flex items-center justify-between px-4 mb-4">
             <span>{input?.variable_name}</span>
             <div className="flex gap-3 items-center text-gray-400">
-            <Edit className="cursor-pointer" size={20} onClick={() => handleEditInput(input._id, inputType)} />
+              <Edit className="cursor-pointer" size={20} onClick={() => handleEditClick(input._id)} />
             <Trash2
                 className="cursor-pointer"
                 size={20}

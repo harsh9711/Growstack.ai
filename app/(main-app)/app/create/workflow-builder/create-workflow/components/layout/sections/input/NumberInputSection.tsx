@@ -4,6 +4,7 @@ import { Switch } from "@/components/ui/switch";
 import React, { useEffect, useState } from "react";
 interface NumberTextInputSectionProps {
   onParamsChange: (params: ShortTextParams) => void;
+  inputParams: ShortTextParams | {};
 }
 
 interface ShortTextParams {
@@ -14,14 +15,14 @@ interface ShortTextParams {
   required: boolean;
   variable_name: string;
 }
-export default function NumberTextInputSection({ onParamsChange }: NumberTextInputSectionProps) {
+export default function NumberTextInputSection({ onParamsChange,inputParams }: NumberTextInputSectionProps) {
   const [params, setParams] = useState<ShortTextParams>({
-    display_name: "",
-    placeholder: "",
-    default_value: "",
-    description: "",
-    required: false,
-    variable_name: "",
+    display_name: (inputParams as ShortTextParams).display_name || "",
+    placeholder: (inputParams as ShortTextParams).placeholder || "",
+    default_value: (inputParams as ShortTextParams).default_value || "",
+    description: (inputParams as ShortTextParams).description || "",
+    required: (inputParams as ShortTextParams).required || false,
+    variable_name: (inputParams as ShortTextParams).variable_name || "",
   });
 
   useEffect(() => {
