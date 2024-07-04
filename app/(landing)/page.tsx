@@ -5,6 +5,7 @@ import { Nunito_Sans } from "next/font/google";
 import Slider from "./components/Slider";
 import Marquee from "react-fast-marquee";
 import { testimonials } from "./components/constants/testimonials";
+import Circle from "./components/Circle";
 
 const nunito = Nunito_Sans({
   subsets: ["latin"],
@@ -15,10 +16,10 @@ const nunito = Nunito_Sans({
 export default function Home() {
   return (
     <main className="space-y-20">
-      <section className="p-4 mt-20">
-        <div className="bg-gradient-to-b from-transparent  to-[#009975] h-[70vh] rounded-[40px] pl-40 py-20">
-          <div className="flex justify-between items-center">
-            <div className="flex justify-end w-full">
+      <section className="p-4 mt-">
+        <div className="relative flex items-center bg-gradient-to-b from-transparent to-[#009975] h-[75vh] rounded-[40px] pl-40 py-20 overflow-hidden">
+          <div className="w-full flex justify-between items-center">
+            <div className="flex items-center justify-end w-full">
               <div className="max-w-[820px] w-full">
                 <div className="max-w-3xl space-y-5">
                   <h1 className="text-[56px] max-w-2xl leading-normal bg-gradient-to-b from-black to-black/30 bg-clip-text text-transparent">
@@ -34,9 +35,14 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="w-full flex justify-end">
-              <div className="bg-white/50 py-5 pl-5 rounded-l-[40px] shadow-2xl">
-                <Image src="/assets/dashboard-preview.png" alt="" width={700} height={400} />
+            <div className="w-full flex items-center justify-center">
+              <div />
+              <div className="absolute -top-[25%] -right-[15%] flex items-center justify-center" style={{ width: "1260px", height: "1260px" }}>
+                <Circle size={1300} animation="animate-rotateClockwise" />
+                <Circle size={1000} animation="animate-rotateCounterClockwise" />
+                <div className="absolute flex items-center justify-center">
+                  <Image src="/assets/dashboard-preview.png" alt="Center Image" width={700} height={700} />
+                </div>
               </div>
             </div>
           </div>
@@ -76,10 +82,45 @@ export default function Home() {
       </section>
 
       <section>
+        <div className="flex flex-col items-center gap-7 bg-[#FAFBFC] py-20">
+          <div className="bg-[#00968914] py-2 px-3.5 flex items-center gap-3 rounded-full text-sm font-semibold uppercase max-w-fit"> Powered by</div>
+          <h1 className="text-center text-[42px] leading-normal">
+            <span className="font-semibold">We are </span>
+            model agnostic
+          </h1>
+          <p className="max-w-2xl leading-loose text-center">
+            Our sales success platform integrates with your sales team’s workflow. So, every sales rep is equipped to convert pipeline more effectively.
+          </p>
+          <div className="grid grid-cols-7 gap-4 w-full max-w-[1460px] mx-auto">
+            <div className="bg-white border border-[#F0F0F0] rounded-2xl p-7 w-full flex justify-center items-center hover:shadow-2xl hover:shadow-gray-300 transition-all duration-300 cursor-pointer">
+              <Image src="/brands/openai.svg" alt="" width={50} height={50} className="max-h-16" />
+            </div>
+            <div className="bg-white border border-[#F0F0F0] rounded-2xl p-7 w-full flex justify-center items-center hover:shadow-2xl hover:shadow-gray-300 transition-all duration-300 cursor-pointer">
+              <Image src="/brands/gemini.svg" alt="" width={100} height={100} className="max-h-16" />
+            </div>
+            <div className="bg-white border border-[#F0F0F0] rounded-2xl p-7 w-full flex justify-center items-center hover:shadow-2xl hover:shadow-gray-300 transition-all duration-300 cursor-pointer">
+              <Image src="/brands/anthropic.svg" alt="" width={50} height={50} className="max-h-16" />
+            </div>
+            <div className="bg-white border border-[#F0F0F0] rounded-2xl p-7 w-full flex justify-center items-center hover:shadow-2xl hover:shadow-gray-300 transition-all duration-300 cursor-pointer">
+              <Image src="/brands/meta.svg" alt="" width={70} height={70} className="max-h-16" />
+            </div>
+            <div className="bg-white border border-[#F0F0F0] rounded-2xl p-7 w-full flex justify-center items-center hover:shadow-2xl hover:shadow-gray-300 transition-all duration-300 cursor-pointer">
+              <Image src="/brands/knowprose.svg" alt="" width={50} height={50} className="max-h-16" />
+            </div>
+            <div className="bg-white border border-[#F0F0F0] rounded-2xl p-7 w-full flex justify-center items-center hover:shadow-2xl hover:shadow-gray-300 transition-all duration-300 cursor-pointer">
+              <Image src="/brands/mistral.svg" alt="" width={50} height={50} className="max-h-16" />
+            </div>
+            <div className="bg-white border border-[#F0F0F0] rounded-2xl p-7 w-full flex justify-center items-center hover:shadow-2xl hover:shadow-gray-300 transition-all duration-300 cursor-pointer">
+              <Image src="/brands/ibm.svg" alt="" width={80} height={80} className="max-h-16" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
         <div className="space-y-7 max-w-[1860px] mx-auto">
           <div className="max-w-[1480px] mx-auto">
             <div className="bg-[#00968914] py-2 px-4 uppercase flex items-center gap-3 rounded-full text-sm font-semibold max-w-fit text-primary-green">
-              {" "}
               FAQ
             </div>
             <div className="flex items-center justify-between gap-20 mt-5">
@@ -92,11 +133,11 @@ export default function Home() {
               </p>
             </div>
           </div>
-          <div className="mt-10 bg-[#F9DE6F]/30 p-5 rounded-[40px] md:pt-10 md:pb-20">
-            <div className="max-w-[1480px] mx-auto flex justify-between items-center">
+          <div className="mt-16 bg-[#DCEFFF]/70 p-5 rounded-[40px] md:pt-10 md:pb-20">
+            <div className="max-w-[1480px] mx-auto flex gap-20 justify-between items-center">
               <div className="space-y-5 w-full">
                 <h2>01</h2>
-                <h1 className="leading-relaxed text-[42px] max-w-md font-semibold !mt-2">AI marketing and sales apps</h1>
+                <h1 className="leading-relaxed text-[42px] max-w-xl font-medium !mt-2">Goodbye to writer's block: Ready-to-use prompts for any content</h1>
                 <p className="w-full max-w-lg leading-loose">
                   An AI marketing and sales application uses artificial intelligence to enhance and automate marketing and sales processes, improving customer
                   engagement and driving conversions.
@@ -104,181 +145,215 @@ export default function Home() {
                 <ul className="space-y-4 !mt-7">
                   <li className="flex gap-x-2 items-center">
                     <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
-                    Listen to what they say about you
+                    Predictive analytics
                   </li>
                   <li className="flex gap-x-2 items-center">
                     <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
-                    Randomised words which.
+                    Personalized customer interactions
                   </li>
                   <li className="flex gap-x-2 items-center">
                     <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
-                    Internet tend to repeat predefined chunks
+                    Automated lead scoring and management
                   </li>
                   <li className="flex gap-x-2 items-center">
                     <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
-                    Automate multiple scenarios
+                    Chatbot and virtual assistants
                   </li>
                 </ul>
                 <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
-                  Get Started <ArrowRight />
+                  Learn more <ArrowRight />
                 </button>
               </div>
               <div className="w-full flex justify-center items-center">
-                <Image src="/assets/marketing-apps.png" alt="" width={900} height={900} className="translate-y-[80px]" />
+                <Image src="/assets/marketing-apps.png" alt="" width={1600} height={1600} className="translate-y-[80px]" />
               </div>
             </div>
           </div>
-          <div className="mt-10 bg-[#9AEEE7]/30 p-5 rounded-[40px] md:pt-10 md:pb-20">
-            <div className="max-w-[1480px] mx-auto flex justify-between items-center">
+          <div className="mt-16 bg-[#F9DE6F]/30 p-5 rounded-[40px] md:pt-10 md:pb-20">
+            <div className="max-w-[1480px] mx-auto flex gap-20 flex-row-reverse justify-between items-center">
               <div className="space-y-5 w-full">
-                <h2>01</h2>
-                <h1 className="leading-relaxed text-[42px] max-w-md font-semibold !mt-2">AI marketing and sales apps</h1>
+                <h2>02</h2>
+                <h1 className="leading-relaxed text-[42px] max-w-xl font-medium !mt-2">Text to videos and Product AI</h1>
                 <p className="w-full max-w-lg leading-loose">
-                  An AI marketing and sales application uses artificial intelligence to enhance and automate marketing and sales processes, improving customer
-                  engagement and driving conversions.
+                  The Imaginate application converts text into videos, utilizing advanced AI to generate engaging multimedia content from written input.
                 </p>
                 <ul className="space-y-4 !mt-7">
                   <li className="flex gap-x-2 items-center">
                     <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
-                    Listen to what they say about you
+                    Text-to-video conversion
                   </li>
                   <li className="flex gap-x-2 items-center">
                     <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
-                    Randomised words which.
+                    Customizable templates
                   </li>
                   <li className="flex gap-x-2 items-center">
                     <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
-                    Internet tend to repeat predefined chunks
+                    Voiceover integration
                   </li>
                   <li className="flex gap-x-2 items-center">
                     <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
-                    Automate multiple scenarios
+                    Multilingual support
                   </li>
                 </ul>
                 <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
-                  Get Started <ArrowRight />
+                  Learn more <ArrowRight />
                 </button>
               </div>
               <div className="w-full flex justify-center items-center">
-                <Image src="/assets/marketing-apps.png" alt="" width={900} height={900} className="translate-y-[80px]" />
+                <Image src="/assets/text-to-video.png" alt="" width={900} height={900} />
               </div>
             </div>
           </div>
-          <div className="mt-10 bg-[#FAE8F1] p-5 rounded-[40px] md:pt-10 md:pb-20">
-            <div className="max-w-[1480px] mx-auto flex justify-between items-center">
+          <div className="mt-16 bg-[#9AEEE7]/30 p-5 rounded-[40px] md:pt-10 md:pb-20">
+            <div className="max-w-[1480px] mx-auto flex gap-20 justify-between items-center">
               <div className="space-y-5 w-full">
-                <h2>01</h2>
-                <h1 className="leading-relaxed text-[42px] max-w-md font-semibold !mt-2">AI marketing and sales apps</h1>
+                <h2>03</h2>
+                <h1 className="leading-relaxed text-[42px] max-w-xl font-medium !mt-2">Marketing and sales assistants</h1>
                 <p className="w-full max-w-lg leading-loose">
-                  An AI marketing and sales application uses artificial intelligence to enhance and automate marketing and sales processes, improving customer
-                  engagement and driving conversions.
+                  Marketing and sales assistants are AI-powered tools designed to support and enhance your marketing and sales efforts, improving efficiency and
+                  customer engagement.
                 </p>
                 <ul className="space-y-4 !mt-7">
                   <li className="flex gap-x-2 items-center">
                     <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
-                    Listen to what they say about you
+                    Automated email campaigns
                   </li>
                   <li className="flex gap-x-2 items-center">
                     <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
-                    Randomised words which.
+                    Sales pipeline management
                   </li>
                   <li className="flex gap-x-2 items-center">
                     <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
-                    Internet tend to repeat predefined chunks
+                    Customer interaction tracking
                   </li>
                   <li className="flex gap-x-2 items-center">
                     <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
-                    Automate multiple scenarios
+                    Performance analytics
                   </li>
                 </ul>
                 <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
-                  Get Started <ArrowRight />
+                  Learn more <ArrowRight />
                 </button>
               </div>
               <div className="w-full flex justify-center items-center">
-                <Image src="/assets/marketing-apps.png" alt="" width={900} height={900} className="translate-y-[80px]" />
+                <Image src="/assets/marketing-assistants.png" alt="" width={900} height={900} />
               </div>
             </div>
           </div>
-          <div className="mt-10 bg-[#FFEDE6] p-5 rounded-[40px] md:pt-10 md:pb-20">
-            <div className="max-w-[1480px] mx-auto flex justify-between items-center">
+          <div className="mt-16 bg-[#FAE8F1] p-5 rounded-[40px] md:pt-10 md:pb-20">
+            <div className="max-w-[1480px] mx-auto flex gap-20 flex-row-reverse justify-between items-center">
               <div className="space-y-5 w-full">
-                <h2>01</h2>
-                <h1 className="leading-relaxed text-[42px] max-w-md font-semibold !mt-2">AI marketing and sales apps</h1>
+                <h2>04</h2>
+                <h1 className="leading-relaxed text-[42px] max-w-xl font-medium !mt-2">AI-powered assistants that understand you. </h1>
                 <p className="w-full max-w-lg leading-loose">
-                  An AI marketing and sales application uses artificial intelligence to enhance and automate marketing and sales processes, improving customer
-                  engagement and driving conversions.
+                  An AI-powered tool for creating optimized landing pages and emails, designed to enhance user engagement and conversion rates through
+                  intelligent design and content suggestions.
                 </p>
                 <ul className="space-y-4 !mt-7">
                   <li className="flex gap-x-2 items-center">
                     <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
-                    Listen to what they say about you
+                    Smart template library
                   </li>
                   <li className="flex gap-x-2 items-center">
                     <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
-                    Randomised words which.
+                    AI-Driven content generation
                   </li>
                   <li className="flex gap-x-2 items-center">
                     <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
-                    Internet tend to repeat predefined chunks
+                    Real-Time analytics and optimization
                   </li>
                   <li className="flex gap-x-2 items-center">
                     <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
-                    Automate multiple scenarios
+                    Integration with marketing tools
                   </li>
                 </ul>
                 <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
-                  Get Started <ArrowRight />
+                  Learn more <ArrowRight />
                 </button>
               </div>
               <div className="w-full flex justify-center items-center">
-                <Image src="/assets/marketing-apps.png" alt="" width={900} height={900} className="translate-y-[80px]" />
+                <Image src="/assets/ai-assistants.png" alt="" width={900} height={900} />
               </div>
             </div>
           </div>
-          <div className="mt-10 bg-[#E2F0CB] p-5 rounded-[40px] md:pt-10 md:pb-20">
-            <div className="max-w-[1480px] mx-auto flex justify-between items-center">
+          <div className="mt-16 bg-[#FFEDE6] p-5 rounded-[40px] md:pt-10 md:pb-20">
+            <div className="max-w-[1480px] mx-auto flex gap-20 justify-between items-center">
               <div className="space-y-5 w-full">
-                <h2>01</h2>
-                <h1 className="leading-relaxed text-[42px] max-w-md font-semibold !mt-2">AI marketing and sales apps</h1>
+                <h2>05</h2>
+                <h1 className="leading-relaxed text-[42px] max-w-xl font-medium !mt-2">No-code power: Tailored apps for any task</h1>
                 <p className="w-full max-w-lg leading-loose">
-                  An AI marketing and sales application uses artificial intelligence to enhance and automate marketing and sales processes, improving customer
-                  engagement and driving conversions.
+                  Build custom apps with easy-to-use components to design exactly what you need for each use case. By training these apps with your best
+                  examples, you'll get high-quality results that are consistent and repeatable every time – no need for complex prompt engineering
                 </p>
                 <ul className="space-y-4 !mt-7">
                   <li className="flex gap-x-2 items-center">
                     <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
-                    Listen to what they say about you
+                    Dynamic audience segmentation
                   </li>
                   <li className="flex gap-x-2 items-center">
                     <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
-                    Randomised words which.
+                    Conversational AI chatbots
                   </li>
                   <li className="flex gap-x-2 items-center">
                     <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
-                    Internet tend to repeat predefined chunks
+                    Predictive campaign analytics
                   </li>
                   <li className="flex gap-x-2 items-center">
                     <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
-                    Automate multiple scenarios
+                    Seamless integration with marketing platforms
                   </li>
                 </ul>
                 <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
-                  Get Started <ArrowRight />
+                  Learn more <ArrowRight />
                 </button>
               </div>
               <div className="w-full flex justify-center items-center">
-                <Image src="/assets/marketing-apps.png" alt="" width={900} height={900} className="translate-y-[80px]" />
+                <Image src="/assets/custom-gpts.png" alt="" width={900} height={900} />
+              </div>
+            </div>
+          </div>
+          <div className="mt-16 bg-[#E2F0CB] p-5 rounded-[40px] md:pt-10 md:pb-20">
+            <div className="max-w-[1480px] mx-auto flex gap-20 flex-row-reverse justify-between items-center">
+              <div className="space-y-5 w-full">
+                <h2>06</h2>
+                <h1 className="leading-relaxed text-[42px] max-w-xl font-medium !mt-2">Social planner hub</h1>
+                <p className="w-full max-w-lg leading-loose">
+                  The Social Planner Hub streamlines social media management with a Conversation Hub, Analytics, and Scheduler for effective planning and
+                  execution.
+                </p>
+                <ul className="space-y-4 !mt-7">
+                  <li className="flex gap-x-2 items-center">
+                    <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                    Social media conversation hub
+                  </li>
+                  <li className="flex gap-x-2 items-center">
+                    <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                    Scheduler page plan and schedule social media posts
+                  </li>
+                  <li className="flex gap-x-2 items-center">
+                    <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                    Content calendar and collaboration
+                  </li>
+                  <li className="flex gap-x-2 items-center">
+                    <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                    Social media analytics
+                  </li>
+                </ul>
+                <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
+                  Learn more <ArrowRight />
+                </button>
+              </div>
+              <div className="w-full flex justify-center items-center">
+                <Image src="/assets/social-planner.png" alt="" width={900} height={900} />
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section>
+      <section className="bg-[url('/backgrounds/abstract-dots.png')] bg-no-repeat bg-cover ">
         <div className="flex flex-col items-center space-y-4">
           <div className="bg-[#00968914] py-2 px-4 uppercase flex items-center gap-3 rounded-full text-sm font-semibold max-w-fit text-primary-green">
-            {" "}
             Advocacy
           </div>
           <h1 className="text-[42px] max-w-2xl leading-normal font-semibold  text-center">
@@ -369,7 +444,6 @@ export default function Home() {
         <div className="bg-[url('/backgrounds/abstract-dots.png')] bg-no-repeat bg-cover w-full space-y-12 py-16">
           <div className="flex flex-col items-center space-y-4">
             <div className="bg-[#00968914] py-2 px-4 uppercase flex items-center gap-3 rounded-full text-sm font-semibold max-w-fit text-[#009689]">
-              {" "}
               Benefits
             </div>
             <h1 className="text-[42px] max-w-2xl leading-normal font-semibold  text-center">
