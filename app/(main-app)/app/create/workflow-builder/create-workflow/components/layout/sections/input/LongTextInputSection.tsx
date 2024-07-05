@@ -4,6 +4,7 @@ import { Switch } from "@/components/ui/switch";
 import React, { useEffect, useState } from "react";
 interface LongTextInputSectionProps {
   onParamsChange: (params: ShortTextParams) => void;
+  inputParams: ShortTextParams | {};
 }
 
 interface ShortTextParams {
@@ -15,14 +16,14 @@ interface ShortTextParams {
   variable_name: string;
 }
 
-export default function LongTextInputSection({ onParamsChange }: LongTextInputSectionProps) {
+export default function LongTextInputSection({ onParamsChange, inputParams }: LongTextInputSectionProps) {
   const [params, setParams] = useState<ShortTextParams>({
-    display_name: "",
-    placeholder: "",
-    default_value: "",
-    description: "",
-    required: false,
-    variable_name: "",
+    display_name: (inputParams as ShortTextParams).display_name || "",
+    placeholder: (inputParams as ShortTextParams).placeholder || "",
+    default_value: (inputParams as ShortTextParams).default_value || "",
+    description: (inputParams as ShortTextParams).description || "",
+    required: (inputParams as ShortTextParams).required || false,
+    variable_name: (inputParams as ShortTextParams).variable_name || "",
   });
 
   useEffect(() => {

@@ -20,7 +20,7 @@ export default function InputSection() {
         </div>
       </div>
       {addNewInput ? (
-        <AddInput />
+        <AddInput setAddNewInput={setAddNewInput}/>
       ) : (
         <Fragment>
           <div className="mt-8 space-y-3">
