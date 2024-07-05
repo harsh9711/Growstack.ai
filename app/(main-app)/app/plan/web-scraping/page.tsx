@@ -288,6 +288,15 @@ const WebScraping: React.FC = () => {
               </Table>
             </Motion>
           )}
+          <button
+            onClick={handleBulkSubmit}
+            disabled={isPending}
+            className={clsx(
+              "mx-auto mt-4 w-[200px] h-14 flex items-center justify-center bg-primary-green rounded-xl sheen text-white",
+              isPending && "bg-opacity-90"
+            )}>
+            {isPending ? <Spinner /> : "Save,"}
+          </button>
         </div>
       </div>
     </Fragment>
