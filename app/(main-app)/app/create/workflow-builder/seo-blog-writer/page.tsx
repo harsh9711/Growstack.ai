@@ -5,9 +5,12 @@ import { table } from 'console'
 import { Table } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
-import React, { useRef, RefObject, useState } from 'react'
+import React, { useRef, RefObject, useState,useEffect } from 'react'
 import { columns } from '../../../components/DataTable'
 import { CSVLink } from 'react-csv';
+import { useSearchParams } from 'next/navigation'
+import axios from 'axios'
+import { API_URL } from '@/lib/api'
 
 const Page = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -15,10 +18,50 @@ const Page = () => {
   const runRef = useRef<HTMLDivElement>(null);
   const tableRef = useRef<HTMLDivElement>(null);
   const [tableData, setTableData] = useState<any[]>([]); // Placeholder for table data
+  const [workflowId, setWorkflowId] = useState("");
+  const [keyWords, setKeyWords] = useState<string>("")
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(Math.ceil(tableData.length / 10)); // Placeholder for total pages
+  const searchParams = useSearchParams();
+  interface WorkFlowData {
+    actions: any[];
+    input_configs: any[]; 
+    output_configs: any[]; 
+  }
+  
+  const [workFlowData, setWorkFlowData] = useState<WorkFlowData>({ actions: [], input_configs: [], output_configs : []});
+  const fetchWorkflowData = async (id: string) => {
+    try {
+      const response = await axios.get(`${API_URL}/workflow/api/v1/${id}`);
+      setWorkFlowData(response.data.data);
+    } catch (error) {
+      console.log('Error fetching workflow data:', error);
+    }
+  }
 
+  const handleRunWorkFlow = async () => {
+    try {
+      const payload = {
+        actions_with_runs: workFlowData.actions.map((action) => ({ action: action._id })),
+        inputs: workFlowData.input_configs.map((input) => ({
+          variable_name: input.variable_name, variable_value: keyWords
+        })),
+        outputs: workFlowData.output_configs.map((output) => ({ variable_name: output.display_name, variable_value: output.value }))
+      }
+      await axios.post(`${API_URL}/workflow/api/v1/${workflowId}/runner`, { payload })
+
+    } catch (error) {
+      console.log('Error running workflow:', error);
+    }
+  }
+  useEffect(() => {
+    const id = searchParams.get("workflow_id");
+    if (id) {
+      setWorkflowId(id);
+      fetchWorkflowData(id);
+    }
+  }, [searchParams]);
 
   const [activeSection, setActiveSection] = useState<string>('run');
   const exportData = () => {
@@ -178,17 +221,26 @@ const Page = () => {
       <h2 className='font-semibold text-lg'>Input</h2>
     </div>
     <div>
-      <h2 className='font-bold text-lg'>Content brief</h2>
+      <h2 className='font-bold text-lg'>
+        Keywords
+      </h2>
+              <input
+                type="text"
+                placeholder="Enter keywords by comma separated"
+                className="w-full p-2 border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2"
+                value={keyWords}
+                onChange={(e) => setKeyWords(e.target.value)}
+              />
     </div>
-    <div className='flex flex-col gap-2'>
+    {/* <div className='flex flex-col gap-2'>
       <h2 className='font-medium'>Content brief</h2>
       <input
         type="text"
         placeholder="Enter content brief here"
         className="w-full p-2 border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2"
       />
-    </div>
-    <div className='bg-[#03473729] flex flex-row items-center justify-center rounded-xl p-4 gap-3'>
+    </div> */}
+    <div className='bg-[#03473729] flex flex-row items-center justify-center rounded-xl p-4 gap-3' onClick={()=>handleRunWorkFlow()}>
       <Image src="/run.png" alt="go" width={10} height={10}/>
       <h2 className="text-[#14171B] font"> Run Workflow</h2>
     </div>

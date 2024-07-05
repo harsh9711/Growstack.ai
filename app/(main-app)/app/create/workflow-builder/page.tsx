@@ -7,10 +7,19 @@ import { Plus, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
+
+type PreBuiltTemplate = {
+  _id: number;
+  name: string;
+  description: string;
+  image: string;
+  workflow_id:string
+};
 
 export default function WorkflowBuilder() {
   const [workflowId, setWorkflowId] = useState(null);
+  const [preBuiltTemplates, setPreBuiltTemplates] = useState<PreBuiltTemplate[]>([]);
   const router = useRouter();
   const createWorkflow = async () => {
     try {
@@ -24,6 +33,19 @@ export default function WorkflowBuilder() {
       // Handle error (e.g., show an error message)
     }
   };
+  const getPreBuiltTemplates = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/workflow/api/v1?pre_built=true`);
+      setPreBuiltTemplates(response.data.data);
+      console.log('Pre-built templates:', response.data.data);
+    } catch (error) { 
+      console.error('Error fetching pre-built templates:', error);
+    }
+  }
+
+  useEffect(()=>{
+    getPreBuiltTemplates();
+  },[])
   return (
     <Fragment>
       <main className="">
@@ -37,27 +59,17 @@ export default function WorkflowBuilder() {
         </div>
         <div className="mt-10">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-           <Link href="/app/create/workflow-builder/seo-blog-writer"> 
-           <Card
-              title="SEO blog writer"
-              description="Automate the entire process from keyword research to content creation, you can produce high-quality, search engine-friendly ..."
-              imageSrc="/assets/workflow-assets1.svg"
-            /></Link>
-            <Card
-              title="Research lead & generate personalized email"
-              description="Personalize outreach of a new lead. This workflow uses GPT, Google Search, and LinkedIn ..."
-              imageSrc="/assets/workflow-assets2.svg"
-            />
-            <Card
-              title="Convert Youtube videos into blog posts in your brand voice"
-              description="Convert webinars, tutorials, or any Youtube video into SEO-optimized blog posts..."
-              imageSrc="/assets/workflow-assets3.svg"
-            />
-            <Card
-              title="SEO keyword research"
-              description="Find untapped SEO ranking potential for your website or blog with our SEO keyword research agent. This workflow researches your..."
-              imageSrc="/assets/workflow-assets4.svg"
-            />
+            {
+              preBuiltTemplates.map((template) => (
+                <Link key={template._id} href={`/app/create/workflow-builder/seo-blog-writer?workflow_id=${template.workflow_id}`}>
+                  <Card
+                    title={template.name}
+                    description="Automate the entire process from keyword research to content creation, you can produce high-quality, search engine-friendly ..."
+                    imageSrc="/assets/workflow-assets1.svg"
+                  />
+                </Link>
+              ))
+            }
           </div>
           <div className="mt-10">
             <div className="flex items-center gap-4">
