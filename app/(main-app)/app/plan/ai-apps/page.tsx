@@ -26,26 +26,28 @@ export default function MarketingPage() {
   const fetchAssistants = async () => {
     setIsPending(true);
     try {
-      let apiUrl = `${API_URL}/ai/api/v1/chat-template?page=1&limit=20`;
-console.log("selectedtag",selectedTag);
+      let apiUrl = `${API_URL}/ai/api/v1/chat-template?category=${selectedTag}`;
+      console.log("selectedtag", selectedTag);
       if (selectedTag === "Others") {
         apiUrl = `${API_URL}/ai/api/v1/chat-template/user?page=1&limit=20&search=${searchQuery}`;
       }
 
       console.log("API URL:", apiUrl);
 
-      const response = await axios.get(apiUrl); 
+      const response = await axios.get(apiUrl);
 
-      console.log("API Response:", response.data); 
+      console.log("API Response:", response.data);
 
       if (response.data.data && response.data.data) {
-        const formattedAssistants = response.data.data.map((assistant: any) => ({
-          _id: assistant._id,
-          "ASSISTANT NAME": assistant["ASSISTANT NAME"],
-          "ASSISTANT DESCRIPTION": assistant["ASSISTANT DESCRIPTION"],
-          icon: assistant["icon"],
-          category: assistant["category"],
-        }));
+        const formattedAssistants = response.data.data.map(
+          (assistant: any) => ({
+            _id: assistant._id,
+            "ASSISTANT NAME": assistant["ASSISTANT NAME"],
+            "ASSISTANT DESCRIPTION": assistant["ASSISTANT DESCRIPTION"],
+            icon: assistant["icon"],
+            category: assistant["category"],
+          })
+        );
         setAssistants(formattedAssistants);
       } else {
         console.error("Unexpected API response format:", response.data);
@@ -61,15 +63,6 @@ console.log("selectedtag",selectedTag);
   useEffect(() => {
     fetchAssistants();
   }, [selectedTag, searchQuery]);
-
-  const filteredAssistants = assistants.filter((assistant) => {
-    if (selectedTag === "Others") {
-      return true; 
-    } else {
-      return assistant.category === selectedTag; 
-    }
-  });
-  
 
   return (
     <Fragment>
@@ -107,7 +100,9 @@ console.log("selectedtag",selectedTag);
               onClick={() => setSelectedTag(tag.name)}
               className={clsx(
                 "py-3.5 px-6 rounded-lg cursor-pointer flex items-center gap-2 transition duration-300",
-                selectedTag === tag.name ? "bg-primary-green text-white" : "bg-[#E9E9E9] text-primary-green"
+                selectedTag === tag.name
+                  ? "bg-primary-green text-white"
+                  : "bg-[#E9E9E9] text-primary-green"
               )}
             >
               <Image src={tag.icon} alt="" width={20} height={20} />
@@ -122,7 +117,10 @@ console.log("selectedtag",selectedTag);
             <div>No assistants found</div>
           ) : (
             assistants.map((assistant, index) => (
-              <Link href={`/app/plan/ai-apps/${assistant._id}`} key={assistant._id}>
+              <Link
+                href={`/app/plan/ai-apps/${assistant._id}`}
+                key={assistant._id}
+              >
                 <div className="flex items-center justify-between gap-5 bg-white border border-[#EEF0F4] rounded-2xl p-6 shadow-xl shadow-gray-100 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer">
                   <div className="flex gap-4 items-start">
                     <img
@@ -132,9 +130,18 @@ console.log("selectedtag",selectedTag);
                       height={80}
                       className="w-[64px] h-[64px]"
                     />
-                    <div className="space-y-2">
-                      <h1 className="text-lg font-semibold">{assistant["ASSISTANT NAME"]}</h1>
-                      <p className="text-primary-black text-opacity-70 text-[14px] leading-relaxed">
+                    <div className="space-y-2 max-h-[80px]">
+                      <h1 className="text-lg font-semibold">
+                        {assistant["ASSISTANT NAME"]}
+                      </h1>
+                      <p
+                        className="text-primary-black text-opacity-70 text-[14px] leading-relaxed overflow-hidden text-ellipsis"
+                        style={{
+                          display: "-webkit-box",
+                          WebkitLineClamp: 3,
+                          WebkitBoxOrient: "vertical",
+                        }}
+                      >
                         {assistant["ASSISTANT DESCRIPTION"]}
                       </p>
                     </div>
@@ -159,11 +166,11 @@ const tags = [
   },
   {
     icon: "/icons/blogposts.svg",
-    name: "Blog posts",
+    name: "Blogs posts",
   },
   {
     icon: "/icons/shoppingcart.svg",
-    name: "Ecommerce",
+    name: "Commerce",
   },
   {
     icon: "/icons/emails.svg",
