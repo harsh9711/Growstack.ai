@@ -11,6 +11,8 @@ import { IOutline, ISubtitleTalkingPoints } from "../types";
 import { Plus, X } from "lucide-react";
 import { DraggableIcon } from "@/components/svgs";
 import SubtitleList from "./SubtitleList";
+import { Reorder } from "framer-motion";
+import TalkingPointsList from "./TalkingPointList";
 
 interface TalkingPointsComponentProps {
   currentStep: number;
@@ -45,7 +47,6 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
 
   const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
 
-  const [keywordsInput, setKeywordsInput] = useState<string>("");
   const [numTalkingPoints, setNumTalkingPoints] = useState<number>(3);
   const [numTalkingPointsWords, setNumTalkingPointsWords] = useState<number>(10);
 
@@ -109,6 +110,28 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
     setSelectedOutlines({ ...selectedOutlines, subtitles: updatedSubtitles });
   };
 
+  const handleTalkingPointsReorder = (newOrder: ISubtitleTalkingPoints[]) => {
+    setTalkingPoints(newOrder);
+  };
+
+  const handleTalkingPointsRemove = (indexToRemove: number) => {
+    setTalkingPoints((prev) => prev.filter((_, index) => index !== indexToRemove));
+  };
+
+  const [showInput, setShowInput] = useState(false);
+  const [newSubtitleName, setNewSubtitleName] = useState("");
+
+  const addNewSection = () => {
+    if (newSubtitleName.trim() === "") {
+      return;
+    }
+
+    const updatedSubtitles = [...selectedOutlines.subtitles, newSubtitleName.trim()];
+    handleReorder(updatedSubtitles);
+    setNewSubtitleName("");
+    setShowInput(false);
+  };
+
   return (
     <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
       <div className="flex gap-5 !mt-10 items-start">
@@ -145,11 +168,32 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
           <div className="space-y-1.5">
             <label className="font-medium">Article outline</label>
             {selectedOutlines.subtitles.length > 0 && <SubtitleList subtitles={selectedOutlines.subtitles} onReorder={handleReorder} onRemove={handleRemove} />}
-            <div className="flex justify-end">
-              <button className="text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 p-1.5 rounded-lg text-sm items-center font-medium transition-all duration-300 mt-3">
-                <Plus size={18} className="text-primary-green" />
-                Add new section
-              </button>
+            <div className="flex flex-col justify-end">
+              {!showInput && (
+                <button
+                  onClick={() => setShowInput(true)}
+                  className="self-end text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 p-1.5 rounded-lg text-sm items-center font-medium transition-all duration-300 mt-3">
+                  <Plus size={18} className="text-primary-green" />
+                  Add new section
+                </button>
+              )}
+              {showInput && (
+                <div className="pl-6 pr-9 mt-2.5 flex flex-col">
+                  <input
+                    type="text"
+                    className="flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2"
+                    placeholder="Enter new section title"
+                    value={newSubtitleName}
+                    onChange={(e) => setNewSubtitleName(e.target.value)}
+                  />
+                  <button
+                    onClick={addNewSection}
+                    className="self-end text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 p-1.5 rounded-lg text-sm items-center font-medium transition-all duration-300 mt-3">
+                    <Plus size={18} className="text-primary-green" />
+                    Confirm
+                  </button>
+                </div>
+              )}
             </div>
           </div>
           <div className="space-y-1.5">
@@ -221,34 +265,11 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
           )}
           {talkingPoints.length > 0 && (
             <div className="">
-              <ul className="mt-4 px-10 py-12 bg-white border rounded-3xl space-y-10">
-                {talkingPoints.map((item: any, index: number) => (
-                  <li key={index} className="flex flex-col gap-4">
-                    <div className="flex items-start gap-4">
-                      <DraggableIcon className="cursor-grab active:cursor-grabbing mt-3 w-full max-w-fit" />
-                      <div className="w-full space-y-8">
-                        <h1 className="w-full bg-[#F5F5F5] p-3 rounded-lg">{item.subtitle_name}</h1>
-                        <div className="space-y-4">
-                          {item.talking_points.map((point: any, index: number) => (
-                            <div key={index}>
-                              <div className="w-full bg-[#F5F5F5] p-3 rounded-lg" key={index}>
-                                {point}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                      <X size={25} className="text-primary-green cursor-pointer mt-3" />
-                    </div>
-                    <div className="flex justify-end pr-10">
-                      <button className="text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 p-2 rounded-lg text-sm items-center font-medium transition-all duration-300">
-                        <Plus size={18} className="text-primary-green" />
-                        Add new talking points
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+              <TalkingPointsList
+                handleTalkingPointsRemove={handleTalkingPointsRemove}
+                handleTalkingPointsReorder={handleTalkingPointsReorder}
+                talkingPoints={talkingPoints}
+              />
               <div className="flex justify-end">
                 <button onClick={() => setCurrentStep(3)} className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px]">
                   Next step

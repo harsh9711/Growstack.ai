@@ -210,6 +210,7 @@ export default function AiAppPage({
           data = "<br>" + data;
         }
         content += data;
+        console.log(content)
         setGeneratedContent(content);
       };
     } catch (error) {
