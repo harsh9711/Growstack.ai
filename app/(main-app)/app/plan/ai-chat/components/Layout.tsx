@@ -26,8 +26,12 @@ interface SidebarItem {
   selected:boolean;
   onRename: (_id: string, newTitle: string) => void;
   onSelect: () => void;
-
 }
+
+type Message = {
+  message: string;
+  isUser: boolean;
+};
 
 const groupByDate = (items: SidebarItem[]) => {
   const grouped: { [date: string]: SidebarItem[] } = {};
@@ -43,29 +47,26 @@ const groupByDate = (items: SidebarItem[]) => {
   return grouped;
 };
 const Layout: React.FC = () => {
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [showNewChatInput, setShowNewChatInput] = useState(false);
   const [selectedModel, setSelectedModel] = useState<string>("gpt-3.5-turbo");
   const [sidebarItems, setSidebarItems] = useState<SidebarItem[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
 
- 
-
    const fetchMessages = async (_id: string) => {
     try {
       const response = await axios.get(`${API_URL}/ai/api/v1/conversation/${_id}`);
-      console.log("Fetch Messages API Response:", response.data.data.chats[0].thread[0].user_prompt);
-            console.log("Fetch Messages API Response:", response.data.data.chats[0].thread[0].response);
-      const chatData = response.data.data.chats[0].thread;
-
-       const messages = chatData.flatMap((thread: any) => [
-        `User: ${thread.user_prompt}`,
-        `Assistant: ${thread.response}`,
-      ]);
+      const chatData = response.data.data.chats;
+      const messages = chatData.reduce((acc: Message[], chats: any) => {
+        const flattenedThreads = chats.thread.flatMap((thread: any) => [
+          { message: thread.user_prompt, isUser: true },
+          { message: thread.response, isUser: false },
+        ]);
+        return acc.concat(flattenedThreads);
+      }, []);
       setMessages(messages);
-      setSelectedConversation(_id); 
-
-      const firstFewWords = chatData[0].user_prompt.split(' ').slice(0, 5).join(' ');
+      setSelectedConversation(_id);
+      const firstFewWords = response.data.data.title
       setSidebarItems(prevItems =>
         prevItems.map(item =>
           item._id === _id ? { ...item, title: firstFewWords } : item
@@ -77,44 +78,60 @@ const Layout: React.FC = () => {
       console.error("Error fetching messages:", error);
     }
   };
-    useEffect(() => {
-    console.log("useEffect executed");
-    const fetchData = async () => {
-      try {
-        console.log("Fetching data from API...");
-        const response = await axios.get(`${API_URL}/ai/api/v1/conversation/`);
-        console.log("API Response:", response.data.data[0]);
-        const items = response.data.data.map((item: any) => ({
-          _id: item._id,
-          title: item.title,
-          selected: item.selected,
-          createdDate: item.createdAt,
-          updatedDate: item.updatedAt,
-        }));
-        setSidebarItems(items);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+  const fetchConversations = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/ai/api/v1/conversation/`);
+      const items = response.data.data.map((item: any) => ({
+        _id: item._id,
+        title: item.title,
+        selected: item.selected,
+        createdDate: item.createdAt,
+        updatedDate: item.updatedAt,
+      }));
+      setSidebarItems(items);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
-    fetchData();
+  useEffect(()=>{
+    if(selectedConversation){
+      fetchMessages(selectedConversation)
+    }
+  },[selectedConversation])
+
+    useEffect(() => {
+      fetchConversations();
   }, []);
+
     const handleRename = async (_id: string, newTitle: string) => {
     try {
-    const response = await axios.put(`${API_URL}/ai/api/v1/conversation/${_id}`, { title: newTitle });
-    console.log(response)
-      setSidebarItems(prevItems =>
-        prevItems.map(item =>
-          item._id === _id ? { ...item, title: newTitle, updatedDate: new Date().toISOString() } : item
-        )
-      );
+    await axios.put(`${API_URL}/ai/api/v1/conversation/${_id}`, { title: newTitle });
+    fetchConversations();
+    } catch (error) {
+      console.error("Error renaming chat:", error);
+    }
+  };
+    const handleDelete = async (_id: string) => {
+    try {
+    await axios.delete(`${API_URL}/ai/api/v1/conversation/${_id}`);
+    fetchConversations();
     } catch (error) {
       console.error("Error renaming chat:", error);
     }
   };
 
-  const handleSend = (message: string) => {
-    setMessages(prevMessages => [...prevMessages, `${message}`]);
+  const handleSend = (message: string, isUser: boolean = true,id:string | null) => {
+    setMessages(prevMessages => {
+      if (!isUser && prevMessages.length > 0 && !prevMessages[prevMessages.length - 1].isUser) {
+        const updatedMessages = [...prevMessages];
+        updatedMessages[updatedMessages.length - 1].message = message;
+        return updatedMessages;
+      } else {
+        return [...prevMessages, { message, isUser }];
+      }
+    });
+    id && setSelectedConversation(id);
   };
   const groupedSidebarItems = groupByDate(sidebarItems);
 
@@ -131,23 +148,7 @@ const Layout: React.FC = () => {
     { label: "Claude 3.5 Sonnet", value: "claude-3.5-sonnet", icon: <AnthropicClaude /> },
     { label: "Gemini 1.5 Flash", value: "gemini-1.5-flash", icon: <GoogleGemini /> },
     { label: "Gemini 1.5 Pro", value: "gemini-1.5-pro", icon: <GoogleGemini /> },
-    { label: "LLaMA 2 13B Chat", value: "llama-2-13b-chat", icon: <ChatGptIcon2 /> },
-    { label: "LLaMA 2 70B Chat", value: "llama-2-70b-chat", icon: <ChatGptIcon2 /> },
-    { label: "LLaMA 2 7B Chat", value: "llama-2-7b-chat", icon: <ChatGptIcon2 /> },
-    { label: "LLaMA 3 70B Instruct", value: "llama-3-70b-instruct", icon: <ChatGptIcon2 /> },
-    { label: "LLaMA 3 70B Instruct Groq", value: "llama-3-70b-instruct-groq", icon: <ChatGptIcon2 /> },
-    { label: "LLaMA 3 8B Instruct", value: "llama-3-8b-instruct", icon: <ChatGptIcon2 /> },
-    { label: "LLaMA 3 8B Instruct Groq", value: "llama-3-8b-instruct-groq", icon: <ChatGptIcon2 /> },
-    { label: "LLaMA 3 Sonar Large 32K Chat", value: "llama-3-sonar-large-32k-chat", icon: <ChatGptIcon2 /> },
-    { label: "LLaMA 3 Sonar Small 32K Chat", value: "llama-3-sonar-small-32k-chat", icon: <ChatGptIcon2 /> },
-    { label: "Mistral 7B Instruct 4K", value: "mistral-7b-instruct-4k", icon: <ChatGptIcon2 /> },
-    { label: "Mistral Codestral", value: "mistral-codestral", icon: <ChatGptIcon2 /> },
-    { label: "Mistral Large", value: "mistral-large", icon: <ChatGptIcon2 /> },
-    { label: "Mistral Medium", value: "mistral-medium", icon: <ChatGptIcon2 /> },
-    { label: "Mistral Small", value: "mistral-small", icon: <ChatGptIcon2 /> },
-    { label: "Mistral 8x22B Instruct", value: "mistral-8x22b-instruct", icon: <ChatGptIcon2 /> },
-    { label: "Mistral 8x7B", value: "mistral-8x7b", icon: <ChatGptIcon2 /> },
-    { label: "Mistral 8x7B Groq", value: "mistral-8x7b-groq", icon: <ChatGptIcon2 /> },
+    
   ];
 
   const [selectedOption, setSelectedOption] = useState(options[0].value);
@@ -182,7 +183,11 @@ const Layout: React.FC = () => {
             </SelectContent>
           </Select>
           <button
-            onClick={() => setShowNewChatInput(true)}
+            onClick={() => {
+              setSelectedConversation(null);
+              setMessages([]);
+              setShowNewChatInput(true)
+            }}
             className="text-white bg-primary-green hover:bg-primary-green/90 flex gap-2 justify-center items-center h-12 px-6 font-medium rounded-xl transition-all duration-300 text-sm">
             New
           </button>
@@ -192,9 +197,9 @@ const Layout: React.FC = () => {
         </div>
         <div className="border-y border-[#EFEFEF] flex items-center justify-between py-3 px-6">
           <h2 className="font-semibold">Your conversations</h2>
-          <button className="hover:bg-primary-green/10 sheen px-2 py-1.5 text-primary-green font-medium rounded transition-all duration-300 text-sm">
+          {/* <button className="hover:bg-primary-green/10 sheen px-2 py-1.5 text-primary-green font-medium rounded transition-all duration-300 text-sm">
             Clear all
-          </button>
+          </button> */}
         </div>
  <div className="relative p-5 flex-1 overflow-y-auto max-h-[calc(100vh-280px)]">
           {Object.entries(groupedSidebarItems).map(([date, items]) => (
@@ -205,8 +210,10 @@ const Layout: React.FC = () => {
                   key={item._id}
                   _id={item._id}
                   title={item.title}
-                  onSelect={() => fetchMessages(item._id)}
-                  onRename={handleRename} setSidebarItems={function (value: React.SetStateAction<any[]>): void {
+                  onSelect={() => setSelectedConversation(item._id)}
+                  onDelete={handleDelete}
+                  onRename={handleRename} 
+                  setSidebarItems={function (value: React.SetStateAction<any[]>): void {
                     throw new Error("Function not implemented.");
                   } }                
                 />
@@ -219,10 +226,10 @@ const Layout: React.FC = () => {
       <main className="flex-1 w-full flex flex-col bg-white p-4 rounded-3xl border">
         <div className="flex-1 p-4 overflow-y-auto">
           {messages.map((message, idx) => (
-            <ChatMessage key={idx} message={message} isUser={idx % 2 === 0} />
+            <ChatMessage key={idx} message={message.message} isUser={message.isUser}/>
           ))}
         </div>
-        {showNewChatInput && <ChatInput  onSend={handleSend} selectedModel={selectedModel} />}
+        {showNewChatInput && <ChatInput onSend={handleSend} selectedModel={selectedModel} fetchConversations={fetchConversations} selectedConversation={selectedConversation} selectedOption={selectedOption}/>}
       </main>
     </div>
   );

@@ -8,9 +8,9 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="overflow-hidden">
+    <div>
       <Navbar />
-      {children}
+      <div>{children}</div>
       <Footer />
     </div>
   );

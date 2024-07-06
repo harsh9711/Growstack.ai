@@ -20,7 +20,16 @@ const ChatSection: React.FC<ChatSectionProps> = ({ conversation, assistant }) =>
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
+    setMessages((prevMessages) => {
+      const existingMessageIndex = prevMessages.findIndex((msg) => msg.prompt === prompt);
+      if (existingMessageIndex !== -1) {
+        const updatedMessages = [...prevMessages];
+        updatedMessages[existingMessageIndex].response = response;
+        return updatedMessages;
+      } else {
+        return [...prevMessages, newMessage];
+      }
+    });
   };
 
   return (

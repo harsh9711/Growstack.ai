@@ -14,6 +14,18 @@ import { API_URL } from '@/lib/api'
 import { InputIcon2 } from '@/components/svgs'
 import clsx from 'clsx'
 
+type WorkFlowData = {
+  actions: any[];
+  input_configs: any[];
+  output_configs: any[];
+}
+
+type WorkFlowResults = {
+  outputs: any[];
+  status: boolean;
+  failed_step: number;
+}
+
 const Page = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const buildRef = useRef<HTMLDivElement>(null);
@@ -22,15 +34,12 @@ const Page = () => {
   const [tableData, setTableData] = useState<any[]>([]); // Placeholder for table data
   const [workflowId, setWorkflowId] = useState("");
   const [keyWords, setKeyWords] = useState<string>("")
+  
+  const [workFlowResults, setWorkFlowResults] = useState<WorkFlowResults>({ outputs: [], status: true, failed_step: -1});
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(Math.ceil(tableData.length / 10)); // Placeholder for total pages
   const searchParams = useSearchParams();
-  interface WorkFlowData {
-    actions: any[];
-    input_configs: any[]; 
-    output_configs: any[]; 
-  }
   
   const [workFlowData, setWorkFlowData] = useState<WorkFlowData>({ actions: [], input_configs: [], output_configs : []});
   const fetchWorkflowData = async (id: string) => {
@@ -51,7 +60,9 @@ const Page = () => {
         })),
         outputs: workFlowData.output_configs.map((output) => ({ variable_name: output.display_name, variable_value: output.value }))
       }
-      await axios.post(`${API_URL}/workflow/api/v1/${workflowId}/runner`, { payload })
+      const response = await axios.post(`${API_URL}/workflow/api/v1/${workflowId}/runner`, payload)
+     
+      setWorkFlowResults({ ...response.data.data, outputs: response.data.data.outputs.map((output: any) => ({ ...output, variable_value: output.variable_type === 'object' ? JSON.parse(output.variable_value) : output.variable_value })) });
 
     } catch (error) {
       console.log('Error running workflow:', error);
@@ -113,6 +124,9 @@ const Page = () => {
       goToPage(currentPage + 1);
     }
   };
+
+
+  console.log(workFlowResults)
   return (
     <div>
       <div className='flex flex-row items-center gap-80 py-10'>
@@ -261,7 +275,7 @@ const Page = () => {
         className="w-full p-2 border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2"
       />
     </div> */}
-    <div className='bg-[#03473729] flex flex-row items-center justify-center rounded-xl p-4 gap-3' onClick={()=>handleRunWorkFlow()}>
+    <div className='bg-[#03473729] flex flex-row items-center justify-center rounded-xl p-4 gap-3 cursor-pointer' onClick={()=>handleRunWorkFlow()}>
       <Image src="/run.png" alt="go" width={10} height={10}/>
       <h2 className="text-[#14171B] font"> Run Workflow</h2>
     </div>
@@ -273,15 +287,55 @@ const Page = () => {
       <h1 className="text-2xl font-medium text-left">Results</h1>
       <p className='text-[#14171B]/80'>Your output will appear below.</p>
     </div>
-    <div className='border-gray-300 border rounded-xl flex flex-col gap-4 p-6 bg-white'>
-      <div className='flex flex-row items-center gap-6'>
-        <Image src="/leaf.png" alt="go" width={50} height={50}/>
-        <h2 className='font-medium text-lg'>1. Generate blog post</h2>
-      </div>
-    </div>
+    {
+      workFlowResults.outputs.map((output,idx) => (
+        <>
+          {workFlowResults.status && workFlowResults.failed_step <= idx+1 &&
+            (output.variable_name !== "Gpt Response" ? 
+            <div key={idx} className='border-gray-300 border rounded-xl flex flex-col gap-4 p-6 bg-white'>
+              <div className='flex flex-row items-center gap-6'>
+                <Image src="/leaf.png" alt="go" width={50} height={50} />
+                <h2 className='font-medium text-lg'>{idx + 1} {output.variable_name} </h2>
+                <button
+                  className="bg-primary-green ml-auto text-white px-4 py-2 rounded"
+                  onClick={() => navigator.clipboard.writeText(output.variable_value)}
+                >
+                  Copy
+                </button>
+              </div>
+              <div className="bg-gray-100 p-4 rounded-lg break-words whitespace-pre-line">
+                {output.variable_type === 'object' ?
+                  Array.isArray(output.variable_value) &&
+                  output.variable_value.map((item: any) => (
+                    <p>{item}</p>
+                  ))
+                  : output.variable_value}
+              </div>
+            </div> :
+            Object.entries(output.variable_value).map(([key, value] : any, index) => (
+              <div key={index} className='border-gray-300 border rounded-xl flex flex-col gap-4 p-6 bg-white'>
+                <div className='flex flex-row items-center gap-6'>
+                  <Image src="/leaf.png" alt="go" width={50} height={50} />
+                  <h2 className='font-medium text-lg'>{index + idx + 1} {key}</h2>
+                  <button
+                    className="bg-primary-green ml-auto text-white px-4 py-2 rounded"
+                    onClick={() => navigator.clipboard.writeText(value)}
+                  >
+                    Copy
+                  </button>
+                </div>
+                <div className="bg-gray-100 p-4 rounded-lg break-words whitespace-pre-line">
+                  {value}
+                </div>
+              </div>
+            )))
+            }
+        </>
+      ))
+    }
           
 
-    <div className='border-gray-300 border rounded-xl flex flex-col gap-4 p-6 bg-white'>
+    {/* <div className='border-gray-300 border rounded-xl flex flex-col gap-4 p-6 bg-white'>
       <div className='flex flex-row items-center gap-6'>
         <Image src="/leaf.png" alt="go" width={50} height={50}/>
         <h2 className='font-medium text-lg'>2. Brainstorm title</h2>
@@ -298,8 +352,8 @@ const Page = () => {
         <Image src="/leaf.png" alt="go" width={50} height={50}/>
         <h2 className='font-medium text-lg'>4. Search Keyword</h2>
       </div>
-    </div>
-           <div className='border-gray-300 border rounded-xl flex flex-col gap-6 p-6 '>
+    </div> */}
+           {/* <div className='border-gray-300 border rounded-xl flex flex-col gap-6 p-6 '>
             <div className='flex flex-row items-center gap-6'>
                 <Image src="/leaf.png" alt="go" width={50} height={50}/>
                 <h2 className='font-medium text-lg'>5.Extract Top 3 URLs</h2>
@@ -380,7 +434,7 @@ const Page = () => {
                 <Image src="/leaf.png" alt="go" width={50} height={50}/>
                 <h2 className='font-medium text-lg'>15. Generate Outline</h2>
             </div>
-          </div>
+          </div> */}
           </div>
           </div>
       <div ref={tableRef} className="flex-shrink-0 w-full h-full min-w-[1000px] bg-white p-10 snap-center gap-10 flex flex-col">
