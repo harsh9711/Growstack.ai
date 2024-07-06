@@ -37,7 +37,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage }) => {
 
       const { data } = response;
       const chatId = data.data;
-      const eventSource = new EventSource(`${API_URL}/ai/api/v1/chat-template/generate/stream/${chatId}`);
+      const eventSource = new EventSource(`${API_URL}/ai/api/v1/assistant/chat/stream/${chatId}`);
       let content = "";
 
       eventSource.onerror = (event) => {
@@ -50,7 +50,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage }) => {
         addMessage(user_prompt, content);
       };
 
-      // Add the user message with an empty bot response initially
       addMessage(user_prompt, "");
     } catch (error: any) {
       if (error.response) {

@@ -22,9 +22,6 @@ export default function AiArticles() {
   const [images, setImages] = useState<Array<{ revised_prompt: string; url: string }>>([]);
   const [articleData, setArticleDate] = useState<any>();
 
-  console.log(images);
-
-
   const renderComponent = () => {
     switch (currentStep) {
       case 0:
