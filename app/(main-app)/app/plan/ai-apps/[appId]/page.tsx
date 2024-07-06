@@ -205,9 +205,6 @@ export default function AiAppPage({
         var data = event.data;
 
         if (data.includes("<p")) {
-
-        console.log(data);
-        if (data.includes("<p")) {
           console.log("Yes");
 
           data = "<br>" + data;
