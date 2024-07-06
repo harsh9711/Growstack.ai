@@ -136,10 +136,10 @@ const Layout: React.FC = () => {
   const groupedSidebarItems = groupByDate(sidebarItems);
 
   const options = [
-    { label: "ChatGPT 3.5", value: "gpt-3.5", icon: <ChatGptIcon2 /> },
+    // { label: "ChatGPT 3.5", value: "gpt-3.5", icon: <ChatGptIcon2 /> },
     { label: "ChatGPT 3.5 Turbo", value: "gpt-3.5-turbo", icon: <ChatGptIcon2 /> },
     { label: "GPT 4", value: "gpt-4", icon: <ChatGptIcon2 /> },
-    { label: "GPT 4 Turbo", value: "gpt-4-turbo", icon: <ChatGptIcon2 /> },
+    // { label: "GPT 4 Turbo", value: "gpt-4-turbo", icon: <ChatGptIcon2 /> },
     { label: "GPT 4o", value: "gpt-4o", icon: <ChatGptIcon2 /> },
     { label: "Claude 2", value: "claude-2", icon: <AnthropicClaude /> },
     { label: "Claude 3 Haiku", value: "claude-3-haiku", icon: <AnthropicClaude /> },
