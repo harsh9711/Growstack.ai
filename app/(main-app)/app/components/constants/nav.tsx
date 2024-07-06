@@ -151,12 +151,12 @@ const navLinks: NavLink[] = [
       {
         icon: <SquareShapeIcon />,
         name: "Social media conversation hub",
-        href: "#",
+        href: "/app/engage/Social-media",
       },
       {
         icon: <DocumentIcon />,
         name: "Social advocacy",
-        href: "#",
+        href: "/app/engage/Social-media",
       },
     ],
     title: "Engage",
