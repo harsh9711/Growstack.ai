@@ -42,7 +42,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage }) => {
 
       eventSource.onerror = (event) => {
         eventSource.close();
-        toast.error("Error occurred while streaming data.");
       };
 
       eventSource.onmessage = (event) => {
