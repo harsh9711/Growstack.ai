@@ -193,14 +193,19 @@ export default function AiAppPage({
       );
       const chatId = response.data.data;
       const eventSource = new EventSource(
-        `${API_URL}/ai/api/v1/chat-template/generate/stream/${chatId}`
+        `http://34.207.110.165:8082/ai/api/v1/chat-template/generate/stream/${chatId}`
       );
       var content = "";
       eventSource.onerror = (event) => {
         eventSource.close();
       };
       eventSource.onmessage = (event) => {
-        const data = event.data;
+        var data = event.data;
+        console.log(data);
+        if (data.includes("<p")) {
+          console.log("Yes");
+          data = "<br>" + data;
+        }
         content += data;
         setGeneratedContent(content);
       };
