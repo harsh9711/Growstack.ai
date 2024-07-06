@@ -193,7 +193,9 @@ export default function AiAppPage({
       );
       const chatId = response.data.data;
       const eventSource = new EventSource(
-        `http://34.207.110.165:8082/ai/api/v1/chat-template/generate/stream/${chatId}`
+
+        `https://foodzap.co/ai/api/v1/chat-template/generate/stream/${chatId}`
+
       );
       var content = "";
       eventSource.onerror = (event) => {
@@ -201,9 +203,13 @@ export default function AiAppPage({
       };
       eventSource.onmessage = (event) => {
         var data = event.data;
+
+        if (data.includes("<p")) {
+
         console.log(data);
         if (data.includes("<p")) {
           console.log("Yes");
+
           data = "<br>" + data;
         }
         content += data;
