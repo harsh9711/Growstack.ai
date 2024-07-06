@@ -11,9 +11,10 @@ interface ChatInputProps {
   selectedModel: string;
   fetchConversations: () => void;
   selectedConversation:string | null;
+  selectedOption:string
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel, fetchConversations, selectedConversation }) => {
+const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel, fetchConversations, selectedConversation, selectedOption }) => {
   const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -29,7 +30,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel, fetchConve
 
       try {
         // Check if chatId is not set, fetch a new chatId
-        const conversation = await axios.post(`${API_URL}/ai/api/v1/conversation/chat?conversation_id=${selectedConversation ? selectedConversation :''}&model=gpt-4o`,{user_prompt:input});
+        const conversation = await axios.post(`${API_URL}/ai/api/v1/conversation/chat?conversation_id=${selectedConversation ? selectedConversation : ''}&model=${selectedOption}`,{user_prompt:input});
         onSend(input, true, null);
         setInput("");
           // setConversationId(createResponse.data.data._id); // Set chatId from API response
