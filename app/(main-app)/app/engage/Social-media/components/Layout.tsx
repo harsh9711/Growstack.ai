@@ -16,6 +16,7 @@ import axios from "axios";
 import { API_URL } from "@/lib/api";
 import Image from "next/image";
 import { CiFilter } from "react-icons/ci";
+import { FaFilter } from "react-icons/fa";
 
 interface SidebarItem {
   _id: string;
@@ -68,24 +69,37 @@ const SearchBar= () => {
           onClick={toggleFilterMenu}
           className="p-2 focus:outline-none"
         >
-   <CiFilter className="w-6 h-6" />
+  {isFilterMenuOpen ? (
+            <FaFilter className="w-6 h-6 text-green-800" />
+          ) : (
+            <CiFilter className="w-8 h-6 text-green-800" />
+          )}
            </button>
       </div>
 
    
       {isFilterMenuOpen && (
-        <div className="absolute mt-2 right-0 w-48 bg-white border border-gray-300 rounded-md shadow-lg">
+        <div className="absolute z-[20] mt-2  top-14 right-0 w-80 bg-white border border-gray-300 rounded-2xl shadow-lg">
           <div className="p-4">
-            <h3 className="text-lg font-semibold">Filters</h3>
+            <div className="flex flex-row justify-between"><h3 className="text-lg font-medium">Filter</h3>
+            <h3 className="text-lg font-normal flex flex-row gap-1"><Image src="/refresh.png" alt="refresh" width={20} height={5}/>Reset</h3></div>
+
             <div className="mt-2 space-y-2">
               {/* Add filter options here */}
-              <label className="flex items-center">
-                <input type="checkbox" className="form-checkbox" />
-                <span className="ml-2">Option 1</span>
+              <label className="flex items-center flex-row justify-between">
+               <span> <input type="checkbox" className="bg-green-800 form-checkbox" />
+                <span className="ml-2">Carlos Jairo</span></span>
+                <Image src="/contact.png" alt="contact" width="20" height={10}/>
               </label>
-              <label className="flex items-center">
-                <input type="checkbox" className="form-checkbox" />
-                <span className="ml-2">Option 2</span>
+              <label className="flex items-center flex-row justify-between">
+               <span> <input type="checkbox" className="form-checkbox" />
+                <span className="ml-2">Carlos Jairo</span></span>
+                <Image src="/contact.png" alt="contact" width="20" height={10}/>
+              </label>
+                <label className="flex items-center flex-row justify-between">
+               <span> <input type="checkbox" className="form-checkbox" />
+                <span className="ml-2">Carlos Jairo</span></span>
+                <Image src="/contact.png" alt="contact" width="20" height={10}/>
               </label>
             </div>
             <button
@@ -177,26 +191,40 @@ const Layout: React.FC = () => {
   const groupedSidebarItems = groupByDate(sidebarItems);
 
 
+ const [activeIndex, setActiveIndex] = useState(0);
 
+  const handleButtonClick = (index: number) => {
+    setActiveIndex(index);
+  };
   return (
     <div className="flex-1 h-full flex gap-4 mt-10">
       <aside className="w-full max-w-[380px] relative border bg-white rounded-3xl flex flex-col">
-        <div className="flex flex-row justify-between px-6 pt-6">
-<div className="max-w-40 flex flex-row gap-6">
-   <button
-            className=" transition-all duration-300">All
-          </button>
-            <button
-            className=" transition-all duration-300">
-              My
+        <div className="flex flex-row justify-between px-6 pt-6 pb-2">
+ <div className="relative max-w-40 flex flex-row gap-6 font-normal ">
+      <button
+        onClick={() => handleButtonClick(0)}
+        className={`transition-all text-lg duration-300 ${activeIndex === 0 ? 'text-green-800' : ''}`}
+      >
+        All
+      </button>
+      <button
+        onClick={() => handleButtonClick(1)}
+        className={`transition-all text-lg duration-300 ${activeIndex === 1 ? 'text-green-800' : ''}`}
+      >
+        My
+      </button>
+      <button
+        onClick={() => handleButtonClick(2)}
+        className={`transition-all duration-300 text-lg ${activeIndex === 2 ? 'text-green-800' : ''}`}
+      >
+        Unassigned
+      </button>
+      <div
+        className="absolute -bottom-3 left-0 text-lg  right-0 h-1 bg-green-800 transition-all duration-300"
+        style={{ transform: `translateX(${activeIndex * 100}%) `, width: '20%' }}
+      />
+    </div>
 
-          </button>
-
-             <button
-            className=" transition-all duration-300">
-              Unassigned
-          </button>
-</div>
 <div className="flex flex-row gap-4">
           <button
             className=" transition-all duration-300">
@@ -214,7 +242,7 @@ const Layout: React.FC = () => {
  <div className="relative p-5 flex-1 overflow-y-auto max-h-[calc(100vh-280px)]">
           {Object.entries(groupedSidebarItems).map(([date, items]) => (
             <div key={date}>
-              <h3 className="text-lg font-semibold">{date}</h3>
+              {/* <h3 className="text-lg font-semibold">{date}</h3> */}
               {items.map((item) => (
             <SidebarItem
                   key={item._id}
