@@ -13,6 +13,7 @@ import axios from 'axios'
 import { API_URL } from '@/lib/api'
 import { InputIcon2 } from '@/components/svgs'
 import clsx from 'clsx'
+import ReactMarkdown from "react-markdown";
 
 type WorkFlowData = {
   actions: any[];
@@ -307,9 +308,9 @@ const Page = () => {
                 {output.variable_type === 'object' ?
                   Array.isArray(output.variable_value) &&
                   output.variable_value.map((item: any) => (
-                    <p>{item}</p>
+                    <ReactMarkdown>{item}</ReactMarkdown>
                   ))
-                  : output.variable_value}
+                  : <ReactMarkdown>{output.variable_value}</ReactMarkdown>}
               </div>
             </div> :
             Object.entries(output.variable_value).map(([key, value] : any, index) => (
@@ -325,7 +326,9 @@ const Page = () => {
                   </button>
                 </div>
                 <div className="bg-gray-100 p-4 rounded-lg break-words whitespace-pre-line">
-                  {value}
+                  <ReactMarkdown>
+                    {value}
+                  </ReactMarkdown>
                 </div>
               </div>
             )))
