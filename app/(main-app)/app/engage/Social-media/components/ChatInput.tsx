@@ -7,16 +7,14 @@ import axios from 'axios';
 import { API_URL } from "@/lib/api";
 
 interface ChatInputProps {
-  onSend: (message: string,isUser:boolean,id:string|null) => void;
+  onSend: (message: string) => void;
   selectedModel: string;
-  fetchConversations: () => void;
-  selectedConversation:string | null;
-  selectedOption:string
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel, fetchConversations, selectedConversation, selectedOption }) => {
+const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel }) => {
   const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [chatId, setChatId] = useState<string | null>(null); // Initialize chatId as null
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -30,27 +28,40 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel, fetchConve
 
       try {
         // Check if chatId is not set, fetch a new chatId
-        const conversation = await axios.post(`${API_URL}/ai/api/v1/conversation/chat?conversation_id=${selectedConversation ? selectedConversation : ''}&model=${selectedOption}`,{user_prompt:input});
-        onSend(input, true, null);
-        setInput("");
-          // setConversationId(createResponse.data.data._id); // Set chatId from API response
-        if (!selectedConversation) fetchConversations();
+        if (!chatId) {
+          const createResponse = await axios.get(`${API_URL}/ai/api/v1/conversation/create`);
+          console.log("Create Conversation API response:", createResponse.data.data._id);
+          setChatId(createResponse.data.data._id); // Set chatId from API response
+        }
 
-        const eventSource = new EventSource(
-          `${API_URL}/ai/api/v1/conversation/chat/stream/${conversation.data.data.chat_id}`
-        );
+        // Send message only if chatId is set
+        if (chatId) {
+          const chatResponse = await axios.post(
+            `${API_URL}/ai/api/v1/conversation/chat`,
+            {
+              user_prompt: input,
+            },
+            {
+              params: {
+                conversation_id: chatId,
+                model: selectedModel,
+              },
+            }
+          );
 
-        var content = "";
-      eventSource.onerror = (event) => {
-        eventSource.close();
-      };
+          console.log("Chat API response:", chatResponse.data);
+          onSend(input);
 
-      eventSource.onmessage = (event) => {
-        const data = event.data;
-        content += data;
-        onSend(content, false, conversation.data.data.conversation_id);
-      };
+          setTimeout(() => {
+            onSend(chatResponse.data); // Assuming this is the appropriate way to handle onSend
+          }, 1000);
 
+          setInput("");
+
+          if (textareaRef.current) {
+            autosize.update(textareaRef.current);
+          }
+        }
       } catch (error) {
         console.error('Error calling APIs:', error);
       }
@@ -79,7 +90,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel, fetchConve
       <ToolsDialog />
       <button
         className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
-        // onClick={() => setChatId(null)} // Reset chatId to fetch new conversation when clicked
+        onClick={() => setChatId(null)} // Reset chatId to fetch new conversation when clicked
       >
         <MicrophoneIcon />
       </button>
