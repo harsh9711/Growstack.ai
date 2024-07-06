@@ -17,9 +17,13 @@ export default function AiArticles() {
   const [keywords, setKeywords] = useState<string[]>([]);
   const [keywordInputValue, setKeywordInputValue] = useState<string>("");
   const [talkingPoints, setTalkingPoints] = useState<ISubtitleTalkingPoints[]>([]);
-  const [articleData, setArticleDate] = useState<any>();
   const [articleTitle, setArticleTitle] = useState<string>("");
   const [outlines, setOutlines] = useState<IOutline[]>([]);
+  const [images, setImages] = useState<Array<{ revised_prompt: string; url: string }>>([]);
+  const [articleData, setArticleDate] = useState<any>();
+
+  console.log(images);
+
 
   const renderComponent = () => {
     switch (currentStep) {
@@ -80,10 +84,13 @@ export default function AiArticles() {
             setCurrentStep={setCurrentStep}
             talkingPoints={talkingPoints}
             setArticleData={setArticleDate}
+            images={images}
+            articleData={articleData}
+            setImages={setImages}
           />
         );
       case 4:
-        return <ResultComponent articleData={articleData} />;
+        return <ResultComponent articleData={articleData} images={images} setImages={setImages} />;
     }
   };
 

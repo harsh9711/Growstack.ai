@@ -202,6 +202,7 @@ export default function AiAppPage({
       eventSource.onmessage = (event) => {
         const data = event.data;
         content += data;
+        console.log(content)
         setGeneratedContent(content);
       };
     } catch (error) {

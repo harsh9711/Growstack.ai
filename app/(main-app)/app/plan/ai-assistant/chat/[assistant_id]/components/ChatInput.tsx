@@ -4,6 +4,7 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import axios from "@/config/axios.config";
 import { toast } from "react-hot-toast";
+import { API_URL } from "@/lib/api";
 
 interface ChatInputProps {
   assistant_id: string;
@@ -35,8 +36,23 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage }) => {
       });
 
       const { data } = response;
-      console.log(data);
-      addMessage(user_prompt, data);
+      const chatId = data.data;
+      const eventSource = new EventSource(`${API_URL}/ai/api/v1/chat-template/generate/stream/${chatId}`);
+      let content = "";
+
+      eventSource.onerror = (event) => {
+        eventSource.close();
+        toast.error("Error occurred while streaming data.");
+      };
+
+      eventSource.onmessage = (event) => {
+        const receivedData = event.data;
+        content += receivedData;
+        addMessage(user_prompt, content);
+      };
+
+      // Add the user message with an empty bot response initially
+      addMessage(user_prompt, "");
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);

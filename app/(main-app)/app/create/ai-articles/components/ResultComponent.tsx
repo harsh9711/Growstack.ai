@@ -7,10 +7,11 @@ import "../../../../../../styles/markdown.css";
 
 interface ResultComponentProps {
   articleData: string;
+  images: Array<{ revised_prompt: string; url: string }>;
+  setImages: React.Dispatch<React.SetStateAction<Array<{ revised_prompt: string; url: string }>>>;
 }
 
-const ResultComponent: React.FC<ResultComponentProps> = ({ articleData }) => {
-
+const ResultComponent: React.FC<ResultComponentProps> = ({ articleData, images, setImages }) => {
   return (
     <div className="mt-10">
       <div className="!bg-white shadow-box max-w-2xl mx-auto flex flex-col justify-center items-center p-12 space-y-6">
@@ -25,7 +26,12 @@ const ResultComponent: React.FC<ResultComponentProps> = ({ articleData }) => {
         <div className="bg-primary-green rounded-2xl py-6 px-8 flex items-center gap-4 mt-6">
           <h2 className="text-lg font-semibold text-white">Final Article</h2>
         </div>
-        <div className="border !bg-white shadow-box p-10 mt-5 leading-relaxed">
+        <div className="border !bg-white shadow-box p-10 mt-5 leading-relaxed space-y-3">
+          <div className="flex justify-center items-center gap-2">
+            {images.map((image, index) => (
+              <img src={image.url} key={index} alt="" width={300} height={300} className="rounded-2xl cursor-pointer" />
+            ))}
+          </div>
           <ReactMarkdown className="prose" remarkPlugins={[remarkGfm]}>
             {articleData}
           </ReactMarkdown>

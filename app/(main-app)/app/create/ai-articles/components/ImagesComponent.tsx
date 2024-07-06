@@ -11,6 +11,7 @@ import { creativityOptions, languageOptions, povOptions, writingToneOptions } fr
 import AdvancedOptions from "./AdvancedOptions";
 import ImageDialog from "./dialogs/ImageDialog";
 import { IOutline, ISubtitleTalkingPoints } from "../types";
+import { API_URL } from "@/lib/api";
 
 interface ImagesComponentProps {
   currentStep: number;
@@ -19,7 +20,10 @@ interface ImagesComponentProps {
   articleTitle: string;
   setArticleTitle: React.Dispatch<React.SetStateAction<string>>;
   talkingPoints: ISubtitleTalkingPoints[];
+  articleData: any;
   setArticleData: React.Dispatch<React.SetStateAction<any>>;
+  images: Array<{ revised_prompt: string; url: string }>;
+  setImages: React.Dispatch<React.SetStateAction<Array<{ revised_prompt: string; url: string }>>>;
 }
 
 const ImagesComponent: React.FC<ImagesComponentProps> = ({
@@ -29,11 +33,13 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
   articleTitle,
   setArticleTitle,
   talkingPoints,
+  articleData,
   setArticleData,
+  images,
+  setImages,
 }) => {
   const [isArticlePending, setIsArticlePending] = useState(false);
   const [isPending, setIsPending] = useState(false);
-  const [images, setImages] = useState<Array<{ revised_prompt: string; url: string }>>([]);
   const [description, setDescription] = useState<string>("");
   const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
   const [aiModel, setAiModel] = useState<string>("gpt-4o");
@@ -61,11 +67,7 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
         setImages(data.data);
       })
       .catch((err) => {
-        if (err.response) {
-          toast.error(err.response.data.message);
-        } else {
-          toast.error(err.message);
-        }
+        toast.error(err.response.data.message || err.message);
         console.log(err);
       })
       .finally(() => {
@@ -89,23 +91,31 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
     axios
       .post("/ai/api/v1/wizard/generate", data)
       .then((response) => {
-        const { data } = response;
-        setArticleData(data);
-        setCurrentStep(currentStep + 1);
-        setImages([]);
+        const {
+          data: { data },
+        } = response;
+        const articleId = data;
+        const eventSource = new EventSource(`${API_URL}/ai/api/v1/chat-template/generate/stream/${articleId}`);
+        var content = "";
+        eventSource.onerror = (event) => {
+          eventSource.close();
+        };
+        eventSource.onmessage = (event) => {
+          const data = event.data;
+          content += data;
+          setArticleData(content);
+        };
+        setCurrentStep(4)
       })
       .catch((err) => {
-        if (err.response) {
-          toast.error(err.response.data.message);
-        } else {
-          toast.error(err.message);
-        }
+        toast.error(err.response.data.message || err.message);
         console.log(err);
       })
       .finally(() => {
         setIsArticlePending(false);
       });
   };
+
   const toggleAdvancedOptions = () => {
     setShowAdvanced((prev) => !prev);
   };
@@ -172,19 +182,20 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
               onClick={generateImage}
               disabled={isPending}
               className={clsx(
-                "w-full p-2 h-14 !mt-8 text-white bg-primary-green rounded-xl hover:bg-opacity-90 flex justify-center items-center",
-                isPending && "opacity-50 cursor-not-allowed"
+                "w-full p-2 h-12 !mt-4 text-white bg-primary-green rounded-xl hover:bg-opacity-90 flex justify-center items-center",
+                isPending && "opacity-70 cursor-not-allowed"
               )}>
               {isPending ? <Spinner /> : "Generate Image"}
             </button>
             <button
               onClick={generateArticle}
-              disabled={isArticlePending}
+              disabled={(isArticlePending && images.length < 1) || images.length >= 1}
               className={clsx(
-                "w-full p-2 h-14 !mt-8 text-white bg-primary-green rounded-xl hover:bg-opacity-90 flex justify-center items-center",
-                isArticlePending && "opacity-50 cursor-not-allowed"
+                "w-full p-2 h-12 !mt-4 text-white bg-primary-green rounded-xl hover:bg-opacity-90 flex justify-center items-center",
+                isArticlePending && images.length < 1 && "opacity-70 cursor-not-allowed",
+                images.length >= 1 && "cursor-not-allowed"
               )}>
-              {isArticlePending ? <Spinner /> : "Skip this step"}
+              {isArticlePending && images.length < 1 ? <Spinner /> : "Skip this step"}
             </button>
           </div>
         </div>
@@ -211,12 +222,16 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
                 <button
                   onClick={generateArticle}
                   disabled={isArticlePending}
-                  className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px] flex gap-2 items-center justify-center">
+                  className={clsx(
+                    "w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[200px] flex gap-2 items-center justify-center",
+                    isArticlePending && "opacity-70"
+                  )}>
                   {isArticlePending ? <Spinner /> : "Generate Article"}
                 </button>
               </div>
             </div>
           )}
+          {articleData}
         </div>
       </div>
     </Motion>
