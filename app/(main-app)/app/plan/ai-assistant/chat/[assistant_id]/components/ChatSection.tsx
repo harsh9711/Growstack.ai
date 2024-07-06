@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ChatInput from "./ChatInput";
 import ChatOptions from "./ChatOptions";
 import ChatMessages from "./ChatMessages";
@@ -10,7 +10,11 @@ interface ChatSectionProps {
 }
 
 const ChatSection: React.FC<ChatSectionProps> = ({ conversation, assistant }) => {
-  const [messages, setMessages] = useState<Chat[]>(conversation.chats);
+  const [messages, setMessages] = useState<Chat[]>([]);
+
+  useEffect(() => {
+    setMessages(conversation.chats);
+  }, [conversation.chats]);
 
   const addMessage = (prompt: string, response: string) => {
     const newMessage: Chat = {
