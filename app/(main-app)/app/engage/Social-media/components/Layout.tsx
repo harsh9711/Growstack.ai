@@ -192,47 +192,70 @@ const Layout: React.FC = () => {
 
 
  const [activeIndex, setActiveIndex] = useState(0);
+  const [hoverIndex, setHoverIndex] = useState<number | null>(null);
 
   const handleButtonClick = (index: number) => {
     setActiveIndex(index);
+  };
+
+  const handleMouseEnter = (index: number) => {
+    setHoverIndex(index);
+  };
+
+  const handleMouseLeave = () => {
+    setHoverIndex(null);
   };
   return (
     <div className="flex-1 h-full flex gap-4 mt-10">
       <aside className="w-full max-w-[380px] relative border bg-white rounded-3xl flex flex-col">
         <div className="flex flex-row justify-between px-6 pt-6 pb-2">
- <div className="relative max-w-40 flex flex-row gap-6 font-normal ">
-      <button
-        onClick={() => handleButtonClick(0)}
-        className={`transition-all text-lg duration-300 ${activeIndex === 0 ? 'text-green-800' : ''}`}
-      >
-        All
-      </button>
-      <button
-        onClick={() => handleButtonClick(1)}
-        className={`transition-all text-lg duration-300 ${activeIndex === 1 ? 'text-green-800' : ''}`}
-      >
-        My
-      </button>
-      <button
-        onClick={() => handleButtonClick(2)}
-        className={`transition-all duration-300 text-lg ${activeIndex === 2 ? 'text-green-800' : ''}`}
-      >
-        Unassigned
-      </button>
-      <div
-        className="absolute -bottom-3 left-0 text-lg  right-0 h-1 bg-green-800 transition-all duration-300"
-        style={{ transform: `translateX(${activeIndex * 100}%) `, width: '20%' }}
-      />
-    </div>
+          <div className="relative max-w-40 flex flex-row gap-6 font-normal">
+            <button
+              onClick={() => handleButtonClick(0)}
+              className={`transition-all text-lg duration-300 ${activeIndex === 0 ? 'text-green-800' : ''}`}
+            >
+              All
+            </button>
+            <button
+              onClick={() => handleButtonClick(1)}
+              className={`transition-all text-lg duration-300 ${activeIndex === 1 ? 'text-green-800' : ''}`}
+            >
+              My
+            </button>
+            <button
+              onClick={() => handleButtonClick(2)}
+              className={`transition-all duration-300 text-lg ${activeIndex === 2 ? 'text-green-800' : ''}`}
+            >
+              Unassigned
+            </button>
+            <div
+              className={`absolute -bottom-3 h-1 bg-green-800 transition-all duration-300 ${
+                activeIndex === 2 ? '-left-28' : activeIndex === 1 ? '-left-1' : '-left-2'
+              }`}              style={{
+                transform: `translateX(${activeIndex * 100}%)`,
+                width: activeIndex === 2 ? '65%' : '25%',
+              }}
+            />
+          </div>
 
-<div className="flex flex-row gap-4">
+<div className="flex flex-row gap-1">
           <button
             className=" transition-all duration-300">
-           <Image src="/engagemenu.png" alt="engage" width={30} height={20} />
+        <svg width="42" height="32" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="22" height="22" rx="5" fill="#034737"/>
+<rect x="5.16797" y="5.66406" width="4" height="4" rx="0.666667" stroke="white" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="11.832" y="5.66406" width="4" height="4" rx="0.666667" stroke="white" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="5.16797" y="12.3359" width="4" height="4" rx="0.666667" stroke="white" stroke-width="1.16667" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11.832 13.7448C11.5099 13.7448 11.2487 14.006 11.2487 14.3281C11.2487 14.6503 11.5099 14.9115 11.832 14.9115V13.7448ZM15.832 14.9115C16.1542 14.9115 16.4154 14.6503 16.4154 14.3281C16.4154 14.006 16.1542 13.7448 15.832 13.7448V14.9115ZM14.4154 12.3281C14.4154 12.006 14.1542 11.7448 13.832 11.7448C13.5099 11.7448 13.2487 12.006 13.2487 12.3281H14.4154ZM13.2487 16.3281C13.2487 16.6503 13.5099 16.9115 13.832 16.9115C14.1542 16.9115 14.4154 16.6503 14.4154 16.3281H13.2487ZM11.832 14.9115H15.832V13.7448H11.832V14.9115ZM13.2487 12.3281V16.3281H14.4154V12.3281H13.2487Z" fill="white"/>
+</svg>
+
           </button>
             <button
             className=" transition-all duration-300">
-           <Image src="/engagearrow.png" alt="engage" width={30} height={20} />
+<svg width="42" height="32" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="22" height="22" rx="5" fill="#034737"/>
+<path d="M11.866 14.5C11.4811 15.1667 10.5189 15.1667 10.134 14.5L7.5359 10C7.151 9.33333 7.63212 8.5 8.40192 8.5L13.5981 8.5C14.3679 8.5 14.849 9.33333 14.4641 10L11.866 14.5Z" fill="white"/>
+</svg>
           </button>
        </div>
         </div>
@@ -240,31 +263,15 @@ const Layout: React.FC = () => {
         <SearchBar/>
         </div>
  <div className="relative p-5 flex-1 overflow-y-auto max-h-[calc(100vh-280px)]">
-          {Object.entries(groupedSidebarItems).map(([date, items]) => (
-            <div key={date}>
-              {/* <h3 className="text-lg font-semibold">{date}</h3> */}
-              {items.map((item) => (
-            <SidebarItem
-                  key={item._id}
-                  _id={item._id}
-                  title={item.title}
-                  onSelect={() => fetchMessages(item._id)}
-                  onRename={handleRename} setSidebarItems={function (value: React.SetStateAction<any[]>): void {
-                    throw new Error("Function not implemented.");
-                  } } onDelete={function (_id: string): void {
-                    throw new Error("Function not implemented.");
-                  } }                />
-              ))}
-            </div>
-          ))}
+        
+            <SidebarItem/>
+                
         </div>
         <div className="h-20 w-full bg-gradient-to-b from-transparent via-white to-white absolute bottom-0 rounded-b-3xl" />
       </aside>
       <main className="flex-1 w-full flex flex-col bg-white p-4 rounded-3xl border">
         <div className="flex-1 p-4 overflow-y-auto">
-          {messages.map((message, idx) => (
-            <ChatMessage key={idx} message={message} isUser={idx % 2 === 0} />
-          ))}
+        
         </div>
         {showNewChatInput && <ChatInput  onSend={handleSend} selectedModel={selectedModel} fetchConversations={function (): void {
           throw new Error("Function not implemented.");
