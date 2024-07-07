@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import ToolsDialog from "./ToolsDialog";
 import axios from 'axios';
 import { API_URL } from "@/lib/api";
+import toast from "react-hot-toast";
 
 interface ChatInputProps {
   onSend: (content: string,string:string,id:string|null) => void;
@@ -26,23 +27,24 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel, fetchConve
   }, []);
 
   const handleSend = async () => {
-    if (input.trim()) {
-      console.log("Sending API requests...");
+    if (input.trim() === '') return;
 
-      try {
-        const user_prompt = input.trim();
-        // Check if chatId is not set, fetch a new chatId
-        const conversation = await axios.post(`${API_URL}/ai/api/v1/conversation/chat?conversation_id=${selectedConversation ? selectedConversation : ''}&model=${selectedOption}`,{user_prompt:input});
-        addMessage(input,"");
-        setInput("");
-          // setConversationId(createResponse.data.data._id); // Set chatId from API response
-        if (!selectedConversation) fetchConversations();
+    const user_prompt = input.trim();
+    setInput('');
+    addMessage(user_prompt, '');
+    try {
+      const conversation = await axios.post(
+        `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${selectedConversation ? selectedConversation : ''
+        }&model=${selectedOption}`,
+        { user_prompt: input }
+      );
+      if (!selectedConversation) fetchConversations();
 
-        const eventSource = new EventSource(
-          `${API_URL}/ai/api/v1/conversation/chat/stream/${conversation.data.data.chat_id}`
-        );
+      const eventSource = new EventSource(
+        `${API_URL}/ai/api/v1/conversation/chat/stream/${conversation.data.data.chat_id}`
+      );
 
-        var content = "";
+      var content = '';
       eventSource.onerror = (event) => {
         eventSource.close();
       };
@@ -50,11 +52,13 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel, fetchConve
       eventSource.onmessage = (event) => {
         const data = event.data;
         content += data;
-        onSend(user_prompt,content, conversation.data.data.conversation_id);
+        onSend(user_prompt, content, conversation.data.data.conversation_id);
       };
-
-      } catch (error) {
-        console.error('Error calling APIs:', error);
+    } catch (error:any) {
+      if (error.response) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error(error.message);
       }
     }
   };
