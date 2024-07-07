@@ -264,7 +264,15 @@ const Layout: React.FC = () => {
         </div>
  <div className="relative p-5 flex-1 overflow-y-auto max-h-[calc(100vh-280px)]">
         
-            <SidebarItem/>
+            <SidebarItem _id={""} title={""} onRename={function (_id: string, newTitle: string): void {
+            throw new Error("Function not implemented.");
+          } } onDelete={function (_id: string): void {
+            throw new Error("Function not implemented.");
+          } } onSelect={function (): void {
+            throw new Error("Function not implemented.");
+          } } setSidebarItems={function (value: React.SetStateAction<any[]>): void {
+            throw new Error("Function not implemented.");
+          } }/>
                 
         </div>
         <div className="h-20 w-full bg-gradient-to-b from-transparent via-white to-white absolute bottom-0 rounded-b-3xl" />
