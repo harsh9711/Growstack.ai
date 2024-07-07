@@ -17,6 +17,8 @@ import ReactMarkdown from "react-markdown";
 import { MdDeleteOutline } from "react-icons/md";
 import { HiOutlineDuplicate } from "react-icons/hi";
 import { CiCirclePlus } from "react-icons/ci";
+import toast from 'react-hot-toast'
+import DotsLoader from "@/components/DotLoader";
 
 type WorkFlowData = {
   actions: any[];
@@ -81,6 +83,7 @@ if (deleteButtonTimeoutRef2.current !== null) {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(Math.ceil(tableData.length / 10)); // Placeholder for total pages
   const searchParams = useSearchParams();
+  const [isWorkFlowFetched, setIsWorkFlowFetched] = useState<boolean>(true);
   
   const [workFlowData, setWorkFlowData] = useState<WorkFlowData>({ actions: [], input_configs: [], output_configs : []});
   const fetchWorkflowData = async (id: string) => {
@@ -94,6 +97,7 @@ if (deleteButtonTimeoutRef2.current !== null) {
 
   const handleRunWorkFlow = async () => {
     try {
+      setIsWorkFlowFetched(false);
       const payload = {
         actions_with_runs: workFlowData.actions.map((action) => ({ action: action._id })),
         inputs: workFlowData.input_configs.map((input) => ({
@@ -104,9 +108,11 @@ if (deleteButtonTimeoutRef2.current !== null) {
       const response = await axios.post(`${API_URL}/workflow/api/v1/${workflowId}/runner`, payload)
      
       setWorkFlowResults({ ...response.data.data, outputs: response.data.data.outputs.map((output: any) => ({ ...output, variable_value: output.variable_type === 'object' ? JSON.parse(output.variable_value) : output.variable_value })) });
-
+      setIsWorkFlowFetched(true)
     } catch (error) {
       console.log('Error running workflow:', error);
+      toast.error('Error running workflow');
+      setIsWorkFlowFetched(true)
     }
   }
   useEffect(() => {
@@ -531,10 +537,14 @@ if (deleteButtonTimeoutRef2.current !== null) {
         className="w-full p-2 border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2"
       />
     </div> */}
+    {
+      !isWorkFlowFetched ? <DotsLoader />:
+    
     <div className='bg-[#03473729] flex flex-row items-center justify-center rounded-xl p-4 gap-3 cursor-pointer' onClick={()=>handleRunWorkFlow()}>
       <Image src="/run.png" alt="go" width={10} height={10}/>
       <h2 className="text-[#14171B] font"> Run Workflow</h2>
     </div>
+}
   </div>
 
   {/* Results Section */}
