@@ -7,14 +7,15 @@ import axios from 'axios';
 import { API_URL } from "@/lib/api";
 
 interface ChatInputProps {
-  onSend: (message: string,isUser:boolean,id:string|null) => void;
+  onSend: (content: string,string:string,id:string|null) => void;
   selectedModel: string;
   fetchConversations: () => void;
   selectedConversation:string | null;
   selectedOption:string
+  addMessage: (prompt: string, response: string) => void;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel, fetchConversations, selectedConversation, selectedOption }) => {
+const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel, fetchConversations, selectedConversation, selectedOption, addMessage }) => {
   const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -29,9 +30,10 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel, fetchConve
       console.log("Sending API requests...");
 
       try {
+        const user_prompt = input.trim();
         // Check if chatId is not set, fetch a new chatId
         const conversation = await axios.post(`${API_URL}/ai/api/v1/conversation/chat?conversation_id=${selectedConversation ? selectedConversation : ''}&model=${selectedOption}`,{user_prompt:input});
-        onSend(input, true, null);
+        addMessage(input,"");
         setInput("");
           // setConversationId(createResponse.data.data._id); // Set chatId from API response
         if (!selectedConversation) fetchConversations();
@@ -48,7 +50,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel, fetchConve
       eventSource.onmessage = (event) => {
         const data = event.data;
         content += data;
-        onSend(content, false, conversation.data.data.conversation_id);
+        onSend(user_prompt,content, conversation.data.data.conversation_id);
       };
 
       } catch (error) {
