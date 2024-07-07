@@ -1,31 +1,26 @@
 import { aiModelOptions } from "@/app/(main-app)/app/create/ai-articles/constants/options";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import clsx from "clsx";
 import { Download, Settings, Share2, UserCircle } from "lucide-react";
 import { useState } from "react";
-import { Assistant } from "../../../components/types";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Assistant, Chat, Conversation } from "../../../components/types";
+import { downloadDocx, downloadPdf, downloadTxt } from "./utils/downloadHelpers";
 
 interface IProps {
   assistant: Assistant;
   isSidebarOpen: boolean;
   setIsSidebarOpen: (isSidebarOpen: boolean) => void;
+  conversation: Conversation;
 }
-export default function Topbar({ assistant, isSidebarOpen, setIsSidebarOpen }: IProps) {
+
+export default function Topbar({ assistant, conversation, isSidebarOpen, setIsSidebarOpen }: IProps) {
   const [selectedAiModel, setSelectedAiModel] = useState(aiModelOptions[0].value);
+
   return (
     <div className="border-b px-10 py-5">
       <div className="flex justify-between">
         <div className="flex items-center gap-4">
-          {/* <Image src={assistant.avatar} alt="" width={50} height={50} className="rounded-xl object-cover shadow-xl" /> */}
           <img src={assistant.avatar} alt="" width={50} height={50} className="rounded-xl object-cover shadow-xl" />
           <div>
             <h2 className="text-xl font-semibold">{assistant.name}</h2>
@@ -50,16 +45,16 @@ export default function Topbar({ assistant, isSidebarOpen, setIsSidebarOpen }: I
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem className="flex items-center gap-2">
-                <Download size={18}/>
+              <DropdownMenuItem className="flex items-center gap-2" onClick={() => downloadTxt(conversation.chats)}>
+                <Download size={18} />
                 Download chat (.txt)
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2">
-                <Download size={18}/>
+              <DropdownMenuItem className="flex items-center gap-2" onClick={() => downloadPdf(conversation.chats)}>
+                <Download size={18} />
                 Download chat (.pdf)
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2">
-                <Download size={18}/>
+              <DropdownMenuItem className="flex items-center gap-2" onClick={() => downloadDocx(conversation.chats)}>
+                <Download size={18} />
                 Download chat (.docx)
               </DropdownMenuItem>
             </DropdownMenuContent>

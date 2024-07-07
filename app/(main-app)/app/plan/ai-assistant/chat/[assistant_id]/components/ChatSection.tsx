@@ -24,15 +24,18 @@ const ChatSection: React.FC<ChatSectionProps> = ({ conversation, assistant }) =>
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+  };
+
+  const updateMessage = (prompt: string, response: string) => {
     setMessages((prevMessages) => {
-      const existingMessageIndex = prevMessages.findIndex((msg) => msg.prompt === prompt);
-      if (existingMessageIndex !== -1) {
+      const messageIndex = prevMessages.findIndex((msg) => msg.prompt === prompt);
+      if (messageIndex !== -1) {
         const updatedMessages = [...prevMessages];
-        updatedMessages[existingMessageIndex].response = response;
+        updatedMessages[messageIndex].response = response;
         return updatedMessages;
-      } else {
-        return [...prevMessages, newMessage];
       }
+      return prevMessages;
     });
   };
 
@@ -43,7 +46,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({ conversation, assistant }) =>
       </div>
       <div className="space-y-4">
         <ChatOptions />
-        <ChatInput assistant_id={assistant.id} addMessage={addMessage} />
+        <ChatInput assistant_id={assistant.id} addMessage={addMessage} updateMessage={updateMessage} />
       </div>
     </div>
   );

@@ -9,9 +9,10 @@ import { API_URL } from "@/lib/api";
 interface ChatInputProps {
   assistant_id: string;
   addMessage: (prompt: string, response: string) => void;
+  updateMessage: (prompt: string, response: string) => void;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage }) => {
+const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateMessage }) => {
   const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -26,6 +27,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage }) => {
 
     const user_prompt = input.trim();
     setInput("");
+    addMessage(user_prompt, "");
 
     try {
       const response = await axios.post(`/ai/api/v1/assistant/chat/${assistant_id}`, {
@@ -47,10 +49,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage }) => {
       eventSource.onmessage = (event) => {
         const receivedData = event.data;
         content += receivedData;
-        addMessage(user_prompt, content);
+        updateMessage(user_prompt, content);
       };
-
-      addMessage(user_prompt, "");
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
