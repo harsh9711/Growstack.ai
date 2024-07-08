@@ -9,7 +9,7 @@ interface SidebarItemProps {
   time: string;
   author: string;
   message: string;
-    imageUrl: string; // New property to hold the image URL
+    imageUrl: string;
 
 }
 
@@ -18,7 +18,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
   time,
   author,
   message,
-    imageUrl, // Destructure imageUrl from props
+    imageUrl,
 
 }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -33,7 +33,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <Image src={imageUrl} alt="contact" width={60} height={30} />
+        <Image src={imageUrl} alt="contact" width={50} height={50} className="-translate-y-1" />
         <div className="flex-1">
           <div className="flex flex-row justify-between ">
             <h2 className="font-semibold">{title}</h2>
