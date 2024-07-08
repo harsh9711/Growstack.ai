@@ -33,7 +33,7 @@ const SidebarAccount: React.FC<SidebarItemProps> = ({
     <>
       <div
         className={clsx(
-          "flex gap-4 w-full p-4 hover:bg-gray-100 cursor-pointer rounded-full items-center group relative",
+          "flex gap-4 w-full p-4 hover:bg-gray-100 cursor-pointer rounded-md items-center group relative",
           isHovered && "pr-4",
           !isActive && "opacity-50" // Fade out if not active
         )}
@@ -62,8 +62,8 @@ const SidebarAccount: React.FC<SidebarItemProps> = ({
           </div>
         </div>
       </div>
-      <div className="h-0.5 bg-gray-300 my-1"></div>
-      <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar={false} />
+      <div className="border border-gray-300 my-1"></div>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
     </>
   );
 };

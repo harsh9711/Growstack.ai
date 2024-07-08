@@ -17,7 +17,12 @@ import SidebarItem from "./SidebarItem";
 import ChatInput from "./ChatInput";
 import { CiSettings } from "react-icons/ci";
 import SidebarAccount from "./SidebarAccount";
-import { BsPlus } from "react-icons/bs";
+import { BsPlus, BsThreeDotsVertical } from "react-icons/bs";
+import { CiCircleInfo } from "react-icons/ci";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { AiOutlineMessage } from "react-icons/ai";
+import { BiReset } from "react-icons/bi";
+import { RxCross1 } from "react-icons/rx";
 
 interface SidebarItem {
   _id: string;
@@ -29,14 +34,27 @@ interface SidebarItem {
   onSelect: () => void;
 }
 
+
+const hideScrollbarStyles: React.CSSProperties = {
+  overflowY: "auto",
+  msOverflowStyle: "none", // IE and Edge
+  scrollbarWidth: "none", // Firefox
+};
+
+const hideScrollbarWebkit: React.CSSProperties = {
+  scrollbarWidth: "none", // Firefox
+  WebkitOverflowScrolling: "touch", // Optional for touch devices
+};
 const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
-  const filterMenuRef = useRef<HTMLDivElement>(null); 
-
+  const filterMenuRef = useRef<HTMLDivElement>(null);
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (filterMenuRef.current && !filterMenuRef.current.contains(event.target as Node)) {
+    if (
+      filterMenuRef.current &&
+      !filterMenuRef.current.contains(event.target as Node)
+    ) {
       setIsFilterMenuOpen(false);
     }
   };
@@ -45,7 +63,7 @@ const SearchBar = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [])
+  }, []);
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
@@ -55,8 +73,8 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="relative flex items-center  rounded-2xl">
-      <div className="flex items-center w-full bg-gray-100   border border-gray-300 py-1 px-2 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-green-800">
+    <div className="relative flex items-center  max-w-[293px] max-h-[48px] shadow-lg rounded-2xl">
+      <div className="flex items-center  bg-gray-100   border border-gray-300 py-1 px-2 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-green-800">
         <input
           type="text"
           value={searchQuery}
@@ -64,7 +82,7 @@ const SearchBar = () => {
           placeholder="Search..."
           className="flex-grow p-2 bg-gray-100 text-xl  focus:outline-none"
         />
-        <button onClick={toggleFilterMenu} className="p-2 focus:outline-none">
+        <button onClick={toggleFilterMenu} className="p-2 -translate-x-10 ">
           {isFilterMenuOpen ? (
             <FaFilter className="w-6 h-6 text-green-800" />
           ) : (
@@ -75,14 +93,14 @@ const SearchBar = () => {
 
       {isFilterMenuOpen && (
         <div
-        ref={filterMenuRef}
-        className="absolute z-20 mt-2 top-14 right-0 w-80 bg-white border border-gray-300 rounded-2xl shadow-lg"
-      >
+          ref={filterMenuRef}
+          className="absolute z-20 mt-2 top-14 right-0 w-72 bg-white border border-gray-300 rounded-2xl shadow-lg"
+        >
           <div className="p-4">
             <div className="flex flex-row justify-between">
               <h3 className="text-lg font-medium">Filter</h3>
               <h3 className="text-lg font-normal flex flex-row gap-1">
-                <Image src="/refresh.png" alt="refresh" width={20} height={2} />
+                <BiReset className="my-1" />
                 Reset
               </h3>
             </div>
@@ -130,7 +148,6 @@ const SearchBar = () => {
                 />
               </label>
             </div>
-        
           </div>
         </div>
       )}
@@ -138,7 +155,7 @@ const SearchBar = () => {
   );
 };
 
-const Layout= () => {
+const Layout = () => {
   const options = [
     {
       label: "All accounts",
@@ -253,9 +270,6 @@ const Layout= () => {
       },
     ],
   ];
-  const [messages, setMessages] = useState<string[]>([]);
-  const [showNewChatInput, setShowNewChatInput] = useState(false);
-  const [selectedModel, setSelectedModel] = useState<string>("gpt-3.5-turbo");
   const [showRightSidebar, setShowRightSidebar] = useState(false);
   const [MenuRotated, setMenuRotated] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -265,10 +279,42 @@ const Layout= () => {
   const [showNewSidebar, setShowNewSidebar] = useState(false);
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const [selectedOption, setSelectedOption] = useState(options[0].value);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen2, setIsOpen2] = useState(false);
 
+  const [isOpened, setIsOpened] = useState(true);
+  const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false); // State to track if filter menu is open
+  const filterMenuRef = useRef<HTMLDivElement>(null); // Ref to the filter menu container
+
+  const toggleFilterMenu = () => {
+    setIsFilterMenuOpen(!isFilterMenuOpen);
+  };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (filterMenuRef.current && !filterMenuRef.current.contains(event.target as Node)) {
+      setIsFilterMenuOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+  const toggleSubMenu = () => {
+    setIsOpen(!isOpen);
+  };
+  const toggleSubMenu2 = () => {
+    setIsOpen2(!isOpen2);
+  };
   const toggleFilter = () => {
     setIsFilterOpen(!isFilterOpen);
     setIsArrowRotated(!isArrowRotated);
+  };
+  const handleMessage = (itemId: { title: string; time: string; author: string; message: string; imageUrl: string; }) => {
+    console.log("good");
+    setIsOpened(!isOpened);
   };
   const toggleMenu = () => {
     setShowRightSidebar(!showRightSidebar);
@@ -276,6 +322,7 @@ const Layout= () => {
     setMenuRotated(!MenuRotated);
     setShowNewSidebar((prev) => !prev);
   };
+
   const handleApplyFilters = () => {
     console.log("Filters applied");
     setIsFilterOpen(false);
@@ -286,10 +333,6 @@ const Layout= () => {
     setIsFilterOpen(false);
   };
 
-  const handleSend = (message: string) => {
-    setMessages((prevMessages) => [...prevMessages, `${message}`]);
-  };
-
   const selectedOptionLabel = options.find(
     (option) => option.value === selectedOption
   )?.label;
@@ -297,18 +340,10 @@ const Layout= () => {
     setActiveIndex(index);
   };
 
-  // const handleMouseEnter = (index: number) => {
-  //   setHoverIndex(index);
-  // };
-
-  // const handleMouseLeave = () => {
-  //   setHoverIndex(null);
-  // };
-
   return (
-    <div className="flex-1 max-h-[700px] flex  mt-10">
+    <div className="flex-1 max-h-[900px] flex  mt-10 shadow-lg rounded-full">
       {showRightSidebar && (
-        <aside className="w-full max-w-[380px] relative border bg-white rounded-l-3xl flex flex-col">
+        <aside className="w-full max-w-[350px] relative border bg-white rounded-l-3xl flex flex-col">
           <div className="flex flex-row gap-6  py-4 px-6">
             <Select value={selectedOption} onValueChange={setSelectedOption}>
               <SelectTrigger className="w-[300px] h-12  text-black bg-gray-100 border-0 rounded-xl flex items-center justify-between px-4">
@@ -442,7 +477,7 @@ const Layout= () => {
       )}
       <aside
         className={clsx(
-          "w-full max-w-[380px] relative border bg-white  flex flex-col",
+          "w-full max-w-[350px] relative border bg-white rounded-l-3xl  flex flex-col",
           showRightSidebar ? "" : "rounded-l-3xl"
         )}
       >
@@ -451,7 +486,7 @@ const Layout= () => {
             <button
               onClick={() => handleButtonClick(0)}
               className={`transition-all text-[16px] duration-300 ${
-                activeIndex === 0 ? "text-green-800" : ""
+                activeIndex === 0 ? "text-green-800 font-bold" : ""
               }`}
             >
               All
@@ -459,7 +494,7 @@ const Layout= () => {
             <button
               onClick={() => handleButtonClick(1)}
               className={`transition-all text-[16px] duration-300 ${
-                activeIndex === 1 ? "text-green-800" : ""
+                activeIndex === 1 ? "text-green-800 font-bold" : ""
               }`}
             >
               My
@@ -467,7 +502,7 @@ const Layout= () => {
             <button
               onClick={() => handleButtonClick(2)}
               className={`transition-all duration-300 text-[16px] ${
-                activeIndex === 2 ? "text-green-800" : ""
+                activeIndex === 2 ? "text-green-800 font-bold" : ""
               }`}
             >
               Unassigned
@@ -490,7 +525,7 @@ const Layout= () => {
           <div className="relative">
             <div className="flex flex-row gap-4">
               <button
-                className="transition-all duration-300"
+                className="shadow-lg transition-all duration-300"
                 onClick={toggleMenu}
               >
                 <svg
@@ -543,7 +578,7 @@ const Layout= () => {
                 </svg>
               </button>
               <button
-                className="transition-all duration-300"
+                className="shadow-lg transition-all duration-300"
                 onClick={toggleFilter}
               >
                 <svg
@@ -708,39 +743,350 @@ const Layout= () => {
         <div className="border-y   py-4 px-6">
           <SearchBar />
         </div>
-        <div className="relative p-5 flex-1 overflow-y-auto max-h-[calc(100vh-280px)]">
-          {sidebarData[activeIndex].map((item, idx) => (
-            <SidebarItem
-              key={idx}
-              title={item.title}
-              time={item.time}
-              author={item.author}
-              message={item.message}
-              imageUrl={item.imageUrl}
-            />
-          ))}
-        </div>
-        <div className="h-20 w-full bg-gradient-to-b from-transparent via-white to-white absolute bottom-0 " />
+       <div className="relative p-5 flex-1 overflow-y-auto max-h-[calc(100vh-280px)]">
+  {sidebarData[activeIndex].map((item, idx) => (
+    <SidebarItem
+      key={idx}
+      title={item.title}
+      time={item.time}
+      author={item.author}
+      message={item.message}
+      imageUrl={item.imageUrl}
+      onClick={() => handleMessage(item)} // Using 'item.title' as an example
+    />
+  ))}
+</div>
+        {/* <div className="h-20 w-full bg-gradient-to-b from-transparent via-white to-white absolute bottom-0 rounde" /> */}
       </aside>
-
-      <main className="flex-1 w-full flex flex-col bg-white p-4 border">
-        <div className="flex-1 p-4 overflow-y-auto">
-          {messages.map((message, idx) => (
-            <ChatMessage key={idx} message={message} isUser={idx % 2 === 0} />
-          ))}
+      {isOpened && (
+       <main
+        className="flex-1 w-full flex flex-col bg-gray-100 p-4 border"
+        style={{ ...hideScrollbarStyles, ...hideScrollbarWebkit }}
+      >
+        {" "}
+        <div
+          className="flex-1 p-4"
+          style={{ ...hideScrollbarStyles, ...hideScrollbarWebkit }}
+        >
+          <div className="flex flex-row justify-between">
+            {" "}
+            <ChatMessage
+              message={
+                <>
+                  Lorem ipsum dolor sit amet consectetur. Non mattis tempor in
+                  sed ante venenatis ornare. Ultrices at bibendum at vitae ac
+                  diam habitasse. Ac cras Https://www.link.com. Imperdiet non
+                  potenti fermentum vitae sit id cras porta urna. Dignissim sit
+                  enim vitae elit semper pellentesque massa nulla. Nullam congue
+                  magna.
+                  <Image
+                    src="/pic.png"
+                    alt="pic"
+                    width={60}
+                    height={80}
+                    className="rounded-xl border mt-2"
+                  />
+                </>
+              }
+              imageUrl={"/contact2.png"}
+              title={"Growstack-AI"}
+              time={"Facebook Post"}
+            />
+            <h2 className="text-[12px] font-light">2023-03-06 , 11:00 PM</h2>
+          </div>{" "}
+          <div className="flex flex-row justify-between">
+            {" "}
+            <ChatMessage
+              message="omg, this is amazing"
+              imageUrl={"/contact2.png"}
+              title={"Vale Ferreira"}
+              time={""}
+            />
+            <h2 className="text-[12px] font-light">2023-03-06 , 11:00 PM</h2>
+          </div>{" "}
+          <div className="flex flex-col items-start translate-x-14">
+            <p className="py-2 px-4 bg-white max-w-[600px] rounded-lg text-sm">
+              perfect! ✅{" "}
+            </p>
+          </div>
+          <div className="flex flex-col items-start mt-4 translate-x-14">
+            <p className="py-2 px-4 bg-white max-w-[600px] rounded-lg text-sm">
+              Wow, this is really epic{" "}
+            </p>
+          </div>
         </div>
-        {showNewChatInput && (
-          <ChatInput
-            onSend={handleSend}
-            selectedModel={selectedModel}
-            fetchConversations={function (): void {
-              throw new Error("Function not implemented.");
-            }}
-            selectedConversation={null}
-            selectedOption={""}
-          />
+       <div className="flex flex-row w-80 justify-between"> 
+        <div className="flex flex-col items-start -translate-y-10 translate-x-14 border-l-4 border-green-900 w-[500px] rounded-xl shadow-green-900 ">
+            <p className="py-2 px-4 bg-white max-w-[600px] rounded-lg text-sm">
+         <span className="flex flex-row gap-2 item-center"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10 17V11C10 10.4477 10.4477 10 11 10H17V3C17 1.89543 16.1046 1 15 1H3C1.89543 1 1 1.89543 1 3V15C1 16.1046 1.89543 17 3 17H10" stroke="#034737" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+   Hey, Rosa! Can you make sure to  include a link to our tutorial? Thanks! </span>   <label className="flex p-2 items-center rounded-md  flex-row justify-between">
+                <span className="flex flex-row">
+                <Image src="/contact.png" alt="contact" width="20" height={10} />
+                                  <span className="ml-2 text-black text-md ">Leslie Alexander</span>
+                </span>
+              </label>          </p>
+            
+          
+          </div> <BsThreeDotsVertical />
+          </div>
+        <ChatInput />
+      </main> )}
+      <aside
+        className={clsx(
+          "w-full max-w-[350px] relative border bg-white  flex flex-col",
+          showRightSidebar ? "" : "rounded-r-3xl"
         )}
-      </main>
+      >
+        <div className="flex flex-col justify-between px-6 pt-6 pb-2">
+          <div
+            className="relative w-full flex flex-row justify-between font-normal items-center cursor-pointer"
+            onClick={toggleSubMenu}
+          >
+            <div className="flex flex-row gap-2 items-center">
+              <CiCircleInfo className="text-2xl" />
+              <h2 className="text-[16px] font-medium">Conversation details</h2>
+            </div>
+            {isOpen ? (
+              <IoIosArrowUp className="text-xl" />
+            ) : (
+              <IoIosArrowDown className="text-xl" />
+            )}
+          </div>
+
+          {isOpen && (
+            <div className=" flex flex-col gap-4">
+              <div className="border border-gray-300 mt-4"></div>
+
+              <div className="flex flex-row items-center ">
+                <AiOutlineMessage className="text-2xl" />
+                <h2 className="text-[16px] font-medium items-center ml-2">
+                  {" "}
+                  Post comments
+                </h2>
+              </div>
+              <div className="flex flex-roww-full justify-between ">
+                <span>
+                  <h2 className="text-[14px]">Started</h2>
+                  <h2 className="text-[16px] font-medium">Mar 24, 2024</h2>
+                </span>
+                <span>
+                  <h2 className="text-[14px]">Last update</h2>
+                  <h2 className="text-[16px] font-medium">Mar 31, 2024</h2>
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="border border-gray-300 my-4"></div>
+
+        <div className="flex flex-col justify-between px-6  pb-2">
+          <div
+            className="relative w-full flex flex-row justify-between font-normal items-center cursor-pointer"
+            onClick={toggleSubMenu2}
+          >
+            <div className="flex flex-row gap-2 items-center">
+              <Image
+                src="/f.png"
+                alt="facebook"
+                width={25}
+                height={25}
+                className="text-2xl"
+              />
+              <h2 className="text-[16px] font-medium">Post</h2>
+            </div>
+            {isOpen2 ? (
+              <IoIosArrowUp className="text-xl" />
+            ) : (
+              <IoIosArrowDown className="text-xl" />
+            )}
+          </div>
+
+          {isOpen2 && (
+            <div className=" flex flex-col ">
+              <div className="border border-gray-300 my-4"></div>
+
+              <div className="flex flex-row justify-between mb-4">
+                {" "}
+                <div className="flex flex-col">
+                  <h2 className="text-md font-semibold ">GrowStack AI</h2>
+                  <p className="text-[12px] font-light">Facebook post</p>
+                </div>
+                <h2 className="font-extralight text-[12px]">
+                  2023-03-06 , 11:00 PM
+                </h2>
+              </div>
+
+              <div className="flex flex-col gap-2 justify-between bg-[#F8F8F8] p-4 rounded-xl mb-4">
+                <h2 className="font-light text-[12px] text-black">
+                  Lorem ipsum dolor sit amet consectetur. Non mattis tempor in
+                  sed ante venenatis ornare. Ultrices at bibendum at vitae ac
+                  diam habitasse. Ac cras Https://www.link.com. Imperdiet non
+                  potenti fermentum vitae sit id cras porta urna. Dignissim sit
+                  enim vitae elit semper pellentesque massa nulla. Nullam congue
+                  magna.
+                </h2>
+                <Image
+                  src="/pic.png"
+                  alt="pic"
+                  width={60}
+                  height={80}
+                  className="rounded-xl"
+                />
+              </div>
+              <button className="text-white bg-primary-green shadow-lg hover:bg-primary-green/90 w-36 justify-center flex gap-2 items-center h-12 font-medium rounded-xl transition-all duration-300 text-sm">
+                <svg
+                  width="21"
+                  height="20"
+                  viewBox="0 0 21 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9.66732 5.82812H5.50065C4.58018 5.82812 3.83398 6.57432 3.83398 7.49479V14.9948C3.83398 15.9153 4.58018 16.6615 5.50065 16.6615H13.0007C13.9211 16.6615 14.6673 15.9153 14.6673 14.9948V10.8281"
+                    stroke="white"
+                    stroke-width="1.45833"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M8.83398 11.6615L17.1673 3.32812"
+                    stroke="white"
+                    stroke-width="1.45833"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M13 3.32812H17.1667V7.49479"
+                    stroke="white"
+                    stroke-width="1.45833"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                Open post
+              </button>
+            </div>
+          )}
+        </div>
+        <div className="border border-gray-300 my-4"></div>
+        <div className="flex flex-row items-center gap-4  px-6">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle
+              cx="6.00065"
+              cy="4.66667"
+              r="2.66667"
+              stroke="#034737"
+              stroke-width="1.16667"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M2 14V12.6667C2 11.1939 3.19391 10 4.66667 10H7.33333C8.80609 10 10 11.1939 10 12.6667V14"
+              stroke="#034737"
+              stroke-width="1.16667"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M10.666 2.08594C11.846 2.38805 12.6712 3.45126 12.6712 4.66927C12.6712 5.88728 11.846 6.95049 10.666 7.2526"
+              stroke="#034737"
+              stroke-width="1.16667"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <path
+              d="M14 14.0016V12.6682C13.993 11.4579 13.1719 10.4041 12 10.1016"
+              stroke="#034737"
+              stroke-width="1.16667"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <h2 className="text-[16px] font-medium"> Assignees</h2>
+        </div>
+        <div className="relative">
+      <div className="px-6 py-2 cursor-pointer" onClick={toggleFilterMenu}>
+        <Image src="/circlec.png" alt="cicle" width={50} height={50} />
+      </div>
+
+      {isFilterMenuOpen && (
+        <div
+          ref={filterMenuRef}
+          className="absolute z-20 mt-2 -top-80 right-40 MAX-W-[300px] bg-white border border-gray-300 rounded-2xl shadow-lg"
+        >
+          <div className="p-4">
+          <div className="flex items-center w-full bg-gray-100   border border-gray-300  px-2 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-green-800">
+        <input
+          type="text"
+          placeholder="Search..."
+          className="flex-grow  bg-gray-100 text-xl  focus:outline-none"
+        />
+        <button className="p-2 right-0 ">
+        <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M12.0205 12.0527L21.92 21.9522" stroke="#4B465C" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.0205 12.0527L21.92 21.9522" stroke="white" stroke-opacity="0.2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.0205 21.9473L21.92 12.0478" stroke="#4B465C" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12.0205 21.9473L21.92 12.0478" stroke="white" stroke-opacity="0.2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+        </button>
+      </div>
+            <div className="mt-2 space-y-2">
+              {/* Example checkboxes */}
+              <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md  flex-row justify-between">
+                <span className="flex flex-row">
+                <Image src="/contact.png" alt="contact" width="20" height={10} />
+                                  <span className="ml-2 text-black text-md ">Carlos Jairo</span>
+                </span>
+              </label>
+              <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md  flex-row justify-between">
+                <span className="flex flex-row">
+                <Image src="/contact.png" alt="contact" width="20" height={10} />
+                                  <span className="ml-2 text-black text-md ">Leslie Alexander</span>
+                </span>
+              </label>
+              <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md  flex-row justify-between">
+                <span className="flex flex-row">
+                <Image src="/contact.png" alt="contact" width="20" height={10} />
+                                  <span className="ml-2 text-black text-md ">Kathryn Murphy</span>
+                </span>
+              </label>
+              <label className="flex bg-[#FAFBFC] p-2 items-center  rounded-md flex-row justify-between">
+                <span className="flex flex-row">
+                <Image src="/contact.png" alt="contact" width="20" height={10} />
+                                  <span className="ml-2 text-black text-md ">Marvin McKinney</span>
+                </span>
+              </label>
+              <label className="flex bg-[#FAFBFC] items-center  rounded-md flex-row p-2 stify-between">
+                <span className="flex flex-row w-full px-2 justify-between">
+               <span className="flex flex-row"> <Image src="/contact.png" alt="contact" width="20" height={10} />
+                                  <h2 className="ml-2 text-black text-md ">Guy Hawkins</h2></span>
+                                <span className=" bg-[#03473729] rounded-md">
+                                  <h2 className="p-1 text-[10px]">Assign user</h2>
+                </span>
+                </span>
+              </label>
+              <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md  flex-row justify-between">
+                <span className="flex flex-row">
+                <Image src="/contact.png" alt="contact" width="20" height={10} />
+                                  <span className="ml-2 text-black text-md ">Jenny Wilson</span>
+                </span>
+              </label>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+      </aside>
+     
     </div>
   );
 };

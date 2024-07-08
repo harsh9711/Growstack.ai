@@ -9,10 +9,9 @@ interface SidebarItemProps {
   time: string;
   author: string;
   message: string;
-    imageUrl: string;
-
+  imageUrl: string;
+  onClick?: () => void; // Optional onClick handler
 }
-
 const SidebarItem: React.FC<SidebarItemProps> = ({
   title,
   time,
@@ -27,7 +26,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
     <>
       <div
         className={clsx(
-          "flex gap-4 w-full p-4 hover:bg-gray-100 cursor-pointer rounded-full items-center group relative",
+          "flex gap-4 w-full p-4 hover:bg-gray-100 cursor-pointer rounded-md items-center group relative",
           isHovered && "pr-4"
         )}
         onMouseEnter={() => setIsHovered(true)}
@@ -40,12 +39,12 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
             <h2 className="font-extralight text-sm">{time}</h2>
           </div>
           <h2>{author}</h2>
-          <h2 className="font-extralight text-sm">{message}</h2>
+          <h2 className="font-extralight text-[12px]">{message}</h2>
         </div>
       </div>
      
-      <div className="h-0.5 bg-gray-300 my-1"></div>
-    </>
+      <div className="border border-gray-300 my-1"></div>
+      </>
   );
 };
 
