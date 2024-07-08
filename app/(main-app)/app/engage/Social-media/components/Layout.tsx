@@ -23,6 +23,7 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { AiOutlineMessage } from "react-icons/ai";
 import { BiReset } from "react-icons/bi";
 import { RxCross1 } from "react-icons/rx";
+import { MdDelete } from "react-icons/md";
 
 interface SidebarItem {
   _id: string;
@@ -270,6 +271,11 @@ const Layout = () => {
       },
     ],
   ];
+  const [showDelete, setShowDelete] = useState(false);
+
+  const handleDotsClick = () => {
+    setShowDelete(!showDelete);
+  };
   const [showRightSidebar, setShowRightSidebar] = useState(false);
   const [MenuRotated, setMenuRotated] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -815,22 +821,38 @@ const Layout = () => {
             </p>
           </div>
         </div>
-       <div className="flex flex-row w-80 justify-between"> 
-        <div className="flex flex-col items-start -translate-y-10 translate-x-14 border-l-4 border-green-900 w-[500px] rounded-xl shadow-green-900 ">
-            <p className="py-2 px-4 bg-white max-w-[600px] rounded-lg text-sm">
-         <span className="flex flex-row gap-2 item-center"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M10 17V11C10 10.4477 10.4477 10 11 10H17V3C17 1.89543 16.1046 1 15 1H3C1.89543 1 1 1.89543 1 3V15C1 16.1046 1.89543 17 3 17H10" stroke="#034737" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-   Hey, Rosa! Can you make sure to  include a link to our tutorial? Thanks! </span>   <label className="flex p-2 items-center rounded-md  flex-row justify-between">
-                <span className="flex flex-row">
-                <Image src="/contact.png" alt="contact" width="20" height={10} />
-                                  <span className="ml-2 text-black text-md ">Leslie Alexander</span>
-                </span>
-              </label>          </p>
-            
-          
-          </div> <BsThreeDotsVertical />
-          </div>
+        <div className="flex flex-row w-full justify-between">
+      <div className="flex flex-col items-start -translate-y-10 translate-x-14 border-l-4 border-green-900 w-[500px] rounded-xl shadow-green-900">
+        <p className="py-2 px-4 bg-white max-w-[600px] rounded-lg text-sm">
+          <span className="flex flex-row gap-2 item-center">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 17V11C10 10.4477 10.4477 10 11 10H17V3C17 1.89543 16.1046 1 15 1H3C1.89543 1 1 1.89543 1 3V15C1 16.1046 1.89543 17 3 17H10" stroke="#034737" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            Hey, Rosa! Can you make sure to include a link to our tutorial? Thanks!
+          </span>
+          <label className="flex p-2 items-center rounded-md flex-row justify-between">
+            <span className="flex flex-row">
+              <Image src="/contact.png" alt="contact" width="20" height={10} />
+              <span className="ml-2 text-black text-md">Leslie Alexander</span>
+            </span>
+          </label>
+        </p>
+       
+      </div>
+      {showDelete && (
+          <button
+            className=" h-[40px] items-center flex flex-row px-4 bg-white text-white gap-2 rounded-xl  translate-y-2 -translate-x-32 "
+            onClick={() => alert('Delete action triggered')}
+          >
+         <MdDelete className="text-red-500 text-2xl" />
+       <h2 className="text-black">  Delete</h2>
+          </button>
+        )}
+      <BsThreeDotsVertical
+        className="-translate-x-[450px] -translate-y-8 text-xl cursor-pointer"
+        onClick={handleDotsClick}
+      />
+    </div>
         <ChatInput />
       </main> )}
       <aside
