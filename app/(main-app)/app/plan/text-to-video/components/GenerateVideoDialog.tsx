@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 import { HiOutlineQuestionMarkCircle } from "react-icons/hi2";
 import { z } from "zod";
 import { AnimatePresence, motion } from "framer-motion";
+import Link from "next/link";
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -377,7 +378,9 @@ export default function GenerateVideoDialog() {
                     </video>
                   </div>
                   <div className="flex justify-end">
-                    <button className="bg-primary-green text-white py-3.5 px-4 sheen rounded-xl flex items-center justify-center">Continue in editor</button>
+                    <Link href="/create/video">
+                      <button className="bg-primary-green text-white py-3.5 px-4 sheen rounded-xl flex items-center justify-center">Continue in editor</button>
+                    </Link>
                   </div>
                 </Motion>
               ) : (
