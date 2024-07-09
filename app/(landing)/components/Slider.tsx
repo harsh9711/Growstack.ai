@@ -18,7 +18,7 @@ export default function Slider() {
       <div className="relative flex px-3 md:px-4 w-full">
         <Swiper
           modules={[Navigation, Scrollbar, A11y]}
-          spaceBetween={20}
+          spaceBetween={200}
           loop={true}
           className="w-full"
           breakpoints={{
@@ -35,50 +35,98 @@ export default function Slider() {
           }}
           pagination={{ clickable: true }}>
           <SwiperSlide className="cursor-grab active:cursor-grabbing">
-            <div className="w-full flex items-center gap-10 bg-[#EED7A1] px-16 pt-10 pb-16 rounded-3xl">
-              <div className="w-full relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[20px] before:right-[20px] before:rounded-xl">
-                <Image src="/assets/full-dashboard-preview.png" alt="" width={700} height={700} className="!rounded-xl shadow-box relative z-[1]" />
+            <div className="w-[1400px] flex items-center gap-10 bg-[#EED7A1] px-16 pt-10 pb-16 rounded-3xl">
+              <div className="w-full relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[40px] before:right-[20px] -translate-y-10 before:rounded-xl">
+                <Image src="/assets/full-dashboard-preview.png" alt="" width={900} height={900} className="!rounded-xl shadow-box relative z-[1]" />
               </div>
-              <div className="space-y-5 w-3/4">
-                <h1 className="leading-relaxed text-[34px] max-w-md font-semibold !mt-2">Create posts & content</h1>
-                <p className="w-full max-w-lg leading-loose">
-                  Lorem ipsum dolor sit amet consectetur. Enim feugiat scelerisque ullamcorper dictumst aliquet lectus sed.
-                </p>
-                <button className="bg-transparent border border-primary-green hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
-                  Learn More{" "}
-                </button>
+              <div className="space-y-4 w-full pt-1">
+                <h1 className="leading-relaxed text-[34px] w-full font-semibold !mt-2">Strategize Your Marketing Campaigns</h1>
+                <p className="w-full max-w-lg leading-loose font-semibold">
+                Develop and refine your marketing strategies with AI-powered planning tools.                </p>
+                <div className="bg-transparent transition duration-500 text-primary-green   rounded-xl font-semibold flex flex-col items-start ">
+                <h2 className="text-[18px]">Features</h2>
+                <ul className="space-y-4 !mt-5">
+                        <li className="flex gap-x-2 items-center  font-semibold">
+                          <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                          AI Chat
+                        </li>
+                        <li className="flex gap-x-2 items-center  font-semibold">
+                          <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                          AI Apps
+                      </li>
+                      <li className="flex gap-x-2 items-center  font-semibold">
+                          <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                          AI Assistant                      </li> <li className="flex gap-x-2 items-center  font-semibold">
+                          <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                          AI Custom GPT                      </li><li className="flex gap-x-2 items-center  font-semibold">
+                          <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                          Text to Video                   </li>
+                    </ul>                </div>
               </div>
             </div>
           </SwiperSlide>
           <SwiperSlide className="cursor-grab active:cursor-grabbing">
-            <div className="w-full flex items-center gap-10 bg-[#CD8B62] px-16 pt-10 pb-16 rounded-3xl">
-              <div className="w-full relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[20px] before:right-[20px] before:rounded-xl">
-                <Image src="/assets/full-dashboard-preview.png" alt="" width={700} height={700} className="!rounded-xl shadow-box relative z-[1]" />
+            <div className="w-[1400px] flex items-center gap-10 bg-[#CD8B62] px-16 pt-10 pb-16 rounded-3xl">
+              <div className="w-full relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[40px] before:right-[20px] -translate-y-10 before:rounded-xl">
+                <Image src="/assets/full-dashboard-preview.png" alt="" width={900} height={900} className="!rounded-xl shadow-box relative z-[1]" />
               </div>
-              <div className="space-y-5 w-3/4">
-                <h1 className="leading-relaxed text-[34px] max-w-md font-semibold !mt-2">Create posts & content</h1>
-                <p className="w-full max-w-lg leading-loose">
-                  Lorem ipsum dolor sit amet consectetur. Enim feugiat scelerisque ullamcorper dictumst aliquet lectus sed.
-                </p>
-                <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
-                  Learn More{" "}
-                </button>
+              <div className="space-y-4 w-full pt-1">
+                <h1 className="leading-relaxed text-[34px] w-full font-semibold !mt-2">Strategize Your Marketing Campaigns</h1>
+                <p className="w-full max-w-lg leading-loose font-semibold">
+                Develop and refine your marketing strategies with AI-powered planning tools.                </p>
+                <div className="bg-transparent transition duration-500 text-primary-green   rounded-xl font-semibold flex flex-col items-start ">
+                <h2 className="text-[18px]">Features</h2>
+                <ul className="space-y-4 !mt-5">
+                        <li className="flex gap-x-2 items-center  font-semibold">
+                          <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                          AI Chat
+                        </li>
+                        <li className="flex gap-x-2 items-center  font-semibold">
+                          <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                          AI Apps
+                      </li>
+                      <li className="flex gap-x-2 items-center  font-semibold">
+                          <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                          AI Assistant                      </li> <li className="flex gap-x-2 items-center  font-semibold">
+                          <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                          AI Custom GPT                      </li><li className="flex gap-x-2 items-center  font-semibold">
+                          <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                          Text to Video                   </li>
+                    </ul>                </div>
               </div>
             </div>
           </SwiperSlide>
           <SwiperSlide className="cursor-grab active:cursor-grabbing">
-            <div className="w-full flex items-center gap-10 bg-[#C6BC94] px-16 pt-10 pb-16 rounded-3xl">
-              <div className="w-full relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[20px] before:right-[20px] before:rounded-xl">
-                <Image src="/assets/full-dashboard-preview.png" alt="" width={700} height={700} className="!rounded-xl shadow-box relative z-[1]" />
+            <div className="w-[1100px] flex items-center gap-10 bg-[#C6BC94] px-16 pt-10 pb-16 rounded-3xl">
+              <div className="w-[1500px] relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[40px] before:right-[20px] -translate-y-8 before:rounded-xl">
+                <Image src="/assets/full-dashboard-preview.png" alt="" width={900} height={900} className="!rounded-xl shadow-box relative z-[1]" />
               </div>
-              <div className="space-y-5 w-3/4">
-                <h1 className="leading-relaxed text-[34px] max-w-md font-semibold !mt-2">Create posts & content</h1>
-                <p className="w-full max-w-lg leading-loose">
-                  Lorem ipsum dolor sit amet consectetur. Enim feugiat scelerisque ullamcorper dictumst aliquet lectus sed.
-                </p>
-                <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
-                  Learn More{" "}
-                </button>
+              <div className="space-y-4 w-full pt-1">
+                <h1 className="leading-relaxed text-[34px] w-full font-semibold !mt-2">Effortlessly Create Posts 
+                & Content</h1>
+                <p className="w-full max-w-lg leading-loose font-semibold">
+                Develop engaging posts and multimedia content with ease.                      </p>
+                <div className="bg-transparent transition duration-500 text-primary-green   rounded-xl font-semibold flex flex-col items-start ">
+                <h2 className="text-[18px]">Features</h2>
+                <ul className="space-y-4 !mt-5">
+                        <li className="flex gap-x-2 items-center  font-semibold">
+                          <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                          AI Website Builder                     </li>
+                          <li className="flex gap-x-2 items-center  font-semibold">
+                          <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                          AI Email Builder                    </li>
+                          <li className="flex gap-x-2 items-center  font-semibold">
+                          <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                          AI Workflow Builder                  </li>
+                          <li className="flex gap-x-2 items-center  font-semibold">
+                          <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                          AI Article Wizard                     </li>
+                          <li className="opacity-0 flex gap-x-2 items-center  font-semibold">
+                          <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                          AI Article Wizard                     </li>
+                          
+                       
+                    </ul>                </div>
               </div>
             </div>
           </SwiperSlide>
@@ -93,8 +141,13 @@ export default function Slider() {
                   Lorem ipsum dolor sit amet consectetur. Enim feugiat scelerisque ullamcorper dictumst aliquet lectus sed.
                 </p>
                 <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
-                  Learn More{" "}
-                </button>
+                Features
+                <ul className="space-y-4 !mt-7">
+                        <li className="flex gap-x-2 items-center  font-semibold">
+                          <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                          AI Chat
+                        </li>
+                    </ul>                </button>
               </div>
             </div>
           </SwiperSlide>
@@ -115,18 +168,22 @@ export default function Slider() {
             </div>
           </SwiperSlide>
           <SwiperSlide className="cursor-grab active:cursor-grabbing">
-            <div className="w-full flex items-center gap-10 bg-[#C1B1E4] px-16 pt-10 pb-16 rounded-3xl">
-              <div className="w-full relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[20px] before:right-[20px] before:rounded-xl">
-                <Image src="/assets/full-dashboard-preview.png" alt="" width={700} height={700} className="!rounded-xl shadow-box relative z-[1]" />
+            <div className="w-[1650px] flex items-center gap-10 bg-[#C1B1E4] px-16 pt-10 pb-16 rounded-3xl">
+              <div className="w-full relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[40px] before:right-[20px] -translate-y-4 before:rounded-xl">
+                <Image src="/assets/full-dashboard-preview.png" alt="" width={900} height={900} className="!rounded-xl shadow-box relative z-[1]" />
               </div>
-              <div className="space-y-5 w-3/4">
-                <h1 className="leading-relaxed text-[34px] max-w-md font-semibold !mt-2">Create posts & content</h1>
-                <p className="w-full max-w-lg leading-loose">
-                  Lorem ipsum dolor sit amet consectetur. Enim feugiat scelerisque ullamcorper dictumst aliquet lectus sed.
-                </p>
-                <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
-                  Learn More{" "}
-                </button>
+              <div className="space-y-4 w-full pt-1">
+                <h1 className="leading-relaxed text-[34px] w-full font-semibold !mt-2">Engage Your Audience Effectively</h1>
+                <p className="w-full max-w-lg leading-loose font-semibold">
+                Foster meaningful interactions with your community.                               </p>
+                <div className="bg-transparent transition duration-500 text-primary-green   rounded-xl font-semibold flex flex-col items-start ">
+                <h2 className="text-[18px]">Features</h2>
+                <ul className="space-y-4 !mt-5">
+                        <li className="flex gap-x-2 items-center  font-semibold">
+                          <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                          Social Media Conversation Hub                        </li>
+                       
+                    </ul>                </div>
               </div>
             </div>
           </SwiperSlide>

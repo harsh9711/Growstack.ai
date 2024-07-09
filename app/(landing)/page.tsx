@@ -25,12 +25,14 @@ export default function Home() {
               <div className="max-w-[820px] w-full">
                 <div className="max-w-3xl space-y-5">
                   <h1 className="text-[56px] max-w-2xl leading-normal bg-gradient-to-b from-black to-black/30 bg-clip-text text-transparent">
-                    <span className="font-semibold">AI has ushered in a </span>
-                    <br /> <span className="font"> transformative era </span> <br /> <span className="font-extralight"> in marketing.</span>
+                    <span className="font-semibold">Your AI Catalyst for </span>
+                    <br /> <span className="font-extralight">Business Success!</span>
+                   
                   </h1>
-                  <p className="text-[17px] leading-loose">
-                    Empower Your Business with AI-Powered Solutions for Seamless Marketing, Sales, and Social Media Management
-                  </p>
+                 
+
+                  <p className="text-[17px] w-[600px] leading-loose">
+                  AI is transforming the way we work. GrowStack transforms your business into an innovation powerhouse, driving unmatched productivity and meaningful progress.                  </p>
                   <button className="bg-white flex items-center gap-2 text-primary-green py-4 px-7 rounded-xl shadow-md shadow-[#00000025]">
                     Get Started <ArrowRight />
                   </button>
@@ -127,7 +129,7 @@ export default function Home() {
             </div>
             <div className="flex items-center justify-between gap-20 mt-5">
               <h1 className="w-full text-[42px] max-w-2xl leading-normal bg-gradient-to-b from-black to-black/30 bg-clip-text text-transparent">
-                <span className="font-semibold">The platform your whole </span>
+                <span className="font-semibold">The pcssddlatform your whole </span>
                 <br /> <span className="font-extralight"> business will love.</span>
               </h1>
               <p className="w-full max-w-lg leading-loose">
@@ -145,11 +147,11 @@ export default function Home() {
                 <div className={`max-w-[1480px] mx-auto flex ${card.id % 2 === 0 ? "flex-row-reverse" : ""} gap-20 justify-between items-center`}>
                   <div className="space-y-5 w-full">
                     <h2>{card.number}</h2>
-                    <h1 className="leading-relaxed text-[42px] max-w-xl font-medium !mt-2">{card.title}</h1>
+                    <h1 className="leading-relaxed text-[42px] max-w-md font-medium !mt-2">{card.title}</h1>
                     <p className="w-full max-w-lg leading-loose">{card.description}</p>
                     <ul className="space-y-4 !mt-7">
                       {card.listItems.map((item, index) => (
-                        <li key={index} className="flex gap-x-2 items-center">
+                        <li key={index} className="flex gap-x-2 items-center  font-semibold">
                           <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
                           {item}
                         </li>
@@ -169,11 +171,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-[url('/backgrounds/abstract-dots.png')] bg-no-repeat bg-cover ">
+      <section className="bg-[url('/backgrounds/abstract-dots.png')] bg-no-repeat bg-cover  pt-28">
         <div className="flex flex-col items-center space-y-4">
-          <div className="bg-[#00968914] py-2 px-4 uppercase flex items-center gap-3 rounded-full text-xs font-semibold max-w-fit text-[#009689]">Advocacy</div>
-          <h1 className="text-[42px] max-w-2xl leading-normal font-semibold  text-center">
-            Social hub & <span className="font-light">Advocacy</span>
+          <div className="bg-[#03473726]/15 py-2 px-4 uppercase flex items-center gap-3 rounded-full text-xs font-semibold max-w-fit text-[#034737]">Complete Marketing Ecosystem</div>
+          <h1 className="text-[42px] w-full leading-normal flex flex-col font-semibold  text-center">
+          Streamline Your Marketing Workflow from<span className="font-light">Planning to Engagement with Growstack</span>
           </h1>
         </div>
         <Slider />
