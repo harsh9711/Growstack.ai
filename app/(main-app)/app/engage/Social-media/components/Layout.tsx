@@ -459,22 +459,22 @@ const Layout = () => {
           </div>
           <div className="relative p-5 flex-1  ">
             <SidebarAccount
-              title={"GrowStack AI"}
+              title={"GrowStackAI"}
               author={"Twitter profile"}
               imageUrl={"/facebook.png"}
             />
             <SidebarAccount
-              title={"GrowStack AI"}
+              title={"GrowStackAI"}
               author={"Twitter profile"}
               imageUrl={"/twitter.png"}
             />
             <SidebarAccount
-              title={"GrowStack AI"}
+              title={"GrowStackAI"}
               author={"Twitter profile"}
               imageUrl={"/insta.png"}
             />
             <SidebarAccount
-              title={"GrowStack AI"}
+              title={"GrowStackAI"}
               author={"Twitter profile"}
               imageUrl={"/facebook.png"}
             />

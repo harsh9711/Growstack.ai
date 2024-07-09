@@ -41,10 +41,10 @@ const SidebarAccount: React.FC<SidebarItemProps> = ({
         onMouseLeave={() => setIsHovered(false)}
       >
         <Image src={imageUrl} alt="contact" width={60} height={50} />
-        <div className="flex flex-row items-center gap-16 justify-between flex-grow">
+        <div className="flex flex-row items-center gap-16 w-full justify-between">
           <div className="flex flex-col gap-1">
-            <h2 className="font-semibold text-md">{title}</h2>
-            <h2 className="text-md font-medium">{author}</h2>
+            <h2 className="font-semibold text-[14px]">{title}</h2>
+            <h2 className="text-[12px] font-medium">{author}</h2>
           </div>
           <div className="flex flex-row gap-2">
             {isActive ? (
