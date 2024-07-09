@@ -4,6 +4,7 @@ import "../styles/globals.css";
 import Progressbar from "@/providers/Progressbar";
 import { Suspense } from "react";
 import { Toaster } from "react-hot-toast";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -30,6 +31,7 @@ export default function RootLayout({
           <Toaster />
         </Suspense>
       </body>
+      <GoogleAnalytics gaId="G-4F6RLEFEVZ" />
     </html>
   );
 }
