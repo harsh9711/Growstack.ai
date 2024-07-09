@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import clsx from "clsx";
-import { MessageIcon2 } from "@/components/svgs";
-import { Trash2 } from "lucide-react";
 import Image from "next/image";
 
 interface SidebarItemProps {
@@ -10,17 +8,26 @@ interface SidebarItemProps {
   author: string;
   message: string;
   imageUrl: string;
-  onClick?: () => void; // Optional onClick handler
+  onClick?: () => void; 
 }
+
 const SidebarItem: React.FC<SidebarItemProps> = ({
   title,
   time,
   author,
   message,
-    imageUrl,
-
+  imageUrl,
+  onClick,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isOpened, setIsOpened] = useState(false);
+
+  const handleItemClick = () => {
+    if (onClick) {
+      onClick(); 
+    }
+    setIsOpened(true);
+  };
 
   return (
     <>
@@ -31,6 +38,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
         )}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        onClick={handleItemClick}
       >
         <Image src={imageUrl} alt="contact" width={50} height={50} className="-translate-y-1" />
         <div className="flex-1">
@@ -44,7 +52,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       </div>
      
       <div className="border border-gray-300 my-1"></div>
-      </>
+    </>
   );
 };
 

@@ -22,7 +22,6 @@ import { CiCircleInfo } from "react-icons/ci";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { AiOutlineMessage } from "react-icons/ai";
 import { BiReset } from "react-icons/bi";
-import { RxCross1 } from "react-icons/rx";
 import { MdDelete } from "react-icons/md";
 
 interface SidebarItem {
@@ -271,11 +270,7 @@ const Layout = () => {
       },
     ],
   ];
-  const [showDelete, setShowDelete] = useState(false);
 
-  const handleDotsClick = () => {
-    setShowDelete(!showDelete);
-  };
   const [showRightSidebar, setShowRightSidebar] = useState(false);
   const [MenuRotated, setMenuRotated] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -287,11 +282,23 @@ const Layout = () => {
   const [selectedOption, setSelectedOption] = useState(options[0].value);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
+  const [isOpened, setIsOpened] = useState(false);
+  const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
+  const filterMenuRef = useRef<HTMLDivElement>(null); 
+  const [showDelete, setShowDelete] = useState(false);
+  const [show, setShow] = useState(false);
+  const [show2, setShow2] = useState(false);
 
-  const [isOpened, setIsOpened] = useState(true);
-  const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false); // State to track if filter menu is open
-  const filterMenuRef = useRef<HTMLDivElement>(null); // Ref to the filter menu container
-
+  const handleDotsClick = () => {
+    setShowDelete(!showDelete);
+  };
+  const handleDotsClick2 = () => {
+    setShow(!show);
+  };
+  
+  const handleDotsClick3 = () => {
+    setShow2(!show2);
+  };
   const toggleFilterMenu = () => {
     setIsFilterMenuOpen(!isFilterMenuOpen);
   };
@@ -347,7 +354,7 @@ const Layout = () => {
   };
 
   return (
-    <div className="flex-1 max-h-[900px] flex  mt-10 shadow-lg rounded-full">
+    <div className="flex-1 max-h-[900px] flex  mt-10 shadow-lg rounded-3xl">
       {showRightSidebar && (
         <aside className="w-full max-w-[350px] relative border bg-white rounded-l-3xl flex flex-col">
           <div className="flex flex-row gap-6  py-4 px-6">
@@ -769,7 +776,10 @@ const Layout = () => {
         className="flex-1 w-full flex flex-col bg-gray-100 p-4 border"
         style={{ ...hideScrollbarStyles, ...hideScrollbarWebkit }}
       >
-        {" "}
+   <div className="flex flex-row gap-4 items-center">   <Image src="/facebook.png" alt="facebook" width={50} height={50}/> 
+       <h2 className="font-semibold text-[18px]">Post comments</h2>
+                          </div> 
+                          <div className="border border-gray-300 my-4 w-[1400px] -translate-x-4"></div>
         <div
           className="flex-1 p-4"
           style={{ ...hideScrollbarStyles, ...hideScrollbarWebkit }}
@@ -798,7 +808,30 @@ const Layout = () => {
               title={"Growstack-AI"}
               time={"Facebook Post"}
             />
-            <h2 className="text-[12px] font-light">2023-03-06 , 11:00 PM</h2>
+    <div className="flex flex-row items-center relative">
+  <h2 className="text-[12px] font-light mr-2">2023-03-06 , 11:00 PM</h2>
+  {show && (
+    <button
+      className="items-center flex flex-row px-4 p-2 bg-white text-white gap-2 translate-y-8 rounded-xl group"
+    >
+      <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9.66732 5.82812H5.50065C4.58018 5.82812 3.83398 6.57432 3.83398 7.49479V14.9948C3.83398 15.9153 4.58018 16.6615 5.50065 16.6615H13.0007C13.9211 16.6615 14.6673 15.9153 14.6673 14.9948V10.8281" stroke="#14171B" strokeWidth="1.45833" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M8.83398 11.6615L17.1673 3.32812" stroke="#14171B" strokeWidth="1.45833" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M13 3.32812H17.1667V7.49479" stroke="#14171B" strokeWidth="1.45833" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+      <h2 className="text-black  transform transition-transform  duration-200 ease-in-out group-hover:scale-110 ">
+        Open on network
+      </h2>
+
+    </button>
+  )}
+  <BsThreeDotsVertical
+    className="text-xl "
+    onClick={handleDotsClick2}
+  />
+</div>
+
+          
           </div>{" "}
           <div className="flex flex-row justify-between">
             {" "}
@@ -808,8 +841,28 @@ const Layout = () => {
               title={"Vale Ferreira"}
               time={""}
             />
-            <h2 className="text-[12px] font-light">2023-03-06 , 11:00 PM</h2>
-          </div>{" "}
+   <div className="flex flex-row items-center relative">
+  <h2 className="text-[12px] font-light mr-2">2023-03-06 , 11:00 PM</h2>
+  {show2 && (
+    <button
+      className="items-center flex flex-row px-4 p-2 bg-white text-white gap-2 translate-y-8 rounded-xl group"
+    >
+      <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9.66732 5.82812H5.50065C4.58018 5.82812 3.83398 6.57432 3.83398 7.49479V14.9948C3.83398 15.9153 4.58018 16.6615 5.50065 16.6615H13.0007C13.9211 16.6615 14.6673 15.9153 14.6673 14.9948V10.8281" stroke="#14171B" strokeWidth="1.45833" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M8.83398 11.6615L17.1673 3.32812" stroke="#14171B" strokeWidth="1.45833" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M13 3.32812H17.1667V7.49479" stroke="#14171B" strokeWidth="1.45833" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+      <h2 className="text-black  transform transition-transform  duration-200 ease-in-out group-hover:scale-110 ">
+        Open on network
+      </h2>
+
+    </button>
+  )}
+  <BsThreeDotsVertical
+    className="text-xl "
+    onClick={handleDotsClick3}
+  />
+</div>          </div>{" "}
           <div className="flex flex-col items-start translate-x-14">
             <p className="py-2 px-4 bg-white max-w-[600px] rounded-lg text-sm">
               perfect! ✅{" "}
@@ -841,11 +894,11 @@ const Layout = () => {
       </div>
       {showDelete && (
           <button
-            className=" h-[40px] items-center flex flex-row px-4 bg-white text-white gap-2 rounded-xl  translate-y-2 -translate-x-32 "
+            className=" h-[50px] items-center flex flex-row px-4 bg-white text-white gap-2 rounded-xl  translate-y-2 -translate-x-32 group "
             onClick={() => alert('Delete action triggered')}
           >
-         <MdDelete className="text-red-500 text-2xl" />
-       <h2 className="text-black">  Delete</h2>
+              <MdDelete className="text-red-500 text-2xl transform transition-transform duration-200 ease-in-out group-hover:scale-110" />
+              <h2 className="text-black transform transition-transform duration-200 ease-in-out group-hover:scale-110">  Delete</h2>
           </button>
         )}
       <BsThreeDotsVertical
@@ -855,7 +908,17 @@ const Layout = () => {
     </div>
         <ChatInput />
       </main> )}
-      <aside
+      {!isOpened && (
+          <main
+          className="w-full  bg-white"
+        >
+    <div className="flex items-center bg-white  h-full text-[16px] justify-center font-bold text-gray-700">
+     Select a conversation to see details        </div>
+
+        </main>
+     
+      )}
+      {isOpened && (   <aside
         className={clsx(
           "w-full max-w-[350px] relative border bg-white  flex flex-col",
           showRightSidebar ? "" : "rounded-r-3xl"
@@ -1051,7 +1114,7 @@ const Layout = () => {
           placeholder="Search..."
           className="flex-grow  bg-gray-100 text-xl  focus:outline-none"
         />
-        <button className="p-2 right-0 ">
+        <button className=" right-0 ">
         <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M12.0205 12.0527L21.92 21.9522" stroke="#4B465C" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M12.0205 12.0527L21.92 21.9522" stroke="white" stroke-opacity="0.2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1107,7 +1170,7 @@ const Layout = () => {
         </div>
       )}
     </div>
-      </aside>
+      </aside>)}
      
     </div>
   );

@@ -35,7 +35,7 @@ const SidebarAccount: React.FC<SidebarItemProps> = ({
         className={clsx(
           "flex gap-4 w-full p-4 hover:bg-gray-100 cursor-pointer rounded-md items-center group relative",
           isHovered && "pr-4",
-          !isActive && "opacity-50" // Fade out if not active
+          !isActive && "opacity-50" 
         )}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}

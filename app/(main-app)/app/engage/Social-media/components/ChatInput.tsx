@@ -1,23 +1,65 @@
-import { MicrophoneIcon, SendIcon2 } from "@/components/svgs";
-import autosize from "autosize";
-import Image from "next/image";
+
 import React, { useEffect, useRef, useState } from "react";
-import ToolsDialog from "./ToolsDialog";
-import axios from 'axios';
-import { API_URL } from "@/lib/api";
+import { BsChevronDown, BsPlus } from "react-icons/bs";
+import { RxCross1 } from "react-icons/rx";
 
 
 const ChatInput= () => {
   const [input, setInput] = useState("");
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
+  const [isFilterAssistantOpen, setIsFilterAssistantOpen] = useState(false);
+
+  const [isAddingNewSnippet, setIsAddingNewSnippet] = useState(false);
+  const [isAddingNewSnippet2, setIsAddingNewSnippet2] = useState(false);
+
+  const filterMenuRef = useRef<HTMLDivElement>(null);  
+  const filterMenuRef2= useRef<HTMLDivElement>(null);
+
+  const [selectedType, setSelectedType] = useState('message'); 
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedType(event.target.value);
+  };
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
+  const handleAddNewClick = () => {
+    setIsAddingNewSnippet(true);
+  };
+
+  const handleCrossClick = () => {
+    setIsFilterMenuOpen(false);
+  };
+  const handleCrossClick2 = () => {
+    setIsAddingNewSnippet2(false);
+  };
+  const toggleFilterMenu = () => {
+    setIsFilterMenuOpen(!isFilterMenuOpen);
+  };
+  const toggleFilterAssistant = () => {
+    setIsFilterAssistantOpen(!isFilterAssistantOpen);
+  };
   useEffect(() => {
-    if (textareaRef.current) {
-      autosize(textareaRef.current);
-    }
+    const handleClickOutside = (event: MouseEvent) => {
+      if (filterMenuRef.current && !filterMenuRef.current.contains(event.target as Node)) {
+        setIsFilterMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
   }, []);
 
-
+  const handleCancelClick = () => {
+    setIsAddingNewSnippet(false);
+  };
 
 
   return (
@@ -35,15 +77,99 @@ const ChatInput= () => {
       
     </div>
        <div className='border bg-white flex flex-row p-4 rounded-b-xl justify-between'>
-   <div className="flex flex-row gap-4 items-center">   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+   <div className="flex flex-row gap-4 items-center"> 
+     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M10 13.9965C10.6583 14.6684 11.5594 15.047 12.5 15.047C13.4406 15.047 14.3417 14.6684 15 13.9965L19 9.99647C20.3807 8.61576 20.3807 6.37718 19 4.99647C17.6193 3.61576 15.3807 3.61576 14 4.99647L13.5 5.49647" stroke="#14171B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M14.0004 10.0036C13.3421 9.33175 12.441 8.95312 11.5004 8.95312C10.5597 8.95312 9.65869 9.33175 9.00038 10.0036L5.00038 14.0036C3.61967 15.3843 3.61967 17.6229 5.00038 19.0036C6.38109 20.3843 8.61967 20.3843 10.0004 19.0036L10.5004 18.5036" stroke="#14171B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<div className="relative">
+      <div className="px-6 py-2 cursor-pointer" onClick={toggleFilterMenu}>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M8 6H18C19.1046 6 20 6.89543 20 8V18C20 19.1046 19.1046 20 18 20H6" stroke="#14171B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
 <circle cx="6" cy="18" r="2" stroke="#14171B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M8 18V6C8 4.89543 7.10457 4 6 4C4.89543 4 4 4.89543 4 6V18" stroke="#14171B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+</svg>      </div>
+
+{isFilterMenuOpen && (
+        <div
+          ref={filterMenuRef}
+          className="absolute z-20 mt-2 -top-72 -right-60 w-[300px] bg-white border border-gray-300 rounded-2xl shadow-lg"
+        >
+          <div className="p-4">
+            {!isAddingNewSnippet ? (
+              <>
+                <div className="flex items-center w-full bg-gray-100 border border-gray-300 px-2 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-green-800">
+                  <input
+                    type="text"
+                    placeholder="Search..."
+                    className="flex-grow bg-gray-100 text-xl focus:outline-none"
+                  />
+                  <button className="p-2 flex" onClick={handleCrossClick}>
+                    <RxCross1 className="-translate-x-6" />
+                  </button>
+                </div>
+                <div className="mt-4 space-y-2">
+                  <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md flex-row justify-between">
+                    <span className="flex flex-row">
+                      <span className="ml-2 text-black text-md">Newsletter</span>
+                    </span>
+                  </label>
+                  <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md flex-row justify-between">
+                    <span className="flex flex-row">
+                      <span className="ml-2 text-black text-md">Intro message</span>
+                    </span>
+                  </label>
+                  <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md flex-row justify-between">
+                    <span className="flex flex-row">
+                      <span className="ml-2 text-black text-md">Outro</span>
+                    </span>
+                  </label>
+                  <div className="items-center justify-center pt-2">
+                    <button
+                      className="text-white bg-primary-green hover:bg-primary-green/90 w-full justify-center flex gap-2 items-center h-10 font-medium rounded-xl transition-all duration-300 text-sm"
+                      onClick={handleAddNewClick}
+                    >
+                      <BsPlus className="text-2xl" />
+                      Add new snippet
+                    </button>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+               <label className="block text-black text-md w-full font-medium mb-2">Title <span className="text-red-500"> *</span></label>
+                <input
+                  type="text"
+                  placeholder="Title"
+                  className="w-full bg-gray-100 border border-gray-300 p-2 rounded-lg mb-2 focus:outline-none"
+                />
+              
+                <label className="block text-black text-md font-medium mb-2">Topic <span className="text-red-500"> *</span></label>
+                <textarea
+                  placeholder="Enter your snippet here..."
+                  className="w-full bg-gray-100 border h-[91px] border-gray-300 p-2 rounded-lg mb-2 focus:outline-none text-start"
+                />
+                <div className="flex w-full justify-end gap-2 ">
+                  <button
+                    className="text-black w-full  bg-gray-300 hover:bg-gray-400 px-4 py-2 rounded-lg transition-all duration-300 text-sm"
+                    onClick={handleCancelClick}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="text-white w-full  bg-primary-green hover:bg-primary-green/90 px-4 py-2 rounded-lg transition-all duration-300 text-sm"
+                    onClick={handleCrossClick}
+                  >
+                    Save
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <circle cx="12" cy="12" r="9" stroke="#14171B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M9.00086 10H9.01086" stroke="#14171B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
@@ -56,22 +182,108 @@ const ChatInput= () => {
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M11.1158 10.284C10.5398 9.708 9.59977 9.708 9.02377 10.284C8.44777 10.86 8.44777 11.8 9.02377 12.376L18.2158 21.568C18.5038 21.856 18.8798 22 19.2598 22C19.6398 22 20.0198 21.856 20.3078 21.568C20.8838 20.992 20.8838 20.052 20.3078 19.476L11.1158 10.284ZM9.58777 10.848C9.71977 10.716 9.89577 10.648 10.0678 10.648C10.2438 10.648 10.4158 10.716 10.5478 10.848L12.8438 13.144L11.8838 14.104L9.58777 11.808C9.32377 11.544 9.32377 11.116 9.58777 10.848ZM19.7398 21C19.4758 21.264 19.0438 21.264 18.7798 21L12.4518 14.672L13.4118 13.712L19.7398 20.04C20.0078 20.304 20.0078 20.736 19.7398 21ZM8.92777 6.96C9.62377 6.96 10.5158 7.852 10.5158 8.548C10.5158 8.768 10.6958 8.948 10.9158 8.948C11.1358 8.948 11.3158 8.768 11.3158 8.548C11.3158 7.852 12.2078 6.96 12.9038 6.96C13.1238 6.96 13.3038 6.78 13.3038 6.56C13.3038 6.34 13.1238 6.16 12.9038 6.16C12.2078 6.16 11.3158 5.268 11.3158 4.572C11.3158 4.352 11.1358 4.172 10.9158 4.172C10.6958 4.172 10.5158 4.352 10.5158 4.572C10.5158 5.268 9.62377 6.16 8.92777 6.16C8.70777 6.16 8.52777 6.34 8.52777 6.56C8.52777 6.78 8.70377 6.96 8.92777 6.96ZM10.9158 5.748C11.1278 6.064 11.4118 6.348 11.7278 6.56C11.4118 6.772 11.1278 7.056 10.9158 7.372C10.7038 7.056 10.4198 6.772 10.1038 6.56C10.4198 6.348 10.6998 6.064 10.9158 5.748ZM6.04777 12.104C6.04777 11.408 6.93977 10.516 7.63577 10.516C7.85577 10.516 8.03577 10.336 8.03577 10.116C8.03577 9.896 7.85577 9.716 7.63577 9.716C6.93977 9.716 6.04777 8.824 6.04777 8.128C6.04777 7.908 5.86777 7.728 5.64777 7.728C5.42777 7.728 5.24777 7.908 5.24777 8.128C5.24777 8.824 4.35577 9.716 3.65977 9.716C3.43977 9.716 3.25977 9.896 3.25977 10.116C3.25977 10.336 3.43977 10.516 3.65977 10.516C4.35577 10.516 5.24777 11.408 5.24777 12.104C5.24777 12.324 5.42777 12.504 5.64777 12.504C5.86777 12.504 6.04777 12.324 6.04777 12.104ZM4.83577 10.116C5.15177 9.904 5.43577 9.62 5.64777 9.304C5.85977 9.62 6.14377 9.904 6.45977 10.116C6.14377 10.328 5.85977 10.612 5.64777 10.928C5.43577 10.612 5.15177 10.328 4.83577 10.116ZM8.20377 3.988C7.50777 3.988 6.61577 3.096 6.61577 2.4C6.61577 2.18 6.43577 2 6.21577 2C5.99577 2 5.81577 2.18 5.81577 2.4C5.81577 3.096 4.92377 3.988 4.22777 3.988C4.00777 3.988 3.82777 4.168 3.82777 4.388C3.82777 4.608 4.00777 4.788 4.22777 4.788C4.92377 4.788 5.81577 5.68 5.81577 6.376C5.81577 6.596 5.99577 6.776 6.21577 6.776C6.43577 6.776 6.61577 6.596 6.61577 6.376C6.61577 5.68 7.50777 4.788 8.20377 4.788C8.42377 4.788 8.60377 4.608 8.60377 4.388C8.60377 4.168 8.42377 3.988 8.20377 3.988ZM6.21577 5.2C6.00377 4.884 5.71977 4.6 5.40377 4.388C5.71977 4.176 6.00377 3.892 6.21577 3.576C6.42777 3.892 6.71177 4.176 7.02777 4.388C6.71177 4.6 6.42777 4.884 6.21577 5.2Z" fill="#034737"/>
 </svg>
-<svg width="80" height="12" viewBox="0 0 80 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M6.846 9.33H2.59L1.806 11.5H0.462L3.99 1.798H5.46L8.974 11.5H7.63L6.846 9.33ZM6.482 8.294L4.718 3.366L2.954 8.294H6.482ZM11.7856 1.742V11.5H10.5116V1.742H11.7856ZM17.2133 7.636C17.2133 6.852 17.372 6.166 17.6893 5.578C18.0067 4.98067 18.4407 4.51867 18.9913 4.192C19.5513 3.86533 20.172 3.702 20.8533 3.702C21.5253 3.702 22.1087 3.84667 22.6033 4.136C23.098 4.42533 23.4667 4.78933 23.7093 5.228V3.828H24.9973V11.5H23.7093V10.072C23.4573 10.52 23.0793 10.8933 22.5753 11.192C22.0807 11.4813 21.502 11.626 20.8393 11.626C20.158 11.626 19.542 11.458 18.9913 11.122C18.4407 10.786 18.0067 10.3147 17.6893 9.708C17.372 9.10133 17.2133 8.41067 17.2133 7.636ZM23.7093 7.65C23.7093 7.07133 23.5927 6.56733 23.3593 6.138C23.126 5.70867 22.8087 5.382 22.4073 5.158C22.0153 4.92467 21.5813 4.808 21.1053 4.808C20.6293 4.808 20.1953 4.92 19.8033 5.144C19.4113 5.368 19.0987 5.69467 18.8653 6.124C18.632 6.55333 18.5153 7.05733 18.5153 7.636C18.5153 8.224 18.632 8.73733 18.8653 9.176C19.0987 9.60533 19.4113 9.93667 19.8033 10.17C20.1953 10.394 20.6293 10.506 21.1053 10.506C21.5813 10.506 22.0153 10.394 22.4073 10.17C22.8087 9.93667 23.126 9.60533 23.3593 9.176C23.5927 8.73733 23.7093 8.22867 23.7093 7.65ZM29.8663 11.626C29.2783 11.626 28.7509 11.528 28.2843 11.332C27.8176 11.1267 27.4489 10.8467 27.1783 10.492C26.9076 10.128 26.7583 9.71267 26.7303 9.246H28.0463C28.0836 9.62867 28.2609 9.94133 28.5783 10.184C28.9049 10.4267 29.3296 10.548 29.8523 10.548C30.3376 10.548 30.7203 10.4407 31.0003 10.226C31.2803 10.0113 31.4203 9.74067 31.4203 9.414C31.4203 9.078 31.2709 8.83067 30.9723 8.672C30.6736 8.504 30.2116 8.34067 29.5863 8.182C29.0169 8.03267 28.5503 7.88333 28.1863 7.734C27.8316 7.57533 27.5236 7.34667 27.2623 7.048C27.0103 6.74 26.8843 6.33867 26.8843 5.844C26.8843 5.452 27.0009 5.09267 27.2343 4.766C27.4676 4.43933 27.7989 4.18267 28.2283 3.996C28.6576 3.8 29.1476 3.702 29.6983 3.702C30.5476 3.702 31.2336 3.91667 31.7563 4.346C32.2789 4.77533 32.5589 5.36333 32.5963 6.11H31.3223C31.2943 5.70867 31.1309 5.38667 30.8323 5.144C30.5429 4.90133 30.1509 4.78 29.6563 4.78C29.1989 4.78 28.8349 4.878 28.5643 5.074C28.2936 5.27 28.1583 5.52667 28.1583 5.844C28.1583 6.096 28.2376 6.306 28.3963 6.474C28.5643 6.63267 28.7696 6.76333 29.0123 6.866C29.2643 6.95933 29.6096 7.06667 30.0483 7.188C30.5989 7.33733 31.0469 7.48667 31.3923 7.636C31.7376 7.776 32.0316 7.99067 32.2743 8.28C32.5263 8.56933 32.6569 8.94733 32.6663 9.414C32.6663 9.834 32.5496 10.212 32.3163 10.548C32.0829 10.884 31.7516 11.15 31.3223 11.346C30.9023 11.5327 30.4169 11.626 29.8663 11.626ZM37.1807 11.626C36.5927 11.626 36.0654 11.528 35.5987 11.332C35.1321 11.1267 34.7634 10.8467 34.4927 10.492C34.2221 10.128 34.0727 9.71267 34.0447 9.246H35.3607C35.3981 9.62867 35.5754 9.94133 35.8927 10.184C36.2194 10.4267 36.6441 10.548 37.1667 10.548C37.6521 10.548 38.0347 10.4407 38.3147 10.226C38.5947 10.0113 38.7347 9.74067 38.7347 9.414C38.7347 9.078 38.5854 8.83067 38.2867 8.672C37.9881 8.504 37.5261 8.34067 36.9007 8.182C36.3314 8.03267 35.8647 7.88333 35.5007 7.734C35.1461 7.57533 34.8381 7.34667 34.5767 7.048C34.3247 6.74 34.1987 6.33867 34.1987 5.844C34.1987 5.452 34.3154 5.09267 34.5487 4.766C34.7821 4.43933 35.1134 4.18267 35.5427 3.996C35.9721 3.8 36.4621 3.702 37.0127 3.702C37.8621 3.702 38.5481 3.91667 39.0707 4.346C39.5934 4.77533 39.8734 5.36333 39.9107 6.11H38.6367C38.6087 5.70867 38.4454 5.38667 38.1467 5.144C37.8574 4.90133 37.4654 4.78 36.9707 4.78C36.5134 4.78 36.1494 4.878 35.8787 5.074C35.6081 5.27 35.4727 5.52667 35.4727 5.844C35.4727 6.096 35.5521 6.306 35.7107 6.474C35.8787 6.63267 36.0841 6.76333 36.3267 6.866C36.5787 6.95933 36.9241 7.06667 37.3627 7.188C37.9134 7.33733 38.3614 7.48667 38.7067 7.636C39.0521 7.776 39.3461 7.99067 39.5887 8.28C39.8407 8.56933 39.9714 8.94733 39.9807 9.414C39.9807 9.834 39.8641 10.212 39.6307 10.548C39.3974 10.884 39.0661 11.15 38.6367 11.346C38.2167 11.5327 37.7314 11.626 37.1807 11.626ZM42.4372 2.582C42.1945 2.582 41.9892 2.498 41.8212 2.33C41.6532 2.162 41.5692 1.95667 41.5692 1.714C41.5692 1.47133 41.6532 1.266 41.8212 1.098C41.9892 0.93 42.1945 0.845999 42.4372 0.845999C42.6705 0.845999 42.8665 0.93 43.0252 1.098C43.1932 1.266 43.2772 1.47133 43.2772 1.714C43.2772 1.95667 43.1932 2.162 43.0252 2.33C42.8665 2.498 42.6705 2.582 42.4372 2.582ZM43.0532 3.828V11.5H41.7792V3.828H43.0532ZM47.9405 11.626C47.3525 11.626 46.8252 11.528 46.3585 11.332C45.8918 11.1267 45.5232 10.8467 45.2525 10.492C44.9818 10.128 44.8325 9.71267 44.8045 9.246H46.1205C46.1578 9.62867 46.3352 9.94133 46.6525 10.184C46.9792 10.4267 47.4038 10.548 47.9265 10.548C48.4118 10.548 48.7945 10.4407 49.0745 10.226C49.3545 10.0113 49.4945 9.74067 49.4945 9.414C49.4945 9.078 49.3452 8.83067 49.0465 8.672C48.7478 8.504 48.2858 8.34067 47.6605 8.182C47.0912 8.03267 46.6245 7.88333 46.2605 7.734C45.9058 7.57533 45.5978 7.34667 45.3365 7.048C45.0845 6.74 44.9585 6.33867 44.9585 5.844C44.9585 5.452 45.0752 5.09267 45.3085 4.766C45.5418 4.43933 45.8732 4.18267 46.3025 3.996C46.7318 3.8 47.2218 3.702 47.7725 3.702C48.6218 3.702 49.3078 3.91667 49.8305 4.346C50.3532 4.77533 50.6332 5.36333 50.6705 6.11H49.3965C49.3685 5.70867 49.2052 5.38667 48.9065 5.144C48.6172 4.90133 48.2252 4.78 47.7305 4.78C47.2732 4.78 46.9092 4.878 46.6385 5.074C46.3678 5.27 46.2325 5.52667 46.2325 5.844C46.2325 6.096 46.3118 6.306 46.4705 6.474C46.6385 6.63267 46.8438 6.76333 47.0865 6.866C47.3385 6.95933 47.6838 7.06667 48.1225 7.188C48.6732 7.33733 49.1212 7.48667 49.4665 7.636C49.8118 7.776 50.1058 7.99067 50.3485 8.28C50.6005 8.56933 50.7312 8.94733 50.7405 9.414C50.7405 9.834 50.6238 10.212 50.3905 10.548C50.1572 10.884 49.8258 11.15 49.3965 11.346C48.9765 11.5327 48.4912 11.626 47.9405 11.626ZM54.0929 4.878V9.4C54.0929 9.77333 54.1723 10.0393 54.3309 10.198C54.4896 10.3473 54.7649 10.422 55.1569 10.422H56.0949V11.5H54.9469C54.2376 11.5 53.7056 11.3367 53.3509 11.01C52.9963 10.6833 52.8189 10.1467 52.8189 9.4V4.878H51.8249V3.828H52.8189V1.896H54.0929V3.828H56.0949V4.878H54.0929ZM57.1625 7.636C57.1625 6.852 57.3212 6.166 57.6385 5.578C57.9559 4.98067 58.3899 4.51867 58.9405 4.192C59.5005 3.86533 60.1212 3.702 60.8025 3.702C61.4745 3.702 62.0579 3.84667 62.5525 4.136C63.0472 4.42533 63.4159 4.78933 63.6585 5.228V3.828H64.9465V11.5H63.6585V10.072C63.4065 10.52 63.0285 10.8933 62.5245 11.192C62.0299 11.4813 61.4512 11.626 60.7885 11.626C60.1072 11.626 59.4912 11.458 58.9405 11.122C58.3899 10.786 57.9559 10.3147 57.6385 9.708C57.3212 9.10133 57.1625 8.41067 57.1625 7.636ZM63.6585 7.65C63.6585 7.07133 63.5419 6.56733 63.3085 6.138C63.0752 5.70867 62.7579 5.382 62.3565 5.158C61.9645 4.92467 61.5305 4.808 61.0545 4.808C60.5785 4.808 60.1445 4.92 59.7525 5.144C59.3605 5.368 59.0479 5.69467 58.8145 6.124C58.5812 6.55333 58.4645 7.05733 58.4645 7.636C58.4645 8.224 58.5812 8.73733 58.8145 9.176C59.0479 9.60533 59.3605 9.93667 59.7525 10.17C60.1445 10.394 60.5785 10.506 61.0545 10.506C61.5305 10.506 61.9645 10.394 62.3565 10.17C62.7579 9.93667 63.0752 9.60533 63.3085 9.176C63.5419 8.73733 63.6585 8.22867 63.6585 7.65ZM70.8375 3.688C71.7708 3.688 72.5268 3.97267 73.1055 4.542C73.6842 5.102 73.9735 5.914 73.9735 6.978V11.5H72.7135V7.16C72.7135 6.39467 72.5222 5.81133 72.1395 5.41C71.7568 4.99933 71.2342 4.794 70.5715 4.794C69.8995 4.794 69.3628 5.004 68.9615 5.424C68.5695 5.844 68.3735 6.45533 68.3735 7.258V11.5H67.0995V3.828H68.3735V4.92C68.6255 4.528 68.9662 4.22467 69.3955 4.01C69.8342 3.79533 70.3148 3.688 70.8375 3.688ZM77.6086 4.878V9.4C77.6086 9.77333 77.6879 10.0393 77.8466 10.198C78.0052 10.3473 78.2806 10.422 78.6726 10.422H79.6106V11.5H78.4626C77.7532 11.5 77.2212 11.3367 76.8666 11.01C76.5119 10.6833 76.3346 10.1467 76.3346 9.4V4.878H75.3406V3.828H76.3346V1.896H77.6086V3.828H79.6106V4.878H77.6086Z" fill="#14171B"/>
-</svg>
+<div className="relative">
+      <div className="px-6 py-2 cursor-pointer" onClick={toggleFilterAssistant}>
+        <h2>AI assistant</h2>
+      </div>
+
+      {isFilterAssistantOpen && (
+        <div
+          ref={filterMenuRef2}
+          className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50"
+          onClick={() => setIsFilterAssistantOpen(false)} 
+        >
+          <div className="max-w-[443px] bg-white border border-gray-300 rounded-2xl shadow-lg">
+            <div className="p-4">
+                  <div className="flex items-center w-full bg-gray-100 border border-gray-300 px-2 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-green-800">
+                    <input
+                      type="text"
+                      placeholder="Search AI assistant"
+                      className="flex-grow bg-gray-100 text-xl focus:outline-none"
+                    />
+                    <button className="p-4 flex" onClick={handleCrossClick2}>
+                      <RxCross1 className="" />
+                    </button>
+                  </div>
+                  <div className="border border-gray-300 my-4"></div>
+
+                  <div className="mt-4 space-y-2">
+                    <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md flex-row justify-between">
+                      <span className="flex flex-col">
+                        <span className="ml-2 text-black text-[16px] font-semibold">Summarize</span>
+                        <span className="ml-2 text-[#14171B] text-[14px] font-light">Summarize the conversation.</span>
+
+                      </span>
+                    </label>
+                    <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md flex-row justify-between">
+                      <span className="flex flex-col">
+                        <span className="ml-2 text-black text-[16px] font-semibold">Rewrite</span>
+                        <span className="ml-2 text-[#14171B] text-[14px] font-light">Rephrase the content.</span>
+
+                      </span>
+                    </label>
+                    <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md flex-row justify-between">
+                      <span className="flex flex-col">
+                        <span className="ml-2 text-black text-[16px] font-semibold">Expand</span>
+                        <span className="ml-2 text-[#14171B] text-[14px] font-light">Expand your content into a longer sentence.</span>
+
+                      </span>
+                    </label>
+                    <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md flex-row justify-between">
+                      <span className="flex flex-col">
+                        <span className="ml-2 text-black text-[16px] font-semibold">Make more friendly</span>
+                        <span className="ml-2 text-[#14171B] text-[14px] font-light">Rewrite the content to be more informal & friendly.</span>
+
+                      </span>
+                    </label>
+                    <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md flex-row justify-between">
+                      <span className="flex flex-col">
+                        <span className="ml-2 text-black text-[16px] font-semibold">Use AI templates / document</span>
+                        <span className="ml-2 text-[#14171B] text-[14px] font-light">Browse AI texts templates and your documents.</span>
+
+                      </span>
+                    </label>
+                  </div>
+            
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+
 <svg width="1" height="24" viewBox="0 0 1 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <line x1="0.5" y1="2.18556e-08" x2="0.499999" y2="24" stroke="#E6E6E6"/>
 </svg>
-<svg width="63" height="21" viewBox="0 0 63 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M8.75 15H7.476L2.352 7.23V15H1.078V5.228H2.352L7.476 12.984V5.228H8.75V15ZM14.2678 15.126C13.5491 15.126 12.8958 14.9627 12.3078 14.636C11.7291 14.3093 11.2718 13.8473 10.9358 13.25C10.6091 12.6433 10.4458 11.9433 10.4458 11.15C10.4458 10.366 10.6138 9.67533 10.9498 9.078C11.2951 8.47133 11.7618 8.00933 12.3498 7.692C12.9378 7.36533 13.5958 7.202 14.3238 7.202C15.0518 7.202 15.7098 7.36533 16.2978 7.692C16.8858 8.00933 17.3478 8.46667 17.6838 9.064C18.0291 9.66133 18.2018 10.3567 18.2018 11.15C18.2018 11.9433 18.0244 12.6433 17.6698 13.25C17.3244 13.8473 16.8531 14.3093 16.2558 14.636C15.6584 14.9627 14.9958 15.126 14.2678 15.126ZM14.2678 14.006C14.7251 14.006 15.1544 13.8987 15.5558 13.684C15.9571 13.4693 16.2791 13.1473 16.5218 12.718C16.7738 12.2887 16.8998 11.766 16.8998 11.15C16.8998 10.534 16.7784 10.0113 16.5358 9.582C16.2931 9.15267 15.9758 8.83533 15.5838 8.63C15.1918 8.41533 14.7671 8.308 14.3098 8.308C13.8431 8.308 13.4138 8.41533 13.0218 8.63C12.6391 8.83533 12.3311 9.15267 12.0978 9.582C11.8644 10.0113 11.7478 10.534 11.7478 11.15C11.7478 11.7753 11.8598 12.3027 12.0838 12.732C12.3171 13.1613 12.6251 13.4833 13.0078 13.698C13.3904 13.9033 13.8104 14.006 14.2678 14.006ZM21.4308 8.378V12.9C21.4308 13.2733 21.5102 13.5393 21.6688 13.698C21.8275 13.8473 22.1028 13.922 22.4948 13.922H23.4328V15H22.2848C21.5755 15 21.0435 14.8367 20.6888 14.51C20.3342 14.1833 20.1568 13.6467 20.1568 12.9V8.378H19.1628V7.328H20.1568V5.396H21.4308V7.328H23.4328V8.378H21.4308ZM31.9764 10.87C31.9764 11.1127 31.9624 11.3693 31.9344 11.64H25.8024C25.8491 12.396 26.1058 12.9887 26.5724 13.418C27.0484 13.838 27.6224 14.048 28.2944 14.048C28.8451 14.048 29.3024 13.922 29.6664 13.67C30.0398 13.4087 30.3011 13.0633 30.4504 12.634H31.8224C31.6171 13.3713 31.2064 13.9733 30.5904 14.44C29.9744 14.8973 29.2091 15.126 28.2944 15.126C27.5664 15.126 26.9131 14.9627 26.3344 14.636C25.7651 14.3093 25.3171 13.8473 24.9904 13.25C24.6638 12.6433 24.5004 11.9433 24.5004 11.15C24.5004 10.3567 24.6591 9.66133 24.9764 9.064C25.2938 8.46667 25.7371 8.00933 26.3064 7.692C26.8851 7.36533 27.5478 7.202 28.2944 7.202C29.0224 7.202 29.6664 7.36067 30.2264 7.678C30.7864 7.99533 31.2158 8.434 31.5144 8.994C31.8224 9.54467 31.9764 10.17 31.9764 10.87ZM30.6604 10.604C30.6604 10.1187 30.5531 9.70333 30.3384 9.358C30.1238 9.00333 29.8298 8.73733 29.4564 8.56C29.0924 8.37333 28.6864 8.28 28.2384 8.28C27.5944 8.28 27.0438 8.48533 26.5864 8.896C26.1384 9.30667 25.8818 9.876 25.8164 10.604H30.6604Z" fill="#14171B"/>
-<path d="M48 8L53 13L58 8" stroke="#14171B" stroke-width="1.45833" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
+<div className="relative">
+      <div className="relative">
+        <div
+          onClick={toggleDropdown}
+          className="w-28 p-2 rounded-lg  flex justify-between items-center cursor-pointer"
+        >
+          {selectedType === 'message' ? 'Message' : 'Note'}
+          <BsChevronDown className={`h-4 w-4 ml-2 ${isOpen ? 'transform rotate-180' : ''}`} />
+        </div>
+        {isOpen && (
+          <div className="absolute mt-1 w-full rounded-lg border border-gray-300 bg-white shadow-lg">
+            <option
+              value="message"
+              className="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:font-medium hover:text-green-900"
+            >
+              Message
+            </option>
+            <option
+              value="note"
+              className="block px-4 py-2 text-sm text-gray-700 cursor-pointer hover:font-medium hover:text-green-900"
+            >
+              Note
+            </option>
+          </div>
+        )}
+      </div>
+    </div>
 
 </div> 
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-   <path d="M7.40359 6.32015L15.8936 3.49015C19.7036 2.22015 21.7736 4.30015 20.5136 8.11015L17.6836 16.6002C15.7836 22.3102 12.6636 22.3102 10.7636 16.6002L9.92359 14.0802L7.40359 13.2402C1.69359 11.3402 1.69359 8.23016 7.40359 6.32015Z" stroke="#034737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-   <path d="M10.1094 13.6525L13.6894 10.0625" stroke="#034737" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-   </svg> </div></div>
+ </div></div>
   );
 };
 

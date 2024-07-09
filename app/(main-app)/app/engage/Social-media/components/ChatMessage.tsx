@@ -1,12 +1,8 @@
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from "@radix-ui/react-select";
-import clsx from "clsx";
 import React from "react";
-import { BsPlus } from "react-icons/bs";
-import { options } from "../../../analyse/reputation-manager/layouts/subsections/components/graphs/LineGraph";
-import SidebarAccount from "./SidebarAccount";
+
 
 interface ChatMessageProps {
-  message: React.ReactNode; // Changed to React.ReactNode
+  message: React.ReactNode; 
   imageUrl: string;
   title: string;
   time: string;
