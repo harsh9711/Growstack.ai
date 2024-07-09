@@ -13,6 +13,12 @@ import axios from 'axios'
 import { API_URL } from '@/lib/api'
 import { InputIcon2 } from '@/components/svgs'
 import clsx from 'clsx'
+import ReactMarkdown from "react-markdown";
+import { MdDeleteOutline } from "react-icons/md";
+import { HiOutlineDuplicate } from "react-icons/hi";
+import { CiCirclePlus } from "react-icons/ci";
+import toast from 'react-hot-toast'
+import DotsLoader from "@/components/DotLoader";
 
 type WorkFlowData = {
   actions: any[];
@@ -34,12 +40,50 @@ const Page = () => {
   const [tableData, setTableData] = useState<any[]>([]); // Placeholder for table data
   const [workflowId, setWorkflowId] = useState("");
   const [keyWords, setKeyWords] = useState<string>("")
-  
+   const [hovered, setHovered] = useState(false);
+   const [hovered2, setHovered2] = useState(false);
+  const deleteButtonTimeoutRef = useRef<number | null>(null);
+    const deleteButtonTimeoutRef2 = useRef<number | null>(null);
+
+
+  const handleHover = () => {
+    setHovered(true);
+if (deleteButtonTimeoutRef.current !== null) {
+      clearTimeout(deleteButtonTimeoutRef.current);
+    }
+  };
+ const handleMouseLeave = () => {
+    if (deleteButtonTimeoutRef.current !== null) {
+      clearTimeout(deleteButtonTimeoutRef.current);
+    }
+    deleteButtonTimeoutRef.current = window.setTimeout(() => {
+      setHovered(false);
+    }, 500); 
+  };
+
+    const handleHover2 = () => {
+    setHovered2(true);
+if (deleteButtonTimeoutRef2.current !== null) {
+      clearTimeout(deleteButtonTimeoutRef2.current);
+    }
+  };
+ const handleMouseLeave2 = () => {
+    if (deleteButtonTimeoutRef2.current !== null) {
+      clearTimeout(deleteButtonTimeoutRef2.current);
+    }
+    deleteButtonTimeoutRef2.current = window.setTimeout(() => {
+      setHovered2(false);
+    }, 500); 
+  };
+
+
+
   const [workFlowResults, setWorkFlowResults] = useState<WorkFlowResults>({ outputs: [], status: true, failed_step: -1});
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(Math.ceil(tableData.length / 10)); // Placeholder for total pages
   const searchParams = useSearchParams();
+  const [isWorkFlowFetched, setIsWorkFlowFetched] = useState<boolean>(true);
   
   const [workFlowData, setWorkFlowData] = useState<WorkFlowData>({ actions: [], input_configs: [], output_configs : []});
   const fetchWorkflowData = async (id: string) => {
@@ -53,6 +97,7 @@ const Page = () => {
 
   const handleRunWorkFlow = async () => {
     try {
+      setIsWorkFlowFetched(false);
       const payload = {
         actions_with_runs: workFlowData.actions.map((action) => ({ action: action._id })),
         inputs: workFlowData.input_configs.map((input) => ({
@@ -63,9 +108,11 @@ const Page = () => {
       const response = await axios.post(`${API_URL}/workflow/api/v1/${workflowId}/runner`, payload)
      
       setWorkFlowResults({ ...response.data.data, outputs: response.data.data.outputs.map((output: any) => ({ ...output, variable_value: output.variable_type === 'object' ? JSON.parse(output.variable_value) : output.variable_value })) });
-
+      setIsWorkFlowFetched(true)
     } catch (error) {
       console.log('Error running workflow:', error);
+      toast.error('Error running workflow');
+      setIsWorkFlowFetched(true)
     }
   }
   useEffect(() => {
@@ -176,19 +223,195 @@ const Page = () => {
     <h1 className="text-md font-medium text-center text-[#14171B] *">Test workflow</h1>
   </div>
 
+      <button
+      className={clsx(
+        'relative w-full z-[20] max-w-[340px] p-3 border rounded-xl flex items-center gap-4 cursor-pointer !border-primary-green',
+       
+      )}
+      onMouseEnter={handleHover}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className="bg-primary-green p-4 rounded-lg">
+        <Image src="/edit.png" alt="edit icon" width={30} height={30} />
+      </div>
+      <div className="space-y-1 flex flex-col items-start">
+        <h3 className="text-[17px] font-medium">Input</h3>
+      </div>
+      <div
+        className={clsx(
+          'absolute right-0  z-[10] top-0 h-full flex items-center pr-3 transition-transform duration-300',
+          {
+             'transform translate-x-40 opacity-100': hovered,
+            'transform translate-x-0 opacity-0': !hovered,
+             'pointer-events-auto': hovered,
+            'pointer-events-none': !hovered,
+            
+          }
+        )}
+      >
+        <div className="bg-red-500 p-3 rounded-md">
+          <MdDeleteOutline size={24} color="white" />
+        </div>
+      </div>
+    </button>
+  <div className="relative border-t-2 border-dotted border-gray-400 w-20 rotate-90">
+      <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center opacity-0 hover:opacity-100">
+        <CiCirclePlus  size={34} color="red" />
+      </div>
+    </div>   <button
+      className={clsx(
+        'relative w-full z-[20] max-w-[340px] p-3 border rounded-xl flex items-center gap-4 cursor-pointer !border-primary-green',
+       
+      )}
+      onMouseEnter={handleHover2}
+      onMouseLeave={handleMouseLeave2}
+    >
+      <div className="bg-primary-green p-4 rounded-lg">
+        <Image src="/edit.png" alt="edit icon" width={30} height={30} />
+      </div>
+      <div className="space-y-1 flex flex-col items-start">
+        <h3 className="text-[17px] font-medium">Search Keyword</h3>
+      </div>
+      <div
+        className={clsx(
+          'absolute right-0  z-[10] top-0 h-full flex items-center pr-3 transition-transform duration-300',
+          {
+            'transform translate-x-40 opacity-100': hovered2,
+            'transform translate-x-0 opacity-0': !hovered2,
+             'pointer-events-auto': hovered2,
+            'pointer-events-none': !hovered2,
+            
+          }
+        )}
+      >
+        <div className=" rounded-md flex gap-6 flex-row">
+          <HiOutlineDuplicate size={34} color="blue"  />
+
+          <MdDeleteOutline size={34} color="red" />
+        </div>
+      </div>
+    </button>
+          <div className=" border-t-2 border-dotted border-gray-400 w-20 rotate-90"></div>
   <button
           className={clsx(
             "w-full max-w-[340px] transition-all duration-300 p-3 border  rounded-xl flex items-center gap-4 cursor-pointer !border-primary-green"
           )}>
           <div className="bg-primary-green p-4 rounded-lg">
-          <Image src="/edit.png" alt="go" width={30} height={30}/>
+          <Image src="/1.png" alt="go" width={30} height={30}/>
           </div>
           <div className="space-y-1 flex flex-col items-start">
-            <h3 className="text-[17px]  font-medium">Input</h3>
+            <h3 className="text-[17px]  font-medium">Extract Top 3 URLs</h3>
+          </div>
+        </button>
+          <div className=" border-t-2 border-dotted border-gray-400 w-20 rotate-90"></div>
+  <button
+          className={clsx(
+            "w-full max-w-[340px] transition-all duration-300 p-3 border  rounded-xl flex items-center gap-4 cursor-pointer !border-primary-green"
+          )}>
+          <div className="bg-primary-green p-4 rounded-lg">
+          <Image src="/1.png" alt="go" width={30} height={30}/>
+          </div>
+          <div className="space-y-1 flex flex-col items-start">
+            <h3 className="text-[17px]  font-medium">Scan First URL</h3>
+          </div>
+        </button>
+           <div className=" border-t-2 border-dotted border-gray-400 w-20 rotate-90"></div>
+  <button
+          className={clsx(
+            "w-full max-w-[340px] transition-all duration-300 p-3 border  rounded-xl flex items-center gap-4 cursor-pointer !border-primary-green"
+          )}>
+          <div className="bg-primary-green p-4 rounded-lg">
+          <Image src="/1.png" alt="go" width={30} height={30}/>
+          </div>
+          <div className="space-y-1 flex flex-col items-start">
+            <h3 className="text-[17px]  font-medium">Extract H 2 S From First URL</h3>
+          </div>
+        </button>
+          <div className=" border-t-2 border-dotted border-gray-400 w-20 rotate-90"></div>
+  <button
+          className={clsx(
+            "w-full max-w-[340px] transition-all duration-300 p-3 border  rounded-xl flex items-center gap-4 cursor-pointer !border-primary-green"
+          )}>
+          <div className="bg-primary-green p-4 rounded-lg">
+          <Image src="/1.png" alt="go" width={30} height={30}/>
+          </div>
+          <div className="space-y-1 flex flex-col items-start">
+            <h3 className="text-[17px]  font-medium">Scan Third URL</h3>
+          </div>
+        </button>
+          <div className=" border-t-2 border-dotted border-gray-400 w-20 rotate-90"></div>
+  <button
+          className={clsx(
+            "w-full max-w-[340px] transition-all duration-300 p-3 border  rounded-xl flex items-center gap-4 cursor-pointer !border-primary-green"
+          )}>
+          <div className="bg-primary-green p-4 rounded-lg">
+          <Image src="/1.png" alt="go" width={30} height={30}/>
+          </div>
+          <div className="space-y-1 flex flex-col items-start">
+            <h3 className="text-[17px]  font-medium">Extract H 2 S From Third URL</h3>
+          </div>
+        </button>
+           <div className=" border-t-2 border-dotted border-gray-400 w-20 rotate-90"></div>
+  <button
+          className={clsx(
+            "w-full max-w-[340px] transition-all duration-300 p-3 border  rounded-xl flex items-center gap-4 cursor-pointer !border-primary-green"
+          )}>
+          <div className="bg-primary-green p-4 rounded-lg">
+          <Image src="/1.png" alt="go" width={30} height={30}/>
+          </div>
+          <div className="space-y-1 flex flex-col items-start">
+            <h3 className="text-[17px]  font-medium">Recommend Page Type</h3>
+          </div>
+        </button>
+           <div className=" border-t-2 border-dotted border-gray-400 w-20 rotate-90"></div>
+  <button
+          className={clsx(
+            "w-full max-w-[340px] transition-all duration-300 p-3 border  rounded-xl flex items-center gap-4 cursor-pointer !border-primary-green"
+          )}>
+          <div className="bg-primary-green p-4 rounded-lg">
+          <Image src="/1.png" alt="go" width={30} height={30}/>
+          </div>
+          <div className="space-y-1 flex flex-col items-start">
+            <h3 className="text-[17px]  font-medium">BrainStorm Questions</h3>
+          </div>
+        </button>
+         <div className=" border-t-2 border-dotted border-gray-400 w-20 rotate-90"></div>
+  <button
+          className={clsx(
+            "w-full max-w-[340px] transition-all duration-300 p-3 border  rounded-xl flex items-center gap-4 cursor-pointer !border-primary-green"
+          )}>
+          <div className="bg-primary-green p-4 rounded-lg">
+          <Image src="/1.png" alt="go" width={30} height={30}/>
+          </div>
+          <div className="space-y-1 flex flex-col items-start">
+            <h3 className="text-[17px]  font-medium">BrainStorm Blog Titles</h3>
+          </div>
+        </button>
+         <div className=" border-t-2 border-dotted border-gray-400 w-20 rotate-90"></div>
+  <button
+          className={clsx(
+            "w-full max-w-[340px] transition-all duration-300 p-3 border  rounded-xl flex items-center gap-4 cursor-pointer !border-primary-green"
+          )}>
+          <div className="bg-primary-green p-4 rounded-lg">
+          <Image src="/1.png" alt="go" width={30} height={30}/>
+          </div>
+          <div className="space-y-1 flex flex-col items-start">
+            <h3 className="text-[17px]  font-medium">Generate URL Slug</h3>
+          </div>
+        </button>
+          <div className=" border-t-2 border-dotted border-gray-400 w-20 rotate-90"></div>
+  <button
+          className={clsx(
+            "w-full max-w-[340px] transition-all duration-300 p-3 border  rounded-xl flex items-center gap-4 cursor-pointer !border-primary-green"
+          )}>
+          <div className="bg-primary-green p-4 rounded-lg">
+          <Image src="/1.png" alt="go" width={30} height={30}/>
+          </div>
+          <div className="space-y-1 flex flex-col items-start">
+            <h3 className="text-[17px]  font-medium">Generate Outline</h3>
           </div>
         </button>
     <div className=" border-t-2 border-dotted border-gray-400 w-20 rotate-90"></div>
-  
   <button
           className={clsx(
             "w-full max-w-[340px] transition-all duration-300 p-3 border  rounded-xl flex items-center gap-4 cursor-pointer !border-primary-green"
@@ -198,6 +421,30 @@ const Page = () => {
           </div>
           <div className="space-y-1 flex flex-col items-start">
             <h3 className="text-[17px]  font-medium">Generate blog post</h3>
+          </div>
+        </button>
+         <div className=" border-t-2 border-dotted border-gray-400 w-20 rotate-90"></div>
+  <button
+          className={clsx(
+            "w-full max-w-[340px] transition-all duration-300 p-3 border  rounded-xl flex items-center gap-4 cursor-pointer !border-primary-green"
+          )}>
+          <div className="bg-primary-green p-4 rounded-lg">
+          <Image src="/1.png" alt="go" width={30} height={30}/>
+          </div>
+          <div className="space-y-1 flex flex-col items-start">
+            <h3 className="text-[17px]  font-medium">Generate Meta Description</h3>
+          </div>
+        </button>
+          <div className=" border-t-2 border-dotted border-gray-400 w-20 rotate-90"></div>
+  <button
+          className={clsx(
+            "w-full max-w-[340px] transition-all duration-300 p-3 border  rounded-xl flex items-center gap-4 cursor-pointer !border-primary-green"
+          )}>
+          <div className="bg-primary-green p-4 rounded-lg">
+          <Image src="/1.png" alt="go" width={30} height={30}/>
+          </div>
+          <div className="space-y-1 flex flex-col items-start">
+            <h3 className="text-[17px]  font-medium">Find Content Brief</h3>
           </div>
         </button>
   <div className=" border-t border-dotted border-gray-400 w-20 rotate-90"></div>
@@ -226,7 +473,22 @@ const Page = () => {
             <h3 className="text-[16px] font-medium">Brainstorm meta description</h3>
           </div>
         </button>
-  </div>``
+        <div className=" border-t border-dotted border-gray-400 w-20 rotate-90"></div>
+
+  <button
+          className={clsx(
+            "w-full max-w-[340px] transition-all duration-300 p-3 border  rounded-xl flex items-center gap-4 cursor-pointer !border-primary-green"
+          )}>
+          <div className="bg-primary-green p-4 rounded-lg">
+          <Image src="/3.png" alt="go" width={30} height={30}/>
+          </div>
+          <div className="space-y-1 flex flex-col items-start">
+            <h3 className="text-[16px] font-medium">Brainstorm meta description</h3>
+          </div>
+        </button>
+  </div>
+  
+  
   <div className='flex flex-col gap-2 px-60'>
       <div className='border shadow-md rounded-xl'><input
         type="text"
@@ -275,10 +537,14 @@ const Page = () => {
         className="w-full p-2 border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2"
       />
     </div> */}
+    {
+      !isWorkFlowFetched ? <DotsLoader />:
+    
     <div className='bg-[#03473729] flex flex-row items-center justify-center rounded-xl p-4 gap-3 cursor-pointer' onClick={()=>handleRunWorkFlow()}>
       <Image src="/run.png" alt="go" width={10} height={10}/>
       <h2 className="text-[#14171B] font"> Run Workflow</h2>
     </div>
+}
   </div>
 
   {/* Results Section */}
@@ -307,9 +573,9 @@ const Page = () => {
                 {output.variable_type === 'object' ?
                   Array.isArray(output.variable_value) &&
                   output.variable_value.map((item: any) => (
-                    <p>{item}</p>
+                    <ReactMarkdown>{item}</ReactMarkdown>
                   ))
-                  : output.variable_value}
+                  : <ReactMarkdown>{output.variable_value}</ReactMarkdown>}
               </div>
             </div> :
             Object.entries(output.variable_value).map(([key, value] : any, index) => (
@@ -325,7 +591,9 @@ const Page = () => {
                   </button>
                 </div>
                 <div className="bg-gray-100 p-4 rounded-lg break-words whitespace-pre-line">
-                  {value}
+                  <ReactMarkdown>
+                    {value}
+                  </ReactMarkdown>
                 </div>
               </div>
             )))

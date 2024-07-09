@@ -3,15 +3,15 @@
 import Motion from "@/components/Motion";
 import Spinner from "@/components/Spinner";
 import axios from "@/config/axios.config";
+import { API_URL } from "@/lib/api";
 import clsx from "clsx";
 import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { creativityOptions, languageOptions, povOptions, writingToneOptions } from "../constants/options";
+import { ISubtitleTalkingPoints } from "../types";
 import AdvancedOptions from "./AdvancedOptions";
 import ImageDialog from "./dialogs/ImageDialog";
-import { IOutline, ISubtitleTalkingPoints } from "../types";
-import { API_URL } from "@/lib/api";
 
 interface ImagesComponentProps {
   currentStep: number;
@@ -20,8 +20,8 @@ interface ImagesComponentProps {
   articleTitle: string;
   setArticleTitle: React.Dispatch<React.SetStateAction<string>>;
   talkingPoints: ISubtitleTalkingPoints[];
-  articleData: any;
-  setArticleData: React.Dispatch<React.SetStateAction<any>>;
+  articleData: string;
+  setArticleData: React.Dispatch<React.SetStateAction<string>>;
   images: Array<{ revised_prompt: string; url: string }>;
   setImages: React.Dispatch<React.SetStateAction<Array<{ revised_prompt: string; url: string }>>>;
 }
@@ -87,6 +87,7 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
       article_length: 500,
     };
 
+    setArticleData("");
     setIsArticlePending(true);
     axios
       .post("/ai/api/v1/wizard/generate", data)
@@ -95,17 +96,20 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
           data: { data },
         } = response;
         const articleId = data;
-        const eventSource = new EventSource(`${API_URL}/ai/api/v1/chat-template/generate/stream/${articleId}`);
-        var content = "";
+        const eventSource = new EventSource(`${API_URL}/ai/api/v1/wizard/generate/stream/${articleId}`);
         eventSource.onerror = (event) => {
           eventSource.close();
         };
+        setCurrentStep(4);
         eventSource.onmessage = (event) => {
-          const data = event.data;
-          content += data;
-          setArticleData(content);
+          const data: string = event.data;
+          console.log(data);
+          setArticleData((prevData) => {
+            const newData = prevData + data;
+            console.log(newData);
+            return newData;
+          });
         };
-        setCurrentStep(4)
       })
       .catch((err) => {
         toast.error(err.response.data.message || err.message);
@@ -231,7 +235,6 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
               </div>
             </div>
           )}
-          {articleData}
         </div>
       </div>
     </Motion>

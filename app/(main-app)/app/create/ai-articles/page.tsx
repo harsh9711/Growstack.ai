@@ -20,10 +20,7 @@ export default function AiArticles() {
   const [articleTitle, setArticleTitle] = useState<string>("");
   const [outlines, setOutlines] = useState<IOutline[]>([]);
   const [images, setImages] = useState<Array<{ revised_prompt: string; url: string }>>([]);
-  const [articleData, setArticleDate] = useState<any>();
-
-  console.log(images);
-
+  const [articleData, setArticleData] = useState<string>("");
 
   const renderComponent = () => {
     switch (currentStep) {
@@ -83,9 +80,9 @@ export default function AiArticles() {
             currentStep={currentStep}
             setCurrentStep={setCurrentStep}
             talkingPoints={talkingPoints}
-            setArticleData={setArticleDate}
-            images={images}
             articleData={articleData}
+            setArticleData={setArticleData}
+            images={images}
             setImages={setImages}
           />
         );

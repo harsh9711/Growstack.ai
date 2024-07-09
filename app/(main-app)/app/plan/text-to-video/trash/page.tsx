@@ -3,9 +3,12 @@
 import Motion from "@/components/Motion";
 import { Info } from "lucide-react";
 import Image from "next/image";
-import { Fragment, useState } from "react";
-import { ai_video_templates } from "../components/data/templates";
+import { Fragment, useEffect, useState } from "react";
 import VideoTemplateCard from "../components/VideoTemplateCard";
+import { Template } from "../components/types";
+import { API_URL } from "@/lib/api";
+import axios from "axios";
+import TemplateLoader from "../components/TemplateLoader";
 
 export default function TrashPage() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
@@ -61,12 +64,31 @@ export default function TrashPage() {
 }
 
 const VideosComponent = () => {
+  const [templates, setTemplates] = useState<Template[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const url = `${API_URL}/ai/api/v1/video/templates`;
+        console.log("Fetching data from:", url); // Log the constructed URL for debugging
+        const response = await axios.get<{ data: { templates: Template[] } }>(url);
+        console.log("Response data:", response.data.data.templates); // Log the response data
+        setTemplates(response.data.data.templates);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
       <div className="grid grid-cols-4 gap-5 mt-8">
-        {ai_video_templates.slice(0, 3).map((data, index) => (
-          <VideoTemplateCard {...data} key={index} />
-        ))}
+        {!templates
+          ? Array(10)
+              .fill(null)
+              .map((_, index) => <TemplateLoader key={index} />)
+          : templates.map((template) => <VideoTemplateCard key={template.id} {...template} />)}
       </div>
     </Motion>
   );

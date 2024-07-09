@@ -68,9 +68,9 @@ const AssistantsChats: React.FC<PageProps> = ({ params: { assistant_id } }: Page
   return (
     <div className="flex-1 flex flex-col h-full w-full">
       <div className="flex-1 flex h-full !bg-white shadow-box mt-8 border">
-        <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} assistant_id={assistant_id}/>
+        <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} assistant_id={assistant_id} />
         <div className="flex-1 flex flex-col h-[82.7vh]">
-          <Topbar assistant={assistantData!} isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+          <Topbar conversation={assistantConversation} assistant={assistantData!} isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
           <ChatSection conversation={assistantConversation} assistant={assistantData} />
         </div>
       </div>

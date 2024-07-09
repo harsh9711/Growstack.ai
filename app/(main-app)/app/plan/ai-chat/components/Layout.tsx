@@ -29,8 +29,8 @@ interface SidebarItem {
 }
 
 type Message = {
-  message: string;
-  isUser: boolean;
+  prompt: string;
+  response: string;
 };
 
 const groupByDate = (items: SidebarItem[]) => {
@@ -59,8 +59,7 @@ const Layout: React.FC = () => {
       const chatData = response.data.data.chats;
       const messages = chatData.reduce((acc: Message[], chats: any) => {
         const flattenedThreads = chats.thread.flatMap((thread: any) => [
-          { message: thread.user_prompt, isUser: true },
-          { message: thread.response, isUser: false },
+          { prompt: thread.user_prompt, response: thread.response },
         ]);
         return acc.concat(flattenedThreads);
       }, []);
@@ -121,15 +120,21 @@ const Layout: React.FC = () => {
     }
   };
 
-  const handleSend = (message: string, isUser: boolean = true,id:string | null) => {
-    setMessages(prevMessages => {
-      if (!isUser && prevMessages.length > 0 && !prevMessages[prevMessages.length - 1].isUser) {
+  const addMessage = (prompt: string, response: string) => {
+    setMessages((prevMessages) => [...prevMessages, {prompt,response}]);
+  };
+
+  console.log({messages})
+
+  const handleSend = (message: string,response:string,id:string | null) => {
+    setMessages((prevMessages) => {
+      const messageIndex = prevMessages.findIndex((msg) => msg.prompt === message);
+      if (messageIndex !== -1) {
         const updatedMessages = [...prevMessages];
-        updatedMessages[updatedMessages.length - 1].message = message;
+        updatedMessages[messageIndex].response = response;
         return updatedMessages;
-      } else {
-        return [...prevMessages, { message, isUser }];
       }
+      return prevMessages;
     });
     id && setSelectedConversation(id);
   };
@@ -225,11 +230,9 @@ const Layout: React.FC = () => {
       </aside>
       <main className="flex-1 w-full flex flex-col bg-white p-4 rounded-3xl border">
         <div className="flex-1 p-4 overflow-y-auto">
-          {messages.map((message, idx) => (
-            <ChatMessage key={idx} message={message.message} isUser={message.isUser}/>
-          ))}
+            <ChatMessage conversation={messages}/>
         </div>
-        {showNewChatInput && <ChatInput onSend={handleSend} selectedModel={selectedModel} fetchConversations={fetchConversations} selectedConversation={selectedConversation} selectedOption={selectedOption}/>}
+        {showNewChatInput && <ChatInput onSend={handleSend} selectedModel={selectedModel} fetchConversations={fetchConversations} selectedConversation={selectedConversation} selectedOption={selectedOption} addMessage={addMessage}/>}
       </main>
     </div>
   );

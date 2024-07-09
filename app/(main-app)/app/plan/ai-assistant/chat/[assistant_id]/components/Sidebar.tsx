@@ -65,7 +65,7 @@ export default function Sidebar({ isOpen, onClose, assistant_id }: IProps) {
 
   return (
     <div className={clsx("w-[400px] border-r overflow-hidden transition-all duration-500 opacity-100", !isOpen && "!w-0 !opacity-0")}>
-      <div className="border-b py-[18px] px-8">
+      <div className="border-b py-[20px] px-8">
         <h1 className="text-xl font-semibold whitespace-nowrap">Chat with our AI team</h1>
         <p className="text-primary-black text-opacity-50 mt-1 whitespace-nowrap">AI professionals</p>
       </div>

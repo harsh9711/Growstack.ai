@@ -91,7 +91,7 @@ export default function Home() {
             model agnostic
           </h1>
           <p className="max-w-2xl leading-loose text-center">
-            Our sales success platform integrates with your sales team’s workflow. So, every sales rep is equipped to convert pipeline more effectively.
+            Our sales success platform integrates with your sales team's workflow. So, every sales rep is equipped to convert pipeline more effectively.
           </p>
           <div className="grid grid-cols-7 gap-4 w-full max-w-[1460px] mx-auto">
             <div className="bg-white border border-[#F0F0F0] rounded-2xl p-7 w-full flex justify-center items-center hover:shadow-2xl hover:shadow-gray-300 transition-all duration-300 cursor-pointer">
