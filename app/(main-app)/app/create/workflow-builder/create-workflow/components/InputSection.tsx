@@ -5,7 +5,12 @@ import React, { Fragment, useState } from "react";
 import AddInput from "./layout/AddInput";
 import ProvidersDrawer from "./ProvidersDrawer";
 
-export default function InputSection() {
+interface InputSectionProps {
+  inputConfig: any[];
+  setInputConfigs: (params: any) => void;
+}
+
+export default function InputSection({ inputConfig, setInputConfigs }: InputSectionProps) {
   const [addNewInput, setAddNewInput] = useState(false);
 
   return (
@@ -19,8 +24,8 @@ export default function InputSection() {
           <span className="text-primary-black text-opacity-50 text-sm">Configure and test the input data</span>
         </div>
       </div>
-      {addNewInput ? (
-        <AddInput setAddNewInput={setAddNewInput}/>
+        {addNewInput || inputConfig.length ? (
+        <AddInput setAddNewInput={setAddNewInput} inputConfig={inputConfig} setInputConfigs={setInputConfigs}/>
       ) : (
         <Fragment>
           <div className="mt-8 space-y-3">

@@ -34,7 +34,7 @@ export const tools: Tool[] = [
         },
         {
           input_type:"TEXT_AREA",
-          input_label:"Instruction",
+          input_label:"instruction",
           input_default_value:"Tell me a joke about AI",
           input_values:""
         }
