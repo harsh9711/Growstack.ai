@@ -184,9 +184,9 @@ const [showTable, setShowTable] = useState(false); // State to control table vis
                     <SelectTrigger className="w-full border-none">
                         <span className="relative">
                           <SelectValue
-                            value={formData.country}
-                            onChange={handleChange}
-                            name="country"
+                            // value={}
+                            // onChange={handleChange}
+                            // name="country"
                             placeholder="Country"
                           />
                         </span>
