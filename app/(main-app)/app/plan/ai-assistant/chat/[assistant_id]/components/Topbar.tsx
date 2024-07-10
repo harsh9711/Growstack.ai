@@ -1,17 +1,26 @@
 import { aiModelOptions } from "@/app/(main-app)/app/create/ai-articles/constants/options";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import clsx from "clsx";
-import { Settings, Share2, UserCircle } from "lucide-react";
+import { Download, Settings, Share2, UserCircle } from "lucide-react";
 import { useState } from "react";
-import { Assistant } from "../../../components/types";
+import { Assistant, Chat, Conversation } from "../../../components/types";
+import { downloadDocx, downloadPdf, downloadTxt } from "./utils/downloadHelpers";
 
-export default function Topbar({ assistant }: { assistant: Assistant }) {
+interface IProps {
+  assistant: Assistant;
+  isSidebarOpen: boolean;
+  setIsSidebarOpen: (isSidebarOpen: boolean) => void;
+  conversation: Conversation;
+}
+
+export default function Topbar({ assistant, conversation, isSidebarOpen, setIsSidebarOpen }: IProps) {
   const [selectedAiModel, setSelectedAiModel] = useState(aiModelOptions[0].value);
+
   return (
-    <div className="border-b px-10 py-6">
+    <div className="border-b px-10 py-5">
       <div className="flex justify-between">
         <div className="flex items-center gap-4">
-          {/* <Image src={assistant.avatar} alt="" width={50} height={50} className="rounded-xl object-cover shadow-xl" /> */}
           <img src={assistant.avatar} alt="" width={50} height={50} className="rounded-xl object-cover shadow-xl" />
           <div>
             <h2 className="text-xl font-semibold">{assistant.name}</h2>
@@ -24,12 +33,33 @@ export default function Topbar({ assistant }: { assistant: Assistant }) {
           <div className="bg-primary-green/10 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
             <Share2 />
           </div>
-          <div className="bg-primary-green/10 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
+          <div
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="bg-primary-green/10 hover:text-white hover:bg-primary-green transition-all duration-300 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
             <UserCircle />
           </div>
-          <div className="bg-primary-green/10 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
-            <Settings />
-          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <div className="bg-primary-green/10 hover:text-white hover:bg-primary-green transition-all duration-300 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
+                <Settings />
+              </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem className="flex items-center gap-2" onClick={() => downloadTxt(conversation.chats)}>
+                <Download size={18} />
+                Download chat (.txt)
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center gap-2" onClick={() => downloadPdf(conversation.chats)}>
+                <Download size={18} />
+                Download chat (.pdf)
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex items-center gap-2" onClick={() => downloadDocx(conversation.chats)}>
+                <Download size={18} />
+                Download chat (.docx)
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           <Select value={selectedAiModel} onValueChange={setSelectedAiModel}>
             <SelectTrigger className="min-w-[200px] h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4">
               <SelectValue placeholder="Select an option" />

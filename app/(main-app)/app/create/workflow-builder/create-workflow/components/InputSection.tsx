@@ -12,15 +12,15 @@ export default function InputSection() {
     <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
       <div className="flex items-center gap-4 border-b border-[#bbbbbb6b] border-dashed pb-8">
         <div className="bg-primary-green p-4 rounded-lg">
-          <InputIcon2 className="text-white" />
-        </div>
-        <div>
+            <InputIcon2 className="text-white" />
+          </div>
+          <div>
           <h2 className="text-xl font-medium">Input</h2>
           <span className="text-primary-black text-opacity-50 text-sm">Configure and test the input data</span>
         </div>
       </div>
       {addNewInput ? (
-        <AddInput />
+        <AddInput setAddNewInput={setAddNewInput}/>
       ) : (
         <Fragment>
           <div className="mt-8 space-y-3">

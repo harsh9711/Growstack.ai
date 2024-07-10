@@ -3,14 +3,22 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Code, Copy, Database, HelpCircle, History, Play, Send } from "lucide-react";
 import Link from "next/link";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import WorkFlowBuilderComponent from "./components/WorkFlowBuilderComponent";
+import { useSearchParams } from "next/navigation";
 
 export default function CreateWorkflowPage() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
+  const [workflowId, setWorkflowId] = useState("");
   const tabs = ["Editor", "Versions", "Settings"];
-
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    const id = searchParams.get("workflow_id");
+    if (id) {
+      setWorkflowId(id);
+    }
+  }, [searchParams]);
   return (
     <Fragment>
       <main className="flex-1 flex flex-col h-full w-full">
@@ -29,7 +37,7 @@ export default function CreateWorkflowPage() {
             <div className="space-y-2">
               <h1 className="text-xl font-semibold">New workflow</h1>
               <p className="text-primary-black text-opacity-50 flex items-center gap-6 text-sm">
-                wkf_VzfU33gpxzoNGU
+                {workflowId}
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>

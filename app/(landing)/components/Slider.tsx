@@ -18,7 +18,7 @@ export default function Slider() {
       <div className="relative flex px-3 md:px-4 w-full">
         <Swiper
           modules={[Navigation, Scrollbar, A11y]}
-          spaceBetween={20}
+          spaceBetween={800}
           loop={true}
           className="w-full"
           breakpoints={{
@@ -33,116 +33,144 @@ export default function Slider() {
             nextEl: ".button-next-slide",
             prevEl: ".button-prev-slide",
           }}
-          pagination={{ clickable: true }}>
+          pagination={{ clickable: true }}
+        >
           <SwiperSlide className="cursor-grab active:cursor-grabbing">
-            <div className="w-full flex items-center gap-10 bg-[#EED7A1] px-16 pt-10 pb-16 rounded-3xl">
-              <div className="w-full relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[20px] before:right-[20px] before:rounded-xl">
-                <Image src="/assets/full-dashboard-preview.png" alt="" width={700} height={700} className="!rounded-xl shadow-box relative z-[1]" />
+            <div className="w-[1400px] flex items-center gap-10 bg-[#E8FBE1] px-16 pt-10 pb-16 rounded-3xl">
+              <div className="w-full relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[40px] before:right-[20px] -translate-y-10 before:rounded-xl">
+                <Image src="/assets/full-dashboard-preview.png" alt="" width={1400} height={900} className="!rounded-xl shadow-box relative z-[1]" />
               </div>
-              <div className="space-y-5 w-3/4">
-                <h1 className="leading-relaxed text-[34px] max-w-md font-semibold !mt-2">Create posts & content</h1>
-                <p className="w-full max-w-lg leading-loose">
-                  Lorem ipsum dolor sit amet consectetur. Enim feugiat scelerisque ullamcorper dictumst aliquet lectus sed.
-                </p>
-                <button className="bg-transparent border border-primary-green hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
-                  Learn More{" "}
-                </button>
+              <div className="space-y-4 w-full pt-1">
+                <h1 className="leading-relaxed text-[34px] w-full font-semibold !mt-2">Seamlessly Publish Across Platforms</h1>
+                <p className="w-full max-w-lg leading-loose font-semibold">
+                Schedule and publish content to reach your audience at the right time.                </p>
+                <div className="bg-transparent transition duration-500 text-primary-green rounded-xl font-semibold flex flex-col items-start ">
+                  <h2 className="text-[18px]">Features</h2>
+                  <ul className="space-y-4 !mt-5">
+                    <li className="flex gap-x-2 items-center font-semibold">
+                      <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                      Scheduler                    </li>
+                    <li className="flex gap-x-2 items-center font-semibold">
+                      <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                      Quick Posting                    </li>
+                    <li className="flex gap-x-2 items-center font-semibold">
+                      <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                      Multi-Posting                    </li>
+                    <li className="flex gap-x-2 items-center font-semibold">
+                      <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                      Settings                      </li>
+                    <li className="flex gap-x-2 items-center font-semibold">
+                      <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                      Posting Logs                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </SwiperSlide>
           <SwiperSlide className="cursor-grab active:cursor-grabbing">
-            <div className="w-full flex items-center gap-10 bg-[#CD8B62] px-16 pt-10 pb-16 rounded-3xl">
-              <div className="w-full relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[20px] before:right-[20px] before:rounded-xl">
-                <Image src="/assets/full-dashboard-preview.png" alt="" width={700} height={700} className="!rounded-xl shadow-box relative z-[1]" />
+            <div className="w-[1400px] flex items-center gap-10 bg-[#ECE3FC] px-16 pt-20 pb-24 rounded-3xl">
+              <div className="w-full relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[40px] before:right-[20px] -translate-y-10 before:rounded-xl">
+                <Image src="/assets/full-dashboard-preview.png" alt="" width={1600} height={900} className="!rounded-xl shadow-box relative z-[1]" />
               </div>
-              <div className="space-y-5 w-3/4">
-                <h1 className="leading-relaxed text-[34px] max-w-md font-semibold !mt-2">Create posts & content</h1>
-                <p className="w-full max-w-lg leading-loose">
-                  Lorem ipsum dolor sit amet consectetur. Enim feugiat scelerisque ullamcorper dictumst aliquet lectus sed.
-                </p>
-                <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
-                  Learn More{" "}
-                </button>
-              </div>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide className="cursor-grab active:cursor-grabbing">
-            <div className="w-full flex items-center gap-10 bg-[#C6BC94] px-16 pt-10 pb-16 rounded-3xl">
-              <div className="w-full relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[20px] before:right-[20px] before:rounded-xl">
-                <Image src="/assets/full-dashboard-preview.png" alt="" width={700} height={700} className="!rounded-xl shadow-box relative z-[1]" />
-              </div>
-              <div className="space-y-5 w-3/4">
-                <h1 className="leading-relaxed text-[34px] max-w-md font-semibold !mt-2">Create posts & content</h1>
-                <p className="w-full max-w-lg leading-loose">
-                  Lorem ipsum dolor sit amet consectetur. Enim feugiat scelerisque ullamcorper dictumst aliquet lectus sed.
-                </p>
-                <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
-                  Learn More{" "}
-                </button>
+              <div className="space-y-4 w-full pt-1">
+                <h1 className="leading-relaxed text-[34px] w-[500px] font-semibold !mt-2">Engage Your Audience Effectively</h1>
+                <p className="w-full max-w-lg leading-loose font-semibold">
+                Foster meaningful interactions with your community.               </p>
+                <div className="bg-transparent transition duration-500 text-primary-green rounded-xl font-semibold flex flex-col items-start ">
+                  <h2 className="text-[18px]">Features</h2>
+                  <ul className="space-y-4 !mt-5">
+                    <li className="flex gap-x-2 items-center font-semibold">
+                      <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                      Social Media Conversation Hub                    </li>
+                  
+                  </ul>
+                </div>
               </div>
             </div>
           </SwiperSlide>
           <SwiperSlide className="cursor-grab active:cursor-grabbing">
-            <div className="w-full flex items-center gap-10 bg-[#FAE8F1] px-16 pt-10 pb-16 rounded-3xl">
-              <div className="w-full relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[20px] before:right-[20px] before:rounded-xl">
-                <Image src="/assets/full-dashboard-preview.png" alt="" width={700} height={700} className="!rounded-xl shadow-box relative z-[1]" />
+            <div className="w-[1400px] flex items-center gap-10 bg-[#CD8B62] px-16 pt-10 pb-16 rounded-3xl">
+              <div className="w-full relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[40px] before:right-[20px] -translate-y-10 before:rounded-xl">
+                <Image src="/assets/full-dashboard-preview.png" alt="" width={900} height={900} className="!rounded-xl shadow-box relative z-[1]" />
               </div>
-              <div className="space-y-5 w-3/4">
-                <h1 className="leading-relaxed text-[34px] max-w-md font-semibold !mt-2">Create posts & content</h1>
-                <p className="w-full max-w-lg leading-loose">
-                  Lorem ipsum dolor sit amet consectetur. Enim feugiat scelerisque ullamcorper dictumst aliquet lectus sed.
+              <div className="space-y-4 w-full pt-1">
+                <h1 className="leading-relaxed text-[34px] w-full font-semibold !mt-2">Strategize Your Marketing Campaigns</h1>
+                <p className="w-full max-w-lg leading-loose font-semibold">
+                  Develop and refine your marketing strategies with AI-powered planning tools.
                 </p>
-                <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
-                  Learn More{" "}
-                </button>
+                <div className="bg-transparent transition duration-500 text-primary-green rounded-xl font-semibold flex flex-col items-start ">
+                  <h2 className="text-[18px]">Features</h2>
+                  <ul className="space-y-4 !mt-5">
+                    <li className="flex gap-x-2 items-center font-semibold">
+                      <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                      AI Chat
+                    </li>
+                    <li className="flex gap-x-2 items-center font-semibold">
+                      <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                      AI Apps
+                    </li>
+                    <li className="flex gap-x-2 items-center font-semibold">
+                      <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                      AI Assistant
+                    </li>
+                    <li className="flex gap-x-2 items-center font-semibold">
+                      <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                      AI Custom GPT
+                    </li>
+                    <li className="flex gap-x-2 items-center font-semibold">
+                      <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                      Text to Video
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </SwiperSlide>
           <SwiperSlide className="cursor-grab active:cursor-grabbing">
-            <div className="w-full flex items-center gap-10 bg-[#9AEEE7] px-16 pt-10 pb-16 rounded-3xl">
-              <div className="w-full relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[20px] before:right-[20px] before:rounded-xl">
-                <Image src="/assets/full-dashboard-preview.png" alt="" width={700} height={700} className="!rounded-xl shadow-box relative z-[1]" />
+            <div className="w-[1400px] flex items-center gap-10 bg-[#C6BC94] px-16 pt-24 pb-20 rounded-3xl">
+              <div className="w-full relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[40px] before:right-[20px] -translate-y-10 before:rounded-xl">
+                <Image src="/assets/full-dashboard-preview.png" alt="" width={2000} height={1400} className="!rounded-xl w-full h-full shadow-box relative z-[1]" />
               </div>
-              <div className="space-y-5 w-3/4">
-                <h1 className="leading-relaxed text-[34px] max-w-md font-semibold !mt-2">Create posts & content</h1>
-                <p className="w-full max-w-lg leading-loose">
-                  Lorem ipsum dolor sit amet consectetur. Enim feugiat scelerisque ullamcorper dictumst aliquet lectus sed.
-                </p>
-                <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
-                  Learn More{" "}
-                </button>
-              </div>
-            </div>
-          </SwiperSlide>
-          <SwiperSlide className="cursor-grab active:cursor-grabbing">
-            <div className="w-full flex items-center gap-10 bg-[#C1B1E4] px-16 pt-10 pb-16 rounded-3xl">
-              <div className="w-full relative before:absolute before:border before:border-primary-green before:w-full before:h-full before:top-[20px] before:right-[20px] before:rounded-xl">
-                <Image src="/assets/full-dashboard-preview.png" alt="" width={700} height={700} className="!rounded-xl shadow-box relative z-[1]" />
-              </div>
-              <div className="space-y-5 w-3/4">
-                <h1 className="leading-relaxed text-[34px] max-w-md font-semibold !mt-2">Create posts & content</h1>
-                <p className="w-full max-w-lg leading-loose">
-                  Lorem ipsum dolor sit amet consectetur. Enim feugiat scelerisque ullamcorper dictumst aliquet lectus sed.
-                </p>
-                <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-9 py-4 rounded-xl font-semibold flex items-center gap-2">
-                  Learn More{" "}
-                </button>
+              <div className="space-y-4 w-full pt-1">
+                <h1 className="leading-relaxed text-[34px] w-full font-semibold !mt-2">Effortlessly Create Posts 
+                & Content</h1>
+                <p className="w-full max-w-lg leading-loose font-semibold">
+                Develop engaging posts and multimedia content with ease.                </p>
+                <div className="bg-transparent transition duration-500 text-primary-green rounded-xl font-semibold flex flex-col items-start ">
+                  <h2 className="text-[18px]">Features</h2>
+                  <ul className="space-y-4 !mt-5">
+                    <li className="flex gap-x-2 items-center font-semibold">
+                      <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                      AI Website Builder                   </li>
+                    <li className="flex gap-x-2 items-center font-semibold">
+                      <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                      AI Email Builder                     </li>
+                    <li className="flex gap-x-2 items-center font-semibold">
+                      <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                      AI Workflow Builder                 </li>
+                    <li className="flex gap-x-2 items-center font-semibold">
+                      <Image src="/icons/check.svg" alt="" width={20} height={20} className="h-[14px] w-[14px] sm:w-[20px] sm:h-[20px]" />
+                      AI Article Wizard                  </li>
+                    
+                  </ul>
+                </div>
               </div>
             </div>
           </SwiperSlide>
         </Swiper>
-      </div>
-      <div className="flex justify-center gap-5 mt-6 relative">
-        <button className="button-prev-slide rounded-full p-4 text-primary-green bg-primary-light-gray hover:bg-primary-green hover:text-white transition-all duration-400">
-          <ArrowLeft />
-        </button>
-        <button className="button-next-slide rounded-full p-4 text-primary-green bg-primary-light-gray hover:bg-primary-green hover:text-white transition-all duration-400">
-          <ArrowRight />
-        </button>
+        <div className="absolute hidden md:flex items-center gap-x-5 lg:gap-x-10 top-1/2 transform -translate-y-1/2 px-4 w-full justify-between">
+          <button className="button-prev-slide hover:bg-[#fff]/20 flex items-center justify-center transition duration-300 rounded-full !p-2 lg:!p-4">
+            <ArrowLeft className="h-5 w-5 lg:h-8 lg:w-8" />
+          </button>
+          <button className="button-next-slide hover:bg-[#fff]/20 flex items-center justify-center transition duration-300 rounded-full !p-2 lg:!p-4">
+            <ArrowRight className="h-5 w-5 lg:h-8 lg:w-8" />
+          </button>
+        </div>
       </div>
     </div>
   );
 }
+
 
 const CategoryTabs = () => {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);

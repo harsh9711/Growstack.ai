@@ -1,46 +1,52 @@
-// TalkingPointsComponent.tsx
-
 import Spinner from "@/components/Spinner";
 import axios from "@/config/axios.config";
 import clsx from "clsx";
 import { AnimatePresence } from "framer-motion";
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import toast from "react-hot-toast";
 import { creativityOptions, languageOptions, povOptions, writingToneOptions } from "../constants/options";
 import AdvancedOptions from "./AdvancedOptions";
 import Motion from "@/components/Motion";
-import { IOutline, ISubtitleTalkingPoints, TKeyword } from "../types";
+import { IOutline, ISubtitleTalkingPoints } from "../types";
 import { Plus, X } from "lucide-react";
-import { Draggable } from "@/components/svgs";
+import { DraggableIcon } from "@/components/svgs";
+import SubtitleList from "./SubtitleList";
+import { Reorder } from "framer-motion";
+import TalkingPointsList from "./TalkingPointList";
 
 interface TalkingPointsComponentProps {
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   selectedOutlines: IOutline;
-  keywords: TKeyword;
-  setKeywords: React.Dispatch<React.SetStateAction<TKeyword>>;
-  title: string;
-  setTitle: React.Dispatch<React.SetStateAction<string>>;
+  setSelectedOutlines: React.Dispatch<React.SetStateAction<IOutline>>;
+  keywords: string[];
+  setKeywords: React.Dispatch<React.SetStateAction<string[]>>;
   talkingPoints: ISubtitleTalkingPoints[];
   setTalkingPoints: React.Dispatch<React.SetStateAction<ISubtitleTalkingPoints[]>>;
+  articleTitle: string;
+  setArticleTitle: React.Dispatch<React.SetStateAction<string>>;
+  keywordInputValue: string;
+  setKeywordInputValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
   currentStep,
   setCurrentStep,
   selectedOutlines,
+  setSelectedOutlines,
   keywords,
   setKeywords,
-  setTitle,
-  title,
   talkingPoints,
   setTalkingPoints,
+  articleTitle,
+  setArticleTitle,
+  keywordInputValue,
+  setKeywordInputValue,
 }) => {
   const [isPending, setIsPending] = useState(false);
 
   const [showAdvanced, setShowAdvanced] = useState<boolean>(false);
 
-  const [keywordsInput, setKeywordsInput] = useState<string>("");
   const [numTalkingPoints, setNumTalkingPoints] = useState<number>(3);
   const [numTalkingPointsWords, setNumTalkingPointsWords] = useState<number>(10);
 
@@ -52,8 +58,9 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
 
   const generateTalkingPoints = () => {
     const data = {
-      title: title,
+      title: articleTitle,
       keywords: keywords,
+      subtitles: selectedOutlines.subtitles.map((subtitle) => subtitle),
       no_of_talking_point_per_outline: numTalkingPoints,
       max_takling_point_words: numTalkingPointsWords,
       model: aiModel,
@@ -62,22 +69,67 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
       langauge: language,
     };
 
-    setTalkingPoints([] as any);
+    setTalkingPoints([]);
     setIsPending(true);
     axios
       .post("/ai/api/v1/wizard/talking-points", data)
       .then(({ data: { data } }) => {
         setTalkingPoints(data.subtitles_talking_points);
       })
-      .catch((error) => {
-        toast.error("Failed to generate Talking Points. Please try again.");
-        console.error("Error generating Talking Points:", error);
+      .catch((err) => {
+        if (err.response) {
+          toast.error(err.response.data.message);
+        } else {
+          toast.error(err.message);
+        }
+        console.log(err);
       })
       .finally(() => setIsPending(false));
   };
 
+  const handleKeywordInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setKeywordInputValue(value);
+    const splitKeywords = value
+      .split(",")
+      .map((kw) => kw.trim())
+      .filter((kw) => kw);
+    setKeywords(splitKeywords);
+  };
+
   const toggleAdvancedOptions = () => {
     setShowAdvanced((prev) => !prev);
+  };
+
+  const handleReorder = (subtitles: string[]) => {
+    setSelectedOutlines({ ...selectedOutlines, subtitles });
+  };
+
+  const handleRemove = (index: number) => {
+    const updatedSubtitles = selectedOutlines.subtitles.filter((_, i) => i !== index);
+    setSelectedOutlines({ ...selectedOutlines, subtitles: updatedSubtitles });
+  };
+
+  const handleTalkingPointsReorder = (newOrder: ISubtitleTalkingPoints[]) => {
+    setTalkingPoints(newOrder);
+  };
+
+  const handleTalkingPointsRemove = (indexToRemove: number) => {
+    setTalkingPoints((prev) => prev.filter((_, index) => index !== indexToRemove));
+  };
+
+  const [showInput, setShowInput] = useState(false);
+  const [newSubtitleName, setNewSubtitleName] = useState("");
+
+  const addNewSection = () => {
+    if (newSubtitleName.trim() === "") {
+      return;
+    }
+
+    const updatedSubtitles = [...selectedOutlines.subtitles, newSubtitleName.trim()];
+    handleReorder(updatedSubtitles);
+    setNewSubtitleName("");
+    setShowInput(false);
   };
 
   return (
@@ -94,8 +146,8 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
             <input
               type="text"
               id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              value={articleTitle}
+              onChange={(e) => setArticleTitle(e.target.value)}
               placeholder="Enter the title"
               className="flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2"
             />
@@ -107,30 +159,41 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
             <input
               type="text"
               id="keywords"
-              value={keywords}
-              onChange={(e) => setKeywordsInput(e.target.value)}
+              value={keywordInputValue}
+              onChange={handleKeywordInputChange}
               placeholder="Enter keywords separated by commas"
               className="flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2"
             />
           </div>
           <div className="space-y-1.5">
             <label className="font-medium">Article outline</label>
-            {selectedOutlines.subtitles.length > 0 && (
-              <ul className="mt-4 space-y-4">
-                {selectedOutlines.subtitles.map((subtitle, index) => (
-                  <li key={index} className="flex items-center gap-4">
-                    <Draggable className="cursor-grab active:cursor-grabbing w-full max-w-fit" />
-                    <div className="w-full bg-[#F5F5F5] p-3 rounded-lg">{subtitle}</div>
-                    <X size={25} className="text-primary-green cursor-pointer" />
-                  </li>
-                ))}
-              </ul>
-            )}
-            <div className="flex justify-end">
-              <button className="text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 p-1.5 rounded-lg text-sm items-center font-medium transition-all duration-300 mt-3">
-                <Plus size={18} className="text-primary-green" />
-                Add new section
-              </button>
+            {selectedOutlines.subtitles.length > 0 && <SubtitleList subtitles={selectedOutlines.subtitles} onReorder={handleReorder} onRemove={handleRemove} />}
+            <div className="flex flex-col justify-end">
+              {!showInput && (
+                <button
+                  onClick={() => setShowInput(true)}
+                  className="self-end text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 p-1.5 rounded-lg text-sm items-center font-medium transition-all duration-300 mt-3">
+                  <Plus size={18} className="text-primary-green" />
+                  Add new section
+                </button>
+              )}
+              {showInput && (
+                <div className="pl-6 pr-9 mt-2.5 flex flex-col">
+                  <input
+                    type="text"
+                    className="flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2"
+                    placeholder="Enter new section title"
+                    value={newSubtitleName}
+                    onChange={(e) => setNewSubtitleName(e.target.value)}
+                  />
+                  <button
+                    onClick={addNewSection}
+                    className="self-end text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 p-1.5 rounded-lg text-sm items-center font-medium transition-all duration-300 mt-3">
+                    <Plus size={18} className="text-primary-green" />
+                    Confirm
+                  </button>
+                </div>
+              )}
             </div>
           </div>
           <div className="space-y-1.5">
@@ -202,34 +265,11 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
           )}
           {talkingPoints.length > 0 && (
             <div className="">
-              <ul className="mt-4 px-10 py-12 bg-white border rounded-3xl space-y-10">
-                {talkingPoints.map((item: any, index: number) => (
-                  <li key={index} className="flex flex-col gap-4">
-                    <div className="flex items-start gap-4">
-                      <Draggable className="cursor-grab active:cursor-grabbing mt-3 w-full max-w-fit" />
-                      <div className="w-full space-y-8">
-                        <h1 className="w-full bg-[#F5F5F5] p-3 rounded-lg">{item.subtitle_name}</h1>
-                        <div className="space-y-4">
-                          {item.talking_points.map((point: any, index: number) => (
-                            <div key={index}>
-                              <div className="w-full bg-[#F5F5F5] p-3 rounded-lg" key={index}>
-                                {point}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                      <X size={25} className="text-primary-green cursor-pointer mt-3" />
-                    </div>
-                    <div className="flex justify-end pr-10">
-                      <button className="text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 p-2 rounded-lg text-sm items-center font-medium transition-all duration-300">
-                        <Plus size={18} className="text-primary-green" />
-                        Add new talking points
-                      </button>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+              <TalkingPointsList
+                handleTalkingPointsRemove={handleTalkingPointsRemove}
+                handleTalkingPointsReorder={handleTalkingPointsReorder}
+                talkingPoints={talkingPoints}
+              />
               <div className="flex justify-end">
                 <button onClick={() => setCurrentStep(3)} className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px]">
                   Next step

@@ -2,9 +2,10 @@
 import { useState, useEffect, Fragment } from "react";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import AssistantCard from "./components/AssistantCard";
-import axios from "axios";
+import axios from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { Assistant } from "./components/types";
+import toast from "react-hot-toast";
 
 export default function AiAssistants() {
   const [assistants, setAssistants] = useState<Assistant[]>([]);
@@ -15,13 +16,14 @@ export default function AiAssistants() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const url = `${API_URL}/ai/api/v1/assistant?role=${selectedRole}`;
-        console.log("Fetching data from:", url); // Log the constructed URL for debugging
-        const response = await axios.get(url);
-        console.log("Response data:", response.data); // Log the response data
+        const response = await axios.get(`/ai/api/v1/assistant?role=${selectedRole}`);
         setAssistants(response.data.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
+      } catch (error: any) {
+        if (error.response) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error(error.message);
+        }
       } finally {
         setLoading(false);
       }

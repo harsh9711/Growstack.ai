@@ -8,9 +8,11 @@ import { TbTemplate } from "react-icons/tb";
 import GenerateVideoDialog from "./GenerateVideoDialog";
 import PptDialog from "./PptDialog";
 import VideoTemplateCard from "./VideoTemplateCard";
-import { ai_video_templates } from "./data/templates";
+import { Template } from "./types";
+import Link from "next/link";
+import TemplateLoader from "./TemplateLoader";
 
-const CreateVideoDialog = () => {
+const CreateVideoDialog = ({ templates }: { templates: Array<Template> | null }) => {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [selectedOrientationIndex, setSelectedOrientationIndex] = useState(0);
 
@@ -28,7 +30,7 @@ const CreateVideoDialog = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
+        <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2">
           <Plus size={20} />
           Create new video
         </button>
@@ -38,13 +40,15 @@ const CreateVideoDialog = () => {
           <section className="w-full pt-8 pb-4 px-10 bg-white space-y-6 border-b border-primary-light-gray">
             <h1 className="text-2xl font-semibold">Create a new video</h1>
             <div className="flex gap-8 w-full">
-              <div className="w-full hover-card flex items-center justify-between transition duration-500 ring-1 ring-[#E7E7E7] p-6 rounded-2xl cursor-pointer group">
-                <div className="space-y-3">
-                  <h1 className="text-[18px] font-semibold">Blank Video</h1>
-                  <p className="text-primary-neutral">Start from scratch with a blank canvas</p>
+              <Link href="/create/video" className="w-full">
+                <div className="w-full hover-card flex items-center justify-between transition duration-500 ring-1 ring-[#E7E7E7] p-6 rounded-2xl cursor-pointer group">
+                  <div className="space-y-3">
+                    <h1 className="text-[18px] font-semibold">Blank Video</h1>
+                    <p className="text-primary-neutral">Start from scratch with a blank canvas</p>
+                  </div>
+                  <VideoMedia className="text-primary-neutral group-hover:text-primary-green transition duration-300" />
                 </div>
-                <VideoMedia className="text-primary-neutral group-hover:text-primary-green transition duration-300" />
-              </div>
+              </Link>
               <GenerateVideoDialog />
               <PptDialog />
             </div>
@@ -52,7 +56,7 @@ const CreateVideoDialog = () => {
               <div className="w-full flex gap-x-4 items-center">
                 <div className="flex gap-x-2 items-center">
                   <div className="p-2 bg-white rounded-[8px] cursor-pointer hover:shadow transition duration-500">
-                    <TbTemplate size={26} className="text-primary-green" />{" "}
+                    <TbTemplate size={26} className="text-primary-green" />
                   </div>
                   <span className="text-primary-green font-semibold text-lg">Use Template</span>
                   <ChevronRight size={25} className="filter grayscale opacity-60" />
@@ -111,9 +115,11 @@ const CreateVideoDialog = () => {
 
           <main className="flex-1 h-full w-full px-10 pb-10 mx-auto relative overflow-y-auto">
             <section className="grid grid-cols-4 gap-6">
-              {ai_video_templates.map((data, i: number) => (
-                <VideoTemplateCard {...data} key={i} />
-              ))}
+              {!templates
+                ? Array(10)
+                    .fill(null)
+                    .map((_, index) => <TemplateLoader key={index} />)
+                : templates.map((template) => <VideoTemplateCard key={template.id} {...template} />)}
             </section>
           </main>
         </div>

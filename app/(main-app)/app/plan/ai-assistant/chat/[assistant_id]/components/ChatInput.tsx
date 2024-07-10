@@ -4,13 +4,15 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import axios from "@/config/axios.config";
 import { toast } from "react-hot-toast";
+import { API_URL } from "@/lib/api";
 
 interface ChatInputProps {
   assistant_id: string;
   addMessage: (prompt: string, response: string) => void;
+  updateMessage: (prompt: string, response: string) => void;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage }) => {
+const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateMessage }) => {
   const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -25,6 +27,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage }) => {
 
     const user_prompt = input.trim();
     setInput("");
+    addMessage(user_prompt, "");
 
     try {
       const response = await axios.post(`/ai/api/v1/assistant/chat/${assistant_id}`, {
@@ -35,11 +38,25 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage }) => {
       });
 
       const { data } = response;
-      console.log(data)
-      addMessage(user_prompt, data);
+      const chatId = data.data;
+      const eventSource = new EventSource(`${API_URL}/ai/api/v1/assistant/chat/stream/${chatId}`);
+      let content = "";
+
+      eventSource.onerror = (event) => {
+        eventSource.close();
+      };
+
+      eventSource.onmessage = (event) => {
+        const receivedData = event.data;
+        content += receivedData;
+        updateMessage(user_prompt, content);
+      };
     } catch (error: any) {
-      console.error("Error sending prompt:", error);
-      toast.error("Something went wrong sending the prompt.");
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
     }
   };
 

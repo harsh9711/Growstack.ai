@@ -76,11 +76,11 @@ interface ToolCardProps {
   onClick: () => void;
 }
 
-const ToolCard: React.FC<ToolCardProps> = ({ icon, title, description, category, onClick }) => {
+const ToolCard: React.FC<ToolCardProps> = ({ icon, name, description, category, onClick }) => {
   return (
     <div className="border border-[#E4E4E4] p-7 rounded-3xl flex flex-col items-start relative space-y-3 hover:shadow-2xl hover:shadow-gray-200 cursor-pointer transition-all duration-300">
       <Image src={icon} alt="" width={50} height={50} />
-      <h3 className="text-lg font-semibold">{title}</h3>
+      <h3 className="text-lg font-semibold">{name}</h3>
       <p className="text-gray-600 text-[15px] leading-relaxed">{description}</p>
       <span className="mt-auto text-xs px-2 py-1 bg-gray-100 rounded-full absolute top-4 right-6 text-primary-black text-opacity-70">{category}</span>
     </div>

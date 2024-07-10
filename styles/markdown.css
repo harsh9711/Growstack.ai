@@ -1,0 +1,36 @@
+.prose {
+  width: 100%;
+  max-width: none;
+}
+
+.prose h1 {
+  font-size: 30px;
+  line-height: 1.5;
+}
+
+.prose h2 {
+  font-size: 24px;
+}
+
+.prose h3 {
+  font-size: 20px;
+}
+
+.prose h4 {
+  font-size: 18px;
+}
+
+.prose table {
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+}
+
+.prose table td {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+}
+
+.prose table th {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+}

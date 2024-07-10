@@ -1,39 +1,105 @@
 import Motion from "@/components/Motion";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import React from "react";
+import React, { useEffect, useState } from "react";
+interface LongTextInputSectionProps {
+  onParamsChange: (params: ShortTextParams) => void;
+  inputParams: ShortTextParams | {};
+}
 
-export default function LongTextInputSection() {
+interface ShortTextParams {
+  display_name: string;
+  placeholder: string;
+  default_value: string;
+  description: string;
+  required: boolean;
+  variable_name: string;
+}
+
+export default function LongTextInputSection({ onParamsChange, inputParams }: LongTextInputSectionProps) {
+  const [params, setParams] = useState<ShortTextParams>({
+    display_name: (inputParams as ShortTextParams).display_name || "",
+    placeholder: (inputParams as ShortTextParams).placeholder || "",
+    default_value: (inputParams as ShortTextParams).default_value || "",
+    description: (inputParams as ShortTextParams).description || "",
+    required: (inputParams as ShortTextParams).required || false,
+    variable_name: (inputParams as ShortTextParams).variable_name || "",
+  });
+
+  useEffect(() => {
+    onParamsChange(params);
+  }, [params, onParamsChange]);
+
+  const updateParams = (updates: Partial<ShortTextParams>) => {
+    const updatedParams = { ...params, ...updates };
+
+    if (updates.display_name) {
+      updatedParams.variable_name = updates.display_name.toLowerCase().replace(/\s+/g, "_");
+    }
+
+    setParams(updatedParams);
+  };
   return (
     <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
       <div className="space-y-4">
         <div className="space-y-2">
-          <label className="font-medium text-sm">Input label </label>
-          <Input type="text" placeholder="Input label" />
+          <label className="font-medium text-sm">Input label</label>
+          <Input
+            type="text"
+            value={params.display_name}
+            onChange={(e) => updateParams({ display_name: e.target.value })}
+            placeholder="Input label"
+          />
         </div>
         <div className="space-y-2">
-          <label className="font-medium text-sm">Placeholder </label>
-          <Input type="text" placeholder="None" />
+          <label className="font-medium text-sm">Placeholder</label>
+          <Input
+            type="text"
+            value={params.placeholder}
+            onChange={(e) => updateParams({ placeholder: e.target.value })}
+            placeholder="None"
+          />
         </div>
         <div className="space-y-2">
-          <label className="font-medium text-sm">Default value </label>
-          <Input type="text" placeholder="None" />
+          <label className="font-medium text-sm">Default value</label>
+          <Input
+            type="text"
+            value={params.default_value}
+            onChange={(e) => updateParams({ default_value: e.target.value })}
+            placeholder="None"
+          />
         </div>
         <div className="space-y-2">
           <label className="font-medium flex gap-2 items-center">
-            Description <span className="text-primary-black text-opacity-30 text-xs">Optional</span>{" "}
+            Description{" "}
+            <span className="text-primary-black text-opacity-30 text-xs">Optional</span>{" "}
           </label>
-          <textarea placeholder="Input label" className="bg-[#F2F2F2] p-3 h-[120px] block resize-none w-full rounded-xl"></textarea>
+          <textarea
+            value={params.description}
+            onChange={(e) => updateParams({ description: e.target.value })}
+            placeholder="Input label"
+            className="bg-[#F2F2F2] p-3 h-[120px] block resize-none w-full rounded-xl"
+          ></textarea>
         </div>
         <div className="space-y-2">
           <label className="font-medium flex gap-2 items-center">Required</label>
-          <Switch />
+          <Switch
+            checked={params.required}
+            onCheckedChange={(checked) => updateParams({ required: checked })}
+          />
         </div>
         <div className="space-y-2">
-          <label className="font-medium text-sm">Variable name </label>
-          <Input type="text" placeholder="Input Variable name" />
+          <label className="font-medium text-sm">Variable name</label>
+          <Input
+            type="text"
+            value={params.variable_name}
+            onChange={(e) => updateParams({ variable_name: e.target.value })}
+            placeholder="Input Variable name"
+          />
         </div>
       </div>
     </Motion>
   );
 }
+
+

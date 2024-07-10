@@ -2,24 +2,42 @@ import Spinner from "@/components/Spinner";
 import { CheckIcon2 } from "@/components/svgs";
 import axios from "@/config/axios.config";
 import { AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import React, { ChangeEvent, SetStateAction, useState } from "react";
 import toast from "react-hot-toast";
 import { creativityOptions, languageOptions, povOptions, writingToneOptions } from "../constants/options";
 import AdvancedOptions from "./AdvancedOptions";
 import clsx from "clsx";
 import Motion from "@/components/Motion";
-export default function IdeasComponent({ currentStep, setCurrentStep }: { currentStep: number; setCurrentStep: any }) {
+
+export default function IdeasComponent({
+  currentStep,
+  setCurrentStep,
+  keywordInputValue,
+  keywords,
+  setKeywordInputValue,
+  setKeywords,
+  articleTitle,
+  setArticleTitle,
+}: {
+  currentStep: number;
+  setCurrentStep: any;
+  keywords: string[];
+  setKeywords: React.Dispatch<SetStateAction<string[]>>;
+  keywordInputValue: string;
+  setKeywordInputValue: React.Dispatch<SetStateAction<string>>;
+  articleTitle: string;
+  setArticleTitle: React.Dispatch<SetStateAction<string>>;
+}) {
   const [isPending, setIsPending] = useState(false);
   const [isKeywordPending, setIsKeywordPending] = useState(false);
-
   const [ideas, setIdeas] = useState<Array<string>>([]);
   const [generatedKeywords, setGeneratedKeywords] = useState<Array<string>>([]);
+  const [viewKeywords, setViewKeywords] = useState(true);
 
   //form data settings
   const [topic, setTopic] = useState("");
   const [numTopics, setNumTopics] = useState(3);
   const [maxTopicWords, setMaxTopicWords] = useState(20);
-  const [keywords, setKeywords] = useState(10);
   const [numKeywords, setNumKeywords] = useState(10);
   const [showAdvanced, setShowAdvanced] = useState(false);
 
@@ -34,12 +52,22 @@ export default function IdeasComponent({ currentStep, setCurrentStep }: { curren
     setIdeas([]);
     setIsPending(true);
     axios
-      .post("/ai/api/v1/wizard/ideas")
+      .post("/ai/api/v1/wizard/ideas", {
+        topic: topic,
+        no_of_topics: numTopics,
+        max_topics_words: maxTopicWords,
+        keywords: keywords,
+      })
       .then(({ data: { data } }) => {
         setIdeas(data.topics);
+        setViewKeywords(false);
       })
       .catch((err) => {
-        toast.error("Something went wrong!!");
+        if (err.response) {
+          toast.error(err.response.data.message);
+        } else {
+          toast.error(err.message);
+        }
         console.log(err);
       })
       .finally(() => setIsPending(false));
@@ -60,13 +88,57 @@ export default function IdeasComponent({ currentStep, setCurrentStep }: { curren
       .then(({ data: { data, message } }) => {
         setGeneratedKeywords(data.keywords);
         toast.success(message);
+        setViewKeywords(true);
       })
       .catch((err) => {
-        toast.error("Something went wrong!!");
-        console.log(err);
+        if (err.response) {
+          toast.error(err.response.data.message);
+        } else {
+          toast.error(err.message);
+        }
       })
       .finally(() => setIsKeywordPending(false));
   };
+
+  const handleKeywordClick = (keyword: string) => {
+    setKeywords((prevKeywords) => {
+      if (prevKeywords.includes(keyword)) {
+        return prevKeywords.filter((kw) => kw !== keyword);
+      }
+      return [...prevKeywords, keyword];
+    });
+  };
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setKeywordInputValue(value);
+    const splitKeywords = value
+      .split(",")
+      .map((kw) => kw.trim())
+      .filter((kw) => kw);
+    setKeywords(splitKeywords);
+  };
+
+  const handleKeywordUpdate = (keyword: string) => {
+    handleKeywordClick(keyword);
+    setKeywordInputValue((prevValue) => {
+      const newKeywords = keywords.includes(keyword) ? keywords.filter((kw) => kw !== keyword) : [...keywords, keyword];
+      return newKeywords.join(", ");
+    });
+  };
+
+  const handleSelectAll = () => {
+    setKeywords(generatedKeywords);
+    setKeywordInputValue(generatedKeywords.join(", "));
+  };
+
+  const handleUnselectAll = () => {
+    setKeywords([]);
+    setKeywordInputValue("");
+  };
+
+  const allSelected = generatedKeywords.every((keyword) => keywords.includes(keyword));
+  const notAllSelected = generatedKeywords.some((keyword) => !keywords.includes(keyword));
 
   const toggleAdvancedOptions = () => {
     setShowAdvanced((prev) => !prev);
@@ -74,7 +146,7 @@ export default function IdeasComponent({ currentStep, setCurrentStep }: { curren
 
   return (
     <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
-      <div className="flex gap-5 !mt-10">
+      <div className="flex gap-5 items-start !mt-10">
         <div className="w-full !bg-white shadow-box p-7 border rounded-3xl max-w-xl">
           <div className="space-y-1.5">
             <div className="flex justify-between">
@@ -102,8 +174,9 @@ export default function IdeasComponent({ currentStep, setCurrentStep }: { curren
                 type="number"
                 id="num-topics"
                 name="num-topics"
+                min={1}
                 value={numTopics}
-                onChange={(e) => setNumTopics(e.target.value as any)}
+                onChange={(e) => setNumTopics(parseInt(e.target.value))}
                 className="flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
               />
             </div>
@@ -115,8 +188,9 @@ export default function IdeasComponent({ currentStep, setCurrentStep }: { curren
                 type="number"
                 id="max-topic-words"
                 name="max-topic-words"
+                min={1}
                 value={maxTopicWords}
-                onChange={(e) => setMaxTopicWords(e.target.value as any)}
+                onChange={(e) => setMaxTopicWords(parseInt(e.target.value))}
                 className="flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
               />
             </div>
@@ -128,11 +202,11 @@ export default function IdeasComponent({ currentStep, setCurrentStep }: { curren
                 Keywords
               </label>
               <input
-                type="number"
+                type="text"
                 id="keywords"
                 name="keywords"
-                value={keywords}
-                onChange={(e) => setKeywords(e.target.value as any)}
+                value={keywordInputValue}
+                onChange={handleInputChange}
                 className="flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
               />
             </div>
@@ -146,7 +220,7 @@ export default function IdeasComponent({ currentStep, setCurrentStep }: { curren
                 id="num-keywords"
                 name="num-keywords"
                 value={numKeywords}
-                onChange={(e) => setNumKeywords(e.target.value as any)}
+                onChange={(e) => setNumKeywords(parseInt(e.target.value))}
                 className="flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
               />
             </div>
@@ -161,15 +235,6 @@ export default function IdeasComponent({ currentStep, setCurrentStep }: { curren
             )}>
             {isKeywordPending ? <Spinner /> : "Generate keywords"}
           </button>
-          {generatedKeywords.length > 0 && (
-            <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
-              <div className="flex flex-wrap gap-2 mt-3">
-                {generatedKeywords.map((generatedKeyword) => (
-                  <div className="bg-gray-100 text-gray-600 p-2 rounded first-letter:uppercase">{generatedKeyword}</div>
-                ))}
-              </div>
-            </Motion>
-          )}
 
           <div className="flex gap-4 items-center !mt-8">
             <div className="bg-gray-200 w-full h-0.5" />
@@ -199,7 +264,10 @@ export default function IdeasComponent({ currentStep, setCurrentStep }: { curren
           <button
             onClick={generateIdeas}
             disabled={isPending}
-            className={clsx("w-full p-2 h-14 !mt-8 text-white bg-primary-green rounded-xl hover:bg-opacity-90 flex justify-center items-center", isPending && "opacity-80 cursor-not-allowed")}>
+            className={clsx(
+              "w-full p-2 h-14 !mt-8 text-white bg-primary-green rounded-xl hover:bg-opacity-90 flex justify-center items-center",
+              isPending && "opacity-80 cursor-not-allowed"
+            )}>
             {isPending ? <Spinner /> : "Generate Ideas"}
           </button>
         </div>
@@ -209,25 +277,78 @@ export default function IdeasComponent({ currentStep, setCurrentStep }: { curren
             <span className="bg-white h-12 w-12 grid place-content-center rounded-full">{currentStep + 1}</span>
             <h2 className="text-lg font-semibold text-white">Ideas list</h2>
           </div>
-          {isPending && ideas.length < 1 && <div className="h-40 grid place-content-center">Please hang on as we generate ideas for you...</div>}
-          {ideas.length > 0 && (
-            <div>
-              <ul className="mt-5">
-                {ideas.map((idea, index) => (
-                  <li key={index} className="py-5 px-7 mb-3 border rounded-xl bg-white text-lg flex items-center gap-4 cursor-pointer group">
-                    <span className="border p-2 rounded-full text-gray-400 group-hover:text-primary-green group-hover:border-primary-green translate-all duration-300">
-                      <CheckIcon2 />
-                    </span>
-                    <span>{idea}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="flex justify-end">
-                <button onClick={() => setCurrentStep(1)} className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px]">
-                  Next step
-                </button>
-              </div>
-            </div>
+
+          {viewKeywords &&
+            (isKeywordPending && generatedKeywords.length < 1 ? (
+              <div className="h-40 grid place-content-center">Generating keywords for you...</div>
+            ) : (
+              generatedKeywords.length > 0 && (
+                <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+                  <h1 className="text-lg text-center my-6 font-semibold">Choose your keywords</h1>
+                  <div className="flex flex-wrap justify-center gap-2 mt-3">
+                    {generatedKeywords.map((generatedKeyword) => (
+                      <div
+                        key={generatedKeyword}
+                        onClick={() => handleKeywordUpdate(generatedKeyword)}
+                        className={clsx(
+                          "bg-gray-100 text-gray-600 p-3 rounded-xl first-letter:uppercase cursor-pointer transition-all duration-300",
+                          keywords.includes(generatedKeyword) && "bg-primary-green text-white"
+                        )}>
+                        {generatedKeyword}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex justify-center mt-4">
+                    {!allSelected && (
+                      <button onClick={handleSelectAll} className="bg-gray-300 hover:bg-gray-300/90 text-gray-600 py-1.5 px-3 rounded-lg">
+                        Select All
+                      </button>
+                    )}
+                    {!notAllSelected && (
+                      <button onClick={handleUnselectAll} className="bg-red-500 hover:bg-red-600 text-white py-1.5 px-3 rounded-lg">
+                        Unselect All
+                      </button>
+                    )}
+                  </div>
+                </Motion>
+              )
+            ))}
+
+          {isPending && ideas.length < 1 ? (
+            <div className="h-40 grid place-content-center">Generating ideas for you...</div>
+          ) : (
+            ideas.length > 0 &&
+            !viewKeywords && (
+              <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+                <ul className="mt-5">
+                  {ideas.map((idea, index) => (
+                    <li
+                      onClick={() => setArticleTitle(idea)}
+                      key={index}
+                      className={clsx(
+                        "py-5 px-7 mb-3 border rounded-xl bg-white text-lg flex items-center gap-4 cursor-pointer group transition-all duration-300",
+                        idea === articleTitle && "border-primary-green/70"
+                      )}>
+                      <span
+                        className={clsx(
+                          "border p-2 rounded-full text-gray-400 group-hover:text-primary-green group-hover:border-primary-green translate-all duration-300",
+                          idea === articleTitle && "text-primary-green border-primary-green"
+                        )}>
+                        <CheckIcon2 />
+                      </span>
+                      <span>{idea}</span>
+                    </li>
+                  ))}
+                </ul>
+                {articleTitle && (
+                  <div className="flex justify-end">
+                    <button onClick={() => setCurrentStep(1)} className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px]">
+                      Next step
+                    </button>
+                  </div>
+                )}
+              </Motion>
+            )
           )}
         </div>
       </div>

@@ -1,18 +1,24 @@
-import { MicrophoneIcon, SendIcon2 } from "@/components/svgs"; 
+import { MicrophoneIcon, SendIcon2 } from "@/components/svgs";
 import autosize from "autosize";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import ToolsDialog from "./ToolsDialog";
 import axios from 'axios';
 import { API_URL } from "@/lib/api";
+import toast from "react-hot-toast";
+
 interface ChatInputProps {
-  onSend: (message: string) => void;
+  onSend: (content: string,string:string,id:string|null) => void;
   selectedModel: string;
+  fetchConversations: () => void;
+  selectedConversation:string | null;
+  selectedOption:string
+  addMessage: (prompt: string, response: string) => void;
 }
-const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel }) => {
+
+const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel, fetchConversations, selectedConversation, selectedOption, addMessage }) => {
   const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [messages, setMessages] = React.useState<string[]>([]);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -21,39 +27,38 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel }) => {
   }, []);
 
   const handleSend = async () => {
-    setMessages(prevMessages => [...prevMessages, `You: ${messages}`]);
-    if (input.trim()) {
-      console.log("Sending API requests...");
+    if (input.trim() === '') return;
 
-      try {
-        // First API 
-        const createResponse = await axios.get(`${API_URL}/ai/api/v1/conversation/create`);
-        console.log("Create Conversation API response:", createResponse.data.data.conversation_id);
+    const user_prompt = input.trim();
+    setInput('');
+    addMessage(user_prompt, '');
+    try {
+      const conversation = await axios.post(
+        `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${selectedConversation ? selectedConversation : ''
+        }&model=${selectedOption}`,
+        { user_prompt: input }
+      );
+      if (!selectedConversation) fetchConversations();
 
-        // Second API call 
-        const chatResponse = await axios.post(
-          `${API_URL}/ai/api/v1/conversation/chat`,
-          {
-            user_prompt: input,
-          },
-          {
-            params: {
-              conversation_id:  createResponse.data.data.conversation_id,
-              chat_id:  createResponse.data.data._id,
-              model: selectedModel,
-            },
-          }
-        );  
-        console.log("Chat API response:", chatResponse.data);
+      const eventSource = new EventSource(
+        `${API_URL}/ai/api/v1/conversation/chat/stream/${conversation.data.data.chat_id}`
+      );
 
-        onSend(chatResponse.data);
-        setInput("");
+      var content = '';
+      eventSource.onerror = (event) => {
+        eventSource.close();
+      };
 
-        if (textareaRef.current) {
-          autosize.update(textareaRef.current);
-        }
-      } catch (error) {
-        console.error('Error calling APIs:', error);
+      eventSource.onmessage = (event) => {
+        const data = event.data;
+        content += data;
+        onSend(user_prompt, content, conversation.data.data.conversation_id);
+      };
+    } catch (error:any) {
+      if (error.response) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error(error.message);
       }
     }
   };
@@ -79,12 +84,15 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel }) => {
       />
       <ToolsDialog />
       <button
-        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
+        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
+        // onClick={() => setChatId(null)} // Reset chatId to fetch new conversation when clicked
+      >
         <MicrophoneIcon />
       </button>
       <button
         onClick={handleSend}
-        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
+        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
+      >
         <SendIcon2 />
       </button>
     </div>
