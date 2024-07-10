@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { tools } from "./data/tools";
 
-export default function ProvidersDrawer({ trigger }: { trigger: React.ReactNode }) {
+export default function ProvidersDrawer({ trigger, onSelectAction }: { trigger: React.ReactNode; onSelectAction?: (action: any) => void }) {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
 
   const categories = ["All", "Text", "Image", "Stable diffusion", "Audio", "Music", "Video", "Integrations", "Utilities", "Email", "Workflows"];
@@ -55,7 +55,11 @@ export default function ProvidersDrawer({ trigger }: { trigger: React.ReactNode 
               <h2 className="text-xl font-semibold mb-4">{selectedCategory}</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {filteredTools.map((data) => (
-                  <ToolCard {...data} key={data.id} onClick={() => {}} />
+                  <DrawerClose
+                    asChild
+                    className="absolute right-3 top-0 rounded-lg transition-opacity p-2 hover:bg-[#ff00001f] hover:opacity-100 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+                    <ToolCard {...data} key={data.id} onClick={() => onSelectAction(data)} />
+                  </DrawerClose>
                 ))}
               </div>
             </div>
@@ -78,7 +82,7 @@ interface ToolCardProps {
 
 const ToolCard: React.FC<ToolCardProps> = ({ icon, name, description, category, onClick }) => {
   return (
-    <div className="border border-[#E4E4E4] p-7 rounded-3xl flex flex-col items-start relative space-y-3 hover:shadow-2xl hover:shadow-gray-200 cursor-pointer transition-all duration-300">
+    <div className="border border-[#E4E4E4] p-7 rounded-3xl flex flex-col items-start relative space-y-3 hover:shadow-2xl hover:shadow-gray-200 cursor-pointer transition-all duration-300" onClick={onClick}>
       <Image src={icon} alt="" width={50} height={50} />
       <h3 className="text-lg font-semibold">{name}</h3>
       <p className="text-gray-600 text-[15px] leading-relaxed">{description}</p>
