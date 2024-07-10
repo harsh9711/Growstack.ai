@@ -170,7 +170,7 @@ export default function AiAppPage({
         console.error("Unsupported download option");
     }
   };
-<<<<<<< HEAD
+
   
   // const handleSubmit = async () => {
   //   try {
@@ -242,59 +242,8 @@ const handleSubmit = async () => {
 };
 
 
-=======
 
-  const handleSubmit = async () => {
-    try {
-      const formattedUserPrompt = assistant.inputs
-        .map(
-          (input: any, index: number) => `${input.title}:${userPrompts[index]}`
-        )
-        .join(".");
-
-      const response = await axios.post(
-        `${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`,
-        {
-          ...userInput,
-          user_prompt: formattedUserPrompt,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const chatId = response.data.data;
-      const eventSource = new EventSource(
-
-        `https://foodzap.co/ai/api/v1/chat-template/generate/stream/${chatId}`
-
-      );
-      var content = "";
-      eventSource.onerror = (event) => {
-        eventSource.close();
-      };
-      eventSource.onmessage = (event) => {
-        var data = event.data;
-
-        if (data.includes("<p")) {
-          console.log("Yes");
-
-          data = "<br>" + data;
-        }
-        content += data;
-        console.log(content)
-        setGeneratedContent(content);
-      };
-    } catch (error) {
-      console.error("Error generating template:", error);
-    }
-  };
-  const handleChange = (e: { target: { name: any; value: any } }) => {
-    const { name, value } = e.target;
-    setUserInput((prev) => ({ ...prev, [name]: value }));
-  };
->>>>>>> main
+ 
 
   const handleEditorChange = (content: string) => {
     setGeneratedContent(content);
@@ -564,7 +513,7 @@ const handleSubmit = async () => {
                 id="number-of-results"
                 name="number_of_results"
                 value={userInput.number_of_results}
-                onChange={handleChange}
+                // onChange={handleChange}
               />
             </div>
             <div>
@@ -579,7 +528,7 @@ const handleSubmit = async () => {
                 id="estimated-result-length"
                 name="estimated_result_length"
                 value={userInput.estimated_result_length}
-                onChange={handleChange}
+                // onChange={handleChange}
               />
             </div>
           </div>
