@@ -18,7 +18,7 @@ export default function WebsiteBuilder() {
           <div className="w-full flex justify-end gap-2">
             <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
               <Search className="text-gray-500" size={20} />
-              <input type="search" className="outline-none h-[40px] w-full" placeholder="Search GPTs" />
+              <input type="search" className="outline-none h-[40px] w-full" placeholder="Search websites" />
             </div>
             <Link href="/app/create/website-builder/new-website">
               <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">

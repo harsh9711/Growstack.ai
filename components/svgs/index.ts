@@ -77,3 +77,6 @@ export { default as CloudSaveIcon } from "@/public/svgs/save.svg";
 export { default as TextIcon } from "@/public/svgs/text.svg";
 export { default as ShapesIcon } from "@/public/svgs/shapes.svg";
 export { default as MediaIcon } from "@/public/svgs/media.svg";
+export { default as WwwIcon } from "@/public/svgs/wwwIcon.svg";
+export { default as WidgetIcon } from "@/public/svgs/widgets.svg";
+export { default as TagIcon } from "@/public/svgs/tag.svg";

@@ -3,6 +3,8 @@
 import { Plus, Search } from "lucide-react";
 import Link from "next/link";
 import { Fragment } from "react";
+import ProjectCard from "./components/ProjectCard";
+import { projects } from "./components/data";
 
 export default function EmailBuilder() {
   return (
@@ -16,15 +18,20 @@ export default function EmailBuilder() {
           <div className="w-full flex justify-end gap-2">
             <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
               <Search className="text-gray-500" size={20} />
-              <input type="search" className="outline-none h-[40px] w-full" placeholder="Search GPTs" />
+              <input type="search" className="outline-none h-[40px] w-full" placeholder="Search emails" />
             </div>
-            <Link href="/app/plan/custom-gpts/new">
+            <Link href="/create/email-builder">
               <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
                 <Plus size={20} />
                 Create new AI Email
               </button>
             </Link>
           </div>
+        </div>
+        <div className="grid grid-cols-4 gap-4 mt-6">
+          {projects.map((data, index) => (
+            <ProjectCard {...data} key={index} />
+          ))}
         </div>
       </main>
     </Fragment>

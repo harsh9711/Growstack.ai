@@ -8,7 +8,7 @@ import Layout from "./Layout";
 export default function CreateVideoPage() {
   const router = useRouter();
   return (
-    <div className="px-3 flex-1 h-screen flex flex-col gap-4">
+    <div className="p-3 flex-1 h-screen flex flex-col gap-4">
       <header className="bg-primary-green flex justify-between px-5 py-2 rounded-2xl text-white text-[15px]">
         <div className="flex items-center gap-6">
           <button onClick={() => router.back()} className="hover:bg-[#fff]/20 p-2 rounded-lg transition-all duration-300">
@@ -51,10 +51,10 @@ export default function CreateVideoPage() {
             <CloudSaveIcon className="scale-105" />
           </button>
           <div className="h-5 w-[2px] bg-white rounded-full" />
-          <button className="bg-[#fff]/20 text-white/80 h-11 w-11 flex justify-center items-center rounded-lg transition-all duration-300">
+          <button className="bg-[#fff]/20 text-white/80 h-10 w-10 flex justify-center items-center rounded-lg transition-all duration-300">
             <Play size={22} />
           </button>
-          <button className=" !ml-2 bg-white text-primary-green h-11 px-6 font-medium rounded-lg">Generate</button>
+          <button className=" !ml-2 bg-white text-primary-green h-10 px-6 font-medium rounded-lg">Generate</button>
         </div>
       </header>
       {/* <div className="!bg-white shadow-box h-full w-full max-w-[112px] p-4">
