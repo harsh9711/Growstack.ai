@@ -1,15 +1,13 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
-import NewEmailDialog from "./components/NewEmailDialog";
 import Motion from "@/components/Motion";
 import Spinner from "@/components/Spinner";
+import { useState } from "react";
+import Header from "./components/Header";
+import NewEmailDialog from "./components/NewEmailDialog";
+import Sidebar from "./components/Sidebar";
 
 export default function EmailBuilder() {
-  const router = useRouter();
   const [iframeWidth, setIframeWidth] = useState("100%");
   const [selectedTab, setSelectedTab] = useState("Widgets");
   const [generatedHtml, setGeneratedHtml] = useState("");

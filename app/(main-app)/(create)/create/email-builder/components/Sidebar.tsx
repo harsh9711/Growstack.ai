@@ -66,9 +66,9 @@ const Widgets = () => {
 const Tags = () => {
   return (
     <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
-      <div className="p-4">
+      <div className="p-3">
         <div className="space-y-2 divide-y divide-gray-100">
-          {Array(20)
+          {Array(13)
             .fill(null)
             .map((_, index) => (
               <div key={index} className="flex justify-between p-2 items-center">

@@ -1,4 +1,3 @@
-import React from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,20 +9,22 @@ import {
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import clsx from "clsx";
 import { ArrowLeft, ChevronDown, Redo2, Undo2, X } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { HiOutlineQuestionMarkCircle } from "react-icons/hi2";
 import { SlScreenDesktop, SlScreenSmartphone, SlScreenTablet } from "react-icons/sl";
 
 export default function Header({ handleViewScreenChange, iframeWidth }: { handleViewScreenChange: (value: string) => void; iframeWidth: string }) {
+  const router = useRouter();
+
   return (
     <header className="bg-primary-green flex items-center justify-between px-4 pt-2 pb-3 rounded-b-xl text-white text-[15px]">
-      <div className="flex items-center gap-6">
+      <Link href="/app">
         <button className="hover:bg-[#fff]/20 p-2 rounded-lg flex items-center gap-2 transition-all duration-300">
           <ArrowLeft size={20} />
           Dashboard
         </button>
-      </div>
+      </Link>
       <div className="flex items-center gap-3">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -200,7 +201,7 @@ export default function Header({ handleViewScreenChange, iframeWidth }: { handle
         <button className="bg-[#fff]/20 hover:bg-white text-white hover:text-primary-green h-10 px-4 flex justify-center items-center rounded-lg transition-all duration-300">
           Export
         </button>
-        <button className="bg-[#FF0000] h-9 w-9 grid place-content-center text-white rounded">
+        <button onClick={() => router.back()} className="bg-[#FF0000] h-9 w-9 grid place-content-center text-white rounded">
           <X size={20} />
         </button>
       </div>
