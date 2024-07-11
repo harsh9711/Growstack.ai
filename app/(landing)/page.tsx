@@ -531,9 +531,9 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-10">
+      <section className="py-10 flex flex-col gap-20 mt-20">
         <div className="flex flex-col items-center gap-7">
-          <div className="bg-[#00968914] py-2 px-4 uppercase flex items-center gap-3 rounded-full text-xs font-semibold max-w-fit text-[#009689]"> FAQ</div>
+          <div className="bg-[#00968914] py-2 px-4 uppercase flex items-center gap-3 rounded-full text-xs font-semibold max-w-fit text-[#034737]"> FAQ</div>
           <h1 className="text-[42px] font-semibold text-primary-green">Quick answers <span className="font-light bg-gradient-to-b from-black to-black/30 bg-clip-text text-transparent">on GrowStack</span> </h1>
         </div>
         <div className="bg-[url('/backgrounds/abstract-dots.png')] bg-no-repeat bg-cover bg-right-bottom w-full">
