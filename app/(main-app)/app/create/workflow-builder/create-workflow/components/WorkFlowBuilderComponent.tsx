@@ -116,7 +116,7 @@ export default function WorkFlowBuilderComponent() {
 
   const reorderActions = async (actionId: string, direction: string) => {
     try {
-      await axios.put(`${API_URL}/workflow/api/v1/${workflowId}/actions/${actionId}/reorder=${direction}`)
+      await axios.put(`${API_URL}/workflow/api/v1/${workflowId}/actions/${actionId}/reorder?direction=${direction}`)
     } catch (error) {
 
     }
@@ -142,7 +142,8 @@ export default function WorkFlowBuilderComponent() {
       const response = await postAction(payload, index !== undefined ? index : 1);
       toast.success("Action added successfully")
       const newAction = {
-        ...response.data.data.newAction
+        ...response.data.data.newAction,
+        index: index !== undefined ? index-1 : 0
       };
       newAction.preset_json = action.preset_json
       newAction.icon = action.icon
@@ -174,7 +175,7 @@ export default function WorkFlowBuilderComponent() {
       case "Output":
         return <OutputSection />;
       case "Actions":
-        return <ActionsSection key={activeAction.action_id} activeAction={activeAction} setActiveAction={setActiveAction} onSaveAction={onSaveAction} isAPICalling={isAPICalling}/>;
+        return <ActionsSection key={activeAction.action_id} activeAction={activeAction} setActiveAction={setActiveAction} onSaveAction={onSaveAction} isAPICalling={isAPICalling} actions={actions} inputConfigs={inputConfigs}/>;
     }
   };
   
@@ -251,12 +252,12 @@ export default function WorkFlowBuilderComponent() {
                         </div>
                       </DropdownMenuItem>
                       <DropdownMenuItem inset className="min-w-[200px] flex justify-between gap-8 items-center my-1" disabled={index===0}>
-                          <div className="flex gap-3" /*onClick={() => reorderActions('up')}*/>
+                          <div className="flex gap-3" onClick={() => reorderActions(action._id,'up')}>
                           <h2>Move Up</h2>
                         </div>
                       </DropdownMenuItem>
                         <DropdownMenuItem inset className="min-w-[200px] flex justify-between gap-8 items-center my-1" disabled={index === actions.length-1}>
-                          <div className="flex gap-3" /*onClick={() => reorderActions('down')}*/>
+                         <div className="flex gap-3" onClick={() => reorderActions(action._id, 'down')}>
                           <h2>Move Down</h2>
                         </div>
                       </DropdownMenuItem>
