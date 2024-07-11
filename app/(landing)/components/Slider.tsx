@@ -15,7 +15,7 @@ export default function Slider() {
   return (
     <div className="w-full space-y-10 mt-10">
       <CategoryTabs />
-      <div className="relative flex px-3 md:px-4 w-full">
+      <div className="relative flex flex-col px-3 md:px-4 w-full">
         <Swiper
           modules={[Navigation, Scrollbar, A11y]}
           spaceBetween={800}
@@ -158,7 +158,7 @@ export default function Slider() {
             </div>
           </SwiperSlide>
         </Swiper>
-        <div className="absolute hidden md:flex items-center gap-x-5 lg:gap-x-10 top-1/2 transform -translate-y-1/2 px-4 w-full justify-between">
+        <div className="flex items-center gap-x-5 lg:gap-x-10 top-1/2 transform translate-y-4 px-4 w-full justify-between">
   <button className="button-prev-slide hover:bg-[#fff]/20 flex items-center justify-center transition duration-300 rounded-full !p-2 lg:!p-4">
     <ArrowLeft className="h-5 w-5 lg:h-8 lg:w-8" />
   </button>
@@ -191,7 +191,7 @@ const CategoryTabs = () => {
           {tabs.map(({ img, title, themeColor }, index) => (
             <div
               key={index}
-              className={`w-full h-[60px] flex gap-x-4 justify-start items-center relative cursor-pointer z-[1] transition-all duration-500 text-[16px] px-3 ${
+              className={`w-full h-[60px] flex gap-x-4 justify-start items-center relative cursor-pointer z-[1] transition-all  duration-500 text-[16px] px-3 ${
                 selectedTabIndex === index ? "!text-white" : "!text-primary-green"
               }`}
               onClick={() => handleTabClick(index)}>
