@@ -159,13 +159,14 @@ export default function Slider() {
           </SwiperSlide>
         </Swiper>
         <div className="absolute hidden md:flex items-center gap-x-5 lg:gap-x-10 top-1/2 transform -translate-y-1/2 px-4 w-full justify-between">
-          <button className="button-prev-slide hover:bg-[#fff]/20 flex items-center justify-center transition duration-300 rounded-full !p-2 lg:!p-4">
-            <ArrowLeft className="h-5 w-5 lg:h-8 lg:w-8" />
-          </button>
-          <button className="button-next-slide hover:bg-[#fff]/20 flex items-center justify-center transition duration-300 rounded-full !p-2 lg:!p-4">
-            <ArrowRight className="h-5 w-5 lg:h-8 lg:w-8" />
-          </button>
-        </div>
+  <button className="button-prev-slide hover:bg-[#fff]/20 flex items-center justify-center transition duration-300 rounded-full !p-2 lg:!p-4">
+    <ArrowLeft className="h-5 w-5 lg:h-8 lg:w-8" />
+  </button>
+  <button className="button-next-slide hover:bg-[#fff]/20 flex items-center justify-center transition duration-300 rounded-full !p-2 lg:!p-4">
+    <ArrowRight className="h-5 w-5 lg:h-8 lg:w-8" />
+  </button>
+</div>
+
       </div>
     </div>
   );
