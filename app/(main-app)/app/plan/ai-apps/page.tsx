@@ -78,6 +78,7 @@ export default function MarketingPage() {
   useEffect(() => {
     fetchAssistants();
   }, [selectedTag, searchQuery]);
+  
 
   return (
     <Fragment>
