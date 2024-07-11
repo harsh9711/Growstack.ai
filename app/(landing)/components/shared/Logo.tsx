@@ -5,7 +5,7 @@ import React from "react";
 export default function Logo() {
   return (
     <Link href="/">
-      <Image src="/logo/growstack.svg" alt="" width={180} height={40} draggable={false} className="select-none min-w-[180px] max-h-14" />
+      <Image src="/logo.png" alt="" width={180} height={40} draggable={false} className="select-none min-w-[180px] max-h-14" />
     </Link>
   );
 }
