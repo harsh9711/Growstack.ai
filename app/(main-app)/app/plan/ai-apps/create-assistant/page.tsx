@@ -179,7 +179,7 @@ export default function CreateAssistantPage() {
                   <SelectContent>
                     <SelectItem value="Articles And Contents">Articles And Contents</SelectItem>
                     <SelectItem value="Blogs Posts">Blogs Posts</SelectItem>
-                    <SelectItem value="Commerce">Commerce</SelectItem>
+                    <SelectItem value="Commerce"> Ecommerce</SelectItem>
                     <SelectItem value="Emails">Emails</SelectItem>
                     <SelectItem value="Frameworks">Frameworks</SelectItem>
                     <SelectItem value="Marketing">Marketing</SelectItem>
