@@ -50,22 +50,27 @@ export default function Faq() {
 
 const faqList = [
   {
-    question: "How can your platform transform my business strategies into success stories?",
+    question: "What is Custom GPT?",
+    answer:
+      "Custom GPT is a tailored AI model designed to generate human-like text based on specific needs and data.",
+  },
+  {
+    question: "How can Custom GPT benefit my business?",
     answer:
       "Simply sign up for an account on our website and explore our features to get started. You can also reach out to our customer support team for assistance.",
   },
   {
-    question: "Can I upgrade or downgrade my plan at any time?",
+    question: "How do I integrate Custom GPT into my systems?",
     answer:
       "Simply sign up for an account on our website and explore our features to get started. You can also reach out to our customer support team for assistance.",
   },
   {
-    question: "How does your platform address unique business challenges with tailored solutions?",
+    question: "Is my data secure with Custom GPT?",
     answer:
       "Simply sign up for an account on our website and explore our features to get started. You can also reach out to our customer support team for assistance.",
   },
   {
-    question: "What remarkable benefits does your platform offer for businesses seeking growth and prosperity?",
+    question: "Can Custom GPT be trained on my business data?",
     answer:
       "Simply sign up for an account on our website and explore our features to get started. You can also reach out to our customer support team for assistance.",
   },
