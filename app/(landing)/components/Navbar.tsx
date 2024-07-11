@@ -42,11 +42,11 @@ export default function Navbar() {
                   <Link href={link.href} key={index}>
                     <div
                       className={`flex flex-col gap-[10px] items-center justify-center cursor-pointer relative ${
-                        pathname === link.href && "text-primary-green"
+                        pathname === link.href && "text-primary-green font-bold"
                       }`}>
-                      <h1 className="whitespace-nowrap">{link.label}</h1>
+                      <h1 className="whitespace-nowrap hover:font-bold">{link.label}</h1>
                       <div
-                        className={`w-0 h-1 rounded-full bg-primary-green absolute left-0 mt-10 transition-all duration-300 ${
+                        className={`w-0 h-1 rounded-full bg-primary-green font-bold absolute left-0 mt-10 transition-all duration-300 ${
                           pathname === link.href ? "!w-full" : "w-0"
                         }`}
                       />
@@ -57,12 +57,10 @@ export default function Navbar() {
             </div>
             <div className="flex gap-x-4 items-center">
               <div className="bg-[#C9C9C9] h-8 w-[1px]" />
-              <Link href="/auth/login" className="py-3 px-8 rounded-xl hover:bg flex justify-center items-center">
-                SIgn in
-              </Link>
+             
               <Link href="/auth/register" className="sheen bg-primary-green text-white py-3.5 px-9 rounded-xl flex gap-2 items-center justify-center">
-                Sign up
-                <MdArrowOutward size={22} />
+              Login
+               <MdArrowOutward size={22} />
               </Link>
             </div>
           </div>

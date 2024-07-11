@@ -8,6 +8,14 @@ export const navLinks = [
     label: "Features",
   },
   {
+    href: "/solutions",
+    label: "Solutions",
+  },
+  {
+    href: "/resources",
+    label: "Resources",
+  },
+  {
     href: "/pricing",
     label: "Pricing",
   },
@@ -16,11 +24,7 @@ export const navLinks = [
     label: "FAQs",
   },
   {
-    href: "/company",
-    label: "Company",
-  },
-  {
-    href: "/blogs",
-    label: "Blogs",
+    href: "/verticals",
+    label: "Verticals",
   },
 ];
