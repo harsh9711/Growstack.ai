@@ -1,3 +1,4 @@
+// web scraping done
 "use client";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { Plus, Search, X } from "lucide-react";
@@ -709,7 +710,7 @@ const [selectedCountry, setSelectedCountry] = useState(null); // State to store 
 
         
         const fetchDataForCountry = () => {
-            // Here you can fetch data or perform any necessary actions based on selectedOption.value or selectedOption.label
+          
             console.log(`Fetching data for ${country.label}`);
             // Example: fetch(`/api/data/${country.value}`).then(response => response.json()).then(data => console.log(data));
         };
