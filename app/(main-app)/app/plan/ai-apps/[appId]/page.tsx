@@ -85,6 +85,25 @@ export default function AiAppPage({
     temp.innerHTML = html;
     return temp.textContent || temp.innerText || "";
   };
+  
+  const handleChange = (e: { target: { value: string; name: any; }; }) => {
+    let newValue = parseInt(e.target.value, 10);
+  
+    if (newValue < 0) {
+      newValue = 0;
+    }
+  
+    setUserInput({ ...userInput, [e.target.name]: newValue });
+  };
+  // const handleChange2 = (e: { target: { value: string; }; }) => {
+  //   let newValue = parseInt(e.target.value, 10);
+  
+  //   if (newValue < 0) {
+  //     newValue = 0;
+  //   }
+  //   setUserInput({ ...userInput, estimated_result_length: newValue });
+  // };
+  
   useEffect(() => {
     const fetchAssistant = async () => {
       try {
@@ -509,7 +528,7 @@ export default function AiAppPage({
                 id="number-of-results"
                 name="number_of_results"
                 value={userInput.number_of_results}
-                // onChange={handleChange}
+                onChange={handleChange}
               />
             </div>
             <div>
@@ -524,7 +543,7 @@ export default function AiAppPage({
                 id="estimated-result-length"
                 name="estimated_result_length"
                 value={userInput.estimated_result_length}
-                // onChange={handleChange}
+                onChange={handleChange}
               />
             </div>
           </div>

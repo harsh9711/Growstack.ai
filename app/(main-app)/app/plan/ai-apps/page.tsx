@@ -79,6 +79,9 @@ export default function MarketingPage() {
     fetchAssistants();
   }, [selectedTag, searchQuery]);
 
+  
+  
+
   return (
     <Fragment>
       <main className="">
@@ -100,6 +103,16 @@ export default function MarketingPage() {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
+            <Link href="/app/plan/ai-apps/create-assistant">
+              <button className="text-primary-green font-medium border-primary-green border sheen transition duration-500 px-4 py-4 rounded-xl flex items-center gap-2">
+                <Plus size={20} />
+                Upload file
+                <svg className="ml-2" width="20" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.5 11.25L9 6.75L13.5 11.25" stroke="#034737" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+
+              </button>
+            </Link>
             <Link href="/app/plan/ai-apps/create-assistant">
               <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
                 <Plus size={20} />
@@ -180,7 +193,7 @@ const tags = [
   },
   {
     icon: "/icons/shoppingcart.svg",
-    name: "Commerce",
+    name: "Ecommerce",
   },
   {
     icon: "/icons/emails.svg",
