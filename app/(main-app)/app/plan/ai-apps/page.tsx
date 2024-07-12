@@ -30,6 +30,7 @@ export default function MarketingPage() {
       console.log("selectedtag", selectedTag);
       if (selectedTag === "Others") {
         apiUrl = `${API_URL}/ai/api/v1/chat-template/user?page=1&limit=20&search=${searchQuery}`;
+        console.log(apiUrl);
       }
 
       console.log("API URL:", apiUrl);
@@ -38,7 +39,7 @@ export default function MarketingPage() {
 
       console.log("API Response:", response.data);
 
-      if (response.data.data && response.data.data) {
+      if ( response.data.data) {
         const formattedAssistants = response.data.data.map(
           (assistant: any) => ({
             _id: assistant._id,
@@ -49,7 +50,21 @@ export default function MarketingPage() {
           })
         );
         setAssistants(formattedAssistants);
-      } else {
+      }
+      // else if (response.data.data.data!=undefined) {
+      //   console.log(response.data.data.data)
+      //   const formattedAssistants = response.data.data.data.map(
+      //     (assistant: any) => ({
+      //       _id: assistant._id,
+      //       "ASSISTANT NAME": assistant["ASSISTANT NAME"],
+      //       "ASSISTANT DESCRIPTION": assistant["ASSISTANT DESCRIPTION"],
+      //       icon: assistant["icon"],
+      //       category: assistant["category"],
+      //     })
+      //   );
+      //   setAssistants(formattedAssistants);
+      // }
+     else {
         console.error("Unexpected API response format:", response.data);
       }
     } catch (error) {
@@ -123,13 +138,8 @@ export default function MarketingPage() {
               >
                 <div className="flex items-center justify-between gap-5 bg-white border border-[#EEF0F4] rounded-2xl p-6 shadow-xl shadow-gray-100 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer">
                   <div className="flex gap-4 items-start">
-                    <img
-                      src={assistant["icon"]}
-                      alt={assistant["ASSISTANT NAME"]}
-                      width={80}
-                      height={80}
-                      className="w-[64px] h-[64px]"
-                    />
+                  <div dangerouslySetInnerHTML={{ __html: assistant.icon }} className="w-[64px] h-[64px]" />
+
                     <div className="space-y-2 max-h-[80px]">
                       <h1 className="text-lg font-semibold">
                         {assistant["ASSISTANT NAME"]}
@@ -192,8 +202,8 @@ const tags = [
     icon: "/icons/websites.svg",
     name: "Websites",
   },
-  {
-    icon: "/icons/all.svg",
-    name: "Others",
-  },
+  // {
+  //   icon: "/icons/all.svg",
+  //   name: "Others",
+  // },
 ];
