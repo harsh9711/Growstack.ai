@@ -1,5 +1,5 @@
 "use client";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { Plus, Search, X } from "lucide-react";
 import axios from "axios";
 import { API_URL } from "@/lib/api";
@@ -324,7 +324,7 @@ const [showTable, setShowTable] = useState(false); // State to control table vis
 
     </>
   );
-};
+}
 interface Place {
   latitude: number;
   longitude: number;
@@ -342,7 +342,6 @@ const WebScraping: React.FC = () => {
   const [count, setCount] = useState(1);
   const [bulkInput, setBulkInput] = useState("");
   const [countryCode, setCountryCode] = useState("");
-  const [inputCountry, setInputCountry] = useState("");
   const [places, setPlaces] = useState<Place[]>([]);
   const [showTable, setShowTable] = useState(false);
   const [center, setCenter] = useState<LatLngExpression>([39.0997, -94.5786]);
@@ -350,11 +349,11 @@ const WebScraping: React.FC = () => {
   const [isPending, setIsPending] = useState(false);
   const router = useRouter();
 
-  const handleProspectAdded = (newProspect: Place) => {
-    // Update places state with the new prospect
-    setPlaces([...places, newProspect]);
-    setShowTable(true); // Show the table after adding a prospect
-  };
+  // const handleProspectAdded = (newProspect: Place) => {
+  //   // Update places state with the new prospect
+  //   setPlaces([...places, newProspect]);
+  //   setShowTable(true); // Show the table after adding a prospect
+  // };
   useEffect(() => {
     if (places.length > 0) {
       setCenter([places[0].latitude, places[0].longitude]);
@@ -412,9 +411,9 @@ const WebScraping: React.FC = () => {
     setBulkInput(terms.join(","));
   };
 
-  const handleCountryInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputCountry(e.target.value);
-  };
+  // const handleCountryInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setInputCountry(e.target.value);
+  // };
 
   const handleCountrySearch = (e: { preventDefault: () => void; }) => {
     e.preventDefault(); // Prevents default form submission
@@ -442,6 +441,7 @@ const WebScraping: React.FC = () => {
       };
 
       const response = await axios.post(`${API_URL}/ai/api/v1/webscrape`, postData);
+      console.log("resposne",response);
       setPlaces(
         response.data.data[0].places.map((place: Place) => ({
           title: place.title,
@@ -463,7 +463,7 @@ const WebScraping: React.FC = () => {
       setIsPending(false);
     }
   };
-
+console.log("places",places);
   const renderRatingStars = (rating: number) => {
     const stars = [];
     for (let i = 0; i < 5; i++) {
@@ -475,28 +475,166 @@ const WebScraping: React.FC = () => {
     }
     return <div>{stars}</div>;
   };
+  interface OptionType {
+    label: string;
+    value: string;
+}
+
+// const [inputCountry, setInputCountry] = useState<string>(''); // State for input value
+// const [filteredCountries, setFilteredCountries] = useState<string[]>([]); // State for filtered countries
+const [isModalOpen2, setIsModalOpen2] = useState<boolean>(false); // State for modal open/close
+const [selectedCountry, setSelectedCountry] = useState(null); // State to store selected country
+
+  // const [selectedOption, setSelectedOption] = useState<OptionType | null>(null); // Explicitly type selectedOption
+  const countries: OptionType[] = [
+    { label: 'Argentina', value: 'argentina' },
+        { label: 'Australia', value: 'australia' },
+        { label: 'Brazil', value: 'brazil' },
+        { label: 'Canada', value: 'canada' },
+        { label: 'China', value: 'china' },
+        { label: 'France', value: 'france' },
+        { label: 'Germany', value: 'germany' },
+        { label: 'India', value: 'india' },
+        { label: 'Japan', value: 'japan' },
+        { label: 'Mexico', value: 'mexico' },
+        { label: 'Russia', value: 'russia' },
+        { label: 'South Africa', value: 'south-africa' },
+        { label: 'United Kingdom', value: 'uk' },
+        { label: 'United States', value: 'usa' }
+    ]; // Array of country options
+
+    const handleSelectChange = (selectedOption: any): void => {
+      setSelectedOption(selectedOption); // Update selectedOption state
+  };
+ const [inputCountry, setInputCountry] = useState<string>(''); // State for input value
+    const [filteredCountries, setFilteredCountries] = useState<OptionType[]>([]); // State for filtered countries
+    const [selectedOption, setSelectedOption] = useState<OptionType | null>(null); // State for selected country
+    // const [places, setPlaces] = useState<any[]>([]); // State for places (dummy data)
+
+    // Function to handle country input change
+    const handleCountryInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        const { value } = event.target;
+        setInputCountry(value);
+
+        // Filter countries based on input value
+        const filtered = countries.filter(country =>
+            country.label.toLowerCase().includes(value.toLowerCase())
+        );
+        setFilteredCountries(filtered);
+    };
+
+    // Function to handle when a country is selected from the filtered list
+    const handleFilteredCountrySelect = (country: OptionType): void => {
+        setSelectedOption(country); // Set the selected country object
+        setInputCountry(country.label); // Set the input field value to the selected country label
+        setFilteredCountries([]); // Clear filtered countries list
+
+        // Example logic to fetch data or perform actions based on selected country
+        // Replace with your actual implementation
+        const fetchDataForCountry = () => {
+            // Here you can fetch data or perform any necessary actions based on selectedOption.value or selectedOption.label
+            console.log(`Fetching data for ${country.label}`);
+            // Example: fetch(`/api/data/${country.value}`).then(response => response.json()).then(data => console.log(data));
+        };
+
+        fetchDataForCountry();
+    };
+
+const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
+    if ((event.key === 'Backspace' || event.key === 'Delete') && inputCountry === '' && selectedOption !== null) {
+        event.preventDefault(); // Prevent default behavior of Backspace/Delete in input field
+        setSelectedOption(null); // Clear selected country if input is empty and user presses backspace/delete
+    }
+};
+
+  // Function to open modal
+  const openModal2 = () => {
+      setIsModalOpen2(true);
+  };
+
+  // Function to close modal
+  const closeModal2 = () => {
+      setIsModalOpen2(false);
+  };
+
+  // Function to handle adding prospect (dummy function for demo)
+  const handleProspectAdded = () => {
+      // Implement logic to add prospect here
+      console.log('Prospect added');
+      closeModal(); // Close modal after adding prospect
+  };
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-  const MyMapComponent = React.memo(({ places }: { places: Place[] }) => {
-    const center = { lat: 51.505, lng: -0.09 }; // Example center
-    const zoom = 13; // Example zoom level
+  console.log("places2",places);
+
+  const MyMapComponent = () => {
+    const mapRef = useRef<google.maps.Map | null>(null);
+    const mapContainerStyle = {
+      width: '100%',
+      height: '600px',
+    };
+  
+    const center = {
+      lat: -33.89,
+      lng: 151.274,
+    };
+  
+    const zoom = 10;
+  
+    const customMarkerIcon = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
+  
+    const onLoad = useCallback((map: google.maps.Map) => {
+      mapRef.current = map;
+  
+      if (!places || places.length === 0) {
+        return;
+      }
+  
+      const bounds = new window.google.maps.LatLngBounds();
+  
+      places.forEach((place) => {
+        const { latitude, longitude } = place;
+        const position = new window.google.maps.LatLng(latitude, longitude);
+        bounds.extend(position);
+  
+        new window.google.maps.Marker({
+          position,
+          map: mapRef.current,
+          icon: customMarkerIcon,
+        });
+      });
+  
+      mapRef.current?.fitBounds(bounds);
+  
+      const maxZoom = 15;
+      mapRef.current?.addListener('zoom_changed', () => {
+  const currentZoom = mapRef.current?.getZoom();
+  if (currentZoom !== undefined && currentZoom > maxZoom) {
+    mapRef.current?.setZoom(maxZoom);
+  }
+});
+
+  
+    }, [places]);
+  
+    const onUnmount = useCallback(() => {
+      mapRef.current = null;
+    }, []);
   
     return (
       <LoadScript googleMapsApiKey="AIzaSyB8uvaGZVlIgN8HaF4zU72wBeMIYmCBVwo">
         <GoogleMap
+          mapContainerStyle={mapContainerStyle}
           center={center}
           zoom={zoom}
-          mapContainerStyle={{ width: '100%', height: '600px' }}
-        >
-          {places.map((place, index) => (
-            <Marker key={index} position={{ lat: place.latitude, lng: place.longitude }} />
-          ))}
-        </GoogleMap>
+          onLoad={onLoad}
+          onUnmount={onUnmount}
+        />
       </LoadScript>
     );
-  });
+  };
   return (
     <Fragment>
       <div className="flex flex-col h-full flex-1">
@@ -516,6 +654,7 @@ const WebScraping: React.FC = () => {
                   placeholder="Enter search term"
                   value={field.value}
                   onChange={(e) => handleInputChange(field.id, e.target.value)}
+
                 />
                 {fields.length > 1 && (
                   <button className="bg-[#F2F2F2] p-3 rounded-full grid place-content-center" onClick={() => removeField(field.id)}>
@@ -540,29 +679,57 @@ const WebScraping: React.FC = () => {
           <div className="mt-6">
             <h2 className="text-lg font-semibold">Location</h2>
             <div className="flex items-center gap-4 mt-2 bg-[#F2F2F2] p-2 rounded-xl">
-              <Search className="text-primary-green/80 ml-4" />
-              <input
-                type="text"
-                className="h-12 bg-transparent text-primary-black w-full"
-                placeholder="Enter country name"
-                value={inputCountry}
-                onChange={handleCountryInputChange}
-              />
+                <Search className="text-primary-green/80 ml-4" />
+                <input
+    type="text"
+    className="h-12 bg-transparent text-primary-black w-full"
+    placeholder="Enter country name"
+    value={selectedOption ? selectedOption.label : inputCountry}
+    onChange={handleCountryInputChange}
+    onKeyDown={handleInputKeyDown}
 
-              <button
-          onClick={openModal}
-          className="flex items-center gap-3 hover:bg-primary-green/10 sheen min-w-fit py-3 px-4 rounded-lg transition-all duration-300"
-        >
-          {/* Add SVG icon and text here */}
-          Add prospect manually                  <Search className="text-primary-green" />
-                 
+/>
+                <button
+                    onClick={openModal2}
+                    className="flex items-center gap-3 hover:bg-primary-green/10 sheen min-w-fit py-3 px-4 rounded-lg transition-all duration-300"
+                >
+                    Add prospect manually
                 </button>
-                <AddProspectModal isOpen={isModalOpen} onClose={closeModal} onProspectAdded={handleProspectAdded} />
-                </div>
-          </div>
+            </div>
+
+         {filteredCountries.length > 0 && (
+                            <div className="mt-4 border border-gray-200 rounded-md shadow-md p-4">
+                                <h3 className="text-lg font-medium mb-2">Filtered Countries</h3>
+                                <ul className="list-disc list-inside">
+                                    {filteredCountries.map((country, index) => (
+                                        <li
+                                            key={index}
+                                            className="text-primary-black mb-1 cursor-pointer"
+                                            onClick={() => handleFilteredCountrySelect(country)}
+                                        >
+                                            {country.label}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
+                        {/* Display selected country */}
+                        {selectedOption && (
+                            <div className="mt-4">
+                                <h3 className="text-lg font-medium">Selected Country</h3>
+                                <div className="mt-2 bg-[#F2F2F2] p-2 rounded-xl">
+                                    <p className="text-primary-black">{selectedOption.label}</p>
+                                </div>
+                            </div>
+                        )}
+
+            {/* Modal for adding prospect */}
+            <AddProspectModal isOpen={isModalOpen2} onClose={closeModal2} onProspectAdded={handleProspectAdded} />
+        </div>
 
           <div className="mt-8 relative z-[10]">
-           <MyMapComponent places={[]} />
+           <MyMapComponent  />
           </div>
           <button
             onClick={handleBulkSubmit}
