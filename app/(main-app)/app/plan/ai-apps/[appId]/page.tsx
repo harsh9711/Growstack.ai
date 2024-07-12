@@ -171,7 +171,6 @@ export default function AiAppPage({
     }
   };
 
-  
   // const handleSubmit = async () => {
   //   try {
   //     const formattedUserPrompt = assistant.inputs.map((input: any, index: number) => `${input.title}:${userPrompts[index]}`).join(".");
@@ -195,61 +194,48 @@ export default function AiAppPage({
   //     console.error("Error generating template:", error);
   //   }
   // };
-// ;  
-const handleSubmit = async () => {
-  try {
-    // Ensure userPrompts array matches the length of assistant.inputs
-    if (assistant.inputs.length !== userPrompts.length) {
-      throw new Error("Mismatch between inputs and prompts length");
-    }
-
-    const formattedUserPrompt = assistant.inputs
-      .map((input: { title: string }, index: number) => `${input.title}:${userPrompts[index]}`)
-      .join(".");
-
-    const response = await axios.post(
-      `${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`,
-      {
-        ...userInput,
-        user_prompt: formattedUserPrompt,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
+  // ;
+  const handleSubmit = async () => {
+    try {
+      const formattedUserPrompt = assistant.inputs
+        .map(
+          (input: any, index: number) => `${input.title}:${userPrompts[index]}`
+        )
+        .join(".");
+      const response = await axios.post(
+        `${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`,
+        {
+          ...userInput,
+          user_prompt: formattedUserPrompt,
         },
-      }
-    );
-
-    const chatId = response.data.data;
-    const eventSource = new EventSource(
-      `${API_URL}/ai/api/v1/chat-template/generate/stream/${chatId}`
-    );
-
-    let content = "";
-
-    eventSource.onerror = (event) => {
-      console.error("EventSource failed:", event);
-      eventSource.close();
-    };
-
-    eventSource.onmessage = (event) => {
-      let data = event.data;
-      if (data.includes("<p")) {
-        data = "<br>" + data;
-      }
-      content += data;
-      setGeneratedContent(content);
-    };
-
-  } catch (error) {
-    console.error("Error generating template:", error);
-  }
-};
-
-
-
-
- 
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const chatId = response.data.data;
+      const eventSource = new EventSource(
+        `${API_URL}/ai/api/v1/chat-template/generate/stream/${chatId}`
+      );
+      var content = "";
+      eventSource.onerror = (event) => {
+        eventSource.close();
+      };
+      eventSource.onmessage = (event) => {
+        var data = event.data;
+        console.log(data);
+        if (data.includes("<p")) {
+          console.log("Yes");
+          data = "<br>" + data;
+        }
+        content += data;
+        setGeneratedContent(content);
+      };
+    } catch (error) {
+      console.error("Error generating template:", error);
+    }
+  };
 
   const handleEditorChange = (content: string) => {
     setGeneratedContent(content);
@@ -339,11 +325,12 @@ const handleSubmit = async () => {
         <div className="w-full max-w-[600px] p-8 bg-white rounded-2xl border border-[#EDEFF0] space-y-4">
           <div className="mb-5 border-b border-[#EDEFF0]">
             <div className="flex items-center justify-between pb-5">
-            <div className="flex flex-row items-center gap-3">
+              <div className="flex flex-row items-center gap-3">
                 <div
                   className="rounded"
                   dangerouslySetInnerHTML={{ __html: assistant.icon }}
                 />
+
                 <h2 className="text-2xl font-semibold capitalize">
                   {assistant.name}
                 </h2>
