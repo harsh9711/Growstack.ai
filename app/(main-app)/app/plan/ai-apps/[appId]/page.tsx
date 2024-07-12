@@ -268,6 +268,10 @@ export default function AiAppPage({
     e: React.ChangeEvent<HTMLTextAreaElement>,
     index: number
   ) => {
+
+
+
+    
     const { value } = e.target;
     setUserPrompts((prevPrompts) => {
       const updatedPrompts = [...prevPrompts];
