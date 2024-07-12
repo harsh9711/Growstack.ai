@@ -690,7 +690,6 @@ const [selectedCountry, setSelectedCountry] = useState(null); // State to store 
     const [selectedOption, setSelectedOption] = useState<OptionType | null>(null); // State for selected country
     // const [places, setPlaces] = useState<any[]>([]); // State for places (dummy data)
 
-    // Function to handle country input change
     const handleCountryInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const { value } = event.target;
         setInputCountry(value);
@@ -708,8 +707,7 @@ const [selectedCountry, setSelectedCountry] = useState(null); // State to store 
         setInputCountry(country.label); // Set the input field value to the selected country label
         setFilteredCountries([]); // Clear filtered countries list
 
-        // Example logic to fetch data or perform actions based on selected country
-        // Replace with your actual implementation
+        
         const fetchDataForCountry = () => {
             // Here you can fetch data or perform any necessary actions based on selectedOption.value or selectedOption.label
             console.log(`Fetching data for ${country.label}`);
