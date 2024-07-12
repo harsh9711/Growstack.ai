@@ -198,11 +198,15 @@ export default function AiAppPage({
 // ;  
 const handleSubmit = async () => {
   try {
+    // Ensure userPrompts array matches the length of assistant.inputs
+    if (assistant.inputs.length !== userPrompts.length) {
+      throw new Error("Mismatch between inputs and prompts length");
+    }
+
     const formattedUserPrompt = assistant.inputs
-      .map(
-        (input: any, index: number) => `${input.title}:${userPrompts[index]}`
-      )
+      .map((input: { title: string }, index: number) => `${input.title}:${userPrompts[index]}`)
       .join(".");
+
     const response = await axios.post(
       `${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`,
       {
@@ -215,28 +219,34 @@ const handleSubmit = async () => {
         },
       }
     );
+
     const chatId = response.data.data;
     const eventSource = new EventSource(
       `${API_URL}/ai/api/v1/chat-template/generate/stream/${chatId}`
     );
-    var content = "";
+
+    let content = "";
+
     eventSource.onerror = (event) => {
+      console.error("EventSource failed:", event);
       eventSource.close();
     };
+
     eventSource.onmessage = (event) => {
-      var data = event.data;
-      console.log(data);
+      let data = event.data;
       if (data.includes("<p")) {
-        console.log("Yes");
         data = "<br>" + data;
       }
       content += data;
       setGeneratedContent(content);
     };
+
   } catch (error) {
     console.error("Error generating template:", error);
   }
 };
+
+
 
 
  
