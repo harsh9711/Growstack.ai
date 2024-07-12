@@ -13,6 +13,8 @@ import Motion from "@/components/Motion";
 import Spinner from "@/components/Spinner";
 import { toast } from "react-hot-toast";
 import clsx from "clsx";
+import { LoadScript, GoogleMap } from "@react-google-maps/api";
+import React from "react";
 
 const MapContainer = dynamic(() => import("react-leaflet").then((module) => module.MapContainer), { ssr: false });
 const TileLayer = dynamic(() => import("react-leaflet").then((module) => module.TileLayer), { ssr: false });
@@ -102,11 +104,13 @@ const WebScraping: React.FC = () => {
     setInputCountry(e.target.value);
   };
 
-  const handleCountrySearch = () => {
+  const handleCountrySearch = (e: { preventDefault: () => void; }) => {
+    e.preventDefault(); // Prevents default form submission
     if (inputCountry) {
       getGeoInfo(inputCountry);
     }
   };
+  
 
   const handleBulkSubmit = async () => {
     const allTerms = [
@@ -160,6 +164,24 @@ const WebScraping: React.FC = () => {
     return <div>{stars}</div>;
   };
 
+  const MyMapComponent = React.memo(({ places }: { places: Place[] }) => {
+    const center = { lat: 51.505, lng: -0.09 }; // Example center
+    const zoom = 13; // Example zoom level
+  
+    return (
+      <LoadScript googleMapsApiKey="AIzaSyB8uvaGZVlIgN8HaF4zU72wBeMIYmCBVwo">
+        <GoogleMap
+          center={center}
+          zoom={zoom}
+          mapContainerStyle={{ width: '100%', height: '600px' }}
+        >
+          {places.map((place, index) => (
+            <Marker key={index} position={{ lat: place.latitude, lng: place.longitude }} />
+          ))}
+        </GoogleMap>
+      </LoadScript>
+    );
+  });
   return (
     <Fragment>
       <div className="flex flex-col h-full flex-1">
@@ -174,6 +196,12 @@ const WebScraping: React.FC = () => {
               <div key={field.id} className="flex items-center gap-4 mt-5">
                 <span className="text-lg font-semibold">{field.id}.</span>
                 <input
+                  type="text"
+                  className="h-12 bg-[#F2F2F2] rounded-xl text-primary-black px-5 w-full"
+                  placeholder="Enter search term"
+                  value={field.value}
+                  onChange={(e) => handleInputChange(field.id, e.target.value)}
+                /> <input
                   type="text"
                   className="h-12 bg-[#F2F2F2] rounded-xl text-primary-black px-5 w-full"
                   placeholder="Enter search term"
@@ -222,14 +250,7 @@ const WebScraping: React.FC = () => {
           </div>
 
           <div className="mt-8 relative z-[10]">
-            <MapContainer center={center} zoom={zoom} style={{ width: "100%", height: "600px" }}>
-              <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-              {places.map((place, index) => (
-                <Marker key={index} position={[place.latitude, place.longitude]}>
-                  <Popup>{place.title}</Popup>
-                </Marker>
-              ))}
-            </MapContainer>
+           <MyMapComponent places={[]} />
           </div>
           <button
             onClick={handleBulkSubmit}
@@ -288,15 +309,16 @@ const WebScraping: React.FC = () => {
               </Table>
             </Motion>
           )}
-          <button
-            onClick={handleBulkSubmit}
-            disabled={isPending}
-            className={clsx(
-              "mx-auto mt-4 w-[200px] h-14 flex items-center justify-center bg-primary-green rounded-xl sheen text-white",
-              isPending && "bg-opacity-90"
-            )}>
-            {isPending ? <Spinner /> : "Save,"}
-          </button>
+            {showTable && (
+        <button
+          className={clsx(
+            'mx-auto mt-4 w-[200px] h-14 flex items-center justify-center bg-primary-green rounded-xl sheen text-white',
+            isPending && 'bg-opacity-90'
+          )}
+        >
+          Save
+        </button>
+      )}
         </div>
       </div>
     </Fragment>
