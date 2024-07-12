@@ -20,6 +20,7 @@ import { Switch } from "@/components/ui/switch";
 import { ArrowRight } from "lucide-react";
 import { LoadScript, GoogleMap } from "@react-google-maps/api";
 import React from "react";
+import { FaArrowCircleLeft } from "react-icons/fa";
 
 const MapContainer = dynamic(() => import("react-leaflet").then((module) => module.MapContainer), { ssr: false });
 const TileLayer = dynamic(() => import("react-leaflet").then((module) => module.TileLayer), { ssr: false });
@@ -567,10 +568,10 @@ const WebScraping: React.FC = () => {
             onClick={handleBulkSubmit}
             disabled={isPending}
             className={clsx(
-              "mx-auto mt-4 w-[200px] h-14 flex items-center justify-center bg-primary-green rounded-xl sheen text-white",
+              "mx-auto mt-4 w-[200px] h-14  text-2xl flex items-center justify-center bg-primary-green rounded-xl sheen text-white",
               isPending && "bg-opacity-90"
             )}>
-            {isPending ? <Spinner /> : "Start"}
+            {isPending ? <Spinner /> : "Start"}<FaArrowCircleLeft className="rotate-180 text-white text-2xl ml-4" />
           </button>
 
           {showTable && (
@@ -628,7 +629,8 @@ const WebScraping: React.FC = () => {
             isPending && 'bg-opacity-90'
           )}
         >
-          Save
+          Save<FaArrowCircleLeft className="rotate-180 text-white text-2xl ml-4" />
+
         </button>
       )}
         </div>
