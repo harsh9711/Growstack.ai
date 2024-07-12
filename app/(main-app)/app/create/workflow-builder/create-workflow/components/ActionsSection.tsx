@@ -24,11 +24,13 @@ type SuggestionOption = {
     index: number;
     isExpanded: boolean;
     subOptions: SubOption[];
+    show:boolean
 };
 
 type SubOption = {
     label: string;
     name: string;
+    show:boolean
 };
 
 const ActionsSection = ({ actions, activeAction, setActiveAction, onSaveAction, isAPICalling, inputConfigs }: ActionsSectionProps) => {
@@ -98,10 +100,12 @@ const ActionsSection = ({ actions, activeAction, setActiveAction, onSaveAction, 
                 icon: <InputIcon2 />,
                 isExpanded: false,
                 index: 0,
+                show:true,
                 subOptions: inputConfigs.map((inputConfig: any) => ({
                     label: inputConfig.variable_name,
                     value: inputConfig._id,
-                    name: inputConfig.variable_name
+                    name: inputConfig.variable_name,
+                    show:true
                 }))
             },
             ...actions.slice(0, activeAction.index).map((action: any, index: number) => ({
@@ -110,11 +114,13 @@ const ActionsSection = ({ actions, activeAction, setActiveAction, onSaveAction, 
                 label: action.name,
                 index: index + 1,
                 isExpanded: false,
+                show:true,
                 icon: <img src={action.icon} alt={action.name} width="24" height="24" className="flex-shrink-0 rounded-md object-contain min-h-[24px] min-w-[24px]" />,
                 subOptions: [{
                     label: 'Output',
                     value: action.action_id,
-                    name: `Step${index + 1}.output`
+                    name: `Step${index + 1}.output`,
+                    show:true
                 }]
             }))
         ]);
@@ -163,6 +169,20 @@ const ActionsSection = ({ actions, activeAction, setActiveAction, onSaveAction, 
             return option;
         }));
     };
+
+    useEffect(()=>{
+        const query = searchQuery.trim().toLowerCase();
+            setSuggestionOptions((prevState) => prevState.map((option) => {
+                    return {
+                        ...option,
+                        show: option.subOptions.some((subOption) => subOption.label.toLowerCase().includes(query)),
+                        subOptions: option.subOptions.map((subOption) => ({
+                            ...subOption,
+                            show: subOption.label.toLowerCase().includes(query)
+                        }))
+                    }
+            }));
+    },[searchQuery])
 
     return (
         <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
@@ -235,6 +255,7 @@ const ActionsSection = ({ actions, activeAction, setActiveAction, onSaveAction, 
                                             placeholder="Search..."
                                         />
                                         {suggestionOptions.map((suggestion, index) => (
+                                            suggestion.show &&
                                             <div key={index}>
                                                 <div className="flex gap-3 cursor-pointer" onClick={() => toggleSuggestion(index)}>
                                                     <div>
@@ -245,6 +266,7 @@ const ActionsSection = ({ actions, activeAction, setActiveAction, onSaveAction, 
                                                     </div>
                                                 </div>
                                                 {suggestion.isExpanded && suggestion.subOptions.map((subOption, subIndex) => (
+                                                    subOption.show &&
                                                     <div key={subIndex} className="flex gap-3 cursor-pointer" onClick={() => handleSubOptionClick(subOption)}>
                                                         <div>
                                                             {subOption.label}
