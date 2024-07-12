@@ -8,6 +8,7 @@ import ContactsTable from "./components/ContactsTable";
 import RestoreTable from "./components/RestoreTable";
 import TasksTable from "./components/TasksTable";
 import Link from "next/link";
+import { CiCirclePlus } from "react-icons/ci";
 
 export default function ContactsDashboard() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
@@ -111,8 +112,10 @@ export default function ContactsDashboard() {
                 <SettingsIcon size={20} />
               </button>
             </Link>
+            
           </div>
         </div>
+        
         <div className="mt-5">{renderContent(selectedTabIndex)}</div>
       </main>
     </Fragment>

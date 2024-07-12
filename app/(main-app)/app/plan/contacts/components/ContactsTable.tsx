@@ -24,6 +24,8 @@ import { useState } from "react";
 import { contacts } from "./data/contacts";
 import FilterSheet from "./FilterSheet";
 import Motion from "@/components/Motion";
+import Link from "next/link";
+import { CiCirclePlus } from "react-icons/ci";
 
 export const columns: ColumnDef<Contact>[] = [
   {
@@ -161,6 +163,12 @@ export default function ContactsTable() {
             <Search className="text-gray-500" size={20} />
             <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" />
           </div>
+          <Link href="/app/plan/web-scraping/add-prospect" className="w-full max-w-fit">
+                <button className="flex items-center gap-3 hover:bg-primary-green/10 sheen min-w-fit py-3 px-4 rounded-lg transition-all duration-300">
+                  <CiCirclePlus className="text-primary-green" />
+                  Add prospect manually
+                </button>
+              </Link>
           <FilterSheet />
         </div>
         <div className="rounded-lg border overflow-hidden mt-5">
