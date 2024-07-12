@@ -48,7 +48,7 @@ const groupByDate = (items: SidebarItem[]) => {
 };
 const Layout: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [showNewChatInput, setShowNewChatInput] = useState(false);
+  const [_, setShowNewChatInput] = useState(false);
   const [selectedModel, setSelectedModel] = useState<string>("gpt-3.5-turbo");
   const [sidebarItems, setSidebarItems] = useState<SidebarItem[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
@@ -71,7 +71,6 @@ const Layout: React.FC = () => {
           item._id === _id ? { ...item, title: firstFewWords } : item
         )
       );
-    setShowNewChatInput(true);
 
     } catch (error) {
       console.error("Error fetching messages:", error);
@@ -232,7 +231,7 @@ const Layout: React.FC = () => {
         <div className="flex-1 p-4 overflow-y-auto">
             <ChatMessage conversation={messages}/>
         </div>
-        {showNewChatInput && <ChatInput onSend={handleSend} selectedModel={selectedModel} fetchConversations={fetchConversations} selectedConversation={selectedConversation} selectedOption={selectedOption} addMessage={addMessage}/>}
+        <ChatInput onSend={handleSend} selectedModel={selectedModel} fetchConversations={fetchConversations} selectedConversation={selectedConversation} selectedOption={selectedOption} addMessage={addMessage}/>
       </main>
     </div>
   );
