@@ -85,6 +85,25 @@ export default function AiAppPage({
     temp.innerHTML = html;
     return temp.textContent || temp.innerText || "";
   };
+  
+  const handleChange = (e: { target: { value: string; name: any; }; }) => {
+    let newValue = parseInt(e.target.value, 10);
+  
+    if (newValue < 0) {
+      newValue = 0;
+    }
+  
+    setUserInput({ ...userInput, [e.target.name]: newValue });
+  };
+  // const handleChange2 = (e: { target: { value: string; }; }) => {
+  //   let newValue = parseInt(e.target.value, 10);
+  
+  //   if (newValue < 0) {
+  //     newValue = 0;
+  //   }
+  //   setUserInput({ ...userInput, estimated_result_length: newValue });
+  // };
+  
   useEffect(() => {
     const fetchAssistant = async () => {
       try {
@@ -171,7 +190,6 @@ export default function AiAppPage({
     }
   };
 
-  
   // const handleSubmit = async () => {
   //   try {
   //     const formattedUserPrompt = assistant.inputs.map((input: any, index: number) => `${input.title}:${userPrompts[index]}`).join(".");
@@ -195,55 +213,48 @@ export default function AiAppPage({
   //     console.error("Error generating template:", error);
   //   }
   // };
-// ;  
-const handleSubmit = async () => {
-  try {
-    const formattedUserPrompt = assistant.inputs
-      .map((input: { title: any; }, index:number) => `${input.title}: ${userPrompts[index]}`)
-      .join(" "); // <-- Changed to join with a space between each part
-
-    const response = await fetch(`${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        ...userInput,
-        user_prompt: formattedUserPrompt,
-      }),
-    });
-
-    if (!response.body) {
-      throw new Error('ReadableStream not supported in this browser.');
-    }
-
-    const reader = response.body.getReader();
-
-    console.log("HERE:   ", response.body);
-    const decoder = new TextDecoder();
-    let content = '';
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-
-      const chunk = decoder.decode(value);
-
-      const cleanedChunk = chunk.split("\n").map(line => line.replace(/^data:\s*/, '')).join('');
-      content += cleanedChunk;
-
-      if (content.includes('.')) {
+  // ;
+  const handleSubmit = async () => {
+    try {
+      const formattedUserPrompt = assistant.inputs
+        .map(
+          (input: any, index: number) => `${input.title}:${userPrompts[index]}`
+        )
+        .join(".");
+      const response = await axios.post(
+        `${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`,
+        {
+          ...userInput,
+          user_prompt: formattedUserPrompt,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const chatId = response.data.data;
+      const eventSource = new EventSource(
+        `${API_URL}/ai/api/v1/chat-template/generate/stream/${chatId}`
+      );
+      var content = "";
+      eventSource.onerror = (event) => {
+        eventSource.close();
+      };
+      eventSource.onmessage = (event) => {
+        var data = event.data;
+        console.log(data);
+        if (data.includes("<p")) {
+          console.log("Yes");
+          data = "<br>" + data;
+        }
+        content += data;
         setGeneratedContent(content);
-      }
+      };
+    } catch (error) {
+      console.error("Error generating template:", error);
     }
-  } catch (error) {
-    console.error("Error generating template:", error);
-  }
-};
-
-
-
- 
+  };
 
   const handleEditorChange = (content: string) => {
     setGeneratedContent(content);
@@ -257,6 +268,10 @@ const handleSubmit = async () => {
     e: React.ChangeEvent<HTMLTextAreaElement>,
     index: number
   ) => {
+
+
+
+    
     const { value } = e.target;
     setUserPrompts((prevPrompts) => {
       const updatedPrompts = [...prevPrompts];
@@ -333,12 +348,12 @@ const handleSubmit = async () => {
         <div className="w-full max-w-[600px] p-8 bg-white rounded-2xl border border-[#EDEFF0] space-y-4">
           <div className="mb-5 border-b border-[#EDEFF0]">
             <div className="flex items-center justify-between pb-5">
-              <div className="flex items-center gap-3">
-                <img
-                  src={assistant.icon}
-                  alt=""
-                  className="rounded w-[34px] h-[34px]"
+              <div className="flex flex-row items-center gap-3">
+                <div
+                  className="rounded"
+                  dangerouslySetInnerHTML={{ __html: assistant.icon }}
                 />
+
                 <h2 className="text-2xl font-semibold capitalize">
                   {assistant.name}
                 </h2>
@@ -513,7 +528,7 @@ const handleSubmit = async () => {
                 id="number-of-results"
                 name="number_of_results"
                 value={userInput.number_of_results}
-                // onChange={handleChange}
+                onChange={handleChange}
               />
             </div>
             <div>
@@ -528,7 +543,7 @@ const handleSubmit = async () => {
                 id="estimated-result-length"
                 name="estimated_result_length"
                 value={userInput.estimated_result_length}
-                // onChange={handleChange}
+                onChange={handleChange}
               />
             </div>
           </div>

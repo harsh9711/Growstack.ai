@@ -179,7 +179,7 @@ export default function CreateAssistantPage() {
                   <SelectContent>
                     <SelectItem value="Articles And Contents">Articles And Contents</SelectItem>
                     <SelectItem value="Blogs Posts">Blogs Posts</SelectItem>
-                    <SelectItem value="Commerce">Commerce</SelectItem>
+                    <SelectItem value="Commerce"> Ecommerce</SelectItem>
                     <SelectItem value="Emails">Emails</SelectItem>
                     <SelectItem value="Frameworks">Frameworks</SelectItem>
                     <SelectItem value="Marketing">Marketing</SelectItem>
@@ -248,15 +248,19 @@ export default function CreateAssistantPage() {
                   )}
 
                   <div className="w-full space-y-2">
-                    <Select value={input.required} onValueChange={(value) => handleInputChange(index, "required", value)}>
-                      <SelectTrigger className="w-full border-none h-14">
-                        <SelectValue placeholder="Optional" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Optional">Optional</SelectItem>
-                        <SelectItem value="Required">Required</SelectItem>
-                      </SelectContent>
-                    </Select>{" "}
+                <Select 
+  value={input.required || "Required"} 
+  onValueChange={(value) => handleInputChange(index, "required", value)}
+>
+  <SelectTrigger className="w-full border-none h-14">
+    <SelectValue placeholder="Required" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="Required">Required</SelectItem>
+    <SelectItem value="Optional">Optional</SelectItem>
+  </SelectContent>
+</Select>
+
                   </div>
 
                   {index === userInputs.length - 1 ? (

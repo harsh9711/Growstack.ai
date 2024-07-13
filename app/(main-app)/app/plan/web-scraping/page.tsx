@@ -1,5 +1,6 @@
+// web scraping done
 "use client";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { Plus, Search, X } from "lucide-react";
 import axios from "axios";
 import { API_URL } from "@/lib/api";
@@ -18,6 +19,10 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { ArrowRight } from "lucide-react";
+import { LoadScript, GoogleMap } from "@react-google-maps/api";
+import React from "react";
+import { FaArrowCircleLeft } from "react-icons/fa";
+
 const MapContainer = dynamic(() => import("react-leaflet").then((module) => module.MapContainer), { ssr: false });
 const TileLayer = dynamic(() => import("react-leaflet").then((module) => module.TileLayer), { ssr: false });
 const Marker = dynamic(() => import("react-leaflet").then((module) => module.Marker), { ssr: false });
@@ -192,13 +197,12 @@ const [showTable, setShowTable] = useState(false); // State to control table vis
                         </span>
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="sunday">Sunday</SelectItem>
-                        <SelectItem value="monday">Monday</SelectItem>
-                        <SelectItem value="wednesday">Wednesday</SelectItem>
-                        <SelectItem value="thursday">Thursday</SelectItem>
-                        <SelectItem value="friday">Friday</SelectItem>
-                        <SelectItem value="saturday">Saturday</SelectItem>
-                        <SelectItem value="sunday">Sunday</SelectItem>
+                        <SelectItem value="monday">Afghanistan</SelectItem>
+                        <SelectItem value="wednesday">Albania</SelectItem>
+                        <SelectItem value="thursday">Algeria</SelectItem>
+                        <SelectItem value="friday">Andorra</SelectItem>
+                        <SelectItem value="saturday">Angola</SelectItem>
+                        <SelectItem value="sunday">Anguilla</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -320,7 +324,7 @@ const [showTable, setShowTable] = useState(false); // State to control table vis
 
     </>
   );
-};
+}
 interface Place {
   latitude: number;
   longitude: number;
@@ -338,7 +342,6 @@ const WebScraping: React.FC = () => {
   const [count, setCount] = useState(1);
   const [bulkInput, setBulkInput] = useState("");
   const [countryCode, setCountryCode] = useState("");
-  const [inputCountry, setInputCountry] = useState("");
   const [places, setPlaces] = useState<Place[]>([]);
   const [showTable, setShowTable] = useState(false);
   const [center, setCenter] = useState<LatLngExpression>([39.0997, -94.5786]);
@@ -346,11 +349,11 @@ const WebScraping: React.FC = () => {
   const [isPending, setIsPending] = useState(false);
   const router = useRouter();
 
-  const handleProspectAdded = (newProspect: Place) => {
-    // Update places state with the new prospect
-    setPlaces([...places, newProspect]);
-    setShowTable(true); // Show the table after adding a prospect
-  };
+  // const handleProspectAdded = (newProspect: Place) => {
+  //   // Update places state with the new prospect
+  //   setPlaces([...places, newProspect]);
+  //   setShowTable(true); // Show the table after adding a prospect
+  // };
   useEffect(() => {
     if (places.length > 0) {
       setCenter([places[0].latitude, places[0].longitude]);
@@ -408,15 +411,17 @@ const WebScraping: React.FC = () => {
     setBulkInput(terms.join(","));
   };
 
-  const handleCountryInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputCountry(e.target.value);
-  };
+  // const handleCountryInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setInputCountry(e.target.value);
+  // };
 
-  const handleCountrySearch = () => {
+  const handleCountrySearch = (e: { preventDefault: () => void; }) => {
+    e.preventDefault(); // Prevents default form submission
     if (inputCountry) {
       getGeoInfo(inputCountry);
     }
   };
+  
 
   const handleBulkSubmit = async () => {
     const allTerms = [
@@ -436,6 +441,7 @@ const WebScraping: React.FC = () => {
       };
 
       const response = await axios.post(`${API_URL}/ai/api/v1/webscrape`, postData);
+      console.log("resposne",response);
       setPlaces(
         response.data.data[0].places.map((place: Place) => ({
           title: place.title,
@@ -457,7 +463,7 @@ const WebScraping: React.FC = () => {
       setIsPending(false);
     }
   };
-
+console.log("places",places);
   const renderRatingStars = (rating: number) => {
     const stars = [];
     for (let i = 0; i < 5; i++) {
@@ -469,10 +475,344 @@ const WebScraping: React.FC = () => {
     }
     return <div>{stars}</div>;
   };
+  interface OptionType {
+    label: string;
+    value: string;
+}
+
+// const [inputCountry, setInputCountry] = useState<string>(''); // State for input value
+// const [filteredCountries, setFilteredCountries] = useState<string[]>([]); // State for filtered countries
+const [isModalOpen2, setIsModalOpen2] = useState<boolean>(false); // State for modal open/close
+const [selectedCountry, setSelectedCountry] = useState(null); // State to store selected country
+
+  // const [selectedOption, setSelectedOption] = useState<OptionType | null>(null); // Explicitly type selectedOption
+  const countries: OptionType[] = [
+    { label: 'Afghanistan', value: 'afghanistan' },
+  { label: 'Albania', value: 'albania' },
+  { label: 'Algeria', value: 'algeria' },
+  { label: 'Andorra', value: 'andorra' },
+  { label: 'Angola', value: 'angola' },
+  { label: 'Antigua and Barbuda', value: 'antigua-and-barbuda' },
+  { label: 'Argentina', value: 'argentina' },
+  { label: 'Armenia', value: 'armenia' },
+  { label: 'Australia', value: 'australia' },
+  { label: 'Austria', value: 'austria' },
+  { label: 'Azerbaijan', value: 'azerbaijan' },
+  { label: 'Bahamas', value: 'bahamas' },
+  { label: 'Bahrain', value: 'bahrain' },
+  { label: 'Bangladesh', value: 'bangladesh' },
+  { label: 'Barbados', value: 'barbados' },
+  { label: 'Belarus', value: 'belarus' },
+  { label: 'Belgium', value: 'belgium' },
+  { label: 'Belize', value: 'belize' },
+  { label: 'Benin', value: 'benin' },
+  { label: 'Bhutan', value: 'bhutan' },
+  { label: 'Bolivia', value: 'bolivia' },
+  { label: 'Bosnia and Herzegovina', value: 'bosnia-and-herzegovina' },
+  { label: 'Botswana', value: 'botswana' },
+  { label: 'Brazil', value: 'brazil' },
+  { label: 'Brunei', value: 'brunei' },
+  { label: 'Bulgaria', value: 'bulgaria' },
+  { label: 'Burkina Faso', value: 'burkina-faso' },
+  { label: 'Burundi', value: 'burundi' },
+  { label: 'Cabo Verde', value: 'cabo-verde' },
+  { label: 'Cambodia', value: 'cambodia' },
+  { label: 'Cameroon', value: 'cameroon' },
+  { label: 'Canada', value: 'canada' },
+  { label: 'Central African Republic', value: 'central-african-republic' },
+  { label: 'Chad', value: 'chad' },
+  { label: 'Chile', value: 'chile' },
+  { label: 'China', value: 'china' },
+  { label: 'Colombia', value: 'colombia' },
+  { label: 'Comoros', value: 'comoros' },
+  { label: 'Congo', value: 'congo' },
+  { label: 'Costa Rica', value: 'costa-rica' },
+  { label: 'Croatia', value: 'croatia' },
+  { label: 'Cuba', value: 'cuba' },
+  { label: 'Cyprus', value: 'cyprus' },
+  { label: 'Czech Republic', value: 'czech-republic' },
+  { label: 'Denmark', value: 'denmark' },
+  { label: 'Djibouti', value: 'djibouti' },
+  { label: 'Dominica', value: 'dominica' },
+  { label: 'Dominican Republic', value: 'dominican-republic' },
+  { label: 'Ecuador', value: 'ecuador' },
+  { label: 'Egypt', value: 'egypt' },
+  { label: 'El Salvador', value: 'el-salvador' },
+  { label: 'Equatorial Guinea', value: 'equatorial-guinea' },
+  { label: 'Eritrea', value: 'eritrea' },
+  { label: 'Estonia', value: 'estonia' },
+  { label: 'Eswatini', value: 'eswatini' },
+  { label: 'Ethiopia', value: 'ethiopia' },
+  { label: 'Fiji', value: 'fiji' },
+  { label: 'Finland', value: 'finland' },
+  { label: 'France', value: 'france' },
+  { label: 'Gabon', value: 'gabon' },
+  { label: 'Gambia', value: 'gambia' },
+  { label: 'Georgia', value: 'georgia' },
+  { label: 'Germany', value: 'germany' },
+  { label: 'Ghana', value: 'ghana' },
+  { label: 'Greece', value: 'greece' },
+  { label: 'Grenada', value: 'grenada' },
+  { label: 'Guatemala', value: 'guatemala' },
+  { label: 'Guinea', value: 'guinea' },
+  { label: 'Guinea-Bissau', value: 'guinea-bissau' },
+  { label: 'Guyana', value: 'guyana' },
+  { label: 'Haiti', value: 'haiti' },
+  { label: 'Honduras', value: 'honduras' },
+  { label: 'Hungary', value: 'hungary' },
+  { label: 'Iceland', value: 'iceland' },
+  { label: 'India', value: 'india' },
+  { label: 'Indonesia', value: 'indonesia' },
+  { label: 'Iran', value: 'iran' },
+  { label: 'Iraq', value: 'iraq' },
+  { label: 'Ireland', value: 'ireland' },
+  { label: 'Israel', value: 'israel' },
+  { label: 'Italy', value: 'italy' },
+  { label: 'Jamaica', value: 'jamaica' },
+  { label: 'Japan', value: 'japan' },
+  { label: 'Jordan', value: 'jordan' },
+  { label: 'Kazakhstan', value: 'kazakhstan' },
+  { label: 'Kenya', value: 'kenya' },
+  { label: 'Kiribati', value: 'kiribati' },
+  { label: 'Kuwait', value: 'kuwait' },
+  { label: 'Kyrgyzstan', value: 'kyrgyzstan' },
+  { label: 'Laos', value: 'laos' },
+  { label: 'Latvia', value: 'latvia' },
+  { label: 'Lebanon', value: 'lebanon' },
+  { label: 'Lesotho', value: 'lesotho' },
+  { label: 'Liberia', value: 'liberia' },
+  { label: 'Libya', value: 'libya' },
+  { label: 'Liechtenstein', value: 'liechtenstein' },
+  { label: 'Lithuania', value: 'lithuania' },
+  { label: 'Luxembourg', value: 'luxembourg' },
+  { label: 'Madagascar', value: 'madagascar' },
+  { label: 'Malawi', value: 'malawi' },
+  { label: 'Malaysia', value: 'malaysia' },
+  { label: 'Maldives', value: 'maldives' },
+  { label: 'Mali', value: 'mali' },
+  { label: 'Malta', value: 'malta' },
+  { label: 'Marshall Islands', value: 'marshall-islands' },
+  { label: 'Mauritania', value: 'mauritania' },
+  { label: 'Mauritius', value: 'mauritius' },
+  { label: 'Mexico', value: 'mexico' },
+  { label: 'Micronesia', value: 'micronesia' },
+  { label: 'Moldova', value: 'moldova' },
+  { label: 'Monaco', value: 'monaco' },
+  { label: 'Mongolia', value: 'mongolia' },
+  { label: 'Montenegro', value: 'montenegro' },
+  { label: 'Morocco', value: 'morocco' },
+  { label: 'Mozambique', value: 'mozambique' },
+  { label: 'Myanmar', value: 'myanmar' },
+  { label: 'Namibia', value: 'namibia' },
+  { label: 'Nauru', value: 'nauru' },
+  { label: 'Nepal', value: 'nepal' },
+  { label: 'Netherlands', value: 'netherlands' },
+  { label: 'New Zealand', value: 'new-zealand' },
+  { label: 'Nicaragua', value: 'nicaragua' },
+  { label: 'Niger', value: 'niger' },
+  { label: 'Nigeria', value: 'nigeria' },
+  { label: 'North Korea', value: 'north-korea' },
+  { label: 'North Macedonia', value: 'north-macedonia' },
+  { label: 'Norway', value: 'norway' },
+  { label: 'Oman', value: 'oman' },
+  { label: 'Pakistan', value: 'pakistan' },
+  { label: 'Palau', value: 'palau' },
+  { label: 'Palestine', value: 'palestine' },
+  { label: 'Panama', value: 'panama' },
+  { label: 'Papua New Guinea', value: 'papua-new-guinea' },
+  { label: 'Paraguay', value: 'paraguay' },
+  { label: 'Peru', value: 'peru' },
+  { label: 'Philippines', value: 'philippines' },
+  { label: 'Poland', value: 'poland' },
+  { label: 'Portugal', value: 'portugal' },
+  { label: 'Qatar', value: 'qatar' },
+  { label: 'Romania', value: 'romania' },
+  { label: 'Russia', value: 'russia' },
+  { label: 'Rwanda', value: 'rwanda' },
+  { label: 'Saint Kitts and Nevis', value: 'saint-kitts-and-nevis' },
+  { label: 'Saint Lucia', value: 'saint-lucia' },
+  { label: 'Saint Vincent and the Grenadines', value: 'saint-vincent-and-the-grenadines' },
+  { label: 'Samoa', value: 'samoa' },
+  { label: 'San Marino', value: 'san-marino' },
+  { label: 'Sao Tome and Principe', value: 'sao-tome-and-principe' },
+  { label: 'Saudi Arabia', value: 'saudi-arabia' },
+  { label: 'Senegal', value: 'senegal' },
+  { label: 'Serbia', value: 'serbia' },
+  { label: 'Seychelles', value: 'seychelles' },
+  { label: 'Sierra Leone', value: 'sierra-leone' },
+  { label: 'Singapore', value: 'singapore' },
+  { label: 'Slovakia', value: 'slovakia' },
+  { label: 'Slovenia', value: 'slovenia' },
+  { label: 'Solomon Islands', value: 'solomon-islands' },
+  { label: 'Somalia', value: 'somalia' },
+  { label: 'South Africa', value: 'south-africa' },
+  { label: 'South Korea', value: 'south-korea' },
+  { label: 'South Sudan', value: 'south-sudan' },
+  { label: 'Spain', value: 'spain' },
+  { label: 'Sri Lanka', value: 'sri-lanka' },
+  { label: 'Sudan', value: 'sudan' },
+  { label: 'Suriname', value: 'suriname' },
+  { label: 'Sweden', value: 'sweden' },
+  { label: 'Switzerland', value: 'switzerland' },
+  { label: 'Syria', value: 'syria' },
+  { label: 'Taiwan', value: 'taiwan' },
+  { label: 'Tajikistan', value: 'tajikistan' },
+  { label: 'Tanzania', value: 'tanzania' },
+  { label: 'Thailand', value: 'thailand' },
+  { label: 'Timor-Leste', value: 'timor-leste' },
+  { label: 'Togo', value: 'togo' },
+  { label: 'Tonga', value: 'tonga' },
+  { label: 'Trinidad and Tobago', value: 'trinidad-and-tobago' },
+  { label: 'Tunisia', value: 'tunisia' },
+  { label: 'Turkey', value: 'turkey' },
+  { label: 'Turkmenistan', value: 'turkmenistan' },
+  { label: 'Tuvalu', value: 'tuvalu' },
+  { label: 'Uganda', value: 'uganda' },
+  { label: 'Ukraine', value: 'ukraine' },
+  { label: 'United Arab Emirates', value: 'united-arab-emirates' },
+  { label: 'United Kingdom', value: 'united-kingdom' },
+  { label: 'United States', value: 'united-states' },
+  { label: 'Uruguay', value: 'uruguay' },
+  { label: 'Uzbekistan', value: 'uzbekistan' },
+  { label: 'Vanuatu', value: 'vanuatu' },
+  { label: 'Vatican City', value: 'vatican-city' },
+  { label: 'Venezuela', value: 'venezuela' },
+  { label: 'Vietnam', value: 'vietnam' },
+  { label: 'Yemen', value: 'yemen' },
+  { label: 'Zambia', value: 'zambia' },
+  { label: 'Zimbabwe', value: 'zimbabwe' }
+    ]; // Array of country options
+
+    const handleSelectChange = (selectedOption: any): void => {
+      setSelectedOption(selectedOption); // Update selectedOption state
+  };
+ const [inputCountry, setInputCountry] = useState<string>(''); // State for input value
+    const [filteredCountries, setFilteredCountries] = useState<OptionType[]>([]); // State for filtered countries
+    const [selectedOption, setSelectedOption] = useState<OptionType | null>(null); // State for selected country
+    // const [places, setPlaces] = useState<any[]>([]); // State for places (dummy data)
+
+    const handleCountryInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        const { value } = event.target;
+        setInputCountry(value);
+
+        // Filter countries based on input value
+        const filtered = countries.filter(country =>
+            country.label.toLowerCase().includes(value.toLowerCase())
+        );
+        setFilteredCountries(filtered);
+    };
+
+    // Function to handle when a country is selected from the filtered list
+    const handleFilteredCountrySelect = (country: OptionType): void => {
+        setSelectedOption(country); // Set the selected country object
+        setInputCountry(country.label); // Set the input field value to the selected country label
+        setFilteredCountries([]); // Clear filtered countries list
+
+        
+        const fetchDataForCountry = () => {
+          
+            console.log(`Fetching data for ${country.label}`);
+            // Example: fetch(`/api/data/${country.value}`).then(response => response.json()).then(data => console.log(data));
+        };
+
+        fetchDataForCountry();
+    };
+
+const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
+    if ((event.key === 'Backspace' || event.key === 'Delete') && inputCountry === '' && selectedOption !== null) {
+        event.preventDefault(); // Prevent default behavior of Backspace/Delete in input field
+        setSelectedOption(null); // Clear selected country if input is empty and user presses backspace/delete
+    }
+};
+
+  // Function to open modal
+  const openModal2 = () => {
+      setIsModalOpen2(true);
+  };
+
+  // Function to close modal
+  const closeModal2 = () => {
+      setIsModalOpen2(false);
+  };
+
+  // Function to handle adding prospect (dummy function for demo)
+  const handleProspectAdded = (newProspect: Place) => {
+    // Update places state with the new prospect
+    setPlaces([...places, newProspect]);
+    setShowTable(true); // Show the table after adding a prospect
+  };
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+  console.log("places2",places);
+
+  const MyMapComponent = () => {
+    const mapRef = useRef<google.maps.Map | null>(null);
+    const mapContainerStyle = {
+      width: '100%',
+      height: '600px',
+    };
+  
+    const center = {
+      lat: -33.89,
+      lng: 151.274,
+    };
+  
+    const zoom = 10;
+  
+    const customMarkerIcon = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
+  
+    const onLoad = useCallback((map: google.maps.Map) => {
+      mapRef.current = map;
+  
+      if (!places || places.length === 0) {
+        return;
+      }
+  
+      const bounds = new window.google.maps.LatLngBounds();
+  
+      places.forEach((place) => {
+        const { latitude, longitude } = place;
+        const position = new window.google.maps.LatLng(latitude, longitude);
+        bounds.extend(position);
+  
+        new window.google.maps.Marker({
+          position,
+          map: mapRef.current,
+          icon: customMarkerIcon,
+        });
+      });
+  
+      mapRef.current?.fitBounds(bounds);
+  
+      const maxZoom = 15;
+      mapRef.current?.addListener('zoom_changed', () => {
+  const currentZoom = mapRef.current?.getZoom();
+  if (currentZoom !== undefined && currentZoom > maxZoom) {
+    mapRef.current?.setZoom(maxZoom);
+  }
+});
+
+  
+    }, [places]);
+  
+    const onUnmount = useCallback(() => {
+      mapRef.current = null;
+    }, []);
+  
+    return (
+      <LoadScript googleMapsApiKey="AIzaSyB8uvaGZVlIgN8HaF4zU72wBeMIYmCBVwo">
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          center={center}
+          zoom={zoom}
+          onLoad={onLoad}
+          onUnmount={onUnmount}
+        />
+      </LoadScript>
+    );
+  };
   return (
     <Fragment>
       <div className="flex flex-col h-full flex-1">
@@ -492,6 +832,7 @@ const WebScraping: React.FC = () => {
                   placeholder="Enter search term"
                   value={field.value}
                   onChange={(e) => handleInputChange(field.id, e.target.value)}
+
                 />
                 {fields.length > 1 && (
                   <button className="bg-[#F2F2F2] p-3 rounded-full grid place-content-center" onClick={() => removeField(field.id)}>
@@ -516,45 +857,66 @@ const WebScraping: React.FC = () => {
           <div className="mt-6">
             <h2 className="text-lg font-semibold">Location</h2>
             <div className="flex items-center gap-4 mt-2 bg-[#F2F2F2] p-2 rounded-xl">
-              <Search className="text-primary-green/80 ml-4" />
-              <input
-                type="text"
-                className="h-12 bg-transparent text-primary-black w-full"
-                placeholder="Enter country name"
-                value={inputCountry}
-                onChange={handleCountryInputChange}
-              />
+                <Search className="text-primary-green/80 ml-4" />
+                <input
+    type="text"
+    className="h-12 bg-transparent text-primary-black w-full"
+    placeholder="Enter country name"
+    value={selectedOption ? selectedOption.label : inputCountry}
+    onChange={handleCountryInputChange}
+    onKeyDown={handleInputKeyDown}
 
-              <button
-          onClick={openModal}
-          className="flex items-center gap-3 hover:bg-primary-green/10 sheen min-w-fit py-3 px-4 rounded-lg transition-all duration-300"
-        >
-          {/* Add SVG icon and text here */}
-          Add prospect manually                  <Search className="text-primary-green" />
-                 
+/>
+                <button
+                    onClick={openModal2}
+                    className="flex items-center gap-3 hover:bg-primary-green/10 sheen min-w-fit py-3 px-4 rounded-lg transition-all duration-300"
+                >
+                    Add prospect manually
                 </button>
-                <AddProspectModal isOpen={isModalOpen} onClose={closeModal} onProspectAdded={handleProspectAdded} />
-                </div>
-          </div>
+            </div>
+
+         {filteredCountries.length > 0 && (
+                            <div className="mt-4 border border-gray-200 rounded-md shadow-md p-4">
+                                <h3 className="text-lg font-medium mb-2">Filtered Countries</h3>
+                                <ul className="list-disc list-inside">
+                                    {filteredCountries.map((country, index) => (
+                                        <li
+                                            key={index}
+                                            className="text-primary-black mb-1 cursor-pointer"
+                                            onClick={() => handleFilteredCountrySelect(country)}
+                                        >
+                                            {country.label}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
+                        {/* Display selected country */}
+                        {selectedOption && (
+                            <div className="mt-4">
+                                <h3 className="text-lg font-medium">Selected Country</h3>
+                                <div className="mt-2 bg-[#F2F2F2] p-2 rounded-xl">
+                                    <p className="text-primary-black">{selectedOption.label}</p>
+                                </div>
+                            </div>
+                        )}
+
+            {/* Modal for adding prospect */}
+            <AddProspectModal isOpen={isModalOpen2} onClose={closeModal2} onProspectAdded={handleProspectAdded} />
+        </div>
 
           <div className="mt-8 relative z-[10]">
-            <MapContainer center={center} zoom={zoom} style={{ width: "100%", height: "600px" }}>
-              <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-              {places.map((place, index) => (
-                <Marker key={index} position={[place.latitude, place.longitude]}>
-                  <Popup>{place.title}</Popup>
-                </Marker>
-              ))}
-            </MapContainer>
+           <MyMapComponent  />
           </div>
           <button
             onClick={handleBulkSubmit}
             disabled={isPending}
             className={clsx(
-              "mx-auto mt-4 w-[200px] h-14 flex items-center justify-center bg-primary-green rounded-xl sheen text-white",
+              "mx-auto mt-4 w-[200px] h-14  text-2xl flex items-center justify-center bg-primary-green rounded-xl sheen text-white",
               isPending && "bg-opacity-90"
             )}>
-            {isPending ? <Spinner /> : "Start"}
+            {isPending ? <Spinner /> : "Start"}<FaArrowCircleLeft className="rotate-180 text-white text-2xl ml-4" />
           </button>
 
           {showTable && (
@@ -605,15 +967,17 @@ const WebScraping: React.FC = () => {
               </Table>
             </Motion>
           )}
-          <button
-            onClick={handleBulkSubmit}
-            disabled={isPending}
-            className={clsx(
-              "mx-auto mt-4 w-[200px] h-14 flex items-center justify-center bg-primary-green rounded-xl sheen text-white",
-              isPending && "bg-opacity-90"
-            )}>
-            {isPending ? <Spinner /> : "Save,"}
-          </button>
+            {showTable && (
+        <button
+          className={clsx(
+            'mx-auto mt-4 w-[200px] h-14 flex items-center justify-center bg-primary-green rounded-xl sheen text-white',
+            isPending && 'bg-opacity-90'
+          )}
+        >
+          Save<FaArrowCircleLeft className="rotate-180 text-white text-2xl ml-4" />
+
+        </button>
+      )}
         </div>
       </div>
     </Fragment>
@@ -621,3 +985,5 @@ const WebScraping: React.FC = () => {
 };
 
 export default WebScraping;
+
+
