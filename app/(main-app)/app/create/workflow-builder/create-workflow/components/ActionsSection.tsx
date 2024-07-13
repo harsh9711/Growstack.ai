@@ -6,7 +6,24 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import clsx from 'clsx'
 import { Input } from '@/components/ui/input'
 import DotsLoader from '@/components/DotLoader'
-
+import { IoIosArrowDropdown } from 'react-icons/io'
+import { MenuIcon } from 'lucide-react'
+const DropdownArrowIcon = () => (
+    <svg
+        className="h-5 w-5 ml-2"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+        />
+    </svg>
+);
 interface ActionsSectionProps {
     activeAction: any;
     setActiveAction: (params: any) => void;
@@ -201,7 +218,7 @@ const ActionsSection = ({ actions, activeAction, setActiveAction, onSaveAction, 
                     if (option.input_type === "DROPDOWN") {
                         return (
                             <React.Fragment key={index}>
-                                <div className="font-bold text-xl">{option.input_label}</div>
+                                <div className="font-medium mb-2 capitalize text-xl">{option.input_label}</div>
                                 <Select value={selectedOption} onValueChange={setSelectedOption}>
                                     <SelectTrigger className="w-full h-12 rounded-lg border border-primary-green bg-white text-primary-green">
                                         <SelectValue placeholder="Select an option">
@@ -233,51 +250,65 @@ const ActionsSection = ({ actions, activeAction, setActiveAction, onSaveAction, 
 
                     if (option.input_type === "TEXT_AREA") {
                         return (
-                            <div key={index}>
-                                <div className="font-bold text-xl">Instructions</div>
-                                <textarea
-                                    ref={textareaRef}
-                                    onFocus={handleTextareaFocus}
-                                    id="description"
-                                    name="description"
-                                    value={description}
-                                    onChange={(e) => setDescription(e.target.value)}
-                                    placeholder="Describe what your image is about"
-                                    className="h-[200px] w-full bg-[#F5F5F5] rounded-xl block resize-none p-4 text-[15px]"
-                                ></textarea>
-                                {isDropdownVisible && (
-                                    <div className="dropdown" ref={dropdownRef}>
-                                        <input
-                                            type="text"
-                                            value={searchQuery}
-                                            onChange={handleSearchChange}
-                                            className=""
-                                            placeholder="Search..."
-                                        />
-                                        {suggestionOptions.map((suggestion, index) => (
-                                            suggestion.show &&
-                                            <div key={index}>
-                                                <div className="flex gap-3 cursor-pointer" onClick={() => toggleSuggestion(index)}>
-                                                    <div>
-                                                        {suggestion.icon}
-                                                    </div>
-                                                    <div>
-                                                        {suggestion.label}
-                                                    </div>
-                                                </div>
-                                                {suggestion.isExpanded && suggestion.subOptions.map((subOption, subIndex) => (
-                                                    subOption.show &&
-                                                    <div key={subIndex} className="flex gap-3 cursor-pointer" onClick={() => handleSubOptionClick(subOption)}>
-                                                        <div>
-                                                            {subOption.label}
-                                                        </div>
-                                                    </div>
-                                                ))}
+                          <div key={index} className='mt-8 '>
+            <div className="font-medium  text-xl mb-2 capitalize">Instructions</div>
+            <textarea
+                ref={textareaRef}
+                onFocus={handleTextareaFocus}
+                id="description"
+                name="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Describe what your image is about"
+                className="h-[200px] w-full bg-[#F5F5F5] rounded-xl block resize-none p-4 text-[15px]"
+            ></textarea>
+            {isDropdownVisible && (
+                <div className="dropdown border border-white shadow-md rounded-xl mt-2" ref={dropdownRef}>
+                    <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                        className="p-2 border border-gray-300 rounded-md w-full mb-2"
+                        placeholder="Search..."
+                    />
+                    {suggestionOptions.map((suggestion, index) => (
+                        suggestion.show && (
+                            <div key={index} className="mb-2">
+                                <div
+                                    className="flex w-full justify-between items-center gap-3 cursor-pointer p-2 rounded-md hover:bg-gray-100"
+                                    onClick={() => toggleSuggestion(index)}
+                                >
+                                 <div className='flex flex-row gap-x-2'> 
+                                 <MenuIcon className='rounded-xl border border-x-white shadow-md'/> 
+                                  <div className="flex items-center">
+                                            {suggestion.icon}</div>
+                                            <span>{suggestion.label}</span>
+                                        </div>
+                                          <div className="text-gray-400">
+                                            <IoIosArrowDropdown className={`transform ${suggestion.isExpanded ? 'rotate-180 text-2xl' : 'text-2xl'}`} />
+                                        </div>
+
+                                   
+                                </div>
+                                {suggestion.isExpanded && suggestion.subOptions.map((subOption, subIndex) => (
+                                    subOption.show && (
+                                        <div
+                                            key={subIndex}
+                                            className="flex items-center gap-3 cursor-pointer p-2 rounded-md hover:bg-gray-100 ml-8"
+                                            onClick={() => handleSubOptionClick(subOption)}
+                                        >
+                                         <div className='flex flex-row gap-x-2'> <MenuIcon className='rounded-xl border border-x-white shadow-md'/>    <div>
+                                                {subOption.label}</div>
                                             </div>
-                                        ))}
-                                    </div>
-                                )}
+                                        </div>
+                                    )
+                                ))}
                             </div>
+                        )
+                    ))}
+                </div>
+            )}
+        </div>
                         );
                     }
                     return null;
