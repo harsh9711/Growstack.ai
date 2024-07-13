@@ -183,72 +183,7 @@ const ActionsSection = ({ actions, activeAction, setActiveAction, onSaveAction, 
                     }
             }));
     },[searchQuery])
-    const YourComponent = () => {
-        const [selectedOption, setSelectedOption] = useState('');
-        const [selectedOptionLabel, setSelectedOptionLabel] = useState('');
-        const [searchQuery, setSearchQuery] = useState('');
-        const [dropDownOptions, setDropDownOptions] = useState([
-            { label: 'Option 1', value: 'option1' },
-            { label: 'Option 2', value: 'option2' },
-            { label: 'Option 3', value: 'option3' },
-            // Add more options as needed
-        ]);
-    
-        // Function to handle search input change
-        const handleSearchChange = (event: { target: { value: any } }) => {
-            const { value } = event.target;
-            setSearchQuery(value);
-            // Filter dropdown options based on search query
-            const filteredOptions = dropDownOptions.filter(option =>
-                option.label.toLowerCase().includes(value.toLowerCase())
-            );
-            setDropDownOptions(filteredOptions);
-        };
-    
-        // Function to handle selection change
-        const handleSelectionChange = (value: React.SetStateAction<string>, label: React.SetStateAction<string>) => {
-            setSelectedOption(value);
-            setSelectedOptionLabel(label);
-        };
-    
-        return (
-            <React.Fragment>
-                <Select value={selectedOption} onValueChange={handleSelectionChange}>
-                   
-                    <SelectTrigger className="w-full h-12 rounded-lg border border-primary-green bg-white text-primary-green">
-                    <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={handleSearchChange}
-                        className=""
-                        placeholder="Search..."
-                    />
-                        <SelectValue placeholder="Select an option">
-                            {selectedOptionLabel && (
-                                <div className="flex items-center gap-2">{selectedOptionLabel}</div>
-                            )}
-                        </SelectValue>
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectGroup>
-                            {dropDownOptions.map(({ label, value }) => (
-                                <SelectItem key={value} value={value}>
-                                    <div
-                                        className={clsx(
-                                            "flex items-center gap-2",
-                                            selectedOption === value && "text-primary-green font-medium"
-                                        )}
-                                    >
-                                        {label}
-                                    </div>
-                                </SelectItem>
-                            ))}
-                        </SelectGroup>
-                    </SelectContent>
-                </Select>
-            </React.Fragment>
-        );
-    };
+
     return (
         <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
             <div className="flex items-center gap-4 pb-8">
@@ -311,8 +246,36 @@ const ActionsSection = ({ actions, activeAction, setActiveAction, onSaveAction, 
                                     className="h-[200px] w-full bg-[#F5F5F5] rounded-xl block resize-none p-4 text-[15px]"
                                 ></textarea>
                                 {isDropdownVisible && (
-                                    
-                                   <YourComponent/>
+                                    <div className="dropdown" ref={dropdownRef}>
+                                        <input
+                                            type="text"
+                                            value={searchQuery}
+                                            onChange={handleSearchChange}
+                                            className=""
+                                            placeholder="Search..."
+                                        />
+                                        {suggestionOptions.map((suggestion, index) => (
+                                            suggestion.show &&
+                                            <div key={index}>
+                                                <div className="flex gap-3 cursor-pointer" onClick={() => toggleSuggestion(index)}>
+                                                    <div>
+                                                        {suggestion.icon}
+                                                    </div>
+                                                    <div>
+                                                        {suggestion.label}
+                                                    </div>
+                                                </div>
+                                                {suggestion.isExpanded && suggestion.subOptions.map((subOption, subIndex) => (
+                                                    subOption.show &&
+                                                    <div key={subIndex} className="flex gap-3 cursor-pointer" onClick={() => handleSubOptionClick(subOption)}>
+                                                        <div>
+                                                            {subOption.label}
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ))}
+                                    </div>
                                 )}
                             </div>
                         );
