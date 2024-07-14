@@ -17,15 +17,12 @@ import { AnthropicClaude, ChatGptIcon2, GoogleGemini } from "@/components/svgs";
 import clsx from "clsx";
 import axios from "axios";
 import { API_URL } from "@/lib/api";
+import { ISidebarItem } from "../interface/chat.interface";
 
-interface SidebarItem {
-  _id: string;
-  title: string;
-  createdDate: string;
-  updatedDate?: string;
-  selected: boolean;
-  onRename: (_id: string, newTitle: string) => void;
-  onSelect: () => void;
+interface LayoutProps {
+  sidebarItems: ISidebarItem[];
+  setSidebarItems: React.Dispatch<React.SetStateAction<any[]>>;
+  fetchConversations: () => void;
 }
 
 type Message = {
@@ -33,8 +30,8 @@ type Message = {
   response: string;
 };
 
-const groupByDate = (items: SidebarItem[]) => {
-  const grouped: { [date: string]: SidebarItem[] } = {};
+const groupByDate = (items: ISidebarItem[]) => {
+  const grouped: { [date: string]: ISidebarItem[] } = {};
 
   items.forEach((item) => {
     const date = item.updatedDate
@@ -48,16 +45,15 @@ const groupByDate = (items: SidebarItem[]) => {
 
   return grouped;
 };
-const Layout: React.FC = () => {
+const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [_, setShowNewChatInput] = useState(false);
   const [selectedModel, setSelectedModel] = useState<string>("gpt-3.5-turbo");
-  const [sidebarItems, setSidebarItems] = useState<SidebarItem[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<
     string | null
   >(null);
   const [groupedSidebarItems, setGroupedSidebarItems] = useState<{
-    [date: string]: SidebarItem[];
+    [date: string]: ISidebarItem[];
   }>({});
   const [searchTerm, setSearchTerm] = useState("");
   const [toggleSearch, setToggleSearch] = useState<boolean>(false);
@@ -86,31 +82,12 @@ const Layout: React.FC = () => {
       console.error("Error fetching messages:", error);
     }
   };
-  const fetchConversations = async () => {
-    try {
-      const response = await axios.get(`${API_URL}/ai/api/v1/conversation/`);
-      const items = response.data.data.map((item: any) => ({
-        _id: item._id,
-        title: item.title,
-        selected: item.selected,
-        createdDate: item.createdAt,
-        updatedDate: item.updatedAt,
-      }));
-      setSidebarItems(items);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   useEffect(() => {
     if (selectedConversation) {
       fetchMessages(selectedConversation);
     }
   }, [selectedConversation]);
-
-  useEffect(() => {
-    fetchConversations();
-  }, []);
 
   useEffect(() => {
     setGroupedSidebarItems(groupByDate(sidebarItems));
