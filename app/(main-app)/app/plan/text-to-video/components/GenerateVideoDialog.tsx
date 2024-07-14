@@ -50,19 +50,8 @@ export default function GenerateVideoDialog() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(0);
-  const [videoScript, setVideoScript] = useState(
-    "create a video about the movie 'Game of thrones', how it began and how it ended, basically a short summary about it"
-  );
-  const [outputVideo, setOutputVideo] = useState<VideoStatus | null>({
-    createdAt: 1720477218,
-    download: "https://synthesia-ttv-data.s3-eu-west-1.amazonaws.com/video_data/e3c3eeee-6066-45ba-a659-f4a8d83398c0/transfers/rendered_video.mp4",
-    duration: "0:00:37.669",
-    id: "e3c3eeee-6066-45ba-a659-f4a8d83398c0",
-    lastUpdatedAt: 1720477346,
-    status: "complete",
-    title: "A Welcome message",
-    visibility: "public",
-  });
+  const [videoScript, setVideoScript] = useState("");
+  const [outputVideo, setOutputVideo] = useState<VideoStatus | null>();
 
   const [fields, setFields] = useState<FieldsState>({
     objective: false,
