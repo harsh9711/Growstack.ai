@@ -6,7 +6,7 @@ import {
   SelectGroup,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
 import React, { useEffect, useState } from "react";
 import ChatInput from "./ChatInput";
@@ -23,7 +23,7 @@ interface SidebarItem {
   title: string;
   createdDate: string;
   updatedDate?: string;
-  selected:boolean;
+  selected: boolean;
   onRename: (_id: string, newTitle: string) => void;
   onSelect: () => void;
 }
@@ -36,8 +36,10 @@ type Message = {
 const groupByDate = (items: SidebarItem[]) => {
   const grouped: { [date: string]: SidebarItem[] } = {};
 
-  items.forEach(item => {
-    const date = item.updatedDate ? item.updatedDate?.split('T')[0] : item.createdDate?.split('T')[0];
+  items.forEach((item) => {
+    const date = item.updatedDate
+      ? item.updatedDate?.split("T")[0]
+      : item.createdDate?.split("T")[0];
     if (!grouped[date]) {
       grouped[date] = [];
     }
@@ -51,11 +53,20 @@ const Layout: React.FC = () => {
   const [_, setShowNewChatInput] = useState(false);
   const [selectedModel, setSelectedModel] = useState<string>("gpt-3.5-turbo");
   const [sidebarItems, setSidebarItems] = useState<SidebarItem[]>([]);
-  const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
+  const [selectedConversation, setSelectedConversation] = useState<
+    string | null
+  >(null);
+  const [groupedSidebarItems, setGroupedSidebarItems] = useState<{
+    [date: string]: SidebarItem[];
+  }>({});
+  const [searchTerm, setSearchTerm] = useState("");
+  const [toggleSearch, setToggleSearch] = useState<boolean>(false);
 
-   const fetchMessages = async (_id: string) => {
+  const fetchMessages = async (_id: string) => {
     try {
-      const response = await axios.get(`${API_URL}/ai/api/v1/conversation/${_id}`);
+      const response = await axios.get(
+        `${API_URL}/ai/api/v1/conversation/${_id}`
+      );
       const chatData = response.data.data.chats;
       const messages = chatData.reduce((acc: Message[], chats: any) => {
         const flattenedThreads = chats.thread.flatMap((thread: any) => [
@@ -65,13 +76,12 @@ const Layout: React.FC = () => {
       }, []);
       setMessages(messages);
       setSelectedConversation(_id);
-      const firstFewWords = response.data.data.title
-      setSidebarItems(prevItems =>
-        prevItems.map(item =>
+      const firstFewWords = response.data.data.title;
+      setSidebarItems((prevItems) =>
+        prevItems.map((item) =>
           item._id === _id ? { ...item, title: firstFewWords } : item
         )
       );
-
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
@@ -92,42 +102,48 @@ const Layout: React.FC = () => {
     }
   };
 
-  useEffect(()=>{
-    if(selectedConversation){
-      fetchMessages(selectedConversation)
+  useEffect(() => {
+    if (selectedConversation) {
+      fetchMessages(selectedConversation);
     }
-  },[selectedConversation])
+  }, [selectedConversation]);
 
-    useEffect(() => {
-      fetchConversations();
+  useEffect(() => {
+    fetchConversations();
   }, []);
 
-    const handleRename = async (_id: string, newTitle: string) => {
+  useEffect(() => {
+    setGroupedSidebarItems(groupByDate(sidebarItems));
+  }, [sidebarItems]);
+
+  const handleRename = async (_id: string, newTitle: string) => {
     try {
-    await axios.put(`${API_URL}/ai/api/v1/conversation/${_id}`, { title: newTitle });
-    fetchConversations();
+      await axios.put(`${API_URL}/ai/api/v1/conversation/${_id}`, {
+        title: newTitle,
+      });
+      fetchConversations();
     } catch (error) {
       console.error("Error renaming chat:", error);
     }
   };
-    const handleDelete = async (_id: string) => {
+  const handleDelete = async (_id: string) => {
     try {
-    await axios.delete(`${API_URL}/ai/api/v1/conversation/${_id}`);
-    fetchConversations();
+      await axios.delete(`${API_URL}/ai/api/v1/conversation/${_id}`);
+      fetchConversations();
     } catch (error) {
       console.error("Error renaming chat:", error);
     }
   };
 
   const addMessage = (prompt: string, response: string) => {
-    setMessages((prevMessages) => [...prevMessages, {prompt,response}]);
+    setMessages((prevMessages) => [...prevMessages, { prompt, response }]);
   };
 
-  console.log({messages})
-
-  const handleSend = (message: string,response:string,id:string | null) => {
+  const handleSend = (message: string, response: string, id: string | null) => {
     setMessages((prevMessages) => {
-      const messageIndex = prevMessages.findIndex((msg) => msg.prompt === message);
+      const messageIndex = prevMessages.findIndex(
+        (msg) => msg.prompt === message
+      );
       if (messageIndex !== -1) {
         const updatedMessages = [...prevMessages];
         updatedMessages[messageIndex].response = response;
@@ -137,26 +153,64 @@ const Layout: React.FC = () => {
     });
     id && setSelectedConversation(id);
   };
-  const groupedSidebarItems = groupByDate(sidebarItems);
 
   const options = [
     // { label: "ChatGPT 3.5", value: "gpt-3.5", icon: <ChatGptIcon2 /> },
-    { label: "ChatGPT 3.5 Turbo", value: "gpt-3.5-turbo", icon: <ChatGptIcon2 /> },
+    {
+      label: "ChatGPT 3.5 Turbo",
+      value: "gpt-3.5-turbo",
+      icon: <ChatGptIcon2 />,
+    },
     { label: "GPT 4", value: "gpt-4", icon: <ChatGptIcon2 /> },
     // { label: "GPT 4 Turbo", value: "gpt-4-turbo", icon: <ChatGptIcon2 /> },
     { label: "GPT 4o", value: "gpt-4o", icon: <ChatGptIcon2 /> },
     { label: "Claude 2", value: "claude-2", icon: <AnthropicClaude /> },
-    { label: "Claude 3 Haiku", value: "claude-3-haiku", icon: <AnthropicClaude /> },
-    { label: "Claude 3 Opus", value: "claude-3-opus", icon: <AnthropicClaude /> },
-    { label: "Claude 3 Sonnet", value: "claude-3-sonnet", icon: <AnthropicClaude /> },
-    { label: "Claude 3.5 Sonnet", value: "claude-3.5-sonnet", icon: <AnthropicClaude /> },
-    { label: "Gemini 1.5 Flash", value: "gemini-1.5-flash", icon: <GoogleGemini /> },
-    { label: "Gemini 1.5 Pro", value: "gemini-1.5-pro", icon: <GoogleGemini /> },
-    
+    {
+      label: "Claude 3 Haiku",
+      value: "claude-3-haiku",
+      icon: <AnthropicClaude />,
+    },
+    {
+      label: "Claude 3 Opus",
+      value: "claude-3-opus",
+      icon: <AnthropicClaude />,
+    },
+    {
+      label: "Claude 3 Sonnet",
+      value: "claude-3-sonnet",
+      icon: <AnthropicClaude />,
+    },
+    {
+      label: "Claude 3.5 Sonnet",
+      value: "claude-3.5-sonnet",
+      icon: <AnthropicClaude />,
+    },
+    {
+      label: "Gemini 1.5 Flash",
+      value: "gemini-1.5-flash",
+      icon: <GoogleGemini />,
+    },
+    {
+      label: "Gemini 1.5 Pro",
+      value: "gemini-1.5-pro",
+      icon: <GoogleGemini />,
+    },
   ];
 
   const [selectedOption, setSelectedOption] = useState(options[0].value);
-  const selectedOptionLabel = options.find((option) => option.value === selectedOption)?.label;
+  const selectedOptionLabel = options.find(
+    (option) => option.value === selectedOption
+  )?.label;
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredSidebarItems = sidebarItems.filter((item) =>
+    item.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const groupedFilteredSidebarItems = groupByDate(filteredSidebarItems);
 
   return (
     <div className="flex-1 h-full flex gap-4 mt-10">
@@ -167,7 +221,13 @@ const Layout: React.FC = () => {
               <SelectValue placeholder="Select an option">
                 {selectedOptionLabel && (
                   <div className="flex items-center gap-2">
-                    <span className="min-w-fit">{options.find((option) => option.value === selectedOption)?.icon}</span>
+                    <span className="min-w-fit">
+                      {
+                        options.find(
+                          (option) => option.value === selectedOption
+                        )?.icon
+                      }
+                    </span>
                     {selectedOptionLabel}
                   </div>
                 )}
@@ -177,7 +237,13 @@ const Layout: React.FC = () => {
               <SelectGroup>
                 {options.map(({ icon, label, value }) => (
                   <SelectItem key={value} value={value}>
-                    <div className={clsx("flex items-center gap-2", selectedOption === value && "text-primary-green font-medium")}>
+                    <div
+                      className={clsx(
+                        "flex items-center gap-2",
+                        selectedOption === value &&
+                          "text-primary-green font-medium"
+                      )}
+                    >
                       <span className="min-w-fit">{icon}</span>
                       {label}
                     </div>
@@ -190,14 +256,31 @@ const Layout: React.FC = () => {
             onClick={() => {
               setSelectedConversation(null);
               setMessages([]);
-              setShowNewChatInput(true)
+              setShowNewChatInput(true);
             }}
-            className="text-white bg-primary-green hover:bg-primary-green/90 flex gap-2 justify-center items-center h-12 px-6 font-medium rounded-xl transition-all duration-300 text-sm">
+            className="text-white bg-primary-green hover:bg-primary-green/90 flex gap-2 justify-center items-center h-12 px-6 font-medium rounded-xl transition-all duration-300 text-sm"
+          >
             New
           </button>
-          <button className="text-white bg-primary-black rounded-full h-12 w-12 grid place-content-center">
+          <button
+            className="text-white bg-primary-black rounded-full h-12 w-12 grid place-content-center"
+            onClick={() => setToggleSearch(!toggleSearch)}
+          >
             <Search size={20} />
           </button>
+        </div>
+        <div className="border-y border-[#EFEFEF] flex items-center justify-between py-3 px-6">
+          {toggleSearch && (
+            <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
+              <Search className="text-gray-500" size={20} />
+              <input
+                type="search"
+                className="outline-none h-[40px] w-full"
+                placeholder="Search"
+                onChange={handleSearch}
+              />
+            </div>
+          )}
         </div>
         <div className="border-y border-[#EFEFEF] flex items-center justify-between py-3 px-6">
           <h2 className="font-semibold">Your conversations</h2>
@@ -205,21 +288,23 @@ const Layout: React.FC = () => {
             Clear all
           </button> */}
         </div>
- <div className="relative p-5 flex-1 overflow-y-auto max-h-[calc(100vh-280px)]">
-          {Object.entries(groupedSidebarItems).map(([date, items]) => (
+        <div className="relative p-5 flex-1 overflow-y-auto max-h-[calc(100vh-280px)]">
+          {Object.entries(groupedFilteredSidebarItems).map(([date, items]) => (
             <div key={date}>
               <h3 className="text-lg font-semibold">{date}</h3>
               {items.map((item) => (
-            <SidebarItem
+                <SidebarItem
                   key={item._id}
                   _id={item._id}
                   title={item.title}
                   onSelect={() => setSelectedConversation(item._id)}
                   onDelete={handleDelete}
-                  onRename={handleRename} 
-                  setSidebarItems={function (value: React.SetStateAction<any[]>): void {
+                  onRename={handleRename}
+                  setSidebarItems={function (
+                    value: React.SetStateAction<any[]>
+                  ): void {
                     throw new Error("Function not implemented.");
-                  } }                
+                  }}
                 />
               ))}
             </div>
@@ -229,9 +314,16 @@ const Layout: React.FC = () => {
       </aside>
       <main className="flex-1 w-full flex flex-col bg-white p-4 rounded-3xl border">
         <div className="flex-1 p-4 overflow-y-auto">
-            <ChatMessage conversation={messages}/>
+          <ChatMessage conversation={messages} />
         </div>
-        <ChatInput onSend={handleSend} selectedModel={selectedModel} fetchConversations={fetchConversations} selectedConversation={selectedConversation} selectedOption={selectedOption} addMessage={addMessage}/>
+        <ChatInput
+          onSend={handleSend}
+          selectedModel={selectedModel}
+          fetchConversations={fetchConversations}
+          selectedConversation={selectedConversation}
+          selectedOption={selectedOption}
+          addMessage={addMessage}
+        />
       </main>
     </div>
   );
