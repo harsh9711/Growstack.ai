@@ -40,15 +40,13 @@ const CreateVideoDialog = ({ templates }: { templates: Array<Template> | null })
           <section className="w-full pt-8 pb-4 px-10 bg-white space-y-6 border-b border-primary-light-gray">
             <h1 className="text-2xl font-semibold">Create a new video</h1>
             <div className="flex gap-8 w-full">
-              <Link href="/create/video" className="w-full">
-                <div className="w-full hover-card flex items-center justify-between transition duration-500 ring-1 ring-[#E7E7E7] p-6 rounded-2xl cursor-pointer group">
-                  <div className="space-y-3">
-                    <h1 className="text-[18px] font-semibold">Blank Video</h1>
-                    <p className="text-primary-neutral">Start from scratch with a blank canvas</p>
-                  </div>
-                  <VideoMedia className="text-primary-neutral group-hover:text-primary-green transition duration-300" />
+              <div className="w-full hover-card flex items-center justify-between transition duration-500 ring-1 ring-[#E7E7E7] p-6 rounded-2xl cursor-pointer group">
+                <div className="space-y-3">
+                  <h1 className="text-[18px] font-semibold">Blank Video</h1>
+                  <p className="text-primary-neutral">Start from scratch with a blank canvas</p>
                 </div>
-              </Link>
+                <VideoMedia className="text-primary-neutral group-hover:text-primary-green transition duration-300" />
+              </div>
               <GenerateVideoDialog />
               <PptDialog />
             </div>
