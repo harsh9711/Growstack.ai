@@ -42,7 +42,7 @@ interface Assistant {
   profile_image: string;
 }
 
-export const columns: ColumnDef<Assistant>[] = [
+ const columns: ColumnDef<Assistant>[] = [
   {
     id: "select",
     header: ({ table }) => (
