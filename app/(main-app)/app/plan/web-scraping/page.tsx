@@ -41,7 +41,7 @@ const AddProspectModal: React.FC<AddProspectProps> = ({ isOpen, onClose, onProsp
 
   const [formData, setFormData] = useState({
     businessName: '',
-    phoneNumber: '',
+    // phoneNumber: 2334,
     address: '',
     city: '',
     state: '',
@@ -76,7 +76,7 @@ const AddProspectModal: React.FC<AddProspectProps> = ({ isOpen, onClose, onProsp
       longitude: 0, // Replace with actual longitude
       title: formData.businessName,
       address: formData.address,
-      phoneNumber: formData.phoneNumber,
+      // phoneNumber: formData.phoneNumber,
       rating: 0, // Replace with actual rating if available
       ratingCount: 0, // Replace with actual rating count if available
       website: formData.website,
@@ -86,7 +86,7 @@ const AddProspectModal: React.FC<AddProspectProps> = ({ isOpen, onClose, onProsp
     setProspects([...prospects, newProspect]);
     setFormData({
       businessName: '',
-      phoneNumber: '',
+      // phoneNumber: 2344,
       address: '',
       city: '',
       state: '',
@@ -132,7 +132,7 @@ const AddProspectModal: React.FC<AddProspectProps> = ({ isOpen, onClose, onProsp
                     placeholder="Type your Business name"
                   />
                 </div>
-                <div className="space-y-2">
+                {/* <div className="space-y-2">
                   <label className="font-medium">
                     Business phone number <span className="text-[#F00]">*</span>
                   </label>
@@ -143,7 +143,7 @@ const AddProspectModal: React.FC<AddProspectProps> = ({ isOpen, onClose, onProsp
                     onChange={handleChange}
                     placeholder="Type your phone number"
                   />
-                </div>
+                </div> */}
                 <div className="space-y-2">
                   <label className="font-medium">
                     Address <span className="text-[#F00]">*</span>
@@ -290,7 +290,7 @@ const AddProspectModal: React.FC<AddProspectProps> = ({ isOpen, onClose, onProsp
                       // Reset form logic if needed
                       setFormData({
                         businessName: '',
-                        phoneNumber: '',
+                        // phoneNumber: 2344,
                         address: '',
                         city: '',
                         state: '',
@@ -330,7 +330,7 @@ interface Place {
   longitude: number;
   title: string;
   address: string;
-  phoneNumber: string;
+  // phoneNumber: number;
   rating: number;
   ratingCount: number;
   website: string;
@@ -446,7 +446,7 @@ const WebScraping: React.FC = () => {
         response.data.data[0].places.map((place: Place) => ({
           title: place.title,
           address: place.address,
-          phoneNumber: place.phoneNumber,
+          // phoneNumber: place.phoneNumber,
           rating: place.rating,
           ratingCount: place.ratingCount,
           website: place.website,
@@ -463,7 +463,7 @@ const WebScraping: React.FC = () => {
       setIsPending(false);
     }
   };
-  console.log("places", places);
+  // console.log("placesCollected", places);
   const renderRatingStars = (rating: number) => {
     const stars = [];
     for (let i = 0; i < 5; i++) {
@@ -745,54 +745,50 @@ const WebScraping: React.FC = () => {
     const [isPending, setIsPending] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [fileTitle, setFileTitle] = useState('');
+  // console.log("placesCollected", places);
+ const handleSave = async () => {
+    setIsPending(true);
 
-    const handleSave = async () => {
-      setIsPending(true);
-      //  title: place.title,
-      //           address: place.address,
-      //           phoneNumber: place.phoneNumber,
-      //           rating: place.rating,
-      //           ratingCount: place.ratingCount,
-      //           latitude: place.latitude,
-      //           longitude: place.longitude,
-      try {
-        for (const place of places) {
-          const data = {
-            title: fileTitle,
-            businesses: [
-              {
-                business_name: place.title,
-                business_phone_number: place.phoneNumber,
-                address: place.address,
-                rating: place.rating,
-                rating_count: place.ratingCount,
-                country: "h",
-                state: "h",
-                city: "h",
-                zip_code: "2424453",
-                website: place.website || "",
-                business_contact: {
-                  first_name: "h",
-                  last_name: "h",
-                  email: "h",
-                  phone: "934434636",
-                }
-              }
-            ]
-          };
-
-          const response = await axios.post(`${API_URL}/users/api/v1/contacts/prospects/save`, data);
-          console.log('Response:', response.data);
+    try {
+      const businesses = places.map(place => ({
+        business_name: place.title,
+        // business_phone_number: place.phoneNumber,
+        address: place.address,
+        rating: place.rating,
+        rating_count: place.ratingCount,
+        country: "India", // Replace with actual country data if available
+        state: "haryana",   // Replace with actual state data if available
+        city: "Gurgaon",    // Replace with actual city data if available
+        zip_code: "12117", // Replace with actual zip code if available
+        website: place.website || "",
+        business_contact: {
+          first_name: "Swapnil",   // Replace with actual contact data if available
+          last_name: "Amin",    // Replace with actual contact data if available
+          email: "swapnil@webbuddy.agency",        // Replace with actual contact data if available
+          phone: "478174892415" // Replace with actual contact data if available
         }
-        // Handle success (e.g., show a success message)
-      } catch (error) {
-        console.error('Error:', error);
-        // Handle error (e.g., show an error message)
-      } finally {
-        setIsPending(false);
-        setIsModalOpen(false);  // Close the modal after saving
-      }
-    };
+      }));
+
+      const data = {
+        title: fileTitle,
+        businesses: businesses
+      };
+
+      console.log('Sending data:', data);
+
+      const response = await axios.post(`${API_URL}/users/api/v1/contacts/prospects/save`, data);
+      console.log('Response:', response.data);
+      toast.success('Data saved successfully!');
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle error (e.g., show an error message)
+      toast.error('Failed to save data. Please try again.');
+    } finally {
+      setIsPending(false);
+      setIsModalOpen(false);  // Close the modal after saving
+    }
+  };
+
 
     const openModal = () => {
       setIsModalOpen(true);
@@ -820,7 +816,7 @@ const WebScraping: React.FC = () => {
           onClick={openModal}
           disabled={isPending}
         >
-          Save
+          Save 
           <FaArrowCircleLeft className="rotate-180 text-white text-2xl ml-4" />
         </button>
 
@@ -835,7 +831,7 @@ const WebScraping: React.FC = () => {
                 className="w-full p-2 mb-4 border rounded-md"
                 placeholder="Enter file title"
               />
-              <div className="flex justify-end">
+              <div className="flex justify-end z-[40] relative">
                 <button
                   onClick={() => setIsModalOpen(false)}
                   className="px-4 py-2 mr-2 text-sm text-white bg-gray-500 rounded-md"
@@ -1063,16 +1059,16 @@ const WebScraping: React.FC = () => {
                           <h2 className="text-sky-500 mr-20">{place?.ratingCount ? place.ratingCount.toLocaleString() + " Ratings" : "-"}</h2>
                         </div>
                       </TableCell>
-                      <TableCell>
-                        <div>{place?.phoneNumber || "-"}</div>
-                      </TableCell>
+                      {/* <TableCell>
+                        <div>{place?.phoneNumber || "9876543212"}</div>
+                      </TableCell> */}
                       <TableCell>
                         {place.website ? (
                           <Link href={place?.website} target="_blank" rel="noopener noreferrer" className="underline text-blue-600">
                             {place?.website}
                           </Link>
                         ) : (
-                          "-"
+                          "https://picsum.photos/200/300"
                         )}
                       </TableCell>
                     </TableRow>
