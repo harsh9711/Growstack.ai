@@ -2,9 +2,13 @@ import Motion from "@/components/Motion";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import React, { useEffect, useState } from "react";
+import { z } from "zod";
+import { variableNameSchema } from "./utils/validations";
 interface YesOrNoInputSectionProps {
   onParamsChange: (params: ShortTextParams) => void;
   inputParams: ShortTextParams | {};
+  variableNameError: string;
+  setVariableNameError: (params: string) => void;
 }
 
 interface ShortTextParams {
@@ -16,7 +20,7 @@ interface ShortTextParams {
   variable_name: string;
 }
 
-export default function YesOrNoInputSection({ onParamsChange, inputParams }: YesOrNoInputSectionProps) {
+export default function YesOrNoInputSection({ onParamsChange, inputParams, variableNameError, setVariableNameError }: YesOrNoInputSectionProps) {
   const [params, setParams] = useState<ShortTextParams>({
     display_name: (inputParams as ShortTextParams).display_name || "",
     placeholder: (inputParams as ShortTextParams).placeholder || "",
@@ -34,10 +38,22 @@ export default function YesOrNoInputSection({ onParamsChange, inputParams }: Yes
     const updatedParams = { ...params, ...updates };
 
     if (updates.display_name) {
-      updatedParams.variable_name = updates.display_name.toLowerCase().replace(/\s+/g, "_");
+      updatedParams.variable_name = updates.display_name.trim().toLowerCase().replace(/\s+/g, "_");
     }
-
+    else if (updates.display_name === "") {
+      updatedParams.variable_name = ""
+    }
     setParams(updatedParams);
+    if ('variable_name' in updatedParams) {
+      try {
+        variableNameSchema.parse(updatedParams.variable_name);
+        setVariableNameError('');
+      } catch (err) {
+        if (err instanceof z.ZodError) {
+          setVariableNameError(err.errors[0].message);
+        }
+      }
+    }
   };
   return (
     <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
@@ -96,6 +112,7 @@ export default function YesOrNoInputSection({ onParamsChange, inputParams }: Yes
             onChange={(e) => updateParams({ variable_name: e.target.value })}
             placeholder="Input Variable name"
           />
+          <p className="text-red-400 text-xs"> {variableNameError}</p>
         </div>
       </div>
     </Motion>
