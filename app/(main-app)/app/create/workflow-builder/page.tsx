@@ -15,24 +15,13 @@ type PreBuiltTemplate = {
   description: string;
   image: string;
   workflow_id:string
+  slug:string
 };
 
 export default function WorkflowBuilder() {
   const [workflowId, setWorkflowId] = useState(null);
   const [preBuiltTemplates, setPreBuiltTemplates] = useState<PreBuiltTemplate[]>([]);
   const router = useRouter();
-  const createWorkflow = async () => {
-    try {
-      const response = await axios.post(`${API_URL}/workflow/api/v1`);
-      const newWorkflowId = response.data.data.workflow_id;
-      console.log('Workflow created successfully:', newWorkflowId);
-      setWorkflowId(newWorkflowId);
-      router.push(`/app/create/workflow-builder/create-workflow?workflow_id=${newWorkflowId}`);
-    } catch (error) {
-      console.error('Error creating workflow:', error);
-      // Handle error (e.g., show an error message)
-    }
-  };
   const getPreBuiltTemplates = async () => {
     try {
       const response = await axios.get(`${API_URL}/workflow/api/v1?pre_built=true`);
@@ -50,28 +39,34 @@ export default function WorkflowBuilder() {
     <Fragment>
       <main className="">
         <div className="flex justify-between items-center mt-10">
-          <div className="space-y-2 w-full">
+          <div className="space-y-2">
             <h1 className="text-2xl font-semibold">Get started</h1>
             <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
               Explore pre-built templates, create a new workflow, or import an existing one.
             </p>
           </div>
+          <Link href="/app/create/workflow-builder/workflows">
+            <button
+              className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
+              Eplore your workflows
+            </button>
+          </Link>
         </div>
         <div className="mt-10">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {
               preBuiltTemplates.map((template) => (
-                <Link key={template._id} href={`/app/create/workflow-builder/seo-blog-writer?workflow_id=${template.workflow_id}`}>
+                <Link key={template._id} href={`/app/create/workflow-builder/template/${template.slug}?workflow_id=${template.workflow_id}`}>
                   <Card
                     title={template.name}
-                    description="Automate the entire process from keyword research to content creation, you can produce high-quality, search engine-friendly ..."
-                    imageSrc="/assets/workflow-assets1.svg"
+                    description={template.description}
+                    imageSrc={template.image}
                   />
                 </Link>
               ))
             }
           </div>
-          <div className="mt-10">
+          {/* <div className="mt-10">
             <div className="flex items-center gap-4">
               <h2 className="text-[16px] text-primary-black">Or build your own</h2>
               <div className="h-[1px] w-full flex-1 bg-gray-200" />
@@ -90,7 +85,7 @@ export default function WorkflowBuilder() {
                     <button
                      onClick={createWorkflow} className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
                       <Plus size={20} />
-                      Create workflow
+                      Eplore your workflows
                     </button>
                   </Link>
                 </div>
@@ -107,7 +102,7 @@ export default function WorkflowBuilder() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </main>
     </Fragment>

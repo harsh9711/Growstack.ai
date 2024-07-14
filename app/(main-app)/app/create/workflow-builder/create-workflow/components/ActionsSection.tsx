@@ -8,22 +8,8 @@ import { Input } from '@/components/ui/input'
 import DotsLoader from '@/components/DotLoader'
 import { IoIosArrowDropdown } from 'react-icons/io'
 import { MenuIcon } from 'lucide-react'
-const DropdownArrowIcon = () => (
-    <svg
-        className="h-5 w-5 ml-2"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-    >
-        <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M19 9l-7 7-7-7"
-        />
-    </svg>
-);
+import SuggestionDropdown from './SuggestionDropdown'
+
 interface ActionsSectionProps {
     activeAction: any;
     setActiveAction: (params: any) => void;
@@ -41,13 +27,13 @@ type SuggestionOption = {
     index: number;
     isExpanded: boolean;
     subOptions: SubOption[];
-    show:boolean
+    show: boolean
 };
 
 type SubOption = {
     label: string;
     name: string;
-    show:boolean
+    show: boolean
 };
 
 const ActionsSection = ({ actions, activeAction, setActiveAction, onSaveAction, isAPICalling, inputConfigs }: ActionsSectionProps) => {
@@ -114,15 +100,15 @@ const ActionsSection = ({ actions, activeAction, setActiveAction, onSaveAction, 
                 type: 'input',
                 name: 'Input',
                 label: 'Input',
-                icon: <InputIcon2 />,
+                icon: <MenuIcon />,
                 isExpanded: false,
                 index: 0,
-                show:true,
+                show: true,
                 subOptions: inputConfigs.map((inputConfig: any) => ({
                     label: inputConfig.variable_name,
                     value: inputConfig._id,
                     name: inputConfig.variable_name,
-                    show:true
+                    show: true
                 }))
             },
             ...actions.slice(0, activeAction.index).map((action: any, index: number) => ({
@@ -131,13 +117,13 @@ const ActionsSection = ({ actions, activeAction, setActiveAction, onSaveAction, 
                 label: action.name,
                 index: index + 1,
                 isExpanded: false,
-                show:true,
+                show: true,
                 icon: <img src={action.icon} alt={action.name} width="24" height="24" className="flex-shrink-0 rounded-md object-contain min-h-[24px] min-w-[24px]" />,
                 subOptions: [{
                     label: 'Output',
                     value: action.action_id,
-                    name: `Step${index + 1}.output`,
-                    show:true
+                    name: `step${index + 1}.output`,
+                    show: true
                 }]
             }))
         ]);
@@ -166,7 +152,7 @@ const ActionsSection = ({ actions, activeAction, setActiveAction, onSaveAction, 
             const textarea = textareaRef.current;
             const startPos = textarea.selectionStart;
             const endPos = textarea.selectionEnd;
-            const newDescription = description.substring(0, startPos) + `{{${subOption.name}}}` + description.substring(endPos);
+            const newDescription = description.substring(0, startPos) + `{$` + `{${subOption.name}}}` + description.substring(endPos);
             setDescription(newDescription);
             setTimeout(() => {
                 textarea.setSelectionRange(startPos + subOption.name.length + 4, startPos + subOption.name.length + 4);
@@ -187,29 +173,27 @@ const ActionsSection = ({ actions, activeAction, setActiveAction, onSaveAction, 
         }));
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         const query = searchQuery.trim().toLowerCase();
-            setSuggestionOptions((prevState) => prevState.map((option) => {
-                    return {
-                        ...option,
-                        show: option.subOptions.some((subOption) => subOption.label.toLowerCase().includes(query)),
-                        subOptions: option.subOptions.map((subOption) => ({
-                            ...subOption,
-                            show: subOption.label.toLowerCase().includes(query)
-                        }))
-                    }
-            }));
-    },[searchQuery])
+        setSuggestionOptions((prevState) => prevState.map((option) => {
+            return {
+                ...option,
+                show: option.subOptions.some((subOption) => subOption.label.toLowerCase().includes(query)),
+                subOptions: option.subOptions.map((subOption) => ({
+                    ...subOption,
+                    show: subOption.label.toLowerCase().includes(query)
+                }))
+            }
+        }));
+    }, [searchQuery])
 
     return (
         <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
             <div className="flex items-center gap-4 pb-8">
-                <div className="flex flex-row gap-2 p-6 items-start">
-                    <img src={activeAction.icon} alt="openai-gpt" width="42" height="42" className="flex-shrink-0 rounded-md object-contain min-h-[42px] min-w-[42px]" />
-                    <div className="flex flex-col gap-2 w-full">
-                        <div className="relative flex items-center w-full rounded-md h-10">
-                            {activeAction.name}
-                        </div>
+                <div className="w-full flex flex-row items-center gap-2">
+                    <img src={activeAction.icon} height="56" width="56" />
+                    <div className="flex flex-col gap-2 w-full text-xl border-2 p-2.5 rounded-md">
+                        {activeAction.name}
                     </div>
                 </div>
             </div>
@@ -250,65 +234,20 @@ const ActionsSection = ({ actions, activeAction, setActiveAction, onSaveAction, 
 
                     if (option.input_type === "TEXT_AREA") {
                         return (
-                          <div key={index} className='mt-8 '>
-            <div className="font-medium  text-xl mb-2 capitalize">Instructions</div>
-            <textarea
-                ref={textareaRef}
-                onFocus={handleTextareaFocus}
-                id="description"
-                name="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Describe what your image is about"
-                className="h-[200px] w-full bg-[#F5F5F5] rounded-xl block resize-none p-4 text-[15px]"
-            ></textarea>
-            {isDropdownVisible && (
-                <div className="dropdown border border-white shadow-md rounded-xl mt-2" ref={dropdownRef}>
-                    <input
-                        type="text"
-                        value={searchQuery}
-                        onChange={handleSearchChange}
-                        className="p-2 border border-gray-300 rounded-md w-full mb-2"
-                        placeholder="Search..."
-                    />
-                    {suggestionOptions.map((suggestion, index) => (
-                        suggestion.show && (
-                            <div key={index} className="mb-2">
-                                <div
-                                    className="flex w-full justify-between items-center gap-3 cursor-pointer p-2 rounded-md hover:bg-gray-100"
-                                    onClick={() => toggleSuggestion(index)}
-                                >
-                                 <div className='flex flex-row gap-x-2'> 
-                                 <MenuIcon className='rounded-xl border border-x-white shadow-md'/> 
-                                  <div className="flex items-center">
-                                            {suggestion.icon}</div>
-                                            <span>{suggestion.label}</span>
-                                        </div>
-                                          <div className="text-gray-400">
-                                            <IoIosArrowDropdown className={`transform ${suggestion.isExpanded ? 'rotate-180 text-2xl' : 'text-2xl'}`} />
-                                        </div>
-
-                                   
-                                </div>
-                                {suggestion.isExpanded && suggestion.subOptions.map((subOption, subIndex) => (
-                                    subOption.show && (
-                                        <div
-                                            key={subIndex}
-                                            className="flex items-center gap-3 cursor-pointer p-2 rounded-md hover:bg-gray-100 ml-8"
-                                            onClick={() => handleSubOptionClick(subOption)}
-                                        >
-                                         <div className='flex flex-row gap-x-2'> <MenuIcon className='rounded-xl border border-x-white shadow-md'/>    <div>
-                                                {subOption.label}</div>
-                                            </div>
-                                        </div>
-                                    )
-                                ))}
+                            <div key={index} className='mt-8 '>
+                                <div className="font-medium  text-xl mb-2 capitalize">Instructions</div>
+                                <textarea
+                                    ref={textareaRef}
+                                    onFocus={handleTextareaFocus}
+                                    id="description"
+                                    name="description"
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
+                                    placeholder="Describe what your image is about"
+                                    className="h-[200px] w-full bg-[#F5F5F5] rounded-xl block resize-none p-4 text-[15px]"
+                                ></textarea>
+                                <SuggestionDropdown dropdownRef={dropdownRef} isDropdownVisible={isDropdownVisible} handleSubOptionClick={handleSubOptionClick} suggestionOptions={suggestionOptions} setSuggestionOptions={setSuggestionOptions} />
                             </div>
-                        )
-                    ))}
-                </div>
-            )}
-        </div>
                         );
                     }
                     return null;

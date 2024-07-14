@@ -23,9 +23,19 @@ export default function WorkFlowBuilderComponent() {
   const [workflowId, setWorkflowId] = useState<string | null>(null);
   const [isAPICalling, setIsAPICalling] = useState(false);
   const [inputConfigs,setInputConfigs] = useState<any[]>([]);
-
+  const [outputConfigs, setOutputConfigs] = useState<any[]>([]);
   
 
+  const createPayloadBody =(input:any)=> {
+    return input.reduce((acc:any, input:any) => {
+      acc[input.input_label] = input.input_default_value;
+      if (input.is_prompt) {
+        acc.prompt = input.prompt; // Replace 'your_prompt_value' with actual prompt value
+      }
+      return acc;
+    }, {});
+    
+  }
   const handleAddStep=()=>{
     
   }
@@ -42,14 +52,11 @@ export default function WorkFlowBuilderComponent() {
     setIsAPICalling(true)
     try {
       const payload = {
-        preset_json:{
-          body:{
-            [action.preset_json.body.inputs[0].input_label]:action.preset_json.body.inputs[0].input_default_value,
-            [action.preset_json.body.inputs[1].input_label]:action.preset_json.body.inputs[1].input_default_value
-          }
+        preset_json: {
+          body: createPayloadBody(action.preset_json.body.inputs)
         },
-        event_execute:action.event_execute
-      }
+        event_execute: action.event_execute
+      };
       const { data: { data: { updateAction }}}=await axios.put(`${API_URL}/workflow/api/v1/${workflowId}/actions/${action.action_id}`, payload)
       setActions(actions.map((act) => act.action_id ===action.action_id?({...updateAction,icon:action.icon,preset_json:action.preset_json}):act))
       setIsAPICalling(false)
@@ -62,7 +69,7 @@ export default function WorkFlowBuilderComponent() {
 
   const getWorkFlowDetails=async(id:string)=>{
     try {
-      const { data: { data: { input_configs, actions } } } = await axios.get(`${API_URL}/workflow/api/v1/${id}`)
+      const { data: { data: { input_configs, actions, output_configs } } } = await axios.get(`${API_URL}/workflow/api/v1/${id}`)
       setActions(
         actions.map((action: any) => {
           const tool: any = tools.find((tool) => tool.name === action.name);
@@ -73,24 +80,17 @@ export default function WorkFlowBuilderComponent() {
               ...tool?.preset_json,
               body: {
                 ...tool?.preset_json.body,
-                inputs: tool?.preset_json.body.inputs.map((input:any, index:number) => {
-                  let updatedValue = input.input_default_value;
-                  if (index === 0) {
-                    updatedValue = action.preset_json.body.model;
-                  } else if (index === 1) {
-                    updatedValue = action.preset_json.body.instruction;
-                  }
-                  return {
-                    ...input,
-                    input_default_value: updatedValue,
-                  };
-                })
+                inputs: tool?.preset_json.body.inputs.map((input: any) => ({
+                  ...input,
+                  input_default_value: action.preset_json.body[input.input_label] ?? input.input_default_value,
+                })),
               }
             }
           };
         })
       );
       setInputConfigs(input_configs)
+      setOutputConfigs(output_configs)
     } catch (error) {
       toast.error("Failed to fetch workflow details")
     }
@@ -122,42 +122,37 @@ export default function WorkFlowBuilderComponent() {
     }
   }
 
-  const onSelectAction=async (action:any,index?:number)=>{
+  const onSelectAction=async (action:any,index:number)=>{
     let updatedActions: any[] = [];
     const payload = {
       name: action.name,
       description: action.description,
       provider: action.provider,
       subtype: action.subtype,
+      preset_id:action.id,
       preset_json: {
-        body: {
-          [action.preset_json.body.inputs[0].input_label]: action.preset_json.body.inputs[0].input_default_value,
-          [action.preset_json.body.inputs[1].input_label]: action.preset_json.body.inputs[1].input_default_value
-        }
+        body: createPayloadBody(action.preset_json.body.inputs)
       },
       category: action.category,
       event_execute: action.event_execute,
     }
     try {
-      const response = await postAction(payload, index !== undefined ? index : 1);
+      const response = await postAction(payload, index);
       toast.success("Action added successfully")
       const newAction = {
         ...response.data.data.newAction,
-        index: index !== undefined ? index-1 : 0
+        index: index - 1,
+        preset_json: action.preset_json,
+        icon: action.icon
       };
-      newAction.preset_json = action.preset_json
-      newAction.icon = action.icon
-      if (index===undefined) {
-        updatedActions = [newAction];
-      }
-      else if(index===1){
-        updatedActions = [newAction,...actions];
-      }
-      else{
+
+      if (index === 1) {
+        updatedActions = [newAction, ...actions];
+      } else {
         updatedActions = [
-          ...actions.slice(0, index-1),
+          ...actions.slice(0, index - 1),
           newAction,
-          ...actions.slice(index-1)
+          ...actions.slice(index - 1)
         ];
       }
       setActions(updatedActions);
@@ -171,9 +166,9 @@ export default function WorkFlowBuilderComponent() {
   const renderSection = () => {
     switch (activeTag) {
       case "Input":
-        return <InputSection inputConfig={inputConfigs} setInputConfigs={setInputConfigs}/>;
+        return <InputSection inputConfig={inputConfigs} setInputConfigs={setInputConfigs} onSelectAction={onSelectAction}/>;
       case "Output":
-        return <OutputSection />;
+        return <OutputSection outputConfigs={outputConfigs} setOutputConfigs={setOutputConfigs} actions={actions} inputConfigs={inputConfigs} workflowId={workflowId}/>;
       case "Actions":
         return <ActionsSection key={activeAction.action_id} activeAction={activeAction} setActiveAction={setActiveAction} onSaveAction={onSaveAction} isAPICalling={isAPICalling} actions={actions} inputConfigs={inputConfigs}/>;
     }
@@ -189,7 +184,7 @@ export default function WorkFlowBuilderComponent() {
       getWorkFlowDetails(id)
 
     }
-  }, [window.location.search]); 
+  }, []); 
   
   return (
     <>
@@ -236,7 +231,7 @@ export default function WorkFlowBuilderComponent() {
                 </div>
                 <div className="space-y-1 flex flex-col items-start">
                   <h3 className="text-[17px] font-medium">{action.name}</h3>
-                  <p className="text-sm text-primary-black text-opacity-50">Step {index+1} {action.subtype}</p>
+                   <p className="text-sm text-primary-black text-opacity-50">Step {index + 1} <span className="font-semibold text-black">{action.subtype}</span></p>
                 </div>
                 <div className="ml-auto">
                   <DropdownMenu>
@@ -285,7 +280,7 @@ export default function WorkFlowBuilderComponent() {
                 Add Step <Plus size={16} />
               </button>
             }
-            onSelectAction={onSelectAction}
+            onSelectAction={(data)=>onSelectAction(data,1)}
           />)}
           
           
