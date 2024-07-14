@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useState, useContext, useEffect, ReactNode } from "react";
+import { Base64 } from "js-base64";
 
 interface GeneratedHtmlContextType {
   generatedHtml: string | null;
@@ -15,13 +16,15 @@ export const GeneratedHtmlProvider = ({ children }: { children: ReactNode }) => 
   useEffect(() => {
     const storedHtml = localStorage.getItem("generatedHtml");
     if (storedHtml) {
-      setGeneratedHtmlState(storedHtml);
+      const decodedHtml = Base64.decode(storedHtml);
+      setGeneratedHtmlState(decodedHtml);
     }
   }, []);
 
   const setGeneratedHtml = (html: string | null) => {
     if (html) {
-      localStorage.setItem("generatedHtml", html);
+      const encodedHtml = Base64.encode(html);
+      localStorage.setItem("generatedHtml", encodedHtml);
     } else {
       localStorage.removeItem("generatedHtml");
     }

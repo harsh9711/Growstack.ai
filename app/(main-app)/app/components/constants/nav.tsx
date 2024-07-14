@@ -156,7 +156,7 @@ const navLinks: NavLink[] = [
       {
         icon: <DocumentIcon />,
         name: "Social advocacy",
-        href: "/app/engage/Social-media",
+        href: "/app/engage/social-advocacy",
       },
     ],
     title: "Engage",
