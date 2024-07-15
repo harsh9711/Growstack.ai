@@ -8,9 +8,10 @@ import ProvidersDrawer from "./ProvidersDrawer";
 interface InputSectionProps {
   inputConfig: any[];
   setInputConfigs: (params: any) => void;
+  onSelectAction: (params: any,index:number) => void;
 }
 
-export default function InputSection({ inputConfig, setInputConfigs }: InputSectionProps) {
+export default function InputSection({ inputConfig, setInputConfigs, onSelectAction }: InputSectionProps) {
   const [addNewInput, setAddNewInput] = useState(false);
 
   return (
@@ -49,6 +50,7 @@ export default function InputSection({ inputConfig, setInputConfigs }: InputSect
                     Continue without inputs
                   </button>
                 }
+                onSelectAction={(data)=>onSelectAction(data,1)}
               />
             </div>
           </div>

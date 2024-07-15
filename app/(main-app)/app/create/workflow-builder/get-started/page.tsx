@@ -30,7 +30,7 @@ export default function GetStarted() {
                   Create workflow
                 </button>
               </Link>
-              <Link href="/app/create/workflow-builder/get-started">
+              <Link href="/app/create/workflow-builder">
                 <button className="hover:bg-primary-green/20 text-primary-green sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2">
                   <WorkflowsIcon2 className="w-7 h-7 text-primary-green"/>
                   Explore templates
