@@ -26,7 +26,6 @@ export default function WorkflowBuilder() {
     try {
       const response = await axios.get(`${API_URL}/workflow/api/v1?pre_built=true`);
       setPreBuiltTemplates(response.data.data);
-      console.log('Pre-built templates:', response.data.data);
     } catch (error) { 
       console.error('Error fetching pre-built templates:', error);
     }

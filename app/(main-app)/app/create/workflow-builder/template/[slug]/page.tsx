@@ -550,7 +550,7 @@ const Page = () => {
             </div>
             {
               workFlowData.input_configs.map((input, idx) => (
-                <div>
+                <div key={idx}>
                   <h2 className='font-medium text-lg'>
                     {input.display_name}
                   </h2>
@@ -639,11 +639,11 @@ const Page = () => {
               <label htmlFor="import-csv" className="border bg-primary-blue hover:bg-primary-blue-dark text-white py-2 px-4 rounded-lg text-sm cursor-pointer transition duration-300 ease-in-out flex items-center">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M4 17V19C4 20.1046 4.89543 21 6 21H18C19.1046 21 20 20.1046 20 19V17" stroke="#4B465C" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
-                  <path d="M4 17V19C4 20.1046 4.89543 21 6 21H18C19.1046 21 20 20.1046 20 19V17" stroke="white" stroke-opacity="0.2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M4 17V19C4 20.1046 4.89543 21 6 21H18C19.1046 21 20 20.1046 20 19V17" stroke="white" strokeOpacity="0.2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
                   <path d="M7 11L12 16L17 11" stroke="#4B465C" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
-                  <path d="M7 11L12 16L17 11" stroke="white" stroke-opacity="0.2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M7 11L12 16L17 11" stroke="white" strokeOpacity="0.2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
                   <path d="M12 4V16" stroke="#4B465C" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
-                  <path d="M12 4V16" stroke="white" stroke-opacity="0.2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M12 4V16" stroke="white" strokeOpacity="0.2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
 
 
@@ -657,11 +657,11 @@ const Page = () => {
               >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M4 17V19C4 20.1046 4.89543 21 6 21H18C19.1046 21 20 20.1046 20 19V17" stroke="#4B465C" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
-                  <path d="M4 17V19C4 20.1046 4.89543 21 6 21H18C19.1046 21 20 20.1046 20 19V17" stroke="white" stroke-opacity="0.2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M4 17V19C4 20.1046 4.89543 21 6 21H18C19.1046 21 20 20.1046 20 19V17" stroke="white" strokeOpacity="0.2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
                   <path d="M7 9L12 4L17 9" stroke="#4B465C" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
-                  <path d="M7 9L12 4L17 9" stroke="white" stroke-opacity="0.2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M7 9L12 4L17 9" stroke="white" strokeOpacity="0.2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
                   <path d="M12 4V16" stroke="#4B465C" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
-                  <path d="M12 4V16" stroke="white" stroke-opacity="0.2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M12 4V16" stroke="white" strokeOpacity="0.2" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
 
                 <h2 className='text-black ml-4 '>Export CSV</h2>
