@@ -366,7 +366,7 @@ export default function GenerateVideoDialog() {
                   variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
                   classNames="flex-1 w-full h-full grid place-content-center">
                   <div className="flex flex-col justify-center items-center mb-40">
-                    <Image src="/gifs/empty-box.gif" alt="" width={250} height={250} />
+                    <Image src="/gifs/empty-box.gif" alt="" width={250} height={250} unoptimized />
                     <h1 className="text-2xl text-center font-semibold">There's nothing here.</h1>
                     <p className="max-w-xl leading-loose text-center mt-3">Fill out the form 👈 to geneate a video</p>
                   </div>
