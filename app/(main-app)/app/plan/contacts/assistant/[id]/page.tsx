@@ -105,11 +105,11 @@ interface Assistant {
       </div>
     ),
   },
-  {
-    accessorKey: "last_activity",
-    header: () => "Last Activity",
-    cell: ({ row }) => <div>{row.getValue("last_activity")}</div>,
-  },
+  // {
+  //   accessorKey: "last_activity",
+  //   header: () => "Last Activity",
+  //   cell: ({ row }) => <div>{row.getValue("last_activity")}</div>,
+  // },
 ];
 
 interface PageProps {

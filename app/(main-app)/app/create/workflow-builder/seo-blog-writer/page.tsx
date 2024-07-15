@@ -186,7 +186,7 @@ if (deleteButtonTimeoutRef2.current !== null) {
                   fill="#212833"
                 />
               </svg>
-              <h2 className='text-xl font-medium'>New WorkFlow {" "}/ {" "}Write blog post (3)</h2>
+              <h2 className='text-sm font-medium'>New WorkFlow {" "}/ {" "}Write blog post (3)</h2>
             </button>
           </Link>
         </div>
