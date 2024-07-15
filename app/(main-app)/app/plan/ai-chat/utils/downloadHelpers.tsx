@@ -33,12 +33,17 @@ export const handleDownloadByText = (data: any) => {
 };
 
 export const handleDownloadByPDF = (data: any) => {
+  const lineHeight = 7;
+  const margin = 10;
+  const pageWidth = 180;
+  const pageHeight = 290;
+
   data.forEach((conversation: any) => {
     const doc = new jsPDF();
     doc.setFontSize(16);
-    doc.text(`# ${conversation.title}`, 10, 10);
+    doc.text(`# ${conversation.title}`, margin, lineHeight);
     doc.setFontSize(12);
-    let y = 20;
+    let y = lineHeight * 3;
 
     conversation.data.forEach(
       ({
@@ -48,23 +53,25 @@ export const handleDownloadByPDF = (data: any) => {
         user_prompt: string;
         response: string;
       }) => {
-        if (y > 280) {
-          doc.addPage();
-          y = 10;
-        }
-        doc.text(`## Message From You:`, 10, y);
-        y += 7;
-        doc.text(user_prompt, 10, y);
-        y += 7;
+        const addText = (label: string, text: string) => {
+          const labelLines = doc.splitTextToSize(label, pageWidth);
+          const textLines = doc.splitTextToSize(text, pageWidth);
+          const lines = [...labelLines, ...textLines];
 
-        if (y > 280) {
-          doc.addPage();
-          y = 10;
-        }
-        doc.text(`## Message From GrowStackAI:`, 10, y);
-        y += 7;
-        doc.text(response, 10, y);
-        y += 10;
+          if (y + lines.length * lineHeight > pageHeight - margin) {
+            doc.addPage();
+            y = margin;
+          }
+
+          doc.text(labelLines, margin, y);
+          y += labelLines.length * lineHeight;
+
+          doc.text(textLines, margin, y);
+          y += textLines.length * lineHeight + lineHeight;
+        };
+
+        addText(`## Message From You:`, user_prompt.trim());
+        addText(`## Message From GrowStackAI:`, response.trim());
       }
     );
 
@@ -91,53 +98,51 @@ export const handleDownloadByDOCX = async (data: any) => {
               ],
             }),
             new Paragraph({}),
-            ...conversation.data
-              .map(
-                ({
-                  user_prompt,
-                  response,
-                }: {
-                  user_prompt: string;
-                  response: string;
-                }) => [
-                  new Paragraph({
-                    children: [
-                      new TextRun({
-                        text: `## Message From You:`,
-                        bold: true,
-                        size: 24,
-                      }),
-                    ],
-                  }),
-                  new Paragraph({
-                    children: [
-                      new TextRun({
-                        text: user_prompt,
-                        size: 24,
-                      }),
-                    ],
-                  }),
-                  new Paragraph({}),
-                  new Paragraph({
-                    children: [
-                      new TextRun({
-                        text: `## Message From GrowStackAI:`,
-                        bold: true,
-                        size: 24,
-                      }),
-                    ],
-                  }),
-                  new Paragraph({
-                    children: [
-                      new TextRun({
-                        text: response,
-                        size: 24,
-                      }),
-                    ],
-                  }),
-                ]
-              )
-              .flat(),
+            ...conversation.data.flatMap(
+              ({
+                user_prompt,
+                response,
+              }: {
+                user_prompt: string;
+                response: string;
+              }) => [
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: `## Message From You:`,
+                      bold: true,
+                      size: 24,
+                    }),
+                  ],
+                }),
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: user_prompt,
+                      size: 22,
+                    }),
+                  ],
+                }),
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: `## Message From GrowStackAI:`,
+                      bold: true,
+                      size: 24,
+                    }),
+                  ],
+                }),
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: response,
+                      size: 22,
+                    }),
+                  ],
+                }),
+                new Paragraph({}),
+              ]
+            ),
           ],
         },
       ],
