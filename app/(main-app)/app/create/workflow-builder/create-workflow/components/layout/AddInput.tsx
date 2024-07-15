@@ -27,6 +27,7 @@ export default function AddInput({ setAddNewInput, inputConfig, setInputConfigs 
   const [inputParams, setInputParams] = useState<{ variable_name?: string }>({});
   const [workflowId, setWorkflowId] = useState<string | null>(null);
   const [editID, setEditID] = useState("");
+  const [variableNameError, setVariableNameError] = useState('Must be at least 1 character long');
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -52,24 +53,24 @@ export default function AddInput({ setAddNewInput, inputConfig, setInputConfigs 
       icon: <NumberHashtag />,
       name: "Number",
     },
-    {
-      icon: <FileUpload />,
-      name: "File Upload",
-    },
+    // {
+    //   icon: <FileUpload />,
+    //   name: "File Upload",
+    // },
   ];
 
   const renderInputSection = () => {
     switch (inputType) {
       case "SHORT TEXT":
-        return <ShortTextInputSection onParamsChange={setInputParams} inputParams={inputParams} />;
+        return <ShortTextInputSection onParamsChange={setInputParams} inputParams={inputParams} variableNameError={variableNameError} setVariableNameError={setVariableNameError}/>;
       case "Long text":
-        return <LongTextInputSection onParamsChange={setInputParams} inputParams={inputParams} />;
+        return <LongTextInputSection onParamsChange={setInputParams} inputParams={inputParams} variableNameError={variableNameError} setVariableNameError={setVariableNameError}/>;
       case "Yes/No":
-        return <YesOrNoInputSection onParamsChange={setInputParams} inputParams={inputParams} />;
+        return <YesOrNoInputSection onParamsChange={setInputParams} inputParams={inputParams} variableNameError={variableNameError} setVariableNameError={setVariableNameError}/>;
       case "Number":
-        return <NumberInputSection onParamsChange={setInputParams} inputParams={inputParams} />;
-      case "File Upload":
-        return <FileUploadInputSection onParamsChange={setInputParams}  />;
+        return <NumberInputSection onParamsChange={setInputParams} inputParams={inputParams} variableNameError={variableNameError} setVariableNameError={setVariableNameError}/>;
+      // case "File Upload":
+      //   return <FileUploadInputSection onParamsChange={setInputParams} variableNameError={variableNameError} setVariableNameError={setVariableNameError} />;
     }
   };
   const handleAddClick = async () => {
@@ -165,14 +166,14 @@ export default function AddInput({ setAddNewInput, inputConfig, setInputConfigs 
 
       <div className="flex justify-end gap-4">
         <button className="py-3 px-6 bg-white border border-[#CF0000] text-[#CF0000] hover:bg-[#cf000009] rounded-xl mt-6"
-          onClick={inputConfig.length ? () => { setViewAllInputs(true), setEditID("") } : () => setAddNewInput(false)}
+          onClick={inputConfig.length ? () => { setViewAllInputs(true), setEditID(""),setInputParams({}) } : () => setAddNewInput(false)}
         >
           Cancel
         </button>
         <button
           onClick={editID ? updateInput :  handleAddClick}
-          className="py-3 px-6 bg-primary-green rounded-xl text-white mt-6 hover:bg-primary-green/90 transition-all duration-300"
-          disabled={!inputParams?.variable_name}
+          className={`py-3 px-6 bg-primary-green rounded-xl text-white mt-6 hover:bg-primary-green/90 transition-all duration-300 ${variableNameError && 'opacity-50'}`}
+          disabled={!!variableNameError}
         >
           {editID ? 'Save' : 'Add'}
         </button>

@@ -42,7 +42,125 @@ export const tools: Tool[] = [
         
       }
     },
-    event_execute:"processTextGpt"
+    event_execute:"processLLM"
+  },
+  {
+    id: 2,
+    description: "Turn a title and outline text into a fully complete high quality article within seconds",
+    name: "Article Writer",
+    category: "Text",
+    icon: "/dummy/providers/article-svgrepo-com.svg",
+    provider: "Openai",
+    subtype: "gpt",
+    preset_json: {
+      body: {
+        inputs: [
+          {
+            input_type: "DROPDOWN",
+            input_label: "model",
+            input_default_value: "gpt-4o",
+            input_values: [
+              "gpt-4",
+              "gpt-3.5-turbo",
+              "gpt-4o"
+            ]
+          },
+          {
+            input_type: "TEXT_AREA",
+            input_label: "instruction",
+            input_default_value: "generate article on ai",
+            input_values: "",
+            is_prompt: true,
+            prompt: "Assume You are best article writer in the world. you are supposed to write article based on users instructions,ssume You are best article writer in the world. you are supposed to write article based on users instructionsssume You are best article writer in the world. you are supposed to write article based on users instructions"
+          }
+        ],
+
+      }
+    },
+    event_execute: "processLLM"
+  },
+  {
+    id: 3,
+    description: "Summarize any text in a short and easy to understand concise way",
+    name: "Summarize text",
+    category: "Text",
+    icon: "/dummy/providers/summarize-text.svg",
+    provider: "LLM",
+    subtype: "LLM",
+    preset_json: {
+      body: {
+        inputs: [
+          {
+
+            input_type: "DROPDOWN",
+            input_label: "model",
+            input_default_value: "gpt-4o",
+            input_values: [
+              "gpt-4",
+              "gpt-3.5-turbo",
+              "gpt-4o",
+              "gemini-1.5-pro",
+              "gemini-1.5-flash",
+              "gemini-1.0-pro",
+              "claude-3-opus-20240229",
+              "claude-3-sonnet-20240229",
+              "claude-3-haiku-20240307"
+            ]
+          },
+          {
+            input_type: "TEXT_AREA",
+            input_label: "instruction",
+            input_default_value: "",
+            input_values: "",
+            is_prompt: true,
+            prompt: "Please summarize the following text in a short and easy-to-understand manner, highlighting the key points and main ideas in a concise way."
+          }
+        ],
+
+      }
+    },
+    event_execute: "processLLM"
+  },
+  {
+    id: 4,
+    description: "Write the description about your product and why it worth it",
+    name: "Product description",
+    category: "Text",
+    icon: "/dummy/providers/product-description.svg",
+    provider: "LLM",
+    subtype: "LLM",
+    preset_json: {
+      body: {
+        inputs: [
+          {
+            input_type: "DROPDOWN",
+            input_label: "model",
+            input_default_value: "gpt-4o",
+            input_values: [
+              "gpt-4",
+              "gpt-3.5-turbo",
+              "gpt-4o",
+              "gemini-1.5-pro",
+              "gemini-1.5-flash",
+              "gemini-1.0-pro",
+              "claude-3-opus-20240229",
+              "claude-3-sonnet-20240229",
+              "claude-3-haiku-20240307"
+            ]
+          },
+          {
+            input_type: "TEXT_AREA",
+            input_label: "instruction",
+            input_default_value: "",
+            input_values: "",
+            is_prompt: true,
+            prompt: "Create a compelling product description for a new release. The product name is VR.oculus, designed to enhance spiritual experiences. Consider your audience—women and aliens. Craft a narrative that captures the transformative potential of this innovative device, detailing how it transports users to otherworldly realms. Highlight its features and benefits, emphasizing its unique ability to connect users with the spiritual world seamlessly. Your description should evoke curiosity and excitement, painting a vivid picture of the VR.oculus as a must-have for seekers of transcendent experiences"
+          }
+        ],
+
+      }
+    },
+    event_execute: "processLLM"
   },
   // { id: 2, description: "Generate text using Anthropic's Claude models", title: "Anthropic Claude", category: "Text", icon: "/dummy/providers/claude.svg" },
   // {
