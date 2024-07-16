@@ -12,7 +12,10 @@ interface Message {
   updatedAt: string;
 }
 
-export const translateText = async (messages: Message[], target: string): Promise<Message[]> => {
+export const translateText = async (
+  messages: Message[],
+  target: string
+): Promise<Message[]> => {
   const translate = async (text: string, target: string): Promise<string> => {
     try {
       const response = await axios.post(
@@ -31,7 +34,7 @@ export const translateText = async (messages: Message[], target: string): Promis
       return response.data.data.translations[0].translatedText;
     } catch (error) {
       console.error("Error translating text:", error);
-      return text; // Return the original text in case of an error
+      return text;
     }
   };
 
