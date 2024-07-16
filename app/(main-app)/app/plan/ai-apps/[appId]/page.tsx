@@ -190,37 +190,15 @@ export default function AiAppPage({
     }
   };
 
-  // const handleSubmit = async () => {
-  //   try {
-  //     const formattedUserPrompt = assistant.inputs.map((input: any, index: number) => `${input.title}:${userPrompts[index]}`).join(".");
-
-  //     const response = await axios.post(
-  //       `${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`,
-  //       {
-  //         ...userInput,
-  //         user_prompt: formattedUserPrompt,
-  //       },
-  //       {
-  //         headers: {
-  //           'Content-Type': 'application/json'
-  //         },
-  //       }
-  //     );
-  //     console.log("Generated Data Article:", response.data);
-  //     setGeneratedContent(response.data);
-
-  //   } catch (error) {
-  //     console.error("Error generating template:", error);
-  //   }
-  // };
-  // ;
-  const handleSubmit = async () => {
+   const [isLoading, setIsLoading] = useState(false);
+   const handleSubmit = async () => {
     try {
+      setLoading(true); // Start loading
+
       const formattedUserPrompt = assistant.inputs
-        .map(
-          (input: any, index: number) => `${input.title}:${userPrompts[index]}`
-        )
+        .map((input: any, index: number) => `${input.title}:${userPrompts[index]}`)
         .join(".");
+
       const response = await axios.post(
         `${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`,
         {
@@ -233,28 +211,47 @@ export default function AiAppPage({
           },
         }
       );
+
       const chatId = response.data.data;
       const eventSource = new EventSource(
         `${API_URL}/ai/api/v1/chat-template/generate/stream/${chatId}`
       );
-      var content = "";
+
       eventSource.onerror = (event) => {
         eventSource.close();
+        setLoading(false); // Stop loading if there is an error
       };
+
+      let content = "<ol>"; // Start with an ordered list
+
       eventSource.onmessage = (event) => {
-        var data = event.data;
-        console.log(data);
-        if (data.includes("<p")) {
-          console.log("Yes");
-          data = "<br>" + data;
+        let data = event.data;
+
+        // Check for end of stream signal
+        if (data === "END_OF_STREAM") {
+          eventSource.close(); // Close the event source
+          setLoading(false); // Stop loading
+          return;
         }
+
+        // Clean up and append data as before
+        data = data.replace(/<li>\s*/g, "<li>")
+                   .replace(/\s*<\/li>/g, "</li><br>")
+                   .replace(/<ol>\s*/g, "<ol>")
+                   .replace(/\s*<\/ol>/g, "</ol>");
+
         content += data;
-        setGeneratedContent(content);
+        setGeneratedContent(content + "</ol>");
       };
     } catch (error) {
       console.error("Error generating template:", error);
+      setLoading(false); // Stop loading if there is an error
     }
   };
+  
+  
+  
+  
 
   const handleEditorChange = (content: string) => {
     setGeneratedContent(content);
@@ -551,7 +548,7 @@ export default function AiAppPage({
             className="w-full h-14 py-2 text-white bg-primary-green rounded-lg !mt-5"
             onClick={handleSubmit}
           >
-            Generate Template
+            Generate
           </button>
         </div>
         <div className="w-full p-8 bg-white rounded-2xl border border-[#EDEFF0] flex flex-col">

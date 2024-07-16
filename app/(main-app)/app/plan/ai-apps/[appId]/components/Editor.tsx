@@ -3,6 +3,7 @@ import "@/styles/editor.css";
 import dynamic from "next/dynamic";
 import { useMemo, useState, useEffect } from "react";
 import "react-quill/dist/quill.snow.css";
+import { HiOutlineRefresh } from "react-icons/hi"; // Import a loading icon from React Icons
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -13,9 +14,19 @@ interface EditorProps {
 
 const Editor = ({ content, onChange }: EditorProps) => {
   const [value, setValue] = useState("");
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
+  const [showEditor, setShowEditor] = useState(false); // Add state to control editor visibility
 
   useEffect(() => {
     setValue(content);
+    setIsLoading(false); // Mark loading as false once content is set
+  }, [content]);
+
+  useEffect(() => {
+    // Show editor when generated content is available
+    if (content && content.trim() !== "") {
+      setShowEditor(true);
+    }
   }, [content]);
 
   const modules = useMemo(
@@ -55,14 +66,24 @@ const Editor = ({ content, onChange }: EditorProps) => {
   };
 
   return (
-    <div className="flex-1 h-full rounded-lg">
-      <ReactQuill
-        value={value}
-        onChange={handleChange}
-        modules={modules}
-        formats={formats}
-        className="h-[calc(100%-40px)]" 
-      />
+    <div className="flex flex-col h-full rounded-lg relative">
+      {isLoading && (
+        <div className="flex items-center justify-center bg-white opacity-50 absolute top-0 left-0 w-full h-full z-10">
+          <span>Loading Content...</span>
+          <HiOutlineRefresh className="ml-4 animate-spin h-8 w-8 text-gray-500" /> {/* Loading icon */}
+        </div>
+      )}
+      {showEditor && (
+        <div className={`flex-1 ${isLoading ? "hidden" : ""}`}>
+          <ReactQuill
+            value={value}
+            onChange={handleChange}
+            modules={modules}
+            formats={formats}
+            className="h-full"
+          />
+        </div>
+      )}
     </div>
   );
 };
