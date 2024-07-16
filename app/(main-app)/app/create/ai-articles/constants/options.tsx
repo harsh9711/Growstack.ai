@@ -82,22 +82,22 @@ export const povOptions = [
 export const languageOptions = [
   {
     label: "English",
-    value: "English",
+    value: "en",
     icon: "",
   },
   {
     label: "Hindi",
-    value: "Hindi",
+    value: "hi",
     icon: "",
   },
   {
     label: "Spanish",
-    value: "Spanish",
+    value: "es",
     icon: "",
   },
   {
     label: "French",
-    value: "French",
+    value: "fr",
     icon: "",
   },
 ];
