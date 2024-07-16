@@ -281,9 +281,14 @@ export default function AiAppPage({
   const handleEditorChange = (content: string) => {
     setGeneratedContent(content);
   };
-
-  const handleDropdownChange = (name: any, value: any) => {
-    setUserInput((prev) => ({ ...prev, [name]: value }));
+  const [userInput1, setUserInput1] = useState({
+    language: "English (USA)", // Set your default language here
+  });
+  const handleDropdownChange = (field: string, value: any) => {
+    setUserInput1((prevInput) => ({
+      ...prevInput,
+      [field]: value,
+    }));
   };
 
   const handleUserPromptChange = (
@@ -421,8 +426,19 @@ export default function AiAppPage({
           <div>
             <Dropdown
               label="Language"
-              items={["English (USA)", "Spanish", "French"]}
-              value={userInput.language}
+              items={[
+                "English (USA)", "Spanish", "French", "German", "Italian", "Chinese (Simplified)", 
+                "Chinese (Traditional)", "Japanese", "Korean", "Portuguese", "Russian", 
+                "Arabic", "Hindi", "Bengali", "Urdu", "Indonesian", "Dutch", "Turkish", 
+                "Vietnamese", "Thai", "Greek", "Swedish", "Norwegian", "Danish", 
+                "Finnish", "Polish", "Czech", "Hungarian", "Romanian", "Hebrew", 
+                "Malay", "Filipino", "Swahili", "Zulu", "Afrikaans", "Serbian", 
+                "Croatian", "Bulgarian", "Slovak", "Slovenian", "Lithuanian", 
+                "Latvian", "Estonian", "Icelandic", "Irish", "Welsh", "Maltese", 
+                "Luxembourgish", "Catalan", "Galician", "Basque", "Scottish Gaelic", 
+                "Breton", "Corsican", "Esperanto", "Latin"
+              ]}
+              value={userInput1.language}
               onChange={(value: any) => handleDropdownChange("language", value)}
             />
           </div>
