@@ -10,6 +10,7 @@ import Sidebargpt from "./components/Sidebar";
 import { Assistant } from "@/types/assistants";
 import { Conversation } from "../../ai-assistant/components/types";
 import Sidebargpt1 from "./components/Sidebar1";
+import Downbar from "./components/Downbar";
 
 interface PageProps {
   params: {
@@ -29,13 +30,14 @@ const AssistantsChats: React.FC<PageProps> = ({ params: { assistant_id } }: Page
 
   return (
     <div className="flex-1 flex flex-col h-full w-full">
-      <div className="flex-1 flex flex-col h-full !bg-gray-100 shadow-box mt-8 border">
+      <div className="flex flex-col h-full !bg-gray-100 shadow-box mt-8 border">
       <Topbar  />
         <div className="h-full">
         <Sidebargpt />
 
           {/* <ChatSection/> */}
         </div>
+          <Downbar/>
       </div>
     </div>
   );

@@ -43,7 +43,7 @@ export default function Sidebargpt() {
 
   return (
     <div className="justify-between flex flex-row w-full h-full transition-all duration-500 opacity-100">
-      <div className="bg-white w-full h-[650px] rounded-2xl overflow-hidden transition-all duration-500 opacity-100 border relative">
+      <div className="bg-white w-full h-full rounded-2xl overflow-hidden transition-all duration-500 opacity-100 border relative">
         <div className="w-full flex flex-col items-center">
           <div className="w-80 flex relative bg-white border shadow-2xl translate-y-10 rounded-2xl overflow-hidden">
             {tabs.map((tab, index) => (
@@ -192,7 +192,7 @@ export default function Sidebargpt() {
           </div>
         </div>
       </div>
-      <div className="bg-gray-100 w-full  h-[620px] rounded-2xl overflow-hidden transition-all duration-500 opacity-100 relative">
+      <div className="bg-gray-100 w-full  h-full rounded-2xl overflow-hidden transition-all duration-500 opacity-100 relative">
           <div className="w-full flex flex-col items-center">
             <div className="w-full p-4 px-8 mt-4">
               <p className="mt-4 flex flex-col gap-y-[148px]">
