@@ -24,7 +24,11 @@ import axios from "axios";
 import { API_URL } from "@/lib/api";
 import Spinner from "@/components/Spinner";
 import toast from "react-hot-toast";
-
+import {
+  handleDownloadByDOCX,
+  handleDownloadByPDF,
+  handleDownloadByText,
+} from "../utils/downloadHelpers";
 interface ShareChatDialogProps {
   sidebarItems: ISidebarItem[];
 }
@@ -106,45 +110,20 @@ export default function ShareChatDialog({
 
         if (selectedOutputType === "text") {
           handleDownloadByText(data);
+        } else if (selectedOutputType === "pdf") {
+          handleDownloadByPDF(data);
+        } else if (selectedOutputType === "docx") {
+          handleDownloadByDOCX(data);
         }
+
+        setLoading(false);
+        handleClear();
       } catch (error) {
         console.error("Error fetching conversations:", error);
       }
     } else {
       toast.error("You have no conversation selected");
     }
-  };
-
-  const handleDownloadByText = (data: any) => {
-    data.forEach((conversation: any) => {
-      let content = `# ${conversation.title}\n`;
-      conversation.data.forEach(
-        ({
-          user_prompt,
-          response,
-        }: {
-          user_prompt: string;
-          response: string;
-        }) => {
-          content += `\n## Message From You:\n${user_prompt}\n`;
-          content += `## Message From GrowStackAI:\n${response}\n`;
-        }
-      );
-
-      const blob = new Blob([content], { type: "text/plain" });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.style.display = "none";
-      a.href = url;
-      a.download = `${conversation.title
-        .replace(/[^a-z0-9]/gi, "_")
-        .toLowerCase()}.txt`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-    });
-    setLoading(false);
-    handleClear();
   };
 
   return (
