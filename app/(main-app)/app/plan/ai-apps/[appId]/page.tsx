@@ -190,66 +190,78 @@ export default function AiAppPage({
     }
   };
 
-   const [isLoading, setIsLoading] = useState(false);
-   const handleSubmit = async () => {
-    try {
-      setLoading(true); // Start loading
+  // const handleSubmit = async () => {
+  //   try {
+  //     const formattedUserPrompt = assistant.inputs.map((input: any, index: number) => `${input.title}:${userPrompts[index]}`).join(".");
 
-      const formattedUserPrompt = assistant.inputs
-        .map((input: any, index: number) => `${input.title}:${userPrompts[index]}`)
-        .join(".");
+  //     const response = await axios.post(
+  //       `${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`,
+  //       {
+  //         ...userInput,
+  //         user_prompt: formattedUserPrompt,
+  //       },
+  //       {
+  //         headers: {
+  //           'Content-Type': 'application/json'
+  //         },
+  //       }
+  //     );
+  //     console.log("Generated Data Article:", response.data);
+  //     setGeneratedContent(response.data);
 
-      const response = await axios.post(
-        `${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`,
-        {
-          ...userInput,
-          user_prompt: formattedUserPrompt,
+  //   } catch (error) {
+  //     console.error("Error generating template:", error);
+  //   }
+  // };
+  // ;
+ const handleSubmit = async () => {
+  try {
+    const formattedUserPrompt = assistant.inputs
+      .map(
+        (input: any, index: number) => `${input.title}:${userPrompts[index]}`
+      )
+      .join(".");
+    const response = await axios.post(
+      `${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`,
+      {
+        ...userInput,
+        user_prompt: formattedUserPrompt,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      const chatId = response.data.data;
-      const eventSource = new EventSource(
-        `${API_URL}/ai/api/v1/chat-template/generate/stream/${chatId}`
-      );
-
-      eventSource.onerror = (event) => {
-        eventSource.close();
-        setLoading(false); // Stop loading if there is an error
-      };
-
-      let content = "<ol>"; // Start with an ordered list
-
-      eventSource.onmessage = (event) => {
-        let data = event.data;
-
-        // Check for end of stream signal
-        if (data === "END_OF_STREAM") {
-          eventSource.close(); // Close the event source
-          setLoading(false); // Stop loading
-          return;
-        }
-
-        // Clean up and append data as before
-        data = data.replace(/<li>\s*/g, "<li>")
-                   .replace(/\s*<\/li>/g, "</li><br>")
-                   .replace(/<ol>\s*/g, "<ol>")
-                   .replace(/\s*<\/ol>/g, "</ol>");
-
-        content += data;
-        setGeneratedContent(content + "</ol>");
-      };
-    } catch (error) {
-      console.error("Error generating template:", error);
-      setLoading(false); // Stop loading if there is an error
-    }
-  };
+      }
+    );
+    const chatId = response.data.data;
+    const eventSource = new EventSource(
+      `${API_URL}/ai/api/v1/chat-template/generate/stream/${chatId}`
+    );
+    let content = "<ol><strong>"; // Start with an ordered list
+    eventSource.onerror = (event) => {
+      eventSource.close();
+    };
+    eventSource.onmessage = (event) => {
+      let data = event.data;
+      console.log(data);
   
+      // Clean up the data to ensure it is properly formatted
+      data = data.replace(/<li>\s*/g, "<li>") // Remove spaces after <li>
+                 .replace(/\s*<\/li>/g, "</li><br>") // Add space before </li> by adding a <br> tag
+                 .replace(/<ol>\s*/g, "<ol>") // Remove spaces after <ol>
+                 .replace(/\s*<\/ol>/g, "</ol>"); // Remove spaces before </ol>
   
+      // Add the cleaned data to content
+      content += data;
+  
+      // Set the generated content with the final formatted HTML
+      setGeneratedContent(content + "</strong></ol>");
+    };
+  } catch (error) {
+    console.error("Error generating template:", error);
+  }
+};
+
   
   
 

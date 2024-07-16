@@ -1,7 +1,8 @@
 // components/Editor.tsx
+
 import "@/styles/editor.css";
 import dynamic from "next/dynamic";
-import { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import "react-quill/dist/quill.snow.css";
 import { HiOutlineRefresh } from "react-icons/hi"; // Import a loading icon from React Icons
 
@@ -14,20 +15,21 @@ interface EditorProps {
 
 const Editor = ({ content, onChange }: EditorProps) => {
   const [value, setValue] = useState("");
-  const [isLoading, setIsLoading] = useState(true); // Add loading state
-  const [showEditor, setShowEditor] = useState(false); // Add state to control editor visibility
+  const [isLoading, setIsLoading] = useState(true); // Initialize loading state to false
+  const [generatedContent, setGeneratedContent] = useState<string>("");
 
   useEffect(() => {
     setValue(content);
-    setIsLoading(false); // Mark loading as false once content is set
+    setIsLoading(true); // Set loading to true whenever content changes
   }, [content]);
 
   useEffect(() => {
-    // Show editor when generated content is available
-    if (content && content.trim() !== "") {
-      setShowEditor(true);
-    }
-  }, [content]);
+    // Simulate async content generation
+    setTimeout(() => {
+      setGeneratedContent("Initial content loaded.");
+      setIsLoading(false); // Set loading to false after content is generated
+    }, 500); // Adjust timeout as needed (e.g., 100 milliseconds)
+  }, [content]); // Ensure useEffect runs when content changes
 
   const modules = useMemo(
     () => ({
@@ -73,17 +75,15 @@ const Editor = ({ content, onChange }: EditorProps) => {
           <HiOutlineRefresh className="ml-4 animate-spin h-8 w-8 text-gray-500" /> {/* Loading icon */}
         </div>
       )}
-      {showEditor && (
-        <div className={`flex-1 ${isLoading ? "hidden" : ""}`}>
-          <ReactQuill
-            value={value}
-            onChange={handleChange}
-            modules={modules}
-            formats={formats}
-            className="h-full"
-          />
-        </div>
-      )}
+      <div className={`flex-1 ${isLoading ? "hidden" : ""}`}>
+        <ReactQuill
+          value={value}
+          onChange={handleChange}
+          modules={modules}
+          formats={formats}
+          className="h-full"
+        />
+      </div>
     </div>
   );
 };
