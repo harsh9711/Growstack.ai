@@ -27,6 +27,7 @@ import { EditorState, convertToRaw } from "draft-js";
 import { saveAs } from "file-saver"; // Import file-saver library for downloading files
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
+import { HiOutlineRefresh } from "react-icons/hi";
 
 const Dropdown = ({
   label,
@@ -80,12 +81,13 @@ export default function AiAppPage({
     number_of_results: 1,
     estimated_result_length: 400,
   });
+  const [isLoading, setIsLoading] = useState(false);
+
   const stripHtmlTags = (html: string) => {
     const temp = document.createElement("div");
     temp.innerHTML = html;
     return temp.textContent || temp.innerText || "";
   };
-  
   const handleChange = (e: { target: { value: string; name: any; }; }) => {
     let newValue = parseInt(e.target.value, 10);
   
@@ -214,6 +216,17 @@ export default function AiAppPage({
   //   }
   // };
   // ;
+  const handleGenerateClick = () => {
+    // Set isLoading to true to indicate loading has started
+    setIsLoading(true);
+
+    // Perform your generate action here (e.g., fetch data, compute something)
+    // Simulate loading delay (remove this in actual implementation)
+    setTimeout(() => {
+      // After some action is completed, set isLoading back to false
+      setIsLoading(false);
+    }, 2000); // Example: Simulating loading for 2 seconds
+  };
  const handleSubmit = async () => {
   try {
     const formattedUserPrompt = assistant.inputs
@@ -333,7 +346,10 @@ export default function AiAppPage({
   if (loading) {
     return <div>Loading...</div>;
   }
-
+  const handleBothActions = () => {
+    handleGenerateClick(); // Call ghandleGenerate function
+    handleSubmit(); // Call handleSubmit function
+  };
   return (
     <Fragment>
       <div className="flex items-center justify-between mt-10">
@@ -558,9 +574,14 @@ export default function AiAppPage({
           </div>
           <button
             className="w-full h-14 py-2 text-white bg-primary-green rounded-lg !mt-5"
-            onClick={handleSubmit}
+            onClick={handleBothActions} 
           >
-            Generate
+            Generate    {isLoading && (
+        <div className="flex flex-row gap-4 mx-auto items-center justify-center">
+          <span>Loading Content...</span>
+          <HiOutlineRefresh className="ml-4  h-4 w-4 text-gray-500" /> 
+        </div>
+      )}
           </button>
         </div>
         <div className="w-full p-8 bg-white rounded-2xl border border-[#EDEFF0] flex flex-col">
