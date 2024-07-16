@@ -48,7 +48,11 @@ export default function NewWebsite() {
         toast.error("Failed to generate website");
       }
     } catch (error: any) {
-      toast.error(error.response.data.message || error.message);
+      if (error.response) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error(error.message);
+      }
       console.error("Error generating website:", error);
     } finally {
       setLoading(false);

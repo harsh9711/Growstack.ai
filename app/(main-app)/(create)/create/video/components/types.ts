@@ -9,5 +9,9 @@ export interface VideoData {
   status: "complete" | "in_progress";
   title: string;
   visibility: "public" | "private";
-  videoScript: string;
 }
+
+export type Scene = {
+  id: string;
+  title: string;
+};
