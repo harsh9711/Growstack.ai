@@ -103,7 +103,7 @@ export default function MarketingPage() {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <Link href="/app/plan/ai-apps/create-assistant">
+            {/* <Link href="/app/plan/ai-apps/create-assistant">
               <button className="text-primary-green font-medium border-primary-green border sheen transition duration-500 px-4 py-4 rounded-xl flex items-center gap-2">
                 <Plus size={20} />
                 Upload file
@@ -112,7 +112,7 @@ export default function MarketingPage() {
 </svg>
 
               </button>
-            </Link>
+            </Link> */}
             <Link href="/app/plan/ai-apps/create-assistant">
               <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
                 <Plus size={20} />
