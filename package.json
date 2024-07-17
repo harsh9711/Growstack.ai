@@ -61,6 +61,8 @@
     "react-select": "^5.8.0",
     "react-select-country-list": "^2.2.3",
     "react-toastify": "^10.0.5",
+    "rehype-raw": "^7.0.0",
+    "remark-breaks": "^4.0.0",
     "remark-gfm": "^4.0.0",
     "swiper": "^11.1.4",
     "tailwind-merge": "^2.3.0",
