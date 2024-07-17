@@ -17,7 +17,7 @@ export default function EmailBuilder() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
-    handleEdit(true);
+    handleEdit();
   }, [generatedHtml]);
 
   const handleViewScreenChange = (view: string) => {
@@ -40,23 +40,16 @@ export default function EmailBuilder() {
     }
   };
 
-  const handleEdit = (enable: boolean) => {
+  const handleEdit = () => {
     if (iframeRef.current) {
       const iframeDocument = iframeRef.current.contentDocument;
       if (iframeDocument) {
         iframeDocument.querySelectorAll<HTMLElement>("*").forEach((element) => {
-          element.contentEditable = enable ? "true" : "false";
-          if (enable) {
-            element.addEventListener("mouseover", handleMouseOver);
-            element.addEventListener("mouseout", handleMouseOut);
-            element.addEventListener("focus", handleFocus);
-            element.addEventListener("blur", handleBlur);
-          } else {
-            element.removeEventListener("mouseover", handleMouseOver);
-            element.removeEventListener("mouseout", handleMouseOut);
-            element.removeEventListener("focus", handleFocus);
-            element.removeEventListener("blur", handleBlur);
-          }
+          element.contentEditable = "true";
+          element.addEventListener("mouseover", handleMouseOver);
+          element.addEventListener("mouseout", handleMouseOut);
+          element.addEventListener("focus", handleFocus);
+          element.addEventListener("blur", handleBlur);
         });
       }
     }
@@ -137,16 +130,6 @@ export default function EmailBuilder() {
         </div>
       </div>
       <NewEmailDialog generateHtml={generatedHtml} setGeneratedHtml={setGeneratedHtml} setLoading={setLoading} />
-      <div className="flex gap-4 p-4 bg-white shadow-lg rounded-lg mt-4">
-        {selectedElement && (
-          <div className="flex gap-4 items-center">
-            <textarea className="border rounded p-2 w-96" value={editedContent} onChange={(e) => setEditedContent(e.target.value)} />
-            <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onClick={handleUpdate}>
-              Update
-            </button>
-          </div>
-        )}
-      </div>
     </div>
   );
 }
