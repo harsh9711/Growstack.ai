@@ -36,7 +36,10 @@ function PublishModal({ show, onHide, workflowId }: PublishModalProps) {
                 <div className="">Workflow ID</div>
                 <div className="flex items-center">
                   <Input value={workflowId} className="flex-1 h-10 rounded-md border text-black dark:text-white cursor-not-allowed" type="text" disabled={true} />
-                  <div className="cursor-pointer" onClick={() => navigator.clipboard.writeText(workflowId)}>
+                  <div className="cursor-pointer" onClick={() => {
+                    navigator.clipboard.writeText(workflowId)
+                    toast.success("Copied to clipboard")
+                  }}>
                   <ClipboardCopy size={25}/>
                   </div>
                 </div>
@@ -103,7 +106,10 @@ export default function CreateWorkflowPage() {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <button className="cursor-pointer text-primary-green" onClick={() => navigator.clipboard.writeText("wkf_VzfU33gpxzoNGU")}>
+                      <button className="cursor-pointer text-primary-green" onClick={() => {
+                        navigator.clipboard.writeText("wkf_VzfU33gpxzoNGU")
+                        toast.success("Copied to clipboard")
+                      }}>
                         <Copy size={16} />
                       </button>
                     </TooltipTrigger>

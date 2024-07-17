@@ -117,8 +117,9 @@ export default function WorkFlowBuilderComponent() {
   const reorderActions = async (actionId: string, direction: string) => {
     try {
       await axios.put(`${API_URL}/workflow/api/v1/${workflowId}/actions/${actionId}/reorder?direction=${direction}`)
+      toast.success("Action reordered successfully")
     } catch (error) {
-
+      toast.error("Failed to reorder action")
     }
   }
 
