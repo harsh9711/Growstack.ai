@@ -1,13 +1,172 @@
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { BsChevronDown, BsPlus } from "react-icons/bs";
 import { RxCross1 } from "react-icons/rx";
+// import FilterSheet from "./FilterSheet";
+import {Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription } from "@/components/ui/sheet";
+import { FilterIcon,  Search } from "lucide-react";
+import { RiArrowDropDownLine } from "react-icons/ri";
 
+interface FilterItem {
+  id: number;
+  title: string;
+  description: string;
+}
+const items: FilterItem[] = [
+  {
+    id: 1,
+    title: "Content rewriter",
+    description: "Rewrite content to be more engaging and descriptive."
+  },
+  {
+    id: 2,
+    title: "Customer testimonials",
+    description: "Write personalized customer testimonials for your product."
+  },
+  {
+    id: 3,
+    title: "Explain a concept to my three year old",
+    description: "How to explain a concept easily to your three year old."
+  },
+  {
+    id: 4,
+    title: "Review request email",
+    description: "Write request email requesting service/product/feedback."
+  },
+  {
+    id: 5,
+    title: "Review responder",
+    description: "Save your time in responding to your customer reviews."
+  },
+  {
+    id: 6,
+    title: "Content rewriter",
+    description: "Rewrite content to be more engaging and descriptive."
+  },
+  {
+    id: 7,
+    title: "Content rewriter",
+    description: "Rewrite content to be more engaging and descriptive."
+  },
+  {
+    id: 8,
+    title: "Content rewriter",
+    description: "Rewrite content to be more engaging and descriptive."
+  },{
+    id: 9,
+    title: "Content rewriter",
+    description: "Rewrite content to be more engaging and descriptive."
+  },
+  // Add other items as needed
+];
 
 const ChatInput= () => {
   const [input, setInput] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [showFilterSheet, setShowFilterSheet] = useState(false);  
+   const [isOpen2, setIsOpen2] = useState(false);
+   const toggleSheet = () => {
+    setIsOpen2(!isOpen2);
+    setShowFilterSheet(true)
+  };  
+   const FilterSheet = () => {
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filteredItems, setFilteredItems] = useState<FilterItem[]>(items);
+  
+   
+    const handleCloseSheet = useCallback((event: MouseEvent) => {
+      if (!(event.target instanceof Element) || !event.target.closest('.sheet-content')) {
+        setIsOpen2(false);
+      }
+    }, []);
+  
+    useEffect(() => {
+      if (isOpen2) {
+        document.addEventListener('click', handleCloseSheet);
+      } else {
+        document.removeEventListener('click', handleCloseSheet);
+      }
+  
+      return () => {
+        document.removeEventListener('click', handleCloseSheet);
+      };
+    }, [isOpen2, handleCloseSheet]);
+  
+    useEffect(() => {
+      setFilteredItems(
+        items.filter(item =>
+          item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          item.description.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      );
+    }, [searchTerm]);
+  
+  
+    return (
+      <>
+        <button
+          className="border opacity-0 border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black"
+          onClick={toggleSheet}
+        >
+          <FilterIcon size={20} />
+        </button>
+        {isOpen2 && (
+          <Sheet open={isOpen2} >
+            <SheetContent className="rounded-l-[40px] sheet-content">
+              <SheetHeader className="flex flex-row justify-between w-full items-center">
+                <SheetTitle className="-translate-y-4 text-[20px]">AI templates</SheetTitle>  <button
+              className="absolute top-4 z-[20] translate-x-[430px] text-red-500"
+              onClick={() => setIsOpen2(false)}
+            >
+              &#x2715; {/* Close icon (X) */}
+            </button>
+              </SheetHeader>
+              <div className="border-[0.5px] border-gray-100 mt-6 mb-6 w-[1600px] -translate-x-10"></div>
 
+              <div className="bg-[#F2F2F2] border border-[#EBEBEB] px-4 py-1 rounded-xl flex items-center justify-between w-full max-w-md mt-5">
+      <div className="flex items-center gap-x-2">
+        <Search className="text-gray-500" size={25} />
+        <input
+          type="search"
+          className="bg-[#F2F2F2] outline-none h-[40px] w-full"
+          placeholder="Search AI assistant"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
+      <div className="flex items-center gap-x-2">
+        <svg width="1" height="25" viewBox="0 0 1 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="0.5" y1="0" x2="0.5" y2="25" stroke="#C6C6C6" />
+        </svg>
+        <h2 className="text-[12px]">Customer support</h2>
+        <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 7.60938L10 12.6094L15 7.60937" stroke="#14171B" strokeWidth="1.45833" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </div>
+    </div>
+  <div className="border-[0.5px] border-gray-100 mt-6 mb-6"></div>
+              <div className=" space-y-4">
+                {filteredItems.map(item => (
+                    <div key={item.id} className="cursor-pointer bg-[#F2F2F2] py-4 px-6 flex justify-between items-center rounded-2xl">
+                    <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect width="42" height="42" rx="10" fill="white"/>
+                    </svg>
+                    <span className="flex flex-col w-full ml-4">
+                      <h1 className="font-semibold text-ellipsis text-[14px] w-full ">{item.title}</h1>
+                      <p className="text-[12px] w-full ">{item.description}</p>
+                    </span>
+                  </div>
+                ))}
+              </div>
+             
+            </SheetContent>
+          </Sheet>
+        )}
+      </>
+    );
+  };
+  const handleOpenFilterSheet = () => {
+    setShowFilterSheet(true);
+  };
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
   const [isFilterAssistantOpen, setIsFilterAssistantOpen] = useState(false);
@@ -63,7 +222,8 @@ const ChatInput= () => {
 
 
   return (
-    <div className="shadow-lg rounded-full"><div className="flex bg-white  p-2 border gap-2 rounded-t-xl items-end">
+    <div className="shadow-lg rounded-full">
+      <div className="flex bg-white  p-2 border gap-2 rounded-t-xl items-end">
       <textarea
         ref={textareaRef}
         value={input}
@@ -102,10 +262,10 @@ const ChatInput= () => {
                   <input
                     type="text"
                     placeholder="Search..."
-                    className="flex-grow bg-gray-100 text-xl focus:outline-none"
+                    className="flex-grow bg-gray-100 text-sm focus:outline-none"
                   />
                   <button className="p-2 flex" onClick={handleCrossClick}>
-                    <RxCross1 className="-translate-x-6" />
+                    <RxCross1 className="" />
                   </button>
                 </div>
                 <div className="mt-4 space-y-2">
@@ -191,66 +351,64 @@ const ChatInput= () => {
         <div
           ref={filterMenuRef2}
           className="fixed inset-0 flex items-center justify-center z-50 bg-gray-500 bg-opacity-50"
-          onClick={() => setIsFilterAssistantOpen(false)} 
+          onClick={() => setIsFilterAssistantOpen(false)}
         >
           <div className="max-w-[443px] bg-white border border-gray-300 rounded-2xl shadow-lg">
             <div className="p-4">
-                  <div className="flex items-center w-full bg-gray-100 border border-gray-300 px-2 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-green-800">
-                    <input
-                      type="text"
-                      placeholder="Search AI assistant"
-                      className="flex-grow bg-gray-100 text-xl focus:outline-none"
-                    />
-                    <button className="p-4 flex" onClick={handleCrossClick2}>
-                      <RxCross1 className="" />
-                    </button>
-                  </div>
-                  <div className="border border-gray-300 my-4"></div>
+              <div className="flex items-center w-full bg-gray-100 border border-gray-300 px-2 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-green-800">
+                <input
+                  type="text"
+                  placeholder="Search AI assistant"
+                  className="flex-grow bg-gray-100 text-xl focus:outline-none"
+                />
+                <button className="p-4 flex" onClick={handleCrossClick2}>
+                  <RxCross1 className="" />
+                </button>
+              </div>
+              <div className="border border-gray-300 my-4"></div>
 
-                  <div className="mt-4 space-y-2">
-                    <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md flex-row justify-between">
-                      <span className="flex flex-col">
-                        <span className="ml-2 text-black text-[16px] font-semibold">Summarize</span>
-                        <span className="ml-2 text-[#14171B] text-[14px] font-light">Summarize the conversation.</span>
+              <div className="mt-4 space-y-2">
+                <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md flex-row justify-between" onClick={(e) => e.stopPropagation()}>
+                  <span className="flex flex-col">
+                    <span className="ml-2 text-black text-[16px] font-semibold">Summarize</span>
+                    <span className="ml-2 text-[#14171B] text-[14px] font-light">Summarize the conversation.</span>
+                  </span>
+                </label>
+                <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md flex-row justify-between" onClick={(e) => e.stopPropagation()}>
+                  <span className="flex flex-col">
+                    <span className="ml-2 text-black text-[16px] font-semibold">Rewrite</span>
+                    <span className="ml-2 text-[#14171B] text-[14px] font-light">Rephrase the content.</span>
+                  </span>
+                </label>
+                <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md flex-row justify-between" onClick={(e) => e.stopPropagation()}>
+                  <span className="flex flex-col">
+                    <span className="ml-2 text-black text-[16px] font-semibold">Expand</span>
+                    <span className="ml-2 text-[#14171B] text-[14px] font-light">Expand your content into a longer sentence.</span>
+                  </span>
+                </label>
+                <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md flex-row justify-between" onClick={(e) => e.stopPropagation()}>
+                  <span className="flex flex-col">
+                    <span className="ml-2 text-black text-[16px] font-semibold">Make more friendly</span>
+                    <span className="ml-2 text-[#14171B] text-[14px] font-light">Rewrite the content to be more informal & friendly.</span>
+                  </span>
+                </label>
+                <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md flex-row justify-between"  onClick={toggleSheet}>
+                  <span className="flex flex-col">
+                    <span className="ml-2 text-black text-[16px] font-semibold">Use AI templates / document</span>
+                    <span className="ml-2 text-[#14171B] text-[14px] font-light">Browse AI texts templates and your documents.</span>
+               
+                  </span>
+                </label>
+              </div>
 
-                      </span>
-                    </label>
-                    <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md flex-row justify-between">
-                      <span className="flex flex-col">
-                        <span className="ml-2 text-black text-[16px] font-semibold">Rewrite</span>
-                        <span className="ml-2 text-[#14171B] text-[14px] font-light">Rephrase the content.</span>
-
-                      </span>
-                    </label>
-                    <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md flex-row justify-between">
-                      <span className="flex flex-col">
-                        <span className="ml-2 text-black text-[16px] font-semibold">Expand</span>
-                        <span className="ml-2 text-[#14171B] text-[14px] font-light">Expand your content into a longer sentence.</span>
-
-                      </span>
-                    </label>
-                    <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md flex-row justify-between">
-                      <span className="flex flex-col">
-                        <span className="ml-2 text-black text-[16px] font-semibold">Make more friendly</span>
-                        <span className="ml-2 text-[#14171B] text-[14px] font-light">Rewrite the content to be more informal & friendly.</span>
-
-                      </span>
-                    </label>
-                    <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md flex-row justify-between">
-                      <span className="flex flex-col">
-                        <span className="ml-2 text-black text-[16px] font-semibold">Use AI templates / document</span>
-                        <span className="ml-2 text-[#14171B] text-[14px] font-light">Browse AI texts templates and your documents.</span>
-
-                      </span>
-                    </label>
-                  </div>
-            
             </div>
           </div>
         </div>
       )}
-    </div>
+    
 
+    </div>
+{/* //comment  */}
 <svg width="1" height="24" viewBox="0 0 1 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <line x1="0.5" y1="2.18556e-08" x2="0.499999" y2="24" stroke="#E6E6E6"/>
 </svg>
@@ -281,10 +439,13 @@ const ChatInput= () => {
         )}
       </div>
     </div>
-
+    {showFilterSheet && <FilterSheet/>}
 </div> 
  </div></div>
   );
 };
+
+
+
 
 export default ChatInput;

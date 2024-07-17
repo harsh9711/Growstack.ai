@@ -42,7 +42,13 @@ interface Assistant {
   profile_image: string;
 }
 
- const columns: ColumnDef<Assistant>[] = [
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
+
+const columns: ColumnDef<Assistant>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -105,63 +111,49 @@ interface Assistant {
       </div>
     ),
   },
-  {
-    accessorKey: "last_activity",
-    header: () => "Last Activity",
-    cell: ({ row }) => <div>{row.getValue("last_activity")}</div>,
-  },
 ];
-
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
 
 const ContactsTable: React.FC<PageProps> = ({ params: { id } }) => {
   const [assistants, setAssistants] = useState<Assistant[]>([]);
   const [isPending, setIsPending] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-    console.log("assistant_id:", id);
-const fetchAssistants = async () => {
-  setIsPending(true);
-  try {
-    const response = await axios.get(`${API_URL}/users/api/v1/contacts/prospects/${id}`);
-    const { businesses } = response.data.data;
-console.log(businesses)
-    const formattedAssistants = businesses.map((assistant: any) => ({
-      business_name: assistant.business_name || "-",
-      phone: assistant.business_contact?.phone || "-",
-      email: assistant?.business_contact?.email || "-",
-      website: assistant?.website || "-",
-      created_on: {
-        date: new Date(assistant.createdAt).toLocaleDateString("en-US", {
-          month: "long",
-          day: "numeric",
-          year: "numeric",
-        }),
-        time: new Date(assistant.createdAt).toLocaleTimeString(),
-      },
-      last_activity: formatLastActivity(new Date(assistant.updatedAt)),
-      tags: assistant.tags || [],
-      profile_image: assistant.profile_image || "",
-    }));
-
-    setAssistants(formattedAssistants);
-  } catch (error) {
-    console.error("Error fetching assistants:", error);
-    toast.error("Failed to fetch assistants. Please try again.");
-  } finally {
-    setIsPending(false);
-  }
-};
-
-
   useEffect(() => {
-        fetchAssistants();
-    }, []);
+    const fetchAssistants = async () => {
+      setIsPending(true);
+      try {
+        const response = await axios.get(`${API_URL}/users/api/v1/contacts/prospects/${id}`);
+        const { businesses } = response.data.data;
 
+        const formattedAssistants = businesses.map((assistant: any) => ({
+          business_name: assistant.business_name || "-",
+          phone: assistant.business_contact?.phone || "-",
+          email: assistant?.business_contact?.email || "-",
+          website: assistant?.website || "-",
+          created_on: {
+            date: new Date(assistant.createdAt).toLocaleDateString("en-US", {
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            }),
+            time: new Date(assistant.createdAt).toLocaleTimeString(),
+          },
+          last_activity: formatLastActivity(new Date(assistant.updatedAt)),
+          tags: assistant.tags || [],
+          profile_image: assistant.profile_image || "",
+        }));
+
+        setAssistants(formattedAssistants);
+      } catch (error) {
+        console.error("Error fetching assistants:", error);
+        toast.error("Failed to fetch assistants. Please try again.");
+      } finally {
+        setIsPending(false);
+      }
+    };
+
+    fetchAssistants();
+  }, [id]);
 
   const formatLastActivity = (updatedAt: Date): string => {
     const now = new Date();
@@ -191,7 +183,7 @@ console.log(businesses)
     getFilteredRowModel: getFilteredRowModel(),
   });
 
-   useEffect(() => {
+  useEffect(() => {
     table.setGlobalFilter(searchQuery);
   }, [searchQuery]);
 
@@ -212,7 +204,6 @@ console.log(businesses)
       </button>
     );
   }
-
 
   return (
     <Motion
