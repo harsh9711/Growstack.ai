@@ -28,6 +28,8 @@ import { saveAs } from "file-saver"; // Import file-saver library for downloadin
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import { HiOutlineRefresh } from "react-icons/hi";
+import TemplateLoader from "../../text-to-video/components/TemplateLoader";
+import { FaCircleNotch } from "react-icons/fa";
 
 const Dropdown = ({
   label,
@@ -281,9 +283,14 @@ export default function AiAppPage({
   const handleEditorChange = (content: string) => {
     setGeneratedContent(content);
   };
-
-  const handleDropdownChange = (name: any, value: any) => {
-    setUserInput((prev) => ({ ...prev, [name]: value }));
+  const [userInput1, setUserInput1] = useState({
+    language: "English (USA)", // Set your default language here
+  });
+  const handleDropdownChange = (field: string, value: any) => {
+    setUserInput1((prevInput) => ({
+      ...prevInput,
+      [field]: value,
+    }));
   };
 
   const handleUserPromptChange = (
@@ -301,7 +308,6 @@ export default function AiAppPage({
       return updatedPrompts;
     });
   };
-
   const handleCheckboxChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number
@@ -421,8 +427,19 @@ export default function AiAppPage({
           <div>
             <Dropdown
               label="Language"
-              items={["English (USA)", "Spanish", "French"]}
-              value={userInput.language}
+              items={[
+                "English (USA)", "Spanish", "French", "German", "Italian", "Chinese (Simplified)", 
+                "Chinese (Traditional)", "Japanese", "Korean", "Portuguese", "Russian", 
+                "Arabic", "Hindi", "Bengali", "Urdu", "Indonesian", "Dutch", "Turkish", 
+                "Vietnamese", "Thai", "Greek", "Swedish", "Norwegian", "Danish", 
+                "Finnish", "Polish", "Czech", "Hungarian", "Romanian", "Hebrew", 
+                "Malay", "Filipino", "Swahili", "Zulu", "Afrikaans", "Serbian", 
+                "Croatian", "Bulgarian", "Slovak", "Slovenian", "Lithuanian", 
+                "Latvian", "Estonian", "Icelandic", "Irish", "Welsh", "Maltese", 
+                "Luxembourgish", "Catalan", "Galician", "Basque", "Scottish Gaelic", 
+                "Breton", "Corsican", "Esperanto", "Latin"
+              ]}
+              value={userInput1.language}
               onChange={(value: any) => handleDropdownChange("language", value)}
             />
           </div>
@@ -573,16 +590,17 @@ export default function AiAppPage({
             </div>
           </div>
           <button
-            className="w-full h-14 py-2 text-white bg-primary-green rounded-lg !mt-5"
-            onClick={handleBothActions} 
-          >
-            Generate    {isLoading && (
-        <div className="flex flex-row gap-4 mx-auto items-center justify-center">
-          <span>Loading Content...</span>
-          <HiOutlineRefresh className="ml-4  h-4 w-4 text-gray-500" /> 
-        </div>
-      )}
-          </button>
+      className="w-full h-14 py-2 text-white bg-primary-green rounded-lg mt-5 flex items-center justify-center"
+      onClick={handleBothActions}
+    >
+      <div className="flex items-center gap-2">
+        {!isLoading ? (
+          "Generate"
+        ) : (
+          <FaCircleNotch className="h-6 w-6 text-white animate-spin" />
+        )}
+      </div>
+    </button>
         </div>
         <div className="w-full p-8 bg-white rounded-2xl border border-[#EDEFF0] flex flex-col">
           <div className="flex items-center justify-between mb-5 border-b pb-5">

@@ -103,7 +103,7 @@ export default function MarketingPage() {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <Link href="/app/plan/ai-apps/create-assistant">
+            {/* <Link href="/app/plan/ai-apps/create-assistant">
               <button className="text-primary-green font-medium border-primary-green border sheen transition duration-500 px-4 py-4 rounded-xl flex items-center gap-2">
                 <Plus size={20} />
                 Upload file
@@ -112,7 +112,7 @@ export default function MarketingPage() {
 </svg>
 
               </button>
-            </Link>
+            </Link> */}
             <Link href="/app/plan/ai-apps/create-assistant">
               <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
                 <Plus size={20} />
@@ -138,9 +138,13 @@ export default function MarketingPage() {
             </div>
           ))}
         </div>
-        <div className="grid grid-cols-3 gap-5 mt-9">
+        <div className="grid grid-cols-3 gap-5 mt-9 items-center justify-center">
           {loading ? (
-            <p>Loading...</p>
+        <div className="flex flex-col items-center justify-center translate-x-[500px] mx-auto w-full ">
+        {/* <p className="text-center mb-4">Loading...</p> */}
+        <Image src="/loader2.gif" alt="loader" width={650} height={650}  className="item-center justify-center mx-auto" />
+      </div>
+      
           ) : assistants.length < 1 ? (
             <div>No assistants found</div>
           ) : (
