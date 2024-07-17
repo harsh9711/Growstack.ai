@@ -51,7 +51,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
         </div>
       </div>
      
-      <div className="border border-gray-300 my-1"></div>
+      <div className="border-[0.5px] border-gray-200 my-1"></div>
     </>
   );
 };
