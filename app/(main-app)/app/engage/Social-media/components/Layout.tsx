@@ -80,7 +80,7 @@ const SearchBar = () => {
     value={searchQuery}
     onChange={handleSearchChange}
     placeholder="Search..."
-    className="bg-gray-100 text-sm focus:outline-none - translate-x-4"
+    className="bg-gray-100 text-sm focus:outline-none -translate-x-6"
   />
   <button onClick={toggleFilterMenu} className="p-2 translate-x-6">
     {isFilterMenuOpen ? (
@@ -872,7 +872,7 @@ const Layout = () => {
             </div>
           </div>
           <div className="flex flex-row w-full justify-between">
-            <div className="flex flex-col items-start -translate-y-6 translate-x-16  border-l-4 border-green-900 w-[500px] rounded-xl shadow-green-900">
+            <div className="flex flex-col items-start -translate-y-0 translate-x-16  border-l-4 border-green-900 w-[500px] rounded-xl shadow-green-900">
               <p className="py-2 px-4 bg-white max-w-[600px] rounded-lg text-sm">
                 <span className="flex flex-row gap-2 item-center">
                   <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -903,6 +903,7 @@ const Layout = () => {
               onClick={handleDotsClick}
             />
           </div>
+          <div className="mt-8"></div>
           <ChatInput />
         </main>)}
       {!isOpened && (
@@ -1107,7 +1108,7 @@ const Layout = () => {
                   <input
                     type="text"
                     placeholder="Search..."
-                    className="flex-grow  bg-gray-100 text-xl  focus:outline-none"
+                    className="flex-grow  bg-gray-100 text-sm focus:outline-none"
                   />
                   <button className=" right-0 ">
                     <svg width="24" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1146,7 +1147,7 @@ const Layout = () => {
                     </span>
                   </label>
                   <label className="flex bg-[#FAFBFC] items-center  rounded-md flex-row p-2 stify-between">
-                    <span className="flex flex-row w-full px-2 justify-between">
+                    <span className="flex flex-row w-full justify-between">
                       <span className="flex flex-row"> <Image src="/contact.png" alt="contact" width="20" height={10} />
                         <h2 className="ml-2 text-black text-md ">Guy Hawkins</h2></span>
                       <span className=" bg-[#03473729] rounded-md">

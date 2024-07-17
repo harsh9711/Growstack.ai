@@ -222,7 +222,8 @@ const ChatInput= () => {
 
 
   return (
-    <div className="shadow-lg rounded-full"><div className="flex bg-white  p-2 border gap-2 rounded-t-xl items-end">
+    <div className="shadow-lg rounded-full">
+      <div className="flex bg-white  p-2 border gap-2 rounded-t-xl items-end">
       <textarea
         ref={textareaRef}
         value={input}
@@ -261,10 +262,10 @@ const ChatInput= () => {
                   <input
                     type="text"
                     placeholder="Search..."
-                    className="flex-grow bg-gray-100 text-xl focus:outline-none"
+                    className="flex-grow bg-gray-100 text-sm focus:outline-none"
                   />
                   <button className="p-2 flex" onClick={handleCrossClick}>
-                    <RxCross1 className="-translate-x-6" />
+                    <RxCross1 className="" />
                   </button>
                 </div>
                 <div className="mt-4 space-y-2">
