@@ -138,13 +138,9 @@ export default function MarketingPage() {
             </div>
           ))}
         </div>
-        <div className="grid grid-cols-3 gap-5 mt-9 items-center justify-center">
+        <div className="grid grid-cols-3 gap-5 mt-9">
           {loading ? (
-        <div className="flex flex-col items-center justify-center translate-x-[500px] mx-auto w-full ">
-        {/* <p className="text-center mb-4">Loading...</p> */}
-        <Image src="/loader2.gif" alt="loader" width={650} height={650}  className="item-center justify-center mx-auto" />
-      </div>
-      
+            <p>Loading...</p>
           ) : assistants.length < 1 ? (
             <div>No assistants found</div>
           ) : (
@@ -154,25 +150,23 @@ export default function MarketingPage() {
                 key={assistant._id}
               >
                 <div className="flex items-center justify-between gap-5 bg-white border border-[#EEF0F4] rounded-2xl p-6 shadow-xl shadow-gray-100 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer">
-                  <div className="flex gap-4 items-start">
-                  <div dangerouslySetInnerHTML={{ __html: assistant.icon }} className="w-[64px] h-[64px]" />
-
-                    <div className="space-y-2 max-h-[80px]">
-                      <h1 className="text-lg font-semibold">
-                        {assistant["ASSISTANT NAME"]}
-                      </h1>
-                      <p
-                        className="text-primary-black text-opacity-70 text-[14px] leading-relaxed overflow-hidden text-ellipsis"
-                        style={{
-                          display: "-webkit-box",
-                          WebkitLineClamp: 3,
-                          WebkitBoxOrient: "vertical",
-                        }}
-                      >
-                        {assistant["ASSISTANT DESCRIPTION"]}
-                      </p>
-                    </div>
-                  </div>
+                 <div className="flex gap-4 items-start flex-grow overflow-hidden">
+        <div dangerouslySetInnerHTML={{ __html: assistant.icon }} className="w-[64px] h-[64px] flex-shrink-0" />
+        <div className="space-y-2 overflow-hidden flex-grow">
+          <h1 className="text-lg font-semibold overflow-hidden text-ellipsis whitespace-nowrap">
+            {assistant["ASSISTANT NAME"]}
+          </h1>
+          <p className="text-primary-black text-opacity-70 text-[14px] leading-relaxed overflow-hidden text-ellipsis"
+            style={{
+              display: "-webkit-box",
+              WebkitLineClamp: 3,
+              WebkitBoxOrient: "vertical",
+            }}
+          >
+            {assistant["ASSISTANT DESCRIPTION"]}
+          </p>
+        </div>
+      </div>
                   <div className="cursor-pointer w-full max-w-fit hover:bg-gray-50 p-1 rounded transition">
                     <StarIcon className="text-[#ADADAD]" />
                   </div>
