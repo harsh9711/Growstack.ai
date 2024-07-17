@@ -74,22 +74,23 @@ const SearchBar = () => {
 
   return (
     <div className="relative flex items-center  max-w-[293px] max-h-[48px] shadow-lg rounded-2xl">
-      <div className="flex items-center  bg-gray-100   border-[0.5px] border-gray-200 px-2 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-green-800">
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={handleSearchChange}
-          placeholder="Search..."
-          className="flex-grow px-2 bg-gray-100 text-xl  focus:outline-none"
-        />
-        <button onClick={toggleFilterMenu} className="p-2 -translate-x-10 ">
-          {isFilterMenuOpen ? (
-            <FaFilter className="w-6 h-6 text-green-800" />
-          ) : (
-            <CiFilter className="w-8 h-6 text-green-800" />
-          )}
-        </button>
-      </div>
+      <div className="flex items-center bg-gray-100 border-[0.5px] border-gray-200 px-10 rounded-2xl overflow-hidden focus-within:ring-1 focus-within:ring-green-800">
+  <input
+    type="text"
+    value={searchQuery}
+    onChange={handleSearchChange}
+    placeholder="Search..."
+    className="bg-gray-100 text-sm focus:outline-none - translate-x-4"
+  />
+  <button onClick={toggleFilterMenu} className="p-2 translate-x-6">
+    {isFilterMenuOpen ? (
+      <FaFilter className="w-6 h-6 text-green-800" />
+    ) : (
+      <CiFilter className="w-8 h-6 text-green-800" />
+    )}
+  </button>
+</div>
+
 
       {isFilterMenuOpen && (
         <div
