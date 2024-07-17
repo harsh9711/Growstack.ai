@@ -88,13 +88,14 @@ const ChatInput: React.FC<ChatInputProps> = ({
 
   const promptInput = (description: string) => {
     const trimmedDescription = description.replace(/\s+/g, " ").trim();
-    setInput(trimmedDescription);
+    const newInput = `${input} ${trimmedDescription}`;
+    setInput(newInput);
     setTimeout(() => {
       if (textareaRef.current) {
-        textareaRef.current.value = trimmedDescription;
+        textareaRef.current.value = newInput;
         textareaRef.current.focus();
         textareaRef.current.selectionStart = textareaRef.current.selectionEnd =
-          trimmedDescription.length;
+          newInput.length;
       }
     }, 500);
   };

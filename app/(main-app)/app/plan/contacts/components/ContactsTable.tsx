@@ -69,12 +69,12 @@ export const columns: ColumnDef<Contact>[] = [
     ),
   },
   {
-    accessorKey: "email",
-    header: () => <div className="uppercase">Email</div>,
+    accessorKey: "website",
+    header: () => <div className="uppercase">Website</div>,
     cell: ({ row }) => (
       <div className="flex gap-2 items-center">
         <MailIcon size={20} className="text-primary-green" />
-        <p>{row.getValue("email")}</p>
+        <p>{row.getValue("website")}</p>
       </div>
     ),
   },
@@ -163,12 +163,7 @@ export default function ContactsTable() {
             <Search className="text-gray-500" size={20} />
             <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" />
           </div>
-          <Link href="/app/plan/web-scraping/add-prospect" className="w-full max-w-fit">
-                <button className="flex items-center gap-3 hover:bg-primary-green/10 sheen min-w-fit py-3 px-4 rounded-lg transition-all duration-300">
-                  <CiCirclePlus className="text-primary-green" />
-                  Add prospect manually
-                </button>
-              </Link>
+     
           <FilterSheet />
         </div>
         <div className="rounded-lg border overflow-hidden mt-5">
