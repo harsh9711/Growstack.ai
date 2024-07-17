@@ -20,7 +20,12 @@ export default function TextToVideoPage() {
         console.log("Response data:", response.data.data.templates);
         setTemplates(response.data.data.templates);
       } catch (error: any) {
-        toast.error(error.response.data.message || error.message);
+        if (error.response) {
+          toast.error(error.response.data.error);
+        } else {
+          toast.error(error.message);
+        }
+        setTemplates([]);
         console.error("Error fetching data:", error);
       }
     };

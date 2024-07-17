@@ -6,14 +6,15 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { API_URL } from "@/lib/api";
 import axios from "axios";
 import clsx from "clsx";
+import { AnimatePresence, motion } from "framer-motion";
+import { Base64 } from "js-base64";
 import { Minus, Plus } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { HiOutlineQuestionMarkCircle } from "react-icons/hi2";
 import { z } from "zod";
-import { AnimatePresence, motion } from "framer-motion";
-import Link from "next/link";
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -25,25 +26,6 @@ const formSchema = z.object({
 });
 
 type FormSchema = z.infer<typeof formSchema>;
-
-const TooltipContentComponent = () => (
-  <div className="w-[460px] p-8 font-normal text-base space-y-8">
-    <div className="space-y-5">
-      <h1 className="text-primary-green text-xl font-semibold">Tips for generating video with AI</h1>
-      <div className="bg-primary-green p-5 text-white rounded-lg leading-normal text-[15px]">
-        Your prompt is processed through a third-party service by OpenAI
-      </div>
-    </div>
-    <div className="space-y-5">
-      <h1 className="text-primary-black text-xl font-semibold">Get a good draft ready</h1>
-      <p className="text-primary-neutral/60 text-[15px]">
-        We recommend you watch this 1-minute video on how to use the video assistant to achieve a good first draft.
-      </p>
-      <Image src="/videos/dummy-video.png" alt="" width={500} height={400} />
-    </div>
-    <button className="border border-[#C3C3C3] py-3.5 w-full rounded-xl !mt-14 font-semibold text-primary-neutral">Learn More</button>
-  </div>
-);
 
 type FieldsState = {
   objective: boolean;
@@ -64,25 +46,12 @@ export interface VideoStatus {
   visibility: "public" | "private";
 }
 
-const TooltipComponent = () => (
-  <TooltipProvider>
-    <Tooltip>
-      <TooltipTrigger asChild className="cursor-pointer">
-        <div>
-          <HiOutlineQuestionMarkCircle />
-        </div>
-      </TooltipTrigger>
-      <TooltipContent className="border-gradient-blue-to-gray-to-b rounded-[22px] p-0">
-        <div className="text-primary-black">{<TooltipContentComponent />}</div>
-      </TooltipContent>
-    </Tooltip>
-  </TooltipProvider>
-);
-
 export default function GenerateVideoDialog() {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(0);
-  const [outputVideo, setOutputVideo] = useState<VideoStatus | null>(null);
+  const [videoScript, setVideoScript] = useState("");
+  const [outputVideo, setOutputVideo] = useState<VideoStatus | null>();
 
   const [fields, setFields] = useState<FieldsState>({
     objective: false,
@@ -145,8 +114,8 @@ export default function GenerateVideoDialog() {
       // First API call to generate script
       const scriptResponse = await axios.post(`${API_URL}/ai/api/v1/generate/video/video-script`, formData);
       if (scriptResponse.data.success) {
+        setVideoScript(scriptResponse.data.data.script);
         toast.success(scriptResponse.data.message);
-
         setStep(2); // Step 2: Generating video with script
 
         // Second API call to generate video with the generated script
@@ -183,6 +152,14 @@ export default function GenerateVideoDialog() {
       setLoading(false);
       setStep(0); // Reset step
     }
+  };
+
+  const navigateToEditor = () => {
+    const videoData = JSON.stringify({
+      videoData: { ...outputVideo, videoScript },
+    });
+    const encodedVideoData = Base64.encode(videoData);
+    router.push(`/create/video?data=${encodedVideoData}`);
   };
 
   return (
@@ -378,9 +355,9 @@ export default function GenerateVideoDialog() {
                     </video>
                   </div>
                   <div className="flex justify-end">
-                    <Link href="/create/video">
-                      <button className="bg-primary-green text-white py-3.5 px-4 sheen rounded-xl flex items-center justify-center">Continue in editor</button>
-                    </Link>
+                    <button onClick={navigateToEditor} className="bg-primary-green text-white py-3.5 px-4 sheen rounded-xl flex items-center justify-center">
+                      Continue in editor
+                    </button>
                   </div>
                 </Motion>
               ) : (
@@ -389,7 +366,7 @@ export default function GenerateVideoDialog() {
                   variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
                   classNames="flex-1 w-full h-full grid place-content-center">
                   <div className="flex flex-col justify-center items-center mb-40">
-                    <Image src="/gifs/empty-box.gif" alt="" width={250} height={250} />
+                    <Image src="/gifs/empty-box.gif" alt="" width={250} height={250} unoptimized />
                     <h1 className="text-2xl text-center font-semibold">There's nothing here.</h1>
                     <p className="max-w-xl leading-loose text-center mt-3">Fill out the form 👈 to geneate a video</p>
                   </div>
@@ -402,3 +379,37 @@ export default function GenerateVideoDialog() {
     </Dialog>
   );
 }
+
+const TooltipComponent = () => (
+  <TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger asChild className="cursor-pointer">
+        <div>
+          <HiOutlineQuestionMarkCircle />
+        </div>
+      </TooltipTrigger>
+      <TooltipContent className="border-gradient-blue-to-gray-to-b rounded-[22px] p-0">
+        <div className="text-primary-black">{<PopupContent />}</div>
+      </TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
+);
+
+const PopupContent = () => (
+  <div className="w-[460px] p-8 font-normal text-base space-y-8">
+    <div className="space-y-5">
+      <h1 className="text-primary-green text-xl font-semibold">Tips for generating video with AI</h1>
+      <div className="bg-primary-green p-5 text-white rounded-lg leading-normal text-[15px]">
+        Your prompt is processed through a third-party service by OpenAI
+      </div>
+    </div>
+    <div className="space-y-5">
+      <h1 className="text-primary-black text-xl font-semibold">Get a good draft ready</h1>
+      <p className="text-primary-neutral/60 text-[15px]">
+        We recommend you watch this 1-minute video on how to use the video assistant to achieve a good first draft.
+      </p>
+      <Image src="/videos/dummy-video.png" alt="" width={500} height={400} />
+    </div>
+    <button className="border border-[#C3C3C3] py-3.5 w-full rounded-xl !mt-14 font-semibold text-primary-neutral">Learn More</button>
+  </div>
+);

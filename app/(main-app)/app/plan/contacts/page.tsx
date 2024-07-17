@@ -9,11 +9,12 @@ import RestoreTable from "./components/RestoreTable";
 import TasksTable from "./components/TasksTable";
 import Link from "next/link";
 import { CiCirclePlus } from "react-icons/ci";
+import Prospects from "./components/ProspectsTable";
 
 export default function ContactsDashboard() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
-  const tabs = ["Smart list", "Bulk actions", "Restore", "Tasks", "Company"];
+  const tabs = ["Smart list ", "Bulk actions", "Restore", "Tasks", "Company","Prospects"];
 
   const renderContent = (selectedTabIndex: number) => {
     switch (selectedTabIndex) {
@@ -27,6 +28,8 @@ export default function ContactsDashboard() {
         return <TasksTable />;
       case 4:
         return <CompanyTable />;
+         case 5:
+        return <Prospects />;
     }
   };
   const renderTitle = (selectedTabIndex: number) => {
@@ -68,9 +71,19 @@ export default function ContactsDashboard() {
           </Fragment>
         );
       case 4:
+
         return (
           <Fragment>
             <h1 className="text-2xl font-semibold">Company</h1>
+            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
+              Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam ultricies accumsan. Nec.{" "}
+            </p>
+          </Fragment>
+        );
+         case 5:
+  return (
+          <Fragment>
+            <h1 className="text-2xl font-semibold">Prospects</h1>
             <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
               Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam ultricies accumsan. Nec.{" "}
             </p>

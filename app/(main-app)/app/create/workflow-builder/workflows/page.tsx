@@ -3,68 +3,121 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { API_URL } from "@/lib/api";
 import axios from "axios";
-import { Copy, Edit, MoreVertical, Plus, Trash2 } from "lucide-react";
+import { Copy, Edit, MoreVertical, Plus, Trash2, X } from "lucide-react";
 import Link from "next/link";
-import React, { Fragment, useState,useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import { formatUpdatedAt } from "./utils";
-// import Modal from 'react-bootstrap/Modal';
-// import Button from 'react-bootstrap/Button';
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/input";
 
 interface EditModalProps {
   show: boolean;
-  onHide: (params:boolean) => void;
+  onHide: (params: boolean) => void;
+  editWorkFlow: Workflow;
+  setEditWorkFlow: (params: Workflow) => void;
+  onSave: () => void
 }
 
-// function EditModal({show,onHide }: EditModalProps) {
-//   return (
-//     <Modal show={show} onHide={handleClose}>
-//       <Modal.Header closeButton>
-//         <Modal.Title>Modal heading</Modal.Title>
-//       </Modal.Header>
-//       <Modal.Body>Woohoo, you are reading this text in a modal!</Modal.Body>
-//       <Modal.Footer>
-//         <Button variant="secondary" onClick={handleClose}>
-//           Close
-//         </Button>
-//         <Button variant="primary" onClick={handleClose}>
-//           Save Changes
-//         </Button>
-//       </Modal.Footer>
-//     </Modal>
-//   )
-// }
+function EditModal({ show, onHide, editWorkFlow, setEditWorkFlow, onSave }: EditModalProps) {
+  return (
+    <div className={`z-50 fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center ${show ? 'block' : 'hidden'}`}>
+      {/* Semi-transparent backdrop */}
+      <div className="fixed top-0 left-0 right-0 bottom-0 bg-black opacity-50"></div>
+
+      {/* Modal content */}
+      <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center">
+        <div className="flex-1 h-full w-full flex justify-center items-center mt-10 mb-20">
+          <div className="w-full max-w-3xl bg-white border border-[#EDEFF0] rounded-3xl shadow-box p-10 relative">
+            <div className="flex justify-between">
+              <h1 className="text-xl font-semibold leading-none tracking-tight border-[#EDEFF0] pb-4">Edit Workflow</h1>
+              <div className="text-2xl cursor-pointer" onClick={() => onHide(false)}>
+                <X />
+              </div>
+            </div>
+            <div className="mt-4 flex flex-col gap-5">
+              <div className="space-y-2">
+                <label className="font-medium">
+                  Workflow name
+                </label>
+                <Input type="text" placeholder="Type your workflow name" value={editWorkFlow.name} onChange={(e) => setEditWorkFlow({ ...editWorkFlow, name: e.target.value })} />
+              </div>
+
+              <div className="flex justify-end gap-4 w-full">
+                <button className="py-3.5 h-14 w-full max-w-[140px] px-6 bg-white border text-primary-green border-primary-green rounded-xl mt-6" onClick={() => onHide(false)}>Cancel</button>
+                <button className="py-3.5 h-14 w-full max-w-[200px] px-6 bg-primary-green sheen rounded-xl text-white mt-6 flex items-center justify-center gap-3 whitespace-nowrap" onClick={onSave}>
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
 
 
 type Workflow = {
-  id: number; 
-  [key: string]: any;
+  [key: string]: string;
 };
 
 export default function Workflows() {
   const [workFlows, setWorkFlows] = useState<Workflow[]>([]);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [workflowId, setWorkflowId] = useState(null);
+  const router = useRouter();
+  const [editWorkFlow, setEditWorkFlow] = useState<Workflow>({});
+  const createWorkflow = async () => {
+    try {
+      const response = await axios.post(`${API_URL}/workflow/api/v1`);
+      const newWorkflowId = response.data.data.workflow_id;
+      setWorkflowId(newWorkflowId);
+      router.push(`/app/create/workflow-builder/create-workflow?workflow_id=${newWorkflowId}`);
+    } catch (error) {
+      console.error('Error creating workflow:', error);
+      toast.error('Error creating workflow')
+    }
+  };
 
-  const getAllWorkFlows =async () =>{
+  const getAllWorkFlows = async () => {
     try {
       const response = await axios.get(`${API_URL}/workflow/api/v1`);
       setWorkFlows(response.data.data);
     } catch (error) {
       console.log('Error fetching workflows:', error);
-    } 
+      toast.error('Error fetching workflows');
+    }
   }
 
   const deleteWorkFlow = async (id: string) => {
     try {
       await axios.delete(`${API_URL}/workflow/api/v1/${id}`);
+      toast.success('Workflow deleted successfully');
       getAllWorkFlows();
     } catch (error) {
+      toast.error('Error deleting workflow');
       console.log('Error deleting workflow:', error)
+    }
+  }
+
+  const handleEditWorkFlow = async () => {
+    try {
+      await axios.put(`${API_URL}/workflow/api/v1/${editWorkFlow.workflow_id}`, { name: editWorkFlow.name });
+      toast.success('Workflow edited successfully');
+      setShowEditModal(false);
+      getAllWorkFlows();
+    } catch (error) {
+      toast.error('Error editing workflow');
+      console.log(error);
     }
   }
 
   useEffect(() => {
     getAllWorkFlows();
-  },[])
+  }, [])
 
   return (
     <Fragment>
@@ -74,7 +127,10 @@ export default function Workflows() {
             <h1 className="text-2xl font-semibold">Workflows</h1>
           </div>
           <Link href="/app/create/workflow-builder/create-workflow" className="min-w-fit">
-            <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2 whitespace-nowrap">
+            <button
+              className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2 whitespace-nowrap"
+              onClick={createWorkflow}
+            >
               <Plus size={20} />
               Create workflow
             </button>
@@ -96,25 +152,28 @@ export default function Workflows() {
                       <MoreVertical size={20} />
                     </button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent>
-                    <DropdownMenuItem inset className="min-w-[200px] flex justify-between gap-8 items-center my-1">
+                  <DropdownMenuContent >
+                    <DropdownMenuItem inset className="min-w-[200px] flex justify-between gap-8 items-center my-1" onClick={() => {
+                      setShowEditModal(true);
+                      setEditWorkFlow(workflow);
+                    }}>
                       <div className="flex gap-3">
-                          <Edit size={20} />
-                          <h2>Edit</h2>
-                        </div>
+                        <Edit size={20} />
+                        <h2>Edit</h2>
+                      </div>
                     </DropdownMenuItem>
-                    <DropdownMenuItem inset className="min-w-[200px] flex justify-between gap-8 items-center my-1">
-                      <div className="flex gap-3" onClick={() => deleteWorkFlow(workflow.workflow_id)}>
+                    <DropdownMenuItem inset className="min-w-[200px] flex justify-between gap-8 items-center my-1" onClick={() => deleteWorkFlow(workflow.workflow_id)}>
+                      <div className="flex gap-3" >
                         <Trash2 size={20} />
                         <h2>Delete</h2>
                       </div>
                     </DropdownMenuItem>
-                    <DropdownMenuItem inset className="min-w-[200px] flex justify-between gap-8 items-center my-1">
+                    {/* <DropdownMenuItem inset className="min-w-[200px] flex justify-between gap-8 items-center my-1">
                       <div className="flex gap-3">
                         <Copy size={20} />
                         <h2>Duplicate</h2>
                       </div>
-                    </DropdownMenuItem>
+                    </DropdownMenuItem> */}
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
@@ -122,7 +181,7 @@ export default function Workflows() {
           }
         </div>
       </main>
-      {/* <EditModal show={showEditModal} onHide={()=>setShowEditModal(false)}/> */}
+      <EditModal show={showEditModal} onHide={() => setShowEditModal(false)} editWorkFlow={editWorkFlow} setEditWorkFlow={setEditWorkFlow} onSave={handleEditWorkFlow} />
     </Fragment>
   );
 }

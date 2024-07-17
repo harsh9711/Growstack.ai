@@ -3,38 +3,54 @@ import autosize from "autosize";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import ToolsDialog from "./ToolsDialog";
-import axios from 'axios';
+import axios from "axios";
 import { API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
 
 interface ChatInputProps {
-  onSend: (content: string,string:string,id:string|null) => void;
+  onSend: (content: string, string: string, id: string | null) => void;
   selectedModel: string;
   fetchConversations: () => void;
-  selectedConversation:string | null;
-  selectedOption:string
+  selectedConversation: string | null;
+  selectedOption: string;
   addMessage: (prompt: string, response: string) => void;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel, fetchConversations, selectedConversation, selectedOption, addMessage }) => {
+const ChatInput: React.FC<ChatInputProps> = ({
+  onSend,
+  selectedModel,
+  fetchConversations,
+  selectedConversation,
+  selectedOption,
+  addMessage,
+}) => {
   const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (textareaRef.current) {
       autosize(textareaRef.current);
+      textareaRef.current.style.overflow = "auto";
     }
   }, []);
 
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+      textareaRef.current.style.overflow = "auto";
+    }
+  }, [input]);
+
   const handleSend = async () => {
-    if (input.trim() === '') return;
+    if (input.trim() === "") return;
 
     const user_prompt = input.trim();
-    setInput('');
-    addMessage(user_prompt, '');
+    setInput("");
+    addMessage(user_prompt, "");
     try {
       const conversation = await axios.post(
-        `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${selectedConversation ? selectedConversation : ''
+        `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${
+          selectedConversation ? selectedConversation : ""
         }&model=${selectedOption}`,
         { user_prompt: input }
       );
@@ -44,7 +60,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel, fetchConve
         `${API_URL}/ai/api/v1/conversation/chat/stream/${conversation.data.data.chat_id}`
       );
 
-      var content = '';
+      var content = "";
       eventSource.onerror = (event) => {
         eventSource.close();
       };
@@ -54,7 +70,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel, fetchConve
         content += data;
         onSend(user_prompt, content, conversation.data.data.conversation_id);
       };
-    } catch (error:any) {
+    } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.error);
       } else {
@@ -70,19 +86,42 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend, selectedModel, fetchConve
     }
   };
 
+  const promptInput = (description: string) => {
+    const trimmedDescription = description.replace(/\s+/g, " ").trim();
+    const newInput = `${input} ${trimmedDescription}`;
+    setInput(newInput);
+    setTimeout(() => {
+      if (textareaRef.current) {
+        textareaRef.current.value = newInput;
+        textareaRef.current.focus();
+        textareaRef.current.selectionStart = textareaRef.current.selectionEnd =
+          newInput.length;
+      }
+    }, 500);
+  };
+
   return (
     <div className="flex p-2 border gap-2 rounded-xl items-end">
-      <Image src="/logo/growstack-mini.svg" alt="" width={25} height={25} draggable={false} className="select-none ml-2 mb-3" />
+      <Image
+        src="/logo/growstack-mini.svg"
+        alt=""
+        width={25}
+        height={25}
+        draggable={false}
+        className="select-none ml-2 mb-3"
+      />
       <textarea
         ref={textareaRef}
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleKeyDown}
         rows={1}
-        className="w-full flex-1 p-2 bg-transparent resize-none overflow-hidden min-h-11 max-h-[300px]"
+        className="w-full flex-1 p-2 bg-transparent resize-none overflow-auto min-h-11 max-h-[300px]"
         placeholder="What's in your mind?"
       />
-      <ToolsDialog />
+      <ToolsDialog
+        setInput={(description: string) => promptInput(description)}
+      />
       <button
         className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
         // onClick={() => setChatId(null)} // Reset chatId to fetch new conversation when clicked

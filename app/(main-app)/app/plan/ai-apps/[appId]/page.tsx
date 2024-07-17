@@ -27,6 +27,7 @@ import { EditorState, convertToRaw } from "draft-js";
 import { saveAs } from "file-saver"; // Import file-saver library for downloading files
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
+import { HiOutlineRefresh } from "react-icons/hi";
 
 const Dropdown = ({
   label,
@@ -80,11 +81,31 @@ export default function AiAppPage({
     number_of_results: 1,
     estimated_result_length: 400,
   });
+  const [isLoading, setIsLoading] = useState(false);
+
   const stripHtmlTags = (html: string) => {
     const temp = document.createElement("div");
     temp.innerHTML = html;
     return temp.textContent || temp.innerText || "";
   };
+  const handleChange = (e: { target: { value: string; name: any; }; }) => {
+    let newValue = parseInt(e.target.value, 10);
+  
+    if (newValue < 0) {
+      newValue = 0;
+    }
+  
+    setUserInput({ ...userInput, [e.target.name]: newValue });
+  };
+  // const handleChange2 = (e: { target: { value: string; }; }) => {
+  //   let newValue = parseInt(e.target.value, 10);
+  
+  //   if (newValue < 0) {
+  //     newValue = 0;
+  //   }
+  //   setUserInput({ ...userInput, estimated_result_length: newValue });
+  // };
+  
   useEffect(() => {
     const fetchAssistant = async () => {
       try {
@@ -195,47 +216,67 @@ export default function AiAppPage({
   //   }
   // };
   // ;
-  const handleSubmit = async () => {
-    try {
-      const formattedUserPrompt = assistant.inputs
-        .map(
-          (input: any, index: number) => `${input.title}:${userPrompts[index]}`
-        )
-        .join(".");
-      const response = await axios.post(
-        `${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`,
-        {
-          ...userInput,
-          user_prompt: formattedUserPrompt,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const chatId = response.data.data;
-      const eventSource = new EventSource(
-        `${API_URL}/ai/api/v1/chat-template/generate/stream/${chatId}`
-      );
-      var content = "";
-      eventSource.onerror = (event) => {
-        eventSource.close();
-      };
-      eventSource.onmessage = (event) => {
-        var data = event.data;
-        console.log(data);
-        if (data.includes("<p")) {
-          console.log("Yes");
-          data = "<br>" + data;
-        }
-        content += data;
-        setGeneratedContent(content);
-      };
-    } catch (error) {
-      console.error("Error generating template:", error);
-    }
+  const handleGenerateClick = () => {
+    // Set isLoading to true to indicate loading has started
+    setIsLoading(true);
+
+    // Perform your generate action here (e.g., fetch data, compute something)
+    // Simulate loading delay (remove this in actual implementation)
+    setTimeout(() => {
+      // After some action is completed, set isLoading back to false
+      setIsLoading(false);
+    }, 2000); // Example: Simulating loading for 2 seconds
   };
+ const handleSubmit = async () => {
+  try {
+    const formattedUserPrompt = assistant.inputs
+      .map(
+        (input: any, index: number) => `${input.title}:${userPrompts[index]}`
+      )
+      .join(".");
+    const response = await axios.post(
+      `${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`,
+      {
+        ...userInput,
+        user_prompt: formattedUserPrompt,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const chatId = response.data.data;
+    const eventSource = new EventSource(
+      `${API_URL}/ai/api/v1/chat-template/generate/stream/${chatId}`
+    );
+    let content = "<ol><strong>"; // Start with an ordered list
+    eventSource.onerror = (event) => {
+      eventSource.close();
+    };
+    eventSource.onmessage = (event) => {
+      let data = event.data;
+      console.log(data);
+  
+      // Clean up the data to ensure it is properly formatted
+      data = data.replace(/<li>\s*/g, "<li>") // Remove spaces after <li>
+                 .replace(/\s*<\/li>/g, "</li><br>") // Add space before </li> by adding a <br> tag
+                 .replace(/<ol>\s*/g, "<ol>") // Remove spaces after <ol>
+                 .replace(/\s*<\/ol>/g, "</ol>"); // Remove spaces before </ol>
+  
+      // Add the cleaned data to content
+      content += data;
+  
+      // Set the generated content with the final formatted HTML
+      setGeneratedContent(content + "</strong></ol>");
+    };
+  } catch (error) {
+    console.error("Error generating template:", error);
+  }
+};
+
+  
+  
 
   const handleEditorChange = (content: string) => {
     setGeneratedContent(content);
@@ -305,7 +346,10 @@ export default function AiAppPage({
   if (loading) {
     return <div>Loading...</div>;
   }
-
+  const handleBothActions = () => {
+    handleGenerateClick(); // Call ghandleGenerate function
+    handleSubmit(); // Call handleSubmit function
+  };
   return (
     <Fragment>
       <div className="flex items-center justify-between mt-10">
@@ -509,7 +553,7 @@ export default function AiAppPage({
                 id="number-of-results"
                 name="number_of_results"
                 value={userInput.number_of_results}
-                // onChange={handleChange}
+                onChange={handleChange}
               />
             </div>
             <div>
@@ -524,15 +568,20 @@ export default function AiAppPage({
                 id="estimated-result-length"
                 name="estimated_result_length"
                 value={userInput.estimated_result_length}
-                // onChange={handleChange}
+                onChange={handleChange}
               />
             </div>
           </div>
           <button
             className="w-full h-14 py-2 text-white bg-primary-green rounded-lg !mt-5"
-            onClick={handleSubmit}
+            onClick={handleBothActions} 
           >
-            Generate Template
+            Generate    {isLoading && (
+        <div className="flex flex-row gap-4 mx-auto items-center justify-center">
+          <span>Loading Content...</span>
+          <HiOutlineRefresh className="ml-4  h-4 w-4 text-gray-500" /> 
+        </div>
+      )}
           </button>
         </div>
         <div className="w-full p-8 bg-white rounded-2xl border border-[#EDEFF0] flex flex-col">

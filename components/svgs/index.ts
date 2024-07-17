@@ -80,3 +80,7 @@ export { default as MediaIcon } from "@/public/svgs/media.svg";
 export { default as WwwIcon } from "@/public/svgs/wwwIcon.svg";
 export { default as WidgetIcon } from "@/public/svgs/widgets.svg";
 export { default as TagIcon } from "@/public/svgs/tag.svg";
+export { default as GestureIcon } from "@/public/svgs/gesture.svg";
+export { default as MarkerIcon } from "@/public/svgs/marker.svg";
+export { default as ClockIcon } from "@/public/svgs/clock.svg";
+export { default as DictionIcon } from "@/public/svgs/diction.svg";
