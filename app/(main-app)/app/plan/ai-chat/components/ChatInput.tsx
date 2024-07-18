@@ -8,12 +8,12 @@ import { API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
 
 interface ChatInputProps {
-  onSend: (content: string, string: string, id: string | null) => void;
+  onSend: (content: string, role: string) => void;
   selectedModel: string;
   fetchConversations: () => void;
   selectedConversation: string | null;
   selectedOption: string;
-  addMessage: (prompt: string, response: string) => void;
+  addMessage: (role: string, content: string, loading: boolean) => void;
 }
 
 const ChatInput: React.FC<ChatInputProps> = ({
@@ -46,7 +46,8 @@ const ChatInput: React.FC<ChatInputProps> = ({
 
     const user_prompt = input.trim();
     setInput("");
-    addMessage(user_prompt, "");
+    addMessage("user", user_prompt, false);
+    addMessage("assistant", "", true);
     try {
       const conversation = await axios.post(
         `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${
@@ -60,15 +61,24 @@ const ChatInput: React.FC<ChatInputProps> = ({
         `${API_URL}/ai/api/v1/conversation/chat/stream/${conversation.data.data.chat_id}`
       );
 
-      var content = "";
+      var content = ``;
+      let isStreamClosed = false;
       eventSource.onerror = (event) => {
         eventSource.close();
+        isStreamClosed = true;
       };
 
       eventSource.onmessage = (event) => {
         const data = event.data;
         content += data;
-        onSend(user_prompt, content, conversation.data.data.conversation_id);
+        onSend(content, "assistant")
+      };
+
+      eventSource.close = () => {
+        if (!isStreamClosed) {
+          onSend(content, "assistant");
+          isStreamClosed = true;
+        }
       };
     } catch (error: any) {
       if (error.response) {
