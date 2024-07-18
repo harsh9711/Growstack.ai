@@ -13,7 +13,7 @@ interface ChatInputProps {
 }
 const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
   return (
-    <div className="shadow-xl p-1 flex  border gap-2 rounded-xl items-end">
+    <div className="shadow-lg p-1 flex  border gap-2 rounded-xl items-end">
       <Image
         src="/logo/growstack-mini.svg"
         alt=""

@@ -40,7 +40,13 @@ export default function Sidebargpt() {
   const handleSend = () => {
     setShowBox(true);
   };
-
+  const getChatInputTranslate = () => {
+    if (selectedTabIndex === 0) {
+      return '-translate-y-0'; // Translate up for Create tab
+    } else {
+      return 'translate-y-[35px]'; // Translate up for Configure tab
+    }
+  };
   return (
     <div className="justify-between flex flex-row w-full h-full transition-all duration-500 opacity-100">
       <div className="bg-white w-full h-full rounded-2xl overflow-hidden transition-all duration-500 opacity-100 border relative">
@@ -72,7 +78,7 @@ export default function Sidebargpt() {
               <p className="mt-10 flex flex-col gap-y-72">
                 <span className="flex flex-col gap-y-4">
                   <h2 className="font-bold text-[18px]">GPT builder</h2>
-                  <p className="text-[14px] flex flex-col gap-y-4">
+                  <h2 className="text-[14px] flex flex-col gap-y-4">
                     Hi! I’ll help you build a new GPT. You can say something
                     like, “make a creative who helps generate visuals for new
                     products” or make a software engineer who helps format my
@@ -81,7 +87,7 @@ export default function Sidebargpt() {
                     <span className="mt-4">
                       What would you like to make?{" "}
                     </span>
-                  </p>
+                  </h2>
                 </span>
                 <ChatInput onSend={handleSend} />{" "}
               </p>
@@ -192,7 +198,7 @@ export default function Sidebargpt() {
           </div>
         </div>
       </div>
-      <div className="bg-gray-100 w-full  h-full rounded-2xl overflow-hidden transition-all duration-500 opacity-100 relative">
+      <div className="bg-gray-100 w-full  h-full rounded-2xl  transition-all duration-500 opacity-100 relative">
           <div className="w-full flex flex-col items-center">
             <div className="w-full p-4 px-8 mt-4">
               <p className="mt-4 flex flex-col gap-y-[148px]">
@@ -217,7 +223,9 @@ export default function Sidebargpt() {
                     </p>
                   </span>
                 </div>
-                <ChatInput onSend={handleSend} />
+                <div className={getChatInputTranslate()}>
+        <ChatInput onSend={handleSend} />
+      </div>
               </p>
             </div>
           </div>

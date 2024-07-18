@@ -280,7 +280,7 @@ export default function Sidebargpt4() {
       <div className="bg-gray-100 w-full  h-[620px] rounded-2xl overflow-hidden transition-all duration-500 opacity-100 relative">
           <div className="w-full flex flex-col items-center">
             <div className="w-full p-4 px-8 mt-4">
-              <p className="mt-4 flex flex-col gap-y-[148px]">
+              <span className="mt-4 flex flex-col gap-y-[140px]">
                 <span className="flex flex-col ">
                   <h2 className="font-bold text-xl text-[18px] text-center">
                     Preview
@@ -294,19 +294,19 @@ export default function Sidebargpt4() {
                     width={100}
                     height={100}
                   />
-                  <span className="items-center justify-center flex flex-col">
+                  <div className="items-center justify-center flex flex-col">
                     {" "}
                     <h2 className="font-bold text-[18px]">Cookie Helper</h2>
                     <p className="text-[14px]">
                       A helpful guide for baking cookies
                     </p>
-                  </span>
+                  </div>
                 </div>
-                <div className="mt-4">                <ChatInput onSend={function (): void {
+                <div className="-translate-y-2 fle">                <ChatInput onSend={function (): void {
                 throw new Error("Function not implemented.");
               } } /></div>
 
-              </p>
+              </span>
             </div>
           </div>
       </div>
