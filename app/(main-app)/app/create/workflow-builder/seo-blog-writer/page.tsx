@@ -20,6 +20,7 @@ import { CiCirclePlus } from "react-icons/ci";
 import toast from 'react-hot-toast'
 import DotsLoader from "@/components/DotLoader";
 
+
 type WorkFlowData = {
   actions: any[];
   input_configs: any[];
