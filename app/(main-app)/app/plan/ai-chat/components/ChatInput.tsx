@@ -14,6 +14,7 @@ interface ChatInputProps {
   selectedConversation: string | null;
   selectedOption: string;
   addMessage: (role: string, content: string, loading: boolean) => void;
+  setSelectedConversation: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const ChatInput: React.FC<ChatInputProps> = ({
@@ -23,6 +24,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
   selectedConversation,
   selectedOption,
   addMessage,
+  setSelectedConversation,
 }) => {
   const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -55,31 +57,10 @@ const ChatInput: React.FC<ChatInputProps> = ({
         }&model=${selectedOption}`,
         { user_prompt: input }
       );
+      const response = conversation.data.data.response;
+      setSelectedConversation(conversation.data.data.conversation_id);
       if (!selectedConversation) fetchConversations();
-
-      const eventSource = new EventSource(
-        `${API_URL}/ai/api/v1/conversation/chat/stream/${conversation.data.data.chat_id}`
-      );
-
-      var content = ``;
-      let isStreamClosed = false;
-      eventSource.onerror = (event) => {
-        eventSource.close();
-        isStreamClosed = true;
-      };
-
-      eventSource.onmessage = (event) => {
-        const data = event.data;
-        content += data;
-        onSend(content, "assistant")
-      };
-
-      eventSource.close = () => {
-        if (!isStreamClosed) {
-          onSend(content, "assistant");
-          isStreamClosed = true;
-        }
-      };
+      onSend(response, "assistant");
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.error);
