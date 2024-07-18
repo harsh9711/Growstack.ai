@@ -33,6 +33,29 @@
   transform: translate(-50%, -50%);
 }
 
+.dropdown-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 1s ease-out, opacity 1s ease-out; /* Transition for max-height and opacity */
+  opacity: 0; /* Initially hidden */
+}
+
+.dropdown-content.dropdown-open {
+  max-height: 200px; /* Adjust the maximum height as needed */
+  opacity: 1; /* Visible */
+}
+.dropdown-content2 {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 1s ease-out, opacity 1s ease-out; /* Transition for max-height and opacity */
+  opacity: 0; /* Initially hidden */
+}
+
+.dropdown-content2.dropdown-open {
+  max-height: 1000px; /* Adjust the maximum height as needed */
+  opacity: 1; /* Visible */
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

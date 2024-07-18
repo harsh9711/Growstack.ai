@@ -2,7 +2,7 @@ import { TextIcon } from "@/components/svgs";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Search } from "lucide-react";
 import Image from "next/image";
-import { avatars } from "../constants/avatars";
+import { avatars } from "../../constants/avatars";
 
 export default function TextDropdown() {
   return (

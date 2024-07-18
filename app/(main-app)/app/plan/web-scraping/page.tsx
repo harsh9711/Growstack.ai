@@ -41,7 +41,7 @@ const AddProspectModal: React.FC<AddProspectProps> = ({ isOpen, onClose, onProsp
 
   const [formData, setFormData] = useState({
     businessName: '',
-    // phoneNumber: 2334,
+    phoneNumber: '', 
     address: '',
     city: '',
     state: '',
@@ -58,7 +58,7 @@ const AddProspectModal: React.FC<AddProspectProps> = ({ isOpen, onClose, onProsp
 
   useEffect(() => {
     if (isOpen) {
-      // Add any necessary initialization logic here
+      
     }
   }, [isOpen]);
 
@@ -71,12 +71,23 @@ const AddProspectModal: React.FC<AddProspectProps> = ({ isOpen, onClose, onProsp
   };
 
   const handleSubmit = () => {
+    // let formattedPhoneNumber;
+  
+    // try {
+    //   // Replace 'US' with the appropriate country code
+    //   const phoneNumber = parsePhoneNumber(formData.phoneNumber, 'US');
+    //   formattedPhoneNumber = phoneNumber.number;
+    // } catch (error) {
+    //   console.error('Invalid phone number', error);
+    //   formattedPhoneNumber = formData.phoneNumber; // Fallback to the original string if parsing fails
+    // }
+  
     const newProspect: Place = {
       latitude: 0, // Replace with actual latitude
       longitude: 0, // Replace with actual longitude
       title: formData.businessName,
       address: formData.address,
-      // phoneNumber: formData.phoneNumber,
+      phoneNumber: formData.phoneNumber,
       rating: 0, // Replace with actual rating if available
       ratingCount: 0, // Replace with actual rating count if available
       website: formData.website,
@@ -86,7 +97,7 @@ const AddProspectModal: React.FC<AddProspectProps> = ({ isOpen, onClose, onProsp
     setProspects([...prospects, newProspect]);
     setFormData({
       businessName: '',
-      // phoneNumber: 2344,
+      phoneNumber: '',
       address: '',
       city: '',
       state: '',
@@ -98,11 +109,9 @@ const AddProspectModal: React.FC<AddProspectProps> = ({ isOpen, onClose, onProsp
       email: '',
       phone: '',
     });
-    // Update prospects state with new prospect
 
-    console.log('Form Data:', newProspect); // Log form data to console
+    console.log('Form Data:', newProspect); 
 
-    // Toggle showTable to true to display the table
     setShowTable(true);
 
     onClose();
@@ -132,7 +141,7 @@ const AddProspectModal: React.FC<AddProspectProps> = ({ isOpen, onClose, onProsp
                     placeholder="Type your Business name"
                   />
                 </div>
-                {/* <div className="space-y-2">
+                <div className="space-y-2">
                   <label className="font-medium">
                     Business phone number <span className="text-[#F00]">*</span>
                   </label>
@@ -143,7 +152,7 @@ const AddProspectModal: React.FC<AddProspectProps> = ({ isOpen, onClose, onProsp
                     onChange={handleChange}
                     placeholder="Type your phone number"
                   />
-                </div> */}
+                </div>
                 <div className="space-y-2">
                   <label className="font-medium">
                     Address <span className="text-[#F00]">*</span>
@@ -282,15 +291,13 @@ const AddProspectModal: React.FC<AddProspectProps> = ({ isOpen, onClose, onProsp
                   </div>
                 )}
 
-                {/* Buttons */}
                 <div className="flex justify-end gap-4 w-full">
                   <button
                     className="py-3.5 h-14 w-full max-w-[140px] px-6 bg-white border text-primary-green border-primary-green  rounded-xl mt-6"
                     onClick={() => {
-                      // Reset form logic if needed
                       setFormData({
                         businessName: '',
-                        // phoneNumber: 2344,
+                        phoneNumber: '',
                         address: '',
                         city: '',
                         state: '',
@@ -330,7 +337,7 @@ interface Place {
   longitude: number;
   title: string;
   address: string;
-  // phoneNumber: number;
+  phoneNumber:string;
   rating: number;
   ratingCount: number;
   website: string;
@@ -349,22 +356,17 @@ const WebScraping: React.FC = () => {
   const [isPending, setIsPending] = useState(false);
   const router = useRouter();
 
-  // const handleProspectAdded = (newProspect: Place) => {
-  //   // Update places state with the new prospect
-  //   setPlaces([...places, newProspect]);
-  //   setShowTable(true); // Show the table after adding a prospect
-  // };
+
   useEffect(() => {
     if (places.length > 0) {
       setCenter([places[0].latitude, places[0].longitude]);
       console.log(center);
-      setZoom(20); // Adjust zoom level if needed
+      setZoom(20); 
     }
   }, [places]);
 
   useEffect(() => {
     getGeoInfo();
-    // Access and log query parameters from URL
     console.log("Query params from URL:", (router as any).query);
   }, [(router as any).query]);
 
@@ -379,8 +381,8 @@ const WebScraping: React.FC = () => {
         let data = response.data;
         if (countryName) {
           data = data[0];
-          setCenter([data.latitude, data.longitude]); // Update map center based on fetched coordinates
-          setZoom(100); // Adjust zoom level if needed
+          setCenter([data.latitude, data.longitude]);
+          setZoom(100);
         } else {
           console.log("Fetched country code by IP:", data);
           setCountryCode(data.country_code);
@@ -411,9 +413,7 @@ const WebScraping: React.FC = () => {
     setBulkInput(terms.join(","));
   };
 
-  // const handleCountryInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setInputCountry(e.target.value);
-  // };
+ ;
 
   const handleCountrySearch = (e: { preventDefault: () => void; }) => {
     e.preventDefault(); // Prevents default form submission
@@ -431,29 +431,35 @@ const WebScraping: React.FC = () => {
         .filter(Boolean),
       ...fields.map((field) => field.value.trim()).filter(Boolean),
     ];
-
+  
     setIsPending(true);
+  
     try {
       const postData = {
         queries: allTerms,
         country_code: countryCode,
         location: inputCountry, // Include inputCountry in the payload
       };
-
-      const response = await axios.post(`${API_URL}/ai/api/v1/webscrape`, postData);
-      console.log("resposne", response);
-      setPlaces(
-        response.data.data[0].places.map((place: Place) => ({
+  
+      const allResults = [];
+  
+      for (let i = 0; i < 6; i++) {
+        const response = await axios.post(`${API_URL}/ai/api/v1/webscrape`, postData);
+        console.log("response", response);
+        const places = response.data.data[0].places.map((place: Place) => ({
           title: place.title,
           address: place.address,
-          // phoneNumber: place.phoneNumber,
+          phoneNumber: place.phoneNumber,
           rating: place.rating,
           ratingCount: place.ratingCount,
           website: place.website,
           latitude: place.latitude,
           longitude: place.longitude,
-        }))
-      );
+        }));
+        allResults.push(...places);
+      }
+  
+      setPlaces(allResults);
       toast.success("Your data has been scrapped!");
       setShowTable(true);
     } catch (error) {
@@ -463,6 +469,7 @@ const WebScraping: React.FC = () => {
       setIsPending(false);
     }
   };
+  ;
   // console.log("placesCollected", places);
   const renderRatingStars = (rating: number) => {
     const stars = [];
@@ -479,13 +486,9 @@ const WebScraping: React.FC = () => {
     label: string;
     value: string;
   }
+  const [isModalOpen2, setIsModalOpen2] = useState<boolean>(false);
+  const [selectedCountry, setSelectedCountry] = useState(null); 
 
-  // const [inputCountry, setInputCountry] = useState<string>(''); // State for input value
-  // const [filteredCountries, setFilteredCountries] = useState<string[]>([]); // State for filtered countries
-  const [isModalOpen2, setIsModalOpen2] = useState<boolean>(false); // State for modal open/close
-  const [selectedCountry, setSelectedCountry] = useState(null); // State to store selected country
-
-  // const [selectedOption, setSelectedOption] = useState<OptionType | null>(null); // Explicitly type selectedOption
   const countries: OptionType[] = [
     { label: 'Afghanistan', value: 'afghanistan' },
     { label: 'Albania', value: 'albania' },
@@ -681,32 +684,29 @@ const WebScraping: React.FC = () => {
     { label: 'Yemen', value: 'yemen' },
     { label: 'Zambia', value: 'zambia' },
     { label: 'Zimbabwe', value: 'zimbabwe' }
-  ]; // Array of country options
+  ];
 
   const handleSelectChange = (selectedOption: any): void => {
-    setSelectedOption(selectedOption); // Update selectedOption state
+    setSelectedOption(selectedOption);
   };
-  const [inputCountry, setInputCountry] = useState<string>(''); // State for input value
-  const [filteredCountries, setFilteredCountries] = useState<OptionType[]>([]); // State for filtered countries
-  const [selectedOption, setSelectedOption] = useState<OptionType | null>(null); // State for selected country
-  // const [places, setPlaces] = useState<any[]>([]); // State for places (dummy data)
+  const [inputCountry, setInputCountry] = useState<string>(''); 
+  const [filteredCountries, setFilteredCountries] = useState<OptionType[]>([]); 
+  const [selectedOption, setSelectedOption] = useState<OptionType | null>(null); 
 
   const handleCountryInputChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const { value } = event.target;
     setInputCountry(value);
 
-    // Filter countries based on input value
     const filtered = countries.filter(country =>
       country.label.toLowerCase().includes(value.toLowerCase())
     );
     setFilteredCountries(filtered);
   };
 
-  // Function to handle when a country is selected from the filtered list
   const handleFilteredCountrySelect = (country: OptionType): void => {
-    setSelectedOption(country); // Set the selected country object
-    setInputCountry(country.label); // Set the input field value to the selected country label
-    setFilteredCountries([]); // Clear filtered countries list
+    setSelectedOption(country); 
+    setInputCountry(country.label); 
+    setFilteredCountries([]); 
 
 
     const fetchDataForCountry = () => {
@@ -720,8 +720,8 @@ const WebScraping: React.FC = () => {
 
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
     if ((event.key === 'Backspace' || event.key === 'Delete') && inputCountry === '' && selectedOption !== null) {
-      event.preventDefault(); // Prevent default behavior of Backspace/Delete in input field
-      setSelectedOption(null); // Clear selected country if input is empty and user presses backspace/delete
+      event.preventDefault(); 
+      setSelectedOption(null);
     }
   };
 
@@ -735,9 +735,7 @@ const WebScraping: React.FC = () => {
     setIsModalOpen2(false);
   };
 
-  // Function to handle adding prospect (dummy function for demo)
   const handleProspectAdded = (newProspect: Place) => {
-    // Update places state with the new prospect
     setPlaces([...places, newProspect]);
     setShowTable(true); // Show the table after adding a prospect
   };
@@ -756,16 +754,16 @@ const WebScraping: React.FC = () => {
         address: place.address,
         rating: place.rating,
         rating_count: place.ratingCount,
-        country: "India", // Replace with actual country data if available
-        state: "haryana",   // Replace with actual state data if available
-        city: "Gurgaon",    // Replace with actual city data if available
-        zip_code: "12117", // Replace with actual zip code if available
+        country: "India",
+        state: "haryana",  
+        city: "Gurgaon",   
+        zip_code: "12117", 
         website: place.website || "",
         business_contact: {
-          first_name: "Swapnil",   // Replace with actual contact data if available
-          last_name: "Amin",    // Replace with actual contact data if available
-          email: "swapnil@webbuddy.agency",        // Replace with actual contact data if available
-          phone: "478174892415" // Replace with actual contact data if available
+          first_name: "Swapnil",  
+          last_name: "Amin",    
+          email: "swapnil@webbuddy.agency",       
+          phone: "478174892415"
         }
       }));
 
@@ -781,11 +779,10 @@ const WebScraping: React.FC = () => {
       toast.success('Data saved successfully!');
     } catch (error) {
       console.error('Error:', error);
-      // Handle error (e.g., show an error message)
       toast.error('Failed to save data. Please try again.');
     } finally {
       setIsPending(false);
-      setIsModalOpen(false);  // Close the modal after saving
+      setIsModalOpen(false);
     }
   };
 
@@ -871,7 +868,7 @@ const WebScraping: React.FC = () => {
 
     const zoom = 10;
 
-    const customMarkerIcon = "https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png";
+    const customMarkerIcon = "https://images.app.goo.gl/j4Yfm4ETCEWNuQQV8";
 
     const onLoad = useCallback((map: google.maps.Map) => {
       mapRef.current = map;
@@ -881,7 +878,16 @@ const WebScraping: React.FC = () => {
       }
 
       const bounds = new window.google.maps.LatLngBounds();
-
+      const svgMarker = {
+        path: "M-1.547 12l6.563-6.609-1.406-1.406-5.156 5.203-2.063-2.109-1.406 1.406zM0 0q2.906 0 4.945 2.039t2.039 4.945q0 1.453-0.727 3.328t-1.758 3.516-2.039 3.070-1.711 2.273l-0.75 0.797q-0.281-0.328-0.75-0.867t-1.688-2.156-2.133-3.141-1.664-3.445-0.75-3.375q0-2.906 2.039-4.945t4.945-2.039z",
+        fillColor: "red",
+        fillOpacity: 0.6,
+        strokeWeight: 0,
+        rotation: 0,
+        scale: 2,
+        anchor: new google.maps.Point(0, 20),
+      };
+    
       places.forEach((place) => {
         const { latitude, longitude } = place;
         const position = new window.google.maps.LatLng(latitude, longitude);
@@ -890,7 +896,7 @@ const WebScraping: React.FC = () => {
         new window.google.maps.Marker({
           position,
           map: mapRef.current,
-          icon: customMarkerIcon,
+          icon: svgMarker,
         });
       });
 
@@ -919,10 +925,30 @@ const WebScraping: React.FC = () => {
           zoom={zoom}
           onLoad={onLoad}
           onUnmount={onUnmount}
-        />
+        >
+          </GoogleMap>
       </LoadScript>
     );
   };
+  const [currentPage, setCurrentPage] = useState(1);
+const resultsPerPage = 10;
+const totalPages = Math.ceil(places.length / resultsPerPage);
+
+const startIndex = (currentPage - 1) * resultsPerPage;
+const endIndex = startIndex + resultsPerPage;
+const currentResults = places.slice(startIndex, endIndex);
+
+const handleNextPage = () => {
+  if (currentPage < totalPages) {
+    setCurrentPage(currentPage + 1);
+  }
+};
+
+const handlePreviousPage = () => {
+  if (currentPage > 1) {
+    setCurrentPage(currentPage - 1);
+  }
+};
   return (
     <Fragment>
       <div className="flex flex-col h-full flex-1">
@@ -953,7 +979,6 @@ const WebScraping: React.FC = () => {
             ))}
             <div className="flex justify-between mt-6 ml-7 mr-16">
               <button className=" h-12 px-7 rounded-xl text-primary-green flex items-center gap-3 font-medium">
-                {/* Functionality for the first button */}
               </button>
               <div className="flex items-center gap-4 relative z-[20]">
                 <BulkDialog onBulkAdd={handleBulkAdd} />
@@ -1002,7 +1027,6 @@ const WebScraping: React.FC = () => {
               </div>
             )}
 
-            {/* Display selected country */}
             {selectedOption && (
               <div className="mt-4">
                 <h3 className="text-lg font-medium">Selected Country</h3>
@@ -1012,7 +1036,6 @@ const WebScraping: React.FC = () => {
               </div>
             )}
 
-            {/* Modal for adding prospect */}
             <AddProspectModal isOpen={isModalOpen2} onClose={closeModal2} onProspectAdded={handleProspectAdded} />
           </div>
 
@@ -1045,36 +1068,51 @@ const WebScraping: React.FC = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {places.map((place, index) => (
-
-                    <TableRow key={index}>
-                      <TableCell className="flex flex-col">
-                        <div className="text-base font-semibold">{place?.title || "-"}</div>
-                        <div className="mt-1">{place?.address || "-"}</div>
-                      </TableCell>
-                      <TableCell>
-                        <div>{renderRatingStars(place?.rating || 0)}</div>
-                        <div className="flex flex-row justify-between gap-4 text-md mt-1">
-                          <h2 className=" font-semibold">{place?.rating || "-"} </h2>
-                          <h2 className="text-sky-500 mr-20">{place?.ratingCount ? place.ratingCount.toLocaleString() + " Ratings" : "-"}</h2>
-                        </div>
-                      </TableCell>
-                      {/* <TableCell>
-                        <div>{place?.phoneNumber || "9876543212"}</div>
-                      </TableCell> */}
-                      <TableCell>
-                        {place.website ? (
-                          <Link href={place?.website} target="_blank" rel="noopener noreferrer" className="underline text-blue-600">
-                            {place?.website}
-                          </Link>
-                        ) : (
-                          "https://picsum.photos/200/300"
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+      {currentResults.map((place, index) => (
+        <TableRow key={index}>
+          <TableCell className="flex flex-col">
+            <div className="text-base font-semibold">{place?.title || "-"}</div>
+            <div className="mt-1">{place?.address || "-"}</div>
+          </TableCell>
+          <TableCell>
+            <div>{renderRatingStars(place?.rating || 0)}</div>
+            <div className="flex flex-row justify-between gap-4 text-md mt-1">
+              <h2 className="font-semibold">{place?.rating || "-"} </h2>
+              <h2 className="text-sky-500 mr-20">{place?.ratingCount ? place.ratingCount.toLocaleString() + " Ratings" : "-"}</h2>
+            </div>
+          </TableCell>
+          <TableCell>
+          <div className="text-[14px] flex whitespace-nowrap">{place?.phoneNumber || "9876543212"}</div>
+          </TableCell>
+          <TableCell>
+            {place.website ? (
+              <Link href={place?.website} target="_blank" rel="noopener noreferrer" className="underline text-blue-600">
+                {place?.website}
+              </Link>
+            ) : (
+              "https://picsum.photos/200/300"
+            )}
+          </TableCell>
+        </TableRow>
+      ))}
+    </TableBody>
+   
+              </Table> <div className="flex justify-between mt-4">
+      <button 
+        onClick={handlePreviousPage} 
+        disabled={currentPage === 1} 
+        className={`px-4 py-2 ${currentPage === 1 ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-700"} text-white font-bold rounded`}
+      >
+        Previous
+      </button>
+      <button 
+        onClick={handleNextPage} 
+        disabled={currentPage === totalPages} 
+        className={`px-4 py-2 ${currentPage === totalPages ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-700"} text-white font-bold rounded`}
+      >
+        Next
+      </button>
+    </div>
             </Motion>
           )}
           {showTable && <SaveButton />}

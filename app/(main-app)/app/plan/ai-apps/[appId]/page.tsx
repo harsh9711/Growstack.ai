@@ -27,6 +27,9 @@ import { EditorState, convertToRaw } from "draft-js";
 import { saveAs } from "file-saver"; // Import file-saver library for downloading files
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
+import { HiOutlineRefresh } from "react-icons/hi";
+import TemplateLoader from "../../text-to-video/components/TemplateLoader";
+import { FaCircleNotch } from "react-icons/fa";
 
 const Dropdown = ({
   label,
@@ -80,12 +83,13 @@ export default function AiAppPage({
     number_of_results: 1,
     estimated_result_length: 400,
   });
+  const [isLoading, setIsLoading] = useState(false);
+
   const stripHtmlTags = (html: string) => {
     const temp = document.createElement("div");
     temp.innerHTML = html;
     return temp.textContent || temp.innerText || "";
   };
-  
   const handleChange = (e: { target: { value: string; name: any; }; }) => {
     let newValue = parseInt(e.target.value, 10);
   
@@ -214,54 +218,79 @@ export default function AiAppPage({
   //   }
   // };
   // ;
-  const handleSubmit = async () => {
-    try {
-      const formattedUserPrompt = assistant.inputs
-        .map(
-          (input: any, index: number) => `${input.title}:${userPrompts[index]}`
-        )
-        .join(".");
-      const response = await axios.post(
-        `${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`,
-        {
-          ...userInput,
-          user_prompt: formattedUserPrompt,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      const chatId = response.data.data;
-      const eventSource = new EventSource(
-        `${API_URL}/ai/api/v1/chat-template/generate/stream/${chatId}`
-      );
-      var content = "";
-      eventSource.onerror = (event) => {
-        eventSource.close();
-      };
-      eventSource.onmessage = (event) => {
-        var data = event.data;
-        console.log(data);
-        if (data.includes("<p")) {
-          console.log("Yes");
-          data = "<br>" + data;
-        }
-        content += data;
-        setGeneratedContent(content);
-      };
-    } catch (error) {
-      console.error("Error generating template:", error);
-    }
+  const handleGenerateClick = () => {
+    // Set isLoading to true to indicate loading has started
+    setIsLoading(true);
+
+    // Perform your generate action here (e.g., fetch data, compute something)
+    // Simulate loading delay (remove this in actual implementation)
+    setTimeout(() => {
+      // After some action is completed, set isLoading back to false
+      setIsLoading(false);
+    }, 2000); // Example: Simulating loading for 2 seconds
   };
+ const handleSubmit = async () => {
+  try {
+    const formattedUserPrompt = assistant.inputs
+      .map(
+        (input: any, index: number) => `${input.title}:${userPrompts[index]}`
+      )
+      .join(".");
+    const response = await axios.post(
+      `${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`,
+      {
+        ...userInput,
+        user_prompt: formattedUserPrompt,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const chatId = response.data.data;
+    const eventSource = new EventSource(
+      `${API_URL}/ai/api/v1/chat-template/generate/stream/${chatId}`
+    );
+    let content = "<ol><strong>"; // Start with an ordered list
+    eventSource.onerror = (event) => {
+      eventSource.close();
+    };
+    eventSource.onmessage = (event) => {
+      let data = event.data;
+      console.log(data);
+  
+      // Clean up the data to ensure it is properly formatted
+      data = data.replace(/<li>\s*/g, "<li>") // Remove spaces after <li>
+                 .replace(/\s*<\/li>/g, "</li><br>") // Add space before </li> by adding a <br> tag
+                 .replace(/<ol>\s*/g, "<ol>") // Remove spaces after <ol>
+                 .replace(/\s*<\/ol>/g, "</ol>"); // Remove spaces before </ol>
+  
+      // Add the cleaned data to content
+      content += data;
+  
+      // Set the generated content with the final formatted HTML
+      setGeneratedContent(content + "</strong></ol>");
+    };
+  } catch (error) {
+    console.error("Error generating template:", error);
+  }
+};
+
+  
+  
 
   const handleEditorChange = (content: string) => {
     setGeneratedContent(content);
   };
-
-  const handleDropdownChange = (name: any, value: any) => {
-    setUserInput((prev) => ({ ...prev, [name]: value }));
+  const [userInput1, setUserInput1] = useState({
+    language: "English (USA)", // Set your default language here
+  });
+  const handleDropdownChange = (field: string, value: any) => {
+    setUserInput1((prevInput) => ({
+      ...prevInput,
+      [field]: value,
+    }));
   };
 
   const handleUserPromptChange = (
@@ -279,7 +308,6 @@ export default function AiAppPage({
       return updatedPrompts;
     });
   };
-
   const handleCheckboxChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number
@@ -324,7 +352,10 @@ export default function AiAppPage({
   if (loading) {
     return <div>Loading...</div>;
   }
-
+  const handleBothActions = () => {
+    handleGenerateClick(); // Call ghandleGenerate function
+    handleSubmit(); // Call handleSubmit function
+  };
   return (
     <Fragment>
       <div className="flex items-center justify-between mt-10">
@@ -396,8 +427,19 @@ export default function AiAppPage({
           <div>
             <Dropdown
               label="Language"
-              items={["English (USA)", "Spanish", "French"]}
-              value={userInput.language}
+              items={[
+                "English (USA)", "Spanish", "French", "German", "Italian", "Chinese (Simplified)", 
+                "Chinese (Traditional)", "Japanese", "Korean", "Portuguese", "Russian", 
+                "Arabic", "Hindi", "Bengali", "Urdu", "Indonesian", "Dutch", "Turkish", 
+                "Vietnamese", "Thai", "Greek", "Swedish", "Norwegian", "Danish", 
+                "Finnish", "Polish", "Czech", "Hungarian", "Romanian", "Hebrew", 
+                "Malay", "Filipino", "Swahili", "Zulu", "Afrikaans", "Serbian", 
+                "Croatian", "Bulgarian", "Slovak", "Slovenian", "Lithuanian", 
+                "Latvian", "Estonian", "Icelandic", "Irish", "Welsh", "Maltese", 
+                "Luxembourgish", "Catalan", "Galician", "Basque", "Scottish Gaelic", 
+                "Breton", "Corsican", "Esperanto", "Latin"
+              ]}
+              value={userInput1.language}
               onChange={(value: any) => handleDropdownChange("language", value)}
             />
           </div>
@@ -548,11 +590,17 @@ export default function AiAppPage({
             </div>
           </div>
           <button
-            className="w-full h-14 py-2 text-white bg-primary-green rounded-lg !mt-5"
-            onClick={handleSubmit}
-          >
-            Generate Template
-          </button>
+      className="w-full h-14 py-2 text-white bg-primary-green rounded-lg mt-5 flex items-center justify-center"
+      onClick={handleBothActions}
+    >
+      <div className="flex items-center gap-2">
+        {!isLoading ? (
+          "Generate"
+        ) : (
+          <FaCircleNotch className="h-6 w-6 text-white animate-spin" />
+        )}
+      </div>
+    </button>
         </div>
         <div className="w-full p-8 bg-white rounded-2xl border border-[#EDEFF0] flex flex-col">
           <div className="flex items-center justify-between mb-5 border-b pb-5">

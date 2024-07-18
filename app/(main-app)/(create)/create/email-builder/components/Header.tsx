@@ -14,7 +14,15 @@ import { useRouter } from "next/navigation";
 import { HiOutlineQuestionMarkCircle } from "react-icons/hi2";
 import { SlScreenDesktop, SlScreenSmartphone, SlScreenTablet } from "react-icons/sl";
 
-export default function Header({ handleViewScreenChange, iframeWidth }: { handleViewScreenChange: (value: string) => void; iframeWidth: string }) {
+export default function Header({
+  handleViewScreenChange,
+  iframeWidth,
+  handleExport
+}: {
+  handleViewScreenChange: (value: string) => void;
+  iframeWidth: string;
+  handleExport: () => void;
+}) {
   const router = useRouter();
 
   return (
@@ -198,7 +206,9 @@ export default function Header({ handleViewScreenChange, iframeWidth }: { handle
         <button className="bg-[#fff]/20 hover:bg-white text-white hover:text-primary-green h-10 px-4 flex justify-center items-center rounded-lg transition-all duration-300">
           Save & close
         </button>
-        <button className="bg-[#fff]/20 hover:bg-white text-white hover:text-primary-green h-10 px-4 flex justify-center items-center rounded-lg transition-all duration-300">
+        <button
+          onClick={handleExport}
+          className="bg-[#fff]/20 hover:bg-white text-white hover:text-primary-green h-10 px-4 flex justify-center items-center rounded-lg transition-all duration-300">
           Export
         </button>
         <button onClick={() => router.back()} className="bg-[#FF0000] h-9 w-9 grid place-content-center text-white rounded">

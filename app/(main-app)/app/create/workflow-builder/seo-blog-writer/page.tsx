@@ -10,6 +10,10 @@ import { columns } from '../../../components/DataTable'
 import { CSVLink } from 'react-csv';
 import { useSearchParams } from 'next/navigation'
 import axios from 'axios'
+<<<<<<< HEAD
+=======
+import { API_URL } from '@/lib/api'
+>>>>>>> main
 import { InputIcon2 } from '@/components/svgs'
 import clsx from 'clsx'
 import ReactMarkdown from "react-markdown";
@@ -18,7 +22,10 @@ import { HiOutlineDuplicate } from "react-icons/hi";
 import { CiCirclePlus } from "react-icons/ci";
 import toast from 'react-hot-toast'
 import DotsLoader from "@/components/DotLoader";
+<<<<<<< HEAD
 import { API_URL } from '@/lib/api'
+=======
+>>>>>>> main
 
 type WorkFlowData = {
   actions: any[];

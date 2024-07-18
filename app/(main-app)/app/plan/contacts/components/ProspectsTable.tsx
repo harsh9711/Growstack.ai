@@ -1,9 +1,7 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { RxCross2 } from "react-icons/rx";
 import {
     ColumnDef,
     flexRender,
@@ -14,19 +12,13 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { ArrowRight, FilterIcon, MailIcon, MenuIcon, Phone, Search } from "lucide-react";
-import Image from "next/image";
+import { MailIcon,  Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import FilterSheet from "./FilterSheet";
 import Motion from "@/components/Motion";
 import Link from "next/link";
-import { CiCirclePlus } from "react-icons/ci";
 import { API_URL } from "@/lib/api";
 import axios from "axios";
-import toast from "react-hot-toast";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@radix-ui/react-select";
-import { Switch } from "@radix-ui/react-switch";
-import { Input } from "@/components/ui/input";
 
 
 
@@ -42,7 +34,7 @@ interface Assistant {
     };
     last_activity: string;
     tags: string[];
-    profile_image: string; // Assuming this is part of your API response
+    profile_image: string; 
 }
 
 
@@ -85,7 +77,7 @@ export const columns: ColumnDef<Assistant>[] = [
         cell: ({ row }) => (
             <div className="flex gap-2 items-center">
                 <MailIcon size={20} className="text-primary-green" />
-                <p>{row.getValue("totalprospects")}</p>
+                <Link href={`/app/plan/contacts/assistant/${row.original._id}`}>     <p>{row.getValue("totalprospects")}</p></Link>
             </div>
         ),
     },
@@ -94,8 +86,9 @@ export const columns: ColumnDef<Assistant>[] = [
         header: () => <div className="uppercase">Created</div>,
         cell: ({ row }) => (
             <div className="flex gap-3">
-                <span>{row.original.created_on.date}</span>
-                <span>{row.original.created_on.time}</span>
+           <Link href={`/app/plan/contacts/assistant/${row.original._id}`}>
+                   <span>{row.original.created_on.date}</span>
+                <span>{row.original.created_on.time}</span></Link>
             </div>
         ),
     },

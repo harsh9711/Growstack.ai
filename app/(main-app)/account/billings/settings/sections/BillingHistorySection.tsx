@@ -4,7 +4,6 @@ import Motion from "@/components/Motion";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Contact } from "@/types/contact";
 import {
   ColumnDef,
   ColumnFiltersState,

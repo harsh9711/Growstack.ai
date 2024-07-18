@@ -14,7 +14,7 @@ import Prospects from "./components/ProspectsTable";
 export default function ContactsDashboard() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
-  const tabs = ["Smart list", "Bulk actions", "Restore", "Tasks", "Company","Prospects"];
+  const tabs = ["Smart list ", "Bulk actions", "Restore", "Tasks", "Company","Prospects"];
 
   const renderContent = (selectedTabIndex: number) => {
     switch (selectedTabIndex) {

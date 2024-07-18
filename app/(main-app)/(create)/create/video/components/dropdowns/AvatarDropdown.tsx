@@ -1,14 +1,15 @@
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent } from "@/components/ui/dropdown-menu";
 import { Search, UserCircle } from "lucide-react";
 import React, { useState, useEffect } from "react";
-import { avatars } from "../constants/avatars";
+import { avatars } from "../../constants/avatars";
 import Image from "next/image";
 
 interface AvatarDropdownProps {
   onAvatarSelect: (avatarId: string) => void;
+  setSelectedAvatarId: (avatarId: string) => void;
 }
 
-export default function AvatarDropdown({ onAvatarSelect }: AvatarDropdownProps) {
+export default function AvatarDropdown({ onAvatarSelect, setSelectedAvatarId }: AvatarDropdownProps) {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [filteredAvatars, setFilteredAvatars] = useState(avatars);
 
@@ -43,11 +44,14 @@ export default function AvatarDropdown({ onAvatarSelect }: AvatarDropdownProps) 
         </div>
         <h2 className="text-[17px] font-semibold">All</h2>
         <div className="grid grid-cols-3 gap-4 max-h-[500px] overflow-y-auto hidden-scrollbar">
-          {filteredAvatars.map((avatar) => (
+          {filteredAvatars.map((avatar, index) => (
             <div
-              key={avatar["Avatar Name"]}
+              key={index}
               className="border rounded-lg overflow-hidden hover:shadow-2xl hover:shadow-gray-300 cursor-pointer transition-all duration-300"
-              onClick={() => onAvatarSelect(avatar.AVATAR_ID)} // Handle avatar selection
+              onClick={() => {
+                setSelectedAvatarId(avatar.AVATAR_ID);
+                onAvatarSelect(avatar.AVATAR_ID);
+              }} // Handle avatar selection
             >
               <Image src={avatar.Avatar_image} alt={avatar["Avatar Name"]} width={400} height={400} className="w-full h-[120px] object-cover overflow-hidden" />
               <div className="p-4 py-2 ">

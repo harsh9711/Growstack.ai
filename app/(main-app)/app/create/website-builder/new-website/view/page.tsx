@@ -1,9 +1,11 @@
 "use client";
 
+"use client";
+
 import { Eye, Rocket } from "lucide-react";
 import { useGeneratedHtml } from "../../context/GeneratedHtmlContext";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { WwwIcon } from "@/components/svgs";
 import { SlScreenDesktop, SlScreenTablet, SlScreenSmartphone } from "react-icons/sl";
 import { Switch } from "@/components/ui/switch";
@@ -14,6 +16,8 @@ export default function ViewGeneratedWebsite() {
   const { generatedHtml } = useGeneratedHtml();
   const router = useRouter();
   const [iframeWidth, setIframeWidth] = useState("100%");
+  const [editingMode, setEditingMode] = useState(false); // State to track editing mode
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   // useEffect(() => {
   //   if (!generatedHtml) {
@@ -37,7 +41,46 @@ export default function ViewGeneratedWebsite() {
         break;
     }
   };
-  console.log(iframeWidth)
+
+  const handleEdit = () => {
+    if (iframeRef.current) {
+      const iframeDocument = iframeRef.current.contentDocument;
+      if (iframeDocument) {
+        iframeDocument.querySelectorAll<HTMLElement>("*").forEach((element) => {
+          element.contentEditable = editingMode ? "false" : "true"; // Toggle content editable
+          if (editingMode) {
+            element.style.outline = "none"; // Remove outline on edit disable
+          } else {
+            element.addEventListener("mouseover", handleMouseOver);
+            element.addEventListener("mouseout", handleMouseOut);
+            element.addEventListener("focus", handleFocus);
+            element.addEventListener("blur", handleBlur);
+          }
+        });
+      }
+    }
+    setEditingMode(!editingMode); // Toggle editing mode state
+  };
+
+  const handleMouseOver = (event: MouseEvent) => {
+    const element = event.target as HTMLElement;
+    element.style.outline = "2px dashed blue";
+  };
+
+  const handleMouseOut = (event: MouseEvent) => {
+    const element = event.target as HTMLElement;
+    element.style.outline = "none";
+  };
+
+  const handleFocus = (event: FocusEvent) => {
+    const element = event.target as HTMLElement;
+    element.style.border = "2px solid blue";
+  };
+
+  const handleBlur = (event: FocusEvent) => {
+    const element = event.target as HTMLElement;
+    element.style.border = "none";
+  };
 
   return (
     <main className="flex-1 h-full w-full flex flex-col mt-10">
@@ -50,7 +93,7 @@ export default function ViewGeneratedWebsite() {
 
         <div className="flex items-center gap-5">
           <div className="flex items-center gap-2">
-            <Switch />
+            <Switch checked={editingMode} onClick={handleEdit} />
             Construction Mode
           </div>
           <div className="flex items-center gap-3">
@@ -58,7 +101,10 @@ export default function ViewGeneratedWebsite() {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <button
-                    className={clsx("border h-10 w-10 rounded-lg flex gap-2 items-center justify-center", iframeWidth === "100%" && "border-[3px] border-blue-400")}
+                    className={clsx(
+                      "border h-10 w-10 rounded-lg flex gap-2 items-center justify-center",
+                      iframeWidth === "100%" && "border-[3px] border-blue-400"
+                    )}
                     onClick={() => handleViewScreenChange("desktop")}>
                     <SlScreenDesktop size={22} />
                   </button>
@@ -72,7 +118,10 @@ export default function ViewGeneratedWebsite() {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <button
-                    className={clsx("border h-10 w-10 rounded-lg flex gap-2 items-center justify-center", iframeWidth === "768px" && "border-[3px] border-blue-400")}
+                    className={clsx(
+                      "border h-10 w-10 rounded-lg flex gap-2 items-center justify-center",
+                      iframeWidth === "768px" && "border-[3px] border-blue-400"
+                    )}
                     onClick={() => handleViewScreenChange("tablet")}>
                     <SlScreenTablet size={22} />
                   </button>
@@ -86,7 +135,10 @@ export default function ViewGeneratedWebsite() {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <button
-                    className={clsx("border h-10 w-10 rounded-lg flex gap-2 items-center justify-center", iframeWidth === "375px" && "border-[3px] border-blue-400")}
+                    className={clsx(
+                      "border h-10 w-10 rounded-lg flex gap-2 items-center justify-center",
+                      iframeWidth === "375px" && "border-[3px] border-blue-400"
+                    )}
                     onClick={() => handleViewScreenChange("mobile")}>
                     <SlScreenSmartphone size={22} />
                   </button>
@@ -114,6 +166,7 @@ export default function ViewGeneratedWebsite() {
       <div className="flex-1">
         {generatedHtml ? (
           <iframe
+            ref={iframeRef}
             srcDoc={generatedHtml}
             className="w-full h-full pt-3 bg-white"
             style={{ width: iframeWidth, height: "calc(100vh - 100px)", margin: "0 auto" }} // Adjust width and center the iframe
