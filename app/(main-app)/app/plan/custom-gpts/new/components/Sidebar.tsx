@@ -46,20 +46,22 @@ export default function Sidebargpt() {
   };
   const getChatInputTranslate = () => {
     if (selectedTabIndex === 0) {
-      return 'translate-y-[135px]'; // Translate up for Create tab
+      return 'translate-y-[135px]'; 
     } else {
-      return 'translate-y-[35px]'; // Translate up for Configure tab
+      return 'translate-y-[35px]'; 
     }
   };
   
   interface ModalProps {
     onClose: () => void;
-    onFileSelect: (file: File | null) => void;
+    // onFileSelect: (file: File | null) => void;
+    children?: React.ReactNode; 
+
   }
   
 
 
-  const Modal: React.FC<ModalProps> = ({ onClose, onFileSelect }) => {
+const Modal: React.FC<ModalProps> = ({ onClose, children }) => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
   
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -71,7 +73,7 @@ export default function Sidebargpt() {
     };
   
     const handleUpload = () => {
-      onFileSelect(selectedFile);
+      // onFileSelect(selectedFile);
       setSelectedFile(null); // Reset selected file state
       onClose(); // Close the modal after file selection
     };
@@ -166,7 +168,7 @@ export default function Sidebargpt() {
     const handleSave = () => {
       if (selectedImage) {
         onSave(selectedImage);
-        setSelectedImage(null); // Reset selected image after save
+        setSelectedImage(null); 
         onClose();
       }
     };
@@ -234,10 +236,9 @@ export default function Sidebargpt() {
   };
   
   const handleUpload = () => {
-    // Handle file upload logic here
     console.log('Selected file:', selectedFile);
-    setSelectedFile(null); // Reset selected file state after upload
-    // Do not close modal after upload to allow for further actions
+    setSelectedFile(null); 
+   
   };
     return (
       <div className="flex flex-col justify-start">
