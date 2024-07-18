@@ -46,7 +46,7 @@ export default function Sidebargpt() {
   };
   const getChatInputTranslate = () => {
     if (selectedTabIndex === 0) {
-      return '-translate-y-0'; // Translate up for Create tab
+      return 'translate-y-[135px]'; // Translate up for Create tab
     } else {
       return 'translate-y-[35px]'; // Translate up for Configure tab
     }
@@ -679,7 +679,7 @@ Tools
                     </p>
                   </span>
                 </div>
-                <div className={getChatInputTranslate()}>
+                <div className="translate-y-[260px]">
         <ChatInput onSend={handleSend} />
       </div>
               </span>
