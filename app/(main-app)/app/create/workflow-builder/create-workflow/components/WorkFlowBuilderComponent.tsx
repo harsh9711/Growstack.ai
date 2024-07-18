@@ -117,6 +117,18 @@ export default function WorkFlowBuilderComponent() {
   const reorderActions = async (actionId: string, direction: string) => {
     try {
       await axios.put(`${API_URL}/workflow/api/v1/${workflowId}/actions/${actionId}/reorder?direction=${direction}`)
+      setActions((prevActions)=>{
+        const actionIndex = prevActions.findIndex((action) => action._id === actionId);
+        const action = prevActions[actionIndex];
+        const updatedActions = [...prevActions];
+        updatedActions.splice(actionIndex, 1);
+        if (direction === 'up') {
+          updatedActions.splice(actionIndex - 1, 0, action);
+        } else {
+          updatedActions.splice(actionIndex + 1, 0, action);
+        }
+        return updatedActions
+      })
       toast.success("Action reordered successfully")
     } catch (error) {
       toast.error("Failed to reorder action")
@@ -185,7 +197,7 @@ export default function WorkFlowBuilderComponent() {
       getWorkFlowDetails(id)
 
     }
-  }, []); 
+  }, [window.location.search]); 
   
   return (
     <>
@@ -242,18 +254,18 @@ export default function WorkFlowBuilderComponent() {
                       </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                      <DropdownMenuItem inset className="min-w-[200px] flex justify-between gap-8 items-center my-1">
-                         <div className="flex gap-3" onClick={(event) => { event.stopPropagation(); deleteAction(action._id, index); }}>
+                       <DropdownMenuItem inset className="min-w-[200px] flex justify-between gap-8 items-center my-1" onClick={(event) => { event.stopPropagation(); deleteAction(action._id, index); }}>
+                         <div className="flex gap-3">
                           <h2>Delete</h2>
                         </div>
                       </DropdownMenuItem>
-                      <DropdownMenuItem inset className="min-w-[200px] flex justify-between gap-8 items-center my-1" disabled={index===0}>
-                          <div className="flex gap-3" onClick={() => reorderActions(action._id,'up')}>
+                       <DropdownMenuItem inset className="min-w-[200px] flex justify-between gap-8 items-center my-1" disabled={index === 0} onClick={(event) => { event.stopPropagation() ,reorderActions(action._id, 'up')}}>
+                          <div className="flex gap-3">
                           <h2>Move Up</h2>
                         </div>
                       </DropdownMenuItem>
-                        <DropdownMenuItem inset className="min-w-[200px] flex justify-between gap-8 items-center my-1" disabled={index === actions.length-1}>
-                         <div className="flex gap-3" onClick={() => reorderActions(action._id, 'down')}>
+                       <DropdownMenuItem inset className="min-w-[200px] flex justify-between gap-8 items-center my-1" disabled={index === actions.length - 1} onClick={(event) => { event.stopPropagation() ,reorderActions(action._id, 'down')}}>
+                         <div className="flex gap-3">
                           <h2>Move Down</h2>
                         </div>
                       </DropdownMenuItem>
