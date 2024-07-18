@@ -2,7 +2,7 @@
 import { saveAs } from "file-saver";
 import { jsPDF } from "jspdf";
 import { Document, Packer, Paragraph, TextRun } from "docx";
-import { Chat } from "../../../../components/types";
+import { Chat } from "../../../../ai-assistant/components/types";
 
 export const downloadTxt = (chats: Chat[]) => {
   const content = chats.map((chat) => `User: ${chat.prompt}\nAssistant: ${chat.response}\n`).join("\n");
