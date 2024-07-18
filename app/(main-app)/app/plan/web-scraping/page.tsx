@@ -355,6 +355,7 @@ const WebScraping: React.FC = () => {
   const [zoom, setZoom] = useState(6); // Default zoom level
   const [isPending, setIsPending] = useState(false);
   const router = useRouter();
+  const [currentPageNumber, setCurrentPageNumber] = useState(1); // Initial page number, adjust as per your application logic
 
 
   useEffect(() => {
@@ -422,6 +423,7 @@ const WebScraping: React.FC = () => {
     }
   };
 
+  const [fetchedResults, setFetchedResults] = useState<Array<Place[]>>([]);
 
   const handleBulkSubmit = async () => {
     const allTerms = [
@@ -437,13 +439,14 @@ const WebScraping: React.FC = () => {
     try {
       const postData = {
         queries: allTerms,
-        country_code: countryCode,
-        location: inputCountry, // Include inputCountry in the payload
+      country_code: countryCode,
+      location: inputCountry, 
+      page: currentPageNumber,
       };
-  
+  console.log("page",postData.page)
       const allResults = [];
   
-      for (let i = 0; i < 6; i++) {
+      // for (let i = 0; i < 6; i++) {
         const response = await axios.post(`${API_URL}/ai/api/v1/webscrape`, postData);
         console.log("response", response);
         const places = response.data.data[0].places.map((place: Place) => ({
@@ -457,8 +460,10 @@ const WebScraping: React.FC = () => {
           longitude: place.longitude,
         }));
         allResults.push(...places);
-      }
-  
+      // }
+      const updatedResults = [...fetchedResults];
+      updatedResults[currentPageNumber - 1] = allResults;
+      setFetchedResults(updatedResults);
       setPlaces(allResults);
       toast.success("Your data has been scrapped!");
       setShowTable(true);
@@ -807,7 +812,7 @@ const WebScraping: React.FC = () => {
       <div>
         <button
           className={clsx(
-            'mx-auto mt-4 w-[200px] h-14 flex items-center justify-center bg-primary-green rounded-xl sheen text-white',
+            'mx-auto mt-4 w-[200px] text-2xl h-14 flex items-center justify-center bg-primary-green rounded-xl sheen text-white',
             isPending && 'bg-opacity-90'
           )}
           onClick={openModal}
@@ -945,16 +950,25 @@ const endIndex = startIndex + resultsPerPage;
 const currentResults = places.slice(startIndex, endIndex);
 
 const handleNextPage = () => {
-  if (currentPage < totalPages) {
-    setCurrentPage(currentPage + 1);
-  }
+  setCurrentPageNumber(currentPageNumber + 1);
+  handleBulkSubmit();
 };
 
 const handlePreviousPage = () => {
-  if (currentPage > 1) {
-    setCurrentPage(currentPage - 1);
-  }
+  if (currentPageNumber > 1) {
+    setCurrentPageNumber(currentPageNumber - 1);
+
+    const previousPageResults = fetchedResults[currentPageNumber - 2];
+    if (previousPageResults) {
+      setPlaces(previousPageResults);
+    } else {
+      console.warn(`No results found for page ${currentPageNumber - 1}`);
+    }
+  } else {
+    console.warn('Already on the first page');
+  } 
 };
+
   return (
     <Fragment>
       <div className="flex flex-col h-full flex-1">
@@ -1104,20 +1118,12 @@ const handlePreviousPage = () => {
     </TableBody>
    
               </Table> <div className="flex justify-between mt-4">
-      <button 
-        onClick={handlePreviousPage} 
-        disabled={currentPage === 1} 
-        className={`px-4 py-2 ${currentPage === 1 ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-700"} text-white font-bold rounded`}
-      >
-        Previous
-      </button>
-      <button 
-        onClick={handleNextPage} 
-        disabled={currentPage === totalPages} 
-        className={`px-4 py-2 ${currentPage === totalPages ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-700"} text-white font-bold rounded`}
-      >
-        Next
-      </button>
+     <button onClick={handlePreviousPage} disabled={currentPageNumber === 1} className=" mt-4 w-[200px] h-14  text-xl flex items-center justify-center bg-primary-green rounded-xl sheen text-white">
+     <FaArrowCircleLeft className="-rotate-270 text-white text-xl mr-4" />      Previous
+    </button>
+    <button onClick={handleNextPage} className=" mt-4 w-[200px] h-14  text-xl flex items-center justify-center bg-primary-green rounded-xl sheen text-white">
+    Next <FaArrowCircleLeft className="rotate-180 text-white text-xl ml-4" />
+    </button>
     </div>
             </Motion>
           )}
