@@ -26,8 +26,9 @@ interface LayoutProps {
 }
 
 type Message = {
-  prompt: string;
-  response: string;
+  content: string;
+  role: string;
+  loading: boolean;
 };
 
 const groupByDate = (items: ISidebarItem[]) => {
@@ -45,7 +46,11 @@ const groupByDate = (items: ISidebarItem[]) => {
 
   return grouped;
 };
-const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutProps) => {
+const Layout = ({
+  sidebarItems,
+  setSidebarItems,
+  fetchConversations,
+}: LayoutProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [_, setShowNewChatInput] = useState(false);
   const [selectedModel, setSelectedModel] = useState<string>("gpt-3.5-turbo");
@@ -60,13 +65,12 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
 
   const fetchMessages = async (_id: string) => {
     try {
-      const response = await axios.get(
-        `${API_URL}/ai/api/v1/conversation/${_id}`
-      );
+      const response = await axios.get(`${API_URL}/ai/api/v1/conversation/${_id}`);
       const chatData = response.data.data.chats;
       const messages = chatData.reduce((acc: Message[], chats: any) => {
         const flattenedThreads = chats.thread.flatMap((thread: any) => [
-          { prompt: thread.user_prompt, response: thread.response },
+          { role: 'user', content: thread.user_prompt, loading: false },
+          { role: 'assistant', content: thread.response, loading: false },
         ]);
         return acc.concat(flattenedThreads);
       }, []);
@@ -112,23 +116,19 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
     }
   };
 
-  const addMessage = (prompt: string, response: string) => {
-    setMessages((prevMessages) => [...prevMessages, { prompt, response }]);
+  const addMessage = (role: string, content: string, loading: boolean) => {
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { role, content, loading },
+    ]);
   };
 
-  const handleSend = (message: string, response: string, id: string | null) => {
-    setMessages((prevMessages) => {
-      const messageIndex = prevMessages.findIndex(
-        (msg) => msg.prompt === message
-      );
-      if (messageIndex !== -1) {
-        const updatedMessages = [...prevMessages];
-        updatedMessages[messageIndex].response = response;
-        return updatedMessages;
-      }
-      return prevMessages;
-    });
-    id && setSelectedConversation(id);
+  const updateMessage = (content: string, role: string) => {
+    setMessages((prevMessages) =>
+      prevMessages.map((msg, index) =>
+        index === prevMessages.length - 1 && msg.role === role ? { ...msg, content, loading: false } : msg
+      )
+    );
   };
 
   const options = [
@@ -294,7 +294,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
           <ChatMessage conversation={messages} />
         </div>
         <ChatInput
-          onSend={handleSend}
+          onSend={updateMessage}
           selectedModel={selectedModel}
           fetchConversations={fetchConversations}
           selectedConversation={selectedConversation}

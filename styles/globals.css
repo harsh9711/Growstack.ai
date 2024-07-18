@@ -3,6 +3,58 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* Custom styles for the radio buttons */
+.custom-radio {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #D1D5DB; /* Default gray border */
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  background-color: white;
+}
+
+.custom-radio:checked {
+  border-color: #034737; /* Green border when selected */
+  background-color: white ; /* Green background when selected */
+}
+
+.custom-radio:checked::before {
+  content: '';
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #034737;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.dropdown-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 1s ease-out, opacity 1s ease-out; /* Transition for max-height and opacity */
+  opacity: 0; /* Initially hidden */
+}
+
+.dropdown-content.dropdown-open {
+  max-height: 200px; /* Adjust the maximum height as needed */
+  opacity: 1; /* Visible */
+}
+.dropdown-content2 {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 1s ease-out, opacity 1s ease-out; /* Transition for max-height and opacity */
+  opacity: 0; /* Initially hidden */
+}
+
+.dropdown-content2.dropdown-open {
+  max-height: 1000px; /* Adjust the maximum height as needed */
+  opacity: 1; /* Visible */
+}
 
 @layer base {
   :root {
