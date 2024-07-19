@@ -6,7 +6,10 @@ import Link from "next/link";
 import Toggle from "react-toggle";
 import "react-toggle/style.css" // for ES6 modules
 import { FiFile, FiUpload } from 'react-icons/fi'; // Example icon from react-icons
-import { MinusIcon, PlusIcon } from "lucide-react";
+import { CircleAlert, File, MinusIcon, PlusIcon, Trash } from "lucide-react";
+import axios from "axios";
+import { API_URL } from "@/lib/api";
+import toast from "react-hot-toast";
 
 export default function Sidebargpt() {
   const tabs = ["Create", "Configure"];
@@ -54,27 +57,25 @@ export default function Sidebargpt() {
 
   interface ModalProps {
     onClose: () => void;
-    // onFileSelect: (file: File | null) => void;
-    children?: React.ReactNode;
-
+    onFileUpload: (file: File) => void;
   }
 
 
 
-  const Modal: React.FC<ModalProps> = ({ onClose, children }) => {
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const UploadFileModal: React.FC<ModalProps> = ({ onClose, onFileUpload }) => {
+    
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       const inputElement = event.target as HTMLInputElement;
       const file = inputElement.files?.[0];
       if (file) {
-        setSelectedFile(file);
+        onFileUpload(file)
       }
     };
 
     const handleUpload = () => {
       // onFileSelect(selectedFile);
-      setSelectedFile(null); // Reset selected file state
+      // setSelectedFile(null); // Reset selected file state
       onClose(); // Close the modal after file selection
     };
 
@@ -119,7 +120,7 @@ export default function Sidebargpt() {
                       </svg>
                       <h2 className="text-black text-xl font-bold"> Drag your files here or <span className="text-green-500">click to upload</span></h2>
                       <p className="text-[14px]">Information in attached files will be available to this assistant</p><p className="text-green-400">Learn more</p></span>
-                    {/* <input id="file-upload" name="file-upload" type="file" className="sr-only" onChange={handleFileChange} /> */}
+                    <input id="file-upload" name="file-upload" type="file" className="sr-only" onChange={handleFileChange}/>
                   </label>
 
                 </div>
@@ -138,7 +139,7 @@ export default function Sidebargpt() {
                 >
                   Cancel
                 </button> <button
-                  onClick={handleUpload}
+                  onClick={handleLabelClick}
                   className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
                 >
                   Upload
@@ -206,40 +207,56 @@ export default function Sidebargpt() {
     const [isOpen1, setIsOpen1] = useState(false);
     const [isOpen2, setIsOpen2] = useState(false);
 
-
-
-    const handleChangeFile = () => {
-      setSelectedFile(null);
-    };
-
     const handleSaveImage = (image: string) => {
       // Handle saving image logic here
       console.log('Image saved:', image);
     };
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+    const [isInterpreterModalOpen, setIsInterpreterModalOpen] = useState(false);
+    const [uplodedSearchFiles,setUploadedSearchFiles] = useState<File[]>([]);
+    
+    const [uploadedCodeInterpreterFiles,setUploadedCodeInterpreterFiles] = useState<File[]>([]);
 
-    const handleOpenModal = () => {
-      setIsModalOpen(true);
+    const handleOpenSearchModal = () => {
+      setIsSearchModalOpen(true);
     };
 
-    const handleCloseModal = () => {
-      setIsModalOpen(false);
+    const handleCloseSearchModal = () => {
+      setIsSearchModalOpen(false);
     };
 
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const inputElement = event.target as HTMLInputElement;
-      const file = inputElement.files?.[0];
-      if (file) {
-        setSelectedFile(file);
-      }
+    const handleOpenInterpreterModal = () => {
+      setIsInterpreterModalOpen(true);
     };
 
-    const handleUpload = () => {
-      console.log('Selected file:', selectedFile);
-      setSelectedFile(null);
-
+    const handleCloseInterpreterModal = () => {
+      setIsInterpreterModalOpen(false);
     };
+    const handleSearchFileUpload = async (file:File)=>{
+      const formData = new FormData();
+      formData.append('file_search', file);
+      try {
+        // const response = await axios.post(`${API_URL}/users/api/v1/customgpt/upload`,formData)
+        setUploadedSearchFiles((prev) =>[...prev, file]);
+        handleCloseSearchModal();
+        toast.success('File uploaded successfully');
+      } catch (error) {
+        console.error('Error uploading file:', error);
+    }
+  }
+
+  const handleCodeInterpreterFileUpload = async (file:File)=>{
+    const formData = new FormData();
+    formData.append('code_interpreter', file);
+    try {
+      // const response = await axios.post(`${API_URL}/users/api/v1/customgpt/upload`,formData)
+      setUploadedCodeInterpreterFiles((prev)=>[...prev,file]);
+      handleCloseInterpreterModal();
+      toast.success('File uploaded successfully');
+    } catch (error) {
+      console.error('Error uploading file:', error);
+  }
+}
     return (
       <div className="flex flex-col justify-start">
         {/* Left Side */}
@@ -252,51 +269,46 @@ export default function Sidebargpt() {
               className="mr-2"
             />
             <span className="text-md flex flex-row gap-x-2 font-medium">File Search
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="9" stroke="#4B465C" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-                <circle cx="12" cy="12" r="9" stroke="white" strokeOpacity="0.2" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M11.9999 8H12.0099" stroke="#4B465C" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M11.9999 8H12.0099" stroke="white" strokeOpacity="0.2" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M11 12H12V16H13" stroke="#4B465C" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M11 12H12V16H13" stroke="white" strokeOpacity="0.2" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+              <CircleAlert size={21}/>
             </span>
           </div>
 
           <div className={`flex items-center ml-4 bg-gray-200 px-2 rounded-2xl`}>
-            <label htmlFor="file-upload" className="cursor-pointer flex flex-row items-center" onClick={handleOpenModal}>
+            <label className="cursor-pointer flex flex-row items-center" onClick={handleOpenSearchModal}>
               <PlusIcon width={15} height={20} />
               <span className="text-sm">Files</span>
             </label>
-            {/* <input id="file-upload" type="file" className="hidden" onChange={handleFileChange} /> */}
-
-            {selectedFile && (
-              <div className="ml-2 flex items-center">
-                <img src={URL.createObjectURL(selectedFile)} alt="Selected File" className="h-8 w-8 object-contain rounded-full" />
-                <button onClick={handleChangeFile} className="ml-2 focus:outline-none text-gray-600 hover:text-gray-800">
-                  Change
-                </button>
-              </div>
-            )}
-
-
-
-            {isModalOpen && (
-              <Modal onClose={handleCloseModal}>
-                {selectedFile && (
-                  <div>
-                    <p>Selected File: {selectedFile.name}</p>
-                    <button onClick={handleUpload}>Upload File</button>
-                  </div>
-                )}
-                <input id="file-upload-modal" type="file" onChange={handleFileChange} style={{ display: 'none' }} />
-                <label htmlFor="file-upload-modal" className="cursor-pointer">
-                  Select File
-                </label>
-              </Modal>
+            {isSearchModalOpen && (
+              <UploadFileModal
+                key="file_search"
+                onClose={handleCloseSearchModal}
+                onFileUpload={(file: File) => handleSearchFileUpload(file)}
+              />
             )}
           </div>
         </div>
+        {
+          uplodedSearchFiles.length > 0 && (
+            <div className="flex flex-col gap-y-4">
+              <h2 className="text-md font-semibold">Uploaded Files</h2>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+                {uplodedSearchFiles.map((file, index) => (
+                  <div key={index} className="flex items-center bg-gray-100 p-2 rounded-md">
+                    <File size={24} />
+                    <span className="text-sm truncate ml-2">{file.name}</span>
+                    <button
+                      className="ml-auto focus:outline-none"
+                      // onClick={() => handleRemoveUploadedFile(index)}
+                    >
+                      <Trash size={20} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )
+        }
+
 
         <div className="border-b border-gray-200 pr-4 mt-4 mb-4"></div>
 
@@ -310,50 +322,47 @@ export default function Sidebargpt() {
               className="mr-2"
             />
             <span className="text-md font-medium flex flex-row gap-x-2">Code Interpreter
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="9" stroke="#4B465C" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-                <circle cx="12" cy="12" r="9" stroke="white" strokeOpacity="0.2" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M11.9999 8H12.0099" stroke="#4B465C" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M11.9999 8H12.0099" stroke="white" strokeOpacity="0.2" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M11 12H12V16H13" stroke="#4B465C" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M11 12H12V16H13" stroke="white" strokeOpacity="0.2" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
+              <CircleAlert size={21} />
             </span>
           </div>
           <div className={`flex items-center ml-4 bg-gray-200 px-2 rounded-2xl`}>
-            <label htmlFor="file-upload" className="cursor-pointer flex flex-row items-center" onClick={handleOpenModal}>
+            <label className="cursor-pointer flex flex-row items-center" onClick={handleOpenInterpreterModal}>
               <PlusIcon width={15} height={20} />
               <span className="text-sm">Files</span>
             </label>
-            {/* <input id="file-upload" type="file" className="hidden" onChange={handleFileChange} /> */}
 
-            {selectedFile && (
-              <div className="ml-2 flex items-center">
-                <img src={URL.createObjectURL(selectedFile)} alt="Selected File" className="h-8 w-8 object-contain rounded-full" />
-                <button onClick={handleChangeFile} className="ml-2 focus:outline-none text-gray-600 hover:text-gray-800">
-                  Change
-                </button>
-              </div>
-            )}
-
-
-
-            {isModalOpen && (
-              <Modal onClose={handleCloseModal} >
-                {selectedFile && (
-                  <div>
-                    <p>Selected File: {selectedFile.name}</p>
-                    <button onClick={handleUpload}>Upload File</button>
-                  </div>
-                )}
-                <input id="file-upload-modal" type="file" onChange={handleFileChange} style={{ display: 'none' }} />
-                <label htmlFor="file-upload-modal" className="cursor-pointer">
-                  Select File
-                </label>
-              </Modal>
+            {isInterpreterModalOpen && (
+              <UploadFileModal
+                key="code_interpreter"
+                onClose={handleCloseInterpreterModal}
+                onFileUpload={(file: File) => handleCodeInterpreterFileUpload(file)}
+              />
             )}
           </div>
         </div>
+        {
+          uploadedCodeInterpreterFiles.length > 0 && (
+            <div className="flex flex-col gap-y-4">
+              <h2 className="text-md font-semibold">Uploaded Files</h2>
+              <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+                {uploadedCodeInterpreterFiles.map((file, index) => (
+                  <div key={index} className="flex items-center bg-gray-100 p-2 rounded-md">
+                    <File size={24} />
+                    <span className="text-sm truncate ml-2">{file.name}</span>
+                    <button
+                      className="ml-auto focus:outline-none"
+                    // onClick={() => handleRemoveUploadedFile(index)}
+                    >
+                      <Trash size={20} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )
+        }
+
+        
         <div className="border-b border-gray-200 pr-4 mt-4 mb-4"></div>
 
         {/* Modals */}
@@ -366,16 +375,31 @@ export default function Sidebargpt() {
 
   const UploadImageSVG = () => {
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const handleUploadFile = async (file: File) => {
+      const formData = new FormData();
+      formData.append('document', file);
+      try {
+        const response = await axios.post(`${API_URL}/users/api/v1/file/upload`,formData)
+        console.log(response)
+        // setSelectedImage(URL.createObjectURL(file));
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
 
+    }
     const handleImageUpload: ChangeEventHandler<HTMLInputElement> = (event) => {
       const file = event.target.files?.[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setSelectedImage(reader.result as string | null);
-        };
-        reader.readAsDataURL(file);
+      console.log(file)
+      if(file){
+        handleUploadFile(file);
       }
+      // if (file) {
+      //   const reader = new FileReader();
+      //   reader.onloadend = () => {
+      //     setSelectedImage(reader.result as string | null);
+      //   };
+      //   reader.readAsDataURL(file);
+      // }
     };
 
     // const handleSVGClick = () => {
@@ -681,4 +705,3 @@ export default function Sidebargpt() {
     </div>
   );
 }
-
