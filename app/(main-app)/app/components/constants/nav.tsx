@@ -106,11 +106,11 @@ const navLinks: NavLink[] = [
         name: "AI article wizard",
         href: "/app/create/ai-articles",
       },
-      {
-        icon: <ProductAiIcon />,
-        name: "Product AI ",
-        href: "/app/create/product-ai",
-      },
+      // {
+      //   icon: <ProductAiIcon />,
+      //   name: "Product AI ",
+      //   href: "/app/create/product-ai",
+      // },
     ],
     title: "Create",
   },
