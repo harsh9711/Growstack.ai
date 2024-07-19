@@ -6,6 +6,8 @@ import ToolsDialog from "./ToolsDialog";
 import axios from "axios";
 import { API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
+import useSpeechRecognition from "../../hooks/UseSpeechRecognition";
+import { languageOptions } from "../../../create/ai-articles/constants/options";
 
 interface ChatInputProps {
   onSend: (content: string, role: string) => void;
@@ -26,8 +28,16 @@ const ChatInput: React.FC<ChatInputProps> = ({
   addMessage,
   setSelectedConversation,
 }) => {
+  const selectedLanguage = languageOptions[0].value;
   const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const { startRecognition, textToSpeech } = useSpeechRecognition(
+    selectedLanguage,
+    (transcript: string) => {
+      setInput(transcript);
+      handleSend(transcript, true);
+    }
+  );
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -43,24 +53,29 @@ const ChatInput: React.FC<ChatInputProps> = ({
     }
   }, [input]);
 
-  const handleSend = async () => {
-    if (input.trim() === "") return;
-
-    const user_prompt = input.trim();
+  const handleSend = async (user_prompt?: string, fromMic: boolean = false) => {
+    if (user_prompt) {
+      user_prompt = user_prompt.trim();
+    }
+    const prompt = user_prompt || input.trim();
+    if (prompt === "") return;
     setInput("");
-    addMessage("user", user_prompt, false);
+    addMessage("user", prompt, false);
     addMessage("assistant", "", true);
     try {
       const conversation = await axios.post(
         `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${
           selectedConversation ? selectedConversation : ""
         }&model=${selectedOption}`,
-        { user_prompt: input }
+        { user_prompt: prompt }
       );
       const response = conversation.data.data.response;
       setSelectedConversation(conversation.data.data.conversation_id);
       if (!selectedConversation) fetchConversations();
       onSend(response, "assistant");
+      if (fromMic) {
+        await textToSpeech(response);
+      }
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.error);
@@ -114,13 +129,13 @@ const ChatInput: React.FC<ChatInputProps> = ({
         setInput={(description: string) => promptInput(description)}
       />
       <button
+        onClick={startRecognition}
         className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
-        // onClick={() => setChatId(null)} // Reset chatId to fetch new conversation when clicked
       >
         <MicrophoneIcon />
       </button>
       <button
-        onClick={handleSend}
+        onClick={() => handleSend()}
         className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
       >
         <SendIcon2 />
