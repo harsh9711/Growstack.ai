@@ -4,6 +4,7 @@ import ChatOptions from "./ChatOptions";
 import ChatMessages from "./ChatMessages";
 import { Assistant, Chat, Conversation } from "../../../components/types";
 import { translateText } from "./utils/translate";
+import { languageOptions } from "@/app/(main-app)/app/create/ai-articles/constants/options";
 
 interface ChatSectionProps {
   conversation: Conversation;
@@ -15,7 +16,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({
   assistant,
 }) => {
   const [messages, setMessages] = useState<Chat[]>([]);
-  const [selectedLanguage, setSelectedLanguage] = useState<string>("en");
+  const [selectedLanguage, setSelectedLanguage] = useState<string>(languageOptions[0].value);
 
   useEffect(() => {
     setMessages(conversation.chats);
@@ -69,6 +70,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({
           assistant_id={assistant.id}
           addMessage={addMessage}
           updateMessage={updateMessage}
+          selectedLanguage={selectedLanguage}
         />
       </div>
     </div>

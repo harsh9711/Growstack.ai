@@ -67,8 +67,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ _id, title, onRename, onSelec
   return (
     <div
       className={clsx(
-        "flex gap-4 w-full p-4 hover:bg-gray-100 cursor-pointer rounded-full items-center group  relative",
-        isHovered && "pr-4"
+        "flex gap-4 w-full p-4 hover:bg-gray-100 cursor-pointer rounded-full items-center group relative"
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -91,7 +90,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ _id, title, onRename, onSelec
           className="border-gray-300 focus:border-primary-green rounded px-2 py-1 w-full mb-1"
         />
       )}
-      <div className={clsx("py-4 px-5 rounded-l-3xl items-center gap-3.5 w-full flex max-w-fit transition-all duration-100 transform translate-x-full group-hover:translate-x-0")}>
+      {/* <div className={clsx("py-4 px-5 rounded-l-3xl items-center gap-3.5 w-full flex max-w-fit")}> */}
         {isHovered && (
           <>
             <Trash2 size={18} className="cursor-pointer" onClick={(e)=>{
@@ -104,7 +103,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ _id, title, onRename, onSelec
             />
           </>
         )}
-      </div>
+      {/* </div> */}
     </div>
   );
 };

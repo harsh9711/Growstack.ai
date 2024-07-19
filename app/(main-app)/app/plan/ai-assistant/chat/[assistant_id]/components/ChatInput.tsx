@@ -10,9 +10,10 @@ interface ChatInputProps {
   assistant_id: string;
   addMessage: (prompt: string, response: string) => void;
   updateMessage: (prompt: string, response: string) => void;
+  selectedLanguage: string;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateMessage }) => {
+const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateMessage, selectedLanguage }) => {
   const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -32,25 +33,13 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateM
     try {
       const response = await axios.post(`/ai/api/v1/assistant/chat/${assistant_id}`, {
         user_prompt,
-        language: "english",
+        language: selectedLanguage,
         tone: "friendly",
         writing_style: "poetic",
       });
 
-      const { data } = response;
-      const chatId = data.data;
-      const eventSource = new EventSource(`${API_URL}/ai/api/v1/assistant/chat/stream/${chatId}`);
-      let content = "";
+      updateMessage(user_prompt, response.data.data.response)
 
-      eventSource.onerror = (event) => {
-        eventSource.close();
-      };
-
-      eventSource.onmessage = (event) => {
-        const receivedData = event.data;
-        content += receivedData;
-        updateMessage(user_prompt, content);
-      };
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
