@@ -172,19 +172,20 @@ export default function CreateAssistantPage() {
                 <label className="font-medium">
                   Template category <span className="text-[#F00]">*</span>
                 </label>
-                <Select onValueChange={handleCategoryChange}>
+                <Select onValueChange={handleCategoryChange} defaultValue="Blogs Posts">
                   <SelectTrigger className="w-full border-none h-14">
                     <SelectValue placeholder={category ? category : "Select a category"} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Articles And Contents">Articles And Contents</SelectItem>
+                    <SelectItem value="Blogs Posts">My Assistants</SelectItem>
+                    {/* <SelectItem value="Articles And Contents">Articles And Contents</SelectItem>
                     <SelectItem value="Blogs Posts">Blogs Posts</SelectItem>
                     <SelectItem value="Commerce"> Ecommerce</SelectItem>
                     <SelectItem value="Emails">Emails</SelectItem>
                     <SelectItem value="Frameworks">Frameworks</SelectItem>
                     <SelectItem value="Marketing">Marketing</SelectItem>
                     <SelectItem value="Social Media">Social Media</SelectItem>
-                    <SelectItem value="Websites">Websites</SelectItem>
+                    <SelectItem value="Websites">Websites</SelectItem> */}
                   </SelectContent>
                 </Select>
               </div>
