@@ -3,7 +3,6 @@ import ChatInput from "./ChatInput";
 import ChatOptions from "./ChatOptions";
 import ChatMessages from "./ChatMessages";
 import { Assistant, Chat, Conversation } from "../../../components/types";
-import { translateText } from "./utils/translate";
 import { languageOptions } from "@/app/(main-app)/app/create/ai-articles/constants/options";
 
 interface ChatSectionProps {
@@ -16,7 +15,9 @@ const ChatSection: React.FC<ChatSectionProps> = ({
   assistant,
 }) => {
   const [messages, setMessages] = useState<Chat[]>([]);
-  const [selectedLanguage, setSelectedLanguage] = useState<string>(languageOptions[0].value);
+  const [selectedLanguage, setSelectedLanguage] = useState<string>(
+    languageOptions[0].value
+  );
 
   useEffect(() => {
     setMessages(conversation.chats);
@@ -35,22 +36,15 @@ const ChatSection: React.FC<ChatSectionProps> = ({
 
   const updateMessage = (prompt: string, response: string) => {
     setMessages((prevMessages) => {
-      const messageIndex = prevMessages.findIndex(
-        (msg) => msg.prompt === prompt
-      );
-      if (messageIndex !== -1) {
-        const updatedMessages = [...prevMessages];
-        updatedMessages[messageIndex].response = response;
-        return updatedMessages;
-      }
-      return prevMessages;
+      const messageIndex = prevMessages.length - 1;
+      const updatedMessages = [...prevMessages];
+      updatedMessages[messageIndex].response = response;
+      return updatedMessages;
     });
   };
 
   const switchLanguage = async (language: string) => {
     setSelectedLanguage(language);
-    const translatedMessages = await translateText(messages, language);
-    setMessages(translatedMessages);
   };
 
   return (
