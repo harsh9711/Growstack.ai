@@ -25,7 +25,7 @@ export default function Page() {
       case 0:
         return <Compositions />;
       case 1:
-        return <MyCompositions />;w
+        return <MyCompositions />;
       default:
         return null;
     }
