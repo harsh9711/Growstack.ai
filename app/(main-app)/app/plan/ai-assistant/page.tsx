@@ -57,20 +57,17 @@ export default function AiAssistants() {
             <SelectContent>
               <SelectGroup>
                 <SelectItem value="Education">Education</SelectItem>
-                <SelectItem value="Frontend Developer">
-                  Frontend Developer
+                <SelectItem value="Marketing">
+                Marketing
                 </SelectItem>
-                <SelectItem value="Backend Developer">
-                  Backend Developer
-                </SelectItem>
-                <SelectItem value="Project Manager">Project Manager</SelectItem>
-                <SelectItem value="Data Scientist">Data Scientist</SelectItem>
-                <SelectItem value="DevOps Engineer">DevOps Engineer</SelectItem>
-                <SelectItem value="QA Engineer">QA Engineer</SelectItem>
-                <SelectItem value="Product Manager">Product Manager</SelectItem>
-                <SelectItem value="Business Analyst">
-                  Business Analyst
-                </SelectItem>
+                <SelectItem value="Regular Use">Regular Use</SelectItem>
+                <SelectItem value="Analytics">Analytics</SelectItem>
+                <SelectItem value="Research & Strategy">Research & Strategy</SelectItem>
+                <SelectItem value="Sales">Sales</SelectItem>
+                <SelectItem value="Customer success">Customer success</SelectItem>
+                <SelectItem value="Finance">Finance</SelectItem>
+                <SelectItem value="Fun">Fun</SelectItem>
+                <SelectItem value="Tech">Tech</SelectItem>
               </SelectGroup>
             </SelectContent>
           </Select>
