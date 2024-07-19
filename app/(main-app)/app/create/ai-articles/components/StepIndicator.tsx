@@ -1,10 +1,30 @@
 import React from "react";
 import clsx from "clsx";
 import { Check } from "lucide-react";
+import Image from "next/image";
+const CircularImage = () => {
+  return (
+    <div style={styles.circleContainer}>
+      <Image src="/ai.svg" alt="ai" width={25} height={25} />
+    </div>
+  );
+};
 
+const styles = {
+  circleContainer: {
+    width: '50px',    // Adjust the size as needed
+    height: '50px',   // Adjust the size as needed
+    backgroundColor: 'white',
+    borderRadius: '50%',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',   
+
+  },
+};
 const StepIndicator = ({ steps, currentStep, setCurrentStep }: { steps: string[]; currentStep: number; setCurrentStep: (value: number) => void }) => {
   return (
-    <div className="max-w-fit gap-10 mx-auto flex justify-between mb-6">
+    <div className="max-w-fit translate-x-28 gap-10 mx-auto flex justify-between mb-6">
       {steps.map((step, index) => (
         <div key={index} className={`flex items-start gap-5 ${index <= currentStep ? "active" : ""}`}>
           <span
@@ -26,8 +46,9 @@ const StepIndicator = ({ steps, currentStep, setCurrentStep }: { steps: string[]
               />
             </div>
           </div>
+         
         </div>
-      ))}
+      ))} <CircularImage/>
     </div>
   );
 };
