@@ -8,6 +8,7 @@ import StepIndicator from "./components/StepIndicator";
 import TalkingPointsComponent from "./components/TalkingPointsComponent";
 import ResultComponent from "./components/ResultComponent";
 import { IOutline, ISubtitleTalkingPoints } from "./types";
+import Image from "next/image";
 
 export default function AiArticles() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -112,7 +113,7 @@ export default function AiArticles() {
           </div>
         </div>
         <div className="mx-auto p-4">
-          <StepIndicator steps={steps} currentStep={currentStep} setCurrentStep={setCurrentStep} />
+     <StepIndicator steps={steps} currentStep={currentStep} setCurrentStep={setCurrentStep} />
           {renderComponent()}
         </div>
       </main>

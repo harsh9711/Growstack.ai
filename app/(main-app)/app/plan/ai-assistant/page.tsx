@@ -45,7 +45,7 @@ export default function AiAssistants() {
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                <SelectItem value="UI/UX Designer">UI/UX Designer</SelectItem>
+                <SelectItem value="Education">Education</SelectItem>
                 <SelectItem value="Frontend Developer">Frontend Developer</SelectItem>
                 <SelectItem value="Backend Developer">Backend Developer</SelectItem>
                 <SelectItem value="Project Manager">Project Manager</SelectItem>

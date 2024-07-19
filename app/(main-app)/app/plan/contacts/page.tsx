@@ -14,21 +14,19 @@ import Prospects from "./components/ProspectsTable";
 export default function ContactsDashboard() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
-  const tabs = ["Smart list ", "Bulk actions", "Restore", "Tasks", "Company","Prospects"];
+  const tabs = ["Smart list ", "Restore", "Company","Prospects"];
 
   const renderContent = (selectedTabIndex: number) => {
     switch (selectedTabIndex) {
       case 0:
         return <ContactsTable />;
+      
       case 1:
-        return <BulkActionsTable />;
-      case 2:
         return <RestoreTable />;
-      case 3:
-        return <TasksTable />;
-      case 4:
+     
+      case 2:
         return <CompanyTable />;
-         case 5:
+         case 3:
         return <Prospects />;
     }
   };
@@ -43,16 +41,8 @@ export default function ContactsDashboard() {
             </p>
           </Fragment>
         );
+    
       case 1:
-        return (
-          <Fragment>
-            <h1 className="text-2xl font-semibold">Bulk actions</h1>
-            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
-              Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam ultricies accumsan. Nec.{" "}
-            </p>
-          </Fragment>
-        );
-      case 2:
         return (
           <Fragment>
             <h1 className="text-2xl font-semibold">Restored</h1>
@@ -61,16 +51,8 @@ export default function ContactsDashboard() {
             </p>
           </Fragment>
         );
-      case 3:
-        return (
-          <Fragment>
-            <h1 className="text-2xl font-semibold">Tasks list</h1>
-            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
-              Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam ultricies accumsan. Nec.{" "}
-            </p>
-          </Fragment>
-        );
-      case 4:
+    
+      case 2:
 
         return (
           <Fragment>
@@ -80,7 +62,7 @@ export default function ContactsDashboard() {
             </p>
           </Fragment>
         );
-         case 5:
+         case 3:
   return (
           <Fragment>
             <h1 className="text-2xl font-semibold">Prospects</h1>
