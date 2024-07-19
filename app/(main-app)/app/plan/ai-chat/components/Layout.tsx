@@ -65,12 +65,14 @@ const Layout = ({
 
   const fetchMessages = async (_id: string) => {
     try {
-      const response = await axios.get(`${API_URL}/ai/api/v1/conversation/${_id}`);
+      const response = await axios.get(
+        `${API_URL}/ai/api/v1/conversation/${_id}`
+      );
       const chatData = response.data.data.chats;
       const messages = chatData.reduce((acc: Message[], chats: any) => {
         const flattenedThreads = chats.thread.flatMap((thread: any) => [
-          { role: 'user', content: thread.user_prompt, loading: false },
-          { role: 'assistant', content: thread.response, loading: false },
+          { role: "user", content: thread.user_prompt, loading: false },
+          { role: "assistant", content: thread.response, loading: false },
         ]);
         return acc.concat(flattenedThreads);
       }, []);
@@ -126,7 +128,9 @@ const Layout = ({
   const updateMessage = (content: string, role: string) => {
     setMessages((prevMessages) =>
       prevMessages.map((msg, index) =>
-        index === prevMessages.length - 1 && msg.role === role ? { ...msg, content, loading: false } : msg
+        index === prevMessages.length - 1 && msg.role === role
+          ? { ...msg, content, loading: false }
+          : msg
       )
     );
   };
@@ -190,8 +194,8 @@ const Layout = ({
   const groupedFilteredSidebarItems = groupByDate(filteredSidebarItems);
 
   return (
-    <div className="flex-1 h-full flex gap-4 mt-10">
-      <aside className="w-full max-w-[380px] relative border bg-white rounded-3xl flex flex-col">
+    <div className="flex-1 flex gap-4 mt-10 ">
+      <aside className="fixed flex flex-col w-[380px] border bg-white rounded-3xl h-[calc(100vh-150px)]">
         <div className="flex gap-2 p-5">
           <Select value={selectedOption} onValueChange={setSelectedOption}>
             <SelectTrigger className="w-[200px] h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4">
@@ -261,11 +265,8 @@ const Layout = ({
         </div>
         <div className="border-y border-[#EFEFEF] flex items-center justify-between py-3 px-6">
           <h2 className="font-semibold">Your conversations</h2>
-          {/* <button className="hover:bg-primary-green/10 sheen px-2 py-1.5 text-primary-green font-medium rounded transition-all duration-300 text-sm">
-            Clear all
-          </button> */}
         </div>
-        <div className="relative p-5 flex-1 overflow-y-auto max-h-[calc(100vh-280px)]">
+        <div className="flex-1 overflow-y-auto p-5">
           {Object.entries(groupedFilteredSidebarItems).map(([date, items]) => (
             <div key={date}>
               <h3 className="text-lg font-semibold">{date}</h3>
@@ -277,9 +278,7 @@ const Layout = ({
                   onSelect={() => setSelectedConversation(item._id)}
                   onDelete={handleDelete}
                   onRename={handleRename}
-                  setSidebarItems={function (
-                    value: React.SetStateAction<any[]>
-                  ): void {
+                  setSidebarItems={(value: React.SetStateAction<any[]>) => {
                     throw new Error("Function not implemented.");
                   }}
                 />
@@ -287,17 +286,18 @@ const Layout = ({
             </div>
           ))}
         </div>
-        <div className="h-20 w-full bg-gradient-to-b from-transparent via-white to-white absolute bottom-0 rounded-b-3xl" />
+        <div className="h-20 w-full bg-gradient-to-b from-transparent via-white to-white rounded-b-3xl" />
       </aside>
-      <main className="flex-1 w-full flex flex-col bg-white p-4 rounded-3xl border">
-        <div className="flex-1 p-4 overflow-y-auto">
-          <ChatMessage conversation={messages} />
+      <main className="fixed flex flex-col bg-white p-4 rounded-3xl border  ml-[390px] h-[calc(100vh-150px)] w-[calc(100%-600px)]">
+        <div className="flex-1 p-4 overflow-y-auto ">
+          <ChatMessage conversation={messages} selectedConversation={selectedConversation} />
         </div>
         <ChatInput
           onSend={updateMessage}
           selectedModel={selectedModel}
           fetchConversations={fetchConversations}
           selectedConversation={selectedConversation}
+          setSelectedConversation={setSelectedConversation}
           selectedOption={selectedOption}
           addMessage={addMessage}
         />
