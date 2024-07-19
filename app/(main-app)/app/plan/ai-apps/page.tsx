@@ -213,8 +213,8 @@ const tags = [
     icon: "/icons/websites.svg",
     name: "Websites",
   },
-  // {
-  //   icon: "/icons/all.svg",
-  //   name: "Others",
-  // },
+   {
+    icon: "/icons/my-documents-folder.svg",
+     name: "My Assistants",
+  },
 ];
