@@ -50,11 +50,11 @@ export default function ComingSoon() {
   return (
     <div className="flex-1 h-full w-full flex flex-col items-center justify-center text-center">
       <Image src="/logo/growstack-mini.svg" alt="" width={60} height={60} className="mb-10"/>
-      <div className="text-6xl mb-12">
+      <div className="text-6xl font-medium mb-12">
         {timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0 ? (
           <div>Time's up!</div>
         ) : (
-          <div className="flex space-x-10">
+          <div className="flex space-x-10 bg-white py-6 px-10 shadow-xl shadow-gray-100 rounded-3xl">
             <div>
               <span>{timeLeft.days}</span>
               <span className="block text-sm">days</span>
