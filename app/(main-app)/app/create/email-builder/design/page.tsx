@@ -1,7 +1,6 @@
 "use client";
-import Head from "next/head";
 import Script from "next/script";
-import "../../../../../../public/dist/builder.css";
+import "../../../../../../public/builderjs/dist/builder.css";
 
 const DesignPage = () => {
   return (
@@ -10,11 +9,11 @@ const DesignPage = () => {
         <div style={{ margin: "auto" }} className="lds-dual-ring"></div>
       </div>
 
-      <Script src="/dist/builder.js" strategy="afterInteractive" />
-      <Script src="/plugins/rss/RssElement.js" strategy="afterInteractive" />
-      <Script src="/plugins/rss/RssControl.js" strategy="afterInteractive" />
-      <Script src="/plugins/rss/RssWidget.js" strategy="afterInteractive" />
-      <Script src="/scripts/editor.js" strategy="afterInteractive" />
+      <Script src="/builderjs/dist/builder.js" strategy="afterInteractive" />
+      <Script src="/builderjs/plugins/rss/RssElement.js" strategy="afterInteractive" />
+      <Script src="/builderjs/plugins/rss/RssControl.js" strategy="afterInteractive" />
+      <Script src="/builderjs/plugins/rss/RssWidget.js" strategy="afterInteractive" />
+      <Script src="/builderjs/scripts/editor.js" strategy="afterInteractive" />
 
       <style jsx>{`
         .lds-dual-ring {

@@ -1,13 +1,12 @@
-import React from "react";
-import Link from "next/link";
-import Head from "next/head";
 import fs from "fs";
+import Link from "next/link";
 import path from "path";
+import React from "react";
 import "./styles/index.css";
-// import "../../../../../public/assets/css/font.css"
-import "../../../../../public/assets/bootstrap-4.5.0/css/bootstrap.min.css";
-import "../../../../../public/assets/css/sample.css";
-import "../../../../../public/assets/css/album.css";
+// import "../../../../../public/builderjs/assets/css/font.css"
+// import "../../../../../public/builderjs/assets/bootstrap-4.5.0/css/bootstrap.min.css";
+import "../../../../../public/builderjs/assets/css/album.css";
+import "../../../../../public/builderjs/assets/css/sample.css";
 
 interface Template {
   id: string;
@@ -21,8 +20,8 @@ const getTemplates = (dir: string): Template[] => {
     const templatePath = path.join(dir, name);
     const indexFile = path.join(templatePath, "index.html");
     const thumb = fs.existsSync(path.join(templatePath, "thumb.svg"))
-      ? `/templates/${path.basename(dir)}/${name}/thumb.svg`
-      : `/templates/${path.basename(dir)}/${name}/thumb.png`;
+      ? `/builderjs/templates/${path.basename(dir)}/${name}/thumb.svg`
+      : `/builderjs/templates/${path.basename(dir)}/${name}/thumb.png`;
 
     let title = "Untitled";
     if (fs.existsSync(indexFile)) {
@@ -38,9 +37,9 @@ const getTemplates = (dir: string): Template[] => {
 };
 
 const getTemplatesData = (): { featuredTemplates: Template[]; defaultTemplates: Template[]; customTemplates: Template[] } => {
-  const featuredDir = path.join(process.cwd(), "public/templates/featured");
-  const defaultDir = path.join(process.cwd(), "public/templates/default");
-  const customDir = path.join(process.cwd(), "public/templates/custom");
+  const featuredDir = path.join(process.cwd(), "public/builderjs/templates/featured");
+  const defaultDir = path.join(process.cwd(), "public/builderjs/templates/default");
+  const customDir = path.join(process.cwd(), "public/builderjs/templates/custom");
 
   const featuredTemplates = getTemplates(featuredDir);
   const defaultTemplates = getTemplates(defaultDir);
@@ -58,50 +57,46 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <Head>
-        <title>BuilderJS · Home</title>
-        <link rel="apple-touch-icon" sizes="180x180" href="/assets/fav/apple-touch-icon.png" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/assets/fav/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="16x16" href="/assets/fav/favicon-16x16.png" />
-        <link rel="manifest" href="/assets/fav/site.webmanifest" />
-        <meta name="msapplication-TileColor" content="#da532c" />
-        <meta name="theme-color" content="#ffffff" />
-        <script src="/assets/js/jquery-3.5.1.min.js"></script>
-      </Head>
-
       <main role="main">
-        <section className="album py-5 bg-light" id="example">
-          <div className="container">
-            <div className="text-center mb-5">
+        <section className="album py-10 bg-light" id="example">
+          <div className="container space-y-14">
+            <div className="text-center space-y-2">
               <h2 className="font-weight-normal font-size-40">Getting started with a template</h2>
-              <p className="text-muted">Select one of our professionally-designed templates to get started quickly.</p>
+              <p className="">Start your design by choosing one of available layout templates that come with BuilderJS.</p>
             </div>
-            <div className="row">
+            <div className="grid grid-cols-4 gap-7">
               {featuredTemplates.map((template) => (
-                <div className="col-md-3" key={template.id}>
-                  <div className="card mb-4 shadow-sm">
+                <div key={template.id}>
+                  <div className="rounded-xl overflow-hidden mb-4 shadow-md shadow-gray-300/50 bg-white group">
                     <Link href={`/app/create/email-builder/design?type=featured&id=${template.id}`}>
-                      <img width="100%" height="100%" className="_1xvs1" src={template.thumb} title={template.title} alt={template.title} />
+                      <img
+                        width="100%"
+                        height="100%"
+                        className="group-hover:opacity-80 transition-all duration-300"
+                        src={template.thumb}
+                        title={template.title}
+                        alt={template.title}
+                      />
                     </Link>
-                    <div className="card-body">
-                      <h5>{template.title}</h5>
-                      <div className="JHf2a mb-4 small text-muted item-desc">
+                    <div className="py-5 px-6 space-y-1.5">
+                      <h5 className="line-clamp-1 text-[17px]">{template.title}</h5>
+                      <div className="text-[13px]">
                         <i> by </i>
-                        <Link className="R8zaM" href="javascript:;">
+                        <Link className="hover:underline cursor-pointer" href="javascript:;">
                           BuilderJS
                         </Link>
                         <span> at </span>
-                        <Link className="R8zaM" href="javascript:;">
+                        <Link className="hover:underline cursor-pointer" href="javascript:;">
                           SorrentoCorp
                         </Link>
                       </div>
-                      <div className="d-flex justify-content-between align-items-center">
-                        <div className="btn-group">
-                          <Link href={`/app/create/email-builder/design?type=featured&id=${template.id}`} className="btn btn-sm btn-primary">
-                            Design
-                          </Link>
-                        </div>
-                        <small className="text-muted">Featured</small>
+                      <div className="!mt-5 flex justify-between items-center">
+                        <Link
+                          href={`/app/create/email-builder/design?type=featured&id=${template.id}`}
+                          className="px-6 py-2 sheen rounded-lg bg-primary-green text-white">
+                          Design
+                        </Link>
+                        <small className="">Featured</small>
                       </div>
                     </div>
                   </div>
@@ -110,38 +105,45 @@ const Home: React.FC = () => {
             </div>
           </div>
         </section>
-        <section className="album py-5 bg-light" id="default">
-          <div className="container">
-            <div className="text-center mb-5">
-              <h2 className="font-weight-normal font-size-40">Default Templates</h2>
-              <p className="text-muted">Basic templates to start your design journey.</p>
+        <section className="album py-10 bg-light" id="default">
+          <div className="container space-y-14">
+            <div className="text-center space-y-2">
+              <h2 className="font-weight-normal font-size-40">Basic layouts s</h2>
+              <p className="">Start your design by choosing one of available layout templates that come with BuilderJS.</p>
             </div>
-            <div className="row">
+            <div className="grid grid-cols-4 gap-7">
               {defaultTemplates.map((template) => (
-                <div className="col-md-3" key={template.id}>
-                  <div className="card mb-4 shadow-sm">
+                <div key={template.id}>
+                  <div className="rounded-xl overflow-hidden mb-4 shadow-md shadow-gray-300/50 bg-white group">
                     <Link href={`/app/create/email-builder/design?type=default&id=${template.id}`}>
-                      <img width="100%" height="100%" className="_1xvs1" src={template.thumb} title={template.title} alt={template.title} />
+                      <img
+                        width="100%"
+                        height="100%"
+                        className="group-hover:opacity-80 transition-all duration-300"
+                        src={template.thumb}
+                        title={template.title}
+                        alt={template.title}
+                      />
                     </Link>
-                    <div className="card-body">
-                      <h5>{template.title}</h5>
-                      <div className="JHf2a mb-4 small text-muted item-desc">
+                    <div className="py-5 px-6 space-y-1.5">
+                      <h5 className="line-clamp-1 text-[17px]">{template.title}</h5>
+                      <div className="text-[13px]">
                         <i> by </i>
-                        <Link className="R8zaM" href="javascript:;">
+                        <Link className="hover:underline cursor-pointer" href="javascript:;">
                           BuilderJS
                         </Link>
                         <span> at </span>
-                        <Link className="R8zaM" href="javascript:;">
+                        <Link className="hover:underline cursor-pointer" href="javascript:;">
                           SorrentoCorp
                         </Link>
                       </div>
-                      <div className="d-flex justify-content-between align-items-center">
-                        <div className="btn-group">
-                          <Link href={`/app/create/email-builder/design?type=default&id=${template.id}`} className="btn btn-sm btn-primary">
-                            Design
-                          </Link>
-                        </div>
-                        <small className="text-muted">Default</small>
+                      <div className="!mt-5 flex justify-between items-center">
+                        <Link
+                          href={`/app/create/email-builder/design?type=default&id=${template.id}`}
+                          className="px-6 py-2 sheen rounded-lg bg-primary-green text-white">
+                          Design
+                        </Link>
+                        <small className="">Default</small>
                       </div>
                     </div>
                   </div>
@@ -150,38 +152,45 @@ const Home: React.FC = () => {
             </div>
           </div>
         </section>
-        <section className="album py-5 bg-light" id="custom">
-          <div className="container">
-            <div className="text-center mb-5">
-              <h2 className="font-weight-normal font-size-40">Custom Templates</h2>
-              <p className="text-muted">Templates created and customized by users.</p>
+        <section className="album py-10 bg-light" id="custom">
+          <div className="container space-y-14">
+            <div className="text-center space-y-2">
+              <h2 className="font-weight-normal font-size-40">Or upload your template and edit</h2>
+              <p className="">If you already have an email or page template, just load it to the editor and start editing...</p>
             </div>
-            <div className="row">
+            <div className="grid grid-cols-4 gap-7">
               {customTemplates.map((template) => (
-                <div className="col-md-3" key={template.id}>
-                  <div className="card mb-4 shadow-sm">
+                <div key={template.id}>
+                  <div className="rounded-xl overflow-hidden mb-4 shadow-md shadow-gray-300/50 bg-white group">
                     <Link href={`/app/create/email-builder/design?type=custom&id=${template.id}`}>
-                      <img width="100%" height="100%" className="_1xvs1" src={template.thumb} title={template.title} alt={template.title} />
+                      <img
+                        width="100%"
+                        height="100%"
+                        className="group-hover:opacity-80 transition-all duration-300"
+                        src={template.thumb}
+                        title={template.title}
+                        alt={template.title}
+                      />
                     </Link>
-                    <div className="card-body">
-                      <h5>{template.title}</h5>
-                      <div className="JHf2a mb-4 small text-muted item-desc">
+                    <div className="py-5 px-6 space-y-1.5">
+                      <h5 className="line-clamp-1 text-[17px]">{template.title}</h5>
+                      <div className="text-[13px]">
                         <i> by </i>
-                        <Link className="R8zaM" href="javascript:;">
+                        <Link className="hover:underline cursor-pointer" href="javascript:;">
                           BuilderJS
                         </Link>
                         <span> at </span>
-                        <Link className="R8zaM" href="javascript:;">
+                        <Link className="hover:underline cursor-pointer" href="javascript:;">
                           SorrentoCorp
                         </Link>
                       </div>
-                      <div className="d-flex justify-content-between align-items-center">
-                        <div className="btn-group">
-                          <Link href={`/app/create/email-builder/design?type=custom&id=${template.id}`} className="btn btn-sm btn-primary">
-                            Design
-                          </Link>
-                        </div>
-                        <small className="text-muted">Custom</small>
+                      <div className="!mt-5 flex justify-between items-center">
+                        <Link
+                          href={`/app/create/email-builder/design?type=custom&id=${template.id}`}
+                          className="px-6 py-2 sheen rounded-lg bg-primary-green text-white">
+                          Design
+                        </Link>
+                        <small className="">Custom</small>
                       </div>
                     </div>
                   </div>
@@ -191,14 +200,6 @@ const Home: React.FC = () => {
           </div>
         </section>
       </main>
-      <footer className="text-muted">
-        <div className="container">
-          <p className="float-right">
-            <Link href="javascript:;">Back to top</Link>
-          </p>
-          <p>© 2022 Sorrento Corp. Trademarks and brands are the property of their respective owners.</p>
-        </div>
-      </footer>
     </>
   );
 };
