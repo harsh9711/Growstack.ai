@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "@/config/axios.config";
 import { toast } from "react-hot-toast";
 import { API_URL } from "@/lib/api";
+import useSpeechRecognition from "../../../../hooks/UseSpeechRecognition";
 
 interface ChatInputProps {
   assistant_id: string;
@@ -13,9 +14,21 @@ interface ChatInputProps {
   selectedLanguage: string;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateMessage, selectedLanguage }) => {
+const ChatInput: React.FC<ChatInputProps> = ({
+  assistant_id,
+  addMessage,
+  updateMessage,
+  selectedLanguage,
+}) => {
   const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const { startRecognition, textToSpeech } = useSpeechRecognition(
+    selectedLanguage,
+    (transcript: string) => {
+      setInput(transcript);
+      handleSend(transcript, true);
+    }
+  );
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -23,23 +36,32 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateM
     }
   }, []);
 
-  const handleSend = async () => {
-    if (input.trim() === "") return;
+  const handleSend = async (user_prompt?: string, fromMic: boolean = false) => {
+    if (user_prompt) {
+      user_prompt = user_prompt.trim();
+    }
+    const prompt = user_prompt || input.trim();
+    if (prompt === "") return;
 
-    const user_prompt = input.trim();
     setInput("");
-    addMessage(user_prompt, "");
+    addMessage(prompt, "");
 
     try {
-      const response = await axios.post(`/ai/api/v1/assistant/chat/${assistant_id}`, {
-        user_prompt,
-        language: selectedLanguage,
-        tone: "friendly",
-        writing_style: "poetic",
-      });
+      const response = await axios.post(
+        `/ai/api/v1/assistant/chat/${assistant_id}`,
+        {
+          user_prompt: prompt,
+          language: selectedLanguage,
+          tone: "friendly",
+          writing_style: "poetic",
+        }
+      );
 
-      updateMessage(user_prompt, response.data.data.response)
-
+      const responseText = response.data.data.response;
+      updateMessage(prompt, responseText);
+      if (fromMic) {
+        await textToSpeech(responseText);
+      }
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
@@ -58,7 +80,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateM
 
   return (
     <div className="flex p-2 border gap-2 rounded-xl items-end">
-      <Image src="/logo/growstack-mini.svg" alt="" width={25} height={25} draggable={false} className="select-none ml-2 mb-3" />
+      <Image
+        src="/logo/growstack-mini.svg"
+        alt=""
+        width={25}
+        height={25}
+        draggable={false}
+        className="select-none ml-2 mb-3"
+      />
       <textarea
         ref={textareaRef}
         value={input}
@@ -68,12 +97,16 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateM
         className="w-full flex-1 p-2 bg-transparent resize-none overflow-hidden min-h-11 max-h-[300px]"
         placeholder="What's in your mind?"
       />
-      <button className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
+      <button
+        onClick={startRecognition}
+        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
+      >
         <MicrophoneIcon />
       </button>
       <button
-        onClick={handleSend}
-        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
+        onClick={() => handleSend()}
+        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
+      >
         <SendIcon2 />
       </button>
     </div>
