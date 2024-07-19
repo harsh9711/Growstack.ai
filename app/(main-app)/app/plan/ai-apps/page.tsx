@@ -28,7 +28,7 @@ export default function MarketingPage() {
     try {
       let apiUrl = `${API_URL}/ai/api/v1/chat-template?category=${selectedTag}`;
       console.log("selectedtag", selectedTag);
-      if (selectedTag === "Others") {
+      if (selectedTag === "My Assistants") {
         apiUrl = `${API_URL}/ai/api/v1/chat-template/user?page=1&limit=20&search=${searchQuery}`;
         console.log(apiUrl);
       }
@@ -39,8 +39,10 @@ export default function MarketingPage() {
 
       console.log("API Response:", response.data);
 
-      if ( response.data.data) {
-        const formattedAssistants = response.data.data.map(
+      const data = selectedTag === "My Assistants" ? response.data.data.data : response.data.data;
+
+      if ( data) {
+        const formattedAssistants = data.map(
           (assistant: any) => ({
             _id: assistant._id,
             "ASSISTANT NAME": assistant["ASSISTANT NAME"],
@@ -98,7 +100,7 @@ export default function MarketingPage() {
               <input
                 type="search"
                 className="outline-none h-[40px] w-full"
-                placeholder="Search for articles and contents"
+                placeholder="Search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -213,8 +215,9 @@ const tags = [
     icon: "/icons/websites.svg",
     name: "Websites",
   },
-  // {
-  //   icon: "/icons/all.svg",
-  //   name: "Others",
-  // },
+
+  {
+    icon: "/icons/my-documents-folder.svg",
+    name: "My Assistants",
+  },
 ];
