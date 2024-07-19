@@ -98,7 +98,7 @@ export default function MarketingPage() {
               <input
                 type="search"
                 className="outline-none h-[40px] w-full"
-                placeholder="Search for articles and contents"
+                placeholder="Search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
