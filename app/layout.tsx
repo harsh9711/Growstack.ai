@@ -5,6 +5,7 @@ import Progressbar from "@/providers/Progressbar";
 import { Suspense } from "react";
 import { Toaster } from "react-hot-toast";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import StateProvider from "@/providers/StateProvider";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -26,10 +27,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={poppins.className}>
-        <Suspense fallback={<div style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>Loading...</div>}>
-          <Progressbar>{children}</Progressbar>
-          <Toaster />
-        </Suspense>
+        <StateProvider>
+          <Suspense fallback={<div style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>Loading...</div>}>
+            <Progressbar>{children}</Progressbar>
+            <Toaster />
+          </Suspense>
+        </StateProvider>
       </body>
       <GoogleAnalytics gaId="G-4F6RLEFEVZ" />
     </html>

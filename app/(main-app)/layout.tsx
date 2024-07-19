@@ -6,6 +6,7 @@ import "@/styles/button.css";
 import PageTransition from "@/providers/PageTransition";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
+import AuthProvider from "@/providers/AuthProvider";
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -15,11 +16,13 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <main className={clsx("pt-4 pb-12 bg-[#FBFBFB] text-[#14171B] min-h-screen text-[15px] flex flex-col", shouldHideNavbar() && "!p-0")}>
-      {!shouldHideNavbar() && <Navbar />}
-      <PageTransition classNames={clsx("w-full max-w-[85%] mx-auto flex-1 flex flex-col h-full mt-[70px]", shouldHideNavbar() && "!max-w-none")}>
-        {children}
-      </PageTransition>
-    </main>
+    <AuthProvider>
+      <main className={clsx("pt-4 pb-12 bg-[#FBFBFB] text-[#14171B] min-h-screen text-[15px] flex flex-col", shouldHideNavbar() && "!p-0")}>
+        {!shouldHideNavbar() && <Navbar />}
+        <PageTransition classNames={clsx("w-full max-w-[85%] mx-auto flex-1 flex flex-col h-full mt-[70px]", shouldHideNavbar() && "!max-w-none")}>
+          {children}
+        </PageTransition>
+      </main>
+    </AuthProvider>
   );
 }
