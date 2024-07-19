@@ -108,7 +108,7 @@ const Home: React.FC = () => {
         <section className="album py-10 bg-light" id="default">
           <div className="container space-y-14">
             <div className="text-center space-y-2">
-              <h2 className="font-weight-normal font-size-40">Basic layouts s</h2>
+              <h2 className="font-weight-normal font-size-40">Basic layouts</h2>
               <p className="">Start your design by choosing one of available layout templates that come with BuilderJS.</p>
             </div>
             <div className="grid grid-cols-4 gap-7">
