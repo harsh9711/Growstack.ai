@@ -6,6 +6,7 @@ import remarkBreaks from 'remark-breaks';
 import rehypeRaw from 'rehype-raw'; 
 interface ChatMessagesProps {
   conversation: Message[];
+  selectedConversation: string | null;
 }
 
 type Message = {
@@ -14,7 +15,7 @@ type Message = {
   loading: boolean;
 };
 
-const ChatMessages: React.FC<ChatMessagesProps> = ({ conversation }) => {
+const ChatMessages: React.FC<ChatMessagesProps> = ({ conversation, selectedConversation }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -27,15 +28,6 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ conversation }) => {
     scrollToBottom();
   }, [conversation]);
 
-const formatToMarkdown = (text: string) => {
-  let formattedText = text.replace(/(-\s|\d+\.\s)/g, '\n$1');
-
-  formattedText = formattedText.replace(/(\n- |\n\d+\.\s)/g, '\n\n$1');
-  
-  formattedText = formattedText.trim();
-  
-  return formattedText;
-};
   return (
     <>
       {conversation.map((chat, index) => (
@@ -70,7 +62,7 @@ const formatToMarkdown = (text: string) => {
                   remarkPlugins={[remarkGfm, remarkBreaks]}
                   rehypePlugins={[rehypeRaw]}
                 >
-                  {formatToMarkdown(chat.content)}
+                  {chat.content}
                 </ReactMarkdown>
               )}
             </div>
