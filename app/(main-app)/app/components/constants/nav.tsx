@@ -155,6 +155,37 @@ const navLinks: NavLink[] = [
     icon: <EngageIcon />,
     sublinks: [
       {
+        icon: <AutomationIcon />,
+        name: "WhatsApp and telegram automation with our apps",
+        subItems: [
+          {
+            icon: <WhatsappIcon />,
+            name: "WhatsApp overview",
+            href: "/app/integration/whatsapp-automation",
+          },
+          {
+            icon: <TelegramIcon />,
+            name: "Telegram overview",
+            href: "/app/integration/telegram-automation",
+          },
+          {
+            icon: <CampaignIcon />,
+            name: "Campaigns",
+            href: "/app/integration/campaigns",
+          },
+          {
+            icon: <AiAssistantIcon />,
+            name: "AI assistant",
+            href: "/app/integration/ai-assistant",
+          },
+          {
+            icon: <SettingsIcon />,
+            name: "Settings",
+            href: "/app/integration/settings",
+          },
+        ],
+      },
+      {
         icon: <SquareShapeIcon />,
         name: "Social media conversation hub",
         href: "/app/engage/Social-media",
@@ -192,48 +223,6 @@ const navLinks: NavLink[] = [
       },
     ],
     title: "Analyse",
-  },
-  {
-    icon: <IntegrationIcon />,
-    sublinks: [
-      {
-        icon: <AutomationIcon />,
-        name: "WhatsApp and telegram automation with our apps",
-        subItems: [
-          {
-            icon: <WhatsappIcon />,
-            name: "WhatsApp overview",
-            href: "/app/integration/whatsapp-automation",
-          },
-          {
-            icon: <TelegramIcon />,
-            name: "Telegram overview",
-            href: "/app/integration/telegram-automation",
-          },
-          {
-            icon: <CampaignIcon />,
-            name: "Campaigns",
-            href: "/app/integration/campaigns",
-          },
-          {
-            icon: <AiAssistantIcon />,
-            name: "AI assistant",
-            href: "/app/integration/ai-assistant",
-          },
-          {
-            icon: <SettingsIcon />,
-            name: "Settings",
-            href: "/app/integration/settings",
-          },
-        ],
-      },
-      {
-        icon: <SchedulerIcon />,
-        name: "Social Planner Hub",
-        href: "#",
-      },
-    ],
-    title: "Integration",
   },
 ];
 

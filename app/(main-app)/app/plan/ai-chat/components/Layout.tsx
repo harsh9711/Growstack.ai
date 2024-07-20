@@ -135,6 +135,21 @@ const Layout = ({
     );
   };
 
+  const removeMessage = () => {
+    setMessages((prevMessages) => {
+      const lastUserMessageIndex = prevMessages
+        .slice()
+        .reverse()
+        .findIndex((msg) => msg.role === "user");
+
+      if (lastUserMessageIndex === -1) return prevMessages;
+
+      const indexToRemove = prevMessages.length - 1 - lastUserMessageIndex;
+      const newMessages = prevMessages.filter((_, index) => index !== indexToRemove && index !== indexToRemove + 1);
+      return newMessages;
+    });
+  };
+
   const options = [
     // { label: "ChatGPT 3.5", value: "gpt-3.5", icon: <ChatGptIcon2 /> },
     {
@@ -145,25 +160,24 @@ const Layout = ({
     { label: "GPT 4", value: "gpt-4", icon: <ChatGptIcon2 /> },
     // { label: "GPT 4 Turbo", value: "gpt-4-turbo", icon: <ChatGptIcon2 /> },
     { label: "GPT 4o", value: "gpt-4o", icon: <ChatGptIcon2 /> },
-    { label: "Claude 2", value: "claude-2", icon: <AnthropicClaude /> },
     {
-      label: "Claude 3 Haiku",
-      value: "claude-3-haiku",
+      label: "Claude 3.5 Sonnet",
+      value: "claude-3-5-sonnet-20240620",
       icon: <AnthropicClaude />,
     },
     {
       label: "Claude 3 Opus",
-      value: "claude-3-opus",
+      value: "claude-3-opus-20240229",
       icon: <AnthropicClaude />,
     },
     {
       label: "Claude 3 Sonnet",
-      value: "claude-3-sonnet",
+      value: "claude-3-sonnet-20240229",
       icon: <AnthropicClaude />,
     },
     {
-      label: "Claude 3.5 Sonnet",
-      value: "claude-3.5-sonnet",
+      label: "Claude 3 Haiku",
+      value: "claude-3-haiku-20240307",
       icon: <AnthropicClaude />,
     },
     {
@@ -290,7 +304,10 @@ const Layout = ({
       </aside>
       <main className="fixed flex flex-col bg-white p-4 rounded-3xl border  ml-[390px] h-[calc(100vh-150px)] w-[calc(100%-600px)]">
         <div className="flex-1 p-4 overflow-y-auto ">
-          <ChatMessage conversation={messages} selectedConversation={selectedConversation} />
+          <ChatMessage
+            conversation={messages}
+            selectedConversation={selectedConversation}
+          />
         </div>
         <ChatInput
           onSend={updateMessage}
@@ -300,6 +317,7 @@ const Layout = ({
           setSelectedConversation={setSelectedConversation}
           selectedOption={selectedOption}
           addMessage={addMessage}
+          removeMessage={removeMessage}
         />
       </main>
     </div>
