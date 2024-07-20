@@ -6,6 +6,7 @@ import { Download, Settings, Share2, UserCircle } from "lucide-react";
 import { useState } from "react";
 import { Assistant, Chat, Conversation } from "../../../components/types";
 import { downloadDocx, downloadPdf, downloadTxt } from "./utils/downloadHelpers";
+import Image from "next/image";
 
 interface IProps {
   assistant: Assistant;
@@ -21,7 +22,7 @@ export default function Topbar({ assistant, conversation, isSidebarOpen, setIsSi
     <div className="border-b px-10 py-5">
       <div className="flex justify-between">
         <div className="flex items-center gap-4">
-          <img src={assistant.avatar} alt="" width={50} height={50} className="rounded-xl object-cover shadow-xl" />
+          <Image src={assistant.avatar} alt="" width={200} height={200} className="h-[50px] w-[50px] rounded-xl object-cover shadow-md shadow-gray-200" />
           <div>
             <h2 className="text-xl font-semibold">{assistant.name}</h2>
             <p className="flex items-center gap-2 text-primary-black text-opacity-70">
