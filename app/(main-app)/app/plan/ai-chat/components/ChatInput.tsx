@@ -13,6 +13,7 @@ interface ChatInputProps {
   onSend: (content: string, role: string) => void;
   selectedModel: string;
   fetchConversations: () => void;
+  removeMessage: () => void;
   selectedConversation: string | null;
   selectedOption: string;
   addMessage: (role: string, content: string, loading: boolean) => void;
@@ -27,6 +28,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
   selectedOption,
   addMessage,
   setSelectedConversation,
+  removeMessage,
 }) => {
   const selectedLanguage = languageOptions[0].value;
   const [input, setInput] = useState("");
@@ -82,6 +84,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
       } else {
         toast.error(error.message);
       }
+      removeMessage();
     }
   };
 
