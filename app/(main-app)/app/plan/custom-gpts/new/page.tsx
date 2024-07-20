@@ -102,11 +102,9 @@ const AssistantsChats: React.FC<PageProps> = ({ params: { assistant_id } }: Page
       }
       if (isToggleCheckedForInterpreter) {
         tools.push({ type: 'code_interpreter' });
-        if (uploadedIntepreterFiles.length) {
+        if (uploadedIntepreterFiles.length > 0) {
           tool_resources.code_interpreter = {
-            file_ids: uploadedIntepreterFiles
-              .map((file) => file.id)
-              .filter((id) => id !== undefined),
+            file_ids: uploadedIntepreterFiles.map((file) => file.id ?? ''),
           };
         }
       }
