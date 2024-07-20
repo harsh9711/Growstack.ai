@@ -76,6 +76,11 @@ const navLinks: NavLink[] = [
         href: "/app/plan/web-scraping",
       },
       {
+        icon: <ProductAiIcon />,
+        name: "AI playground",
+        href: "/app/plan/ai-playground",
+      },
+      {
         icon: <UserIcon />,
         name: "Contact",
         href: "/app/plan/contacts",
@@ -106,11 +111,11 @@ const navLinks: NavLink[] = [
         name: "AI article wizard",
         href: "/app/create/ai-articles",
       },
-      // {
-      //   icon: <ProductAiIcon />,
-      //   name: "Product AI ",
-      //   href: "/app/create/product-ai",
-      // },
+      {
+        icon: <ProductAiIcon />,
+        name: "Product AI ",
+        href: "/app/create/product-ai",
+      },
     ],
     title: "Create",
   },
@@ -161,27 +166,27 @@ const navLinks: NavLink[] = [
           {
             icon: <WhatsappIcon />,
             name: "WhatsApp overview",
-            href: "/app/integration/whatsapp-automation",
+            href: "/app/engage/integration/whatsapp-automation",
           },
           {
             icon: <TelegramIcon />,
             name: "Telegram overview",
-            href: "/app/integration/telegram-automation",
+            href: "/app/engage/integration/telegram-automation",
           },
           {
             icon: <CampaignIcon />,
             name: "Campaigns",
-            href: "/app/integration/campaigns",
+            href: "/app/engage/integration/campaigns",
           },
           {
             icon: <AiAssistantIcon />,
             name: "AI assistant",
-            href: "/app/integration/ai-assistant",
+            href: "/app/engage/integration/ai-assistant",
           },
           {
             icon: <SettingsIcon />,
             name: "Settings",
-            href: "/app/integration/settings",
+            href: "/app/engage/integration/settings",
           },
         ],
       },

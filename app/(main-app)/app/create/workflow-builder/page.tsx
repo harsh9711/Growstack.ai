@@ -47,7 +47,7 @@ export default function WorkflowBuilder() {
           </div>
           <Link href="/app/create/workflow-builder/workflows">
             <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
-              Eplore your workflows
+              Explore your workflows
             </button>
           </Link>
         </div>

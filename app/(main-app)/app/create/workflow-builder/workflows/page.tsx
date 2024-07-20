@@ -152,10 +152,12 @@ export default function Workflows() {
                 </p>
               </div>
               <div className="flex items-center gap-4">
-                <button className="flex items-center gap-3 rounded-xl h-12 bg-primary-green sheen px-6 text-white text-[14px]">
-                  <FaPlay size={12} />
-                  Run workflow
-                </button>
+                <Link key={workflow._id} href={`/app/create/workflow-builder/workflows?workflow_id=${workflow.workflow_id}`}>
+                  <button className="flex items-center gap-3 rounded-xl h-12 bg-primary-green sheen px-6 text-white text-[14px]">
+                    <FaPlay size={12} />
+                    Run workflow
+                  </button>
+                </Link>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button className="px-2 hover:bg-gray-100 h-10 w-10 rounded-full">
