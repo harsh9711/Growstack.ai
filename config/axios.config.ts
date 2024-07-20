@@ -3,6 +3,7 @@ import axios from "axios";
 
 const instance = axios.create({
   baseURL: API_URL,
+  // withCredentials: true, TODO: uncomment this line when cors origins are configured
 });
 
 instance.interceptors.request.use(
