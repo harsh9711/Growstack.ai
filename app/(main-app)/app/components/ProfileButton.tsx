@@ -1,5 +1,6 @@
 "use client";
 
+import { BrandVoiceIcon } from "@/components/svgs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -51,6 +52,12 @@ export function ProfileButton() {
             <DropdownMenuItem className="flex gap-3 px-4">
               <Settings size={22} />
               Saved documents
+            </DropdownMenuItem>
+          </Link>
+          <Link href="/account/saved-documents">
+            <DropdownMenuItem className="flex gap-3 px-4">
+              <BrandVoiceIcon size={22} />
+              Brand voice
             </DropdownMenuItem>
           </Link>
           <Link href="/account/billings/settings">
