@@ -1,11 +1,11 @@
 "use client";
 
 import Spinner from "@/components/Spinner";
-import { useRouter } from 'next-nprogress-bar';
+import { useRouter } from "next-nprogress-bar";
 import { Checkbox } from "@/components/ui/checkbox";
 import { API_URL } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import axios from "@/config/axios.config";
 import clsx from "clsx";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -14,9 +14,12 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
+import { useDispatch } from "react-redux";
+import { login } from "@/lib/features/auth/auth.slice";
 
 export default function Login() {
   const router = useRouter();
+  const dispatch = useDispatch();
   const ValidationSchema = z.object({
     email: z.string().email("Please enter a valid email address"),
     password: z.string().min(8, "Password must be at least 8 characters").max(20, "Password can't exceed 20 characters"),
@@ -35,8 +38,9 @@ export default function Login() {
     setIsPending(true);
     try {
       const validatedData = ValidationSchema.parse(data);
-      const response = await axios.post(API_URL + "/users/api/v1/auth/login", validatedData);
-      router.push("/app")
+      const response = await axios.post("/users/api/v1/auth/login", validatedData);
+      dispatch(login(response.data.data));
+      router.push("/app");
       toast.success(response.data.message);
     } catch (error: any) {
       if (error.response) {
@@ -51,12 +55,9 @@ export default function Login() {
   };
 
   return (
-    <motion.main
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.3 }}
-    >      <div className=" flex flex-col xl:flex-row h-screen overflow-y-auto gap-10">
+    <motion.main initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+      {" "}
+      <div className=" flex flex-col xl:flex-row h-screen overflow-y-auto gap-10">
         <section className="w-full h-full flex justify-center items-center bg-white">
           <div className="w-full max-w-2xl max-h-[840px] h-full p-14 bg-[#F7FAFC] rounded-[30px]">
             <div className="slide-reveal w-full h-full max-w-[460px] mx-auto flex flex-col justify-between items-center md:items-start space-y-10">
@@ -150,11 +151,15 @@ export default function Login() {
                   <div className="h-[2px] w-full bg-[#EFEFF4]" />
                 </div>
                 <div className="space-y-3">
-                  <Link href={`${API_URL}/users/api/v1/auth/facebook`} className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021]">
+                  <Link
+                    href={`${API_URL}/users/api/v1/auth/facebook`}
+                    className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021]">
                     <Image src="/icons/facebook.svg" alt="" width={20} height={20} />
                     Continue with Facebook
                   </Link>
-                  <Link href={`${API_URL}/users/api/v1/auth/google`} className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021]">
+                  <Link
+                    href={`${API_URL}/users/api/v1/auth/google`}
+                    className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021]">
                     <Image src="/icons/google.svg" alt="" width={20} height={20} />
                     Continue with Google
                   </Link>

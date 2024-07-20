@@ -1,3 +1,6 @@
+"use client";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -6,25 +9,34 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { getCurrentUser } from "@/lib/features/auth/auth.selector";
+import { logout } from "@/lib/features/auth/auth.slice";
 import { Info, LogOut, Settings, User } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { TbReportMoney } from "react-icons/tb";
+import { useDispatch } from "react-redux";
 
 export function ProfileButton() {
+  const dispatch = useDispatch();
+  const currentUser = getCurrentUser();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <button>
-          <Image src="/dummy/person-0.png" alt="" width={100} height={100} className="w-[50px] h-[50px] object-cover rounded-xl" />
-        </button>
+        <Avatar className="rounded-xl">
+          <AvatarImage src="" />
+          <AvatarFallback className="rounded-xl">{currentUser.email.slice(0, 1)}</AvatarFallback>
+        </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[300px] relative right-10 text-[15px]">
         <div className="p-4 flex items-center gap-3">
-          <Image src="/dummy/person-0.png" alt="" width={100} height={100} className="w-[50px] h-[50px] object-cover rounded-full" />
+          <Avatar>
+            <AvatarImage src="" />
+            <AvatarFallback>{currentUser.email.slice(0, 1)}</AvatarFallback>
+          </Avatar>
           <div>
             <h1 className="text-xl font-semibold">John Doe</h1>
-            <p className="text-primary-black text-opacity-50">Admin</p>
+            <p className="text-primary-grey text-sm">{currentUser.email}</p>
           </div>
         </div>
         <DropdownMenuSeparator />
@@ -56,7 +68,9 @@ export function ProfileButton() {
           </DropdownMenuItem>
         </Link>
         <DropdownMenuSeparator />
-        <button className="relative flex select-none items-center rounded-lg h-12 p-4 outline-none w-full gap-3 text-[#D9000B] hover:bg-[#D9000B]/10 cursor-pointer">
+        <button
+          onClick={() => dispatch(logout())}
+          className="relative flex select-none items-center rounded-lg h-12 p-4 outline-none w-full gap-3 text-[#D9000B] hover:bg-[#D9000B]/10 cursor-pointer">
           <LogOut size={20} />
           Sign out
         </button>

@@ -26,9 +26,9 @@ const Page = () => {
   ];
 
   return (
-    <div>
+    <div className="mt-10">
       <form className="flex flex-col xl:flex-row gap-6">
-        <section className="bg-white px-4 sm:px-8 py-6 lg:p-14 w-full rounded-[20px] md:rounded-[40px] custom-box-shadow">
+        <section className="bg-white px-4 sm:px-8 py-6 lg:p-14 w-full rounded-[20px] md:rounded-[40px] shadow-xl shadow-gray-100">
           <h1 className="text-2xl font-semibold capitalize leading-loose">Personal Information </h1>
           <div className="flex items-center gap-5 mt-6">
             <div className="bg-primary-green grid place-content-center h-20 max-w-20 rounded-full w-full">
@@ -116,13 +116,13 @@ const Page = () => {
         </section>
 
         <section className="space-y-6 w-full xl:w-3/5">
-          <div className="bg-white px-4 sm:px-8 py-6 lg:p-14 w-full rounded-[20px] md:rounded-[40px] custom-box-shadow space-y-2">
+          <div className="bg-white px-4 sm:px-8 py-6 lg:p-14 w-full rounded-[20px] md:rounded-[40px] shadow-xl shadow-gray-100 space-y-2">
             <h1 className="text-2xl font-semibold capitalize leading-loose">Package Information </h1>
             <p className="font-semibold">
               Package Type : <span className="text-primary-green underline font-normal">free</span>
             </p>
           </div>
-          <div className="bg-white px-4 sm:px-8 py-6 lg:p-14 w-full rounded-[20px] md:rounded-[40px] custom-box-shadow space-y-6">
+          <div className="bg-white px-4 sm:px-8 py-6 lg:p-14 w-full rounded-[20px] md:rounded-[40px] shadow-xl shadow-gray-100 space-y-6">
             <h1 className="text-2xl font-semibold capitalize leading-loose">Reset Password</h1>
             <div className="space-y-3 w-full">
               <label className="font-semibold">
