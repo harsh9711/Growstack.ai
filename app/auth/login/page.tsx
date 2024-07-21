@@ -53,7 +53,7 @@ export default function Login() {
       );
       setCookie("token", response.data.data.token, {
         secure: true,
-        path: "/",
+        // path: "/",
         sameSite: "none",
         expires: new Date(Date.now() + 2 * 60 * 60 * 1000),
       });
