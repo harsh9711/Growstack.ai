@@ -25,9 +25,9 @@ export default function Login() {
       const avatar = searchParams.get("avatar");
       //   console.log(token);
       setCookie("token", token, {
-        secure: false,
+        secure: true,
         path: "/",
-        // sameSite: "strict",
+        sameSite: "none",
         expires: new Date(Date.now() + 2 * 60 * 60 * 1000),
       });
       const user = {
