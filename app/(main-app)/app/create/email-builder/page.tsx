@@ -80,7 +80,7 @@ const Home: React.FC = () => {
                     </Link>
                     <div className="py-5 px-6 space-y-1.5">
                       <h5 className="line-clamp-1 text-[17px]">{template.title}</h5>
-                      <div className="text-[13px]">
+                      {/* <div className="text-[13px]">
                         <i> by </i>
                         <Link className="hover:underline cursor-pointer" href="javascript:;">
                           BuilderJS
@@ -89,7 +89,7 @@ const Home: React.FC = () => {
                         <Link className="hover:underline cursor-pointer" href="javascript:;">
                           SorrentoCorp
                         </Link>
-                      </div>
+                      </div> */}
                       <div className="!mt-5 flex justify-between items-center">
                         <Link
                           href={`/app/create/email-builder/design?type=featured&id=${template.id}`}
