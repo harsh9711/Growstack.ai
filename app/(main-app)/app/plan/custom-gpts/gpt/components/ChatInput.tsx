@@ -1,12 +1,12 @@
-import { MicrophoneIcon, SendIcon2 } from '@/components/svgs';
-import autosize from 'autosize';
-import Image from 'next/image';
-import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
-import { API_URL } from '@/lib/api';
-import toast from 'react-hot-toast';
-import ToolsDialog from '../../../ai-chat/components/ToolsDialog';
-import { BookText, File, Plus, Trash, X } from 'lucide-react';
+import { MicrophoneIcon, SendIcon2 } from "@/components/svgs";
+import autosize from "autosize";
+import Image from "next/image";
+import React, { useEffect, useRef, useState } from "react";
+import instance from "@/config/axios.config";
+import { API_URL } from "@/lib/api";
+import toast from "react-hot-toast";
+import ToolsDialog from "../../../ai-chat/components/ToolsDialog";
+import { BookText, File, Plus, Trash, X } from "lucide-react";
 
 type ChatMessageType = {
   thread_id: string;
@@ -21,7 +21,7 @@ interface ChatInputProps {
   onSend: (response: string) => void;
   addMessage: (
     user_prompt: string,
-    response: '',
+    response: "",
     loading: boolean,
     images: string[],
     file: { file_type: string; file_id: string; file_name: string }[]
@@ -46,32 +46,34 @@ const ChatInput: React.FC<ChatInputProps> = ({
   customeGptData,
   setChatMessages,
 }) => {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isApiCall, setIsApiCall] = useState(false);
   const [imageUrl, setImageUrl] = useState<string[]>([]);
-  const [file, setFile] = useState<{ file_type: string; file_id: string; file_name: string }[]>([]);
+  const [file, setFile] = useState<
+    { file_type: string; file_id: string; file_name: string }[]
+  >([]);
 
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.focus();
-      textareaRef.current.style.overflow = 'auto';
+      textareaRef.current.style.overflow = "auto";
     }
   }, [input]);
 
   const handleSend = async () => {
-    if (input.trim() === '') return;
+    if (input.trim() === "") return;
     setIsApiCall(true);
     const user_prompt = input.trim();
-    setInput('');
-    addMessage(user_prompt, '', true, imageUrl, file);
+    setInput("");
+    addMessage(user_prompt, "", true, imageUrl, file);
     setImageUrl([]);
     setFile([]);
     try {
       if (chatMessages.length === 0) {
         const {
           data: { data },
-        } = await axios.post(`${API_URL}/ai/api/v1/customgpt/chat`, {
+        } = await instance.post(`${API_URL}/ai/api/v1/customgpt/chat`, {
           user_prompt: input,
           custom_gpt_id: customeGptData._id,
           assistant_id: customeGptData.assistant_id,
@@ -83,7 +85,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
       } else {
         const {
           data: { data },
-        } = await axios.post(`${API_URL}/ai/api/v1/customgpt/chat`, {
+        } = await instance.post(`${API_URL}/ai/api/v1/customgpt/chat`, {
           user_prompt: input,
           custom_gpt_id: customeGptData._id,
           assistant_id: customeGptData.assistant_id,
@@ -102,42 +104,58 @@ const ChatInput: React.FC<ChatInputProps> = ({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && !e.shiftKey && !isApiCall && input !== '') {
+    if (e.key === "Enter" && !e.shiftKey && !isApiCall && input !== "") {
       e.preventDefault();
       handleSend();
     }
   };
 
   const handleUploadFile = async (file: File) => {
-    const imageFileTypes = ['image/png', 'image/jpeg', 'image/jpg', 'image/gif'];
-    const pdfFileTypes = ['application/pdf'];
+    const imageFileTypes = [
+      "image/png",
+      "image/jpeg",
+      "image/jpg",
+      "image/gif",
+    ];
+    const pdfFileTypes = ["application/pdf"];
     try {
       if (pdfFileTypes.includes(file.type)) {
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append("file", file);
         const {
           data: { data },
-        } = await axios.post(`${API_URL}/ai/api/v1/customgpt/upload`, formData);
-        setFile((prev) => [...prev, { file_name: file.name, file_id: data.id, file_type: 'FILE' }]);
+        } = await instance.post(
+          `${API_URL}/ai/api/v1/customgpt/upload`,
+          formData
+        );
+        setFile((prev) => [
+          ...prev,
+          { file_name: file.name, file_id: data.id, file_type: "FILE" },
+        ]);
       } else if (imageFileTypes.includes(file.type)) {
         const formData = new FormData();
-        formData.append('document', file);
+        formData.append("document", file);
         const {
           data: {
             data: { fileUrl },
           },
-        } = await axios.post(`${API_URL}/users/api/v1/file/upload`, formData);
+        } = await instance.post(
+          `${API_URL}/users/api/v1/file/upload`,
+          formData
+        );
         setImageUrl((prev) => [...prev, fileUrl]);
       }
     } catch (error) {
-      console.error('Error uploading file:', error);
-      toast.error('Error uploading file');
+      console.error("Error uploading file:", error);
+      toast.error("Error uploading file");
     }
   };
 
   return (
     <div
-      className={`shadow-lg  flex border gap-2 rounded-xl p-2 ${imageUrl.length ? 'items-end' : 'items-center'}`}
+      className={`shadow-lg  flex border gap-2 rounded-xl p-2 ${
+        imageUrl.length ? "items-end" : "items-center"
+      }`}
     >
       <div className="justify-end">
         <input
@@ -148,14 +166,14 @@ const ChatInput: React.FC<ChatInputProps> = ({
           onChange={(e) => {
             if (e.target.files && e.target.files[0]) {
               handleUploadFile(e.target.files[0]);
-              e.target.value = '';
+              e.target.value = "";
             }
           }}
         />
         <label
           htmlFor="fileUpload"
           className={`p-1 rounded-full flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white ${
-            isApiCall ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'
+            isApiCall ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
           }`}
         >
           <Plus />
@@ -199,9 +217,14 @@ const ChatInput: React.FC<ChatInputProps> = ({
             {file.length > 0 && (
               <div className="flex gap-2 flex-wrap">
                 {file.map((file, index) => (
-                  <div key={index} className="flex items-center bg-gray-100 p-2 rounded-md">
+                  <div
+                    key={index}
+                    className="flex items-center bg-gray-100 p-2 rounded-md"
+                  >
                     <BookText size={24} />
-                    <span className="text-sm truncate ml-2 mr-2">{file.file_name}</span>
+                    <span className="text-sm truncate ml-2 mr-2">
+                      {file.file_name}
+                    </span>
                     <button
                       className="ml-auto focus:outline-none"
                       onClick={() => {
@@ -230,10 +253,10 @@ const ChatInput: React.FC<ChatInputProps> = ({
 
       <button
         className={`h-8 w-8 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl ${
-          isApiCall || input === '' ? 'opacity-50 cursor-not-allowed' : ''
+          isApiCall || input === "" ? "opacity-50 cursor-not-allowed" : ""
         }`}
         onClick={handleSend}
-        disabled={isApiCall || input === ''}
+        disabled={isApiCall || input === ""}
       >
         <SendIcon2 />
       </button>

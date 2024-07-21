@@ -2,7 +2,7 @@
 
 import Layout from "./components/Layout";
 import ShareChatDialog from "./components/ShareChatDialog";
-import axios from "axios";
+import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { ISidebarItem } from "./interface/chat.interface";
@@ -12,7 +12,7 @@ export default function Home() {
 
   const fetchConversations = async () => {
     try {
-      const response = await axios.get(`${API_URL}/ai/api/v1/conversation/`);
+      const response = await instance.get(`${API_URL}/ai/api/v1/conversation/`);
       const items = response.data.data.map((item: any) => ({
         _id: item._id,
         title: item.title,

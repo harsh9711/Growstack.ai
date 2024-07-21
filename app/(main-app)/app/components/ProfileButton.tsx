@@ -48,7 +48,7 @@ export function ProfileButton() {
               My profile
             </DropdownMenuItem>
           </Link>
-          <Link href="/account/saved-documents">
+          {/* <Link href="/account/saved-documents">
             <DropdownMenuItem className="flex gap-3 px-4">
               <Settings size={22} />
               Saved documents
@@ -59,19 +59,19 @@ export function ProfileButton() {
               <BrandVoiceIcon size={22} />
               Brand voice
             </DropdownMenuItem>
-          </Link>
-          <Link href="/account/billings/settings">
+          </Link> */}
+          {/* <Link href="/account/billings/settings">
             <DropdownMenuItem className="flex gap-3 px-4">
               <TbReportMoney size={22} />
               Billings
             </DropdownMenuItem>
-          </Link>
+          </Link> */}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <Link href="#">
           <DropdownMenuItem className="flex gap-3 px-4">
             <Info size={22} />
-            FAQ
+            Help
           </DropdownMenuItem>
         </Link>
         <DropdownMenuSeparator />

@@ -2,9 +2,14 @@ import Motion from "@/components/Motion";
 import Spinner from "@/components/Spinner";
 import { GenerateAi } from "@/components/svgs";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { API_URL } from "@/lib/api";
-import axios from "axios";
+import instance from "@/config/axios.config";
 import clsx from "clsx";
 import { AnimatePresence, motion } from "framer-motion";
 import { Base64 } from "js-base64";
@@ -70,7 +75,9 @@ export default function GenerateVideoDialog() {
     audience: "",
   });
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
@@ -84,7 +91,9 @@ export default function GenerateVideoDialog() {
 
   const checkVideoStatus = async (videoId: string) => {
     try {
-      const statusResponse = await axios.get(`${API_URL}/ai/api/v1/video/status/${videoId}`);
+      const statusResponse = await instance.get(
+        `${API_URL}/ai/api/v1/video/status/${videoId}`
+      );
       if (statusResponse.data.data.status === "complete") {
         toast.success("Video generation complete");
         setOutputVideo(statusResponse.data.data);
@@ -112,7 +121,10 @@ export default function GenerateVideoDialog() {
 
     try {
       // First API call to generate script
-      const scriptResponse = await axios.post(`${API_URL}/ai/api/v1/generate/video/video-script`, formData);
+      const scriptResponse = await instance.post(
+        `${API_URL}/ai/api/v1/generate/video/video-script`,
+        formData
+      );
       if (scriptResponse.data.success) {
         setVideoScript(scriptResponse.data.data.script);
         toast.success(scriptResponse.data.message);
@@ -129,7 +141,10 @@ export default function GenerateVideoDialog() {
           soundtrack: "urban",
         };
 
-        const videoResponse = await axios.post(`${API_URL}/ai/api/v1/generate/video`, videoData);
+        const videoResponse = await instance.post(
+          `${API_URL}/ai/api/v1/generate/video`,
+          videoData
+        );
         if (videoResponse.data.success) {
           toast.success("Video generation request successful");
 
@@ -148,7 +163,11 @@ export default function GenerateVideoDialog() {
         setStep(0); // Reset step
       }
     } catch (error: any) {
-      toast.error(error.response.data.message || error.message || "Error submitting the form");
+      toast.error(
+        error.response.data.message ||
+          error.message ||
+          "Error submitting the form"
+      );
       setLoading(false);
       setStep(0); // Reset step
     }
@@ -167,7 +186,9 @@ export default function GenerateVideoDialog() {
       <DialogTrigger asChild>
         <div className="w-full hover-card flex items-center justify-between transition duration-500 ring-1 ring-[#E7E7E7] p-6 rounded-2xl cursor-pointer group">
           <div className="space-y-3">
-            <h1 className="text-[18px] font-semibold">Generate Video with AI</h1>
+            <h1 className="text-[18px] font-semibold">
+              Generate Video with AI
+            </h1>
             <p className="text-primary-neutral">Create your video with AI</p>
           </div>
           <GenerateAi className="text-primary-neutral group-hover:text-primary-green transition duration-300" />
@@ -184,7 +205,10 @@ export default function GenerateVideoDialog() {
           <main className="flex-1 flex">
             <div className="w-full max-w-[426px] space-y-4">
               <div className="w-full space-y-2">
-                <label htmlFor="objective" className="flex items-center font-semibold gap-x-3">
+                <label
+                  htmlFor="objective"
+                  className="flex items-center font-semibold gap-x-3"
+                >
                   <span className="space-x-2">
                     Title <span className="text-[#F93939]">*</span>
                   </span>
@@ -199,7 +223,10 @@ export default function GenerateVideoDialog() {
                 />
               </div>
               <div className="w-full space-y-2">
-                <label htmlFor="objective" className="flex items-center font-semibold gap-x-3">
+                <label
+                  htmlFor="objective"
+                  className="flex items-center font-semibold gap-x-3"
+                >
                   <span className="space-x-2">
                     Objective <span className="text-[#F93939]">*</span>
                   </span>
@@ -209,7 +236,8 @@ export default function GenerateVideoDialog() {
                   placeholder="Introduction to financial well-being"
                   value={formData.objective}
                   onChange={handleInputChange}
-                  className="border border-[#DEDEDE] bg-[#F5F5F5] resize-none h-[140px] w-full rounded-xl outline-none focus:border-primary-green transition-all p-4"></textarea>
+                  className="border border-[#DEDEDE] bg-[#F5F5F5] resize-none h-[140px] w-full rounded-xl outline-none focus:border-primary-green transition-all p-4"
+                ></textarea>
               </div>
               <AnimatePresence>
                 <div className="space-y-3">
@@ -274,19 +302,31 @@ export default function GenerateVideoDialog() {
                   )}
                 </div>
                 <div className="flex flex-wrap gap-3">
-                  <button className="border border-[#C3C3C3] py-2 px-3 rounded-xl flex items-center gap-2" onClick={() => toggleField("language")}>
+                  <button
+                    className="border border-[#C3C3C3] py-2 px-3 rounded-xl flex items-center gap-2"
+                    onClick={() => toggleField("language")}
+                  >
                     {fields.language ? <Minus size={20} /> : <Plus size={20} />}
                     Language
                   </button>
-                  <button className="border border-[#C3C3C3] py-2 px-3 rounded-xl flex items-center gap-2" onClick={() => toggleField("tone")}>
+                  <button
+                    className="border border-[#C3C3C3] py-2 px-3 rounded-xl flex items-center gap-2"
+                    onClick={() => toggleField("tone")}
+                  >
                     {fields.tone ? <Minus size={20} /> : <Plus size={20} />}
                     Tone
                   </button>
-                  <button className="border border-[#C3C3C3] py-2 px-3 rounded-xl flex items-center gap-2" onClick={() => toggleField("speaker")}>
+                  <button
+                    className="border border-[#C3C3C3] py-2 px-3 rounded-xl flex items-center gap-2"
+                    onClick={() => toggleField("speaker")}
+                  >
                     {fields.speaker ? <Minus size={20} /> : <Plus size={20} />}
                     Speaker
                   </button>
-                  <button className="border border-[#C3C3C3] py-2 px-3 rounded-xl flex items-center gap-2" onClick={() => toggleField("audience")}>
+                  <button
+                    className="border border-[#C3C3C3] py-2 px-3 rounded-xl flex items-center gap-2"
+                    onClick={() => toggleField("audience")}
+                  >
                     {fields.audience ? <Minus size={20} /> : <Plus size={20} />}
                     Audience
                   </button>
@@ -299,44 +339,96 @@ export default function GenerateVideoDialog() {
                   "!mt-6 bg-primary-green text-white py-3.5 w-full rounded-xl flex items-center justify-center",
                   loading && "opacity-80 cursor-not-allowed"
                 )}
-                onClick={handleSubmit}>
+                onClick={handleSubmit}
+              >
                 {loading ? <Spinner /> : "Generate Video"}
               </button>
             </div>
             <div className="w-full flex">
               {loading ? (
                 <div className="flex flex-col items-center w-full max-w-3xl mx-auto">
-                  <Motion transition={{ duration: 1 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+                  <Motion
+                    transition={{ duration: 1 }}
+                    variants={{
+                      hidden: { opacity: 0 },
+                      visible: { opacity: 1 },
+                    }}
+                  >
                     <div
                       className={clsx(
                         "flex gap-3 items-center py-4 px-6 w-full rounded-lg",
-                        step === 1 ? "bg-gray-200 text-gray-700" : "bg-green-200 text-green-800"
-                      )}>
+                        step === 1
+                          ? "bg-gray-200 text-gray-700"
+                          : "bg-green-200 text-green-800"
+                      )}
+                    >
                       {step > 1 ? <span>✔</span> : <Spinner />}
-                      <p className="ml-2">{step === 1 ? "Generating a video script..." : "Video script generated"}</p>
+                      <p className="ml-2">
+                        {step === 1
+                          ? "Generating a video script..."
+                          : "Video script generated"}
+                      </p>
                     </div>
                   </Motion>
                   {step > 1 && (
-                    <Motion transition={{ duration: 1 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+                    <Motion
+                      transition={{ duration: 1 }}
+                      variants={{
+                        hidden: { opacity: 0 },
+                        visible: { opacity: 1 },
+                      }}
+                    >
                       <div
                         className={clsx(
                           "flex gap-3 items-center py-4 px-6 w-full rounded-lg mt-2",
-                          step === 2 ? "bg-gray-200 text-gray-700" : "bg-green-200 text-green-800"
-                        )}>
-                        {step > 2 ? <span>✔</span> : step === 2 ? <Spinner /> : null}
-                        <p className="ml-2">{step === 2 ? "Generating video with script..." : step > 2 ? "Video generation started" : null}</p>
+                          step === 2
+                            ? "bg-gray-200 text-gray-700"
+                            : "bg-green-200 text-green-800"
+                        )}
+                      >
+                        {step > 2 ? (
+                          <span>✔</span>
+                        ) : step === 2 ? (
+                          <Spinner />
+                        ) : null}
+                        <p className="ml-2">
+                          {step === 2
+                            ? "Generating video with script..."
+                            : step > 2
+                            ? "Video generation started"
+                            : null}
+                        </p>
                       </div>
                     </Motion>
                   )}
                   {step > 2 && (
-                    <Motion transition={{ duration: 1 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+                    <Motion
+                      transition={{ duration: 1 }}
+                      variants={{
+                        hidden: { opacity: 0 },
+                        visible: { opacity: 1 },
+                      }}
+                    >
                       <div
                         className={clsx(
                           "flex gap-3 items-center py-4 px-6 w-full rounded-lg mt-2",
-                          step === 3 ? "bg-gray-200 text-gray-700" : "bg-green-200 text-green-800"
-                        )}>
-                        {step === 3 ? <Spinner /> : step > 3 ? <span>✔</span> : null}
-                        <p className="ml-2">{step === 3 ? "Generating video, this might take a while..." : step > 3 ? "Video generated successfully" : null}</p>
+                          step === 3
+                            ? "bg-gray-200 text-gray-700"
+                            : "bg-green-200 text-green-800"
+                        )}
+                      >
+                        {step === 3 ? (
+                          <Spinner />
+                        ) : step > 3 ? (
+                          <span>✔</span>
+                        ) : null}
+                        <p className="ml-2">
+                          {step === 3
+                            ? "Generating video, this might take a while..."
+                            : step > 3
+                            ? "Video generated successfully"
+                            : null}
+                        </p>
                       </div>
                     </Motion>
                   )}
@@ -345,17 +437,23 @@ export default function GenerateVideoDialog() {
                 <Motion
                   transition={{ duration: 0.5 }}
                   variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
-                  classNames="flex flex-col justify-between">
+                  classNames="flex flex-col justify-between"
+                >
                   <div className="flex flex-col items-center">
                     <h2 className="mb-2">Your video is ready!</h2>
-                    <p className="mb-4 text-lg font-semibold">{outputVideo.title}</p>
+                    <p className="mb-4 text-lg font-semibold">
+                      {outputVideo.title}
+                    </p>
                     <video controls className="rounded-xl w-full max-w-4xl">
                       <source src={outputVideo.download} type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
                   </div>
                   <div className="flex justify-end">
-                    <button onClick={navigateToEditor} className="bg-primary-green text-white py-3.5 px-4 sheen rounded-xl flex items-center justify-center">
+                    <button
+                      onClick={navigateToEditor}
+                      className="bg-primary-green text-white py-3.5 px-4 sheen rounded-xl flex items-center justify-center"
+                    >
                       Continue in editor
                     </button>
                   </div>
@@ -364,11 +462,22 @@ export default function GenerateVideoDialog() {
                 <Motion
                   transition={{ duration: 0.5 }}
                   variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
-                  classNames="flex-1 w-full h-full grid place-content-center">
+                  classNames="flex-1 w-full h-full grid place-content-center"
+                >
                   <div className="flex flex-col justify-center items-center mb-40">
-                    <Image src="/gifs/empty-box.gif" alt="" width={250} height={250} unoptimized />
-                    <h1 className="text-2xl text-center font-semibold">There's nothing here.</h1>
-                    <p className="max-w-xl leading-loose text-center mt-3">Fill out the form 👈 to geneate a video</p>
+                    <Image
+                      src="/gifs/empty-box.gif"
+                      alt=""
+                      width={250}
+                      height={250}
+                      unoptimized
+                    />
+                    <h1 className="text-2xl text-center font-semibold">
+                      There's nothing here.
+                    </h1>
+                    <p className="max-w-xl leading-loose text-center mt-3">
+                      Fill out the form 👈 to geneate a video
+                    </p>
                   </div>
                 </Motion>
               )}
@@ -398,18 +507,25 @@ const TooltipComponent = () => (
 const PopupContent = () => (
   <div className="w-[460px] p-8 font-normal text-base space-y-8">
     <div className="space-y-5">
-      <h1 className="text-primary-green text-xl font-semibold">Tips for generating video with AI</h1>
+      <h1 className="text-primary-green text-xl font-semibold">
+        Tips for generating video with AI
+      </h1>
       <div className="bg-primary-green p-5 text-white rounded-lg leading-normal text-[15px]">
         Your prompt is processed through a third-party service by OpenAI
       </div>
     </div>
     <div className="space-y-5">
-      <h1 className="text-primary-black text-xl font-semibold">Get a good draft ready</h1>
+      <h1 className="text-primary-black text-xl font-semibold">
+        Get a good draft ready
+      </h1>
       <p className="text-primary-neutral/60 text-[15px]">
-        We recommend you watch this 1-minute video on how to use the video assistant to achieve a good first draft.
+        We recommend you watch this 1-minute video on how to use the video
+        assistant to achieve a good first draft.
       </p>
       <Image src="/videos/dummy-video.png" alt="" width={500} height={400} />
     </div>
-    <button className="border border-[#C3C3C3] py-3.5 w-full rounded-xl !mt-14 font-semibold text-primary-neutral">Learn More</button>
+    <button className="border border-[#C3C3C3] py-3.5 w-full rounded-xl !mt-14 font-semibold text-primary-neutral">
+      Learn More
+    </button>
   </div>
 );

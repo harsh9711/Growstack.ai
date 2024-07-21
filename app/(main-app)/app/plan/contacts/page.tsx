@@ -14,44 +14,44 @@ import Prospects from "./components/ProspectsTable";
 export default function ContactsDashboard() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
-  const tabs = ["Smart list ", "Restore", "Prospects"];
+  const tabs = ["Prospects"];
 
   const renderContent = (selectedTabIndex: number) => {
     switch (selectedTabIndex) {
+      // case 0:
+      //   return <ContactsTable />;
+
+      // case 1:
+      //   return <RestoreTable />;
+
       case 0:
-        return <ContactsTable />;
-
-      case 1:
-        return <RestoreTable />;
-
-      case 2:
         return <Prospects />;
     }
   };
   const renderTitle = (selectedTabIndex: number) => {
     switch (selectedTabIndex) {
-      case 0:
-        return (
-          <Fragment>
-            <h1 className="text-2xl font-semibold">All contacts</h1>
-            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
-              Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
-              ultricies accumsan. Nec.{" "}
-            </p>
-          </Fragment>
-        );
+      // case 0:
+      //   return (
+      //     <Fragment>
+      //       <h1 className="text-2xl font-semibold">All contacts</h1>
+      //       <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
+      //         Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
+      //         ultricies accumsan. Nec.{" "}
+      //       </p>
+      //     </Fragment>
+      //   );
 
-      case 1:
-        return (
-          <Fragment>
-            <h1 className="text-2xl font-semibold">Restored</h1>
-            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
-              Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
-              ultricies accumsan. Nec.{" "}
-            </p>
-          </Fragment>
-        );
-      case 2:
+      // case 1:
+      //   return (
+      //     <Fragment>
+      //       <h1 className="text-2xl font-semibold">Restored</h1>
+      //       <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
+      //         Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
+      //         ultricies accumsan. Nec.{" "}
+      //       </p>
+      //     </Fragment>
+      //   );
+      case 0:
         return (
           <Fragment>
             <h1 className="text-2xl font-semibold">Prospects</h1>

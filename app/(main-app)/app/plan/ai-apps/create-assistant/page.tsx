@@ -1,13 +1,19 @@
 "use client";
 import { useEffect, useState } from "react";
-import axios from "axios"; // Added axios import
+import instance from "@/config/axios.config"; // Added instance import
 import { API_URL } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Minus, Plus } from "lucide-react";
 import { Assistant } from "@/types/assistants";
 import AssistantsTable from "@/app/(main-app)/app/plan/ai-apps/components/AssistantsDataTable";
@@ -21,10 +27,15 @@ export default function CreateAssistantPage() {
     options?: string; // Optional field for storing options for select, radio, and checkbox
   };
 
-  const [userInputs, setUserInputs] = useState<UserInput[]>([{ title: "", description: "", type: "", required: "Optional" }]);
+  const [userInputs, setUserInputs] = useState<UserInput[]>([
+    { title: "", description: "", type: "", required: "Optional" },
+  ]);
 
   const addUserInput = () => {
-    setUserInputs((prevInputs) => [...prevInputs, { title: "", description: "", type: "", required: "Optional" }]);
+    setUserInputs((prevInputs) => [
+      ...prevInputs,
+      { title: "", description: "", type: "", required: "Optional" },
+    ]);
   };
 
   const removeUserInput = (index: number) => {
@@ -46,7 +57,10 @@ export default function CreateAssistantPage() {
 
   const ValidationSchema = z.object({
     name: z.string().min(3, "Name must be at least 3 characters long"),
-    description: z.string().min(10, "Description must be at least 10 characters").max(200, "Description can't exceed 200 characters"),
+    description: z
+      .string()
+      .min(10, "Description must be at least 10 characters")
+      .max(200, "Description can't exceed 200 characters"),
   });
 
   const [isPending, setIsPending] = useState(false);
@@ -78,14 +92,17 @@ export default function CreateAssistantPage() {
         options: input.options ? input.options.split(",") : undefined,
       }));
 
-      const response = await axios.post(`${API_URL}/ai/api/v1/chat-template/create`, {
-        name,
-        description,
-        icon,
-        custom_prompt,
-        category,
-        inputs: userInputFields, // Include userInputs in the request body
-      });
+      const response = await instance.post(
+        `${API_URL}/ai/api/v1/chat-template/create`,
+        {
+          name,
+          description,
+          icon,
+          custom_prompt,
+          category,
+          inputs: userInputFields, // Include userInputs in the request body
+        }
+      );
 
       toast.success(response.data.message);
 
@@ -97,7 +114,9 @@ export default function CreateAssistantPage() {
         custom_prompt: "",
       });
       setCategory(""); // Clear category after submission
-      setUserInputs([{ title: "", description: "", type: "", required: "Optional" }]); // Reset userInputs
+      setUserInputs([
+        { title: "", description: "", type: "", required: "Optional" },
+      ]); // Reset userInputs
       setRefreshAssistantsTable(true);
       // Log userInputs to the console
       console.log("User Inputs:", userInputFields);
@@ -125,7 +144,11 @@ export default function CreateAssistantPage() {
     setCategory(selectedCategory);
   };
 
-  const handleInputChange = (index: number, key: keyof UserInput, value: string) => {
+  const handleInputChange = (
+    index: number,
+    key: keyof UserInput,
+    value: string
+  ) => {
     setUserInputs((prevInputs) => {
       const updatedInputs = [...prevInputs];
       updatedInputs[index][key] = value;
@@ -150,31 +173,56 @@ export default function CreateAssistantPage() {
       <section className="bg-white border border-[#E4E4E4] rounded-3xl p-10 mt-5">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-5">
-            <h1 className="text-xl font-semibold flex items-center gap-2">Own assistant generator</h1>
+            <h1 className="text-xl font-semibold flex items-center gap-2">
+              Own assistant generator
+            </h1>
             <div className="grid grid-cols-2 gap-8 border-t border-[#EBEBEB] pb-4 pt-8">
               <div className="space-y-2">
                 <label className="font-medium">
                   Template name
                   <span className="text-[#F00]">*</span>
                 </label>
-                <Input type="text" placeholder="Type template name" {...register("name")} value={formData.name} onChange={handleChange} />
-                {errors.name && <p className="text-rose-600 text-sm">{errors.name.message}</p>}
+                <Input
+                  type="text"
+                  placeholder="Type template name"
+                  {...register("name")}
+                  value={formData.name}
+                  onChange={handleChange}
+                />
+                {errors.name && (
+                  <p className="text-rose-600 text-sm">{errors.name.message}</p>
+                )}
               </div>
               <div className="space-y-2">
                 <label className="font-medium">
                   Template description <span className="text-[#F00]">*</span>
                 </label>
-                <Input type="text" placeholder="Type template description" {...register("description")} value={formData.description} onChange={handleChange} />
-                {errors.description && <p className="text-rose-600 text-sm">{errors.description.message}</p>}
+                <Input
+                  type="text"
+                  placeholder="Type template description"
+                  {...register("description")}
+                  value={formData.description}
+                  onChange={handleChange}
+                />
+                {errors.description && (
+                  <p className="text-rose-600 text-sm">
+                    {errors.description.message}
+                  </p>
+                )}
               </div>
 
               <div className="space-y-2">
                 <label className="font-medium">
                   Template category <span className="text-[#F00]">*</span>
                 </label>
-                <Select onValueChange={handleCategoryChange} defaultValue="Blogs Posts">
+                <Select
+                  onValueChange={handleCategoryChange}
+                  defaultValue="Blogs Posts"
+                >
                   <SelectTrigger className="w-full border-none h-14">
-                    <SelectValue placeholder={category ? category : "Select a category"} />
+                    <SelectValue
+                      placeholder={category ? category : "Select a category"}
+                    />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="Blogs Posts">My Assistants</SelectItem>
@@ -193,7 +241,13 @@ export default function CreateAssistantPage() {
                 <label className="font-medium">
                   Template icon <span className="text-[#F00]">*</span>
                 </label>
-                <Input type="text" placeholder="ex:<i class=”fa-solid fa-books”></i>" name="icon" value={formData.icon} onChange={handleChange} />
+                <Input
+                  type="text"
+                  placeholder="ex:<i class=”fa-solid fa-books”></i>"
+                  name="icon"
+                  value={formData.icon}
+                  onChange={handleChange}
+                />
               </div>
             </div>
             <div className="space-y-2 !mt-8">
@@ -207,75 +261,104 @@ export default function CreateAssistantPage() {
                       type="text"
                       placeholder="Type input field title (required)"
                       value={input.title}
-                      onChange={(e) => handleInputChange(index, "title", e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange(index, "title", e.target.value)
+                      }
                     />
                   </div>
 
                   <div className="w-full space-y-2">
-                    <Select value={input.type} onValueChange={(value) => handleInputChange(index, "type", value)}>
+                    <Select
+                      value={input.type}
+                      onValueChange={(value) =>
+                        handleInputChange(index, "type", value)
+                      }
+                    >
                       <SelectTrigger className="w-full border-none h-14">
                         <SelectValue placeholder="Input field" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="Input field">Input field</SelectItem>
-                        <SelectItem value="Textarea field">Textarea field</SelectItem>
-                        <SelectItem value="Select list field">Select list field</SelectItem>
-                        <SelectItem value="Checkbox list field">Checkbox list field</SelectItem>
-                        <SelectItem value="Radio buttons field">Radio buttons field</SelectItem>
+                        <SelectItem value="Textarea field">
+                          Textarea field
+                        </SelectItem>
+                        <SelectItem value="Select list field">
+                          Select list field
+                        </SelectItem>
+                        <SelectItem value="Checkbox list field">
+                          Checkbox list field
+                        </SelectItem>
+                        <SelectItem value="Radio buttons field">
+                          Radio buttons field
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
 
-                  {(input.type === "Input field" || input.type === "Textarea field") && (
+                  {(input.type === "Input field" ||
+                    input.type === "Textarea field") && (
                     <div className="w-full space-y-2">
                       <Input
                         type="text"
                         placeholder="Type input field description (required)"
                         value={input.description}
-                        onChange={(e) => handleInputChange(index, "description", e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange(
+                            index,
+                            "description",
+                            e.target.value
+                          )
+                        }
                       />
                     </div>
                   )}
 
-                  {(input.type === "Select list field" || input.type === "Checkbox list field" || input.type === "Radio buttons field") && (
+                  {(input.type === "Select list field" ||
+                    input.type === "Checkbox list field" ||
+                    input.type === "Radio buttons field") && (
                     <div className="w-full space-y-2">
                       <Input
                         type="text"
                         placeholder="Comma separated options"
                         value={input.options || ""}
-                        onChange={(e) => handleInputChange(index, "options", e.target.value)}
+                        onChange={(e) =>
+                          handleInputChange(index, "options", e.target.value)
+                        }
                       />
                     </div>
                   )}
 
                   <div className="w-full space-y-2">
-                <Select 
-  value={input.required || "Required"} 
-  onValueChange={(value) => handleInputChange(index, "required", value)}
->
-  <SelectTrigger className="w-full border-none h-14">
-    <SelectValue placeholder="Required" />
-  </SelectTrigger>
-  <SelectContent>
-    <SelectItem value="Required">Required</SelectItem>
-    <SelectItem value="Optional">Optional</SelectItem>
-  </SelectContent>
-</Select>
-
+                    <Select
+                      value={input.required || "Required"}
+                      onValueChange={(value) =>
+                        handleInputChange(index, "required", value)
+                      }
+                    >
+                      <SelectTrigger className="w-full border-none h-14">
+                        <SelectValue placeholder="Required" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Required">Required</SelectItem>
+                        <SelectItem value="Optional">Optional</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </div>
 
                   {index === userInputs.length - 1 ? (
                     <button
                       type="button"
                       className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
-                      onClick={addUserInput}>
+                      onClick={addUserInput}
+                    >
                       <Plus />
                     </button>
                   ) : (
                     <button
                       type="button"
                       className="bg-red-500 text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
-                      onClick={() => removeUserInput(index)}>
+                      onClick={() => removeUserInput(index)}
+                    >
                       <Minus />
                     </button>
                   )}
@@ -297,14 +380,20 @@ export default function CreateAssistantPage() {
             </div>
           </div>
           <div className="flex justify-end gap-4">
-            <button className="py-3.5 px-6 bg-primary-green sheen rounded-xl text-white mt-6" type="submit">
+            <button
+              className="py-3.5 px-6 bg-primary-green sheen rounded-xl text-white mt-6"
+              type="submit"
+            >
               Create your own assistant
             </button>
           </div>
         </form>
       </section>
       <section className="bg-white border border-[#E4E4E4] rounded-3xl p-10 mt-7">
-        <AssistantsTable refreshAssistantsTable={refreshAssistantsTable} setRefreshAssistantsTable={setRefreshAssistantsTable} />
+        <AssistantsTable
+          refreshAssistantsTable={refreshAssistantsTable}
+          setRefreshAssistantsTable={setRefreshAssistantsTable}
+        />
       </section>
     </div>
   );

@@ -2157,7 +2157,7 @@ Editor.prototype = {
                 if(thisEditor.data.hasOwnProperty(key)){
                     var value = thisEditor.data[key];
                     // Do something with the item :
-                    data = data + '<input type="hiden" name="'+key+'" value="'+value+'" />';
+                    data = data + '<input type="hidden" name="'+key+'" value="'+value+'" />';
                 }
             }
         }

@@ -1,12 +1,12 @@
-'use client';
+"use client";
 
-import { Plus, Search } from 'lucide-react';
-import Link from 'next/link';
-import { Fragment, useEffect, useState } from 'react';
-import { gpts } from './data/gpts';
-import Image from 'next/image';
-import axios from 'axios';
-import { API_URL } from '@/lib/api';
+import { Plus, Search } from "lucide-react";
+import Link from "next/link";
+import { Fragment, useEffect, useState } from "react";
+import { gpts } from "./data/gpts";
+import Image from "next/image";
+import instance from "@/config/axios.config";
+import { API_URL } from "@/lib/api";
 
 export default function Customgpts() {
   const [customGpts, setCustomGpts] = useState([]);
@@ -15,7 +15,7 @@ export default function Customgpts() {
     try {
       const {
         data: { data },
-      } = await axios.get(`${API_URL}/ai/api/v1/customgpt`);
+      } = await instance.get(`${API_URL}/ai/api/v1/customgpt`);
 
       setCustomGpts(data);
     } catch (error: any) {
@@ -65,7 +65,13 @@ export default function Customgpts() {
                 key={index}
                 className="bg-white border border-[#E8E8E8] rounded-2xl p-6 hover:shadow-2xl hover:shadow-gray-200 cursor-pointer transition-all duration-300 flex items-center gap-5"
               >
-                <Image src={icon} alt="" width={90} height={90} className="rounded-xl" />
+                <Image
+                  src={icon}
+                  alt=""
+                  width={90}
+                  height={90}
+                  className="rounded-xl"
+                />
                 <div className="space-y-2">
                   <h1 className="text-lg font-semibold">{name}</h1>
                   <p className="text-primary-black text-opacity-50 leading-relaxed">
