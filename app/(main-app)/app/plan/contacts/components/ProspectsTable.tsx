@@ -203,9 +203,9 @@ export default function ContactsTable() {
               onChange={(e) => setSearchQuery(e.target.value)}
             />{" "}
           </div>
-          <div className="flex gap-x-2">
+          {/* <div className="flex gap-x-2">
             <FilterSheet />
-          </div>
+          </div> */}
         </div>
         <div className="rounded-lg border overflow-hidden mt-5">
           <Table>
