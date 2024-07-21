@@ -26,7 +26,7 @@ export default function Login() {
       //   console.log(token);
       setCookie("token", token, {
         secure: true,
-        path: "/",
+        // path: "/",
         sameSite: "none",
         expires: new Date(Date.now() + 2 * 60 * 60 * 1000),
       });
