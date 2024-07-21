@@ -4,7 +4,7 @@ import archiver from "archiver";
 import { NextRequest, NextResponse } from "next/server";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
   try {
     //@ts-ignore
     const formdata = await req.formData();
