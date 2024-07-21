@@ -138,9 +138,9 @@ export default function Navbar() {
               className="w-full flex items-center bg-transparent text-[#14171BB8] placeholder:text-[#14171BB8]"
             />
           </div>
-          <button className="cursor-pointer bg-[#F4F4F4] py-3 px-3 rounded-xl">
+          {/* <button className="cursor-pointer bg-[#F4F4F4] py-3 px-3 rounded-xl">
             <IoIosNotificationsOutline size={26} />
-          </button>
+          </button> */}
           <ProfileButton />
         </div>
       </nav>
