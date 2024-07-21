@@ -75,11 +75,11 @@ const navLinks: NavLink[] = [
         name: "Web scraping",
         href: "/app/plan/web-scraping",
       },
-      {
-        icon: <ProductAiIcon />,
-        name: "AI playground",
-        href: "/app/plan/ai-playground",
-      },
+      // {
+      //   icon: <ProductAiIcon />,
+      //   name: "AI playground",
+      //   href: "/app/plan/ai-playground",
+      // },
       {
         icon: <UserIcon />,
         name: "Contact",
@@ -111,124 +111,124 @@ const navLinks: NavLink[] = [
         name: "AI article wizard",
         href: "/app/create/ai-articles",
       },
-      {
-        icon: <ProductAiIcon />,
-        name: "Product AI ",
-        href: "/app/create/product-ai",
-      },
+      // {
+      //   icon: <ProductAiIcon />,
+      //   name: "Product AI ",
+      //   href: "/app/create/product-ai",
+      // },
     ],
     title: "Create",
   },
-  {
-    icon: <PublishIcon />,
-    sublinks: [
-      {
-        icon: <SchedulerIcon />,
-        name: "Scheduler",
-        subItems: [
-          {
-            icon: <QuickPostingIcon />,
-            name: "Quick posting",
-            href: "/app/publish/scheduler/quick-posting/profiles",
-          },
-          {
-            icon: <MultiPostingIcon />,
-            name: "Multi Posting",
-            href: "/app/publish/scheduler/multi-posting",
-          },
-          {
-            icon: <SettingsIcon />,
-            name: "Settings",
-            href: "/app/publish/scheduler/settings",
-          },
-          {
-            icon: <PostingLogsIcon />,
-            name: "Posting Logs",
-            href: "/app/publish/scheduler/posting-logs",
-          },
-          {
-            icon: <DebugIcon />,
-            name: "Posting debug logs",
-            href: "/app/publish/scheduler/debug-logs",
-          },
-        ],
-      },
-    ],
-    title: "Publish",
-  },
-  {
-    icon: <EngageIcon />,
-    sublinks: [
-      {
-        icon: <AutomationIcon />,
-        name: "WhatsApp and telegram automation with our apps",
-        subItems: [
-          {
-            icon: <WhatsappIcon />,
-            name: "WhatsApp overview",
-            href: "/app/engage/integration/whatsapp-automation",
-          },
-          {
-            icon: <TelegramIcon />,
-            name: "Telegram overview",
-            href: "/app/engage/integration/telegram-automation",
-          },
-          {
-            icon: <CampaignIcon />,
-            name: "Campaigns",
-            href: "/app/engage/integration/campaigns",
-          },
-          {
-            icon: <AiAssistantIcon />,
-            name: "AI assistant",
-            href: "/app/engage/integration/ai-assistant",
-          },
-          {
-            icon: <SettingsIcon />,
-            name: "Settings",
-            href: "/app/engage/integration/settings",
-          },
-        ],
-      },
-      {
-        icon: <SquareShapeIcon />,
-        name: "Social media conversation hub",
-        href: "/app/engage/Social-media",
-      },
-      {
-        icon: <DocumentIcon />,
-        name: "Social advocacy",
-        href: "/app/engage/social-advocacy",
-      },
-    ],
-    title: "Engage",
-  },
-  {
-    icon: <AnalyseIcon />,
-    sublinks: [
-      {
-        icon: <PresentationAnalyticsIcon />,
-        name: "Social media analytics",
-        href: "/app/analyse/social-media",
-      },
-      {
-        icon: <ReputationIcon />,
-        name: "Reputation mgmt. system",
-        href: "/app/analyse/reputation-manager",
-      },
-      {
-        icon: <AdsAnalyticsIcon />,
-        name: "Ads analytics",
-        href: "/app/analyse/ads-analytics",
-      },
-      {
-        icon: <ReportAnalyticsIcon />,
-        name: "Email & SMS Analytics",
-        href: "#",
-      },
-    ],
-    title: "Analyse",
-  },
+  // {
+  //   icon: <PublishIcon />,
+  //   sublinks: [
+  //     {
+  //       icon: <SchedulerIcon />,
+  //       name: "Scheduler",
+  //       subItems: [
+  //         {
+  //           icon: <QuickPostingIcon />,
+  //           name: "Quick posting",
+  //           href: "/app/publish/scheduler/quick-posting/profiles",
+  //         },
+  //         {
+  //           icon: <MultiPostingIcon />,
+  //           name: "Multi Posting",
+  //           href: "/app/publish/scheduler/multi-posting",
+  //         },
+  //         {
+  //           icon: <SettingsIcon />,
+  //           name: "Settings",
+  //           href: "/app/publish/scheduler/settings",
+  //         },
+  //         {
+  //           icon: <PostingLogsIcon />,
+  //           name: "Posting Logs",
+  //           href: "/app/publish/scheduler/posting-logs",
+  //         },
+  //         {
+  //           icon: <DebugIcon />,
+  //           name: "Posting debug logs",
+  //           href: "/app/publish/scheduler/debug-logs",
+  //         },
+  //       ],
+  //     },
+  //   ],
+  //   title: "Publish",
+  // },
+  // {
+  //   icon: <EngageIcon />,
+  //   sublinks: [
+  //     {
+  //       icon: <AutomationIcon />,
+  //       name: "WhatsApp and telegram automation with our apps",
+  //       subItems: [
+  //         {
+  //           icon: <WhatsappIcon />,
+  //           name: "WhatsApp overview",
+  //           href: "/app/engage/integration/whatsapp-automation",
+  //         },
+  //         {
+  //           icon: <TelegramIcon />,
+  //           name: "Telegram overview",
+  //           href: "/app/engage/integration/telegram-automation",
+  //         },
+  //         {
+  //           icon: <CampaignIcon />,
+  //           name: "Campaigns",
+  //           href: "/app/engage/integration/campaigns",
+  //         },
+  //         {
+  //           icon: <AiAssistantIcon />,
+  //           name: "AI assistant",
+  //           href: "/app/engage/integration/ai-assistant",
+  //         },
+  //         {
+  //           icon: <SettingsIcon />,
+  //           name: "Settings",
+  //           href: "/app/engage/integration/settings",
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       icon: <SquareShapeIcon />,
+  //       name: "Social media conversation hub",
+  //       href: "/app/engage/Social-media",
+  //     },
+  //     {
+  //       icon: <DocumentIcon />,
+  //       name: "Social advocacy",
+  //       href: "/app/engage/social-advocacy",
+  //     },
+  //   ],
+  //   title: "Engage",
+  // },
+  // {
+  //   icon: <AnalyseIcon />,
+  //   sublinks: [
+  //     {
+  //       icon: <PresentationAnalyticsIcon />,
+  //       name: "Social media analytics",
+  //       href: "/app/analyse/social-media",
+  //     },
+  //     {
+  //       icon: <ReputationIcon />,
+  //       name: "Reputation mgmt. system",
+  //       href: "/app/analyse/reputation-manager",
+  //     },
+  //     {
+  //       icon: <AdsAnalyticsIcon />,
+  //       name: "Ads analytics",
+  //       href: "/app/analyse/ads-analytics",
+  //     },
+  //     {
+  //       icon: <ReportAnalyticsIcon />,
+  //       name: "Email & SMS Analytics",
+  //       href: "#",
+  //     },
+  //   ],
+  //   title: "Analyse",
+  // },
 ];
 
 export default navLinks;
