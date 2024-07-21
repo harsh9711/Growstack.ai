@@ -60,16 +60,12 @@ const navLinks: NavLink[] = [
         name: "AI assistant",
         href: "/app/plan/ai-assistant",
       },
-      {
-        icon: <ChatgptIcon />,
-        name: "AI custom GPT",
-        href: "/app/plan/custom-gpts",
-      },
-      {
-        icon: <TextToVideoIcon />,
-        name: "Text to video",
-        href: "/app/plan/text-to-video",
-      },
+      // {
+      //   icon: <ChatgptIcon />,
+      //   name: "AI custom GPT",
+      //   href: "/app/plan/custom-gpts",
+      // },
+
       {
         icon: <TridentIcon />,
         name: "Web scraping",
@@ -91,25 +87,25 @@ const navLinks: NavLink[] = [
   {
     icon: <CreateIcon />,
     sublinks: [
-      {
-        icon: <LayoutIcon />,
-        name: "AI website builder",
-        href: "/app/create/website-builder",
-      },
+      // {
+      //   icon: <LayoutIcon />,
+      //   name: "AI website builder",
+      //   href: "/app/create/website-builder",
+      // },
       {
         icon: <MailIcon />,
         name: "AI email builder",
         href: "/app/create/email-builder",
       },
+      // {
+      //   icon: <ShapeIcon />,
+      //   name: "AI workflow builder",
+      //   href: "/app/create/workflow-builder",
+      // },
       {
-        icon: <ShapeIcon />,
-        name: "AI workflow builder",
-        href: "/app/create/workflow-builder",
-      },
-      {
-        icon: <AiArticleIcon />,
-        name: "AI article wizard",
-        href: "/app/create/ai-articles",
+        icon: <TextToVideoIcon />,
+        name: "Text to video",
+        href: "/app/plan/text-to-video",
       },
       // {
       //   icon: <ProductAiIcon />,
@@ -118,6 +114,21 @@ const navLinks: NavLink[] = [
       // },
     ],
     title: "Create",
+  },
+  {
+    icon: <ChatgptIcon />,
+    title: "AI custom GPT",
+    href: "/app/plan/custom-gpts",
+  },
+  {
+    icon: <ShapeIcon />,
+    title: "AI workflow builder",
+    href: "/app/create/workflow-builder",
+  },
+  {
+    icon: <AiArticleIcon />,
+    title: "AI article wizard",
+    href: "/app/create/ai-articles",
   },
   // {
   //   icon: <PublishIcon />,
