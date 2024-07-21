@@ -2,7 +2,7 @@
 
 import Motion from "@/components/Motion";
 import Spinner from "@/components/Spinner";
-import axios from "@/config/axios.config";
+import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import clsx from "clsx";
 import { AnimatePresence } from "framer-motion";
@@ -71,7 +71,7 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
 
     setImages([]);
     setIsPending(true);
-    axios
+    instance
       .post("/ai/api/v1/wizard/image", data)
       .then((response) => {
         const { data } = response;
@@ -100,7 +100,7 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
 
     setArticleData("");
     setIsArticlePending(true);
-    axios
+    instance
       .post("/ai/api/v1/wizard/generate", data)
       .then((response) => {
         const {

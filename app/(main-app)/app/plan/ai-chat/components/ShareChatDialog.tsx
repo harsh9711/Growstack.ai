@@ -20,7 +20,7 @@ import { Search } from "lucide-react";
 import { useState } from "react";
 import { IoIosShareAlt, IoIosArrowBack } from "react-icons/io";
 import { ISidebarItem } from "../interface/chat.interface";
-import axios from "axios";
+import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import Spinner from "@/components/Spinner";
 import toast from "react-hot-toast";
@@ -88,7 +88,7 @@ export default function ShareChatDialog({
         setLoading(true);
         const responses = await Promise.all(
           activeIds.map((id) =>
-            axios.get(`${API_URL}/ai/api/v1/conversation/${id}`)
+            instance.get(`${API_URL}/ai/api/v1/conversation/${id}`)
           )
         );
         const data = responses.map((response) => {

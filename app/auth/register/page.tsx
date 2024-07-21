@@ -4,7 +4,7 @@ import Spinner from "@/components/Spinner";
 import { Checkbox } from "@/components/ui/checkbox";
 import { API_URL } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import instance from "@/config/axios.config";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
@@ -17,7 +17,10 @@ export default function Register() {
   const ValidationSchema = z
     .object({
       email: z.string().email("Please enter a valid email address"),
-      password: z.string().min(8, "Password must be at least 8 characters").max(20, "Password can't exceed 20 characters"),
+      password: z
+        .string()
+        .min(8, "Password must be at least 8 characters")
+        .max(20, "Password can't exceed 20 characters"),
       confirmPassword: z.string(),
       agreeToTerms: z.boolean().refine((val) => val === true, {
         message: "You must agree to the terms and conditions",
@@ -37,13 +40,19 @@ export default function Register() {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<ValidationSchemaType>({ resolver: zodResolver(ValidationSchema), defaultValues: { agreeToTerms: false } });
+  } = useForm<ValidationSchemaType>({
+    resolver: zodResolver(ValidationSchema),
+    defaultValues: { agreeToTerms: false },
+  });
 
   const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
     setIsPending(true);
     try {
       const { email, password } = data;
-      const response = await axios.post(API_URL + "/users/api/v1/signup", { email, password });
+      const response = await instance.post(API_URL + "/users/api/v1/signup", {
+        email,
+        password,
+      });
       toast.success(response.data.message);
     } catch (error: any) {
       if (error.response) {
@@ -63,21 +72,42 @@ export default function Register() {
         <section className="w-full h-full flex justify-center items-center bg-white">
           <div className="w-full max-w-2xl max-h-[900px] h-full p-14 bg-[#F7FAFC] rounded-[30px]">
             <div className="slide-reveal w-full h-full max-w-[460px] mx-auto flex flex-col justify-between items-center md:items-start space-y-10">
-              <Image src={"/logo/growstack.svg"} alt="growstack" height={180} width={180} className="max-h-14" />
+              <Image
+                src={"/logo/growstack.svg"}
+                alt="growstack"
+                height={180}
+                width={180}
+                className="max-h-14"
+              />
               <div className="space-y-6 w-full">
                 <div className="space-y-3">
-                  <h1 className="text-3xl font-bold text-center md:text-left">Get started</h1>
-                  <p className="text-[#002030B2] text-base text-center md:text-left">Create your account now.</p>
+                  <h1 className="text-3xl font-bold text-center md:text-left">
+                    Get started
+                  </h1>
+                  <p className="text-[#002030B2] text-base text-center md:text-left">
+                    Create your account now.
+                  </p>
                 </div>
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-7 !mt-7 w-full">
+                <form
+                  onSubmit={handleSubmit(onSubmit)}
+                  className="space-y-7 !mt-7 w-full"
+                >
                   {/* styled input field for email */}
                   <div>
                     <div
                       className={clsx(
                         "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
-                        errors["email"] && "border-rose-600 focus-within:border-rose-600"
-                      )}>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16" fill="none">
+                        errors["email"] &&
+                          "border-rose-600 focus-within:border-rose-600"
+                      )}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
                         <path
                           fillRule="evenodd"
                           clipRule="evenodd"
@@ -95,7 +125,11 @@ export default function Register() {
                         />
                       </div>
                     </div>
-                    {errors.email && <span className="text-rose-600 text-sm">{errors.email?.message}</span>}
+                    {errors.email && (
+                      <span className="text-rose-600 text-sm">
+                        {errors.email?.message}
+                      </span>
+                    )}
                   </div>
 
                   {/* styled input field for password */}
@@ -103,9 +137,17 @@ export default function Register() {
                     <div
                       className={clsx(
                         "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
-                        errors["password"] && "border-rose-600 focus-within:border-rose-600"
-                      )}>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16" fill="none">
+                        errors["password"] &&
+                          "border-rose-600 focus-within:border-rose-600"
+                      )}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
                         <path
                           fillRule="evenodd"
                           clipRule="evenodd"
@@ -119,12 +161,18 @@ export default function Register() {
                           id="password"
                           autoComplete="password"
                           placeholder="Enter your password..."
-                          className={clsx("text-sm peer focus:ring-0 h-[60px] w-full")}
+                          className={clsx(
+                            "text-sm peer focus:ring-0 h-[60px] w-full"
+                          )}
                           {...register("password")}
                         />
                       </div>
                     </div>
-                    {errors.password && <span className="text-rose-600 text-sm">{errors.password?.message}</span>}
+                    {errors.password && (
+                      <span className="text-rose-600 text-sm">
+                        {errors.password?.message}
+                      </span>
+                    )}
                   </div>
 
                   {/* styled input field for password confirmation*/}
@@ -132,9 +180,17 @@ export default function Register() {
                     <div
                       className={clsx(
                         "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
-                        errors["confirmPassword"] && "border-rose-600 focus-within:border-rose-600"
-                      )}>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16" fill="none">
+                        errors["confirmPassword"] &&
+                          "border-rose-600 focus-within:border-rose-600"
+                      )}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
                         <path
                           fillRule="evenodd"
                           clipRule="evenodd"
@@ -148,35 +204,59 @@ export default function Register() {
                           id="confirm-password"
                           autoComplete="confirm-password"
                           placeholder="Confirm password"
-                          className={clsx("text-sm peer focus:ring-0 h-[60px] w-full")}
+                          className={clsx(
+                            "text-sm peer focus:ring-0 h-[60px] w-full"
+                          )}
                           {...register("confirmPassword")}
                         />
                       </div>
                     </div>
-                    {errors.confirmPassword && <span className="text-rose-600 text-sm">{errors.confirmPassword?.message}</span>}
+                    {errors.confirmPassword && (
+                      <span className="text-rose-600 text-sm">
+                        {errors.confirmPassword?.message}
+                      </span>
+                    )}
                   </div>
 
                   <div>
                     <div className="flex items-center space-x-2">
-                      <Checkbox id="agree-to-terms" defaultChecked={false} onCheckedChange={(checked) => setValue("agreeToTerms", Boolean(checked))} />
+                      <Checkbox
+                        id="agree-to-terms"
+                        defaultChecked={false}
+                        onCheckedChange={(checked) =>
+                          setValue("agreeToTerms", Boolean(checked))
+                        }
+                      />
                       <label
                         htmlFor="agree-to-terms"
-                        className="text-sm font-medium text-[#667085] leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                        className="text-sm font-medium text-[#667085] leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
                         I agree to the{" "}
-                        <Link href="/user-agreements/terms-and-conditions" className="text-primary-green">
+                        <Link
+                          href="/user-agreements/terms-and-conditions"
+                          className="text-primary-green"
+                        >
                           Terms & Conditions
                         </Link>{" "}
                         and{" "}
-                        <Link href="/user-agreements/privacy-policy" className="text-primary-green">
+                        <Link
+                          href="/user-agreements/privacy-policy"
+                          className="text-primary-green"
+                        >
                           Privacy Policy
                         </Link>
                       </label>
                     </div>
-                    {errors.agreeToTerms && <span className="text-rose-600 text-sm">{errors.agreeToTerms.message}</span>}
+                    {errors.agreeToTerms && (
+                      <span className="text-rose-600 text-sm">
+                        {errors.agreeToTerms.message}
+                      </span>
+                    )}
                   </div>
                   <button
                     type="submit"
-                    className="bg-primary-green hover:bg-primary-green/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center">
+                    className="bg-primary-green hover:bg-primary-green/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center"
+                  >
                     {isPending ? <Spinner /> : "Register"}
                   </button>
                 </form>
@@ -187,18 +267,37 @@ export default function Register() {
                   <div className="h-[2px] w-full bg-[#EFEFF4]" />
                 </div>
                 <div className="space-y-3">
-                  <Link href={`${API_URL}/users/api/v1/auth/facebook`} className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021]">
-                    <Image src="/icons/facebook.svg" alt="" width={20} height={20} />
+                  <Link
+                    href={`${API_URL}/users/api/v1/auth/facebook`}
+                    className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021]"
+                  >
+                    <Image
+                      src="/icons/facebook.svg"
+                      alt=""
+                      width={20}
+                      height={20}
+                    />
                     Continue with Facebook
                   </Link>
-                  <Link href={`${API_URL}/users/api/v1/auth/google`} className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021]">
-                    <Image src="/icons/google.svg" alt="" width={20} height={20} />
+                  <Link
+                    href={`${API_URL}/users/api/v1/auth/google`}
+                    className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021]"
+                  >
+                    <Image
+                      src="/icons/google.svg"
+                      alt=""
+                      width={20}
+                      height={20}
+                    />
                     Continue with Google
                   </Link>
                 </div>
                 <p className="text-center text-[#667085]">
                   Already have an account?{" "}
-                  <Link href="/auth/login" className="text-primary-green font-semibold">
+                  <Link
+                    href="/auth/login"
+                    className="text-primary-green font-semibold"
+                  >
                     Login Now
                   </Link>
                 </p>

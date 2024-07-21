@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import axios from '@/config/axios.config';
-import React, { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-import Topbar from '../new/components/Topbar';
-import { API_URL } from '@/lib/api';
-import { useRouter, useSearchParams } from 'next/navigation';
-import Image from 'next/image';
-import ChatInput from './components/ChatInput';
-import ChatMessage from './components/ChatMessage';
+import instance from "@/config/axios.config";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import Topbar from "../new/components/Topbar";
+import { API_URL } from "@/lib/api";
+import { useRouter, useSearchParams } from "next/navigation";
+import Image from "next/image";
+import ChatInput from "./components/ChatInput";
+import ChatMessage from "./components/ChatMessage";
 
 type CustomGptData = {
   name: string;
@@ -40,11 +40,11 @@ const Page = () => {
   const [isAPICalled, setIsAPICalled] = useState<boolean>(false);
   const searchParams = useSearchParams();
   const [customeGptData, setCustomGptData] = useState<CustomGptData>({
-    name: '',
-    description: '',
-    icon: '',
-    _id: '',
-    assistant_id: '',
+    name: "",
+    description: "",
+    icon: "",
+    _id: "",
+    assistant_id: "",
     conversation_starter: [],
   });
   const [chatMessages, setChatMessages] = useState<ChatMessageType[]>([]);
@@ -56,7 +56,7 @@ const Page = () => {
         data: {
           data: { custom_gpt_id, chats },
         },
-      } = await axios.get(`${API_URL}/ai/api/v1/customgpt/${id}`);
+      } = await instance.get(`${API_URL}/ai/api/v1/customgpt/${id}`);
       setCustomGptData(custom_gpt_id);
       setChatMessages(chats);
       setConversation(
@@ -102,12 +102,12 @@ const Page = () => {
   };
 
   const handleSend = async (starter: string) => {
-    addMessage(starter, '', true);
+    addMessage(starter, "", true);
     try {
       if (chatMessages.length === 0) {
         const {
           data: { data },
-        } = await axios.post(`${API_URL}/ai/api/v1/customgpt/chat`, {
+        } = await instance.post(`${API_URL}/ai/api/v1/customgpt/chat`, {
           user_prompt: starter,
           custom_gpt_id: customeGptData._id,
           assistant_id: customeGptData.assistant_id,
@@ -121,7 +121,7 @@ const Page = () => {
   };
 
   useEffect(() => {
-    const id = searchParams.get('custom_gpt_id');
+    const id = searchParams.get("custom_gpt_id");
     if (id) {
       getCustomGptData(id);
     }
@@ -150,7 +150,9 @@ const Page = () => {
                     className="rounded-full items-center w-28 h-28"
                   />
                   <span className="items-center justify-center flex flex-col">
-                    <h2 className="font-bold text-[18px]">{customeGptData?.name}</h2>
+                    <h2 className="font-bold text-[18px]">
+                      {customeGptData?.name}
+                    </h2>
                     <p className="text-[14px]">{customeGptData?.description}</p>
                   </span>
                 </div>

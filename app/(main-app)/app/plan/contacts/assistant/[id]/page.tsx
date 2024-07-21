@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import instance from "@/config/axios.config";
 import clsx from "clsx";
 import toast from "react-hot-toast";
 import {
@@ -57,7 +57,9 @@ const columns: ColumnDef<Assistant>[] = [
           table.getIsAllPageRowsSelected() ||
           (table.getIsSomePageRowsSelected() && "indeterminate")
         }
-        onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
+        onCheckedChange={(value: any) =>
+          table.toggleAllPageRowsSelected(!!value)
+        }
         aria-label="Select all"
         className="w-[18px] h-[18px]"
       />
@@ -122,7 +124,9 @@ const ContactsTable: React.FC<PageProps> = ({ params: { id } }) => {
     const fetchAssistants = async () => {
       setIsPending(true);
       try {
-        const response = await axios.get(`${API_URL}/users/api/v1/contacts/prospects/${id}`);
+        const response = await instance.get(
+          `${API_URL}/users/api/v1/contacts/prospects/${id}`
+        );
         const { businesses } = response.data.data;
 
         const formattedAssistants = businesses.map((assistant: any) => ({
@@ -233,7 +237,10 @@ const ContactsTable: React.FC<PageProps> = ({ params: { id } }) => {
                     <TableHead key={header.id}>
                       {header.isPlaceholder
                         ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   ))}
                 </TableRow>
@@ -248,14 +255,20 @@ const ContactsTable: React.FC<PageProps> = ({ params: { id } }) => {
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
                       </TableCell>
                     ))}
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={columns.length} className="h-24 text-center">
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
                     {isPending ? "Loading data..." : "No data available"}
                   </TableCell>
                 </TableRow>
