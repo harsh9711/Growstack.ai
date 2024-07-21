@@ -1,6 +1,6 @@
 "use client";
 
-import axios from "@/config/axios.config";
+import instance from "@/config/axios.config";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Assistant, Conversation } from "../../components/types";
@@ -32,7 +32,7 @@ const AssistantsChats: React.FC<PageProps> = ({
     const fetchAssistantConversation = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(
+        const response = await instance.get(
           `/ai/api/v1/assistant/${assistant_id}`
         );
         setAssistantConversation(response.data.data.convo);
@@ -51,7 +51,7 @@ const AssistantsChats: React.FC<PageProps> = ({
 
     const fetchAssistantData = async () => {
       try {
-        const response = await axios.get("/ai/api/v1/assistant");
+        const response = await instance.get("/ai/api/v1/assistant");
         setAssistantData(
           response.data.data.filter(
             (assistant: Assistant) => assistant.id === assistant_id
@@ -87,8 +87,8 @@ const AssistantsChats: React.FC<PageProps> = ({
   }
 
   const switchLanguage = (language: string) => {
-    setSelectedLanguage(language)
-  }
+    setSelectedLanguage(language);
+  };
 
   return (
     <div className="flex-1 flex flex-col h-full w-full">

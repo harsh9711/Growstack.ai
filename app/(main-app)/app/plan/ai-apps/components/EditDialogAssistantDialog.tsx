@@ -1,18 +1,29 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import axios from "axios";
+import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
+import {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 import { Edit2, Minus, Plus } from "lucide-react";
 import { Assistant } from "@/types/assistants";
 import { useRouter } from "next/navigation";
-import { Dialog, DialogTrigger, DialogContent, DialogClose } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 type UserInput = {
   title: string;
@@ -24,8 +35,13 @@ type UserInput = {
 
 const ValidationSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters long"),
-  description: z.string().min(10, "Description must be at least 10 characters").max(200, "Description can't exceed 200 characters"),
-  custom_prompt: z.string().min(10, "Custom prompt must be at least 10 characters"),
+  description: z
+    .string()
+    .min(10, "Description must be at least 10 characters")
+    .max(200, "Description can't exceed 200 characters"),
+  custom_prompt: z
+    .string()
+    .min(10, "Custom prompt must be at least 10 characters"),
   category: z.string(), // Include category in validation schema
   icon: z.string(), // Include icon in validation schema
   title: z.string(),
@@ -56,7 +72,9 @@ const EditAssistantDialog = ({ id }: { id: string }) => {
     if (id) {
       const fetchAssistant = async () => {
         try {
-          const response = await axios.get(`${API_URL}/ai/api/v1/chat-template/${id}`);
+          const response = await instance.get(
+            `${API_URL}/ai/api/v1/chat-template/${id}`
+          );
           const assistantData = response.data.data;
 
           // Set assistant and inputs states
@@ -86,7 +104,10 @@ const EditAssistantDialog = ({ id }: { id: string }) => {
   }, [id, reset]);
 
   const addUserInput = () => {
-    setinputs((prevInputs) => [...prevInputs, { title: "", description: "", type: "", required: "Optional", icon: "" }]);
+    setinputs((prevInputs) => [
+      ...prevInputs,
+      { title: "", description: "", type: "", required: "Optional", icon: "" },
+    ]);
   };
 
   const removeUserInput = (index: number) => {
@@ -97,7 +118,11 @@ const EditAssistantDialog = ({ id }: { id: string }) => {
     });
   };
 
-  const handleInputChange = (index: number, key: keyof UserInput, value: string) => {
+  const handleInputChange = (
+    index: number,
+    key: keyof UserInput,
+    value: string
+  ) => {
     setinputs((prevInputs) => {
       const updatedInputs = [...prevInputs];
       updatedInputs[index][key] = value;
@@ -117,7 +142,10 @@ const EditAssistantDialog = ({ id }: { id: string }) => {
         title: data.title, // Include title in changedFields
         inputs, // Ensure inputs are included
       };
-      await axios.put(`${API_URL}/ai/api/v1/chat-template/${id}`, changedFields);
+      await instance.put(
+        `${API_URL}/ai/api/v1/chat-template/${id}`,
+        changedFields
+      );
       toast.success("Assistant updated successfully");
     } catch (error) {
       console.error("Error updating assistant:", error);
@@ -145,55 +173,93 @@ const EditAssistantDialog = ({ id }: { id: string }) => {
       <DialogContent className="max-w-[1800px]">
         <h1 className="text-2xl font-semibold">Edit Assistant</h1>
         {isLoading ? (
-          <section className="grid place-content-center h-[40vh]">Loading...</section>
+          <section className="grid place-content-center h-[40vh]">
+            Loading...
+          </section>
         ) : (
           assistant && (
             <section className="bg-white rounded-3xl mt-5">
               <form onSubmit={handleSubmit(handleUpdate)}>
                 <div className="space-y-5">
-                  <h1 className="text-xl font-semibold flex items-center gap-2">Assistant Editor</h1>
+                  <h1 className="text-xl font-semibold flex items-center gap-2">
+                    Assistant Editor
+                  </h1>
                   <div className="grid grid-cols-2 gap-8 border-t border-[#EBEBEB] pb-4 pt-8">
                     <div className="space-y-2">
                       <label className="font-medium">
                         Template Name <span className="text-[#F00]">*</span>
                       </label>
-                      <Input type="text" placeholder="Type assistant name" {...register("name")} />
-                      {errors.name && <p className="text-rose-600">{errors.name.message}</p>}
+                      <Input
+                        type="text"
+                        placeholder="Type assistant name"
+                        {...register("name")}
+                      />
+                      {errors.name && (
+                        <p className="text-rose-600">{errors.name.message}</p>
+                      )}
                     </div>
                     <div className="space-y-2">
                       <label className="font-medium">
-                        Template Description <span className="text-[#F00]">*</span>
+                        Template Description{" "}
+                        <span className="text-[#F00]">*</span>
                       </label>
-                      <Input type="text" placeholder="Type assistant description" {...register("description")} />
-                      {errors.description && <p className="text-rose-600">{errors.description.message}</p>}
+                      <Input
+                        type="text"
+                        placeholder="Type assistant description"
+                        {...register("description")}
+                      />
+                      {errors.description && (
+                        <p className="text-rose-600">
+                          {errors.description.message}
+                        </p>
+                      )}
                     </div>
                     <div className="space-y-2">
                       <label className="font-medium">
                         Template Category <span className="text-[#F00]">*</span>
                       </label>
-                      <Select {...register("category")} defaultValue={assistant.category}>
+                      <Select
+                        {...register("category")}
+                        defaultValue={assistant.category}
+                      >
                         <SelectTrigger className="w-full border-none h-14">
                           <SelectValue>{assistant.category}</SelectValue>
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="Articles And Contents">Articles And Contents</SelectItem>
-                          <SelectItem value="Blogs Posts">Blogs Posts</SelectItem>
+                          <SelectItem value="Articles And Contents">
+                            Articles And Contents
+                          </SelectItem>
+                          <SelectItem value="Blogs Posts">
+                            Blogs Posts
+                          </SelectItem>
                           <SelectItem value="Commerce">Commerce</SelectItem>
                           <SelectItem value="Emails">Emails</SelectItem>
                           <SelectItem value="Frameworks">Frameworks</SelectItem>
                           <SelectItem value="Marketing">Marketing</SelectItem>
-                          <SelectItem value="Social Media">Social Media</SelectItem>
+                          <SelectItem value="Social Media">
+                            Social Media
+                          </SelectItem>
                           <SelectItem value="Websites">Websites</SelectItem>
                         </SelectContent>
                       </Select>
-                      {errors.category && <p className="text-rose-600">{errors.category.message}</p>}
+                      {errors.category && (
+                        <p className="text-rose-600">
+                          {errors.category.message}
+                        </p>
+                      )}
                     </div>
                     <div className="space-y-2">
                       <label className="font-medium">
                         Template Icon <span className="text-[#F00]">*</span>
                       </label>
-                      <Input type="text" placeholder="Type assistant icon" {...register("icon")} />
-                      {errors.icon && <p className="text-rose-600">{errors.icon.message}</p>}
+                      <Input
+                        type="text"
+                        placeholder="Type assistant icon"
+                        {...register("icon")}
+                      />
+                      {errors.icon && (
+                        <p className="text-rose-600">{errors.icon.message}</p>
+                      )}
                     </div>
                   </div>
                   <div className="space-y-2 !mt-8">
@@ -208,7 +274,9 @@ const EditAssistantDialog = ({ id }: { id: string }) => {
                             type="text"
                             placeholder="Type input field title (required)"
                             value={input.title}
-                            onChange={(e) => handleInputChange(index, "title", e.target.value)}
+                            onChange={(e) =>
+                              handleInputChange(index, "title", e.target.value)
+                            }
                           />
                         </div>
                         <div className="w-full space-y-2">
@@ -216,25 +284,51 @@ const EditAssistantDialog = ({ id }: { id: string }) => {
                             type="text"
                             placeholder="Type input field description (required)"
                             value={input.description}
-                            onChange={(e) => handleInputChange(index, "description", e.target.value)}
+                            onChange={(e) =>
+                              handleInputChange(
+                                index,
+                                "description",
+                                e.target.value
+                              )
+                            }
                           />
                         </div>
                         <div className="w-full space-y-2">
-                          <Select value={input.type} onValueChange={(value) => handleInputChange(index, "type", value)}>
+                          <Select
+                            value={input.type}
+                            onValueChange={(value) =>
+                              handleInputChange(index, "type", value)
+                            }
+                          >
                             <SelectTrigger className="w-full border-none h-14">
                               <SelectValue placeholder="Input field" />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="Input field">Input field</SelectItem>
-                              <SelectItem value="Textarea field">Textarea field</SelectItem>
-                              <SelectItem value="Select list field">Select list field</SelectItem>
-                              <SelectItem value="Checkbox list field">Checkbox list field</SelectItem>
-                              <SelectItem value="Radio buttons field">Radio buttons field</SelectItem>
+                              <SelectItem value="Input field">
+                                Input field
+                              </SelectItem>
+                              <SelectItem value="Textarea field">
+                                Textarea field
+                              </SelectItem>
+                              <SelectItem value="Select list field">
+                                Select list field
+                              </SelectItem>
+                              <SelectItem value="Checkbox list field">
+                                Checkbox list field
+                              </SelectItem>
+                              <SelectItem value="Radio buttons field">
+                                Radio buttons field
+                              </SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
                         <div className="w-full space-y-2">
-                          <Select value={input.required} onValueChange={(value) => handleInputChange(index, "required", value)}>
+                          <Select
+                            value={input.required}
+                            onValueChange={(value) =>
+                              handleInputChange(index, "required", value)
+                            }
+                          >
                             <SelectTrigger className="w-full border-none h-14">
                               <SelectValue placeholder="Optional" />
                             </SelectTrigger>
@@ -248,14 +342,16 @@ const EditAssistantDialog = ({ id }: { id: string }) => {
                           <button
                             type="button"
                             className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
-                            onClick={addUserInput}>
+                            onClick={addUserInput}
+                          >
                             <Plus />
                           </button>
                         ) : (
                           <button
                             type="button"
                             className="bg-red-500 text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
-                            onClick={() => removeUserInput(index)}>
+                            onClick={() => removeUserInput(index)}
+                          >
                             <Minus />
                           </button>
                         )}
@@ -266,16 +362,28 @@ const EditAssistantDialog = ({ id }: { id: string }) => {
                     <label className="font-medium">
                       Custom Prompt <span className="text-[#F00]">*</span>
                     </label>
-                    <Input type="text" placeholder="Type custom prompt" className="h-14" {...register("custom_prompt")} />
-                    {errors.custom_prompt && <p className="text-rose-600">{errors.custom_prompt.message}</p>}
+                    <Input
+                      type="text"
+                      placeholder="Type custom prompt"
+                      className="h-14"
+                      {...register("custom_prompt")}
+                    />
+                    {errors.custom_prompt && (
+                      <p className="text-rose-600">
+                        {errors.custom_prompt.message}
+                      </p>
+                    )}
                   </div>
                   <div className="flex justify-end gap-x-3 !mt-8">
                     <DialogClose>
-                      <button className="border text-primary-black px-8 py-4 rounded-xl flex items-center gap-2">Cancel</button>
+                      <button className="border text-primary-black px-8 py-4 rounded-xl flex items-center gap-2">
+                        Cancel
+                      </button>
                     </DialogClose>
                     <button
                       className="bg-primary-green text-white sheen transition duration-500 px-8 py-4 rounded-xl flex items-center gap-2"
-                      disabled={isPending}>
+                      disabled={isPending}
+                    >
                       {isPending ? "Updating..." : "Update Assistant"}
                     </button>
                   </div>

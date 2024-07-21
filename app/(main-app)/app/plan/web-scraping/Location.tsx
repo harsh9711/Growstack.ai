@@ -2,7 +2,7 @@
 import { Fragment, SetStateAction, useEffect, useState } from "react";
 import { Plus, Search, X } from "lucide-react";
 import BulkDialog from "./components/BulkDialog";
-import axios from "axios";
+import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 // import LocationMap from "./Location";
 import { LoadScript, GoogleMap, Marker } from "@react-google-maps/api";
@@ -39,7 +39,9 @@ const LocationMap: React.FC<Props> = ({ places }) => {
     }
   }, [places]);
 
-  const handleLocationChange = (e: { target: { value: SetStateAction<string> } }) => {
+  const handleLocationChange = (e: {
+    target: { value: SetStateAction<string> };
+  }) => {
     setLocation(e.target.value); // Update location state on input change
   };
 
@@ -49,12 +51,15 @@ const LocationMap: React.FC<Props> = ({ places }) => {
 
   const handleCountrySearch = async () => {
     try {
-      const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json`, {
-        params: {
-          key: "YOUR_OPENCAGE_API_KEY",
-          q: inputCountry,
-        },
-      });
+      const response = await instance.get(
+        `https://api.opencagedata.com/geocode/v1/json`,
+        {
+          params: {
+            key: "YOUR_OPENCAGE_API_KEY",
+            q: inputCountry,
+          },
+        }
+      );
       const { lat, lng } = response.data.results[0].geometry;
       setCenter({ lat, lng });
     } catch (error) {
@@ -68,14 +73,29 @@ const LocationMap: React.FC<Props> = ({ places }) => {
         <p className="font-medium">Location</p>
         <div className="bg-[#F2F2F2] border border-[#E4E4E4] py-2 pl-5 pr-2 flex items-center gap-4 rounded-xl focus-within:border-gray-300">
           <Search className="text-primary-green" />
-          <input className="h-10 bg-transparent w-full" placeholder="Enter location" value={location} onChange={handleLocationChange} />
-          <Link href={`https://www.google.com/maps?q=${encodeURIComponent(location)}`} className="w-full max-w-fit" target="_blank" rel="noopener noreferrer">
+          <input
+            className="h-10 bg-transparent w-full"
+            placeholder="Enter location"
+            value={location}
+            onChange={handleLocationChange}
+          />
+          <Link
+            href={`https://www.google.com/maps?q=${encodeURIComponent(
+              location
+            )}`}
+            className="w-full max-w-fit"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <button className="flex items-center gap-3 hover:bg-primary-green/10 sheen min-w-fit py-3 px-4 rounded-lg transition-all duration-300">
               <Search className="text-primary-green" />
               View Map
             </button>
           </Link>
-          <Link href="/app/plan/web-scraping/add-prospect" className="w-full max-w-fit">
+          <Link
+            href="/app/plan/web-scraping/add-prospect"
+            className="w-full max-w-fit"
+          >
             <button className="flex items-center gap-3 hover:bg-primary-green/10 sheen min-w-fit py-3 px-4 rounded-lg transition-all duration-300">
               <Search className="text-primary-green" />
               Add prospect manually
@@ -93,17 +113,28 @@ const LocationMap: React.FC<Props> = ({ places }) => {
             value={inputCountry}
             onChange={handleCountryInputChange}
           />
-          <button className="bg-white h-12 px-8 rounded-xl text-primary-green flex items-center gap-3 font-medium" onClick={handleCountrySearch}>
+          <button
+            className="bg-white h-12 px-8 rounded-xl text-primary-green flex items-center gap-3 font-medium"
+            onClick={handleCountrySearch}
+          >
             Search Country
           </button>
         </div>
       </div>
       <div className="mt-8">
         <LoadScript googleMapsApiKey="YOUR_GOOGLE_MAPS_API_KEY">
-          <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={10}>
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={center}
+            zoom={10}
+          >
             {/* Render markers for each place */}
             {places.map((place, index) => (
-              <Marker key={index} position={{ lat: place.latitude, lng: place.longitude }} title={place.title} />
+              <Marker
+                key={index}
+                position={{ lat: place.latitude, lng: place.longitude }}
+                title={place.title}
+              />
             ))}
           </GoogleMap>
         </LoadScript>
@@ -131,7 +162,7 @@ export default function WebScraping() {
     if (countryName) {
       url = `https://restcountries.com/v3.1/name/${countryName}`;
     }
-    axios
+    instance
       .get(url)
       .then((response) => {
         let data = response.data;
@@ -161,7 +192,9 @@ export default function WebScraping() {
   };
 
   const handleInputChange = (id: number, value: string) => {
-    const updatedFields = fields.map((field) => (field.id === id ? { ...field, value } : field));
+    const updatedFields = fields.map((field) =>
+      field.id === id ? { ...field, value } : field
+    );
     setFields(updatedFields);
   };
 
@@ -202,7 +235,10 @@ export default function WebScraping() {
       console.log("Post data:", postData); // Log post data to verify
 
       // Send POST request to API
-      const response = await axios.post(`${API_URL}/ai/api/v1/webscrape`, postData);
+      const response = await instance.post(
+        `${API_URL}/ai/api/v1/webscrape`,
+        postData
+      );
       console.log("Response from API:", response.data.data[0].places);
 
       // Update places state with response data
@@ -228,7 +264,9 @@ export default function WebScraping() {
         <div className="mt-8">
           <div className="space-y-2 w-full">
             <h1 className="text-2xl font-semibold">Web scraping</h1>
-            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">Google my business scraping tool</p>
+            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
+              Google my business scraping tool
+            </p>
           </div>
           <section className="bg-primary-green p-10 rounded-3xl mt-4 text-white">
             <h1 className="text-xl font-semibold">Search Terms</h1>
@@ -243,7 +281,10 @@ export default function WebScraping() {
                   onChange={(e) => handleInputChange(field.id, e.target.value)}
                 />
                 {fields.length > 1 && (
-                  <button className="bg-[#F2F2F2] p-3 rounded-full grid place-content-center" onClick={() => removeField(field.id)}>
+                  <button
+                    className="bg-[#F2F2F2] p-3 rounded-full grid place-content-center"
+                    onClick={() => removeField(field.id)}
+                  >
                     <X className="text-[#FF0000]" />
                   </button>
                 )}
@@ -255,7 +296,10 @@ export default function WebScraping() {
               </button>
               <div className="flex items-center gap-4">
                 <BulkDialog onBulkAdd={handleBulkAdd} />
-                <button className="bg-white h-12 px-8 rounded-xl text-primary-green flex items-center gap-3 font-medium" onClick={addField}>
+                <button
+                  className="bg-white h-12 px-8 rounded-xl text-primary-green flex items-center gap-3 font-medium"
+                  onClick={addField}
+                >
                   <Plus size={23} />
                   Add field
                 </button>
@@ -271,7 +315,10 @@ export default function WebScraping() {
                   value={inputCountry}
                   onChange={handleCountryInputChange}
                 />
-                <button className="bg-white h-12 px-8 rounded-xl text-primary-green flex items-center gap-3 font-medium" onClick={handleCountrySearch}>
+                <button
+                  className="bg-white h-12 px-8 rounded-xl text-primary-green flex items-center gap-3 font-medium"
+                  onClick={handleCountrySearch}
+                >
                   Search Country
                 </button>
               </div>
@@ -280,7 +327,10 @@ export default function WebScraping() {
           <LocationMap places={places} />
           {showTable} {/* Render the table when showTable is true */}
           <div className="flex justify-center mt-10">
-            <button className="bg-primary-green h-14 text-white sheen w-full max-w-[200px] mx-auto rounded-xl" onClick={handleBulkSubmit}>
+            <button
+              className="bg-primary-green h-14 text-white sheen w-full max-w-[200px] mx-auto rounded-xl"
+              onClick={handleBulkSubmit}
+            >
               Start
             </button>
           </div>

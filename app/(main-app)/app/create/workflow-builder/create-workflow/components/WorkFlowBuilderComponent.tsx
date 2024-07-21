@@ -1,27 +1,29 @@
-'use client';
+"use client";
 
 // components/WorkFlowBuilderComponent.tsx
-import { InputIcon2, OutputIcon2 } from '@/components/svgs';
-import clsx from 'clsx';
-import { MoreVertical, Plus } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import InputSection from './InputSection';
-import OutputSection from './OutputSection';
-import ActionsSection from './ActionsSection';
-import ProvidersDrawer from './ProvidersDrawer';
+import { InputIcon2, OutputIcon2 } from "@/components/svgs";
+import clsx from "clsx";
+import { MoreVertical, Plus } from "lucide-react";
+import { useEffect, useState } from "react";
+import InputSection from "./InputSection";
+import OutputSection from "./OutputSection";
+import ActionsSection from "./ActionsSection";
+import ProvidersDrawer from "./ProvidersDrawer";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import axios from 'axios';
-import { API_URL } from '@/lib/api';
-import toast from 'react-hot-toast';
-import { tools } from './data/tools';
+} from "@/components/ui/dropdown-menu";
+import instance from "@/config/axios.config";
+import { API_URL } from "@/lib/api";
+import toast from "react-hot-toast";
+import { tools } from "./data/tools";
 
 export default function WorkFlowBuilderComponent() {
-  const [activeTag, setActiveTag] = useState<'Input' | 'Output' | 'Actions'>('Input');
+  const [activeTag, setActiveTag] = useState<"Input" | "Output" | "Actions">(
+    "Input"
+  );
   const [openProvidersDrawer, setOpenProvidersDrawer] = useState(false);
   const [activeAction, setActiveAction] = useState<any>({});
   const [actions, setActions] = useState<any[]>([]);
@@ -47,7 +49,7 @@ export default function WorkFlowBuilderComponent() {
 
   const postAction = async (action: any, index: any) => {
     try {
-      return axios.post(
+      return instance.post(
         `${API_URL}/workflow/api/v1/${workflowId}/actions?indexOfAction=${index}`,
         action
       );
@@ -69,21 +71,25 @@ export default function WorkFlowBuilderComponent() {
         data: {
           data: { updateAction },
         },
-      } = await axios.put(
+      } = await instance.put(
         `${API_URL}/workflow/api/v1/${workflowId}/actions/${action.action_id}`,
         payload
       );
       setActions(
         actions.map((act) =>
           act.action_id === action.action_id
-            ? { ...updateAction, icon: action.icon, preset_json: action.preset_json }
+            ? {
+                ...updateAction,
+                icon: action.icon,
+                preset_json: action.preset_json,
+              }
             : act
         )
       );
       setIsAPICalling(false);
-      toast.success('Action saved successfully');
+      toast.success("Action saved successfully");
     } catch (error) {
-      toast.error('Failed to save action');
+      toast.error("Failed to save action");
       setIsAPICalling(false);
     }
   };
@@ -94,7 +100,7 @@ export default function WorkFlowBuilderComponent() {
         data: {
           data: { input_configs, actions, output_configs },
         },
-      } = await axios.get(`${API_URL}/workflow/api/v1/${id}`);
+      } = await instance.get(`${API_URL}/workflow/api/v1/${id}`);
       setActions(
         actions.map((action: any) => {
           const tool: any = tools.find((tool) => tool.name === action.name);
@@ -108,7 +114,8 @@ export default function WorkFlowBuilderComponent() {
                 inputs: tool?.preset_json.body.inputs.map((input: any) => ({
                   ...input,
                   input_default_value:
-                    action.preset_json.body[input.input_label] ?? input.input_default_value,
+                    action.preset_json.body[input.input_label] ??
+                    input.input_default_value,
                 })),
               },
             },
@@ -118,47 +125,51 @@ export default function WorkFlowBuilderComponent() {
       setInputConfigs(input_configs);
       setOutputConfigs(output_configs);
     } catch (error) {
-      toast.error('Failed to fetch workflow details');
+      toast.error("Failed to fetch workflow details");
     }
   };
 
   const deleteAction = async (actionId: string, index: number) => {
     try {
-      await axios.delete(`${API_URL}/workflow/api/v1/${workflowId}/actions/${actionId}`);
+      await instance.delete(
+        `${API_URL}/workflow/api/v1/${workflowId}/actions/${actionId}`
+      );
       setActions(actions.filter((action) => action._id !== actionId));
       if (index === 0) {
-        setActiveTag('Input');
+        setActiveTag("Input");
         setActiveAction({});
       } else {
         setActiveAction(actions[index - 1]);
-        setActiveTag('Actions');
+        setActiveTag("Actions");
       }
-      toast.success('Action deleted successfully');
+      toast.success("Action deleted successfully");
     } catch (error) {
-      toast.error('Failed to delete action');
+      toast.error("Failed to delete action");
     }
   };
 
   const reorderActions = async (actionId: string, direction: string) => {
     try {
-      await axios.put(
+      await instance.put(
         `${API_URL}/workflow/api/v1/${workflowId}/actions/${actionId}/reorder?direction=${direction}`
       );
       setActions((prevActions) => {
-        const actionIndex = prevActions.findIndex((action) => action._id === actionId);
+        const actionIndex = prevActions.findIndex(
+          (action) => action._id === actionId
+        );
         const action = prevActions[actionIndex];
         const updatedActions = [...prevActions];
         updatedActions.splice(actionIndex, 1);
-        if (direction === 'up') {
+        if (direction === "up") {
           updatedActions.splice(actionIndex - 1, 0, action);
         } else {
           updatedActions.splice(actionIndex + 1, 0, action);
         }
         return updatedActions;
       });
-      toast.success('Action reordered successfully');
+      toast.success("Action reordered successfully");
     } catch (error) {
-      toast.error('Failed to reorder action');
+      toast.error("Failed to reorder action");
     }
   };
 
@@ -178,7 +189,7 @@ export default function WorkFlowBuilderComponent() {
     };
     try {
       const response = await postAction(payload, index);
-      toast.success('Action added successfully');
+      toast.success("Action added successfully");
       const newAction = {
         ...response.data.data.newAction,
         index: index - 1,
@@ -189,19 +200,23 @@ export default function WorkFlowBuilderComponent() {
       if (index === 1) {
         updatedActions = [newAction, ...actions];
       } else {
-        updatedActions = [...actions.slice(0, index - 1), newAction, ...actions.slice(index - 1)];
+        updatedActions = [
+          ...actions.slice(0, index - 1),
+          newAction,
+          ...actions.slice(index - 1),
+        ];
       }
       setActions(updatedActions);
       setActiveAction(action);
     } catch (error) {
       console.log(error);
-      toast.error('Failed to add action');
+      toast.error("Failed to add action");
     }
   };
 
   const renderSection = () => {
     switch (activeTag) {
-      case 'Input':
+      case "Input":
         return (
           <InputSection
             inputConfig={inputConfigs}
@@ -209,7 +224,7 @@ export default function WorkFlowBuilderComponent() {
             onSelectAction={onSelectAction}
           />
         );
-      case 'Output':
+      case "Output":
         return (
           <OutputSection
             outputConfigs={outputConfigs}
@@ -219,7 +234,7 @@ export default function WorkFlowBuilderComponent() {
             workflowId={workflowId}
           />
         );
-      case 'Actions':
+      case "Actions":
         return (
           <ActionsSection
             key={activeAction.action_id}
@@ -236,7 +251,7 @@ export default function WorkFlowBuilderComponent() {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
-    const id = searchParams.get('workflow_id');
+    const id = searchParams.get("workflow_id");
     if (id) {
       setWorkflowId(id);
       getWorkFlowDetails(id);
@@ -249,10 +264,10 @@ export default function WorkFlowBuilderComponent() {
         {/* Left section - Workflow steps */}
         <div className="flex-1 p-5 flex flex-col justify-center items-center gap-10">
           <button
-            onClick={() => setActiveTag('Input')}
+            onClick={() => setActiveTag("Input")}
             className={clsx(
-              'w-full max-w-[340px] transition-all duration-300 p-3 border border-[#E5E7EB] rounded-xl flex items-center gap-4 cursor-pointer',
-              activeTag === 'Input' && '!border-primary-green'
+              "w-full max-w-[340px] transition-all duration-300 p-3 border border-[#E5E7EB] rounded-xl flex items-center gap-4 cursor-pointer",
+              activeTag === "Input" && "!border-primary-green"
             )}
           >
             <div className="bg-primary-green p-4 rounded-lg">
@@ -260,7 +275,9 @@ export default function WorkFlowBuilderComponent() {
             </div>
             <div className="space-y-1 flex flex-col items-start">
               <h3 className="text-[17px] font-medium">Input</h3>
-              <p className="text-sm text-primary-black text-opacity-50">Click to add inputs</p>
+              <p className="text-sm text-primary-black text-opacity-50">
+                Click to add inputs
+              </p>
             </div>
           </button>
 
@@ -275,12 +292,14 @@ export default function WorkFlowBuilderComponent() {
               <button
                 key={index}
                 onClick={() => {
-                  setActiveTag('Actions');
+                  setActiveTag("Actions");
                   setActiveAction({ ...action, index });
                 }}
                 className={clsx(
-                  'w-full max-w-[340px] transition-all duration-300 p-3 border border-[#E5E7EB] rounded-xl flex items-center gap-4 cursor-pointer',
-                  index === activeAction.index && activeTag === 'Actions' && '!border-primary-green'
+                  "w-full max-w-[340px] transition-all duration-300 p-3 border border-[#E5E7EB] rounded-xl flex items-center gap-4 cursor-pointer",
+                  index === activeAction.index &&
+                    activeTag === "Actions" &&
+                    "!border-primary-green"
                 )}
               >
                 <div className="">
@@ -289,8 +308,10 @@ export default function WorkFlowBuilderComponent() {
                 <div className="space-y-1 flex flex-col items-start">
                   <h3 className="text-[17px] font-medium">{action.name}</h3>
                   <p className="text-sm text-primary-black text-opacity-50">
-                    Step {index + 1}{' '}
-                    <span className="font-semibold text-black">{action.subtype}</span>
+                    Step {index + 1}{" "}
+                    <span className="font-semibold text-black">
+                      {action.subtype}
+                    </span>
                   </p>
                 </div>
                 <div className="ml-auto">
@@ -318,7 +339,8 @@ export default function WorkFlowBuilderComponent() {
                         className="min-w-[200px] flex justify-between gap-8 items-center my-1"
                         disabled={index === 0}
                         onClick={(event) => {
-                          event.stopPropagation(), reorderActions(action._id, 'up');
+                          event.stopPropagation(),
+                            reorderActions(action._id, "up");
                         }}
                       >
                         <div className="flex gap-3">
@@ -330,7 +352,8 @@ export default function WorkFlowBuilderComponent() {
                         className="min-w-[200px] flex justify-between gap-8 items-center my-1"
                         disabled={index === actions.length - 1}
                         onClick={(event) => {
-                          event.stopPropagation(), reorderActions(action._id, 'down');
+                          event.stopPropagation(),
+                            reorderActions(action._id, "down");
                         }}
                       >
                         <div className="flex gap-3">
@@ -360,10 +383,10 @@ export default function WorkFlowBuilderComponent() {
           )}
 
           <button
-            onClick={() => setActiveTag('Output')}
+            onClick={() => setActiveTag("Output")}
             className={clsx(
-              'w-full max-w-[340px] transition-all duration-300 p-3 border border-[#E5E7EB] rounded-xl flex items-center gap-4 cursor-pointer',
-              activeTag === 'Output' && '!border-primary-green'
+              "w-full max-w-[340px] transition-all duration-300 p-3 border border-[#E5E7EB] rounded-xl flex items-center gap-4 cursor-pointer",
+              activeTag === "Output" && "!border-primary-green"
             )}
           >
             <div className="bg-primary-green p-4 rounded-lg">
@@ -371,7 +394,9 @@ export default function WorkFlowBuilderComponent() {
             </div>
             <div className="space-y-1 flex flex-col items-start">
               <h3 className="text-[17px] font-medium">Output</h3>
-              <p className="text-sm text-primary-black text-opacity-50">Click to add outputs</p>
+              <p className="text-sm text-primary-black text-opacity-50">
+                Click to add outputs
+              </p>
             </div>
           </button>
         </div>

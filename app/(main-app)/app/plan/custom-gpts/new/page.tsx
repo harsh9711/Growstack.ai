@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import axios from '@/config/axios.config';
-import React, { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
-import Topbar from './components/Topbar';
-import ChatSection from './components/ChatSection';
-import Sidebar from './components/Sidebar';
-import Sidebargpt from './components/Sidebar';
-import { Assistant } from '@/types/assistants';
-import { Conversation } from '../../ai-assistant/components/types';
-import Sidebargpt1 from './components/Sidebar1';
-import Downbar from './components/Downbar';
-import { API_URL } from '@/lib/api';
-import { useRouter } from 'next/navigation';
+import instance from "@/config/axios.config";
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import Topbar from "./components/Topbar";
+import ChatSection from "./components/ChatSection";
+import Sidebar from "./components/Sidebar";
+import Sidebargpt from "./components/Sidebar";
+import { Assistant } from "@/types/assistants";
+import { Conversation } from "../../ai-assistant/components/types";
+import Sidebargpt1 from "./components/Sidebar1";
+import Downbar from "./components/Downbar";
+import { API_URL } from "@/lib/api";
+import { useRouter } from "next/navigation";
 
 interface PageProps {
   params: {
@@ -41,9 +41,12 @@ type ConversationPayLoad = {
   icon?: string;
 };
 
-const AssistantsChats: React.FC<PageProps> = ({ params: { assistant_id } }: PageProps) => {
+const AssistantsChats: React.FC<PageProps> = ({
+  params: { assistant_id },
+}: PageProps) => {
   const [assistantData, setAssistantData] = useState<Assistant | null>(null);
-  const [assistantConversation, setAssistantConversation] = useState<Conversation | null>(null);
+  const [assistantConversation, setAssistantConversation] =
+    useState<Conversation | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
@@ -51,37 +54,48 @@ const AssistantsChats: React.FC<PageProps> = ({ params: { assistant_id } }: Page
   const router = useRouter();
 
   // states for sidebar
-  const [conversationStarters, setConversationStarters] = useState<string[]>(['']);
-  const [isToggleCheckedForSearch, setIsToggleCheckedForSearch] = useState(false);
-  const [isToggleCheckedForInterpreter, setIsToggleCheckedForInterpreter] = useState(false);
+  const [conversationStarters, setConversationStarters] = useState<string[]>([
+    "",
+  ]);
+  const [isToggleCheckedForSearch, setIsToggleCheckedForSearch] =
+    useState(false);
+  const [isToggleCheckedForInterpreter, setIsToggleCheckedForInterpreter] =
+    useState(false);
   const [vectorStoreId, setVectorStoreId] = useState<string | null>(null);
-  const [uploadedIntepreterFiles, setUploadedIntepreterFiles] = useState<CustomFile[]>([]);
-  const [uploadedSerachFiles, setUploadedSerachFiles] = useState<CustomFile[]>([]);
+  const [uploadedIntepreterFiles, setUploadedIntepreterFiles] = useState<
+    CustomFile[]
+  >([]);
+  const [uploadedSerachFiles, setUploadedSerachFiles] = useState<CustomFile[]>(
+    []
+  );
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
-  const [capabilities, setCapabilities] = useState<{ IMAGE: boolean; WEB_BROWSING: boolean }>({
+  const [capabilities, setCapabilities] = useState<{
+    IMAGE: boolean;
+    WEB_BROWSING: boolean;
+  }>({
     IMAGE: false,
     WEB_BROWSING: false,
   });
   const [iconImage, setIconImage] = useState<string | null>(null);
   const [formData, setFormData] = useState({
-    name: '',
-    description: '',
-    instructions: '',
+    name: "",
+    description: "",
+    instructions: "",
   });
 
   const handleCreateConversation = async () => {
     try {
       if (!iconImage) {
-        toast.error('Please upload an icon image');
+        toast.error("Please upload an icon image");
         return;
       } else if (!formData.name) {
-        toast.error('Please enter the name');
+        toast.error("Please enter the name");
         return;
       } else if (!formData.description) {
-        toast.error('Please enter the description');
+        toast.error("Please enter the description");
         return;
       } else if (!formData.instructions) {
-        toast.error('Please enter the instructions');
+        toast.error("Please enter the instructions");
         return;
       }
       setIsAPICalled(true);
@@ -95,16 +109,16 @@ const AssistantsChats: React.FC<PageProps> = ({ params: { assistant_id } }: Page
         tool_resources: ToolResources = {},
         cap = [];
       if (isToggleCheckedForSearch) {
-        tools.push({ type: 'file_search' });
+        tools.push({ type: "file_search" });
         if (vectorStoreId) {
           tool_resources.file_search = { vector_store_ids: [vectorStoreId] };
         }
       }
       if (isToggleCheckedForInterpreter) {
-        tools.push({ type: 'code_interpreter' });
+        tools.push({ type: "code_interpreter" });
         if (uploadedIntepreterFiles.length > 0) {
           tool_resources.code_interpreter = {
-            file_ids: uploadedIntepreterFiles.map((file) => file.id ?? ''),
+            file_ids: uploadedIntepreterFiles.map((file) => file.id ?? ""),
           };
         }
       }
@@ -116,16 +130,18 @@ const AssistantsChats: React.FC<PageProps> = ({ params: { assistant_id } }: Page
       }
       if (
         conversationStarters.length > 1 ||
-        (conversationStarters.length === 1 && conversationStarters[0] !== '')
+        (conversationStarters.length === 1 && conversationStarters[0] !== "")
       ) {
-        payload.conversation_starter = conversationStarters.filter((starter) => starter !== '');
+        payload.conversation_starter = conversationStarters.filter(
+          (starter) => starter !== ""
+        );
       }
       if (capabilities.IMAGE || capabilities.WEB_BROWSING) {
         if (capabilities.IMAGE) {
-          cap.push('IMAGE');
+          cap.push("IMAGE");
         }
         if (capabilities.WEB_BROWSING) {
-          cap.push('WEB_BROWSING');
+          cap.push("WEB_BROWSING");
         }
         payload.capabilities = cap;
       }
@@ -135,12 +151,14 @@ const AssistantsChats: React.FC<PageProps> = ({ params: { assistant_id } }: Page
             customGptConvo: { custom_gpt_id },
           },
         },
-      } = await axios.post(`${API_URL}/ai/api/v1/customgpt/create`, { ...payload });
+      } = await instance.post(`${API_URL}/ai/api/v1/customgpt/create`, {
+        ...payload,
+      });
       setIsAPICalled(false);
-      toast.success('Conversation created successfully');
+      toast.success("Conversation created successfully");
       router.push(`/app/plan/custom-gpts/gpt/?custom_gpt_id=${custom_gpt_id}`);
     } catch (error: any) {
-      toast.error('Failed to create conversation');
+      toast.error("Failed to create conversation");
       console.error(error);
       setIsAPICalled(false);
     }

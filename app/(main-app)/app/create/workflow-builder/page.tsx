@@ -2,7 +2,7 @@
 
 import { WorkflowsIcon, WorkflowsIcon2 } from "@/components/svgs";
 import { API_URL } from "@/lib/api";
-import axios from "axios";
+import instance from "@/config/axios.config";
 import { Plus, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,7 +25,7 @@ export default function WorkflowBuilder() {
   const router = useRouter();
   const getPreBuiltTemplates = async () => {
     try {
-      const response = await axios.get(`${API_URL}/workflow/api/v1?pre_built=true`);
+      const response = await instance.get(`${API_URL}/workflow/api/v1?pre_built=true`);
       setPreBuiltTemplates(response.data.data);
     } catch (error) {
       console.error("Error fetching pre-built templates:", error);
@@ -61,7 +61,7 @@ export default function WorkflowBuilder() {
                 ))
               : Array(5)
                   .fill(null)
-                  .map((_, index) => <WorkflowLoader key={index}/>)}
+                  .map((_, index) => <WorkflowLoader key={index} />)}
           </div>
           {/* <div className="mt-10">
             <div className="flex items-center gap-4">
@@ -115,7 +115,9 @@ type CardProps = {
 const Card: React.FC<CardProps> = ({ title, description, imageSrc }) => (
   <div className="p-8 bg-white rounded-3xl border border-[#E8E8E8] hover:shadow-xl hover:shadow-gray-200/60 transition-all duration-300 cursor-pointer space-y-4 min-h-[320px]">
     <Image src={imageSrc} alt={title} width={400} height={400} className="w-full h-32 object-cover rounded-xl" />
-    <h3 className="text-xl font-semibold leading-relaxed line-clamp-1 text-ellipsis overflow-hidden" title={title}>{title}</h3>
+    <h3 className="text-xl font-semibold leading-relaxed line-clamp-1 text-ellipsis overflow-hidden" title={title}>
+      {title}
+    </h3>
     <p className="!mt-3 leading-relaxed text-primary-black text-opacity-70 line-clamp-2 text-ellipsis overflow-hidden">{description}</p>
   </div>
 );

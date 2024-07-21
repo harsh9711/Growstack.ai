@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { z } from "zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import instance from "@/config/axios.config";
 import clsx from "clsx";
 import toast from "react-hot-toast";
 import Spinner from "@/components/Spinner";
@@ -36,7 +36,10 @@ const EmailForm: React.FC<EmailFormProps> = ({ onEmailSubmitted }) => {
     setIsPending(true);
     try {
       const validatedData = EmailValidationSchema.parse(data);
-      const response = await axios.post(API_URL + "/users/api/v1/password-reset-request", validatedData);
+      const response = await instance.post(
+        API_URL + "/users/api/v1/password-reset-request",
+        validatedData
+      );
       toast.success(response.data.message);
       onEmailSubmitted(data.email); // Call the callback function to proceed to OTP verification
     } catch (error: any) {
@@ -52,20 +55,35 @@ const EmailForm: React.FC<EmailFormProps> = ({ onEmailSubmitted }) => {
   };
 
   return (
-    <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion
+      transition={{ duration: 0.2 }}
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+    >
       <div className="space-y-6 w-full">
         <div className="space-y-3">
           <h1 className="text-3xl font-bold text-center">Forgot password?</h1>
-          <p className="text-[#002030B2] text-base text-center">Enter your email to receive password reset OTP</p>
+          <p className="text-[#002030B2] text-base text-center">
+            Enter your email to receive password reset OTP
+          </p>
         </div>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-7 !mt-7 w-full">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-7 !mt-7 w-full"
+        >
           <div>
             <div
               className={clsx(
                 "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
                 errors.email && "border-rose-600 focus-within:border-rose-600"
-              )}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16" fill="none">
+              )}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="22"
+                height="22"
+                viewBox="0 0 16 16"
+                fill="none"
+              >
                 <path
                   fillRule="evenodd"
                   clipRule="evenodd"
@@ -83,16 +101,38 @@ const EmailForm: React.FC<EmailFormProps> = ({ onEmailSubmitted }) => {
                 />
               </div>
             </div>
-            {errors.email && <span className="text-rose-600 text-sm">{errors.email?.message}</span>}
+            {errors.email && (
+              <span className="text-rose-600 text-sm">
+                {errors.email?.message}
+              </span>
+            )}
           </div>
 
-          <button type="submit" className="bg-primary-green hover:bg-primary-green/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center">
+          <button
+            type="submit"
+            className="bg-primary-green hover:bg-primary-green/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center"
+          >
             {isPending ? <Spinner /> : "Reset password"}
           </button>
         </form>
-        <Link href="/auth/login" className="text-[#14171B] text-center flex items-center gap-4 justify-center">
-          <svg xmlns="http://www.w3.org/2000/svg" width="8" height="14" viewBox="0 0 8 14" fill="none">
-            <path d="M7 1L1 7L7 13" stroke="#14171B" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+        <Link
+          href="/auth/login"
+          className="text-[#14171B] text-center flex items-center gap-4 justify-center"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="8"
+            height="14"
+            viewBox="0 0 8 14"
+            fill="none"
+          >
+            <path
+              d="M7 1L1 7L7 13"
+              stroke="#14171B"
+              strokeWidth="1.75"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
           Back to login
         </Link>

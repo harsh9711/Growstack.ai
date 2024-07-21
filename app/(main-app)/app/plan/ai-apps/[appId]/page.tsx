@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, Fragment } from "react";
-import axios from "axios";
+import instance from "@/config/axios.config";
 import {
   Select,
   SelectContent,
@@ -112,7 +112,7 @@ export default function AiAppPage({
     const fetchAssistant = async () => {
       try {
         const assistId = window.location.href.split("/").pop();
-        const response = await axios.get(
+        const response = await instance.get(
           `${API_URL}/ai/api/v1/chat-template/${assistId}`
         );
         const assistantData = response.data.data;
@@ -198,7 +198,7 @@ export default function AiAppPage({
   //   try {
   //     const formattedUserPrompt = assistant.inputs.map((input: any, index: number) => `${input.title}:${userPrompts[index]}`).join(".");
 
-  //     const response = await axios.post(
+  //     const response = await instance.post(
   //       `${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`,
   //       {
   //         ...userInput,
@@ -236,7 +236,7 @@ export default function AiAppPage({
           (input: any, index: number) => `${input.title}:${userPrompts[index]}`
         )
         .join(".");
-      const response = await axios.post(
+      const response = await instance.post(
         `${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`,
         {
           ...userInput,

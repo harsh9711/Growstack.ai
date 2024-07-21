@@ -2,7 +2,7 @@ import { MicrophoneIcon, SendIcon2 } from "@/components/svgs";
 import autosize from "autosize";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
-import axios from "@/config/axios.config";
+import instance from "@/config/axios.config";
 import { toast } from "react-hot-toast";
 import { API_URL } from "@/lib/api";
 import useSpeechRecognition from "../../../../hooks/UseSpeechRecognition";
@@ -47,7 +47,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
     addMessage(prompt, "");
 
     try {
-      const response = await axios.post(
+      const response = await instance.post(
         `/ai/api/v1/assistant/chat/${assistant_id}`,
         {
           user_prompt: prompt,

@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { Base64 } from "js-base64";
 import { VideoData } from "./components/types";
 
-import axios from "axios";
+import instance from "@/config/axios.config";
 import { toast } from "react-toastify";
 import { API_URL } from "@/lib/api";
 import Header from "./components/Header";
@@ -19,7 +19,9 @@ export default function CreateVideoPage() {
   const [generatedVideoDetails, setGeneratedVideoDetails] = useState<{
     videoData: VideoData;
   } | null>(null);
-  const [selectedAvatarId, setSelectedAvatarId] = useState("49dc8f46-8c08-45f1-8608-57069c173827");
+  const [selectedAvatarId, setSelectedAvatarId] = useState(
+    "49dc8f46-8c08-45f1-8608-57069c173827"
+  );
   const [videoScript, setVideoScript] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [backgroundColor, setBackgroundColor] = useState<string>("light_pink");
@@ -36,10 +38,14 @@ export default function CreateVideoPage() {
 
   const checkVideoStatus = async (videoId: string) => {
     try {
-      const statusResponse = await axios.get(`${API_URL}/ai/api/v1/video/status/${videoId}`);
+      const statusResponse = await instance.get(
+        `${API_URL}/ai/api/v1/video/status/${videoId}`
+      );
       if (statusResponse.data.data.status === "complete") {
         toast.success("Video updated successfully");
-        const videoDetails = { videoData: statusResponse.data.data as VideoData };
+        const videoDetails = {
+          videoData: statusResponse.data.data as VideoData,
+        };
         setGeneratedVideoDetails(videoDetails);
         setLoading(false);
       } else {
@@ -64,7 +70,10 @@ export default function CreateVideoPage() {
         soundtrack: soundTrack,
       };
 
-      const videoResponse = await axios.post(`${API_URL}/ai/api/v1/generate/video`, videoData);
+      const videoResponse = await instance.post(
+        `${API_URL}/ai/api/v1/generate/video`,
+        videoData
+      );
       if (videoResponse.data.success) {
         toast.success("Video update request successful");
 

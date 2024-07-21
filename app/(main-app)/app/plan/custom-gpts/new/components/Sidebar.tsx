@@ -1,14 +1,22 @@
-import { ChangeEventHandler, useState } from 'react';
-import ChatInput from './ChatInput';
-import Image from 'next/image';
-import Toggle from 'react-toggle';
-import 'react-toggle/style.css'; // for ES6 modules
-import { CircleAlert, File, Minus, MinusIcon, Plus, PlusIcon, Trash } from 'lucide-react';
-import axios from 'axios';
-import { API_URL } from '@/lib/api';
-import toast from 'react-hot-toast';
-import FileUploadModal from './FileUploadModal';
-import { Checkbox } from '@/components/ui/checkbox';
+import { ChangeEventHandler, useState } from "react";
+import ChatInput from "./ChatInput";
+import Image from "next/image";
+import Toggle from "react-toggle";
+import "react-toggle/style.css"; // for ES6 modules
+import {
+  CircleAlert,
+  File,
+  Minus,
+  MinusIcon,
+  Plus,
+  PlusIcon,
+  Trash,
+} from "lucide-react";
+import instance from "@/config/axios.config";
+import { API_URL } from "@/lib/api";
+import toast from "react-hot-toast";
+import FileUploadModal from "./FileUploadModal";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type CustomFile = File & { id?: string; name?: string };
 interface SearchFilesProps {
@@ -37,19 +45,22 @@ const SearchFiles = ({
   const handleSearchFileUpload = async (file: File) => {
     setIsAPILoading(true);
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append("file", file);
     try {
       const {
         data: { data },
-      } = await axios.post(`${API_URL}/ai/api/v1/customgpt/upload`, formData);
+      } = await instance.post(
+        `${API_URL}/ai/api/v1/customgpt/upload`,
+        formData
+      );
       setUploadedSerachFiles([
         ...uploadedSerachFiles,
         { ...file, name: data.filename, id: data.id },
       ]);
-      toast.success('File uploaded successfully');
+      toast.success("File uploaded successfully");
       setIsAPILoading(false);
     } catch (error) {
-      console.error('Error uploading file:', error);
+      console.error("Error uploading file:", error);
       setIsAPILoading(false);
     }
   };
@@ -59,15 +70,18 @@ const SearchFiles = ({
         data: {
           data: { vector_store_id },
         },
-      } = await axios.post(`${API_URL}/ai/api/v1/customgpt/batch-vector-store`, {
-        file_ids: uploadedSerachFiles.map((file) => file.id),
-      });
+      } = await instance.post(
+        `${API_URL}/ai/api/v1/customgpt/batch-vector-store`,
+        {
+          file_ids: uploadedSerachFiles.map((file) => file.id),
+        }
+      );
       setVectorStoreId(vector_store_id);
       setIsSearchModalOpen(false);
-      toast.success('Files attached successfully');
+      toast.success("Files attached successfully");
     } catch (error) {
-      console.error('Error attaching files:', error);
-      toast.error('Error attaching files');
+      console.error("Error attaching files:", error);
+      toast.error("Error attaching files");
     }
   };
 
@@ -78,7 +92,9 @@ const SearchFiles = ({
           <Toggle
             defaultChecked={isToggleCheckedForSearch}
             icons={false}
-            onChange={() => setIsToggleCheckedForSearch(!isToggleCheckedForSearch)}
+            onChange={() =>
+              setIsToggleCheckedForSearch(!isToggleCheckedForSearch)
+            }
             className="mr-2"
           />
           <span className="text-md flex flex-row gap-x-2 font-medium">
@@ -89,7 +105,11 @@ const SearchFiles = ({
 
         <div className={`flex items-center ml-4 bg-gray-200 px-2 rounded-2xl`}>
           <button
-            className={`flex flex-row items-center ${!isToggleCheckedForSearch ? 'cursor-not-allowed opacity-50' : 'cursor-pointer '}`}
+            className={`flex flex-row items-center ${
+              !isToggleCheckedForSearch
+                ? "cursor-not-allowed opacity-50"
+                : "cursor-pointer "
+            }`}
             onClick={() => setIsSearchModalOpen(true)}
             disabled={!isToggleCheckedForSearch}
           >
@@ -139,20 +159,23 @@ const CodeIntepreterFiles = ({
 
   const handleCodeInterpreterFileUpload = async (file: File) => {
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append("file", file);
     try {
       const {
         data: { data },
-      } = await axios.post(`${API_URL}/ai/api/v1/customgpt/upload`, formData);
+      } = await instance.post(
+        `${API_URL}/ai/api/v1/customgpt/upload`,
+        formData
+      );
       setUploadedIntepreterFiles([
         ...uploadedIntepreterFiles,
         { ...file, name: data.filename, id: data.id },
       ]);
       setIsInterpreterModalOpen(false);
-      toast.success('File uploaded successfully');
+      toast.success("File uploaded successfully");
     } catch (error) {
-      console.error('Error uploading file:', error);
-      toast.error('Error uploading file');
+      console.error("Error uploading file:", error);
+      toast.error("Error uploading file");
     }
   };
   const handleRemoveUploadedFile = (id: any) => {
@@ -160,14 +183,16 @@ const CodeIntepreterFiles = ({
       const payload = {
         file_id: id,
       };
-      axios.delete(`${API_URL}/ai/api/v1/customgpt/file?code=true`, {
+      instance.delete(`${API_URL}/ai/api/v1/customgpt/file?code=true`, {
         data: { payload },
       });
-      setUploadedIntepreterFiles(uploadedIntepreterFiles.filter((file) => file.id !== id));
-      toast.success('File removed successfully');
+      setUploadedIntepreterFiles(
+        uploadedIntepreterFiles.filter((file) => file.id !== id)
+      );
+      toast.success("File removed successfully");
     } catch (error) {
-      console.error('Error removing file:', error);
-      toast.error('Error removing file');
+      console.error("Error removing file:", error);
+      toast.error("Error removing file");
     }
   };
   return (
@@ -177,7 +202,9 @@ const CodeIntepreterFiles = ({
           <Toggle
             defaultChecked={isToggleCheckedForInterpreter}
             icons={false}
-            onChange={() => setIsToggleCheckedForInterpreter(!isToggleCheckedForInterpreter)}
+            onChange={() =>
+              setIsToggleCheckedForInterpreter(!isToggleCheckedForInterpreter)
+            }
             className="mr-2"
           />
           <span className="text-md font-medium flex flex-row gap-x-2">
@@ -187,7 +214,11 @@ const CodeIntepreterFiles = ({
         </div>
         <div className={`flex items-center ml-4 bg-gray-200 px-2 rounded-2xl`}>
           <button
-            className={`flex flex-row items-center ${!isToggleCheckedForInterpreter ? 'cursor-not-allowed opacity-50' : 'cursor-pointer '}`}
+            className={`flex flex-row items-center ${
+              !isToggleCheckedForInterpreter
+                ? "cursor-not-allowed opacity-50"
+                : "cursor-pointer "
+            }`}
             onClick={() => setIsInterpreterModalOpen(true)}
           >
             <PlusIcon width={15} height={20} />
@@ -198,7 +229,9 @@ const CodeIntepreterFiles = ({
             <FileUploadModal
               key="code_interpreter"
               onClose={() => setIsInterpreterModalOpen(false)}
-              onFileUpload={(file: File) => handleCodeInterpreterFileUpload(file)}
+              onFileUpload={(file: File) =>
+                handleCodeInterpreterFileUpload(file)
+              }
               uploadedFiles={uploadedIntepreterFiles}
               setUploadedFiles={setUploadedIntepreterFiles}
               isAPILoading={isAPILoading}
@@ -213,7 +246,10 @@ const CodeIntepreterFiles = ({
           <h2 className="text-md font-semibold">Uploaded Files</h2>
           <div className="grid grid-cols-2 gap-x-4 gap-y-2">
             {uploadedIntepreterFiles.map((file, index) => (
-              <div key={index} className="flex items-center bg-gray-100 p-2 rounded-md">
+              <div
+                key={index}
+                className="flex items-center bg-gray-100 p-2 rounded-md"
+              >
                 <File size={24} />
                 <span className="text-sm truncate ml-2">{file.name}</span>
                 <button
@@ -247,7 +283,11 @@ interface SidebarProps {
     description: string;
     instructions: string;
   };
-  setFormData: (value: { name: string; description: string; instructions: string }) => void;
+  setFormData: (value: {
+    name: string;
+    description: string;
+    instructions: string;
+  }) => void;
   uploadedSerachFiles: CustomFile[];
   setUploadedSerachFiles: (value: CustomFile[]) => void;
   isSearchModalOpen: boolean;
@@ -288,9 +328,9 @@ export default function Sidebargpt({
 
   const handleAddStarterField = () => {
     if (conversationStarters.length < 4) {
-      setConversationStarters((prev: string[]) => [...prev, '']);
+      setConversationStarters((prev: string[]) => [...prev, ""]);
     } else {
-      toast.error('Maximum 4 conversation starters allowed');
+      toast.error("Maximum 4 conversation starters allowed");
     }
   };
 
@@ -340,18 +380,21 @@ export default function Sidebargpt({
   const UploadImageSVG = () => {
     const handleUploadFile = async (file: File) => {
       const formData = new FormData();
-      formData.append('document', file);
+      formData.append("document", file);
       try {
         const {
           data: {
             data: { fileUrl },
           },
-        } = await axios.post(`${API_URL}/users/api/v1/file/upload`, formData);
+        } = await instance.post(
+          `${API_URL}/users/api/v1/file/upload`,
+          formData
+        );
         setIconImage(fileUrl);
-        toast.success('Icon uploaded successfully');
+        toast.success("Icon uploaded successfully");
       } catch (error) {
-        console.error('Error uploading file:', error);
-        toast.error('Error uploading file');
+        console.error("Error uploading file:", error);
+        toast.error("Error uploading file");
       }
     };
     const handleImageUpload: ChangeEventHandler<HTMLInputElement> = (event) => {
@@ -361,14 +404,19 @@ export default function Sidebargpt({
       }
     };
 
-    const handleFileInputChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    const handleFileInputChange: ChangeEventHandler<HTMLInputElement> = (
+      event
+    ) => {
       handleImageUpload(event);
-      event.target.value = '';
+      event.target.value = "";
     };
 
     return (
       <div className="text-center">
-        <label className="flex items-center justify-center mx-auto" htmlFor="fileInput">
+        <label
+          className="flex items-center justify-center mx-auto"
+          htmlFor="fileInput"
+        >
           <div className="relative w-28 h-28">
             {iconImage ? (
               <img
@@ -385,7 +433,13 @@ export default function Sidebargpt({
                 xmlns="http://www.w3.org/2000/svg"
                 className="cursor-pointer"
               >
-                <circle cx="56" cy="56" r="55.5" stroke="black" strokeDasharray="2 2" />
+                <circle
+                  cx="56"
+                  cy="56"
+                  r="55.5"
+                  stroke="black"
+                  strokeDasharray="2 2"
+                />
                 <path
                   d="M56.0001 42.582V69.4154"
                   stroke="#14171B"
@@ -491,21 +545,28 @@ export default function Sidebargpt({
                     </div>
 
                     <div className="mb-4">
-                      <p className="block text-[14px] font-semibold text-gray-700">Tools</p>
+                      <p className="block text-[14px] font-semibold text-gray-700">
+                        Tools
+                      </p>
                       <div className="border-b border-gray-200 pr-4 mt-2 mb-2"></div>
 
                       <FileUploadComponent />
                     </div>
 
                     <div className="mb-4">
-                      <p className="block text-[14px] font-semibold text-gray-700">Capabilities</p>
+                      <p className="block text-[14px] font-semibold text-gray-700">
+                        Capabilities
+                      </p>
                       <div className="border-b border-gray-200 pr-4 mt-2 mb-2"></div>
                       <div className="flex gap-2">
                         <div className="flex items-center space-x-2">
                           <Checkbox
                             id="IMAGE"
                             onClick={() =>
-                              setCapabilities({ ...capabilities, IMAGE: !capabilities.IMAGE })
+                              setCapabilities({
+                                ...capabilities,
+                                IMAGE: !capabilities.IMAGE,
+                              })
                             }
                           />
                           <label
@@ -587,22 +648,31 @@ export default function Sidebargpt({
             <h2 className="font-bold text-4xl text-center mb-7">Preview</h2>
             <div className="flex justify-center items-center flex-col mb-7">
               <img
-                src={iconImage || '/cookie.png'}
+                src={iconImage || "/cookie.png"}
                 alt="cookie"
                 className="rounded-full w-28 h-28"
               />
               <div>
-                <h2 className="font-bold text-[18px] text-center">{formData.name}</h2>
-                <p className="text-[14px] text-center">{formData.description}</p>
+                <h2 className="font-bold text-[18px] text-center">
+                  {formData.name}
+                </h2>
+                <p className="text-[14px] text-center">
+                  {formData.description}
+                </p>
               </div>
             </div>
             <div>
-              <h2 className="font-bold text-xl text-center">Your Conversation Starters</h2>
+              <h2 className="font-bold text-xl text-center">
+                Your Conversation Starters
+              </h2>
               <div className="!min-h-[100px] grid grid-cols-4 gap-4">
                 {conversationStarters.map(
                   (starter, index) =>
-                    starter !== '' && (
-                      <div key={index} className="p-4 border rounded-lg shadow-md bg-white">
+                    starter !== "" && (
+                      <div
+                        key={index}
+                        className="p-4 border rounded-lg shadow-md bg-white"
+                      >
                         <span className="text-sm">{starter}</span>
                       </div>
                     )
