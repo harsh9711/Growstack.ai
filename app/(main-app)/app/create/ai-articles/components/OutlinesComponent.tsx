@@ -2,12 +2,17 @@
 
 import Motion from "@/components/Motion";
 import Spinner from "@/components/Spinner";
-import axios from "@/config/axios.config";
+import instance from "@/config/axios.config";
 import clsx from "clsx";
 import { AnimatePresence } from "framer-motion";
 import React, { ChangeEvent, useState } from "react";
 import toast from "react-hot-toast";
-import { creativityOptions, languageOptions, povOptions, writingToneOptions } from "../constants/options";
+import {
+  creativityOptions,
+  languageOptions,
+  povOptions,
+  writingToneOptions,
+} from "../constants/options";
 import { IOutline } from "../types";
 import AdvancedOptions from "./AdvancedOptions";
 
@@ -48,8 +53,12 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
   const [numSubtitles, setNumSubtitles] = useState<number>(10);
 
   const [aiModel, setAiModel] = useState<string>("gpt-4o");
-  const [creativity, setCreativity] = useState<string>(creativityOptions[0].value);
-  const [writingTone, setWritingTone] = useState<string>(writingToneOptions[0].value);
+  const [creativity, setCreativity] = useState<string>(
+    creativityOptions[0].value
+  );
+  const [writingTone, setWritingTone] = useState<string>(
+    writingToneOptions[0].value
+  );
   const [language, setLanguage] = useState<string>(languageOptions[0].value);
   const [pov, setPov] = useState<string>(povOptions[0].value);
 
@@ -67,7 +76,7 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
 
     setOutlines([]);
     setIsPending(true);
-    axios
+    instance
       .post("/ai/api/v1/wizard/outlines", data)
       .then(({ data: { data } }) => {
         setOutlines(data.outlines);
@@ -98,7 +107,10 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
   };
 
   return (
-    <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion
+      transition={{ duration: 0.5 }}
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+    >
       <div className="flex gap-5 !mt-10 items-start">
         <div className="w-full !bg-white shadow-box p-7 border rounded-3xl max-w-xl space-y-6">
           <div className="space-y-1.5">
@@ -106,7 +118,9 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
               <label className="font-medium" htmlFor="title">
                 Title <span className="text-rose-600">*</span>
               </label>
-              <span className="text-primary-black text-opacity-50 text-sm">0/2000</span>
+              <span className="text-primary-black text-opacity-50 text-sm">
+                0/2000
+              </span>
             </div>
             <input
               type="text"
@@ -157,7 +171,10 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
 
           <div className="flex gap-4 items-center !mt-8">
             <div className="bg-gray-200 w-full h-0.5" />
-            <button onClick={toggleAdvancedOptions} className="w-full text-primary-green text-base">
+            <button
+              onClick={toggleAdvancedOptions}
+              className="w-full text-primary-green text-base"
+            >
               {showAdvanced ? "Advanced options -" : "Advanced options +"}
             </button>
             <div className="bg-gray-200 w-full h-0.5" />
@@ -185,16 +202,23 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
             className={clsx(
               "w-full p-2 h-14 !mt-8 text-white bg-primary-green rounded-xl hover:bg-opacity-90 flex justify-center items-center",
               isPending && "opacity-80 cursor-not-allowed"
-            )}>
+            )}
+          >
             {isPending ? <Spinner /> : "Generate Outlines"}
           </button>
         </div>
         <div className="w-full">
           <div className="bg-primary-green rounded-2xl py-5 px-7 flex items-center gap-4">
-            <span className="bg-white h-12 w-12 grid place-content-center rounded-full">{currentStep + 1}</span>
+            <span className="bg-white h-12 w-12 grid place-content-center rounded-full">
+              {currentStep + 1}
+            </span>
             <h2 className="text-lg font-semibold text-white">Outline list</h2>
           </div>
-          {isPending && outlines.length < 1 && <div className="h-40 grid place-content-center">Please hang on as we generate outlines for you...</div>}
+          {isPending && outlines.length < 1 && (
+            <div className="h-40 grid place-content-center">
+              Please hang on as we generate outlines for you...
+            </div>
+          )}
           {outlines.length > 0 && (
             <div>
               <div className={clsx("mt-4 space-y-2")}>
@@ -203,9 +227,11 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
                     key={index}
                     className={clsx(
                       "py-7 px-12 mb-3 border rounded-2xl bg-white flex flex-col gap-4 cursor-pointer list-disc transition-all duration-300",
-                      selectedOutlines === outline && "border border-primary-green text-primary-green"
+                      selectedOutlines === outline &&
+                        "border border-primary-green text-primary-green"
                     )}
-                    onClick={() => setSelectedOutlines(outlines[index])}>
+                    onClick={() => setSelectedOutlines(outlines[index])}
+                  >
                     {outline.subtitles.map((subtitle, index) => (
                       <li key={index}>{subtitle}</li>
                     ))}
@@ -214,7 +240,10 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
               </div>
               {selectedOutlines.subtitles && (
                 <div className="flex justify-end">
-                  <button onClick={() => setCurrentStep(2)} className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px]">
+                  <button
+                    onClick={() => setCurrentStep(2)}
+                    className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px]"
+                  >
                     Next step
                   </button>
                 </div>

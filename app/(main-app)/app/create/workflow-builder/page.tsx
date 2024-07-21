@@ -2,7 +2,7 @@
 
 import { WorkflowsIcon, WorkflowsIcon2 } from "@/components/svgs";
 import { API_URL } from "@/lib/api";
-import axios from "axios";
+import instance from "@/config/axios.config";
 import { Plus, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -21,11 +21,15 @@ type PreBuiltTemplate = {
 
 export default function WorkflowBuilder() {
   const [workflowId, setWorkflowId] = useState(null);
-  const [preBuiltTemplates, setPreBuiltTemplates] = useState<PreBuiltTemplate[]>([]);
+  const [preBuiltTemplates, setPreBuiltTemplates] = useState<
+    PreBuiltTemplate[]
+  >([]);
   const router = useRouter();
   const getPreBuiltTemplates = async () => {
     try {
-      const response = await axios.get(`${API_URL}/workflow/api/v1?pre_built=true`);
+      const response = await instance.get(
+        `${API_URL}/workflow/api/v1?pre_built=true`
+      );
       setPreBuiltTemplates(response.data.data);
     } catch (error) {
       console.error("Error fetching pre-built templates:", error);
@@ -42,7 +46,8 @@ export default function WorkflowBuilder() {
           <div className="space-y-2">
             <h1 className="text-2xl font-semibold">Get started</h1>
             <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
-              Explore pre-built templates, create a new workflow, or import an existing one.
+              Explore pre-built templates, create a new workflow, or import an
+              existing one.
             </p>
           </div>
           <Link href="/app/create/workflow-builder/workflows">
@@ -55,13 +60,20 @@ export default function WorkflowBuilder() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {preBuiltTemplates.length > 0
               ? preBuiltTemplates.map((template) => (
-                  <Link key={template._id} href={`/app/create/workflow-builder/template/${template.slug}?workflow_id=${template.workflow_id}`}>
-                    <Card title={template.name} description={template.description} imageSrc={template.image} />
+                  <Link
+                    key={template._id}
+                    href={`/app/create/workflow-builder/template/${template.slug}?workflow_id=${template.workflow_id}`}
+                  >
+                    <Card
+                      title={template.name}
+                      description={template.description}
+                      imageSrc={template.image}
+                    />
                   </Link>
                 ))
               : Array(5)
                   .fill(null)
-                  .map((_, index) => <WorkflowLoader key={index}/>)}
+                  .map((_, index) => <WorkflowLoader key={index} />)}
           </div>
           {/* <div className="mt-10">
             <div className="flex items-center gap-4">
@@ -114,8 +126,16 @@ type CardProps = {
 
 const Card: React.FC<CardProps> = ({ title, description, imageSrc }) => (
   <div className="p-8 bg-white rounded-3xl border border-[#E8E8E8] hover:shadow-xl hover:shadow-gray-200/60 transition-all duration-300 cursor-pointer space-y-4">
-    <Image src={imageSrc} alt={title} width={400} height={400} className="w-full h-32 object-cover rounded-" />
+    <Image
+      src={imageSrc}
+      alt={title}
+      width={400}
+      height={400}
+      className="w-full h-32 object-cover rounded-"
+    />
     <h3 className="text-xl font-semibold leading-relaxed">{title}</h3>
-    <p className="!mt-3 leading-relaxed text-primary-black text-opacity-70">{description}</p>
+    <p className="!mt-3 leading-relaxed text-primary-black text-opacity-70">
+      {description}
+    </p>
   </div>
 );

@@ -1,10 +1,25 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { API_URL } from "@/lib/api";
-import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
-import axios from "axios";
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import instance from "@/config/axios.config";
 import clsx from "clsx";
 import { Check, Search, XIcon } from "lucide-react";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
@@ -27,22 +42,33 @@ interface Assistant {
   handleStatusChange: (id: string, status: string) => void;
 }
 
-const handleDelete = async (templateId: string, fetchAssistants: () => Promise<void>) => {
+const handleDelete = async (
+  templateId: string,
+  fetchAssistants: () => Promise<void>
+) => {
   try {
-    await axios.delete(`${API_URL}/ai/api/v1/chat-template/${templateId}`);
+    await instance.delete(`${API_URL}/ai/api/v1/chat-template/${templateId}`);
     await fetchAssistants();
   } catch (error) {
     console.error("Error deleting assistant:", error);
   }
 };
 
-const columns = (handleDelete: (id: string, fetchAssistants: () => Promise<void>) => void, fetchAssistants: () => Promise<void>): ColumnDef<Assistant>[] => [
+const columns = (
+  handleDelete: (id: string, fetchAssistants: () => Promise<void>) => void,
+  fetchAssistants: () => Promise<void>
+): ColumnDef<Assistant>[] => [
   {
     id: "select",
     header: ({ table }) => (
       <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-        onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value: any) =>
+          table.toggleAllPageRowsSelected(!!value)
+        }
         aria-label="Select all"
         className="w-[18px] h-[18px]"
       />
@@ -61,25 +87,44 @@ const columns = (handleDelete: (id: string, fetchAssistants: () => Promise<void>
   {
     accessorKey: "ASSISTANT NAME",
     header: () => <div className="uppercase">Assistant Name</div>,
-    cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("ASSISTANT NAME")}</div>,
+    cell: ({ row }) => (
+      <div className="capitalize flex items-center gap-3">
+        {row.getValue("ASSISTANT NAME")}
+      </div>
+    ),
   },
   {
     accessorKey: "ASSISTANT DESCRIPTION",
     header: () => <div className="uppercase">Assistant Description</div>,
-    cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("ASSISTANT DESCRIPTION")}</div>,
+    cell: ({ row }) => (
+      <div className="capitalize flex items-center gap-3">
+        {row.getValue("ASSISTANT DESCRIPTION")}
+      </div>
+    ),
   },
   {
     accessorKey: "STATUS",
     header: () => <div className="uppercase">Status</div>,
     cell: ({ row }) => {
-      const status = row.getValue("STATUS") as "active" | "inactive" | "disabled";
+      const status = row.getValue("STATUS") as
+        | "active"
+        | "inactive"
+        | "disabled";
       const statusClasses = {
         active: "text-green-500",
         inactive: "text-yellow-500",
         disabled: "text-red-500",
       };
 
-      return <div className={`text-left font-medium capitalize ${statusClasses[status] || ""}`}>{status}</div>;
+      return (
+        <div
+          className={`text-left font-medium capitalize ${
+            statusClasses[status] || ""
+          }`}
+        >
+          {status}
+        </div>
+      );
     },
   },
   {
@@ -101,19 +146,25 @@ const columns = (handleDelete: (id: string, fetchAssistants: () => Promise<void>
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
         <EditAssistantDialog id={row.original._id} />
-        <DeleteAssistantDialog id={row.original._id} handleDelete={handleDelete} fetchAssistants={fetchAssistants} />
+        <DeleteAssistantDialog
+          id={row.original._id}
+          handleDelete={handleDelete}
+          fetchAssistants={fetchAssistants}
+        />
         <button
           className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300"
           onClick={() => {
             row.original.handleStatusChange(row.original._id, "inactive");
-          }}>
+          }}
+        >
           <XIcon size={15} />
         </button>
         <button
           className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300"
           onClick={() => {
             row.original.handleStatusChange(row.original._id, "active");
-          }}>
+          }}
+        >
           <Check size={15} />
         </button>
       </div>
@@ -121,38 +172,58 @@ const columns = (handleDelete: (id: string, fetchAssistants: () => Promise<void>
   },
 ];
 
-const AssistantsTable: React.FC<AssistantsTableProps> = ({ refreshAssistantsTable, setRefreshAssistantsTable }) => {
+const AssistantsTable: React.FC<AssistantsTableProps> = ({
+  refreshAssistantsTable,
+  setRefreshAssistantsTable,
+}) => {
   const [assistants, setAssistants] = useState<Assistant[]>([]);
   const [isPending, setIsPending] = useState(false);
 
   const fetchAssistants = async () => {
     setIsPending(true);
     try {
-      const response = await axios.get(`${API_URL}/ai/api/v1/chat-template/user?page=1&limit=20`);
+      const response = await instance.get(
+        `${API_URL}/ai/api/v1/chat-template/user?page=1&limit=20`
+      );
       if (response.data.data && response.data.data.data) {
-        const formattedAssistants = response.data.data.data.map((assistant: any) => ({
-          _id: assistant._id,
-          "ASSISTANT NAME": assistant["ASSISTANT NAME"],
-          "ASSISTANT DESCRIPTION": assistant["ASSISTANT DESCRIPTION"],
-          STATUS: assistant["STATUS"],
-          CREATED: assistant["CREATED"] || new Date().toISOString(),
-          handleStatusChange: async (id: string, status: string) => {
-            const updateAssistantStatus = async () => {
-              try {
-                await axios.put(`${API_URL}/ai/api/v1/chat-template/${id}`, { STATUS: status });
-                await fetchAssistants();
-                const message = `${assistant["ASSISTANT NAME"]} ${status === "active" ? "activated" : "deactivated"} successfully!`;
-                toast.success(message);
-              } catch (error) {
-                console.error("Error updating status:", error);
-                toast.error(`Error updating ${assistant["ASSISTANT NAME"]} status.`);
-              }
-            };
+        const formattedAssistants = response.data.data.data.map(
+          (assistant: any) => ({
+            _id: assistant._id,
+            "ASSISTANT NAME": assistant["ASSISTANT NAME"],
+            "ASSISTANT DESCRIPTION": assistant["ASSISTANT DESCRIPTION"],
+            STATUS: assistant["STATUS"],
+            CREATED: assistant["CREATED"] || new Date().toISOString(),
+            handleStatusChange: async (id: string, status: string) => {
+              const updateAssistantStatus = async () => {
+                try {
+                  await instance.put(
+                    `${API_URL}/ai/api/v1/chat-template/${id}`,
+                    {
+                      STATUS: status,
+                    }
+                  );
+                  await fetchAssistants();
+                  const message = `${assistant["ASSISTANT NAME"]} ${
+                    status === "active" ? "activated" : "deactivated"
+                  } successfully!`;
+                  toast.success(message);
+                } catch (error) {
+                  console.error("Error updating status:", error);
+                  toast.error(
+                    `Error updating ${assistant["ASSISTANT NAME"]} status.`
+                  );
+                }
+              };
 
-            setAssistants((prevAssistants) => prevAssistants.map((a) => (a._id === id ? { ...a, STATUS: status } : a)));
-            await updateAssistantStatus();
-          },
-        }));
+              setAssistants((prevAssistants) =>
+                prevAssistants.map((a) =>
+                  a._id === id ? { ...a, STATUS: status } : a
+                )
+              );
+              await updateAssistantStatus();
+            },
+          })
+        );
         setAssistants(formattedAssistants);
         setRefreshAssistantsTable(false);
       } else {
@@ -188,8 +259,11 @@ const AssistantsTable: React.FC<AssistantsTableProps> = ({ refreshAssistantsTabl
         onClick={() => table.setPageIndex(i)}
         className={clsx(
           "w-12 h-[45px] rounded-lg mx-1 bg-[#4B465C14] transition-all duration-300",
-          i === table.getState().pagination.pageIndex ? "!bg-primary-green hover:bg-opacity-50 text-white" : "hover:bg-[#4B465C29]"
-        )}>
+          i === table.getState().pagination.pageIndex
+            ? "!bg-primary-green hover:bg-opacity-50 text-white"
+            : "hover:bg-[#4B465C29]"
+        )}
+      >
         {i + 1}
       </button>
     );
@@ -201,7 +275,11 @@ const AssistantsTable: React.FC<AssistantsTableProps> = ({ refreshAssistantsTabl
         <h1 className="text-xl font-semibold">My own assistants lists</h1>
         <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
           <Search className="text-gray-500" size={20} />
-          <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" />
+          <input
+            type="search"
+            className="outline-none h-[40px] w-full"
+            placeholder="Search"
+          />
         </div>
       </div>
       <div className="rounded-lg border overflow-hidden mt-5 bg-white min-h-[50vh]">
@@ -210,7 +288,14 @@ const AssistantsTable: React.FC<AssistantsTableProps> = ({ refreshAssistantsTabl
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className="bg-[#0347370D]">
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
                 ))}
               </TableRow>
             ))}
@@ -218,21 +303,36 @@ const AssistantsTable: React.FC<AssistantsTableProps> = ({ refreshAssistantsTabl
           <TableBody>
             {isPending ? (
               <TableRow className="hover:bg-white">
-                <TableCell colSpan={columns.length + 20} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
+                <TableCell
+                  colSpan={columns.length + 20}
+                  className="h-[50vh] text-center font-semibold text-lg hover:bg-white"
+                >
                   Loading...
                 </TableCell>
               </TableRow>
             ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="bg-white">
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  className="bg-white"
+                >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow className="hover:bg-white">
-                <TableCell colSpan={columns.length + 20} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
+                <TableCell
+                  colSpan={columns.length + 20}
+                  className="h-[50vh] text-center font-semibold text-lg hover:bg-white"
+                >
                   No results.
                 </TableCell>
               </TableRow>
@@ -248,7 +348,8 @@ const AssistantsTable: React.FC<AssistantsTableProps> = ({ refreshAssistantsTabl
               size="sm"
               className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px]"
               onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}>
+              disabled={!table.getCanPreviousPage()}
+            >
               Previous
             </Button>
             <div>
@@ -259,7 +360,8 @@ const AssistantsTable: React.FC<AssistantsTableProps> = ({ refreshAssistantsTabl
               size="sm"
               className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px] px-4"
               onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}>
+              disabled={!table.getCanNextPage()}
+            >
               Next
             </Button>
           </div>

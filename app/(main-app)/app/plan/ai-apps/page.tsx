@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { Plus, Search, StarIcon } from "lucide-react";
 import Image from "next/image";
 import { Fragment, useState, useEffect } from "react";
-import axios from "axios";
+import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import Link from "next/link";
 
@@ -35,22 +35,23 @@ export default function MarketingPage() {
 
       console.log("API URL:", apiUrl);
 
-      const response = await axios.get(apiUrl);
+      const response = await instance.get(apiUrl);
 
       console.log("API Response:", response.data);
 
-      const data = selectedTag === "My Assistants" ? response.data.data.data : response.data.data;
+      const data =
+        selectedTag === "My Assistants"
+          ? response.data.data.data
+          : response.data.data;
 
-      if ( data) {
-        const formattedAssistants = data.map(
-          (assistant: any) => ({
-            _id: assistant._id,
-            "ASSISTANT NAME": assistant["ASSISTANT NAME"],
-            "ASSISTANT DESCRIPTION": assistant["ASSISTANT DESCRIPTION"],
-            icon: assistant["icon"],
-            category: assistant["category"],
-          })
-        );
+      if (data) {
+        const formattedAssistants = data.map((assistant: any) => ({
+          _id: assistant._id,
+          "ASSISTANT NAME": assistant["ASSISTANT NAME"],
+          "ASSISTANT DESCRIPTION": assistant["ASSISTANT DESCRIPTION"],
+          icon: assistant["icon"],
+          category: assistant["category"],
+        }));
         setAssistants(formattedAssistants);
       }
       // else if (response.data.data.data!=undefined) {
@@ -66,7 +67,7 @@ export default function MarketingPage() {
       //   );
       //   setAssistants(formattedAssistants);
       // }
-     else {
+      else {
         console.error("Unexpected API response format:", response.data);
       }
     } catch (error) {
@@ -80,9 +81,6 @@ export default function MarketingPage() {
   useEffect(() => {
     fetchAssistants();
   }, [selectedTag, searchQuery]);
-
-  
-  
 
   return (
     <Fragment>
@@ -152,23 +150,27 @@ export default function MarketingPage() {
                 key={assistant._id}
               >
                 <div className="flex items-center justify-between gap-5 bg-white border border-[#EEF0F4] rounded-2xl p-6 shadow-xl shadow-gray-100 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer">
-                 <div className="flex gap-4 items-start flex-grow overflow-hidden">
-        <div dangerouslySetInnerHTML={{ __html: assistant.icon }} className="w-[64px] h-[64px] flex-shrink-0" />
-        <div className="space-y-2 overflow-hidden flex-grow">
-          <h1 className="text-lg font-semibold overflow-hidden text-ellipsis whitespace-nowrap">
-            {assistant["ASSISTANT NAME"]}
-          </h1>
-          <p className="text-primary-black text-opacity-70 text-[14px] leading-relaxed overflow-hidden text-ellipsis"
-            style={{
-              display: "-webkit-box",
-              WebkitLineClamp: 3,
-              WebkitBoxOrient: "vertical",
-            }}
-          >
-            {assistant["ASSISTANT DESCRIPTION"]}
-          </p>
-        </div>
-      </div>
+                  <div className="flex gap-4 items-start flex-grow overflow-hidden">
+                    <div
+                      dangerouslySetInnerHTML={{ __html: assistant.icon }}
+                      className="w-[64px] h-[64px] flex-shrink-0"
+                    />
+                    <div className="space-y-2 overflow-hidden flex-grow">
+                      <h1 className="text-lg font-semibold overflow-hidden text-ellipsis whitespace-nowrap">
+                        {assistant["ASSISTANT NAME"]}
+                      </h1>
+                      <p
+                        className="text-primary-black text-opacity-70 text-[14px] leading-relaxed overflow-hidden text-ellipsis"
+                        style={{
+                          display: "-webkit-box",
+                          WebkitLineClamp: 3,
+                          WebkitBoxOrient: "vertical",
+                        }}
+                      >
+                        {assistant["ASSISTANT DESCRIPTION"]}
+                      </p>
+                    </div>
+                  </div>
                   <div className="cursor-pointer w-full max-w-fit hover:bg-gray-50 p-1 rounded transition">
                     <StarIcon className="text-[#ADADAD]" />
                   </div>

@@ -3,18 +3,25 @@ import clsx from "clsx";
 import { EditIcon, MessageIcon2 } from "@/components/svgs";
 import { Trash2 } from "lucide-react";
 import { API_URL } from "@/lib/api";
-import axios from "axios";
+import instance from "@/config/axios.config";
 
 interface SidebarItemProps {
   _id: string;
   title: string;
   onRename: (_id: string, newTitle: string) => void;
-  onDelete:(_id: string) => void;
-  onSelect: () => void; 
-  setSidebarItems: React.Dispatch<React.SetStateAction<any[]>>; 
+  onDelete: (_id: string) => void;
+  onSelect: () => void;
+  setSidebarItems: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ _id, title, onRename, onSelect, setSidebarItems, onDelete }) => {
+const SidebarItem: React.FC<SidebarItemProps> = ({
+  _id,
+  title,
+  onRename,
+  onSelect,
+  setSidebarItems,
+  onDelete,
+}) => {
   const [isHovered, setIsHovered] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
   const [editing, setEditing] = useState(false);
@@ -44,11 +51,11 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ _id, title, onRename, onSelec
     if (!target.closest(".rename-menu")) {
       if (newTitle !== title && editing) {
         onRename(_id, newTitle);
-        setEditing(false); 
+        setEditing(false);
       } else {
         setNewTitle(title);
       }
-      setIsHovered(false); 
+      setIsHovered(false);
     }
   };
 
@@ -74,10 +81,17 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ _id, title, onRename, onSelec
       onClick={onSelect} // Trigger onSelect when item is clicked
     >
       <MessageIcon2
-        className={clsx("group-hover:text-primary-green", isHovered && "text-primary-green")}
+        className={clsx(
+          "group-hover:text-primary-green",
+          isHovered && "text-primary-green"
+        )}
       />
       {!editing && (
-        <span className={clsx("flex-1 whitespace-nowrap overflow-hidden text-ellipsis")}>
+        <span
+          className={clsx(
+            "flex-1 whitespace-nowrap overflow-hidden text-ellipsis"
+          )}
+        >
           {title}
         </span>
       )}
@@ -86,23 +100,27 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ _id, title, onRename, onSelec
           type="text"
           value={newTitle}
           onChange={handleInputChange}
-          onBlur={handleRenameClick} 
+          onBlur={handleRenameClick}
           className="border-gray-300 focus:border-primary-green rounded px-2 py-1 w-full mb-1"
         />
       )}
       {/* <div className={clsx("py-4 px-5 rounded-l-3xl items-center gap-3.5 w-full flex max-w-fit")}> */}
-        {isHovered && (
-          <>
-            <Trash2 size={18} className="cursor-pointer" onClick={(e)=>{
+      {isHovered && (
+        <>
+          <Trash2
+            size={18}
+            className="cursor-pointer"
+            onClick={(e) => {
               e.stopPropagation();
-              onDelete(_id)
-              }} />
-            <EditIcon
-              className="cursor-pointer h-4 w-4"
-              onClick={handleRenameClick}
-            />
-          </>
-        )}
+              onDelete(_id);
+            }}
+          />
+          <EditIcon
+            className="cursor-pointer h-4 w-4"
+            onClick={handleRenameClick}
+          />
+        </>
+      )}
       {/* </div> */}
     </div>
   );

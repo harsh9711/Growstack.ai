@@ -1,75 +1,102 @@
-"use client"
+"use client";
 
 // components/WorkFlowBuilderComponent.tsx
-import {  InputIcon2, OutputIcon2 } from "@/components/svgs";
+import { InputIcon2, OutputIcon2 } from "@/components/svgs";
 import clsx from "clsx";
-import {  MoreVertical, Plus } from "lucide-react";
+import { MoreVertical, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import InputSection from "./InputSection";
 import OutputSection from "./OutputSection";
 import ActionsSection from "./ActionsSection";
 import ProvidersDrawer from "./ProvidersDrawer";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import axios from "axios";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
 import { tools } from "./data/tools";
 
 export default function WorkFlowBuilderComponent() {
-  const [activeTag, setActiveTag] = useState<"Input" | "Output" | "Actions">("Input");
+  const [activeTag, setActiveTag] = useState<"Input" | "Output" | "Actions">(
+    "Input"
+  );
   const [openProvidersDrawer, setOpenProvidersDrawer] = useState(false);
   const [activeAction, setActiveAction] = useState<any>({});
-  const [actions,setActions]=useState<any[]>([]);
+  const [actions, setActions] = useState<any[]>([]);
   const [workflowId, setWorkflowId] = useState<string | null>(null);
   const [isAPICalling, setIsAPICalling] = useState(false);
-  const [inputConfigs,setInputConfigs] = useState<any[]>([]);
+  const [inputConfigs, setInputConfigs] = useState<any[]>([]);
   const [outputConfigs, setOutputConfigs] = useState<any[]>([]);
-  
 
-  const createPayloadBody =(input:any)=> {
-    return input.reduce((acc:any, input:any) => {
+  const createPayloadBody = (input: any) => {
+    return input.reduce((acc: any, input: any) => {
       acc[input.input_label] = input.input_default_value;
       if (input.is_prompt) {
         acc.prompt = input.prompt; // Replace 'your_prompt_value' with actual prompt value
       }
       return acc;
     }, {});
-    
-  }
-  const handleAddStep=()=>{
-    
-  }
+  };
+  const handleAddStep = () => {};
 
-  const postAction=async (action:any,index:any)=>{
+  const postAction = async (action: any, index: any) => {
     try {
-      return axios.post(`${API_URL}/workflow/api/v1/${workflowId}/actions?indexOfAction=${index}`,action)
+      return instance.post(
+        `${API_URL}/workflow/api/v1/${workflowId}/actions?indexOfAction=${index}`,
+        action
+      );
     } catch (error) {
-     throw error
+      throw error;
     }
-  }
+  };
 
-  const onSaveAction=async(action:any)=>{
-    setIsAPICalling(true)
+  const onSaveAction = async (action: any) => {
+    setIsAPICalling(true);
     try {
       const payload = {
         preset_json: {
-          body: createPayloadBody(action.preset_json.body.inputs)
+          body: createPayloadBody(action.preset_json.body.inputs),
         },
-        event_execute: action.event_execute
+        event_execute: action.event_execute,
       };
-      const { data: { data: { updateAction }}}=await axios.put(`${API_URL}/workflow/api/v1/${workflowId}/actions/${action.action_id}`, payload)
-      setActions(actions.map((act) => act.action_id ===action.action_id?({...updateAction,icon:action.icon,preset_json:action.preset_json}):act))
-      setIsAPICalling(false)
-      toast.success("Action saved successfully")
+      const {
+        data: {
+          data: { updateAction },
+        },
+      } = await instance.put(
+        `${API_URL}/workflow/api/v1/${workflowId}/actions/${action.action_id}`,
+        payload
+      );
+      setActions(
+        actions.map((act) =>
+          act.action_id === action.action_id
+            ? {
+                ...updateAction,
+                icon: action.icon,
+                preset_json: action.preset_json,
+              }
+            : act
+        )
+      );
+      setIsAPICalling(false);
+      toast.success("Action saved successfully");
     } catch (error) {
-      toast.error("Failed to save action")
-      setIsAPICalling(false)
+      toast.error("Failed to save action");
+      setIsAPICalling(false);
     }
-  }
+  };
 
-  const getWorkFlowDetails=async(id:string)=>{
+  const getWorkFlowDetails = async (id: string) => {
     try {
-      const { data: { data: { input_configs, actions, output_configs } } } = await axios.get(`${API_URL}/workflow/api/v1/${id}`)
+      const {
+        data: {
+          data: { input_configs, actions, output_configs },
+        },
+      } = await instance.get(`${API_URL}/workflow/api/v1/${id}`);
       setActions(
         actions.map((action: any) => {
           const tool: any = tools.find((tool) => tool.name === action.name);
@@ -82,81 +109,88 @@ export default function WorkFlowBuilderComponent() {
                 ...tool?.preset_json.body,
                 inputs: tool?.preset_json.body.inputs.map((input: any) => ({
                   ...input,
-                  input_default_value: action.preset_json.body[input.input_label] ?? input.input_default_value,
+                  input_default_value:
+                    action.preset_json.body[input.input_label] ??
+                    input.input_default_value,
                 })),
-              }
-            }
+              },
+            },
           };
         })
       );
-      setInputConfigs(input_configs)
-      setOutputConfigs(output_configs)
+      setInputConfigs(input_configs);
+      setOutputConfigs(output_configs);
     } catch (error) {
-      toast.error("Failed to fetch workflow details")
+      toast.error("Failed to fetch workflow details");
     }
-  }
+  };
 
-  const deleteAction = async (actionId: string,index:number) => {
+  const deleteAction = async (actionId: string, index: number) => {
     try {
-      await axios.delete(`${API_URL}/workflow/api/v1/${workflowId}/actions/${actionId}`)
-      setActions(actions.filter((action) => action._id !== actionId))
-      if(index===0){
-        setActiveTag('Input')
-        setActiveAction({})
+      await instance.delete(
+        `${API_URL}/workflow/api/v1/${workflowId}/actions/${actionId}`
+      );
+      setActions(actions.filter((action) => action._id !== actionId));
+      if (index === 0) {
+        setActiveTag("Input");
+        setActiveAction({});
+      } else {
+        setActiveAction(actions[index - 1]);
+        setActiveTag("Actions");
       }
-      else{
-        setActiveAction(actions[index-1])
-        setActiveTag('Actions')
-      }
-      toast.success("Action deleted successfully")
+      toast.success("Action deleted successfully");
     } catch (error) {
-      toast.error("Failed to delete action")
+      toast.error("Failed to delete action");
     }
-  }
+  };
 
   const reorderActions = async (actionId: string, direction: string) => {
     try {
-      await axios.put(`${API_URL}/workflow/api/v1/${workflowId}/actions/${actionId}/reorder?direction=${direction}`)
-      setActions((prevActions)=>{
-        const actionIndex = prevActions.findIndex((action) => action._id === actionId);
+      await instance.put(
+        `${API_URL}/workflow/api/v1/${workflowId}/actions/${actionId}/reorder?direction=${direction}`
+      );
+      setActions((prevActions) => {
+        const actionIndex = prevActions.findIndex(
+          (action) => action._id === actionId
+        );
         const action = prevActions[actionIndex];
         const updatedActions = [...prevActions];
         updatedActions.splice(actionIndex, 1);
-        if (direction === 'up') {
+        if (direction === "up") {
           updatedActions.splice(actionIndex - 1, 0, action);
         } else {
           updatedActions.splice(actionIndex + 1, 0, action);
         }
-        return updatedActions
-      })
-      toast.success("Action reordered successfully")
+        return updatedActions;
+      });
+      toast.success("Action reordered successfully");
     } catch (error) {
-      toast.error("Failed to reorder action")
+      toast.error("Failed to reorder action");
     }
-  }
+  };
 
-  const onSelectAction=async (action:any,index:number)=>{
+  const onSelectAction = async (action: any, index: number) => {
     let updatedActions: any[] = [];
     const payload = {
       name: action.name,
       description: action.description,
       provider: action.provider,
       subtype: action.subtype,
-      preset_id:action.id,
+      preset_id: action.id,
       preset_json: {
-        body: createPayloadBody(action.preset_json.body.inputs)
+        body: createPayloadBody(action.preset_json.body.inputs),
       },
       category: action.category,
       event_execute: action.event_execute,
-    }
+    };
     try {
       const response = await postAction(payload, index);
-      toast.success("Action added successfully")
+      toast.success("Action added successfully");
       const newAction = {
         ...response.data.data.newAction,
         index: index - 1,
         preset_json: action.preset_json,
-        icon: action.icon
+        icon: action.icon,
       };
 
       if (index === 1) {
@@ -165,86 +199,116 @@ export default function WorkFlowBuilderComponent() {
         updatedActions = [
           ...actions.slice(0, index - 1),
           newAction,
-          ...actions.slice(index - 1)
+          ...actions.slice(index - 1),
         ];
       }
       setActions(updatedActions);
-      setActiveAction(action)
+      setActiveAction(action);
     } catch (error) {
-      console.log(error)
-      toast.error("Failed to add action")
+      console.log(error);
+      toast.error("Failed to add action");
     }
-  }
+  };
 
   const renderSection = () => {
     switch (activeTag) {
       case "Input":
-        return <InputSection inputConfig={inputConfigs} setInputConfigs={setInputConfigs} onSelectAction={onSelectAction}/>;
+        return (
+          <InputSection
+            inputConfig={inputConfigs}
+            setInputConfigs={setInputConfigs}
+            onSelectAction={onSelectAction}
+          />
+        );
       case "Output":
-        return <OutputSection outputConfigs={outputConfigs} setOutputConfigs={setOutputConfigs} actions={actions} inputConfigs={inputConfigs} workflowId={workflowId}/>;
+        return (
+          <OutputSection
+            outputConfigs={outputConfigs}
+            setOutputConfigs={setOutputConfigs}
+            actions={actions}
+            inputConfigs={inputConfigs}
+            workflowId={workflowId}
+          />
+        );
       case "Actions":
-        return <ActionsSection key={activeAction.action_id} activeAction={activeAction} setActiveAction={setActiveAction} onSaveAction={onSaveAction} isAPICalling={isAPICalling} actions={actions} inputConfigs={inputConfigs}/>;
+        return (
+          <ActionsSection
+            key={activeAction.action_id}
+            activeAction={activeAction}
+            setActiveAction={setActiveAction}
+            onSaveAction={onSaveAction}
+            isAPICalling={isAPICalling}
+            actions={actions}
+            inputConfigs={inputConfigs}
+          />
+        );
     }
   };
-  
-  
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
-    const id = searchParams.get('workflow_id');
+    const id = searchParams.get("workflow_id");
     if (id) {
       setWorkflowId(id);
-      getWorkFlowDetails(id)
-
+      getWorkFlowDetails(id);
     }
-  }, [window.location.search]); 
-  
+  }, [window.location.search]);
+
   return (
     <>
-    <div className="flex-1 flex flex-col md:flex-row bg-white rounded-3xl mt-6">
-      {/* Left section - Workflow steps */}
-      <div className="flex-1 p-5 flex flex-col justify-center items-center gap-10">
-        <button
-          onClick={() => setActiveTag("Input")}
-          className={clsx(
-            "w-full max-w-[340px] transition-all duration-300 p-3 border border-[#E5E7EB] rounded-xl flex items-center gap-4 cursor-pointer",
-            activeTag === "Input" && "!border-primary-green"
-          )}>
-          <div className="bg-primary-green p-4 rounded-lg">
-            <InputIcon2 className="text-white" />
-          </div>
-          <div className="space-y-1 flex flex-col items-start">
-            <h3 className="text-[17px] font-medium">Input</h3>
-            <p className="text-sm text-primary-black text-opacity-50">Click to add inputs</p>
-          </div>
-        </button>
+      <div className="flex-1 flex flex-col md:flex-row bg-white rounded-3xl mt-6">
+        {/* Left section - Workflow steps */}
+        <div className="flex-1 p-5 flex flex-col justify-center items-center gap-10">
+          <button
+            onClick={() => setActiveTag("Input")}
+            className={clsx(
+              "w-full max-w-[340px] transition-all duration-300 p-3 border border-[#E5E7EB] rounded-xl flex items-center gap-4 cursor-pointer",
+              activeTag === "Input" && "!border-primary-green"
+            )}
+          >
+            <div className="bg-primary-green p-4 rounded-lg">
+              <InputIcon2 className="text-white" />
+            </div>
+            <div className="space-y-1 flex flex-col items-start">
+              <h3 className="text-[17px] font-medium">Input</h3>
+              <p className="text-sm text-primary-black text-opacity-50">
+                Click to add inputs
+              </p>
+            </div>
+          </button>
 
-           {actions.map((action,index)=>(
-              <>
-              {index ===0 && (
-               <ProvidersDrawer
-                 trigger={
-                   <Plus size={16} onClick={() => handleAddStep()} />
-                 }
-                 onSelectAction={(data)=>onSelectAction(data,index+1)}
-               />
-               )}
+          {actions.map((action, index) => (
+            <>
+              {index === 0 && (
+                <ProvidersDrawer
+                  trigger={<Plus size={16} onClick={() => handleAddStep()} />}
+                  onSelectAction={(data) => onSelectAction(data, index + 1)}
+                />
+              )}
               <button
-              key={index}
+                key={index}
                 onClick={() => {
                   setActiveTag("Actions");
-                    setActiveAction({...action,index});
+                  setActiveAction({ ...action, index });
                 }}
                 className={clsx(
                   "w-full max-w-[340px] transition-all duration-300 p-3 border border-[#E5E7EB] rounded-xl flex items-center gap-4 cursor-pointer",
-                  index === activeAction.index && activeTag==="Actions" && "!border-primary-green"
-                )}>
+                  index === activeAction.index &&
+                    activeTag === "Actions" &&
+                    "!border-primary-green"
+                )}
+              >
                 <div className="">
                   <img src={action.icon} alt="" />
                 </div>
                 <div className="space-y-1 flex flex-col items-start">
                   <h3 className="text-[17px] font-medium">{action.name}</h3>
-                   <p className="text-sm text-primary-black text-opacity-50">Step {index + 1} <span className="font-semibold text-black">{action.subtype}</span></p>
+                  <p className="text-sm text-primary-black text-opacity-50">
+                    Step {index + 1}{" "}
+                    <span className="font-semibold text-black">
+                      {action.subtype}
+                    </span>
+                  </p>
                 </div>
                 <div className="ml-auto">
                   <DropdownMenu>
@@ -254,18 +318,41 @@ export default function WorkFlowBuilderComponent() {
                       </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                       <DropdownMenuItem inset className="min-w-[200px] flex justify-between gap-8 items-center my-1" onClick={(event) => { event.stopPropagation(); deleteAction(action._id, index); }}>
-                         <div className="flex gap-3">
+                      <DropdownMenuItem
+                        inset
+                        className="min-w-[200px] flex justify-between gap-8 items-center my-1"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          deleteAction(action._id, index);
+                        }}
+                      >
+                        <div className="flex gap-3">
                           <h2>Delete</h2>
                         </div>
                       </DropdownMenuItem>
-                       <DropdownMenuItem inset className="min-w-[200px] flex justify-between gap-8 items-center my-1" disabled={index === 0} onClick={(event) => { event.stopPropagation() ,reorderActions(action._id, 'up')}}>
-                          <div className="flex gap-3">
+                      <DropdownMenuItem
+                        inset
+                        className="min-w-[200px] flex justify-between gap-8 items-center my-1"
+                        disabled={index === 0}
+                        onClick={(event) => {
+                          event.stopPropagation(),
+                            reorderActions(action._id, "up");
+                        }}
+                      >
+                        <div className="flex gap-3">
                           <h2>Move Up</h2>
                         </div>
                       </DropdownMenuItem>
-                       <DropdownMenuItem inset className="min-w-[200px] flex justify-between gap-8 items-center my-1" disabled={index === actions.length - 1} onClick={(event) => { event.stopPropagation() ,reorderActions(action._id, 'down')}}>
-                         <div className="flex gap-3">
+                      <DropdownMenuItem
+                        inset
+                        className="min-w-[200px] flex justify-between gap-8 items-center my-1"
+                        disabled={index === actions.length - 1}
+                        onClick={(event) => {
+                          event.stopPropagation(),
+                            reorderActions(action._id, "down");
+                        }}
+                      >
+                        <div className="flex gap-3">
                           <h2>Move Down</h2>
                         </div>
                       </DropdownMenuItem>
@@ -273,51 +360,48 @@ export default function WorkFlowBuilderComponent() {
                   </DropdownMenu>
                 </div>
               </button>
-               <ProvidersDrawer
-                 trigger={
-                   <Plus size={16} onClick={() => handleAddStep()} />
-                 }
-                 onSelectAction={(data)=>onSelectAction(data,index+2)}
-               />
-              </>
+              <ProvidersDrawer
+                trigger={<Plus size={16} onClick={() => handleAddStep()} />}
+                onSelectAction={(data) => onSelectAction(data, index + 2)}
+              />
+            </>
+          ))}
 
-            ))
-          }
+          {actions.length === 0 && (
+            <ProvidersDrawer
+              trigger={
+                <button className="w-full max-w-[340px] px-4 py-6 font-medium bg-[#F5F5F5] rounded-xl flex justify-center items-center gap-2">
+                  Add Step <Plus size={16} />
+                </button>
+              }
+              onSelectAction={(data) => onSelectAction(data, 1)}
+            />
+          )}
 
+          <button
+            onClick={() => setActiveTag("Output")}
+            className={clsx(
+              "w-full max-w-[340px] transition-all duration-300 p-3 border border-[#E5E7EB] rounded-xl flex items-center gap-4 cursor-pointer",
+              activeTag === "Output" && "!border-primary-green"
+            )}
+          >
+            <div className="bg-primary-green p-4 rounded-lg">
+              <OutputIcon2 className="text-white" />
+            </div>
+            <div className="space-y-1 flex flex-col items-start">
+              <h3 className="text-[17px] font-medium">Output</h3>
+              <p className="text-sm text-primary-black text-opacity-50">
+                Click to add outputs
+              </p>
+            </div>
+          </button>
+        </div>
 
-          
-            {actions.length===0 && (
-          <ProvidersDrawer
-            trigger={
-              <button className="w-full max-w-[340px] px-4 py-6 font-medium bg-[#F5F5F5] rounded-xl flex justify-center items-center gap-2">
-                Add Step <Plus size={16} />
-              </button>
-            }
-            onSelectAction={(data)=>onSelectAction(data,1)}
-          />)}
-          
-          
-
-        <button
-          onClick={() => setActiveTag("Output")}
-          className={clsx(
-            "w-full max-w-[340px] transition-all duration-300 p-3 border border-[#E5E7EB] rounded-xl flex items-center gap-4 cursor-pointer",
-            activeTag === "Output" && "!border-primary-green"
-          )}>
-          <div className="bg-primary-green p-4 rounded-lg">
-            <OutputIcon2 className="text-white" />
-          </div>
-          <div className="space-y-1 flex flex-col items-start">
-            <h3 className="text-[17px] font-medium">Output</h3>
-            <p className="text-sm text-primary-black text-opacity-50">Click to add outputs</p>
-          </div>
-        </button>
+        {/* Right section - Input configuration */}
+        <div className="border-l border-[#F0F0F0] w-full max-w-[482px] md:w-1/3 p-10 flex flex-col">
+          {renderSection()}
+        </div>
       </div>
-
-      {/* Right section - Input configuration */}
-      <div className="border-l border-[#F0F0F0] w-full max-w-[482px] md:w-1/3 p-10 flex flex-col">{renderSection()}</div>
-    </div>
-     
     </>
   );
 }

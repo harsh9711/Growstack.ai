@@ -3,7 +3,7 @@ import autosize from "autosize";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import ToolsDialog from "./ToolsDialog";
-import axios from "axios";
+import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
 import useSpeechRecognition from "../../hooks/UseSpeechRecognition";
@@ -65,7 +65,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
     addMessage("user", prompt, false);
     addMessage("assistant", "", true);
     try {
-      const conversation = await axios.post(
+      const conversation = await instance.post(
         `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${
           selectedConversation ? selectedConversation : ""
         }&model=${selectedOption}`,

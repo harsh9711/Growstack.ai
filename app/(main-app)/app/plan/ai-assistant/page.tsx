@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import AssistantCard from "./components/AssistantCard";
-import axios from "@/config/axios.config";
+import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { Assistant } from "./components/types";
 import toast from "react-hot-toast";
@@ -23,7 +23,7 @@ export default function AiAssistants() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(
+        const response = await instance.get(
           `/ai/api/v1/assistant?category=${selectedRole}`
         );
         setAssistants(response.data.data);
@@ -57,14 +57,16 @@ export default function AiAssistants() {
             <SelectContent>
               <SelectGroup>
                 <SelectItem value="Education">Education</SelectItem>
-                <SelectItem value="Marketing">
-                Marketing
-                </SelectItem>
+                <SelectItem value="Marketing">Marketing</SelectItem>
                 <SelectItem value="Regular Use">Regular Use</SelectItem>
                 <SelectItem value="Analytics">Analytics</SelectItem>
-                <SelectItem value="Research & Strategy">Research & Strategy</SelectItem>
+                <SelectItem value="Research & Strategy">
+                  Research & Strategy
+                </SelectItem>
                 <SelectItem value="Sales">Sales</SelectItem>
-                <SelectItem value="Customer success">Customer success</SelectItem>
+                <SelectItem value="Customer success">
+                  Customer success
+                </SelectItem>
                 <SelectItem value="Finance">Finance</SelectItem>
                 <SelectItem value="Fun">Fun</SelectItem>
                 <SelectItem value="Tech">Tech</SelectItem>

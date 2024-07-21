@@ -15,7 +15,7 @@ import SidebarItem from "./SidebarItem";
 import { Search } from "lucide-react";
 import { AnthropicClaude, ChatGptIcon2, GoogleGemini } from "@/components/svgs";
 import clsx from "clsx";
-import axios from "axios";
+import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { ISidebarItem } from "../interface/chat.interface";
 
@@ -65,7 +65,7 @@ const Layout = ({
 
   const fetchMessages = async (_id: string) => {
     try {
-      const response = await axios.get(
+      const response = await instance.get(
         `${API_URL}/ai/api/v1/conversation/${_id}`
       );
       const chatData = response.data.data.chats;
@@ -101,7 +101,7 @@ const Layout = ({
 
   const handleRename = async (_id: string, newTitle: string) => {
     try {
-      await axios.put(`${API_URL}/ai/api/v1/conversation/${_id}`, {
+      await instance.put(`${API_URL}/ai/api/v1/conversation/${_id}`, {
         title: newTitle,
       });
       fetchConversations();
@@ -111,7 +111,7 @@ const Layout = ({
   };
   const handleDelete = async (_id: string) => {
     try {
-      await axios.delete(`${API_URL}/ai/api/v1/conversation/${_id}`);
+      await instance.delete(`${API_URL}/ai/api/v1/conversation/${_id}`);
       fetchConversations();
     } catch (error) {
       console.error("Error renaming chat:", error);
@@ -145,7 +145,9 @@ const Layout = ({
       if (lastUserMessageIndex === -1) return prevMessages;
 
       const indexToRemove = prevMessages.length - 1 - lastUserMessageIndex;
-      const newMessages = prevMessages.filter((_, index) => index !== indexToRemove && index !== indexToRemove + 1);
+      const newMessages = prevMessages.filter(
+        (_, index) => index !== indexToRemove && index !== indexToRemove + 1
+      );
       return newMessages;
     });
   };

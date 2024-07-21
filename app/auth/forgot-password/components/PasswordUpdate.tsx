@@ -4,7 +4,7 @@ import Motion from "@/components/Motion";
 import Spinner from "@/components/Spinner";
 import { API_URL } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import instance from "@/config/axios.config";
 import clsx from "clsx";
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -17,11 +17,17 @@ interface PasswordUpdateProps {
   setStep: (value: number) => void;
 }
 
-const PasswordUpdate: React.FC<PasswordUpdateProps> = ({ email, otp, setStep }) => {
+const PasswordUpdate: React.FC<PasswordUpdateProps> = ({
+  email,
+  otp,
+  setStep,
+}) => {
   const [isPending, setIsPending] = useState(false);
   const PasswordUpdateSchema = z
     .object({
-      password: z.string().min(6, "Password must be at least 6 characters long"),
+      password: z
+        .string()
+        .min(6, "Password must be at least 6 characters long"),
       confirmPassword: z.string(),
     })
     .refine((data) => data.password === data.confirmPassword, {
@@ -41,7 +47,10 @@ const PasswordUpdate: React.FC<PasswordUpdateProps> = ({ email, otp, setStep }) 
   const onSubmit: SubmitHandler<PasswordUpdateSchemaType> = async (data) => {
     setIsPending(true);
     try {
-      const response = await axios.put(API_URL + "/users/api/v1/reset-password", { email, otp, password: data.password });
+      const response = await instance.put(
+        API_URL + "/users/api/v1/reset-password",
+        { email, otp, password: data.password }
+      );
       toast.success(response.data.message);
     } catch (error: any) {
       if (error.response) {
@@ -56,20 +65,36 @@ const PasswordUpdate: React.FC<PasswordUpdateProps> = ({ email, otp, setStep }) 
   };
 
   return (
-    <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion
+      transition={{ duration: 0.2 }}
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+    >
       <div className="space-y-6 w-full">
         <div className="space-y-3">
           <h1 className="text-3xl font-bold text-center">You're finished!</h1>
-          <p className="text-[#002030B2] text-base text-center">Enter your new password</p>
+          <p className="text-[#002030B2] text-base text-center">
+            Enter your new password
+          </p>
         </div>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-7 !mt-7 w-full">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-7 !mt-7 w-full"
+        >
           <div>
             <div
               className={clsx(
                 "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
-                errors["password"] && "border-rose-600 focus-within:border-rose-600"
-              )}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16" fill="none">
+                errors["password"] &&
+                  "border-rose-600 focus-within:border-rose-600"
+              )}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="22"
+                height="22"
+                viewBox="0 0 16 16"
+                fill="none"
+              >
                 <path
                   fillRule="evenodd"
                   clipRule="evenodd"
@@ -88,15 +113,27 @@ const PasswordUpdate: React.FC<PasswordUpdateProps> = ({ email, otp, setStep }) 
                 />
               </div>
             </div>
-            {errors.password && <span className="text-rose-600 text-sm">{errors.password?.message}</span>}
+            {errors.password && (
+              <span className="text-rose-600 text-sm">
+                {errors.password?.message}
+              </span>
+            )}
           </div>
           <div>
             <div
               className={clsx(
                 "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
-                errors["confirmPassword"] && "border-rose-600 focus-within:border-rose-600"
-              )}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16" fill="none">
+                errors["confirmPassword"] &&
+                  "border-rose-600 focus-within:border-rose-600"
+              )}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="22"
+                height="22"
+                viewBox="0 0 16 16"
+                fill="none"
+              >
                 <path
                   fillRule="evenodd"
                   clipRule="evenodd"
@@ -115,16 +152,38 @@ const PasswordUpdate: React.FC<PasswordUpdateProps> = ({ email, otp, setStep }) 
                 />
               </div>
             </div>
-            {errors.confirmPassword && <span className="text-rose-600 text-sm">{errors.confirmPassword?.message}</span>}
+            {errors.confirmPassword && (
+              <span className="text-rose-600 text-sm">
+                {errors.confirmPassword?.message}
+              </span>
+            )}
           </div>
 
-          <button type="submit" className="bg-primary-green hover:bg-primary-green/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center">
+          <button
+            type="submit"
+            className="bg-primary-green hover:bg-primary-green/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center"
+          >
             {isPending ? <Spinner /> : "Update password"}
           </button>
         </form>
-        <button onClick={() => setStep(2)} className="text-[#14171B] text-center flex items-center gap-4 justify-center cursor-pointer mx-auto">
-          <svg xmlns="http://www.w3.org/2000/svg" width="8" height="14" viewBox="0 0 8 14" fill="none">
-            <path d="M7 1L1 7L7 13" stroke="#14171B" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+        <button
+          onClick={() => setStep(2)}
+          className="text-[#14171B] text-center flex items-center gap-4 justify-center cursor-pointer mx-auto"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="8"
+            height="14"
+            viewBox="0 0 8 14"
+            fill="none"
+          >
+            <path
+              d="M7 1L1 7L7 13"
+              stroke="#14171B"
+              strokeWidth="1.75"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
           Back
         </button>

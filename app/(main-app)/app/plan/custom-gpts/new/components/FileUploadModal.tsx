@@ -1,10 +1,10 @@
-import { Trash } from 'lucide-react';
-import { useState } from 'react';
-import FileUploaderDropZone from './FileUploaderDropZone';
-import { API_URL } from '@/lib/api';
-import axios from 'axios';
-import toast from 'react-hot-toast';
-import Spinner from '../../../../../../../public/svgs/spinner';
+import { Trash } from "lucide-react";
+import { useState } from "react";
+import FileUploaderDropZone from "./FileUploaderDropZone";
+import { API_URL } from "@/lib/api";
+import instance from "@/config/axios.config";
+import toast from "react-hot-toast";
+import Spinner from "../../../../../../../public/svgs/spinner";
 
 type CustomFile = File & { id?: string; name?: string };
 
@@ -35,15 +35,15 @@ const FileUploadModal: React.FC<UploadFileModalProps> = ({
       const payload = {
         file_id: id,
       };
-      await axios.delete(`${API_URL}/ai/api/v1/customgpt/file?code=true`, {
+      await instance.delete(`${API_URL}/ai/api/v1/customgpt/file?code=true`, {
         data: { payload },
       });
       setUploadedFiles(uploadedFiles.filter((file) => file.id !== id));
-      toast.success('File removed successfully');
+      toast.success("File removed successfully");
       setIsAPILoading(false);
     } catch (error) {
-      console.error('Error removing file:', error);
-      toast.error('Error removing file');
+      console.error("Error removing file:", error);
+      toast.error("Error removing file");
       setIsAPILoading(false);
     }
   };
@@ -54,7 +54,10 @@ const FileUploadModal: React.FC<UploadFileModalProps> = ({
         <div className="fixed inset-0 transition-opacity" aria-hidden="true">
           <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
         </div>
-        <span className="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">
+        <span
+          className="hidden sm:inline-block sm:align-middle sm:h-screen"
+          aria-hidden="true"
+        >
           &#8203;
         </span>
         <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
@@ -63,7 +66,12 @@ const FileUploadModal: React.FC<UploadFileModalProps> = ({
               <FileUploaderDropZone onFileUpload={onFileUpload} type={type} />
             </div>
           )}
-          {isAPILoading && <svg className="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24"></svg>}
+          {isAPILoading && (
+            <svg
+              className="animate-spin h-5 w-5 mr-3"
+              viewBox="0 0 24 24"
+            ></svg>
+          )}
           {uploadedFiles.length > 0 && (
             <div className="mt-4 px-8">
               <label className="block text-[14px] font-semibold text-gray-700">
@@ -123,9 +131,11 @@ const FileUploadModal: React.FC<UploadFileModalProps> = ({
               >
                 Cancel
               </button>
-              {type === 'file_search' && (
+              {type === "file_search" && (
                 <button
-                  onClick={() => handleAttachSearchFiles && handleAttachSearchFiles()}
+                  onClick={() =>
+                    handleAttachSearchFiles && handleAttachSearchFiles()
+                  }
                   className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
                 >
                   Attach
