@@ -85,3 +85,4 @@ export { default as MarkerIcon } from "@/public/svgs/marker.svg";
 export { default as ClockIcon } from "@/public/svgs/clock.svg";
 export { default as DictionIcon } from "@/public/svgs/diction.svg";
 export { default as ProductAiIcon } from "@/public/svgs/product-ai.svg";
+export { default as BrandVoiceIcon } from "@/public/svgs/brand-voice.svg";

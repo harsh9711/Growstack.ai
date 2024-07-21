@@ -8,14 +8,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Fragment, useState, useEffect } from "react";
+import WorkflowLoader from "./components/WorkflowLoader";
 
 type PreBuiltTemplate = {
   _id: number;
   name: string;
   description: string;
   image: string;
-  workflow_id:string
-  slug:string
+  workflow_id: string;
+  slug: string;
 };
 
 export default function WorkflowBuilder() {
@@ -26,14 +27,14 @@ export default function WorkflowBuilder() {
     try {
       const response = await axios.get(`${API_URL}/workflow/api/v1?pre_built=true`);
       setPreBuiltTemplates(response.data.data);
-    } catch (error) { 
-      console.error('Error fetching pre-built templates:', error);
+    } catch (error) {
+      console.error("Error fetching pre-built templates:", error);
     }
-  }
+  };
 
-  useEffect(()=>{
+  useEffect(() => {
     getPreBuiltTemplates();
-  },[])
+  }, []);
   return (
     <Fragment>
       <main className="">
@@ -45,25 +46,22 @@ export default function WorkflowBuilder() {
             </p>
           </div>
           <Link href="/app/create/workflow-builder/workflows">
-            <button
-              className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
-              Eplore your workflows
+            <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
+              Explore your workflows
             </button>
           </Link>
         </div>
         <div className="mt-10">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {
-              preBuiltTemplates.map((template) => (
-                <Link key={template._id} href={`/app/create/workflow-builder/template/${template.slug}?workflow_id=${template.workflow_id}`}>
-                  <Card
-                    title={template.name}
-                    description={template.description}
-                    imageSrc={template.image}
-                  />
-                </Link>
-              ))
-            }
+            {preBuiltTemplates.length > 0
+              ? preBuiltTemplates.map((template) => (
+                  <Link key={template._id} href={`/app/create/workflow-builder/template/${template.slug}?workflow_id=${template.workflow_id}`}>
+                    <Card title={template.name} description={template.description} imageSrc={template.image} />
+                  </Link>
+                ))
+              : Array(5)
+                  .fill(null)
+                  .map((_, index) => <WorkflowLoader key={index}/>)}
           </div>
           {/* <div className="mt-10">
             <div className="flex items-center gap-4">

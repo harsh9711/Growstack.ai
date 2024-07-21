@@ -199,6 +199,25 @@
   background: #034737d5;
 }
 
+.scrollbar-primary-sm::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+.scrollbar-primary-sm::-webkit-scrollbar-track {
+  background: #EEEEEE;
+  border-radius: 20px;
+}
+
+.scrollbar-primary-sm::-webkit-scrollbar-thumb {
+  background: #034737;
+  border-radius: 20px;
+}
+
+.scrollbar-primary-sm::-webkit-scrollbar-thumb:hover {
+  background: #034737d5;
+}
+
 .hover-card {
   position: relative;
 }
