@@ -52,9 +52,9 @@ export default function Login() {
         validatedData
       );
       setCookie("token", response.data.data.token, {
-        secure: false,
-        path: "/",
-        sameSite: "strict",
+        secure: true,
+        // path: "/",
+        sameSite: "none",
         expires: new Date(Date.now() + 2 * 60 * 60 * 1000),
       });
       dispatch(login(response.data.data));
