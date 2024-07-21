@@ -96,7 +96,7 @@ export default function Navbar() {
 
   return (
     <header className="bg-white shadow-2xl shadow-primary-green/10 py-4 px-10 rounded-[24px] w-full max-w-[90%] mx-auto fixed top-0 left-1/2 transform -translate-x-1/2 z-[5]">
-      <nav className="flex justify-between items-center">
+      <nav className="flex justify-between items-center gap-5">
         <div className="border-r border-[#DEDEDE] pr-10">
           <Image
             src="/logo/growstack.svg"
@@ -169,7 +169,7 @@ const NavLinkBtn = ({
           className: clsx(isActive && "text-primary-green"),
         })}
       </div>
-      <h2>{link.title}</h2>
+      <h2 className="whitespace-nowrap">{link.title}</h2>
     </div>
   );
 };
