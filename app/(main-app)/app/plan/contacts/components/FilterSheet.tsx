@@ -18,7 +18,7 @@ export default function FilterSheet() {
         <FilterIcon size={20} />
       </button>
       {isOpen && (
-        <Sheet open={isOpen}>
+        <Sheet open={isOpen} onOpenChange={toggleSheet}>
           <SheetContent className="rounded-l-[40px]">
             <SheetHeader>
               <SheetTitle>Filters</SheetTitle>

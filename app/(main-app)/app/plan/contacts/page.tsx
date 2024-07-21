@@ -33,7 +33,7 @@ export default function ContactsDashboard() {
       case 0:
         return (
           <Fragment>
-            <h1 className="text-2xl font-semibold">All contacts123</h1>
+            <h1 className="text-2xl font-semibold">All contacts</h1>
             <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
               Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
               ultricies accumsan. Nec.{" "}
@@ -101,11 +101,11 @@ export default function ContactsDashboard() {
                 ></div>
               </div>
             </div>
-            <Link href="/app/plan/contacts/settings">
+            {/* <Link href="/app/plan/contacts/settings">
               <button className="border Fborder-[#EBEBEB] rounded-lg p-3 hover:bg-primary-light-gray text-primary-black">
                 <SettingsIcon size={20} />
               </button>
-            </Link>
+            </Link> */}
           </div>
         </div>
 
