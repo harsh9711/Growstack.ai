@@ -50,8 +50,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
 
   useEffect(() => {
     if (textareaRef.current) {
-      textareaRef.current.focus();
-      textareaRef.current.style.overflow = "auto";
+      autosize.update(textareaRef.current);
     }
   }, [input]);
 
@@ -64,6 +63,9 @@ const ChatInput: React.FC<ChatInputProps> = ({
     setInput("");
     addMessage("user", prompt, false);
     addMessage("assistant", "", true);
+    if (textareaRef.current) {
+      autosize.update(textareaRef.current);
+    }
     try {
       const conversation = await instance.post(
         `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${

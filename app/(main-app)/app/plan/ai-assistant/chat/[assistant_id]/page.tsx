@@ -7,6 +7,7 @@ import { Assistant, Conversation } from "../../components/types";
 import Topbar from "./components/Topbar";
 import ChatSection from "./components/ChatSection";
 import Sidebar from "./components/Sidebar";
+import { languageOptions } from "@/app/(main-app)/app/create/ai-articles/constants/options";
 
 interface PageProps {
   params: {
@@ -23,6 +24,9 @@ const AssistantsChats: React.FC<PageProps> = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const [selectedLanguage, setSelectedLanguage] = useState<string>(
+    languageOptions[0].value
+  );
 
   useEffect(() => {
     const fetchAssistantConversation = async () => {
@@ -82,6 +86,10 @@ const AssistantsChats: React.FC<PageProps> = ({
     );
   }
 
+  const switchLanguage = (language: string) => {
+    setSelectedLanguage(language);
+  };
+
   return (
     <div className="flex-1 flex flex-col h-full w-full">
       <div className="flex-1 flex h-full !bg-white shadow-box mt-8 border">
@@ -96,10 +104,13 @@ const AssistantsChats: React.FC<PageProps> = ({
             assistant={assistantData!}
             isSidebarOpen={isSidebarOpen}
             setIsSidebarOpen={setIsSidebarOpen}
+            selectedLanguage={selectedLanguage}
+            switchLanguage={switchLanguage}
           />
           <ChatSection
             conversation={assistantConversation}
             assistant={assistantData}
+            selectedLanguage={selectedLanguage}
           />
         </div>
       </div>

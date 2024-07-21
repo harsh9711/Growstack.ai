@@ -164,7 +164,7 @@ export default function ContactsTable() {
             <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" />
           </div>
      {/* <Image src="/icon1.svg" alt="icon" width={40} height={40}/> */}
-          <FilterSheet />
+          {/* <FilterSheet /> */}
         </div>
         <div className="rounded-lg border overflow-hidden mt-5">
           <Table>

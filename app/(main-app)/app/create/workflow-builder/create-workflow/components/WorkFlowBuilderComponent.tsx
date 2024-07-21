@@ -32,12 +32,16 @@ export default function WorkFlowBuilderComponent() {
   const [inputConfigs, setInputConfigs] = useState<any[]>([]);
   const [outputConfigs, setOutputConfigs] = useState<any[]>([]);
 
-  const createPayloadBody = (input: any) => {
-    return input.reduce((acc: any, input: any) => {
+  const createPayloadBody = (inputs: any) => {
+    let promptValue: any = null;
+    return inputs.reduce((acc: any, input: any) => {
       acc[input.input_label] = input.input_default_value;
-      if (input.is_prompt) {
-        acc.prompt = input.prompt; // Replace 'your_prompt_value' with actual prompt value
+
+      if (input.is_prompt && !promptValue) {
+        promptValue = input.prompt; // Save the first encountered prompt value
+        acc.prompt = promptValue;
       }
+
       return acc;
     }, {});
   };

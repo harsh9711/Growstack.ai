@@ -8,16 +8,15 @@ import { languageOptions } from "@/app/(main-app)/app/create/ai-articles/constan
 interface ChatSectionProps {
   conversation: Conversation;
   assistant: Assistant;
+  selectedLanguage: string;
 }
 
 const ChatSection: React.FC<ChatSectionProps> = ({
   conversation,
   assistant,
+  selectedLanguage
 }) => {
   const [messages, setMessages] = useState<Chat[]>([]);
-  const [selectedLanguage, setSelectedLanguage] = useState<string>(
-    languageOptions[0].value
-  );
 
   useEffect(() => {
     setMessages(conversation.chats);
@@ -43,23 +42,20 @@ const ChatSection: React.FC<ChatSectionProps> = ({
     });
   };
 
-  const switchLanguage = async (language: string) => {
-    setSelectedLanguage(language);
-  };
 
   return (
     <div className="flex-1 h-full flex flex-col px-8 pb-8">
-      <div className="flex-1 flex flex-col h-full max-h-[55vh] overflow-y-auto">
+      <div className="flex-1 flex flex-col h-full max-h-[68vh] overflow-y-auto">
         <ChatMessages
           conversation={{ ...conversation, chats: messages }}
           assistant={assistant}
         />
       </div>
       <div className="space-y-4">
-        <ChatOptions
+        {/* <ChatOptions
           switchLanguage={switchLanguage}
           selectedLanguage={selectedLanguage}
-        />
+        /> */}
         <ChatInput
           assistant_id={assistant.id}
           addMessage={addMessage}

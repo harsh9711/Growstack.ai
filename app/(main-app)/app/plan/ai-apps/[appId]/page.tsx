@@ -248,31 +248,8 @@ export default function AiAppPage({
           },
         }
       );
-      const chatId = response.data.data;
-      const eventSource = new EventSource(
-        `${API_URL}/ai/api/v1/chat-template/generate/stream/${chatId}`
-      );
-      let content = "<ol><strong>"; // Start with an ordered list
-      eventSource.onerror = (event) => {
-        eventSource.close();
-      };
-      eventSource.onmessage = (event) => {
-        let data = event.data;
-        console.log(data);
-
-        // Clean up the data to ensure it is properly formatted
-        data = data
-          .replace(/<li>\s*/g, "<li>") // Remove spaces after <li>
-          .replace(/\s*<\/li>/g, "</li><br>") // Add space before </li> by adding a <br> tag
-          .replace(/<ol>\s*/g, "<ol>") // Remove spaces after <ol>
-          .replace(/\s*<\/ol>/g, "</ol>"); // Remove spaces before </ol>
-
-        // Add the cleaned data to content
-        content += data;
-
-        // Set the generated content with the final formatted HTML
-        setGeneratedContent(content + "</strong></ol>");
-      };
+      const content = response.data.data;
+      setGeneratedContent(content);
     } catch (error) {
       console.error("Error generating template:", error);
     }
@@ -285,7 +262,7 @@ export default function AiAppPage({
     language: "English (USA)", // Set your default language here
   });
   const handleDropdownChange = (field: string, value: any) => {
-    setUserInput1((prevInput) => ({
+    setUserInput((prevInput) => ({
       ...prevInput,
       [field]: value,
     }));
@@ -568,10 +545,14 @@ export default function AiAppPage({
               label="AI Model"
               items={[
                 "gpt-3.5-turbo",
-                "gpt-3.5-turbo-instruct",
                 "gpt-4",
-                "gpt-4-turbo",
                 "gpt-4o",
+                "claude-3-5-sonnet-20240620",
+                "claude-3-opus-20240229",
+                "claude-3-sonnet-20240229",
+                "claude-3-haiku-20240307",
+                "gemini-1.5-flash",
+                "gemini-1.5-pro",
               ]}
               value={userInput.model}
               onChange={(value: any) => handleDropdownChange("model", value)}
@@ -661,7 +642,7 @@ export default function AiAppPage({
                   <SelectItem value="Workbook 2">Workbook 2</SelectItem>
                 </SelectContent>
               </Select>
-              <div className="flex items-center gap-2 whitespace-nowrap">
+              {/* <div className="flex items-center gap-2 whitespace-nowrap">
                 <Switch />
                 <label
                   htmlFor="include-brand"
@@ -669,7 +650,7 @@ export default function AiAppPage({
                 >
                   Internet Access
                 </label>
-              </div>
+              </div> */}
             </div>
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
@@ -687,9 +668,9 @@ export default function AiAppPage({
                   onChange={(value: any) => handleDownload(value)}
                 />
 
-                <button className="p-2 bg-gray-100 border rounded-lg">
+                {/* <button className="p-2 bg-gray-100 border rounded-lg">
                   <Save size={20} className="text-gray-600" />
-                </button>
+                </button> */}
               </div>
             </div>
           </div>

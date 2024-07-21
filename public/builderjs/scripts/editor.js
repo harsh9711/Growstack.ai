@@ -73,14 +73,14 @@ var editor = new Editor({
   showInlineToolbar: true,
   root: "/builderjs/dist",
   url: "/builderjs/" + templateUrl,
-  urlBack: window.location.origin,
-  uploadAssetUrl: "", //e.g 'asset.php',
+  urlBack: "/app/create/email-builder",
+  uploadAssetUrl: "/api/email-builder/upload-asset",
   uploadAssetMethod: "POST",
-  uploadTemplateUrl: "", // e.g 'save-to-disk.php'
+  uploadTemplateUrl: "/api/email-builder/upload-template",
   uploadTemplateCallback: function (response) {
     window.location = response.url;
   },
-  saveUrl: "", //e.g 'save-to-disk.php'
+  saveUrl: "/api/email-builder/save-to-disk",
   saveMethod: "POST",
   data: {
     _token: "CSRF_TOKEN", // Replace with your CSRF token if applicable
@@ -93,7 +93,7 @@ var editor = new Editor({
     window.location = url;
   },
   export: {
-    url: "", // Replace with your export URL if needed e.g 'export.php'
+    url: "/api/email-builder/export", // Replace with your export URL if needed e.g 'export.php'
   },
   backgrounds: [
     "/builderjs/assets/image/backgrounds/images1.jpg",

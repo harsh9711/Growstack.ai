@@ -32,7 +32,7 @@ const CreateVideoDialog = ({ templates }: { templates: Array<Template> | null })
       <DialogTrigger asChild>
         <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2">
           <Plus size={20} />
-          Create new video
+          Create new video with AI
         </button>
       </DialogTrigger>
       <DialogContent className="max-w-[40%] h-[35vh] flex flex-col pt-0">
@@ -40,13 +40,13 @@ const CreateVideoDialog = ({ templates }: { templates: Array<Template> | null })
           <section className="w-full pt-8 pb-4 px-10 bg-white space-y-6  border-primary-light-gray">
             <h1 className="text-2xl font-semibold">Create a new video</h1>
             <div className="flex flex-col gap-8 w-full">
-              <div className="w-full hover-card flex items-center justify-between transition h-full duration-500 ring-1 ring-[#E7E7E7] p-6 rounded-2xl cursor-pointer group">
+              {/* <div className="w-full hover-card flex items-center justify-between transition h-full duration-500 ring-1 ring-[#E7E7E7] p-6 rounded-2xl cursor-pointer group">
                 <div className="space-y-3">
                   <h1 className="text-[18px] font-semibold">Blank Video</h1>
                   <p className="text-primary-neutral">Start from scratch with a blank canvas</p>
                 </div>
                 <VideoMedia className="text-primary-neutral group-hover:text-primary-green transition duration-300" />
-              </div>
+              </div> */}
               <GenerateVideoDialog />
               {/* <PptDialog /> */}
             </div>

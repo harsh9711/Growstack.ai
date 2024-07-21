@@ -109,24 +109,6 @@ export default function Dashboard() {
               </span>
             </p>
           </div>
-          <div className="flex items-center gap-2 relative">
-            <Select>
-              <SelectTrigger className="w-[150px] bg-white">
-                <SelectValue placeholder="Select" />
-              </SelectTrigger>
-              <SelectContent defaultValue={"daily"}>
-                <SelectGroup>
-                  <SelectItem value="daily">Daily</SelectItem>
-                  <SelectItem value="monthly">Monthly</SelectItem>
-                  <SelectItem value="yearly">Yearly</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-            <button className="bg-primary-green py-4 pl-4 pr-5 flex items-center gap-3 rounded-xl text-white sheen">
-              <Plus size={22} />
-              Create social planner
-            </button>
-          </div>
         </div>
         <div className="grid grid-cols-4 gap-6 mt-10">
           <div className="bg-white py-7 px-8 rounded-3xl flex justify-between items-center shadow-2xl shadow-gray-200">

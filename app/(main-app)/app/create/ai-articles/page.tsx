@@ -108,7 +108,7 @@ export default function AiArticles() {
                   strokeMiterlimit="10"
                 />
               </svg>{" "}
-              Your Balance is <span className="font-semibold text-primary-green">5,389,159 Words</span>{" "}
+              Your Balance is <span className="font-semibold text-primary-green">10,000 Words</span>{" "}
             </p>
           </div>
         </div>

@@ -1,10 +1,8 @@
 "use client";
 
 import { languageOptions } from "@/app/(main-app)/app/create/ai-articles/constants/options";
-import { writingStyleOptions, writingToneOptions } from "./constants/options";
 import clsx from "clsx";
 import { ChevronDown } from "lucide-react";
-import { useState } from "react";
 import {
   Select,
   SelectContent,
@@ -23,12 +21,6 @@ const ChatOptions: React.FC<ChatOptionsProps> = ({
   switchLanguage,
   selectedLanguage,
 }) => {
-  const [selectedWritingStyle, setSelectedWritingStyle] = useState(
-    writingStyleOptions[0].value
-  );
-  const [selectedWritingTone, setSelectedWritingTone] = useState(
-    writingToneOptions[0].value
-  );
 
   return (
     <div className="flex gap-4 pt-3 justify-end">
