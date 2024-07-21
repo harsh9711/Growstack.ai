@@ -4,7 +4,7 @@ import archiver from "archiver";
 import { NextRequest, NextResponse } from "next/server";
 import { NextApiRequest, NextApiResponse } from "next";
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(req: NextRequest, res: NextResponse) {
   try {
     //@ts-ignore
     const formdata = await req.formData();
@@ -35,17 +35,17 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
     const output = fs.createWriteStream(zipFile);
     const archive = archiver("zip", { zlib: { level: 9 } });
 
-    res.setHeader("Content-Description", "File Transfer");
-    res.setHeader("Content-Type", "application/zip");
-    res.setHeader("Content-Disposition", `attachment; filename=${path.basename(zipFile)}`);
-    res.setHeader("Content-Transfer-Encoding", "binary");
-    res.setHeader("Expires", "0");
-    res.setHeader("Cache-Control", "must-revalidate");
-    res.setHeader("Pragma", "public");
-    res.setHeader("Content-Length", archive.pointer().toString());
+    // res.setHeader("Content-Description", "File Transfer");
+    // res.setHeader("Content-Type", "application/zip");
+    // res.setHeader("Content-Disposition", `attachment; filename=${path.basename(zipFile)}`);
+    // res.setHeader("Content-Transfer-Encoding", "binary");
+    // res.setHeader("Expires", "0");
+    // res.setHeader("Cache-Control", "must-revalidate");
+    // res.setHeader("Pragma", "public");
+    // res.setHeader("Content-Length", archive.pointer().toString());
 
     const fileStream = fs.createReadStream(zipFile);
-    fileStream.pipe(res);
+    // fileStream.pipe(res);
 
     archive.on("error", (err) => {
       throw err;
