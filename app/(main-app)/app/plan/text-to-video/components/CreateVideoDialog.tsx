@@ -32,7 +32,7 @@ const CreateVideoDialog = ({ templates }: { templates: Array<Template> | null })
       <DialogTrigger asChild>
         <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2">
           <Plus size={20} />
-          Create new video
+          Create new video with AI
         </button>
       </DialogTrigger>
       <DialogContent className="max-w-[40%] h-[35vh] flex flex-col pt-0">
