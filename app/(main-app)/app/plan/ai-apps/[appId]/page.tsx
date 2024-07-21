@@ -262,7 +262,7 @@ export default function AiAppPage({
     language: "English (USA)", // Set your default language here
   });
   const handleDropdownChange = (field: string, value: any) => {
-    setUserInput1((prevInput) => ({
+    setUserInput((prevInput) => ({
       ...prevInput,
       [field]: value,
     }));

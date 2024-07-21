@@ -3,6 +3,7 @@ import "@/styles/editor.css";
 import dynamic from "next/dynamic";
 import { useMemo, useState, useEffect } from "react";
 import "react-quill/dist/quill.snow.css";
+import { marked } from "marked";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -15,7 +16,12 @@ const Editor = ({ content, onChange }: EditorProps) => {
   const [value, setValue] = useState("");
 
   useEffect(() => {
-    setValue(content);
+    const convertMarkdownToHtml = async (markdown: string) => {
+      const html = await marked(markdown);
+      setValue(html);
+    };
+
+    convertMarkdownToHtml(content);
   }, [content]);
 
   const modules = useMemo(
@@ -24,7 +30,12 @@ const Editor = ({ content, onChange }: EditorProps) => {
         [{ header: "1" }, { header: "2" }, { font: [] }],
         [{ size: [] }],
         ["bold", "italic", "underline", "strike", "blockquote"],
-        [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
+        [
+          { list: "ordered" },
+          { list: "bullet" },
+          { indent: "-1" },
+          { indent: "+1" },
+        ],
         ["link", "image", "video"],
         ["clean"],
       ],
@@ -61,7 +72,7 @@ const Editor = ({ content, onChange }: EditorProps) => {
         onChange={handleChange}
         modules={modules}
         formats={formats}
-        className="h-[calc(100%-40px)]" 
+        className="h-[calc(100%-40px)]"
       />
     </div>
   );
