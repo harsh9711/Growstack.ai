@@ -1,11 +1,30 @@
-import { aiModelOptions } from "@/app/(main-app)/app/create/ai-articles/constants/options";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  aiModelOptions,
+  languageOptions,
+} from "@/app/(main-app)/app/create/ai-articles/constants/options";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import clsx from "clsx";
 import { Download, Settings, Share2, UserCircle } from "lucide-react";
 import { useState } from "react";
 import { Assistant, Chat, Conversation } from "../../../components/types";
-import { downloadDocx, downloadPdf, downloadTxt } from "./utils/downloadHelpers";
+import {
+  downloadDocx,
+  downloadPdf,
+  downloadTxt,
+} from "./utils/downloadHelpers";
 import Image from "next/image";
 
 interface IProps {
@@ -13,16 +32,33 @@ interface IProps {
   isSidebarOpen: boolean;
   setIsSidebarOpen: (isSidebarOpen: boolean) => void;
   conversation: Conversation;
+  selectedLanguage: string;
+  switchLanguage: (language: string) => void;
 }
 
-export default function Topbar({ assistant, conversation, isSidebarOpen, setIsSidebarOpen }: IProps) {
-  const [selectedAiModel, setSelectedAiModel] = useState(aiModelOptions[0].value);
+export default function Topbar({
+  assistant,
+  conversation,
+  isSidebarOpen,
+  setIsSidebarOpen,
+  selectedLanguage,
+  switchLanguage,
+}: IProps) {
+  const [selectedAiModel, setSelectedAiModel] = useState(
+    aiModelOptions[0].value
+  );
 
   return (
     <div className="border-b px-10 py-5">
       <div className="flex justify-between">
         <div className="flex items-center gap-4">
-          <Image src={assistant.avatar} alt="" width={200} height={200} className="h-[50px] w-[50px] rounded-xl object-cover shadow-md shadow-gray-200" />
+          <Image
+            src={assistant.avatar}
+            alt=""
+            width={200}
+            height={200}
+            className="h-[50px] w-[50px] rounded-xl object-cover shadow-md shadow-gray-200"
+          />
           <div>
             <h2 className="text-xl font-semibold">{assistant.name}</h2>
             <p className="flex items-center gap-2 text-primary-black text-opacity-70">
@@ -31,12 +67,13 @@ export default function Topbar({ assistant, conversation, isSidebarOpen, setIsSi
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <div className="bg-primary-green/10 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
+          {/* <div className="bg-primary-green/10 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
             <Share2 />
-          </div>
+          </div> */}
           <div
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="bg-primary-green/10 hover:text-white hover:bg-primary-green transition-all duration-300 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
+            className="bg-primary-green/10 hover:text-white hover:bg-primary-green transition-all duration-300 h-11 w-11 grid place-content-center rounded-lg cursor-pointer"
+          >
             <UserCircle />
           </div>
           <DropdownMenu>
@@ -46,15 +83,24 @@ export default function Topbar({ assistant, conversation, isSidebarOpen, setIsSi
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem className="flex items-center gap-2" onClick={() => downloadTxt(conversation.chats)}>
+              <DropdownMenuItem
+                className="flex items-center gap-2"
+                onClick={() => downloadTxt(conversation.chats)}
+              >
                 <Download size={18} />
                 Download chat (.txt)
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2" onClick={() => downloadPdf(conversation.chats)}>
+              <DropdownMenuItem
+                className="flex items-center gap-2"
+                onClick={() => downloadPdf(conversation.chats)}
+              >
                 <Download size={18} />
                 Download chat (.pdf)
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2" onClick={() => downloadDocx(conversation.chats)}>
+              <DropdownMenuItem
+                className="flex items-center gap-2"
+                onClick={() => downloadDocx(conversation.chats)}
+              >
                 <Download size={18} />
                 Download chat (.docx)
               </DropdownMenuItem>
@@ -69,8 +115,34 @@ export default function Topbar({ assistant, conversation, isSidebarOpen, setIsSi
               <SelectGroup>
                 {aiModelOptions.map(({ icon, label, value }) => (
                   <SelectItem key={value} value={value}>
-                    <div className={clsx("flex items-center gap-2", selectedAiModel === value && "font-medium")}>
+                    <div
+                      className={clsx(
+                        "flex items-center gap-2",
+                        selectedAiModel === value && "font-medium"
+                      )}
+                    >
                       <span className="min-w-fit">{icon}</span>
+                      {label}
+                    </div>
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <Select value={selectedLanguage} onValueChange={switchLanguage}>
+            <SelectTrigger className="bg-[#429A85] min-w-[200px] h-12 text-white border-0 rounded-xl flex items-center justify-between px-4">
+              <SelectValue placeholder="Select an option" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {languageOptions.map(({ label, value }) => (
+                  <SelectItem key={value} value={value}>
+                    <div
+                      className={clsx(
+                        "flex items-center gap-2",
+                        selectedLanguage === value && "font-medium"
+                      )}
+                    >
                       {label}
                     </div>
                   </SelectItem>
