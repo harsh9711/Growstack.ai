@@ -18,7 +18,10 @@ export default function page() {
       </div>
       <div className="flex gap-4 my-10">
         {blogTags.map((tag, index) => (
-          <div key={index} className={`py-3 cursor-pointer px-4 text-[14px] rounded-full max-w-fit`} style={{ backgroundColor: tag.theme_color }}>
+          <div
+            key={index}
+            className={`py-3 cursor-pointer px-6 text-[14px] rounded-full max-w-fit ${index === 0 && "text-white"}`}
+            style={{ backgroundColor: tag.theme_color }}>
             {tag.tage_title}
           </div>
         ))}
