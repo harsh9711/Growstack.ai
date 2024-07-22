@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import "../../../../../../styles/markdown.css";
 import DotsLoader from "@/components/DotLoader";
+import { Share2 } from "lucide-react";
 
 interface ResultComponentProps {
   articleData: string;
@@ -42,8 +43,11 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
         </div>
       </div>
       <section className="max-w-6xl mx-auto">
-        <div className="bg-primary-green rounded-2xl py-6 px-8 flex items-center gap-4 mt-6">
+        <div className="bg-primary-green rounded-2xl py-6 px-8 flex items-center gap-4 mt-6 justify-between">
           <h2 className="text-lg font-semibold text-white">Final Article</h2>
+          <div className="bg-white h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
+            <Share2 />
+          </div>
         </div>
         <div className="border !bg-white shadow-box p-10 mt-5 leading-relaxed space-y-3">
           {!articleData ? (

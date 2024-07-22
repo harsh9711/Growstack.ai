@@ -35,6 +35,7 @@ import { ArrowRight } from "lucide-react";
 import { LoadScript, GoogleMap } from "@react-google-maps/api";
 import React from "react";
 import { FaArrowCircleLeft } from "react-icons/fa";
+import UseGoogleAutocomplete from "../hooks/UseGoogleAutocomplete";
 
 const MapContainer = dynamic(
   () => import("react-leaflet").then((module) => module.MapContainer),
@@ -389,6 +390,7 @@ const WebScraping: React.FC = () => {
   const router = useRouter();
   const [currentPageNumber, setCurrentPageNumber] = useState(1); // Initial page number, adjust as per your application logic
 
+
   useEffect(() => {
     if (places.length > 0) {
       setCenter([places[0].latitude, places[0].longitude]);
@@ -739,18 +741,16 @@ const WebScraping: React.FC = () => {
   const [inputCountry, setInputCountry] = useState<string>("");
   const [filteredCountries, setFilteredCountries] = useState<OptionType[]>([]);
   const [selectedOption, setSelectedOption] = useState<OptionType | null>(null);
+  const { autocompleteInputRef } = UseGoogleAutocomplete({setInputCountry});
 
-  const handleCountryInputChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ): void => {
+
+  const handleCountryInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     setInputCountry(value);
-
-    const filtered = countries.filter((country) =>
-      country.label.toLowerCase().includes(value.toLowerCase())
-    );
-    setFilteredCountries(filtered);
   };
+
+  console.log("inputCountry", inputCountry)
+  console.log("Debugggginnggg44--inputCountry::Place selected:", inputCountry);
 
   const handleFilteredCountrySelect = (country: OptionType): void => {
     setSelectedOption(country);
@@ -833,6 +833,9 @@ const WebScraping: React.FC = () => {
         );
         console.log("Response:", response.data);
         toast.success("Data saved successfully!");
+        setTimeout(() => {
+          router.push(`/app/plan/contacts`)
+        }, 10)
       } catch (error) {
         console.error("Error:", error);
         toast.error("Failed to save data. Please try again.");
@@ -875,7 +878,7 @@ const WebScraping: React.FC = () => {
         </button>
 
         {isModalOpen && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-30">
             <div className="bg-white p-8 rounded-md">
               <h2 className="mb-4 text-lg font-semibold">Enter Title</h2>
               <input
@@ -1072,6 +1075,7 @@ const WebScraping: React.FC = () => {
             <div className="flex items-center gap-4 mt-2 bg-[#F2F2F2] p-2 rounded-xl">
               <Search className="text-primary-green/80 ml-4" />
               <input
+                ref={autocompleteInputRef}
                 type="text"
                 className="h-12 bg-transparent text-primary-black w-full"
                 placeholder="Enter country name"
@@ -1087,7 +1091,7 @@ const WebScraping: React.FC = () => {
               </button>
             </div>
 
-            {filteredCountries.length > 0 && (
+            {/* {filteredCountries.length > 0 && (
               <div className="mt-4 border border-gray-200 rounded-md shadow-md p-4">
                 <h3 className="text-lg font-medium mb-2">Filtered Countries</h3>
                 <ul className="list-disc list-inside">
@@ -1102,7 +1106,7 @@ const WebScraping: React.FC = () => {
                   ))}
                 </ul>
               </div>
-            )}
+            )} */}
 
             {selectedOption && (
               <div className="mt-4">
