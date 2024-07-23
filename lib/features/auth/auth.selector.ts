@@ -6,7 +6,7 @@ const isAuthenticated = () => {
   return useSelector((state: RootState) => state.auth.isAuthenticated);
 };
 
-const getCurrentUser = () => {
+const getCurrentUser = (): User => {
   return useSelector((state: RootState) => state.auth.user);
 };
 

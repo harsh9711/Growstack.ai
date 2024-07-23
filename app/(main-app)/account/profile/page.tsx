@@ -1,154 +1,215 @@
 "use client";
-import React, { useState } from "react";
 
-const Page = () => {
-  const years = [
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { getCurrentUser } from "@/lib/features/auth/auth.selector";
+import { Edit, KeyIcon, Settings2Icon, ShieldCheckIcon, UserIcon as UserIcon2, UserX2 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import { BiPencil } from "react-icons/bi";
+
+export default function ProfilePage() {
+  const currentUser = getCurrentUser();
+  const [previewImage, setPreviewImage] = useState<any>(null);
+
+  const options = [
     {
-      label: "1st Year",
-      value: "1st Year",
+      link: "#",
+      icon: <UserIcon2 />,
+      title: "View profile",
     },
     {
-      label: "2nd Year",
-      value: "2nd Year",
+      link: "#",
+      icon: <Settings2Icon />,
+      title: "set defaults",
     },
     {
-      label: "3rd Year",
-      value: "3rd Year",
+      link: "#",
+      icon: <KeyIcon />,
+      title: "Change password",
     },
     {
-      label: "4th Year",
-      value: "4th Year",
+      link: "#",
+      icon: <ShieldCheckIcon />,
+      title: "2FA Authentication",
     },
     {
-      label: "Passed Out",
-      value: "Passed Out",
+      link: "#",
+      icon: <UserX2 />,
+      title: "Delete Account",
     },
   ];
+  const handleImageUpload = (e: any) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      const result = reader.result;
+      setPreviewImage(result);
+    };
+  };
 
   return (
-    <div className="mt-10">
-      <form className="flex flex-col xl:flex-row gap-6">
-        <section className="bg-white px-4 sm:px-8 py-6 lg:p-14 w-full rounded-[20px] md:rounded-[40px] shadow-xl shadow-gray-100">
-          <h1 className="text-2xl font-semibold capitalize leading-loose">Personal Information </h1>
-          <div className="flex items-center gap-5 mt-6">
-            <div className="bg-primary-green grid place-content-center h-20 max-w-20 rounded-full w-full">
-              <h1 className="text-white text-3xl">J</h1>
-            </div>
-            <div className="w-full space-y-4">
-              <h1>
-                Profile Image <span className="text-primary-green">(Image size must be less than 1MB*)</span>
-              </h1>
-              <div className="hidden sm:flex h-[54px] w-full border border-[#eee] rounded-xl text-sm justify-between">
-                <div className="flex-1 flex items-center px-4">
-                  <h1>Profile Image</h1>
-                </div>
-
-                <label
-                  htmlFor="profile-image"
-                  className="bg-primary-green text-white h-[54px] px-8 rounded-r-xl flex items-center justify-center cursor-pointer">
-                  Browse
-                </label>
-                <input type="file" id="profile-image" accept="images/*" className="hidden" />
+    <div className="flex-1 flex mt-10 gap-8">
+      <div className="w-full max-w-md !bg-white shadow-box p-10 rounded-xl flex flex-col divide-y divide-gray-200 space-y-5">
+        <div className="space-y-2 flex flex-col items-center">
+          <div className="max-w-fit space-y-6">
+            <label htmlFor="profileImage" className="relative group w-28 h-28 rounded-full overflow-hidden">
+              <div className="w-28 h-28">
+                {previewImage ? (
+                  <Image src={previewImage} alt="" width={100} height={100} className="h-28 w-28 object-cover rounded-full" />
+                ) : (
+                  <div className="h-28 w-28 bg-gray-200 rounded-full grid place-content-center text-3xl font-medium uppercase">
+                    {currentUser.email.slice(0, 1)}
+                  </div>
+                )}
               </div>
-            </div>
-          </div>
-          <div className="h-[54px] w-full border border-[#eee] rounded-xl text-sm flex sm:hidden justify-between mt-5">
-            <div className="flex-1 flex items-center px-4">
-              <h1>Profile Image</h1>
-            </div>
-
-            <label htmlFor="profile-image" className="bg-primary-green text-white h-[54px] px-8 rounded-r-xl flex items-center justify-center cursor-pointer">
-              Browse
+              <div className="w-28 h-28 rounded-full absolute inset-0 bg-black opacity-0 group-hover:bg-black/50 group-hover:opacity-100 z-10 flex flex-col items-center justify-center text-white cursor-pointer transition">
+                <BiPencil size={35} />
+              </div>
             </label>
-            <input type="file" id="profile-image" accept="images/*" className="hidden" />
+            <input type="file" id="profileImage" accept="image/*" className="hidden" onChange={handleImageUpload} />
           </div>
-          <div className="flex flex-col space-y-7 mt-6">
-            <div className="flex flex-col sm:flex-row gap-x-6 w-full gap-y-6">
+          <h2 className="text-2xl font-semibold">Admin</h2>
+          <p>Administrator</p>
+        </div>
+        <div className="flex justify-between pt-6">
+          <div className="flex flex-col items-center gap-1">
+            <h2 className="text-2xl font-semibold">981.2K</h2>
+            <p className="text-gray-400">Words Left</p>
+          </div>
+          <div className="flex flex-col items-center gap-1">
+            <h2 className="text-2xl font-semibold">981.2K</h2>
+            <p className="text-gray-400">Words Left</p>
+          </div>
+        </div>
+        <div className="space-y-1.5 mt-8 pt-6">
+          {options.map((option, index) => (
+            <Link href={option.link} className="flex gap-3 items-center p-3 hover:bg-gray-50 rounded-lg transition capitalize" key={index}>
+              {option.icon}
+              <h1 className="text-sm">{option.title}</h1>
+            </Link>
+          ))}
+        </div>
+      </div>
+      <div className="w-full !bg-white shadow-box p-10 rounded-xl flex flex-col">
+        <div className="flex-1">
+          <h1 className="border-b pb-4 flex items-center gap-3 font-semibold text-xl">
+            <Edit size={20} />
+            Edit your profile
+          </h1>
+          <div>
+            <div className="grid grid-cols-2 gap-x-5 gap-y-6 mt-6">
               <div className="space-y-3 w-full">
                 <label>Full Name</label>
                 <input type="text" name="fullName" placeholder="Full Name" className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm" />
               </div>
               <div className="space-y-3 w-full">
+                <label>Role job</label>
+                <input
+                  type="text"
+                  name="role"
+                  placeholder="Enter your role job"
+                  value="Administrator"
+                  className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
+                />
+              </div>
+              <div className="space-y-3 w-full">
                 <label>Email</label>
-                <input type="text" name="email" placeholder="Enter your email" className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm" />
-              </div>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-x-6 w-full gap-y-6">
-              <div className="space-y-3 w-full">
-                <label>Contact</label>
                 <input
                   type="text"
-                  name="contact"
-                  placeholder="Enter your contact number"
+                  name="email"
+                  placeholder="Enter your email"
+                  value="admin@gmail.com"
                   className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                 />
               </div>
-              <div className="space-y-3 w-full">
-                <label>College Name</label>
-                <input
-                  type="text"
-                  name="collegeName"
-                  placeholder="Enter your college name"
-                  className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
-                />
-              </div>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-x-6 w-full gap-y-6">
-              <div className="space-y-3 w-full">
-                <label>Branch</label>
-                <input type="text" name="branch" placeholder="Your branch" className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm" />
-              </div>
-              <div className="space-y-3 w-full">
-                <label>Year</label>
-                {/* <input name="year" className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm">
-                  {years.map(({ label, value }) => (
-                    <option key={value} value={value}>
-                      {label}
-                    </option>
-                  ))}
-                </input> */}
-              </div>
-            </div>
-            <button type="submit" className="bg-primary-green px-12 py-4 rounded-xl text-white self-end">
-              Update
-            </button>
-          </div>
-        </section>
+              <div className="flex items-center gap-5">
+                <div className="w-full space-y-3">
+                  <h1>Change avatar</h1>
+                  <div className="hidden sm:flex h-[54px] w-full bg-white border border-[#eee] rounded-xl text-sm justify-between">
+                    <div className="flex-1 flex items-center px-4">
+                      <h1>Choose your avatar...</h1>
+                    </div>
 
-        <section className="space-y-6 w-full xl:w-3/5">
-          <div className="bg-white px-4 sm:px-8 py-6 lg:p-14 w-full rounded-[20px] md:rounded-[40px] shadow-xl shadow-gray-100 space-y-2">
-            <h1 className="text-2xl font-semibold capitalize leading-loose">Package Information </h1>
-            <p className="font-semibold">
-              Package Type : <span className="text-primary-green underline font-normal">free</span>
-            </p>
-          </div>
-          <div className="bg-white px-4 sm:px-8 py-6 lg:p-14 w-full rounded-[20px] md:rounded-[40px] shadow-xl shadow-gray-100 space-y-6">
-            <h1 className="text-2xl font-semibold capitalize leading-loose">Reset Password</h1>
-            <div className="space-y-3 w-full">
-              <label className="font-semibold">
-                New Password <span className="text-primary-red">*</span>
-              </label>
-              <input type="password" name="newPassword" placeholder="New Password" className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm" />
+                    <label
+                      htmlFor="profile-image"
+                      className="bg-primary-green text-white h-[54px] px-8 rounded-r-xl flex items-center justify-center cursor-pointer">
+                      Browse
+                    </label>
+                    <input type="file" id="profile-image" accept="images/*" className="hidden" />
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-3 w-full">
+                <label>Company name</label>
+                <input
+                  type="text"
+                  name="company-name"
+                  placeholder="Enter your Company name"
+                  className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
+                />
+              </div>
+              <div className="space-y-3 w-full">
+                <label>Company website</label>
+                <input
+                  type="url"
+                  name="company-website"
+                  placeholder="Enter your Company website"
+                  className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
+                />
+              </div>
+
+              <div className="space-y-3 w-full">
+                <label>Address Line</label>
+                <input
+                  type="text"
+                  name="address-line"
+                  placeholder="Your Address Line"
+                  className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
+                />
+              </div>
             </div>
-            <div className="space-y-3 w-full">
-              <label className="font-semibold">
-                Confirm Password <span className="text-primary-red">*</span>
-              </label>
-              <input
-                type="password"
-                name="confirmPassword"
-                placeholder="Confirm Password"
-                className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
-              />
+            <div className="grid grid-cols-3 gap-x-5 gap-y-6 mt-6">
+              <div className="space-y-3 w-full">
+                <label>City</label>
+                <input type="text" name="city" placeholder="Enter your City" className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm" />
+              </div>
+              <div className="space-y-3 w-full">
+                <label>Postal Code</label>
+                <input
+                  type="url"
+                  name="postal-code"
+                  placeholder="Enter your Postal Code"
+                  className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
+                />
+              </div>
+
+              <div className="space-y-3 w-full">
+                <label>Country</label>
+                <Select>
+                  <SelectTrigger className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm bg-white">
+                    <SelectValue placeholder="Select" />
+                  </SelectTrigger>
+                  <SelectContent defaultValue={"daily"}>
+                    <SelectGroup>
+                      <SelectItem value="daily">Daily</SelectItem>
+                      <SelectItem value="monthly">Monthly</SelectItem>
+                      <SelectItem value="yearly">Yearly</SelectItem>
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>{" "}
+              </div>
             </div>
-            <button type="submit" className="bg-primary-green text-white w-full py-4 rounded-xl">
-              Reset password
-            </button>
           </div>
-        </section>
-      </form>
+        </div>
+        <div className="flex justify-end gap-4">
+          <button className="h-12 py-3 px-3 w-full max-w-[150px] uppercase border border-primary-green text-primary-green hover:bg-primary-green/10 rounded-xl mt-6">
+            Cancel
+          </button>
+          <button className="h-12 py-3 px-3 w-full max-w-[150px] uppercase bg-primary-green sheen rounded-xl text-white mt-6">Update</button>
+        </div>
+      </div>
     </div>
   );
-};
-
-export default Page;
+}

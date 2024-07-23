@@ -62,7 +62,7 @@ const Home: React.FC = () => {
           <div className="container space-y-14">
             <div className="text-center space-y-2">
               <h2 className="font-weight-normal font-size-40">Getting started with a template</h2>
-              <p className="">Start your design by choosing one of available layout templates that come with BuilderJS.</p>
+              <p className="">Start your design by choosing one of available layout templates that come with our Email builder.</p>
             </div>
             <div className="grid grid-cols-4 gap-7">
               {featuredTemplates.map((template) => (
@@ -99,7 +99,7 @@ const Home: React.FC = () => {
           <div className="container space-y-14">
             <div className="text-center space-y-2">
               <h2 className="font-weight-normal font-size-40">Basic layouts</h2>
-              <p className="">Start your design by choosing one of available layout templates that come with BuilderJS.</p>
+              <p className="">Start your design by choosing one of available layout templates that come with our Email builder.</p>
             </div>
             <div className="grid grid-cols-4 gap-7">
               {defaultTemplates.map((template) => (
