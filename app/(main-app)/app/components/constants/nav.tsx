@@ -65,7 +65,11 @@ const navLinks: NavLink[] = [
         name: "AI custom GPT",
         href: "/app/plan/custom-gpts",
       },
-
+      {
+        icon: <TextToVideoIcon />,
+        name: "Text to video",
+        href: "/app/plan/text-to-video",
+      },
       {
         icon: <TridentIcon />,
         name: "Web scraping",
@@ -103,9 +107,9 @@ const navLinks: NavLink[] = [
         href: "/app/create/workflow-builder",
       },
       {
-        icon: <TextToVideoIcon />,
-        name: "Text to video",
-        href: "/app/plan/text-to-video",
+        icon: <AiArticleIcon />,
+        name: "AI article wizard",
+        href: "/app/create/ai-articles",
       },
       {
         icon: <ProductAiIcon />,
