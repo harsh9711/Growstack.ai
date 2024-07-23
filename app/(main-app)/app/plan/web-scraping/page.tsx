@@ -816,7 +816,7 @@ const WebScraping: React.FC = () => {
             first_name: "Swapnil",
             last_name: "Amin",
             email: "swapnil@webbuddy.agency",
-            phone: "478174892415",
+            phone: place.phoneNumber.replace(/\D/g, '') || "",
           },
         }));
 
@@ -879,7 +879,7 @@ const WebScraping: React.FC = () => {
 
         {isModalOpen && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-30">
-            <div className="bg-white p-8 rounded-md">
+            <div className="bg-white p-8 rounded-md w-1/2">
               <h2 className="mb-4 text-lg font-semibold">Enter Title</h2>
               <input
                 type="text"
