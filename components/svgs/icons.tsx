@@ -136,4 +136,101 @@ function PhoneIcon() {
   );
 }
 
-export { CircleIcon, DeleteIcon, SMSIcon, EmailIcon, UploadIcon, PhoneIcon };
+function EmailIcon2() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <g clipPath="url(#clip0_44_1619)">
+        <path
+          fill="#034737"
+          d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-.4 4.25l-7.07 4.42c-.32.2-.74.2-1.06 0L4.4 8.25a.85.85 0 11.9-1.44L12 11l6.7-4.19a.85.85 0 11.9 1.44z"
+        ></path>
+      </g>
+      <defs>
+        <clipPath id="clip0_44_1619">
+          <path fill="#fff" d="M0 0H24V24H0z"></path>
+        </clipPath>
+      </defs>
+    </svg>
+  );
+}
+
+function MessageIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="28"
+      height="28"
+      fill="none"
+      viewBox="0 0 28 28"
+    >
+      <path
+        fill="#034737"
+        d="M22.262 4.277H6.1a2.448 2.448 0 00-2.448 2.448v9.91A2.448 2.448 0 006.1 19.081h2.625v4.719l4.188-4.719h9.349a2.448 2.448 0 002.447-2.448V6.725a2.448 2.448 0 00-2.447-2.448zm-5.896 10.078h-8.64a.697.697 0 010-1.394h8.64a.697.697 0 010 1.394zm3.828-3.883H7.725a.697.697 0 010-1.394h12.47a.697.697 0 010 1.394z"
+      ></path>
+    </svg>
+  );
+}
+
+function CallIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill="#034737"
+        d="M20.313 16.77c0 .71-.586 1.517-2.035 2.88a2.294 2.294 0 01-1.661.634h-.068c-3.072-.067-7.68-4.8-7.843-5.03-.163-.23-4.953-4.695-5.02-7.805a2.323 2.323 0 01.633-1.69c1.44-1.488 2.208-2.064 2.909-2.073a2.131 2.131 0 011.411.73 11.32 11.32 0 011.843 2.447 1.45 1.45 0 010 1.411L9.916 9.34a5.865 5.865 0 001.843 2.88 5.874 5.874 0 002.88 1.843l1.066-.566a1.42 1.42 0 011.41 0 11.322 11.322 0 012.468 1.862 1.922 1.922 0 01.73 1.411z"
+      ></path>
+    </svg>
+  );
+}
+
+function FbMessageIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="18"
+      fill="none"
+      viewBox="0 0 18 18"
+    >
+      <g clipPath="url(#clip0_44_1606)">
+        <path
+          fill="#034737"
+          d="M3.315 14.776v3.202l3.02-1.702c.843.24 1.738.37 2.665.37 4.97 0 9-3.727 9-8.323C18 3.726 13.97 0 9 0S0 3.726 0 8.323c0 2.603 1.292 4.927 3.315 6.453z"
+        ></path>
+        <path
+          fill="#fff"
+          d="M8.04 6.043l-4.854 5.093 4.417-2.402 2.308 2.402 4.826-5.093-4.368 2.36-2.33-2.36z"
+        ></path>
+      </g>
+      <defs>
+        <clipPath id="clip0_44_1606">
+          <path fill="#fff" d="M0 0H18V18H0z"></path>
+        </clipPath>
+      </defs>
+    </svg>
+  );
+}
+
+export {
+  CircleIcon,
+  DeleteIcon,
+  SMSIcon,
+  EmailIcon,
+  UploadIcon,
+  PhoneIcon,
+  EmailIcon2,
+  MessageIcon,
+  CallIcon,
+  FbMessageIcon,
+};

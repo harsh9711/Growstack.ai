@@ -7,7 +7,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { PhoneIcon } from "@/components/svgs/icons";
+import {
+  CallIcon,
+  EmailIcon2,
+  FbMessageIcon,
+  PhoneIcon,
+} from "@/components/svgs/icons";
+import { MessageIcon } from "@/components/svgs";
 
 interface AddContactProps {
   setToggleModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,7 +22,7 @@ interface AddContactProps {
 const AddContact = ({ setToggleModal }: AddContactProps) => {
   return (
     <div className="relative top">
-      <div className="px-4 py-3 border-b border-gray-300">
+      <div className="fixed w-1/2 bg-white z-40 px-4 py-3 border-b border-gray-300">
         <button
           onClick={() => setToggleModal(false)}
           className="absolute top-1 right-1 rounded-lg transition-opacity p-2 hover:bg-[#ff00001f] hover:opacity-100 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
@@ -25,7 +31,7 @@ const AddContact = ({ setToggleModal }: AddContactProps) => {
         </button>
         <div className="font-semibold text-[22px] text-header">Contact</div>
       </div>
-      <div className="px-4 py-3">
+      <div className="relative top-[60px] px-4 py-3">
         <div className="flex">
           <div className="flex justify-center items-center w-[120px] h-[120px] border border-[#F2F2F2] bg-[#F2F2F2] mr-6 rounded-md">
             <PhoneIcon />
@@ -135,19 +141,31 @@ const AddContact = ({ setToggleModal }: AddContactProps) => {
         </div>
         <DividerWithText />
         <div className="flex justify-between items-center my-[20px]">
-          <div className="text-[14px]">Email</div>
+          <div className="flex items-center justify-center text-[14px]">
+            <EmailIcon2 />
+            <span className="ml-[10px]">Email</span>
+          </div>
           <Checkbox />
         </div>
         <div className="flex justify-between items-center mb-[20px]">
-          <div className="text-[14px]">Text messages</div>
+          <div className="flex items-center justify-center text-[14px]">
+            <MessageIcon />
+            <span className="ml-[10px]">Text messages</span>
+          </div>
           <Checkbox />
         </div>
         <div className="flex justify-between items-center mb-[20px]">
-          <div className="text-[14px]">Calls & Voicemails</div>
+          <div className="flex items-center justify-center text-[14px]">
+            <CallIcon />
+            <span className="ml-[10px]">Calls & Voicemails</span>
+          </div>
           <Checkbox />
         </div>
         <div className="flex justify-between items-center mb-[20px]">
-          <div className="text-[14px]">Facebook messages</div>
+          <div className="flex items-center justify-center text-[14px]">
+            <FbMessageIcon />
+            <span className="ml-[10px]">Facebook messages</span>
+          </div>
           <Checkbox />
         </div>
         <div className="flex justify-end mb-[30px]">

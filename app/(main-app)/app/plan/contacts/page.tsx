@@ -15,7 +15,7 @@ import AddContact from "./components/modal/addContact";
 export default function ContactsDashboard() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
-  const [toggleModal, setToggleModal] = useState<boolean>(true);
+  const [toggleModal, setToggleModal] = useState<boolean>(false);
   const tabs = ["Smart list", "Bulk actions", "Restore", "Tasks", "Company"];
 
   const renderContent = (selectedTabIndex: number) => {
