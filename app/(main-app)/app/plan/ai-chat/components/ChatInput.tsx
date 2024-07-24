@@ -8,6 +8,7 @@ import { API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
 import useSpeechRecognition from "../../hooks/UseSpeechRecognition";
 import { languageOptions } from "../../../create/ai-articles/constants/options";
+import Microphone from "./Microphone";
 
 interface ChatInputProps {
   onSend: (content: string, role: string) => void;
@@ -31,15 +32,23 @@ const ChatInput: React.FC<ChatInputProps> = ({
   removeMessage,
 }) => {
   const selectedLanguage = languageOptions[0].value;
+  const [open, setOpen] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
   const [input, setInput] = useState("");
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const { startRecognition, textToSpeech } = useSpeechRecognition(
-    selectedLanguage,
-    (transcript: string) => {
-      setInput(transcript);
-      handleSend(transcript, true);
-    }
-  );
+  const { startRecognition, stopRecognition, textToSpeech } =
+    useSpeechRecognition(
+      selectedLanguage,
+      (transcript: string) => {
+        setInput(transcript);
+        handleSend(transcript, true);
+      },
+      () => {
+        setOpen(false);
+        setIsAnimating(false);
+      }
+    );
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -67,12 +76,16 @@ const ChatInput: React.FC<ChatInputProps> = ({
       autosize.update(textareaRef.current);
     }
     try {
+      setIsAnimating(false);
+      setOpen(false);
       const conversation = await instance.post(
         `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${
           selectedConversation ? selectedConversation : ""
         }&model=${selectedOption}`,
         { user_prompt: prompt }
       );
+      setIsAnimating(true);
+      setOpen(true);
       const response = conversation.data.data.response;
       setSelectedConversation(conversation.data.data.conversation_id);
       if (!selectedConversation) fetchConversations();
@@ -94,6 +107,17 @@ const ChatInput: React.FC<ChatInputProps> = ({
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSend();
+    }
+  };
+
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+    if (isAnimating) {
+      stopRecognition();
+      setIsAnimating(false);
+    } else {
+      startRecognition();
+      setIsAnimating(true);
     }
   };
 
@@ -134,10 +158,15 @@ const ChatInput: React.FC<ChatInputProps> = ({
         setInput={(description: string) => promptInput(description)}
       />
       <button
-        onClick={startRecognition}
+        // onClick={startRecognition}
         className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
       >
-        <MicrophoneIcon />
+        {/* <MicrophoneIcon /> */}
+        <Microphone
+          open={open}
+          isAnimating={isAnimating}
+          handleOpenChange={handleOpenChange}
+        />
       </button>
       <button
         onClick={() => handleSend()}
