@@ -10,7 +10,8 @@ declare global {
 
 const useSpeechRecognition = (
   language: string,
-  onResult: (transcript: string) => void
+  onResult: (transcript: string) => void,
+  onEndCallback: () => void
 ) => {
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const recognitionRef = useRef<any>(null);
@@ -45,7 +46,7 @@ const useSpeechRecognition = (
     } else {
       toast.error("Speech recognition not supported in this browser.");
     }
-  }, [language, onResult]);
+  }, [language, onResult, onEndCallback]);
 
   const startRecognition = () => {
     if (recognitionRef.current && !isRecording) {
@@ -53,17 +54,55 @@ const useSpeechRecognition = (
     }
   };
 
-  const textToSpeech = async (text: string) => {
+  const stopRecognition = () => {
+    if (recognitionRef.current && isRecording) {
+      recognitionRef.current.stop();
+    }
+    if (window.speechSynthesis.speaking) {
+      window.speechSynthesis.cancel();
+    }
+  };
+
+  const textToSpeech = async (text: string, language = "en-US") => {
     if ("speechSynthesis" in window) {
       const utterance = new SpeechSynthesisUtterance(text);
+
+      const loadVoices = () => {
+        return new Promise((resolve) => {
+          let voices = window.speechSynthesis.getVoices();
+          if (voices.length) {
+            resolve(voices);
+          } else {
+            window.speechSynthesis.onvoiceschanged = () => {
+              voices = window.speechSynthesis.getVoices();
+              resolve(voices);
+            };
+          }
+        });
+      };
+
+      const voices: any = await loadVoices();
+      const googleFemaleVoice = voices.find(
+        (voice: any) =>
+          voice.name.includes("Google") && voice.name.includes("Female")
+      );
+
+      if (googleFemaleVoice) {
+        utterance.voice = googleFemaleVoice;
+      }
+
       utterance.lang = language;
+      utterance.onend = () => {
+        onEndCallback();
+      };
+
       window.speechSynthesis.speak(utterance);
     } else {
       toast.error("Text-to-speech not supported in this browser.");
     }
   };
 
-  return { isRecording, startRecognition, textToSpeech };
+  return { isRecording, startRecognition, stopRecognition, textToSpeech };
 };
 
 export default useSpeechRecognition;

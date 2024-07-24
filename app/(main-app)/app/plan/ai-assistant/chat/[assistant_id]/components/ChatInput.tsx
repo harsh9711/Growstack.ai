@@ -27,7 +27,8 @@ const ChatInput: React.FC<ChatInputProps> = ({
     (transcript: string) => {
       setInput(transcript);
       handleSend(transcript, true);
-    }
+    },
+    () => {}
   );
 
   useEffect(() => {

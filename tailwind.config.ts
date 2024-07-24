@@ -13,6 +13,12 @@ const config = {
       },
     },
     extend: {
+      spacing: {
+        '1.75': '7px',
+      },
+      minWidth: {
+        '20rem': '20rem',
+      },
       colors: {
         "primary-green": "#034737",
         "primary-light-gray": "#F4F4F4",
