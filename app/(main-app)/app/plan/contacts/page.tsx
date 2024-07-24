@@ -9,68 +9,97 @@ import RestoreTable from "./components/RestoreTable";
 import TasksTable from "./components/TasksTable";
 import Link from "next/link";
 import { CiCirclePlus } from "react-icons/ci";
-import Prospects from "./components/ProspectsTable";
+import Modal from "./components/modal";
+import AddContact from "./components/modal/addContact";
 
 export default function ContactsDashboard() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
-  const tabs = ["Prospects"];
+  const [toggleModal, setToggleModal] = useState<boolean>(true);
+  const tabs = ["Smart list", "Bulk actions", "Restore", "Tasks", "Company"];
 
   const renderContent = (selectedTabIndex: number) => {
     switch (selectedTabIndex) {
-      // case 0:
-      //   return <ContactsTable />;
-
-      // case 1:
-      //   return <RestoreTable />;
-
       case 0:
-        return <Prospects />;
+        return <ContactsTable setToggleModal={setToggleModal} />;
+      case 1:
+        return <BulkActionsTable />;
+      case 2:
+        return <RestoreTable />;
+      case 3:
+        return <TasksTable />;
+      case 4:
+        return <CompanyTable />;
     }
   };
   const renderTitle = (selectedTabIndex: number) => {
     switch (selectedTabIndex) {
-      // case 0:
-      //   return (
-      //     <Fragment>
-      //       <h1 className="text-2xl font-semibold">All contacts</h1>
-      //       <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
-      //         Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
-      //         ultricies accumsan. Nec.{" "}
-      //       </p>
-      //     </Fragment>
-      //   );
-
-      // case 1:
-      //   return (
-      //     <Fragment>
-      //       <h1 className="text-2xl font-semibold">Restored</h1>
-      //       <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
-      //         Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
-      //         ultricies accumsan. Nec.{" "}
-      //       </p>
-      //     </Fragment>
-      //   );
       case 0:
         return (
           <Fragment>
-            <h1 className="text-2xl font-semibold">Prospects</h1>
-            {/* <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
+            <h1 className="text-2xl font-semibold">All contacts</h1>
+            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
               Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
               ultricies accumsan. Nec.{" "}
-            </p> */}
+            </p>
+          </Fragment>
+        );
+      case 1:
+        return (
+          <Fragment>
+            <h1 className="text-2xl font-semibold">Bulk actions</h1>
+            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
+              Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
+              ultricies accumsan. Nec.{" "}
+            </p>
+          </Fragment>
+        );
+      case 2:
+        return (
+          <Fragment>
+            <h1 className="text-2xl font-semibold">Restored</h1>
+            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
+              Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
+              ultricies accumsan. Nec.{" "}
+            </p>
+          </Fragment>
+        );
+      case 3:
+        return (
+          <Fragment>
+            <h1 className="text-2xl font-semibold">Tasks list</h1>
+            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
+              Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
+              ultricies accumsan. Nec.{" "}
+            </p>
+          </Fragment>
+        );
+      case 4:
+        return (
+          <Fragment>
+            <h1 className="text-2xl font-semibold">Company</h1>
+            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
+              Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
+              ultricies accumsan. Nec.{" "}
+            </p>
           </Fragment>
         );
     }
   };
   return (
     <Fragment>
+      {toggleModal && (
+        <Modal setToggleModal={setToggleModal}>
+          <AddContact setToggleModal={setToggleModal} />
+        </Modal>
+      )}
+
       <main className="">
         <div className="flex justify-between items-center mt-8">
           <div className="space-y-2 w-full">
             {renderTitle(selectedTabIndex)}
           </div>
-          {/* <div className="w-full flex items-center justify-end gap-3">
+          <div className="w-full flex items-center justify-end gap-3">
             <div className="w-full max-w-[620px] bg-white shadow-2xl shadow-gray-200 px-3 py-2 rounded-xl">
               <div className="w-full flex relative">
                 {tabs.map((tab, index) => (
@@ -100,13 +129,13 @@ export default function ContactsDashboard() {
                   }}
                 ></div>
               </div>
-            </div> */}
-            {/* <Link href="/app/plan/contacts/settings">
+            </div>
+            <Link href="/app/plan/contacts/settings">
               <button className="border Fborder-[#EBEBEB] rounded-lg p-3 hover:bg-primary-light-gray text-primary-black">
                 <SettingsIcon size={20} />
               </button>
-            </Link> */}
-          {/* </div> */}
+            </Link>
+          </div>
         </div>
 
         <div className="mt-5">{renderContent(selectedTabIndex)}</div>
