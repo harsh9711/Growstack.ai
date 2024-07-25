@@ -74,6 +74,8 @@
     "rehype-raw": "^7.0.0",
     "remark-breaks": "^4.0.0",
     "remark-gfm": "^4.0.0",
+    "sweetalert": "^2.1.2",
+    "sweetalert2": "^11.12.3",
     "swiper": "^11.1.4",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
