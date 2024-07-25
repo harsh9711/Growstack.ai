@@ -222,6 +222,25 @@ function FbMessageIcon() {
   );
 }
 
+function TriangleAlertIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="30"
+      height="30"
+      fill="none"
+      viewBox="0 0 24 24"
+    >
+      <path
+        fill="#034737"
+        fillRule="evenodd"
+        d="M12.872 3.51a1 1 0 00-1.744 0l-9 16A1 1 0 003 21h18a1 1 0 00.872-1.49l-9-16zm-.877 4.495a1 1 0 000 2h.01a1 1 0 100-2h-.01zm1.01 4a1 1 0 10-2 0V17a1 1 0 002 0v-4.995z"
+        clipRule="evenodd"
+      ></path>
+    </svg>
+  );
+}
+
 export {
   CircleIcon,
   DeleteIcon,
@@ -233,4 +252,5 @@ export {
   MessageIcon,
   CallIcon,
   FbMessageIcon,
+  TriangleAlertIcon,
 };
