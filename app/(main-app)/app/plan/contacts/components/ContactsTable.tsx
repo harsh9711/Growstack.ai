@@ -155,13 +155,13 @@ export const columns: ColumnDef<Contact>[] = [
 interface ContactsTableProps {
   setToggleModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleModal: (value: ModalContent) => void;
-  setDeleteIds: React.Dispatch<React.SetStateAction<string[]>>;
+  setSelectedIds: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 export default function ContactsTable({
   setToggleModal,
   handleModal,
-  setDeleteIds,
+  setSelectedIds,
 }: ContactsTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -192,7 +192,6 @@ export default function ContactsTable({
         time_zone: item.time_zone,
       }));
 
-      console.log("responsexx", formattedContacts);
       setContacts(formattedContacts);
     };
     getContacts();
@@ -238,14 +237,13 @@ export default function ContactsTable({
     );
   }
 
-  const handleDelete = () => {
+  const handleClick = (value: ModalContent) => {
     setToggleModal(true);
-    handleModal(ModalContent.DELETE_CONTACT);
+    handleModal(value);
     const selectedRowIds = table
       .getSelectedRowModel()
       .rows.map((row) => row.original.id);
-    console.log("selectedRowIds", selectedRowIds);
-    setDeleteIds(selectedRowIds);
+    setSelectedIds(selectedRowIds);
   };
 
   return (
@@ -280,15 +278,21 @@ export default function ContactsTable({
               <CircleIcon />
             </button>
             <button
-              onClick={handleDelete}
+              onClick={() => handleClick(ModalContent.DELETE_CONTACT)}
               className=" mr-1 w-[45px] h-[45px] flex border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black"
             >
               <DeleteIcon />
             </button>
-            <button className=" mr-1 w-[45px] h-[45px] flex border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black">
+            <button
+              onClick={() => handleClick(ModalContent.SEND_SMS)}
+              className=" mr-1 w-[45px] h-[45px] flex border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black"
+            >
               <SMSIcon />
             </button>
-            <button className=" mr-1 w-[45px] h-[45px] flex border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black">
+            <button
+              onClick={() => handleClick(ModalContent.SEND_EMAIL)}
+              className=" mr-1 w-[45px] h-[45px] flex border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black"
+            >
               <EmailIcon />
             </button>
             <button className=" mr-1 w-[45px] h-[45px] flex border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black">
