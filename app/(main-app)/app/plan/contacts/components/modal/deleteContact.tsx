@@ -9,13 +9,13 @@ import instance from "@/config/axios.config";
 interface DeleteContactProps {
   setToggleModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleModal: (value: ModalContent | null) => void;
-  deleteIds: string[];
+  selectedIds: string[];
 }
 
 const DeleteContact = ({
   setToggleModal,
   handleModal,
-  deleteIds,
+  selectedIds,
 }: DeleteContactProps) => {
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -24,7 +24,7 @@ const DeleteContact = ({
     try {
       setLoading(true);
       const payload = {
-        contact_ids: deleteIds,
+        contact_ids: selectedIds,
         updated_data: {
           delete: true,
         },
