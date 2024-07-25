@@ -668,9 +668,9 @@ export default function AiAppPage({
                   onChange={(value: any) => handleDownload(value)}
                 />
 
-                {/* <button className="p-2 bg-gray-100 border rounded-lg">
+                <button className="p-2 bg-gray-100 border rounded-lg">
                   <Save size={20} className="text-gray-600" />
-                </button> */}
+                </button>
               </div>
             </div>
           </div>
