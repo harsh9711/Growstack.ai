@@ -13,21 +13,20 @@ import Modal from "./components/modal";
 import AddContact from "./components/modal/addContact";
 import DeleteContact from "./components/modal/deleteContact";
 import { ModalContent } from "./components/modal/modalEnums";
+import SendSMS from "./components/modal/sendSMS";
+import SendEmail from "./components/modal/sendEmail";
 
 export default function ContactsDashboard() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
   const [toggleModal, setToggleModal] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<ModalContent | null>(null);
-  const [deleteIds, setDeleteIds] = useState<string[]>([])
+  const [selectedIds, setSelectedIds] = useState<string[]>([])
   const tabs = ["Smart list", "Bulk actions", "Restore", "Tasks", "Company"];
 
   const handleModal = (value: ModalContent | null) => {
     setModalContent(value);
   };
-
-  console.log("deleteIds", deleteIds)
-
   const renderContent = (selectedTabIndex: number) => {
     switch (selectedTabIndex) {
       case 0:
@@ -35,7 +34,7 @@ export default function ContactsDashboard() {
           <ContactsTable
             setToggleModal={setToggleModal}
             handleModal={handleModal}
-            setDeleteIds={setDeleteIds}
+            setSelectedIds={setSelectedIds}
           />
         );
       case 1:
@@ -117,7 +116,21 @@ export default function ContactsDashboard() {
             <DeleteContact
               setToggleModal={setToggleModal}
               handleModal={handleModal}
-              deleteIds={deleteIds}
+              selectedIds={selectedIds}
+            />
+          )}
+          {modalContent === ModalContent.SEND_SMS && (
+            <SendSMS
+              setToggleModal={setToggleModal}
+              handleModal={handleModal}
+              selectedIds={selectedIds}
+            />
+          )}
+          {modalContent === ModalContent.SEND_EMAIL && (
+            <SendEmail
+              setToggleModal={setToggleModal}
+              handleModal={handleModal}
+              selectedIds={selectedIds}
             />
           )}
         </Modal>
