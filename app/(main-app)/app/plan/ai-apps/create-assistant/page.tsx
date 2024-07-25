@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import instance from "@/config/axios.config"; // Added instance import
+import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
@@ -54,6 +54,8 @@ export default function CreateAssistantPage() {
   });
 
   const [category, setCategory] = useState("");
+  const svgPattern = /^<svg.*<\/svg>$/;
+  const fontAwesomePattern = /^<i class=['"]fa[a-zA-Z0-9\- ]+['"]><\/i>$/;
 
   const ValidationSchema = z.object({
     name: z.string().min(3, "Name must be at least 3 characters long"),
@@ -61,6 +63,9 @@ export default function CreateAssistantPage() {
       .string()
       .min(10, "Description must be at least 10 characters")
       .max(200, "Description can't exceed 200 characters"),
+    icon: z.string().refine(value => svgPattern.test(value) || fontAwesomePattern.test(value), {
+      message: "Invalid icon format. Only SVG tags or Font Awesome icons are allowed.",
+    }),
   });
 
   const [isPending, setIsPending] = useState(false);
@@ -72,6 +77,8 @@ export default function CreateAssistantPage() {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
+    clearErrors,
   } = useForm<ValidationSchemaType>({
     resolver: zodResolver(ValidationSchema),
   });
@@ -134,7 +141,8 @@ export default function CreateAssistantPage() {
 
   const handleChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
-    setFormData((prevFormData) => ({
+
+    return setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: value,
     }));
@@ -217,6 +225,7 @@ export default function CreateAssistantPage() {
                 </label>
                 <Select
                   onValueChange={handleCategoryChange}
+                  value={category}
                   defaultValue="Blogs Posts"
                 >
                   <SelectTrigger className="w-full border-none h-14">
@@ -243,11 +252,29 @@ export default function CreateAssistantPage() {
                 </label>
                 <Input
                   type="text"
-                  placeholder="ex:<i class=”fa-solid fa-books”></i>"
-                  name="icon"
+                  placeholder="ex:<i class='fa-solid fa-books'></i>"
+                  {...register("icon")}
                   value={formData.icon}
-                  onChange={handleChange}
+                  onChange={(e) => {
+                    const { value } = e.target;
+                    setFormData((prevFormData) => ({
+                      ...prevFormData,
+                      icon: value,
+                    }));
+                    if (!svgPattern.test(value) && !fontAwesomePattern.test(value)) {
+                      setError("icon", {
+                        type: "manual",
+                        message:
+                          "Invalid icon format. Only SVG tags or Font Awesome icons are allowed.",
+                      });
+                    } else {
+                      clearErrors("icon");
+                    }
+                  }}
                 />
+                {errors.icon && (
+                  <p className="text-rose-600 text-sm">{errors.icon.message}</p>
+                )}
               </div>
             </div>
             <div className="space-y-2 !mt-8">
