@@ -13,6 +13,10 @@ const config = {
       },
     },
     extend: {
+      inset: {
+        '-1.75rem': '-1.30rem',
+        '-1.00rem': '-0.55rem',
+      },
       spacing: {
         '1.75': '7px',
       },
@@ -26,6 +30,7 @@ const config = {
         "primary-black": "#14171B",
         "primary-neutral": "#343434",
         "primary-grey": "#918EA4",
+        header: "hsl(var(--header))",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -83,6 +88,9 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "caret-blink": "caret-blink 1.25s ease-out infinite",
+      },
+      borderColor: {
+        'custom-gray': '#EAEAEA',
       },
     },
   },
