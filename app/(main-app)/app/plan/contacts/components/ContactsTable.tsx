@@ -10,7 +10,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Contact } from "@/types/contact";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -27,8 +26,8 @@ import {
 import clsx from "clsx";
 import { FilterIcon, MailIcon, Phone, Search } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
-import { contacts } from "./data/contacts";
+import { useEffect, useState } from "react";
+// import { contacts } from "./data/contacts";
 import FilterSheet from "./FilterSheet";
 import Motion from "@/components/Motion";
 import Link from "next/link";
@@ -41,6 +40,20 @@ import {
   EmailIcon,
   UploadIcon,
 } from "@/components/svgs/icons";
+import instance from "@/config/axios.config";
+import { formatDate } from "@/lib/utils";
+import { ModalContent } from "./modal/modalEnums";
+
+interface Contact {
+  id: string;
+  name: string;
+  logo: string;
+  phones: any;
+  email: string[];
+  created_on: string;
+  contact_type: string;
+  time_zone: string;
+}
 
 export const columns: ColumnDef<Contact>[] = [
   {
@@ -75,7 +88,7 @@ export const columns: ColumnDef<Contact>[] = [
     cell: ({ row }) => (
       <div className="capitalize flex items-center gap-3">
         <Image
-          src={row.original.profile_image}
+          src={row.original.logo}
           alt=""
           width={100}
           height={100}
@@ -91,7 +104,11 @@ export const columns: ColumnDef<Contact>[] = [
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
         <Phone size={20} className="text-primary-green" />{" "}
-        <span>{row.getValue("phone")}</span>
+        <span>
+          {row.original.phones
+            .map((phone: any) => `${phone.country_code}${phone.number}`)
+            .join(", ")}
+        </span>
       </div>
     ),
   },
@@ -100,8 +117,17 @@ export const columns: ColumnDef<Contact>[] = [
     header: () => <div className="uppercase">Email</div>,
     cell: ({ row }) => (
       <div className="flex gap-2 items-center">
-        <MailIcon size={20} className="text-primary-green" />
-        <p>{row.getValue("email")}</p>
+        <p>
+          {row.original.email.length > 0 ? (
+            <>
+              {" "}
+              <MailIcon size={20} className="text-primary-green" />{" "}
+              {row.original.email.join(", ")}
+            </>
+          ) : (
+            "-"
+          )}
+        </p>
       </div>
     ),
   },
@@ -110,36 +136,33 @@ export const columns: ColumnDef<Contact>[] = [
     header: () => <div className="uppercase">Created</div>,
     cell: ({ row }) => (
       <div className="flex gap-3">
-        <span>{row.original.created_on.date}</span>
-        <span>{row.original.created_on.time}</span>
+        <span>{formatDate(row.original.created_on)}</span>
       </div>
     ),
   },
   {
-    accessorKey: "last_activity",
-    header: () => "LAST ACTIVITY",
-    cell: ({ row }) => <div>{row.getValue("last_activity")}</div>,
+    accessorKey: "contact_type",
+    header: () => "CONTACT TYPE",
+    cell: ({ row }) => <div>{row.getValue("contact_type")}</div>,
   },
   {
-    id: "tags",
-    header: "TAGS",
-    cell: ({ row }) => {
-      return (
-        <div className="flex gap-2">
-          {row.original.tags.map((tag) => (
-            <div className="px-3 py-2 bg-[#0347370D] rounded-md">{tag}</div>
-          ))}
-        </div>
-      );
-    },
+    accessorKey: "time_zone",
+    header: "TIME ZONE",
+    cell: ({ row }) => <div>{row.getValue("time_zone")}</div>,
   },
 ];
 
 interface ContactsTableProps {
   setToggleModal: React.Dispatch<React.SetStateAction<boolean>>;
+  handleModal: (value: ModalContent) => void;
+  setDeleteIds: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
-export default function ContactsTable({ setToggleModal }: ContactsTableProps) {
+export default function ContactsTable({
+  setToggleModal,
+  handleModal,
+  setDeleteIds,
+}: ContactsTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -148,6 +171,32 @@ export default function ContactsTable({ setToggleModal }: ContactsTableProps) {
     pageIndex: 0,
     pageSize: 10,
   });
+
+  const [contacts, setContacts] = useState<Contact[]>([]);
+
+  useEffect(() => {
+    const getContacts = async () => {
+      const response = await instance.get(
+        `/users/api/v1/contacts?page10=${pagination.pageIndex}&limit=${pagination.pageSize}`
+      );
+      const data = response.data.data.contacts;
+
+      const formattedContacts = data.map((item: any) => ({
+        id: item._id,
+        name: `${item.first_name} ${item.last_name}`,
+        email: item.emails,
+        phones: item.phones,
+        logo: item.logo,
+        created_on: item.createdAt,
+        contact_type: item.contact_type,
+        time_zone: item.time_zone,
+      }));
+
+      console.log("responsexx", formattedContacts);
+      setContacts(formattedContacts);
+    };
+    getContacts();
+  }, [pagination.pageIndex, pagination.pageSize]);
 
   const table = useReactTable({
     data: contacts,
@@ -189,6 +238,16 @@ export default function ContactsTable({ setToggleModal }: ContactsTableProps) {
     );
   }
 
+  const handleDelete = () => {
+    setToggleModal(true);
+    handleModal(ModalContent.DELETE_CONTACT);
+    const selectedRowIds = table
+      .getSelectedRowModel()
+      .rows.map((row) => row.original.id);
+    console.log("selectedRowIds", selectedRowIds);
+    setDeleteIds(selectedRowIds);
+  };
+
   return (
     <Motion
       transition={{ duration: 0.2 }}
@@ -213,11 +272,17 @@ export default function ContactsTable({ setToggleModal }: ContactsTableProps) {
           <div className="flex justify-center items-center">
             <button
               className=" mr-1 w-[45px] h-[45px] flex border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black"
-              onClick={() => setToggleModal(true)}
+              onClick={() => {
+                setToggleModal(true);
+                handleModal(ModalContent.ADD_CONTACT);
+              }}
             >
               <CircleIcon />
             </button>
-            <button className=" mr-1 w-[45px] h-[45px] flex border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black">
+            <button
+              onClick={handleDelete}
+              className=" mr-1 w-[45px] h-[45px] flex border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black"
+            >
               <DeleteIcon />
             </button>
             <button className=" mr-1 w-[45px] h-[45px] flex border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black">

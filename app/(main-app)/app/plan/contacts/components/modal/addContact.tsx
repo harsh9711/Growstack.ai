@@ -22,9 +22,11 @@ import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import Spinner from "@/components/Spinner";
 import toast from "react-hot-toast";
+import { ModalContent } from "./modalEnums";
 
 interface AddContactProps {
   setToggleModal: React.Dispatch<React.SetStateAction<boolean>>;
+  handleModal: (value: ModalContent | null) => void;
 }
 
 type PhoneType = {
@@ -42,7 +44,7 @@ interface AddContactDetails {
   time_zone: string;
 }
 
-const AddContact = ({ setToggleModal }: AddContactProps) => {
+const AddContact = ({ setToggleModal, handleModal }: AddContactProps) => {
   const [contactData, setContactData] = useState<AddContactDetails>({
     logo: "",
     first_name: "",
@@ -153,6 +155,7 @@ const AddContact = ({ setToggleModal }: AddContactProps) => {
       setLoading(false);
       toast.success(response.data.message);
       setToggleModal(false);
+      handleModal(null);
     } catch (error: any) {
       console.error("Error uploading file:", error);
       toast.error(error);
@@ -163,7 +166,10 @@ const AddContact = ({ setToggleModal }: AddContactProps) => {
     <div className="relative top">
       <div className="fixed w-1/2 bg-white z-40 px-4 py-3 border-b border-gray-300">
         <button
-          onClick={() => setToggleModal(false)}
+          onClick={() => {
+            setToggleModal(false);
+            handleModal(null);
+          }}
           className="absolute top-1 right-1 rounded-lg transition-opacity p-2 hover:bg-[#ff00001f] hover:opacity-100 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
         >
           <X className="h-5 w-5 text-[#ff00009d]" />
