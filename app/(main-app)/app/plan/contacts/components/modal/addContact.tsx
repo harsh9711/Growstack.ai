@@ -331,7 +331,7 @@ const AddContact = ({ setToggleModal, handleModal }: AddContactProps) => {
           <div className="text-[14px]">Contact type</div>
           <Dropdown
             label="Choose one"
-            items={["Lead 1", "Lead 2", "Lead 3"]}
+            items={["Lead", "customer"]}
             value={contactData.contact_type}
             onChange={(value: any) => handleSelectChange("contact_type", value)}
           />
