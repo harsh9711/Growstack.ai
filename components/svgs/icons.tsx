@@ -241,6 +241,61 @@ function TriangleAlertIcon() {
   );
 }
 
+function LinkIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="18"
+      fill="none"
+      viewBox="0 0 18 18"
+    >
+      <path
+        stroke="#034737"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.313"
+        d="M7.5 10.5a2.625 2.625 0 003.75 0l3-3a2.652 2.652 0 00-3.75-3.75l-.375.375"
+      ></path>
+      <path
+        stroke="#034737"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.313"
+        d="M10.5 7.5a2.625 2.625 0 00-3.75 0l-3 3a2.652 2.652 0 003.75 3.75l.375-.375"
+      ></path>
+    </svg>
+  );
+}
+function SmileIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="18"
+      height="18"
+      fill="none"
+      viewBox="0 0 18 18"
+    >
+      <circle
+        cx="9"
+        cy="9"
+        r="6.75"
+        stroke="#034737"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.313"
+      ></circle>
+      <path
+        stroke="#034737"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.313"
+        d="M6.75 7.5h.008M11.25 7.5h.008M7.125 11.25a2.625 2.625 0 003.75 0"
+      ></path>
+    </svg>
+  );
+}
+
 export {
   CircleIcon,
   DeleteIcon,
@@ -253,4 +308,6 @@ export {
   CallIcon,
   FbMessageIcon,
   TriangleAlertIcon,
+  LinkIcon,
+  SmileIcon,
 };
