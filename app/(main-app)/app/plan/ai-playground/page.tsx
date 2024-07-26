@@ -1,150 +1,172 @@
-import { OpenTabIcon, SendIcon2 } from "@/components/svgs";
-import { History, Link, MoreHorizontal, Plus, Settings2 } from "lucide-react";
+"use client";
+
+import { History, Plus } from "lucide-react";
 import Image from "next/image";
+import ChatArea from "./component/chatArea";
+import { useState } from "react";
+import { aiModelOptions } from "../../create/ai-articles/constants/options";
+import { Message } from "./interface/playground";
+import instance from "@/config/axios.config";
+import { API_URL } from "@/lib/api";
 
 export default function AiPlayground() {
+  const [userPrompt, setUserPrompt] = useState<string>("");
+  const [chatAreas, setChatAreas] = useState<
+    { id: number; selectedModel: string; conversation: Message[] }[]
+  >([
+    { id: 0, selectedModel: aiModelOptions[0].value, conversation: [] },
+    { id: 1, selectedModel: aiModelOptions[0].value, conversation: [] },
+  ]);
+
+  const addChatArea = () => {
+    setChatAreas([
+      ...chatAreas,
+      {
+        id: chatAreas.length,
+        selectedModel: aiModelOptions[0].value,
+        conversation: [],
+      },
+    ]);
+  };
+
+  const updateChatAreaModel = (id: number, newModel: string) => {
+    setChatAreas(
+      chatAreas.map((chatArea) =>
+        chatArea.id === id ? { ...chatArea, selectedModel: newModel } : chatArea
+      )
+    );
+  };
+
+  const convo: Message[] = [
+    {
+      content: "Hello World",
+      role: "user",
+      loading: false,
+    },
+    {
+      content: "I am just an assistant",
+      role: "assistant",
+      loading: false,
+    },
+    {
+      content: "How are you doing?",
+      role: "user",
+      loading: false,
+    },
+    {
+      content: "I don't have a feeling for that",
+      role: "assistant",
+      loading: false,
+    },
+  ];
+
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUserPrompt(event.target.value);
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (userPrompt.trim() === "") return;
+
+    const newMessage: Message = {
+      content: userPrompt,
+      role: "user",
+      loading: false,
+    };
+
+    const loadingAssistantMessage: Message = {
+      content: "",
+      role: "assistant",
+      loading: true,
+    };
+
+    setChatAreas((prevChatAreas) =>
+      prevChatAreas.map((chatArea) => ({
+        ...chatArea,
+        conversation: [
+          ...chatArea.conversation,
+          newMessage,
+          loadingAssistantMessage,
+        ],
+      }))
+    );
+
+    await Promise.all(
+      chatAreas.map(async (chatArea, index) => {
+        const payload = {
+          user_prompt: userPrompt,
+          model: chatArea.selectedModel,
+          provider: "perplexity",
+        };
+
+        try {
+          const response = await instance.post(
+            `${API_URL}/ai/api/v1/playground`,
+            payload
+          );
+
+          console.log("responsezzzz", response);
+          // const assistantMessage: Message = {
+          //   content: response.data.message,
+          //   role: "assistant",
+          //   loading: false,
+          // };
+
+          // setChatAreas((prevChatAreas) =>
+          //   prevChatAreas.map((ca, caIndex) =>
+          //     ca.id === chatArea.id
+          //       ? {
+          //           ...ca,
+          //           conversation: ca.conversation.map((msg, msgIndex) =>
+          //             msgIndex === ca.conversation.length - 1
+          //               ? assistantMessage
+          //               : msg
+          //           ),
+          //         }
+          //       : ca
+          //   )
+          // );
+        } catch (error) {
+          console.error("Error sending prompt:", error);
+        }
+      })
+    );
+
+    setUserPrompt("");
+  };
+
   return (
     <div className="flex-1 h-full flex flex-col mt-10">
-      <div className="flex-1 h-full flex gap-6">
-        <div className="!bg-white border border-[#E8E8E8] shadow-box p-5 space-y-5 h-fit">
-          <button className="bg-primary-green p-3 rounded-[16px] text-white">
-            <Plus size={32}/>
+      <form onSubmit={handleSubmit} className="flex-1 h-full flex gap-6">
+        <div className="!bg-white fixed left-0 flex flex-col border border-[#E8E8E8] shadow-box p-5 space-y-5 h-fit">
+          <button
+            type="button"
+            className="bg-primary-green p-3 rounded-[16px] text-white"
+          >
+            <Plus size={32} />
           </button>
-          <button className="bg-primary-green p-3 rounded-[16px] text-white">
-            <History size={32}/>
+          <button
+            type="button"
+            className="bg-primary-green p-3 rounded-[16px] text-white"
+          >
+            <History size={32} />
           </button>
         </div>
-        <div className="!bg-white border border-[#E8E8E8] shadow-box p-7 w-full flex flex-col justify-between">
-          <div>
-            <div className="flex justify-between">
-              <div></div>
-              <div className="flex items-center gap-2">
-                <div className="flex gap-4">
-                  <span className="bg-gray-100 text-sm py-0.5 px-2 rounded-full text-primary-black text-opacity-70">Synced</span>
-                </div>
-                <button className="p-1 hover:bg-gray-100 rounded-lg">
-                  <Settings2 size={20} />
-                </button>
-                <button className="p-1 hover:bg-gray-100 rounded-lg">
-                  <Plus size={20} />
-                </button>
-                <button className="p-1 hover:bg-gray-100 rounded-lg">
-                  <MoreHorizontal size={20} />
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="bg-[#F5F5F5] border border-[#E8E8E8] rounded-3xl space-y-5">
-            <div className="space-y-5 px-7 pt-7 pb-4">
-              <h1 className="flex items-center gap-2">
-                <Image src="/brands/meta.svg" alt="" width={20} height={20} /> Meta / llama-3-70b-instruct-groq
-              </h1>
-              <p className="text-primary-black text-opacity-70 leading-relaxed">
-                Llama is a 70 billion parameter open source model by Meta fine-tuned for instruction following purposes served by Groq on their LPU hardware.
-              </p>
-              <div className="space-y-4 divide-y-[1px]">
-                <p className="flex pt-4">
-                  <span className="font-semibold w-full max-w-[150px]">Context</span>
-                  <span className=" w-full text-primary-black text-opacity-70">8,192 tokens</span>
-                </p>
-                <p className="flex pt-4">
-                  <span className="font-semibold w-full max-w-[150px]">Input pricing</span>
-                  <span className=" w-full text-primary-black text-opacity-70">$0.70 / million tokens</span>
-                </p>
-                <p className="flex pt-4">
-                  <span className="font-semibold w-full max-w-[150px]">Output pricing</span>
-                  <span className=" w-full text-primary-black text-opacity-70">$0.80 / million tokens</span>
-                </p>
-              </div>
-            </div>
-            <div className="flex justify-between bg-white p-5 rounded-b-3xl">
-              <div className="flex items-center gap-10">
-                <span className="flex items-center gap-2 text-primary-black text-opacity-70 cursor-pointer">
-                  Model Page <OpenTabIcon className="w-5 h-5" />
-                </span>
-                <span className="flex items-center gap-2 text-primary-black text-opacity-70 cursor-pointer">
-                  Pricing <OpenTabIcon className="w-5 h-5" />
-                </span>
-              </div>
-              <span className="flex items-center gap-2 text-primary-green cursor-pointer">
-                Website <OpenTabIcon className="w-5 h-5" />
-              </span>
-            </div>
-          </div>
-          <div className="border border-gray-200 bg-[#F5F5F5] flex items-center gap-3 p-1 pl-4 rounded-xl">
-            <Link size={20} className="text-primary-green" />
-            <input type="text" placeholder="Type your message..." className=" w-full h-11 rounded-xl bg-transparent" />
-            <button className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
-              <SendIcon2 />
-            </button>
-          </div>
-        </div>
-        <div className="!bg-white border border-[#E8E8E8] shadow-box p-7 w-full flex flex-col justify-between">
-          <div>
-            <div className="flex justify-between">
-              <div></div>
-              <div className="flex items-center gap-2">
-                <div className="flex gap-4">
-                  <span className="bg-gray-100 text-sm py-0.5 px-2 rounded-full text-primary-black text-opacity-70">Synced</span>
-                </div>
-                <button className="p-1 hover:bg-gray-100 rounded-lg">
-                  <Settings2 size={20} />
-                </button>
-                <button className="p-1 hover:bg-gray-100 rounded-lg">
-                  <Plus size={20} />
-                </button>
-                <button className="p-1 hover:bg-gray-100 rounded-lg">
-                  <MoreHorizontal size={20} />
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="bg-[#F5F5F5] border border-[#E8E8E8] rounded-3xl space-y-5">
-            <div className="space-y-5 px-7 pt-7 pb-4">
-              <h1 className="flex items-center gap-2">
-                <Image src="/brands/meta.svg" alt="" width={20} height={20} /> Meta / llama-3-70b-instruct-groq
-              </h1>
-              <p className="text-primary-black text-opacity-70 leading-relaxed">
-                Llama is a 70 billion parameter open source model by Meta fine-tuned for instruction following purposes served by Groq on their LPU hardware.
-              </p>
-              <div className="space-y-4 divide-y-[1px]">
-                <p className="flex pt-4">
-                  <span className="font-semibold w-full max-w-[150px]">Context</span>
-                  <span className=" w-full text-primary-black text-opacity-70">8,192 tokens</span>
-                </p>
-                <p className="flex pt-4">
-                  <span className="font-semibold w-full max-w-[150px]">Input pricing</span>
-                  <span className=" w-full text-primary-black text-opacity-70">$0.70 / million tokens</span>
-                </p>
-                <p className="flex pt-4">
-                  <span className="font-semibold w-full max-w-[150px]">Output pricing</span>
-                  <span className=" w-full text-primary-black text-opacity-70">$0.80 / million tokens</span>
-                </p>
-              </div>
-            </div>
-            <div className="flex justify-between bg-white p-5 rounded-b-3xl">
-              <div className="flex items-center gap-10">
-                <span className="flex items-center gap-2 text-primary-black text-opacity-70 cursor-pointer">
-                  Model Page <OpenTabIcon className="w-5 h-5" />
-                </span>
-                <span className="flex items-center gap-2 text-primary-black text-opacity-70 cursor-pointer">
-                  Pricing <OpenTabIcon className="w-5 h-5" />
-                </span>
-              </div>
-              <span className="flex items-center gap-2 text-primary-green cursor-pointer">
-                Website <OpenTabIcon className="w-5 h-5" />
-              </span>
-            </div>
-          </div>
-          <div className="border border-gray-200 bg-[#F5F5F5] flex items-center gap-3 p-1 pl-4 rounded-xl">
-            <Link size={20} className="text-primary-green" />
-            <input type="text" placeholder="Type your message..." className=" w-full h-11 rounded-xl bg-transparent" />
-            <button className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
-              <SendIcon2 />
-            </button>
-          </div>
-        </div>
-      </div>
+        {chatAreas.map((chatArea) => (
+          <ChatArea
+            key={chatArea.id}
+            selectedModel={chatArea.selectedModel}
+            addChatArea={addChatArea}
+            onModelChange={(newModel) =>
+              updateChatAreaModel(chatArea.id, newModel)
+            }
+            handleChange={handleChange}
+            conversation={chatArea.conversation}
+            userPrompt={userPrompt}
+          />
+        ))}
+      </form>
     </div>
   );
 }
