@@ -177,19 +177,19 @@ export default function ContactsTable({
   useEffect(() => {
     const getContacts = async () => {
       const response = await instance.get(
-        `/users/api/v1/contacts?page10=${pagination.pageIndex}&limit=${pagination.pageSize}`
+        `/users/api/v1/contacts?page=${pagination.pageIndex}&limit=${pagination.pageSize}`
       );
       const data = response.data.data.contacts;
 
       const formattedContacts = data.map((item: any) => ({
-        id: item._id,
-        name: `${item.first_name} ${item.last_name}`,
-        email: item.emails,
-        phones: item.phones,
-        logo: item.logo,
-        created_on: item.createdAt,
-        contact_type: item.contact_type,
-        time_zone: item.time_zone,
+        id: item.contacts._id,
+        name: `${item.contacts.first_name} ${item.contacts.last_name}`,
+        email: item.contacts.emails,
+        phones: item.contacts.phones,
+        logo: item.contacts.logo,
+        created_on: item.contacts.createdAt,
+        contact_type: item.contacts.contact_type,
+        time_zone: item.contacts.time_zone,
       }));
 
       setContacts(formattedContacts);
