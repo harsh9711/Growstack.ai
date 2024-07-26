@@ -41,7 +41,7 @@ const ChatArea = ({
     (option) => option.value === selectedModel
   )?.label;
   return (
-    <div className="!bg-white border border-[#E8E8E8] shadow-box p-7 w-full flex flex-col justify-between">
+    <div className="!bg-white border border-[#E8E8E8] shadow-box p-7 w-full flex flex-col justify-between max-h-[90vh] overflow-auto">
       <div>
         <div className="flex justify-between mb-[10px]">
           <>
