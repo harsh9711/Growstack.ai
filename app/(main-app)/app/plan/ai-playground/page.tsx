@@ -1,13 +1,13 @@
 "use client";
 
 import { History, Plus } from "lucide-react";
-import Image from "next/image";
 import ChatArea from "./component/chatArea";
 import { useState } from "react";
 import { aiModelOptions } from "../../create/ai-articles/constants/options";
 import { Message } from "./interface/playground";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
+import toast from "react-hot-toast";
 
 export default function AiPlayground() {
   const [userPrompt, setUserPrompt] = useState<string>("");
@@ -37,32 +37,16 @@ export default function AiPlayground() {
     );
   };
 
-  const convo: Message[] = [
-    {
-      content: "Hello World",
-      role: "user",
-      loading: false,
-    },
-    {
-      content: "I am just an assistant",
-      role: "assistant",
-      loading: false,
-    },
-    {
-      content: "How are you doing?",
-      role: "user",
-      loading: false,
-    },
-    {
-      content: "I don't have a feeling for that",
-      role: "assistant",
-      loading: false,
-    },
-  ];
-
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setUserPrompt(event.target.value);
+  };
+
+  const handleDelete = (id: number) => {
+    if (chatAreas.length > 2) {
+      setChatAreas(chatAreas.filter((chatArea) => chatArea.id !== id));
+    } else {
+      toast.error("Minimum of Two Chats");
+    }
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -94,9 +78,14 @@ export default function AiPlayground() {
 
     await Promise.all(
       chatAreas.map(async (chatArea, index) => {
+        // const payload = {
+        //   user_prompt: userPrompt,
+        //   model: chatArea.selectedModel,
+        //   provider: "perplexity",
+        // };
         const payload = {
           user_prompt: userPrompt,
-          model: chatArea.selectedModel,
+          model: "llama-3-sonar-large-32k-online",
           provider: "perplexity",
         };
 
@@ -107,26 +96,26 @@ export default function AiPlayground() {
           );
 
           console.log("responsezzzz", response);
-          // const assistantMessage: Message = {
-          //   content: response.data.message,
-          //   role: "assistant",
-          //   loading: false,
-          // };
+          const assistantMessage: Message = {
+            content: response.data.data,
+            role: "assistant",
+            loading: false,
+          };
 
-          // setChatAreas((prevChatAreas) =>
-          //   prevChatAreas.map((ca, caIndex) =>
-          //     ca.id === chatArea.id
-          //       ? {
-          //           ...ca,
-          //           conversation: ca.conversation.map((msg, msgIndex) =>
-          //             msgIndex === ca.conversation.length - 1
-          //               ? assistantMessage
-          //               : msg
-          //           ),
-          //         }
-          //       : ca
-          //   )
-          // );
+          setChatAreas((prevChatAreas) =>
+            prevChatAreas.map((ca, caIndex) =>
+              ca.id === chatArea.id
+                ? {
+                    ...ca,
+                    conversation: ca.conversation.map((msg, msgIndex) =>
+                      msgIndex === ca.conversation.length - 1
+                        ? assistantMessage
+                        : msg
+                    ),
+                  }
+                : ca
+            )
+          );
         } catch (error) {
           console.error("Error sending prompt:", error);
         }
@@ -164,6 +153,7 @@ export default function AiPlayground() {
             handleChange={handleChange}
             conversation={chatArea.conversation}
             userPrompt={userPrompt}
+            handleDelete={() => handleDelete(chatArea.id)}
           />
         ))}
       </form>
