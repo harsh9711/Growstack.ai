@@ -14,6 +14,7 @@ import {
 import clsx from "clsx";
 import { Message } from "../interface/playground";
 import ChatMessages from "./chatMessage";
+import "@/styles/editor.css";
 
 interface ChatAreaProps {
   selectedModel: string;
@@ -22,7 +23,10 @@ interface ChatAreaProps {
   conversation: Message[];
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   userPrompt: string;
+  handleDelete: () => void;
 }
+
+const outputType = [{ label: "Delect Chat", value: "delect chat" }];
 
 const ChatArea = ({
   selectedModel,
@@ -31,6 +35,7 @@ const ChatArea = ({
   conversation,
   handleChange,
   userPrompt,
+  handleDelete
 }: ChatAreaProps) => {
   const selectedOptionLabel = aiModelOptions.find(
     (option) => option.value === selectedModel
@@ -62,9 +67,22 @@ const ChatArea = ({
             >
               <Plus size={20} />
             </button>
-            <button type="button" className="p-1 hover:bg-gray-100 rounded-lg">
-              <MoreHorizontal size={20} />
-            </button>
+            <div className={"remove-caret"}>
+              <Select onValueChange={handleDelete}>
+                <SelectTrigger className="p-1 bg-white border-0 h-10 hover:bg-gray-100 rounded-lg">
+                  <MoreHorizontal size={20} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {outputType.map(({ label, value }) => (
+                      <SelectItem value={value} key={value}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
       </div>
