@@ -11,17 +11,32 @@ import Link from "next/link";
 import { CiCirclePlus } from "react-icons/ci";
 import Modal from "./components/modal";
 import AddContact from "./components/modal/addContact";
+import DeleteContact from "./components/modal/deleteContact";
+import { ModalContent } from "./components/modal/modalEnums";
+import SendSMS from "./components/modal/sendSMS";
+import SendEmail from "./components/modal/sendEmail";
 
 export default function ContactsDashboard() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
   const [toggleModal, setToggleModal] = useState<boolean>(false);
+  const [modalContent, setModalContent] = useState<ModalContent | null>(null);
+  const [selectedIds, setSelectedIds] = useState<string[]>([])
   const tabs = ["Smart list", "Bulk actions", "Restore", "Tasks", "Company"];
 
+  const handleModal = (value: ModalContent | null) => {
+    setModalContent(value);
+  };
   const renderContent = (selectedTabIndex: number) => {
     switch (selectedTabIndex) {
       case 0:
-        return <ContactsTable setToggleModal={setToggleModal} />;
+        return (
+          <ContactsTable
+            setToggleModal={setToggleModal}
+            handleModal={handleModal}
+            setSelectedIds={setSelectedIds}
+          />
+        );
       case 1:
         return <BulkActionsTable />;
       case 2:
@@ -86,11 +101,38 @@ export default function ContactsDashboard() {
         );
     }
   };
+
   return (
     <Fragment>
       {toggleModal && (
         <Modal setToggleModal={setToggleModal}>
-          <AddContact setToggleModal={setToggleModal} />
+          {modalContent === ModalContent.ADD_CONTACT && (
+            <AddContact
+              setToggleModal={setToggleModal}
+              handleModal={handleModal}
+            />
+          )}
+          {modalContent === ModalContent.DELETE_CONTACT && (
+            <DeleteContact
+              setToggleModal={setToggleModal}
+              handleModal={handleModal}
+              selectedIds={selectedIds}
+            />
+          )}
+          {modalContent === ModalContent.SEND_SMS && (
+            <SendSMS
+              setToggleModal={setToggleModal}
+              handleModal={handleModal}
+              selectedIds={selectedIds}
+            />
+          )}
+          {modalContent === ModalContent.SEND_EMAIL && (
+            <SendEmail
+              setToggleModal={setToggleModal}
+              handleModal={handleModal}
+              selectedIds={selectedIds}
+            />
+          )}
         </Modal>
       )}
 
