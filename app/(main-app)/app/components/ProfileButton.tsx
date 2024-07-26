@@ -54,7 +54,7 @@ export function ProfileButton() {
               Saved documents
             </DropdownMenuItem>
           </Link>
-          <Link href="/account/saved-documents">
+          <Link href="/account/brand-voice">
             <DropdownMenuItem className="flex gap-3 px-4">
               <BrandVoiceIcon size={22} />
               Brand voice

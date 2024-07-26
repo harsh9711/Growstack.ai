@@ -174,7 +174,7 @@ export default function ProfilePage() {
 
   const handleDeleteProfile = () => {
     swal({
-      title: "Delete Inventory",
+      title: "Delete Profile",
       text: "Are you sure you want to delete it?",
       icon: "warning",
       buttons: ["Cancel", "Delete"],
