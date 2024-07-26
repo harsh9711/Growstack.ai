@@ -7,3 +7,9 @@
   border-radius: 20px;
   margin-top: 12px;
 }
+
+.ql-editor-fr .ql-container {
+  height: 124px !important;
+  padding: 0 !important;
+  border-radius: 10px !important;
+}
