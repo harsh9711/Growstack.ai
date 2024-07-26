@@ -30,12 +30,16 @@ import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { ChangeEvent } from "react";
 import swal from "sweetalert";
 import ChangePassword from "./components/ChangePassword";
+import Spinner from "@/components/Spinner";
 
 export default function ProfilePage() {
   const currentUser = getCurrentUser();
   const [previewImage, setPreviewImage] = useState<any>(null);
-  const [avatar, setAvatar] = useState<any>({});
+  const [avatarLink, setAvatarLink] = useState<any>({});
   const [changePasswordEnable, setChangePasswordEnable] = useState(false);
+  const [isPending, setIsPending] = useState(false);
+
+  console.log("SS", avatarLink);
 
   const ValidationSchema = z.object({
     email: z.string().email("Please enter a valid email address"),
@@ -47,7 +51,7 @@ export default function ProfilePage() {
     city: z.string().nonempty("Please enter a city"),
     postal_code: z.string().nonempty("Please enter a Postal Code"),
     country: z.string().optional(),
-    avatar: z.any().optional(),
+    profile_img: z.any().optional(),
   });
 
   type ValidationSchemaType = z.infer<typeof ValidationSchema>;
@@ -70,7 +74,7 @@ export default function ProfilePage() {
       city: "",
       postal_code: "",
       country: "",
-      avatar: null,
+      profile_img: null,
     },
   });
 
@@ -118,41 +122,54 @@ export default function ProfilePage() {
       setValue("address_line", userData.address_line);
       setValue("postal_code", userData.postal_code);
       setValue("city", userData.city);
+      setValue("country", userData.country);
     } catch (error) {
       console.log("Error fetching workflows:", error);
       toast.error("Error fetching profile data");
     }
   };
 
-  const handleSelectPDF = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeAvatar = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     console.log("FIL", file);
     if (file) {
-      setAvatar(file);
+      const formData = new FormData();
+      formData.append("document", file);
+      try {
+        const response = await instance.post(
+          `${API_URL}/users/api/v1/file/upload`,
+          formData
+        );
+        setAvatarLink(response.data.data.fileUrl);
+      } catch (error) {
+        toast.error("Error uploading avatar");
+      }
     }
   };
 
   const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
-    // setIsPending(true);
+    setIsPending(true);
     try {
-      const validatedData = ValidationSchema.parse(data);
+      const validatedData = ValidationSchema.parse({
+        ...data,
+        profile_img: avatarLink,
+      });
       const response = await instance.put(
         API_URL + "/users/api/v1",
         validatedData
       );
       handleGetProfileData();
-      // dispatch(login(response.data.data));
 
       toast.success(response.data.message);
     } catch (error: any) {
       if (error.response) {
-        // toast.error(error.response.data.message);
+        toast.error(error.response.data.message);
       } else {
-        // toast.error(error.message);
+        toast.error(error.message);
       }
-      console.error("Login failed:", error);
+      console.error("Profile Upa]date failed:", error);
     } finally {
-      // setIsPending(false);
+      setIsPending(false);
     }
   };
 
@@ -184,7 +201,6 @@ export default function ProfilePage() {
         try {
           await instance.delete(`${API_URL}/users/api/v1`);
         } catch (error) {
-          console.log("Error fetching workflows:", error);
           toast.error("Error deleting profile");
         }
       } else {
@@ -224,7 +240,7 @@ export default function ProfilePage() {
               type="file"
               id="profileImage"
               accept="image/*"
-              className="hidden"
+              // className="hidden"
               onChange={handleImageUpload}
             />
           </div>
@@ -335,7 +351,7 @@ export default function ProfilePage() {
                         id="profile-image"
                         accept="images/*"
                         className="hidden"
-                        onChange={handleSelectPDF}
+                        onChange={handleChangeAvatar}
                       />
                     </div>
                   </div>
@@ -425,7 +441,10 @@ export default function ProfilePage() {
                     name="country"
                     control={control}
                     render={({ field }) => (
-                      <Select {...field}>
+                      <Select
+                        onValueChange={(value) => field.onChange(value)}
+                        value={field.value}
+                      >
                         <SelectTrigger className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm bg-white">
                           <SelectValue placeholder="Select" />
                         </SelectTrigger>
@@ -460,7 +479,7 @@ export default function ProfilePage() {
               type="submit"
               className="h-12 py-3 px-3 w-full max-w-[150px] uppercase bg-primary-green sheen rounded-xl text-white mt-6"
             >
-              Update
+              {isPending ? <Spinner /> : " Update"}
             </button>
           </div>
         </form>
