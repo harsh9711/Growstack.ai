@@ -2,8 +2,8 @@
 
 import { History, Plus } from "lucide-react";
 import ChatArea from "./component/chatArea";
-import { useState } from "react";
-import { aiModelOptions } from "../../create/ai-articles/constants/options";
+import { useEffect, useRef, useState } from "react";
+import { modelData } from "../../create/ai-articles/constants/options";
 import { Message } from "./interface/playground";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
@@ -12,10 +12,25 @@ import toast from "react-hot-toast";
 export default function AiPlayground() {
   const [userPrompt, setUserPrompt] = useState<string>("");
   const [chatAreas, setChatAreas] = useState<
-    { id: number; selectedModel: string; conversation: Message[] }[]
+    {
+      id: number;
+      selectedModel: string;
+      provider: string;
+      conversation: Message[];
+    }[]
   >([
-    { id: 0, selectedModel: aiModelOptions[0].value, conversation: [] },
-    { id: 1, selectedModel: aiModelOptions[0].value, conversation: [] },
+    {
+      id: 0,
+      selectedModel: modelData[0].models[0].value,
+      provider: modelData[0].provider,
+      conversation: [],
+    },
+    {
+      id: 1,
+      selectedModel: modelData[0].models[0].value,
+      provider: modelData[0].provider,
+      conversation: [],
+    },
   ]);
 
   const addChatArea = () => {
@@ -23,16 +38,23 @@ export default function AiPlayground() {
       ...chatAreas,
       {
         id: chatAreas.length,
-        selectedModel: aiModelOptions[0].value,
+        selectedModel: modelData[0].models[0].value,
+        provider: modelData[0].provider,
         conversation: [],
       },
     ]);
   };
 
   const updateChatAreaModel = (id: number, newModel: string) => {
+    const newProvider = modelData.find((provider) =>
+      provider.models.some((model) => model.value === newModel)
+    )?.provider;
+
     setChatAreas(
       chatAreas.map((chatArea) =>
-        chatArea.id === id ? { ...chatArea, selectedModel: newModel } : chatArea
+        chatArea.id === id
+          ? { ...chatArea, selectedModel: newModel, provider: newProvider || "" }
+          : chatArea
       )
     );
   };
@@ -78,15 +100,10 @@ export default function AiPlayground() {
 
     await Promise.all(
       chatAreas.map(async (chatArea, index) => {
-        // const payload = {
-        //   user_prompt: userPrompt,
-        //   model: chatArea.selectedModel,
-        //   provider: "perplexity",
-        // };
         const payload = {
           user_prompt: userPrompt,
-          model: "llama-3-sonar-large-32k-online",
-          provider: "perplexity",
+          model: chatArea.selectedModel,
+          provider: chatArea.provider,
         };
 
         try {
@@ -126,7 +143,7 @@ export default function AiPlayground() {
   };
 
   return (
-    <div className="flex-1 h-full flex flex-col mt-10">
+    <div className="flex-1 h-full flex flex-col mt-10 overflow-x-auto">
       <form onSubmit={handleSubmit} className="flex-1 h-full flex gap-6">
         <div className="!bg-white fixed left-0 flex flex-col border border-[#E8E8E8] shadow-box p-5 space-y-5 h-fit">
           <button
