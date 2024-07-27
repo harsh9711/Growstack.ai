@@ -3,13 +3,21 @@
 import { Plus, Search } from "lucide-react";
 import Link from "next/link";
 import { Fragment, useEffect, useState } from "react";
-import { gpts } from "./data/gpts";
 import Image from "next/image";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 
+type CustomGpt = {
+  description: string;
+  icon: string;
+  name: string;
+  _id: string;
+  show: boolean;
+};
+
+
 export default function Customgpts() {
-  const [customGpts, setCustomGpts] = useState([]);
+  const [customGpts, setCustomGpts] = useState<CustomGpt[]>([]);
 
   const getCustomGpts = async () => {
     try {
@@ -17,7 +25,7 @@ export default function Customgpts() {
         data: { data },
       } = await instance.get(`${API_URL}/ai/api/v1/customgpt`);
 
-      setCustomGpts(data);
+      setCustomGpts(data.map((d: any) => ({ ...d, show: true })));
     } catch (error: any) {
       console.error(error);
     }
@@ -48,6 +56,15 @@ export default function Customgpts() {
                 type="search"
                 className="outline-none h-[40px] w-full"
                 placeholder="Search GPTs"
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setCustomGpts(
+                    customGpts.map((d: any) => ({
+                      ...d,
+                      show: d.name.toLowerCase().includes(value.toLowerCase()),
+                    }))
+                  );
+                }}
               />
             </div>
             <Link href="/app/plan/custom-gpts/new">
@@ -59,12 +76,14 @@ export default function Customgpts() {
           </div>
         </div>
         <div className="grid grid-cols-3 gap-5 mt-8">
-          {customGpts.map(({ description, icon, name, _id }, index) => (
-            <Link href={`/app/plan/custom-gpts/gpt?custom_gpt_id=${_id}`}>
-              <div
-                key={index}
-                className="bg-white border border-[#E8E8E8] rounded-2xl p-6 hover:shadow-2xl hover:shadow-gray-200 cursor-pointer transition-all duration-300 flex items-center gap-5"
-              >
+          {customGpts.map(
+            ({ description, icon, name, _id, show }, index) =>
+              show && (
+                <Link href={`/app/plan/custom-gpts/gpt?custom_gpt_id=${_id}`}>
+                  <div
+                    key={index}
+                    className="bg-white border border-[#E8E8E8] rounded-2xl p-6 hover:shadow-2xl hover:shadow-gray-200 cursor-pointer transition-all duration-300 flex items-center gap-5"
+                  >
                 <Image
                   src={icon}
                   alt=""
@@ -72,14 +91,14 @@ export default function Customgpts() {
                   height={90}
                   className="rounded-xl"
                 />
-                <div className="space-y-2">
-                  <h1 className="text-lg font-semibold">{name}</h1>
-                  <p className="text-primary-black text-opacity-50 leading-relaxed">
-                    {description}
-                  </p>
-                </div>
-              </div>
-            </Link>
+                    <div className="space-y-2">
+                      <h1 className="text-lg font-semibold">{name}</h1>
+                      <p className="text-primary-black text-opacity-50 leading-relaxed">
+                        {description}
+                      </p>
+                    </div>
+                  </div>
+                </Link>
           ))}
         </div>
       </main>

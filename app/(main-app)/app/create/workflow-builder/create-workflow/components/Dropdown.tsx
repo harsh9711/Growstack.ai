@@ -26,8 +26,6 @@ const Dropdown = ({ option, setActiveAction, index }: DropdownProps) => {
   );
   const selectedOptionLabel = dropDownOptions.find((opt) => opt.value === selectedOption)?.label;
 
-  console.log(option);
-
   useEffect(() => {
     setActiveAction((prevState: any) => ({
       ...prevState,

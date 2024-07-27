@@ -203,7 +203,6 @@ const Page = () => {
     }
   };
 
-  console.log(workFlowResults);
   return (
     <div>
       <div className="flex flex-row items-center gap-80 py-10">

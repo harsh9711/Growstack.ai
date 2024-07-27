@@ -93,7 +93,6 @@ export default function OutputSection({
   setOutputConfigs,
   workflowId,
 }: OutputSectionProps) {
-  console.log(inputConfigs);
   const [addNewOutput, setAddNewOutput] = useState(false);
   const [showPublishModal, setShowPublishModal] = useState(false);
 
