@@ -139,7 +139,7 @@ export const modelData = [
     ],
   },
   {
-    provider: "gemini",
+    provider: "google",
     models: [
       {
         label: "Gemini 1.5 Pro",
