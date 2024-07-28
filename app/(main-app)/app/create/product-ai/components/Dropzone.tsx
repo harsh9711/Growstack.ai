@@ -24,7 +24,7 @@ export default function Dropzone({ onFileDrop: onFileDrop }: Props) {
   });
 
   return (
-    <div {...getRootProps()} className="b outline-none w-full flex justify-center items-center h-[220px] cursor-pointer">
+    <div {...getRootProps()} className="b outline-none w-full flex justify-center items-center h-[250px] cursor-pointer">
       <input {...getInputProps()} accept="images/*" />
       {isDragActive ? (
         <p className="text-lg text-center">Drop the files here ...</p>
