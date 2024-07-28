@@ -136,19 +136,39 @@ export const modelData = [
         value: "gpt-4o",
         icon: <ChatGptIcon2 />,
       },
+      {
+        label: "GPT 4o Mini",
+        value: "gpt-4o-mini",
+        icon: <ChatGptIcon2 />,
+      },
+      {
+        label: "GPT 4 Turbo",
+        value: "gpt-4-turbo",
+        icon: <ChatGptIcon2 />,
+      },
     ],
   },
   {
-    provider: "gemini",
+    provider: "google",
     models: [
       {
         label: "Gemini 1.5 Pro",
-        value: "gemini-1.5-pro",
+        value: "models/gemini-1.5-pro",
         icon: <GoogleGemini />,
       },
       {
         label: "Gemini 1.5 Flash",
-        value: "gemini-1.5-flash",
+        value: "models/gemini-1.5-flash",
+        icon: <GoogleGemini />,
+      },
+      {
+        label: "Gemini 1.5 Flash Pro",
+        value: "models/gemini-1.5-pro-latest",
+        icon: <GoogleGemini />,
+      },
+      {
+        label: "Gemini 1.5 Flash Latest",
+        value: "models/gemini-1.5-flash-latest",
         icon: <GoogleGemini />,
       },
     ],

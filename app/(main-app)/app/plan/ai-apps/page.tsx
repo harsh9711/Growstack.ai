@@ -116,7 +116,7 @@ export default function MarketingPage() {
             <Link href="/app/plan/ai-apps/create-assistant">
               <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
                 <Plus size={20} />
-                Create your own assistant
+                Create AI Apps
               </button>
             </Link>
           </div>

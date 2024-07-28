@@ -88,7 +88,6 @@ const ActionsSection = ({
     ]);
   }, []);
 
-  console.log(activeAction);
 
   return (
     <Motion
