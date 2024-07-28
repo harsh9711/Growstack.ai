@@ -1,7 +1,7 @@
 import { X } from "lucide-react";
 import { ModalContent } from "./modalEnums";
 import { TriangleAlertIcon } from "@/components/svgs/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -12,21 +12,112 @@ import {
 import Editor from "../../../ai-apps/[appId]/components/Editor";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import "@/styles/editor.css";
+import { Contact } from "@/types/contacts";
+import toast from "react-hot-toast";
+import instance from "@/config/axios.config";
+import Spinner from "@/components/Spinner";
 
 interface SendEmailProps {
   setToggleModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleModal: (value: ModalContent | null) => void;
   selectedIds: string[];
+  contacts: Contact[];
 }
+
+interface EmailDataProps {
+  subject: string;
+  template_id: string;
+  contacts: {
+    username: string;
+    img: string;
+    emails: string[];
+  }[];
+  content: string;
+}
+
+const initialEmailData = {
+  subject: "",
+  template_id: "",
+  contacts: [],
+  content: "",
+};
 
 const SendEmail = ({
   setToggleModal,
   handleModal,
   selectedIds,
+  contacts,
 }: SendEmailProps) => {
   const [proceed, setProceed] = useState<boolean>(false);
+  const [emailData, setEmailData] = useState<EmailDataProps>(initialEmailData);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handleEditorChange = () => {};
+  const getSelectedContactsDetails = () => {
+    const selectedContacts = contacts.filter((contact) =>
+      selectedIds.includes(contact.id)
+    );
+    return selectedContacts.map((contact) => ({
+      username: contact.name,
+      img: contact.logo,
+      emails: contact.email,
+    }));
+  };
+
+  useEffect(() => {
+    const selectedDetails = getSelectedContactsDetails();
+    setEmailData((prevState) => ({
+      ...prevState,
+      contacts: selectedDetails,
+    }));
+  }, [selectedIds, contacts]);
+
+  const handleEditorChange = (content: string) => {
+    setEmailData((prevState) => ({
+      ...prevState,
+      content: content,
+    }));
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setEmailData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleTemplateChange = (value: string) => {
+    setEmailData((prevState) => ({
+      ...prevState,
+      template_id: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const { subject } = emailData;
+
+      const payload = {
+        subject,
+        template_id: "66a0b35cc90cad75808afbf5",
+        contacts: emailData.contacts.map((contact) => contact.emails),
+      };
+      console.log("payloadxxx", payload);
+      setLoading(true);
+      const response = await instance.post(
+        `/users/api/v1/mails/contacts`,
+        payload
+      );
+      setLoading(false);
+      console.log("response", response);
+    } catch (error: any) {
+      console.error("Error uploading file:", error);
+      toast.error(error);
+    }
+  };
+
+  const avatars = emailData.contacts.map((contact) => contact.img);
   return (
     <>
       <div
@@ -50,15 +141,18 @@ const SendEmail = ({
           Send email to following contacts
         </div>
         <div className="flex gap-2 items-center">
-          <div className="rounded-[100%] text-white bg-[#033747] w-[45px] h-[45px] flex items-center justify-center">
-            B
-          </div>
-          <div className="rounded-[100%] text-white bg-[#B970FF] w-[45px] h-[45px] flex items-center justify-center">
-            R
-          </div>
-          <div className="rounded-[100%] text-white bg-[#0474C4] w-[45px] h-[45px] flex items-center justify-center">
-            B
-          </div>
+          {avatars.map((avatar, index) => (
+            <div
+              key={index}
+              className="rounded-[100%] text-white bg-[#033747] w-[45px] h-[45px] flex items-center justify-center"
+            >
+              <img
+                src={avatar}
+                alt={`avatar-${index}`}
+                className="rounded-full w-full h-full object-cover"
+              />
+            </div>
+          ))}
         </div>
         {!proceed ? (
           <>
@@ -80,10 +174,15 @@ const SendEmail = ({
             </div>
           </>
         ) : (
-          <div className="mt-[10px] pb-3">
+          <form onSubmit={handleSubmit} className="mt-[10px] pb-3">
             <div className="mt-[20px]">
               <div className="text-[14px]">Email templates</div>
-              <Dropdown label="Select" items={["Template 1", "Template 2", "Template 3"]} />
+              <Dropdown
+                label="Select"
+                items={["Template 1", "Template 2", "Template 3"]}
+                value={emailData.template_id}
+                onChange={handleTemplateChange}
+              />
             </div>
             <div className="flex mt-[25px] gap-3">
               <div className="flex-1">
@@ -94,16 +193,18 @@ const SendEmail = ({
                   className="w-full p-3 rounded-md bg-[#F2F2F2] mt-2 h-[44px]"
                   name="from_name"
                   required={true}
+                  onChange={handleChange}
                 />
               </div>
               <div className="flex-1">
                 <div className="text-[14px]">From email</div>
                 <input
-                  type="text"
+                  type="email"
                   placeholder="From email"
                   className="w-full p-3 rounded-md bg-[#F2F2F2] mt-2 h-[44px]"
                   name="from_email"
                   required={true}
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -113,8 +214,9 @@ const SendEmail = ({
                 type="text"
                 placeholder="Enter email subject"
                 className="w-full p-3 rounded-md bg-[#F2F2F2] mt-2 h-[44px]"
-                name="first_name"
+                name="subject"
                 required={true}
+                onChange={handleChange}
               />
             </div>
             {/* <div className="w-full p-8 bg-white rounded-2xl border border-[#EDEFF0] flex flex-col"> */}
@@ -148,16 +250,18 @@ const SendEmail = ({
               placeholder="Enter a description for the action..."
               className="w-full p-3 rounded-md bg-[#F2F2F2] mt-2 h-[44px]"
               name="action"
+              onChange={handleChange}
             />
             <div className="flex justify-end mt-6 mb-3">
               <button
-                type="button"
-                className="text-[16px] bg-white text-[#034737] border border-[#034737] px-[20px] py-[6px] rounded-md"
+                type="submit"
+                disabled={loading}
+                className="text-[16px] min-w-[105px] bg-white text-[#034737] border border-[#034737] px-[20px] py-[6px] rounded-md flex justify-center"
               >
-                Send Email
+                {loading ? <Spinner color="black" /> : "Send Email"}
               </button>
             </div>
-          </div>
+          </form>
         )}
       </div>
     </>
