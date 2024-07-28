@@ -27,7 +27,6 @@ import clsx from "clsx";
 import { FilterIcon, MailIcon, Phone, Search } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-// import { contacts } from "./data/contacts";
 import FilterSheet from "./FilterSheet";
 import Motion from "@/components/Motion";
 import Link from "next/link";
@@ -43,17 +42,7 @@ import {
 import instance from "@/config/axios.config";
 import { formatDate } from "@/lib/utils";
 import { ModalContent } from "./modal/modalEnums";
-
-interface Contact {
-  id: string;
-  name: string;
-  logo: string;
-  phones: any;
-  email: string[];
-  created_on: string;
-  contact_type: string;
-  time_zone: string;
-}
+import { Contact } from "@/types/contacts";
 
 export const columns: ColumnDef<Contact>[] = [
   {
@@ -156,46 +145,23 @@ interface ContactsTableProps {
   setToggleModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleModal: (value: ModalContent) => void;
   setSelectedIds: React.Dispatch<React.SetStateAction<string[]>>;
+  contacts: Contact[];
+  pagination: PaginationState;
+  setPagination: React.Dispatch<React.SetStateAction<PaginationState>>;
 }
 
 export default function ContactsTable({
   setToggleModal,
   handleModal,
   setSelectedIds,
+  contacts,
+  pagination,
+  setPagination,
 }: ContactsTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
-
-  const [contacts, setContacts] = useState<Contact[]>([]);
-
-  useEffect(() => {
-    const getContacts = async () => {
-      const response = await instance.get(
-        `/users/api/v1/contacts?page=${pagination.pageIndex}&limit=${pagination.pageSize}`
-      );
-      const data = response.data.data.contacts;
-
-      const formattedContacts = data.map((item: any) => ({
-        id: item.contacts._id,
-        name: `${item.contacts.first_name} ${item.contacts.last_name}`,
-        email: item.contacts.emails,
-        phones: item.contacts.phones,
-        logo: item.contacts.logo,
-        created_on: item.contacts.createdAt,
-        contact_type: item.contacts.contact_type,
-        time_zone: item.contacts.time_zone,
-      }));
-
-      setContacts(formattedContacts);
-    };
-    getContacts();
-  }, [pagination.pageIndex, pagination.pageSize]);
 
   const table = useReactTable({
     data: contacts,

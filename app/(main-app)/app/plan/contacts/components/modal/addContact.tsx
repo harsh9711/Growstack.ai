@@ -27,6 +27,7 @@ import { ModalContent } from "./modalEnums";
 interface AddContactProps {
   setToggleModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleModal: (value: ModalContent | null) => void;
+  getContacts: () => void;
 }
 
 type PhoneType = {
@@ -44,7 +45,11 @@ interface AddContactDetails {
   time_zone: string;
 }
 
-const AddContact = ({ setToggleModal, handleModal }: AddContactProps) => {
+const AddContact = ({
+  setToggleModal,
+  handleModal,
+  getContacts,
+}: AddContactProps) => {
   const [contactData, setContactData] = useState<AddContactDetails>({
     logo: "",
     first_name: "",
@@ -156,6 +161,7 @@ const AddContact = ({ setToggleModal, handleModal }: AddContactProps) => {
       toast.success(response.data.message);
       setToggleModal(false);
       handleModal(null);
+      getContacts();
     } catch (error: any) {
       console.error("Error uploading file:", error);
       toast.error(error);
@@ -382,7 +388,7 @@ const AddContact = ({ setToggleModal, handleModal }: AddContactProps) => {
           <button
             disabled={loading}
             type="submit"
-            className="text-[14px] bg-primary-green text-white px-[20px] py-[6px] rounded-md mr-[10px]"
+            className="text-[14px] w-[95px] bg-primary-green text-white px-[20px] py-[6px] rounded-md mr-[10px]"
           >
             {loading ? <Spinner /> : "Save"}
           </button>
