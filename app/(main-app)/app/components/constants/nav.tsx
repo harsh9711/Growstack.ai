@@ -146,11 +146,11 @@ const navLinks: NavLink[] = [
             name: "Posting Logs",
             href: "/app/publish/scheduler/posting-logs",
           },
-          {
-            icon: <DebugIcon />,
-            name: "Posting debug logs",
-            href: "/app/publish/scheduler/debug-logs",
-          },
+          // {
+          //   icon: <DebugIcon />,
+          //   name: "Posting debug logs",
+          //   href: "/app/publish/scheduler/debug-logs",
+          // },
         ],
       },
     ],

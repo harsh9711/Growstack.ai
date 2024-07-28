@@ -497,37 +497,34 @@ const Layout = () => {
       >
         <div className="flex flex-row justify-between px-6 pt-6 pb-2">
           <div className="relative max-w-40 flex flex-row gap-8 font-normal text-ellipsis">
-            <button
+            {/* <button
               onClick={() => handleButtonClick(0)}
               className={`transition-all text-[16px] duration-300 ${activeIndex === 0 ? "text-green-800 font-semibold" : ""
                 }`}
             >
               All
-            </button>
+            </button> */}
             <button
               onClick={() => handleButtonClick(1)}
               className={`transition-all text-[16px] duration-300 ${activeIndex === 1 ? "text-green-800 font-semibold" : ""
                 }`}
             >
-              My
+              Comments
             </button>
             <button
               onClick={() => handleButtonClick(2)}
               className={`transition-all duration-300 text-[16px] ${activeIndex === 2 ? "text-green-800 font-semibold" : ""
                 }`}
             >
-              Unassigned
+              Messages
             </button>
             <div
-              className={`absolute -bottom-3 h-1 bg-green-800 transition-all duration-300  ${activeIndex === 2
-                  ? "-left-[110px]"
-                  : activeIndex === 1
-                    ? "-left-0"
-                    : "-left-2"
+              className={`absolute -bottom-3 h-1 bg-green-800 transition-all duration-300  ${activeIndex === 1
+                  ? "-left-0" : "left-[72%]"
                 }`}
               style={{
-                transform: `translateX(${activeIndex * 100}%)`,
-                width: activeIndex === 2 ? "65%" : "25%",
+                // transform: `translateX(${activeIndex * 100}%)`,
+                width: '60%',
               }}
             />
           </div>

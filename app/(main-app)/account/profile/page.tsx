@@ -228,7 +228,7 @@ export default function ProfilePage() {
                   />
                 ) : (
                   <div className="h-28 w-28 bg-gray-200 rounded-full grid place-content-center text-3xl font-medium uppercase">
-                    {currentUser.email.slice(0, 1)}
+                    {currentUser?.email?.slice(0, 1)}
                   </div>
                 )}
               </div>
