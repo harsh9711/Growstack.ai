@@ -40,7 +40,7 @@ interface AddContactDetails {
   first_name: string;
   last_name: string;
   phones: PhoneType[];
-  email: string[];
+  emails: string[];
   contact_type: string;
   time_zone: string;
 }
@@ -55,7 +55,7 @@ const AddContact = ({
     first_name: "",
     last_name: "",
     phones: [{ country_code: "", number: "" }],
-    email: [""],
+    emails: [""],
     contact_type: "",
     time_zone: "",
   });
@@ -80,18 +80,18 @@ const AddContact = ({
   };
 
   const handleEmailChange = (index: number, value: string) => {
-    const newEmails = [...contactData.email];
+    const newEmails = [...contactData.emails];
     newEmails[index] = value;
     setContactData((prevState) => ({
       ...prevState,
-      email: newEmails,
+      emails: newEmails,
     }));
   };
 
   const addEmailField = () => {
     setContactData((prevState) => ({
       ...prevState,
-      email: [...prevState.email, ""],
+      emails: [...prevState.emails, ""],
     }));
   };
 
@@ -103,7 +103,7 @@ const AddContact = ({
   };
 
   const removeEmailField = (index: number) => {
-    const newEmails = contactData.email.filter((_, i) => i !== index);
+    const newEmails = contactData.emails.filter((_, i) => i !== index);
     setContactData((prevState) => ({
       ...prevState,
       email: newEmails,
@@ -261,7 +261,7 @@ const AddContact = ({
         </div>
         <div className="mt-[20px]">
           <div className="text-[14px]">Email</div>
-          {contactData.email.map((email, index) => (
+          {contactData.emails.map((email, index) => (
             <div className="mb-2" key={index}>
               <input
                 type="text"
@@ -272,7 +272,7 @@ const AddContact = ({
                 value={email}
                 required={true}
               />
-              {contactData.email.length > 1 && index !== 0 && (
+              {contactData.emails.length > 1 && index !== 0 && (
                 <div className="flex justify-end">
                   <button
                     type="button"
@@ -388,7 +388,7 @@ const AddContact = ({
           <button
             disabled={loading}
             type="submit"
-            className="text-[14px] w-[95px] bg-primary-green text-white px-[20px] py-[6px] rounded-md mr-[10px]"
+            className="text-[14px] w-[95px] bg-primary-green text-white px-[20px] py-[6px] rounded-md mr-[10px] flex justify-center items-center"
           >
             {loading ? <Spinner /> : "Save"}
           </button>

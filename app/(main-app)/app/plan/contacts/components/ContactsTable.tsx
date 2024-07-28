@@ -43,6 +43,7 @@ import instance from "@/config/axios.config";
 import { formatDate } from "@/lib/utils";
 import { ModalContent } from "./modal/modalEnums";
 import { Contact } from "@/types/contacts";
+import Spinner from "@/components/Spinner";
 
 export const columns: ColumnDef<Contact>[] = [
   {
@@ -148,6 +149,7 @@ interface ContactsTableProps {
   contacts: Contact[];
   pagination: PaginationState;
   setPagination: React.Dispatch<React.SetStateAction<PaginationState>>;
+  loading: boolean;
 }
 
 export default function ContactsTable({
@@ -157,6 +159,7 @@ export default function ContactsTable({
   contacts,
   pagination,
   setPagination,
+  loading,
 }: ContactsTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -267,7 +270,7 @@ export default function ContactsTable({
             <FilterSheet />
           </div>
         </div>
-        <div className="rounded-lg border overflow-hidden mt-5">
+        <div className="rounded-lg border overflow-hidden mt-5 flex justify-center">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -288,7 +291,16 @@ export default function ContactsTable({
               ))}
             </TableHeader>
             <TableBody>
-              {table.getRowModel().rows?.length ? (
+              {loading ? (
+                <TableRow className="hover:bg-white">
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-[50vh] text-center font-semibold text-lg hover:bg-white"
+                  >
+                    Loading...
+                  </TableCell>
+                </TableRow>
+              ) : table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow
                     key={row.id}

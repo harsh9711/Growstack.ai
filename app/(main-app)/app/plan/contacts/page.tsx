@@ -31,11 +31,14 @@ export default function ContactsDashboard() {
   });
 
   const [contacts, setContacts] = useState<Contact[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const getContacts = async () => {
+    setLoading(true);
     const response = await instance.get(
       `/users/api/v1/contacts?page=${pagination.pageIndex}&limit=${pagination.pageSize}`
     );
+    setLoading(false);
     const data = response.data.data.contacts;
 
     const formattedContacts = data.map((item: any) => ({
@@ -72,6 +75,7 @@ export default function ContactsDashboard() {
             contacts={contacts}
             pagination={pagination}
             setPagination={setPagination}
+            loading={loading}
           />
         );
       case 1:
@@ -170,6 +174,7 @@ export default function ContactsDashboard() {
               setToggleModal={setToggleModal}
               handleModal={handleModal}
               selectedIds={selectedIds}
+              contacts={contacts}
             />
           )}
         </Modal>
