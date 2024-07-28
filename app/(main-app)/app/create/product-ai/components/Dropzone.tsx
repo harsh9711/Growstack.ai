@@ -1,15 +1,21 @@
 "use client";
 
 import Image from "next/image";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
 interface Props {
   onFileDrop: (acceptedFiles: File[], rejectedFiles: FileRejection[]) => void;
 }
-const acceptedFileTypes = {};
+const acceptedFileTypes = {
+  'image/jpeg': ['.jpg', '.jpeg'],
+  'image/png': ['.png'],
+  'image/webp': ['.webp'],
+  'image/heic': ['.heic'],
+};
 
 export default function Dropzone({ onFileDrop: onFileDrop }: Props) {
-  const onDrop = useCallback(onFileDrop, []);
+  const onDrop = useCallback(onFileDrop, [onFileDrop]);
+  
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: acceptedFileTypes,
@@ -18,16 +24,16 @@ export default function Dropzone({ onFileDrop: onFileDrop }: Props) {
   });
 
   return (
-    <div {...getRootProps()} className="b outline-none w-full flex justify-center items-center h-[396px] cursor-pointer">
+    <div {...getRootProps()} className="b outline-none w-full flex justify-center items-center h-[220px] cursor-pointer">
       <input {...getInputProps()} accept="images/*" />
       {isDragActive ? (
         <p className="text-lg text-center">Drop the files here ...</p>
       ) : (
-        <div className="flex flex-col items-center gap-10">
-          <Image src="/assets/file-uploader__upload-icon_margin.svg" alt="upload" width={280} height={280} />
-          <div className="space-y-4">
+        <div className="flex flex-col items-center gap-2">
+          <Image src="/assets/file-uploader__upload-icon_margin.svg" alt="upload" width={120} height={120} />
+          <div className="space-y-2">
             <h1 className="text-2xl text-primary-neutral font-semibold text-center">Upload your product image to get started</h1>
-            <h2 className="text-lg text-center font-semibold !mt-6">
+            <h2 className="text-lg text-center font-semibold !mt-2">
               <span className="text-primary-green">Click to upload</span> or drag and drop
             </h2>
             <p className="text-xs text-center text-primary-grey">Formats: JPG, PNG, WEBP or HEIC (max. 10MB)</p>
