@@ -1,7 +1,7 @@
 "use client";
 
 import { SettingsIcon } from "lucide-react";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import BulkActionsTable from "./components/BulkActionsTable";
 import CompanyTable from "./components/CompanyTable";
 import ContactsTable from "./components/ContactsTable";
@@ -15,13 +15,47 @@ import DeleteContact from "./components/modal/deleteContact";
 import { ModalContent } from "./components/modal/modalEnums";
 import SendSMS from "./components/modal/sendSMS";
 import SendEmail from "./components/modal/sendEmail";
+import { PaginationState } from "@tanstack/react-table";
+import { Contact } from "@/types/contacts";
+import instance from "@/config/axios.config";
 
 export default function ContactsDashboard() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
   const [toggleModal, setToggleModal] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<ModalContent | null>(null);
-  const [selectedIds, setSelectedIds] = useState<string[]>([])
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
+  const [contacts, setContacts] = useState<Contact[]>([]);
+
+  const getContacts = async () => {
+    const response = await instance.get(
+      `/users/api/v1/contacts?page=${pagination.pageIndex}&limit=${pagination.pageSize}`
+    );
+    const data = response.data.data.contacts;
+
+    const formattedContacts = data.map((item: any) => ({
+      id: item.contacts._id,
+      name: `${item.contacts.first_name} ${item.contacts.last_name}`,
+      email: item.contacts.emails,
+      phones: item.contacts.phones,
+      logo: item.contacts.logo,
+      created_on: item.contacts.createdAt,
+      contact_type: item.contacts.contact_type,
+      time_zone: item.contacts.time_zone,
+    }));
+
+    setContacts(formattedContacts);
+  };
+
+  useEffect(() => {
+    getContacts();
+  }, [pagination.pageIndex, pagination.pageSize]);
+
   const tabs = ["Smart list", "Bulk actions", "Restore", "Tasks", "Company"];
 
   const handleModal = (value: ModalContent | null) => {
@@ -35,6 +69,9 @@ export default function ContactsDashboard() {
             setToggleModal={setToggleModal}
             handleModal={handleModal}
             setSelectedIds={setSelectedIds}
+            contacts={contacts}
+            pagination={pagination}
+            setPagination={setPagination}
           />
         );
       case 1:
@@ -110,6 +147,7 @@ export default function ContactsDashboard() {
             <AddContact
               setToggleModal={setToggleModal}
               handleModal={handleModal}
+              getContacts={getContacts}
             />
           )}
           {modalContent === ModalContent.DELETE_CONTACT && (
@@ -117,6 +155,7 @@ export default function ContactsDashboard() {
               setToggleModal={setToggleModal}
               handleModal={handleModal}
               selectedIds={selectedIds}
+              getContacts={getContacts}
             />
           )}
           {modalContent === ModalContent.SEND_SMS && (

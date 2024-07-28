@@ -10,12 +10,14 @@ interface DeleteContactProps {
   setToggleModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleModal: (value: ModalContent | null) => void;
   selectedIds: string[];
+  getContacts: () => void;
 }
 
 const DeleteContact = ({
   setToggleModal,
   handleModal,
   selectedIds,
+  getContacts,
 }: DeleteContactProps) => {
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -36,6 +38,7 @@ const DeleteContact = ({
       setLoading(false);
       setToggleModal(false);
       handleModal(null);
+      getContacts();
       toast.success(response.data.message);
     } catch (error: any) {
       console.error("Error uploading file:", error);
@@ -76,7 +79,7 @@ const DeleteContact = ({
           <button
             disabled={loading}
             type="submit"
-            className="text-[14px] bg-primary-green text-white px-[20px] py-[6px] rounded-md mr-[10px]"
+            className="text-[14px] w-[95px] bg-primary-green text-white px-[20px] py-[6px] rounded-md mr-[10px]"
           >
             {loading ? <Spinner /> : "Delete"}
           </button>
