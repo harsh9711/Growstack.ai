@@ -39,8 +39,6 @@ export default function ProfilePage() {
   const [changePasswordEnable, setChangePasswordEnable] = useState(false);
   const [isPending, setIsPending] = useState(false);
 
-  console.log("SS", avatarLink);
-
   const ValidationSchema = z.object({
     email: z.string().email("Please enter a valid email address"),
     name: z.string().nonempty("Please enter a Full Name"),
