@@ -6,6 +6,7 @@ import instance from "@/config/axios.config";
 import { toast } from "react-hot-toast";
 import { API_URL } from "@/lib/api";
 import useSpeechRecognition from "../../../../hooks/UseSpeechRecognition";
+import Microphone from "../../../../ai-chat/components/Microphone";
 
 interface ChatInputProps {
   assistant_id: string;
@@ -21,15 +22,21 @@ const ChatInput: React.FC<ChatInputProps> = ({
   selectedLanguage,
 }) => {
   const [input, setInput] = useState("");
+  const [open, setOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const { startRecognition, textToSpeech } = useSpeechRecognition(
-    selectedLanguage,
-    (transcript: string) => {
-      setInput(transcript);
-      handleSend(transcript, true);
-    },
-    () => {}
-  );
+  const [isAnimating, setIsAnimating] = useState(false);
+  const { startRecognition, stopRecognition, textToSpeech } =
+    useSpeechRecognition(
+      selectedLanguage,
+      (transcript: string) => {
+        setInput(transcript);
+        handleSend(transcript, true);
+      },
+      () => {
+        setOpen(false);
+        setIsAnimating(false);
+      }
+    );
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -79,6 +86,17 @@ const ChatInput: React.FC<ChatInputProps> = ({
     }
   };
 
+  const handleOpenChange = (newOpen: boolean) => {
+    setOpen(newOpen);
+    if (isAnimating) {
+      stopRecognition();
+      setIsAnimating(false);
+    } else {
+      startRecognition();
+      setIsAnimating(true);
+    }
+  };
+
   return (
     <div className="flex p-2 border gap-2 rounded-xl items-end">
       <Image
@@ -99,10 +117,15 @@ const ChatInput: React.FC<ChatInputProps> = ({
         placeholder="What's in your mind?"
       />
       <button
-        onClick={startRecognition}
+        // onClick={startRecognition}
         className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
       >
-        <MicrophoneIcon />
+        {/* <MicrophoneIcon /> */}
+        <Microphone
+          open={open}
+          isAnimating={isAnimating}
+          handleOpenChange={handleOpenChange}
+        />
       </button>
       <button
         onClick={() => handleSend()}
