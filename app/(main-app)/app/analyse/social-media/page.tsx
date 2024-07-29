@@ -1,11 +1,30 @@
+"use client";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import Image from "next/image";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import BarGraph from "./components/BarGraph";
 import DetailsTable from "./components/DetailsTable";
+import { API_URL } from "@/lib/api";
+import instance from "@/config/axios.config";
+import toast from "react-hot-toast";
 
 export default function SocialMediaAnalyticsPage() {
+  // const [] = useState([]);
+
+  const fetchAnalytics = async () => {
+    try {
+      const response = await instance.get(API_URL + '/users/api/v1/social-media/analytics');
+      console.log('response', response)
+    } catch (error: any) {
+      toast.error(error.response.data.message)
+    }
+  };
+
+  useEffect(() => {
+    fetchAnalytics()
+  }, [])
+
   return (
     <Fragment>
       <main className="">
@@ -64,6 +83,7 @@ export default function SocialMediaAnalyticsPage() {
               </div>
             </div>
           </div>
+
           <div className="w-full bg-white border border-[#DFDFDF] rounded-3xl">
             <div className="px-10 py-5">
               <div className="flex items-center justify-between">
