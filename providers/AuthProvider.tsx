@@ -11,14 +11,11 @@ import { usePathname } from "next/navigation";
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   // const isLoggedIn = isAuthenticated();
   let isLoggedIn = false;
-  console.log(getCookie("token"));
   if (getCookie("token")) {
     isLoggedIn = true;
   }
   const router = useRouter();
   const pathname = usePathname();
-
-  console.log(pathname);
   useEffect(() => {
     if (pathname !== "/auth/redirect" && !isLoggedIn) {
       toast.error("Login to view this page!");

@@ -1,0 +1,6 @@
+export enum ModalContent {
+  ADD_CONTACT = "ADD_CONTACT",
+  DELETE_CONTACT = "DELETE_CONTACT",
+  SEND_SMS = "SEND_SMS",
+  SEND_EMAIL = "SEND_EMAIL",
+}

@@ -25,12 +25,14 @@ interface AddInputProps {
   setAddNewInput: (params: boolean) => void;
   inputConfig: any[];
   setInputConfigs: (params: any) => void;
+  onSelectAction: (params: any, index: number) => void;
 }
 
 export default function AddInput({
   setAddNewInput,
   inputConfig,
   setInputConfigs,
+  onSelectAction
 }: AddInputProps) {
   const [inputType, setInputType] = useState("Short text");
   const [viewAllInputs, setViewAllInputs] = useState(inputConfig.length !== 0);
@@ -284,6 +286,7 @@ export default function AddInput({
                 Continue
               </button>
             }
+            onSelectAction={(data) => onSelectAction(data, 1)}
           />
         </div>
       </div>

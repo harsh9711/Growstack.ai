@@ -1,0 +1,13 @@
+
+/* Adjust padding for the input to align text properly */
+.react-tel-input .form-control {
+  padding-left: 4rem; /* Adjust this value as needed */
+  width: 100% !important;
+  height: 44px !important;
+  background-color: #F2F2F2 !important;
+  border: none !important;
+}
+
+.react-tel-input .flag-dropdown {
+  border: none !important;
+}
