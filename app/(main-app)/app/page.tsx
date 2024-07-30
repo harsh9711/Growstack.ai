@@ -196,7 +196,7 @@ export default function Dashboard() {
               </div>
               <div className="max-h-[450px] overflow-y-auto mt-6 scrollbar-primary-sm">
                 <div className="grid grid-cols-2 gap-5 pr-5">
-                  {aiAppsloading ? (
+                  {aiAssistantsloading ? (
                     Array(15)
                       .fill(null)
                       .map((_, index) => <AiAppSkeletonLoader key={index} />)
