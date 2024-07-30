@@ -48,7 +48,7 @@ export default function UpdateBrandVoice() {
   };
 
   const [formData, setFormData] = useState({
-    name: "",
+    brand_name: "",
     description: "",
     website: "",
     tagline: "",
@@ -59,7 +59,7 @@ export default function UpdateBrandVoice() {
   const [tone_of_voice, setToneOfVoice] = useState("");
 
   const ValidationSchema = z.object({
-    name: z.string().nonempty("Required"),
+    brand_name: z.string().nonempty("Required"),
     website: z.string().nonempty("Required"),
     industry: z.string().nonempty("Required"),
     tagline: z.string().nonempty("Required"),
@@ -80,7 +80,7 @@ export default function UpdateBrandVoice() {
   } = useForm<ValidationSchemaType>({
     resolver: zodResolver(ValidationSchema),
     defaultValues: {
-      name: "",
+      brand_name: "",
       website: "",
       industry: "",
       tagline: "",
@@ -93,13 +93,13 @@ export default function UpdateBrandVoice() {
   });
 
   useEffect(() => {
-    setValue("name", updateBrandVoice?.name);
+    setValue("brand_name", updateBrandVoice?.brand_name);
     setValue("website", updateBrandVoice?.website);
     setValue("industry", updateBrandVoice?.industry);
     setValue("tagline", updateBrandVoice?.tagline);
     setValue("target_audience", updateBrandVoice?.target_audience);
     setFormData({
-      name: updateBrandVoice?.name,
+      brand_name: updateBrandVoice?.brand_name,
       description: updateBrandVoice?.description,
       website: updateBrandVoice?.website,
       tagline: updateBrandVoice?.tagline,
@@ -123,8 +123,14 @@ export default function UpdateBrandVoice() {
   const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
     setIsPending(true);
     try {
-      const { name, description, tagline, industry, website, target_audience } =
-        formData;
+      const {
+        brand_name,
+        description,
+        tagline,
+        industry,
+        website,
+        target_audience,
+      } = formData;
 
       // Prepare userInputs to be sent with the POST request
       const userInputFields = userInputs.map((input) => ({
@@ -136,7 +142,7 @@ export default function UpdateBrandVoice() {
       const response = await instance.put(
         `${API_URL}/users/api/v1/brand-voice/${brand_id}`,
         {
-          name,
+          brand_name,
           description,
           target_audience,
           tagline,
@@ -218,12 +224,14 @@ export default function UpdateBrandVoice() {
                 <Input
                   type="text"
                   placeholder="Type company / brand name"
-                  {...register("name")}
-                  value={formData.name}
+                  {...register("brand_name")}
+                  value={formData.brand_name}
                   onChange={handleChange}
                 />
-                {errors.name && (
-                  <p className="text-rose-600 text-sm">{errors.name.message}</p>
+                {errors.brand_name && (
+                  <p className="text-rose-600 text-sm">
+                    {errors.brand_name.message}
+                  </p>
                 )}
               </div>
               <div className="space-y-2">

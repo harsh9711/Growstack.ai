@@ -130,14 +130,14 @@ export default function Navbar() {
           ))}
         </div>
         <div className="flex items-center gap-5">
-          <div className="bg-[#F4F4F4] p-3.5 max-w-3xl mx-auto flex items-center gap-4 rounded-xl">
+          {/* <div className="bg-[#F4F4F4] p-3.5 max-w-3xl mx-auto flex items-center gap-4 rounded-xl">
             <Search className="text-[#14171BB8]" />
             <input
               type="text"
               placeholder="Search"
               className="w-full flex items-center bg-transparent text-[#14171BB8] placeholder:text-[#14171BB8]"
             />
-          </div>
+          </div> */}
           {/* <button className="cursor-pointer bg-[#F4F4F4] py-3 px-3 rounded-xl">
             <IoIosNotificationsOutline size={26} />
           </button> */}

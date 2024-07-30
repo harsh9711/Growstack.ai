@@ -33,6 +33,8 @@ export default function ContactsDashboard() {
   const [toggleModal, setToggleModal] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<ModalContent | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const tabs = ["Smart list", "Prospects", "Restore", "Tasks", "Company"];
+
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -77,8 +79,6 @@ export default function ContactsDashboard() {
     const percentage = (tab / totalTabs) * 100;
     setTabUnderlineLeft(percentage);
   }, [tabQueryParam]);
-
-
 
   const handleModal = (value: ModalContent | null) => {
     setModalContent(value);

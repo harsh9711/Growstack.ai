@@ -88,7 +88,7 @@ export default function AiArticles() {
           />
         );
       case 4:
-        return <ResultComponent articleData={articleData} images={images} setImages={setImages} />;
+        return <ResultComponent articleTitle={articleTitle} articleData={articleData} images={images} setImages={setImages} />;
     }
   };
 

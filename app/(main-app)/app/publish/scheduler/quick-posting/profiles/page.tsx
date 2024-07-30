@@ -55,7 +55,7 @@ export default function SchedulerPage() {
             <Image src="/icons/x-icon.svg" alt="" width={30} height={30} />X Profile
           </div>
         </Link>
-        <Link
+        {/* <Link
           href={{
             pathname: API_URL + `/users/api/v1/social-media/connect`,
             query: { profile: "Blogger" },
@@ -104,7 +104,7 @@ export default function SchedulerPage() {
             <Image src="/icons/reddit-icon.svg" alt="" width={40} height={40} />
             Reddit
           </div>
-        </Link>
+        </Link> */}
       </div>
     </div>
   );

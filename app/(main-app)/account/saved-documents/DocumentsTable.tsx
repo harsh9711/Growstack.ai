@@ -38,6 +38,7 @@ import {
   editDocument,
   savedDecument,
 } from "@/lib/features/documents/document.slice";
+import moment from "moment";
 
 interface Document {
   name: string;
@@ -56,8 +57,8 @@ const categoryColors = {
 };
 
 const languageFlags = {
-  English: "/assets/flags/us.svg",
-  // English: "/assets/flags/uk.svg",
+  "English (USA)": "/assets/flags/us.svg",
+  English: "/assets/flags/uk.svg",
   Spanish: "/assets/flags/spain.svg",
   French: "/assets/flags/france.svg",
   Hindi: "/assets/flags/india.svg",
@@ -188,13 +189,13 @@ export default function DocumentsTable() {
         <div className="capitalize">{row.getValue("doc_name")}</div>
       ),
     },
-    {
-      accessorKey: "workbook",
-      header: () => <div className="uppercase">Workbook</div>,
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("workbook")}</div>
-      ),
-    },
+    // {
+    //   accessorKey: "workbook",
+    //   header: () => <div className="uppercase">Workbook</div>,
+    //   cell: ({ row }) => (
+    //     <div className="capitalize">{row.getValue("workbook")}</div>
+    //   ),
+    // },
     {
       accessorKey: "category",
       header: () => <div className="uppercase">Category</div>,
@@ -214,23 +215,31 @@ export default function DocumentsTable() {
     {
       accessorKey: "createdAt",
       header: () => <div className="uppercase">Created</div>,
-      cell: ({ row }) => <div>{row.getValue("createdAt")}</div>,
+      cell: ({ row }: any) => (
+        <div className="capitalize">
+          {row.original.createdAt
+            ? moment(row.original.createdAt).format("MMMM DD YYYY hh:mm A")
+            : ""}
+        </div>
+      ),
     },
     {
       accessorKey: "doc_language",
       header: () => <div className="uppercase">Language</div>,
-      cell: ({ row }) => (
+      cell: ({ row }: any) => (
         <div className="flex items-center gap-2.5">
-          <Image
-            src={
-              languageFlags[
-                row.getValue("doc_language") as keyof typeof languageFlags
-              ]
-            }
-            alt=""
-            width={20}
-            height={20}
-          />{" "}
+          {row.original.doc_language && (
+            <Image
+              src={
+                languageFlags[
+                  row.getValue("doc_language") as keyof typeof languageFlags
+                ]
+              }
+              alt=""
+              width={20}
+              height={20}
+            />
+          )}{" "}
           {row.getValue("doc_language")}
         </div>
       ),

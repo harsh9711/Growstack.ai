@@ -58,6 +58,7 @@ const Dropdown = ({
   hideLabel,
   value,
   onChange,
+  placeholder,
   info
 }: any) => (
   <div className="space-y-3">
@@ -85,7 +86,7 @@ const Dropdown = ({
     )}
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="w-full border-none">
-        <SelectValue placeholder={label} />
+        <SelectValue placeholder={placeholder ? placeholder : label} />
       </SelectTrigger>
       <SelectContent>
         {items.map((item: any, index: number) => (
@@ -123,14 +124,12 @@ export default function AiAppPage({
     estimated_result_length: 400,
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [workbook, setWorkbook] = useState("");
-
-  console.log("dssds", editDocumentData, isEdit);
-
-  // const pathName = usePathname();
-  // const segments = pathName.split("/");
-
-  // const doc_id = segments[segments.length - 1];
+  // const [workbook, setWorkbook] = useState("");
+  const [allBrandVoices, setAllBrandVoices] = useState<any>([]);
+  const [brandName, setBrandName] = useState("");
+  const [selectedBrandVoice, setSelectedBrandVoice] = useState({});
+  const [isChecked, setIsChecked] = useState(false);
+  const brandNames = allBrandVoices?.map((item: any) => item.brand_name);
 
   const stripHtmlTags = (html: string) => {
     const temp = document.createElement("div");
@@ -156,6 +155,13 @@ export default function AiAppPage({
   // };
 
   useEffect(() => {
+    const findedBrandvoice = allBrandVoices?.find((item: any) => {
+      return item.brand_name === brandName;
+    });
+    setSelectedBrandVoice(findedBrandvoice);
+  }, [brandName]);
+
+  useEffect(() => {
     const fetchAssistant = async () => {
       try {
         const assistId = window.location.href.split("/").pop();
@@ -178,10 +184,27 @@ export default function AiAppPage({
   }, [assistantId]);
 
   useEffect(() => {
+    const handleGetAllBrandVoices = async () => {
+      try {
+        const response = await instance.get(
+          `${API_URL}/users/api/v1/brand-voice/all`
+        );
+
+        setAllBrandVoices(response?.data?.data);
+      } catch (error) {
+        console.log("Error fetching Documents:", error);
+        toast.error("Error fetching Documents data");
+      }
+    };
+
+    handleGetAllBrandVoices();
+  }, []);
+
+  useEffect(() => {
     if (isEdit) {
       setFileName(editDocumentData?.doc_name);
       setUserInput1(editDocumentData?.doc_language);
-      setWorkbook(editDocumentData?.workbook);
+      // setWorkbook(editDocumentData?.workbook);
       setGeneratedContent(editDocumentData?.doc_content);
     }
   }, [editDocumentData]);
@@ -297,6 +320,7 @@ export default function AiAppPage({
         {
           ...userInput,
           user_prompt: formattedUserPrompt,
+          brand_voice: selectedBrandVoice,
         },
         {
           headers: {
@@ -380,7 +404,7 @@ export default function AiAppPage({
         doc_name: fileName,
         doc_language: userInput1,
         doc_type: "TEXT",
-        workbook,
+        // workbook,
         category: "text",
         doc_content: generatedContent,
       };
@@ -388,6 +412,10 @@ export default function AiAppPage({
         API_URL + `/users/api/v1/docs/save`,
         payload
       );
+      router.push(`/account/saved-documents`);
+      setFileName("");
+      setUserInput1("");
+      setGeneratedContent("");
 
       toast.success(response.data.message);
     } catch (error: any) {
@@ -408,7 +436,7 @@ export default function AiAppPage({
         doc_name: fileName,
         doc_language: userInput1,
         doc_type: "TEXT",
-        workbook,
+        // workbook,
         category: "text",
         doc_content: generatedContent,
       };
@@ -502,12 +530,25 @@ export default function AiAppPage({
               </span>
             </p>
             <div className="flex items-center gap-2">
-              <Switch />
+              <Switch checked={isChecked} onCheckedChange={setIsChecked} />
               <label htmlFor="include-brand" className="text-sm">
                 Include your brand
               </label>
             </div>
           </div>
+          {isChecked && (
+            <div>
+              <Dropdown
+                label="Select Company"
+                placeholder="Select your Company / Brand"
+                items={brandNames}
+                value={brandName}
+                onChange={(value: any) => {
+                  setBrandName(value);
+                }}
+              />
+            </div>
+          )}
           <div>
             <Dropdown
               label="Language"
@@ -750,7 +791,7 @@ export default function AiAppPage({
                 value={fileName}
                 onChange={(e) => setFileName(e.target.value)}
               />
-              <Select
+              {/* <Select
                 onValueChange={(e: any) => setWorkbook(e)}
                 defaultValue={workbook}
               >
@@ -762,7 +803,7 @@ export default function AiAppPage({
                   <SelectItem value="Workbook 1">Workbook 1</SelectItem>
                   <SelectItem value="Workbook 2">Workbook 2</SelectItem>
                 </SelectContent>
-              </Select>
+              </Select> */}
               {/* <div className="flex items-center gap-2 whitespace-nowrap">
                 <Switch />
                 <label

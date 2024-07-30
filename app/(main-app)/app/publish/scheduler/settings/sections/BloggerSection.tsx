@@ -26,7 +26,7 @@ export default function BloggerSection() {
             Add Blogger account
           </button>
         </div>
-        <div className="mt-10 space-y-6">
+        {/* <div className="mt-10 space-y-6">
           <h1 className="text-xl font-semibold text-primary-green">Auto post settings</h1>
           <div className="flex items-center">
             <label className="flex items-center gap-1 w-1/5 min-w-[400px] font-medium">Blogger URL</label>
@@ -65,7 +65,7 @@ export default function BloggerSection() {
               </Select>
             </div>
           </div>
-        </div>
+        </div> */}
       </Motion>
     </Fragment>
   );

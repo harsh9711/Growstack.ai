@@ -15,7 +15,8 @@ import TwitterSection from "./sections/TwitterSection";
 export default function page() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
-  const tabs = ["General", "Facebook", "Twitter", "Linkedin", "Tumblr", "Pinterest", "GMB", "Reddit", "Instagram", "Blogger"];
+  // const tabs = ["General", "Facebook", "Twitter", "Linkedin", "Tumblr", "Pinterest", "GMB", "Reddit", "Instagram", "Blogger"];
+  const tabs = ["General", "Facebook", "Twitter", "Linkedin", "Instagram",];
 
   const renderContent = () => {
     switch (selectedTabIndex) {
@@ -28,17 +29,17 @@ export default function page() {
       case 3:
         return <LinkedInSection />;
       case 4:
-        return <TumblrSection />;
-      case 5:
-        return <PinterestSection />;
-      case 6:
-        return <GoogleSection />;
-      case 7:
-        return <RedditSection />;
-      case 8:
         return <InstagramSection />;
-      case 9:
-        return <BloggerSection />;
+      // case 5:
+      //   return <TumblrSection />;
+      // case 6:
+      //   return <PinterestSection />;
+      // case 7:
+      //   return <GoogleSection />;
+      // case 8:
+      //   return <RedditSection />;
+      // case 9:
+      //   return <BloggerSection />;
     }
   };
 

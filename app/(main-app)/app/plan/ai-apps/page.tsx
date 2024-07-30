@@ -61,6 +61,7 @@ const tags = [
 export default function MarketingPage() {
   const [selectedTag, setSelectedTag] = useState(tags[0].name);
   const [assistants, setAssistants] = useState<Assistant[]>([]);
+  const [allAssistantsData, setAllAssistantsData] = useState<Assistant[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [isPending, setIsPending] = useState(false);
@@ -70,15 +71,15 @@ export default function MarketingPage() {
     try {
       let apiUrl = `${API_URL}/ai/api/v1/chat-template?category=${selectedTag}`;
       if (selectedTag === "My Assistants") {
-        apiUrl = `${API_URL}/ai/api/v1/chat-template/user?page=1&limit=20&search=${searchQuery}`;
+        apiUrl = `${API_URL}/ai/api/v1/chat-template?category=MyAssistants`;
       }
 
       const response = await instance.get(apiUrl);
+
       const data =
         selectedTag === "My Assistants"
-          ? response.data.data.data
+          ? response.data.data
           : response.data.data;
-
       if (data) {
         const formattedAssistants = data.map((assistant: any) => ({
           _id: assistant._id,
@@ -89,6 +90,7 @@ export default function MarketingPage() {
           favorite: assistant["favorite"],
         }));
         setAssistants(formattedAssistants);
+        setAllAssistantsData(formattedAssistants);
       } else {
         console.error("Unexpected API response format:", response.data);
       }
@@ -120,9 +122,42 @@ export default function MarketingPage() {
     }
   };
 
+  // const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const newSearchTerm = e.target.value.toLowerCase();
+  //   setSearchTerm(newSearchTerm);
+
+  //   // If the search term is empty, reset the careers to the initial list
+  //   if (newSearchTerm.trim() === "") {
+  //     setAssistants(allAssistantsData);
+  //   } else {
+  //     // Otherwise, filter the careers based on the search term
+  //     setAssistants(
+  //       assistants.filter((assistant: any) =>
+  //         assistant["ASSISTANT NAME"].toLowerCase().includes(newSearchTerm)
+  //       )
+  //     );
+  //   }
+  // };
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value.toLowerCase());
+  };
+
   useEffect(() => {
     fetchAssistants();
-  }, [selectedTag, searchQuery]);
+  }, [selectedTag]);
+
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setAssistants(allAssistantsData);
+    } else {
+      setAssistants(
+        allAssistantsData.filter((assistant: any) =>
+          assistant["ASSISTANT NAME"].toLowerCase().includes(searchQuery)
+        )
+      );
+    }
+  }, [searchQuery]);
 
   return (
     <Fragment>
@@ -142,7 +177,7 @@ export default function MarketingPage() {
                 className="outline-none h-[40px] w-full"
                 placeholder="Search"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={handleSearch}
               />
             </div>
 
