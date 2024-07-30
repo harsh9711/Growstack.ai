@@ -91,11 +91,11 @@ const navLinks: NavLink[] = [
   {
     icon: <CreateIcon />,
     sublinks: [
-      {
-        icon: <LayoutIcon />,
-        name: "AI website builder",
-        href: "/app/create/website-builder",
-      },
+      // {
+      //   icon: <LayoutIcon />,
+      //   name: "AI website builder",
+      //   href: "/app/create/website-builder",
+      // },
       {
         icon: <MailIcon />,
         name: "AI email builder",
@@ -195,11 +195,11 @@ const navLinks: NavLink[] = [
         name: "Social media conversation hub",
         href: "/app/engage/Social-media",
       },
-      {
-        icon: <DocumentIcon />,
-        name: "Social advocacy",
-        href: "/app/engage/social-advocacy",
-      },
+      // {
+      //   icon: <DocumentIcon />,
+      //   name: "Social advocacy",
+      //   href: "/app/engage/social-advocacy",
+      // },
     ],
     title: "Engage",
   },
@@ -216,16 +216,16 @@ const navLinks: NavLink[] = [
         name: "Reputation mgmt. system",
         href: "/app/analyse/reputation-manager",
       },
-      {
-        icon: <AdsAnalyticsIcon />,
-        name: "Ads analytics",
-        href: "/app/analyse/ads-analytics",
-      },
-      {
-        icon: <ReportAnalyticsIcon />,
-        name: "Email & SMS Analytics",
-        href: "#",
-      },
+      // {
+      //   icon: <AdsAnalyticsIcon />,
+      //   name: "Ads analytics",
+      //   href: "/app/analyse/ads-analytics",
+      // },
+      // {
+      //   icon: <ReportAnalyticsIcon />,
+      //   name: "Email & SMS Analytics",
+      //   href: "#",
+      // },
     ],
     title: "Analyse",
   },

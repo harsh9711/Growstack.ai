@@ -217,7 +217,7 @@ export default function ProfilePage() {
           <div className="max-w-fit space-y-6">
             <label
               htmlFor="profileImage"
-              className="relative group w-28 h-28 rounded-full overflow-hidden"
+              className="relative group flex w-full justify-center h-28 rounded-full overflow-hidden"
             >
               <div className="w-28 h-28">
                 {previewImage ? (
@@ -234,9 +234,9 @@ export default function ProfilePage() {
                   </div>
                 )}
               </div>
-              <div className="w-28 h-28 rounded-full absolute inset-0 bg-black opacity-0 group-hover:bg-black/50 group-hover:opacity-100 z-10 flex flex-col items-center justify-center text-white cursor-pointer transition">
+              {/* <div className="w-28 h-28 rounded-full absolute inset-0 bg-black opacity-0 group-hover:bg-black/50 group-hover:opacity-100 z-10 flex flex-col items-center justify-center text-white cursor-pointer transition">
                 <BiPencil size={35} />
-              </div>
+              </div> */}
             </label>
             {/* <input
               type="file"
@@ -499,7 +499,7 @@ export default function ProfilePage() {
             </button>
             <button
               type="submit"
-              className="h-12 py-3 px-3 w-full max-w-[150px] uppercase bg-primary-green sheen rounded-xl text-white mt-6"
+              className="h-12 py-3 px-3 flex justify-center w-full max-w-[150px] uppercase bg-primary-green sheen rounded-xl text-white mt-6"
             >
               {isPending ? <Spinner /> : " Update"}
             </button>

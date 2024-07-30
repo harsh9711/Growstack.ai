@@ -22,7 +22,7 @@ export default function ContactsDashboard() {
   const [toggleModal, setToggleModal] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<ModalContent | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const tabs = ["Smart list", "Bulk actions", "Restore", "Tasks", "Company"];
+  const tabs = ["Smart list", "Prospects", "Restore", "Tasks", "Company"];
 
   const handleModal = (value: ModalContent | null) => {
     setModalContent(value);

@@ -49,6 +49,7 @@ const Dropdown = ({
   hideLabel,
   value,
   onChange,
+  placeholder
 }: any) => (
   <div className="space-y-3">
     {!hideLabel && (
@@ -61,7 +62,7 @@ const Dropdown = ({
     )}
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="w-full border-none">
-        <SelectValue placeholder={label} />
+        <SelectValue placeholder={placeholder ? placeholder : label} />
       </SelectTrigger>
       <SelectContent>
         {items.map((item: any, index: number) => (
@@ -514,7 +515,8 @@ export default function AiAppPage({
           {isChecked && (
             <div>
               <Dropdown
-                label="Brand Voices"
+                label="Select Company"
+                placeholder="Select your Company / Brand"
                 items={brandNames}
                 value={brandName}
                 onChange={(value: any) => {
