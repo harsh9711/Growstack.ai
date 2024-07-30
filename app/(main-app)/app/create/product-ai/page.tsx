@@ -58,7 +58,7 @@ export default function Page() {
       setFileUploadLoading(true);
       try {
         const response = await instance.post(
-          `${API_URL}/users/api/v1/file/upload`,
+          ${API_URL}/users/api/v1/file/upload,
           formData
         );
         const fileUrl = response.data.data.fileUrl;
@@ -122,7 +122,7 @@ export default function Page() {
 
     const removeBg = async (): Promise<FinalResultProps | null> => {
       const response = await instance.post(
-        `${API_URL}/ai/api/v1/products/bg-remover`,
+        ${API_URL}/ai/api/v1/products/bg-remover,
         {
           img_url,
           category,
@@ -133,7 +133,7 @@ export default function Page() {
       if (result_url) {
         const pollStatus = async (): Promise<FinalResultProps | null> => {
           const statusResponse = await instance.post(
-            `${API_URL}/ai/api/v1/products/image/status`,
+            ${API_URL}/ai/api/v1/products/image/status,
             {
               image_url: result_url,
             }
@@ -167,7 +167,7 @@ export default function Page() {
       img_url: string
     ): Promise<FinalResultProps | null> => {
       const response = await instance.post(
-        `${API_URL}/ai/api/v1/products/image/edit`,
+        ${API_URL}/ai/api/v1/products/image/edit,
         {
           user_prompt,
           negative_promt,
@@ -227,7 +227,7 @@ export default function Page() {
           const url = window.URL.createObjectURL(blob);
           const link = document.createElement("a");
           link.href = url;
-          link.download = `finalresult.${result.ext}`;
+          link.download = finalresult.${result.ext};
           document.body.appendChild(link);
           link.click();
           link.remove();
