@@ -18,8 +18,14 @@ import SendEmail from "./components/modal/sendEmail";
 import { PaginationState } from "@tanstack/react-table";
 import { Contact } from "@/types/contacts";
 import instance from "@/config/axios.config";
+import ProspectsTable from "./components/ProspectsTable";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function ContactsDashboard() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const tabQueryParam = searchParams.get("tab");
+
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
   const [toggleModal, setToggleModal] = useState<boolean>(false);
@@ -59,11 +65,26 @@ export default function ContactsDashboard() {
     getContacts();
   }, [pagination.pageIndex, pagination.pageSize]);
 
-  const tabs = ["Smart list", "Bulk actions", "Restore", "Tasks", "Company"];
+  useEffect(() => {
+    const tab = tabQueryParam ? Number(tabQueryParam) : 0;
+    setSelectedTabIndex(tab);
+    const totalTabs = tabs.length;
+    const percentage = (tab / totalTabs) * 100;
+    setTabUnderlineLeft(percentage);
+  }, [tabQueryParam]);
+
+  const tabs = ["Smart list", "Prospects", "Restore"];
 
   const handleModal = (value: ModalContent | null) => {
     setModalContent(value);
   };
+
+  const handleTabClick = (index: number) => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("tab", index.toString());
+    router.push(`?${params.toString()}`);
+  };
+
   const renderContent = (selectedTabIndex: number) => {
     switch (selectedTabIndex) {
       case 0:
@@ -79,13 +100,13 @@ export default function ContactsDashboard() {
           />
         );
       case 1:
-        return <BulkActionsTable />;
+        return <ProspectsTable />;
       case 2:
         return <RestoreTable />;
-      case 3:
-        return <TasksTable />;
-      case 4:
-        return <CompanyTable />;
+      // case 3:
+      //   return <TasksTable />;
+      // case 4:
+      //   return <CompanyTable />;
     }
   };
   const renderTitle = (selectedTabIndex: number) => {
@@ -103,7 +124,7 @@ export default function ContactsDashboard() {
       case 1:
         return (
           <Fragment>
-            <h1 className="text-2xl font-semibold">Bulk actions</h1>
+            <h1 className="text-2xl font-semibold">Prospects</h1>
             <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
               Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
               ultricies accumsan. Nec.{" "}
@@ -120,26 +141,26 @@ export default function ContactsDashboard() {
             </p>
           </Fragment>
         );
-      case 3:
-        return (
-          <Fragment>
-            <h1 className="text-2xl font-semibold">Tasks list</h1>
-            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
-              Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
-              ultricies accumsan. Nec.{" "}
-            </p>
-          </Fragment>
-        );
-      case 4:
-        return (
-          <Fragment>
-            <h1 className="text-2xl font-semibold">Company</h1>
-            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
-              Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
-              ultricies accumsan. Nec.{" "}
-            </p>
-          </Fragment>
-        );
+      // case 3:
+      //   return (
+      //     <Fragment>
+      //       <h1 className="text-2xl font-semibold">Tasks list</h1>
+      //       <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
+      //         Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
+      //         ultricies accumsan. Nec.{" "}
+      //       </p>
+      //     </Fragment>
+      //   );
+      // case 4:
+      //   return (
+      //     <Fragment>
+      //       <h1 className="text-2xl font-semibold">Company</h1>
+      //       <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
+      //         Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
+      //         ultricies accumsan. Nec.{" "}
+      //       </p>
+      //     </Fragment>
+      //   );
     }
   };
 
@@ -196,12 +217,7 @@ export default function ContactsDashboard() {
                         ? "!text-white"
                         : "!text-primary-grey"
                     }`}
-                    onClick={() => {
-                      const totalTabs = tabs.length;
-                      const percentage = (index / totalTabs) * 100;
-                      setSelectedTabIndex(index);
-                      setTabUnderlineLeft(percentage);
-                    }}
+                    onClick={() => handleTabClick(index)}
                   >
                     {tab}
                   </div>

@@ -73,7 +73,6 @@ export const columns: ColumnDef<Assistant>[] = [
     accessorKey: "title",
     header: () => <div className="uppercase">Name</div>,
     cell: ({ row }) => (
-      // console.log(row.original._id);
       <Link href={`/app/plan/contacts/assistant/${row.original._id}`}>
         <div className="capitalize flex items-center gap-3">
           {row.getValue("title")}
@@ -101,7 +100,7 @@ export const columns: ColumnDef<Assistant>[] = [
     cell: ({ row }) => (
       <div className="flex gap-3">
         <Link href={`/app/plan/contacts/assistant/${row.original._id}`}>
-          <span>{row.original.created_on.date}</span>
+          <span>{row.original.created_on.date}</span>{" "}
           <span>{row.original.created_on.time}</span>
         </Link>
       </div>
@@ -109,7 +108,7 @@ export const columns: ColumnDef<Assistant>[] = [
   },
 ];
 
-export default function ContactsTable() {
+export default function ProspectsTable() {
   const [assistants, setAssistants] = useState<Assistant[]>([]);
   const [isPending, setIsPending] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -120,7 +119,6 @@ export default function ContactsTable() {
       const response = await instance.get(
         `${API_URL}/users/api/v1/contacts/prospects`
       );
-      console.log("response", response.data.data.docs);
       if (response.data.data.docs) {
         const formattedAssistants = response.data.data.docs.map(
           (assistant: any) => ({
@@ -228,7 +226,16 @@ export default function ContactsTable() {
               ))}
             </TableHeader>
             <TableBody>
-              {table.getRowModel().rows?.length ? (
+              {isPending ? (
+                <TableRow className="hover:bg-white">
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-[50vh] text-center font-semibold text-lg hover:bg-white"
+                  >
+                    Loading...
+                  </TableCell>
+                </TableRow>
+              ) : table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow
                     key={row.id}

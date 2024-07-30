@@ -785,7 +785,6 @@ const WebScraping: React.FC = () => {
     const [isPending, setIsPending] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [fileTitle, setFileTitle] = useState("");
-    // console.log("placesCollected", places);
     const handleSave = async () => {
       setIsPending(true);
 
@@ -821,7 +820,7 @@ const WebScraping: React.FC = () => {
         );
         toast.success("Data saved successfully!");
         setTimeout(() => {
-          router.push(`/app/plan/contacts`)
+          router.push(`/app/plan/contacts?tab=1`)
         }, 10)
       } catch (error) {
         console.error("Error:", error);
