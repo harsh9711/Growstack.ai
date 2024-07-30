@@ -100,6 +100,11 @@ export default function AiAppPage({
   });
   const [isLoading, setIsLoading] = useState(false);
   // const [workbook, setWorkbook] = useState("");
+  const [allBrandVoices, setAllBrandVoices] = useState<any>([]);
+  const [brandName, setBrandName] = useState("");
+  const [selectedBrandVoice, setSelectedBrandVoice] = useState({});
+  const [isChecked, setIsChecked] = useState(false);
+  const brandNames = allBrandVoices?.map((item: any) => item.brand_name);
 
   const stripHtmlTags = (html: string) => {
     const temp = document.createElement("div");
@@ -125,6 +130,13 @@ export default function AiAppPage({
   // };
 
   useEffect(() => {
+    const findedBrandvoice = allBrandVoices?.find((item: any) => {
+      return item.brand_name === brandName;
+    });
+    setSelectedBrandVoice(findedBrandvoice);
+  }, [brandName]);
+
+  useEffect(() => {
     const fetchAssistant = async () => {
       try {
         const assistId = window.location.href.split("/").pop();
@@ -145,6 +157,23 @@ export default function AiAppPage({
 
     fetchAssistant();
   }, [assistantId]);
+
+  useEffect(() => {
+    const handleGetAllBrandVoices = async () => {
+      try {
+        const response = await instance.get(
+          `${API_URL}/users/api/v1/brand-voice/all`
+        );
+
+        setAllBrandVoices(response?.data?.data);
+      } catch (error) {
+        console.log("Error fetching Documents:", error);
+        toast.error("Error fetching Documents data");
+      }
+    };
+
+    handleGetAllBrandVoices();
+  }, []);
 
   useEffect(() => {
     if (isEdit) {
@@ -266,6 +295,7 @@ export default function AiAppPage({
         {
           ...userInput,
           user_prompt: formattedUserPrompt,
+          brand_voice: selectedBrandVoice,
         },
         {
           headers: {
@@ -475,12 +505,24 @@ export default function AiAppPage({
               </span>
             </p>
             <div className="flex items-center gap-2">
-              <Switch />
+              <Switch checked={isChecked} onCheckedChange={setIsChecked} />
               <label htmlFor="include-brand" className="text-sm">
                 Include your brand
               </label>
             </div>
           </div>
+          {isChecked && (
+            <div>
+              <Dropdown
+                label="Brand Voices"
+                items={brandNames}
+                value={brandName}
+                onChange={(value: any) => {
+                  setBrandName(value);
+                }}
+              />
+            </div>
+          )}
           <div>
             <Dropdown
               label="Language"

@@ -31,8 +31,11 @@ import { ChangeEvent } from "react";
 import swal from "sweetalert";
 import ChangePassword from "./components/ChangePassword";
 import Spinner from "@/components/Spinner";
+import { login } from "@/lib/features/auth/auth.slice";
+import { useDispatch } from "react-redux";
 
 export default function ProfilePage() {
+  const dispatch = useDispatch();
   const currentUser = getCurrentUser();
   const [previewImage, setPreviewImage] = useState<any>(null);
   const [avatarLink, setAvatarLink] = useState<any>({});
@@ -112,6 +115,7 @@ export default function ProfilePage() {
     try {
       const response = await instance.get(`${API_URL}/users/api/v1`);
       const userData = response?.data?.data;
+      dispatch(login(userData));
       setValue("email", userData.email);
       setValue("name", userData.name);
       setValue("job_role", userData.job_role);
@@ -234,13 +238,33 @@ export default function ProfilePage() {
                 <BiPencil size={35} />
               </div>
             </label>
-            <input
+            {/* <input
               type="file"
               id="profileImage"
               accept="image/*"
               // className="hidden"
               onChange={handleImageUpload}
-            />
+            /> */}
+
+            <div className="hidden sm:flex h-[54px] w-full bg-white border border-[#eee] rounded-xl text-sm justify-between">
+              <div className="flex-1 flex items-center px-4">
+                <h1>Choose your avatar...</h1>
+              </div>
+
+              <label
+                htmlFor="profile-image"
+                className="bg-primary-green text-white h-[54px] px-8 rounded-r-xl flex items-center justify-center cursor-pointer"
+              >
+                Browse
+              </label>
+              <input
+                type="file"
+                id="profile-image"
+                accept="images/*"
+                className="hidden"
+                onChange={handleImageUpload}
+              />
+            </div>
           </div>
           <h2 className="text-2xl font-semibold">Admin</h2>
           <p>Administrator</p>

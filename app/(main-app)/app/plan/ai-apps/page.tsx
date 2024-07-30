@@ -75,11 +75,11 @@ export default function MarketingPage() {
       }
 
       const response = await instance.get(apiUrl);
+
       const data =
         selectedTag === "My Assistants"
-          ? response.data.data.data
+          ? response.data.data
           : response.data.data;
-
       if (data) {
         const formattedAssistants = data.map((assistant: any) => ({
           _id: assistant._id,
