@@ -70,9 +70,9 @@ export default function MarketingPage() {
     setIsPending(true);
     try {
       let apiUrl = `${API_URL}/ai/api/v1/chat-template?category=${selectedTag}`;
-      // if (selectedTag === "My Assistants") {
-      //   apiUrl = `${API_URL}/ai/api/v1/chat-template/user?page=1&limit=20&search=${searchQuery}`;
-      // }
+      if (selectedTag === "My Assistants") {
+        apiUrl = `${API_URL}/ai/api/v1/chat-template?category=MyAssistants`;
+      }
 
       const response = await instance.get(apiUrl);
       const data =

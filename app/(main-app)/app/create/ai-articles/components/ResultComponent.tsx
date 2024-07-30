@@ -1,13 +1,19 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import "../../../../../../styles/markdown.css";
 import DotsLoader from "@/components/DotLoader";
 import { Share2 } from "lucide-react";
+import instance from "@/config/axios.config";
+import { API_URL } from "@/lib/api";
+import toast from "react-hot-toast";
+import Spinner from "@/components/Spinner";
+import { useRouter } from "next/navigation";
 
 interface ResultComponentProps {
+  articleTitle: string;
   articleData: string;
   images: Array<{ revised_prompt: string; url: string }>;
   setImages: React.Dispatch<
@@ -16,10 +22,40 @@ interface ResultComponentProps {
 }
 
 const ResultComponent: React.FC<ResultComponentProps> = ({
+  articleTitle,
   articleData,
   images,
   setImages,
 }) => {
+  const router = useRouter();
+  const [isPending, setIsPending] = useState(false);
+  console.log('articleTitle', articleTitle)
+  console.log('articleData', articleData)
+  const handleShare = async () => {
+    setIsPending(true);
+    const payload = {
+      title: articleTitle,
+      article: articleData,
+    }
+    try {
+      const response = await instance.post(
+        API_URL + "/ai/api/v1/wizard/generate/cms",
+        payload
+      );
+      toast.success(response.data.message);
+      router.push(`/app/publish/scheduler/quick-posting`);
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error(error);
+    } finally {
+      setIsPending(false);
+    }
+  }
+
   return (
     <div className="mt-10">
       <div className="!bg-white shadow-box max-w-2xl mx-auto flex flex-col justify-center items-center p-12 space-y-6">
@@ -45,8 +81,9 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
       <section className="max-w-6xl mx-auto">
         <div className="bg-primary-green rounded-2xl py-6 px-8 flex items-center gap-4 mt-6 justify-between">
           <h2 className="text-lg font-semibold text-white">Final Article</h2>
-          <div className="bg-white h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
-            <Share2 />
+          <div onClick={handleShare} className="bg-white h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
+            {isPending ? <Spinner color="black" /> : <Share2 />}
+            
           </div>
         </div>
         <div className="border !bg-white shadow-box p-10 mt-5 leading-relaxed space-y-3">

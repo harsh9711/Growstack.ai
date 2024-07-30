@@ -55,7 +55,7 @@ export default function LinkedinSection() {
             </button>
           </div>
         </div>
-        <div className="mt-10 space-y-6">
+        {/* <div className="mt-10 space-y-6">
           <h1 className="text-xl font-semibold text-primary-green">Auto post settings</h1>
 
           <div className="flex items-center">
@@ -104,7 +104,7 @@ export default function LinkedinSection() {
               </Select>
             </div>
           </div>
-        </div>
+        </div> */}
       </Motion>
     </Fragment>
   );
