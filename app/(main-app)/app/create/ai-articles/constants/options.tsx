@@ -41,11 +41,11 @@ export const aiModelOptions = [
     value: "gemini-1.5-flash",
     icon: <GoogleGemini />,
   },
-  // {
-  //   label: "Gemini 1.5 Pro",
-  //   value: "gemini-1.5-pro",
-  //   icon: <GoogleGemini />,
-  // },
+  {
+    label: "Gemini 1.5 Pro",
+    value: "gemini-1.5-pro",
+    icon: <GoogleGemini />,
+  },
 ];
 
 export const writingToneOptions = [

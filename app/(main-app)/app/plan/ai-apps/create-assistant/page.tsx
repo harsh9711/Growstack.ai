@@ -234,7 +234,7 @@ export default function CreateAssistantPage() {
                     />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Blogs Posts">My Assistants</SelectItem>
+                    <SelectItem value="My Assistants">My Assistants</SelectItem>
                     {/* <SelectItem value="Articles And Contents">Articles And Contents</SelectItem>
                     <SelectItem value="Blogs Posts">Blogs Posts</SelectItem>
                     <SelectItem value="Commerce"> Ecommerce</SelectItem>
