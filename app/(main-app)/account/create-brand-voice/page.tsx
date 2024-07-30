@@ -42,7 +42,7 @@ export default function CreateBrandVoice() {
   };
 
   const [formData, setFormData] = useState({
-    name: "",
+    brand_name: "",
     description: "",
     website: "",
     tagline: "",
@@ -55,7 +55,7 @@ export default function CreateBrandVoice() {
   const fontAwesomePattern = /^<i class=['"]fa[a-zA-Z0-9\- ]+['"]><\/i>$/;
 
   const ValidationSchema = z.object({
-    name: z.string().nonempty("Required"),
+    brand_name: z.string().nonempty("Required"),
     website: z.string().nonempty("Required"),
     industry: z.string().nonempty("Required"),
     tagline: z.string().nonempty("Required"),
@@ -63,7 +63,6 @@ export default function CreateBrandVoice() {
   });
 
   const [isPending, setIsPending] = useState(false);
-  const [refreshAssistantsTable, setRefreshAssistantsTable] = useState(true);
 
   type ValidationSchemaType = z.infer<typeof ValidationSchema>;
 
@@ -82,8 +81,14 @@ export default function CreateBrandVoice() {
   const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
     setIsPending(true);
     try {
-      const { name, description, tagline, industry, website, target_audience } =
-        formData;
+      const {
+        brand_name,
+        description,
+        tagline,
+        industry,
+        website,
+        target_audience,
+      } = formData;
 
       // Prepare userInputs to be sent with the POST request
       const userInputFields = userInputs.map((input) => ({
@@ -95,7 +100,7 @@ export default function CreateBrandVoice() {
       const response = await instance.post(
         `${API_URL}/users/api/v1/brand-voice/create`,
         {
-          name,
+          brand_name,
           description,
           target_audience,
           tagline,
@@ -113,7 +118,7 @@ export default function CreateBrandVoice() {
 
       // Clear form data after successful submission
       setFormData({
-        name: "",
+        brand_name: "",
         description: "",
         website: "",
         tagline: "",
@@ -122,7 +127,6 @@ export default function CreateBrandVoice() {
       });
       setToneOfVoice(""); // Clear category after submission
       setUserInputs([{ name: "", brief: "", isProduct: "" }]); // Reset userInputs
-      setRefreshAssistantsTable(true);
       // Log userInputs to the console
       console.log("User Inputs:", userInputFields);
     } catch (error: any) {
@@ -176,12 +180,14 @@ export default function CreateBrandVoice() {
                 <Input
                   type="text"
                   placeholder="Type company / brand name"
-                  {...register("name")}
-                  value={formData.name}
+                  {...register("brand_name")}
+                  value={formData.brand_name}
                   onChange={handleChange}
                 />
-                {errors.name && (
-                  <p className="text-rose-600 text-sm">{errors.name.message}</p>
+                {errors.brand_name && (
+                  <p className="text-rose-600 text-sm">
+                    {errors.brand_name.message}
+                  </p>
                 )}
               </div>
               <div className="space-y-2">

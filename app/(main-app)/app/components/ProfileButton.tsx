@@ -1,5 +1,5 @@
 "use client";
-
+import React from "react";
 import { BrandVoiceIcon } from "@/components/svgs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -26,7 +26,9 @@ export function ProfileButton() {
       <DropdownMenuTrigger asChild>
         <Avatar className="rounded-xl">
           <AvatarImage src="" />
-          <AvatarFallback className="rounded-xl">{currentUser?.email?.slice(0, 1)}</AvatarFallback>
+          <AvatarFallback className="rounded-xl">
+            {currentUser?.email?.slice(0, 1)}
+          </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[300px] relative right-10 text-[15px]">
@@ -36,7 +38,7 @@ export function ProfileButton() {
             <AvatarFallback>{currentUser?.email?.slice(0, 1)}</AvatarFallback>
           </Avatar>
           <div>
-            <h1 className="text-xl font-semibold">John Doe</h1>
+            <h1 className="text-xl font-semibold">{currentUser?.user_name ?? "John Doe"}</h1>
             <p className="text-primary-grey text-sm">{currentUser?.email}</p>
           </div>
         </div>
@@ -77,7 +79,8 @@ export function ProfileButton() {
         <DropdownMenuSeparator />
         <button
           onClick={() => dispatch(logout())}
-          className="relative flex select-none items-center rounded-lg h-12 p-4 outline-none w-full gap-3 text-[#D9000B] hover:bg-[#D9000B]/10 cursor-pointer">
+          className="relative flex select-none items-center rounded-lg h-12 p-4 outline-none w-full gap-3 text-[#D9000B] hover:bg-[#D9000B]/10 cursor-pointer"
+        >
           <LogOut size={20} />
           Sign out
         </button>

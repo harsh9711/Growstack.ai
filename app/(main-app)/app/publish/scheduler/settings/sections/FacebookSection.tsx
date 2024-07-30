@@ -52,7 +52,7 @@ export default function FacebookSection() {
             </div>
           </div>
         </div>
-        <div className="mt-16 space-y-6">
+        {/* <div className="mt-16 space-y-6">
           <h1 className="text-xl font-semibold text-primary-green">Auto post settings</h1>
 
           <div className="flex items-center">
@@ -100,7 +100,7 @@ export default function FacebookSection() {
               </Select>
             </div>
           </div>
-        </div>
+        </div> */}
       </Motion>
     </Fragment>
   );

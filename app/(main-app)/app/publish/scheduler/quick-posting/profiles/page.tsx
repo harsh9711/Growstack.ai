@@ -10,6 +10,10 @@ export default function SchedulerPage() {
     try {
       const response = await instance.get(API_URL + '/users/api/v1/social-media/connect');
       console.log('response', response)
+      const url = response?.data.data
+      if (url) {
+        window.location.href = url;
+      }
     } catch (error: any) {
       toast.error(error.response.data.message)
     }
@@ -55,7 +59,7 @@ export default function SchedulerPage() {
             <Image src="/icons/x-icon.svg" alt="" width={30} height={30} />X Profile
           </div>
         </Link>
-        <Link
+        {/* <Link
           href={{
             pathname: API_URL + `/users/api/v1/social-media/connect`,
             query: { profile: "Blogger" },
@@ -104,7 +108,7 @@ export default function SchedulerPage() {
             <Image src="/icons/reddit-icon.svg" alt="" width={40} height={40} />
             Reddit
           </div>
-        </Link>
+        </Link> */}
       </div>
     </div>
   );

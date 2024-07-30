@@ -22,7 +22,6 @@ import instance from "@/config/axios.config";
 import ProspectsTable from "./components/ProspectsTable";
 import { useRouter, useSearchParams } from "next/navigation";
 
-
 export default function ContactsDashboard() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -33,6 +32,8 @@ export default function ContactsDashboard() {
   const [toggleModal, setToggleModal] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<ModalContent | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const tabs = ["Smart list", "Prospects", "Restore"];
+
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -67,9 +68,6 @@ export default function ContactsDashboard() {
     getContacts();
   }, [pagination.pageIndex, pagination.pageSize]);
 
-
-  const tabs = ["Smart list", "Bulk actions", "Restore", "Tasks", "Company"];
-
   useEffect(() => {
     const tab = tabQueryParam ? Number(tabQueryParam) : 0;
     setSelectedTabIndex(tab);
@@ -77,8 +75,6 @@ export default function ContactsDashboard() {
     const percentage = (tab / totalTabs) * 100;
     setTabUnderlineLeft(percentage);
   }, [tabQueryParam]);
-
-
 
   const handleModal = (value: ModalContent | null) => {
     setModalContent(value);

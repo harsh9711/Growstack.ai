@@ -31,8 +31,11 @@ import { ChangeEvent } from "react";
 import swal from "sweetalert";
 import ChangePassword from "./components/ChangePassword";
 import Spinner from "@/components/Spinner";
+import { login } from "@/lib/features/auth/auth.slice";
+import { useDispatch } from "react-redux";
 
 export default function ProfilePage() {
+  const dispatch = useDispatch();
   const currentUser = getCurrentUser();
   const [previewImage, setPreviewImage] = useState<any>(null);
   const [avatarLink, setAvatarLink] = useState<any>({});
@@ -82,21 +85,21 @@ export default function ProfilePage() {
       icon: <UserIcon2 />,
       title: "View profile",
     },
-    {
-      link: "#",
-      icon: <Settings2Icon />,
-      title: "set defaults",
-    },
+    // {
+    //   link: "#",
+    //   icon: <Settings2Icon />,
+    //   title: "set defaults",
+    // },
     {
       link: "#",
       icon: <KeyIcon />,
       title: "Change password",
     },
-    {
-      link: "#",
-      icon: <ShieldCheckIcon />,
-      title: "2FA Authentication",
-    },
+    // {
+    //   link: "#",
+    //   icon: <ShieldCheckIcon />,
+    //   title: "2FA Authentication",
+    // },
     {
       link: "#",
       icon: <UserX2 />,
@@ -112,6 +115,7 @@ export default function ProfilePage() {
     try {
       const response = await instance.get(`${API_URL}/users/api/v1`);
       const userData = response?.data?.data;
+      dispatch(login(userData));
       setValue("email", userData.email);
       setValue("name", userData.name);
       setValue("job_role", userData.job_role);
@@ -127,30 +131,30 @@ export default function ProfilePage() {
     }
   };
 
-  const handleChangeAvatar = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    console.log("FIL", file);
-    if (file) {
-      const formData = new FormData();
-      formData.append("document", file);
-      try {
-        const response = await instance.post(
-          `${API_URL}/users/api/v1/file/upload`,
-          formData
-        );
-        setAvatarLink(response.data.data.fileUrl);
-      } catch (error) {
-        toast.error("Error uploading avatar");
-      }
-    }
-  };
+  // const handleChangeAvatar = async (event: ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0];
+  //   console.log("FIL", file);
+  //   if (file) {
+  //     const formData = new FormData();
+  //     formData.append("document", file);
+  //     try {
+  //       const response = await instance.post(
+  //         `${API_URL}/users/api/v1/file/upload`,
+  //         formData
+  //       );
+  //       setAvatarLink(response.data.data.fileUrl);
+  //     } catch (error) {
+  //       toast.error("Error uploading avatar");
+  //     }
+  //   }
+  // };
 
   const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
     setIsPending(true);
     try {
       const validatedData = ValidationSchema.parse({
         ...data,
-        profile_img: avatarLink,
+        // profile_img: avatarLink,
       });
       const response = await instance.put(
         API_URL + "/users/api/v1",
@@ -213,7 +217,7 @@ export default function ProfilePage() {
           <div className="max-w-fit space-y-6">
             <label
               htmlFor="profileImage"
-              className="relative group w-28 h-28 rounded-full overflow-hidden"
+              className="relative group flex w-full justify-center h-28 rounded-full overflow-hidden"
             >
               <div className="w-28 h-28">
                 {previewImage ? (
@@ -230,17 +234,37 @@ export default function ProfilePage() {
                   </div>
                 )}
               </div>
-              <div className="w-28 h-28 rounded-full absolute inset-0 bg-black opacity-0 group-hover:bg-black/50 group-hover:opacity-100 z-10 flex flex-col items-center justify-center text-white cursor-pointer transition">
+              {/* <div className="w-28 h-28 rounded-full absolute inset-0 bg-black opacity-0 group-hover:bg-black/50 group-hover:opacity-100 z-10 flex flex-col items-center justify-center text-white cursor-pointer transition">
                 <BiPencil size={35} />
-              </div>
+              </div> */}
             </label>
-            <input
+            {/* <input
               type="file"
               id="profileImage"
               accept="image/*"
               // className="hidden"
               onChange={handleImageUpload}
-            />
+            /> */}
+
+            <div className="hidden sm:flex h-[54px] w-full bg-white border border-[#eee] rounded-xl text-sm justify-between">
+              <div className="flex-1 flex items-center px-4">
+                <h1>Choose your avatar...</h1>
+              </div>
+
+              <label
+                htmlFor="profile-image"
+                className="bg-primary-green text-white h-[54px] px-8 rounded-r-xl flex items-center justify-center cursor-pointer"
+              >
+                Browse
+              </label>
+              <input
+                type="file"
+                id="profile-image"
+                accept="images/*"
+                className="hidden"
+                onChange={handleImageUpload}
+              />
+            </div>
           </div>
           <h2 className="text-2xl font-semibold">Admin</h2>
           <p>Administrator</p>
@@ -330,7 +354,7 @@ export default function ProfilePage() {
                     </span>
                   )}
                 </div>
-                <div className="flex items-center gap-5">
+                {/* <div className="flex items-center gap-5">
                   <div className="w-full space-y-3">
                     <h1>Change avatar</h1>
                     <div className="hidden sm:flex h-[54px] w-full bg-white border border-[#eee] rounded-xl text-sm justify-between">
@@ -353,7 +377,7 @@ export default function ProfilePage() {
                       />
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <div className="space-y-3 w-full">
                   <label>Company name</label>
                   <input
@@ -475,7 +499,7 @@ export default function ProfilePage() {
             </button>
             <button
               type="submit"
-              className="h-12 py-3 px-3 w-full max-w-[150px] uppercase bg-primary-green sheen rounded-xl text-white mt-6"
+              className="h-12 py-3 px-3 flex justify-center w-full max-w-[150px] uppercase bg-primary-green sheen rounded-xl text-white mt-6"
             >
               {isPending ? <Spinner /> : " Update"}
             </button>

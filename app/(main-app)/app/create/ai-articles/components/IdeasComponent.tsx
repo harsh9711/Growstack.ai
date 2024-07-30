@@ -66,6 +66,10 @@ export default function IdeasComponent({
         no_of_topics: numTopics,
         max_topics_words: maxTopicWords,
         keywords: keywords,
+        model: aiModel,
+        creativity: creativity,
+        tone: writingTone,
+        langauge: language
       })
       .then(({ data: { data } }) => {
         setIdeas(data.topics);

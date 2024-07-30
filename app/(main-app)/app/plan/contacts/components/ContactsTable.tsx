@@ -166,6 +166,37 @@ export default function ContactsTable({
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
+  // const [pagination, setPagination] = useState<PaginationState>({
+  //   pageIndex: 0,
+  //   pageSize: 10,
+  // });
+
+  const [allContactsData, setAllContactsData] = useState<Contact[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    const getContacts = async () => {
+      const response = await instance.get(
+        `/users/api/v1/contacts?page=${pagination.pageIndex}&limit=${pagination.pageSize}`
+      );
+      const data = response.data.data.contacts;
+
+      const formattedContacts = data.map((item: any) => ({
+        id: item.contacts._id,
+        name: `${item.contacts.first_name} ${item.contacts.last_name}`,
+        email: item.contacts.emails,
+        phones: item.contacts.phones,
+        logo: item.contacts.logo,
+        created_on: item.contacts.createdAt,
+        contact_type: item.contacts.contact_type,
+        time_zone: item.contacts.time_zone,
+      }));
+
+      setAllContactsData(formattedContacts);
+    };
+    getContacts();
+  }, [pagination.pageIndex, pagination.pageSize]);
+
   const table = useReactTable({
     data: contacts,
     columns,
@@ -215,6 +246,22 @@ export default function ContactsTable({
     setSelectedIds(selectedRowIds);
   };
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value.toLowerCase());
+  };
+
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      // setContacts(allContactsData);
+    } else {
+      // setContacts(
+      //   allContactsData.filter((contant: any) =>
+      //     contant.name.toLowerCase().includes(searchQuery)
+      //   )
+      // );
+    }
+  }, [searchQuery]);
+
   return (
     <Motion
       transition={{ duration: 0.2 }}
@@ -228,6 +275,8 @@ export default function ContactsTable({
               type="search"
               className="outline-none h-[40px] w-full"
               placeholder="Search"
+              value={searchQuery}
+              onChange={handleSearch}
             />
           </div>
           {/* <Link href="/app/plan/web-scraping/add-prospect" className="w-full max-w-fit">
