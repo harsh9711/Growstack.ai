@@ -52,14 +52,14 @@ export default function SocialMediaAnalyticsPage() {
               <Image src="/assets/brand-linkedin.png" alt="" width={60} height={60} />
               <h2 className="font-semibold text-[16px]">Linkedin </h2>
             </div>
-            <div className="group bg-white border border-[#F3F3F3] rounded-xl p-3 flex gap-4 items-center cursor-pointer transition duration-300 hover:shadow-xl hover:shadow-gray-100">
+            {/* <div className="group bg-white border border-[#F3F3F3] rounded-xl p-3 flex gap-4 items-center cursor-pointer transition duration-300 hover:shadow-xl hover:shadow-gray-100">
               <Image src="/assets/brand-tiktok.png" alt="" width={60} height={60} />
               <h2 className="font-semibold text-[16px]">Tiktok </h2>
             </div>
             <div className="group bg-white border border-[#F3F3F3] rounded-xl p-3 flex gap-4 items-center cursor-pointer transition duration-300 hover:shadow-xl hover:shadow-gray-100">
               <Image src="/assets/brand-telegram.png" alt="" width={60} height={60} />
               <h2 className="font-semibold text-[16px]">Telegram </h2>
-            </div>
+            </div> */}
             <div className="!bg-white shadow-box rounded-3xl p-7">
               <h1 className="text-[17px] font-semibold">Account</h1>
               <div className="flex flex-col justify-center items-center space-y-4 mt-4">
@@ -88,7 +88,7 @@ export default function SocialMediaAnalyticsPage() {
             <div className="px-10 py-5">
               <div className="flex items-center justify-between">
                 <h1 className="text-xl font-semibold">Overview</h1>
-                <Select>
+                {/* <Select>
                   <SelectTrigger className="border-none">
                     <SelectValue placeholder="Select date range" />
                   </SelectTrigger>
@@ -100,7 +100,7 @@ export default function SocialMediaAnalyticsPage() {
                     <SelectItem value="10/14/2020 - 10/23/2020">06/22/2020 - 06/22/2020</SelectItem>
                     <SelectItem value="11/21/2020 - 11/12/2020">06/22/2020 - 06/22/2020</SelectItem>
                   </SelectContent>
-                </Select>
+                </Select> */}
               </div>
               <div className="flex justify-between mt-3">
                 <div className="space-y-5">
@@ -135,7 +135,7 @@ export default function SocialMediaAnalyticsPage() {
             <div className="shadow-top px-10 py-7 rounded-t-3xl mt-5">
               <div className="flex items-center justify-between">
                 <h1 className="text-xl font-semibold">Statistics</h1>
-                <Select>
+                {/* <Select>
                   <SelectTrigger className="border-none">
                     <SelectValue placeholder="Select date range" />
                   </SelectTrigger>
@@ -147,7 +147,7 @@ export default function SocialMediaAnalyticsPage() {
                     <SelectItem value="10/14/2020 - 10/23/2020">06/22/2020 - 06/22/2020</SelectItem>
                     <SelectItem value="11/21/2020 - 11/12/2020">06/22/2020 - 06/22/2020</SelectItem>
                   </SelectContent>
-                </Select>
+                </Select> */}
               </div>
               <div className="flex items-center gap-6">
                 <p className="flex items-center gap-2">
@@ -167,12 +167,12 @@ export default function SocialMediaAnalyticsPage() {
                 <BarGraph />
               </div>
             </div>
-            <div className="shadow-top py-7 rounded-t-3xl mt-5">
+            {/* <div className="shadow-top py-7 rounded-t-3xl mt-5">
               <div className="px-10 mb-5">
                 <h1 className="text-xl font-semibold">Data details</h1>
               </div>
               <DetailsTable />
-            </div>
+            </div> */}
           </div>
         </div>
       </main>

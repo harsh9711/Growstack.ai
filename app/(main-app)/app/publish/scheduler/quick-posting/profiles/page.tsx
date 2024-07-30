@@ -10,6 +10,10 @@ export default function SchedulerPage() {
     try {
       const response = await instance.get(API_URL + '/users/api/v1/social-media/connect');
       console.log('response', response)
+      const url = response?.data.data
+      if (url) {
+        window.location.href = url;
+      }
     } catch (error: any) {
       toast.error(error.response.data.message)
     }
