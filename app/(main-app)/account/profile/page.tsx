@@ -82,21 +82,21 @@ export default function ProfilePage() {
       icon: <UserIcon2 />,
       title: "View profile",
     },
-    {
-      link: "#",
-      icon: <Settings2Icon />,
-      title: "set defaults",
-    },
+    // {
+    //   link: "#",
+    //   icon: <Settings2Icon />,
+    //   title: "set defaults",
+    // },
     {
       link: "#",
       icon: <KeyIcon />,
       title: "Change password",
     },
-    {
-      link: "#",
-      icon: <ShieldCheckIcon />,
-      title: "2FA Authentication",
-    },
+    // {
+    //   link: "#",
+    //   icon: <ShieldCheckIcon />,
+    //   title: "2FA Authentication",
+    // },
     {
       link: "#",
       icon: <UserX2 />,
@@ -127,30 +127,30 @@ export default function ProfilePage() {
     }
   };
 
-  const handleChangeAvatar = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    console.log("FIL", file);
-    if (file) {
-      const formData = new FormData();
-      formData.append("document", file);
-      try {
-        const response = await instance.post(
-          `${API_URL}/users/api/v1/file/upload`,
-          formData
-        );
-        setAvatarLink(response.data.data.fileUrl);
-      } catch (error) {
-        toast.error("Error uploading avatar");
-      }
-    }
-  };
+  // const handleChangeAvatar = async (event: ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0];
+  //   console.log("FIL", file);
+  //   if (file) {
+  //     const formData = new FormData();
+  //     formData.append("document", file);
+  //     try {
+  //       const response = await instance.post(
+  //         `${API_URL}/users/api/v1/file/upload`,
+  //         formData
+  //       );
+  //       setAvatarLink(response.data.data.fileUrl);
+  //     } catch (error) {
+  //       toast.error("Error uploading avatar");
+  //     }
+  //   }
+  // };
 
   const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
     setIsPending(true);
     try {
       const validatedData = ValidationSchema.parse({
         ...data,
-        profile_img: avatarLink,
+        // profile_img: avatarLink,
       });
       const response = await instance.put(
         API_URL + "/users/api/v1",
@@ -330,7 +330,7 @@ export default function ProfilePage() {
                     </span>
                   )}
                 </div>
-                <div className="flex items-center gap-5">
+                {/* <div className="flex items-center gap-5">
                   <div className="w-full space-y-3">
                     <h1>Change avatar</h1>
                     <div className="hidden sm:flex h-[54px] w-full bg-white border border-[#eee] rounded-xl text-sm justify-between">
@@ -353,7 +353,7 @@ export default function ProfilePage() {
                       />
                     </div>
                   </div>
-                </div>
+                </div> */}
                 <div className="space-y-3 w-full">
                   <label>Company name</label>
                   <input

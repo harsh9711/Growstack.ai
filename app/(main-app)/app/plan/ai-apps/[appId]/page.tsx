@@ -99,14 +99,7 @@ export default function AiAppPage({
     estimated_result_length: 400,
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [workbook, setWorkbook] = useState("");
-
-  console.log("dssds", editDocumentData, isEdit);
-
-  // const pathName = usePathname();
-  // const segments = pathName.split("/");
-
-  // const doc_id = segments[segments.length - 1];
+  // const [workbook, setWorkbook] = useState("");
 
   const stripHtmlTags = (html: string) => {
     const temp = document.createElement("div");
@@ -157,7 +150,7 @@ export default function AiAppPage({
     if (isEdit) {
       setFileName(editDocumentData?.doc_name);
       setUserInput1(editDocumentData?.doc_language);
-      setWorkbook(editDocumentData?.workbook);
+      // setWorkbook(editDocumentData?.workbook);
       setGeneratedContent(editDocumentData?.doc_content);
     }
   }, [editDocumentData]);
@@ -356,7 +349,7 @@ export default function AiAppPage({
         doc_name: fileName,
         doc_language: userInput1,
         doc_type: "TEXT",
-        workbook,
+        // workbook,
         category: "text",
         doc_content: generatedContent,
       };
@@ -364,6 +357,10 @@ export default function AiAppPage({
         API_URL + `/users/api/v1/docs/save`,
         payload
       );
+      router.push(`/account/saved-documents`);
+      setFileName("");
+      setUserInput1("");
+      setGeneratedContent("");
 
       toast.success(response.data.message);
     } catch (error: any) {
@@ -384,7 +381,7 @@ export default function AiAppPage({
         doc_name: fileName,
         doc_language: userInput1,
         doc_type: "TEXT",
-        workbook,
+        // workbook,
         category: "text",
         doc_content: generatedContent,
       };
@@ -724,7 +721,7 @@ export default function AiAppPage({
                 value={fileName}
                 onChange={(e) => setFileName(e.target.value)}
               />
-              <Select
+              {/* <Select
                 onValueChange={(e: any) => setWorkbook(e)}
                 defaultValue={workbook}
               >
@@ -736,7 +733,7 @@ export default function AiAppPage({
                   <SelectItem value="Workbook 1">Workbook 1</SelectItem>
                   <SelectItem value="Workbook 2">Workbook 2</SelectItem>
                 </SelectContent>
-              </Select>
+              </Select> */}
               {/* <div className="flex items-center gap-2 whitespace-nowrap">
                 <Switch />
                 <label

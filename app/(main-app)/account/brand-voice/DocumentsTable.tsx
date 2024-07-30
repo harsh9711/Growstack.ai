@@ -106,10 +106,10 @@ export default function DocumentsTable() {
 
   const columns: ColumnDef<any>[] = [
     {
-      accessorKey: "name",
+      accessorKey: "brand_name",
       header: () => <div className="uppercase">Brand Name</div>,
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("name")}</div>
+        <div className="capitalize">{row.getValue("brand_name")}</div>
       ),
     },
     {

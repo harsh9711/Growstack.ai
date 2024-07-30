@@ -173,6 +173,8 @@ export default function ContactsTable({
   });
 
   const [contacts, setContacts] = useState<Contact[]>([]);
+  const [allContactsData, setAllContactsData] = useState<Contact[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const getContacts = async () => {
@@ -193,6 +195,7 @@ export default function ContactsTable({
       }));
 
       setContacts(formattedContacts);
+      setAllContactsData(formattedContacts);
     };
     getContacts();
   }, [pagination.pageIndex, pagination.pageSize]);
@@ -246,6 +249,22 @@ export default function ContactsTable({
     setSelectedIds(selectedRowIds);
   };
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value.toLowerCase());
+  };
+
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setContacts(allContactsData);
+    } else {
+      setContacts(
+        allContactsData.filter((contant: any) =>
+          contant.name.toLowerCase().includes(searchQuery)
+        )
+      );
+    }
+  }, [searchQuery]);
+
   return (
     <Motion
       transition={{ duration: 0.2 }}
@@ -259,6 +278,8 @@ export default function ContactsTable({
               type="search"
               className="outline-none h-[40px] w-full"
               placeholder="Search"
+              value={searchQuery}
+              onChange={handleSearch}
             />
           </div>
           {/* <Link href="/app/plan/web-scraping/add-prospect" className="w-full max-w-fit">
