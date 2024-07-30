@@ -1,3 +1,5 @@
+// components/UseGoogleAutocomplete.tsx
+
 import { useEffect, useRef } from "react";
 
 declare global {
@@ -18,16 +20,32 @@ const UseGoogleAutocomplete = ({
   const scriptRef = useRef<HTMLScriptElement | null>(null);
 
   useEffect(() => {
-    console.log("Debugggginnggg11::UseGoogleAutocomplete useEffect triggered");
+    if (!apiKey) {
+      console.error("API key is missing");
+      return;
+    }
+
+    const loadScript = () => {
+      if (scriptRef.current) return;
+
+      scriptRef.current = document.createElement("script");
+      scriptRef.current.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initAutocomplete`;
+      scriptRef.current.async = true;
+      scriptRef.current.defer = true;
+      scriptRef.current.onload = () => {
+        console.log("Google Maps script loaded successfully");
+      };
+      scriptRef.current.onerror = () => {
+        console.error("Error loading Google Maps script");
+      };
+      document.body.appendChild(scriptRef.current);
+    };
 
     window.initAutocomplete = () => {
       if (!autocompleteInputRef.current) {
-        console.error(
-          "Debugggginnggg22::Autocomplete input reference is not set"
-        );
+        console.error("Autocomplete input reference is not set");
         return;
       }
-      console.log("Debugggginnggg33::Initializing Google Autocomplete");
       const autocomplete = new google.maps.places.Autocomplete(
         autocompleteInputRef.current,
         {
@@ -37,34 +55,21 @@ const UseGoogleAutocomplete = ({
 
       autocomplete.addListener("place_changed", () => {
         const place = autocomplete.getPlace();
-        if (place) {
-          const result = place?.formatted_address || ""
-          console.log("Debugggginnggg44::Place selected:", result);
+        if (place && place.formatted_address) {
+          const result = place.formatted_address;
           setInputCountry(result);
         } else {
-          console.warn("Debugggginnggg55::No place selected");
+          console.warn("No place selected");
         }
       });
     };
 
-    if (!scriptRef.current) {
-      console.log("Debugggginnggg66::Creating Google Maps script element");
-      scriptRef.current = document.createElement("script");
-      scriptRef.current.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initAutocomplete`;
-      scriptRef.current.async = true;
-      scriptRef.current.defer = true;
-      scriptRef.current.onload = () => {
-        console.log("Debugggginnggg77::Google Maps script loaded successfully");
-      };
-      scriptRef.current.onerror = () => {
-        console.error("Debugggginnggg88::Error loading Google Maps script");
-      };
-      document.body.appendChild(scriptRef.current);
+    if (typeof window !== "undefined") {
+      loadScript();
     }
 
     return () => {
       if (scriptRef.current && document.body.contains(scriptRef.current)) {
-        console.log("Debugggginnggg99::Removing Google Maps script element");
         document.body.removeChild(scriptRef.current);
       }
       window.initAutocomplete = () => {};
