@@ -16,6 +16,7 @@ import { Contact } from "@/types/contacts";
 import toast from "react-hot-toast";
 import instance from "@/config/axios.config";
 import Spinner from "@/components/Spinner";
+import { API_URL } from "@/lib/api";
 
 interface SendEmailProps {
   setToggleModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,14 +33,14 @@ interface EmailDataProps {
     img: string;
     emails: string[];
   }[];
-  content: string;
+  message: string;
 }
 
 const initialEmailData = {
   subject: "",
   template_id: "",
   contacts: [],
-  content: "",
+  message: "",
 };
 
 const SendEmail = ({
@@ -51,6 +52,9 @@ const SendEmail = ({
   const [proceed, setProceed] = useState<boolean>(false);
   const [emailData, setEmailData] = useState<EmailDataProps>(initialEmailData);
   const [loading, setLoading] = useState<boolean>(false);
+  const [templates, setTemplates] = useState<{ id: string; name: string }[]>(
+    []
+  );
 
   const getSelectedContactsDetails = () => {
     const selectedContacts = contacts.filter((contact) =>
@@ -64,6 +68,25 @@ const SendEmail = ({
   };
 
   useEffect(() => {
+    const fetchTemplates = async () => {
+      try {
+        const res = await instance.get(
+          `${API_URL}/users/api/v1/docs?page=1&limit=10&category=text`
+        );
+        const data = res.data.data.docs.map((re: any) => ({
+          id: re._id,
+          name: re.doc_name,
+        }));
+        setTemplates(data);
+      } catch (error) {
+        console.error("Error fetching templates:", error);
+        toast.error("Failed to fetch email templates.");
+      }
+    };
+    fetchTemplates();
+  }, []);
+
+  useEffect(() => {
     const selectedDetails = getSelectedContactsDetails();
     setEmailData((prevState) => ({
       ...prevState,
@@ -71,10 +94,10 @@ const SendEmail = ({
     }));
   }, [selectedIds, contacts]);
 
-  const handleEditorChange = (content: string) => {
+  const handleEditorChange = (message: string) => {
     setEmailData((prevState) => ({
       ...prevState,
-      content: content,
+      message: message,
     }));
   };
 
@@ -96,21 +119,26 @@ const SendEmail = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const { subject } = emailData;
-
+      const { subject, template_id } = emailData;
       const payload = {
         subject,
-        template_id: "66a0b35cc90cad75808afbf5",
-        contacts: emailData.contacts.map((contact) => contact.emails),
+        template_id,
+        contacts: emailData.contacts.map((contact) => ({
+          username: contact.username,
+          emails: contact.emails,
+        })),
       };
-      console.log("payloadxxx", payload);
       setLoading(true);
       const response = await instance.post(
         `/users/api/v1/mails/contacts`,
         payload
       );
       setLoading(false);
-      console.log("response", response);
+      if (response.data.success) {
+        toast.success(response.data.message);
+        setToggleModal(false);
+        handleModal(null);
+      }
     } catch (error: any) {
       console.error("Error uploading file:", error);
       toast.error(error);
@@ -179,34 +207,21 @@ const SendEmail = ({
               <div className="text-[14px]">Email templates</div>
               <Dropdown
                 label="Select"
-                items={["Template 1", "Template 2", "Template 3"]}
+                items={templates}
                 value={emailData.template_id}
                 onChange={handleTemplateChange}
               />
             </div>
-            <div className="flex mt-[25px] gap-3">
-              <div className="flex-1">
-                <div className="text-[14px]">From name</div>
-                <input
-                  type="text"
-                  placeholder="From name"
-                  className="w-full p-3 rounded-md bg-[#F2F2F2] mt-2 h-[44px]"
-                  name="from_name"
-                  required={true}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="flex-1">
-                <div className="text-[14px]">From email</div>
-                <input
-                  type="email"
-                  placeholder="From email"
-                  className="w-full p-3 rounded-md bg-[#F2F2F2] mt-2 h-[44px]"
-                  name="from_email"
-                  required={true}
-                  onChange={handleChange}
-                />
-              </div>
+            <div className="mt-[20px]">
+              <div className="text-[14px]">From name</div>
+              <input
+                type="text"
+                placeholder="From name"
+                className="w-full p-3 rounded-md bg-[#F2F2F2] mt-2 h-[44px]"
+                name="name"
+                required={true}
+                onChange={handleChange}
+              />
             </div>
             <div className="flex-1 mt-[25px]">
               <div className="text-[14px]">Email subject</div>
@@ -225,7 +240,7 @@ const SendEmail = ({
               <Editor content={""} onChange={handleEditorChange} />
             </div>
             {/* </div> */}
-            <div className="my-[15px]">
+            {/* <div className="my-[15px]">
               <RadioGroup
                 defaultValue="Add all at once"
                 className="w-full flex items-center"
@@ -251,7 +266,7 @@ const SendEmail = ({
               className="w-full p-3 rounded-md bg-[#F2F2F2] mt-2 h-[44px]"
               name="action"
               onChange={handleChange}
-            />
+            /> */}
             <div className="flex justify-end mt-6 mb-3">
               <button
                 type="submit"
@@ -277,11 +292,15 @@ const Dropdown = ({ label, items, value, onChange, required = true }: any) => (
         <SelectValue placeholder={label} />
       </SelectTrigger>
       <SelectContent>
-        {items.map((item: any, index: number) => (
-          <SelectItem value={item} key={index}>
-            {item}
-          </SelectItem>
-        ))}
+        {items.length > 0 ? (
+          items.map((item: any) => (
+            <SelectItem value={item.id} key={item.id}>
+              {item.name}
+            </SelectItem>
+          ))
+        ) : (
+          <SelectItem value="no">{"no item"}</SelectItem>
+        )}
       </SelectContent>
     </Select>
   </div>
