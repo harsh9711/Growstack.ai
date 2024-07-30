@@ -140,8 +140,6 @@ const AddProspectModal: React.FC<AddProspectProps> = ({
       phone: "",
     });
 
-    console.log("Form Data:", newProspect);
-
     setShowTable(true);
 
     onClose();
@@ -394,14 +392,12 @@ const WebScraping: React.FC = () => {
   useEffect(() => {
     if (places.length > 0) {
       setCenter([places[0].latitude, places[0].longitude]);
-      console.log(center);
       setZoom(20);
     }
   }, [places]);
 
   useEffect(() => {
     getGeoInfo();
-    console.log("Query params from URL:", (router as any).query);
   }, [(router as any).query]);
 
   const getGeoInfo = (countryName = "") => {
@@ -418,7 +414,6 @@ const WebScraping: React.FC = () => {
           setCenter([data.latitude, data.longitude]);
           setZoom(100);
         } else {
-          console.log("Fetched country code by IP:", data);
           setCountryCode(data.country_code);
         }
       })
@@ -476,7 +471,6 @@ const WebScraping: React.FC = () => {
         location: inputCountry,
         page: currentPageNumber,
       };
-      console.log("page", postData.page);
       const allResults = [];
 
       // for (let i = 0; i < 6; i++) {
@@ -484,7 +478,6 @@ const WebScraping: React.FC = () => {
         `${API_URL}/ai/api/v1/webscrape`,
         postData
       );
-      console.log("response", response);
       const places = response.data.data[0].places.map((place: Place) => ({
         title: place.title,
         address: place.address,
@@ -510,7 +503,6 @@ const WebScraping: React.FC = () => {
       setIsPending(false);
     }
   };
-  // console.log("placesCollected", places);
   const renderRatingStars = (rating: number) => {
     const stars = [];
     for (let i = 0; i < 5; i++) {
@@ -749,9 +741,6 @@ const WebScraping: React.FC = () => {
     setInputCountry(value);
   };
 
-  console.log("inputCountry", inputCountry)
-  console.log("Debugggginnggg44--inputCountry::Place selected:", inputCountry);
-
   const handleFilteredCountrySelect = (country: OptionType): void => {
     setSelectedOption(country);
     setInputCountry(country.label);
@@ -796,7 +785,6 @@ const WebScraping: React.FC = () => {
     const [isPending, setIsPending] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [fileTitle, setFileTitle] = useState("");
-    // console.log("placesCollected", places);
     const handleSave = async () => {
       setIsPending(true);
 
@@ -825,16 +813,14 @@ const WebScraping: React.FC = () => {
           businesses: businesses,
         };
 
-        console.log("Sending data:", data);
 
         const response = await instance.post(
           `${API_URL}/users/api/v1/contacts/prospects/save`,
           data
         );
-        console.log("Response:", response.data);
         toast.success("Data saved successfully!");
         setTimeout(() => {
-          router.push(`/app/plan/contacts`)
+          router.push(`/app/plan/contacts?tab=1`)
         }, 10)
       } catch (error) {
         console.error("Error:", error);
@@ -912,7 +898,6 @@ const WebScraping: React.FC = () => {
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-  console.log("places2", places);
 
   const MyMapComponent = () => {
     const mapRef = useRef<google.maps.Map | null>(null);

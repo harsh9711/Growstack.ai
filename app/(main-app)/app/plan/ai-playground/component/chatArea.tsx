@@ -51,14 +51,14 @@ const ChatArea = ({
             selectedOptionLabel={selectedOption?.label}
           />
           <div className="flex items-center gap-2">
-            <div className="flex gap-4">
+            {/* <div className="flex gap-4">
               <span className="bg-gray-100 text-sm py-0.5 px-2 rounded-full text-primary-black text-opacity-70">
                 Synced
               </span>
             </div>
             <button type="button" className="p-1 hover:bg-gray-100 rounded-lg">
               <Settings2 size={20} />
-            </button>
+            </button> */}
             <button
               type="button"
               onClick={addChatArea}
@@ -94,7 +94,7 @@ const ChatArea = ({
         />
       )}
       <div className="border border-gray-200 bg-[#F5F5F5] flex items-center gap-3 p-1 pl-4 rounded-xl">
-        <Link size={20} className="text-primary-green" />
+        {/* <Link size={20} className="text-primary-green" /> */}
         <input
           type="text"
           placeholder="Type your message..."
@@ -130,7 +130,7 @@ const AIModel = ({
   const allModels = modelData.flatMap((provider) => provider.models);
   return (
     <Select value={selectedOption} onValueChange={setSelectedOption}>
-      <SelectTrigger className="w-[50%] h-[34px] bg-white text-header border border-gray-300 rounded-xl flex items-center justify-between px-4">
+      <SelectTrigger className="w-[70%] h-[34px] bg-white text-header border border-gray-300 rounded-xl flex items-center justify-between px-4">
         <SelectValue placeholder="Select an option">
           {selectedOptionLabel && (
             <div className="flex items-center gap-2">

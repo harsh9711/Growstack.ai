@@ -1,7 +1,7 @@
 "use client";
 
 import { SettingsIcon } from "lucide-react";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import BulkActionsTable from "./components/BulkActionsTable";
 import CompanyTable from "./components/CompanyTable";
 import ContactsTable from "./components/ContactsTable";
@@ -15,18 +15,76 @@ import DeleteContact from "./components/modal/deleteContact";
 import { ModalContent } from "./components/modal/modalEnums";
 import SendSMS from "./components/modal/sendSMS";
 import SendEmail from "./components/modal/sendEmail";
+import { PaginationState } from "@tanstack/react-table";
+import { Contact } from "@/types/contacts";
+import instance from "@/config/axios.config";
+import ProspectsTable from "./components/ProspectsTable";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function ContactsDashboard() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const tabQueryParam = searchParams.get("tab");
+
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
   const [toggleModal, setToggleModal] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<ModalContent | null>(null);
-  const [selectedIds, setSelectedIds] = useState<string[]>([])
-  const tabs = ["Smart list", "Bulk actions", "Restore", "Tasks", "Company"];
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const getContacts = async () => {
+    setLoading(true);
+    const response = await instance.get(
+      `/users/api/v1/contacts?page=${pagination.pageIndex}&limit=${pagination.pageSize}`
+    );
+    setLoading(false);
+    const data = response.data.data.contacts;
+
+    const formattedContacts = data.map((item: any) => ({
+      id: item.contacts._id,
+      name: `${item.contacts.first_name} ${item.contacts.last_name}`,
+      email: item.contacts.emails,
+      phones: item.contacts.phones,
+      logo: item.contacts.logo,
+      created_on: item.contacts.createdAt,
+      contact_type: item.contacts.contact_type,
+      time_zone: item.contacts.time_zone,
+    }));
+
+    setContacts(formattedContacts);
+  };
+
+  useEffect(() => {
+    getContacts();
+  }, [pagination.pageIndex, pagination.pageSize]);
+
+  useEffect(() => {
+    const tab = tabQueryParam ? Number(tabQueryParam) : 0;
+    setSelectedTabIndex(tab);
+    const totalTabs = tabs.length;
+    const percentage = (tab / totalTabs) * 100;
+    setTabUnderlineLeft(percentage);
+  }, [tabQueryParam]);
+
+  const tabs = ["Smart list", "Prospects", "Restore"];
 
   const handleModal = (value: ModalContent | null) => {
     setModalContent(value);
   };
+
+  const handleTabClick = (index: number) => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("tab", index.toString());
+    router.push(`?${params.toString()}`);
+  };
+
   const renderContent = (selectedTabIndex: number) => {
     switch (selectedTabIndex) {
       case 0:
@@ -35,16 +93,20 @@ export default function ContactsDashboard() {
             setToggleModal={setToggleModal}
             handleModal={handleModal}
             setSelectedIds={setSelectedIds}
+            contacts={contacts}
+            pagination={pagination}
+            setPagination={setPagination}
+            loading={loading}
           />
         );
       case 1:
-        return <BulkActionsTable />;
+        return <ProspectsTable />;
       case 2:
         return <RestoreTable />;
-      case 3:
-        return <TasksTable />;
-      case 4:
-        return <CompanyTable />;
+      // case 3:
+      //   return <TasksTable />;
+      // case 4:
+      //   return <CompanyTable />;
     }
   };
   const renderTitle = (selectedTabIndex: number) => {
@@ -62,7 +124,7 @@ export default function ContactsDashboard() {
       case 1:
         return (
           <Fragment>
-            <h1 className="text-2xl font-semibold">Bulk actions</h1>
+            <h1 className="text-2xl font-semibold">Prospects</h1>
             <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
               Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
               ultricies accumsan. Nec.{" "}
@@ -79,26 +141,26 @@ export default function ContactsDashboard() {
             </p>
           </Fragment>
         );
-      case 3:
-        return (
-          <Fragment>
-            <h1 className="text-2xl font-semibold">Tasks list</h1>
-            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
-              Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
-              ultricies accumsan. Nec.{" "}
-            </p>
-          </Fragment>
-        );
-      case 4:
-        return (
-          <Fragment>
-            <h1 className="text-2xl font-semibold">Company</h1>
-            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
-              Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
-              ultricies accumsan. Nec.{" "}
-            </p>
-          </Fragment>
-        );
+      // case 3:
+      //   return (
+      //     <Fragment>
+      //       <h1 className="text-2xl font-semibold">Tasks list</h1>
+      //       <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
+      //         Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
+      //         ultricies accumsan. Nec.{" "}
+      //       </p>
+      //     </Fragment>
+      //   );
+      // case 4:
+      //   return (
+      //     <Fragment>
+      //       <h1 className="text-2xl font-semibold">Company</h1>
+      //       <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
+      //         Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
+      //         ultricies accumsan. Nec.{" "}
+      //       </p>
+      //     </Fragment>
+      //   );
     }
   };
 
@@ -110,6 +172,7 @@ export default function ContactsDashboard() {
             <AddContact
               setToggleModal={setToggleModal}
               handleModal={handleModal}
+              getContacts={getContacts}
             />
           )}
           {modalContent === ModalContent.DELETE_CONTACT && (
@@ -117,6 +180,7 @@ export default function ContactsDashboard() {
               setToggleModal={setToggleModal}
               handleModal={handleModal}
               selectedIds={selectedIds}
+              getContacts={getContacts}
             />
           )}
           {modalContent === ModalContent.SEND_SMS && (
@@ -131,6 +195,7 @@ export default function ContactsDashboard() {
               setToggleModal={setToggleModal}
               handleModal={handleModal}
               selectedIds={selectedIds}
+              contacts={contacts}
             />
           )}
         </Modal>
@@ -152,12 +217,7 @@ export default function ContactsDashboard() {
                         ? "!text-white"
                         : "!text-primary-grey"
                     }`}
-                    onClick={() => {
-                      const totalTabs = tabs.length;
-                      const percentage = (index / totalTabs) * 100;
-                      setSelectedTabIndex(index);
-                      setTabUnderlineLeft(percentage);
-                    }}
+                    onClick={() => handleTabClick(index)}
                   >
                     {tab}
                   </div>

@@ -216,17 +216,25 @@ export default function Page() {
       console.error("Error processing request:", error);
       toast.error(error.message);
     }
-
   };
 
   const handleDownload = () => {
     if (result) {
-      const link = document.createElement("a");
-      link.href = result.link;
-      link.download = `finalresult.${result.ext}`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      setLoading(true);
+      fetch(result.link)
+        .then((response) => response.blob())
+        .then((blob: any) => {
+          const url = window.URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = `finalresult.${result.ext}`;
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          window.URL.revokeObjectURL(url);
+          setLoading(false);
+        })
+        .catch((error) => console.error("Download error:", error));
     }
   };
 
@@ -243,7 +251,7 @@ export default function Page() {
                   src={result.link}
                 />
               </div>
-              <div className="flex justify-end mb-[30px]">
+              <div className="flex justify-end mb-[30px] mt-[10px]">
                 <button
                   onClick={() => {
                     setResult(null);
@@ -257,9 +265,9 @@ export default function Page() {
                 <button
                   type="button"
                   onClick={handleDownload}
-                  className="text-[14px] ml-2 mt-[10px] bg-primary-green text-white px-[20px] py-[6px] rounded-md"
+                  className="text-[16px] ml-2 bg-primary-green text-white px-[20px] py-[6px] min-w-[130px] flex justify-center items-center"
                 >
-                  Download
+                  {loading ? <Spinner /> : "Download"}
                 </button>
               </div>
             </>
@@ -269,9 +277,13 @@ export default function Page() {
               className="bg-white border-gradient-blue-to-gray-to-r rounded-[28px] px-10 pb-6 space-y-8"
             >
               <div className="relative z-[1] max-w-5xl mx-auto">
-                {productAI.img_url ? (
+                {fileUploadLoading ? (
+                  <div className="h-[250px] w-full flex justify-center items-center border border-[#F2F2F2]">
+                    <Spinner color="black" size={35} />
+                  </div>
+                ) : productAI.img_url ? (
                   <>
-                    <div className="h-[220px] w-full mt-2 border border-[#F2F2F2]">
+                    <div className="h-[250px] w-full mt-2 border border-[#F2F2F2]">
                       <img
                         src={productAI.img_url}
                         alt="Logo"
