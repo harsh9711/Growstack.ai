@@ -108,7 +108,7 @@ const ChangePassword = () => {
           </button>
           <button
             type="submit"
-            className="h-12 py-3 px-3 w-full max-w-[150px] uppercase bg-primary-green sheen rounded-xl text-white mt-6"
+            className="h-12 py-3 px-3 w-full max-w-[220px] uppercase bg-primary-green sheen rounded-xl text-white mt-6"
           >
             Change Password
           </button>
