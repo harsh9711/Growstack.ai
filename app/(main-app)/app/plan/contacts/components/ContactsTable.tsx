@@ -27,7 +27,6 @@ import clsx from "clsx";
 import { FilterIcon, MailIcon, Phone, Search } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-// import { contacts } from "./data/contacts";
 import FilterSheet from "./FilterSheet";
 import Motion from "@/components/Motion";
 import Link from "next/link";
@@ -43,17 +42,8 @@ import {
 import instance from "@/config/axios.config";
 import { formatDate } from "@/lib/utils";
 import { ModalContent } from "./modal/modalEnums";
-
-interface Contact {
-  id: string;
-  name: string;
-  logo: string;
-  phones: any;
-  email: string[];
-  created_on: string;
-  contact_type: string;
-  time_zone: string;
-}
+import { Contact } from "@/types/contacts";
+import Spinner from "@/components/Spinner";
 
 export const columns: ColumnDef<Contact>[] = [
   {
@@ -156,17 +146,26 @@ interface ContactsTableProps {
   setToggleModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleModal: (value: ModalContent) => void;
   setSelectedIds: React.Dispatch<React.SetStateAction<string[]>>;
+  contacts: Contact[];
+  pagination: PaginationState;
+  setPagination: React.Dispatch<React.SetStateAction<PaginationState>>;
+  loading: boolean;
 }
 
 export default function ContactsTable({
   setToggleModal,
   handleModal,
   setSelectedIds,
+  contacts,
+  pagination,
+  setPagination,
+  loading,
 }: ContactsTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -322,7 +321,7 @@ export default function ContactsTable({
             <FilterSheet />
           </div>
         </div>
-        <div className="rounded-lg border overflow-hidden mt-5">
+        <div className="rounded-lg border overflow-hidden mt-5 flex justify-center">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -343,7 +342,16 @@ export default function ContactsTable({
               ))}
             </TableHeader>
             <TableBody>
-              {table.getRowModel().rows?.length ? (
+              {loading ? (
+                <TableRow className="hover:bg-white">
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-[50vh] text-center font-semibold text-lg hover:bg-white"
+                  >
+                    Loading...
+                  </TableCell>
+                </TableRow>
+              ) : table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow
                     key={row.id}

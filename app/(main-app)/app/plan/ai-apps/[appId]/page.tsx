@@ -30,6 +30,14 @@ import "jspdf-autotable";
 import { HiOutlineRefresh } from "react-icons/hi";
 import TemplateLoader from "../../text-to-video/components/TemplateLoader";
 import { FaCircleNotch } from "react-icons/fa";
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next-nprogress-bar";
@@ -42,6 +50,7 @@ import {
   savedDecument,
 } from "@/lib/features/documents/document.slice";
 
+
 const Dropdown = ({
   label,
   items,
@@ -49,14 +58,29 @@ const Dropdown = ({
   hideLabel,
   value,
   onChange,
-  placeholder
+  placeholder,
+  info
 }: any) => (
   <div className="space-y-3">
     {!hideLabel && (
       <h2 className="font-medium flex items-center gap-2">
         {label}{" "}
         {!!infoIcon ? (
-          <Info size={18} className="text-primary-black text-opacity-50" />
+          <>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Info
+                    size={18}
+                    className="text-primary-black text-opacity-50"
+                  />
+                </TooltipTrigger>
+                <TooltipContent className="bg-white">
+                  <p>{info}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </>
         ) : null}
       </h2>
     )}
@@ -700,6 +724,7 @@ export default function AiAppPage({
               onChange={(value: any) =>
                 handleDropdownChange("creativity", value)
               }
+              info={"Increase or decrease the creativity level to get various results"}
             />
             <Dropdown
               label="Tone of Voice"
@@ -709,6 +734,7 @@ export default function AiAppPage({
               onChange={(value: any) =>
                 handleDropdownChange("tone_of_voice", value)
               }
+              info={"Set result tone of the text as needed"}
             />
           </div>
           <div className="grid grid-cols-2 gap-2">
