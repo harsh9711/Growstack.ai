@@ -18,8 +18,10 @@ import SendEmail from "./components/modal/sendEmail";
 import { PaginationState } from "@tanstack/react-table";
 import { Contact } from "@/types/contacts";
 import instance from "@/config/axios.config";
+
 import ProspectsTable from "./components/ProspectsTable";
 import { useRouter, useSearchParams } from "next/navigation";
+
 
 export default function ContactsDashboard() {
   const router = useRouter();
@@ -65,6 +67,9 @@ export default function ContactsDashboard() {
     getContacts();
   }, [pagination.pageIndex, pagination.pageSize]);
 
+
+  const tabs = ["Smart list", "Bulk actions", "Restore", "Tasks", "Company"];
+
   useEffect(() => {
     const tab = tabQueryParam ? Number(tabQueryParam) : 0;
     setSelectedTabIndex(tab);
@@ -73,7 +78,7 @@ export default function ContactsDashboard() {
     setTabUnderlineLeft(percentage);
   }, [tabQueryParam]);
 
-  const tabs = ["Smart list", "Prospects", "Restore"];
+
 
   const handleModal = (value: ModalContent | null) => {
     setModalContent(value);
