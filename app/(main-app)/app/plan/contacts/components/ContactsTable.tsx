@@ -166,12 +166,11 @@ export default function ContactsTable({
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
+  // const [pagination, setPagination] = useState<PaginationState>({
+  //   pageIndex: 0,
+  //   pageSize: 10,
+  // });
 
-  const [contacts, setContacts] = useState<Contact[]>([]);
   const [allContactsData, setAllContactsData] = useState<Contact[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -193,7 +192,6 @@ export default function ContactsTable({
         time_zone: item.contacts.time_zone,
       }));
 
-      setContacts(formattedContacts);
       setAllContactsData(formattedContacts);
     };
     getContacts();
@@ -254,13 +252,13 @@ export default function ContactsTable({
 
   useEffect(() => {
     if (searchQuery.trim() === "") {
-      setContacts(allContactsData);
+      // setContacts(allContactsData);
     } else {
-      setContacts(
-        allContactsData.filter((contant: any) =>
-          contant.name.toLowerCase().includes(searchQuery)
-        )
-      );
+      // setContacts(
+      //   allContactsData.filter((contant: any) =>
+      //     contant.name.toLowerCase().includes(searchQuery)
+      //   )
+      // );
     }
   }, [searchQuery]);
 
