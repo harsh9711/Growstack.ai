@@ -34,9 +34,20 @@ export interface Assistant {
   welcome_message: string;
 }
 
+export interface FavoriteAssistant {
+  category: string;
+  description: string;
+  icon: string;
+  isActivated: boolean;
+  name: string;
+  premium: boolean;
+  _id: string;
+}
+
 export default function Dashboard() {
   const [aiApps, setAiApps] = useState<AiApp[]>([]);
   const [assistants, setAssistants] = useState<Assistant[]>([]);
+  const [favoriteAssistants, setFavoriteAssistants] = useState<FavoriteAssistant[]>([]);
   const [aiAppsloading, setAiAppsLoading] = useState(true);
   const [aiAssistantsloading, setAiAssistantsLoading] = useState(true);
   const fetchAiApps = async () => {
@@ -84,10 +95,31 @@ export default function Dashboard() {
     }
   };
 
+  const fetchFavoriteAssistants = async () => {
+    setAiAssistantsLoading(true);
+    try {
+      ``;
+      const response = await instance.get(`${API_URL}/ai/api/v1/chat-template/fav-apps`);
+      setFavoriteAssistants(response.data.data);
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.log(error);
+    } finally {
+      setAiAssistantsLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchAiApps();
     fetchAssistants();
+    fetchFavoriteAssistants();
   }, []);
+
+  console.log('asdasd', favoriteAssistants)
 
   return (
     <main className="">
@@ -168,12 +200,12 @@ export default function Dashboard() {
                     Array(15)
                       .fill(null)
                       .map((_, index) => <AiAppSkeletonLoader key={index} />)
-                  ) : aiApps.length < 1 ? (
+                  ) : favoriteAssistants.length < 1 ? (
                     <div className="flex justify-center items-center">
                       No assistants found
                     </div>
                   ) : (
-                    aiApps.map((assistant, index) => (
+                    favoriteAssistants.map((assistant, index) => (
                       <Link
                         href={`/app/plan/ai-apps/${assistant._id}`}
                         key={assistant._id}
@@ -188,7 +220,7 @@ export default function Dashboard() {
                             />
                             <div className="space-y-2 overflow-hidden flex-grow">
                               <h1 className="text-lg font-semibold overflow-hidden text-ellipsis whitespace-nowrap">
-                                {assistant["ASSISTANT NAME"]}
+                                {assistant.name}
                               </h1>
                               <p
                                 className="text-primary-black text-opacity-70 text-[14px] leading-relaxed overflow-hidden text-ellipsis"
@@ -198,13 +230,13 @@ export default function Dashboard() {
                                   WebkitBoxOrient: "vertical",
                                 }}
                               >
-                                {assistant["ASSISTANT DESCRIPTION"]}
+                                {assistant.description}
                               </p>
                             </div>
                           </div>
-                          <div className="cursor-pointer w-full max-w-fit hover:bg-gray-50 p-1 rounded transition">
+                          {/* <div className="cursor-pointer w-full max-w-fit hover:bg-gray-50 p-1 rounded transition">
                             <StarIcon className="text-[#ADADAD]" />
-                          </div>
+                          </div> */}
                         </div>
                       </Link>
                     ))

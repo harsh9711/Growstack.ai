@@ -30,12 +30,26 @@ import "jspdf-autotable";
 import { HiOutlineRefresh } from "react-icons/hi";
 import TemplateLoader from "../../text-to-video/components/TemplateLoader";
 import { FaCircleNotch } from "react-icons/fa";
+
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next-nprogress-bar";
+import {
+  getSavedDecumentForEdit,
+  isEditDecument,
+} from "@/lib/features/documents/document.selector";
+import {
+  editDocument,
+  savedDecument,
+} from "@/lib/features/documents/document.slice";
+
 
 const Dropdown = ({
   label,
@@ -89,6 +103,10 @@ export default function AiAppPage({
 }: {
   params: { assistantId: string };
 }) {
+  const router = useRouter();
+  const isEdit = isEditDecument();
+  const editDocumentData: any = getSavedDecumentForEdit();
+  const dispatch = useDispatch();
   const [assistant, setAssistant] = useState<any>({});
   const [userPrompts, setUserPrompts] = useState<string[]>([]); // Initialize as empty array
   const [editorState, setEditorState] = useState(EditorState.createEmpty()); // Example state for editor content
@@ -105,6 +123,14 @@ export default function AiAppPage({
     estimated_result_length: 400,
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [workbook, setWorkbook] = useState("");
+
+  console.log("dssds", editDocumentData, isEdit);
+
+  // const pathName = usePathname();
+  // const segments = pathName.split("/");
+
+  // const doc_id = segments[segments.length - 1];
 
   const stripHtmlTags = (html: string) => {
     const temp = document.createElement("div");
@@ -150,6 +176,15 @@ export default function AiAppPage({
 
     fetchAssistant();
   }, [assistantId]);
+
+  useEffect(() => {
+    if (isEdit) {
+      setFileName(editDocumentData?.doc_name);
+      setUserInput1(editDocumentData?.doc_language);
+      setWorkbook(editDocumentData?.workbook);
+      setGeneratedContent(editDocumentData?.doc_content);
+    }
+  }, [editDocumentData]);
 
   const handleDownload = (selectedOption: string) => {
     const contentState = editorState.getCurrentContent();
@@ -252,7 +287,7 @@ export default function AiAppPage({
   };
   const handleSubmit = async () => {
     try {
-      const formattedUserPrompt = assistant.inputs
+      const formattedUserPrompt = assistant?.inputs
         .map(
           (input: any, index: number) => `${input.title}:${userPrompts[index]}`
         )
@@ -279,9 +314,7 @@ export default function AiAppPage({
   const handleEditorChange = (content: string) => {
     setGeneratedContent(content);
   };
-  const [userInput1, setUserInput1] = useState({
-    language: "English (USA)", // Set your default language here
-  });
+  const [userInput1, setUserInput1] = useState("");
   const handleDropdownChange = (field: string, value: any) => {
     setUserInput((prevInput) => ({
       ...prevInput,
@@ -339,6 +372,65 @@ export default function AiAppPage({
       updatedPrompts[index] = value.trim();
       return updatedPrompts;
     });
+  };
+
+  const handleSaveDocument = async () => {
+    try {
+      const payload = {
+        doc_name: fileName,
+        doc_language: userInput1,
+        doc_type: "TEXT",
+        workbook,
+        category: "text",
+        doc_content: generatedContent,
+      };
+      const response = await instance.post(
+        API_URL + `/users/api/v1/docs/save`,
+        payload
+      );
+
+      toast.success(response.data.message);
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error("Document Save failed:", error);
+    } finally {
+      // setIsPending(false);
+    }
+  };
+
+  const handleEditDocument = async () => {
+    try {
+      const payload = {
+        doc_name: fileName,
+        doc_language: userInput1,
+        doc_type: "TEXT",
+        workbook,
+        category: "text",
+        doc_content: generatedContent,
+      };
+      const response = await instance.put(
+        API_URL + `/users/api/v1/docs/${editDocumentData?._id}`,
+        payload
+      );
+      if (response.data.success) {
+        dispatch(editDocument(false));
+        router.push(`/account/saved-documents`);
+      }
+      toast.success(response.data.message);
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error("Document Save failed:", error);
+    } finally {
+      // setIsPending(false);
+    }
   };
 
   if (loading) {
@@ -477,12 +569,15 @@ export default function AiAppPage({
                 "Esperanto",
                 "Latin",
               ]}
-              value={userInput1.language}
-              onChange={(value: any) => handleDropdownChange("language", value)}
+              value={userInput1}
+              onChange={(value: any) => {
+                handleDropdownChange("language", value);
+                setUserInput1(value);
+              }}
             />
           </div>
           <div className="space-y-3">
-            {assistant.inputs.map((input: any, index: number) => (
+            {assistant?.inputs?.map((input: any, index: number) => (
               <div key={index}>
                 <label
                   className="font-medium flex justify-between"
@@ -655,7 +750,10 @@ export default function AiAppPage({
                 value={fileName}
                 onChange={(e) => setFileName(e.target.value)}
               />
-              <Select>
+              <Select
+                onValueChange={(e: any) => setWorkbook(e)}
+                defaultValue={workbook}
+              >
                 <SelectTrigger className="w-full border-none">
                   <SelectValue placeholder="All Workbooks" />
                 </SelectTrigger>
@@ -691,9 +789,12 @@ export default function AiAppPage({
                   onChange={(value: any) => handleDownload(value)}
                 />
 
-                {/* <button className="p-2 bg-gray-100 border rounded-lg">
+                <button
+                  className="p-2 bg-gray-100 border rounded-lg"
+                  onClick={isEdit ? handleEditDocument : handleSaveDocument}
+                >
                   <Save size={20} className="text-gray-600" />
-                </button> */}
+                </button>
               </div>
             </div>
           </div>
