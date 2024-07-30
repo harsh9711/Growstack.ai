@@ -1,5 +1,5 @@
 "use client";
-
+import React, { useEffect, useState } from "react";
 import { BrandVoiceIcon } from "@/components/svgs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -16,17 +16,38 @@ import { Info, LogOut, Settings, User } from "lucide-react";
 import Link from "next/link";
 import { TbReportMoney } from "react-icons/tb";
 import { useDispatch } from "react-redux";
+import instance from "@/config/axios.config";
+import { API_URL } from "@/lib/api";
+import toast from "react-hot-toast";
 
 export function ProfileButton() {
   const dispatch = useDispatch();
-  const currentUser = getCurrentUser();
+  // const currentUser = getCurrentUser();
+  const [currentUser, setCurrentUser] = useState<any>({});
+
+  const handleGetProfileData = async () => {
+    try {
+      const response = await instance.get(`${API_URL}/users/api/v1`);
+      const userData = response?.data?.data;
+      setCurrentUser(userData);
+    } catch (error) {
+      console.log("Error fetching workflows:", error);
+      toast.error("Error fetching profile data");
+    }
+  };
+
+  useEffect(() => {
+    handleGetProfileData();
+  }, []);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="rounded-xl">
           <AvatarImage src="" />
-          <AvatarFallback className="rounded-xl">{currentUser?.email?.slice(0, 1)}</AvatarFallback>
+          <AvatarFallback className="rounded-xl">
+            {currentUser?.email?.slice(0, 1)}
+          </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[300px] relative right-10 text-[15px]">
@@ -36,7 +57,7 @@ export function ProfileButton() {
             <AvatarFallback>{currentUser?.email?.slice(0, 1)}</AvatarFallback>
           </Avatar>
           <div>
-            <h1 className="text-xl font-semibold">John Doe</h1>
+            <h1 className="text-xl font-semibold">{currentUser?.name}</h1>
             <p className="text-primary-grey text-sm">{currentUser?.email}</p>
           </div>
         </div>
@@ -77,7 +98,8 @@ export function ProfileButton() {
         <DropdownMenuSeparator />
         <button
           onClick={() => dispatch(logout())}
-          className="relative flex select-none items-center rounded-lg h-12 p-4 outline-none w-full gap-3 text-[#D9000B] hover:bg-[#D9000B]/10 cursor-pointer">
+          className="relative flex select-none items-center rounded-lg h-12 p-4 outline-none w-full gap-3 text-[#D9000B] hover:bg-[#D9000B]/10 cursor-pointer"
+        >
           <LogOut size={20} />
           Sign out
         </button>
