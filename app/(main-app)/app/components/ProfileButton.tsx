@@ -25,7 +25,7 @@ export function ProfileButton() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="rounded-xl">
-          <AvatarImage src="" />
+          <AvatarImage src={currentUser.profile_img} />
           <AvatarFallback className="rounded-xl">
             {currentUser?.email?.slice(0, 1)}
           </AvatarFallback>
@@ -34,11 +34,13 @@ export function ProfileButton() {
       <DropdownMenuContent className="w-[300px] relative right-10 text-[15px]">
         <div className="p-4 flex items-center gap-3">
           <Avatar>
-            <AvatarImage src="" />
+            <AvatarImage src={currentUser.profile_img} />
             <AvatarFallback>{currentUser?.email?.slice(0, 1)}</AvatarFallback>
           </Avatar>
           <div>
-            <h1 className="text-xl font-semibold">{currentUser?.user_name ?? "John Doe"}</h1>
+            <h1 className="text-xl font-semibold">
+              {currentUser?.user_name ?? "John Doe"}
+            </h1>
             <p className="text-primary-grey text-sm">{currentUser?.email}</p>
           </div>
         </div>
