@@ -24,28 +24,20 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { Edit, FileDown, Search, Delete } from "lucide-react";
+import { Edit, FileDown, Search, DeleteIcon } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-// import { documents } from "./data";
+import { documents } from "./data";
 import instance from "@/config/axios.config";
-import { API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
+import { API_URL } from "@/lib/api";
 import swal from "sweetalert";
 import { useRouter } from "next-nprogress-bar";
-import { useDispatch } from "react-redux";
-import {
-  editDocument,
-  savedDecument,
-} from "@/lib/features/documents/document.slice";
 
-interface Document {
+interface BrandVoice {
   name: string;
-  workbook: string;
-  category: "active" | "inactive" | "disabled";
-  created: string;
-  language: "English (USA)" | "English (UK)" | "Spanish" | "French" | "Hindi";
-  wordsUsed: number;
+  description: string;
+  products: any;
   _id: string;
 }
 
@@ -56,8 +48,8 @@ const categoryColors = {
 };
 
 const languageFlags = {
-  English: "/assets/flags/us.svg",
-  // English: "/assets/flags/uk.svg",
+  "English (USA)": "/assets/flags/us.svg",
+  "English (UK)": "/assets/flags/uk.svg",
   Spanish: "/assets/flags/spain.svg",
   French: "/assets/flags/france.svg",
   Hindi: "/assets/flags/india.svg",
@@ -65,103 +57,36 @@ const languageFlags = {
 
 // export const columns: ColumnDef<Document>[] = [
 //   {
-//     accessorKey: "doc_name",
-//     header: () => <div className="uppercase">Document Name</div>,
-//     cell: ({ row }) => (
-//       <div className="capitalize">{row.getValue("doc_name")}</div>
-//     ),
+//     accessorKey: "name",
+//     header: () => <div className="uppercase">Name</div>,
+//     cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
 //   },
 //   {
 //     accessorKey: "workbook",
-//     header: () => <div className="uppercase">Workbook</div>,
+//     header: () => <div className="uppercase">Description</div>,
 //     cell: ({ row }) => (
 //       <div className="capitalize">{row.getValue("workbook")}</div>
 //     ),
 //   },
+
 //   {
-//     accessorKey: "category",
-//     header: () => <div className="uppercase">Category</div>,
-//     cell: ({ row }) => (
-//       <div
-//         className={clsx(
-//           "capitalize",
-//           categoryColors[
-//             row.getValue("category") as keyof typeof categoryColors
-//           ]
-//         )}
-//       >
-//         {row.getValue("category")}
-//       </div>
-//     ),
-//   },
-//   {
-//     accessorKey: "createdAt",
-//     header: () => <div className="uppercase">Created</div>,
-//     cell: ({ row }) => <div>{row.getValue("createdAt")}</div>,
-//   },
-//   {
-//     accessorKey: "doc_language",
-//     header: () => <div className="uppercase">Language</div>,
-//     cell: ({ row }) => (
-//       <div className="flex items-center gap-2.5">
-//         <Image
-//           src={
-//             languageFlags[
-//               row.getValue("doc_language") as keyof typeof languageFlags
-//             ]
-//           }
-//           alt=""
-//           width={20}
-//           height={20}
-//         />{" "}
-//         {row.getValue("doc_language")}
-//       </div>
-//     ),
-//   },
-//   {
-//     accessorKey: "doc_words",
-//     header: () => <div className="uppercase">Words Used</div>,
-//     cell: ({ row }) => <div>{row.getValue("doc_words")}</div>,
+//     accessorKey: "wordsUsed",
+//     header: () => <div className="uppercase">Products</div>,
+//     cell: ({ row }) => <div>{row.getValue("wordsUsed")}</div>,
 //   },
 //   {
 //     id: "actions",
 //     header: () => <div className="uppercase">Action</div>,
-//     cell: ({ row }) => {
-//       const handleDeleteDocs = (id: string) => {
-//         swal({
-//           title: "Delete Document",
-//           text: "Are you sure you want to delete it?",
-//           icon: "warning",
-//           buttons: ["Cancel", "Delete"],
-//           dangerMode: true,
-//         }).then(async (willDelete) => {
-//           if (willDelete) {
-//             try {
-//               const response = await instance.delete(
-//                 `${API_URL}/users/api/v1/docs/:${id}`
-//               );
-//               console.log("FFFFF", response);
-//             } catch (error) {
-//               toast.error("Error deleting document");
-//             }
-//           } else {
-//           }
-//         });
-//       };
-//       return (
-//         <div className="flex items-center gap-2">
-//           <button className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300">
-//             <Edit size={20} className="text-gray-800 cursor-pointer" />
-//           </button>
-//           <button
-//             className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300"
-//             onClick={() => handleDeleteDocs(row.original._id)}
-//           >
-//             <Delete size={20} className="text-gray-800 cursor-pointer" />
-//           </button>
-//         </div>
-//       );
-//     },
+//     cell: ({ row }) => (
+//       <div className="flex items-center gap-2">
+//         <button className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300">
+//           <Edit size={20} className="text-gray-800 cursor-pointer" />
+//         </button>
+//         <button className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300">
+//           <DeleteIcon size={20} className="text-gray-800 cursor-pointer" />
+//         </button>
+//       </div>
+//     ),
 //     enableSorting: false,
 //     enableHiding: false,
 //   },
@@ -169,7 +94,6 @@ const languageFlags = {
 
 export default function DocumentsTable() {
   const router = useRouter();
-  const dispatch = useDispatch();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -180,87 +104,47 @@ export default function DocumentsTable() {
   });
   const [documents, setDocuments] = useState([]);
 
-  const columns: ColumnDef<Document>[] = [
+  const columns: ColumnDef<any>[] = [
     {
-      accessorKey: "doc_name",
-      header: () => <div className="uppercase">Document Name</div>,
+      accessorKey: "name",
+      header: () => <div className="uppercase">Brand Name</div>,
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("doc_name")}</div>
+        <div className="capitalize">{row.getValue("name")}</div>
       ),
     },
     {
-      accessorKey: "workbook",
-      header: () => <div className="uppercase">Workbook</div>,
+      accessorKey: "description",
+      header: () => <div className="uppercase">Description</div>,
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("workbook")}</div>
+        <div className="capitalize">{row.getValue("description")}</div>
       ),
     },
+
     {
-      accessorKey: "category",
-      header: () => <div className="uppercase">Category</div>,
-      cell: ({ row }) => (
-        <div
-          className={clsx(
-            "capitalize",
-            categoryColors[
-              row.getValue("category") as keyof typeof categoryColors
-            ]
-          )}
-        >
-          {row.getValue("category")}
-        </div>
-      ),
-    },
-    {
-      accessorKey: "createdAt",
-      header: () => <div className="uppercase">Created</div>,
-      cell: ({ row }) => <div>{row.getValue("createdAt")}</div>,
-    },
-    {
-      accessorKey: "doc_language",
-      header: () => <div className="uppercase">Language</div>,
-      cell: ({ row }) => (
-        <div className="flex items-center gap-2.5">
-          <Image
-            src={
-              languageFlags[
-                row.getValue("doc_language") as keyof typeof languageFlags
-              ]
-            }
-            alt=""
-            width={20}
-            height={20}
-          />{" "}
-          {row.getValue("doc_language")}
-        </div>
-      ),
-    },
-    {
-      accessorKey: "doc_words",
-      header: () => <div className="uppercase">Words Used</div>,
-      cell: ({ row }) => <div>{row.getValue("doc_words")}</div>,
+      accessorKey: "products",
+      header: () => <div className="uppercase">Products</div>,
+      cell: ({ row }) => <div>{row.original.products.length}</div>,
     },
     {
       id: "actions",
       header: () => <div className="uppercase">Action</div>,
-      cell: ({ row }) => {
-        return (
-          <div className="flex items-center gap-2">
-            <button
-              className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300"
-              onClick={() => handleEdit(row?.original)}
-            >
-              <Edit size={20} className="text-gray-800 cursor-pointer" />
-            </button>
-            <button
-              className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300"
-              onClick={() => handleDeleteDocs(row?.original?._id)}
-            >
-              <Delete size={20} className="text-gray-800 cursor-pointer" />
-            </button>
-          </div>
-        );
-      },
+      cell: ({ row }) => (
+        <div className="flex items-center gap-2">
+          <button className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300">
+            <Edit
+              size={20}
+              className="text-gray-800 cursor-pointer"
+              onClick={() => handleEdit(row?.original._id)}
+            />
+          </button>
+          <button
+            className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300"
+            onClick={() => handleDeleteBranVoice(row?.original?._id)}
+          >
+            <DeleteIcon size={20} className="text-gray-800 cursor-pointer" />
+          </button>
+        </div>
+      ),
       enableSorting: false,
       enableHiding: false,
     },
@@ -288,10 +172,6 @@ export default function DocumentsTable() {
     },
   });
 
-  useEffect(() => {
-    handleGetDocumentsData();
-  }, [pagination.pageIndex]);
-
   const paginationButtons = [];
   for (let i = 0; i < table.getPageCount(); i++) {
     paginationButtons.push(
@@ -310,10 +190,10 @@ export default function DocumentsTable() {
     );
   }
 
-  const handleGetDocumentsData = async () => {
+  const handleGetBrandVoiceData = async () => {
     try {
       const response = await instance.get(
-        `${API_URL}/users/api/v1/docs?page=${pagination.pageIndex + 1}&limit=10`
+        `${API_URL}/users/api/v1/brand-voice`
       );
       setDocuments(response?.data?.data?.docs);
     } catch (error) {
@@ -321,8 +201,7 @@ export default function DocumentsTable() {
       toast.error("Error fetching Documents data");
     }
   };
-
-  const handleDeleteDocs = (id: string) => {
+  const handleDeleteBranVoice = (id: string) => {
     swal({
       title: "Delete Document",
       text: "Are you sure you want to delete it?",
@@ -333,10 +212,10 @@ export default function DocumentsTable() {
       if (willDelete) {
         try {
           const response = await instance.delete(
-            `${API_URL}/users/api/v1/docs/${id}`
+            `${API_URL}/users/api/v1/brand-voice/${id}`
           );
           if (response.data.success) {
-            handleGetDocumentsData();
+            handleGetBrandVoiceData();
           }
         } catch (error) {
           toast.error("Error deleting document");
@@ -346,11 +225,13 @@ export default function DocumentsTable() {
     });
   };
 
-  const handleEdit = (row: any) => {
-    router.push(`/app/plan/ai-apps/${row._id}`);
-    dispatch(editDocument(true));
-    dispatch(savedDecument(row));
+  const handleEdit = (id: string) => {
+    router.push(`/account/create-brand-voice/${id}`);
   };
+
+  useEffect(() => {
+    handleGetBrandVoiceData();
+  }, []);
 
   return (
     <Motion
@@ -359,7 +240,7 @@ export default function DocumentsTable() {
     >
       <div className="w-full">
         <div className="flex items-center justify-between px-5 pt-5">
-          <h2 className="text-lg font-semibold">All my documents</h2>
+          <h2 className="text-lg font-semibold">All my brand voice</h2>
           <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
             <Search className="text-[#5A5963]" />
             <input

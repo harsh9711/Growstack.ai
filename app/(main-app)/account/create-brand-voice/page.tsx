@@ -16,25 +16,20 @@ import {
 } from "@/components/ui/select";
 import { Minus, Plus } from "lucide-react";
 import { Assistant } from "@/types/assistants";
-import AssistantsTable from "@/app/(main-app)/app/plan/ai-apps/components/AssistantsDataTable";
+import { toneOfVoice } from "./data";
+import { useRouter } from "next-nprogress-bar";
 
-export default function CreateAssistantPage() {
-  type UserInput = {
-    title: string;
-    description: string;
-    type: string;
-    required: string;
-    options?: string; // Optional field for storing options for select, radio, and checkbox
-  };
+export default function CreateBrandVoice() {
+  const router = useRouter();
 
-  const [userInputs, setUserInputs] = useState<UserInput[]>([
-    { title: "", description: "", type: "", required: "Optional" },
+  const [userInputs, setUserInputs] = useState<any[]>([
+    { name: "", brief: "", isProducts: "" },
   ]);
 
   const addUserInput = () => {
     setUserInputs((prevInputs) => [
       ...prevInputs,
-      { title: "", description: "", type: "", required: "Optional" },
+      { name: "", brief: "", isProducts: "" },
     ]);
   };
 
@@ -49,23 +44,22 @@ export default function CreateAssistantPage() {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
-    icon: "",
-    custom_prompt: "",
+    website: "",
+    tagline: "",
+    target_audience: "",
+    industry: "",
   });
 
-  const [category, setCategory] = useState("");
+  const [tone_of_voice, setToneOfVoice] = useState("");
   const svgPattern = /^<svg.*<\/svg>$/;
   const fontAwesomePattern = /^<i class=['"]fa[a-zA-Z0-9\- ]+['"]><\/i>$/;
 
   const ValidationSchema = z.object({
-    name: z.string().min(3, "Name must be at least 3 characters long"),
-    description: z
-      .string()
-      .min(10, "Description must be at least 10 characters")
-      .max(200, "Description can't exceed 200 characters"),
-    icon: z.string().refine(value => svgPattern.test(value) || fontAwesomePattern.test(value), {
-      message: "Invalid icon format. Only SVG tags or Font Awesome icons are allowed.",
-    }),
+    name: z.string().nonempty("Required"),
+    website: z.string().nonempty("Required"),
+    industry: z.string().nonempty("Required"),
+    tagline: z.string().nonempty("Required"),
+    target_audience: z.string().nonempty("Required"),
   });
 
   const [isPending, setIsPending] = useState(false);
@@ -88,42 +82,46 @@ export default function CreateAssistantPage() {
   const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
     setIsPending(true);
     try {
-      const { name, description, icon, custom_prompt } = formData;
+      const { name, description, tagline, industry, website, target_audience } =
+        formData;
 
       // Prepare userInputs to be sent with the POST request
       const userInputFields = userInputs.map((input) => ({
-        title: input.title,
-        description: input.description,
-        field_type: input.type,
-        requirement: input.required === "Required", // Assuming 'required' is a boolean field in your API
-        options: input.options ? input.options.split(",") : undefined,
+        name: input.name,
+        brief: input.brief,
+        isProduct: input.isProduct === "Product" ? true : false,
       }));
 
       const response = await instance.post(
-        `${API_URL}/ai/api/v1/chat-template/create`,
+        `${API_URL}/users/api/v1/brand-voice/create`,
         {
           name,
           description,
-          icon,
-          custom_prompt,
-          category,
-          inputs: userInputFields, // Include userInputs in the request body
+          target_audience,
+          tagline,
+          industry,
+          website,
+          tone_of_voice,
+          products: userInputFields, // Include userInputs in the request body
         }
       );
 
-      toast.success(response.data.message);
+      if (response.data.success) {
+        router.push("/account/brand-voice");
+        toast.success(response.data.message);
+      }
 
       // Clear form data after successful submission
       setFormData({
         name: "",
         description: "",
-        icon: "",
-        custom_prompt: "",
+        website: "",
+        tagline: "",
+        target_audience: "",
+        industry: "",
       });
-      setCategory(""); // Clear category after submission
-      setUserInputs([
-        { title: "", description: "", type: "", required: "Optional" },
-      ]); // Reset userInputs
+      setToneOfVoice(""); // Clear category after submission
+      setUserInputs([{ name: "", brief: "", isProduct: "" }]); // Reset userInputs
       setRefreshAssistantsTable(true);
       // Log userInputs to the console
       console.log("User Inputs:", userInputFields);
@@ -149,50 +147,35 @@ export default function CreateAssistantPage() {
   };
 
   const handleCategoryChange = (selectedCategory: string) => {
-    setCategory(selectedCategory);
+    setToneOfVoice(selectedCategory);
   };
 
-  const handleInputChange = (
-    index: number,
-    key: keyof UserInput,
-    value: string
-  ) => {
+  const handleInputChange = (index: number, key: keyof any, value: string) => {
     setUserInputs((prevInputs) => {
       const updatedInputs = [...prevInputs];
       updatedInputs[index][key] = value;
-
-      // Concatenate options into description if it's a Select, Checkbox list, or Radio buttons field
-      if (
-        key === "options" &&
-        (updatedInputs[index].type === "Select list field" ||
-          updatedInputs[index].type === "Checkbox list field" ||
-          updatedInputs[index].type === "Radio buttons field")
-      ) {
-        updatedInputs[index].description = `${value}`;
-      }
-
       return updatedInputs;
     });
   };
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold mt-5">Create your own assistant</h1>
+      <h1 className="text-2xl font-semibold mt-5">New Brand Voice</h1>
       <section className="bg-white border border-[#E4E4E4] rounded-3xl p-10 mt-5">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-5">
             <h1 className="text-xl font-semibold flex items-center gap-2">
-              Own assistant generator
+              Brand Information
             </h1>
             <div className="grid grid-cols-2 gap-8 border-t border-[#EBEBEB] pb-4 pt-8">
               <div className="space-y-2">
                 <label className="font-medium">
-                  Template name
+                  Company / Brand Name
                   <span className="text-[#F00]">*</span>
                 </label>
                 <Input
                   type="text"
-                  placeholder="Type template name"
+                  placeholder="Type company / brand name"
                   {...register("name")}
                   value={formData.name}
                   onChange={handleChange}
@@ -203,98 +186,147 @@ export default function CreateAssistantPage() {
               </div>
               <div className="space-y-2">
                 <label className="font-medium">
-                  Template description <span className="text-[#F00]">*</span>
+                  Website <span className="text-[#F00]">*</span>
                 </label>
                 <Input
                   type="text"
-                  placeholder="Type template description"
-                  {...register("description")}
-                  value={formData.description}
+                  placeholder="Type Website"
+                  {...register("website")}
+                  value={formData.website}
                   onChange={handleChange}
                 />
-                {errors.description && (
+                {errors.website && (
                   <p className="text-rose-600 text-sm">
-                    {errors.description.message}
+                    {errors.website.message}
                   </p>
                 )}
               </div>
 
               <div className="space-y-2">
                 <label className="font-medium">
-                  Template category <span className="text-[#F00]">*</span>
+                  Industry
+                  <span className="text-[#F00]">*</span>
+                </label>
+                <Input
+                  type="text"
+                  placeholder="Type industry name"
+                  {...register("industry")}
+                  value={formData.industry}
+                  onChange={handleChange}
+                />
+                {errors.industry && (
+                  <p className="text-rose-600 text-sm">
+                    {errors.industry.message}
+                  </p>
+                )}
+              </div>
+              <div className="space-y-2">
+                <label className="font-medium">
+                  Tagline
+                  <span className="text-[#F00]">*</span>
+                </label>
+                <Input
+                  type="text"
+                  placeholder="Type tagline"
+                  {...register("tagline")}
+                  value={formData.tagline}
+                  onChange={handleChange}
+                />
+                {errors.tagline && (
+                  <p className="text-rose-600 text-sm">
+                    {errors.tagline.message}
+                  </p>
+                )}
+              </div>
+              <div className="space-y-2">
+                <label className="font-medium">
+                  Target audience
+                  <span className="text-[#F00]">*</span>
+                </label>
+                <Input
+                  type="text"
+                  placeholder="Type template name"
+                  {...register("target_audience")}
+                  value={formData.target_audience}
+                  onChange={handleChange}
+                />
+                {errors.target_audience && (
+                  <p className="text-rose-600 text-sm">
+                    {errors.target_audience.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label className="font-medium">
+                  Tone of voice <span className="text-[#F00]">*</span>
                 </label>
                 <Select
                   onValueChange={handleCategoryChange}
-                  value={category}
+                  value={tone_of_voice}
                   defaultValue="Blogs Posts"
                 >
                   <SelectTrigger className="w-full border-none h-14">
                     <SelectValue
-                      placeholder={category ? category : "Select a category"}
+                      placeholder={
+                        tone_of_voice ? tone_of_voice : "Select a category"
+                      }
                     />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Blogs Posts">My Assistants</SelectItem>
-                    {/* <SelectItem value="Articles And Contents">Articles And Contents</SelectItem>
-                    <SelectItem value="Blogs Posts">Blogs Posts</SelectItem>
-                    <SelectItem value="Commerce"> Ecommerce</SelectItem>
-                    <SelectItem value="Emails">Emails</SelectItem>
-                    <SelectItem value="Frameworks">Frameworks</SelectItem>
-                    <SelectItem value="Marketing">Marketing</SelectItem>
-                    <SelectItem value="Social Media">Social Media</SelectItem>
-                    <SelectItem value="Websites">Websites</SelectItem> */}
+                    {toneOfVoice.map(({ value, title }, index) => {
+                      return (
+                        <SelectItem key={index} value={value}>
+                          {title}
+                        </SelectItem>
+                      );
+                    })}
                   </SelectContent>
                 </Select>
               </div>
-              <div className="space-y-2">
-                <label className="font-medium">
-                  Template icon <span className="text-[#F00]">*</span>
-                </label>
-                <Input
-                  type="text"
-                  placeholder="ex:<i class='fa-solid fa-books'></i>"
-                  {...register("icon")}
-                  value={formData.icon}
-                  onChange={(e) => {
-                    const { value } = e.target;
-                    setFormData((prevFormData) => ({
-                      ...prevFormData,
-                      icon: value,
-                    }));
-                    if (!svgPattern.test(value) && !fontAwesomePattern.test(value)) {
-                      setError("icon", {
-                        type: "manual",
-                        message:
-                          "Invalid icon format. Only SVG tags or Font Awesome icons are allowed.",
-                      });
-                    } else {
-                      clearErrors("icon");
-                    }
-                  }}
-                />
-                {errors.icon && (
-                  <p className="text-rose-600 text-sm">{errors.icon.message}</p>
-                )}
-              </div>
+            </div>
+            <div className="space-y-2">
+              <label className="font-medium">
+                Company / Brand description{" "}
+                <span className="text-[#F00]">*</span>
+              </label>
+              <textarea
+                placeholder="Type company description"
+                className="h-[200px] w-full bg-[#F2F2F2] rounded-2xl p-3 resize-none"
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+              />
             </div>
             <div className="space-y-2 !mt-8">
               <label className="font-medium">
-                User input fields <span className="text-[#F00]">*</span>
+                Product or service information{" "}
+                <span className="text-[#F00]">*</span>
               </label>
               {userInputs.map((input, index) => (
                 <div key={index} className="flex gap-4 items-center">
                   <div className="w-full space-y-2">
                     <Input
                       type="text"
-                      placeholder="Type input field title (required)"
-                      value={input.title}
+                      placeholder="Provide product / service name"
+                      value={input.name}
                       onChange={(e) =>
-                        handleInputChange(index, "title", e.target.value)
+                        handleInputChange(index, "name", e.target.value)
+                      }
+                    />
+                  </div>
+                  <div className="w-full space-y-2">
+                    <Input
+                      type="text"
+                      placeholder="Provide brief product / service description"
+                      value={input.brief}
+                      onChange={(e) =>
+                        handleInputChange(index, "brief", e.target.value)
                       }
                     />
                   </div>
 
-                  <div className="w-full space-y-2">
+                  {/* <div className="w-full space-y-2">
                     <Select
                       value={input.type}
                       onValueChange={(value) =>
@@ -320,9 +352,9 @@ export default function CreateAssistantPage() {
                         </SelectItem>
                       </SelectContent>
                     </Select>
-                  </div>
+                  </div> */}
 
-                  {(input.type === "Input field" ||
+                  {/* {(input.type === "Input field" ||
                     input.type === "Textarea field") && (
                     <div className="w-full space-y-2">
                       <Input
@@ -353,21 +385,22 @@ export default function CreateAssistantPage() {
                         }
                       />
                     </div>
-                  )}
+                  )} */}
 
                   <div className="w-full space-y-2">
                     <Select
-                      value={input.required || "Required"}
+                      value={input.product}
                       onValueChange={(value) =>
-                        handleInputChange(index, "required", value)
+                        handleInputChange(index, "isProduct", value)
                       }
                     >
                       <SelectTrigger className="w-full border-none h-14">
-                        <SelectValue placeholder="Required" />
+                        <SelectValue placeholder="Product" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Required">Required</SelectItem>
-                        <SelectItem value="Optional">Optional</SelectItem>
+                        <SelectItem value="Product">Product</SelectItem>
+                        <SelectItem value="Service">Service</SelectItem>
+                        <SelectItem value="Other">Other</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -392,35 +425,16 @@ export default function CreateAssistantPage() {
                 </div>
               ))}
             </div>
-
-            <div className="space-y-2">
-              <label className="font-medium">
-                Custom prompt <span className="text-[#F00]">*</span>
-              </label>
-              <textarea
-                placeholder="Type your custom prompt"
-                className="h-[200px] w-full bg-[#F2F2F2] rounded-2xl p-3 resize-none"
-                name="custom_prompt"
-                value={formData.custom_prompt}
-                onChange={handleChange}
-              />
-            </div>
           </div>
           <div className="flex justify-end gap-4">
             <button
               className="py-3.5 px-6 bg-primary-green sheen rounded-xl text-white mt-6"
               type="submit"
             >
-              Create your own assistant
+              Create
             </button>
           </div>
         </form>
-      </section>
-      <section className="bg-white border border-[#E4E4E4] rounded-3xl p-10 mt-7">
-        <AssistantsTable
-          refreshAssistantsTable={refreshAssistantsTable}
-          setRefreshAssistantsTable={setRefreshAssistantsTable}
-        />
       </section>
     </div>
   );

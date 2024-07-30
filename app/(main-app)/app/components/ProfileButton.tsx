@@ -26,18 +26,18 @@ export function ProfileButton() {
       <DropdownMenuTrigger asChild>
         <Avatar className="rounded-xl">
           <AvatarImage src="" />
-          <AvatarFallback className="rounded-xl">{currentUser.email.slice(0, 1)}</AvatarFallback>
+          <AvatarFallback className="rounded-xl">{currentUser?.email?.slice(0, 1)}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[300px] relative right-10 text-[15px]">
         <div className="p-4 flex items-center gap-3">
           <Avatar>
             <AvatarImage src="" />
-            <AvatarFallback>{currentUser.email.slice(0, 1)}</AvatarFallback>
+            <AvatarFallback>{currentUser?.email?.slice(0, 1)}</AvatarFallback>
           </Avatar>
           <div>
             <h1 className="text-xl font-semibold">John Doe</h1>
-            <p className="text-primary-grey text-sm">{currentUser.email}</p>
+            <p className="text-primary-grey text-sm">{currentUser?.email}</p>
           </div>
         </div>
         <DropdownMenuSeparator />
@@ -54,7 +54,7 @@ export function ProfileButton() {
               Saved documents
             </DropdownMenuItem>
           </Link>
-          <Link href="/account/saved-documents">
+          <Link href="/account/brand-voice">
             <DropdownMenuItem className="flex gap-3 px-4">
               <BrandVoiceIcon size={22} />
               Brand voice
