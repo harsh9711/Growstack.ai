@@ -34,7 +34,7 @@ function UseIt() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/emailBuilder/use1.svg" alt="icon" />
+                                                <img src="/images_growstack/emailBuilder/use1.svg" alt="icon" />
                                             </div>
                                             <h5 className="card-title">For Marketers</h5>
                                             <p className="card-text">Create custom emails without coding. Customize modules, launch campaigns, and export templates to email marketing software.</p>
@@ -47,7 +47,7 @@ function UseIt() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/emailBuilder/use2.svg" alt="icon" />
+                                                <img src="/images_growstack/emailBuilder/use2.svg" alt="icon" />
                                             </div>
                                             <h5 className="card-title">For Designers</h5>
                                             <p className="card-text">GrowStack is just like Figma, for building emails: use the same tools and shortcuts you already know. No time to learn new tools.</p>
@@ -60,7 +60,7 @@ function UseIt() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/emailBuilder/use3.svg" alt="icon" />
+                                                <img src="/images_growstack/emailBuilder/use3.svg" alt="icon" />
                                             </div>
                                             <h5 className="card-title">For Business Owners</h5>
                                             <p className="card-text">Create beautiful communications that engage your audience — so you can build your customer loyalty and boost your conversions, in minutes.</p>
@@ -73,7 +73,7 @@ function UseIt() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/emailBuilder/use4.svg" alt="icon" />
+                                                <img src="/images_growstack/emailBuilder/use4.svg" alt="icon" />
                                             </div>
                                             <h5 className="card-title">For Everyone!</h5>
                                             <p className="card-text">GrowStack isn’t just for business. Send stunning emails to surprise loved ones, friends, students, charity donors, or community members.</p>

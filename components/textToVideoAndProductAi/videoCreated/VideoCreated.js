@@ -24,7 +24,7 @@ function VideoCreated() {
                             <div className="row align-items-center g-0">
                                 <div className="col-md-5">
                                     <div className="imgBlock">
-                                        <img src="/images/textVideo/create1.svg" className="img-fluid" alt="banner" />
+                                        <img src="/images_growstack/textVideo/create1.svg" className="img-fluid" alt="banner" />
                                     </div>
                                 </div>
                                 <div className="col-md-7">
@@ -48,7 +48,7 @@ function VideoCreated() {
                             <div className="row align-items-center g-0">
                                 <div className="col-md-5">
                                     <div className="imgBlock">
-                                        <img src="/images/textVideo/create2.svg" className="img-fluid" alt="banner" />
+                                        <img src="/images_growstack/textVideo/create2.svg" className="img-fluid" alt="banner" />
                                     </div>
                                 </div>
                                 <div className="col-md-7">
@@ -71,7 +71,7 @@ function VideoCreated() {
                             <div className="row align-items-center g-0">
                                 <div className="col-md-5">
                                     <div className="imgBlock">
-                                        <img src="/images/textVideo/create1.svg" className="img-fluid" alt="banner" />
+                                        <img src="/images_growstack/textVideo/create1.svg" className="img-fluid" alt="banner" />
                                     </div>
                                 </div>
                                 <div className="col-md-7">
@@ -92,7 +92,7 @@ function VideoCreated() {
                     <div className="laptopImg" data-aos="fade-up"
                         data-aos-easing="ease-in-sine"
                         data-aos-duration="1000">
-                        <img src="/images/textVideo/laptop.svg" className="img-fluid" alt="laptop" />
+                        <img src="/images_growstack/textVideo/laptop.svg" className="img-fluid" alt="laptop" />
                     </div>
                 </div>
             </div>

@@ -27,7 +27,7 @@ function Editing() {
                             data-aos-duration="1000">
                             <div className="d-flex align-items-center block">
                                 <div className="flex-shrink-0">
-                                    <img src="/images/textVideo/edit1.svg" alt="edit" />
+                                    <img src="/images_growstack/textVideo/edit1.svg" alt="edit" />
                                 </div>
                                 <div className="flex-grow-1 ms-3">
                                     <h4>Background remover</h4>
@@ -40,7 +40,7 @@ function Editing() {
                             data-aos-duration="1000">
                             <div className="d-flex align-items-center block">
                                 <div className="flex-shrink-0">
-                                    <img src="/images/textVideo/edit2.svg" alt="edit" />
+                                    <img src="/images_growstack/textVideo/edit2.svg" alt="edit" />
                                 </div>
                                 <div className="flex-grow-1 ms-3">
                                     <h4>Magic eraser</h4>
@@ -53,7 +53,7 @@ function Editing() {
                             data-aos-duration="1000">
                             <div className="d-flex align-items-center block">
                                 <div className="flex-shrink-0">
-                                    <img src="/images/textVideo/edit3.svg" alt="edit" />
+                                    <img src="/images_growstack/textVideo/edit3.svg" alt="edit" />
                                 </div>
                                 <div className="flex-grow-1 ms-3">
                                     <h4>Batch edit</h4>
@@ -66,7 +66,7 @@ function Editing() {
                             data-aos-duration="1000">
                             <div className="d-flex align-items-center block">
                                 <div className="flex-shrink-0">
-                                    <img src="/images/textVideo/edit4.svg" alt="edit" />
+                                    <img src="/images_growstack/textVideo/edit4.svg" alt="edit" />
                                 </div>
                                 <div className="flex-grow-1 ms-3">
                                     <h4>Colorize</h4>
@@ -79,7 +79,7 @@ function Editing() {
                             data-aos-duration="1000">
                             <div className="d-flex align-items-center block">
                                 <div className="flex-shrink-0">
-                                    <img src="/images/textVideo/edit5.svg" alt="edit" />
+                                    <img src="/images_growstack/textVideo/edit5.svg" alt="edit" />
                                 </div>
                                 <div className="flex-grow-1 ms-3">
                                     <h4>Upscaler</h4>
@@ -92,7 +92,7 @@ function Editing() {
                             data-aos-duration="1000">
                             <div className="d-flex align-items-center block">
                                 <div className="flex-shrink-0">
-                                    <img src="/images/textVideo/edit6.svg" alt="edit" />
+                                    <img src="/images_growstack/textVideo/edit6.svg" alt="edit" />
                                 </div>
                                 <div className="flex-grow-1 ms-3">
                                     <h4>Photo photos maker</h4>

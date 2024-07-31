@@ -18,7 +18,7 @@ function AiProduct() {
                                 <div className="col-md-6" data-aos="fade-right"
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
-                                    <img src="/images/textVideo/scaling.svg" className="img-fluid" alt="banner" />
+                                    <img src="/images_growstack/textVideo/scaling.svg" className="img-fluid" alt="banner" />
                                 </div>
                                 <div className="col-md-6" data-aos="fade-left"
                             data-aos-easing="ease-in-sine"
@@ -65,7 +65,7 @@ function AiProduct() {
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
                             <div className="imgBlock">
-                                <img src="/images/textVideo/ai1.svg" alt="img" />
+                                <img src="/images_growstack/textVideo/ai1.svg" alt="img" />
                             </div>
                         </div>
                         <div className="col-lg-1 none"></div>
@@ -105,7 +105,7 @@ function AiProduct() {
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
                             <div className="imgBlock">
-                                <img src="/images/textVideo/ai2.svg" alt="img" />
+                                <img src="/images_growstack/textVideo/ai2.svg" alt="img" />
                             </div>
                         </div>
                     </div>

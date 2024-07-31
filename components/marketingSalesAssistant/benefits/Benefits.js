@@ -25,7 +25,7 @@ function Benefits() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/home/choose1.svg" alt="icon" />
+                                                <img src="/images_growstack/home/choose1.svg" alt="icon" />
                                             </div>
                                             <h5 className="card-title">Efficiency
                                                 <span>Boost</span></h5>
@@ -39,7 +39,7 @@ function Benefits() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/home/choose2.svg" alt="icon" />
+                                                <img src="/images_growstack/home/choose2.svg" alt="icon" />
                                             </div>
                                             <h5 className="card-title">Enhanced
                                                 <span>Engagement</span></h5>
@@ -53,7 +53,7 @@ function Benefits() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/home/choose3.svg" alt="icon" />
+                                                <img src="/images_growstack/home/choose3.svg" alt="icon" />
                                             </div>
                                             <h5 className="card-title">Competitive
                                                 <span>Edge</span></h5>

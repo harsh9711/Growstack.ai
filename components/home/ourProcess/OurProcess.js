@@ -22,7 +22,7 @@ function OurProcess() {
             <div data-aos="fade-up"
             data-aos-easing="ease-in-sine"
             data-aos-duration="1000">
-            <img src="/images/home/process.svg" alt="process" />
+            <img src="/images_growstack/home/process.svg" alt="process" />
             </div>
           </div>
         </div>

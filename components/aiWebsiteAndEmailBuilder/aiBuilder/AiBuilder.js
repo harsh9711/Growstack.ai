@@ -86,7 +86,7 @@ function AiBuilder() {
                                                 <div className="col-md-6" data-aos="fade-left"
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
-                                                    <img src="/images/emailBuilder/aiWeb.svg" alt="accord" />
+                                                    <img src="/images_growstack/emailBuilder/aiWeb.svg" alt="accord" />
                                                 </div>
                                             </div>
                                         </div>
@@ -116,7 +116,7 @@ function AiBuilder() {
                                                 <div className="col-md-6" data-aos="fade-left"
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
-                                                    <img src="/images/emailBuilder/aiWeb.svg" alt="accord" />
+                                                    <img src="/images_growstack/emailBuilder/aiWeb.svg" alt="accord" />
                                                 </div>
                                             </div>
                                         </div>

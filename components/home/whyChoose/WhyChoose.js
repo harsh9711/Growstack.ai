@@ -26,7 +26,7 @@ function WhyChoose() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/home/choose1.svg" alt="icon" />
+                                                <img src="/images_growstack/home/choose1.svg" alt="icon" />
                                             </div>
                                             <h5 className="card-title">Supercharge Your
                                                 <span>Efficiency</span></h5>
@@ -38,7 +38,7 @@ function WhyChoose() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/home/choose2.svg" alt="icon" />
+                                                <img src="/images_growstack/home/choose2.svg" alt="icon" />
                                             </div>
                                             <h5 className="card-title">Optimize Your
                                                 <span>Revenue</span></h5>
@@ -50,7 +50,7 @@ function WhyChoose() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/home/choose3.svg" alt="icon" />
+                                                <img src="/images_growstack/home/choose3.svg" alt="icon" />
                                             </div>
                                             <h5 className="card-title">Speed Up Your
                                                 <span>Work</span></h5>

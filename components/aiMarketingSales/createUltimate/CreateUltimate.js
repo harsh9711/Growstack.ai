@@ -34,7 +34,7 @@ function CreateUltimate() {
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
                     <div className="imgBlock">
-                        <Image src="/images/aiMarket/blank.svg" alt="createUltimate" width={100} height={100} />
+                        <Image src="/images_growstack/aiMarket/blank.svg" alt="createUltimate" width={100} height={100} />
                     </div>
                 </div>
                 </div>
@@ -45,7 +45,7 @@ function CreateUltimate() {
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
                     <div className="imgBlock">
-                        <Image src="/images/aiMarket/quality.svg" alt="createUltimate" width={100} height={100} />
+                        <Image src="/images_growstack/aiMarket/quality.svg" alt="createUltimate" width={100} height={100} />
                     </div>
                 </div>
                 <div className="col-md-6" data-aos="fade-left"

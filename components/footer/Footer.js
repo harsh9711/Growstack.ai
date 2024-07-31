@@ -29,7 +29,7 @@ function Footer() {
                         <div className="row">
                             <div className="col-lg-3 col-md-12">
                                 <div className="footerLogo">
-                                    <img src="/images/footer/logo.svg" alt="logo" />
+                                    <img src="/images_growstack/footer/logo.svg" alt="logo" />
                                 </div>
                             </div>
                             <div className="col-lg-2 col-md-6">
@@ -65,10 +65,10 @@ function Footer() {
                                 <h4>Newsletter</h4>
                                 <p>Subscribe to our newsletter</p>
                                 <div className="input-group">
-                                    <img src="/images/footer/letter.svg" alt="letter" />
+                                    <img src="/images_growstack/footer/letter.svg" alt="letter" />
                                     <input type="text" className="form-control" placeholder="Enter your email" />
                                     <div className="input-group-append">
-                                        <button className="sheen" type="button"><img src="/images/footer/newsletter.svg" alt="newsletter" /></button>
+                                        <button className="sheen" type="button"><img src="/images_growstack/footer/newsletter.svg" alt="newsletter" /></button>
                                     </div>
                                 </div>
                             </div>
@@ -77,9 +77,9 @@ function Footer() {
                             <p>Copyright © 2024 growstack</p>
                             <div className="social">
                                 <Link href="/register"><img src="/images\/footer/youtube.svg" alt="youtube" /></Link>
-                                <Link href="/register"><img src="/images/footer/facebook.svg" alt="facebook" /></Link>
-                                <Link href="/register"><img src="/images/footer/twitter.svg" alt="twitter" /></Link>
-                                <Link href="/register"><img src="/images/footer/linkedin.svg" alt="linkedin" /></Link>
+                                <Link href="/register"><img src="/images_growstack/footer/facebook.svg" alt="facebook" /></Link>
+                                <Link href="/register"><img src="/images_growstack/footer/twitter.svg" alt="twitter" /></Link>
+                                <Link href="/register"><img src="/images_growstack/footer/linkedin.svg" alt="linkedin" /></Link>
                             </div>
                         </div>
                     </div>

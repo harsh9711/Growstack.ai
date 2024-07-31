@@ -6,11 +6,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Accordion from 'react-bootstrap/Accordion';
 
 const tabData = [
-    { id: 'scheduler', title: 'Scheduler pages', img: '/images/social/tab1.svg', description: 'Effortlessly plan and schedule your social media posts across platforms with our intuitive scheduler pages.' },
-    { id: 'conversation', title: 'Social media conversation', img: '/images/social/tab3.svg', description: 'Effortlessly manage and engage in social media conversations across platforms.' },
-    { id: 'ads', title: 'Ads analytics', img: '/images/social/tab2.svg', description: 'Analyze your social media ads performance with detailed analytics.' },
-    { id: 'analytics', title: 'Social media analytics', img: '/images/social/tab2.svg', description: 'Gain insights into your social media performance with comprehensive analytics.' },
-    { id: 'reputation', title: 'Reputation management', img: '/images/social/tab4.svg', description: 'Manage your social media reputation effectively across various platforms.' },
+    { id: 'scheduler', title: 'Scheduler pages', img: '/images_growstack/social/tab1.svg', description: 'Effortlessly plan and schedule your social media posts across platforms with our intuitive scheduler pages.' },
+    { id: 'conversation', title: 'Social media conversation', img: '/images_growstack/social/tab3.svg', description: 'Effortlessly manage and engage in social media conversations across platforms.' },
+    { id: 'ads', title: 'Ads analytics', img: '/images_growstack/social/tab2.svg', description: 'Analyze your social media ads performance with detailed analytics.' },
+    { id: 'analytics', title: 'Social media analytics', img: '/images_growstack/social/tab2.svg', description: 'Gain insights into your social media performance with comprehensive analytics.' },
+    { id: 'reputation', title: 'Reputation management', img: '/images_growstack/social/tab4.svg', description: 'Manage your social media reputation effectively across various platforms.' },
 ];
 
 const accordionItems = [
@@ -84,7 +84,7 @@ function PlannerSolution() {
                                         <div className="col-md-6" data-aos="fade-left"
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
-                                            <img src="/images/social/accord.svg" alt="accord" />
+                                            <img src="/images_growstack/social/accord.svg" alt="accord" />
                                         </div>
                                     </div>
                                 </div>

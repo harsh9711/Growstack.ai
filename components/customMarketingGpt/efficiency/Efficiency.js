@@ -31,7 +31,7 @@ function Efficiency() {
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
                     <div className="flex-shrink-0">
-                      <img src="/images/customMarketing/tailer1.svg" alt="tailer1" />
+                      <img src="/images_growstack/customMarketing/tailer1.svg" alt="tailer1" />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <h4>Chatbot</h4>
@@ -42,7 +42,7 @@ function Efficiency() {
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
                     <div className="flex-shrink-0">
-                      <img src="/images/customMarketing/tailer2.svg" alt="tailer1" />
+                      <img src="/images_growstack/customMarketing/tailer2.svg" alt="tailer1" />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <h4>Large language models</h4>
@@ -53,7 +53,7 @@ function Efficiency() {
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
                     <div className="flex-shrink-0">
-                      <img src="/images/customMarketing/tailer3.svg" alt="tailer1" />
+                      <img src="/images_growstack/customMarketing/tailer3.svg" alt="tailer1" />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <h4>Productivity</h4>
@@ -64,7 +64,7 @@ function Efficiency() {
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
                     <div className="flex-shrink-0">
-                      <img src="/images/customMarketing/tailer3.svg" alt="tailer1" />
+                      <img src="/images_growstack/customMarketing/tailer3.svg" alt="tailer1" />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <h4>Educations</h4>
@@ -77,7 +77,7 @@ function Efficiency() {
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
                     <div className="flex-shrink-0">
-                      <img src="/images/customMarketing/tailer4.svg" alt="tailer1" />
+                      <img src="/images_growstack/customMarketing/tailer4.svg" alt="tailer1" />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <h4>Scenarios</h4>
@@ -88,7 +88,7 @@ function Efficiency() {
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
                     <div className="flex-shrink-0">
-                      <img src="/images/customMarketing/tailer6.svg" alt="tailer1" />
+                      <img src="/images_growstack/customMarketing/tailer6.svg" alt="tailer1" />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <h4>Writing</h4>
@@ -99,7 +99,7 @@ function Efficiency() {
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
                     <div className="flex-shrink-0">
-                      <img src="/images/customMarketing/tailer7.svg" alt="tailer1" />
+                      <img src="/images_growstack/customMarketing/tailer7.svg" alt="tailer1" />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <h4>Research & Analysis</h4>
@@ -110,7 +110,7 @@ function Efficiency() {
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
                     <div className="flex-shrink-0">
-                      <img src="/images/customMarketing/tailer8.svg" alt="tailer1" />
+                      <img src="/images_growstack/customMarketing/tailer8.svg" alt="tailer1" />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <h4>Programming</h4>

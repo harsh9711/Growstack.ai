@@ -23,7 +23,7 @@ function VideoTemplate() {
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000"> 
                                 <div className="block">
-                                    <img src="/images/textVideo/t1.svg" alt="icon" />
+                                    <img src="/images_growstack/textVideo/t1.svg" alt="icon" />
                                     <h5>Customer service training</h5>
                                 </div>
                             </div>
@@ -31,7 +31,7 @@ function VideoTemplate() {
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000"> 
                                 <div className="block">
-                                    <img src="/images/textVideo/t2.svg" alt="icon" />
+                                    <img src="/images_growstack/textVideo/t2.svg" alt="icon" />
                                     <h5>Sales enablement training video</h5>
                                 </div>
                             </div>
@@ -39,7 +39,7 @@ function VideoTemplate() {
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000"> 
                                 <div className="block">
-                                    <img src="/images/textVideo/t3.svg" alt="icon" />
+                                    <img src="/images_growstack/textVideo/t3.svg" alt="icon" />
                                     <h5>App promo video</h5>
                                 </div>
                             </div>
@@ -47,7 +47,7 @@ function VideoTemplate() {
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000"> 
                                 <div className="block">
-                                    <img src="/images/textVideo/t4.svg" alt="icon" />
+                                    <img src="/images_growstack/textVideo/t4.svg" alt="icon" />
                                     <h5>Customer onboarding</h5>
                                 </div>
                             </div>
@@ -55,7 +55,7 @@ function VideoTemplate() {
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000"> 
                                 <div className="block">
-                                    <img src="/images/textVideo/t5.svg" alt="icon" />
+                                    <img src="/images_growstack/textVideo/t5.svg" alt="icon" />
                                     <h5>Workplace report - LinkedIn</h5>
                                 </div>
                             </div>
@@ -63,7 +63,7 @@ function VideoTemplate() {
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000"> 
                                 <div className="block">
-                                    <img src="/images/textVideo/t6.svg" alt="icon" />
+                                    <img src="/images_growstack/textVideo/t6.svg" alt="icon" />
                                     <h5>Conflict Of interest course</h5>
                                 </div>
                             </div>

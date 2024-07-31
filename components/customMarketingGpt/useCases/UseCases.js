@@ -32,7 +32,7 @@ function UseCases() {
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
                                 <div className="block">
-                                    <img src="/images/customMarketing/case1.svg" alt="case" />
+                                    <img src="/images_growstack/customMarketing/case1.svg" alt="case" />
                                     <p>Customer service</p>
                                 </div>
                             </div>
@@ -40,7 +40,7 @@ function UseCases() {
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
                                 <div className="block">
-                                    <img src="/images/customMarketing/case2.svg" alt="case" />
+                                    <img src="/images_growstack/customMarketing/case2.svg" alt="case" />
                                     <p>Customer engagement</p>
                                 </div>
                             </div>
@@ -48,7 +48,7 @@ function UseCases() {
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
                                 <div className="block">
-                                    <img src="/images/customMarketing/case3.svg" alt="case" />
+                                    <img src="/images_growstack/customMarketing/case3.svg" alt="case" />
                                     <p>Document research</p>
                                 </div>
                             </div>

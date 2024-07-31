@@ -47,7 +47,7 @@ function AiSlider() {
                     {[...Array(20).keys()].map((index) => (
                         <SwiperSlide key={index}>
                             <div className="imgBlock">
-                                <img src={`/images/salesMarketing/ai-${(index % 10) + 1}.png`} alt="ai" />
+                                <img src={`/images_growstack/salesMarketing/ai-${(index % 10) + 1}.png`} alt="ai" />
                                 <div className="block">
                                     <p>
                                         <b>Samantha wells</b>
@@ -95,7 +95,7 @@ function AiSlider() {
                     {[...Array(20).keys()].map((index) => (
                         <SwiperSlide key={index}>
                             <div className="imgBlock">
-                                <img src={`/images/salesMarketing/ai-${(index % 10) + 1}.png`} alt="ai" />
+                                <img src={`/images_growstack/salesMarketing/ai-${(index % 10) + 1}.png`} alt="ai" />
                                 <div className="block">
                                     <p>
                                         <b>Samantha wells</b>

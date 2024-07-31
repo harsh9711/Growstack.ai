@@ -65,11 +65,11 @@ function CustomerStories() {
         >
           <SwiperSlide>
             <div className="card">
-                <img className='logo' src="/images/aiMarket/logo.svg" alt="customer1" />
+                <img className='logo' src="/images_growstack/aiMarket/logo.svg" alt="customer1" />
                 <p className='text'><span>“</span>The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.<span>”</span></p>
                 <div className="d-flex align-items-center block">
                     <div className="flex-shrink-0">
-                      <img src="/images/verticals/user.svg" alt="user" />
+                      <img src="/images_growstack/verticals/user.svg" alt="user" />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <h4>Josh Gould</h4>
@@ -80,11 +80,11 @@ function CustomerStories() {
           </SwiperSlide>
           <SwiperSlide>
             <div className="card">
-                <img className='logo' src="/images/aiMarket/logo.svg" alt="customer1" />
+                <img className='logo' src="/images_growstack/aiMarket/logo.svg" alt="customer1" />
                 <p className='text'><span>“</span>The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.<span>”</span></p>
                 <div className="d-flex align-items-center block">
                     <div className="flex-shrink-0">
-                      <img src="/images/verticals/user.svg" alt="user" />
+                      <img src="/images_growstack/verticals/user.svg" alt="user" />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <h4>Josh Gould</h4>
@@ -95,11 +95,11 @@ function CustomerStories() {
           </SwiperSlide>
           <SwiperSlide>
             <div className="card">
-                <img className='logo' src="/images/aiMarket/logo.svg" alt="customer1" />
+                <img className='logo' src="/images_growstack/aiMarket/logo.svg" alt="customer1" />
                 <p className='text'><span>“</span>The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.<span>”</span></p>
                 <div className="d-flex align-items-center block">
                     <div className="flex-shrink-0">
-                      <img src="/images/verticals/user.svg" alt="user" />
+                      <img src="/images_growstack/verticals/user.svg" alt="user" />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <h4>Josh Gould</h4>
@@ -110,11 +110,11 @@ function CustomerStories() {
           </SwiperSlide>
           <SwiperSlide>
             <div className="card">
-                <img className='logo' src="/images/aiMarket/logo.svg" alt="customer1" />
+                <img className='logo' src="/images_growstack/aiMarket/logo.svg" alt="customer1" />
                 <p className='text'><span>“</span>The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.<span>”</span></p>
                 <div className="d-flex align-items-center block">
                     <div className="flex-shrink-0">
-                      <img src="/images/verticals/user.svg" alt="user" />
+                      <img src="/images_growstack/verticals/user.svg" alt="user" />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <h4>Josh Gould</h4>
@@ -125,11 +125,11 @@ function CustomerStories() {
           </SwiperSlide>
           <SwiperSlide>
             <div className="card">
-                <img className='logo' src="/images/aiMarket/logo.svg" alt="customer1" />
+                <img className='logo' src="/images_growstack/aiMarket/logo.svg" alt="customer1" />
                 <p className='text'><span>“</span>The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.<span>”</span></p>
                 <div className="d-flex align-items-center block">
                     <div className="flex-shrink-0">
-                      <img src="/images/verticals/user.svg" alt="user" />
+                      <img src="/images_growstack/verticals/user.svg" alt="user" />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <h4>Josh Gould</h4>
@@ -140,11 +140,11 @@ function CustomerStories() {
           </SwiperSlide>
           <SwiperSlide>
             <div className="card">
-                <img className='logo' src="/images/aiMarket/logo.svg" alt="customer1" />
+                <img className='logo' src="/images_growstack/aiMarket/logo.svg" alt="customer1" />
                 <p className='text'><span>“</span>The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.<span>”</span></p>
                 <div className="d-flex align-items-center block">
                     <div className="flex-shrink-0">
-                      <img src="/images/verticals/user.svg" alt="user" />
+                      <img src="/images_growstack/verticals/user.svg" alt="user" />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <h4>Josh Gould</h4>
@@ -155,11 +155,11 @@ function CustomerStories() {
           </SwiperSlide>
           <SwiperSlide>
             <div className="card">
-                <img className='logo' src="/images/aiMarket/logo.svg" alt="customer1" />
+                <img className='logo' src="/images_growstack/aiMarket/logo.svg" alt="customer1" />
                 <p className='text'><span>“</span>The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.<span>”</span></p>
                 <div className="d-flex align-items-center block">
                     <div className="flex-shrink-0">
-                      <img src="/images/verticals/user.svg" alt="user" />
+                      <img src="/images_growstack/verticals/user.svg" alt="user" />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <h4>Josh Gould</h4>

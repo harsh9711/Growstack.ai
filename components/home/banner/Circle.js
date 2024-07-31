@@ -16,7 +16,7 @@ function Circle() {
           <div className="icon-container" key={i} style={{ transform: `rotate(${i * 30}deg) translate(650px) rotate(-${i * 30}deg)` }}>
             <Link href={links[i]}>
               <div className={`icon bg-${i % 7}`}>
-                <img alt="icons" src={`/images/banner/icons${(i % 7) + 1}.svg`} />
+                <img alt="icons" src={`/images_growstack/banner/icons${(i % 7) + 1}.svg`} />
               </div>
             </Link>
           </div>
@@ -27,7 +27,7 @@ function Circle() {
           <div className="icon-container" key={i} style={{ transform: `rotate(${i * 30}deg) translate(500px) rotate(-${i * 30}deg)` }}>
             <Link href={links[i]}>
               <div className={`icon bg-${i % 7}`}>
-                <img alt="icons" src={`/images/banner/icons${(i % 7) + 1}.svg`} />
+                <img alt="icons" src={`/images_growstack/banner/icons${(i % 7) + 1}.svg`} />
               </div>
             </Link>
           </div>

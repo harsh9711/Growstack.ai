@@ -57,7 +57,7 @@ function AiPartner() {
           {[...Array(20).keys()].map((index) => (
             <SwiperSlide key={index}>
               <div className="imgBlock">
-                <img src={`/images/aiMarket/aiPartner${(index % 12) + 1}.svg`} alt={`ai-partner-${index}`} />
+                <img src={`/images_growstack/aiMarket/aiPartner${(index % 12) + 1}.svg`} alt={`ai-partner-${index}`} />
               </div>
             </SwiperSlide>
           ))}

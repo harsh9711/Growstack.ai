@@ -29,13 +29,13 @@ function Banner() {
 
                                 </div>
                                 <div className="store">
-                                    <Link href="/register"><img src="/images/banner/playStore.svg" alt="banner" /></Link>
-                                    <Link href="/register"><img src="/images/banner/apple.svg" alt="banner" /></Link>
+                                    <Link href="/register"><img src="/images_growstack/banner/playStore.svg" alt="banner" /></Link>
+                                    <Link href="/register"><img src="/images_growstack/banner/apple.svg" alt="banner" /></Link>
                                 </div>
                             </div>
                         </div>
                         <div className="col-lg-6">
-                            <img className='bannerImg' src="/images/customMarketing/banner.png" alt="banner" />
+                            <img className='bannerImg' src="/images_growstack/customMarketing/banner.png" alt="banner" />
                         </div>
                     </div>
                 </div>

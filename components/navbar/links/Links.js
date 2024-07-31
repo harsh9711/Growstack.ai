@@ -65,7 +65,7 @@ const Links = () => {
       </div>
       <Image
         className="menuButton"
-        src="/images/banner/hamburger.png"
+        src="/images_growstack/banner/hamburger.png"
         alt="hamburger"
         width={30}
         height={30}

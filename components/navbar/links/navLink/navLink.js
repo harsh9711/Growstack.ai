@@ -39,7 +39,7 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
         </Link>
         {hasSubmenu && (
           <Image
-            src="/images/header/arrow.svg"
+            src="/images_growstack/header/arrow.svg"
             alt="arrow"
             width={10}
             height={10}
@@ -51,7 +51,7 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
         <div className="submenu" style={{ display: item.isOpen ? 'block' : 'none' }}>
           {item.submenu.map(sub => (
             <Link key={sub.title} href={sub.path} className="submenu_item" onClick={handleSubmenuItemClick}>
-              {sub.title} <img src="/images/header/arrow.svg" alt="arrow" />
+              {sub.title} <img src="/images_growstack/header/arrow.svg" alt="arrow" />
             </Link>
           ))}
         </div>

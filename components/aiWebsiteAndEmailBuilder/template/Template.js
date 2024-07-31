@@ -13,38 +13,38 @@ const tabData = [
 
 const tabContent = {
     creative: [
-        '/images/emailBuilder/template1.svg',
-        '/images/emailBuilder/template2.svg',
-        '/images/emailBuilder/template3.svg',
-        '/images/emailBuilder/template4.svg',
-        '/images/emailBuilder/template5.svg',
-        '/images/emailBuilder/template6.svg',
-        '/images/emailBuilder/template7.svg',
-        '/images/emailBuilder/template8.svg'
+        '/images_growstack/emailBuilder/template1.svg',
+        '/images_growstack/emailBuilder/template2.svg',
+        '/images_growstack/emailBuilder/template3.svg',
+        '/images_growstack/emailBuilder/template4.svg',
+        '/images_growstack/emailBuilder/template5.svg',
+        '/images_growstack/emailBuilder/template6.svg',
+        '/images_growstack/emailBuilder/template7.svg',
+        '/images_growstack/emailBuilder/template8.svg'
     ],
     newsletters: [
-        '/images/emailBuilder/template3.svg',
-        '/images/emailBuilder/template4.svg',
-        '/images/emailBuilder/template5.svg',
-        '/images/emailBuilder/template6.svg'
+        '/images_growstack/emailBuilder/template3.svg',
+        '/images_growstack/emailBuilder/template4.svg',
+        '/images_growstack/emailBuilder/template5.svg',
+        '/images_growstack/emailBuilder/template6.svg'
     ],
     trigger: [
-        '/images/emailBuilder/template2.svg',
-        '/images/emailBuilder/template3.svg',
-        '/images/emailBuilder/template5.svg',
-        '/images/emailBuilder/template7.svg'
+        '/images_growstack/emailBuilder/template2.svg',
+        '/images_growstack/emailBuilder/template3.svg',
+        '/images_growstack/emailBuilder/template5.svg',
+        '/images_growstack/emailBuilder/template7.svg'
     ],
     holidays: [
-        '/images/emailBuilder/template1.svg',
-        '/images/emailBuilder/template4.svg',
-        '/images/emailBuilder/template6.svg',
-        '/images/emailBuilder/template8.svg'
+        '/images_growstack/emailBuilder/template1.svg',
+        '/images_growstack/emailBuilder/template4.svg',
+        '/images_growstack/emailBuilder/template6.svg',
+        '/images_growstack/emailBuilder/template8.svg'
     ],
     events: [
-        '/images/emailBuilder/template2.svg',
-        '/images/emailBuilder/template4.svg',
-        '/images/emailBuilder/template6.svg',
-        '/images/emailBuilder/template8.svg'
+        '/images_growstack/emailBuilder/template2.svg',
+        '/images_growstack/emailBuilder/template4.svg',
+        '/images_growstack/emailBuilder/template6.svg',
+        '/images_growstack/emailBuilder/template8.svg'
     ],
 };
 

@@ -33,13 +33,13 @@ function Banner() {
 
                                 </div>
                                 <div className="store">
-                                    <Link href="/register"><img src="/images/banner/playStore.svg" alt="banner" /></Link>
-                                    <Link href="/register"><img src="/images/banner/apple.svg" alt="banner" /></Link>
+                                    <Link href="/register"><img src="/images_growstack/banner/playStore.svg" alt="banner" /></Link>
+                                    <Link href="/register"><img src="/images_growstack/banner/apple.svg" alt="banner" /></Link>
                                 </div>
                             </div>
                         </div>
                         <div className="col-lg-6 bannerImg">
-                            <img src="/images/salesMarketing/banner.png" alt="banner" />
+                            <img src="/images_growstack/salesMarketing/banner.png" alt="banner" />
                         </div>
                     </div>
                 </div>
@@ -48,7 +48,7 @@ function Banner() {
             <div className="underBanner" data-aos="fade-up"
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
-                <img src="/images/salesMarketing/underBanner.png" alt="salesMarketing" />
+                <img src="/images_growstack/salesMarketing/underBanner.png" alt="salesMarketing" />
             </div>
             </div>
         </React.Fragment>

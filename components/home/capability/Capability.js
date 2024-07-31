@@ -40,36 +40,36 @@ function Capability() {
                                     <div className="cardsBlock row">
                                     <div className='col-md-6 p-1'>
                                         <div className="block">
-                                            <img src="/images/home/trust.svg" alt="Trustpilot Logo" />
+                                            <img src="/images_growstack/home/trust.svg" alt="Trustpilot Logo" />
                                             <div className="content">
-                                                <img src="/images/home/tstar.svg" alt="star" />
+                                                <img src="/images_growstack/home/tstar.svg" alt="star" />
                                                 <p><b>4.9/5 | 9010</b> reviews</p>
                                             </div>
                                         </div>
                                         </div>
                                         <div className='col-md-6 p-1'>
                                         <div className="block">
-                                            <img src="/images/home/Google.svg" alt="Google Logo" />
+                                            <img src="/images_growstack/home/Google.svg" alt="Google Logo" />
                                             <div className="content">
-                                                <img src="/images/home/gstar.svg" alt="star" />
+                                                <img src="/images_growstack/home/gstar.svg" alt="star" />
                                                 <p><b>4.4/5 | 4443</b> reviews</p>
                                             </div>
                                         </div>
                                         </div>
                                         <div className='col-md-6 p-1'>
                                         <div className="block">
-                                            <img src="/images/home/Hostadvice.svg" alt="Hostadvice Logo" />
+                                            <img src="/images_growstack/home/Hostadvice.svg" alt="Hostadvice Logo" />
                                             <div className="content">
-                                                <img src="/images/home/gstar.svg" alt="star" />
+                                                <img src="/images_growstack/home/gstar.svg" alt="star" />
                                                 <p><b>4.6/5 | 1562</b> reviews</p>
                                             </div>
                                         </div>
                                         </div>
                                         <div className='col-md-6 p-1'>
                                         <div className="block">
-                                            <img src="/images/home/Serchen.svg" alt="Serchen Logo" />
+                                            <img src="/images_growstack/home/Serchen.svg" alt="Serchen Logo" />
                                             <div className="content">
-                                                <img src="/images/home/sstar.svg" alt="star" />
+                                                <img src="/images_growstack/home/sstar.svg" alt="star" />
                                                 <p><b>4.6/5 | 621</b> reviews</p>
                                             </div>
                                         </div>
@@ -80,7 +80,7 @@ function Capability() {
                             </div>
                             <div className="card contact">
                                 <div className="card-body">
-                                    <img src="/images/home/cm.svg" alt="cm" />
+                                    <img src="/images_growstack/home/cm.svg" alt="cm" />
                                     <h5 className="card-title">Contact management</h5>
                                     <p className="card-text">
                                         Keep your contact information organized and protected.
@@ -100,7 +100,7 @@ function Capability() {
                                     </p>
                                     </div>
                                     <div className="text-center">
-                                        <img src="/images/home/wt.svg" alt="GrowStack Logo" />
+                                        <img src="/images_growstack/home/wt.svg" alt="GrowStack Logo" />
                                     </div>
                                 </div>
                             </div>

@@ -20,7 +20,7 @@ function AgentsDepartment() {
                                 <span className="user">From idea to video in minutes 🔥</span>
                                 <h3 className="heading"><span>Agent for </span> <br />
                                 every department</h3>
-                                <Link href="/register" className='sheen'>Get Started <img src="/images/home/arrow.svg" alt="arrow" /></Link>
+                                <Link href="/register" className='sheen'>Get Started <img src="/images_growstack/home/arrow.svg" alt="arrow" /></Link>
 
                                 </div>
                                 <div className="col-md-4 my-2 my-md-3" data-aos="fade-up"
@@ -29,7 +29,7 @@ function AgentsDepartment() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/salesMarketing/legal.svg" alt="icon" />
+                                                <img src="/images_growstack/salesMarketing/legal.svg" alt="icon" />
                                             </div>
                                             <h5 className="heading"><span>Legal & compliance</span>
                                             agents</h5>
@@ -43,7 +43,7 @@ function AgentsDepartment() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/salesMarketing/legal.svg" alt="icon" />
+                                                <img src="/images_growstack/salesMarketing/legal.svg" alt="icon" />
                                             </div>
                                             <h5 className="heading"><span>Marketing & branding</span>
                                             agents</h5>
@@ -57,7 +57,7 @@ function AgentsDepartment() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/salesMarketing/legal.svg" alt="icon" />
+                                                <img src="/images_growstack/salesMarketing/legal.svg" alt="icon" />
                                             </div>
                                             <h5 className="heading"><span>Sales</span>
                                             agents</h5>
@@ -71,7 +71,7 @@ function AgentsDepartment() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/salesMarketing/legal.svg" alt="icon" />
+                                                <img src="/images_growstack/salesMarketing/legal.svg" alt="icon" />
                                             </div>
                                             <h5 className="heading"><span>C-level</span>
                                             agents</h5>
@@ -85,7 +85,7 @@ function AgentsDepartment() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/salesMarketing/legal.svg" alt="icon" />
+                                                <img src="/images_growstack/salesMarketing/legal.svg" alt="icon" />
                                             </div>
                                             <h5 className="heading"><span>HR</span>
                                             agents</h5>

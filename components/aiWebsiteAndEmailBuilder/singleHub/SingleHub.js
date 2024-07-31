@@ -75,7 +75,7 @@ function SingleHub() {
                                             {[...Array(10).keys()].map((index) => (
                                                 <SwiperSlide key={index}>
                                                     <div className="imgBlock">
-                                                        <img src={`/images/emailBuilder/hub1.svg`} alt={`hub1`} />
+                                                        <img src={`/images_growstack/emailBuilder/hub1.svg`} alt={`hub1`} />
                                                     </div>
                                                 </SwiperSlide>
                                             ))}
@@ -169,7 +169,7 @@ function SingleHub() {
                                 data-aos-easing="ease-in-sine"
                                 data-aos-duration="1000">
                                 <div className="imgBlock">
-                                    <img src="/images/emailBuilder/hub2.svg" alt="img" />
+                                    <img src="/images_growstack/emailBuilder/hub2.svg" alt="img" />
                                 </div>
                             </div>
                         </div>

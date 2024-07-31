@@ -20,7 +20,7 @@ function DetailFeatures() {
                                 <span className="user">Details of features</span>
                                 <h3 className="heading"><span>The content  </span> <br />
                                 creation platform</h3>
-                                <Link href="/register" className='sheen'>Start started free <img src="/images/home/arrow.svg" alt="arrow" /></Link>
+                                <Link href="/register" className='sheen'>Start started free <img src="/images_growstack/home/arrow.svg" alt="arrow" /></Link>
 
                                 </div>
                                 <div className="col-md-4 my-2 my-md-3" data-aos="fade-up"
@@ -29,7 +29,7 @@ function DetailFeatures() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/aiMarket/content1.svg" alt="icon" />
+                                                <img src="/images_growstack/aiMarket/content1.svg" alt="icon" />
                                             </div>
                                             <h5 className="heading"><span>Article </span>
                                             generator</h5>
@@ -44,7 +44,7 @@ function DetailFeatures() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/aiMarket/content2.svg" alt="icon" />
+                                                <img src="/images_growstack/aiMarket/content2.svg" alt="icon" />
                                             </div>
                                             <h5 className="heading"><span>Content </span>
                                             rewriter</h5>
@@ -59,7 +59,7 @@ function DetailFeatures() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/aiMarket/content3.svg" alt="icon" />
+                                                <img src="/images_growstack/aiMarket/content3.svg" alt="icon" />
                                             </div>
                                             <h5 className="heading"><span>Paragraph </span>
                                             generator</h5>
@@ -74,7 +74,7 @@ function DetailFeatures() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/aiMarket/content4.svg" alt="icon" />
+                                                <img src="/images_growstack/aiMarket/content4.svg" alt="icon" />
                                             </div>
                                             <h5 className="heading"><span>Blog </span>
                                             titles</h5>
@@ -89,7 +89,7 @@ function DetailFeatures() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/aiMarket/content5.svg" alt="icon" />
+                                                <img src="/images_growstack/aiMarket/content5.svg" alt="icon" />
                                             </div>
                                             <h5 className="heading"><span>Blog </span>
                                             section</h5>
@@ -104,7 +104,7 @@ function DetailFeatures() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/aiMarket/content6.svg" alt="icon" />
+                                                <img src="/images_growstack/aiMarket/content6.svg" alt="icon" />
                                             </div>
                                             <h5 className="heading"><span>Facebooks </span>
                                             ads</h5>
@@ -119,7 +119,7 @@ function DetailFeatures() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/aiMarket/content7.svg" alt="icon" />
+                                                <img src="/images_growstack/aiMarket/content7.svg" alt="icon" />
                                             </div>
                                             <h5 className="heading"><span>Video </span>
                                             descriptions</h5>
@@ -134,7 +134,7 @@ function DetailFeatures() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/aiMarket/content8.svg" alt="icon" />
+                                                <img src="/images_growstack/aiMarket/content8.svg" alt="icon" />
                                             </div>
                                             <h5 className="heading"><span>Instagram  </span>
                                             captions</h5>

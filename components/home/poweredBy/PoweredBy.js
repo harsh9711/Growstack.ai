@@ -23,12 +23,12 @@ function PoweredBy() {
            <div className="images" data-aos="fade-down"
             data-aos-easing="ease-in-sine"
             data-aos-duration="1000">
-            <Link href="/register"><img src="/images/home/poweredBy1.svg" alt="poweredBy" /></Link>
-            <Link href="/register"><img src="/images/home/poweredBy7.svg" alt="poweredBy" /></Link>
-            <Link href="/register"><img src="/images/home/poweredBy2.svg" alt="poweredBy" /></Link>
-            <Link href="/register"><img src="/images/home/poweredBy3.svg" alt="poweredBy" /></Link>
-            <Link href="/register"><img src="/images/home/poweredBy4.svg" alt="poweredBy" /></Link>
-            <Link href="/register"><img src="/images/home/poweredBy5.svg" alt="poweredBy" /></Link>
+            <Link href="/register"><img src="/images_growstack/home/poweredBy1.svg" alt="poweredBy" /></Link>
+            <Link href="/register"><img src="/images_growstack/home/poweredBy7.svg" alt="poweredBy" /></Link>
+            <Link href="/register"><img src="/images_growstack/home/poweredBy2.svg" alt="poweredBy" /></Link>
+            <Link href="/register"><img src="/images_growstack/home/poweredBy3.svg" alt="poweredBy" /></Link>
+            <Link href="/register"><img src="/images_growstack/home/poweredBy4.svg" alt="poweredBy" /></Link>
+            <Link href="/register"><img src="/images_growstack/home/poweredBy5.svg" alt="poweredBy" /></Link>
            </div>
         </div>
       </div>

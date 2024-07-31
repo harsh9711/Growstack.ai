@@ -1,7 +1,7 @@
 [
   {
     "tab_button": "Plan",
-    "tab_img": "/images/home/market1.svg",
+    "tab_img": "/images_growstack/home/market1.svg",
     "slides": [
       {
         "title": "Strategize your marketing campaigns",
@@ -61,7 +61,7 @@
   },
   {
     "tab_button": "Create",
-    "tab_img": "/images/home/market2.svg",
+    "tab_img": "/images_growstack/home/market2.svg",
     "slides": [
       {
         "title": "Strategize your marketing campaigns",
@@ -90,7 +90,7 @@
   },
   {
     "tab_button": "Publish",
-    "tab_img": "/images/home/market3.svg",
+    "tab_img": "/images_growstack/home/market3.svg",
     "slides": [
       {
         "title": "Strategize your marketing campaigns",
@@ -131,7 +131,7 @@
   },
   {
     "tab_button": "Engage",
-    "tab_img": "/images/home/market4.svg",
+    "tab_img": "/images_growstack/home/market4.svg",
     "slides": [
       {
         "title": "Strategize your marketing campaigns",
@@ -172,7 +172,7 @@
   },
   {
     "tab_button": "Analyze",
-    "tab_img": "/images/home/market5.svg",
+    "tab_img": "/images_growstack/home/market5.svg",
     "slides": [
       {
         "title": "Strategize your marketing campaigns",

@@ -83,7 +83,7 @@ function Marketing() {
                                             <div className="row align-items-center">
                                                 <div className="col-md-6">
                                                     <div className="writterImg">
-                                                        <img src="/images/home/marketSlider.svg" alt="marketSlider" />
+                                                        <img src="/images_growstack/home/marketSlider.svg" alt="marketSlider" />
                                                     </div>
                                                 </div>
                                                 <div className="col-md-6">
@@ -94,7 +94,7 @@ function Marketing() {
                                                             <li>Features</li>
                                                             {slide.features.map((feature, i) => (
                                                                 <li key={i}>
-                                                                    <img src="/images/home/check.svg" alt="check" /> {feature}
+                                                                    <img src="/images_growstack/home/check.svg" alt="check" /> {feature}
                                                                 </li>
                                                             ))}
                                                         </ul>

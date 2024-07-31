@@ -56,7 +56,7 @@ function Partnership() {
             {[...Array(20).keys()].map((index) => (
               <SwiperSlide key={index}>
                 <div className="imgBlock">
-                  <img src={`/images/social/partner${(index % 18) + 1}.svg`} alt={`partner-${index}`} />
+                  <img src={`/images_growstack/social/partner${(index % 18) + 1}.svg`} alt={`partner-${index}`} />
                 </div>
               </SwiperSlide>
             ))}

@@ -27,7 +27,7 @@ function VerticalDetails() {
                 data-aos-easing="ease-in-sine"
                 data-aos-duration="1000">
                 <div className="userData">
-                  <img src="/images/verticals/userDetail.svg" alt="user" />
+                  <img src="/images_growstack/verticals/userDetail.svg" alt="user" />
                   <h4>Josh Gould</h4>
                   <span>Blog writer</span>
                   <h3>Contents</h3>
@@ -36,10 +36,10 @@ function VerticalDetails() {
                   <p>Omnis ipsum ratione optio sed</p>
                   <h6>Share this article</h6>
                   <div className="social">
-                    <Link href="/register"> <img src="/images/verticals/share1.svg" alt="facebook" /></Link>
-                    <Link href="/register"> <img src="/images/verticals/share2.svg" alt="twitter" /></Link>
-                    <Link href="/register"> <img src="/images/verticals/share3.svg" alt="linkedin" /></Link>
-                    <Link href="/register"> <img src="/images/verticals/share4.svg" alt="linkedin" /></Link>
+                    <Link href="/register"> <img src="/images_growstack/verticals/share1.svg" alt="facebook" /></Link>
+                    <Link href="/register"> <img src="/images_growstack/verticals/share2.svg" alt="twitter" /></Link>
+                    <Link href="/register"> <img src="/images_growstack/verticals/share3.svg" alt="linkedin" /></Link>
+                    <Link href="/register"> <img src="/images_growstack/verticals/share4.svg" alt="linkedin" /></Link>
                   </div>
                 </div>
               </div>
@@ -65,7 +65,7 @@ function VerticalDetails() {
                   <p>Quia velit maiores optio. Illum qui ea autem at vero ut soluta. Non architecto voluptas sit vitae qui laudantium
                     voluptatum tempora. Doloremque et incidunt ipsam qui modi. Dolorem sit iure earum nihil. Harum cumque
                     perferendis.</p>
-                  <img src="/images/verticals/detailImg.svg" alt="detailImg" />
+                  <img src="/images_growstack/verticals/detailImg.svg" alt="detailImg" />
                   <h3>Omnis ipsum ratione optio sed quos aspernatur nam.</h3>
                   <p>Maxime distinctio nulla aliquam. Illo voluptatibus nulla. Ut consequuntur consequatur tempore suscipit minima voluptatem labore laudantium et. Quaerat praesentium consequatur voluptas dolore voluptates adipisci. Delectus delectus consequatur ex rerum. Laudantium quaerat reprehenderit vel animi.</p>
                 </div>
@@ -84,7 +84,7 @@ function VerticalDetails() {
               <div className="card">
                 <div className="row g-0">
                   <div className="col-md-6">
-                    <img src="/images/verticals/article1.svg" className="img-fluid" alt="banner" />
+                    <img src="/images_growstack/verticals/article1.svg" className="img-fluid" alt="banner" />
                   </div>
                   <div className="col-md-6">
                     <div className="card-body">
@@ -96,7 +96,7 @@ function VerticalDetails() {
                         <p>Sales planning is a fundamental component of sound selling. After all, you can‘t structure an effective sales effort if you don’t have, well, structure.</p>
                         <div className="d-flex align-items-center block">
                           <div className="flex-shrink-0">
-                            <img src="/images/verticals/user.svg" alt="user" />
+                            <img src="/images_growstack/verticals/user.svg" alt="user" />
                           </div>
                           <div className="flex-grow-1 ms-3">
                             <h4>Josh Gould</h4>
@@ -115,7 +115,7 @@ function VerticalDetails() {
               <div className="card">
                 <div className="row g-0">
                   <div className="col-md-6">
-                    <img src="/images/verticals/article2.svg" className="img-fluid" alt="banner" />
+                    <img src="/images_growstack/verticals/article2.svg" className="img-fluid" alt="banner" />
                   </div>
                   <div className="col-md-6">
                     <div className="card-body">
@@ -127,7 +127,7 @@ function VerticalDetails() {
                         <p>Sales planning is a fundamental component of sound selling. After all, you can‘t structure an effective sales effort if you don’t have, well, structure.</p>
                         <div className="d-flex align-items-center block">
                           <div className="flex-shrink-0">
-                            <img src="/images/verticals/user.svg" alt="user" />
+                            <img src="/images_growstack/verticals/user.svg" alt="user" />
                           </div>
                           <div className="flex-grow-1 ms-3">
                             <h4>Josh Gould</h4>
@@ -146,7 +146,7 @@ function VerticalDetails() {
               <div className="card">
                 <div className="row g-0">
                   <div className="col-md-6">
-                    <img src="/images/verticals/article3.svg" className="img-fluid" alt="banner" />
+                    <img src="/images_growstack/verticals/article3.svg" className="img-fluid" alt="banner" />
                   </div>
                   <div className="col-md-6">
                     <div className="card-body">
@@ -158,7 +158,7 @@ function VerticalDetails() {
                         <p>Sales planning is a fundamental component of sound selling. After all, you can‘t structure an effective sales effort if you don’t have, well, structure.</p>
                         <div className="d-flex align-items-center block">
                           <div className="flex-shrink-0">
-                            <img src="/images/verticals/user.svg" alt="user" />
+                            <img src="/images_growstack/verticals/user.svg" alt="user" />
                           </div>
                           <div className="flex-grow-1 ms-3">
                             <h4>Josh Gould</h4>

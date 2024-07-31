@@ -13,29 +13,29 @@ function Register() {
         <div className="block" data-aos="fade-right"
           data-aos-easing="ease-in-sine"
           data-aos-duration="1000">
-          <img className='back' src="/images/login/loginside.svg" alt="login" />
+          <img className='back' src="/images_growstack/login/loginside.svg" alt="login" />
         </div>
         <div className="loginForm" data-aos="fade-left"
           data-aos-easing="ease-in-sine"
           data-aos-duration="1000">
           <div className="formBlock">
             <div className="title">
-              <Link href="/register"><img src="/images/login/logo.svg" alt="logo" /></Link>
+              <Link href="/register"><img src="/images_growstack/login/logo.svg" alt="logo" /></Link>
               <h3>Get started</h3>
               <p>Create your account now.</p>
             </div>
             <form>
               <div className="form-group">
                 <input type="email" name="email" id="email" placeholder="Enter your Email..." />
-                <img src="/images/login/f1.svg" alt="img" />
+                <img src="/images_growstack/login/f1.svg" alt="img" />
               </div>
               <div className="form-group">
                 <input type="password" name="password" id="password" placeholder="Enter your Password..." />
-                <img src="/images/login/f2.svg" alt="img" />
+                <img src="/images_growstack/login/f2.svg" alt="img" />
               </div>
               <div className="form-group">
                 <input type="password" name="password" id="password" placeholder="Confirm your Password..." />
-                <img src="/images/login/f2.svg" alt="img" />
+                <img src="/images_growstack/login/f2.svg" alt="img" />
               </div>
               <div className="rememberForget">
                 <div className="remember">
@@ -48,8 +48,8 @@ function Register() {
                 <p><span>or, login with</span></p>
               </div>
               <div className="buttons">
-                <button><img src="/images/login/wf.svg" alt="linkedin" />Continue with Facebook</button>
-                <button><img src="/images/login/wg.svg" alt="google" />Continue With Google</button>
+                <button><img src="/images_growstack/login/wf.svg" alt="linkedin" />Continue with Facebook</button>
+                <button><img src="/images_growstack/login/wg.svg" alt="google" />Continue With Google</button>
               </div>
               <div className="account">
                 <p>Already have an account? <Link href="/login">Login now</Link></p>

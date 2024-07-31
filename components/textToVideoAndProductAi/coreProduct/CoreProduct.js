@@ -80,7 +80,7 @@ function CoreProduct() {
                      data-aos-easing="ease-in-sine"
                      data-aos-duration="1000">
                   <div className="imgBlock">
-                    <img src="/images/textVideo/product.svg" alt="product" />
+                    <img src="/images_growstack/textVideo/product.svg" alt="product" />
                   </div>
                 </div>
               </div>

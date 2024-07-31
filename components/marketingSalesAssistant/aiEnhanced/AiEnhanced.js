@@ -25,7 +25,7 @@ function AiEnhanced() {
                             <div className="card">
                                 <div className="card-body">
                                     <div className="icon">
-                                        <img src="/images/salesMarketing/aie1.svg" alt="icon" />
+                                        <img src="/images_growstack/salesMarketing/aie1.svg" alt="icon" />
                                     </div>
                                     <h5 className="card-title">Agent for
                                         <span>every department</span></h5>
@@ -39,7 +39,7 @@ function AiEnhanced() {
                             <div className="card">
                                 <div className="card-body">
                                     <div className="icon">
-                                        <img src="/images/salesMarketing/aie2.svg" alt="icon" />
+                                        <img src="/images_growstack/salesMarketing/aie2.svg" alt="icon" />
                                     </div>
                                     <h5 className="card-title">Tailored intelligence
                                         <span>for your business</span></h5>
@@ -53,7 +53,7 @@ function AiEnhanced() {
                             <div className="card">
                                 <div className="card-body">
                                     <div className="icon">
-                                        <img src="/images/salesMarketing/aie3.svg" alt="icon" />
+                                        <img src="/images_growstack/salesMarketing/aie3.svg" alt="icon" />
                                     </div>
                                     <h5 className="card-title">Immediate results &
                                         <span>visible growth</span></h5>

@@ -17,7 +17,7 @@ function ConceptCode() {
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
                         <div className="image">
-                            <img src="/images/emailBuilder/code.svg" alt="conceptCode" />
+                            <img src="/images_growstack/emailBuilder/code.svg" alt="conceptCode" />
                         </div>
                     </div>
                     <div className="col-md-6" data-aos="fade-left"

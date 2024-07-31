@@ -15,7 +15,7 @@ function Premium() {
                 <div className="col-lg-5 col-md-6" data-aos="fade-right"
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
-                    <img src="/images/home/premium.png" alt="premium" />
+                    <img src="/images_growstack/home/premium.png" alt="premium" />
                 </div>
                 <div className="col-lg-7 col-md-6" data-aos="fade-left"
                             data-aos-easing="ease-in-sine"

@@ -6,7 +6,7 @@
         "points": ["Ad Creation", "Content Generation", "Framework Development", "Creative Inspiration"],
         "linkText": "Learn more",
         "link":"/custom-marketing-gpt-apps",
-        "imgSrc": "/images/home/writter.png",
+        "imgSrc": "/images_growstack/home/writter.png",
         "bgColor": "#E7F4FF",
         "top":"10px"
     },
@@ -17,7 +17,7 @@
         "points": ["Text to Videos", "Product Photos", "Voiceover integration", "Multilingual support"],
         "linkText": "Learn more",
         "link":"/",
-        "imgSrc": "/images/home/video.gif",
+        "imgSrc": "/images_growstack/home/video.gif",
         "bgColor": "#FEF6D4" ,
         "top":"20px"
     },
@@ -28,7 +28,7 @@
         "points": ["Real-Time Data Access", "Expert Domain Conversations", "Chat Memory and Personalization", "Create your Own Assistant"],
         "linkText": "Learn more",
         "link":"/",
-        "imgSrc": "/images/home/assistant.gif",
+        "imgSrc": "/images_growstack/home/assistant.gif",
         "bgColor": "#E1FAF8" ,
         "top":"30px"
     },
@@ -39,7 +39,7 @@
         "points": ["Intuitive Drag-and-Drop Interface", "SEO Optimization", "Customizable Templates", "Real-Time Data Access"],
         "linkText": "Learn more",
         "link":"/",
-        "imgSrc": "/images/home/landing.png",
+        "imgSrc": "/images_growstack/home/landing.png",
         "bgColor": "#FAE8F1" ,
         "top":"40px"
     },
@@ -50,7 +50,7 @@
         "points": ["Intuitive Drag-and-Drop Interface", "Customizable Templates", "Real-Time Data Insights", "Personalization and Segmentation"],
         "linkText": "Learn more",
         "link":"/",
-        "imgSrc": "/images/home/emails.png",
+        "imgSrc": "/images_growstack/home/emails.png",
         "bgColor": "#FFEDE6" ,
         "top":"50px"
     },
@@ -61,7 +61,7 @@
         "points": ["Social media conversation hub","Scheduler for Social Media Posts","Content calendar and collaboration","Social media analytics"],
         "linkText": "Learn more",
         "link":"/",
-        "imgSrc": "/images/home/social.png",
+        "imgSrc": "/images_growstack/home/social.png",
         "bgColor": "#E2F0CB" ,
         "top":"60px"
     }

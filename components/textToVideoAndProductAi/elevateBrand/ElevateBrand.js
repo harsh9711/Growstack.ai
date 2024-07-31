@@ -27,7 +27,7 @@ function ElevateBrand() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/textVideo/elevate1.svg" alt="icon" />
+                                                <img src="/images_growstack/textVideo/elevate1.svg" alt="icon" />
                                             </div>
                                             <h5 className="card-title">Set your brand up for social media success</h5>
                                             <p className="card-text">Plan and execute a video content strategy that will significantly increase your brand’s exposure, awareness and engagement.</p>
@@ -40,7 +40,7 @@ function ElevateBrand() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/textVideo/elevate2.svg" alt="icon" />
+                                                <img src="/images_growstack/textVideo/elevate2.svg" alt="icon" />
                                             </div>
                                             <h5 className="card-title">Start a new revenue
                                                 stream</h5>
@@ -54,7 +54,7 @@ function ElevateBrand() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/textVideo/elevate3.svg" alt="icon" />
+                                                <img src="/images_growstack/textVideo/elevate3.svg" alt="icon" />
                                             </div>
                                             <h5 className="card-title">Save time and optimize your workflow</h5>
                                             <p className="card-text">Increase the scale and speed of your video creation. Save time, maximize resources and lower production costs.</p>

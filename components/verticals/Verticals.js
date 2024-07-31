@@ -20,7 +20,7 @@ function Verticals() {
             <form>
               <div className="form-group">
                 <input type="text" name="Search" id="Search" placeholder="Search" />
-                <img src="/images/verticals/search.svg" alt="img" />
+                <img src="/images_growstack/verticals/search.svg" alt="img" />
               </div>
             </form>
           </div>
@@ -38,7 +38,7 @@ function Verticals() {
                     </h5>
                     <div className="d-flex align-items-center block">
                     <div className="flex-shrink-0">
-                      <img src="/images/verticals/user.svg" alt="user" />
+                      <img src="/images_growstack/verticals/user.svg" alt="user" />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <h4>Josh Gould</h4>
@@ -50,7 +50,7 @@ function Verticals() {
                   </div>
                 </div>
                 <div className="col-md-6">
-                  <img src="/images/verticals/banner.svg" className="img-fluid" alt="banner" />
+                  <img src="/images_growstack/verticals/banner.svg" className="img-fluid" alt="banner" />
                 </div>
               </div>
             </div>
@@ -73,7 +73,7 @@ function Verticals() {
           <div className="card">
               <div className="row g-0">
                 <div className="col-md-6">
-                  <img src="/images/verticals/article1.svg" className="img-fluid" alt="banner" />
+                  <img src="/images_growstack/verticals/article1.svg" className="img-fluid" alt="banner" />
                 </div>
                 <div className="col-md-6">
                   <div className="card-body">
@@ -85,7 +85,7 @@ function Verticals() {
                     <p>Sales planning is a fundamental component of sound selling. After all, you can‘t structure an effective sales effort if you don’t have, well, structure.</p>
                     <div className="d-flex align-items-center block">
                     <div className="flex-shrink-0">
-                      <img src="/images/verticals/user.svg" alt="user" />
+                      <img src="/images_growstack/verticals/user.svg" alt="user" />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <h4>Josh Gould</h4>
@@ -104,7 +104,7 @@ function Verticals() {
           <div className="card">
               <div className="row g-0">
                 <div className="col-md-6">
-                  <img src="/images/verticals/article2.svg" className="img-fluid" alt="banner" />
+                  <img src="/images_growstack/verticals/article2.svg" className="img-fluid" alt="banner" />
                 </div>
                 <div className="col-md-6">
                   <div className="card-body">
@@ -116,7 +116,7 @@ function Verticals() {
                     <p>Sales planning is a fundamental component of sound selling. After all, you can‘t structure an effective sales effort if you don’t have, well, structure.</p>
                     <div className="d-flex align-items-center block">
                     <div className="flex-shrink-0">
-                      <img src="/images/verticals/user.svg" alt="user" />
+                      <img src="/images_growstack/verticals/user.svg" alt="user" />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <h4>Josh Gould</h4>
@@ -135,7 +135,7 @@ function Verticals() {
           <div className="card">
               <div className="row g-0">
                 <div className="col-md-6">
-                  <img src="/images/verticals/article3.svg" className="img-fluid" alt="banner" />
+                  <img src="/images_growstack/verticals/article3.svg" className="img-fluid" alt="banner" />
                 </div>
                 <div className="col-md-6">
                   <div className="card-body">
@@ -147,7 +147,7 @@ function Verticals() {
                     <p>Sales planning is a fundamental component of sound selling. After all, you can‘t structure an effective sales effort if you don’t have, well, structure.</p>
                     <div className="d-flex align-items-center block">
                     <div className="flex-shrink-0">
-                      <img src="/images/verticals/user.svg" alt="user" />
+                      <img src="/images_growstack/verticals/user.svg" alt="user" />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <h4>Josh Gould</h4>
@@ -166,7 +166,7 @@ function Verticals() {
           <div className="card">
               <div className="row g-0">
                 <div className="col-md-6">
-                  <img src="/images/verticals/article4.svg" className="img-fluid" alt="banner" />
+                  <img src="/images_growstack/verticals/article4.svg" className="img-fluid" alt="banner" />
                 </div>
                 <div className="col-md-6">
                   <div className="card-body">
@@ -178,7 +178,7 @@ function Verticals() {
                     <p>Sales planning is a fundamental component of sound selling. After all, you can‘t structure an effective sales effort if you don’t have, well, structure.</p>
                     <div className="d-flex align-items-center block">
                     <div className="flex-shrink-0">
-                      <img src="/images/verticals/user.svg" alt="user" />
+                      <img src="/images_growstack/verticals/user.svg" alt="user" />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <h4>Josh Gould</h4>
@@ -197,7 +197,7 @@ function Verticals() {
           <div className="card">
               <div className="row g-0">
                 <div className="col-md-6">
-                  <img src="/images/verticals/article5.svg" className="img-fluid" alt="banner" />
+                  <img src="/images_growstack/verticals/article5.svg" className="img-fluid" alt="banner" />
                 </div>
                 <div className="col-md-6">
                   <div className="card-body">
@@ -209,7 +209,7 @@ function Verticals() {
                     <p>Sales planning is a fundamental component of sound selling. After all, you can‘t structure an effective sales effort if you don’t have, well, structure.</p>
                     <div className="d-flex align-items-center block">
                     <div className="flex-shrink-0">
-                      <img src="/images/verticals/user.svg" alt="user" />
+                      <img src="/images_growstack/verticals/user.svg" alt="user" />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <h4>Josh Gould</h4>
@@ -228,7 +228,7 @@ function Verticals() {
           <div className="card">
               <div className="row g-0">
                 <div className="col-md-6">
-                  <img src="/images/verticals/article6.svg" className="img-fluid" alt="banner" />
+                  <img src="/images_growstack/verticals/article6.svg" className="img-fluid" alt="banner" />
                 </div>
                 <div className="col-md-6">
                   <div className="card-body">
@@ -240,7 +240,7 @@ function Verticals() {
                     <p>Sales planning is a fundamental component of sound selling. After all, you can‘t structure an effective sales effort if you don’t have, well, structure.</p>
                     <div className="d-flex align-items-center block">
                     <div className="flex-shrink-0">
-                      <img src="/images/verticals/user.svg" alt="user" />
+                      <img src="/images_growstack/verticals/user.svg" alt="user" />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <h4>Josh Gould</h4>

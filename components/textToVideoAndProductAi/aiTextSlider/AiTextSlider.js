@@ -43,7 +43,7 @@ function AiTextSlider() {
       {[...Array(20).keys()].map((index) => (
                         <SwiperSlide key={index}>
                             <div className="imgBlock">
-                                <img src={`/images/textVideo/ais${(index % 5) + 1}.svg`} alt="ais" />
+                                <img src={`/images_growstack/textVideo/ais${(index % 5) + 1}.svg`} alt="ais" />
                             </div>
                         </SwiperSlide>
                     ))}

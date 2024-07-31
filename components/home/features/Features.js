@@ -42,11 +42,11 @@ function Features() {
                                                     <ul>
                                                         {feature.points.map((point, index) => (
                                                             <li key={index}>
-                                                                <img src="/images/home/check.svg" alt="check" />{point}
+                                                                <img src="/images_growstack/home/check.svg" alt="check" />{point}
                                                             </li>
                                                         ))}
                                                     </ul>
-                                                    <Link href={feature.link} className='sheen'>{feature.linkText} <img src="/images/home/arrow.svg" alt="arrow" /></Link>
+                                                    <Link href={feature.link} className='sheen'>{feature.linkText} <img src="/images_growstack/home/arrow.svg" alt="arrow" /></Link>
                                                 </div>
                                             </div>
                                             <div className="col-md-6 mt-md-0 mt-4">
@@ -70,11 +70,11 @@ function Features() {
                                                     <ul>
                                                         {feature.points.map((point, index) => (
                                                             <li key={index}>
-                                                                <img src="/images/home/check.svg" alt="check" />{point}
+                                                                <img src="/images_growstack/home/check.svg" alt="check" />{point}
                                                             </li>
                                                         ))}
                                                     </ul>
-                                                    <Link href="/register" className='sheen'>{feature.linkText} <img src="/images/home/arrow.svg" alt="arrow" /></Link>
+                                                    <Link href="/register" className='sheen'>{feature.linkText} <img src="/images_growstack/home/arrow.svg" alt="arrow" /></Link>
                                                 </div>
                                             </div>
                                         </>

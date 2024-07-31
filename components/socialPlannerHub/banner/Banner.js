@@ -30,7 +30,7 @@ function Banner() {
                             </div>
                         </div>
                         <div className="col-lg-6 bannerImg">
-                            <img src="/images/social/banner.svg" alt="banner" />
+                            <img src="/images_growstack/social/banner.svg" alt="banner" />
                         </div>
                     </div>
                 </div>
@@ -70,7 +70,7 @@ function Banner() {
                         {[...Array(20).keys()].map((index) => (
                             <SwiperSlide key={index}>
                                 <div className="imgBlock">
-                                    <img src={`/images/aiMarket/aiPartner${(index % 12) + 1}.svg`} alt={`ai-partner-${index}`} />
+                                    <img src={`/images_growstack/aiMarket/aiPartner${(index % 12) + 1}.svg`} alt={`ai-partner-${index}`} />
                                 </div>
                             </SwiperSlide>
                         ))}

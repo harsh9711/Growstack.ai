@@ -24,7 +24,7 @@ function CraftBrand() {
                            <div className="imgBlock" data-aos="fade-right"
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
-                             <img src="/images/customMarketing/craft1.svg" alt="craft" />
+                             <img src="/images_growstack/customMarketing/craft1.svg" alt="craft" />
                            </div>
                             <section data-aos="fade-left"
                             data-aos-easing="ease-in-sine"
@@ -38,7 +38,7 @@ function CraftBrand() {
                            <div className="imgBlock" data-aos="fade-left"
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
-                             <img src="/images/customMarketing/craft2.svg" alt="craft" />
+                             <img src="/images_growstack/customMarketing/craft2.svg" alt="craft" />
                            </div>
                             <section data-aos="fade-left"
                             data-aos-easing="ease-in-sine"
@@ -52,7 +52,7 @@ function CraftBrand() {
                            <div className="imgBlock" data-aos="fade-right"
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
-                             <img src="/images/customMarketing/craft3.png" alt="craft" />
+                             <img src="/images_growstack/customMarketing/craft3.png" alt="craft" />
                            </div>
                             <section data-aos="fade-left"
                             data-aos-easing="ease-in-sine"

@@ -8,7 +8,7 @@ function Banner() {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const videoUrl = "/images/video/intoVideo.mp4";
+    const videoUrl = "/images_growstack/video/intoVideo.mp4";
     return (
         <React.Fragment>
             <div className="aiMarketBanner">
@@ -33,11 +33,11 @@ function Banner() {
                                     </div>
                                 </div>
                                 <div className="poster">
-                                    <img onClick={handleShow} style={{ cursor: 'pointer' }} src="/images/aiMarket/videoPoster.svg" alt="banner" />
+                                    <img onClick={handleShow} style={{ cursor: 'pointer' }} src="/images_growstack/aiMarket/videoPoster.svg" alt="banner" />
                                 </div>
                                 <div className="store">
-                                    <Link href="/register"><img src="/images/banner/playStore.svg" alt="banner" /></Link>
-                                    <Link href="/register"><img src="/images/banner/apple.svg" alt="banner" /></Link>
+                                    <Link href="/register"><img src="/images_growstack/banner/playStore.svg" alt="banner" /></Link>
+                                    <Link href="/register"><img src="/images_growstack/banner/apple.svg" alt="banner" /></Link>
                                 </div>
                             </div>
                         </div>

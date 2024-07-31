@@ -21,7 +21,7 @@ function Faqs() {
                         <div className="col-md-4" data-aos="fade-right"
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
-                            <img className='image-fluid' src="/images/home/faqsBack.svg" alt="faqsBack" />
+                            <img className='image-fluid' src="/images_growstack/home/faqsBack.svg" alt="faqsBack" />
                         </div>
                         <div className="col-md-8" data-aos="fade-left"
                             data-aos-easing="ease-in-sine"

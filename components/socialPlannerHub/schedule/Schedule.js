@@ -26,7 +26,7 @@ function Schedule() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/social/schedule1.svg" alt="icon" />
+                                                <img src="/images_growstack/social/schedule1.svg" alt="icon" />
                                             </div>
                                             <h5 className="card-title">Understand your <br /> 
                                             audience</h5>
@@ -40,7 +40,7 @@ function Schedule() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/social/schedule2.svg" alt="icon" />
+                                                <img src="/images_growstack/social/schedule2.svg" alt="icon" />
                                             </div>
                                             <h5 className="card-title">Measure your follower <br /> 
                                             growth</h5>
@@ -54,7 +54,7 @@ function Schedule() {
                                     <div className="card">
                                         <div className="card-body">
                                             <div className="icon">
-                                                <img src="/images/social/schedule3.svg" alt="icon" />
+                                                <img src="/images_growstack/social/schedule3.svg" alt="icon" />
                                             </div>
                                             <h5 className="card-title">Enjoy real-time <br /> 
                                             data</h5>

@@ -26,7 +26,7 @@ function Cta() {
                 <div className="col-md-12 col-lg-6 ctaImg">
                     <img data-aos="fade-left"
                             data-aos-easing="ease-in-sine"
-                            data-aos-duration="1000" src="/images/home/cta.png" alt="cta" />
+                            data-aos-duration="1000" src="/images_growstack/home/cta.png" alt="cta" />
                 </div>
             </div>
         </div>

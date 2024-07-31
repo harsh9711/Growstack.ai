@@ -9,7 +9,7 @@ function VideoBanner() {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const videoUrl = "/images/video/intoVideo.mp4";
+  const videoUrl = "/images_growstack/video/intoVideo.mp4";
   useEffect(() => {
     AOS.init();
   }, []);
@@ -23,11 +23,11 @@ function VideoBanner() {
             <div className="content">
               <h3>Lorem Ipsum <span>amet consectetur.</span></h3>
               <p onClick={handleShow} style={{ cursor: 'pointer' }}>
-                <img src="/images/home/play.svg" alt="play" /> Watch video
+                <img src="/images_growstack/home/play.svg" alt="play" /> Watch video
               </p>
             </div>
             <div className="imgBlock">
-              <img onClick={handleShow} style={{ cursor: 'pointer' }} src="/images/home/videoPlay.svg" alt="videoPlay" />
+              <img onClick={handleShow} style={{ cursor: 'pointer' }} src="/images_growstack/home/videoPlay.svg" alt="videoPlay" />
             </div>
           </div>
         </div>

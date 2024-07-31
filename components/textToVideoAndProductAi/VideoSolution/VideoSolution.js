@@ -54,7 +54,7 @@ function VideoSolution() {
                         {[...Array(20).keys()].map((index) => (
                             <SwiperSlide key={index}>
                                 <div className="imgBlock">
-                                    <img src={`/images/textVideo/embed${(index % 9) + 1}.svg`} alt={`embed-${index}`} />
+                                    <img src={`/images_growstack/textVideo/embed${(index % 9) + 1}.svg`} alt={`embed-${index}`} />
                                 </div>
                             </SwiperSlide>
                         ))}
@@ -89,7 +89,7 @@ function VideoSolution() {
                             </div>
                             <div className='col-lg-6 col-md-6 d-flex align-items-center banner-div'>
                                 <div className='form-wrap-img'>
-                                    <img src='/images/textVideo/group-1.svg' className='h-100 w-100' />
+                                    <img src='/images_growstack/textVideo/group-1.svg' className='h-100 w-100' />
                                 </div>
                             </div>
                         </div>
@@ -110,7 +110,7 @@ function VideoSolution() {
                             </div>
                             <div className='col-lg-6 col-md-6 d-flex align-items-center'>
                                 <div className='form-wrap-img frame-2'>
-                                    <img src='/images/textVideo/group-2.svg' className='h-100 w-100' />
+                                    <img src='/images_growstack/textVideo/group-2.svg' className='h-100 w-100' />
                                 </div>
                             </div>
                         </div>
@@ -123,15 +123,15 @@ function VideoSolution() {
                                         <h3>Create videos as  diverse <br />
                                             as your audience</h3>
                                         <p className='list-p'>
-                                            <img src='/images/textVideo/mark-svg.svg' />
+                                            <img src='/images_growstack/textVideo/mark-svg.svg' />
                                             <span>Engage your viewers with over 160 AI avatars</span>
                                         </p>
                                         <p className='list-p'>
-                                            <img src='/images/textVideo/mark-svg.svg' />
+                                            <img src='/images_growstack/textVideo/mark-svg.svg' />
                                             <span>Make your videos more inclusive and diverse</span>
                                         </p>
                                         <p className='list-p'>
-                                            <img src='/images/textVideo/mark-svg.svg' />
+                                            <img src='/images_growstack/textVideo/mark-svg.svg' />
                                             <span>Create your own AI avatar (your digital twin)</span>
                                         </p>
                                         <Link href='' className='sheen'>Generate a video<svg width="21" height="16" viewBox="0 0 21 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -142,7 +142,7 @@ function VideoSolution() {
                             </div>
                             <div className='col-lg-6 col-md-6 d-flex align-items-center'>
                                 <div className='form-wrap-img frame-3'>
-                                    <img src='/images/textVideo/group-3.svg' className='h-100 w-100' />
+                                    <img src='/images_growstack/textVideo/group-3.svg' className='h-100 w-100' />
                                 </div>
                             </div>
                         </div>
