@@ -38,7 +38,7 @@ export default function Login() {
       };
       dispatch(login(user));
 
-      router.push("/app");
+      router.push("/planpage");
       toast.success("Successfully logged in...");
     } else {
       router.push("/auth/login");

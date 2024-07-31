@@ -244,7 +244,7 @@ export default function Login() {
                 </div>
 
                 <p className="text-center text-[#667085]">
-                  Don’t have an account?{" "}
+                  Do not have an account?{" "}
                   <Link
                     href="/auth/register"
                     className="text-primary-green font-semibold"
