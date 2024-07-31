@@ -3,8 +3,20 @@
 import Motion from "@/components/Motion";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -21,9 +33,12 @@ import {
 import clsx from "clsx";
 import { MoreVertical, Search } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdOutlineRefresh } from "react-icons/md";
 import { logs } from "./data/logs";
+import toast from "react-hot-toast";
+import instance from "@/config/axios.config";
+import { API_URL } from "@/lib/api";
 
 type Logs = {
   content: string;
@@ -37,8 +52,13 @@ export const columns: ColumnDef<Logs>[] = [
     header: ({ table }) => (
       <div className="uppercase flex gap-3">
         <Checkbox
-          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-          onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value: any) =>
+            table.toggleAllPageRowsSelected(!!value)
+          }
           aria-label="Select all"
           className="w-[18px] h-[18px]"
         />
@@ -134,15 +154,37 @@ export default function MultiPostsTable() {
         onClick={() => table.setPageIndex(i)}
         className={clsx(
           "w-12 h-[45px] rounded-lg mx-1 bg-[#4B465C14] transition-all duration-300",
-          i === table.getState().pagination.pageIndex ? "!bg-primary-green hover:bg-opacity-50 text-white" : "hover:bg-[#4B465C29]"
-        )}>
+          i === table.getState().pagination.pageIndex
+            ? "!bg-primary-green hover:bg-opacity-50 text-white"
+            : "hover:bg-[#4B465C29]"
+        )}
+      >
         {i + 1}
       </button>
     );
   }
+  const handleGetPostingLogsData = async () => {
+    try {
+      const response = await instance.get(
+        `${API_URL}/users/api/v1/social-media/posts/history?limit=10&page=${
+          pagination.pageIndex + 1
+        }`
+      );
+    } catch (error) {
+      console.log("Error fetching posting logs:", error);
+      toast.error("Error fetching posting log");
+    }
+  };
+
+  useEffect(() => {
+    handleGetPostingLogsData();
+  }, []);
 
   return (
-    <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion
+      transition={{ duration: 0.2 }}
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+    >
       <div className="w-full">
         <div className="rounded-lg border overflow-hidden mt-5 bg-white min-h-[50vh]">
           <Table>
@@ -151,7 +193,14 @@ export default function MultiPostsTable() {
                 <TableRow key={headerGroup.id} className="bg-[#0347370D]">
                   {headerGroup.headers.map((header) => {
                     return (
-                      <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
                     );
                   })}
                 </TableRow>
@@ -160,15 +209,27 @@ export default function MultiPostsTable() {
             <TableBody>
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="bg-white">
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                    className="bg-white"
+                  >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
                     ))}
                   </TableRow>
                 ))
               ) : (
                 <TableRow className="hover:bg-white">
-                  <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-[50vh] text-center font-semibold text-lg hover:bg-white"
+                  >
                     No logs found.
                   </TableCell>
                 </TableRow>
@@ -184,7 +245,8 @@ export default function MultiPostsTable() {
                 size="sm"
                 className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px]"
                 onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}>
+                disabled={!table.getCanPreviousPage()}
+              >
                 Previous
               </Button>
               <div>
@@ -195,7 +257,8 @@ export default function MultiPostsTable() {
                 size="sm"
                 className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px] px-4"
                 onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}>
+                disabled={!table.getCanNextPage()}
+              >
                 Next
               </Button>
             </div>

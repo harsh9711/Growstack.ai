@@ -11,25 +11,32 @@ import PinterestSection from "./sections/PinterestSection";
 import RedditSection from "./sections/RedditSection";
 import TumblrSection from "./sections/TumblrSection";
 import TwitterSection from "./sections/TwitterSection";
+import { API_URL } from "@/lib/api";
+import instance from "@/config/axios.config";
+import toast from "react-hot-toast";
 
 export default function page() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
   // const tabs = ["General", "Facebook", "Twitter", "Linkedin", "Tumblr", "Pinterest", "GMB", "Reddit", "Instagram", "Blogger"];
-  const tabs = ["Facebook", "Twitter", "Linkedin", "Instagram",];
+  const tabs = ["Facebook", "Twitter", "Linkedin", "Instagram"];
+  const [tabName, setTabName] = useState("Facebook");
+  const [messagingActive, setMessagingActive] = useState(false);
+
+  console.log("SSS", messagingActive);
 
   const renderContent = () => {
     switch (selectedTabIndex) {
       // case 0:
       //   return <GeneralSection />;
       case 0:
-        return <FacebookSection />;
+        return <FacebookSection setMessagingActive={setMessagingActive} />;
       case 1:
-        return <TwitterSection />;
+        return <TwitterSection setMessagingActive={setMessagingActive} />;
       case 2:
-        return <LinkedInSection />;
+        return <LinkedInSection setMessagingActive={setMessagingActive} />;
       case 3:
-        return <InstagramSection />;
+        return <InstagramSection setMessagingActive={setMessagingActive} />;
       // case 5:
       //   return <TumblrSection />;
       // case 6:
@@ -43,13 +50,38 @@ export default function page() {
     }
   };
 
+  const handleAdd = async () => {
+    // setIsPending(true);
+    try {
+      const response = await instance.patch(
+        API_URL + `/users/api/v1/social-media/profile/${tabName}`,
+        {
+          messagingActive,
+        }
+      );
+
+      toast.success(response.data.message);
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error("Profile Upa]date failed:", error);
+    } finally {
+      // setIsPending(false);
+    }
+  };
+
   return (
     <Fragment>
       <main>
         <div className="flex justify-between items-center mt-8">
           <div className="space-y-2 w-full">
             <h1 className="text-2xl font-semibold">Scheduler</h1>
-            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[16px]">Settings </p>
+            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[16px]">
+              Settings{" "}
+            </p>
           </div>
         </div>
         <section>
@@ -59,26 +91,40 @@ export default function page() {
                 <div
                   key={index}
                   className={`w-full h-[45px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 whitespace-nowrap ${
-                    selectedTabIndex === index ? "!text-white" : "!text-primary-grey"
+                    selectedTabIndex === index
+                      ? "!text-white"
+                      : "!text-primary-grey"
                   }`}
                   onClick={() => {
                     const totalTabs = tabs.length;
                     const percentage = (index / totalTabs) * 100;
                     setSelectedTabIndex(index);
                     setTabUnderlineLeft(percentage);
-                  }}>
+                    setTabName(tab);
+                    setMessagingActive(false);
+                  }}
+                >
                   {tab}
                 </div>
               ))}
               <div
                 className="absolute bottom-0 h-[45px] bg-primary-green custom-transition rounded-lg"
-                style={{ left: `calc(${tabUnderlineLeft}%)`, width: `${100 / tabs.length}%` }}></div>
+                style={{
+                  left: `calc(${tabUnderlineLeft}%)`,
+                  width: `${100 / tabs.length}%`,
+                }}
+              ></div>
             </div>
           </div>
           <div className="bg-white rounded-3xl border border-[#EDEFF0] pb-10 px-20 pt-16">
             {renderContent()}
             <div className="flex justify-end gap-4 mt-10">
-              <button className="py-3.5 px-4 w-full max-w-[120px] bg-primary-green sheen rounded-xl text-white">Add</button>
+              <button
+                className="py-3.5 px-4 w-full max-w-[120px] bg-primary-green sheen rounded-xl text-white"
+                onClick={handleAdd}
+              >
+                Add
+              </button>
             </div>
           </div>
         </section>
