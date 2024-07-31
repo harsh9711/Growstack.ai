@@ -97,7 +97,7 @@ const SendEmail = ({
   const handleEditorChange = (message: string) => {
     setEmailData((prevState) => ({
       ...prevState,
-      message: message,
+      message,
     }));
   };
 
@@ -114,6 +114,16 @@ const SendEmail = ({
       ...prevState,
       template_id: value,
     }));
+  };
+
+  const handleProceed = () => {
+    if (selectedIds.length < 1) {
+      toast.error(
+        "No selected user detected. Select at least one user to proceed."
+      );
+      return;
+    }
+    setProceed(true);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -194,7 +204,7 @@ const SendEmail = ({
             <div className="flex justify-end mt-8 mb-3">
               <button
                 type="button"
-                onClick={() => setProceed(true)}
+                onClick={handleProceed}
                 className="text-[16px] bg-white text-[#034737] border border-[#034737] px-[20px] py-[6px] rounded-md"
               >
                 Okay, proceed
