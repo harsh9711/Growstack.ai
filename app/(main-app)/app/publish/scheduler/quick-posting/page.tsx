@@ -22,6 +22,7 @@ export default function QuickPosting() {
   const [isVideo, setIsVideo] = useState(false);
   const [scheduleDate, setSchuduleDate] = useState<string>("");
   const [selectedNetworks, setSelectedNetworks] = React.useState<string[]>([]);
+  const [link, setLink] = useState("");
   const tabs = ["Published", "Scheduled"];
   const renderContent = (selectedTabIndex: number) => {
     switch (selectedTabIndex) {
@@ -68,7 +69,7 @@ export default function QuickPosting() {
       const response = await instance.post(
         API_URL + "/users/api/v1/social-media/quickpost",
         {
-          post: content,
+          post: content + " " + link,
           platforms: selectedNetworks,
           mediaUrls,
           isVideo,
@@ -79,6 +80,7 @@ export default function QuickPosting() {
       setIsVideo(false);
       setMediaUrls([]);
       setSchuduleDate(""), setSelectedNetworks([]);
+      setLink("");
       toast.success(response.data.message);
     } catch (error: any) {
       if (error.response) {
@@ -178,6 +180,8 @@ export default function QuickPosting() {
                     type="text"
                     placeholder="Content share link"
                     className="w-full rounded-full"
+                    value={link}
+                    onChange={(e) => setLink(e.target.value)}
                   />
                 </div>
               </div>
