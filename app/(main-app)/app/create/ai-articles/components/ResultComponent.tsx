@@ -29,8 +29,6 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
 }) => {
   const router = useRouter();
   const [isPending, setIsPending] = useState(false);
-  console.log('articleTitle', articleTitle)
-  console.log('articleData', articleData)
   const handleShare = async () => {
     setIsPending(true);
     const payload = {
@@ -43,6 +41,8 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
         payload
       );
       toast.success(response.data.message);
+      console.log('response.data', response.data.data)
+      localStorage.setItem("savedArticle", response?.data?.data)
       router.push(`/app/publish/scheduler/quick-posting`);
     } catch (error: any) {
       if (error.response) {
