@@ -17,3 +17,7 @@
 .remove-caret .cus-caret {
   display: none !important;
 }
+
+.change-bg button {
+  background-color: #FBFBFB !important;
+}
