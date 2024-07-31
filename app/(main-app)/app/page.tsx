@@ -113,10 +113,22 @@ export default function Dashboard() {
     }
   };
 
+  const fetchSocialMediaProfile = async () => {
+    try {
+      const response = await instance.get(`${API_URL}/users/api/v1/social-media/profile`);
+      if (response?.data?.data?.activeSocialAccounts?.length > 0) {
+        localStorage.setItem("activeSocialAccounts", JSON.stringify(response?.data?.data?.activeSocialAccounts));
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchAiApps();
     fetchAssistants();
     fetchFavoriteAssistants();
+    fetchSocialMediaProfile();
   }, []);
 
   console.log('asdasd', favoriteAssistants)

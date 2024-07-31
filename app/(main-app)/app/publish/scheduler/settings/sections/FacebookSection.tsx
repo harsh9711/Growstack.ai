@@ -3,24 +3,37 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Plus } from "lucide-react";
 import { Fragment } from "react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-export default function FacebookSection() {
+export default function FacebookSection({ setMessagingActive, handleOnConnect }: any) {
   return (
     <Fragment>
-      <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+      <Motion
+        transition={{ duration: 0.2 }}
+        variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+      >
         <div className="flex gap-10 mt-3">
           <div className="w-full">
             <div className="space-y-4">
-              <h1 className="text-xl font-semibold text-primary-green">General settings</h1>
+              <h1 className="text-xl font-semibold text-primary-green">
+                General settings
+              </h1>
               <div className="flex items-center">
-                <label className="w-full max-w-[400px]">Enable auto posting</label>
-                <Switch defaultChecked={true} />
+                <label className="w-full max-w-[400px]">Enable messaging</label>
+                <Switch
+                  onCheckedChange={(checked) => setMessagingActive(checked)}
+                />
               </div>
             </div>
           </div>
-          <div className="w-full">
+          {/* <div className="w-full">
             <div className="space-y-4 max-w-[400px]">
               <h1 className="text-xl font-semibold text-primary-green">Proxy Settings</h1>
               <div className="flex justify-between items-center space-x-2">
@@ -28,24 +41,29 @@ export default function FacebookSection() {
                 <Switch />
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="mt-16 space-y-3">
-          <h1 className="text-xl font-semibold text-primary-green">API settings</h1>
+          <h1 className="text-xl font-semibold text-primary-green">
+            API settings
+          </h1>
           <div className="flex items-center">
             <p className="w-full max-w-[400px]">Select authentication type</p>
             <div className="w-full flex justify-between">
-              <RadioGroup defaultValue="Facebook APP method" className="w-full flex items-center">
+              <RadioGroup
+                defaultValue="Facebook APP method"
+                className="w-full flex items-center"
+              >
                 <div className="flex space-x-2 w-full">
                   <RadioGroupItem value="Facebook APP method" id="r1" />
                   <label htmlFor="r1">Facebook APP method</label>
                 </div>
-                <div className="flex space-x-2 w-full">
+                {/* <div className="flex space-x-2 w-full">
                   <RadioGroupItem value="Facebook graph API" id="r2" />
                   <label htmlFor="r2">Facebook graph API</label>
-                </div>
+                </div> */}
               </RadioGroup>
-              <button className="w-full max-w-fit h-12 px-4 py-3 font-medium border border-primary-green text-primary-green rounded-xl flex gap-3 hover:bg-primary-green hover:text-white sheen transition-all duration-300">
+              <button onClick={handleOnConnect} className="w-full max-w-fit h-12 px-4 py-3 font-medium border border-primary-green text-primary-green rounded-xl flex gap-3 hover:bg-primary-green hover:text-white sheen transition-all duration-300">
                 <Plus size={20} />
                 Add Facebook account
               </button>

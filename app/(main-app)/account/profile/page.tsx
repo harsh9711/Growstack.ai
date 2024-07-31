@@ -33,11 +33,12 @@ import ChangePassword from "./components/ChangePassword";
 import Spinner from "@/components/Spinner";
 import { login } from "@/lib/features/auth/auth.slice";
 import { useDispatch } from "react-redux";
+import { countries } from "./data";
 
 export default function ProfilePage() {
   const dispatch = useDispatch();
   const currentUser = getCurrentUser();
-  const [previewImage, setPreviewImage] = useState<any>(null);
+  const [previewImage, setPreviewImage] = useState<any>("");
   const [avatarLink, setAvatarLink] = useState<any>({});
   const [changePasswordEnable, setChangePasswordEnable] = useState(false);
   const [isPending, setIsPending] = useState(false);
@@ -125,36 +126,37 @@ export default function ProfilePage() {
       setValue("postal_code", userData.postal_code);
       setValue("city", userData.city);
       setValue("country", userData.country);
+      setPreviewImage(userData.profile_img);
     } catch (error) {
       console.log("Error fetching workflows:", error);
       toast.error("Error fetching profile data");
     }
   };
 
-  // const handleChangeAvatar = async (event: ChangeEvent<HTMLInputElement>) => {
-  //   const file = event.target.files?.[0];
-  //   console.log("FIL", file);
-  //   if (file) {
-  //     const formData = new FormData();
-  //     formData.append("document", file);
-  //     try {
-  //       const response = await instance.post(
-  //         `${API_URL}/users/api/v1/file/upload`,
-  //         formData
-  //       );
-  //       setAvatarLink(response.data.data.fileUrl);
-  //     } catch (error) {
-  //       toast.error("Error uploading avatar");
-  //     }
-  //   }
-  // };
+  const handleChangeAvatar = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    console.log("FIL", file);
+    if (file) {
+      const formData = new FormData();
+      formData.append("document", file);
+      try {
+        const response = await instance.post(
+          `${API_URL}/users/api/v1/file/upload`,
+          formData
+        );
+        setAvatarLink(response.data.data.fileUrl);
+      } catch (error) {
+        toast.error("Error uploading avatar");
+      }
+    }
+  };
 
   const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
     setIsPending(true);
     try {
       const validatedData = ValidationSchema.parse({
         ...data,
-        // profile_img: avatarLink,
+        profile_img: avatarLink,
       });
       const response = await instance.put(
         API_URL + "/users/api/v1",
@@ -175,15 +177,15 @@ export default function ProfilePage() {
     }
   };
 
-  const handleImageUpload = (e: any) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      const result = reader.result;
-      setPreviewImage(result);
-    };
-  };
+  // const handleImageUpload = (e: any) => {
+  //   const file = e.target.files[0];
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(file);
+  //   reader.onloadend = () => {
+  //     const result = reader.result;
+  //     setPreviewImage(result);
+  //   };
+  // };
 
   const handleMenuClick = (title: string) => {
     if (title === "Delete Account") handleDeleteProfile();
@@ -262,7 +264,7 @@ export default function ProfilePage() {
                 id="profile-image"
                 accept="images/*"
                 className="hidden"
-                onChange={handleImageUpload}
+                onChange={handleChangeAvatar}
               />
             </div>
           </div>
@@ -472,9 +474,13 @@ export default function ProfilePage() {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectGroup>
-                            <SelectItem value="USA">USA</SelectItem>
-                            <SelectItem value="Canada">Canada</SelectItem>
-                            <SelectItem value="UK">UK</SelectItem>
+                            {countries.map((country) => {
+                              return (
+                                <SelectItem value={country.country}>
+                                  {country.country}
+                                </SelectItem>
+                              );
+                            })}
                           </SelectGroup>
                         </SelectContent>
                       </Select>

@@ -2,10 +2,20 @@
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import toast from "react-hot-toast";
 
 export default function SchedulerPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    const activeSocialAccounts = localStorage.getItem("activeSocialAccounts");
+    if (activeSocialAccounts) {
+      router.push("/app/publish/scheduler/quick-posting");
+    }
+  }, [router]);
+
   const handleOnConnect = async () => {
     try {
       const response = await instance.get(API_URL + '/users/api/v1/social-media/connect');
@@ -24,41 +34,21 @@ export default function SchedulerPage() {
       <h1 className="text-[28px] font-semibold">Connect a profile</h1>
       <p className="text-primary-black text-opacity-70 mt-3 leading-relaxed">Attach a profile to see how growstack can help grow your business.</p>
       <div className="w-full grid grid-cols-3 gap-4 mt-8">
-        <>
-          <div onClick={handleOnConnect} className="h-14 w-full flex items-center gap-3 bg-[#217BEE] hover:bg-opacity-90 transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8 text-white">
-            <Image src="/icons/facebook-icon.svg" alt="" width={30} height={30} />
-            Facebook
-          </div>
-        </>
-        <Link
-          href={{
-            pathname: API_URL + `/users/api/v1/social-media/connect`,
-            query: { profile: "Instagram" },
-          }}>
-          <div className="h-14 w-full flex items-center gap-3 bg-[#E4405F] hover:bg-opacity-90 transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8 text-white">
-            <Image src="/icons/instagram-icon.svg" alt="" width={30} height={30} />
-            Instagram
-          </div>
-        </Link>
-        <Link
-          href={{
-            pathname: API_URL + `/users/api/v1/social-media/connect`,
-            query: { profile: "Linkedin" },
-          }}>
-          <div className="h-14 w-full flex items-center gap-3 bg-[#0A66C2] hover:bg-opacity-90 transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8 text-white">
-            <Image src="/icons/linkedin-icon.svg" alt="" width={30} height={30} />
-            Linkedin
-          </div>
-        </Link>
-        <Link
-          href={{
-            pathname: API_URL + `/users/api/v1/social-media/connect`,
-            query: { profile: "X Profile" },
-          }}>
-          <div className="h-14 w-full flex items-center gap-3 bg-[#070707] hover:bg-opacity-90 transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8 text-white">
-            <Image src="/icons/x-icon.svg" alt="" width={30} height={30} />X Profile
-          </div>
-        </Link>
+        <div onClick={handleOnConnect} className="h-14 w-full flex items-center gap-3 bg-[#217BEE] hover:bg-opacity-90 transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8 text-white">
+          <Image src="/icons/facebook-icon.svg" alt="" width={30} height={30} />
+          Facebook
+        </div>
+        <div onClick={handleOnConnect} className="h-14 w-full flex items-center gap-3 bg-[#E4405F] hover:bg-opacity-90 transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8 text-white">
+          <Image src="/icons/instagram-icon.svg" alt="" width={30} height={30} />
+          Instagram
+        </div>
+        <div onClick={handleOnConnect} className="h-14 w-full flex items-center gap-3 bg-[#0A66C2] hover:bg-opacity-90 transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8 text-white">
+          <Image src="/icons/linkedin-icon.svg" alt="" width={30} height={30} />
+          Linkedin
+        </div>
+        <div onClick={handleOnConnect} className="h-14 w-full flex items-center gap-3 bg-[#070707] hover:bg-opacity-90 transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8 text-white">
+          <Image src="/icons/x-icon.svg" alt="" width={30} height={30} />X Profile
+        </div>
         {/* <Link
           href={{
             pathname: API_URL + `/users/api/v1/social-media/connect`,
