@@ -18,7 +18,7 @@ function Interface() {
                     <div className="content">
                     <span className="user">Smooth interface</span>
                     <h3>Chat with your AI assistant</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur. Massa risus ut non orci aliquam. Sit pulvinar placerat turpis gravida donec varius laoreet dolor lorem.</p>
+                    <p>Welcome to your AI assistant chat! Whether you need help with coding, general inquiries, or brainstorming ideas, your AI assistant is here to assist. Feel free to ask questions, seek advice, or request specific information.</p>
                     <Link href="/register" className='sheen'>Explore <img src="/images_growstack/home/arrow.svg" alt="arrow" /></Link>
                     </div>
                 </div>

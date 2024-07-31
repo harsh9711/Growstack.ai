@@ -8,13 +8,14 @@ import PlannerSolution from '@/components/socialPlannerHub/plannerSolution/Plann
 import Schedule from '@/components/socialPlannerHub/schedule/Schedule';
 import SocialInteraction from '@/components/socialPlannerHub/socialInteraction/SocialInteraction';
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Page() {
   return (
     <React.Fragment>
       <div className="clrNav">
-       <Navbar />
-       <Banner />
+      <Navbar logoUrl="/images/growhite.svg" logoAlt="Custom Logo" />
+      <Banner />
        <PlannerSolution />
        <Partnership />
        <SocialInteraction />

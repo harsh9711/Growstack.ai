@@ -76,7 +76,7 @@ function Footer() {
                         <div className="copyRight">
                             <p>Copyright © 2024 growstack</p>
                             <div className="social">
-                                <Link href="/register"><img src="/images\/footer/youtube.svg" alt="youtube" /></Link>
+                                <Link href="/register"><img src="/images_growstack/footer/youtube.svg" alt="youtube" /></Link>
                                 <Link href="/register"><img src="/images_growstack/footer/facebook.svg" alt="facebook" /></Link>
                                 <Link href="/register"><img src="/images_growstack/footer/twitter.svg" alt="twitter" /></Link>
                                 <Link href="/register"><img src="/images_growstack/footer/linkedin.svg" alt="linkedin" /></Link>

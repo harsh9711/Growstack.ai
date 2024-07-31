@@ -13,6 +13,7 @@ import BusinessSolution from '@/components/aiMarketingSales/businessSolution/Bus
 import CustomerStories from '@/components/aiMarketingSales/customerStories/CustomerStories';
 import Cta from '@/components/home/cta/Cta';
 import Faqs from '@/components/home/faq/Faqs';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 function Page() {

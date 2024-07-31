@@ -9,7 +9,7 @@ import StateProvider from "@/providers/StateProvider";
 import SuspenseLoader from "@/components/SuspenseLoader";
 import "./layout.scss";
 import 'aos/dist/aos.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "../styles/new.css";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],

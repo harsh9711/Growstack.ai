@@ -41,8 +41,11 @@
                 gap:20px;
                 padding: 0;
                 width: max-content;
+                flex-direction: row;
 
                 li {
+                    display: flex;
+                    flex-direction: row;
                     img {
                         width: 30px;
                         height: 30px;
@@ -126,6 +129,8 @@
                                 margin: 0;
 
                                 li {
+                                    display: flex;
+                                    flex-direction: row;
                                     img {
                                         margin-right: 10px;
                                     }

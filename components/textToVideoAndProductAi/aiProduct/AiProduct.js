@@ -50,11 +50,11 @@ function AiProduct() {
                                 <span className="user">From idea to video in minutes 🔥</span>
                                 <h3 className="heading mt-2 mb-2 mb-md-0"><span>Product AI </span> photots</h3>
                             </div>
-                            <div className="col-md-5" data-aos="fade-left"
+                            {/* <div className="col-md-5" data-aos="fade-left"
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
                                 <p>Lorem ipsum dolor sit amet consectetur. Egestas sed faucibus odio eget nam nisl libero id a. Aliquam dui quam justo proin dignissim.</p>
-                            </div>
+                            </div> */}
                         </div>
                     <div className="row">
 

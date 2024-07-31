@@ -14,12 +14,13 @@ import WhyChoose from '@/components/home/whyChoose/WhyChoose';
 import FuturePlans from '@/components/home/futurePlans/FuturePlans';
 import Cta from '@/components/home/cta/Cta';
 import Faqs from '@/components/home/faq/Faqs';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Page() {
   return (
     <React.Fragment>
-      <Navbar/>
-      <Banner/>
+<Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
+<Banner/>
       <OurProcess/>
       <PoweredBy/>
       <Features/>

@@ -9,6 +9,7 @@ import AiSlider from '@/components/marketingSalesAssistant/aiSlider/AiSlider';
 import Interface from '@/components/marketingSalesAssistant/interface/Interface';
 import Benefits from '@/components/marketingSalesAssistant/benefits/Benefits';
 import AgentsDepartment from '@/components/marketingSalesAssistant/agentsDepartment/AgentsDepartment';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Page() {
     return (

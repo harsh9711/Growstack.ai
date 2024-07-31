@@ -13,6 +13,7 @@ import VideoCreated from '@/components/textToVideoAndProductAi/videoCreated/Vide
 import VideoSolution from '@/components/textToVideoAndProductAi/VideoSolution/VideoSolution';
 import VideoTemplate from '@/components/textToVideoAndProductAi/videoTemplate/VideoTemplate';
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Page() {
   return (

@@ -9,6 +9,7 @@ import Footer from '@/components/footer/Footer';
 import Faqs from '@/components/home/faq/Faqs';
 import Navbar from '@/components/navbar/Navbar';
 import React from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Page() {
   return (

@@ -96,45 +96,45 @@ function SingleHub() {
                                         <Accordion>
                                             <Accordion.Item eventKey="0">
                                                 <Accordion.Header>Business & service</Accordion.Header>
-                                                <Accordion.Body>
+                                                {/* <Accordion.Body>
                                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                                </Accordion.Body>
+                                                </Accordion.Body> */}
                                             </Accordion.Item>
                                             <Accordion.Item eventKey="1">
                                                 <Accordion.Header>Construction Company</Accordion.Header>
-                                                <Accordion.Body>
+                                             {/* <Accordion.Body>
                                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                                </Accordion.Body>
+                                                </Accordion.Body> */}
                                             </Accordion.Item>
                                             <Accordion.Item eventKey="2">
                                                 <Accordion.Header>AI Company</Accordion.Header>
-                                                <Accordion.Body>
+                                             {/* <Accordion.Body>
                                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                                </Accordion.Body>
+                                                </Accordion.Body> */}
                                             </Accordion.Item>
                                             <Accordion.Item eventKey="4">
                                                 <Accordion.Header>E-Commerce</Accordion.Header>
-                                                <Accordion.Body>
+                                             {/* <Accordion.Body>
                                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                                </Accordion.Body>
+                                                </Accordion.Body> */}
                                             </Accordion.Item>
                                             <Accordion.Item eventKey="5">
                                                 <Accordion.Header>Home Good Store</Accordion.Header>
-                                                <Accordion.Body>
+                                             {/* <Accordion.Body>
                                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                                </Accordion.Body>
+                                                </Accordion.Body> */}
                                             </Accordion.Item>
                                             <Accordion.Item eventKey="6">
                                                 <Accordion.Header>Landing pages</Accordion.Header>
-                                                <Accordion.Body>
+                                             {/* <Accordion.Body>
                                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                                </Accordion.Body>
+                                                </Accordion.Body> */}
                                             </Accordion.Item>
                                             <Accordion.Item eventKey="7">
                                                 <Accordion.Header>Media & blogs</Accordion.Header>
-                                                <Accordion.Body>
+                                             {/* <Accordion.Body>
                                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                                </Accordion.Body>
+                                                </Accordion.Body> */}
                                             </Accordion.Item>
                                         </Accordion>
                                     </div>
