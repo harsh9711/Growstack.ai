@@ -1,10 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-
 @font-face {
   font-family: 'PoppinsRegular';
   src: url('../app/fonts/Poppins-Regular.woff2') format('woff2'),
@@ -135,11 +130,11 @@ body {
   flex-direction: column;
 }
 .mySwipers .swiper-button-prev::after{
-  /* content: url(../../../public/images_growstack/testimonials/left.svg); */
+  /* content: url(../../public/images/testimonials/left.svg); */
   margin-left: 10px;
 }
 .mySwipers .swiper-button-next::after{
-  /* content: url(../../../public/images_growstack/testimonials/right.svg); */
+  /* content: url(../../public/images/testimonials/right.svg); */
   margin-right: 10px;
 }
 .line{
@@ -202,6 +197,9 @@ body {
   }
 }
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 /* Custom styles for the radio buttons */
 .custom-radio {
   appearance: none;
