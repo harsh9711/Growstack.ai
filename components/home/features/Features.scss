@@ -99,6 +99,9 @@
                     text-decoration: none;
                     transition: all 0.3s ease;
                     margin-top: 15px;
+                    display: flex;
+                    flex-direction: row;
+                    width: fit-content;
                     @media (max-width: $breakpoint_mini_laptop) {
                         font-size: 14px;
                         margin-bottom: 10px;
