@@ -14,7 +14,7 @@ function AllStories() {
         <div className="title" data-aos="fade-up"
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
-            <h3 className="heading mt-0"><span>Don’t take our words </span>for it listen to our customers</h3>
+            <h3 className="heading mt-0"><span>Dont take our words </span>for it listen to our customers</h3>
         </div>
         <div className="row">
             <div className="col-md-4 my-2 my-md-2 px-2" data-aos="fade-up"

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Faq from "./components/Faq";
+// import Faq from "./components/Faq";
 import { ArrowRight } from "lucide-react";
 import Slider from "./components/Slider";
 import Marquee from "react-fast-marquee";
@@ -537,7 +537,7 @@ export default function Home() {
           <h1 className="text-[42px] font-semibold text-primary-green">Quick answers <span className="font-light bg-gradient-to-b from-black to-black/30 bg-clip-text text-transparent">on GrowStack</span> </h1>
         </div>
         <div className="bg-[url('/backgrounds/abstract-dots.png')] bg-no-repeat bg-cover bg-right-bottom w-full">
-          <Faq />
+          {/* <Faq /> */}
         </div>
       </section>
     </main>

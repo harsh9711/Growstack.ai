@@ -48,7 +48,7 @@
             font-size: 14px;
         }
         .accordion-button::after{
-            background-image: url(../../../public/images_growstack/home/faqArrow2.svg);
+            background-image: url(../../public/images_growstack/home/faqArrow2.svg);
             width: 35px;
             height: 35px;
             background-size: contain;
@@ -59,7 +59,7 @@
 
         }
         .accordion-button:not(.collapsed)::after{
-            background-image: url(../../../public/images_growstack/home/faqArrow1.svg);
+            background-image: url(../../public/images_growstack/home/faqArrow1.svg);
         }
         }
 }
