@@ -4,6 +4,9 @@
     padding: 0;
     position: relative;
     .wrapper{
+      display: flex;
+      justify-content: center;
+      align-items: center;
         background-color: #FFEDE6;
         overflow: hidden;
         margin: 0 20px 0;
@@ -15,6 +18,10 @@
           border-radius: 25px;
         }
         .user{
+           width:fit-content;
+          display: flex;
+          justify-content: center;
+          align-items: center;
           color: #009689;
           background-color: #00968916;
         }
