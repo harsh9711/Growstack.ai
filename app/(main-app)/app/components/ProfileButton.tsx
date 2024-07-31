@@ -16,16 +16,26 @@ import { Info, LogOut, Settings, User } from "lucide-react";
 import Link from "next/link";
 import { TbReportMoney } from "react-icons/tb";
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import { deleteCookie } from "cookies-next";
 
 export function ProfileButton() {
+  const router = useRouter();
   const dispatch = useDispatch();
   const currentUser = getCurrentUser();
+
+  const handleLogout = () => {
+    deleteCookie('token');
+    localStorage.clear();
+    dispatch(logout())
+    router.push("/auth/login");
+  }
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="rounded-xl">
-          <AvatarImage src={currentUser.profile_img} />
+          <AvatarImage src={currentUser?.profile_img} />
           <AvatarFallback className="rounded-xl">
             {currentUser?.email?.slice(0, 1)}
           </AvatarFallback>
@@ -34,7 +44,7 @@ export function ProfileButton() {
       <DropdownMenuContent className="w-[300px] relative right-10 text-[15px]">
         <div className="p-4 flex items-center gap-3">
           <Avatar>
-            <AvatarImage src={currentUser.profile_img} />
+            <AvatarImage src={currentUser?.profile_img} />
             <AvatarFallback>{currentUser?.email?.slice(0, 1)}</AvatarFallback>
           </Avatar>
           <div>
@@ -80,7 +90,7 @@ export function ProfileButton() {
         </Link>
         <DropdownMenuSeparator />
         <button
-          onClick={() => dispatch(logout())}
+          onClick={handleLogout}
           className="relative flex select-none items-center rounded-lg h-12 p-4 outline-none w-full gap-3 text-[#D9000B] hover:bg-[#D9000B]/10 cursor-pointer"
         >
           <LogOut size={20} />
