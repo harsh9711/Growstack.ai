@@ -1,0 +1,91 @@
+@import "../../../app/variables.scss";
+.cta{
+    padding: 90px 0;
+    background-color: #034737;
+    position: relative;
+    overflow: hidden;
+    @media screen and (max-width: $breakpoint_mini_laptop) {
+        padding: 70px 0;
+    }
+    @media screen and (max-width: $breakpoint_tablet) {
+       text-align: center;
+    }
+    @media screen and (max-width: $breakpoint_mobile_portrait) {
+        padding: 40px 0;
+    }
+    .user{
+        color: white;
+        background-color: #ffffff1b;
+    }
+    h3{
+        font-size: 36px;
+        color: white;
+        font-weight: bold;
+        margin: 20px 0;
+        line-height: 48px;
+        @media (max-width: $breakpoint_mobile_portrait) {
+            font-size: 24px;
+            line-height: 32px;
+            margin: 15px 0;
+          }
+          span{
+            font-weight: 500;
+          }
+    }
+    p{
+        color: white;
+    }
+    a{
+        display: inline-block;
+        background: #034737;
+        color: #fff;
+        padding: 13px 20px;
+        border-radius: 10px;
+        border: 1px solid #fff;
+        font-size: 16px;
+        font-family: "PoppinsMedium";
+        text-decoration: none;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+        &:hover{
+            background: #fff;
+            color: #034737;
+            border: 1px solid #034737;
+            svg {
+                path {
+                    fill: #034737;
+                }
+
+            }
+        }
+        @media (max-width: $breakpoint_mobile_portrait) {
+            font-size: 14px;
+            margin-top: 5px;
+          }
+          svg {
+            margin-left: 10px;
+
+            path {
+                fill: #fff;
+            }
+
+        }
+    }
+    .ctaImg{
+        padding: 0;
+        position: absolute;
+        right: -50px;
+        top: 100%;
+        transform: translateY(-100%);
+        width: auto;
+        @media screen and (max-width: $breakpoint_tablet) {
+            display: none;
+        }
+        img{
+            width: 700px;
+            @media screen and (max-width: $breakpoint_mini_laptop) {
+                width: 570px;
+            }
+        }
+    }
+}

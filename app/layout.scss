@@ -1,0 +1,265 @@
+@import 'variables.scss';
+
+.heading {
+    font-size: 38px;
+    background: -webkit-linear-gradient(#000, #c1c1c1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 25px 0 15px;
+    line-height: 55px;
+    span {
+        background: -webkit-linear-gradient(#000, #000);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: bold;
+        position: relative;
+
+    }
+
+    @media (max-width: $breakpoint_tablet) {
+        font-size: 32px;
+        line-height: 46px;
+    }
+
+    @media screen and (max-width: $breakpoint_mobile_portrait) {
+        font-size: 26px;
+        line-height: 40px;
+    }
+}
+
+p {
+    font-size: 16px;
+    color: #000;
+
+    @media (max-width: $breakpoint_tablet) {
+        font-size: 14px;
+    }
+
+    @media screen and (max-width: $breakpoint_mobile_portrait) {
+        font-size: 14px;
+    }
+}
+
+.btns {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    gap: 15px;
+
+    @media (max-width: $breakpoint_mobile_portrait) {
+        margin-top: 10px;
+    }
+
+    a {
+        background: #fff;
+        color: #034737;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: 16px;
+        font-family: 'PoppinsMedium';
+        text-decoration: none;
+        transition: all 0.3s ease;
+
+        svg {
+            margin-left: 10px;
+
+            path {
+                fill: #034737;
+            }
+
+        }
+
+        &:hover {
+            background: #034737;
+            color: #fff;
+
+            svg {
+                path {
+                    fill: #fff;
+                }
+
+            }
+        }
+
+        &:last-child {
+            background-color: transparent;
+            border: 1px solid #034737;
+
+            &:hover {
+                background: #034737;
+                color: #fff;
+            }
+        }
+
+        @media (max-width: $breakpoint_tablet) {
+            padding: 10px 15px;
+            font-size: 16px;
+        }
+
+        @media screen and (max-width: $breakpoint_mobile_portrait) {
+            font-size: 14px;
+        }
+    }
+}
+
+.user {
+    background: #0347371A;
+    border-radius: 100px;
+    padding: 7px 15px;
+    color: #034737;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 1px;
+    display: inline-block;
+
+    @media screen and (max-width: $breakpoint_mobile_portrait) {
+        font-size: 10px;
+    }
+}
+.title{
+    text-align: center;
+    margin: 0 auto 30px;
+    max-width: 800px;
+    @media (max-width: $breakpoint_mobile_portrait) {
+        margin-bottom: 20px;
+    }
+
+}
+.titleReverse{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+
+.transNav{
+    .trans{
+        background-color: transparent;
+        padding: 15px 0;
+        box-shadow: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        width: 100%;
+    }
+    .customMarketBanner{
+        padding-top: 145px;
+        @media screen and (max-width:$breakpoint_tablet) {
+            padding-top: 110px;
+        }
+    }
+    .marketBanner{
+        padding-top: 145px;
+        @media screen and (max-width:$breakpoint_tablet) {
+            padding-top: 110px;
+        }
+    }
+}
+.clrNav{
+    .trans{
+        background-color: transparent;
+        padding: 15px 0;
+        box-shadow: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        width: 100%;
+        .menu_item {
+            color: #fff;
+            
+            &.active {
+              color: #fff;
+              font-weight: 600;
+              
+              &::before {
+                content: '';
+                position: absolute;
+                width: 100%;
+                height: 2px;
+                border-radius: 100px;
+                background-color: #fff;
+                bottom: 0px;
+                left: 0;
+                
+                @media (max-width: 768px) {
+                  bottom: 0;
+                }
+              }
+            }
+            &:hover {
+              color: #fff;
+              
+              &::before {
+                content: '';
+                position: absolute;
+                width: 100%;
+                height: 2px;
+                border-radius: 100px;
+                background-color: #fff;
+                bottom: 0;
+                left: 0;
+              }
+            }
+          }
+
+          .arrow {
+            filter: grayscale(1);
+          }    
+          .social{
+            .quote{
+                a{
+                    color: #fff;
+                    border: 1px solid #fff;
+                    background-color: #034737;
+                    &:first-of-type{
+                        background-color: #fff;
+                        color: #034737;
+                        svg{
+                            path{
+                                fill: #034737;
+                            }
+                        }
+                        &:hover{
+                            background-color: #034737;
+                            color: #fff;
+                            svg{
+                                path{
+                                    fill: #fff;
+                                }
+                            }
+                        }
+                    }
+                }
+                &::after{
+                    content: "";
+                    position: absolute;
+                    width: 2px;
+                    height: 24px;
+                    background-color: #C9C9C9;
+                    top: 50%;
+                    left: -23px;
+                    transform: translate(0, -50%);
+                    border-radius: 100px;
+                }
+            }
+        } 
+        @media screen and (max-width:768px) {
+            .menuButton{
+                filter: invert(1);
+            }
+            .mobileLinks{
+                background-color: #03503e;
+                box-shadow: 0px 0px 13px 7px rgb(0 0 0 / 16%);
+                }   
+        }
+    }
+    .plannerBanner{
+        padding-top: 95px;
+        @media screen and (max-width:$breakpoint_tablet) {
+            padding-top: 110px;
+        }
+    }
+}

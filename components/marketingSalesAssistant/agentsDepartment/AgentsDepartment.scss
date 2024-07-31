@@ -1,0 +1,77 @@
+@import "../../../app/variables.scss";
+
+.agentsDepartment{
+    padding: 70px 0;
+    position: relative;
+    background-color: #FAFBFC;
+    @media (max-width: $breakpoint_mobile_portrait) {
+        padding: 40px 0;
+      }
+      .cardsBlock{
+        a{
+          display: inline-block;
+          margin-top: 10px;
+          padding: 15px 20px;
+          background: #fff;
+          color: #000;
+          border: 1px solid #D7D7D7;
+          font-size: 16px;
+          font-weight: 700;
+          border-radius: 10px;
+          transition: 0.3s;
+          text-decoration: none;
+          &:hover{
+              background: #034737;
+              color: #fff;
+              border: 1px solid #034737;
+              img{
+                  filter: invert(1);
+              }
+          }
+          img{
+              margin-left: 10px;
+          }
+      
+      }
+        .card{
+            border: 1px solid #E3E3E3;
+            border-radius: 20px;
+            padding: 40px;
+            height: 100%;
+            transition: all 0.3s ease;
+            &:hover{
+                box-shadow: 0px 10px 20px 5px #0000000D;
+            }
+            @media screen and (max-width: $breakpoint_mobile_portrait) {
+               height: auto;
+            }
+            @media screen and (max-width: $breakpoint_tablet) {
+              padding: 20px;
+          }
+            .card-body{
+                padding: 0;
+                h5{
+                    font-size: 20px;
+                    color: #000;
+                    font-weight: bold;
+                    margin: 18px 0 15px;
+                    line-height: 28px;
+                    @media (max-width: $breakpoint_tablet) {
+                        font-size: 18px;
+                      }
+                      span{
+                        display: block;
+                      }
+                }
+                .card-text{
+                    font-size: 16px;
+                    color: #000;
+                    margin: 0;
+                      @media (max-width: $breakpoint_mobile_portrait) {
+                        font-size: 14px;
+                      }
+                }
+            }
+        }
+      }
+}
