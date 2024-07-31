@@ -44,6 +44,8 @@ import { formatDate } from "@/lib/utils";
 import { ModalContent } from "./modal/modalEnums";
 import { Contact } from "@/types/contacts";
 import Spinner from "@/components/Spinner";
+import { API_URL } from "@/lib/api";
+import toast from "react-hot-toast";
 
 export const columns: ColumnDef<Contact>[] = [
   {
@@ -246,6 +248,22 @@ export default function ContactsTable({
     setSelectedIds(selectedRowIds);
   };
 
+  const handleEmailModal = async () => {
+    try {
+      const checkPermission = await instance.get(
+        `${API_URL}/users/api/v1/mails/check-permission`
+      );
+      if (!checkPermission.data.success) {
+        handleClick(ModalContent.CHECK_EMAIL_PERMISSION);
+      } else {
+        handleClick(ModalContent.SEND_EMAIL);
+      }
+    } catch (error: any) {
+      console.error("Error checking permission:", error);
+      toast.error(error);
+    }
+  };
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value.toLowerCase());
   };
@@ -308,14 +326,14 @@ export default function ContactsTable({
               <SMSIcon />
             </button>
             <button
-              onClick={() => handleClick(ModalContent.SEND_EMAIL)}
+              onClick={handleEmailModal}
               className=" mr-1 w-[45px] h-[45px] flex border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black"
             >
               <EmailIcon />
             </button>
-            <button className=" mr-1 w-[45px] h-[45px] flex border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black">
+            {/* <button className=" mr-1 w-[45px] h-[45px] flex border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black">
               <UploadIcon />
-            </button>
+            </button> */}
             <FilterSheet />
           </div>
         </div>

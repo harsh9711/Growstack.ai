@@ -21,6 +21,8 @@ import instance from "@/config/axios.config";
 
 import ProspectsTable from "./components/ProspectsTable";
 import { useRouter, useSearchParams } from "next/navigation";
+import CheckEmailPermission from "./components/modal/checkEmailPermission";
+import toast from "react-hot-toast";
 
 export default function ContactsDashboard() {
   const router = useRouter();
@@ -189,6 +191,13 @@ export default function ContactsDashboard() {
               setToggleModal={setToggleModal}
               handleModal={handleModal}
               selectedIds={selectedIds}
+              contacts={contacts}
+            />
+          )}
+          {modalContent === ModalContent.CHECK_EMAIL_PERMISSION && (
+            <CheckEmailPermission
+              setToggleModal={setToggleModal}
+              handleModal={handleModal}
             />
           )}
           {modalContent === ModalContent.SEND_EMAIL && (

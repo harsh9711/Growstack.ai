@@ -301,7 +301,7 @@ const AddContact = ({
           {contactData.phones.map((phone, index) => (
             <div className="mb-2" key={index}>
               <PhoneInput
-                country={"in"}
+                country={"us"}
                 inputClass="w-full p-3 rounded-md bg-[#F2F2F2] mt-2 h-[44px]"
                 containerClass="w-full"
                 onChange={(value, country) =>
