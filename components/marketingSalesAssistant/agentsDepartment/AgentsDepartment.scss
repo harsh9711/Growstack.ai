@@ -20,6 +20,9 @@
           border-radius: 10px;
           transition: 0.3s;
           text-decoration: none;
+          display: flex;
+          flex-direction: row;
+          width: fit-content;
           &:hover{
               background: #034737;
               color: #fff;

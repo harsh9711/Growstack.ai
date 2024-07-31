@@ -71,6 +71,9 @@
                      }
                 }
                 ul{
+                    display: flex; 
+                    flex-direction: column;
+                    gap: 5px;
                     list-style: none;
                     padding: 0;
                     margin: 0;
@@ -78,6 +81,8 @@
                         img{
                             margin-right: 10px;
                         }
+                        display: flex;
+                        flex-direction: row;
                         font-size: 18px;
                         color: #000;
                         font-weight: 600;

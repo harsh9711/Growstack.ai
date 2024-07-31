@@ -8,11 +8,15 @@
         padding: 40px 0;
       }
       .wrapper{
-        // margin: 0 0 70px;
-        // @media (max-width: $breakpoint_mobile_portrait) {
-        //   margin: 0 0 30px;
-        // }
+        justify-content: center;
+        align-items: center;
+        margin: 0 0 70px;
+        @media (max-width: $breakpoint_mobile_portrait) {
+          margin: 0 0 30px;
+        }
         .user{
+        justify-content: center;
+        align-items: center;
           color: #009689;
           background-color: #00968916;
         }

@@ -12,18 +12,18 @@ function UseIt() {
             <div className="useIt">
                 <div className="wrapper">
                 <div className="container">
-                        <div className="row align-items-end mb-0 mb-md-4">
-                            <div className="col-md-7" data-aos="fade-right"
+                        <div className="row item-center mx-auto justify-center mb-0 mb-md-4">
+                            <div className=" mx-auto" data-aos="fade-right"
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
                             <span className="user">Uses</span>
                             <h3 className="heading mt-2 mb-2 mb-md-0"><span>Who could </span> get use it</h3>
                             </div>
-                            <div className="col-md-5" data-aos="fade-left"
+                            {/* <div className="col-md-5" data-aos="fade-left"
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
                                 <p>Lorem ipsum dolor sit amet consectetur. Imperdiet sodales hac at curabitur.</p>
-                            </div>
+                            </div> */}
                         </div>
                     <div className="row">
                         <div className="cardsBlock">

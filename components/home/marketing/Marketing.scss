@@ -38,6 +38,7 @@
                 border-radius: 100px;
                 list-style: none;
                 display: flex;
+                gap:20px;
                 padding: 0;
                 width: max-content;
 
@@ -55,7 +56,9 @@
                         align-items: center;
                         text-align: center;
                         border-radius: 100px;
-
+                        display: flex;
+                        flex-direction: row;
+                        gap:8px;
                         &.active {
                             background: #034737;
                             color: #fff;

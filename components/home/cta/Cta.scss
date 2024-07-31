@@ -47,6 +47,10 @@
         text-decoration: none;
         transition: all 0.3s ease;
         margin-top: 10px;
+        display: flex;
+        align-items: center;
+        flex-direction: row;
+        width: fit-content;
         &:hover{
             background: #fff;
             color: #034737;

@@ -25,7 +25,7 @@ function Banner() {
                                     </svg>
                                     </Link>
                                 </div>
-                                <div className="sale">
+                                <div className="sale opacity-0">
                                     <Link href="/marketing-and-sales-assistant">Marketing & sales assistant</Link>
                                     <img src="/images_growstack/banner/tri.svg" alt="banner" />
                                 </div>
