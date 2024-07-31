@@ -1,0 +1,74 @@
+@import "../../../app/variables.scss";
+
+.coreFeatures{
+    padding: 20px 0 0;
+    @media screen and (max-width: $breakpoint_mobile_portrait) {
+        padding: 20px 0 0;
+        
+    }
+    .title{
+        margin-bottom: 40px;
+    }
+    .cardsBlock{
+        // margin-bottom: 70px;
+        // @media screen and (max-width: $breakpoint_mobile_portrait) {
+        //     margin-bottom: 40px;
+            
+        // }
+        .card{
+            border: none;
+            background-color: #F6F6F6;
+            border-radius: 15px;
+            padding: 40px;
+            height: 100%;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            &:hover{
+                box-shadow: 0 0 20px 0 rgba(0,0,0,0.1);
+            }
+            @media screen and (max-width: $breakpoint_tablet) {
+                padding: 25px;
+            }
+            @media screen and (max-width: $breakpoint_mobile_portrait) {
+               height: auto;
+               margin-top: 20px;
+            }
+            .card-body{
+                padding: 0;
+                h5{
+                    font-size: 20px;
+                    color: #000;
+                    font-weight: bold;
+                    margin: 18px 0 15px;
+                    background: -webkit-linear-gradient(#000, #c2c2c2);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    line-height: normal;
+                    @media (max-width: $breakpoint_tablet) {
+                        font-size: 18px;
+                      }
+                }
+                .card-text{
+                    font-size: 16px;
+                    color: #000;
+                    margin: 0;
+                      @media (max-width: $breakpoint_mobile_portrait) {
+                        font-size: 14px;
+                      }
+                }
+                .icon{
+                    .overlay{
+                        position: absolute;
+                        top: 0;
+                        right: -12px;
+                        filter: grayscale(1);
+                        opacity: 0.1;
+                        width: 110px;
+
+                    }
+                }
+            }
+        }
+      }
+}

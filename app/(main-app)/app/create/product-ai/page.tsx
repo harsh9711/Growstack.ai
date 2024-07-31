@@ -397,7 +397,7 @@ export default function Page() {
             <div className="flex gap-x-4">
               <div className="cursor-pointer bg-white p-3 rounded-2xl hover:shadow-xl transition duration-500">
                 <Image
-                  src="/images/hand-bag.png"
+                  src="/images_growstack/hand-bag.png"
                   alt=""
                   width={150}
                   height={150}
@@ -405,18 +405,18 @@ export default function Page() {
               </div>
               <div className="cursor-pointer bg-white p-3 rounded-2xl hover:shadow-xl transition duration-500">
                 <Image
-                  src="/images/shoes.png"
+                  src="/images_growstack/shoes.png"
                   alt=""
                   width={150}
                   height={150}
                 />
               </div>
               <div className="cursor-pointer bg-white p-3 rounded-2xl hover:shadow-xl transition duration-500">
-                <Image src="/images/sofa.png" alt="" width={150} height={150} />
+                <Image src="/images_growstack/sofa.png" alt="" width={150} height={150} />
               </div>
               <div className="cursor-pointer bg-white p-3 rounded-2xl hover:shadow-xl transition duration-500">
                 <Image
-                  src="/images/camera.png"
+                  src="/images_growstack/camera.png"
                   alt=""
                   width={150}
                   height={150}

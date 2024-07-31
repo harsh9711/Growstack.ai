@@ -1,0 +1,56 @@
+@import "../../../app/variables.scss";
+
+.template{
+    padding: 90px 0;
+    @media screen and (max-width: $breakpoint_mobile_portrait) {
+        padding: 40px 0; 
+    }
+    .templateBlock{
+        .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+            background-color: #034737 !important;
+            color: #fff;
+        }
+
+        .nav {
+            background-color: #fff;
+            border-radius: 10px;
+            border: 1px solid #EFEFEF;
+            box-shadow: 0 13px 10px 0 rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            @media screen and (max-width: $breakpoint_mobile_portrait) {
+                margin-top: 20px;
+            }
+            @media screen and (max-width: $breakpoint_tablet) {
+                margin: 20px auto;                
+            }
+            .nav-item{
+                width: 20%;
+                button{
+                    width: 100%;
+                }
+                @media screen and (max-width: $breakpoint_mobile_portrait) {
+                    width: auto;
+                    
+                }
+            }
+            .nav-link {
+                color: #034737;
+                font-size: 16px;
+                font-weight: 500;
+                padding:13px 10px;
+                border-radius: 10px;
+                transition: all 0.3s;
+            }
+        }
+        .contentBlock{
+            margin-top: 40px;
+            img{
+                width: 100%;
+                height: auto;
+            }
+        }
+    }
+}

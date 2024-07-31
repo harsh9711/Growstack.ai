@@ -1,0 +1,182 @@
+@import "../../../app/variables.scss";
+
+.verticalDetails {
+    overflow: hidden;
+    .banner {
+        padding: 70px 0;
+        background-color: #FAE8F1;
+
+        .title {
+            h3 {
+                line-height: 55px;
+
+                @media screen and (max-width: $breakpoint_mobile_portrait) {
+                    line-height: 40px;
+
+                }
+            }
+
+            p {
+                max-width: 610px;
+                margin: 0 auto;
+            }
+        }
+    }
+
+    .detail {
+        padding: 70px 0;
+        @media screen and (max-width: $breakpoint_mobile_portrait) {
+            padding: 40px 0;
+            
+        }
+        .userData {
+            img {
+                width: 162px;
+                height: 162px;
+                border-radius: 10px;
+                margin-bottom: 20px;
+            }
+
+            h4 {
+                font-size: 18px;
+                font-weight: 700;
+                margin: 0;
+                color: #14171B;
+            }
+
+            span {
+                font-size: 14px;
+                color: #041D34;
+            }
+            h3{
+                font-size: 22px;
+                font-weight: 800;
+                margin-top: 30px;
+            }
+            .lines{
+                border-left: 3px solid #034737;
+                color: #034737;
+                font-size: 14px;
+                padding-left: 10px;
+                font-weight: 600;
+                margin-top: 15px;
+            }
+            p{
+                font-size: 14px;
+            }
+            h6{
+                font-size: 18px;
+                font-weight: 800;
+                margin-top: 30px;
+            }
+            .social{
+                display: flex;
+                margin-top: 20px;
+                align-items: center;
+                gap: 10px;
+                @media screen and (max-width: $breakpoint_mobile_portrait) {
+                    padding-bottom: 40px;
+                    
+                }
+                a{
+                   img{
+                          width: 20px;
+                            height: 20px;
+                            border-radius: 0;
+                            margin: 0;
+                   }
+                }
+            }
+        }
+        .content{
+            h3{
+                font-size: 22px;
+                font-weight: 800;
+                margin-bottom: 30px;
+                color: #14171B;
+
+            }
+            p{
+                font-size: 14px;
+                color: #14171B;
+
+            }
+            .lines{
+                border-left: 3px solid #E2E2E2;
+                color: #14171B;
+                font-size: 14px;
+                padding-left: 10px;
+                margin-top: 15px;
+            }
+            h4{
+                font-size: 18px;
+                color: #14171B;
+                font-weight: 800;
+            }
+            img{
+                width: 100%;
+                border-radius: 10px;
+                margin: 20px 0;
+            }
+        }
+    }
+    .allArticles{
+        padding-bottom: 40px;
+        h2{
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 25px;
+        }
+        a{
+            text-decoration: none;
+            display: block;
+            .card{
+                border: 1px solid #E8E8E8;
+                border-radius: 30px;
+                overflow: hidden;
+                margin-bottom: 20px;
+                box-shadow: 0px 0px 10px 0px #0000001a;
+                .img-fluid{
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+                .card-body{
+                   padding: 30px;
+                    height: 100%;
+                    .user{
+                        width: fit-content;
+                        background-color: #8a78f0c3;
+                        color: #000;
+                        padding: 8px 10px;
+                    }
+                    .heading{
+                        font-size: 22px;
+                        line-height: 30px;
+                    }
+                    .block{
+                        margin: 20px 0;
+                        img{
+                            width: 48px;
+                            height: 48px;
+                            border-radius: 100px;
+                        }
+                        h4{
+                            font-size: 18px;
+                            margin: 0;
+                            font-weight: 600;
+                        }
+                        p{
+                            font-size: 14px;
+                            margin: 0;
+                        }
+                    }
+                    p{
+                        font-size: 16px;
+                        margin: 0;
+                    }
+                }
+            }
+        }
+    }
+}

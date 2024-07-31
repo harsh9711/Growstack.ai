@@ -1,0 +1,49 @@
+@import "../../../app/variables.scss";
+
+.aiPartner{
+    padding: 90px 0;
+    position: relative;
+    overflow: hidden;
+    @media screen and (max-width: $breakpoint_mobile_portrait){
+        padding: 40px 0;
+      }
+      .head{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 40px;
+        @media screen and (max-width: $breakpoint_mobile_portrait){
+            flex-direction: column-reverse;
+            align-items: flex-start;
+        }
+        h3{
+            font-size: 36px;
+            font-weight: bold;
+            color: #000;
+            @media screen and (max-width: $breakpoint_mobile_portrait){
+                font-size: 24px;
+            }
+        }
+        .user{
+            background-color:#00968923 ;
+            color: #009689;
+        }
+      }
+      .mySwiper{
+        .swiper-slide{
+            width: auto !important;
+        }
+          .imgBlock{
+            height: auto;
+            img {
+                max-width: 100%;
+                height: auto;
+                cursor: pointer;
+                transition: all 0.3s;
+                &:hover{
+                    box-shadow: 0px 0px 20px 0px #0000001a;
+                }
+            }
+          }
+      }
+}

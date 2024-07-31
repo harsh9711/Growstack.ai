@@ -1,0 +1,120 @@
+@import "../../../app/variables.scss";
+
+.emailBanner {
+    padding: 30px 0;
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &::after{
+        content: "";
+        position: absolute;
+        top: 65%;
+        right: 0;
+        transform: translate(0, -50%);
+        z-index: -1;
+        background-image: url(../../../public/images_growstack/emailBuilder/right.svg);
+        background-size: contain;
+        background-repeat: no-repeat;
+        width: 600px;
+        height: 600px;
+        @media screen and (max-width: $breakpoint_laptop) {
+            width: 500px;
+            height: 500px;
+            
+        }
+        @media screen and (max-width: $breakpoint_mini_laptop) {
+            width: 350px;
+            height: 350px;
+            
+        }
+        @media screen and (max-width: $breakpoint_tablet) {
+            display: none;   
+        }
+    }
+    &::before{
+        content: "";
+        position: absolute;
+        top: 65%;
+        left: 0;
+        transform: translate(0, -50%);
+        z-index: -1;
+        background-image: url(../../../public/images_growstack/emailBuilder/left.svg);
+        background-size: contain;
+        background-repeat: no-repeat;
+        width: 600px;
+        height: 600px;
+        @media screen and (max-width: $breakpoint_laptop) {
+            width: 500px;
+            height: 500px;
+            
+        }
+        @media screen and (max-width: $breakpoint_mini_laptop) {
+            width: 350px;
+            height: 350px;
+            
+        }
+        @media screen and (max-width: $breakpoint_tablet) {
+            display: none;   
+        }
+    }
+    @media screen and (max-width: $breakpoint_tablet) {
+        padding: 10px 0;
+    }
+    .bannerContent {
+        background-image: url(../../../public/images_growstack/emailBuilder/map.svg);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        padding: 50px 0;
+        max-width:fit-content;
+        margin: 0 auto;
+        @media screen and (max-width: $breakpoint_tablet) {
+            padding: 30px 0;
+        }
+        .content{
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        .user{
+            border: 1px solid #034737;
+            background-color: transparent;
+            color: #14171B;
+        }
+        .heading{
+            max-width: 617px;
+            margin: 25px auto 15px;
+            font-size: 48px;
+            @media screen and (max-width: $breakpoint_tablet) {
+                font-size: 32px;
+                
+            }
+        }
+        .ebtn{
+            justify-content: center;
+            a{
+                    &:first-child{
+                    background-color: #034737;
+                    color: white;
+                    svg{
+                        path{
+                            fill: white;
+                        }
+                    }
+                    &:hover{
+                        background-color: #03473734;
+                        color: #034737;
+                        svg{
+                            path{
+                                fill: #034737;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
