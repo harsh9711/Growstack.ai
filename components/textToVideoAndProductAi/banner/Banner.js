@@ -29,7 +29,7 @@ function Banner() {
               </div>
             </div>
             <div className='col-lg-7 hidden-md'>
-              <img src='images/textVideo/tool_banner 1.svg' className='w-100' />
+              <img src='images_growstack/textVideo/tool_banner 1.svg' className='w-100' />
             </div>
           </div>
         </div>
