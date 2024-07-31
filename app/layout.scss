@@ -1,4 +1,4 @@
-@import 'variables.scss';
+@import './variables.scss';
 
 .heading {
     font-size: 38px;
@@ -42,6 +42,7 @@ p {
 
 .btns {
     display: flex;
+    flex-direction: row;
     align-items: center;
     margin-top: 20px;
     gap: 15px;
@@ -59,6 +60,8 @@ p {
         font-family: 'PoppinsMedium';
         text-decoration: none;
         transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
 
         svg {
             margin-left: 10px;
