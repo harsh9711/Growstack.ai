@@ -13,7 +13,7 @@ export default function InstagramSection() {
           <div className="space-y-6">
             <h1 className="text-xl font-semibold text-primary-green">General settings</h1>
             <div className="flex items-center">
-              <label className="w-full max-w-[400px]">Enable autoposting</label>
+              <label className="w-full max-w-[400px]">Enable messaging</label>
               <Switch defaultChecked={true} />
             </div>
           </div>
@@ -26,38 +26,6 @@ export default function InstagramSection() {
             Add Instagram account
           </button>
         </div>
-        {/* <div className="mt-10 space-y-6">
-          <h1 className="text-xl font-semibold text-primary-green">Auto post settings</h1>
-
-          <div className="flex items-center">
-            <label className="flex items-center gap-1 w-1/5 min-w-[400px] font-medium">Autopost Posts to Instagram of this user(s)</label>
-            <div className="w-full">
-              <Select>
-                <SelectTrigger className="w-full h-12 rounded-xl border-0">
-                  <SelectValue placeholder="Select Autopost posts" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Monday">Monday</SelectItem>
-                  <SelectItem value="Tuesday">Tuesday</SelectItem>
-                  <SelectItem value="Wednesday">Wednesday</SelectItem>
-                  <SelectItem value="Thursday">Thursday</SelectItem>
-                  <SelectItem value="Friday">Friday</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div className="flex items-center">
-            <label className="flex items-center gap-1 w-1/5 min-w-[400px] font-medium">Instagram post image</label>
-            <div className="w-full flex gap-5">
-              <Input type="url" placeholder="posting type" className="w-full" />
-              <button className="h-12 w-full max-w-[180px] text-primary-green border border-primary-green py-3 px-4 sheen flex justify-center items-center gap-3 rounded-xl hover:bg-primary-green transition-all duration-300 hover:text-white cursor-pointer">
-                <Plus size={20} />
-                <span className="font-medium">Browse...</span>
-              </button>
-            </div>
-          </div>
-        </div> */}
       </Motion>
     </Fragment>
   );

@@ -16,19 +16,19 @@ export default function page() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
   // const tabs = ["General", "Facebook", "Twitter", "Linkedin", "Tumblr", "Pinterest", "GMB", "Reddit", "Instagram", "Blogger"];
-  const tabs = ["General", "Facebook", "Twitter", "Linkedin", "Instagram",];
+  const tabs = ["Facebook", "Twitter", "Linkedin", "Instagram",];
 
   const renderContent = () => {
     switch (selectedTabIndex) {
+      // case 0:
+      //   return <GeneralSection />;
       case 0:
-        return <GeneralSection />;
-      case 1:
         return <FacebookSection />;
-      case 2:
+      case 1:
         return <TwitterSection />;
-      case 3:
+      case 2:
         return <LinkedInSection />;
-      case 4:
+      case 3:
         return <InstagramSection />;
       // case 5:
       //   return <TumblrSection />;

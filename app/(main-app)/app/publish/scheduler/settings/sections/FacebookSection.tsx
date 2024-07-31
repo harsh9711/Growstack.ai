@@ -15,12 +15,12 @@ export default function FacebookSection() {
             <div className="space-y-4">
               <h1 className="text-xl font-semibold text-primary-green">General settings</h1>
               <div className="flex items-center">
-                <label className="w-full max-w-[400px]">Enable auto posting</label>
+                <label className="w-full max-w-[400px]">Enable messaging</label>
                 <Switch defaultChecked={true} />
               </div>
             </div>
           </div>
-          <div className="w-full">
+          {/* <div className="w-full">
             <div className="space-y-4 max-w-[400px]">
               <h1 className="text-xl font-semibold text-primary-green">Proxy Settings</h1>
               <div className="flex justify-between items-center space-x-2">
@@ -28,7 +28,7 @@ export default function FacebookSection() {
                 <Switch />
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="mt-16 space-y-3">
           <h1 className="text-xl font-semibold text-primary-green">API settings</h1>
@@ -40,10 +40,10 @@ export default function FacebookSection() {
                   <RadioGroupItem value="Facebook APP method" id="r1" />
                   <label htmlFor="r1">Facebook APP method</label>
                 </div>
-                <div className="flex space-x-2 w-full">
+                {/* <div className="flex space-x-2 w-full">
                   <RadioGroupItem value="Facebook graph API" id="r2" />
                   <label htmlFor="r2">Facebook graph API</label>
-                </div>
+                </div> */}
               </RadioGroup>
               <button className="w-full max-w-fit h-12 px-4 py-3 font-medium border border-primary-green text-primary-green rounded-xl flex gap-3 hover:bg-primary-green hover:text-white sheen transition-all duration-300">
                 <Plus size={20} />

@@ -382,18 +382,11 @@ const Layout = () => {
           showRightSidebar ? "" : "rounded-l-3xl"
         )}
       >
-        <div className="flex flex-row justify-between px-6 pt-6 pb-2">
-          <div className="relative max-w-40 flex flex-row gap-8 font-normal text-ellipsis">
-            {/* <button
-              onClick={() => handleButtonClick(0)}
-              className={`transition-all text-[14px] duration-300 ${activeIndex === 0 ? "text-green-800 font-semibold" : ""
-                }`}
-            >
-              All
-            </button> */}
+        <div className="flex w-full flex-row justify-between px-6 pt-6 pb-2">
+          <div className="relative w-full flex flex-row gap-8 font-normal text-ellipsis">
             <button
               onClick={() => handleButtonClick(1)}
-              className={`transition-all text-[16px] duration-300 ${
+              className={`transition-all text-[16px] duration-300 w-1/2 ${
                 activeIndex === 1 ? "text-green-800 font-semibold" : ""
               }`}
             >
@@ -401,7 +394,7 @@ const Layout = () => {
             </button>
             <button
               onClick={() => handleButtonClick(2)}
-              className={`transition-all duration-300 text-[16px] ${
+              className={`transition-all duration-300 text-[16px] w-1/2 ${
                 activeIndex === 2 ? "text-green-800 font-semibold" : ""
               }`}
             >
@@ -410,182 +403,13 @@ const Layout = () => {
 
             <div
               className={`absolute -bottom-3 h-1 bg-green-800 transition-all duration-300  ${
-                activeIndex === 1 ? "-left-0" : "left-[72%]"
+                activeIndex === 1 ? "-left-0" : "left-[52%]"
               }`}
               style={{
                 // transform: `translateX(${activeIndex * 100}%)`,
-                width: "60%",
+                width: "50%",
               }}
             />
-          </div>
-
-          <div className="relative">
-            <div className="flex flex-row gap-4">
-              <button
-                className="shadow-lg transition-all duration-300"
-                onClick={toggleMenu}
-              ></button>
-              <button
-                className="shadow-lg transition-all duration-300"
-                onClick={toggleFilter}
-              >
-                <svg
-                  className={clsx(
-                    "w-6 h-6 transition-transform",
-                    isArrowRotated ? "rotate-180" : ""
-                  )}
-                  viewBox="0 0 22 22"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect width="22" height="22" rx="5" fill="#034737" />
-                  <path
-                    d="M11.866 14.5C11.4811 15.1667 10.5189 15.1667 10.134 14.5L7.5359 10C7.151 9.33333 7.63212 8.5 8.40192 8.5L13.5981 8.5C14.3679 8.5 14.849 9.33333 14.4641 10L11.866 14.5Z"
-                    fill="white"
-                  />
-                </svg>
-              </button>
-            </div>
-            {isFilterOpen && (
-              <div className="absolute z-20 mt-2 top-full right-0 w-80 bg-white border-[0.5px] border-gray-200 rounded-2xl shadow-lg">
-                <div className="p-4">
-                  <div className="mt-2 space-y-2">
-                    <label className="flex items-center flex-row justify-between">
-                      <span>
-                        {" "}
-                        <input
-                          type="checkbox"
-                          className="bg-green-800 form-checkbox"
-                        />
-                        <span className="ml-2 font-medium">All types</span>
-                      </span>
-                      <div className="bg-[#0347371A]/10 p-2 rounded-xl">
-                        <h2 className="text-green-950 leading-3">204</h2>
-                      </div>
-                    </label>
-                    <label className="flex items-center flex-row justify-between">
-                      <span>
-                        {" "}
-                        <input
-                          type="checkbox"
-                          className="bg-green-800 form-checkbox"
-                        />
-                        <span className="ml-2 font-medium">
-                          Facebook comments
-                        </span>
-                      </span>
-                      <div className="bg-[#0347371A]/10 p-2 rounded-xl">
-                        <h2 className="text-green-950 leading-3">63</h2>
-                      </div>
-                    </label>
-                    <label className="flex items-center flex-row justify-between">
-                      <span>
-                        {" "}
-                        <input
-                          type="checkbox"
-                          className="bg-green-800 form-checkbox"
-                        />
-                        <span className="ml-2 font-medium">
-                          Facebook messages
-                        </span>
-                      </span>
-                      <div className="bg-[#0347371A]/10 p-2 rounded-xl">
-                        <h2 className="text-green-950 leading-3">39</h2>
-                      </div>
-                    </label>{" "}
-                    <label className="flex items-center flex-row justify-between">
-                      <span>
-                        {" "}
-                        <input
-                          type="checkbox"
-                          className="bg-green-800 form-checkbox"
-                        />
-                        <span className="ml-2 font-medium">
-                          Facebook mentions
-                        </span>
-                      </span>
-                      <div className="bg-[#0347371A]/10 p-2 rounded-xl">
-                        <h2 className="text-green-950 leading-3">3</h2>
-                      </div>
-                    </label>{" "}
-                    <label className="flex items-center flex-row justify-between">
-                      <span>
-                        {" "}
-                        <input
-                          type="checkbox"
-                          className="bg-green-800 form-checkbox"
-                        />
-                        <span className="ml-2 font-medium">
-                          Instagram comments
-                        </span>
-                      </span>
-                      <div className="bg-[#0347371A]/10 p-2 rounded-xl">
-                        <h2 className="text-green-950 leading-3">6</h2>
-                      </div>
-                    </label>
-                    <label className="flex items-center flex-row justify-between">
-                      <span>
-                        {" "}
-                        <input
-                          type="checkbox"
-                          className="bg-green-800 form-checkbox"
-                        />
-                        <span className="ml-2 font-medium">
-                          Instagram messages
-                        </span>
-                      </span>
-                      <div className="bg-[#0347371A]/10 p-2 rounded-xl">
-                        <h2 className="text-green-950 leading-3">53</h2>
-                      </div>
-                    </label>
-                    <label className="flex items-center flex-row justify-between">
-                      <span>
-                        {" "}
-                        <input
-                          type="checkbox"
-                          className="bg-green-800 form-checkbox"
-                        />
-                        <span className="ml-2 font-medium">
-                          Instagram mentions
-                        </span>
-                      </span>
-                      <div className="bg-[#0347371A]/10 p-2 rounded-xl">
-                        <h2 className="text-green-950 leading-3">53</h2>
-                      </div>
-                    </label>
-                    <label className="flex items-center flex-row justify-between">
-                      <span>
-                        {" "}
-                        <input
-                          type="checkbox"
-                          className="bg-green-800 form-checkbox"
-                        />
-                        <span className="ml-2 font-medium">
-                          LinkedIn comments
-                        </span>
-                      </span>
-                      <div className="bg-[#0347371A]/10 p-2 rounded-xl">
-                        <h2 className="text-green-950 leading-3">22</h2>
-                      </div>
-                    </label>
-                  </div>
-                  <div className="flex justify-end mt-4 space-x-4">
-                    <button
-                      onClick={handleCancelFilters}
-                      className="w-full py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      onClick={handleApplyFilters}
-                      className=" w-full py-2 bg-green-900 text-white rounded-md hover:bg-green-800 focus:outline-none "
-                    >
-                      Apply
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
         </div>
         <div className="border-y   py-4 px-6">
