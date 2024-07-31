@@ -12,7 +12,7 @@ import { Switch } from "@/components/ui/switch";
 import { Plus } from "lucide-react";
 import { Fragment } from "react";
 
-export default function TwitterSection({ setMessagingActive }: any) {
+export default function TwitterSection({ setMessagingActive, handleOnConnect }: any) {
   return (
     <Fragment>
       <Motion
@@ -48,7 +48,7 @@ export default function TwitterSection({ setMessagingActive }: any) {
                   <label htmlFor="r1">Twitter APP method</label>
                 </div>
               </RadioGroup>
-              <button className="w-full max-w-fit h-12 px-4 py-3 font-medium border border-primary-green text-primary-green rounded-xl flex gap-3 hover:bg-primary-green hover:text-white sheen transition-all duration-300">
+              <button onClick={handleOnConnect} className="w-full max-w-fit h-12 px-4 py-3 font-medium border border-primary-green text-primary-green rounded-xl flex gap-3 hover:bg-primary-green hover:text-white sheen transition-all duration-300">
                 <Plus size={20} />
                 Add Twitter account
               </button>

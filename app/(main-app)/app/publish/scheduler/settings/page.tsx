@@ -23,20 +23,31 @@ export default function page() {
   const [tabName, setTabName] = useState("Facebook");
   const [messagingActive, setMessagingActive] = useState(false);
 
-  console.log("SSS", messagingActive);
+  const handleOnConnect = async () => {
+    try {
+      const response = await instance.get(API_URL + '/users/api/v1/social-media/connect');
+      console.log('response', response)
+      const url = response?.data.data
+      if (url) {
+        window.location.href = url;
+      }
+    } catch (error: any) {
+      toast.error(error.response.data.message)
+    }
+  }
 
   const renderContent = () => {
     switch (selectedTabIndex) {
       // case 0:
       //   return <GeneralSection />;
       case 0:
-        return <FacebookSection setMessagingActive={setMessagingActive} />;
+        return <FacebookSection setMessagingActive={setMessagingActive} handleOnConnect={handleOnConnect} />;
       case 1:
-        return <TwitterSection setMessagingActive={setMessagingActive} />;
+        return <TwitterSection setMessagingActive={setMessagingActive} handleOnConnect={handleOnConnect} />;
       case 2:
-        return <LinkedInSection setMessagingActive={setMessagingActive} />;
+        return <LinkedInSection setMessagingActive={setMessagingActive} handleOnConnect={handleOnConnect} />;
       case 3:
-        return <InstagramSection setMessagingActive={setMessagingActive} />;
+        return <InstagramSection setMessagingActive={setMessagingActive} handleOnConnect={handleOnConnect} />;
       // case 5:
       //   return <TumblrSection />;
       // case 6:

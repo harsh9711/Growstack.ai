@@ -74,7 +74,7 @@ export default function ScheduledPostsTable() {
               aria-label="Select row"
               className="w-[18px] h-[18px]"
             />
-            <span>{row.getValue("name") ?? "John Doe"}</span>
+            <span>{row?.original?.post?.slice(0, 5) ?? "John Doe"}</span>
           </div>
         );
       },

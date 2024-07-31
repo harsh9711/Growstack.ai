@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-export default function FacebookSection({ setMessagingActive }: any) {
+export default function FacebookSection({ setMessagingActive, handleOnConnect }: any) {
   return (
     <Fragment>
       <Motion
@@ -63,7 +63,7 @@ export default function FacebookSection({ setMessagingActive }: any) {
                   <label htmlFor="r2">Facebook graph API</label>
                 </div> */}
               </RadioGroup>
-              <button className="w-full max-w-fit h-12 px-4 py-3 font-medium border border-primary-green text-primary-green rounded-xl flex gap-3 hover:bg-primary-green hover:text-white sheen transition-all duration-300">
+              <button onClick={handleOnConnect} className="w-full max-w-fit h-12 px-4 py-3 font-medium border border-primary-green text-primary-green rounded-xl flex gap-3 hover:bg-primary-green hover:text-white sheen transition-all duration-300">
                 <Plus size={20} />
                 Add Facebook account
               </button>

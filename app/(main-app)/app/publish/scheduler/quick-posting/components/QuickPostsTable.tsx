@@ -65,6 +65,7 @@ export default function QuickPostsTable() {
         </div>
       ),
       cell: ({ row }) => {
+        console.log('row', row.original)
         return (
           <div className="capitalize flex items-center gap-3">
             <Checkbox
@@ -73,7 +74,7 @@ export default function QuickPostsTable() {
               aria-label="Select row"
               className="w-[18px] h-[18px]"
             />
-            <span>{row.getValue("name") ?? "John Doe"}</span>
+            <span>{row?.original?.post?.slice(0, 5) ?? "John Doe"}</span>
           </div>
         );
       },
