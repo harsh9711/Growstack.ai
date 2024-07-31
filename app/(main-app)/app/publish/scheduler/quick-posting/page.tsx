@@ -84,6 +84,11 @@ export default function QuickPosting() {
                 <Switch />
               </div>
               <div className="w-full flex justify-between mt-6 pb-6 border-b border-[#EDEFF0]">
+                <label className="font-medium">Instagram</label>
+                <Switch />
+              </div>
+
+              {/* <div className="w-full flex justify-between mt-6 pb-6 border-b border-[#EDEFF0]">
                 <label className="font-medium">Tumblr</label>
                 <Switch />
               </div>
@@ -96,13 +101,9 @@ export default function QuickPosting() {
                 <Switch defaultChecked={true} />
               </div>
               <div className="w-full flex justify-between mt-6 pb-6 border-b border-[#EDEFF0]">
-                <label className="font-medium">Instagram</label>
-                <Switch />
-              </div>
-              <div className="w-full flex justify-between mt-6 pb-6 border-b border-[#EDEFF0]">
                 <label className="font-medium">Reddit</label>
                 <Switch />
-              </div>
+              </div> */}
             </section>
 
             <section className="w-full bg-white rounded-3xl border border-[#EDEFF0] px-10 py-6 mt-6">
