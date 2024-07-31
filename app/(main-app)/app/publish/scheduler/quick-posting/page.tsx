@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
@@ -40,6 +40,17 @@ export default function QuickPosting() {
       setMediaUrls([]);
     }
   };
+
+  useEffect(() => {
+    const storedArticle = localStorage.getItem("savedArticle");
+    if (storedArticle) {
+      setContent(storedArticle);
+    }
+
+    return () => {
+      localStorage.removeItem("savedArticle");
+    };
+  }, []);
 
   const handleBrowsImgAndVideo = async (
     event: ChangeEvent<HTMLInputElement>
