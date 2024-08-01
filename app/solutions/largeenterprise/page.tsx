@@ -1,11 +1,10 @@
 "use client";
 import Image from "next/image";
-import { ArrowRight, Navigation, Video } from "lucide-react";
+import { ArrowLeft, ArrowRight, Navigation, Video } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useInView } from 'react-intersection-observer';
-
 import Aos from "aos";
 import Slider from "react-slick";
 import { motion } from "framer-motion";
@@ -42,6 +41,33 @@ const testimonials = [
       "“The best”! That’s what I want to say to this platform, didn’t know that there’s a platform to help you manage your business expenses like this! Very recommended to you who have a big business!",
     companyImage: "No doubt, Spend.In is the best!",
   },
+  {
+    id: 3,
+    img1: "/carousel/c1.png",
+    name: "Moritika Kazuki",
+    role: "Finance Manager at Mangan",
+    description:
+      "“The best”! That’s what I want to say to this platform, didn’t know that there’s a platform to help you manage your business expenses like this! Very recommended to you who have a big business!",
+    companyImage: "No doubt, Spend.In is the best!",
+  },
+  {
+    id: 4,
+    img1: "/carousel/c1.png",
+    name: "Moritika Kazuki",
+    role: "Finance Manager at Mangan",
+    description:
+      "“The best”! That’s what I want to say to this platform, didn’t know that there’s a platform to help you manage your business expenses like this! Very recommended to you who have a big business!",
+    companyImage: "No doubt, Spend.In is the best!",
+  },
+  {
+    id: 5,
+    img1: "/carousel/c1.png",
+    name: "Moritika Kazuki",
+    role: "Finance Manager at Mangan",
+    description:
+      "“The best”! That’s what I want to say to this platform, didn’t know that there’s a platform to help you manage your business expenses like this! Very recommended to you who have a big business!",
+    companyImage: "No doubt, Spend.In is the best!",
+  },
 ];
 
 const Home = () => {
@@ -64,18 +90,29 @@ const Home = () => {
   });
   type SliderRef = Slider | null;
 
-  const sliderRef = useRef<SliderRef>(null);
+//   const sliderRef = useRef<SliderRef>(null);
+
+  const sliderRef = useRef(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  const handleBeforeChange = (oldIndex: number, newIndex: number) => {
+    setCurrentSlide(newIndex);
+  };
+  const previous = () => {
+    if (sliderRef.current) {
+      (sliderRef.current as Slider).slickPrev(); // Type assertion
+    }
+  };
 
   const next = () => {
-    sliderRef.current?.slickNext();
-  };
-
-  const previous = () => {
-    sliderRef.current?.slickPrev();
+    if (sliderRef.current) {
+      (sliderRef.current as Slider).slickNext(); // Type assertion
+    }
   };
   const settings = {
-    dots: true,
-    infinite: true,
+    dots: false,
+    arrows: false,
+    infinite:false,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
@@ -280,8 +317,8 @@ const Home = () => {
  className="mt-20 relative w-full h-[580px] max-w-[1028px] flex items-center justify-center overflow-hidden bg-white brightness-105">
       <motion.div
    className="absolute top-0 left-0 w-full h-full"
-   initial={{ scale: 1.2, opacity: 0 }}
-   animate={inView ? { scale: 1, opacity: 1 } : { scale: 1.2, opacity: 0 }}
+   initial={{ scale: 0, opacity: 0 }}
+   animate={inView ? { scale: 1, opacity: 1 } : { scale: 1, opacity: 0 }}
    transition={{ duration: 1.5 }} 
       >
         <video
@@ -298,7 +335,6 @@ const Home = () => {
             srcLang="en"
             label="English"
           />
-          Your browser does not support the video tag.
         </video>
       </motion.div>
     </div>
@@ -328,7 +364,6 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Images Section with Animation */}
       <motion.div
         ref={ref2}
         className="flex gap-4 mt-16 overflow-x-auto absolute"
@@ -366,20 +401,83 @@ const Home = () => {
       </div>
     </section>
 
-      <section className="py-10 flex flex-col gap-20 mt-20">
-        <div className="flex flex-col items-center gap-7">
-          <div className="bg-[#00968914] py-2 px-4 uppercase flex items-center gap-3 rounded-full text-xs font-semibold max-w-fit text-[#034737]">
+    <section className="   ">
+        <div className="items-center justify-center flex flex-col gap-y-4 mt-24 overflow-hidden ">
+        <Image src="/desing.png" width={1200} height={1000} className="w-full absolute  transform scale-y-[-1]  translate-x-10  z-[20] translate-y-80 h-full" alt="image"/>  
+
+          <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit">
             {" "}
-            FAQ
+            Streamline
           </div>
-          <h1 className="text-[42px] font-semibold text-primary-green">
-            Quick answers{" "}
-            <span className="font-light bg-gradient-to-b from-black to-black/30 bg-clip-text text-transparent">
-              on GrowStack
-            </span>{" "}
+          <h1 className="text-center flex flex-col  text-[42px] leading-normal">
+            <span className="relative text-black font-semibold">
+            Streamline your entire marketing process
+            </span>
+            <span className="text-black font-extralight  ">
+              {" "}
+              from to execution and beyond            </span>
           </h1>
         </div>
-        <div className="bg-[url('/backgrounds/abstract-dots.png')] bg-no-repeat bg-cover bg-right-bottom w-full"></div>
+        <div className="max-w-[1720px] mx-auto mt-10">
+      <div className="z-[80] relative">
+        <Slider
+          ref={sliderRef}
+          {...settings}
+          beforeChange={handleBeforeChange}
+          className=""
+        >
+          {testimonials.map((item, index) => (
+            <div
+              key={index}
+              className="w-[682px] h-[468px] bg-white rounded-[17px] border border-[#e9e7e7] flex flex-col p-6 mx-4"
+            >
+              <div className="flex flex-col justify-between h-full w-full">
+                <div className="flex flex-col gap-y-4 pb-6">
+                  <h1 className="text-[18px] text-black leading-normal font-light multi-line-ellipsis">
+                    {item.id}
+                  </h1>
+                </div>
+                <div className="space-x-4 mt-10 flex flex-row">
+                  <div className="flex flex-col gap-y-2">
+                    <h1 className="text-[24px] text-black leading-normal font-medium multi-line-ellipsis">
+                      {item.name}
+                    </h1>
+                    <p className="text-[18px] text-black multi-line-ellipsis">
+                      {item.role}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </Slider>
+      </div>
+
+      <div className="mt-16 hidden lg:block">
+        <div className="flex w-full max-w-[1720px] justify-between -translate-y-80 z-[90] relative items-center gap-6">
+          {currentSlide > 0 && (
+            <div className="relative translate-x-10 flex items-center justify-center">
+              <button
+                className="transition z-20 duration-300 cursor-pointer flex items-center justify-center w-12 h-12 rounded-full bg-black text-white hover:bg-[#009a9b]"
+                title="Previous"
+                onClick={previous}
+              >
+                <ArrowLeft size={25} />
+              </button>
+            </div>
+          )}
+          <div className="relative flex items-center justify-center">
+            <button
+              className="relative z-20 transition duration-300 cursor-pointer flex items-center justify-center w-12 h-12 rounded-full bg-black text-white hover:bg-[#009a9b]"
+              title="Next"
+              onClick={next}
+            >
+              <ArrowRight size={25} />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
       </section>
     </main>
   );
