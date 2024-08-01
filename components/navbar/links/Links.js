@@ -23,6 +23,14 @@ const links = [
   {
     title: "Solutions",
     path: "/solutions",
+    submenu: [
+          { title: "Large Enterprise", path: "/LargeEnterprise" },
+          { title: "Text to videos and Product AI", path: "/text-to-video-and-product-ai" },
+          { title: "Marketing and sales assistants", path: "/marketing-and-sales-assistant" },
+          { title: "AI Website landing page and email Builder", path: "/ai-website-and-email-builder" },
+          { title: "Custom marketing GPT apps", path: "/custom-marketing-gpt-apps" },
+          { title: "Social planner hub", path: "/social-planner-hub" },
+        ],
   },
   {
     title: "Resources",
