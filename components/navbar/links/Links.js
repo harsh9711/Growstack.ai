@@ -20,10 +20,10 @@ const links = [
           { title: "Social planner hub", path: "/social-planner-hub" },
         ],
   },
-  {
-    title: "Solutions",
-    path: "/solutions",
-  },
+  // {
+  //   title: "Solutions",
+  //   path: "/solutions",
+  // },
   // {
   //   title: "Resources",
   //   path:"/resources"
