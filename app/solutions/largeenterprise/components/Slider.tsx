@@ -91,47 +91,48 @@ const slideData = [
   };
 
   return (
-    <div className="max-w-[1320px] w-full h-full mx-auto mt-10">
-    <div className="relative z-0">
-      <Slider ref={sliderRef} {...settings} className="relative">
-        {slideData.map((item, index) => (
-          <div
-            key={index}
-            className={`w-[410px] h-[600px] rounded-[17px] z-10 relative flex transition-transform duration-300 transform-gpu ${
-                isSlideVisible(index, activeIndex) ? 'scale-110 z-40' : 'scale-95 z-0'
-            }`}
-          >
-            <div className="border border-[#D1D1D1] bg-white  rounded-3xl flex flex-col h-full gap-y-2 z-40">
-              <h2 className="font-semibold text-[#034737] text-[21px] text-center pt-4 px-4">
-                {item.title}
-              </h2>
-              <Image
-                src={item.imageSrc}
-                width={382}
-                height={188}
-                alt={item.title}
-                className="px-4"
-              />
-              <h2 className="font-medium text-[21px] w-full max-w-[369px] px-4">
-                {item.subtitle}
-              </h2>
-              <div className="justify-between w-full gap-x-4 max-w-[417px] mt-2 flex flex-row">
-                {item.tags.map((tag, tagIndex) => (
-                  <span
-                    key={tagIndex}
-                    className="border-r border-t border-b border-[#D8D8D8] items-center justify-center rounded-r-full p-2 w-full max-w-[300px]"
-                  >
-                    <h2 className="text-[17px] font-semibold mt-1">{tag}</h2>
-                  </span>
-                ))}
-                <span className="mr-4">{item.icon}</span>
-              </div>
-              <p className="px-4 text-gray-600 mt-2 pb-6 tracking-widest">{item.description}</p>
-            </div>
+    <div className="max-w-[1200px] w-full h-auto mt-10 ">
+   <div className="relative z-0">
+  <Slider ref={sliderRef} {...settings} className="relative">
+    {slideData.map((item, index) => (
+      <div
+        key={index}
+        className={`max-w-[420px] h-auto rounded-[17px] z-10 relative flex transition-transform duration-300 transform-gpu ${
+          isSlideVisible(index, activeIndex) ? 'scale-30 z-40' : 'scale-75 z-0'
+        }`}
+      >
+        <div className="border border-[#D1D1D1] bg-white hover:shadow-lg shadow-3xl rounded-3xl flex flex-col h-full gap-y-2 z-40">
+          <h2 className="font-semibold text-[#034737] text-[21px] text-center pt-2 px-4">
+            {item.title}
+          </h2>
+          <Image
+            src={item.imageSrc}
+            width={382}
+            height={188}
+            alt={item.title}
+            className="px-2"
+          />
+          <h2 className="font-medium text-[21px] w-full max-w-[369px] px-4">
+            {item.subtitle}
+          </h2>
+          <div className="justify-between w-full gap-x-2 max-w-[417px] mt-1 flex flex-row">
+            {item.tags.map((tag, tagIndex) => (
+              <span
+                key={tagIndex}
+                className="border-r border-t border-b border-[#D8D8D8] items-center justify-center rounded-r-full p-2 w-full max-w-[300px]"
+              >
+                <h2 className="text-[17px] font-semibold mt-1">{tag}</h2>
+              </span>
+            ))}
+            <span className="mr-2">{item.icon}</span>
           </div>
-        ))}
-      </Slider>
-    </div>
+          <p className="px-4 text-gray-600 mt-1 pb-4 tracking-widest">{item.description}</p>
+        </div>
+      </div>
+    ))}
+  </Slider>
+</div>
+
   </div>
   );
 };

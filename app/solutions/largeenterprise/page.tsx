@@ -2,10 +2,7 @@
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, Navigation, Video } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import { useInView } from "react-intersection-observer";
-import Aos from "aos";
 import Slider from "react-slick";
 import { motion } from "framer-motion";
 import CustomSlider from "./components/Slider";
@@ -381,12 +378,12 @@ const Home = () => {
             </div>
       
     
-    <CustomSlider />
+              <CustomSlider />
           </div>
         </div>
       </section>
       <section className="">
-        <div className="relative flex items-center w-full h-full py-40 bg-white overflow-hidden">
+        <div className="relative flex items-center w-full h-full pb-40 bg-white overflow-hidden">
           <div className="w-full h-full mx-auto flex flex-col justify-between max-h-[950px] max-w-[1920px] items-center">
             <div className="flex flex-col items-center justify-center mx-auto w-full">
               <div className="w-full gap-y-4  flex flex-col items-center justify-center mx-auto">
