@@ -24,14 +24,14 @@ const links = [
     title: "Solutions",
     path: "/solutions",
   },
-  {
-    title: "Resources",
-    path:"/resources"
-  },
-  {
-    title: "Pricing ",
-    path:"/pricing "
-  }
+  // {
+  //   title: "Resources",
+  //   path:"/resources"
+  // },
+  // {
+  //   title: "Pricing ",
+  //   path:"/pricing "
+  // }
 ];
 
 

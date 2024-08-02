@@ -58,7 +58,7 @@ export default function Login() {
         expires: new Date(Date.now() + 2 * 60 * 60 * 1000),
       });
       dispatch(login(response.data.data));
-      router.push("/planpage");
+      router.push("/app");
       toast.success(response.data.message);
     } catch (error: any) {
       if (error.response) {

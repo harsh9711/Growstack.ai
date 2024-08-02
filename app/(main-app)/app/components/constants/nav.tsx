@@ -46,6 +46,11 @@ const navLinks: NavLink[] = [
     icon: <PlanIcon />,
     sublinks: [
       {
+        icon: <ProductAiIcon />,
+        name: "AI playground",
+        href: "/app/plan/ai-playground",
+      },
+      {
         icon: <BotIcon />,
         name: "AI chat",
         href: "/app/plan/ai-chat",
@@ -71,19 +76,9 @@ const navLinks: NavLink[] = [
         href: "/app/plan/text-to-video",
       },
       {
-        icon: <TridentIcon />,
-        name: "Web scraping",
-        href: "/app/plan/web-scraping",
-      },
-      {
         icon: <ProductAiIcon />,
-        name: "AI playground",
-        href: "/app/plan/ai-playground",
-      },
-      {
-        icon: <UserIcon />,
-        name: "Contact",
-        href: "/app/plan/contacts",
+        name: "Product AI ",
+        href: "/app/create/product-ai",
       },
     ],
     title: "Plan",
@@ -96,11 +91,7 @@ const navLinks: NavLink[] = [
       //   name: "AI website builder",
       //   href: "/app/create/website-builder",
       // },
-      {
-        icon: <MailIcon />,
-        name: "AI email builder",
-        href: "/app/create/email-builder",
-      },
+
       {
         icon: <ShapeIcon />,
         name: "AI workflow builder",
@@ -112,9 +103,9 @@ const navLinks: NavLink[] = [
         href: "/app/create/ai-articles",
       },
       {
-        icon: <ProductAiIcon />,
-        name: "Product AI ",
-        href: "/app/create/product-ai",
+        icon: <MailIcon />,
+        name: "AI email builder",
+        href: "/app/create/email-builder",
       },
     ],
     title: "Create",
@@ -173,21 +164,21 @@ const navLinks: NavLink[] = [
             name: "Telegram overview",
             href: "/app/engage/integration/telegram-automation",
           },
-          {
-            icon: <CampaignIcon />,
-            name: "Campaigns",
-            href: "/app/engage/integration/campaigns",
-          },
-          {
-            icon: <AiAssistantIcon />,
-            name: "AI assistant",
-            href: "/app/engage/integration/ai-assistant",
-          },
-          {
-            icon: <SettingsIcon />,
-            name: "Settings",
-            href: "/app/engage/integration/settings",
-          },
+          // {
+          //   icon: <CampaignIcon />,
+          //   name: "Campaigns",
+          //   href: "/app/engage/integration/campaigns",
+          // },
+          // {
+          //   icon: <AiAssistantIcon />,
+          //   name: "AI assistant",
+          //   href: "/app/engage/integration/ai-assistant",
+          // },
+          // {
+          //   icon: <SettingsIcon />,
+          //   name: "Settings",
+          //   href: "/app/engage/integration/settings",
+          // },
         ],
       },
       {
@@ -200,6 +191,16 @@ const navLinks: NavLink[] = [
       //   name: "Social advocacy",
       //   href: "/app/engage/social-advocacy",
       // },
+      {
+        icon: <TridentIcon />,
+        name: "Web scraping",
+        href: "/app/plan/web-scraping",
+      },
+      {
+        icon: <UserIcon />,
+        name: "Contact",
+        href: "/app/plan/contacts",
+      },
     ],
     title: "Engage",
   },
