@@ -6,7 +6,8 @@ import { useInView } from "react-intersection-observer";
 import Slider from "react-slick";
 import { motion } from "framer-motion";
 import CustomSlider from "./components/Slider";
-
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 const testimonials = [
   {
     id: 0,
@@ -135,7 +136,7 @@ const Home = () => {
       largeSrc: '/zoomedimages/zoom1.svg', 
     },
     {
-      src: "/imagezoom/zoom2.svg",
+      src: "/imagezoom/zoom21.svg",
       className: "w-[290.5px] h-[200px] translate-x-[320px] -translate-y-20",
       largeSrc: '/zoomedimages/zoom2.svg', 
     },
@@ -498,7 +499,7 @@ const Home = () => {
     onClick={handleClose}
   >
     <motion.div
-      className="relative z-50"
+      className="relative z-0"
       initial={{ scale: 0.8 }}
       animate={{ scale: 1 }}
       transition={{ duration: 0.5 }}

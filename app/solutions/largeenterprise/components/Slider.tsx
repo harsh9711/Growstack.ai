@@ -92,7 +92,7 @@ const slideData = [
 
   return (
     <div className="max-w-[1200px] w-full h-auto mt-10 ">
-   <div className="relative z-0">
+   <div className="relative z-10">
   <Slider ref={sliderRef} {...settings} className="relative">
     {slideData.map((item, index) => (
       <div
