@@ -51,10 +51,10 @@ const page = () => {
     console.log("querySearchxx", querySearch);
     if (querySearch === "success") {
       toast.success("Payment done successfully!");
-    } else {
-        toast.error("Error occured during payment!");
+    } else if (querySearch === "failure") {
+      toast.error("Error occured during payment!");
     }
-  }, []);
+  }, [querySearch]);
 
   const handlePlanSubscription = async (plan: IPlan) => {
     const payload = { product: plan, currency: "usd" };
