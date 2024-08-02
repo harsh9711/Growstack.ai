@@ -32,6 +32,7 @@ function EditModal({
   setEditWorkFlow,
   onSave,
 }: EditModalProps) {
+  const router = useRouter();
   return (
     <div
       className={`z-50 fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center ${
@@ -60,6 +61,7 @@ function EditModal({
               <div className="space-y-2">
                 <label className="font-medium">Workflow name</label>
                 <Input
+                  className="border-2"
                   type="text"
                   placeholder="Type your workflow name"
                   value={editWorkFlow.name}
@@ -68,20 +70,31 @@ function EditModal({
                   }
                 />
               </div>
-
-              <div className="flex justify-end gap-4 w-full">
-                <button
-                  className="py-3.5 h-14 w-full max-w-[140px] px-6 bg-white border text-primary-green border-primary-green rounded-xl mt-6"
-                  onClick={() => onHide(false)}
-                >
-                  Cancel
-                </button>
+              <div className="flex ">
                 <button
                   className="py-3.5 h-14 w-full max-w-[200px] px-6 bg-primary-green sheen rounded-xl text-white mt-6 flex items-center justify-center gap-3 whitespace-nowrap"
-                  onClick={onSave}
+                  onClick={() => {
+                    router.push(
+                      `/app/create/workflow-builder/create-workflow?workflow_id=${editWorkFlow.workflow_id}`
+                    );
+                  }}
                 >
-                  Save
+                  Edit Workflow Steps
                 </button>
+                <div className="flex justify-end gap-4 w-full">
+                  <button
+                    className="py-3.5 h-14 w-full max-w-[140px] px-6 bg-white border text-primary-green border-primary-green rounded-xl mt-6"
+                    onClick={() => onHide(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    className="py-3.5 h-14 w-full max-w-[200px] px-6 bg-primary-green sheen rounded-xl text-white mt-6 flex items-center justify-center gap-3 whitespace-nowrap"
+                    onClick={onSave}
+                  >
+                    Save
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -193,7 +206,7 @@ export default function Workflows() {
               <div className="flex items-center gap-4">
                 <Link
                   key={workflow._id}
-                  href={`/app/create/workflow-builder/workflows?workflow_id=${workflow.workflow_id}`}
+                  href={`/app/create/workflow-builder/workflows/user-work-flow?workflow_id=${workflow.workflow_id}`}
                 >
                   <button className="flex items-center gap-3 rounded-xl h-12 bg-primary-green sheen px-6 text-white text-[14px]">
                     <FaPlay size={12} />

@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import SuggestionDropdown from './SuggestionDropdown';
+import React, { useEffect, useRef, useState } from "react";
+import SuggestionDropdown from "./SuggestionDropdown";
 
 interface TextAreaProps {
   option: any;
@@ -33,7 +33,9 @@ const TextArea = ({
   suggestionOptions,
   setSuggestionOptions,
 }: TextAreaProps) => {
-  const [description, setDescription] = useState<string>(option.input_default_value);
+  const [description, setDescription] = useState<string>(
+    option.input_default_value
+  );
   const [isDropdownVisible, setDropdownVisible] = useState(false);
 
   // Refs for the dropdown and textarea elements
@@ -47,15 +49,17 @@ const TextArea = ({
         ...prevState.preset_json,
         body: {
           ...prevState.preset_json.body,
-          inputs: prevState.preset_json.body.inputs.map((input: any, i: number) => {
-            if (i === index && input.input_type === 'TEXT_AREA') {
-              return {
-                ...input,
-                input_default_value: description,
-              };
+          inputs: prevState.preset_json.body.inputs.map(
+            (input: any, i: number) => {
+              if (i === index && input.input_type === "TEXT_AREA") {
+                return {
+                  ...input,
+                  input_default_value: description,
+                };
+              }
+              return input;
             }
-            return input;
-          }),
+          ),
         },
       },
     }));
@@ -76,9 +80,9 @@ const TextArea = ({
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -97,8 +101,8 @@ const TextArea = ({
       setDescription(newDescription);
       setTimeout(() => {
         textarea.setSelectionRange(
-          startPos + subOption.name.length + 4,
-          startPos + subOption.name.length + 4
+          startPos + subOption.name.length + 5,
+          startPos + subOption.name.length + 5
         );
         textarea.focus();
       }, 0);
@@ -106,7 +110,9 @@ const TextArea = ({
   };
   return (
     <>
-      <div className="font-medium  text-xl mb-2 capitalize">{option.input_label}</div>
+      <div className="font-medium  text-xl mb-2 capitalize">
+        {option.input_label}
+      </div>
       <textarea
         ref={textareaRef}
         onFocus={handleTextareaFocus}

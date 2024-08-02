@@ -83,7 +83,7 @@ function PublishModal({ show, onHide, workflowId }: PublishModalProps) {
             </div>
             <button className="mt-2 bg-primary-green text-white sheen transition duration-500 px-6 py-4 h-12 rounded-xl flex items-center gap-2">
               <Link
-                href={`/app/create/workflow-builder/template/user-work-flow?workflow_id=${workflowId}`}
+                href={`/app/create/workflow-builder/workflows/user-work-flow?workflow_id=${workflowId}`}
               >
                 Run in dashboard
                 {/* <Zap size={20} /> */}
