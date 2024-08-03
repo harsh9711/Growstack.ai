@@ -2,8 +2,8 @@
 
 .container {
   max-width: 124rem;
-  padding: 4rem 1rem;
-  margin: 0 auto;
+  padding: 0px 200px;
+  margin: 0 200px;
 }
 
 .heading {
@@ -22,6 +22,7 @@
   width: 37rem;
   height: 42rem;
   position: relative;
+  padding: 80px 0px 0px 60px;
   transition: transform 0.5s ease;
   z-index: 1;
   flex-shrink: 0; /* Ensure slides don't shrink */
@@ -609,14 +610,14 @@ body {
 .slide-reveal {
   animation: slideIn 0.5s ease forwards;
 }
-
+/* 
 .hidden-scrollbar {
   scrollbar-width: none;
-}
+} */
 
-.hidden-scrollbar::-webkit-scrollbar {
+/* .hidden-scrollbar::-webkit-scrollbar {
   display: none;
-}
+} */
 
 @keyframes rotateClockwise {
   0% {

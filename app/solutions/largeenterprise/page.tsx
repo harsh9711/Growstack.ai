@@ -5,22 +5,22 @@ import React, { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import Slider from "react-slick";
 import { motion } from "framer-motion";
-import CustomSlider from "./components/Slider";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import SwiperCore, { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
+import 'swiper/css'
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import SwiperSlider from "./components/SwiperSlider";
+import ImageGallery from "./components/ZoomEffect";
+import Navbar from "@/app/(landing)/components/Navbar";
 
 const testimonials = [
   {
     id: 0,
     img1: "/carousel/c1.png",
-    name: "Jimmy Bartney",
-    role: "Product Manager at Picko Lab",
+    name: "Ideation and planning",
+    role: "Generate and refine data-driven ideas using AI Chat and Apps, effortlessly brainstorming and creating initial drafts",
     description:
       "I've tried several website builders, but Webbuddy takes the cake. The templates are modern and customizable, and the drag-and-drop interface makes it a breeze to create a stunning website. Love it!",
     companyImage: "It's just incredible!",
@@ -77,34 +77,7 @@ const Home = () => {
 //     triggerOnce: true,
 //     threshold: 0.1,
 //   });
-  const images = [
-    {
-      src: "/imagezoom/zoom1.svg",
-      className: "w-[301px] h-[200px] translate-x-[200px]",
-      largeSrc: '/zoomedimages/zoom1.svg', 
-    },
-    {
-      src: "/imagezoom/zoom21.svg",
-      className: "w-[290.5px] h-[200px] translate-x-[320px] -translate-y-20",
-      largeSrc: '/zoomedimages/zoom2.svg', 
-    },
-    {
-      src: "/imagezoom/zoom3.svg",
-      className: "w-[301px] h-[200px] translate-x-[350px] translate-y-32",
-      largeSrc: '/zoomedimages/zoom3.svg', 
-    },
-    {
-      src: "/imagezoom/zoom4.svg",
-      className: "w-[301px] h-[200px] -translate-x-[400px] translate-y-60",
-      largeSrc: '/zoomedimages/zoom4.svg', 
-    },
-    {
-      src: "/imagezoom/zoom5.svg",
-      className:
-        "w-[301px] h-[200px]  -translate-x-[170px] -translate-y-40",
-        largeSrc: '/zoomedimages/zoom5.svg', 
-    },
-  ];
+ 
   type ImageType = {
     src: string;
     largeSrc: string;
@@ -231,7 +204,7 @@ const Home = () => {
   return (
     <main className="bg-white">
       <section className="">
-        <div className="relative flex items-center w-full h-full  rounded-[40px]  pt-40 bg-[#F3F7F6] ">
+        <div className="relative flex items-center w-full h-full  rounded-b-[40px]  pt-40 bg-[#F3F7F6] ">
           <div className="w-full h-full mx-auto flex flex-col  justify-between max-h-[870px] max-w-[1920px] items-center">
             <div className="flex flex-col items-center justify-center mx-auto w-full">
               <div className=" w-full gap-y-4 flex flex-col items-center justify-center mx-auto">
@@ -280,7 +253,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="mb-20 mt-10">
+      <section className=" mt-10">
         <div
           className=" w-full max-w-[1920px] h-[602px] gap-y-4 flex flex-col items-center justify-center mx-auto"
           style={{
@@ -305,8 +278,8 @@ const Home = () => {
         </div>
       </section>
       <section className="px-4">
-        <div className="relative flex items-center w-full h-full  rounded-[40px]  py-40 bg-gradient-to-b from-[#E2F0CB] to-[#FFFFFF] ">
-          <div className="w-full  mx-auto flex flex-col  justify-between  h-full max-h-[940px] max-w-[1920px] items-center">
+        <div className="relative flex items-center w-full h-full  rounded-[40px]  pb-40 bg-gradient-to-b from-[#FFFFFF]/30 to-[#E2F0CB]/30 ">
+          <div className="w-full  mx-auto flex flex-col  justify-between  h-full max-h-[800px] max-w-[1920px] items-center">
             <div className="flex flex-col items-center justify-center mx-auto w-full">
               <div className=" w-full gap-y-4 flex flex-col items-center justify-center mx-auto">
                 <div className="bg-[#0347371A] text-[#034737] py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest  font-semibold uppercase w-full max-w-[139px] ">
@@ -314,7 +287,7 @@ const Home = () => {
                 </div>
 
                 <div className="  items-center flex flex-col gap-y-4 justify-center  mx-auto ">
-                  <h1 className="text-[56px]  leading-12 flex  gap-4  items-center justify-center text-black">
+                  <h1 className="text-[42px]  leading-12 flex  gap-4  items-center justify-center text-black">
                     <span className="font-semibold text-center">
                       Global alignment
                     </span>
@@ -327,58 +300,12 @@ const Home = () => {
             </div>
       
     
-              {/* <CustomSlider / */}
-       <div className="container">
-     <Swiper
-  effect={'coverflow'}
-  grabCursor={true}
-  centeredSlides={true}
-  loop={true} // Enable infinite loop
-  slidesPerView={3} // Ensure three slides are visible at once
-  spaceBetween={-30} // Adjust space between slides to create overlap effect
-  watchOverflow={true} // Handle cases with fewer slides
-  coverflowEffect={{
-    rotate: 0,
-    stretch: 0,
-    depth: 100,
-    modifier: 1,
-    slideShadows: false,
-  }}
-  pagination={{ el: '.swiper-pagination', clickable: true }}
-  navigation={{
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
-  }}
-  modules={[EffectCoverflow, Pagination, Navigation]}
-  className="swiper_container"
->
-        <SwiperSlide>
-          <img src="/sliderimages/slider1.svg" alt="slide_image" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="/sliderimages/slider2.svg" alt="slide_image" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src="/sliderimages/slider3.svg" alt="slide_image" />
-        </SwiperSlide>
-        {/* Add more slides if needed */}
-      </Swiper>
-
-      <div className="slider-controler">
-        <div className="swiper-button-prev slider-arrow">
-          <ion-icon name="arrow-back-outline"></ion-icon>
-        </div>
-        <div className="swiper-button-next slider-arrow">
-          <ion-icon name="arrow-forward-outline"></ion-icon>
-        </div>
-        <div className="swiper-pagination"></div>
-      </div>
-    </div>
+  <SwiperSlider/>
           </div>
         </div>
       </section>
       <section className="">
-        <div className="relative flex items-center w-full h-full pb-40 bg-white overflow-hidden">
+        <div className="relative flex items-center w-full h-full py-40 bg-white overflow-hidden">
           <div className="w-full h-full mx-auto flex flex-col justify-between max-h-[950px] max-w-[1920px] items-center">
             <div className="flex flex-col items-center justify-center mx-auto w-full">
               <div className="w-full gap-y-4  flex flex-col items-center justify-center mx-auto">
@@ -387,7 +314,7 @@ const Home = () => {
                 </div>
 
                 <div className="items-center flex flex-col gap-y-4 justify-center mx-auto">
-                  <h1 className="text-[28px] leading-12 flex gap-4 items-center justify-center text-black">
+                  <h1 className="text-[42px] leading-12 flex gap-4 items-center justify-center text-black">
                     <span className="font-semibold text-center">
                       Breaking down data silos
                     </span>
@@ -460,71 +387,10 @@ const Home = () => {
           </div>
         </div>
 
-        <motion.div
-      className="flex gap-4 mt-16 absolute"
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: clickedImage ? 0.5 : 1, scale: clickedImage ? 0.8 : 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      {images.map((image, index) => (
-        <motion.div
-          key={index}
-          className={`relative z-[40] ${image.className}`}
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: clickedImage && clickedIndex !== index ? 0.5 : 1, scale: clickedImage && clickedIndex !== index ? 0.8 : 1 }}
-          transition={{ duration: 0.5, delay: index * 0.1 }}
-          onClick={() => handleClick(image.largeSrc, index)}
-          layout
-          style={clickedImage && clickedIndex !== index ? getRemainingImageStyle(index) : {}}
-        >
-          <Image
-            src={image.src}
-            alt={`Image ${index}`}
-            layout="fill"
-            objectFit="cover"
-            className={`relative ${image.className} ${clickedIndex === index ? 'hidden' : ''}`}
-          />
-        </motion.div>
-      ))}
-
-{clickedImage && (
-  <div
-    className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50"
-    onClick={handleClose}
-  >
-    <motion.div
-      className="relative z-0"
-      initial={{ scale: 0.8 }}
-      animate={{ scale: 1 }}
-      transition={{ duration: 0.5 }}
-      onClick={(e) => e.stopPropagation()} 
-    >
-      <Image
-        src={clickedImage}
-        alt="Zoomed Image"
-        width={1000}
-        height={1000}
-        className="w-full h-auto"
-        objectFit="contain"
-      />
-    </motion.div>
-  </div>
-)}
-
-      </motion.div>
-
-      <div
-        className={`mx-auto mt-16 items-center justify-center inset-0 transition-opacity duration-500 ${clickedImage ? 'opacity-0' : 'opacity-40'}`}
-      >
-        <Image
-          src="/dashboard.png"
-          width={1000}
-          height={227}
-          alt="Dashboard Image"
-          className="rounded-3xl h-[627px]"
-        />
-      </div>
     
+      <div className="item-cen w-full">
+      <ImageGallery/>
+      </div>
       </section>
 
       <section className="   ">
@@ -587,29 +453,31 @@ const Home = () => {
           </div>
 
           <div className="mt-16 hidden lg:block">
-            <div className="flex w-full max-w-[1720px] justify-between -translate-y-80 z-[90] relative items-center gap-6">
-              {currentSlide > 0 && (
-                <div className="relative translate-x-10 flex items-center justify-center">
-                  <button
-                    className="transition z-20 duration-300 cursor-pointer flex items-center justify-center w-12 h-12 rounded-full bg-black text-white hover:bg-[#009a9b]"
-                    title="Previous"
-                    onClick={previous}
-                  >
-                    <ArrowLeft size={25} />
-                  </button>
-                </div>
-              )}
-              <div className="relative flex items-center justify-center">
-                <button
-                  className="relative z-20 transition duration-300 cursor-pointer flex items-center justify-center w-12 h-12 rounded-full bg-black text-white hover:bg-[#009a9b]"
-                  title="Next"
-                  onClick={next}
-                >
-                  <ArrowRight size={25} />
-                </button>
-              </div>
-            </div>
-          </div>
+  <div className="flex w-full max-w-[1720px] justify-between -translate-y-80 z-[90] relative items-center gap-6">
+    {currentSlide > 0 && (
+      <div className="relative translate-x-10 flex items-center justify-center">
+        <button
+          className="transition z-20 duration-300 cursor-pointer flex items-center justify-center w-12 h-12 rounded-full bg-black text-white hover:bg-[#034737]"
+          title="Previous"
+          onClick={previous}
+        >
+          <ArrowLeft size={25} />
+        </button>
+      </div>
+    )}
+
+    <div className="flex items-center justify-center ml-auto">
+      <button
+        className="relative z-20 transition duration-300 cursor-pointer flex items-center justify-center w-12 h-12 rounded-full bg-black text-white hover:bg-[#034737]"
+        title="Next"
+        onClick={next}
+      >
+        <ArrowRight size={25} />
+      </button>
+    </div>
+  </div>
+</div>
+
         </div>
       </section>
     </main>
