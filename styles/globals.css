@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 .container {
   max-width: 124rem;
   padding: 0px 200px;
@@ -347,9 +349,181 @@ body {
   }
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
+.image-thumbnails {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* Center thumbnails */
+  gap: 10px; /* Space between thumbnails */
+}
+
+.thumbnail {
+  width: 500px;  /* Fixed width */
+  height: 200px; /* Fixed height */
+  overflow: hidden; /* Hide overflow to prevent scaling issues */
+  transition: transform 0.3s ease; /* Smooth transition for the effect */
+}
+
+.thumbnail-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease; /* Smooth transition for the effect */
+}
+
+.thumbnail:hover .thumbnail-img {
+  transform: scale(1.1); /* Slightly enlarge the image on hover */
+}
+
+@keyframes bounce-up {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px); /* Adjust the bounce height here */
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.arrow-indicator {
+  position: absolute;
+  right: 10px; /* Adjust as needed */
+  top: 20%;
+  transform: translateY(60%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent; /* Arrow width and direction */
+  border-right: 10px solid transparent; /* Arrow width and direction */
+}
+.gallery-container {
+  display: flex;
+  flex-direction: row;
+  gap:60px;
+  align-items: center;
+  width: 1150px;
+  justify-content: space-between;
+}
+.image-thumbnails {
+  display: flex;
+  gap: 10px;
+}
+.thumbnail {
+  cursor: pointer;
+  position: relative;
+}
+.thumbnail img {
+  width: 600px;
+  height: auto;
+}
+.selected-content {
+  position: relative;
+  gap:30px;
+  display: flex;
+  flex-direction: column;
+
+  margin-top: 20px;
+  text-align: center;
+}
+.progress-container {
+  margin-top: 20px;
+  position:relative;
+  bottom: 0;
+  left: 0;
+  width: 512px;
+  height: 2px;
+  background-color: #6A6A6A26;
+}
+.progress-bar {
+
+  height: 100%;
+  background-color: blue;
+  transition: width 0.2s ease;
+}
+
+
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 100%;
+  position: relative;
+}
+
+.marquee-content {
+  display: flex;
+  gap: 8rem; 
+  animation: marquee 20s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(100%); /* Start just outside the visible area */
+  }
+  10% {
+    transform: translateX(0%); /* Move into view quickly */
+  }
+  90% {
+    transform: translateX(-100%); /* Move out of view */
+  }
+  100% {
+    transform: translateX(-100%); /* Ensure it's completely out of view */
+  }
+}
+
+
+.custom-radio {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 2px solid #D1D5DB; 
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  background-color: white;
+}
+
+.custom-radio:checked {
+  border-color: #034737; /* Green border when selected */
+  background-color: white ; /* Green background when selected */
+}
+
+.custom-radio:checked::before {
+  content: '';
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #034737;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.dropdown-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 1s ease-out, opacity 1s ease-out; /* Transition for max-height and opacity */
+  opacity: 0; /* Initially hidden */
+}
+
+.dropdown-content.dropdown-open {
+  max-height: 200px; /* Adjust the maximum height as needed */
+  opacity: 1; /* Visible */
+}
+.dropdown-content2 {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 1s ease-out, opacity 1s ease-out; /* Transition for max-height and opacity */
+  opacity: 0; /* Initially hidden */
+}
+
+.dropdown-content2.dropdown-open {
+  max-height: 1000px; /* Adjust the maximum height as needed */
+  opacity: 1; /* Visible */
+}
+
 /* Custom styles for the radio buttons */
 .custom-radio {
   appearance: none;

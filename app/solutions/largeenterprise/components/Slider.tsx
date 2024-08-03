@@ -94,8 +94,8 @@ const slideData = [
   return (
     <div className="max-w-[1200px] w-full h-auto mt-10 ">
    <div className="relative z-10">
-   <Slider ref={sliderRef} {...settings} className="relative">
-   {slideData.map((item, index) => (
+  <Slider ref={sliderRef} {...settings} className="relative">
+    {slideData.map((item, index) => (
       <div
         key={index}
         className={`max-w-[420px] h-auto rounded-[17px] z-10 relative flex transition-transform duration-300 transform-gpu ${

@@ -1,36 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Motion from '@/components/Motion';
-
 const ImageGalleryLine = () => {
   type ImageData = {
     src: string;
     alt: string;
     id: number;
     relatedImages: Array<{ src: string; alt: string; id: number }>;
-
   };
 
-  
   const images: ImageData[] = [
     {
       src: '/solutions/imageshown/imageshown1.svg',
       alt: 'Image 1',
       id: 1,
       relatedImages: [
-        { src: '/solutions/related/related1_1.svg', alt: 'Related 1.1', id: 101 },
-        { src: '/solutions/related/related1_2.svg', alt: 'Related 1.2', id: 102 },
-        { src: '/solutions/related/related1_3.svg', alt: 'Related 1.3', id: 103 },
+        { src: '/sideimages/text.svg', alt: 'Related 1.1', id: 2 },
+        { src: '/sideimages/websitebuilder.svg', alt: 'Related 1.1', id: 101 },
+        { src: '/sideimages/webscraping.svg', alt: 'Related 1.1', id: 101 },
       ],
     },
     {
-      src: '/solutions/imageshown/imageshown3.svg',
+        src: '/solutions/imageshown/imageshown3.svg',
       alt: 'Image 2',
       id: 2,
       relatedImages: [
-        { src: '/solutions/related/related2_1.svg', alt: 'Related 2.1', id: 201 },
-        { src: '/solutions/related/related2_2.svg', alt: 'Related 2.2', id: 202 },
-        { src: '/solutions/related/related2_3.svg', alt: 'Related 2.3', id: 203 },
+        { src: '/sideimages/workflow.svg', alt: 'Related 2.1', id: 1 },
+        { src: '/sideimages/websitebuilder.svg', alt: 'Related 1.1', id: 3 },
+        { src: '/sideimages/webscraping.svg', alt: 'Related 1.1', id: 4 },
       ],
     },
     {
@@ -38,9 +34,9 @@ const ImageGalleryLine = () => {
       alt: 'Image 3',
       id: 3,
       relatedImages: [
-        { src: '/solutions/related/related3_1.svg', alt: 'Related 3.1', id: 301 },
-        { src: '/solutions/related/related3_2.svg', alt: 'Related 3.2', id: 302 },
-        { src: '/solutions/related/related3_3.svg', alt: 'Related 3.3', id: 303 },
+        { src: '/sideimages/text.svg', alt: 'Related 1.1', id: 2 },
+        { src: '/sideimages/websitebuilder.svg', alt: 'Related 1.1', id: 3 },
+        { src: '/sideimages/workflow.svg', alt: 'Related 1.1', id: 1 },
       ],
     },
     {
@@ -48,9 +44,9 @@ const ImageGalleryLine = () => {
       alt: 'Image 4',
       id: 4,
       relatedImages: [
-        { src: '/solutions/related/related4_1.svg', alt: 'Related 4.1', id: 401 },
-        { src: '/solutions/related/related4_2.svg', alt: 'Related 4.2', id: 402 },
-        { src: '/solutions/related/related4_3.svg', alt: 'Related 4.3', id: 403 },
+        { src: '/sideimages/text.svg', alt: 'Related 1.1', id: 2 },
+        { src: '/sideimages/workflow.svg', alt: 'Related 1.1', id: 1 },
+        { src: '/sideimages/webscraping.svg', alt: 'Related 1.1', id: 3 },
       ],
     },
   ];
@@ -75,6 +71,14 @@ const ImageGalleryLine = () => {
     setAutoSlide(false);
   };
 
+
+    const handleRelatedImageClick = (relatedImageId: number) => {
+      const newImage = images.find(img => img.id === relatedImageId);
+      if (newImage) {
+        setSelectedImage(newImage);
+        setAutoSlide(false);
+      }
+    };
   return (
     <div style={{ position: 'relative', width: '1920px', height: '973px' }} className="-translate-y-20">
       <div className="relative">
@@ -102,21 +106,22 @@ const ImageGalleryLine = () => {
                 />
               </div>
             </div>
-            <div className="flex flex-col translate-y-96 -translate-x-60">
-              {images.filter(img => img.id !== selectedImage.id).map(img => (
+            <div className="flex flex-col gap-y-16 translate-y-80 -translate-x-60">
+              {selectedImage.relatedImages.map(relatedImg => (
                 <Image
-                  key={img.id}
-                  src={img.src}
+                  key={relatedImg.id}
+                  src={relatedImg.src}
                   width={239}
                   height={200}
-                  alt={img.alt}
-                  onClick={() => handleImageClick(images.find(i => i.id === Math.floor(img.id / 100))!)}
+                  alt={relatedImg.alt}
+                  onClick={() => handleRelatedImageClick(relatedImg.id)}
                   style={{ cursor: 'pointer' }}
                 />
               ))}
             </div>
           </div>
         ) : (
+    
           <div className="relative translate-y-20">
             <svg
               width="1920"
