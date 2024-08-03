@@ -11,6 +11,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 import ImageGalleryLine from "./components/ImageGalleryline";
 import { testimonials } from "@/types/data";
+import Navbar from '@/components/navbar/Navbar';
 
 type SliderRef = Slider | null;
 
@@ -74,6 +75,7 @@ interface Testimonial {
 const page = () => {
   return (
     <main className="flex flex-col overflow-hidden">
+      <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
       <section className="bg-[#034737] w-full  mb-20">
         <div className="relative flex items-center max-w-[1920px] w-full max-h-[1112px] h-full justify-center mx-auto">
           <div className="w-full flex flex-row justify-between brightness-110 relative left-52 items-center mt-52 mb-60">
