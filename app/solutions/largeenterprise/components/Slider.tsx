@@ -1,7 +1,8 @@
 import React, { useState, useRef } from 'react';
-import Slider from 'react-slick';
 import Image from 'next/image'; 
-
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const slideData = [
     {title: 'Unify messaging',
@@ -64,7 +65,7 @@ const slideData = [
     },
   ]
   const CustomSlider = () => {
-    const sliderRef = useRef<Slider | null>(null);
+    const sliderRef = useRef<typeof Slider | null>(null);
     const [activeIndex, setActiveIndex] = useState(0);
 
     const isSlideVisible = (index: number, activeIndex: number): boolean => {
@@ -93,8 +94,8 @@ const slideData = [
   return (
     <div className="max-w-[1200px] w-full h-auto mt-10 ">
    <div className="relative z-10">
-  <Slider ref={sliderRef} {...settings} className="relative">
-    {slideData.map((item, index) => (
+   <Slider ref={sliderRef} {...settings} className="relative">
+   {slideData.map((item, index) => (
       <div
         key={index}
         className={`max-w-[420px] h-auto rounded-[17px] z-10 relative flex transition-transform duration-300 transform-gpu ${

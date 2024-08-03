@@ -14,76 +14,16 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import SwiperSlider from "./components/SwiperSlider";
 import ImageGallery from "./components/ZoomEffect";
+import { testimonials } from "@/types/data";
 
-const testimonials = [
-  {
-    id: 0,
-    img1: "/carousel/c1.png",
-    name: "Ideation and planning",
-    role: "Generate and refine data-driven ideas using AI Chat and Apps, effortlessly brainstorming and creating initial drafts",
-    description:
-      "I've tried several website builders, but Webbuddy takes the cake. The templates are modern and customizable, and the drag-and-drop interface makes it a breeze to create a stunning website. Love it!",
-    companyImage: "It's just incredible!",
-  },
-  {
-    id: 1,
-    img1: "/carousel/c1.png",
-    name: "Natasha Romanoff",
-    role: "Black Widow",
-    description:
-      "Never thought that with Spend.In managing my business expenses is so easy! Been using this platform for 3 months and still counting!",
-    companyImage: "Satisfied User Here!",
-  },
-  {
-    id: 2,
-    img1: "/carousel/c1.png",
-    name: "Moritika Kazuki",
-    role: "Finance Manager at Mangan",
-    description:
-      "“The best”! That’s what I want to say to this platform, didn’t know that there’s a platform to help you manage your business expenses like this! Very recommended to you who have a big business!",
-    companyImage: "No doubt, Spend.In is the best!",
-  },
-  {
-    id: 3,
-    img1: "/carousel/c1.png",
-    name: "Moritika Kazuki",
-    role: "Finance Manager at Mangan",
-    description:
-      "“The best”! That’s what I want to say to this platform, didn’t know that there’s a platform to help you manage your business expenses like this! Very recommended to you who have a big business!",
-    companyImage: "No doubt, Spend.In is the best!",
-  },
-  {
-    id: 4,
-    img1: "/carousel/c1.png",
-    name: "Moritika Kazuki",
-    role: "Finance Manager at Mangan",
-    description:
-      "“The best”! That’s what I want to say to this platform, didn’t know that there’s a platform to help you manage your business expenses like this! Very recommended to you who have a big business!",
-    companyImage: "No doubt, Spend.In is the best!",
-  },
-  {
-    id: 5,
-    img1: "/carousel/c1.png",
-    name: "Moritika Kazuki",
-    role: "Finance Manager at Mangan",
-    description:
-      "“The best”! That’s what I want to say to this platform, didn’t know that there’s a platform to help you manage your business expenses like this! Very recommended to you who have a big business!",
-    companyImage: "No doubt, Spend.In is the best!",
-  },
-];
+
 
 const Home = () => {
-//   const [ref2, inView2] = useInView({
-//     triggerOnce: true,
-//     threshold: 0.1,
-//   });
- 
   type ImageType = {
     src: string;
     largeSrc: string;
     className?: string;
-  };
-  
+  }
   interface ImageGalleryProps {
     images: ImageType[];
   }
@@ -100,29 +40,15 @@ const Home = () => {
       setClickedIndex(null);
     };
   
-    const getRemainingImageStyle = (index: number): React.CSSProperties =>{
-    const positions = [
-      { bottom: '200px', left: '10px' },
-      { bottom: '200px', right: '100px' },
-      { top: '300px', left: '300px' },
-      { top: '200px', right: '600px' },
-    ];
-
-    return positions[index % positions.length];
-  };
-
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const totalItems = 5;
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
-  type SliderRef = Slider | null;
 
-  //   const sliderRef = useRef<SliderRef>(null);
 
-  const sliderRef = useRef(null);
+  const sliderRef = useRef<InstanceType<typeof Slider>>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [visibleSlides, setVisibleSlides] = useState<number[]>([]);
 
@@ -157,15 +83,15 @@ const Home = () => {
   };
   const previous = () => {
     if (sliderRef.current) {
-      (sliderRef.current as Slider).slickPrev();
+        sliderRef.current.slickPrev();
     }
-  };
+};
 
-  const next = () => {
+const next = () => {
     if (sliderRef.current) {
-      (sliderRef.current as Slider).slickNext();
+        sliderRef.current.slickNext();
     }
-  };
+};
   const settings = {
     dots: false,
     arrows: false,
