@@ -21,9 +21,9 @@ function Premium() {
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
                    <div className="content">
-                   <span className="user">Premium analytics</span>
+                   <span className="user">Security</span>
                     <h3>Security & data privacy of the 
-                    highest degree <span>(GDPR Compliance & HIPAA Compliance)</span></h3>
+                    highest degree </h3>
                     <p>We collaborate with all major LLMs, ensuring choice and flexibility while making sure your contact data is 100% secure and cannot be used for anyone else's purposes.</p>
                    </div>
                 </div>
