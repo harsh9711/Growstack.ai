@@ -25,7 +25,7 @@ const links = [
     path: "/solutions",
     submenu: [
           { title: "Large Enterprise", path: "/solutions/largeenterprise" },
-          { title: "Text to videos and Product AI", path: "/text-to-video-and-product-ai" },
+          { title: "MidMarket Enterprise",path: "/solutions/midmarketenterprise"  },
           { title: "Marketing and sales assistants", path: "/marketing-and-sales-assistant" },
           { title: "AI Website landing page and email Builder", path: "/ai-website-and-email-builder" },
           { title: "Custom marketing GPT apps", path: "/custom-marketing-gpt-apps" },

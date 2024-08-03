@@ -3,6 +3,7 @@ import Image from "next/image";
 import { ArrowLeft, ArrowRight, Video } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import Navbar from '@/components/navbar/Navbar';
 import Slider from "react-slick";
 import { motion } from "framer-motion";
 import "slick-carousel/slick/slick.css";
@@ -13,7 +14,6 @@ import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import SwiperSlider from "./components/SwiperSlider";
 import ImageGallery from "./components/ZoomEffect";
-import Navbar from "@/app/(landing)/components/Navbar";
 
 const testimonials = [
   {
@@ -203,6 +203,7 @@ const Home = () => {
   };
   return (
     <main className="bg-white">
+<Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
       <section className="">
         <div className="relative flex items-center w-full h-full  rounded-b-[40px]  pt-40 bg-[#F3F7F6] ">
           <div className="w-full h-full mx-auto flex flex-col  justify-between max-h-[870px] max-w-[1920px] items-center">
