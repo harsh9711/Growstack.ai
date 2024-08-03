@@ -2,22 +2,9 @@
 
 import { useEffect, useState, Fragment } from "react";
 import instance from "@/config/axios.config";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import {
-  ArrowLeft,
-  ChevronRight,
-  Download,
-  Info,
-  Languages,
-  Save,
-} from "lucide-react";
+import { ArrowLeft, ChevronRight, Download, Info, Languages, Save } from "lucide-react";
 import Link from "next/link";
 import { BsStarFill } from "react-icons/bs";
 import Editor from "./components/Editor";
@@ -31,36 +18,15 @@ import { HiOutlineRefresh } from "react-icons/hi";
 import TemplateLoader from "../../text-to-video/components/TemplateLoader";
 import { FaCircleNotch } from "react-icons/fa";
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next-nprogress-bar";
-import {
-  getSavedDecumentForEdit,
-  isEditDecument,
-} from "@/lib/features/documents/document.selector";
-import {
-  editDocument,
-  savedDecument,
-} from "@/lib/features/documents/document.slice";
+import { getSavedDecumentForEdit, isEditDecument } from "@/lib/features/documents/document.selector";
+import { editDocument, savedDecument } from "@/lib/features/documents/document.slice";
 
-
-const Dropdown = ({
-  label,
-  items,
-  infoIcon,
-  hideLabel,
-  value,
-  onChange,
-  placeholder,
-  info
-}: any) => (
+const Dropdown = ({ label, items, infoIcon, hideLabel, value, onChange, placeholder, info }: any) => (
   <div className="space-y-3">
     {!hideLabel && (
       <h2 className="font-medium flex items-center gap-2">
@@ -70,10 +36,7 @@ const Dropdown = ({
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Info
-                    size={18}
-                    className="text-primary-black text-opacity-50"
-                  />
+                  <Info size={18} className="text-primary-black text-opacity-50" />
                 </TooltipTrigger>
                 <TooltipContent className="bg-white">
                   <p>{info}</p>
@@ -99,11 +62,7 @@ const Dropdown = ({
   </div>
 );
 
-export default function AiAppPage({
-  params: { assistantId },
-}: {
-  params: { assistantId: string };
-}) {
+export default function AiAppPage({ params: { assistantId } }: { params: { assistantId: string } }) {
   const router = useRouter();
   const isEdit = isEditDecument();
   const editDocumentData: any = getSavedDecumentForEdit();
@@ -165,9 +124,7 @@ export default function AiAppPage({
     const fetchAssistant = async () => {
       try {
         const assistId = window.location.href.split("/").pop();
-        const response = await instance.get(
-          `${API_URL}/ai/api/v1/chat-template/${assistId}`
-        );
+        const response = await instance.get(`${API_URL}/ai/api/v1/chat-template/${assistId}`);
         const assistantData = response.data.data;
         console.log("check repsonse", response.data.data.inputs[0].field_type);
         console.log(assistantData);
@@ -186,9 +143,7 @@ export default function AiAppPage({
   useEffect(() => {
     const handleGetAllBrandVoices = async () => {
       try {
-        const response = await instance.get(
-          `${API_URL}/users/api/v1/brand-voice/all`
-        );
+        const response = await instance.get(`${API_URL}/users/api/v1/brand-voice/all`);
 
         setAllBrandVoices(response?.data?.data);
       } catch (error) {
@@ -310,11 +265,7 @@ export default function AiAppPage({
   };
   const handleSubmit = async () => {
     try {
-      const formattedUserPrompt = assistant?.inputs
-        .map(
-          (input: any, index: number) => `${input.title}:${userPrompts[index]}`
-        )
-        .join(".");
+      const formattedUserPrompt = assistant?.inputs.map((input: any, index: number) => `${input.title}:${userPrompts[index]}`).join(".");
       const response = await instance.post(
         `${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`,
         {
@@ -346,10 +297,7 @@ export default function AiAppPage({
     }));
   };
 
-  const handleUserPromptChange = (
-    e: React.ChangeEvent<HTMLTextAreaElement>,
-    index: number
-  ) => {
+  const handleUserPromptChange = (e: React.ChangeEvent<HTMLTextAreaElement>, index: number) => {
     const { value } = e.target;
     setUserPrompts((prevPrompts) => {
       const updatedPrompts = [...prevPrompts];
@@ -357,10 +305,7 @@ export default function AiAppPage({
       return updatedPrompts;
     });
   };
-  const handleCheckboxChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     const option = e.target.value.trim();
     setUserPrompts((prevPrompts) => {
       const updatedPrompts = [...prevPrompts];
@@ -375,10 +320,7 @@ export default function AiAppPage({
     });
   };
 
-  const handleRadioChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
+  const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
     setUserPrompts((prevPrompts) => {
       const updatedPrompts = [...prevPrompts];
       updatedPrompts[index] = e.target.value.trim();
@@ -386,10 +328,7 @@ export default function AiAppPage({
     });
   };
 
-  const handleSelectChange = (
-    e: React.ChangeEvent<HTMLSelectElement>,
-    index: number
-  ) => {
+  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>, index: number) => {
     const { value } = e.target;
     setUserPrompts((prevPrompts) => {
       const updatedPrompts = [...prevPrompts];
@@ -408,10 +347,7 @@ export default function AiAppPage({
         category: "text",
         doc_content: generatedContent,
       };
-      const response = await instance.post(
-        API_URL + `/users/api/v1/docs/save`,
-        payload
-      );
+      const response = await instance.post(API_URL + `/users/api/v1/docs/save`, payload);
       router.push(`/account/saved-documents`);
       setFileName("");
       setUserInput1("");
@@ -440,10 +376,7 @@ export default function AiAppPage({
         category: "text",
         doc_content: generatedContent,
       };
-      const response = await instance.put(
-        API_URL + `/users/api/v1/docs/${editDocumentData?._id}`,
-        payload
-      );
+      const response = await instance.put(API_URL + `/users/api/v1/docs/${editDocumentData?._id}`, payload);
       if (response.data.success) {
         dispatch(editDocument(false));
         router.push(`/account/saved-documents`);
@@ -472,14 +405,10 @@ export default function AiAppPage({
     <Fragment>
       <div className="flex items-center justify-between mt-10">
         <p className="flex items-center gap-2 text-[#4B465C] text-opacity-50 text-[15px]">
-          <Link
-            href="/app/plan/ai-apps"
-            className="hover:text-gray-600 transition-all"
-          >
-            All apps
+          <Link href="/app/plan/ai-apps" className="hover:text-gray-600 transition-all">
+            All AI templates
           </Link>
-          <ChevronRight size={20} />{" "}
-          <span className="text-[#3D817B] font-medium">{assistant.name}</span>
+          <ChevronRight size={20} /> <span className="text-[#3D817B] font-medium">{assistant.name}</span>
         </p>
         <Link href="/app/plan/ai-apps">
           <button className="text-primary-green hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-2.5 rounded-full font-semibold items-center">
@@ -492,50 +421,15 @@ export default function AiAppPage({
           <div className="mb-5 border-b border-[#EDEFF0]">
             <div className="flex items-center justify-between pb-5">
               <div className="flex flex-row items-center gap-3">
-                <div
-                  className="rounded"
-                  dangerouslySetInnerHTML={{ __html: assistant.icon }}
-                />
+                <div className="rounded" dangerouslySetInnerHTML={{ __html: assistant.icon }} />
 
-                <h2 className="text-2xl font-semibold capitalize">
-                  {assistant.name}
-                </h2>
+                <h2 className="text-2xl font-semibold capitalize">{assistant.name}</h2>
               </div>
               <BsStarFill size={24} className="text-yellow-300" />
             </div>
             <p className="mb-5 text-md">{assistant.description}</p>
           </div>
-          <div className="mb-5 space-y-6">
-            <p className="flex items-center gap-2 bg-[#F2F2F2] p-4 rounded-lg">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="21"
-                height="22"
-                viewBox="0 0 21 22"
-                fill="none"
-              >
-                <path
-                  d="M8.63825 1.48828H15.3662L11.117 7.50803H15.3662L5.23886 18.7685L8.70907 11.1199H4.88477L8.63825 1.48828Z"
-                  fill="#F9DE6F"
-                  stroke="#F9DE6F"
-                  strokeWidth="0.791016"
-                  strokeMiterlimit="10"
-                />
-              </svg>
-              <span className="text-sm">
-                <span>Your balance is </span>
-                <span className="font-semibold">
-                  Unlimited GPT 3.5 Turbo Words
-                </span>
-              </span>
-            </p>
-            <div className="flex items-center gap-2">
-              <Switch checked={isChecked} onCheckedChange={setIsChecked} />
-              <label htmlFor="include-brand" className="text-sm">
-                Include your brand
-              </label>
-            </div>
-          </div>
+
           {isChecked && (
             <div>
               <Dropdown
@@ -620,79 +514,60 @@ export default function AiAppPage({
           <div className="space-y-3">
             {assistant?.inputs?.map((input: any, index: number) => (
               <div key={index}>
-                <label
-                  className="font-medium flex justify-between"
-                  htmlFor={`user-prompt-${index}`}
-                >
+                <label className="font-medium flex justify-between" htmlFor={`user-prompt-${index}`}>
                   {input.title}
-                  <span className="text-primary-black text-opacity-50 text-sm">
-                    0/2000
-                  </span>
+                  {input.field_type !== "Checkbox list field" && input.field_type !== "Radio buttons field" && input.field_type !== "Select list field" && (
+                    <span className="text-primary-black text-opacity-50 text-sm">{userPrompts[index].length}/2000</span>
+                  )}
                 </label>
                 {input.field_type === "Checkbox list field" ? (
                   <div className="flex flex-col space-y-2">
-                    {input.description
-                      .split(",")
-                      .map((option: string, optionIndex: number) => (
-                        <label
-                          key={optionIndex}
-                          className="flex items-center mt-4"
-                        >
-                          <input
-                            type="checkbox"
-                            value={option.trim()}
-                            checked={userPrompts[index]?.includes(
-                              option.trim()
-                            )}
-                            onChange={(e) => handleCheckboxChange(e, index)}
-                          />
-                          <span className="ml-2">{option.trim()}</span>
-                        </label>
-                      ))}
+                    {input.description.split(",").map((option: string, optionIndex: number) => (
+                      <label key={optionIndex} className="flex items-center mt-4">
+                        <input
+                          type="checkbox"
+                          value={option.trim()}
+                          checked={userPrompts[index]?.includes(option.trim())}
+                          onChange={(e) => handleCheckboxChange(e, index)}
+                        />
+                        <span className="ml-2">{option.trim()}</span>
+                      </label>
+                    ))}
                   </div>
                 ) : null}
                 {input.field_type === "Radio buttons field" && (
                   <div className="flex flex-col space-y-2">
-                    {input.description
-                      .split(",")
-                      .map((option: string, optionIndex: number) => (
-                        <label
-                          key={optionIndex}
-                          className="flex items-center mt-4"
-                        >
-                          <input
-                            type="radio"
-                            value={option.trim()}
-                            checked={userPrompts[index] === option.trim()}
-                            onChange={(e) => handleRadioChange(e, index)}
-                          />
-                          <span className="ml-2">{option.trim()}</span>
-                        </label>
-                      ))}
+                    {input.description.split(",").map((option: string, optionIndex: number) => (
+                      <label key={optionIndex} className="flex items-center mt-4">
+                        <input
+                          type="radio"
+                          value={option.trim()}
+                          checked={userPrompts[index] === option.trim()}
+                          onChange={(e) => handleRadioChange(e, index)}
+                        />
+                        <span className="ml-2">{option.trim()}</span>
+                      </label>
+                    ))}
                   </div>
                 )}
                 {input.field_type === "Select list field" && (
                   <Dropdown
                     label={input.title}
-                    items={input.description
-                      .split(",")
-                      .map((option: string) => option.trim())}
+                    items={input.description.split(",").map((option: string) => option.trim())}
                     value={userPrompts[index]}
                     onChange={(value: any) => handleSelectChange(value, index)}
                   />
                 )}
-                {input.field_type !== "Checkbox list field" &&
-                  input.field_type !== "Radio buttons field" &&
-                  input.field_type !== "Select list field" && (
-                    <textarea
-                      id={`user-prompt-${index}`}
-                      rows={4}
-                      className="w-full p-4 rounded-xl resize-none bg-[#F2F2F2]"
-                      placeholder={input.description}
-                      value={userPrompts[index]}
-                      onChange={(e) => handleUserPromptChange(e, index)}
-                    ></textarea>
-                  )}
+                {input.field_type !== "Checkbox list field" && input.field_type !== "Radio buttons field" && input.field_type !== "Select list field" && (
+                  <textarea
+                    id={`user-prompt-${index}`}
+                    rows={4}
+                    className="w-full p-4 rounded-xl resize-none bg-[#F2F2F2]"
+                    placeholder={input.description}
+                    value={userPrompts[index]}
+                    onChange={(e) => handleUserPromptChange(e, index)}
+                    maxLength={2000}></textarea>
+                )}
               </div>
             ))}
           </div>
@@ -721,9 +596,7 @@ export default function AiAppPage({
               infoIcon
               items={["Original", "Creative"]}
               value={userInput.creativity}
-              onChange={(value: any) =>
-                handleDropdownChange("creativity", value)
-              }
+              onChange={(value: any) => handleDropdownChange("creativity", value)}
               info={"Increase or decrease the creativity level to get various results"}
             />
             <Dropdown
@@ -731,33 +604,19 @@ export default function AiAppPage({
               infoIcon
               items={["Professional", "Friendly", "Casual"]}
               value={userInput.tone_of_voice}
-              onChange={(value: any) =>
-                handleDropdownChange("tone_of_voice", value)
-              }
+              onChange={(value: any) => handleDropdownChange("tone_of_voice", value)}
               info={"Set result tone of the text as needed"}
             />
           </div>
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label
-                className="block mb-2 text-sm font-medium"
-                htmlFor="number-of-results"
-              >
+              <label className="block mb-2 text-sm font-medium" htmlFor="number-of-results">
                 Number of Results
               </label>
-              <Input
-                type="number"
-                id="number-of-results"
-                name="number_of_results"
-                value={userInput.number_of_results}
-                onChange={handleChange}
-              />
+              <Input type="number" id="number-of-results" name="number_of_results" value={userInput.number_of_results} onChange={handleChange} />
             </div>
             <div>
-              <label
-                className="block mb-2 text-sm font-medium"
-                htmlFor="estimated-result-length"
-              >
+              <label className="block mb-2 text-sm font-medium" htmlFor="estimated-result-length">
                 Estimated Result Length
               </label>
               <Input
@@ -769,28 +628,14 @@ export default function AiAppPage({
               />
             </div>
           </div>
-          <button
-            className="w-full h-14 py-2 text-white bg-primary-green rounded-lg mt-5 flex items-center justify-center"
-            onClick={handleBothActions}
-          >
-            <div className="flex items-center gap-2">
-              {!isLoading ? (
-                "Generate"
-              ) : (
-                <FaCircleNotch className="h-6 w-6 text-white animate-spin" />
-              )}
-            </div>
+          <button className="w-full h-14 py-2 text-white bg-primary-green rounded-lg mt-5 flex items-center justify-center" onClick={handleBothActions}>
+            <div className="flex items-center gap-2">{!isLoading ? "Generate" : <FaCircleNotch className="h-6 w-6 text-white animate-spin" />}</div>
           </button>
         </div>
         <div className="w-full p-8 bg-white rounded-2xl border border-[#EDEFF0] flex flex-col">
           <div className="flex items-center justify-between mb-5 border-b pb-5">
             <div className="flex items-center gap-2 w-full max-w-fit">
-              <input
-                type="text"
-                placeholder="Enter file name"
-                value={fileName}
-                onChange={(e) => setFileName(e.target.value)}
-              />
+              <input type="text" placeholder="Enter file name" value={fileName} onChange={(e) => setFileName(e.target.value)} />
               {/* <Select
                 onValueChange={(e: any) => setWorkbook(e)}
                 defaultValue={workbook}
@@ -818,22 +663,13 @@ export default function AiAppPage({
               <div className="flex items-center gap-2">
                 <Dropdown
                   label="Download"
-                  items={[
-                    "Copy as Text",
-                    "Copy as HTML",
-                    "Download as DOC",
-                    "Download as TXT",
-                    "Download as PDF",
-                  ]}
+                  items={["Copy as Text", "Copy as HTML", "Download as DOC", "Download as TXT", "Download as PDF"]}
                   hideLabel
                   value="Copy as Text"
                   onChange={(value: any) => handleDownload(value)}
                 />
 
-                <button
-                  className="p-2 bg-gray-100 border rounded-lg"
-                  onClick={isEdit ? handleEditDocument : handleSaveDocument}
-                >
+                <button className="p-2 bg-gray-100 border rounded-lg" onClick={isEdit ? handleEditDocument : handleSaveDocument}>
                   <Save size={20} className="text-gray-600" />
                 </button>
               </div>

@@ -57,7 +57,7 @@ const navLinks: NavLink[] = [
       },
       {
         icon: <AiAppsIcon />,
-        name: "AI apps",
+        name: "AI templates",
         href: "/app/plan/ai-apps",
       },
       {

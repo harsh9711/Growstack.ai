@@ -350,7 +350,7 @@ export default function Dashboard() {
                     width={60}
                     height={60}
                   />
-                  <h2 className="font-medium">AI apps </h2>
+                  <h2 className="font-medium">AI templates </h2>
                 </div>
                 <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
                   <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
