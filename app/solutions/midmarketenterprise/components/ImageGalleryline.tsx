@@ -8,14 +8,13 @@ const ImageGalleryLine = () => {
     src: string;
     alt: string;
     id: number;
-     relatedImages: {
+    relatedImages: {
       src: string;
       alt: string;
       id: number;
     }[];
   };
 
- 
   const images: ImageData[] = [
     {
       src: '/solutions/imageshown/imageshown1.svg',
@@ -23,8 +22,8 @@ const ImageGalleryLine = () => {
       id: 1,
       relatedImages: [
         { src: '/sideimages/text.svg', alt: 'Related Image 1-1', id: 2 },
-        { src: '/sideimages/webscraping.svg', alt: 'Related Image 1-1', id: 3 },
-        { src: '/sideimages/websitebuilder.svg', alt: 'Related Image 1-1', id: 4 },
+        { src: '/sideimages/webscraping.svg', alt: 'Related Image 1-2', id: 3 },
+        { src: '/sideimages/websitebuilder.svg', alt: 'Related Image 1-3', id: 4 },
       ],
     },
     {
@@ -32,9 +31,9 @@ const ImageGalleryLine = () => {
       alt: 'Image 2',
       id: 2,
       relatedImages: [
-      { src: '/sideimages/workflow.svg', alt: 'Related Image 1-1', id: 1 },
-        { src: '/sideimages/webscraping.svg', alt: 'Related Image 1-1', id: 3 },
-        { src: '/sideimages/websitebuilder.svg', alt: 'Related Image 1-1', id: 4 },
+        { src: '/sideimages/workflow.svg', alt: 'Related Image 2-1', id: 1 },
+        { src: '/sideimages/webscraping.svg', alt: 'Related Image 2-2', id: 3 },
+        { src: '/sideimages/websitebuilder.svg', alt: 'Related Image 2-3', id: 4 },
       ],
     },
     {
@@ -42,9 +41,9 @@ const ImageGalleryLine = () => {
       alt: 'Image 3',
       id: 3,
       relatedImages: [
-  { src: '/sideimages/workflow.svg', alt: 'Related Image 1-1', id: 1 },
-        { src: '/sideimages/text.svg', alt: 'Related Image 1-1', id: 2 },
-        { src: '/sideimages/websitebuilder.svg', alt: 'Related Image 1-1', id: 4 },
+        { src: '/sideimages/workflow.svg', alt: 'Related Image 3-1', id: 1 },
+        { src: '/sideimages/text.svg', alt: 'Related Image 3-2', id: 2 },
+        { src: '/sideimages/websitebuilder.svg', alt: 'Related Image 3-3', id: 4 },
       ],
     },
     {
@@ -52,15 +51,17 @@ const ImageGalleryLine = () => {
       alt: 'Image 4',
       id: 4,
       relatedImages: [
-       { src: '/sideimages/workflow.svg', alt: 'Related Image 1-1', id: 1 },
-        { src: '/sideimages/webscraping.svg', alt: 'Related Image 1-1', id: 3 },
-        { src: '/sideimages/text.svg', alt: 'Related Image 1-1', id: 2 },
+        { src: '/sideimages/workflow.svg', alt: 'Related Image 4-1', id: 1 },
+        { src: '/sideimages/webscraping.svg', alt: 'Related Image 4-2', id: 3 },
+        { src: '/sideimages/text.svg', alt: 'Related Image 4-3', id: 2 },
       ],
     },
   ];
 
   const [selectedImage, setSelectedImage] = useState<ImageData | null>(null);
-  const [autoSlide, setAutoSlide] = useState(true);
+  const [relatedImages, setRelatedImages] = useState<ImageData['relatedImages']>(images[0].relatedImages);
+  const [currentRelatedIndex, setCurrentRelatedIndex] = useState(0);
+  const [loopCompleted, setLoopCompleted] = useState(false);
 
   useEffect(() => {
     Aos.init({ duration: 1000 });
@@ -68,17 +69,34 @@ const ImageGalleryLine = () => {
 
   const handleImageClick = (image: ImageData) => {
     setSelectedImage(image);
-    setAutoSlide(false);
+    setRelatedImages(image.relatedImages);
+    setCurrentRelatedIndex(0); 
+    setLoopCompleted(false); 
   };
 
-const handleRelatedImageClick = (relatedImageId: number) => {
+  const handleRelatedImageClick = (relatedImageId: number) => {
     const newImage = images.find(img => img.id === relatedImageId);
     if (newImage) {
       setSelectedImage(newImage);
-      setAutoSlide(false);
     }
   };
 
+  useEffect(() => {
+    if (selectedImage && !loopCompleted) {
+      const timer = setTimeout(() => {
+       
+        setCurrentRelatedIndex((prevIndex) => {
+          const nextIndex = (prevIndex + 1) % selectedImage.relatedImages.length;
+          if (nextIndex === 0) {
+            setLoopCompleted(true);
+          }
+          handleRelatedImageClick(selectedImage.relatedImages[nextIndex].id);
+          return nextIndex;
+        });
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [selectedImage, currentRelatedIndex, loopCompleted]);
   return (
     <div style={{ position: 'relative', width: '1920px', height: '973px' }} className="">
      
@@ -102,7 +120,7 @@ const handleRelatedImageClick = (relatedImageId: number) => {
                 width={1108}
                 height={560}
                 alt={selectedImage.alt}
-                onClick={() => setAutoSlide(true)}
+                // onClick={() => setAutoSlide(true)}
                 data-aos="zoom-in"
                 style={{ cursor: 'pointer' }}
               />
@@ -243,9 +261,10 @@ const handleRelatedImageClick = (relatedImageId: number) => {
       </div>
        {selectedImage && (
         <div className=" p-4 flex flex-col gap-y-16 translate-y-28">
-                   {selectedImage.relatedImages.map((image) => (
+                   {relatedImages.map((image) => (
 
-              <div key={image.id} className="cursor-pointer" onClick={() => handleRelatedImageClick(image.id)}>
+              <div key={image.id} className="cursor-pointer" 
+              onClick={() => handleRelatedImageClick(image.id)}>
                 <Image
                   src={image.src}
                   width={239}
