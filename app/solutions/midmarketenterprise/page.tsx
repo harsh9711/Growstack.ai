@@ -59,7 +59,7 @@ const settings = {
       settings: {
         slidesToShow: 1,
         slidesToScroll: 1,
-        centerPadding: "5px", 
+        centerPadding: "5px",
       },
     },
   ],

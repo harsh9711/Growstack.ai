@@ -1,32 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
+import 'aos/dist/aos.css';
+import Aos from 'aos';
+
 const ImageGalleryLine = () => {
   type ImageData = {
     src: string;
     alt: string;
     id: number;
-    relatedImages: Array<{ src: string; alt: string; id: number }>;
+     relatedImages: {
+      src: string;
+      alt: string;
+      id: number;
+    }[];
   };
 
+ 
   const images: ImageData[] = [
     {
       src: '/solutions/imageshown/imageshown1.svg',
       alt: 'Image 1',
       id: 1,
       relatedImages: [
-        { src: '/sideimages/text.svg', alt: 'Related 1.1', id: 2 },
-        { src: '/sideimages/websitebuilder.svg', alt: 'Related 1.1', id: 101 },
-        { src: '/sideimages/webscraping.svg', alt: 'Related 1.1', id: 101 },
+        { src: '/sideimages/text.svg', alt: 'Related Image 1-1', id: 2 },
+        { src: '/sideimages/webscraping.svg', alt: 'Related Image 1-1', id: 3 },
+        { src: '/sideimages/websitebuilder.svg', alt: 'Related Image 1-1', id: 4 },
       ],
     },
     {
-        src: '/solutions/imageshown/imageshown3.svg',
+      src: '/solutions/imageshown/imageshown3.svg',
       alt: 'Image 2',
       id: 2,
       relatedImages: [
-        { src: '/sideimages/workflow.svg', alt: 'Related 2.1', id: 1 },
-        { src: '/sideimages/websitebuilder.svg', alt: 'Related 1.1', id: 3 },
-        { src: '/sideimages/webscraping.svg', alt: 'Related 1.1', id: 4 },
+      { src: '/sideimages/workflow.svg', alt: 'Related Image 1-1', id: 1 },
+        { src: '/sideimages/webscraping.svg', alt: 'Related Image 1-1', id: 3 },
+        { src: '/sideimages/websitebuilder.svg', alt: 'Related Image 1-1', id: 4 },
       ],
     },
     {
@@ -34,9 +42,9 @@ const ImageGalleryLine = () => {
       alt: 'Image 3',
       id: 3,
       relatedImages: [
-        { src: '/sideimages/text.svg', alt: 'Related 1.1', id: 2 },
-        { src: '/sideimages/websitebuilder.svg', alt: 'Related 1.1', id: 3 },
-        { src: '/sideimages/workflow.svg', alt: 'Related 1.1', id: 1 },
+  { src: '/sideimages/workflow.svg', alt: 'Related Image 1-1', id: 1 },
+        { src: '/sideimages/text.svg', alt: 'Related Image 1-1', id: 2 },
+        { src: '/sideimages/websitebuilder.svg', alt: 'Related Image 1-1', id: 4 },
       ],
     },
     {
@@ -44,9 +52,9 @@ const ImageGalleryLine = () => {
       alt: 'Image 4',
       id: 4,
       relatedImages: [
-        { src: '/sideimages/text.svg', alt: 'Related 1.1', id: 2 },
-        { src: '/sideimages/workflow.svg', alt: 'Related 1.1', id: 1 },
-        { src: '/sideimages/webscraping.svg', alt: 'Related 1.1', id: 3 },
+       { src: '/sideimages/workflow.svg', alt: 'Related Image 1-1', id: 1 },
+        { src: '/sideimages/webscraping.svg', alt: 'Related Image 1-1', id: 3 },
+        { src: '/sideimages/text.svg', alt: 'Related Image 1-1', id: 2 },
       ],
     },
   ];
@@ -55,74 +63,53 @@ const ImageGalleryLine = () => {
   const [autoSlide, setAutoSlide] = useState(true);
 
   useEffect(() => {
-    if (autoSlide && selectedImage) {
-      const timer = setTimeout(() => {
-        const currentIndex = images.findIndex((img) => img.id === selectedImage.id);
-        const nextIndex = (currentIndex + 1) % images.length;
-        setSelectedImage(images[nextIndex]);
-      }, 4000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [autoSlide, selectedImage]);
+    Aos.init({ duration: 1000 });
+  }, []);
 
   const handleImageClick = (image: ImageData) => {
     setSelectedImage(image);
     setAutoSlide(false);
   };
 
+const handleRelatedImageClick = (relatedImageId: number) => {
+    const newImage = images.find(img => img.id === relatedImageId);
+    if (newImage) {
+      setSelectedImage(newImage);
+      setAutoSlide(false);
+    }
+  };
 
-    const handleRelatedImageClick = (relatedImageId: number) => {
-      const newImage = images.find(img => img.id === relatedImageId);
-      if (newImage) {
-        setSelectedImage(newImage);
-        setAutoSlide(false);
-      }
-    };
   return (
-    <div style={{ position: 'relative', width: '1920px', height: '973px' }} className="-translate-y-20">
-      <div className="relative">
+    <div style={{ position: 'relative', width: '1920px', height: '973px' }} className="">
+     
+      <div className='flex flex-row items-start mt-24 justify-center'>
+      <div className="relative flex items-center justify-center">
         {selectedImage ? (
-          <div className="flex">
-            <div className="w-full flex items-center justify-center">
-              <div className="items-center justify-center flex flex-col gap-y-2 translate-y-[130px] absolute top-0 left-0 right-0">
-                <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit mx-auto">
-                  Lorem Ipsum 🔥
-                </div>
-                <h1 className="text-center text-[42px] leading-normal">
-                  <span className="text-black font-bold">Seamlessly,</span>
-                  <span className="text-black font-extralight"> scale operations</span>
-                </h1>
+          <div className="flex flex-col items-center">
+            <div className="items-center justify-center flex flex-col gap-y-2 mb-4">
+              <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit mx-auto">
+                Lorem Ipsum 🔥
               </div>
-              <div className='translate-y-80'>
-                <Image
-                  className="w-full"
-                  src={selectedImage.src}
-                  width={1108}
-                  height={560}
-                  alt={selectedImage.alt}
-                  onClick={() => setAutoSlide(true)}
-                  style={{ cursor: 'pointer' }}
-                />
-              </div>
+              <h1 className="text-center text-[42px] leading-normal">
+                <span className="text-black font-bold">Seamlessly,</span>
+                <span className="text-black font-extralight"> scale operations</span>
+              </h1>
             </div>
-            <div className="flex flex-col gap-y-16 translate-y-80 -translate-x-60">
-              {selectedImage.relatedImages.map(relatedImg => (
-                <Image
-                  key={relatedImg.id}
-                  src={relatedImg.src}
-                  width={239}
-                  height={200}
-                  alt={relatedImg.alt}
-                  onClick={() => handleRelatedImageClick(relatedImg.id)}
-                  style={{ cursor: 'pointer' }}
-                />
-              ))}
+            <div>
+              <Image
+                className="w-full"
+                src={selectedImage.src}
+                width={1108}
+                height={560}
+                alt={selectedImage.alt}
+                onClick={() => setAutoSlide(true)}
+                data-aos="zoom-in"
+                style={{ cursor: 'pointer' }}
+              />
             </div>
           </div>
         ) : (
-    
-          <div className="relative translate-y-20">
+          <div className="relative ">
             <svg
               width="1920"
               height="973"
@@ -213,9 +200,9 @@ const ImageGalleryLine = () => {
                 width={970}
                 height={600}
                 alt="Image 1"
-                className=""
                 onClick={() => handleImageClick(images[0])}
                 style={{ cursor: 'pointer' }}
+                data-aos="zoom-in"
               />
             </div>
             <div className="relative -top-[1780px] left-[940px]">
@@ -226,6 +213,7 @@ const ImageGalleryLine = () => {
                 alt="Image 2"
                 onClick={() => handleImageClick(images[1])}
                 style={{ cursor: 'pointer' }}
+                data-aos="zoom-in"
               />
             </div>
             <div className="relative -top-[2130px] z-[90] left-[920px]">
@@ -236,21 +224,39 @@ const ImageGalleryLine = () => {
                 alt="Image 3"
                 onClick={() => handleImageClick(images[2])}
                 style={{ cursor: 'pointer' }}
+                data-aos="zoom-in"
               />
             </div>
             <div className="relative -top-[3300px] z-[60] left-[40px]">
               <Image
                 src="/solutions/wire/wire4.svg"
-                width={980}
+                width={970}
                 height={600}
                 alt="Image 4"
                 onClick={() => handleImageClick(images[3])}
                 style={{ cursor: 'pointer' }}
+                data-aos="zoom-in"
               />
             </div>
           </div>
         )}
       </div>
+       {selectedImage && (
+        <div className=" p-4 flex flex-col gap-y-16 translate-y-28">
+                   {selectedImage.relatedImages.map((image) => (
+
+              <div key={image.id} className="cursor-pointer" onClick={() => handleRelatedImageClick(image.id)}>
+                <Image
+                  src={image.src}
+                  width={239}
+                  height={187}
+                  alt={image.alt}
+                  data-aos="fade-right"
+                />
+              </div>
+            ))}
+        </div>
+      )}</div>
     </div>
   );
 };
