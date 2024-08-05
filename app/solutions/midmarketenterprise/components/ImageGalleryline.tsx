@@ -127,7 +127,7 @@ const ImageGalleryLine = () => {
             </div>
           </div>
         ) : (
-          <div className="relative ">
+          <div className="relative -translate-y-24 ">
             <svg
               width="1920"
               height="973"

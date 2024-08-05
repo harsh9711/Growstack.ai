@@ -2,6 +2,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+ 
 .container {
   max-width: 124rem;
   padding: 0px 200px;
@@ -187,8 +188,9 @@ html {
   scroll-behavior: smooth;
 }
 body {
+    overflow: auto; 
   font-family: 'PoppinsRegular' !important;
-  overflow-x: clip;
+  /* overflow-x: clip; */
   background: #f4f7f9;
 }
 

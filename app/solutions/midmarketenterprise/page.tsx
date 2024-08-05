@@ -5,25 +5,12 @@ import React, { useRef } from "react";
 import RepeatText from "./components/RepeatText";
 import GridComponent from "./components/GridBoxes";
 import ImageGallery from "./components/ImageGallery";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 import ImageGalleryLine from "./components/ImageGalleryline";
 import { testimonials } from "@/types/data";
 import Navbar from '@/components/navbar/Navbar';
+import TestimonialsSlider from "./components/SwiperSlide";
 
-type SliderRef = Slider | null;
-
-const sliderRef = React.createRef<Slider>();
-
-const next = () => {
-  sliderRef.current?.slickNext();
-};
-
-const previous = () => {
-  sliderRef.current?.slickPrev();
-};
 const settings = {
   dots: false,
   arrows: false,
@@ -447,21 +434,7 @@ const page = () => {
               resource constraints
             </span>
           </h1>
-          <Image
-            src="/solutions/arrow1.svg"
-            width={200}
-            height={200}
-            alt="arrow"
-            className="absolute left-[120px] z-[10] top-14"
-          />
-          <Image
-            src="/solutions/arrow2.svg"
-            width={200}
-            height={200}
-            alt="arrow"
-            className="absolute right-[120px] z-[10] top-14 -rotate-270 "
-          />
-
+        
           <div className="items-center justify-center mx-auto relative  mt-10 right-12">
             <GridComponent />
           </div>
@@ -480,9 +453,10 @@ const page = () => {
           </div>
         </div>
       </section>
-      <section className="bg-[#E2F0CB]    ">
-        {/* <Image src="/solutions/design.svg" width={200} height={200} alt="arrow" className="relative right-[420px] z-[10]"/> */}
-        <div className="items-center justify-center flex flex-col gap-y-4 mt-24 ">
+      <section className="bg-[#E2F0CB] overflow-hidden   ">
+        <div className="items-center justify-center flex flex-col gap-y-4 mt-20 overflow-hidden ">      
+            <Image src="/solutions/design.svg" width={1000} height={1000} alt="arrow" className="w-full  absolute translate-y-80 -rotate-12 z-0"/>
+
           <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit">
             {" "}
             Lorem Ipsum 🔥
@@ -497,119 +471,7 @@ const page = () => {
             </span>
           </h1>
         </div>
-        <div className="max-w-[1720px] mx-auto mt-10">
-          <div className="">
-            <Slider ref={sliderRef} {...settings} className="">
-              {testimonials.map((item, index) => (
-                <div
-                  key={index}
-                  className="w-[682px] h-[468px] bg-white rounded-[17px] border border-[#e9e7e7] flex flex-col p-6 mx-4" // Adjusted margin for space between cards
-                >
-                  <div className="flex flex-col justify-between h-full w-full">
-                    <div className="flex flex-col gap-y-4 pb-6">
-                      <h1 className="text-[18px] text-black leading-normal font-light multi-line-ellipsis">
-                        {item.id}
-                      </h1>
-                    </div>
-                    <div className="space-x-4 mt-10 flex flex-row">
-                      <div className="flex flex-col gap-y-2">
-                        <h1 className="text-[24px] text-black leading-normal font-medium multi-line-ellipsis">
-                          {item.name}
-                        </h1>
-                        <p className="text-[18px] text-black multi-line-ellipsis">
-                          {item.role}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </Slider>
-          </div>
-          <div className="mt-16">
-            <div className="hidden lg:block">
-              <div className="flex w-full max-w-[1720px] justify-between -translate-y-80 items-center gap-6">
-                <div className="relative translate-x-10 flex items-center justify-center">
-                  <svg
-                    className="absolute -translate-y-10 z-10"
-                    width="328"
-                    height="648"
-                    viewBox="0 0 328 648"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <rect
-                      width="328"
-                      height="648"
-                      transform="matrix(-1 0 0 1 328 0)"
-                      fill="url(#paint0_linear_5726_36861)"
-                    />
-                    <defs>
-                      <linearGradient
-                        id="paint0_linear_5726_36861"
-                        x1="328"
-                        y1="324"
-                        x2="0"
-                        y2="324"
-                        gradientUnits="userSpaceOnUse"
-                      >
-                        <stop stop-color="#E2F0CB" />
-                        <stop
-                          offset="1"
-                          stop-color="#E2F0CB"
-                          stop-opacity="0"
-                        />
-                      </linearGradient>
-                    </defs>
-                  </svg>
-                  <button
-                    className="transition z-20 duration-300 cursor-pointer flex items-center justify-center w-12 h-12 rounded-full bg-black text-white hover:bg-[#009a9b]"
-                    title="Previous"
-                    onClick={previous}
-                  >
-                    <GoArrowLeft size={25} />
-                  </button>
-                </div>
-                <div className="relative flex items-center justify-center">
-                  <svg
-                    className="absolute -translate-y-10 z-10"
-                    width="328"
-                    height="648"
-                    viewBox="0 0 328 648"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <rect
-                      width="328"
-                      height="648"
-                      fill="url(#paint0_linear_5406_21973)"
-                    />
-                    <defs>
-                      <linearGradient
-                        id="paint0_linear_5406_21973"
-                        x1="328"
-                        y1="324"
-                        x2="0"
-                        y2="324"
-                        gradientUnits="userSpaceOnUse"
-                      >
-                        <stop stopColor="#E2F0CB" />
-                        <stop offset="1" stopColor="#E2F0CB" stop-opacity="0" />
-                      </linearGradient>
-                    </defs>
-                  </svg>
-                  <button
-                    className="relative z-20 transition duration-300 cursor-pointer flex items-center justify-center w-12 h-12 rounded-full bg-black text-white hover:bg-[#009a9b]"
-                    title="Next"
-                    onClick={next}
-                  >
-                    <GoArrowRight size={25} />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <TestimonialsSlider/>
       </section>
     </main>
   );
