@@ -17,6 +17,7 @@ const TestimonialsSlider = () => {
         navigation={{
           nextEl: '.swiper-button-next',
           prevEl: '.swiper-button-prev',
+          
         }}
         pagination={false}
         className="swiper-container"
@@ -46,16 +47,12 @@ const TestimonialsSlider = () => {
           </SwiperSlide>
         ))}
       </Swiper>     
-
-      <div className="absolute top-80 left-0 transform -translate-y-1/2 -translate-x-10 z-20">
-          <div className="swiper-button-prev transition duration-300 cursor-pointer flex items-center justify-center w-12 h-12 rounded-full  text-white hover:bg-[#009a9b]" title="Previous">
-          <GoArrowLeft size={25} />
-        </div>
+       {/* Custom Navigation Buttons */}
+       <div className="custom-swiper-button-prev swiper-button-prev" style={{ color: 'black' }}>
+        <GoArrowLeft className="text-3xl" />
       </div>
-      <div className="absolute top-80 right-0 transform -translate-y-1/2 translate-x-10 z-10">
-        <div className="swiper-button-next transition duration-300 cursor-pointer flex items-center justify-center w-full h-12 rounded-full k text-white hover:bg-[#009a9b]" title="Next">
-          <GoArrowRight size={25} />
-        </div>
+      <div className="custom-swiper-button-next swiper-button-next" style={{ color: 'black' }}>
+        <GoArrowRight className="text-3xl" />
       </div>
     </div>
   );

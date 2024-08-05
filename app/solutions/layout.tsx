@@ -16,8 +16,8 @@ export default function Layout({
     <div>
      {/* <Navbar textColor="#ffffff" loginBgColor="#ffffff" />  */}
 
-      <div>{children}</div>
-     <Footer/>
+      <div className="">{children}</div>
+    <div className=" bg-white"> <Footer/></div>
     </div>
   );
 }

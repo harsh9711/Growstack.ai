@@ -62,7 +62,7 @@ interface Testimonial {
 const page = () => {
   return (
     <main className="flex flex-col overflow-hidden">
-      <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
+      <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo"  />
       <section className="bg-[#034737] w-full  mb-20">
         <div className="relative flex items-center max-w-[1920px] w-full max-h-[1112px] h-full justify-center mx-auto">
           <div className="w-full flex flex-row justify-between brightness-110 relative left-52 items-center mt-52 mb-60">
@@ -382,16 +382,15 @@ const page = () => {
               </div>
             </div>
 
-            <div className="w-full flex items-center justify-center">
               <div className="  flex items-center justify-center">
                 <Image
-                  className="w-full relative left-32 "
+                  className="w-full relative  z-0 -top-10 -left-52 "
                   src="/solutions/circle.svg"
                   alt="Center Image"
                   width={1048}
                   height={1000}
                 />
-                <div className=" absolute right-96">
+                <div className=" absolute z-0 right-96">
                   <Image
                     className="w-full"
                     src="/solutions/hero.svg"
@@ -401,7 +400,6 @@ const page = () => {
                   />
                 </div>
               </div>
-            </div>
           </div>
         </div>
       </section>
@@ -458,7 +456,7 @@ const page = () => {
           <Image
             src="/solutions/design.svg"
             width={1000}
-            height={1000}
+            height={1800}
             alt="arrow"
             className="w-full overflow-hidden  absolute translate-y-80 -rotate-6 z-0"
           />

@@ -278,7 +278,7 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="bg-primary-green flex flex-col items-center justify-center py-20">
+      <section className="bg-primary-green flex flex-col items-center justify-center py-20 overflow-hidden">
         <div className="w-full gap-y-4 flex flex-col items-center justify-center mx-auto ">
           <div className="bg-white/10 hover:shadow-md text-white py-2 px-4 flex items-center text-center text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[151px]">
             Globalization
@@ -300,22 +300,22 @@ const Home = () => {
         </div>
 
     
-      <div className="item-cen w-full">
+      <div className="item-cen w-full  overflow-hidden">
       <ImageGallery/>
       </div>
       </section>
 
-      <section className="   ">
+      <section className=" overflow-hidden  ">
         <div className="items-center justify-center flex flex-col gap-y-4 mt-24 overflow-hidden ">
           <Image
             src="/desing.png"
             width={1200}
             height={1000}
-            className="w-full absolute  transform scale-y-[-1]  translate-x-10  z-[20] translate-y-80 h-full"
+            className="w-full absolute h-[1000px]  transform scale-y-[-1]  translate-x-10  z-0 translate-y-64 "
             alt="image"
           />
 
-          <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit">
+          <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 z-20 rounded-full text-[12px] font-semibold text-[#034737] uppercase max-w-fit">
             {" "}
             Streamline
           </div>

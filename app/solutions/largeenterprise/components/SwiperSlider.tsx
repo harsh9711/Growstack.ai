@@ -158,40 +158,42 @@ const SwiperSlider=()=>{
   className="swiper_container"
 >
       {slideData.map((item, index) => (
-        <SwiperSlide key={index}
-        >
-          <div className="max-w-[430px] max-h-[626px] h-full rounded-[17px] z-10 relative flex transition-transform duration-300 transform-gpu scale-100 ">
-            <div className="border border-[#D1D1D1] bg-white shadow-2xl shadow-3xl rounded-3xl flex flex-col h-full gap-y-4 z-40">
-              <h2 className="font-semibold text-[#034737] text-[21px] text-center pt-6 px-8">
-                {item.title}
-              </h2>
-             <div className='px-8'> <Image
-                src={item.imageSrc}
-                width={435}
-                height={215}
-                alt={item.title}
-                className="border p-2 bg-[#37404133]/20 rounded-2xl"
-              /></div>
-              <h2 className="font-medium text-[21px] w-full px-8">
-                {item.subtitle}
-              </h2>
-              <div className="justify-between w-full gap-x-2 max-w-[417px] mt-1 flex flex-row">
-                {item.tags.map((tag, tagIndex) => (
-                  <span
-                    key={tagIndex}
-                    className="border-r border-t border-b border-[#D8D8D8] items-center justify-center rounded-r-full p-2 w-full max-w-[300px]"
-                  >
-                    <h2 className="text-[17px] font-semibold mt-1">{tag}</h2>
-                  </span>
-                ))}
-                <span className="mr-2">{item.icon}</span>
-              </div>
-              <p className="px-8 text-gray-600 mt-1 pb-4 tracking-widest">
-                {item.description}
-              </p>
-            </div>
-          </div>
-        </SwiperSlide>
+       <SwiperSlide key={index}>
+       <div className="max-w-[430px] max-h-[626px] h-full rounded-[17px] z-10 relative flex transition-transform duration-300 transform-gpu scale-100 ">
+         <div className="border border-[#D1D1D1] bg-white shadow-2xl shadow-3xl rounded-3xl flex flex-col h-full gap-y-4 z-40 overflow-hidden">
+           <h2 className="font-semibold text-[#034737] text-[21px] text-center pt-6 px-8">
+             {item.title}
+           </h2>
+           <div className="px-8">
+             <Image
+               src={item.imageSrc}
+               width={435}
+               height={215}
+               alt={item.title}
+               className="w-[435px] h-[215px] object-cover  border-[1px] rounded-[10px]"
+             />
+           </div>
+           <h2 className="font-medium text-[21px] w-full px-8">
+             {item.subtitle}
+           </h2>
+           <div className="justify-between w-full gap-x-2  max-w-[417px] mt-1 flex flex-row">
+             {item.tags.map((tag, tagIndex) => (
+               <span
+                 key={tagIndex}
+                 className="border-r border-t border-b border-[#D8D8D8] px-8 items-center justify-center rounded-r-full p-2 w-full max-w-[300px]"
+               >
+                 <h2 className="text-[17px] font-semibold mt-1 ">{tag}</h2>
+               </span>
+             ))}
+             <span className="mr-6">{item.icon}</span>
+           </div>
+           <p className="px-8 text-gray-600 mt-1 pb-4 tracking-widest">
+             {item.description}
+           </p>
+         </div>
+       </div>
+     </SwiperSlide>
+     
       ))}
     </Swiper>
 

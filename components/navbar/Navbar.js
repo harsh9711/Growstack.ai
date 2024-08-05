@@ -7,8 +7,8 @@ import styles from "./navbar.module.scss";
 
 function Navbar({ logoUrl = "/images/logo.png", logoAlt = "logo" }) {
   return (
-    <div className={`trans ${styles.navbar}`}>
-      <div className="container">
+    <div className={`trans relative z-90 ${styles.navbar}`}>
+      <div className="container  relative z-90">
         <div className={styles.flex}>
           <div className={styles.flext}>
             <Link href="/" className={styles.logo}>
