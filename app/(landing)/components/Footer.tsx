@@ -6,7 +6,7 @@ import "@/styles/button.css";
 
 export default function Footer() {
   return (
-    <footer className="mt-20 px-3 md:px-12 bg-primary-light-gray">
+    <footer className=" px-3 md:px-12 bg-primary-light-gray">
       <div className="flex justify-between max-w-[1480px] mx-auto py-20 items-center">
         <h1 className="text-[42px] font-semibold max-w-lg leading-relaxed text-primary-green">Ready to see a personalized demo?</h1>
         <div className="flex gap-4">

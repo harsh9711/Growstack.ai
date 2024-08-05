@@ -9,7 +9,7 @@ import Image from 'next/image';
 
 const TestimonialsSlider = () => {
   return (
-    <div className="max-w-[1820px] mx-auto relative">
+    <div className="max-w-[1820px] mx-auto relative mb-32 ">
       <Swiper
         modules={[Navigation]}
         spaceBetween={30}

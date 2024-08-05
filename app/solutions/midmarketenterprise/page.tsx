@@ -8,7 +8,7 @@ import ImageGallery from "./components/ImageGallery";
 import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 import ImageGalleryLine from "./components/ImageGalleryline";
 import { testimonials } from "@/types/data";
-import Navbar from '@/components/navbar/Navbar';
+import Navbar from "@/components/navbar/Navbar";
 import TestimonialsSlider from "./components/SwiperSlide";
 
 const settings = {
@@ -434,7 +434,7 @@ const page = () => {
               resource constraints
             </span>
           </h1>
-        
+
           <div className="items-center justify-center mx-auto relative  mt-10 right-12">
             <GridComponent />
           </div>
@@ -454,9 +454,14 @@ const page = () => {
         </div>
       </section>
       <section className="bg-[#E2F0CB] overflow-hidden   ">
-        <div className="items-center justify-center flex flex-col gap-y-4 mt-20 overflow-hidden ">      
-            <Image src="/solutions/design.svg" width={1000} height={1000} alt="arrow" className="w-full  absolute translate-y-80 -rotate-12 z-0"/>
-
+        <div className="items-center justify-center flex flex-col gap-y-4 mt-20 overflow-hidden ">
+          <Image
+            src="/solutions/design.svg"
+            width={1000}
+            height={1000}
+            alt="arrow"
+            className="w-full overflow-hidden  absolute translate-y-80 -rotate-6 z-0"
+          />
           <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit">
             {" "}
             Lorem Ipsum 🔥
@@ -471,7 +476,7 @@ const page = () => {
             </span>
           </h1>
         </div>
-        <TestimonialsSlider/>
+        <TestimonialsSlider />
       </section>
     </main>
   );

@@ -4,17 +4,13 @@ import { ArrowLeft, ArrowRight, Video } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import Navbar from '@/components/navbar/Navbar';
-import Slider from "react-slick";
 import { motion } from "framer-motion";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import 'swiper/css'
-import 'swiper/css/effect-coverflow';
-import 'swiper/css/pagination';
+
 import 'swiper/css/navigation';
 import SwiperSlider from "./components/SwiperSlider";
 import ImageGallery from "./components/ZoomEffect";
 import { testimonials } from "@/types/data";
+import TestimonialsSlider from "./components/Slider";
 
 
 
@@ -48,7 +44,6 @@ const Home = () => {
   });
 
 
-  const sliderRef = useRef<InstanceType<typeof Slider>>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [visibleSlides, setVisibleSlides] = useState<number[]>([]);
 
@@ -81,17 +76,7 @@ const Home = () => {
   const handleBeforeChange = (oldIndex: number, newIndex: number) => {
     setCurrentSlide(newIndex);
   };
-  const previous = () => {
-    if (sliderRef.current) {
-        sliderRef.current.slickPrev();
-    }
-};
 
-const next = () => {
-    if (sliderRef.current) {
-        sliderRef.current.slickNext();
-    }
-};
   const settings = {
     dots: false,
     arrows: false,
@@ -344,68 +329,7 @@ const next = () => {
             </span>
           </h1>
         </div>
-        <div className="max-w-[1720px] mx-auto mt-10">
-          <div className="z-[80] relative">
-            <Slider
-              ref={sliderRef}
-              {...settings}
-              beforeChange={handleBeforeChange}
-              className=""
-            >
-              {testimonials.map((item, index) => (
-                <div
-                  key={index}
-                  className="w-[682px] h-[468px] bg-white rounded-[17px] border border-[#e9e7e7] flex flex-col p-6 mx-4"
-                >
-                  <div className="flex flex-col justify-between h-full w-full">
-                    <div className="flex flex-col gap-y-4 pb-6">
-                      <h1 className="text-[18px] text-black leading-normal font-light multi-line-ellipsis">
-                        {item.id}
-                      </h1>
-                    </div>
-                    <div className="space-x-4 mt-10 flex flex-row">
-                      <div className="flex flex-col gap-y-2">
-                        <h1 className="text-[24px] text-black leading-normal font-medium multi-line-ellipsis">
-                          {item.name}
-                        </h1>
-                        <p className="text-[18px] text-black multi-line-ellipsis">
-                          {item.role}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </Slider>
-          </div>
-
-          <div className="mt-16 hidden lg:block">
-  <div className="flex w-full max-w-[1720px] justify-between -translate-y-80 z-[90] relative items-center gap-6">
-    {currentSlide > 0 && (
-      <div className="relative translate-x-10 flex items-center justify-center">
-        <button
-          className="transition z-20 duration-300 cursor-pointer flex items-center justify-center w-12 h-12 rounded-full bg-black text-white hover:bg-[#034737]"
-          title="Previous"
-          onClick={previous}
-        >
-          <ArrowLeft size={25} />
-        </button>
-      </div>
-    )}
-
-    <div className="flex items-center justify-center ml-auto">
-      <button
-        className="relative z-20 transition duration-300 cursor-pointer flex items-center justify-center w-12 h-12 rounded-full bg-black text-white hover:bg-[#034737]"
-        title="Next"
-        onClick={next}
-      >
-        <ArrowRight size={25} />
-      </button>
-    </div>
-  </div>
-</div>
-
-        </div>
+     <TestimonialsSlider/>
       </section>
     </main>
   );
