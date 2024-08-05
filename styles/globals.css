@@ -8,9 +8,8 @@
   position: absolute;
   width: 10px;
   top: 50%;
-  color: white !important; /* Use !important to override other styles */
+  color: #034737 !important; /* Use !important to override other styles */
   transform: translateY(50%);
-  background: #034737;
   border-radius: 50%;
   padding: 25px;
   cursor: pointer;
@@ -183,14 +182,6 @@
   background: var(--primary);
 }
 
-/* .carousel-slide {
-  transition: transform 0.3s ease, z-index 0s ease;
-}
-
-.carousel-slide.active {
-  transform: scale(1.1);
-  z-index: 1;
-} */
 
 
 

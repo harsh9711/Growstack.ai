@@ -38,3 +38,50 @@ export const testimonials = [
       companyImage: "No doubt, Spend.In is the best!",
     },
   ];
+   export const testimonialsdata = [
+    {
+      id: 1,
+      img1: "/carousel/c1.png",
+      name: "Identify needs and plan",
+      role: "Identify your needs and plan effectively with AI-driven insights and tailored solutions.",
+      description:
+        "I've tried several website builders, but Webbuddy takes the cake. The templates are modern and customizable, and the drag-and-drop interface makes it a breeze to create a stunning website. Love it!",
+    },
+    {
+      id: 2,
+      img1: "/carousel/c1.png",
+      name: "Create and develop content",
+      role: "Create high-quality content quickly with Growstacks AI-powered tools for text and video.",
+      description:
+        "",
+    },
+   
+    {
+      id: 3,
+      img1: "/carousel/c1.png",
+      name: "Automate marketing efforts",
+      role:  "Automate marketing tasks and streamline workflows for efficient and consistent operations.",
+      companyImage: "No doubt, Spend.In is the best!",
+    },
+    {
+      id: 4,
+      img1: "/carousel/c1.png",
+      name: "Engage with audiences",
+      role: "Enhance customer engagement and brand reach through real-time interactions and advocacy.",
+      companyImage: "No doubt, Spend.In is the best!",
+    },
+    {
+      id: 5,
+      img1: "/carousel/c1.png",
+      name: "Analyze and optimize strategies",
+      role: "Analyze performance and optimize strategies for better results and effective marketing.",
+      companyImage: "No doubt, Spend.In is the best!",
+    },
+    {
+      id: 5,
+      img1: "/carousel/c1.png",
+      name: "Scale operations",
+      role: "Scale your business with tools for customer targeting, campaign optimization, and growth strategies.",
+      companyImage: "No doubt, Spend.In is the best!",
+    },
+  ];

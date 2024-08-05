@@ -54,7 +54,7 @@ const SwiperSlider=()=>{
         {
           title: 'Harmonize campaigns',
           imageSrc: '/sliderimages/slider3.svg',
-          subtitle: 'Reduce decision-making time by 40% increase efficiency',
+          subtitle: 'Automate routine tasks Save employees time by 50%',
           tags: ['AI assistant'],
           description: 'Customizable AI assistants for automating high-level research, routine tasks, data analysis, and operational efficiency, tailored to support various departments and scalable for enterprise.',
           icon: (
@@ -112,7 +112,7 @@ const SwiperSlider=()=>{
             {
               title: 'Harmonize campaigns',
               imageSrc: '/sliderimages/slider3.svg',
-              subtitle: 'Reduce decision-making time by 40% increase efficiency',
+              subtitle: 'Automate routine tasks Save employees time by 50%',
               tags: ['AI assistant'],
               description: 'Customizable AI assistants for automating high-level research, routine tasks, data analysis, and operational efficiency, tailored to support various departments and scalable for enterprise.',
               icon: (

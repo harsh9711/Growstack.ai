@@ -89,7 +89,7 @@ const page = () => {
                 <div className="flex flex-col gap-20 mt-10">
                   <div className="flex flex-row gap-8  group text-[18px]">
                     <button className="bg-white font-medium flex items-center gap-2 text-[#034737] py-4 px-7 rounded-xl group-hover:font-bold shadow-md hover:shadow-">
-                      Free free trial <ArrowRight />
+                      Free trial <ArrowRight />
                     </button>
                     <button className="border border-white flex items-center gap-2 text-white hover:font-bold font-medium py-4 px-7 rounded-xl shadow-md shadow-[#00000025]">
                       See demo
@@ -419,11 +419,11 @@ const page = () => {
       <div className="absolute top-[1250px]">
         <RepeatText />
       </div>
-      <section className="relative  mx-auto items-center justify-center ">
+      <section className="relative  mx-auto items-center justify-center py-20 ">
         <div className="flex flex-col items-center justify-center mx-auto gap-2 ">
           <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit">
             {" "}
-            Lorem Ipsum 🔥
+          Resources 
           </div>
           <h1 className="text-center text-[42px] leading-normal">
             <span className="text-black  font-bold"> Overcome</span>
@@ -433,7 +433,7 @@ const page = () => {
             </span>
           </h1>
 
-          <div className="items-center justify-center mx-auto relative  mt-10 right-12">
+          <div className="items-center justify-center mx-auto relative   right-12">
             <GridComponent />
           </div>
         </div>
@@ -462,7 +462,7 @@ const page = () => {
           />
           <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit">
             {" "}
-            Lorem Ipsum 🔥
+Optimize
           </div>
           <h1 className="text-center flex flex-col  text-[42px] leading-normal">
             <span className="relative text-black font-semibold">

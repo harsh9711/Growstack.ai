@@ -2,11 +2,30 @@
 import { ArrowRight, Circle } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import useInView from "../useInView";
 
 const GridComponent = () => {
   const [selected, setSelected] = useState<number | null>(null);
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
+  const isInView = useInView({ threshold: 0.5 });
+  useEffect(() => {
+    if (isInView) {
+      if (!isTimerActive) {
+        setIsTimerActive(true);
+      }
+      if (selected === null) {
+        handleClick(1);
+      }
+    } else {  
+      if (isTimerActive) {
+        setIsTimerActive(false);
+        if (timer) {
+          clearTimeout(timer);
+        }
+      }
+    }
+  }, [isInView]);
 
   useEffect(() => {
     if (isTimerActive) {
@@ -41,7 +60,16 @@ const GridComponent = () => {
     if (timer) {
       clearTimeout(timer);
     }
-  };  const renderArrows = (caseNumber: number) => {
+  };  
+  const handleComponentClick = () => {
+    if (isTimerActive) {
+      setIsTimerActive(false);
+      if (timer) {
+        clearTimeout(timer);
+      }
+    }
+  };
+  const renderArrows = (caseNumber: number) => {
     switch (caseNumber) {
       case 1:
         return (
@@ -212,36 +240,36 @@ const GridComponent = () => {
     width={200}
     height={200}
     alt="arrow"
-    className="absolute left-[170px] z-[10] -top-24"
+    className="absolute left-[260px] z-[10] -top-12"
   />
   <Image
     src="/solutions/arrow2.svg"
     width={200}
     height={200}
     alt="arrow"
-    className="absolute right-[150px] z-[10] -top-24 -rotate-270 rotate-2"
+    className="absolute right-[230px] z-[10] -top-12 -rotate-270 rotate-2"
   />
-            <div className="grid grid-cols-3 relative gap-x-16 left-56 justify-center items-center ">
+            <div className="grid grid-cols-3 relative gap-x-16 left-72 justify-center items-center ">
               <div onClick={() => handleClick(1)} className="rounded-[30px] flex justify-center items-center z-[60] cursor-pointer">
-                <Image src="/solutions/boxes/box1.svg" alt="Box 1" width={400} height={420} />
+                <Image src="/solutions/boxes/box1.svg" alt="Box 1" width={400} height={420} className="w-[480px] h-[357px] " />
               </div>
               <div onClick={() => handleClick(2)} className="rounded-[30px] flex justify-center items-center z-[60] cursor-pointer">
-                <Image src="/solutions/boxes/box2.svg" alt="Box 2" width={400} height={400} />
+                <Image src="/solutions/boxes/box2.svg" alt="Box 2" width={400} height={400} className="w-[480px] h-[357px] " />
               </div>
-              <div className="rounded-[30px] relative right-[700px] top-40 flex justify-center items-center">
-                <Image src="/solutions/boxes/main.svg" alt="Main" width={50} height={50} />
+              <div className="rounded-[30px] relative right-[810px] top-44 flex justify-center items-center">
+                <Image src="/solutions/boxes/main.svg" alt="Main" width={50} height={50}  className=" "/>
               </div>
-              <div onClick={() => handleClick(3)} className="rounded-[30px] relative -top-20 flex justify-center items-center z-[60] cursor-pointer">
-                <Image src="/solutions/boxes/box3.svg" alt="Box 3" width={380} height={400} />
+              <div onClick={() => handleClick(3)} className="rounded-[30px] relative top-2 flex justify-center items-center z-[60] cursor-pointer">
+                <Image src="/solutions/boxes/box3.svg" alt="Box 3" width={380} height={400} className="w-[480px] h-[357px] " />
               </div>
-              <div onClick={() => handleClick(4)} className="rounded-[30px] flex relative -top-20 justify-center items-center z-[60] cursor-pointer">
-                <Image src="/solutions/boxes/box4.svg" alt="Box 4" width={380} height={420} />
+              <div onClick={() => handleClick(4)} className="rounded-[30px] flex relative top-2 justify-center items-center z-[60] cursor-pointer">
+                <Image src="/solutions/boxes/box4.svg" alt="Box 4" width={380} height={420} className="w-[480px] h-[357px] " />
               </div>
             </div></> 
           );
       }
     };
-    return <div className="flex flex-col justify-center relative left-8 mx-auto items-center">  
+    return <div className="flex flex-col justify-center relative left-8 mx-auto items-center" onClick={handleComponentClick}>  
 {renderContent()}</div>;
   };
   export default GridComponent

@@ -61,7 +61,8 @@ const ImageGalleryLine = () => {
   const [selectedImage, setSelectedImage] = useState<ImageData | null>(null);
   const [relatedImages, setRelatedImages] = useState<ImageData['relatedImages']>(images[0].relatedImages);
   const [currentRelatedIndex, setCurrentRelatedIndex] = useState(0);
-  const [loopCompleted, setLoopCompleted] = useState(false);
+  const [timerActive, setTimerActive] = useState(false);
+  const [imagesShownCount, setImagesShownCount] = useState(0);
 
   useEffect(() => {
     Aos.init({ duration: 1000 });
@@ -70,33 +71,40 @@ const ImageGalleryLine = () => {
   const handleImageClick = (image: ImageData) => {
     setSelectedImage(image);
     setRelatedImages(image.relatedImages);
-    setCurrentRelatedIndex(0); 
-    setLoopCompleted(false); 
+    // setImagesShownCount(0);
+        setTimerActive(true);
   };
 
   const handleRelatedImageClick = (relatedImageId: number) => {
     const newImage = images.find(img => img.id === relatedImageId);
     if (newImage) {
       setSelectedImage(newImage);
+      setRelatedImages(newImage.relatedImages);
+      // setImagesShownCount(0); 
+      setTimerActive(true);
     }
   };
 
   useEffect(() => {
-    if (selectedImage && !loopCompleted) {
+    if (timerActive && selectedImage) {
       const timer = setTimeout(() => {
-       
-        setCurrentRelatedIndex((prevIndex) => {
+        setCurrentRelatedIndex(prevIndex => {
           const nextIndex = (prevIndex + 1) % selectedImage.relatedImages.length;
           if (nextIndex === 0) {
-            setLoopCompleted(true);
+            setImagesShownCount(prevCount => prevCount + 1); // Increment the count
+            if (imagesShownCount >= 2) { // Stop after showing 3 images (initial + 2 more)
+              setTimerActive(false); 
+              return prevIndex; // Don't update index
+            }
           }
           handleRelatedImageClick(selectedImage.relatedImages[nextIndex].id);
           return nextIndex;
         });
-      }, 4000);
+      }, 4000); // Time between transitions
       return () => clearTimeout(timer);
     }
-  }, [selectedImage, currentRelatedIndex, loopCompleted]);
+  }, [currentRelatedIndex, timerActive, selectedImage, imagesShownCount]);
+
   return (
     <div style={{ position: 'relative', width: '1920px', height: '973px' }} className="">
      
@@ -106,7 +114,7 @@ const ImageGalleryLine = () => {
           <div className="flex flex-col items-center">
             <div className="items-center justify-center flex flex-col gap-y-2 mb-4">
               <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit mx-auto">
-                Lorem Ipsum 🔥
+            Operations 
               </div>
               <h1 className="text-center text-[42px] leading-normal">
                 <span className="text-black font-bold">Seamlessly,</span>
@@ -205,51 +213,55 @@ const ImageGalleryLine = () => {
             </svg>
             <div className="items-center justify-center flex flex-col gap-y-2 translate-y-[420px] absolute top-0 left-0 right-0">
               <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit mx-auto">
-                Lorem Ipsum 🔥
+            Operations 
               </div>
               <h1 className="text-center text-[42px] leading-normal">
                 <span className="text-black font-bold">Seamlessly,</span>
                 <span className="text-black font-extralight"> scale operations</span>
               </h1>
             </div>
-            <div className="relative -top-[850px] left-2">
+            <div className="relative -top-[900px] left-[300px]">
               <Image
                 src="/solutions/wire/wire1.svg"
                 width={970}
-                height={600}
+                height={600} 
+              className="w-[450px] h-[337px]"
                 alt="Image 1"
                 onClick={() => handleImageClick(images[0])}
                 style={{ cursor: 'pointer' }}
                 data-aos="zoom-in"
               />
             </div>
-            <div className="relative -top-[1780px] left-[940px]">
+            <div className="relative -top-[1260px] left-[1220px]">
               <Image
                 src="/solutions/wire/wire2.svg"
                 width={980}
-                height={600}
+                height={600} 
+              className="w-[450px] h-[337px]"
                 alt="Image 2"
                 onClick={() => handleImageClick(images[1])}
                 style={{ cursor: 'pointer' }}
                 data-aos="zoom-in"
               />
             </div>
-            <div className="relative -top-[2130px] z-[90] left-[920px]">
+            <div className="relative -top-[1050px] z-[90] left-[1120px]">
               <Image
                 src="/solutions/wire/wire3.svg"
                 width={980}
-                height={600}
+                height={600} 
+              className="w-[450px] h-[337px]"
                 alt="Image 3"
                 onClick={() => handleImageClick(images[2])}
                 style={{ cursor: 'pointer' }}
                 data-aos="zoom-in"
               />
             </div>
-            <div className="relative -top-[3300px] z-[60] left-[40px]">
+            <div className="relative -top-[1450px] z-[60] left-[240px]">
               <Image
                 src="/solutions/wire/wire4.svg"
                 width={970}
-                height={600}
+                height={600} 
+              className="w-[450px] h-[337px]"
                 alt="Image 4"
                 onClick={() => handleImageClick(images[3])}
                 style={{ cursor: 'pointer' }}
