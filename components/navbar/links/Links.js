@@ -29,14 +29,14 @@ const links = [
          
         ],
   },
-  {
-    title: "Resources",
-    path:"/resources"
-  },
-  {
-    title: "Pricing ",
-    path:"/pricing "
-  }
+  // {
+  //   title: "Resources",
+  //   path:"/resources"
+  // },
+  // {
+  //   title: "Pricing ",
+  //   path:"/pricing "
+  // }
 ];
 
 

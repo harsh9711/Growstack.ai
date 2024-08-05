@@ -26,6 +26,7 @@ import DotsLoader from "@/components/DotLoader";
 import OutputCard from "./components/OutputCard";
 import { FaPlay } from "react-icons/fa6";
 import Spinner from "@/components/Spinner";
+import { Input } from "@/components/ui/input";
 
 type WorkFlowData = {
   actions: any[];
@@ -122,7 +123,8 @@ const Page = () => {
     }
   };
 
-  const handleRunWorkFlow = async () => {
+  const handleRunWorkFlow = async (e: any) => {
+    e.preventDefault();
     try {
       setIsWorkFlowFetched(false);
       const payload = {
@@ -171,7 +173,6 @@ const Page = () => {
   };
 
   const [activeSection, setActiveSection] = useState<string>("run");
-  
 
   const addNewRow = () => {
     // Placeholder logic to add a new row to the table
@@ -191,7 +192,6 @@ const Page = () => {
       setActiveSection(section);
     }
   };
-  
 
   const goToPage = (page: number) => {
     setCurrentPage(page);
@@ -250,130 +250,126 @@ const Page = () => {
           </Link>
         </div>
         <div className="flex flex-row gap-10 text-md font-medium justify-between">
-        
           <h2
-           
             className={`cursor-pointer 
             border-b-4 border-green-800`}
           >
             Run
           </h2>
-        
         </div>
       </div>
-     
 
-        <div
-          ref={runRef}
-          className="flex-shrink-0 w-full min-w-[1000px] bg-white p-10 snap-center space-y-6 rounded-3xl flex flex-col"
-        >
-          <div className="flex flex-col gap-2 items-start">
-            <h1 className="text-2xl font-semibold text-left">Run workflow</h1>
-            <p className="text-[#14171B]/80">
-              Fill in the input to kick off your workflow.
-            </p>
-          </div>
-          <div className="border rounded-2xl flex flex-col gap-6 p-6 ">
-            <div className="flex flex-row items-center gap-2">
-              <div className="bg-primary-green p-2.5 rounded-[10px] text-white">
-                <Edit size={18} />
-              </div>
-              <h2 className="font-medium text-lg">Input</h2>
+      <div
+        ref={runRef}
+        className="flex-shrink-0 w-full min-w-[1000px] bg-white p-10 snap-center space-y-6 rounded-3xl flex flex-col"
+      >
+        <div className="flex flex-col gap-2 items-start">
+          <h1 className="text-2xl font-semibold text-left">Run workflow</h1>
+          <p className="text-[#14171B]/80">
+            Fill in the input to kick off your workflow.
+          </p>
+        </div>
+        <div className="border rounded-2xl flex flex-col gap-6 p-6 ">
+          <div className="flex flex-row items-center gap-2">
+            <div className="bg-primary-green p-2.5 rounded-[10px] text-white">
+              <Edit size={18} />
             </div>
+            <h2 className="font-medium text-lg">Input</h2>
+          </div>
+          <form onSubmit={handleRunWorkFlow} className="flex flex-col gap-6">
             {workFlowData.input_configs.map((input, idx) => (
               <div key={idx}>
                 <h2 className="font-medium">{input.display_name}</h2>
                 <div className="font-light mt-3 mb-2 text-[14px]">
                   {input.description}
                 </div>
-                <input
+                <Input
                   type="text"
                   placeholder={input.placeholder}
-                  className="w-full p-4 h-[46px] border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
                   value={input.default_value}
                   onChange={(e) => handleChangeInput(e.target.value, idx)}
+                  required={input.required}
                 />
               </div>
             ))}
 
-            <button
-              disabled={!isWorkFlowFetched}
-              className={clsx(
-                "bg-[#03473729] flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 text-primary-green",
-                !isWorkFlowFetched && "text-opacity-70 cursor-not-allowed"
-              )}
-              onClick={() => handleRunWorkFlow()}
-            >
-              {!isWorkFlowFetched ? <Spinner color="#034737" /> : <FaPlay />}
-              <h2 className="text-[#14171B] font"> Run Workflow</h2>
-            </button>
+            <div>
+              <button
+                type="submit"
+                disabled={!isWorkFlowFetched}
+                className={clsx(
+                  "w-full bg-[#03473729] flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 text-primary-green",
+                  !isWorkFlowFetched && "text-opacity-70 cursor-not-allowed"
+                )}
+              >
+                {!isWorkFlowFetched ? <Spinner color="#034737" /> : <FaPlay />}
+                <h2 className="text-[#14171B] font"> Run Workflow</h2>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        {/* Results Section */}
+        <div className="flex flex-col gap-7 !mt-10">
+          <div className="flex flex-col gap-2 items-start">
+            <h1 className="text-2xl font-semibold text-left">Results</h1>
+            <p className="text-[#14171B]/80">Your output will appear below.</p>
           </div>
 
-          {/* Results Section */}
-          <div className="flex flex-col gap-7 !mt-10">
-            <div className="flex flex-col gap-2 items-start">
-              <h1 className="text-2xl font-semibold text-left">Results</h1>
-              <p className="text-[#14171B]/80">
-                Your output will appear below.
-              </p>
-            </div>
-
-            {!workFlowResults.outputs.length &&
-              workFlowData.output_configs.map((output, idx) => (
-                <div className="border rounded-2xl flex flex-col gap-4 p-5 bg-white">
-                  <div className="flex flex-row items-center gap-4">
-                    <Image src="/leaf.png" alt="go" width={45} height={45} />
-                    <h2 className="font-medium text-[17px]">
-                      {idx + 1}. {output.display_name}
-                    </h2>
-                    {!isWorkFlowFetched && <DotsLoader />}
-                  </div>
-                </div>
-              ))}
-            {!workFlowResults.paused &&
-              workFlowResults.outputs.map((output, idx) => (
-                <>
-                  {workFlowResults.status &&
-                    workFlowResults.failed_step <= idx + 1 && (
-                      <OutputCard key={idx} index={idx} output={output} />
-                    )}
-                </>
-              ))}
-            {workFlowResults.paused &&
-              workFlowResults.temp_outputs.map((output, idx) => (
-                <>
-                  {workFlowResults.status &&
-                    workFlowResults.failed_step <= idx + 1 && (
-                      <OutputCard key={idx} index={idx} output={output} />
-                    )}
-                </>
-              ))}
-
-            {workFlowResults.paused && (
-              <div>
-                <h2 className="text-lg font-medium text-center text-gray-400">
-                  Please review this response
-                </h2>
-                <div className="flex flex-row gap-4 items-center justify-center">
-                  <button
-                    className="bg-primary-green text-white px-4 py-2 rounded"
-                    onClick={() => handleResumeWorkflow(true)}
-                  >
-                    Satisfied & Continue
-                  </button>
-                  <button
-                    className="bg-red-500 text-white px-4 py-2 rounded"
-                    onClick={() => handleResumeWorkflow(false)}
-                  >
-                    Regenerate
-                  </button>
+          {!workFlowResults.outputs.length &&
+            workFlowData.output_configs.map((output, idx) => (
+              <div className="border rounded-2xl flex flex-col gap-4 p-5 bg-white">
+                <div className="flex flex-row items-center gap-4">
+                  <Image src="/leaf.png" alt="go" width={45} height={45} />
+                  <h2 className="font-medium text-[17px]">
+                    {idx + 1}. {output.display_name}
+                  </h2>
+                  {!isWorkFlowFetched && <DotsLoader />}
                 </div>
               </div>
-            )}
-          </div>
+            ))}
+          {!workFlowResults.paused &&
+            workFlowResults.outputs.map((output, idx) => (
+              <>
+                {workFlowResults.status &&
+                  workFlowResults.failed_step <= idx + 1 && (
+                    <OutputCard key={idx} index={idx} output={output} />
+                  )}
+              </>
+            ))}
+          {workFlowResults.paused &&
+            workFlowResults.temp_outputs.map((output, idx) => (
+              <>
+                {workFlowResults.status &&
+                  workFlowResults.failed_step <= idx + 1 && (
+                    <OutputCard key={idx} index={idx} output={output} />
+                  )}
+              </>
+            ))}
+
+          {workFlowResults.paused && (
+            <div>
+              <h2 className="text-lg font-medium text-center text-gray-400">
+                Please review this response
+              </h2>
+              <div className="flex flex-row gap-4 items-center justify-center">
+                <button
+                  className="bg-primary-green text-white px-4 py-2 rounded"
+                  onClick={() => handleResumeWorkflow(true)}
+                >
+                  Satisfied & Continue
+                </button>
+                <button
+                  className="bg-red-500 text-white px-4 py-2 rounded"
+                  onClick={() => handleResumeWorkflow(false)}
+                >
+                  Regenerate
+                </button>
+              </div>
+            </div>
+          )}
         </div>
-      
-    
+      </div>
     </div>
   );
 };
