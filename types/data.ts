@@ -78,7 +78,7 @@ export const testimonials = [
       companyImage: "No doubt, Spend.In is the best!",
     },
     {
-      id: 5,
+      id: 6,
       img1: "/carousel/c1.png",
       name: "Scale operations",
       role: "Scale your business with tools for customer targeting, campaign optimization, and growth strategies.",

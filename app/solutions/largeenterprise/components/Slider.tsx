@@ -19,21 +19,12 @@ const TestimonialsSlider = () => {
         }}
         pagination={false}
         className="swiper-container2"
-      > <div className="custom-swiper-button-prev swiper-button-prev">
-      <button className="bg-[#03473714] -ml-2 lg:-ml-4 flex justify-center items-center w-10 h-10 rounded-full shadow focus:outline-none">
-            <svg
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              className="chevron-left w-6 h-6"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                clip-rule="evenodd"
-              ></path>
-            </svg>
+      >
+        <div className="custom-swiper-button-prev swiper-button-prev">
+          <button className="bg-[#03473714] -ml-2 lg:-ml-4 flex justify-center items-center w-10 h-10 rounded-full shadow focus:outline-none">
+            <GoArrowLeft className="w-6 h-6" />
           </button>
-    </div>
+        </div>
         {testimonialsdata.map((item, index) => (
           <SwiperSlide key={index}>
             <div className="w-[599px] h-[468px] bg-white rounded-[17px] border border-[#e9e7e7] flex flex-col p-6 mx-4">
@@ -57,16 +48,12 @@ const TestimonialsSlider = () => {
             </div>
           </SwiperSlide>
         ))}
+        <div className="custom-swiper-button-next swiper-button-next">
+          <button className="bg-[#03473714] -mr-2 lg:-mr-4 flex justify-center items-center w-10 h-10 rounded-full shadow focus:outline-none">
+            <GoArrowRight className="w-6 h-6" />
+          </button>
+        </div>
       </Swiper>
-
-      {/* Custom Navigation Buttons */}
-     
-      <div className="custom-swiper-button-next swiper-button-next">
-        <GoArrowRight />
-      </div>
-
-      {/* Custom styles for navigation buttons */}
-  
     </div>
   );
 };

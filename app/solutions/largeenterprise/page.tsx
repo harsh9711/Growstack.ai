@@ -215,7 +215,7 @@ const Home = () => {
             src="/desing.png"
             width={1200}
             height={1000}
-            className="w-full absolute h-[1000px]  transform scale-y-[-1]  translate-x-10  z-0 translate-y-64 "
+            className="w-full absolute h-[1000px]  transform scale-y-[-1]  translate-x-10  z-0 translate-y-72 "
             alt="image"
           />
 

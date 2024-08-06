@@ -1,7 +1,7 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { GoArrowLeft, GoArrowRight } from 'react-icons/go';
-import { testimonialsdata } from '@/types/data';
+import { testimonials } from '@/types/data';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -34,7 +34,7 @@ const TestimonialsSlider = () => {
             </svg>
           </button>
     </div>
-        {testimonialsdata.map((item, index) => (
+        {testimonials.map((item, index) => (
           <SwiperSlide key={index}>
             <div className="w-[599px] h-[468px] bg-white rounded-[17px] border border-[#e9e7e7] flex flex-col p-6 mx-4">
               <div className="flex flex-col justify-between h-full w-full">
