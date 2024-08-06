@@ -225,43 +225,43 @@ const ImageGalleryLine = () => {
                 src="/solutions/wire/wire1.svg"
                 width={970}
                 height={600} 
-              className="w-[450px] h-[337px]"
+              className="w-[420px] h-[315px]"
                 alt="Image 1"
                 onClick={() => handleImageClick(images[0])}
                 style={{ cursor: 'pointer' }}
                 data-aos="zoom-in"
               />
             </div>
-            <div className="relative -top-[1260px] left-[1220px]">
+            <div className="relative -top-[1200px] left-[1220px]">
               <Image
                 src="/solutions/wire/wire2.svg"
                 width={980}
                 height={600} 
-              className="w-[450px] h-[337px]"
+              className="w-[420px] h-[315px]"
                 alt="Image 2"
                 onClick={() => handleImageClick(images[1])}
                 style={{ cursor: 'pointer' }}
                 data-aos="zoom-in"
               />
             </div>
-            <div className="relative -top-[1050px] z-[90] left-[1120px]">
+            <div className="relative -top-[1000px] z-[90] left-[1120px]">
               <Image
                 src="/solutions/wire/wire3.svg"
                 width={980}
                 height={600} 
-              className="w-[450px] h-[337px]"
+              className="w-[420px] h-[315px]"
                 alt="Image 3"
                 onClick={() => handleImageClick(images[2])}
                 style={{ cursor: 'pointer' }}
                 data-aos="zoom-in"
               />
             </div>
-            <div className="relative -top-[1450px] z-[60] left-[240px]">
+            <div className="relative -top-[1350px] z-[60] left-[260px]">
               <Image
                 src="/solutions/wire/wire4.svg"
                 width={970}
                 height={600} 
-              className="w-[450px] h-[337px]"
+              className="w-[420px] h-[315px]"
                 alt="Image 4"
                 onClick={() => handleImageClick(images[3])}
                 style={{ cursor: 'pointer' }}
