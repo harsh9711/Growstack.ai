@@ -476,32 +476,35 @@ body {
 
 
 .marquee-container {
-  overflow: hidden;
-  white-space: nowrap;
-  width: 100%;
   position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 160px;
 }
 
 .marquee-content {
   display: flex;
-  gap: 8rem; 
-  animation: marquee 20s linear infinite;
+  animation: marquee 90s linear infinite;
+}
+
+.marquee-text {
+  font-size: 92.11px;
+  font-weight: bold;
+  color: transparent;
+  white-space: nowrap;
+  -webkit-text-stroke: 1px #E9E9E9;
+  -webkit-text-fill-color: transparent;
 }
 
 @keyframes marquee {
   0% {
-    transform: translateX(100%); /* Start just outside the visible area */
-  }
-  10% {
-    transform: translateX(0%); /* Move into view quickly */
-  }
-  90% {
-    transform: translateX(-100%); /* Move out of view */
+    transform: translateX(100%);
   }
   100% {
-    transform: translateX(-100%); /* Ensure it's completely out of view */
+    transform: translateX(-100%);
   }
 }
+
 
 
 .custom-radio {

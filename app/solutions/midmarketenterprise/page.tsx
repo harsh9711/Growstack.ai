@@ -411,7 +411,7 @@ const page = () => {
           for mid-market growth and efficiency
         </h2>
 
-        <p className="mt-2 mb-4 text-center">
+        <p className="mt-2 text-white mb-4 text-center">
           Explore how GrowStacks innovative AI tools empower mid-market
           organizations to overcome challenges
         </p>

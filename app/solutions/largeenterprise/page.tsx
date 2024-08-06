@@ -3,118 +3,24 @@ import Image from "next/image";
 import { ArrowLeft, ArrowRight, Video } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import Navbar from '@/components/navbar/Navbar';
+import Navbar from "@/components/navbar/Navbar";
 import { motion } from "framer-motion";
 
-import 'swiper/css/navigation';
+import "swiper/css/navigation";
 import SwiperSlider from "./components/SwiperSlider";
 import ImageGallery from "./components/ZoomEffect";
-import { testimonials } from "@/types/data";
 import TestimonialsSlider from "./components/Slider";
 
-
-
 const Home = () => {
-  type ImageType = {
-    src: string;
-    largeSrc: string;
-    className?: string;
-  }
-  interface ImageGalleryProps {
-    images: ImageType[];
-  }
-      const [clickedImage, setClickedImage] = useState<string | null>(null);
-    const [clickedIndex, setClickedIndex] = useState<number | null>(null);
-  
-    const handleClick = (largeSrc: string, index: number) => {
-      setClickedImage(largeSrc);
-      setClickedIndex(index);
-    };
-  
-    const handleClose = () => {
-      setClickedImage(null);
-      setClickedIndex(null);
-    };
-  
-  const [currentIndex, setCurrentIndex] = useState(0);
   const totalItems = 5;
   const { ref, inView } = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
 
-
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [visibleSlides, setVisibleSlides] = useState<number[]>([]);
-
-  const [activeIndex, setActiveIndex] = useState(0);
-  type SlickBeforeChange = (current: number, next: number) => void;
-  const settings2 = {
-    dots: false,
-    arrows: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-      afterChange: (index: number) => {
-        setActiveIndex(index);
-      },
-  };
-  
-  const isSlideVisible = (index: number, activeIndex: number): boolean => {
-    if (index === activeIndex + 1) {
-      return true;
-    } else if (index === 0 && activeIndex === 2) {
-      return true;
-    }
-    
-    return false;
-  };
-  const handleBeforeChange2: SlickBeforeChange = (current, next) => {
-    setActiveIndex(next);
-  };
-  const handleBeforeChange = (oldIndex: number, newIndex: number) => {
-    setCurrentSlide(newIndex);
-  };
-
-  const settings = {
-    dots: false,
-    arrows: false,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 1,
-          infinite: true,
-          dots: true,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
   return (
     <main className="bg-white">
-<Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
+      <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
       <section className="">
         <div className="relative flex items-center w-full h-full  rounded-b-[40px]  pt-40 bg-[#F3F7F6] ">
           <div className="w-full h-full mx-auto flex flex-col  justify-between max-h-[870px] max-w-[1920px] items-center">
@@ -143,7 +49,7 @@ const Home = () => {
                   <div className="flex flex-col gap-24 mt-4 items-center justify-center ">
                     <div className="flex flex-row gap-8 ">
                       <button className="bg-[#034737] text-white font-medium flex items-center gap-2 py-4 px-7 rounded-xl hover:font-bold shadow-md shadow-[#00000025]">
-                        Free free trial <ArrowRight />
+                        Free trial <ArrowRight />
                       </button>
                       <button className="border border-[#D9D9D9] flex items-center gap-2 text-black hover:font-bold font-medium py-4 px-7 rounded-xl shadow-md shadow-[#00000025]">
                         See demo <ArrowRight className="text-black" />
@@ -210,9 +116,8 @@ const Home = () => {
                 </div>
               </div>
             </div>
-      
-    
-  <SwiperSlider/>
+
+            <SwiperSlider />
           </div>
         </div>
       </section>
@@ -299,10 +204,9 @@ const Home = () => {
           </div>
         </div>
 
-    
-      <div className="item-cen w-full  overflow-hidden">
-      <ImageGallery/>
-      </div>
+        <div className="item-cen w-full  overflow-hidden">
+          <ImageGallery />
+        </div>
       </section>
 
       <section className=" overflow-hidden  ">
@@ -329,7 +233,7 @@ const Home = () => {
             </span>
           </h1>
         </div>
-     <TestimonialsSlider/>
+        <TestimonialsSlider />
       </section>
     </main>
   );
