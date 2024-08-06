@@ -1,5 +1,5 @@
 "use client";
-
+import React from "react";
 import { OpenTabIcon, SendIcon2 } from "@/components/svgs";
 import { Link, MoreHorizontal, Plus, Settings2 } from "lucide-react";
 import { modelData } from "../../../create/ai-articles/constants/options";
@@ -85,14 +85,11 @@ const ChatArea = ({
           </div>
         </div>
       </div>
-      {/* {conversation.length > 0 ? (
+      {conversation.length > 0 ? (
         <ChatMessages conversation={conversation} />
       ) : (
-        <InitialMsg
-          selectedOption={selectedModel}
-          selectedOptionLabel={selectedOption?.label}
-        />
-      )} */}
+        <></>
+      )}
       <div className="border border-gray-200 bg-[#F5F5F5] flex items-center gap-3 p-1 pl-4 rounded-xl">
         {/* <Link size={20} className="text-primary-green" /> */}
         <input
@@ -198,9 +195,7 @@ const InitialMsg = ({
         </p>
         <div className="space-y-4 divide-y-[1px]">
           <p className="flex pt-4">
-            <span className="font-semibold w-full max-w-[150px]">
-              Context
-            </span>
+            <span className="font-semibold w-full max-w-[150px]">Context</span>
             <span className=" w-full text-primary-black text-opacity-70">
               8,192 tokens
             </span>
