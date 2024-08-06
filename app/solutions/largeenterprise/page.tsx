@@ -26,7 +26,7 @@ const Home = () => {
           <div className="w-full h-full mx-auto flex flex-col  justify-between max-h-[870px] max-w-[1920px] items-center">
             <div className="flex flex-col items-center justify-center mx-auto w-full">
               <div className=" w-full gap-y-4 flex flex-col items-center justify-center mx-auto">
-                <div className="bg-[#0347371A] text-[#034737] py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest  font-semibold uppercase w-full max-w-[303px] ">
+                <div className="bg-[#0347371A] text-[#034737] whitespace-nowrap py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest  font-semibold uppercase w-full max-w-[303px] ">
                   Growstack for large enterprises
                 </div>
 
