@@ -100,7 +100,7 @@ const Home = () => {
           <div className="w-full  mx-auto flex flex-col  justify-between  h-full max-h-[800px] max-w-[1920px] items-center">
             <div className="flex flex-col items-center justify-center mx-auto w-full">
               <div className=" w-full gap-y-4 flex flex-col items-center justify-center mx-auto">
-                <div className="bg-[#0347371A] text-[#034737] py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest  font-semibold uppercase w-full max-w-[139px] ">
+                <div className="bg-[#0347371A]  whitespace-nowrap  text-[#034737] py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest  font-semibold uppercase w-full max-w-[139px] ">
                   Consistency
                 </div>
 
@@ -126,7 +126,7 @@ const Home = () => {
           <div className="w-full h-full mx-auto flex flex-col justify-between max-h-[950px] max-w-[1920px] items-center">
             <div className="flex flex-col items-center justify-center mx-auto w-full">
               <div className="w-full gap-y-4  flex flex-col items-center justify-center mx-auto">
-                <div className="bg-[#0347371A] hover:shadow-md text-[#034737] py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[166px]">
+                <div className="bg-[#0347371A] hover:shadow-md  whitespace-nowrap  text-[#034737] py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[166px]">
                   stay connected
                 </div>
 
@@ -185,7 +185,7 @@ const Home = () => {
 
       <section className="bg-primary-green flex flex-col items-center justify-center py-20 overflow-hidden">
         <div className="w-full gap-y-4 flex flex-col items-center justify-center mx-auto ">
-          <div className="bg-white/10 hover:shadow-md text-white py-2 px-4 flex items-center text-center text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[151px]">
+          <div className="bg-white/10 hover:shadow-md  whitespace-nowrap  text-white py-2 px-4 flex items-center text-center text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[151px]">
             Globalization
           </div>
 

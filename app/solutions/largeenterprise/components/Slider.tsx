@@ -18,7 +18,7 @@ const TestimonialsSlider = () => {
           prevEl: `.custom-swiper-button-prev`,
         }}
         pagination={false}
-        className="swiper-container"
+        className="swiper-container2"
       > <div className="custom-swiper-button-prev swiper-button-prev">
       <button className="bg-[#03473714] -ml-2 lg:-ml-4 flex justify-center items-center w-10 h-10 rounded-full shadow focus:outline-none">
             <svg
