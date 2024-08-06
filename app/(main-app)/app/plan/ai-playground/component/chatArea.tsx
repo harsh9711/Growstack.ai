@@ -85,14 +85,14 @@ const ChatArea = ({
           </div>
         </div>
       </div>
-      {conversation.length > 0 ? (
+      {/* {conversation.length > 0 ? (
         <ChatMessages conversation={conversation} />
       ) : (
         <InitialMsg
           selectedOption={selectedModel}
           selectedOptionLabel={selectedOption?.label}
         />
-      )}
+      )} */}
       <div className="border border-gray-200 bg-[#F5F5F5] flex items-center gap-3 p-1 pl-4 rounded-xl">
         {/* <Link size={20} className="text-primary-green" /> */}
         <input

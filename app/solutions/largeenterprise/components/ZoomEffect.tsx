@@ -102,10 +102,10 @@ const ImageGallery = () => {
                         className="relative max-w-full max-h-full p-4 bg-white rounded-lg"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <div className="absolute top-0 left-0 right-0 bg-gray-800 text-white p-2 flex items-center justify-between rounded-t-lg">
-                            <span className="text-lg font-semibold">Image Preview</span>
+                        <div className="absolute top-0 left-0 right-0 bg-white text-white p-2 flex items-center justify-between rounded-t-lg">
+                            <span className="text-lg font-semibold opacity-0">Image Preview</span>
                             <button
-                                className="text-white bg-gray-800 p-1 rounded-full"
+                                className="text-black  p-1 rounded-full"
                                 onClick={handleClose}
                             >
                                 &times;

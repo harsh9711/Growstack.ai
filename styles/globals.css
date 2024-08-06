@@ -478,30 +478,73 @@ body {
 .marquee-container {
   overflow: hidden;
   white-space: nowrap;
-  width: 100%;
   position: relative;
-}
+  width: 100%;
+  height: 160px;}
 
 .marquee-content {
   display: flex;
-  gap: 8rem; 
-  animation: marquee 20s linear infinite;
+  white-space: nowrap;
 }
 
+.marquee-text {
+  font-size: 92.11px;
+  font-weight: bold;
+  color: transparent;
+  white-space: nowrap;
+  -webkit-text-stroke: 1px #E9E9E9;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+  padding: 0 2rem;
+  animation: marquee 20s linear infinite; 
+}
+/* Animation keyframes */
 @keyframes marquee {
-  0% {
-    transform: translateX(100%); /* Start just outside the visible area */
+  from {
+    transform: translateX(100%);
   }
-  10% {
-    transform: translateX(0%); /* Move into view quickly */
-  }
-  90% {
-    transform: translateX(-100%); /* Move out of view */
-  }
-  100% {
-    transform: translateX(-100%); /* Ensure it's completely out of view */
+  to {
+    transform: translateX(-100%);
   }
 }
+
+
+/* .marquee-text:nth-child(2) {
+  animation: marquee 12s linear infinite;
+}
+
+.marquee-text:nth-child(3) {
+  animation: marquee 10s linear infinite;
+}
+
+.marquee-text:nth-child(4) {
+  animation: marquee 8s linear infinite;
+}
+
+.marquee-text:nth-child(5) {
+  animation: marquee 6s linear infinite; /* Fastest */
+
+/* Adding delays to create staggering effect
+.marquee-text:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.marquee-text:nth-child(2) {
+  animation-delay: 2s;
+}
+
+.marquee-text:nth-child(3) {
+  animation-delay: 4s;
+}
+
+.marquee-text:nth-child(4) {
+  animation-delay: 6s;
+}
+
+.marquee-text:nth-child(5) {
+  animation-delay: 8s;
+}
+ */
 
 
 .custom-radio {

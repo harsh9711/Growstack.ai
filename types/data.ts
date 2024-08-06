@@ -78,10 +78,51 @@ export const testimonials = [
       companyImage: "No doubt, Spend.In is the best!",
     },
     {
-      id: 5,
+      id: 6,
       img1: "/carousel/c1.png",
       name: "Scale operations",
       role: "Scale your business with tools for customer targeting, campaign optimization, and growth strategies.",
       companyImage: "No doubt, Spend.In is the best!",
     },
+  ];
+  export const testimonialsdatathirdpage = [
+    {
+      id: 1,
+      img1: "/carousel/c1.png",
+      name: "Strategic planning and research",
+      role: "Develop a clear marketing strategy and gather insights for effective execution.",
+      description:
+        "I've tried several website builders, but Webbuddy takes the cake. The templates are modern and customizable, and the drag-and-drop interface makes it a breeze to create a stunning website. Love it!",
+    },
+    {
+      id: 2,
+      img1: "/carousel/c1.png",
+      name: "Content creation and campaign development",
+      role: "Create high-quality content and develop effective marketing campaigns.",
+      description:
+        "",
+    },
+   
+    {
+      id: 3,
+      img1: "/carousel/c1.png",
+      name: "Content distribution and scheduling",
+      role:  "Distribute content effectively and manage marketing campaigns.",
+      companyImage: "No doubt, Spend.In is the best!",
+    },
+    {
+      id: 4,
+      img1: "/carousel/c1.png",
+      name: "Customer engagement and support",
+      role: "Engage with customers and provide effective support. ",
+      companyImage: "No doubt, Spend.In is the best!",
+    },
+    {
+      id: 5,
+      img1: "/carousel/c1.png",
+      name: "Analyze and optimize strategies",
+      role: "Measure performance and refine marketing strategies",
+      companyImage: "No doubt, Spend.In is the best!",
+    },
+  
   ];
