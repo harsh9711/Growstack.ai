@@ -4,65 +4,15 @@ import Image from "next/image";
 import React, { useRef } from "react";
 import RepeatText from "./components/RepeatText";
 import GridComponent from "./components/GridBoxes";
-import ImageGallery from "./components/ImageGallery";
-import { GoArrowLeft, GoArrowRight } from "react-icons/go";
 import ImageGalleryLine from "./components/ImageGalleryline";
-import { testimonials } from "@/types/data";
 import Navbar from "@/components/navbar/Navbar";
 import TestimonialsSlider from "./components/SwiperSlide";
+import LoadingBar from "./components/Loading";
 
-const settings = {
-  dots: false,
-  arrows: false,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 3,
-  slidesToScroll: 1,
-  autoplay: true,
-  autoplaySpeed: 3000,
-  centerMode: true,
-  centerPadding: "20px",
-  responsive: [
-    {
-      breakpoint: 1024,
-      settings: {
-        slidesToShow: 2,
-        slidesToScroll: 1,
-        infinite: true,
-        dots: true,
-        centerPadding: "15px",
-      },
-    },
-    {
-      breakpoint: 600,
-      settings: {
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        centerPadding: "10px",
-      },
-    },
-    {
-      breakpoint: 480,
-      settings: {
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        centerPadding: "5px",
-      },
-    },
-  ],
-};
-
-interface Testimonial {
-  companyImage: string;
-  description: string;
-  img1: string;
-  name: string;
-  role: string;
-}
 const page = () => {
   return (
     <main className="flex flex-col overflow-hidden">
-      <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo"  />
+      <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
       <section className="bg-[#034737] w-full  mb-20">
         <div className="relative flex items-center max-w-[1920px] w-full max-h-[1112px] h-full justify-center mx-auto">
           <div className="w-full flex flex-row justify-between brightness-110 relative left-52 items-center mt-52 mb-60">
@@ -382,24 +332,24 @@ const page = () => {
               </div>
             </div>
 
-              <div className="  flex items-center justify-center">
+            <div className="  flex items-center justify-center">
+              <Image
+                className="w-full relative  z-0 -top-10 -left-52 "
+                src="/solutions/circle.svg"
+                alt="Center Image"
+                width={1048}
+                height={1000}
+              />
+              <div className=" absolute z-0 right-96">
                 <Image
-                  className="w-full relative  z-0 -top-10 -left-52 "
-                  src="/solutions/circle.svg"
+                  className="w-full"
+                  src="/solutions/hero.svg"
                   alt="Center Image"
-                  width={1048}
-                  height={1000}
+                  width={842}
+                  height={463}
                 />
-                <div className=" absolute z-0 right-96">
-                  <Image
-                    className="w-full"
-                    src="/solutions/hero.svg"
-                    alt="Center Image"
-                    width={842}
-                    height={463}
-                  />
-                </div>
               </div>
+            </div>
           </div>
         </div>
       </section>
@@ -423,7 +373,7 @@ const page = () => {
         <div className="flex flex-col items-center justify-center mx-auto gap-2 ">
           <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit">
             {" "}
-          Resources 
+            Resources
           </div>
           <h1 className="text-center text-[42px] leading-normal">
             <span className="text-black  font-bold"> Overcome</span>
@@ -447,7 +397,7 @@ const page = () => {
       <section className="items-center justify-center mx-auto py-40 ">
         <div className="flex flex-col items-start gap-y-10  ">
           <div>
-            <ImageGallery />
+            <LoadingBar />
           </div>
         </div>
       </section>
@@ -462,7 +412,7 @@ const page = () => {
           />
           <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit">
             {" "}
-Optimize
+            Optimize
           </div>
           <h1 className="text-center flex flex-col  text-[42px] leading-normal">
             <span className="relative text-black font-semibold">
