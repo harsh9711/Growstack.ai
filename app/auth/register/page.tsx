@@ -12,8 +12,13 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
+import { useRouter } from "next-nprogress-bar";
+import { useDispatch } from "react-redux";
+import { login } from "@/lib/features/auth/auth.slice";
 
 export default function Register() {
+  const router = useRouter();
+  const dispatch = useDispatch();
   const ValidationSchema = z
     .object({
       email: z.string().email("Please enter a valid email address"),
@@ -54,6 +59,8 @@ export default function Register() {
         password,
       });
       toast.success(response.data.message);
+      dispatch(login(response.data.data));
+      router.push("/app");
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);

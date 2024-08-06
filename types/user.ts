@@ -3,5 +3,6 @@ type User = {
   id: string;
   token: string;
   user_name:string,
-  profile_img: string
+  profile_img: string,
+  name: string
 };

@@ -34,8 +34,10 @@ import Spinner from "@/components/Spinner";
 import { login } from "@/lib/features/auth/auth.slice";
 import { useDispatch } from "react-redux";
 import { countries } from "./data";
+import { useRouter } from "next-nprogress-bar";
 
 export default function ProfilePage() {
+  const router = useRouter();
   const dispatch = useDispatch();
   const currentUser = getCurrentUser();
   const [previewImage, setPreviewImage] = useState<any>("");
@@ -195,7 +197,7 @@ export default function ProfilePage() {
 
   const handleDeleteProfile = () => {
     swal({
-      title: "Delete Profile",
+      title: "Delete Account",
       text: "Are you sure you want to delete it?",
       icon: "warning",
       buttons: ["Cancel", "Delete"],
@@ -204,6 +206,7 @@ export default function ProfilePage() {
       if (willDelete) {
         try {
           await instance.delete(`${API_URL}/users/api/v1`);
+          router.push("/auth/login");
         } catch (error) {
           toast.error("Error deleting profile");
         }
@@ -268,8 +271,8 @@ export default function ProfilePage() {
               />
             </div>
           </div>
-          <h2 className="text-2xl font-semibold">Admin</h2>
-          <p>Administrator</p>
+          {/* <h2 className="text-2xl font-semibold">Admin</h2>
+          <p>Administrator</p> */}
         </div>
         <div className="flex justify-between pt-6">
           <div className="flex flex-col items-center gap-1">
