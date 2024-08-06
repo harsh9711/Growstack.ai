@@ -88,13 +88,13 @@ const GridComponent = () => {
               <Image src="/solution3rdpage/boxsvgs/boxsvg1.svg" alt="Box 1" width={940} height={555} className="w-[1100px] bg-cover z-[20]" />
             </div>
             <div className="flex  z-[80] flex-row gap-2 w-full max-w-[1060px] justify-center relative">
-              <div onClick={() => handleClick(2)} className="bg-white/14 border-[#034737]   border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+              <div onClick={() => handleClick(2)} className="bg-white/14 border-[#034737] hover:bg-[#034737] hover:text-white   border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
               Brand Monitoring
               </div>
-              <div onClick={() => handleClick(3)} className="bg-white/14 border-[#034737]   border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+              <div onClick={() => handleClick(3)} className="bg-white/14 border-[#034737] hover:bg-[#034737] hover:text-white    border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
               Analyze Insights 
               </div>
-              <div onClick={() => handleClick(4)} className="bg-white/14 border-[#034737]   border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+              <div onClick={() => handleClick(4)} className="bg-white/14 border-[#034737] hover:bg-[#034737] hover:text-white    border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
              Email Optimization
               </div>
             </div>
@@ -107,13 +107,13 @@ const GridComponent = () => {
               <Image src="/solution3rdpage/boxsvgs/boxsvg2.svg" alt="Box 1" width={1240} height={755} className="w-[1100px]  bg-cover z-[20]" />
               </div>
               <div className="flex  z-[80] flex-row items-center left-0 justify-center gap-2 w-full max-w-[1060px]   relative">
-                <div onClick={() => handleClick(1)} className="bg-white/14 border-[#034737] border  whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+                <div onClick={() => handleClick(1)} className="bg-white/14 border-[#034737] hover:bg-[#034737] hover:text-white  border  whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
                 Amplify Reach
                 </div>
-                <div onClick={() => handleClick(3)} className="bg-white/14 whitespace-nowrap border-[#034737] border  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+                <div onClick={() => handleClick(3)} className="bg-white/14 whitespace-nowrap border-[#034737] hover:bg-[#034737] hover:text-white  border  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
                 Analyze Insights 
                 </div>
-                <div onClick={() => handleClick(4)} className="bg-white/14 border-[#034737] border  whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+                <div onClick={() => handleClick(4)} className="bg-white/14 border-[#034737] hover:bg-[#034737] hover:text-white  border  whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
                 Email Optimization
                 </div>
               </div>
@@ -126,14 +126,14 @@ const GridComponent = () => {
               <Image src="/solution3rdpage/boxsvgs/boxsvg3.svg" alt="Box 1" width={1240} height={755} className="w-[1100px]  bg-cover z-[20]" />
               </div>
               <div className="flex z-[80] flex-row gap-2 w-full max-w-[1060px] justify-center relative">
-              <div onClick={() => handleClick(1)} className="bg-white/14 border-[#034737] border  whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-                  Smart search
+              <div onClick={() => handleClick(1)} className="bg-white/14 border-[#034737] hover:bg-[#034737] hover:text-white  border  whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+              Amplify Reach
                 </div>
-                <div onClick={() => handleClick(2)} className="bg-white/14 whitespace-nowrap border-[#034737] border  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-                  Fast creation
+                <div onClick={() => handleClick(2)} className="bg-white/14 whitespace-nowrap border-[#034737] hover:bg-[#034737] hover:text-white  border  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+                Brand Monitoring
                 </div>
-                <div onClick={() => handleClick(4)} className="bg-white/14 border-[#034737] border  whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-                  Tailored solutions
+                <div onClick={() => handleClick(4)} className="bg-white/14 border-[#034737] hover:bg-[#034737] hover:text-white  border  whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+                Email Optimization
                 </div>
               </div>
             </div>
@@ -145,14 +145,13 @@ const GridComponent = () => {
               <Image src="/solution3rdpage/boxsvgs/boxsvg4.svg" alt="Box 1" width={1240} height={755} className="w-[1100px]  bg-cover z-[20]" />
             </div>
             <div className="flex z-[80] flex-row gap-2 w-full max-w-[1060px] justify-center relative">
-              <div onClick={() => handleClick(1)} className="bg-white/14 border-[#034737] border  whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-                Smart search
+              <div onClick={() => handleClick(1)} className="bg-white/14 border-[#034737] hover:bg-[#034737] hover:text-white  border  whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+              Amplify Reach              </div>
+              <div onClick={() => handleClick(2)} className="bg-white/14 whitespace-nowrap border-[#034737] hover:bg-[#034737] hover:text-white  border  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+              Brand Monitoring
               </div>
-              <div onClick={() => handleClick(2)} className="bg-white/14 whitespace-nowrap border-[#034737] border  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-                Fast creation
-              </div>
-              <div onClick={() => handleClick(3)} className="bg-white/14 whitespace-nowrap border-[#034737] border   shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-                Auto search
+              <div onClick={() => handleClick(3)} className="bg-white/14 whitespace-nowrap border-[#034737] hover:bg-[#034737] hover:text-white  border   shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+              Analyze Insights 
               </div>
             </div>
           </div>

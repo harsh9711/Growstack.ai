@@ -20,20 +20,22 @@ const LoadingBar: React.FC = () => {
         '/loading/loading5.svg',
         '/loading/loading6.svg',
     ];
+    const [clickedIndex, setClickedIndex] = useState<number | null>(null);
+
     const contents = [
-        <div key="1" className='flex flex-row items-center gap-x-10'>
+        <div key="1" className={`flex flex-row items-center gap-x-10 ${clickedIndex === 0 ? 'text-[#034737] font-semibold' : ''}`}>
             <Image src="/iconsdiv/icons1.svg" alt="Icon 1" width={50} height={50} />
             <p>Instant engagement</p>
         </div>,
-        <div key="2" className='flex flex-row items-center gap-x-10'>
+        <div key="2" className={`flex flex-row items-center gap-x-10 ${clickedIndex === 1 ? 'text-[#034737] font-semibold' : ''}`}>
             <Image src="/iconsdiv/icons2.svg" alt="Icon 2" width={50} height={50} />
             <p>Brand amplification</p>
         </div>,
-        <div key="3" className='flex flex-row items-center gap-x-10'>
+        <div key="3" className={`flex flex-row items-center gap-x-10 ${clickedIndex === 2 ? 'text-[#034737] font-semibold' : ''}`}>
             <Image src="/iconsdiv/icons3.svg" alt="Icon 3" width={50} height={50} />
             <p>Brand monitoring</p>
         </div>,
-        <div key="4" className='flex flex-row items-center gap-x-10'>
+        <div key="4" className={`flex flex-row items-center gap-x-10 ${clickedIndex === 3 ? 'text-[#034737] font-semibold' : ''}`}>
             <Image src="/iconsdiv/icons4.svg" alt="Icon 4" width={50} height={50} />
             <p>Email optimization</p>
         </div>,
@@ -87,7 +89,6 @@ const LoadingBar: React.FC = () => {
             return newProgress;
         });
     };
-    const [clickedIndex, setClickedIndex] = useState<number | null>(null);
 
     const handleClick = (index: number) => {
         setClickedIndex(index);
