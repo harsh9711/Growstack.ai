@@ -3,53 +3,117 @@ import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import Loader from "@/components/Loader";
+import { useDispatch } from "react-redux";
+import { loaderSelector } from "@/lib/features/documents/document.selector";
+import { isActiveLoader } from "@/lib/features/documents/document.slice";
 
 export default function SchedulerPage() {
   const router = useRouter();
+  const loader = loaderSelector();
+  const dispatch = useDispatch();
+  const [profile, setProfile] = useState<any>([]);
+
+  console.log("LDR", loader);
 
   useEffect(() => {
-    const activeSocialAccounts = localStorage.getItem("activeSocialAccounts");
-    if (activeSocialAccounts) {
+    // const activeSocialAccounts = localStorage.getItem("activeSocialAccounts");
+    if (profile?.activeSocialAccounts?.length > 0) {
       router.push("/app/publish/scheduler/quick-posting");
+    } else {
     }
-  }, [router]);
+  }, [profile]);
+
+  useEffect(() => {
+    handleGetProfileData();
+  }, []);
+
+  const handleGetProfileData = async () => {
+    try {
+      const response = await instance.get(
+        `${API_URL}/users/api/v1/social-media/profile`
+      );
+      if (response.data.data.activeSocialAccounts.length > 0) {
+        dispatch(isActiveLoader(true));
+        setProfile(response.data.data);
+      } else {
+        dispatch(isActiveLoader(false));
+      }
+    } catch (error) {
+      console.log("Error fetching social profile:", error);
+      toast.error("Error fetching social profile data");
+    }
+  };
 
   const handleOnConnect = async () => {
     try {
-      const response = await instance.get(API_URL + '/users/api/v1/social-media/connect');
-      console.log('response', response)
-      const url = response?.data.data
+      const response = await instance.get(
+        API_URL + "/users/api/v1/social-media/connect"
+      );
+      console.log("response", response);
+      const url = response?.data.data;
       if (url) {
         window.location.href = url;
       }
     } catch (error: any) {
-      toast.error(error.response.data.message)
+      toast.error(error.response.data.message);
     }
-  }
+  };
 
   return (
-    <div className="w-full max-w-4xl bg-white px-10 py-14 rounded-3xl shadow-2xl shadow-gray-400">
-      <h1 className="text-[28px] font-semibold">Connect a profile</h1>
-      <p className="text-primary-black text-opacity-70 mt-3 leading-relaxed">Attach a profile to see how growstack can help grow your business.</p>
-      <div className="w-full grid grid-cols-3 gap-4 mt-8">
-        <div onClick={handleOnConnect} className="h-14 w-full flex items-center gap-3 bg-[#217BEE] hover:bg-opacity-90 transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8 text-white">
-          <Image src="/icons/facebook-icon.svg" alt="" width={30} height={30} />
-          Facebook
-        </div>
-        <div onClick={handleOnConnect} className="h-14 w-full flex items-center gap-3 bg-[#E4405F] hover:bg-opacity-90 transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8 text-white">
-          <Image src="/icons/instagram-icon.svg" alt="" width={30} height={30} />
-          Instagram
-        </div>
-        <div onClick={handleOnConnect} className="h-14 w-full flex items-center gap-3 bg-[#0A66C2] hover:bg-opacity-90 transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8 text-white">
-          <Image src="/icons/linkedin-icon.svg" alt="" width={30} height={30} />
-          Linkedin
-        </div>
-        <div onClick={handleOnConnect} className="h-14 w-full flex items-center gap-3 bg-[#070707] hover:bg-opacity-90 transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8 text-white">
-          <Image src="/icons/x-icon.svg" alt="" width={30} height={30} />X Profile
-        </div>
-        {/* <Link
+    <>
+      <div className="w-full max-w-4xl bg-white px-10 py-14 rounded-3xl shadow-2xl shadow-gray-400">
+        <h1 className="text-[28px] font-semibold">Connect a profile</h1>
+        <p className="text-primary-black text-opacity-70 mt-3 leading-relaxed">
+          Attach a profile to see how growstack can help grow your business.
+        </p>
+        <div className="w-full grid grid-cols-3 gap-4 mt-8">
+          <div
+            onClick={handleOnConnect}
+            className="h-14 w-full flex items-center gap-3 bg-[#217BEE] hover:bg-opacity-90 transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8 text-white"
+          >
+            <Image
+              src="/icons/facebook-icon.svg"
+              alt=""
+              width={30}
+              height={30}
+            />
+            Facebook
+          </div>
+          <div
+            onClick={handleOnConnect}
+            className="h-14 w-full flex items-center gap-3 bg-[#E4405F] hover:bg-opacity-90 transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8 text-white"
+          >
+            <Image
+              src="/icons/instagram-icon.svg"
+              alt=""
+              width={30}
+              height={30}
+            />
+            Instagram
+          </div>
+          <div
+            onClick={handleOnConnect}
+            className="h-14 w-full flex items-center gap-3 bg-[#0A66C2] hover:bg-opacity-90 transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8 text-white"
+          >
+            <Image
+              src="/icons/linkedin-icon.svg"
+              alt=""
+              width={30}
+              height={30}
+            />
+            Linkedin
+          </div>
+          <div
+            onClick={handleOnConnect}
+            className="h-14 w-full flex items-center gap-3 bg-[#070707] hover:bg-opacity-90 transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8 text-white"
+          >
+            <Image src="/icons/x-icon.svg" alt="" width={30} height={30} />X
+            Profile
+          </div>
+          {/* <Link
           href={{
             pathname: API_URL + `/users/api/v1/social-media/connect`,
             query: { profile: "Blogger" },
@@ -99,7 +163,9 @@ export default function SchedulerPage() {
             Reddit
           </div>
         </Link> */}
+        </div>
       </div>
-    </div>
+      <Loader display={loader} />
+    </>
   );
 }
