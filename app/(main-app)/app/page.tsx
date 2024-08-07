@@ -45,38 +45,11 @@ export interface FavoriteAssistant {
 }
 
 export default function Dashboard() {
-  const [aiApps, setAiApps] = useState<AiApp[]>([]);
   const [assistants, setAssistants] = useState<Assistant[]>([]);
   const [favoriteAssistants, setFavoriteAssistants] = useState<FavoriteAssistant[]>([]);
   const [aiAppsloading, setAiAppsLoading] = useState(true);
   const [aiAssistantsloading, setAiAssistantsLoading] = useState(true);
-  const fetchAiApps = async () => {
-    setAiAppsLoading(true);
-    try {
-      const response = await instance.get(`${API_URL}/ai/api/v1/chat-template`);
-      const data = response.data.data;
-
-      if (data) {
-        const formattedAssistants = data.map((assistant: any) => ({
-          _id: assistant._id,
-          "ASSISTANT NAME": assistant["ASSISTANT NAME"],
-          "ASSISTANT DESCRIPTION": assistant["ASSISTANT DESCRIPTION"],
-          icon: assistant["icon"],
-          category: assistant["category"],
-        }));
-        setAiApps(formattedAssistants);
-      } else {
-        toast.error(response.data.message);
-        console.error("Unexpected API response format:", response.data);
-      }
-    } catch (error: any) {
-      toast.error(error.message);
-      console.error("Error fetching assistants:", error);
-    } finally {
-      setAiAppsLoading(false);
-    }
-  };
-
+  
   const fetchAssistants = async () => {
     setAiAssistantsLoading(true);
     try {
@@ -125,7 +98,6 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    fetchAiApps();
     fetchAssistants();
     fetchFavoriteAssistants();
     fetchSocialMediaProfile();

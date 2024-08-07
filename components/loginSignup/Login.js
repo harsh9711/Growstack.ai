@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import './Login.scss'
-import Link from 'next/link'
+import "./Login.scss";
+import Link from "next/link";
 function Login() {
   useEffect(() => {
     AOS.init();
@@ -11,11 +11,11 @@ function Login() {
     <React.Fragment>
       <div className="login">
         <div className="loginForm">
-          <div className="formBlock" data-aos="fade-right"
-            data-aos-easing="ease-in-sine"
-            data-aos-duration="1000">
+          <div className="formBlock" data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-duration="1000">
             <div className="title">
-              <Link href="/register"><img src="/images_growstack/login/logo.svg" alt="logo" /></Link>
+              <Link href="/auth/register">
+                <img src="/images_growstack/login/logo.svg" alt="logo" />
+              </Link>
               <h3>Sign in to your account</h3>
               <p>Welcome back! Nice too see you again</p>
             </div>
@@ -37,28 +37,38 @@ function Login() {
                   <Link href="/forget-password">Forget Password?</Link>
                 </div>
               </div>
-              <button className='loginBtn' type="submit">Login</button>
+              <button className="loginBtn" type="submit">
+                Login
+              </button>
               <div className="or">
-                <p><span>or, login with</span></p>
+                <p>
+                  <span>or, login with</span>
+                </p>
               </div>
               <div className="buttons">
-                <button><img src="/images_growstack/login/wf.svg" alt="linkedin" />Continue with Facebook</button>
-                <button><img src="/images_growstack/login/wg.svg" alt="google" />Continue With Google</button>
+                <button>
+                  <img src="/images_growstack/login/wf.svg" alt="linkedin" />
+                  Continue with Facebook
+                </button>
+                <button>
+                  <img src="/images_growstack/login/wg.svg" alt="google" />
+                  Continue With Google
+                </button>
               </div>
               <div className="account">
-                <p>Don't have an account? <Link href="/register">Register Now</Link></p>
+                <p>
+                  Don't have an account? <Link href="/auth/register">Register Now</Link>
+                </p>
               </div>
             </form>
           </div>
         </div>
-        <div className="block" data-aos="fade-left"
-          data-aos-easing="ease-in-sine"
-          data-aos-duration="1000">
-          <img className='back' src="/images_growstack/login/loginside.svg" alt="login" />
+        <div className="block" data-aos="fade-left" data-aos-easing="ease-in-sine" data-aos-duration="1000">
+          <img className="back" src="/images_growstack/login/loginside.svg" alt="login" />
         </div>
       </div>
     </React.Fragment>
-  )
+  );
 }
 
-export default Login
+export default Login;
