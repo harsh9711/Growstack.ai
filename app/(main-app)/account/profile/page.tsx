@@ -158,7 +158,7 @@ export default function ProfilePage() {
     try {
       const validatedData = ValidationSchema.parse({
         ...data,
-        profile_img: avatarLink,
+        ...(Object.keys(avatarLink).length > 0 && { profile_img: avatarLink })
       });
       const response = await instance.put(
         API_URL + "/users/api/v1",
