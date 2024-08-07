@@ -156,9 +156,9 @@ export default function ContactsTable({
   setToggleModal,
   handleModal,
   setSelectedIds,
-  contacts,
-  pagination,
-  setPagination,
+  // contacts,
+  // pagination,
+  // setPagination,
   loading,
 }: ContactsTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);

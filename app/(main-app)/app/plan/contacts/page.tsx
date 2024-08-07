@@ -22,7 +22,6 @@ import instance from "@/config/axios.config";
 import ProspectsTable from "./components/ProspectsTable";
 import { useRouter, useSearchParams } from "next/navigation";
 
-
 export default function ContactsDashboard() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -69,8 +68,7 @@ export default function ContactsDashboard() {
     getContacts();
   }, [pagination.pageIndex, pagination.pageSize]);
 
-
-  const tabs = ["Smart list", "Bulk actions", "Restore", "Tasks", "Company"];
+  // const tabs = ["Smart list", "Bulk actions", "Restore", "Tasks", "Company"];
 
   useEffect(() => {
     const tab = tabQueryParam ? Number(tabQueryParam) : 0;
