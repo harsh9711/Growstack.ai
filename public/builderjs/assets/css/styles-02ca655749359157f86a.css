@@ -14838,7 +14838,7 @@ ol, ul {
   width: 177px;
 }
 .off-canvas-left__top > a {
-  background: url('/assets/images/logo-envato-market.svg');
+  background: url('/assets/images_growstack/logo-envato-market.svg');
   background-size: 177px 15px;
 }
 .off-canvas-left__site {
@@ -14865,14 +14865,14 @@ ol, ul {
   text-indent: -9999px;
 }
 .off-canvas-left__site-logo--3docean {
-  background-image: url('/assets/images/sprite-logos.png');
+  background-image: url('/assets/images_growstack/sprite-logos.png');
   background-position: -285px -196px;
   width: 119px;
   height: 40px;
 }
 @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
   .off-canvas-left__site-logo--3docean {
-    background-image: url('/assets/images/sprite-logos@2x.png');
+    background-image: url('/assets/images_growstack/sprite-logos@2x.png');
     background-size: 577px 449px;
     background-position: -285px -196px;
     height: 40px;
@@ -14880,14 +14880,14 @@ ol, ul {
   }
 }
 .off-canvas-left__site-logo--audiojungle {
-  background-image: url('/assets/images/sprite-logos.png');
+  background-image: url('/assets/images_growstack/sprite-logos.png');
   background-position: -163px -272px;
   width: 143px;
   height: 40px;
 }
 @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
   .off-canvas-left__site-logo--audiojungle {
-    background-image: url('/assets/images/sprite-logos@2x.png');
+    background-image: url('/assets/images_growstack/sprite-logos@2x.png');
     background-size: 577px 449px;
     background-position: -163px -272px;
     height: 40px;
@@ -14895,14 +14895,14 @@ ol, ul {
   }
 }
 .off-canvas-left__site-logo--codecanyon {
-  background-image: url('/assets/images/sprite-logos.png');
+  background-image: url('/assets/images_growstack/sprite-logos.png');
   background-position: 0px -332px;
   width: 147px;
   height: 40px;
 }
 @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
   .off-canvas-left__site-logo--codecanyon {
-    background-image: url('/assets/images/sprite-logos@2x.png');
+    background-image: url('/assets/images_growstack/sprite-logos@2x.png');
     background-size: 577px 449px;
     background-position: 0px -332px;
     height: 40px;
@@ -14910,14 +14910,14 @@ ol, ul {
   }
 }
 .off-canvas-left__site-logo--graphicriver {
-  background-image: url('/assets/images/sprite-logos.png');
+  background-image: url('/assets/images_growstack/sprite-logos.png');
   background-position: -167px -332px;
   width: 139px;
   height: 40px;
 }
 @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
   .off-canvas-left__site-logo--graphicriver {
-    background-image: url('/assets/images/sprite-logos@2x.png');
+    background-image: url('/assets/images_growstack/sprite-logos@2x.png');
     background-size: 577px 449px;
     background-position: -167px -332px;
     height: 40px;
@@ -14925,14 +14925,14 @@ ol, ul {
   }
 }
 .off-canvas-left__site-logo--photodune {
-  background-image: url('/assets/images/sprite-logos.png');
+  background-image: url('/assets/images_growstack/sprite-logos.png');
   background-position: -444px 0px;
   width: 133px;
   height: 40px;
 }
 @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
   .off-canvas-left__site-logo--photodune {
-    background-image: url('/assets/images/sprite-logos@2x.png');
+    background-image: url('/assets/images_growstack/sprite-logos@2x.png');
     background-size: 577px 449px;
     background-position: -444px 0px;
     height: 40px;
@@ -14940,14 +14940,14 @@ ol, ul {
   }
 }
 .off-canvas-left__site-logo--themeforest {
-  background-image: url('/assets/images/sprite-logos.png');
+  background-image: url('/assets/images_growstack/sprite-logos.png');
   background-position: 0px -272px;
   width: 143px;
   height: 40px;
 }
 @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
   .off-canvas-left__site-logo--themeforest {
-    background-image: url('/assets/images/sprite-logos@2x.png');
+    background-image: url('/assets/images_growstack/sprite-logos@2x.png');
     background-size: 577px 449px;
     background-position: 0px -272px;
     height: 40px;
@@ -14955,14 +14955,14 @@ ol, ul {
   }
 }
 .off-canvas-left__site-logo--videohive {
-  background-image: url('/assets/images/sprite-logos.png');
+  background-image: url('/assets/images_growstack/sprite-logos.png');
   background-position: -150px -68px;
   width: 114px;
   height: 40px;
 }
 @media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
   .off-canvas-left__site-logo--videohive {
-    background-image: url('/assets/images/sprite-logos@2x.png');
+    background-image: url('/assets/images_growstack/sprite-logos@2x.png');
     background-size: 577px 449px;
     background-position: -150px -68px;
     height: 40px;
@@ -15288,7 +15288,7 @@ ol, ul {
   z-index: -10;
   background-color: inherit;
   background-size: 480px;
-  background-image: url('/assets/images/bg-page-section-light.png');
+  background-image: url('/assets/images_growstack/bg-page-section-light.png');
 }
 .page-section.-color-grey-light {
   background: hsl(0, 0%, 98%);
@@ -15302,7 +15302,7 @@ ol, ul {
 @supports (background-blend-mode: overlay) {
   .page-section__background {
     background-blend-mode: overlay;
-    background-image: url('/assets/images/bg-page-section.png');
+    background-image: url('/assets/images_growstack/bg-page-section.png');
   }
 }
 .-theme-themeforest .page-section__background {
@@ -16274,7 +16274,7 @@ This one is default from react-modal and can not be modified */
   -moz-osx-font-smoothing: grayscale;
 }
 .product-grid__footer a:before {
-  background-image: url('/assets/images/sprite.png');
+  background-image: url('/assets/images_growstack/sprite.png');
   background-position: -154px -97px;
   width: 14px;
   height: 14px;
@@ -16771,7 +16771,7 @@ This one is default from react-modal and can not be modified */
 @media (min-width: 1152px) {
 
     .placeit-promo-gr {
-    background-image: url(/images/cross-promos/placeit-background-gr.jpg);
+    background-image: url(/images_growstack/cross-promos/placeit-background-gr.jpg);
     }
   }
 .placeit-promo-vh {
@@ -16779,7 +16779,7 @@ This one is default from react-modal and can not be modified */
 @media (min-width: 1152px) {
 
     .placeit-promo-vh {
-    background-image: url(/images/cross-promos/placeit-background-vh.jpg);
+    background-image: url(/images_growstack/cross-promos/placeit-background-vh.jpg);
     }
   }
 .search-page-content-article__text-section {

@@ -13,8 +13,8 @@ export default function Navbar() {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <header className="absolute top-0 w-full px-4 py-4 z-[5]">
-      <div className="max-w-[1480px] mx-auto">
+    <header className="absolute top-0 w-full px-4 py-4 z-[5] ">
+      <div className="max-w-[1480px] bg-white mx-auto">
         <nav className="w-full flex items-center justify-between">
           <Logo />
           <div className="w-10 grid place-content-center ml-6 xl:hidden">

@@ -8,7 +8,7 @@ export default function Compositions() {
     <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
       <div className="grid grid-cols-2 gap-2">
         {compositions.map((data, index) => (
-          <CompositionCard {...data} key={index}/>
+          <CompositionCard doc_name={""} doc_type={""} img_url={""} updatedAt={""} {...data} key={index}/>
         ))}
       </div>
     </Motion>

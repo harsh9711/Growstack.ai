@@ -1,14 +1,16 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Dropzone from "./components/Dropzone";
 import { Switch } from "@/components/ui/switch";
+import History from "./components/History";
 import Image from "next/image";
 import { FileRejection } from "react-dropzone";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
 import Spinner from "@/components/Spinner";
+import { historyProps } from "./interface/history";
 
 interface Product {
   img_url: string;
@@ -45,6 +47,32 @@ export default function Page() {
   const [productAI, setProductAI] = useState<Product>(initialProductValue);
   const [result, setResult] = useState<FinalResultProps | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [history, setHistory] = useState<historyProps[]>([]);
+  const [historyLoading, setHistoryLoading] = useState<boolean>(false);
+
+  const fetchHistory = async () => {
+    try {
+      setHistoryLoading(true);
+      const response = await instance.get(
+        `${API_URL}/users/api/v1/docs?page=1&limit=10&category=image`
+      );
+      setHistoryLoading(false);
+      const data = response.data.data.docs.map((item: any) => ({
+        doc_name: item.doc_name,
+        doc_type: item.doc_type,
+        img_url: item.doc_content.img_url,
+        updatedAt: item.updatedAt,
+      }));
+      setHistory(data);
+    } catch (error: any) {
+      console.error("Error fetching history:", error);
+      toast.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchHistory();
+  }, []);
 
   const onFileDrop = async (
     acceptedFiles: File[],
@@ -241,6 +269,27 @@ export default function Page() {
   return (
     <main className="mt-8 px-4">
       <div className="flex gap-8">
+        <section className="w-full min-h-[200px] max-w-[450px] bg-white rounded-[20px] p-7 space-y-6">
+          <div className="border border-[#DBDBDB] bg-white p-1 rounded-xl">
+            <div className="flex relative">
+              <div
+                className={`w-full h-[40px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 text-[16px] ${"!text-white"}`}
+              >
+                History
+              </div>
+              <div className="absolute bottom-0 w-[100%] h-[40px] bg-primary-green custom-transition rounded-lg"></div>
+            </div>
+          </div>
+          {historyLoading ? (
+            <div className="w-full h-[100px] flex justify-center items-center">
+              <Spinner size={25} color="black" />
+            </div>
+          ) : history.length > 0 ? (
+            <div>{<History history={history} />}</div>
+          ) : (
+            <div className="w-full h-[100px] text-center">No result</div>
+          )}
+        </section>
         <section className="w-full">
           {result ? (
             <>
@@ -348,7 +397,7 @@ export default function Page() {
             <div className="flex gap-x-4">
               <div className="cursor-pointer bg-white p-3 rounded-2xl hover:shadow-xl transition duration-500">
                 <Image
-                  src="/images/hand-bag.png"
+                  src="/images_growstack/hand-bag.png"
                   alt=""
                   width={150}
                   height={150}
@@ -356,18 +405,18 @@ export default function Page() {
               </div>
               <div className="cursor-pointer bg-white p-3 rounded-2xl hover:shadow-xl transition duration-500">
                 <Image
-                  src="/images/shoes.png"
+                  src="/images_growstack/shoes.png"
                   alt=""
                   width={150}
                   height={150}
                 />
               </div>
               <div className="cursor-pointer bg-white p-3 rounded-2xl hover:shadow-xl transition duration-500">
-                <Image src="/images/sofa.png" alt="" width={150} height={150} />
+                <Image src="/images_growstack/sofa.png" alt="" width={150} height={150} />
               </div>
               <div className="cursor-pointer bg-white p-3 rounded-2xl hover:shadow-xl transition duration-500">
                 <Image
-                  src="/images/camera.png"
+                  src="/images_growstack/camera.png"
                   alt=""
                   width={150}
                   height={150}

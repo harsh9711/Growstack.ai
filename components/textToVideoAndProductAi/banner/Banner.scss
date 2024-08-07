@@ -1,0 +1,61 @@
+@import "../../../app/variables.scss";
+
+.textbanner {
+    padding: 90px 0;
+    position: relative;
+    overflow: hidden;
+    background-image: url('/images_growstack/textVideo/Background.svg');
+    background-repeat: no-repeat;
+    background-position-x: right;
+    background-position-y: bottom;
+
+
+    @media (max-width: $breakpoint_tablet) {
+        .hidden-md{
+            display: none;
+        }
+    }
+
+    @media (max-width: $breakpoint_mobile_portrait) {
+        background: linear-gradient(180deg, #FFFFFF 14.67%, #FFFFFF 30.5%, #c59eff 100%);
+        padding: 40px 0;
+        border-radius: 0px 0px 40px 40px;
+    }
+
+}
+
+.bannerContent {
+    .vtitle {
+        font-size: 48px;
+        background: -webkit-linear-gradient(#000, #c1c1c1);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 25px 0 15px;
+
+        span {
+            background: -webkit-linear-gradient(#000, #000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+            position: relative;
+
+        }
+        @media (max-width: $breakpoint_mobile_portrait) {
+            font-size: 40px;
+        }
+        @media screen and (max-width: $breakpoint_mobile_portrait) {
+            font-size: 26px;
+        }
+    }
+}
+
+.reverse {
+    a:first-child{
+        background: #034737;
+        color: #fff;
+
+        svg path{
+            fill: white;
+        }
+    }
+}

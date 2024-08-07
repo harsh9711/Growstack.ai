@@ -1,0 +1,169 @@
+@import "../../../app/variables.scss";
+
+.easySteps {
+  background: linear-gradient(0deg, rgba(226, 240, 203, 0.3) 0%, rgba(255, 255, 255, 0.3) 111.59%);
+  border-bottom-left-radius: 60px;
+  border-bottom-right-radius: 60px;
+  margin: 0 10px;
+  padding-bottom: 30px;
+  overflow: hidden;
+  @media screen and (max-width: $breakpoint_tablet) {
+    border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;   
+  padding-bottom: 20px;     
+}
+  .aibannerCard {
+    background-color: #034737;
+    border-radius: 20px;
+    padding: 30px 0;
+    width: 100%;
+    margin-bottom: 50px;
+    z-index: 99;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+
+    @media screen and (max-width: $breakpoint_tablet) {
+      padding: 20px 0;
+    }
+
+    @media screen and (max-width: $breakpoint_mobile_portrait) {
+      padding: 20px 0;
+    }
+
+    .content {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+
+      @media screen and (max-width: $breakpoint_mobile_portrait) {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .block {
+        position: relative;
+        padding: 0 35px;
+        text-align: center;
+        width: 25%;
+
+        @media screen and (max-width: $breakpoint_mobile_portrait) {
+          width: 100%;
+        }
+
+        &::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 1px;
+          height: 100%;
+          background-color: #cccccc;
+
+          @media screen and (max-width: $breakpoint_mobile_portrait) {
+            display: none;
+          }
+        }
+
+        &:last-child {
+          &::after {
+            display: none;
+          }
+        }
+
+        h3 {
+          color: #fff;
+          font-size: 28px;
+          margin: 0 0 7px;
+          font-weight: bold;
+        }
+
+        p {
+          color: #fff;
+          font-size: 14px;
+          margin: 0;
+          opacity: 0.7;
+        }
+      }
+    }
+  }
+
+  .steps {
+    margin-top: 90px;
+    @media screen and (max-width: $breakpoint_tablet) {
+        margin-top: 30px;          
+  }
+  @media screen and (max-width: $breakpoint_mobile_portrait) {
+    margin-top: 10px;          
+}
+    .step {
+      position: relative;
+      max-width: 295px;
+      height: 100%;
+      @media screen and (max-width: $breakpoint_mobile_portrait) {
+        margin-top: 10px;
+        height: auto;          
+    }
+        @media screen and (max-width: $breakpoint_mini_laptop) {
+          &::after{
+            display: none;
+          
+          }
+        }
+      &.step1::after {
+        content: '';
+        position: absolute;
+        top: -30%;
+        right: -30px;
+        width: 150px;
+        height: 150px;
+        background: url(../../../public/images_growstack/aiMarket/curveArrow.svg);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        z-index: -1;
+      }
+      &.step2::after {
+        content: '';
+        position: absolute;
+        bottom: 10%;
+        right: -75px;
+        width: 150px;
+        height: 150px;
+        background: url(../../../public/images_growstack/aiMarket/curveArrow2.svg);
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        z-index: -1;
+      }
+      h5 {
+        font-size: 14px;
+        font-weight: bold;
+        margin: 0 0 10px;
+      }
+
+      h3 {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 0 0 13px;
+        @media screen and (max-width: $breakpoint_tablet) {
+              font-size: 20px;            
+        }
+      }
+
+      span {
+        font-size: 150px;
+        -webkit-text-fill-color: transparent;
+        -webkit-text-stroke: 1px;
+        color: #0347372d;
+        position: absolute;
+        top: 0;
+        right: -28%;
+        transform: translate(0, -25%);
+        @media screen and (max-width: $breakpoint_mini_laptop) {
+              display: none;
+            
+          }
+      }
+    }
+  }
+}

@@ -1,0 +1,66 @@
+@import "../../../app/variables.scss";
+
+.interface{
+    padding: 90px 0;
+    position: relative;
+    overflow: hidden;
+    &::after{
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url('../../../public/images_growstack/salesMarketing/interfaceBack.png') no-repeat center center;
+        background-size: cover;
+        z-index: -1;
+    }
+    @media (max-width: $breakpoint_mobile_portrait){
+        padding: 40px 0;
+    }
+    .content{
+        max-width: 400px;
+        h3{
+            font-size: 26px;
+            font-weight: 700;
+            margin: 20px 0;
+        
+        }
+        p{
+            font-size: 16px;
+        }
+        a{
+            display: inline-block;
+            margin-top: 10px;
+            padding: 15px 20px;
+            background: #fff;
+            color: #000;
+            border: 1px solid #D7D7D7;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 10px;
+            transition: 0.3s;
+            text-decoration: none;
+            display: flex;
+            flex-direction: row;
+            width: fit-content;
+            &:hover{
+                background: #034737;
+                color: #fff;
+                border: 1px solid #034737;
+                img{
+                    filter: invert(1);
+                }
+            }
+            img{
+                margin-left: 10px;
+            }
+        
+        }
+    }
+    .interFaceImg{
+        img{
+            width: 100%;
+        }
+    }
+}

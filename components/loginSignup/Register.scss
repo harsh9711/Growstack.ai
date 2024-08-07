@@ -1,0 +1,227 @@
+@import "../../app/variables.scss";
+
+.register {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    background-image: url(../../public/images_growstack/login/loginBg.png);
+    background-size: cover;
+    overflow: hidden;
+    .block {
+        width: 50%;
+        position: relative;
+
+        @media screen and (max-width: 992px) {
+            display: none;
+        }
+
+        .back {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 0 60px 60px 0;
+        }
+    }
+
+    .loginForm {
+        width: 50%;
+        max-width: 470px;
+        margin: 0 auto;
+
+        @media screen and (max-width: 1200px) {
+            padding: 40px 0;
+        }
+
+        @media screen and (max-width: 992px) {
+            padding: 50px 10px;
+            width: 100%;
+        }
+
+        .formBlock {
+            background-color: #F7FAFC;
+            border-radius: 20px;
+            padding: 40px;
+
+            @media screen and (max-width: 600px) {
+                padding: 30px 20px;
+
+            }
+
+            .title {
+                text-align: left;
+
+                img {
+                    margin-bottom: 40px;
+                    width: 150px;
+                }
+
+                h3 {
+                    font-size: 26px;
+                    color: #14171B;
+                    font-weight: bold;
+                    margin-bottom: 7px;
+                }
+
+                p {
+                    font-size: 14px;
+                    color: #14171B;
+                    margin-bottom: 20px;
+                }
+            }
+
+            .buttons {
+                display: flex;
+                justify-content: space-between;
+                flex-direction: column;
+                gap: 15px;
+
+                button {
+                    padding: 12px 10px;
+                    font-size: 14px;
+                    background-color: transparent;
+                    color: #000;
+                    border: 1px solid #D0D5DD;
+                    border-radius: 7px;
+                    cursor: pointer;
+                    display: flex;
+                    font-weight: 500;
+                    justify-content: center;
+                    align-items: center;
+
+                    img {
+                        width: 20px;
+                        height: 20px;
+                        margin-right: 10px;
+                    }
+
+                    &:hover {
+                        background-color: transparent;
+                        border: 1px solid #034737;
+                        color: #034737;
+                    }
+                }
+            }
+
+            .or {
+                margin: 30px 0;
+
+                p {
+                    width: 100%;
+                    text-align: center;
+                    border-bottom: 1px solid #EFEFF4;
+                    line-height: 0.1em;
+                    margin: 10px 0 20px;
+
+                    span {
+                        background: #f7fafc;
+                        color: #7E8091;
+                        padding: 0 10px;
+                        font-size: 14px;
+                    }
+                }
+
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+                position: relative;
+
+                input {
+                    width: 100%;
+                    padding: 10px 20px 10px 40px;
+                    font-size: 14px;
+                    border: 1px solid #D0D5DD;
+                    border-radius: 10px;
+                    color: #000;
+                    outline: 0;
+                    background: white;
+
+                    &:focus {
+                        background: #ffff;
+                        color: #000;
+                        border: 1px solid #034737;
+                    }
+
+                }
+
+                input:-webkit-autofill {
+                    -webkit-box-shadow: 0 0 0px 1000px #ffff inset;
+                    -webkit-text-fill-color: #fff;
+                }
+
+                img {
+                    position: absolute;
+                    left: 15px;
+                    top: 50%;
+                    width: 16px;
+                    height: 16px;
+                    transform: translateY(-50%);
+                }
+            }
+
+            .rememberForget {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+                margin-top: 10px;
+
+                .remember {
+                    display: flex;
+                    align-items: center;
+
+                    input {
+                        margin-right: 10px;
+                    }
+
+                    label {
+                        font-size: 14px;
+                        color: #14171B;
+                    }
+                    a{
+                        color: #034737;
+                        font-size: 14px;
+                        text-decoration: none;
+                        font-weight: 500;
+                    
+                    }
+                }
+            }
+
+            .loginBtn {
+                padding: 10px 20px;
+                font-size: 14px;
+                background-color: #034737;
+                color: #fff;
+                border: 1px solid #034737;
+                border-radius: 7px;
+                cursor: pointer;
+                width: 100%;
+
+                &:hover {
+                    background-color: #fff;
+                    color: #034737;
+                    border: 1px solid #034737;
+                }
+            }
+
+            .account {
+                text-align: center;
+                margin-top: 30px;
+
+                p {
+                    color: #7E8091;
+                    font-size: 14px;
+
+                    a {
+                        color: #034737;
+                        font-weight: 500;
+                        text-decoration: none;
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+    }
+}

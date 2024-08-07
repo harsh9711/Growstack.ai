@@ -1,0 +1,45 @@
+@import "../../../app/variables.scss";
+
+.social{
+    display: flex;
+    align-items: center;
+    margin-left: 40px;
+      @media (max-width: 768px) {
+        display: none;
+      }
+    .quote{
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+       gap: 8px;
+        a{
+            font-size: 16px;
+            color: #fff;
+            background-color: #034737;
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: row; 
+            align-items:  center;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            svg{
+                width: 11px;
+                margin-left: 5px;
+            }
+        }
+        &::after{
+            content: "";
+            position: absolute;
+            width: 2px;
+            height: 24px;
+            background-color: #C9C9C9;
+            top: 50%;
+            left: -23px;
+            transform: translate(0, -50%);
+            border-radius: 100px;
+        }
+    }
+}

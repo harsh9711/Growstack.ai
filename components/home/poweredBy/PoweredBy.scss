@@ -1,0 +1,25 @@
+@import "../../../app/variables.scss";
+
+.poweredBy{
+    background-color: #FAFBFC;
+    padding: 50px 0;
+    @media (max-width: $breakpoint_mobile_portrait) {
+        padding: 30px 0;
+    }
+    .images{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 20px;
+        img{
+            transition: all 0.3s ease;
+            width: 162px;
+            border-radius:21px ;
+            &:hover{
+                box-shadow: 0 25px 50px -12px #d1d5db;
+            }
+        }
+    }
+}

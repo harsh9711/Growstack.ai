@@ -1,0 +1,98 @@
+@import "../../../app/variables.scss";
+
+.elevateBrand {
+  padding: 90px 0;
+  background-color: #FAFBFC;
+
+  @media (max-width: $breakpoint_mobile_portrait) {
+    padding: 40px 0;
+  }
+
+  .heading {
+    span {
+      display: block;
+    }
+  }
+
+  .cardsBlock {
+    margin-top: 20px;
+
+    .row {
+      .col-md-4 {
+        &:nth-child(1) .card-title {
+          &::after {
+            background-color: #C1B1E4;
+          }
+        }
+        &:nth-child(2) .card-title {
+          &::after {
+            background-color: #F582A5;
+          }
+        }
+        &:nth-child(3) .card-title {
+          &::after {
+            background-color: #C6D88F;
+          }
+        }
+      }
+    }
+
+    .card {
+      border: none;
+      background-color: transparent;
+      border-radius: 15px;
+      padding: 20px 0;
+      height: 100%;
+      transition: all 0.3s ease;
+
+      @media screen and (max-width: $breakpoint_mobile_portrait) {
+        height: auto;
+        padding: 20px 0 0;
+      }
+
+      .card-body {
+        padding: 0;
+
+        .card-title {
+          font-size: 20px;
+          color: #000;
+          font-weight: bold;
+          margin: 10px 0 15px;
+          max-width: 270px;
+          line-height: normal;
+          position: relative;
+          &::after{
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -15px;
+            width: 3px;
+            height: 100%;
+            border-radius: 100px;
+            @media screen and (max-width: $breakpoint_mini_laptop) {
+              display: none;
+            }
+          }
+          @media (max-width: $breakpoint_tablet) {
+            font-size: 18px;
+          }
+
+          span {
+            font-weight: 400;
+            display: block;
+          }
+        }
+
+        .card-text {
+          font-size: 16px;
+          color: #000;
+          margin: 0;
+
+          @media (max-width: $breakpoint_mobile_portrait) {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+  }
+}

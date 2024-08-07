@@ -1,0 +1,33 @@
+@import "../../../app/variables.scss";
+
+.videoTemplate{
+    padding: 90px 0 150px;
+    background-color: #F4F4F4;
+    @media screen and (max-width: $breakpoint_mobile_portrait) {
+        padding: 40px 0;
+    }
+    .title{
+        .heading{
+            span{
+                display: block;
+            }
+        }
+    }
+    .templates{
+        img{
+            width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        h5{
+            background-color: #fff;
+            border-radius: 10px;
+            padding:20px;
+            font-size: 18px;
+            font-weight: bold;
+            @media screen and (max-width: $breakpoint_mini_laptop) {
+               font-size: 16px;
+            }
+        }
+    }
+}

@@ -1,0 +1,30 @@
+
+.navbar{
+  background-color: #fff;
+  padding: 15px 0;
+  .flex{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .logo {
+      img{
+        width: 155px;
+        height: 44px;
+      }
+    }
+    .items{
+      display: flex;
+      align-items: center;
+      margin: 0;
+    }
+    .flext{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 70px;
+      @media (max-width: 1200px) {
+       gap:45px;
+      }
+    }
+  }
+}

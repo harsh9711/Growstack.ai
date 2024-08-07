@@ -1,0 +1,63 @@
+@import "../../app/variables.scss";
+
+.videoBanner{
+    .block{
+        background-color: #034737;
+        border-radius: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 60px;
+        @media (max-width: $breakpoint_mobile_portrait) {
+            padding: 20px 30px;
+            flex-direction: column;
+        }
+        @media (max-width: $breakpoint_tablet) {
+            padding: 20px 40px;
+          }
+          @media screen and (max-width: $breakpoint_mobile_portrait) {
+            padding: 20px 20px;
+            
+          }
+        .content{
+            @media screen and (max-width: $breakpoint_mobile_portrait) {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            h3{
+                color: #fff;
+                font-size: 36px;
+                font-weight: bold;
+                margin-bottom: 20px;
+                @media (max-width: $breakpoint_tablet) {
+                    font-size: 28px;
+                }
+                @media (max-width: $breakpoint_mobile_portrait) {
+                    font-size: 24px;
+                }
+                span{
+                    font-weight: 400;
+                }
+            }
+            p{
+                img{
+                    margin-right: 15px;
+                }
+                color: #fff;
+                font-size: 16px;
+                text-decoration: underline;
+                margin: 0;
+                &:hover{
+                    text-decoration: none;
+                }
+            }
+        }
+        .imgBlock{
+            img{
+                @media screen and (max-width: $breakpoint_mobile_portrait) {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

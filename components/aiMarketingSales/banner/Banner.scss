@@ -1,0 +1,101 @@
+@import "../../../app/variables.scss";
+
+.aiMarketBanner {
+    padding: 70px 0;
+    position: relative;
+    overflow: hidden;
+    &::after{
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translate(0, -50%);
+        z-index: -1;
+        background-image: url(../../../public/images_growstack/aiMarket/circle.svg);
+        background-size: cover;
+        background-repeat: no-repeat;
+        width: 160px;
+        height: 1000px;
+        @media screen and (max-width: $breakpoint_mobile_portrait) {
+            display: none;   
+        }
+    }
+    &::before{
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translate(0, -50%) rotate(180deg);
+        z-index: -1;
+        background-image: url(../../../public/images_growstack/aiMarket/circle.svg);
+        background-size: cover;
+        background-repeat: no-repeat;
+        width: 160px;
+        height: 1000px;
+        @media screen and (max-width: $breakpoint_mobile_portrait) {
+            display: none;   
+        }
+    }
+    @media screen and (max-width: $breakpoint_tablet) {
+        padding: 40px 0;
+    }
+    .bannerContent {
+        .content{
+            max-width: 760px;
+            margin: 0 auto;
+        }
+        .store{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 50px;
+            gap: 15px;
+            @media screen and (max-width: $breakpoint_mobile_portrait) {
+               margin-bottom: 20px;
+            }
+            a{
+                img{
+                    height: 45px;
+                    border-radius: 10px;
+                    box-shadow: 0px 0px 10px 0px #0000001f;
+                    @media screen and (max-width: $breakpoint_mobile_portrait) {
+                        height: 40px;
+                    }
+                }
+            }
+        }
+        .btn{
+            justify-content: center;
+            gap: 10px;
+            display: flex;
+            a{
+                    &:first-child{
+                    background-color: #034737;
+                    color: white;
+                    svg{
+                        path{
+                            fill: white;
+                        }
+                    }
+                    &:hover{
+                        background-color: #03473734;
+                        color: #034737;
+                        svg{
+                            path{
+                                fill: #034737;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .poster{
+            margin-top: 40px;
+            img{
+                width: 100%;
+                height: auto;
+            }
+        }
+    }
+}
+

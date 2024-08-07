@@ -1,0 +1,18 @@
+@import "../../../app/variables.scss";
+
+.aiTextSlider{
+    .mySwiper{
+        .imgBlock{
+            img{
+                width: 300px;
+                height: auto;
+                @media screen and (max-width: $breakpoint_mini_laptop) {
+                    width: 100%;
+                }
+                @media screen and (max-width: $breakpoint_mobile_portrait) {
+                    width: 200px;
+                }
+            }
+        }
+    }
+}
