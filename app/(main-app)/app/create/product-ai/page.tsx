@@ -53,9 +53,7 @@ export default function Page() {
   const fetchHistory = async () => {
     try {
       setHistoryLoading(true);
-      const response = await instance.get(
-        `${API_URL}/users/api/v1/docs?page=1&limit=10&category=image`
-      );
+      const response = await instance.get(`${API_URL}/users/api/v1/docs?page=1&limit=10&category=image`);
       setHistoryLoading(false);
       const data = response.data.data.docs.map((item: any) => ({
         doc_name: item.doc_name,
@@ -74,10 +72,7 @@ export default function Page() {
     fetchHistory();
   }, []);
 
-  const onFileDrop = async (
-    acceptedFiles: File[],
-    rejectedFiles: FileRejection[]
-  ) => {
+  const onFileDrop = async (acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
     if (acceptedFiles.length > 0) {
       const file = acceptedFiles[0];
       const formData = new FormData();
@@ -85,10 +80,7 @@ export default function Page() {
 
       setFileUploadLoading(true);
       try {
-        const response = await instance.post(
-          `${API_URL}/users/api/v1/file/upload`,
-          formData
-        );
+        const response = await instance.post(`${API_URL}/users/api/v1/file/upload`, formData);
         const fileUrl = response.data.data.fileUrl;
         setProductAI((prevState) => ({
           ...prevState,
@@ -110,9 +102,7 @@ export default function Page() {
     }));
   };
 
-  const handlePromptChange = (
-    event: React.ChangeEvent<HTMLTextAreaElement>
-  ) => {
+  const handlePromptChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = event.target;
     setProductAI((prevState) => ({
       ...prevState,
@@ -129,14 +119,7 @@ export default function Page() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    const {
-      img_url,
-      user_prompt,
-      remove_bg_toggle,
-      category,
-      negative_promt,
-      color,
-    } = productAI;
+    const { img_url, user_prompt, remove_bg_toggle, category, negative_promt, color } = productAI;
 
     if (!img_url) {
       toast.error("Please upload an image.");
@@ -149,23 +132,17 @@ export default function Page() {
     }
 
     const removeBg = async (): Promise<FinalResultProps | null> => {
-      const response = await instance.post(
-        `${API_URL}/ai/api/v1/products/bg-remover`,
-        {
-          img_url,
-          category,
-        }
-      );
+      const response = await instance.post(`${API_URL}/ai/api/v1/products/bg-remover`, {
+        img_url,
+        category,
+      });
       const result_url = response.data.data.result_url;
 
       if (result_url) {
         const pollStatus = async (): Promise<FinalResultProps | null> => {
-          const statusResponse = await instance.post(
-            `${API_URL}/ai/api/v1/products/image/status`,
-            {
-              image_url: result_url,
-            }
-          );
+          const statusResponse = await instance.post(`${API_URL}/ai/api/v1/products/image/status`, {
+            image_url: result_url,
+          });
           const res = statusResponse.data;
 
           if (res.data.status === "DONE") {
@@ -191,19 +168,14 @@ export default function Page() {
       return null;
     };
 
-    const userPrompt = async (
-      img_url: string
-    ): Promise<FinalResultProps | null> => {
-      const response = await instance.post(
-        `${API_URL}/ai/api/v1/products/image/edit`,
-        {
-          user_prompt,
-          negative_promt,
-          img_url,
-          category,
-          color,
-        }
-      );
+    const userPrompt = async (img_url: string): Promise<FinalResultProps | null> => {
+      const response = await instance.post(`${API_URL}/ai/api/v1/products/image/edit`, {
+        user_prompt,
+        negative_promt,
+        img_url,
+        category,
+        color,
+      });
       const res = response.data.data.output[0];
       return {
         name: "",
@@ -273,8 +245,7 @@ export default function Page() {
           <div className="border border-[#DBDBDB] bg-white p-1 rounded-xl">
             <div className="flex relative">
               <div
-                className={`w-full h-[40px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 text-[16px] ${"!text-white"}`}
-              >
+                className={`w-full h-[40px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 text-[16px] ${"!text-white"}`}>
                 History
               </div>
               <div className="absolute bottom-0 w-[100%] h-[40px] bg-primary-green custom-transition rounded-lg"></div>
@@ -294,11 +265,7 @@ export default function Page() {
           {result ? (
             <>
               <div className="h-[65vh] border border-[#F2F2F2]">
-                <img
-                  className="w-[100%] h-[100%] object-contain"
-                  alt="img-result"
-                  src={result.link}
-                />
+                <img className="w-[100%] h-[100%] object-contain" alt="img-result" src={result.link} />
               </div>
               <div className="flex justify-end mb-[30px] mt-[10px]">
                 <button
@@ -307,24 +274,19 @@ export default function Page() {
                     setProductAI(initialProductValue);
                   }}
                   className="text-[16px] bg-white text-red-500 border border-red-500 px-[20px] py-[6px]"
-                  type="button"
-                >
+                  type="button">
                   Upload another
                 </button>
                 <button
                   type="button"
                   onClick={handleDownload}
-                  className="text-[16px] ml-2 bg-primary-green text-white px-[20px] py-[6px] min-w-[130px] flex justify-center items-center"
-                >
+                  className="text-[16px] ml-2 bg-primary-green text-white px-[20px] py-[6px] min-w-[130px] flex justify-center items-center">
                   {loading ? <Spinner /> : "Download"}
                 </button>
               </div>
             </>
           ) : (
-            <form
-              onSubmit={handleSubmit}
-              className="bg-white border-gradient-blue-to-gray-to-r rounded-[28px] px-10 pb-6 space-y-8"
-            >
+            <form onSubmit={handleSubmit} className="bg-white border-gradient-blue-to-gray-to-r rounded-[28px] px-10 pb-6 space-y-8">
               <div className="relative z-[1] max-w-5xl mx-auto">
                 {fileUploadLoading ? (
                   <div className="h-[250px] w-full flex justify-center items-center border border-[#F2F2F2]">
@@ -333,21 +295,11 @@ export default function Page() {
                 ) : productAI.img_url ? (
                   <>
                     <div className="h-[250px] w-full mt-2 border border-[#F2F2F2]">
-                      <img
-                        src={productAI.img_url}
-                        alt="Logo"
-                        className="w-full h-full object-contain"
-                      />
+                      <img src={productAI.img_url} alt="Logo" className="w-full h-full object-contain" />
                     </div>
                     <div className="flex justify-end m-2">
-                      <button
-                        onClick={clearImg}
-                        type="button"
-                        className="hover-underline"
-                      >
-                        <span style={{ textDecoration: "undeline" }}>
-                          Undo image
-                        </span>
+                      <button onClick={clearImg} type="button" className="hover-underline">
+                        <span style={{ textDecoration: "undeline" }}>Undo image</span>
                       </button>
                     </div>
                   </>
@@ -358,76 +310,28 @@ export default function Page() {
                 <div className="border-t border-[#EDEEF3] flex items-center justify-between w-full pt-5 pb-10">
                   <div className="space-y-1">
                     <h1 className=" text-lg">Remove background</h1>
-                    <h1 className="text-primary-grey">
-                      Product images with transparent backgrounds give the best
-                      results
-                    </h1>
+                    <h1 className="text-primary-grey">Product images with transparent backgrounds give the best results</h1>
                   </div>
-                  <Switch
-                    checked={productAI.remove_bg_toggle}
-                    onCheckedChange={handleSwitchChange}
-                  />
+                  <Switch checked={productAI.remove_bg_toggle} onCheckedChange={handleSwitchChange} />
                 </div>
-                <div className="text-[14px] text-header mb-[6px]">
-                  Enter prompt (optional)
-                </div>
+                <div className="text-[14px] text-header mb-[6px]">Enter prompt (optional)</div>
                 <textarea
                   placeholder="I want to ..."
-                  className="bg-[#F2F2F2] p-3 h-[120px] block resize-none w-full rounded-t-xl"
+                  className="bg-[#F2F2F2] p-3 h-[120px] block resize-none w-full rounded-xl"
                   value={productAI.user_prompt}
-                  onChange={handlePromptChange}
-                ></textarea>
+                  onChange={handlePromptChange}></textarea>
                 <div className="flex justify-end mt-6 mb-3">
                   <button
                     type="submit"
                     disabled={loading}
-                    className="text-[16px] w-[95px] flex justify-center bg-primary-green text-white px-[20px] py-[6px] rounded-md mr-[10px]"
-                  >
+                    className="text-[16px] w-[95px] flex justify-center bg-primary-green text-white px-[20px] py-[6px] rounded-md mr-[10px]">
                     {loading ? <Spinner /> : "Submit"}
                   </button>
                 </div>
               </div>
             </form>
           )}
-
-          <div className="mt-10 flex flex-col items-center space-y-7">
-            <p className="text-[#71799B] text-lg text-center">
-              Or you can try with these photos
-            </p>
-            <div className="flex gap-x-4">
-              <div className="cursor-pointer bg-white p-3 rounded-2xl hover:shadow-xl transition duration-500">
-                <Image
-                  src="/images_growstack/hand-bag.png"
-                  alt=""
-                  width={150}
-                  height={150}
-                />
-              </div>
-              <div className="cursor-pointer bg-white p-3 rounded-2xl hover:shadow-xl transition duration-500">
-                <Image
-                  src="/images_growstack/shoes.png"
-                  alt=""
-                  width={150}
-                  height={150}
-                />
-              </div>
-              <div className="cursor-pointer bg-white p-3 rounded-2xl hover:shadow-xl transition duration-500">
-                <Image src="/images_growstack/sofa.png" alt="" width={150} height={150} />
-              </div>
-              <div className="cursor-pointer bg-white p-3 rounded-2xl hover:shadow-xl transition duration-500">
-                <Image
-                  src="/images_growstack/camera.png"
-                  alt=""
-                  width={150}
-                  height={150}
-                />
-              </div>
-            </div>
-          </div>
         </section>
-      </div>
-      <div className="bg-primary-green p-3 rounded-full text-white w-fit fixed bottom-0 right-0 m-5 z-[10]">
-        Credits 50 / 50
       </div>
     </main>
   );
