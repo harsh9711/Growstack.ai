@@ -5,7 +5,7 @@ import Image from "next/image";
 import useInView from "../../midmarketenterprise/useInView";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-
+import "../../midmarketenterprise/components/grid.css"
 const GridComponent = () => {
   const [selected, setSelected] = useState<number | null>(null);
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
@@ -162,20 +162,20 @@ const GridComponent = () => {
           return (
     <>      
             <div data-aos="fade-up"  className="grid grid-cols-3 relative gap-x-16 gap-y-16  left-72 justify-center items-center ">
-              <div onClick={() => handleClick(1)} className="rounded-[30px] flex justify-center items-center z-[60] cursor-pointer">
-                <Image src="/solution3rdpage/boxes/box1.svg" alt="Box 1" width={400} height={420} className="w-[480px] h-[357px] " />
+              <div onClick={() => handleClick(1)} className="rounded-[30px] flex justify-center items-center z-[60] cursor-pointer  hover:scale-105  transition-transform duration-300">
+                <Image src="/solution3rdpage/boxes/box1.svg" alt="Box 1" width={400} height={420} className="w-[480px] h-[357px]  hover-box111" />
               </div>
-              <div onClick={() => handleClick(2)} className="rounded-[30px] flex justify-center items-center z-[60] cursor-pointer">
-                <Image src="/solution3rdpage/boxes/box2.svg" alt="Box 2" width={400} height={400} className="w-[480px] h-[357px] " />
+              <div onClick={() => handleClick(2)} className="rounded-[30px] flex justify-center items-center z-[60] cursor-pointer  hover:scale-105  transition-transform duration-300">
+                <Image src="/solution3rdpage/boxes/box2.svg" alt="Box 2" width={400} height={400} className="w-[480px] h-[357px] hover-box211 " />
               </div>
-              <div className="rounded-[30px] relative right-[810px] top-52 flex justify-center items-center">
+              <div className="rounded-[30px] relative right-[810px] top-52 flex justify-center items-center cursor-pointer hover:scale-150  transition-transform duration-300">
                 <Image src="/solutions/boxes/main.svg" alt="Main" width={80} height={80}  className=" "/>
               </div>
-              <div onClick={() => handleClick(3)} className="rounded-[30px] relative top-2 flex justify-center items-center z-[60] cursor-pointer">
-                <Image src="/solution3rdpage/boxes/box3.svg" alt="Box 3" width={380} height={400} className="w-[480px] h-[357px] " />
+              <div onClick={() => handleClick(3)} className="rounded-[30px] relative top-2 flex justify-center items-center z-[60] cursor-pointer hover:scale-105  transition-transform duration-300">
+                <Image src="/solution3rdpage/boxes/box3.svg" alt="Box 3" width={380} height={400} className="w-[480px] h-[357px] hover-box311 " />
               </div>
-              <div onClick={() => handleClick(4)} className="rounded-[30px] flex relative top-2 justify-center items-center z-[60] cursor-pointer">
-                <Image src="/solution3rdpage/boxes/box4.svg" alt="Box 4" width={380} height={420} className="w-[480px] h-[357px] " />
+              <div onClick={() => handleClick(4)} className="rounded-[30px] flex relative top-2 justify-center items-center z-[60] cursor-pointer hover:scale-105  transition-transform duration-300">
+                <Image src="/solution3rdpage/boxes/box4.svg" alt="Box 4" width={380} height={420} className="w-[480px] h-[357px] hover-box411" />
               </div>
             </div></> 
           );
