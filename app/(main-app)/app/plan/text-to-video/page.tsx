@@ -3,7 +3,6 @@ import instance from "@/config/axios.config";
 import { MoreHorizontal, Search } from "lucide-react";
 import { Fragment, useEffect, useState } from "react";
 import CreateVideoDialog from "./components/CreateVideoDialog";
-import VideoTemplateCard from "./components/VideoTemplateCard";
 import Link from "next/link";
 import { Template } from "./components/types";
 import toast from "react-hot-toast";
@@ -19,9 +18,107 @@ import "@/styles/editor.css";
 
 const outputType = [
   { label: "Download", value: "download" },
-  { label: "Download Subtitles", value: "download_subtitles" },
   { label: "Remove", value: "remove" },
 ];
+const VideoCard = ({
+  _id,
+  title,
+  thumbnailUrl,
+  status,
+  editedAt,
+  videoUrl,
+  onRemove,
+}: {
+  _id: string;
+  title: string;
+  thumbnailUrl: string;
+  status: string;
+  editedAt: string;
+  videoUrl: string;
+  onRemove: (id: string) => void;
+}) => {
+  const handleSelectChange = async (value: string) => {
+    switch (value) {
+      case "download":
+        try {
+          const link = document.createElement("a");
+          link.href = videoUrl;
+          link.download = `${_id}.mp4`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          toast.success("Download started");
+        } catch (error) {
+          toast.error("Failed to download video");
+          console.error("Download error:", error);
+        }
+        break;
+      case "remove":
+        try {
+          await instance.delete(`/users/api/v1/docs/${_id}`);
+          onRemove(_id);
+          toast.success("Video removed");
+        } catch (error) {
+          toast.error("Failed to remove video");
+          console.error("Remove error:", error);
+        }
+        break;
+      default:
+        break;
+    }
+  };
+
+  return (
+    <div className="flex items-center h-[104px] border border-[#EBEBEB] mt-[20px] px-[20px] transition duration-300 hover:border-primary-green">
+      <div className="flex items-center w-full justify-between gap-4">
+        <div className="w-[64px] h-[64px]">
+          <img
+            className="object-cover w-full h-full rounded-2xl"
+            src={thumbnailUrl}
+            alt="video"
+          />
+        </div>
+        <div className="flex-1 flex items-center">
+          <p className="text-[16px] font-medium truncate max-w-[200px]">
+            {title}
+          </p>
+        </div>
+        <div className="flex-1 flex justify-center">
+          <button className="bg-[#EBEBEB] px-[22px] py-[6px] text-[14px] rounded-[30px]">
+            {status}
+          </button>
+        </div>
+        <div className="flex-shrink-0">
+          <span className="text-[#151B23] text-[16px] font-normal">
+            Edited about{" "}
+            {Math.round(
+              (new Date().getTime() - new Date(editedAt).getTime()) / 3600000
+            )}{" "}
+            hours ago
+          </span>
+        </div>
+        <div className="flex-shrink-0 flex items-center gap-4">
+          <div className="remove-caret change-bg">
+            <Select onValueChange={handleSelectChange}>
+              <SelectTrigger className="p-1 bg-white border-0 h-10 hover:bg-gray-100 rounded-lg">
+                <MoreHorizontal size={20} />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  {outputType.map(({ label, value }) => (
+                    <SelectItem value={value} key={value}>
+                      {label}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default function TextToVideoPage() {
   const [templates, setTemplates] = useState<Template[] | null>(null);
@@ -29,11 +126,15 @@ export default function TextToVideoPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const url = `/ai/api/v1/video/templates`;
+        const url = `users/api/v1/docs?page=1&limit=10&category=video`;
         const response = await instance.get<{
-          data: { templates: Template[] };
+          success: boolean;
+          message: string;
+          data: {
+            docs: Template[];
+          };
         }>(url);
-        setTemplates(response.data.data.templates);
+        setTemplates(response.data.data.docs);
       } catch (error: any) {
         if (error.response) {
           toast.error(error.response.data.error);
@@ -46,7 +147,13 @@ export default function TextToVideoPage() {
     };
     fetchData();
   }, []);
-
+  const handleRemove = (id: string) => {
+    setTemplates((prevTemplates) =>
+      prevTemplates
+        ? prevTemplates.filter((template) => template._id !== id)
+        : null
+    );
+  };
   return (
     <Fragment>
       <main>
@@ -66,77 +173,30 @@ export default function TextToVideoPage() {
                 placeholder="Search template"
               />
             </div>
-            {/* <Link href="/app/plan/text-to-video/my-videos">
-              <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2">My videos</button>
-            </Link> */}
             <CreateVideoDialog templates={templates} />
           </div>
         </div>
-        <div>
-          <VideoCard />
-          <VideoCard />
-          <VideoCard />
-        </div>
-        <div className="grid grid-cols-4 gap-5 mt-80">
-          <div className="text-center text-gray-500 text-2xl font-semibold col-span-4">
-            No Videos Available
-          </div>
+        <div className="grid grid-cols-1 gap-5 mt-8">
+          {templates && templates.length > 0 ? (
+            templates.map((template) => (
+              <VideoCard
+                key={template._id}
+                title={template.doc_name}
+                thumbnailUrl={template.doc_content.video_thumbnailUrl}
+                status={template.doc_content.status}
+                editedAt={template.updatedAt}
+                videoUrl={template.doc_content.video_url}
+                onRemove={handleRemove}
+                _id={template._id}
+              />
+            ))
+          ) : (
+            <div className="text-center text-gray-500 text-2xl font-semibold col-span-4">
+              No Videos Available
+            </div>
+          )}
         </div>
       </main>
     </Fragment>
   );
 }
-
-const VideoCard = () => {
-  return (
-    <div className="flex justify-between items-center h-[104px] border border-[#EBEBEB] mt-[20px] px-[20px] transition duration-300 hover:border-primary-green">
-      <div className="flex gap-4 items-center">
-        <div className="w-[64px] h-[64px]">
-          <img
-            className="object-cover w-full h-full rounded-2xl"
-            src="/dummy/person-0.png"
-            alt="video"
-          />
-        </div>
-        <p className="text-[16px] font-medium">Lorem ipsum dolor</p>
-      </div>
-      <div>
-        <button className="bg-[#EBEBEB] px-[22px] py-[6px] text-[14px] rounded-[30px]">
-          Draft
-        </button>
-      </div>
-      <div className="flex gap-4 items-center">
-        <div className="w-[42px] h-[42px] bg-primary-green rounded-md flex justify-center items-center">
-          <span className="text-white text-[16px] font-semibold">J</span>
-        </div>
-        <p className="text-[16px] font-medium">Jhon Doe</p>
-      </div>
-      <div>
-        <span className="text-[#151B23] text-[16px] font-normal">
-          Edited about 21 hours ago
-        </span>
-      </div>
-      <div className="flex items-center gap-4">
-        <button className="bg-primary-green text-white px-[15px] py-[5px] rounded-md">
-          Edit
-        </button>
-        <div className="remove-caret change-bg">
-          <Select>
-            <SelectTrigger className="p-1 bg-white border-0 h-10 hover:bg-gray-100 rounded-lg">
-              <MoreHorizontal size={20} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {outputType.map(({ label, value }) => (
-                  <SelectItem value={value} key={value}>
-                    {label}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
-      </div>
-    </div>
-  );
-};

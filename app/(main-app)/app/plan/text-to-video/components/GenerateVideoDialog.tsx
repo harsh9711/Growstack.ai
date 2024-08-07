@@ -16,10 +16,11 @@ import { Base64 } from "js-base64";
 import { Minus, Plus } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { HiOutlineQuestionMarkCircle } from "react-icons/hi2";
 import { z } from "zod";
+import AvatarSelection from "./AvatarSelection";
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -50,14 +51,21 @@ export interface VideoStatus {
   title: string;
   visibility: "public" | "private";
 }
-
+interface Avatar {
+  thumbnailUrl: string;
+  avatar: string;
+  name: string;
+  role: string;
+  id: string;
+}
 export default function GenerateVideoDialog() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(0);
   const [videoScript, setVideoScript] = useState("");
   const [outputVideo, setOutputVideo] = useState<VideoStatus | null>();
-
+  const [assistants, setAssistants] = useState<Avatar[]>([]);
+  const [error, setError] = useState<string | null>(null);
   const [fields, setFields] = useState<FieldsState>({
     objective: false,
     language: false,
@@ -65,7 +73,7 @@ export default function GenerateVideoDialog() {
     speaker: false,
     audience: false,
   });
-
+  const [scriptIndex, setScriptIndex] = useState(0);
   const [formData, setFormData] = useState<FormSchema>({
     title: "",
     objective: "",
@@ -74,6 +82,8 @@ export default function GenerateVideoDialog() {
     speaker: "",
     audience: "",
   });
+  const [selectedAvatar, setSelectedAvatar] = useState<Avatar | null>(null);
+  const [selectedAvatarId, setSelectedAvatarId] = useState<string | null>(null);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -89,23 +99,53 @@ export default function GenerateVideoDialog() {
     }));
   };
 
-  const checkVideoStatus = async (videoId: string) => {
+  const fetchAvatars = async () => {
     try {
-      const statusResponse = await instance.get(
-        `${API_URL}/ai/api/v1/video/status/${videoId}`
+      const response = await instance.get(`${API_URL}/ai/api/v1/video/avatars`);
+      return response.data;
+    } catch (error) {
+      toast.error("Error fetching avatars");
+      throw error;
+    }
+  };
+
+  const generateVideo = async (scriptElements: string[]) => {
+    if (!selectedAvatar) {
+      toast.error("Please select an avatar");
+      return;
+    }
+
+    try {
+      const moments = scriptElements.map((scriptElement) => ({
+        transcript: scriptElement,
+        avatarId: selectedAvatar.id,
+        voiceId: "3b4bd7b2-4ce0-438a-a37b-dce69fdf91ba",
+      }));
+
+      const videoData = {
+        title: formData.title,
+        input: moments,
+        thumbnailUrl:selectedAvatar.thumbnailUrl,
+      };
+
+      const videoResponse = await instance.post(
+        `${API_URL}/ai/api/v1/generate/video`,
+        videoData
       );
-      if (statusResponse.data.data.status === "complete") {
-        toast.success("Video generation complete");
-        setOutputVideo(statusResponse.data.data);
-        setLoading(false);
-        setStep(0); // Reset step
+
+      if (videoResponse.data.success) {
+        toast.success("Video generation request successful");
+        setOutputVideo(videoResponse.data.data);
+        setStep(3);
       } else {
-        setTimeout(() => checkVideoStatus(videoId), 5000); // Check every 5 seconds
+        toast.error("Failed to generate video");
+        setStep(0);
       }
     } catch (error) {
-      toast.error("Error checking video status");
+      toast.error("Error generating video");
+      setStep(0);
+    } finally {
       setLoading(false);
-      setStep(0); // Reset step
     }
   };
 
@@ -117,59 +157,26 @@ export default function GenerateVideoDialog() {
     }
 
     setLoading(true);
-    setStep(1); // Step 1: Generating video script
+    setStep(1);
 
     try {
-      // First API call to generate script
       const scriptResponse = await instance.post(
         `${API_URL}/ai/api/v1/generate/video/video-script`,
         formData
       );
+
       if (scriptResponse.data.success) {
         setVideoScript(scriptResponse.data.data.script);
         toast.success(scriptResponse.data.message);
-        setStep(2); // Step 2: Generating video with script
-
-        // Second API call to generate video with the generated script
-        const videoData = {
-          title: formData.title,
-          input: {
-            scriptText: scriptResponse.data.data.script, // Use the generated script from the first API call
-            avatar: "49dc8f46-8c08-45f1-8608-57069c173827", // Example avatar ID
-            background: "light_pink", // Example background setting
-          },
-          soundtrack: "urban",
-        };
-
-        const videoResponse = await instance.post(
-          `${API_URL}/ai/api/v1/generate/video`,
-          videoData
-        );
-        if (videoResponse.data.success) {
-          toast.success("Video generation request successful");
-
-          setStep(3); // Step 3: Checking video status
-
-          // Third API call to check video status
-          checkVideoStatus(videoResponse.data.data.id);
-        } else {
-          toast.error("Failed to generate video");
-          setLoading(false);
-          setStep(0); // Reset step
-        }
+        setStep(2);
+        await generateVideo(scriptResponse.data.data.script);
       } else {
         toast.error("Failed to generate script");
-        setLoading(false);
-        setStep(0); // Reset step
+        setStep(0);
       }
-    } catch (error: any) {
-      toast.error(
-        error.response.data.message ||
-          error.message ||
-          "Error submitting the form"
-      );
-      setLoading(false);
-      setStep(0); // Reset step
+    } catch (error) {
+      toast.error("Error submitting the form");
+      setStep(0);
     }
   };
 
@@ -181,6 +188,33 @@ export default function GenerateVideoDialog() {
     router.push(`/create/video?data=${encodedVideoData}`);
   };
 
+  useEffect(() => {
+    const loadAvatars = async () => {
+      try {
+        const data = await fetchAvatars();
+        console.log(data.data);
+        setAssistants(
+          data.data.map((item: any) => ({
+            id: item.id,
+            name: item.name,
+            thumbnailUrl: item.thumbnailUrl,
+          }))
+        );
+      } catch (error) {
+        // setError('Failed to fetch avatars');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadAvatars();
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
+  const handleAvatarSelect = (avatar: Avatar) => {
+    setSelectedAvatar(avatar);
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -202,7 +236,7 @@ export default function GenerateVideoDialog() {
               <TooltipComponent />
             </h1>
           </div>
-          <main className="flex-1 flex">
+          <main className="flex flex-row gap-x-10">
             <div className="w-full max-w-[426px] space-y-4">
               <div className="w-full space-y-2">
                 <label
@@ -464,22 +498,54 @@ export default function GenerateVideoDialog() {
                   variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
                   classNames="flex-1 w-full h-full grid place-content-center"
                 >
-                  <div className="flex flex-col justify-center items-center mb-40">
-                    <Image
-                      src="/gifs/empty-box.gif"
-                      alt=""
-                      width={250}
-                      height={250}
-                      unoptimized
+                  <div>
+                 {selectedAvatar && (
+                      <div className=" mb-20">
+                        <h2 className=" font-semibold mb-2">
+                          Selected Avatar
+                        </h2>
+                        <img
+                          src={selectedAvatar.thumbnailUrl}
+                          alt={selectedAvatar.name}
+                          className="w-24 h-24 object-cover rounded"
+                        />
+                        <p>{selectedAvatar.name}</p>
+                      </div>
+                    )}
+                  <div className="flex flex-row w-[1100px] justify-between">
+                    <h2 className="font-semibold mb-4">
+                      Avatars
+                    </h2>
+                    <h2>Search Bar</h2>
+                    </div>
+                    <AvatarSelection
+                      avatars={assistants}
+                      onSelect={handleAvatarSelect}
                     />
-                    <h1 className="text-2xl text-center font-semibold">
-                      There's nothing here.
-                    </h1>
-                    <p className="max-w-xl leading-loose text-center mt-3">
-                      Fill out the form 👈 to geneate a video
-                    </p>
+                 
                   </div>
                 </Motion>
+                //   <Motion
+                //   transition={{ duration: 0.5 }}
+                //   variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+                //   classNames="flex-1 w-full h-full grid place-content-center"
+                // >
+                //   <div className="flex flex-col justify-center items-center mb-40">
+                //     <Image
+                //       src="/gifs/empty-box.gif"
+                //       alt=""
+                //       width={250}
+                //       height={250}
+                //       unoptimized
+                //     />
+                //     <h1 className="text-2xl text-center font-semibold">
+                //       There's nothing here.
+                //     </h1>
+                //     <p className="max-w-xl leading-loose text-center mt-3">
+                //       Fill out the form 👈 to geneate a video
+                //     </p>
+                //   </div>
+                // </Motion>
               )}
             </div>
           </main>

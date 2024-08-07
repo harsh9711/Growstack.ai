@@ -44,6 +44,11 @@ const nextConfig = {
         hostname: "growstackai.s3.amazonaws.com",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "argildotai.s3-accelerate.amazonaws.com",
+        port: "",
+      },
     ],
   },
   async headers() {
