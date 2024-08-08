@@ -16,7 +16,6 @@ import instance from "@/config/axios.config";
 import toast from "react-hot-toast";
 
 export default function SocialMediaAnalyticsPage() {
-
   const [selectedPlatform, setSelectedPlatform] = useState("Instagram");
   const [analyticsData, setAnalyticsData] = useState<{
     followers: number;
@@ -27,11 +26,11 @@ export default function SocialMediaAnalyticsPage() {
 
   const fetchAnalytics = async (platform: string) => {
     try {
-      const response = await instance.get(`${API_URL}/users/api/v1/social-media/analytics?platform=${platform.toLowerCase()}`);
+      const response = await instance.get(
+        `${API_URL}/users/api/v1/social-media/analytics?platform=${platform.toLowerCase()}`
+      );
       setAnalyticsData(response.data);
-      console.log('response', response);
-
-  
+      console.log("response", response);
     } catch (error: any) {
       toast.error(error.response.data.message);
     }
@@ -42,13 +41,11 @@ export default function SocialMediaAnalyticsPage() {
   }, [selectedPlatform]);
 
   const platforms = [
-
-    { name: 'Instagram', icon: '/assets/brand-instagram.png' },
-    { name: 'Facebook', icon: '/assets/brand-facebook.png' },
-    { name: 'Twitter (X)', icon: '/assets/brand-x.png' },
-    { name: 'Linkedin', icon: '/assets/brand-linkedin.png' },
-    { name: 'Telegram', icon: '/assets/brand-telegram.png' },
-
+    { name: "Instagram", icon: "/assets/brand-instagram.png" },
+    { name: "Facebook", icon: "/assets/brand-facebook.png" },
+    { name: "Twitter (X)", icon: "/assets/brand-x.png" },
+    { name: "Linkedin", icon: "/assets/brand-linkedin.png" },
+    { name: "Telegram", icon: "/assets/brand-telegram.png" },
   ];
 
   return (
@@ -68,9 +65,7 @@ export default function SocialMediaAnalyticsPage() {
               <div
                 key={platform.name}
                 className={`group bg-white border border-[#F3F3F3] rounded-xl p-3 flex gap-4 items-center cursor-pointer transition duration-300 hover:shadow-xl hover:shadow-gray-100 ${
-
-                  selectedPlatform === platform.name ? 'bg-gray-100' : ''
-
+                  selectedPlatform === platform.name ? "bg-gray-100" : ""
                 }`}
                 onClick={() => setSelectedPlatform(platform.name)}
               >
@@ -126,36 +121,47 @@ export default function SocialMediaAnalyticsPage() {
                   </div>
                   <div className="flex justify-between mt-3">
                     <div className="space-y-5">
-
-                      <p className="text-[15px] text-primary-black text-opacity-50">Followers</p>
-                      <h1 className="text-3xl font-semibold">{analyticsData?.followers}</h1>
+                      <p className="text-[15px] text-primary-black text-opacity-50">
+                        Followers
+                      </p>
+                      <h1 className="text-3xl font-semibold">
+                        {analyticsData?.followers}
+                      </h1>
                       <div className="flex gap-2">
                         <TrendingUp className="text-[#00B69B]" />
-                        <span className="text-[#00B69B] font-semibold">8.5% </span>
-
+                        <span className="text-[#00B69B] font-semibold">
+                          8.5%{" "}
+                        </span>
                         Up from yesterday
                       </div>
                     </div>
                     <div className="space-y-5">
-
-                        
-                      <p className="text-[15px] text-primary-black text-opacity-50">Account reached</p>
-                      <h1 className="text-3xl font-semibold">{analyticsData?.accountReached}</h1>
+                      <p className="text-[15px] text-primary-black text-opacity-50">
+                        Account reached
+                      </p>
+                      <h1 className="text-3xl font-semibold">
+                        {analyticsData?.accountReached}
+                      </h1>
                       <div className="flex gap-2">
                         <TrendingDown className="text-[#F93C65]" />
-                        <span className="text-[#F93C65] font-semibold">4.2% </span>
-
+                        <span className="text-[#F93C65] font-semibold">
+                          4.2%{" "}
+                        </span>
                         Down from yesterday
                       </div>
                     </div>
                     <div className="space-y-5">
-
-                      <p className="text-[15px] text-primary-black text-opacity-50">Post activity</p>
-                      <h1 className="text-3xl font-semibold">{analyticsData?.postActivity}</h1>
+                      <p className="text-[15px] text-primary-black text-opacity-50">
+                        Post activity
+                      </p>
+                      <h1 className="text-3xl font-semibold">
+                        {analyticsData?.postActivity}
+                      </h1>
                       <div className="flex gap-2">
                         <TrendingUp className="text-[#00B69B]" />
-                        <span className="text-[#00B69B] font-semibold">8.5% </span>
-
+                        <span className="text-[#00B69B] font-semibold">
+                          8.5%{" "}
+                        </span>
                         Up from yesterday
                       </div>
                     </div>
@@ -180,9 +186,7 @@ export default function SocialMediaAnalyticsPage() {
                     </p>
                   </div>
                   <div className="h-[500px] mt-8">
-
-                    <BarGraph data={analyticsData?.statistics} />
-
+                    <BarGraph />
                   </div>
                 </div>
               </>
