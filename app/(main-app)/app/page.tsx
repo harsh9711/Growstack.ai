@@ -75,6 +75,7 @@ export default function Dashboard() {
     }
   };
 
+
   const handleFavourite = async (method: string, templateId: string) => {
     try {
       const response = await instance.put(API_URL + `/ai/api/v1/chat-template/fav-apps/${templateId}`, { type: method });
@@ -89,6 +90,7 @@ export default function Dashboard() {
       console.error("Error:", error);
     }
   };
+
 
   const fetchSocialMediaProfile = async () => {
     try {
