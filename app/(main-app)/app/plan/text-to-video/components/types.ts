@@ -5,6 +5,7 @@ export interface Template {
   doc_name: string;
   workbook: string;
   category: string;
+  
   doc_content: {
     video_id: string;
     status: string;
@@ -23,4 +24,5 @@ export interface Template {
   initial: string;
   editedTime: string;
   title:string;
+  onSuccess?: () => void; 
 }
