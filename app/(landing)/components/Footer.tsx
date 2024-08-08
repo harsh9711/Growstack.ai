@@ -6,10 +6,10 @@ import "@/styles/button.css";
 
 export default function Footer() {
   return (
-    <footer className="mt-20 px-3 md:px-12 bg-primary-light-gray">
-      <div className="flex justify-between max-w-[1480px] mx-auto py-20 items-center">
+<footer className="rounded-t-[50px] px-10 md:px-12 bg-primary-light-gray ">
+<div className="flex rounded-full justify-between max-w-[1480px] mx-auto py-20 items-center">
         <h1 className="text-[42px] font-semibold max-w-lg leading-relaxed text-primary-green">Ready to see a personalized demo?</h1>
-        <div className="flex gap-4">
+        <div className="flex items-center gap-4">
           <button className="bg-white hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-10 py-5 rounded-xl font-semibold">
             View Demo
           </button>
@@ -49,13 +49,13 @@ export default function Footer() {
                     <Link href="#">Research assistant</Link>
                   </li>
                   <li className="hover:underline">
-                    <Link href="#">AI Marketing & Sales Apps</Link>
+                    <Link href="#">AI Marketing & Sales <br/> Apps</Link>
                   </li>
                   <li className="hover:underline">
                     <Link href="#">Imaginate app</Link>
                   </li>
                   <li className="hover:underline">
-                    <Link href="#">Marketing and sales assistants</Link>
+                    <Link href="#">Marketing and sales <br/>assistants</Link>
                   </li>
                 </ul>
               </div>
@@ -76,9 +76,9 @@ export default function Footer() {
                   </li>
                 </ul>
               </div>
-              <div className="w-full lg:max-w-[380px]">
+              <div className="w-full lg:max-w-[380px] text-white">
                 <h1 className="font-semibold text-lg">Newsletter</h1>
-                <p className="mt-12">Subscribe to our newsletter</p>
+                <p className="mt-12 text-white">Subscribe to our newsletter</p>
                 <div className="bg-transparent border border-[white]/80 p-2 flex rounded-2xl gap-2 mt-6">
                   <Image src="/icons/sms.svg" alt="sms" width={22} height={22} className="ml-4" />
                   <input
@@ -93,8 +93,8 @@ export default function Footer() {
               </div>
             </div>
           </div>
-          <div className="border-t border-[#E0E4EB] flex flex-col-reverse md:flex-row gap-8 justify-between items-center py-10 mt-20">
-            <p>©2024 Company Name. All right reserved.</p>
+          <div className="border-t border-[#E0E4EB] text-white flex flex-col-reverse md:flex-row gap-8 justify-between items-center py-10 mt-20">
+            <p className="text-white">©2024 Company Name. All right reserved.</p>
             <div className="flex gap-4">
               <Link
                 href="https://instagram.com"

@@ -303,14 +303,14 @@ export default function Addoutput({
             <Plus />
             Add Output
           </button>
-          <ProvidersDrawer
+          {/* <ProvidersDrawer
             trigger={
               <button className="w-full text-center bg-primary-green text-white hover:bg-primary-green/90 transition duration-500 px-5 py-4 rounded-xl flex items-center justify-center gap-2">
                 <ArrowRight size={20} />
                 Continue
               </button>
             }
-          />
+          /> */}
         </div>
       </div>
     </Motion>

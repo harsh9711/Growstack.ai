@@ -31,8 +31,6 @@ export function ProfileButton() {
     router.push("/auth/login");
   };
 
-  console.log('currentUser', currentUser)
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -47,6 +45,7 @@ export function ProfileButton() {
         <div className="p-4 flex items-center gap-3">
           <Avatar>
             <AvatarImage src={currentUser?.profile_img} />
+
             <AvatarFallback>{currentUser?.email?.slice(0, 1)}</AvatarFallback>
           </Avatar>
           <div>
@@ -79,7 +78,7 @@ export function ProfileButton() {
           <Link href="/account/billings/settings">
             <DropdownMenuItem className="flex gap-3 px-4">
               <TbReportMoney size={22} />
-              Billings
+              intercom - free for one year
             </DropdownMenuItem>
           </Link>
         </DropdownMenuGroup>
