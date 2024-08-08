@@ -256,7 +256,7 @@ export default function Login() {
             </div>
           </div>
         </section>
-        <section className="w-full bg-[url('/assets/authbg-overlay.svg')] bg-no-repeat bg-cover flex flex-col justify-center items-center p-5 py-12 md:py-20 gap-20 bg-[#F7FAFC] rounded-l-[60px]">
+        <section className="w-full flex flex-col justify-center items-center p-5 py-12 md:py-20 gap-20 bg-[#F7FAFC] rounded-l-[60px]">
           <h1 className="text-2xl font-semibold">Unlock the Power of AI</h1>
           <Image src="/assets/auth-stats.png" alt="" width={550} height={550} />
         </section>

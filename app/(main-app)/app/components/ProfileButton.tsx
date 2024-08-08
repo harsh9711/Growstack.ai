@@ -25,32 +25,28 @@ export function ProfileButton() {
   const currentUser = getCurrentUser();
 
   const handleLogout = () => {
-    deleteCookie('token');
+    deleteCookie("token");
     localStorage.clear();
-    dispatch(logout())
+    dispatch(logout());
     router.push("/auth/login");
-  }
+  };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="rounded-xl">
-          <AvatarImage src={currentUser?.profile_img} />
-          <AvatarFallback className="rounded-xl">
-            {currentUser?.email?.slice(0, 1)}
-          </AvatarFallback>
+          <AvatarImage src={currentUser?.avatar} />
+          <AvatarFallback className="rounded-xl">{currentUser?.email?.slice(0, 1)}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[300px] relative right-10 text-[15px]">
         <div className="p-4 flex items-center gap-3">
           <Avatar>
-            <AvatarImage src={currentUser?.profile_img} />
+            <AvatarImage src={currentUser?.avatar} />
             <AvatarFallback>{currentUser?.email?.slice(0, 1)}</AvatarFallback>
           </Avatar>
           <div>
-            <h1 className="text-xl font-semibold">
-              {currentUser?.user_name ?? "John Doe"}
-            </h1>
+            <h1 className="text-xl font-semibold">{currentUser?.user_name ?? "John Doe"}</h1>
             <p className="text-primary-grey text-sm">{currentUser?.email}</p>
           </div>
         </div>
@@ -77,7 +73,7 @@ export function ProfileButton() {
           <Link href="/account/billings/settings">
             <DropdownMenuItem className="flex gap-3 px-4">
               <TbReportMoney size={22} />
-              Billings
+              intercom - free for one year
             </DropdownMenuItem>
           </Link>
         </DropdownMenuGroup>
@@ -91,8 +87,7 @@ export function ProfileButton() {
         <DropdownMenuSeparator />
         <button
           onClick={handleLogout}
-          className="relative flex select-none items-center rounded-lg h-12 p-4 outline-none w-full gap-3 text-[#D9000B] hover:bg-[#D9000B]/10 cursor-pointer"
-        >
+          className="relative flex select-none items-center rounded-lg h-12 p-4 outline-none w-full gap-3 text-[#D9000B] hover:bg-[#D9000B]/10 cursor-pointer">
           <LogOut size={20} />
           Sign out
         </button>

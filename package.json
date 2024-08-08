@@ -43,6 +43,7 @@
     "formidable": "^3.5.1",
     "framer-motion": "^11.2.10",
     "fs-extra": "^11.2.0",
+    "growstack": "file:",
     "input-otp": "^1.2.4",
     "ionicons": "^7.4.0",
     "js-base64": "^3.7.7",
