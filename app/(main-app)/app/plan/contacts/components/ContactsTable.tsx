@@ -2,14 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -32,13 +25,7 @@ import Motion from "@/components/Motion";
 import Link from "next/link";
 import { CiCirclePlus } from "react-icons/ci";
 import { MdOutlineDelete } from "react-icons/md";
-import {
-  CircleIcon,
-  DeleteIcon,
-  SMSIcon,
-  EmailIcon,
-  UploadIcon,
-} from "@/components/svgs/icons";
+import { CircleIcon, DeleteIcon, SMSIcon, EmailIcon, UploadIcon } from "@/components/svgs/icons";
 import instance from "@/config/axios.config";
 import { formatDate } from "@/lib/utils";
 import { ModalContent } from "./modal/modalEnums";
@@ -52,13 +39,8 @@ export const columns: ColumnDef<Contact>[] = [
     id: "select",
     header: ({ table }) => (
       <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value: any) =>
-          table.toggleAllPageRowsSelected(!!value)
-        }
+        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+        onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
         className="w-[18px] h-[18px]"
       />
@@ -79,13 +61,7 @@ export const columns: ColumnDef<Contact>[] = [
     header: () => <div className="uppercase">Name</div>,
     cell: ({ row }) => (
       <div className="capitalize flex items-center gap-3">
-        <Image
-          src={row.original.logo}
-          alt=""
-          width={100}
-          height={100}
-          className="h-[40px] w-[40px] object-cover rounded-full"
-        />
+        <Image src={row.original.logo} alt="" width={100} height={100} className="h-[40px] w-[40px] object-cover rounded-full" />
         {row.getValue("name")}
       </div>
     ),
@@ -94,11 +70,15 @@ export const columns: ColumnDef<Contact>[] = [
     accessorKey: "phone",
     header: () => <div className="uppercase">Phone</div>,
     cell: ({ row }) => (
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <Phone size={20} className="text-primary-green" />{" "}
         <span>
           {row.original.phones
-            .map((phone: any) => `${phone.country_code}${phone.number}`)
+            .map(
+              (phone: any) => `
+            ${!phone.number.startsWith("+") ? "+" : ""}
+            ${phone.number.slice(0, phone.country_code.length)}  ${phone.number.slice(phone.country_code.length)}`
+            )
             .join(", ")}
         </span>
       </div>
@@ -108,18 +88,14 @@ export const columns: ColumnDef<Contact>[] = [
     accessorKey: "email",
     header: () => <div className="uppercase">Email</div>,
     cell: ({ row }) => (
-      <div className="flex gap-2 items-center">
-        <p>
-          {row.original.email.length > 0 ? (
-            <>
-              {" "}
-              <MailIcon size={20} className="text-primary-green" />{" "}
-              {row.original.email.join(", ")}
-            </>
-          ) : (
-            "-"
-          )}
-        </p>
+      <div className="flex flex-wrap gap-2 items-center">
+        {row.original.email.length > 0 ? (
+          <>
+            <MailIcon size={20} className="text-primary-green" /> {row.original.email.join(", ")}
+          </>
+        ) : (
+          "-"
+        )}
       </div>
     ),
   },
@@ -154,15 +130,7 @@ interface ContactsTableProps {
   loading: boolean;
 }
 
-export default function ContactsTable({
-  setToggleModal,
-  handleModal,
-  setSelectedIds,
-  contacts,
-  pagination,
-  setPagination,
-  loading,
-}: ContactsTableProps) {
+export default function ContactsTable({ setToggleModal, handleModal, setSelectedIds, contacts, pagination, setPagination, loading }: ContactsTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -178,9 +146,7 @@ export default function ContactsTable({
 
   useEffect(() => {
     const getContacts = async () => {
-      const response = await instance.get(
-        `/users/api/v1/contacts?page=${pagination.pageIndex}&limit=${pagination.pageSize}`
-      );
+      const response = await instance.get(`/users/api/v1/contacts?page=${pagination.pageIndex}&limit=${pagination.pageSize}`);
       const data = response.data.data.contacts;
 
       const formattedContacts = data.map((item: any) => ({
@@ -229,11 +195,8 @@ export default function ContactsTable({
         onClick={() => table.setPageIndex(i)}
         className={clsx(
           "w-12 h-[45px] rounded-lg mx-1 bg-[#4B465C14] transition-all duration-300",
-          i === table.getState().pagination.pageIndex
-            ? "!bg-primary-green hover:bg-opacity-50 text-white"
-            : "hover:bg-[#4B465C29]"
-        )}
-      >
+          i === table.getState().pagination.pageIndex ? "!bg-primary-green hover:bg-opacity-50 text-white" : "hover:bg-[#4B465C29]"
+        )}>
         {i + 1}
       </button>
     );
@@ -242,17 +205,13 @@ export default function ContactsTable({
   const handleClick = (value: ModalContent) => {
     setToggleModal(true);
     handleModal(value);
-    const selectedRowIds = table
-      .getSelectedRowModel()
-      .rows.map((row) => row.original.id);
+    const selectedRowIds = table.getSelectedRowModel().rows.map((row) => row.original.id);
     setSelectedIds(selectedRowIds);
   };
 
   const handleEmailModal = async () => {
     try {
-      const checkPermission = await instance.get(
-        `${API_URL}/users/api/v1/mails/check-permission`
-      );
+      const checkPermission = await instance.get(`${API_URL}/users/api/v1/mails/check-permission`);
       if (!checkPermission.data.success) {
         handleClick(ModalContent.CHECK_EMAIL_PERMISSION);
       } else {
@@ -281,21 +240,12 @@ export default function ContactsTable({
   }, [searchQuery]);
 
   return (
-    <Motion
-      transition={{ duration: 0.2 }}
-      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
-    >
+    <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
       <div className="w-full">
         <div className="flex justify-between gap-10 items-center mt-5">
           <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
             <Search className="text-gray-500" size={20} />
-            <input
-              type="search"
-              className="outline-none h-[40px] w-full"
-              placeholder="Search"
-              value={searchQuery}
-              onChange={handleSearch}
-            />
+            <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" value={searchQuery} onChange={handleSearch} />
           </div>
           {/* <Link href="/app/plan/web-scraping/add-prospect" className="w-full max-w-fit">
                 <button className="flex items-center gap-3 hover:bg-primary-green/10 sheen min-w-fit py-3 px-4 rounded-lg transition-all duration-300">
@@ -305,30 +255,27 @@ export default function ContactsTable({
               </Link> */}
           <div className="flex justify-center items-center">
             <button
-              className=" mr-1 w-[45px] h-[45px] flex border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black"
+              className=" mr-1 w-[45px] h-[45px] border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black"
               onClick={() => {
                 setToggleModal(true);
                 handleModal(ModalContent.ADD_CONTACT);
-              }}
-            >
+              }}>
               <CircleIcon />
             </button>
             <button
               onClick={() => handleClick(ModalContent.DELETE_CONTACT)}
-              className=" mr-1 w-[45px] h-[45px] flex border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black"
-            >
+              className=" mr-1 w-[45px] h-[45px] border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black">
               <DeleteIcon />
             </button>
-            <button
+            {/* <button
               onClick={() => handleClick(ModalContent.SEND_SMS)}
-              className=" mr-1 w-[45px] h-[45px] flex border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black"
+              className=" mr-1 w-[45px] h-[45px] border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black"
             >
               <SMSIcon />
-            </button>
+            </button> */}
             <button
               onClick={handleEmailModal}
-              className=" mr-1 w-[45px] h-[45px] flex border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black"
-            >
+              className=" mr-1 w-[45px] h-[45px] border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black">
               <EmailIcon />
             </button>
             {/* <button className=" mr-1 w-[45px] h-[45px] flex border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black">
@@ -344,14 +291,7 @@ export default function ContactsTable({
                 <TableRow key={headerGroup.id} className="bg-[#0347370D]">
                   {headerGroup.headers.map((header) => {
                     return (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-                      </TableHead>
+                      <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>
                     );
                   })}
                 </TableRow>
@@ -360,36 +300,21 @@ export default function ContactsTable({
             <TableBody>
               {loading ? (
                 <TableRow className="hover:bg-white">
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-[50vh] text-center font-semibold text-lg hover:bg-white"
-                  >
+                  <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
                     Loading...
                   </TableCell>
                 </TableRow>
               ) : table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                    className="bg-white"
-                  >
+                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="bg-white">
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
-                      </TableCell>
+                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                     ))}
                   </TableRow>
                 ))
               ) : (
                 <TableRow className="hover:bg-white">
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-[50vh] text-center font-semibold text-lg hover:bg-white"
-                  >
+                  <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
                     No results.
                   </TableCell>
                 </TableRow>
@@ -405,8 +330,7 @@ export default function ContactsTable({
                 size="sm"
                 className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px]"
                 onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-              >
+                disabled={!table.getCanPreviousPage()}>
                 Previous
               </Button>
               <div>
@@ -417,8 +341,7 @@ export default function ContactsTable({
                 size="sm"
                 className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px] px-4"
                 onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-              >
+                disabled={!table.getCanNextPage()}>
                 Next
               </Button>
             </div>

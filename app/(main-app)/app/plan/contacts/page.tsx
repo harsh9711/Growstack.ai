@@ -34,7 +34,7 @@ export default function ContactsDashboard() {
   const [toggleModal, setToggleModal] = useState<boolean>(false);
   const [modalContent, setModalContent] = useState<ModalContent | null>(null);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const tabs = ["Smart list", "Prospects", "Restore"];
+  const tabs = ["Smart list", "Prospects"];
 
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -70,6 +70,8 @@ export default function ContactsDashboard() {
     getContacts();
   }, [pagination.pageIndex, pagination.pageSize]);
 
+  // const tabs = ["Smart list", "Bulk actions", "Restore", "Tasks", "Company"];
+
   useEffect(() => {
     const tab = tabQueryParam ? Number(tabQueryParam) : 0;
     setSelectedTabIndex(tab);
@@ -104,8 +106,8 @@ export default function ContactsDashboard() {
         );
       case 1:
         return <ProspectsTable />;
-      case 2:
-        return <RestoreTable />;
+      // case 2:
+      //   return <RestoreTable />;
       // case 3:
       //   return <TasksTable />;
       // case 4:
@@ -134,16 +136,16 @@ export default function ContactsDashboard() {
             </p>
           </Fragment>
         );
-      case 2:
-        return (
-          <Fragment>
-            <h1 className="text-2xl font-semibold">Restored</h1>
-            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
-              Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
-              ultricies accumsan. Nec.{" "}
-            </p>
-          </Fragment>
-        );
+      // case 2:
+      //   return (
+      //     <Fragment>
+      //       <h1 className="text-2xl font-semibold">Restored</h1>
+      //       <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
+      //         Lorem ipsum dolor sit amet consectetur. Vitae leo amet aliquam
+      //         ultricies accumsan. Nec.{" "}
+      //       </p>
+      //     </Fragment>
+      //   );
       // case 3:
       //   return (
       //     <Fragment>
@@ -217,7 +219,7 @@ export default function ContactsDashboard() {
             {renderTitle(selectedTabIndex)}
           </div>
           <div className="w-full flex items-center justify-end gap-3">
-            <div className="w-full max-w-[620px] bg-white shadow-2xl shadow-gray-200 px-3 py-2 rounded-xl">
+            <div className="w-full max-w-md bg-white shadow-2xl shadow-gray-200 px-3 py-2 rounded-xl">
               <div className="w-full flex relative">
                 {tabs.map((tab, index) => (
                   <div
@@ -242,11 +244,11 @@ export default function ContactsDashboard() {
                 ></div>
               </div>
             </div>
-            <Link href="/app/plan/contacts/settings">
+            {/* <Link href="/app/plan/contacts/settings">
               <button className="border Fborder-[#EBEBEB] rounded-lg p-3 hover:bg-primary-light-gray text-primary-black">
                 <SettingsIcon size={20} />
               </button>
-            </Link>
+            </Link> */}
           </div>
         </div>
 

@@ -25,11 +25,11 @@ export function ProfileButton() {
   const currentUser = getCurrentUser();
 
   const handleLogout = () => {
-    deleteCookie('token');
+    deleteCookie("token");
     localStorage.clear();
-    dispatch(logout())
+    dispatch(logout());
     router.push("/auth/login");
-  }
+  };
 
   return (
     <DropdownMenu>
@@ -45,11 +45,12 @@ export function ProfileButton() {
         <div className="p-4 flex items-center gap-3">
           <Avatar>
             <AvatarImage src={currentUser?.profile_img} />
+
             <AvatarFallback>{currentUser?.email?.slice(0, 1)}</AvatarFallback>
           </Avatar>
           <div>
             <h1 className="text-xl font-semibold">
-              {currentUser?.user_name ?? "John Doe"}
+              {currentUser?.user_name ?? currentUser?.name ?? "John Doe"}
             </h1>
             <p className="text-primary-grey text-sm">{currentUser?.email}</p>
           </div>
@@ -77,7 +78,7 @@ export function ProfileButton() {
           <Link href="/account/billings/settings">
             <DropdownMenuItem className="flex gap-3 px-4">
               <TbReportMoney size={22} />
-              Billings
+              intercom - free for one year
             </DropdownMenuItem>
           </Link>
         </DropdownMenuGroup>
