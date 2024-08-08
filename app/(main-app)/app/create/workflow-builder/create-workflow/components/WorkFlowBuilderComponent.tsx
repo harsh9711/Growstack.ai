@@ -206,8 +206,13 @@ export default function WorkFlowBuilderComponent() {
           ...actions.slice(index - 1),
         ];
       }
+
       setActions(updatedActions);
-      setActiveAction(action);
+      setActiveAction({
+        ...action,
+        action_id: newAction.action_id,
+        index: index - 1,
+      });
     } catch (error) {
       console.log(error);
       toast.error("Failed to add action");

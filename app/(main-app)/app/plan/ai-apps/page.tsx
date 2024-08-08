@@ -164,7 +164,7 @@ export default function MarketingPage() {
       <main className="">
         <div className="flex justify-between items-center mt-8">
           <div className="space-y-2 w-full">
-            <h1 className="text-2xl font-semibold">AI apps</h1>
+            <h1 className="text-2xl font-semibold">AI templates</h1>
             <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
               AI marketing and sales assistant
             </p>
@@ -184,7 +184,7 @@ export default function MarketingPage() {
             <Link href="/app/plan/ai-apps/create-assistant">
               <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
                 <Plus size={20} />
-                Create AI Apps
+                Create AI template
               </button>
             </Link>
           </div>

@@ -25,26 +25,34 @@ export function ProfileButton() {
   const currentUser = getCurrentUser();
 
   const handleLogout = () => {
+
     deleteCookie('token');
     localStorage.clear();
     dispatch(logout())
     router.push("/auth/login");
-  }
+
+
+  };
+
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="rounded-xl">
+
           <AvatarImage src={currentUser?.profile_img} />
           <AvatarFallback className="rounded-xl">
             {currentUser?.email?.slice(0, 1)}
           </AvatarFallback>
+
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[300px] relative right-10 text-[15px]">
         <div className="p-4 flex items-center gap-3">
           <Avatar>
-            <AvatarImage src={currentUser?.profile_img} />
+
+            <AvatarImage src={currentUser?.avatar} />
+
             <AvatarFallback>{currentUser?.email?.slice(0, 1)}</AvatarFallback>
           </Avatar>
           <div>
@@ -77,7 +85,7 @@ export function ProfileButton() {
           <Link href="/account/billings/settings">
             <DropdownMenuItem className="flex gap-3 px-4">
               <TbReportMoney size={22} />
-              Billings
+              intercom - free for one year
             </DropdownMenuItem>
           </Link>
         </DropdownMenuGroup>
@@ -91,8 +99,11 @@ export function ProfileButton() {
         <DropdownMenuSeparator />
         <button
           onClick={handleLogout}
+
           className="relative flex select-none items-center rounded-lg h-12 p-4 outline-none w-full gap-3 text-[#D9000B] hover:bg-[#D9000B]/10 cursor-pointer"
         >
+
+              
           <LogOut size={20} />
           Sign out
         </button>
