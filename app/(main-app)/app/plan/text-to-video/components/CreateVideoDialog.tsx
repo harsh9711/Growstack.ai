@@ -30,6 +30,8 @@ import { HiOutlineQuestionMarkCircle } from "react-icons/hi2";
 import { z } from "zod";
 import AvatarSelection from "./AvatarSelection";
 import AudioBox from "./AudioBox";
+import { CustomSelect } from "./Select";
+import TemplateLoader from "./TemplateLoader";
 export interface VideoStatus {
   createdAt: number;
   download: string;
@@ -110,24 +112,12 @@ const CreateVideoDialog = ({
   >([]);
   const [selectedVoice, setSelectedVoice] = useState<string | null>(null);
   const [playingSampleUrl, setPlayingSampleUrl] = useState<string | null>(null);
-  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false); // Added state for dropdown visibility
-
+  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("");
+  const [tone, settone] = useState<string>("");
   const handleVoiceSelect = (voiceId: string) => {
     setSelectedVoice(voiceId);
   };
-  // useEffect(() => {
-  //   const fetchVoices = async () => {
-  //     try {
-  //       const response = await instance.get(`${API_URL}/ai/api/v1/video/voices`);
-  //       setVoices(response.data.data);
-  //     } catch (error) {
-  //       toast.error("Error fetching voices");
-  //     }
-  //   };
-
-  //   fetchVoices();
-  // }, []);
-
   useEffect(() => {
     const loadAvatars = async () => {
       try {
@@ -172,37 +162,35 @@ const CreateVideoDialog = ({
     setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  const toggleField = (field: keyof FieldsState) => {
-    setFields((prevFields) => ({
-      ...prevFields,
-      [field]: !prevFields[field],
-    }));
-  };
+  const [generatingVideo, setGeneratingVideo] = useState(false);
 
   const generateVideo = async (scriptElements: string[]) => {
     if (!selectedAvatar) {
       toast.error("Please select an avatar");
       return;
     }
-
+  
+    setGeneratingVideo(true);
+    setLoading(true);
+  
     try {
       const moments = scriptElements.map((scriptElement) => ({
         transcript: scriptElement,
         avatarId: selectedAvatar.id,
-        voiceId: selectedVoice || "Keli", // Use default if not selected
+        voiceId: selectedVoice || "",
       }));
-
+  
       const videoData = {
         title: formData.title,
         input: moments,
         thumbnailUrl: selectedAvatar.thumbnailUrl,
       };
-
+  
       const videoResponse = await instance.post(
         `${API_URL}/ai/api/v1/generate/video`,
         videoData
       );
-
+  
       if (videoResponse.data.success) {
         toast.success("Video generation request successful");
         setOutputVideo(videoResponse.data.data);
@@ -216,13 +204,19 @@ const CreateVideoDialog = ({
       setStep(0);
     } finally {
       setLoading(false);
+      setGeneratingVideo(false);
     }
   };
+  
 
   const handleSubmit = async () => {
     const validation = formSchema.safeParse(formData);
     if (!validation.success) {
       toast.error(validation.error.errors[0].message);
+      return;
+    }
+    if (!selectedAvatar) {
+      toast.error("Please select an avatar");
       return;
     }
 
@@ -250,21 +244,9 @@ const CreateVideoDialog = ({
     }
   };
 
-  const navigateToEditor = () => {
-    const videoData = JSON.stringify({
-      videoData: { ...outputVideo, videoScript },
-    });
-    const encodedVideoData = Base64.encode(videoData);
-    router.push(`/create/video?data=${encodedVideoData}`);
-  };
-
   const handleAvatarSelect = (avatar: Avatar) => {
     setSelectedAvatar(avatar);
   };
-
-  // const handleVoiceSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-  //   setSelectedVoice(event.target.value);
-  // };
 
   const resetForm = () => {
     setFormData({
@@ -303,6 +285,7 @@ const CreateVideoDialog = ({
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
+ 
 
   return (
     <Dialog>
@@ -316,6 +299,12 @@ const CreateVideoDialog = ({
         className="max-w-[90%] h-[90vh] px-10 py-7"
         onCloseAutoFocus={handleClose}
       >
+        {loading && (
+    <div className="fixed inset-0 flex items-center justify-center z-50">
+      <TemplateLoader />
+    </div>
+  )}
+
         <div className="relative w-full space-y-6 text-[12px] h-full flex flex-col">
           <main className="flex flex-col gap-x-10">
             <div className="w-full flex flex-row gap-y-4 gap-x-10 mb-6 ">
@@ -364,9 +353,7 @@ const CreateVideoDialog = ({
                         htmlFor="speaker"
                         className="flex items-center font-semibold gap-x-3"
                       >
-                        <span className="space-x-2 text-[15px] ">
-                          Speaker <span className="text-[#F93939]">*</span>
-                        </span>
+                        <span className="space-x-2 text-[15px] ">Speaker</span>
                       </label>
                       <motion.input
                         animate={{ opacity: 1 }}
@@ -389,7 +376,6 @@ const CreateVideoDialog = ({
                       >
                         <span className="space-x-2 text-[15px] ">
                           Target Audience{" "}
-                          <span className="text-[#F93939]">*</span>
                         </span>
                       </label>
                       <motion.input
@@ -409,80 +395,59 @@ const CreateVideoDialog = ({
                 </div>
               </div>
 
-              <div className="flex flex-col gap-y-4  w-1/3">
-                <div className="flex flex-col gap-y-2 mb-2">
-                  <label
-                    htmlFor="language"
-                    className="flex items-center font-semibold gap-x-3"
-                  >
-                    <span className="space-x-2 text-[15px] ">
-                      Language <span className="text-[#F93939]">*</span>
-                    </span>
-                  </label>
-                  <motion.select
-                    animate={{ opacity: 1 }}
-                    initial={{ opacity: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.25 }}
-                    name="language"
-                    value={formData.language}
-                    onChange={handleInputChange}
-                    className="border border-[#DEDEDE] bg-[#F5F5F5] h-[54px] w-full rounded-xl outline-none focus:border-primary-green transition-all p-4"
-                  >
-                    <option value="" disabled>
-                      Select Language
-                    </option>
-                    <option value="English">English</option>
-                    <option value="Spanish">Spanish</option>
-                    <option value="French">French</option>
-                    <option value="German">German</option>
-                    <option value="Chinese">Chinese</option>
-                    <option value="Japanese">Japanese</option>
-                    <option value="Korean">Korean</option>
-                    <option value="Russian">Russian</option>
-                    <option value="Portuguese">Portuguese</option>
-                    <option value="Italian">Italian</option>
-                  </motion.select>
-                </div>
+              <div className="flex flex-col gap-y-4 w-1/3">
+  <div className="flex relative z-30 flex-col gap-y-2 mb-2">
+    <label
+      htmlFor="language"
+      className="flex items-center font-semibold gap-x-3"
+    >
+      <span className="space-x-2 text-[15px]">Language</span>
+    </label>
+    <CustomSelect
+      placeholder="Select Language"
+      options={[
+        "English",
+        "Spanish",
+        "French",
+        "German",
+        "Chinese",
+        "Japanese",
+        "Korean",
+        "Russian",
+        "Portuguese",
+        "Italian",
+      ]}
+      value={selectedLanguage}
+      onChange={(value: string) => setSelectedLanguage(value)}
+    />
+  </div>
 
-                <div className="flex flex-col gap-y-2">
-                  <label
-                    htmlFor="tone"
-                    className="flex items-center font-semibold gap-x-3"
-                  >
-                    <span className="space-x-2 text-[15px] ">
-                      Tone <span className="text-[#F93939]">*</span>
-                    </span>
-                  </label>
-                  <motion.select
-                    animate={{ opacity: 1 }}
-                    initial={{ opacity: 0 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.25 }}
-                    name="tone"
-                    value={formData.tone}
-                    onChange={handleInputChange}
-                    className="border border-[#DEDEDE] z-20 bg-[#F5F5F5] h-[54px] w-full rounded-xl outline-none focus:border-primary-green transition-all p-4"
-                  >
-                    <option value="" disabled>
-                      Select Tone
-                    </option>
-                    <option value="formal">Professional</option>
-                    <option value="casual">Friendly</option>
-                    <option value="neutral">Casual</option>
-                  </motion.select>
-                </div>
-                <div className="relative z-20">
-                  {" "}
-                  <AudioBox
-                    selectedVoice={selectedVoice}
-                    onVoiceSelect={handleVoiceSelect}
-                  />
-                </div>
-              </div>
+  <div className="flex relative z-20 flex-col gap-y-2">
+    <label
+      htmlFor="tone"
+      className="flex items-center font-semibold gap-x-3"
+    >
+      <span className="space-x-2 text-[15px]">Tone</span>
+    </label>
+    <CustomSelect
+      placeholder="Select Tone"
+      options={["Professional", "Casual", "Friendly"]}
+      value={tone}
+      onChange={(value: string) => settone(value)}
+    />
+  </div>
+
+  <div className="relative z-10">
+    <AudioBox
+      selectedVoice={selectedVoice}
+      onVoiceSelect={handleVoiceSelect}
+    />
+  </div>
+</div>
+
             </div>
 
-            <div className="w-full flex">
+            <div className="w-full flex relative z-0">
               {loading ? (
                 <div className="flex flex-col items-center w-full max-w-3xl mx-auto">
                   <Motion
@@ -571,32 +536,33 @@ const CreateVideoDialog = ({
                     </Motion>
                   )}
                 </div>
-              ) : outputVideo ? (
-                <Motion
-                  transition={{ duration: 0.5 }}
-                  variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
-                  classNames="flex flex-col justify-between"
-                >
-                  <div className="flex flex-col items-center">
-                    <h2 className="mb-2">Your video is ready!</h2>
-                    <p className="mb-4 text-lg font-semibold">
-                      {outputVideo.title}
-                    </p>
-                    <video controls className="rounded-xl w-full max-w-4xl">
-                      <source src={outputVideo.download} type="video/mp4" />
-                      Your browser does not support the video tag.
-                    </video>
-                  </div>
-                  <div className="flex justify-end">
-                    <button
-                      onClick={navigateToEditor}
-                      className="bg-primary-green text-white py-3.5 px-4 sheen rounded-xl flex items-center justify-center"
-                    >
-                      Continue in editor
-                    </button>
-                  </div>
-                </Motion>
               ) : (
+                //  outputVideo ? (
+                //   <Motion
+                //     transition={{ duration: 0.5 }}
+                //     variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+                //     classNames="flex flex-col justify-between"
+                //   >
+                //     <div className="flex flex-col items-center">
+                //       <h2 className="mb-2">Your video is ready!</h2>
+                //       <p className="mb-4 text-lg font-semibold">
+                //         {outputVideo.title}
+                //       </p>
+                //       <video controls className="rounded-xl w-full max-w-4xl">
+                //         <source src={outputVideo.download} type="video/mp4" />
+                //         Your browser does not support the video tag.
+                //       </video>
+                //     </div>
+                //     <div className="flex justify-end">
+                //       <button
+                //         onClick={navigateToEditor}
+                //         className="bg-primary-green text-white py-3.5 px-4 sheen rounded-xl flex items-center justify-center"
+                //       >
+                //         Continue in editor
+                //       </button>
+                //     </div>
+                //   </Motion>
+                // ) :
                 <Motion
                   transition={{ duration: 0.5 }}
                   variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}

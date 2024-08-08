@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
-import Image from "next/image"; // For the image if needed
+import Image from "next/image";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 
@@ -19,13 +19,13 @@ const CreateVideoDialog = ({
   const [playingSampleUrl, setPlayingSampleUrl] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     const fetchVoices = async () => {
       try {
-        const response = await instance.get(
-          `${API_URL}/ai/api/v1/video/voices`
-        );
+        const response = await instance.get(`${API_URL}/ai/api/v1/video/voices`);
         setVoices(response.data.data);
       } catch (error) {
         console.error("Error fetching voices");
@@ -33,6 +33,24 @@ const CreateVideoDialog = ({
     };
 
     fetchVoices();
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        buttonRef.current &&
+        !dropdownRef.current.contains(event.target as Node) &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   const handleVoiceSelect = (voiceId: string) => {
@@ -58,11 +76,12 @@ const CreateVideoDialog = ({
         htmlFor="voice"
         className="flex items-center font-semibold gap-x-3"
       >
-        <span className="space-x-2 text-[15px]">Voices</span>
+        <span className="space-x-2 text-[15px] z-0 relative">Voices</span>
       </label>
       <div>
-        <div className="relative z-60">
+        <div className="relative z-20">
           <button
+            ref={buttonRef}
             className="border border-[#DEDEDE] bg-[#F5F5F5] h-full w-full rounded-xl outline-none focus:border-primary-green transition-all p-4 text-left flex justify-between items-center"
             onClick={() => setDropdownOpen((prev) => !prev)}
           >
@@ -72,13 +91,14 @@ const CreateVideoDialog = ({
             <span
               className={`ml-2 transition-transform ${
                 dropdownOpen ? "rotate-180" : ""
-              }`} // Add rotation class
+              }`} 
               style={{ display: "inline-block" }}
             >
-              &#9660;
+              <Image src="/arrowe.svg" width={10} height={10} alt="arrow"/>
             </span>
           </button>
           <motion.div
+            ref={dropdownRef}
             animate={{ opacity: 1 }}
             initial={{ opacity: 0 }}
             exit={{ opacity: 0 }}
@@ -98,13 +118,13 @@ const CreateVideoDialog = ({
                 <button
                   type="button"
                   onClick={(e) => {
-                    e.stopPropagation(); // Prevent dropdown from closing
+                    e.stopPropagation(); 
                     handlePlaySample(voice.sampleUrl);
                   }}
                   className="ml-2"
                   aria-label="Play sample"
                 >
-                  <Image src="/music.png" width={10} height={10} alt="music" />
+                  <Image src="/music.png" width={20} height={20} alt="music" />
                 </button>
               </div>
             ))}
