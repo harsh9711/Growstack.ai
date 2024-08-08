@@ -70,6 +70,8 @@ export default function ContactsDashboard() {
     getContacts();
   }, [pagination.pageIndex, pagination.pageSize]);
 
+  // const tabs = ["Smart list", "Bulk actions", "Restore", "Tasks", "Company"];
+
   useEffect(() => {
     const tab = tabQueryParam ? Number(tabQueryParam) : 0;
     setSelectedTabIndex(tab);
