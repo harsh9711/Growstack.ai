@@ -12,8 +12,7 @@ export default function ContactsDashboard() {
   const tabQueryParam = searchParams.get("tab");
 
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
-  const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
-  const [toggleModal, setToggleModal] = useState<boolean>(false);
+  const [tabDistanceFromLeft, setDistanceFromLeft] = useState(0);
   const tabs = ["Smart list", "Prospects"];
 
   useEffect(() => {
@@ -21,7 +20,7 @@ export default function ContactsDashboard() {
     setSelectedTabIndex(tab);
     const totalTabs = tabs.length;
     const percentage = (tab / totalTabs) * 100;
-    setTabUnderlineLeft(percentage);
+    setDistanceFromLeft(percentage);
   }, [tabQueryParam]);
 
   const handleTabClick = (index: number) => {
@@ -119,7 +118,7 @@ export default function ContactsDashboard() {
                 <div
                   className="absolute bottom-0 h-[48px] bg-primary-green custom-transition rounded-lg"
                   style={{
-                    left: `calc(${tabUnderlineLeft}%)`,
+                    left: `calc(${tabDistanceFromLeft}%)`,
                     width: `${100 / tabs.length}%`,
                   }}></div>
               </div>
