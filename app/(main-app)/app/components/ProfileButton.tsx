@@ -25,24 +25,24 @@ export function ProfileButton() {
   const currentUser = getCurrentUser();
 
   const handleLogout = () => {
-    deleteCookie('token');
+    deleteCookie("token");
     localStorage.clear();
-    dispatch(logout())
+    dispatch(logout());
     router.push("/auth/login");
-  }
+  };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Avatar className="rounded-xl">
-          <AvatarImage src={currentUser?.profile_img} />
+          <AvatarImage src={currentUser?.avatar} />
           <AvatarFallback className="rounded-xl">{currentUser?.email?.slice(0, 1)}</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[300px] relative right-10 text-[15px]">
         <div className="p-4 flex items-center gap-3">
           <Avatar>
-            <AvatarImage src={currentUser?.profile_img} />
+            <AvatarImage src={currentUser?.avatar} />
             <AvatarFallback>{currentUser?.email?.slice(0, 1)}</AvatarFallback>
           </Avatar>
           <div>

@@ -125,7 +125,7 @@ export default function Dashboard() {
             </p>
           </div>
         </div>
-        <div className="grid grid-cols-4 gap-6 mt-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mt-10">
           <div className="bg-white py-7 px-8 rounded-3xl flex justify-between items-center shadow-2xl shadow-gray-200">
             <div className="space-y-3">
               <p className="text-[#4B4B4B]">Total balance</p>
@@ -159,7 +159,7 @@ export default function Dashboard() {
             <Image src="/icons/payment-dollar.svg" alt="" width={100} height={100} />
           </div>
         </div>
-        <div className="w-full flex gap-6 mt-10">
+        <div className="w-full flex flex-col-reverse 2xl:flex-row gap-6 mt-10">
           <div className="w-full space-y-6">
             <div className="w-full bg-white border border-[#E8E8E8] rounded-3xl p-6">
               <div className="flex items-center justify-between">
@@ -169,7 +169,7 @@ export default function Dashboard() {
                 </Link>
               </div>
               <div className="max-h-[450px] overflow-y-auto mt-6 scrollbar-primary-sm">
-                <div className="grid grid-cols-2 gap-5 pr-5">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 pr-5">
                   {aiAppsloading ? (
                     Array(15)
                       .fill(null)
@@ -226,7 +226,7 @@ export default function Dashboard() {
                     </Link>
                   </div>
                   <div className="max-h-[450px] overflow-y-auto mt-6 scrollbar-primary-sm">
-                    <div className="grid grid-cols-2 gap-5 pr-5">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 pr-5">
                       {aiAssistantsloading
                         ? Array(15)
                             .fill(null)
@@ -247,7 +247,7 @@ export default function Dashboard() {
                                 </div>
                               </div>
                               <Link href={`/app/plan/ai-assistant/chat/${id}`}>
-                                <button className="bg-[#CECECE] text-[#7C7C7C] h-12 w-full px-4 rounded-xl hover:bg-primary-green hover:text-white transition-all duration-300">
+                                <button className="bg-white text-primary-green border border-primary-green h-12 w-full px-6 rounded-xl hover:bg-primary-green hover:text-white transition-all duration-300">
                                   Chat now
                                 </button>
                               </Link>
@@ -259,7 +259,7 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
-          <div className="w-[50%] bg-white p-8 rounded-3xl border borer-[#E8E8E8] space-y-5">
+          <div className="w-full 2xl:w-[50%] bg-white p-8 rounded-3xl border borer-[#E8E8E8] space-y-5">
             <div className="space-y-3">
               <h1 className="text-xl font-semibold text-center">Unlock the power of AI</h1>
               <p className="text-[#6C7275] text-center">Chat with the smartest AI - Experience the power of AI with us</p>
