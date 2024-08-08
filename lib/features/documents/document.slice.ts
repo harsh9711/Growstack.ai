@@ -3,11 +3,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface DocumentState {
   isEdit: boolean;
   savedDocumentData: any;
+  loader: boolean
 }
 
 const initialState: DocumentState = {
   isEdit: false,
   savedDocumentData: null,
+  loader: false
 };
 
 const documentSlice = createSlice({
@@ -20,8 +22,12 @@ const documentSlice = createSlice({
     savedDecument: (state, action: PayloadAction<any>) => {
         state.savedDocumentData = action.payload;
       },
+
+      isActiveLoader: (state, action: PayloadAction<any>) => {
+        state.loader = action.payload;
+      },
   },
 });
 
-export const { editDocument, savedDecument } = documentSlice.actions;
+export const { editDocument, savedDecument, isActiveLoader } = documentSlice.actions;
 export default documentSlice.reducer;

@@ -50,7 +50,7 @@ export function ProfileButton() {
           </Avatar>
           <div>
             <h1 className="text-xl font-semibold">
-              {currentUser?.user_name ?? "John Doe"}
+              {currentUser?.user_name ?? currentUser?.name ?? "John Doe"}
             </h1>
             <p className="text-primary-grey text-sm">{currentUser?.email}</p>
           </div>
