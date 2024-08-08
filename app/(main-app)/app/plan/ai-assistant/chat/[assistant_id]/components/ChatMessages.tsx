@@ -5,6 +5,8 @@ import remarkGfm from "remark-gfm";
 import "../../../../../../../../styles/markdown.css";
 import DotsLoader from "@/components/DotLoader";
 import Image from "next/image";
+import { getCurrentUser } from "@/lib/features/auth/auth.selector";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface ChatMessagesProps {
   conversation: Conversation;
@@ -24,6 +26,8 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ conversation, assistant }) 
     scrollToBottom();
   }, [conversation]);
 
+  const currentUser = getCurrentUser();
+
   return (
     <>
       <div className="mt-4 flex justify-start items-start gap-4">
@@ -39,7 +43,10 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ conversation, assistant }) 
           return (
             <div key={chat._id} className="p-4">
               <div className="mt-4 flex flex-row-reverse justify-start items-start gap-4">
-                <Image src="/dummy/person-0.png" alt="User" width={100} height={100} className="w-[45px] h-[45px] object-cover rounded-xl" />
+                <Avatar className="w-11 h-11 rounded-xl">
+                  <AvatarImage src={currentUser?.avatar} />
+                  <AvatarFallback>{currentUser?.email?.slice(0, 1)}</AvatarFallback>
+                </Avatar>
                 <div className="max-w-5xl bg-primary-green text-white py-3 px-5 rounded-xl text-[14.5px] leading-relaxed">{chat.prompt}</div>
               </div>
               <div className="mt-4 flex justify-start items-start gap-4">

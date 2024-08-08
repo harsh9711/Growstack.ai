@@ -1,263 +1,25 @@
-// web scraping done
 "use client";
-import { Fragment, useCallback, useEffect, useRef, useState } from "react";
-import { Plus, Search, X } from "lucide-react";
-import instance from "@/config/axios.config";
-import { API_URL } from "@/lib/api";
-import "leaflet/dist/leaflet.css";
-import { LatLngExpression } from "leaflet"; // Import LatLngExpression instead
-import BulkDialog from "./components/BulkDialog";
-import Link from "next/link";
-import { Table, TableBody, TableCell, TableHeader, TableHead, TableRow } from "@/components/ui/table";
-import dynamic from "next/dynamic";
+
 import Motion from "@/components/Motion";
 import Spinner from "@/components/Spinner";
-import { toast } from "react-hot-toast";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import instance from "@/config/axios.config";
+import { API_URL } from "@/lib/api";
 import clsx from "clsx";
+import { LatLngExpression } from "leaflet";
+import "leaflet/dist/leaflet.css";
+import { Plus, Search, X } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { ArrowRight } from "lucide-react";
-import { LoadScript, GoogleMap } from "@react-google-maps/api";
-import React from "react";
+import React, { Fragment, useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { FaArrowCircleLeft } from "react-icons/fa";
 import UseGoogleAutocomplete from "../hooks/UseGoogleAutocomplete";
-
-const MapContainer = dynamic(() => import("react-leaflet").then((module) => module.MapContainer), { ssr: false });
-const TileLayer = dynamic(() => import("react-leaflet").then((module) => module.TileLayer), { ssr: false });
-const Marker = dynamic(() => import("react-leaflet").then((module) => module.Marker), { ssr: false });
-const Popup = dynamic(() => import("react-leaflet").then((module) => module.Popup), { ssr: false });
-
-interface AddProspectProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onProspectAdded: (newProspect: Place) => void; // Callback to add new prospect to the list
-}
-
-const AddProspectModal: React.FC<AddProspectProps> = ({ isOpen, onClose, onProspectAdded }) => {
-  const [prospects, setProspects] = useState<Place[]>([]); // State to manage prospect data
-  const [showTable, setShowTable] = useState(false); // State to control table visibility
-
-  const [formData, setFormData] = useState({
-    businessName: "",
-    phoneNumber: "",
-    address: "",
-    city: "",
-    state: "",
-    country: "",
-    zipCode: "",
-    website: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-  });
-
-  const [isChecked, setIsChecked] = useState(false);
-
-  useEffect(() => {
-    if (isOpen) {
-    }
-  }, [isOpen]);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = () => {
-
-    const newProspect: Place = {
-      latitude: 0, // Replace with actual latitude
-      longitude: 0, // Replace with actual longitude
-      title: formData.businessName,
-      address: formData.address,
-      phoneNumber: formData.phoneNumber,
-      rating: 0, // Replace with actual rating if available
-      ratingCount: 0, // Replace with actual rating count if available
-      website: formData.website,
-      category: "Custom", // Replace with actual category if available
-    };
-    onProspectAdded(newProspect);
-    setProspects([...prospects, newProspect]);
-    setFormData({
-      businessName: "",
-      phoneNumber: "",
-      address: "",
-      city: "",
-      state: "",
-      country: "",
-      zipCode: "",
-      website: "",
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
-    });
-
-    setShowTable(true);
-
-    onClose();
-  };
-
-  return (
-    <>
-      {isOpen && (
-        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-40 flex justify-center items-center z-50">
-          <div className="flex-1 h-full w-full flex justify-center items-center mt-10 mb-20">
-            <div className="w-full max-w-3xl bg-white border border-[#EDEFF0] rounded-3xl shadow-box p-10">
-              <h1 className="text-xl font-semibold border-b border-[#EDEFF0] pb-4">Add prospect</h1>
-              <div className="mt-4 flex flex-col gap-5">
-                {/* Form fields */}
-                <div className="space-y-2">
-                  <label className="font-medium">
-                    Business name <span className="text-[#F00]">*</span>
-                  </label>
-                  <Input type="text" name="businessName" value={formData.businessName} onChange={handleChange} placeholder="Type your Business name" />
-                </div>
-                <div className="space-y-2">
-                  <label className="font-medium">
-                    Business phone number <span className="text-[#F00]">*</span>
-                  </label>
-                  <Input type="text" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} placeholder="Type your phone number" />
-                </div>
-                <div className="space-y-2">
-                  <label className="font-medium">
-                    Address <span className="text-[#F00]">*</span>
-                  </label>
-                  <Input type="text" name="address" value={formData.address} onChange={handleChange} placeholder="Type Business Address" />
-                </div>
-                <div className="grid grid-cols-2 gap-5">
-                  <div className="space-y-2">
-                    <label className="font-medium">
-                      City <span className="text-[#F00]">*</span>
-                    </label>
-                    <Input type="text" name="city" value={formData.city} onChange={handleChange} placeholder="Type City" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="font-medium">
-                      State <span className="text-[#F00]">*</span>
-                    </label>
-                    <Input type="text" name="state" value={formData.state} onChange={handleChange} placeholder="Type State" />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="font-medium">
-                      Country <span className="text-[#F00]">*</span>
-                    </label>
-                    <Select>
-                      <SelectTrigger className="w-full border-none">
-                        <span className="relative">
-                          <SelectValue
-                            // value={}
-                            // onChange={handleChange}
-                            // name="country"
-                            placeholder="Country"
-                          />
-                        </span>
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="monday">Afghanistan</SelectItem>
-                        <SelectItem value="wednesday">Albania</SelectItem>
-                        <SelectItem value="thursday">Algeria</SelectItem>
-                        <SelectItem value="friday">Andorra</SelectItem>
-                        <SelectItem value="saturday">Angola</SelectItem>
-                        <SelectItem value="sunday">Anguilla</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <label className="font-medium">
-                      Zip code <span className="text-[#F00]">*</span>
-                    </label>
-                    <Input type="text" name="zipCode" value={formData.zipCode} onChange={handleChange} placeholder="Type Zip code" />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <label className="font-medium">
-                    Website <span className="text-[#F00]">*</span>
-                  </label>
-                  <Input type="url" name="website" value={formData.website} onChange={handleChange} placeholder="Type Website URL" />
-                </div>
-
-                {/* Point of contact section */}
-                <div className="flex items-center gap-3">
-                  <Switch checked={isChecked} onCheckedChange={() => setIsChecked((prev) => !prev)} />
-                  Do you have a point of contact at this business?
-                </div>
-                {isChecked && (
-                  <div className="grid grid-cols-2 gap-5">
-                    <div className="space-y-2">
-                      <label className="font-medium">First name</label>
-                      <Input type="text" name="firstName" value={formData.firstName} onChange={handleChange} placeholder="Type First name" />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="font-medium">Last name</label>
-                      <Input type="text" name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Type Last name" />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="font-medium">Email</label>
-                      <Input type="text" name="email" value={formData.email} onChange={handleChange} placeholder="Type Email" />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="font-medium">Phone</label>
-                      <Input type="text" name="phone" value={formData.phone} onChange={handleChange} placeholder="Type Phone" />
-                    </div>
-                  </div>
-                )}
-
-                <div className="flex justify-end gap-4 w-full">
-                  <button
-                    className="py-3.5 h-14 w-full max-w-[140px] px-6 bg-white border text-primary-green border-primary-green  rounded-xl mt-6"
-                    onClick={() => {
-                      setFormData({
-                        businessName: "",
-                        phoneNumber: "",
-                        address: "",
-                        city: "",
-                        state: "",
-                        country: "",
-                        zipCode: "",
-                        website: "",
-                        firstName: "",
-                        lastName: "",
-                        email: "",
-                        phone: "",
-                      });
-                    }}>
-                    Reset
-                  </button>
-                  <button
-                    className="py-3.5 h-14 w-full max-w-[200px] px-6 bg-primary-green sheen rounded-xl text-white mt-6 flex items-center justify-center gap-3 whitespace-nowrap"
-                    onClick={handleSubmit}>
-                    Save Prospect{" "}
-                    <span className="relative p-2 text-primary-green bg-white rounded-full">
-                      <ArrowRight size={20} />
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
-  );
-};
-interface Place {
-  latitude: number;
-  longitude: number;
-  title: string;
-  address: string;
-  phoneNumber: string;
-  rating: number;
-  ratingCount: number;
-  website: string;
-  category: string;
-}
+import AddProspectModal from "./components/AddProspectModal";
+import BulkDialog from "./components/BulkDialog";
+import MapComponent from "./components/MapComponent";
+import SaveProspects from "./components/SaveProspects";
+import { renderRatingStars } from "./components/RatingStars";
 
 const WebScraping: React.FC = () => {
   const [fields, setFields] = useState<{ id: number; value: string }[]>([{ id: 1, value: "" }]);
@@ -325,13 +87,6 @@ const WebScraping: React.FC = () => {
     setBulkInput(terms.join(","));
   };
 
-  const handleCountrySearch = (e: { preventDefault: () => void }) => {
-    e.preventDefault(); // Prevents default form submission
-    if (inputCountry) {
-      getGeoInfo(inputCountry);
-    }
-  };
-
   const [fetchedResults, setFetchedResults] = useState<Array<Place[]>>([]);
 
   const handleBulkSubmit = async () => {
@@ -354,7 +109,6 @@ const WebScraping: React.FC = () => {
       };
       const allResults = [];
 
-      // for (let i = 0; i < 6; i++) {
       const response = await instance.post(`${API_URL}/ai/api/v1/webscrape`, postData);
       const places = response.data.data[0].places.map((place: Place) => ({
         title: place.title,
@@ -367,7 +121,6 @@ const WebScraping: React.FC = () => {
         longitude: place.longitude,
       }));
       allResults.push(...places);
-      // }
       const updatedResults = [...fetchedResults];
       updatedResults[currentPageNumber - 1] = allResults;
       setFetchedResults(updatedResults);
@@ -381,30 +134,12 @@ const WebScraping: React.FC = () => {
       setIsPending(false);
     }
   };
-  const renderRatingStars = (rating: number) => {
-    const stars = [];
-    for (let i = 0; i < 5; i++) {
-      stars.push(
-        <span
-          key={i}
-          style={{
-            color: i < rating ? "#FFD700" : "#E0E0E0",
-            fontSize: "25px",
-          }}>
-          ★
-        </span>
-      );
-    }
-    return <div>{stars}</div>;
-  };
-  interface OptionType {
-    label: string;
-    value: string;
-  }
-  const [isProspectModalOpen, setIsProspectModalOpen] = useState<boolean>(false);
 
   const [inputCountry, setInputCountry] = useState<string>("");
-  const [selectedOption, setSelectedOption] = useState<OptionType | null>(null);
+  const [selectedOption, setSelectedOption] = useState<{
+    label: string;
+    value: string;
+  } | null>(null);
   const { autocompleteInputRef } = UseGoogleAutocomplete({ setInputCountry });
 
   const handleCountryInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -419,190 +154,9 @@ const WebScraping: React.FC = () => {
     }
   };
 
-  // Function to open modal
-  const openProspectModal = () => {
-    setIsProspectModalOpen(true);
-  };
-
-  // Function to close modal
-  const closeProspectModal = () => {
-    setIsProspectModalOpen(false);
-  };
-
   const handleProspectAdded = (newProspect: Place) => {
     setPlaces([...places, newProspect]);
-    setShowTable(true); // Show the table after adding a prospect
-  };
-
-  const SaveButton = () => {
-    const [isPending, setIsPending] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [fileTitle, setFileTitle] = useState("");
-    const handleSave = async () => {
-      setIsPending(true);
-
-      try {
-        const businesses = places.map((place) => ({
-          business_name: place.title,
-          // business_phone_number: place.phoneNumber,
-          address: place.address,
-          rating: place.rating,
-          rating_count: place.ratingCount,
-          country: "India",
-          state: "haryana",
-          city: "Gurgaon",
-          zip_code: "12117",
-          website: place.website || "",
-          business_contact: {
-            first_name: "Swapnil",
-            last_name: "Amin",
-            email: "swapnil@webbuddy.agency",
-            phone: place.phoneNumber.replace(/\D/g, "") || "",
-          },
-        }));
-
-        const data = {
-          title: fileTitle,
-          businesses: businesses,
-        };
-
-        const response = await instance.post(`${API_URL}/users/api/v1/contacts/prospects/save`, data);
-        toast.success("Data saved successfully!");
-        console.log(response.data);
-        setTimeout(() => {
-          router.push(`/app/plan/contacts?tab=1`);
-        }, 10);
-      } catch (error) {
-        console.error("Error:", error);
-        toast.error("Failed to save data. Please try again.");
-      } finally {
-        setIsPending(false);
-        setIsModalOpen(false);
-      }
-    };
-
-    const openModal = () => {
-      setIsModalOpen(true);
-    };
-
-    const handleTitleChange = (e: { target: { value: React.SetStateAction<string> } }) => {
-      setFileTitle(e.target.value);
-    };
-
-    const handleModalSubmit = () => {
-      if (fileTitle.trim() === "") {
-        alert("Title is required.");
-        return;
-      }
-      handleSave();
-    };
-
-    return (
-      <div>
-        <button
-          className={clsx(
-            "mx-auto mt-4 w-[160px] text-xl h-14 flex items-center justify-center bg-primary-green rounded-xl sheen text-white",
-            isPending && "bg-opacity-90"
-          )}
-          onClick={openModal}
-          disabled={isPending}>
-          Save
-          <FaArrowCircleLeft className="rotate-180 text-white ml-4" />
-        </button>
-
-        {isModalOpen && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-30">
-            <div className="bg-white p-8 rounded-3xl w-1/2">
-              <h2 className="mb-4 text-lg font-semibold">Enter Title</h2>
-              <input
-                type="text"
-                value={fileTitle}
-                onChange={handleTitleChange}
-                className="w-full h-12 p-2 mb-4 border rounded-lg"
-                placeholder="Enter file title"
-              />
-              <div className="flex justify-end z-[40] relative">
-                <button onClick={() => setIsModalOpen(false)} className="w-[100px] h-12 px-4 py-2 mr-2 text-white bg-gray-500 rounded-xl flex justify-center items-center">
-                  Cancel
-                </button>
-                <button onClick={handleModalSubmit} className="w-[100px] h-12 px-4 py-2 text-white bg-primary-green rounded-xl flex justify-center items-center">
-                  {isPending ? <Spinner /> : "Submit"}
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    );
-  };
-
-  const MyMapComponent = () => {
-    const mapRef = useRef<google.maps.Map | null>(null);
-    const mapContainerStyle = {
-      width: "100%",
-      height: "600px",
-    };
-
-    const center = {
-      lat: -33.89,
-      lng: 151.274,
-    };
-
-    const zoom = 10;
-
-    const onLoad = useCallback(
-      (map: google.maps.Map) => {
-        mapRef.current = map;
-
-        if (!places || places.length === 0) {
-          return;
-        }
-
-        const bounds = new window.google.maps.LatLngBounds();
-        const svgMarker = {
-          path: "M-1.547 12l6.563-6.609-1.406-1.406-5.156 5.203-2.063-2.109-1.406 1.406zM0 0q2.906 0 4.945 2.039t2.039 4.945q0 1.453-0.727 3.328t-1.758 3.516-2.039 3.070-1.711 2.273l-0.75 0.797q-0.281-0.328-0.75-0.867t-1.688-2.156-2.133-3.141-1.664-3.445-0.75-3.375q0-2.906 2.039-4.945t4.945-2.039z",
-          fillColor: "red",
-          fillOpacity: 0.6,
-          strokeWeight: 0,
-          rotation: 0,
-          scale: 2,
-          anchor: new google.maps.Point(0, 20),
-        };
-
-        places.forEach((place) => {
-          const { latitude, longitude } = place;
-          const position = new window.google.maps.LatLng(latitude, longitude);
-          bounds.extend(position);
-
-          new window.google.maps.Marker({
-            position,
-            map: mapRef.current,
-            icon: svgMarker,
-          });
-        });
-
-        mapRef.current?.fitBounds(bounds);
-
-        const maxZoom = 15;
-        mapRef.current?.addListener("zoom_changed", () => {
-          const currentZoom = mapRef.current?.getZoom();
-          if (currentZoom !== undefined && currentZoom > maxZoom) {
-            mapRef.current?.setZoom(maxZoom);
-          }
-        });
-      },
-      [places]
-    );
-
-    const onUnmount = useCallback(() => {
-      mapRef.current = null;
-    }, []);
-
-    return (
-      <LoadScript googleMapsApiKey="AIzaSyB8uvaGZVlIgN8HaF4zU72wBeMIYmCBVwo">
-        <GoogleMap mapContainerStyle={mapContainerStyle} center={center} zoom={zoom} onLoad={onLoad} onUnmount={onUnmount}></GoogleMap>
-      </LoadScript>
-    );
+    setShowTable(true);
   };
 
   const resultsPerPage = 10;
@@ -681,11 +235,7 @@ const WebScraping: React.FC = () => {
                 onChange={handleCountryInputChange}
                 onKeyDown={handleInputKeyDown}
               />
-              <button
-                onClick={openProspectModal}
-                className="flex items-center gap-3 hover:bg-primary-green/10 sheen min-w-fit py-3 px-4 rounded-lg transition-all duration-300">
-                Add prospect manually
-              </button>
+              <AddProspectModal onProspectAdded={handleProspectAdded} />
             </div>
 
             {selectedOption && (
@@ -696,13 +246,12 @@ const WebScraping: React.FC = () => {
                 </div>
               </div>
             )}
-
-            <AddProspectModal isOpen={isProspectModalOpen} onClose={closeProspectModal} onProspectAdded={handleProspectAdded} />
           </div>
 
-          <div className="mt-8 relative z-[10] min-h-[600px] bg-gray-100">
-            <MyMapComponent />
+          <div className="mt-8 relative min-h-[600px] bg-gray-100">
+            <MapComponent places={places} />
           </div>
+
           <button
             onClick={handleBulkSubmit}
             disabled={isPending}
@@ -730,33 +279,39 @@ const WebScraping: React.FC = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {currentResults.length < 1 ? (
+                  {!isPending && currentResults.length < 1 ? (
                     <TableRow>
                       <TableCell colSpan={4} className="text-lg text-center h-48">
                         <h1>No results found</h1>
                       </TableCell>
                     </TableRow>
+                  ) : isPending ? (
+                    <TableRow>
+                      <TableCell colSpan={4} className="text-lg text-center h-48">
+                        <h1>Loading...</h1>
+                      </TableCell>
+                    </TableRow>
                   ) : (
                     currentResults.map((place, index) => (
                       <TableRow key={index}>
-                        <TableCell className="flex flex-col">
+                        <TableCell className="flex flex-col min-w-[400px]">
                           <div className="text-base font-semibold">{place?.title || "—"}</div>
                           <div className="mt-1">{place?.address || "—"}</div>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="min-w-[220px] max-w-[220px]">
                           {place?.rating && <div>{renderRatingStars(place?.rating || 0)}</div>}
                           <div className="flex flex-row justify-between gap-4 text-md mt-1">
                             <h2 className="font-semibold">{place?.rating || "—"} </h2>
                             <h2 className="text-sky-500 mr-20">{place?.ratingCount ? place.ratingCount.toLocaleString() + " Ratings" : "—"}</h2>
                           </div>
                         </TableCell>
-                        <TableCell>
+                        <TableCell className="min-w-[200px]">
                           <div className="text-[14px] flex whitespace-nowrap">{place?.phoneNumber || "—"}</div>
                         </TableCell>
                         <TableCell>
                           {place.website ? (
                             <Link href={place?.website} target="_blank" rel="noopener noreferrer" className="underline text-blue-600">
-                              {place?.website}
+                              {place.website}
                             </Link>
                           ) : (
                             "—"
@@ -785,7 +340,7 @@ const WebScraping: React.FC = () => {
               </div>
             </Motion>
           )}
-          {showTable && <SaveButton />}
+          {showTable && <SaveProspects places={places} />}
         </div>
       </div>
     </Fragment>

@@ -3,6 +3,7 @@ import {
   AiAppsIcon,
   AiArticleIcon,
   AiAssistantIcon,
+  AiPlaygroundIcon,
   AnalyseIcon,
   AutomationIcon,
   BotIcon,
@@ -46,11 +47,6 @@ const navLinks: NavLink[] = [
     icon: <PlanIcon />,
     sublinks: [
       {
-        icon: <ProductAiIcon />,
-        name: "AI playground",
-        href: "/app/plan/ai-playground",
-      },
-      {
         icon: <BotIcon />,
         name: "AI chat",
         href: "/app/plan/ai-chat",
@@ -74,6 +70,11 @@ const navLinks: NavLink[] = [
         icon: <TextToVideoIcon />,
         name: "Text to video",
         href: "/app/plan/text-to-video",
+      },
+      {
+        icon: <AiPlaygroundIcon />,
+        name: "AI playground",
+        href: "/app/plan/ai-playground",
       },
       {
         icon: <ProductAiIcon />,

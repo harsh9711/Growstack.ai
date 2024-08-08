@@ -1,26 +1,18 @@
-import { X } from "lucide-react";
-import { ModalContent } from "./modalEnums";
-import { TriangleAlertIcon } from "@/components/svgs/icons";
-import { useEffect, useState } from "react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import Editor from "../../../ai-apps/[appId]/components/Editor";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import Spinner from "@/components/Spinner";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import instance from "@/config/axios.config";
+import { API_URL } from "@/lib/api";
 import "@/styles/editor.css";
 import { Contact } from "@/types/contacts";
+import { AlertTriangle, Mail } from "lucide-react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import instance from "@/config/axios.config";
-import Spinner from "@/components/Spinner";
-import { API_URL } from "@/lib/api";
+import Editor from "../../../ai-apps/[appId]/components/Editor";
+import { getCookie } from "cookies-next";
 
 interface SendEmailProps {
-  setToggleModal: React.Dispatch<React.SetStateAction<boolean>>;
-  handleModal: (value: ModalContent | null) => void;
   selectedIds: string[];
   contacts: Contact[];
 }
@@ -29,7 +21,7 @@ interface EmailDataProps {
   subject: string;
   template_id: string;
   contacts: {
-    username: string;
+    name: string;
     img: string;
     emails: string[];
   }[];
@@ -43,36 +35,65 @@ const initialEmailData = {
   message: "",
 };
 
-const SendEmail = ({
-  setToggleModal,
-  handleModal,
-  selectedIds,
-  contacts,
-}: SendEmailProps) => {
+const SendEmail = ({ selectedIds, contacts }: SendEmailProps) => {
   const [proceed, setProceed] = useState<boolean>(false);
-  const [emailData, setEmailData] = useState<EmailDataProps>(initialEmailData);
+  const [isEmailPermissionGranted, setIsEmailPermissionGranted] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [templates, setTemplates] = useState<{ id: string; name: string }[]>(
-    []
-  );
+  const [isOpen, setIsOpen] = useState(false);
+  const [emailData, setEmailData] = useState<EmailDataProps>(initialEmailData);
+  const [pending, setPending] = useState<boolean>(false);
+  const [templates, setTemplates] = useState<{ id: string; name: string }[]>([]);
 
   const getSelectedContactsDetails = () => {
-    const selectedContacts = contacts.filter((contact) =>
-      selectedIds.includes(contact.id)
-    );
+    const selectedContacts = contacts.filter((contact) => selectedIds.includes(contact.id));
     return selectedContacts.map((contact) => ({
-      username: contact.name,
+      name: contact.name,
       img: contact.logo,
       emails: contact.email,
     }));
   };
 
+  const checkEmailPermissionGranted = async () => {
+    setLoading(true);
+    try {
+      const checkPermission = await instance.get(`${API_URL}/users/api/v1/mails/check-permission`);
+      if (!checkPermission.data.success) {
+        return setIsEmailPermissionGranted(false);
+      } else {
+        return setIsEmailPermissionGranted(true);
+      }
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.error);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    checkEmailPermissionGranted();
+  }, []);
+
+  const grantPermission = async () => {
+    try {
+      const token = getCookie("token");
+      if (!token) {
+        throw new Error("Token not found");
+      }
+      const redirectUrl = `${API_URL}/users/api/v1/mails/auth/gmail?token=${token}`;
+      window.location.href = redirectUrl;
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.error);
+      }
+    }
+  };
+
   useEffect(() => {
     const fetchTemplates = async () => {
       try {
-        const res = await instance.get(
-          `${API_URL}/users/api/v1/docs?page=1&limit=10&category=text`
-        );
+        const res = await instance.get(`${API_URL}/users/api/v1/docs?page=1&limit=10&category=text`);
         const data = res.data.data.docs.map((re: any) => ({
           id: re._id,
           name: re.doc_name,
@@ -118,9 +139,7 @@ const SendEmail = ({
 
   const handleProceed = () => {
     if (selectedIds.length < 1) {
-      toast.error(
-        "No selected user detected. Select at least one user to proceed."
-      );
+      toast.error("No contacts selected. Select at least one contact to proceed.");
       return;
     }
     setProceed(true);
@@ -134,162 +153,162 @@ const SendEmail = ({
         subject,
         template_id,
         contacts: emailData.contacts.map((contact) => ({
-          username: contact.username,
+          username: contact.name,
           emails: contact.emails,
         })),
       };
-      setLoading(true);
-      const response = await instance.post(
-        `/users/api/v1/mails/contacts`,
-        payload
-      );
-      setLoading(false);
-      if (response.data.success) {
-        toast.success(response.data.message);
-        setToggleModal(false);
-        handleModal(null);
-      }
+      setPending(true);
+      const response = await instance.post(`/users/api/v1/mails/contacts`, payload);
+      setPending(false);
     } catch (error: any) {
-      console.error("Error uploading file:", error);
-      toast.error(error);
+      if (error.response) {
+        toast.error(error.response.data.error);
+      }
+    } finally {
+      setIsOpen(false);
+      setPending(false);
     }
   };
 
-  const avatars = emailData.contacts.map((contact) => contact.img);
   return (
-    <>
-      <div
-        className={`${
-          proceed ? "fixed w-1/2" : "relative"
-        } bg-white z-40 px-4 py-3 border-b border-gray-300`}
-      >
-        <button
-          onClick={() => {
-            setToggleModal(false);
-            handleModal(null);
-          }}
-          className="absolute top-1 right-1 rounded-lg transition-opacity p-2 hover:bg-[#ff00001f] hover:opacity-100 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
-        >
-          <X className="h-5 w-5 text-[#ff00009d]" />
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <button className="w-[45px] h-[45px] border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black">
+          <Mail />
         </button>
-        <div className="font-semibold text-[22px] text-header">Send email</div>
-      </div>
-      <div className={`${proceed ? "relative top-[60px]" : ""} px-4`}>
-        <div className="text-[24px] font-semibold text-header mt-[40px] mb-[25px]">
-          Send email to following contacts
-        </div>
-        <div className="flex gap-2 items-center">
-          {avatars.map((avatar, index) => (
-            <div
-              key={index}
-              className="rounded-[100%] text-white bg-[#033747] w-[45px] h-[45px] flex items-center justify-center"
-            >
-              <img
-                src={avatar}
-                alt={`avatar-${index}`}
-                className="rounded-full w-full h-full object-cover"
-              />
-            </div>
-          ))}
-        </div>
-        {!proceed ? (
+      </DialogTrigger>
+      <DialogContent className="max-w-5xl pt-0 h-fit gap-0">
+        <DialogHeader className="flex justify-center border-b border-gray-200 py-4">
+          <DialogTitle>Send Email</DialogTitle>
+        </DialogHeader>
+
+        {loading ? (
+          <div className="w-full flex justify-center items-center h-40">Loading</div>
+        ) : !isEmailPermissionGranted ? (
           <>
-            <div className="flex gap-2 mt-[24px]">
-              <TriangleAlertIcon />{" "}
-              <span className="text-[14px] text-[#034737]">
-                Please note the actions will be performed over a period of time,
-                you can track the progress on the bulk action page.
-              </span>
-            </div>
-            <div className="flex justify-end mt-8 mb-3">
+            <div className="text-[24px] font-semibold text-header mt-4">Would you like to grant permission to send emails?</div>
+            <div className="flex justify-end mt-4 space-x-3">
               <button
                 type="button"
-                onClick={handleProceed}
-                className="text-[16px] bg-white text-[#034737] border border-[#034737] px-[20px] py-[6px] rounded-md"
-              >
-                Okay, proceed
+                onClick={() => setIsOpen(false)}
+                className="text-[14px] w-[150px] h-12 bg-white text-red-500 border border-red-500 rounded-xl">
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={grantPermission}
+                className="text-[16px] w-[150px] h-12 bg-primary-green text-white border border-[#034737] rounded-xl">
+                Yes
               </button>
             </div>
           </>
         ) : (
-          <form onSubmit={handleSubmit} className="mt-[10px] pb-3">
-            <div className="mt-[20px]">
-              <div className="text-[14px]">Email templates</div>
-              <Dropdown
-                label="Select"
-                items={templates}
-                value={emailData.template_id}
-                onChange={handleTemplateChange}
-              />
-            </div>
-            <div className="mt-[20px]">
-              <div className="text-[14px]">From name</div>
-              <input
-                type="text"
-                placeholder="From name"
-                className="w-full p-3 rounded-md bg-[#F2F2F2] mt-2 h-[44px]"
-                name="name"
-                required={true}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="flex-1 mt-[25px]">
-              <div className="text-[14px]">Email subject</div>
-              <input
-                type="text"
-                placeholder="Enter email subject"
-                className="w-full p-3 rounded-md bg-[#F2F2F2] mt-2 h-[44px]"
-                name="subject"
-                required={true}
-                onChange={handleChange}
-              />
-            </div>
-            {/* <div className="w-full p-8 bg-white rounded-2xl border border-[#EDEFF0] flex flex-col"> */}
-            <div className="flex-1 mt-[25px] ql-editor-fr px-0 py-0">
-              <div className="text-[14px]">Message</div>
-              <Editor content={""} onChange={handleEditorChange} />
-            </div>
-            {/* </div> */}
-            {/* <div className="my-[15px]">
-              <RadioGroup
-                defaultValue="Add all at once"
-                className="w-full flex items-center"
-              >
-                <div className="flex space-x-2 w-full">
-                  <RadioGroupItem value="Add all at once" id="r1" />
-                  <label htmlFor="r1">Add all at once</label>
+          <div>
+            {selectedIds.length < 1 ? (
+              <div className="text-[24px] font-semibold text-header mt-4">No contacts have been selected</div>
+            ) : (
+              <>
+                <div className="text-[24px] font-semibold text-header mt-4">Send email to following contacts</div>
+                <div className="flex gap-2 items-center relative h-11 my-3">
+                  {emailData.contacts.slice(0, 8).map((contact, index) => (
+                    <div
+                      key={index}
+                      className="absolute"
+                      style={{
+                        left: index * 30,
+                        zIndex: emailData.contacts.length - index,
+                      }}>
+                      {contact.img ? (
+                        <div title={contact.name} className="border border-white rounded-full cursor-pointer relative h-11 w-11 overflow-hidden">
+                          <Image src={contact.img} alt={contact.name} fill objectFit="cover" />
+                        </div>
+                      ) : (
+                        <div
+                          title={contact.name}
+                          className="bg-gray-200 border border-white h-11 w-11 rounded-full flex justify-center items-center cursor-pointer">
+                          <p className="text-xl text-gray-500">{contact.name.slice(0, 1)}</p>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                  {emailData.contacts.length > 8 && (
+                    <div
+                      title={`+ ${emailData.contacts.length - 8} more`}
+                      className="absolute"
+                      style={{
+                        left: (emailData.contacts.length - 2) * 30,
+                        zIndex: emailData.contacts.length - (emailData.contacts.length - 1),
+                      }}>
+                      <div className="bg-gray-200 border border-white h-11 w-11 rounded-full flex justify-center items-center cursor-pointer">
+                        <p className="text-gray-500">+{emailData.contacts.length - 8}</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <div className="flex space-x-2 w-full">
-                  <RadioGroupItem value="Add all at scheduled time" id="r2" />
-                  <label htmlFor="r2">Add all at scheduled time</label>
+              </>
+            )}
+            {!proceed ? (
+              <>
+                <div className="flex items-center gap-2 mt-4">
+                  <AlertTriangle />
+                  <span className="text-[14px]">
+                    Please note the actions will be performed over a period of time, you can track the progress on the bulk action page.
+                  </span>
                 </div>
-                <div className="flex space-x-2 w-full">
-                  <RadioGroupItem value="Add in drip mode" id="r3" />
-                  <label htmlFor="r3">Add in drip mode</label>
+                <div className="flex justify-end mt-5">
+                  <button type="button" onClick={handleProceed} className="text-[16px] bg-primary-green text-white px-5 h-12 rounded-xl">
+                    Okay, proceed
+                  </button>
                 </div>
-              </RadioGroup>
-            </div>
-            <div className="text-[14px] text-header mb-[6px]">Action</div>
-            <input
-              type="text"
-              placeholder="Enter a description for the action..."
-              className="w-full p-3 rounded-md bg-[#F2F2F2] mt-2 h-[44px]"
-              name="action"
-              onChange={handleChange}
-            /> */}
-            <div className="flex justify-end mt-6 mb-3">
-              <button
-                type="submit"
-                disabled={loading}
-                className="text-[16px] min-w-[105px] bg-white text-[#034737] border border-[#034737] px-[20px] py-[6px] rounded-md flex justify-center"
-              >
-                {loading ? <Spinner color="black" /> : "Send Email"}
-              </button>
-            </div>
-          </form>
+              </>
+            ) : (
+              <form onSubmit={handleSubmit} className="mt-4">
+                <div className="mt-5 space-y-2">
+                  <div className="text-[14px]">Email templates</div>
+                  <Dropdown label="Select" items={templates} value={emailData.template_id} onChange={handleTemplateChange} />
+                </div>
+                <div className="mt-5 space-y-2">
+                  <div className="text-[14px]">From name</div>
+                  <input
+                    type="text"
+                    placeholder="From name"
+                    className="w-full p-3 rounded-xl bg-[#F2F2F2] mt-2 h-[44px]"
+                    name="name"
+                    required={true}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="flex-1 mt-[25px]">
+                  <div className="text-[14px]">Email subject</div>
+                  <input
+                    type="text"
+                    placeholder="Enter email subject"
+                    className="w-full p-3 rounded-xl bg-[#F2F2F2] mt-2 h-[44px]"
+                    name="subject"
+                    required={true}
+                    onChange={handleChange}
+                  />
+                </div>
+                {/* <div className="w-full p-8 bg-white rounded-2xl border border-[#EDEFF0] flex flex-col"> */}
+                <div className="flex-1 mt-[25px] ql-editor-fr px-0 py-0">
+                  <div className="text-[14px]">Message</div>
+                  <Editor content={""} onChange={handleEditorChange} />
+                </div>
+
+                <div className="flex justify-end mt-6">
+                  <button
+                    type="submit"
+                    disabled={pending}
+                    className="text-[16px] w-[150px] sheen text-white bg-primary-green h-12 px-6 rounded-xl flex justify-center items-center">
+                    {pending ? <Spinner /> : "Send Email"}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
         )}
-      </div>
-    </>
+      </DialogContent>
+    </Dialog>
   );
 };
 

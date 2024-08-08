@@ -28,7 +28,6 @@ const initialChat = [
 
 export default function AiPlayground() {
   const [userPrompt, setUserPrompt] = useState<string>("");
-  const [toggleModal, setToggleModal] = useState<boolean>(false);
   const [chatAreas, setChatAreas] = useState<
     {
       id: number;
@@ -55,9 +54,7 @@ export default function AiPlayground() {
   };
 
   const updateChatAreaModel = (id: number, newModel: string) => {
-    const newProvider = modelData.find((provider) =>
-      provider.models.some((model) => model.value === newModel)
-    )?.provider;
+    const newProvider = modelData.find((provider) => provider.models.some((model) => model.value === newModel))?.provider;
 
     setChatAreas(
       chatAreas.map((chatArea) =>
@@ -103,11 +100,7 @@ export default function AiPlayground() {
     setChatAreas((prevChatAreas) =>
       prevChatAreas.map((chatArea) => ({
         ...chatArea,
-        conversation: [
-          ...chatArea.conversation,
-          newMessage,
-          loadingAssistantMessage,
-        ],
+        conversation: [...chatArea.conversation, newMessage, loadingAssistantMessage],
       }))
     );
 
@@ -120,10 +113,7 @@ export default function AiPlayground() {
         };
 
         try {
-          const response = await instance.post(
-            `${API_URL}/ai/api/v1/playground`,
-            payload
-          );
+          const response = await instance.post(`${API_URL}/ai/api/v1/playground`, payload);
 
           const assistantMessage: Message = {
             content: response.data.data,
@@ -136,11 +126,7 @@ export default function AiPlayground() {
               ca.id === chatArea.id
                 ? {
                     ...ca,
-                    conversation: ca.conversation.map((msg, msgIndex) =>
-                      msgIndex === ca.conversation.length - 1
-                        ? assistantMessage
-                        : msg
-                    ),
+                    conversation: ca.conversation.map((msg, msgIndex) => (msgIndex === ca.conversation.length - 1 ? assistantMessage : msg)),
                   }
                 : ca
             )
@@ -156,27 +142,10 @@ export default function AiPlayground() {
 
   return (
     <>
-      {toggleModal && (
-        <Modal setToggleModal={setToggleModal}>
-          <NewChatAlert
-            setToggleModal={setToggleModal}
-            handleNewChat={() => {
-              setChatAreas(initialChat);
-              setToggleModal(false);
-            }}
-          />
-        </Modal>
-      )}
       <div className="flex-1 h-full flex flex-col mt-10 overflow-x-auto">
         <form onSubmit={handleSubmit} className="flex-1 h-full flex gap-6">
-          <div className="!bg-white fixed left-0 flex flex-col border border-[#E8E8E8] shadow-box p-5 space-y-5 h-fit">
-            <button
-              type="button"
-              className="bg-primary-green p-3 rounded-[16px] text-white"
-              onClick={() => setToggleModal(true)}
-            >
-              <Plus size={32} />
-            </button>
+          <div className="!bg-white h-full flex flex-col border border-[#E8E8E8] shadow-box p-5 space-y-5">
+            <NewChatAlert handleNewChat={() => setChatAreas(initialChat)} />
             {/* <button
             type="button"
             className="bg-primary-green p-3 rounded-[16px] text-white"
@@ -189,9 +158,7 @@ export default function AiPlayground() {
               key={chatArea.id}
               selectedModel={chatArea.selectedModel}
               addChatArea={addChatArea}
-              onModelChange={(newModel) =>
-                updateChatAreaModel(chatArea.id, newModel)
-              }
+              onModelChange={(newModel) => updateChatAreaModel(chatArea.id, newModel)}
               handleChange={handleChange}
               conversation={chatArea.conversation}
               userPrompt={userPrompt}
