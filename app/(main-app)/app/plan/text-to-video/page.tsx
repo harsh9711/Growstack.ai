@@ -171,7 +171,7 @@ export default function TextToVideoPage() {
         setTemplates([]);
         console.error("Error fetching data:", error);
       } finally {
-        setLoading(false); // Set loading to false once data is fetched
+        setLoading(false);
       }
     };
     fetchData();
