@@ -247,7 +247,7 @@ export default function Dashboard() {
                                 </div>
                               </div>
                               <Link href={`/app/plan/ai-assistant/chat/${id}`}>
-                                <button className="bg-white text-primary-green border border-primary-green h-12 w-full px-6 rounded-xl hover:bg-primary-green hover:text-black transition-all duration-300">
+                                <button className="bg-white text-primary-green border border-primary-green h-12 w-full px-6 rounded-xl hover:bg-primary-green hover:text-white transition-all duration-300">
                                   Chat now
                                 </button>
                               </Link>
@@ -268,7 +268,7 @@ export default function Dashboard() {
               <div className="!mt-7 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
                 <div className="flex gap-4 items-center">
                   <Image src="/icons/ai-chat.svg" alt="" width={60} height={60} />
-                  <h2 className="font-medium text-[18px]">AI chat</h2>
+                  <h2 className="font-medium">AI chat</h2>
                 </div>
                 <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
                   <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
@@ -279,7 +279,7 @@ export default function Dashboard() {
               <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
                 <div className="flex gap-4 items-center">
                   <Image src="/icons/ai-templates.svg" alt="" width={60} height={60} />
-                  <h2 className="font-medium text-[18px]">AI templates </h2>
+                  <h2 className="font-medium">AI templates </h2>
                 </div>
                 <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
                   <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
@@ -290,7 +290,7 @@ export default function Dashboard() {
               <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
                 <div className="flex gap-4 items-center">
                   <Image src="/icons/chatbot.svg" alt="" width={60} height={60} />
-                  <h2 className="font-medium text-[18px]">AI assistants</h2>
+                  <h2 className="font-medium">AI assistants</h2>
                 </div>
                 <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
                   <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
@@ -301,7 +301,7 @@ export default function Dashboard() {
               <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
                 <div className="flex gap-4 items-center">
                   <Image src="/icons/custom-gpts.svg" alt="" width={60} height={60} />
-                  <h2 className="font-medium text-[18px]">AI custom GPT </h2>
+                  <h2 className="font-medium">AI custom GPT </h2>
                 </div>
                 <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
                   <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
@@ -312,7 +312,7 @@ export default function Dashboard() {
               <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
                 <div className="flex gap-4 items-center">
                   <Image src="/icons/media.svg" alt="" width={60} height={60} />
-                  <h2 className="font-medium text-[18px]">Text to video </h2>
+                  <h2 className="font-medium">Text to video </h2>
                 </div>
                 <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
                   <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
@@ -323,7 +323,7 @@ export default function Dashboard() {
               <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
                 <div className="flex gap-4 items-center">
                   <Image src="/icons/workflow-builder.svg" alt="" width={60} height={60} />
-                  <h2 className="font-medium text-[18px]">Workflow builder</h2>
+                  <h2 className="font-medium">Workflow builder</h2>
                 </div>
                 <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
                   <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
@@ -334,7 +334,7 @@ export default function Dashboard() {
               <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
                 <div className="flex gap-4 items-center">
                   <Image src="/icons/text-generator.svg" alt="" width={60} height={60} />
-                  <h2 className="font-medium text-[18px]">AI article wizard</h2>
+                  <h2 className="font-medium">AI article wizard</h2>
                 </div>
                 <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
                   <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
