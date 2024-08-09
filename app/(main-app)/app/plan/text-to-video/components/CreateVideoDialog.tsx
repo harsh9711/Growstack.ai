@@ -538,7 +538,7 @@ const CreateVideoDialog = ({
                     classNames="flex  w-full h-full grid relative z-10 place-content-center"
                   >
                     <div>
-                      <div className="flex flex-col xl:flex-row md:flex-row lg:flex-row 2xl:flex-row w-full 2xl:w-[1640px] justify-between items-center mb-6">
+                      <div className="flex flex-col xl:flex-row md:flex-row lg:flex-row 2xl:flex-row w-full justify-between items-center mb-6">
                         <h2 className="text-lg font-semibold mb-4">
                           Select your Avatar
                         </h2>
