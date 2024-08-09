@@ -48,7 +48,7 @@ export default function Navbar() {
             <div className="min-w-[300px] flex justify-between gap-8 items-center cursor-pointer px-3 py-2 outline-none hover:bg-accent hover:text-accent-foreground rounded-lg my-1">
               <div className="flex gap-3 items-center text-sm">
                 {React.cloneElement(item.icon)}
-                <h2>{item.name}</h2>
+                <h2 className="text-[15px]">{item.name}</h2>
               </div>
               <ChevronRight className="text-gray-500" />
             </div>
@@ -67,7 +67,7 @@ export default function Navbar() {
               {React.cloneElement(item.icon, {
                 className: clsx(pathname === item.href && "text-white"),
               })}
-              <h2 className={clsx(pathname === item.href && "text-white")}>{item.name}</h2>
+              <h2 style={{fontSize:"15px"}} className={clsx(pathname === item.href && "text-white")}>{item.name}</h2>
             </div>
             {item.href && <ChevronRight className={clsx("text-gray-500", pathname === item.href && "text-white")} />}
           </DropdownMenuItem>
@@ -122,7 +122,7 @@ const NavLinkBtn = ({ link, isActive }: { link: NavLink; isActive?: boolean }) =
   return (
     <div
       className={clsx(
-        "flex justify-center items-center p-[9px] pr-6 rounded-2xl gap-4 text-[15px] transition-all duration-200",
+        "flex justify-center items-center p-[9px] pr-6 rounded-2xl gap-4 transition-all duration-200",
         isActive ? "bg-primary-green text-white !hover:bg-primary-green hover:bg-opacity-90" : "hover:bg-[#F1F1F1]"
       )}>
       <div className="bg-[#FAFAFB] p-2.5 rounded-lg">
@@ -130,7 +130,7 @@ const NavLinkBtn = ({ link, isActive }: { link: NavLink; isActive?: boolean }) =
           className: clsx(isActive && "text-primary-green"),
         })}
       </div>
-      <h2 className="whitespace-nowrap">{link.title}</h2>
+      <h2 className="whitespace-nowrap text-[15px] m-0">{link.title}</h2>
     </div>
   );
 };
