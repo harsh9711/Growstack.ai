@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Header } from "./components/Header";
-import { InteractiveElement } from "./components/InteractiveElement";
+import { InteractiveElement } from "./components/Element";
 
 export default function Page() {
   return (
