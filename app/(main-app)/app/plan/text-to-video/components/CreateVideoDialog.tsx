@@ -81,7 +81,7 @@ const CreateVideoDialog = ({
   }
 
   const router = useRouter();
-  const [loading, setLoading] = useState(false);  
+  const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
   const [step, setStep] = useState(0);
   const [videoScript, setVideoScript] = useState("");
@@ -121,28 +121,68 @@ const CreateVideoDialog = ({
   const handleVoiceSelect = (voiceId: string) => {
     setSelectedVoice(voiceId);
   };
+  const handleSubmit = async () => {
+    const validation = formSchema.safeParse(formData);
+    if (!validation.success) {
+      toast.error(validation.error.errors[0].message);
+      return;
+    }
+    if (!selectedAvatar) {
+      toast.error("Please select an avatar");
+      return;
+    }
+
+    setStep(1);
+    try {
+      const scriptResponse = await instance.post(
+        `${API_URL}/ai/api/v1/generate/video/video-script`,
+        formData
+      );
+
+      if (scriptResponse.data.success) {
+        setVideoScript(scriptResponse.data.data.script);
+        await generateVideo(scriptResponse.data.data.script);
+      } else {
+        toast.error("Failed to generate script");
+      }
+    } catch (error) {
+      toast.error("Error submitting the form");
+    }
+  };
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
   const handleButtonClick = async () => {
-    setClicked(true);
     setLoading2(true);
+  
     requestAnimationFrame(async () => {
       const validation = formSchema.safeParse(formData);
       if (!validation.success) {
         toast.error(validation.error.errors[0].message);
+        setLoading2(false);
         return;
       }
       if (!selectedAvatar) {
         toast.error("Please select an avatar");
+        setLoading2(false);
         return;
       }
-      // handleClose(true);
-
+  
+      // Form is valid and avatar is selected
+      setClicked(true);
       setStep(1);
+      
       try {
         const scriptResponse = await instance.post(
           `${API_URL}/ai/api/v1/generate/video/video-script`,
           formData
         );
-
+  
         if (scriptResponse.data.success) {
           setVideoScript(scriptResponse.data.data.script);
           await generateVideo(scriptResponse.data.data.script);
@@ -151,18 +191,18 @@ const CreateVideoDialog = ({
         }
       } catch (error) {
         toast.error("Error submitting the form");
-      }
-      setLoading(true);
-
-      setTimeout(() => {
-        setLoading(false);
+      } finally {
+        setLoading2(false);
+        setLoading(true);
+  
         setTimeout(() => {
           setDialogOpen(false);
           resetForm();
-        },);
-      },);
+        }, 0);
+      }
     });
   };
+  
   useEffect(() => {
     const loadAvatars = async () => {
       try {
@@ -198,14 +238,7 @@ const CreateVideoDialog = ({
     loadVoices();
   }, []);
 
-  const handleInputChange = (
-    e: React.ChangeEvent<
-      HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement
-    >
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
-  };
+  
   const LoadingOverlay = ({ progress }: { progress: number }) => {
     const [displayText, setDisplayText] = useState("Let AI do the magic");
 
@@ -237,6 +270,7 @@ const CreateVideoDialog = ({
   const generateVideo = async (scriptElements: string[]) => {
     if (!selectedAvatar) {
       toast.error("Please select an avatar");
+      setLoading2(false);
       return;
     }
 
@@ -283,35 +317,7 @@ const CreateVideoDialog = ({
     }
   };
 
-  const handleSubmit = async () => {
-    const validation = formSchema.safeParse(formData);
-    if (!validation.success) {
-      toast.error(validation.error.errors[0].message);
-      return;
-    }
-    if (!selectedAvatar) {
-      toast.error("Please select an avatar");
-      return;
-    }
-    // handleClose(true);
-
-    setStep(1);
-    try {
-      const scriptResponse = await instance.post(
-        `${API_URL}/ai/api/v1/generate/video/video-script`,
-        formData
-      );
-
-      if (scriptResponse.data.success) {
-        setVideoScript(scriptResponse.data.data.script);
-        await generateVideo(scriptResponse.data.data.script);
-      } else {
-        toast.error("Failed to generate script");
-      }
-    } catch (error) {
-      toast.error("Error submitting the form");
-    }
-  };
+ 
 
   const handleAvatarSelect = (avatar: Avatar) => {
     setSelectedAvatar(avatar);
@@ -344,13 +350,13 @@ const CreateVideoDialog = ({
   };
 
   const handleClose = () => {
-    if (clicked) {
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-      }, 16000);
-    }
-
+    // if (clicked) {
+    //   setLoading(true);
+    //   setTimeout(() => {
+    //     setLoading(false);
+    //   }, 16000);
+    // }
+    setClicked(false);
     setDialogOpen(false);
     resetForm();
   };
@@ -538,12 +544,14 @@ const CreateVideoDialog = ({
                     classNames="flex  w-full h-full grid relative z-10 place-content-center"
                   >
                     <div>
-                      <div className="flex flex-col xl:flex-row md:flex-row lg:flex-row 2xl:flex-row w-full 2xl:w-[1640px] justify-between items-center mb-6">
-                        <h2 className="text-lg font-semibold mb-4">
-                          Select your Avatar
-                        </h2>
+                      <div className="flex flex-col xl:flex-row md:flex-row lg:flex-row 2xl:flex-row w-full 2xl:w-[1640px] mb-6">
+                        <div className="flex-1 flex items-center">
+                          <h2 className="text-lg font-semibold mb-4 xl:mb-0">
+                            Select your Avatar
+                          </h2>
+                        </div>
 
-                        <div className="flex flex-row items-center justify-center gap-x-6">
+                        <div className="flex flex-col xl:flex-row md:flex-row lg:flex-row 2xl:flex-row flex-1 justify-end items-center gap-x-6">
                           <div className="bg-white border text-[13px] border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-[300px]">
                             <Search className="text-gray-500" size={20} />
                             <input
@@ -554,13 +562,16 @@ const CreateVideoDialog = ({
                               className="p-2 rounded"
                             />
                           </div>
+
                           <button
                             disabled={loading}
                             className={clsx(
-                              "bg-primary-green text-[15px] text-white py-3.5 px-20 w-full rounded-xl flex items-center justify-center",
-                              loading && "opacity-80 cursor-not-allowed"
+                              "bg-primary-green text-[15px] text-white py-3.5 px-20 w-full max-w-[300px] rounded-xl flex items-center justify-center",
+                              {
+                                "opacity-80 cursor-not-allowed": loading,
+                              }
                             )}
-                            onClick={handleButtonClick}
+                            onClick={handleButtonClick }
                           >
                             {loading ? (
                               <Spinner />
@@ -572,6 +583,7 @@ const CreateVideoDialog = ({
                           </button>
                         </div>
                       </div>
+
                       <AvatarSelection
                         avatars={filteredAvatars}
                         onSelect={handleAvatarSelect}
