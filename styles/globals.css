@@ -3,6 +3,57 @@
 @tailwind components;
 @tailwind utilities;
 
+.default-btn {
+  color: white;
+  padding: 7px 20px;
+  border-radius: 8px;
+  background: rgb(233, 91, 74);
+  background: -moz-linear-gradient(
+    0deg,
+    rgba(233, 91, 74, 1) 0%,
+    rgba(177, 100, 196, 1) 100%
+  );
+  background: -webkit-linear-gradient(
+    0deg,
+    rgba(233, 91, 74, 1) 0%,
+    rgba(177, 100, 196, 1) 100%
+  );
+  background: linear-gradient(
+    0deg,
+    rgba(233, 91, 74, 1) 0%,
+    rgba(177, 100, 196, 1) 100%
+  );
+}
+.drop-box {
+  border-radius: 20px;
+  border: 1px dashed rgba(43, 68, 231, 0.25);
+  background: var(--White, #fff);
+  box-shadow: 0px 100px 80px 0px rgba(0, 0, 0, 0.07),
+    0px 41.778px 33.422px 0px rgba(0, 0, 0, 0.05),
+    0px 22.336px 17.869px 0px rgba(0, 0, 0, 0.04),
+    0px 12.522px 10.017px 0px rgba(0, 0, 0, 0.04),
+    0px 6.65px 5.32px 0px rgba(0, 0, 0, 0.03),
+    0px 2.767px 2.214px 0px rgba(0, 0, 0, 0.02);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  /* color: rgb(var(--foreground-rgb)); */
+  background: linear-gradient(0deg, #f7f7f880, rgba(247, 247, 248, 0) 43.01%);
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
 
 .custom-swiper-button-prev,
 .custom-swiper-button-next {
