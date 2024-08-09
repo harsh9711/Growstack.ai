@@ -9,7 +9,7 @@ import MarketingAutomate from '@/components/solutionMarketing/marketingAutomate/
 import MarketingInsights from '@/components/solutionMarketing/marketingInsights/MarketingInsights';
 import MarketingTechnology from '@/components/solutionMarketing/marketingTechnology/MarketingTechnology';
 import MarketingStreamline from '@/components/solutionMarketing/marketingStreamline/MarketingStreamline';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 const Page: React.FC = () => {
     return (
         <React.Fragment>
