@@ -174,12 +174,20 @@ const Page = () => {
     }
   };
 
+  const [workFlowResuming, setWorkFlowResuming] = useState(false);
+
   const handleResumeWorkflow = async (choice: boolean) => {
+    setWorkFlowResuming(true);
     try {
       const response = await instance.get(`${API_URL}/workflow/api/v1/wrun/resume/${workFlowResults.workflow_runner_id}?ctaAction=${choice}`);
       setWorkFlowResults(response.data.data);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error resuming workflow:", error);
+      if (error.response) {
+        toast.error(error.response.data.error);
+      }
+    } finally {
+      setWorkFlowResuming(false);
     }
   };
 
@@ -277,13 +285,17 @@ const Page = () => {
 
           {workFlowResults.paused && (
             <div>
-              <h2 className="text-lg font-medium text-center text-gray-400">Please review this response</h2>
-              <div className="flex flex-row gap-4 items-center justify-center">
-                <button className="bg-primary-green text-white px-4 py-2 rounded" onClick={() => handleResumeWorkflow(true)}>
-                  Satisfied & Continue
+              <h2 className="text-[17px] font-medium text-center text-gray-400">Please review this response</h2>
+              <div className="flex flex-row gap-4 items-center justify-center mt-4">
+                <button
+                  className="h-12 w-[200px] bg-primary-green text-white px-4 py-2 rounded-xl flex justify-center items-center"
+                  onClick={() => handleResumeWorkflow(true)}>
+                  {workFlowResuming ? <Spinner /> : "Satisfied & Continue"}
                 </button>
-                <button className="bg-red-500 text-white px-4 py-2 rounded" onClick={() => handleResumeWorkflow(false)}>
-                  Regenerate
+                <button
+                  className="h-12 w-[150px] bg-red-500 text-white px-4 py-2 rounded-xl flex justify-center items-center"
+                  onClick={() => handleRunWorkFlow()}>
+                  {!isWorkFlowFetched ? <Spinner /> : "Regenerate"}
                 </button>
               </div>
             </div>

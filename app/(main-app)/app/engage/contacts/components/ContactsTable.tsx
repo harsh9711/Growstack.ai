@@ -1,8 +1,12 @@
 "use client";
 
+import Motion from "@/components/Motion";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import instance from "@/config/axios.config";
+import { formatDate } from "@/lib/utils";
+import { Contact } from "@/types/contacts";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -17,22 +21,14 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { FilterIcon, MailIcon, Phone, Search } from "lucide-react";
+import { MailIcon, Phone, Search } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import FilterSheet from "./FilterSheet";
-import Motion from "@/components/Motion";
-import Link from "next/link";
-import { CiCirclePlus } from "react-icons/ci";
-import { MdOutlineDelete } from "react-icons/md";
-import { CircleIcon, DeleteIcon, SMSIcon, EmailIcon, UploadIcon } from "@/components/svgs/icons";
-import instance from "@/config/axios.config";
-import { formatDate } from "@/lib/utils";
-import { ModalContent } from "./modal/modalEnums";
-import { Contact } from "@/types/contacts";
-import Spinner from "@/components/Spinner";
-import { API_URL } from "@/lib/api";
-import toast from "react-hot-toast";
+import AddContact from "./modal/AddContact";
+import DeleteContact from "./modal/DeleteContact";
+import SendEmail from "./modal/SendEmail";
+import SendSMS from "./modal/SendSMS";
 
 export const columns: ColumnDef<Contact>[] = [
   {
@@ -60,8 +56,14 @@ export const columns: ColumnDef<Contact>[] = [
     accessorKey: "name",
     header: () => <div className="uppercase">Name</div>,
     cell: ({ row }) => (
-      <div className="capitalize flex items-center gap-3">
-        <Image src={row.original.logo} alt="" width={100} height={100} className="h-[40px] w-[40px] object-cover rounded-full" />
+      <div className="capitalize flex items-center gap-3 min-w-[240px] max-w-lg">
+        {row.original.logo ? (
+          <Image src={row.original.logo} alt="" width={100} height={100} className="h-11 w-11 object-cover rounded-full" />
+        ) : (
+          <div className="bg-red-100 text-gray-500 w-11 h-11 rounded-full grid place-content-center text-xl border border-white">
+            {row.original.name.slice(0, 1)}
+          </div>
+        )}
         {row.getValue("name")}
       </div>
     ),
@@ -70,8 +72,8 @@ export const columns: ColumnDef<Contact>[] = [
     accessorKey: "phone",
     header: () => <div className="uppercase">Phone</div>,
     cell: ({ row }) => (
-      <div className="flex flex-wrap items-center gap-2">
-        <Phone size={20} className="text-primary-green" />{" "}
+      <div className="flex items-center gap-3 max-w-xl">
+        <Phone size={20} className="text-primary-green w-full max-w-fit" />{" "}
         <span>
           {row.original.phones
             .map(
@@ -88,14 +90,9 @@ export const columns: ColumnDef<Contact>[] = [
     accessorKey: "email",
     header: () => <div className="uppercase">Email</div>,
     cell: ({ row }) => (
-      <div className="flex flex-wrap gap-2 items-center">
-        {row.original.email.length > 0 ? (
-          <>
-            <MailIcon size={20} className="text-primary-green" /> {row.original.email.join(", ")}
-          </>
-        ) : (
-          "-"
-        )}
+      <div className="flex gap-3 items-start max-w-2xl">
+        <MailIcon size={20} className="text-primary-green w-full max-w-fit" />
+        <span>{row.original.email.length > 0 ? <>{row.original.email.join(", ")}</> : "-"}</span>
       </div>
     ),
   },
@@ -103,7 +100,7 @@ export const columns: ColumnDef<Contact>[] = [
     accessorKey: "created_on",
     header: () => <div className="uppercase">Created</div>,
     cell: ({ row }) => (
-      <div className="flex gap-3">
+      <div className="flex gap-3 min-w-[170px]">
         <span>{formatDate(row.original.created_on)}</span>
       </div>
     ),
@@ -111,57 +108,57 @@ export const columns: ColumnDef<Contact>[] = [
   {
     accessorKey: "contact_type",
     header: () => "CONTACT TYPE",
-    cell: ({ row }) => <div>{row.getValue("contact_type")}</div>,
+    cell: ({ row }) => <div className="min-w-[120px]">{row.getValue("contact_type")}</div>,
   },
   {
     accessorKey: "time_zone",
     header: "TIME ZONE",
-    cell: ({ row }) => <div>{row.getValue("time_zone")}</div>,
+    cell: ({ row }) => <div className="min-w-[100px]">{row.getValue("time_zone")}</div>,
   },
 ];
 
-interface ContactsTableProps {
-  setToggleModal: React.Dispatch<React.SetStateAction<boolean>>;
-  handleModal: (value: ModalContent) => void;
-  setSelectedIds: React.Dispatch<React.SetStateAction<string[]>>;
-  contacts: Contact[];
-  pagination: PaginationState;
-  setPagination: React.Dispatch<React.SetStateAction<PaginationState>>;
-  loading: boolean;
-}
-
-export default function ContactsTable({ setToggleModal, handleModal, setSelectedIds, contacts, pagination, setPagination, loading }: ContactsTableProps) {
+export default function ContactsTable() {
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
-  // const [pagination, setPagination] = useState<PaginationState>({
-  //   pageIndex: 0,
-  //   pageSize: 10,
-  // });
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
 
-  const [allContactsData, setAllContactsData] = useState<Contact[]>([]);
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const getContacts = async () => {
+    setLoading(true);
+    const response = await instance.get(`/users/api/v1/contacts?page=${pagination.pageIndex}&limit=${pagination.pageSize}`);
+    setLoading(false);
+    const data = response.data.data.contacts;
+
+    const formattedContacts = data.map((item: any) => ({
+      id: item.contacts._id,
+      name: `${item.contacts.first_name} ${item.contacts.last_name}`,
+      email: item.contacts.emails,
+      phones: item.contacts.phones,
+      logo: item.contacts.logo,
+      created_on: item.contacts.createdAt,
+      contact_type: item.contacts.contact_type,
+      time_zone: item.contacts.time_zone,
+    }));
+
+    setContacts(formattedContacts);
+  };
+
+  useEffect(() => {
+    getContacts();
+  }, [pagination.pageIndex, pagination.pageSize]);
+
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    const getContacts = async () => {
-      const response = await instance.get(`/users/api/v1/contacts?page=${pagination.pageIndex}&limit=${pagination.pageSize}`);
-      const data = response.data.data.contacts;
-
-      const formattedContacts = data.map((item: any) => ({
-        id: item.contacts._id,
-        name: `${item.contacts.first_name} ${item.contacts.last_name}`,
-        email: item.contacts.emails,
-        phones: item.contacts.phones,
-        logo: item.contacts.logo,
-        created_on: item.contacts.createdAt,
-        contact_type: item.contacts.contact_type,
-        time_zone: item.contacts.time_zone,
-      }));
-
-      setAllContactsData(formattedContacts);
-    };
     getContacts();
   }, [pagination.pageIndex, pagination.pageSize]);
 
@@ -187,6 +184,14 @@ export default function ContactsTable({ setToggleModal, handleModal, setSelected
     },
   });
 
+  const onRowSelect = setSelectedIds;
+  useEffect(() => {
+    if (onRowSelect) {
+      const selected = table.getSelectedRowModel().rows.map(({ original }) => original.id);
+      onRowSelect(selected);
+    }
+  }, [onRowSelect, rowSelection, table]);
+
   const paginationButtons = [];
   for (let i = 0; i < table.getPageCount(); i++) {
     paginationButtons.push(
@@ -202,40 +207,15 @@ export default function ContactsTable({ setToggleModal, handleModal, setSelected
     );
   }
 
-  const handleClick = (value: ModalContent) => {
-    setToggleModal(true);
-    handleModal(value);
-    const selectedRowIds = table.getSelectedRowModel().rows.map((row) => row.original.id);
-    setSelectedIds(selectedRowIds);
-  };
-
-  const handleEmailModal = async () => {
-    try {
-      const checkPermission = await instance.get(`${API_URL}/users/api/v1/mails/check-permission`);
-      if (!checkPermission.data.success) {
-        handleClick(ModalContent.CHECK_EMAIL_PERMISSION);
-      } else {
-        handleClick(ModalContent.SEND_EMAIL);
-      }
-    } catch (error: any) {
-      console.error("Error checking permission:", error);
-      toast.error(error);
-    }
-  };
-
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value.toLowerCase());
   };
 
   useEffect(() => {
     if (searchQuery.trim() === "") {
-      // setContacts(allContactsData);
+      setContacts(contacts);
     } else {
-      // setContacts(
-      //   allContactsData.filter((contant: any) =>
-      //     contant.name.toLowerCase().includes(searchQuery)
-      //   )
-      // );
+      setContacts(contacts.filter((contant: any) => contant.name.toLowerCase().includes(searchQuery)));
     }
   }, [searchQuery]);
 
@@ -247,38 +227,13 @@ export default function ContactsTable({ setToggleModal, handleModal, setSelected
             <Search className="text-gray-500" size={20} />
             <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" value={searchQuery} onChange={handleSearch} />
           </div>
-          {/* <Link href="/app/plan/web-scraping/add-prospect" className="w-full max-w-fit">
-                <button className="flex items-center gap-3 hover:bg-primary-green/10 sheen min-w-fit py-3 px-4 rounded-lg transition-all duration-300">
-                  <CiCirclePlus className="text-primary-green" />
-                  Add prospect manually
-                </button>
-              </Link> */}
-          <div className="flex justify-center items-center">
-            <button
-              className=" mr-1 w-[45px] h-[45px] border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black"
-              onClick={() => {
-                setToggleModal(true);
-                handleModal(ModalContent.ADD_CONTACT);
-              }}>
-              <CircleIcon />
-            </button>
-            <button
-              onClick={() => handleClick(ModalContent.DELETE_CONTACT)}
-              className=" mr-1 w-[45px] h-[45px] border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black">
-              <DeleteIcon />
-            </button>
-            {/* <button
-              onClick={() => handleClick(ModalContent.SEND_SMS)}
-              className=" mr-1 w-[45px] h-[45px] border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black"
-            >
-              <SMSIcon />
-            </button> */}
-            <button
-              onClick={handleEmailModal}
-              className=" mr-1 w-[45px] h-[45px] border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black">
-              <EmailIcon />
-            </button>
-            {/* <button className=" mr-1 w-[45px] h-[45px] flex border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black">
+
+          <div className="flex justify-center items-center space-x-2">
+            <AddContact getContacts={getContacts} />
+            <DeleteContact getContacts={getContacts} selectedIds={selectedIds} />
+            <SendSMS contacts={contacts} selectedIds={selectedIds} />
+            <SendEmail contacts={contacts} selectedIds={selectedIds} />
+            {/* <button className="w-[45px] h-[45px] border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black">
               <UploadIcon />
             </button> */}
             <FilterSheet />
