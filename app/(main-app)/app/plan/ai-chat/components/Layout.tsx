@@ -1,24 +1,18 @@
 "use client";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import instance from "@/config/axios.config";
+import { API_URL } from "@/lib/api";
+import clsx from "clsx";
+import { Search } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { aiModelOptions } from "../../../create/ai-articles/constants/options";
+import { ISidebarItem } from "../interface/chat.interface";
 import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
 import SidebarItem from "./SidebarItem";
-import { Search } from "lucide-react";
-import { AnthropicClaude, ChatGptIcon2, GoogleGemini } from "@/components/svgs";
-import clsx from "clsx";
-import instance from "@/config/axios.config";
-import { API_URL } from "@/lib/api";
-import { ISidebarItem } from "../interface/chat.interface";
-import { aiModelOptions } from "../../../create/ai-articles/constants/options";
+import { formatRelativeDate } from "@/utils/dates";
+import Image from "next/image";
 
 interface LayoutProps {
   sidebarItems: ISidebarItem[];
@@ -36,9 +30,7 @@ const groupByDate = (items: ISidebarItem[]) => {
   const grouped: { [date: string]: ISidebarItem[] } = {};
 
   items.forEach((item) => {
-    const date = item.updatedDate
-      ? item.updatedDate?.split("T")[0]
-      : item.createdDate?.split("T")[0];
+    const date = item.updatedDate ? item.updatedDate?.split("T")[0] : item.createdDate?.split("T")[0];
     if (!grouped[date]) {
       grouped[date] = [];
     }
@@ -47,17 +39,11 @@ const groupByDate = (items: ISidebarItem[]) => {
 
   return grouped;
 };
-const Layout = ({
-  sidebarItems,
-  setSidebarItems,
-  fetchConversations,
-}: LayoutProps) => {
+const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutProps) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [_, setShowNewChatInput] = useState(false);
   const [selectedModel, setSelectedModel] = useState<string>("gpt-3.5-turbo");
-  const [selectedConversation, setSelectedConversation] = useState<
-    string | null
-  >(null);
+  const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
   const [groupedSidebarItems, setGroupedSidebarItems] = useState<{
     [date: string]: ISidebarItem[];
   }>({});
@@ -66,9 +52,7 @@ const Layout = ({
 
   const fetchMessages = async (_id: string) => {
     try {
-      const response = await instance.get(
-        `${API_URL}/ai/api/v1/conversation/${_id}`
-      );
+      const response = await instance.get(`${API_URL}/ai/api/v1/conversation/${_id}`);
       const chatData = response.data.data.chats;
       const messages = chatData.reduce((acc: Message[], chats: any) => {
         const flattenedThreads = chats.thread.flatMap((thread: any) => [
@@ -80,11 +64,7 @@ const Layout = ({
       setMessages(messages);
       setSelectedConversation(_id);
       const firstFewWords = response.data.data.title;
-      setSidebarItems((prevItems) =>
-        prevItems.map((item) =>
-          item._id === _id ? { ...item, title: firstFewWords } : item
-        )
-      );
+      setSidebarItems((prevItems) => prevItems.map((item) => (item._id === _id ? { ...item, title: firstFewWords } : item)));
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
@@ -120,19 +100,12 @@ const Layout = ({
   };
 
   const addMessage = (role: string, content: string, loading: boolean) => {
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { role, content, loading },
-    ]);
+    setMessages((prevMessages) => [...prevMessages, { role, content, loading }]);
   };
 
   const updateMessage = (content: string, role: string) => {
     setMessages((prevMessages) =>
-      prevMessages.map((msg, index) =>
-        index === prevMessages.length - 1 && msg.role === role
-          ? { ...msg, content, loading: false }
-          : msg
-      )
+      prevMessages.map((msg, index) => (index === prevMessages.length - 1 && msg.role === role ? { ...msg, content, loading: false } : msg))
     );
   };
 
@@ -146,44 +119,32 @@ const Layout = ({
       if (lastUserMessageIndex === -1) return prevMessages;
 
       const indexToRemove = prevMessages.length - 1 - lastUserMessageIndex;
-      const newMessages = prevMessages.filter(
-        (_, index) => index !== indexToRemove && index !== indexToRemove + 1
-      );
+      const newMessages = prevMessages.filter((_, index) => index !== indexToRemove && index !== indexToRemove + 1);
       return newMessages;
     });
   };
 
   const [selectedOption, setSelectedOption] = useState(aiModelOptions[0].value);
-  const selectedOptionLabel = aiModelOptions.find(
-    (option) => option.value === selectedOption
-  )?.label;
+  const selectedOptionLabel = aiModelOptions.find((option) => option.value === selectedOption)?.label;
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
 
-  const filteredSidebarItems = sidebarItems.filter((item) =>
-    item.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredSidebarItems = sidebarItems.filter((item) => item.title.toLowerCase().includes(searchTerm.toLowerCase()));
 
   const groupedFilteredSidebarItems = groupByDate(filteredSidebarItems);
 
   return (
     <div className="flex-1 flex gap-4 mt-10 ">
-      <aside className="fixed flex flex-col w-[380px] border bg-white rounded-3xl h-[calc(100vh-150px)]">
+      <aside className="flex flex-col w-[380px] border bg-white rounded-3xl h-[calc(100vh-176px)]">
         <div className="flex gap-2 p-5">
           <Select value={selectedOption} onValueChange={setSelectedOption}>
             <SelectTrigger className="w-[200px] h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4">
               <SelectValue placeholder="Select an option">
                 {selectedOptionLabel && (
                   <div className="flex items-center gap-2">
-                    <span className="min-w-fit">
-                      {
-                        aiModelOptions.find(
-                          (option) => option.value === selectedOption
-                        )?.icon
-                      }
-                    </span>
+                    <span className="min-w-fit">{aiModelOptions.find((option) => option.value === selectedOption)?.icon}</span>
                     {selectedOptionLabel}
                   </div>
                 )}
@@ -193,13 +154,7 @@ const Layout = ({
               <SelectGroup>
                 {aiModelOptions.map(({ icon, label, value }) => (
                   <SelectItem key={value} value={value}>
-                    <div
-                      className={clsx(
-                        "flex items-center gap-2",
-                        selectedOption === value &&
-                          "text-primary-green font-medium"
-                      )}
-                    >
+                    <div className={clsx("flex items-center gap-2", selectedOption === value && "text-primary-green font-medium")}>
                       <span className="min-w-fit">{icon}</span>
                       {label}
                     </div>
@@ -214,37 +169,28 @@ const Layout = ({
               setMessages([]);
               setShowNewChatInput(true);
             }}
-            className="text-white bg-primary-green hover:bg-primary-green/90 flex gap-2 justify-center items-center h-12 px-6 font-medium rounded-xl transition-all duration-300 text-sm"
-          >
+            className="text-white bg-primary-green hover:bg-primary-green/90 flex gap-2 justify-center items-center h-12 px-6 font-medium rounded-xl transition-all duration-300 text-sm">
             New
           </button>
-          <button
-            className="text-white bg-primary-black rounded-full h-12 w-12 grid place-content-center"
-            onClick={() => setToggleSearch(!toggleSearch)}
-          >
+          <button className="text-white bg-primary-black rounded-full h-12 w-12 grid place-content-center" onClick={() => setToggleSearch(!toggleSearch)}>
             <Search size={20} />
           </button>
         </div>
-        <div className="border-y border-[#EFEFEF] flex items-center justify-between py-3 px-6">
-          {toggleSearch && (
+        {toggleSearch && (
+          <div className="border-t border-[#EFEFEF] flex items-center justify-between py-3 px-6">
             <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
               <Search className="text-gray-500" size={20} />
-              <input
-                type="search"
-                className="outline-none h-[40px] w-full"
-                placeholder="Search"
-                onChange={handleSearch}
-              />
+              <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" onChange={handleSearch} />
             </div>
-          )}
-        </div>
+          </div>
+        )}
         <div className="border-y border-[#EFEFEF] flex items-center justify-between py-3 px-6">
           <h2 className="font-semibold">Your conversations</h2>
         </div>
-        <div className="flex-1 overflow-y-auto p-5">
+        <div className="flex-1 overflow-y-auto p-5 space-y-5">
           {Object.entries(groupedFilteredSidebarItems).map(([date, items]) => (
             <div key={date}>
-              <h3 className="text-lg font-semibold">{date}</h3>
+              <h3 className="text-gray-400 px-3 mb-2 capitalize">{formatRelativeDate(date)}</h3>
               {items.map((item) => (
                 <SidebarItem
                   key={item._id}
@@ -263,12 +209,20 @@ const Layout = ({
         </div>
         <div className="h-20 w-full bg-gradient-to-b from-transparent via-white to-white rounded-b-3xl" />
       </aside>
-      <main className="fixed flex flex-col bg-white p-4 rounded-3xl border  ml-[390px] h-[calc(100vh-150px)] w-[calc(100%-600px)]">
-        <div className="flex-1 p-4 overflow-y-auto ">
-          <ChatMessage
-            conversation={messages}
-            selectedConversation={selectedConversation}
-          />
+      <main className="w-full flex-1 flex flex-col bg-white p-4 rounded-3xl border h-[calc(100vh-176px)]">
+        <div className="flex-1 p-4 overflow-y-auto flex flex-col">
+          {!messages.length ? (
+            <div className="flex-1 flex flex-col justify-center items-center pb-40 space-y-4">
+              <div className="h-14 w-14 relative">
+                <Image src="/logo/growstack-mini.png" alt="growstack_ai_chat" fill />
+              </div>
+              <h1 className="text-primary-green text-xl">
+                Growstack <span className="font-semibold">AI</span>
+              </h1>
+            </div>
+          ) : (
+            <ChatMessage conversation={messages} selectedConversation={selectedConversation} />
+          )}
         </div>
         <ChatInput
           onSend={updateMessage}

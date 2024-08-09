@@ -1,105 +1,89 @@
 "use client";
 import instance from "@/config/axios.config";
 import { Download, MoreHorizontal, Search, Trash } from "lucide-react";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, Suspense, useEffect, useRef, useState } from "react";
 import CreateVideoDialog from "./components/CreateVideoDialog";
 import { Template } from "./components/types";
 import toast from "react-hot-toast";
 import TemplateLoader from "./components/TemplateLoader";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-} from "@/components/ui/select";
 import "@/styles/editor.css";
 import ConfirmDialog from "./components/ConfirmDialog";
 import VideoPreviewModal from "./components/VideoPreview";
+import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
-const outputType = [
-  { label: "Download", value: "download", icon: <Download size={16} /> },
-  { label: "Delete", value: "delete", icon: <Trash size={16} /> },
-];
 
-const VideoCard = ({
-  _id,
-  title,
-  thumbnailUrl,
-  status,
-  editedAt,
-  videoUrl,
-  onRemove,
-  onPreview,
-}: {
-  _id: string;
-  title: string;
-  thumbnailUrl: string;
-  status: string;
-  editedAt: string;
-  videoUrl: string;
+const VideoTable: React.FC<{
+  videos: Array<{
+    _id: string;
+    title: string;
+    thumbnailUrl: string;
+    status: string;
+    editedAt: string;
+    videoUrl: string;
+  }>;
   onRemove: (id: string) => void;
   onPreview: (url: string) => void;
-}) => {
+}> = ({ videos, onRemove, onPreview }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [currentVideoId, setCurrentVideoId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [videoDuration, setVideoDuration] = useState<{ [key: string]: string }>({});
+
+  useEffect(() => {
+    videos.forEach(video => {
+      const videoElement = document.createElement('video');
+      videoElement.src = video.videoUrl;
+
+      videoElement.addEventListener('loadedmetadata', () => {
+        const totalSeconds = Math.floor(videoElement.duration);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        const formattedDuration = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        setVideoDuration(prev => ({ ...prev, [video._id]: formattedDuration }));
+      });
+    });
+
+    return () => {
+      // Clean up listeners if necessary
+    };
+  }, [videos]);
 
   const handleConfirmDelete = async () => {
+    if (!currentVideoId) return;
+
     setIsDeleting(true);
     try {
-      await instance.delete(`/users/api/v1/docs/${_id}`);
-      onRemove(_id);
-      toast.success("Video removed");
+      await instance.delete(`/users/api/v1/docs/${currentVideoId}`);
+      onRemove(currentVideoId);
+      toast.success('Video removed');
     } catch (error) {
-      toast.error("Failed to remove video");
-      console.error("Remove error:", error);
+      toast.error('Failed to remove video');
+      console.error('Remove error:', error);
     } finally {
       setIsDeleting(false);
       setIsDialogOpen(false);
     }
   };
-  type OutputType = {
+
+ 
+  interface OutputType {
     label: string;
     value: string;
-    icon: React.ReactNode;
-  };
-
-  type CustomSelectProps = {
-    onSelect?: (value: string) => void;
-  };
-  const CustomSelect: React.FC<CustomSelectProps> = ({ onSelect }) => {
+    icon: JSX.Element;
+  }
+  
+  const outputType: OutputType[] = [
+      { label: 'Delete', value: 'delete', icon: <span>🗑️</span> },
+      { label: 'Download', value: 'download', icon: <span>📥</span> }
+  
+  ];
+  
+  const CustomSelect: React.FC<{ videoUrl: string; _id: string }> = ({ videoUrl, _id }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedValue, setSelectedValue] = useState("");
+    const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  
     const dropdownRef = useRef<HTMLDivElement | null>(null);
-    const handleSelectChange = async (value: string) => {
-      if (value === "delete") {
-        setIsDialogOpen(true);
-      } else if (value === "download") {
-        setIsOpen(false);
-        try {
-          const response = await fetch(videoUrl);
-          if (!response.ok) {
-            throw new Error("File not found");
-          }
-
-          const blob = await response.blob();
-          const url = URL.createObjectURL(blob);
-
-          const link = document.createElement("a");
-          link.href = url;
-          link.download = `${_id}.mp4`; // Ensure file extension is correct
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          URL.revokeObjectURL(url);
-
-          toast.success("Download started");
-        } catch (error) {
-          toast.error("Failed to download video");
-          console.error("Download error:", error);
-        }
-      }
-    };
+  
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
@@ -108,17 +92,47 @@ const VideoCard = ({
         setIsOpen(false);
       }
     };
-
+  
     useEffect(() => {
-      document.addEventListener("mousedown", handleClickOutside);
+      document.addEventListener('mousedown', handleClickOutside);
       return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
+        document.removeEventListener('mousedown', handleClickOutside);
       };
     }, []);
-
+  
+    const handleSelectChange = async (value: string, videoUrl: string, _id: string) => {
+      if (value === 'delete') {
+        setCurrentVideoId(_id);
+        setIsDialogOpen(true);
+      } else if (value === 'download') {
+     
+        try {
+          const response = await fetch(videoUrl);
+          if (!response.ok) {
+            throw new Error('File not found');
+          }
+  
+          const blob = await response.blob();
+          const url = URL.createObjectURL(blob);
+  
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `${_id}.mp4`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+  
+          toast.success('Download started');
+        } catch (error) {
+          toast.error('Failed to download video');
+          console.error('Download error:', error);
+        }
+      }
+    };
+  
     return (
       <div className="relative inline-block text-left" ref={dropdownRef}>
-        {" "}
         <button
           type="button"
           className="p-1 bg-white border-0 h-10 hover:bg-gray-100 rounded-lg flex items-center"
@@ -132,9 +146,19 @@ const VideoCard = ({
               {outputType.map(({ label, value, icon }) => (
                 <button
                   key={value}
-                  onClick={() => handleSelectChange(value)}
+                  onClick={() => {
+                    // Check if the value is already selected
+                    if (value === selectedValue) {
+                      setSelectedValue(" ");
+                      handleSelectChange('', videoUrl, _id);
+                    } else {
+                      handleSelectChange(value, videoUrl, _id);
+                      setSelectedValue("");
+                    }
+                    setIsOpen(false);
+                  }}
                   className={`flex items-center gap-2 px-4 py-2 w-full text-left ${
-                    value === selectedValue ? "bg-gray-100" : ""
+                    value === selectedValue ? 'bg-gray-100' : ''
                   }`}
                 >
                   {icon}
@@ -148,42 +172,63 @@ const VideoCard = ({
     );
   };
   return (
-    <div className="flex items-center h-[104px] border border-[#EBEBEB] mt-[20px] px-[20px] transition duration-300 hover:border-primary-green">
-      <div className="flex items-center w-full justify-between gap-4">
-        <div
-          className="w-[64px] h-[64px] cursor-pointer"
-          onClick={() => onPreview(videoUrl)}
-        >
-          <img
-            className="object-cover w-full h-full rounded-2xl"
-            src={thumbnailUrl}
-            alt="video thumbnail"
-          />
-        </div>
-        <div className="flex-1 flex items-center">
-          <p className="text-[16px] font-medium truncate max-w-[200px]">
-            {title}
-          </p>
-        </div>
-        <div className="flex-1 flex justify-center">
-          <button className="bg-[#EBEBEB] px-[22px] py-[6px] text-[14px] rounded-[30px]">
-            {status}
-          </button>
-        </div>
-        <div className="flex-shrink-0">
-          <span className="text-[#151B23] text-[16px] font-normal">
-            Edited about{" "}
-            {Math.round(
-              (new Date().getTime() - new Date(editedAt).getTime()) / 3600000
-            )}{" "}
-            hours ago
-          </span>
-        </div>
+    <div className="rounded-lg border overflow-hidden mt-5 bg-white min-h-[50vh]">
 
-        <CustomSelect />
-      </div>
+    <Table >
+      <TableHeader>
+        <TableRow className="bg-[#0347370D]">
+          <TableHead>Thumbnail</TableHead>
+          <TableHead>Title</TableHead>
+          <TableHead>Duration</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead>Edited At</TableHead>
+          <TableHead>Actions</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {videos.map((video) => (
+          <TableRow key={video._id}>
+            <TableCell onClick={() => onPreview(video.videoUrl)}>
+              <img
+                className="object-cover w-[64px] h-[64px] rounded-2xl"
+                src={video.thumbnailUrl}
+                alt="video thumbnail"
+              />
+            </TableCell>
+            <TableCell className="text-[16px] font-medium truncate max-w-[200px]">
+              {video.title}
+            </TableCell>
+            <TableCell className="text-[14px] text-gray-500">
+              {videoDuration[video._id] || 'Loading...'}
+            </TableCell>
+            <TableCell className="text-[14px] ">
+              {video.status}
+            </TableCell>
+            <TableCell className="text-[16px] text-[#151B23]">
+              {(() => {
+                const timeDifference = new Date().getTime() - new Date(video.editedAt).getTime();
+                const totalMinutes = Math.floor(timeDifference / 60000);
+                const totalSeconds = Math.floor((timeDifference % 60000) / 1000);
 
-      <ConfirmDialog
+                if (totalMinutes >= 60) {
+                  const hours = Math.floor(totalMinutes / 60);
+                  return `Created about ${hours} ${hours === 1 ? 'hr' : 'hrs'} ago`;
+                } else {
+                  return `Created about ${totalMinutes} ${totalMinutes === 1 ? 'min' : 'mins'} and ${totalSeconds} ${totalSeconds === 1 ? 'sec' : 'secs'} ago`;
+                }
+              })()}
+            </TableCell>
+            <TableCell>
+              <CustomSelect videoUrl={video.videoUrl} _id={video._id} />
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+      <TableFooter>
+      </TableFooter>
+      {/* <TableCaption>Your video table caption here</TableCaption> */}
+    </Table>
+    <ConfirmDialog
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
         onConfirm={handleConfirmDelete}
@@ -193,6 +238,9 @@ const VideoCard = ({
     </div>
   );
 };
+
+
+
 
 export default function TextToVideoPage() {
   const [templates, setTemplates] = useState<Template[] | null>(null);
@@ -227,16 +275,14 @@ export default function TextToVideoPage() {
   };
 
   useEffect(() => {
-    // Fetch initial data
     fetchData();
 
-    // Set up WebSocket connection
-    const socket = new WebSocket("wss://your-websocket-server-url"); // Replace with your WebSocket server URL
+    const socket = new WebSocket("wss://your-websocket-server-url");
 
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       if (data.type === "update") {
-        fetchData(); // Refresh data when an update message is received
+        fetchData();
       }
     };
 
@@ -253,12 +299,23 @@ export default function TextToVideoPage() {
     };
 
     return () => {
-      socket.close(); // Clean up WebSocket connection on component unmount
+      socket.close();
     };
   }, []);
 
-  const handleRemove = (id: string) => {
-    // Add your remove functionality here
+  const handleRemove = async (id: string) => {
+    try {
+      await instance.delete(`/users/api/v1/docs/${id}`);
+      toast.success("Video removed successfully");
+      fetchData(); 
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error(error.message);
+      }
+      console.error("Error removing video:", error);
+    }
   };
 
   const handlePreview = (url: string) => {
@@ -266,9 +323,18 @@ export default function TextToVideoPage() {
     setIsPreviewOpen(true);
   };
 
-  const filteredTemplates = templates?.filter((template) =>
+  const filteredTemplates = templates
+  ?.filter((template) =>
     template.doc_name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  )
+  .map((template) => ({
+    _id: template._id,
+    title: template.doc_name,
+    thumbnailUrl: template.doc_content.video_thumbnailUrl,
+    status: template.doc_content.status,
+    editedAt: template.updatedAt,
+    videoUrl: template.doc_content.video_url,
+  }));
 
   return (
     <>
@@ -300,19 +366,13 @@ export default function TextToVideoPage() {
               <TemplateLoader />
             </div>
           ) : filteredTemplates && filteredTemplates.length > 0 ? (
-            filteredTemplates.map((template) => (
-              <VideoCard
-                key={template._id}
-                title={template.doc_name}
-                thumbnailUrl={template.doc_content.video_thumbnailUrl}
-                status={template.doc_content.status}
-                editedAt={template.updatedAt}
-                videoUrl={template.doc_content.video_url}
+            <Suspense fallback={<TemplateLoader />}>
+              <VideoTable
+                videos={filteredTemplates}
                 onRemove={handleRemove}
                 onPreview={handlePreview}
-                _id={template._id}
               />
-            ))
+            </Suspense>
           ) : (
             <div className="text-center text-gray-500 text-2xl font-semibold col-span-4">
               No Videos Available

@@ -13,14 +13,7 @@ interface ChatInputProps {
 const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
   return (
     <div className="shadow-lg p-1 flex  border gap-2 rounded-xl items-end">
-      <Image
-        src="/logo/growstack-mini.svg"
-        alt=""
-        width={25}
-        height={25}
-        draggable={false}
-        className="select-none ml-2 mb-2"
-      />
+      <Image src="/logo/growstack-mini.png" alt="" width={25} height={25} draggable={false} className="select-none ml-2 mb-2" />
       <textarea
         rows={1}
         className="w-full flex-1 p-2 bg-transparent resize-none overflow-auto 

@@ -3,6 +3,7 @@ import {
   AiAppsIcon,
   AiArticleIcon,
   AiAssistantIcon,
+  AiPlaygroundIcon,
   AnalyseIcon,
   AutomationIcon,
   BotIcon,
@@ -46,11 +47,6 @@ const navLinks: NavLink[] = [
     icon: <PlanIcon />,
     sublinks: [
       {
-        icon: <ProductAiIcon />,
-        name: "AI playground",
-        href: "/app/plan/ai-playground",
-      },
-      {
         icon: <BotIcon />,
         name: "AI chat",
         href: "/app/plan/ai-chat",
@@ -58,7 +54,7 @@ const navLinks: NavLink[] = [
       {
         icon: <AiAppsIcon />,
         name: "AI templates",
-        href: "/app/plan/ai-apps",
+        href: "/app/plan/ai-templates",
       },
       {
         icon: <AiAssistantIcon />,
@@ -74,6 +70,11 @@ const navLinks: NavLink[] = [
         icon: <TextToVideoIcon />,
         name: "Text to video",
         href: "/app/plan/text-to-video",
+      },
+      {
+        icon: <AiPlaygroundIcon />,
+        name: "AI playground",
+        href: "/app/plan/ai-playground",
       },
       {
         icon: <ProductAiIcon />,
@@ -194,12 +195,12 @@ const navLinks: NavLink[] = [
       {
         icon: <TridentIcon />,
         name: "Web scraping",
-        href: "/app/plan/web-scraping",
+        href: "/app/engage/web-scraping",
       },
       {
         icon: <UserIcon />,
         name: "Contact",
-        href: "/app/plan/contacts",
+        href: "/app/engage/contacts",
       },
     ],
     title: "Engage",
