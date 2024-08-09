@@ -550,6 +550,7 @@ const CreateVideoDialog = ({
                             Select your Avatar
                           </h2>
                         </div>
+                  
 
                         <div className="flex flex-col xl:flex-row md:flex-row lg:flex-row 2xl:flex-row flex-1 justify-end items-center gap-x-6">
                           <div className="bg-white border text-[13px] border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-[300px]">
