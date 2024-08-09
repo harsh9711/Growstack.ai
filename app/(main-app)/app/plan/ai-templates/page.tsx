@@ -158,7 +158,7 @@ export default function AiAppTemplatesPage() {
               <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" value={searchQuery} onChange={handleSearch} />
             </div>
 
-            <Link href="/app/plan/ai-apps/create-assistant">
+            <Link href="/app/plan/ai-templates/create-assistant">
               <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
                 <Plus size={20} />
                 Create AI template
@@ -191,7 +191,7 @@ export default function AiAppTemplatesPage() {
             appTemplates.map((appTemplate) => (
               <div key={appTemplate._id}>
                 <div className="flex items-center min-h-[130px] justify-between gap-5 bg-white border border-[#EEF0F4] rounded-2xl p-6 shadow-xl shadow-gray-100 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer">
-                  <Link href={`/app/plan/ai-apps/${appTemplate._id}`} className="flex gap-4 items-start flex-grow overflow-hidden">
+                  <Link href={`/app/plan/ai-templates/${appTemplate._id}`} className="flex gap-4 items-start flex-grow overflow-hidden">
                     <div dangerouslySetInnerHTML={{ __html: appTemplate.icon }} className="w-[64px] h-[64px] flex-shrink-0" />
                     <div className="space-y-2 overflow-hidden flex-grow">
                       <h1 className="text-lg font-semibold overflow-hidden text-ellipsis whitespace-nowrap">{appTemplate["ASSISTANT NAME"]}</h1>

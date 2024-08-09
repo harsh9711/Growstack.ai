@@ -339,7 +339,7 @@ export default function AiAppPage({ params: { appTemplateId } }: { params: { app
   };
 
   if (!appTemplate) {
-    return router.push("/app/ai-apps");
+    return router.push("/app/ai-templates");
   }
 
   if (loading) {
@@ -355,12 +355,12 @@ export default function AiAppPage({ params: { appTemplateId } }: { params: { app
     <Fragment>
       <div className="flex items-center justify-between mt-10">
         <p className="flex items-center gap-2 text-[#4B465C] text-opacity-50 text-[15px]">
-          <Link href="/app/plan/ai-apps" className="hover:text-gray-600 transition-all">
+          <Link href="/app/plan/ai-templates" className="hover:text-gray-600 transition-all">
             All AI templates
           </Link>
           <ChevronRight size={20} /> <span className="text-[#3D817B] font-medium">{appTemplate.name}</span>
         </p>
-        <Link href="/app/plan/ai-apps">
+        <Link href="/app/plan/ai-templates">
           <button className="text-primary-green hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-2.5 rounded-full font-semibold items-center">
             <ArrowLeft size={20} /> Back
           </button>

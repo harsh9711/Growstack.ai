@@ -115,15 +115,17 @@ const AddContact = ({ getContacts }: AddContactProps) => {
       setFileUpload(true);
       try {
         const response = await instance.post(`${API_URL}/users/api/v1/file/upload`, formData);
-        setFileUpload(false);
         const fileUrl = response.data.data.fileUrl;
         setContactData((prevState) => ({
           ...prevState,
           logo: fileUrl,
         }));
       } catch (error: any) {
-        console.error("Error uploading file:", error);
-        toast.error(error);
+        if (error.response) {
+          toast.error(error.response.data.error);
+        }
+      } finally {
+        setFileUpload(false);
       }
     }
   };
@@ -133,14 +135,16 @@ const AddContact = ({ getContacts }: AddContactProps) => {
     try {
       setLoading(true);
       const response = await instance.post(`${API_URL}/users/api/v1/contacts/add`, contactData);
-      setLoading(false);
       toast.success(response.data.message);
       resetContactData();
-      setIsOpen(false);
       getContacts();
     } catch (error: any) {
-      console.error("Error uploading file:", error);
-      toast.error(error);
+      if (error.response) {
+        toast.error(error.response.data.error);
+      }
+    } finally {
+      setIsOpen(false);
+      setLoading(false);
     }
   };
 

@@ -1,15 +1,13 @@
-import { AlertTriangle, MessageSquareTextIcon, X } from "lucide-react";
-import { ModalContent } from "./modalEnums";
-import { LinkIcon, SmileIcon, SMSIcon, TriangleAlertIcon } from "@/components/svgs/icons";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import Spinner from "@/components/Spinner";
-import { useEffect, useState } from "react";
-import { Contact } from "@/types/contacts";
-import toast from "react-hot-toast";
+import { LinkIcon, SmileIcon } from "@/components/svgs/icons";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Contact } from "@/types/contacts";
+import { AlertTriangle, MessageSquareTextIcon } from "lucide-react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 interface SendSMSProps {
   selectedIds: string[];

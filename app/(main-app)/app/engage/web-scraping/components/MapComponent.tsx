@@ -2,7 +2,6 @@
 "use client";
 import { GoogleMap, LoadScript } from "@react-google-maps/api";
 import "leaflet/dist/leaflet.css";
-import dynamic from "next/dynamic";
 import { useCallback, useRef } from "react";
 
 const MapComponent = ({ places }: { places: Place[] }) => {

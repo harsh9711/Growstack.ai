@@ -14,12 +14,12 @@ import { useRouter } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { FaArrowCircleLeft } from "react-icons/fa";
-import UseGoogleAutocomplete from "../hooks/UseGoogleAutocomplete";
+import UseGoogleAutocomplete from "./hooks/UseGoogleAutocomplete";
 import AddProspectModal from "./components/AddProspectModal";
 import BulkDialog from "./components/BulkDialog";
 import MapComponent from "./components/MapComponent";
-import SaveProspects from "./components/SaveProspects";
 import { renderRatingStars } from "./components/RatingStars";
+import SaveProspects from "./components/SaveProspects";
 
 const WebScraping: React.FC = () => {
   const [fields, setFields] = useState<{ id: number; value: string }[]>([{ id: 1, value: "" }]);

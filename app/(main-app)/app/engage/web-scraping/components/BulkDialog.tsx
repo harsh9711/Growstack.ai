@@ -1,10 +1,11 @@
-// components/BulkDialog.jsx
 import { useState } from "react";
 import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Edit } from "lucide-react";
+
 interface BulkDialogProps {
-  onBulkAdd: (terms: string[]) => void; // Define the type of onBulkAdd prop
+  onBulkAdd: (terms: string[]) => void;
 }
+
 export default function BulkDialog({ onBulkAdd }: BulkDialogProps) {
   const [bulkInput, setBulkInput] = useState("");
 
@@ -13,10 +14,10 @@ export default function BulkDialog({ onBulkAdd }: BulkDialogProps) {
     const terms = bulkInput
       .split(",")
       .map((term) => term.trim())
-      .filter(Boolean); // Split by comma and trim whitespace
+      .filter(Boolean);
 
-    onBulkAdd(terms); // Pass the terms back to the parent component
-    setBulkInput(""); // Clear the input after adding
+    onBulkAdd(terms);
+    setBulkInput("");
   };
 
   return (

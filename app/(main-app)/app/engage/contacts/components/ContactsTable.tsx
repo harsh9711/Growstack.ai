@@ -21,14 +21,13 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { MailIcon, Phone, Search, UploadIcon } from "lucide-react";
+import { MailIcon, Phone, Search } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import FilterSheet from "./FilterSheet";
 import AddContact from "./modal/AddContact";
 import DeleteContact from "./modal/DeleteContact";
 import SendEmail from "./modal/SendEmail";
-import { SMSIcon } from "@/components/svgs/icons";
 import SendSMS from "./modal/SendSMS";
 
 export const columns: ColumnDef<Contact>[] = [

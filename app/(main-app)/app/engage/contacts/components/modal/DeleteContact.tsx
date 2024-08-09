@@ -32,10 +32,10 @@ const DeleteContact = ({ selectedIds, getContacts }: DeleteContactProps) => {
       getContacts();
       toast.success(response.data.message);
     } catch (error: any) {
-      console.error("Error uploading file:", error);
       toast.error(error.message || "An error occurred");
     } finally {
       setLoading(false);
+      setIsOpen(false);
     }
   };
 

@@ -164,7 +164,7 @@ export default function Dashboard() {
             <div className="w-full bg-white border border-[#E8E8E8] rounded-3xl p-6">
               <div className="flex items-center justify-between">
                 <h1 className="text-xl font-semibold text-center">Favorite AI writer templates</h1>
-                <Link href="/app/plan/ai-apps">
+                <Link href="/app/plan/ai-templates">
                   <button className="bg-[#F5F7FA] py-3 px-5 rounded-lg sheen">View all</button>
                 </Link>
               </div>
@@ -178,7 +178,7 @@ export default function Dashboard() {
                     <div className="flex flex-col justify-center items-center space-y-3 col-span-2 py-8">
                       <h2 className="text-lg text-center font-semibold">You have no AI writer templates added to your favorites list.</h2>
                       <p> Explore more templates to find the ones you like most.</p>
-                      <Link href="/app/plan/ai-apps">
+                      <Link href="/app/plan/ai-templates">
                         <button className="bg-primary-green text-white py-3 px-5 rounded-lg sheen">Explore more</button>
                       </Link>
                     </div>
@@ -187,7 +187,7 @@ export default function Dashboard() {
                       <div
                         key={index}
                         className="flex items-center justify-between gap-5 bg-white border border-[#EEF0F4] rounded-2xl p-6 shadow-xl shadow-gray-100 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer">
-                        <Link href={`/app/plan/ai-apps/${assistant._id}`} className="flex gap-4 items-start flex-grow overflow-hidden">
+                        <Link href={`/app/plan/ai-templates/${assistant._id}`} className="flex gap-4 items-start flex-grow overflow-hidden">
                           <div
                             dangerouslySetInnerHTML={{
                               __html: assistant.icon,
@@ -275,10 +275,10 @@ export default function Dashboard() {
                 </button>
               </div>
             </Link>
-            <Link href="/app/plan/ai-apps">
+            <Link href="/app/plan/ai-templates">
               <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
                 <div className="flex gap-4 items-center">
-                  <Image src="/icons/ai-apps.svg" alt="" width={60} height={60} />
+                  <Image src="/icons/ai-templates.svg" alt="" width={60} height={60} />
                   <h2 className="font-medium">AI templates </h2>
                 </div>
                 <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">

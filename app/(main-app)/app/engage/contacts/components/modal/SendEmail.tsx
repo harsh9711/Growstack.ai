@@ -5,12 +5,12 @@ import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import "@/styles/editor.css";
 import { Contact } from "@/types/contacts";
+import { getCookie } from "cookies-next";
 import { AlertTriangle, Mail } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import Editor from "../../../ai-apps/[appId]/components/Editor";
-import { getCookie } from "cookies-next";
+import Editor from "@/app/(main-app)/app/plan/ai-templates/[appId]/components/Editor";
 
 interface SendEmailProps {
   selectedIds: string[];
