@@ -15,28 +15,22 @@ interface ChatInputProps {
   selectedLanguage: string;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({
-  assistant_id,
-  addMessage,
-  updateMessage,
-  selectedLanguage,
-}) => {
+const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateMessage, selectedLanguage }) => {
   const [input, setInput] = useState("");
   const [open, setOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isAnimating, setIsAnimating] = useState(false);
-  const { startRecognition, stopRecognition, textToSpeech } =
-    useSpeechRecognition(
-      selectedLanguage,
-      (transcript: string) => {
-        setInput(transcript);
-        handleSend(transcript, true);
-      },
-      () => {
-        setOpen(false);
-        setIsAnimating(false);
-      }
-    );
+  const { startRecognition, stopRecognition, textToSpeech } = useSpeechRecognition(
+    selectedLanguage,
+    (transcript: string) => {
+      setInput(transcript);
+      handleSend(transcript, true);
+    },
+    () => {
+      setOpen(false);
+      setIsAnimating(false);
+    }
+  );
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -55,15 +49,12 @@ const ChatInput: React.FC<ChatInputProps> = ({
     addMessage(prompt, "");
 
     try {
-      const response = await instance.post(
-        `/ai/api/v1/assistant/chat/${assistant_id}`,
-        {
-          user_prompt: prompt,
-          language: selectedLanguage,
-          tone: "friendly",
-          writing_style: "poetic",
-        }
-      );
+      const response = await instance.post(`/ai/api/v1/assistant/chat/${assistant_id}`, {
+        user_prompt: prompt,
+        language: selectedLanguage,
+        tone: "friendly",
+        writing_style: "poetic",
+      });
 
       const responseText = response.data.data.response;
       updateMessage(prompt, responseText);
@@ -99,14 +90,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
 
   return (
     <div className="flex p-2 border gap-2 rounded-xl items-end">
-      <Image
-        src="/logo/growstack-mini.svg"
-        alt=""
-        width={25}
-        height={25}
-        draggable={false}
-        className="select-none ml-2 mb-3"
-      />
+      <Image src="/logo/growstack-mini.png" alt="" width={25} height={25} draggable={false} className="select-none ml-2 mb-3" />
       <textarea
         ref={textareaRef}
         value={input}
@@ -118,19 +102,13 @@ const ChatInput: React.FC<ChatInputProps> = ({
       />
       <button
         // onClick={startRecognition}
-        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
-      >
+        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
         {/* <MicrophoneIcon /> */}
-        <Microphone
-          open={open}
-          isAnimating={isAnimating}
-          handleOpenChange={handleOpenChange}
-        />
+        <Microphone open={open} isAnimating={isAnimating} handleOpenChange={handleOpenChange} />
       </button>
       <button
         onClick={() => handleSend()}
-        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
-      >
+        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
         <SendIcon2 />
       </button>
     </div>

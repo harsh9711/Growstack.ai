@@ -49,7 +49,7 @@ export default function ComingSoon() {
 
   return (
     <div className="flex-1 h-full w-full flex flex-col items-center justify-center text-center">
-      <Image src="/logo/growstack-mini.svg" alt="" width={60} height={60} className="mb-10"/>
+      <Image src="/logo/growstack-mini.png" alt="" width={60} height={60} className="mb-10" />
       <div className="text-6xl font-medium mb-12">
         {timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0 ? (
           <div>Time's up!</div>
@@ -75,7 +75,9 @@ export default function ComingSoon() {
         )}
       </div>
       <h1 className="text-3xl uppercase font-semibold mb-4">Coming Soon</h1>
-      <p className="mb-10 max-w-2xl leading-loose">We’re currently working on creating something fantastic. We’ll be here soon. Subscribe to the newsletter to be notified.</p>
+      <p className="mb-10 max-w-2xl leading-loose">
+        We’re currently working on creating something fantastic. We’ll be here soon. Subscribe to the newsletter to be notified.
+      </p>
       <form className="w-full max-w-md">
         <div className="flex items-center border-b-2 border-primary-green py-2">
           <input

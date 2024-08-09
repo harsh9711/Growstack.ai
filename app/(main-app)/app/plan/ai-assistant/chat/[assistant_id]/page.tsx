@@ -8,6 +8,7 @@ import Topbar from "./components/Topbar";
 import ChatSection from "./components/ChatSection";
 import Sidebar from "./components/Sidebar";
 import { languageOptions } from "@/app/(main-app)/app/create/ai-articles/constants/options";
+import Spinner from "@/components/Spinner";
 
 interface PageProps {
   params: {
@@ -72,7 +73,8 @@ const AssistantsChats: React.FC<PageProps> = ({
 
   if (loading || !assistantData || !assistantConversation) {
     return (
-      <div className="flex-1 h-full flex justify-center items-center">
+      <div className="flex-1 flex flex-col gap-5 justify-center items-center">
+        <Spinner color="black" size={100} />
         Loading...
       </div>
     );

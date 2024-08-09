@@ -1,6 +1,6 @@
 .prose {
-  width: 100%;
-  max-width: none;
+  width: 100% !important;
+  max-width: none !important;
 }
 
 .prose h1 {

@@ -18,7 +18,7 @@ export default function GetStarted() {
         </div>
         <div className="w-full py-14 px-5 bg-white rounded-3xl border border-[#E8E8E8] mt-16 max-w-[1600px] mx-auto">
           <div className="flex flex-col justify-center items-center space-y-8">
-            <Image src="/logo/growstack-mini.svg" alt="" width={50} height={50} />
+            <Image src="/logo/growstack-mini.png" alt="" width={50} height={50} />
             <h2 className="text-3xl font-semibold text-center">Let's build your first workflow</h2>
             <p className="text-primary-black text-opacity-60 max-w-2xl mx-auto text-[16px] leading-relaxed text-center !mt-2">
               You don't have any workflows yet. Explore our template library to get started or build your own from scratch.
@@ -32,7 +32,7 @@ export default function GetStarted() {
               </Link>
               <Link href="/app/create/workflow-builder">
                 <button className="hover:bg-primary-green/20 text-primary-green sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2">
-                  <WorkflowsIcon2 className="w-7 h-7 text-primary-green"/>
+                  <WorkflowsIcon2 className="w-7 h-7 text-primary-green" />
                   Explore templates
                 </button>
               </Link>
