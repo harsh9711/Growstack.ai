@@ -1,0 +1,75 @@
+@import "../../../app/variables.scss";
+.marketingInsights {
+    padding: 0 0 90px;
+    background: #fff;
+    overflow: hidden;
+    @media screen and (max-width: $breakpoint_mobile_portrait) {
+        padding: 40px 0;
+    }
+    .tabsBlock {
+        margin-top: 30px;
+
+        .nav-pills {
+            .nav-link {
+                display: flex;
+                align-items: center;
+                padding: 20px 0px;
+                border-radius: 0px;
+                transition: background-color 0.3s ease;
+                color: #14171B;
+                border-bottom: 1px solid rgba(106, 106, 106, 0.15);
+                width: 90%;
+                position: relative;
+                .tab-icon {
+                    margin-right: 15px;
+                   width: 50px;
+                }
+
+                &.active {
+                    background-color: transparent;
+                    color: #034737;
+                    font-weight: 500;
+                    &::after{
+                        content: "";
+                        position: absolute;
+                        right: 0;
+                        width: 20px;
+                        height: 20px;
+                        background: url(../../../public/images_growstack/solutions/arrow.svg) no-repeat center;
+                    }
+                }
+
+                &:hover {
+                    background-color: transparent;
+                    color: #034737;
+                    font-weight: 500;
+                    &::after{
+                        content: "";
+                        position: absolute;
+                        right: 0;
+                        width: 20px;
+                        height: 20px;
+                        background: url(../../../public/images_growstack/solutions/arrow.svg) no-repeat center;
+                    }
+                }
+            }
+        }
+
+        .tab-content {
+            display: none;
+            @media screen and (max-width: $breakpoint_mobile_portrait) {
+               margin-top: 40px;
+            }
+            &.show.active {
+                display: block;
+            }
+
+            .img-fluid {
+                max-width: 100%;
+                height: auto;
+                margin-bottom: 20px;
+            }
+
+        }
+    }
+}
