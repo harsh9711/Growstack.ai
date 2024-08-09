@@ -81,12 +81,14 @@ const CreateVideoDialog = ({
   }
 
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);  
+  const [loading2, setLoading2] = useState(false);
   const [step, setStep] = useState(0);
   const [videoScript, setVideoScript] = useState("");
   const [outputVideo, setOutputVideo] = useState<VideoStatus | null>(null);
   const [assistants, setAssistants] = useState<Avatar[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [clicked, setClicked] = useState(false);
   const [fields, setFields] = useState<FieldsState>({
     objective: false,
     language: false,
@@ -118,6 +120,48 @@ const CreateVideoDialog = ({
   const [tone, settone] = useState<string>("");
   const handleVoiceSelect = (voiceId: string) => {
     setSelectedVoice(voiceId);
+  };
+  const handleButtonClick = async () => {
+    setClicked(true);
+    setLoading2(true);
+    requestAnimationFrame(async () => {
+      const validation = formSchema.safeParse(formData);
+      if (!validation.success) {
+        toast.error(validation.error.errors[0].message);
+        return;
+      }
+      if (!selectedAvatar) {
+        toast.error("Please select an avatar");
+        return;
+      }
+      // handleClose(true);
+
+      setStep(1);
+      try {
+        const scriptResponse = await instance.post(
+          `${API_URL}/ai/api/v1/generate/video/video-script`,
+          formData
+        );
+
+        if (scriptResponse.data.success) {
+          setVideoScript(scriptResponse.data.data.script);
+          await generateVideo(scriptResponse.data.data.script);
+        } else {
+          toast.error("Failed to generate script");
+        }
+      } catch (error) {
+        toast.error("Error submitting the form");
+      }
+      setLoading(true);
+
+      setTimeout(() => {
+        setLoading(false);
+        setTimeout(() => {
+          setDialogOpen(false);
+          resetForm();
+        },);
+      },);
+    });
   };
   useEffect(() => {
     const loadAvatars = async () => {
@@ -249,7 +293,7 @@ const CreateVideoDialog = ({
       toast.error("Please select an avatar");
       return;
     }
-    handleClose(true);
+    // handleClose(true);
 
     setStep(1);
     try {
@@ -299,8 +343,8 @@ const CreateVideoDialog = ({
     setError(null);
   };
 
-  const handleClose = (showLoading: boolean = false) => {
-    if (showLoading) {
+  const handleClose = () => {
+    if (clicked) {
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
@@ -318,13 +362,13 @@ const CreateVideoDialog = ({
   if (loading) return <LoadingOverlay progress={(step / 3) * 100} />;
   if (error) return <p>{error}</p>;
   const progress = (step / 3) * 100;
-  const handleDialogClose = () => {
-    handleClose(false);
-  };
+  // const handleDialogClose = () => {
+  //   handleClose(false);
+  // };
   return (
     <div className="relative">
       {" "}
-      {loading && <LoadingOverlay progress={progress} />}
+      {loading2 && <LoadingOverlay progress={progress} />}
       <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
         <DialogTrigger>
           <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2">
@@ -334,7 +378,7 @@ const CreateVideoDialog = ({
         </DialogTrigger>
         <DialogContent
           className="w-full 2xl:max-w-[90%] h-full 2xl:h-[90vh] px-10 py-7"
-          onCloseAutoFocus={handleDialogClose}
+          onCloseAutoFocus={handleClose}
         >
           <div className="relative w-full space-y-6 text-[12px] h-full flex flex-col">
             <main className="flex flex-col gap-x-10">
@@ -516,9 +560,15 @@ const CreateVideoDialog = ({
                               "bg-primary-green text-[15px] text-white py-3.5 px-20 w-full rounded-xl flex items-center justify-center",
                               loading && "opacity-80 cursor-not-allowed"
                             )}
-                            onClick={handleSubmit}
+                            onClick={handleButtonClick}
                           >
-                            {loading ? <Spinner /> : "Generate Video"}
+                            {loading ? (
+                              <Spinner />
+                            ) : clicked ? (
+                              "Video Generating..."
+                            ) : (
+                              "Generate Video"
+                            )}
                           </button>
                         </div>
                       </div>
