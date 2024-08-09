@@ -227,7 +227,7 @@ export default function ProfilePage() {
               <div className="w-28 h-28">
                 {previewImage ? (
                   <Image
-                    src={previewImage}
+                    src={Object(avatarLink).length ? avatarLink : previewImage}
                     alt=""
                     width={100}
                     height={100}

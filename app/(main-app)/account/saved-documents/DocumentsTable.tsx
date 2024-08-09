@@ -18,6 +18,7 @@ import {
 } from "@tanstack/react-table";
 import clsx from "clsx";
 import { Edit, FileDown, Search, Delete } from "lucide-react";
+import { MdDelete } from "react-icons/md";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 // import { documents } from "./data";
@@ -220,7 +221,7 @@ export default function DocumentsTable() {
               <Edit size={20} className="text-gray-800 cursor-pointer" />
             </button>
             <button className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300" onClick={() => handleDeleteDocs(row?.original?._id)}>
-              <Delete size={20} className="text-gray-800 cursor-pointer" />
+              <MdDelete size={20} className="text-gray-800 cursor-pointer" />
             </button>
           </div>
         );

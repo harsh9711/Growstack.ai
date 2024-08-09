@@ -4,4 +4,5 @@ type User = {
   token: string;
   avatar: string;
   user_name: string;
+  profile_img: string;
 };

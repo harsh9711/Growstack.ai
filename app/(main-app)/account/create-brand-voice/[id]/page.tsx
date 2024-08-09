@@ -420,7 +420,7 @@ export default function UpdateBrandVoice() {
               className="py-3.5 px-6 bg-primary-green sheen rounded-xl text-white mt-6"
               type="submit"
             >
-              Create
+              Update
             </button>
           </div>
         </form>

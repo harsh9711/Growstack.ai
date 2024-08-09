@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 
 export default function SocialMediaAnalyticsPage() {
   const [selectedPlatform, setSelectedPlatform] = useState("Instagram");
+  const [errorMessage, setErrorMessage] = useState(null)
   const [analyticsData, setAnalyticsData] = useState<{
     followers: number;
     accountReached: number;
@@ -22,9 +23,11 @@ export default function SocialMediaAnalyticsPage() {
     try {
       const response = await instance.get(`${API_URL}/users/api/v1/social-media/analytics?platform=${platform.toLowerCase()}`);
       setAnalyticsData(response.data);
+      toast.success(response.data.message);
       console.log("response", response);
     } catch (error: any) {
-      toast.error(error.response.data.message);
+      // toast.error(error.response.data.message);
+      setErrorMessage(error.response.data.message)
     }
   };
 
@@ -148,7 +151,7 @@ export default function SocialMediaAnalyticsPage() {
               </>
             ) : (
               <div className="flex justify-center items-center h-full">
-                <p>Loading...</p>
+                <p>{errorMessage ? errorMessage : 'Loading...'}</p>
               </div>
             )}
           </div>

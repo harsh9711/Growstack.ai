@@ -2,6 +2,7 @@
 
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
+import { login } from "@/lib/features/auth/auth.slice";
 import { ArrowRight, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,6 +10,7 @@ import { useEffect, useState } from "react";
 import ContentLoader from "react-content-loader";
 import toast from "react-hot-toast";
 import { BsStarFill } from "react-icons/bs";
+import { useDispatch } from "react-redux";
 
 interface AiApp {
   _id: string;
@@ -38,6 +40,7 @@ export interface FavoriteAssistant {
 }
 
 export default function Dashboard() {
+  const dispatch = useDispatch();
   const [assistants, setAssistants] = useState<Assistant[]>([]);
   const [favoriteAssistants, setFavoriteAssistants] = useState<FavoriteAssistant[]>([]);
   const [aiAppsloading, setAiAppsLoading] = useState(true);
@@ -101,10 +104,22 @@ export default function Dashboard() {
     }
   };
 
+  const handleGetProfileData = async () => {
+    try {
+      const response = await instance.get(`${API_URL}/users/api/v1`);
+      const userData = response?.data?.data;
+      dispatch(login(userData));
+    } catch (error) {
+      console.log("Error fetching workflows:", error);
+      toast.error("Error fetching profile data");
+    }
+  };
+
   useEffect(() => {
     setAiAppsLoading(true);
     setAiAssistantsLoading(true);
 
+    handleGetProfileData()
     fetchAssistants();
     fetchFavoriteAssistants();
     fetchSocialMediaProfile();

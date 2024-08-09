@@ -80,6 +80,9 @@ export default function QuickPosting() {
 
   const handlePublish = async () => {
     // setIsPending(true);
+    const localDateTime = new Date(`${scheduleDate}T${time}`);
+    const utcDateTime = localDateTime.toISOString();
+
     try {
       const response = await instance.post(
         API_URL + "/users/api/v1/social-media/quickpost",
@@ -88,7 +91,7 @@ export default function QuickPosting() {
           platforms: selectedNetworks,
           mediaUrls,
           isVideo,
-          scheduleDate: scheduleDate + "T" + time + "Z",
+          scheduleDate: utcDateTime,
         }
       );
       setContent("");
@@ -167,19 +170,20 @@ export default function QuickPosting() {
                     <label htmlFor="r2">Video</label>
                   </div>
                 </RadioGroup>
-                <button className="h-12 w-full max-w-[180px] bg-primary-green py-3 px-4 sheen flex justify-center items-center gap-3 rounded-xl text-white cursor-pointer">
+                <label
+                  htmlFor="profile-image"
+                  className="h-12 w-full max-w-[180px] bg-primary-green py-3 px-4 sheen flex justify-center items-center gap-3 rounded-xl text-white cursor-pointer"
+                >
                   <Plus size={20} />
-                  <label htmlFor="profile-image" className="font-medium">
-                    Browse...
-                  </label>
-                </button>
-                <input
-                  type="file"
-                  id="profile-image"
-                  accept="image/*,video/*"
-                  className="hidden"
-                  onChange={handleBrowsImgAndVideo}
-                />
+                  <span className="font-medium">Browse...</span>
+                  <input
+                    type="file"
+                    id="profile-image"
+                    accept="image/*,video/*"
+                    className="hidden"
+                    onChange={handleBrowsImgAndVideo}
+                  />
+                </label>
               </div>
               <div className="flex gap-2">
                 {mediaUrls.length > 0 &&
