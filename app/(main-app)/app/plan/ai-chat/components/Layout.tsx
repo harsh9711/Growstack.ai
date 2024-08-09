@@ -137,7 +137,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
 
   return (
     <div className="flex-1 flex gap-4 mt-10 ">
-      <aside className="fixed flex flex-col w-[380px] border bg-white rounded-3xl h-[calc(100vh-150px)]">
+      <aside className="flex flex-col w-[380px] border bg-white rounded-3xl h-[calc(100vh-176px)]">
         <div className="flex gap-2 p-5">
           <Select value={selectedOption} onValueChange={setSelectedOption}>
             <SelectTrigger className="w-[200px] h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4">
@@ -209,7 +209,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
         </div>
         <div className="h-20 w-full bg-gradient-to-b from-transparent via-white to-white rounded-b-3xl" />
       </aside>
-      <main className="fixed flex flex-col bg-white p-4 rounded-3xl border ml-[390px] h-[calc(100vh-150px)] w-[calc(100%-600px)]">
+      <main className="w-full flex-1 flex flex-col bg-white p-4 rounded-3xl border h-[calc(100vh-176px)]">
         <div className="flex-1 p-4 overflow-y-auto flex flex-col">
           {!messages.length ? (
             <div className="flex-1 flex flex-col justify-center items-center pb-40 space-y-4">

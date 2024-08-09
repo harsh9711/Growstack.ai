@@ -47,7 +47,7 @@ export function ProfileButton() {
             <AvatarFallback>{currentUser?.email?.slice(0, 1)}</AvatarFallback>
           </Avatar>
           <div>
-            <h1 className="text-xl font-semibold">{currentUser?.name ?? "Growstack User"}</h1>
+            <h1 className="text-xl font-semibold capitalize">{currentUser?.user_name ?? "Growstack User"}</h1>
             <p className="text-primary-grey text-sm">{currentUser?.email}</p>
           </div>
         </div>
@@ -71,18 +71,18 @@ export function ProfileButton() {
               Brand voice
             </DropdownMenuItem>
           </Link>
-          <Link href="/account/billings/settings">
+          {/* <Link href="/account/billings/settings">
             <DropdownMenuItem className="flex gap-3 px-4">
               <TbReportMoney size={22} />
-              intercom - free for one year
+              Billing
             </DropdownMenuItem>
-          </Link>
+          </Link> */}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <Link href="#">
           <DropdownMenuItem className="flex gap-3 px-4">
             <Info size={22} />
-            Help
+            intercom - free for one year
           </DropdownMenuItem>
         </Link>
         <DropdownMenuSeparator />

@@ -1,5 +1,3 @@
-// utils/dateFormatter.ts
-
 import { differenceInDays, differenceInMonths, differenceInYears } from "date-fns";
 
 export const formatRelativeDate = (dateString: string) => {

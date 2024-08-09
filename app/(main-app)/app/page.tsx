@@ -75,7 +75,6 @@ export default function Dashboard() {
     }
   };
 
-
   const handleFavourite = async (method: string, templateId: string) => {
     try {
       const response = await instance.put(API_URL + `/ai/api/v1/chat-template/fav-apps/${templateId}`, { type: method });
@@ -90,7 +89,6 @@ export default function Dashboard() {
       console.error("Error:", error);
     }
   };
-
 
   const fetchSocialMediaProfile = async () => {
     try {
@@ -209,7 +207,7 @@ export default function Dashboard() {
                             </p>
                           </div>
                         </Link>
-                        <div className="cursor-pointer w-full max-w-fit hover:bg-gray-50 p-1 rounded transition">
+                        <div className="cursor-pointer w-full max-w-fit transition duration-300 hover:scale-125 flex justify-center items-center">
                           <BsStarFill size={24} className="text-yellow-300" onClick={() => handleFavourite("remove", assistant._id)} />
                         </div>
                       </div>
@@ -222,7 +220,7 @@ export default function Dashboard() {
               <div className="w-full space-y-6">
                 <div className="w-full bg-white border border-[#E8E8E8] rounded-3xl p-6">
                   <div className="flex items-center justify-between">
-                    <h1 className="text-xl font-semibold text-center">Favorite AI chat assistants</h1>
+                    <h1 className="text-xl font-semibold text-center">AI chat assistants</h1>
                     <Link href="/app/plan/ai-assistant">
                       <button className="bg-[#F5F7FA] py-3 px-5 rounded-lg sheen">View all</button>
                     </Link>

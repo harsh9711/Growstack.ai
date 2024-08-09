@@ -1,75 +1,39 @@
 "use client";
 
-import { useEffect, useState, Fragment } from "react";
-import instance from "@/config/axios.config";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { ArrowLeft, ChevronRight, Download, Info, Languages, Save } from "lucide-react";
-import Link from "next/link";
-import { BsStarFill } from "react-icons/bs";
-import Editor from "./components/Editor";
 import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { EditorState, convertToRaw } from "draft-js";
-import { saveAs } from "file-saver"; // Import file-saver library for downloading files
+import { saveAs } from "file-saver";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
-import { HiOutlineRefresh } from "react-icons/hi";
-import TemplateLoader from "../../text-to-video/components/TemplateLoader";
-import { FaCircleNotch } from "react-icons/fa";
+import { ArrowLeft, ChevronRight, Info, Save, StarIcon } from "lucide-react";
+import Link from "next/link";
+import { Fragment, useEffect, useState } from "react";
+import { BsStarFill } from "react-icons/bs";
+import Editor from "./components/Editor";
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
+import Spinner from "@/components/Spinner";
+import { getSavedDecumentForEdit, isEditDecument } from "@/lib/features/documents/document.selector";
+import { editDocument } from "@/lib/features/documents/document.slice";
+import { useRouter } from "next-nprogress-bar";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { useRouter } from "next-nprogress-bar";
-import { getSavedDecumentForEdit, isEditDecument } from "@/lib/features/documents/document.selector";
-import { editDocument, savedDecument } from "@/lib/features/documents/document.slice";
+import { languageOptions } from "../../../create/ai-articles/constants/options";
+import Dropdown from "./components/Dropdown";
+import { Switch } from "@/components/ui/switch";
 
-const Dropdown = ({ label, items, infoIcon, hideLabel, value, onChange, placeholder, info }: any) => (
-  <div className="space-y-3">
-    {!hideLabel && (
-      <h2 className="font-medium flex items-center gap-2">
-        {label}{" "}
-        {!!infoIcon ? (
-          <>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Info size={18} className="text-primary-black text-opacity-50" />
-                </TooltipTrigger>
-                <TooltipContent className="bg-white">
-                  <p>{info}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </>
-        ) : null}
-      </h2>
-    )}
-    <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="w-full border-none">
-        <SelectValue placeholder={placeholder ? placeholder : label} />
-      </SelectTrigger>
-      <SelectContent>
-        {items.map((item: any, index: number) => (
-          <SelectItem value={item} key={index}>
-            {item}
-          </SelectItem>
-        ))}
-      </SelectContent>
-    </Select>
-  </div>
-);
-
-export default function AiAppPage({ params: { assistantId } }: { params: { assistantId: string } }) {
+export default function AiAppPage({ params: { appTemplateId } }: { params: { appTemplateId: string } }) {
   const router = useRouter();
   const isEdit = isEditDecument();
   const editDocumentData: any = getSavedDecumentForEdit();
   const dispatch = useDispatch();
-  const [assistant, setAssistant] = useState<any>({});
+  const [appTemplate, setAppTemplate] = useState<any>({});
   const [userPrompts, setUserPrompts] = useState<string[]>([]); // Initialize as empty array
-  const [editorState, setEditorState] = useState(EditorState.createEmpty()); // Example state for editor content
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [fileName, setFileName] = useState(""); // State for file name input
   const [loading, setLoading] = useState(true);
   const [generatedContent, setGeneratedContent] = useState<string>("");
@@ -82,8 +46,8 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
     number_of_results: 1,
     estimated_result_length: 400,
   });
-  const [isLoading, setIsLoading] = useState(false);
-  // const [workbook, setWorkbook] = useState("");
+  const [isGeneratedResultPending, setIsGeneratedResultPending] = useState(false);
+  const [isDocumentSavePending, setIsDocumentSavePending] = useState(false);
   const [allBrandVoices, setAllBrandVoices] = useState<any>([]);
   const [brandName, setBrandName] = useState("");
   const [selectedBrandVoice, setSelectedBrandVoice] = useState({});
@@ -104,14 +68,6 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
 
     setUserInput({ ...userInput, [e.target.name]: newValue });
   };
-  // const handleChange2 = (e: { target: { value: string; }; }) => {
-  //   let newValue = parseInt(e.target.value, 10);
-
-  //   if (newValue < 0) {
-  //     newValue = 0;
-  //   }
-  //   setUserInput({ ...userInput, estimated_result_length: newValue });
-  // };
 
   useEffect(() => {
     const findedBrandvoice = allBrandVoices?.find((item: any) => {
@@ -121,24 +77,27 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
   }, [brandName]);
 
   useEffect(() => {
-    const fetchAssistant = async () => {
+    const fetchAppTemplate = async () => {
       try {
         const assistId = window.location.href.split("/").pop();
         const response = await instance.get(`${API_URL}/ai/api/v1/chat-template/${assistId}`);
         const assistantData = response.data.data;
-        console.log("check repsonse", response.data.data.inputs[0].field_type);
-        console.log(assistantData);
-        setAssistant(assistantData);
+        setAppTemplate(assistantData);
         setUserPrompts(assistantData.inputs.map(() => ""));
-      } catch (error) {
-        console.error("Error fetching assistant data:", error);
+      } catch (error: any) {
+        if (error.response) {
+          toast.error(error.response.data.error);
+        } else {
+          toast.error(error.message);
+        }
       } finally {
         setLoading(false);
+        setGeneratedContent("");
       }
     };
 
-    fetchAssistant();
-  }, [assistantId]);
+    fetchAppTemplate();
+  }, [appTemplateId]);
 
   useEffect(() => {
     const handleGetAllBrandVoices = async () => {
@@ -146,9 +105,13 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
         const response = await instance.get(`${API_URL}/users/api/v1/brand-voice/all`);
 
         setAllBrandVoices(response?.data?.data);
-      } catch (error) {
+      } catch (error: any) {
+        if (error.response) {
+          toast.error(error.response.data.error);
+        } else {
+          toast.error(error.message);
+        }
         console.log("Error fetching Documents:", error);
-        toast.error("Error fetching Documents data");
       }
     };
 
@@ -228,61 +191,25 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
     }
   };
 
-  // const handleSubmit = async () => {
-  //   try {
-  //     const formattedUserPrompt = assistant.inputs.map((input: any, index: number) => `${input.title}:${userPrompts[index]}`).join(".");
-
-  //     const response = await instance.post(
-  //       `${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`,
-  //       {
-  //         ...userInput,
-  //         user_prompt: formattedUserPrompt,
-  //       },
-  //       {
-  //         headers: {
-  //           'Content-Type': 'application/json'
-  //         },
-  //       }
-  //     );
-  //     console.log("Generated Data Article:", response.data);
-  //     setGeneratedContent(response.data);
-
-  //   } catch (error) {
-  //     console.error("Error generating template:", error);
-  //   }
-  // };
-  // ;
-  const handleGenerateClick = () => {
-    // Set isLoading to true to indicate loading has started
-    setIsLoading(true);
-
-    // Perform your generate action here (e.g., fetch data, compute something)
-    // Simulate loading delay (remove this in actual implementation)
-    setTimeout(() => {
-      // After some action is completed, set isLoading back to false
-      setIsLoading(false);
-    }, 2000); // Example: Simulating loading for 2 seconds
-  };
-  const handleSubmit = async () => {
+  const generateResult = async () => {
+    setIsGeneratedResultPending(true);
     try {
-      const formattedUserPrompt = assistant?.inputs.map((input: any, index: number) => `${input.title}:${userPrompts[index]}`).join(".");
-      const response = await instance.post(
-        `${API_URL}/ai/api/v1/chat-template/generate/${assistant._id}`,
-        {
-          ...userInput,
-          user_prompt: formattedUserPrompt,
-          brand_voice: selectedBrandVoice,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const formattedUserPrompt = appTemplate?.inputs.map((input: any, index: number) => `${input.title}:${userPrompts[index]}`).join(".");
+      const response = await instance.post(`${API_URL}/ai/api/v1/chat-template/generate/${appTemplate._id}`, {
+        ...userInput,
+        user_prompt: formattedUserPrompt,
+        brand_voice: selectedBrandVoice,
+      });
       const content = response.data.data;
       setGeneratedContent(content);
-    } catch (error) {
-      console.error("Error generating template:", error);
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+    } finally {
+      setIsGeneratedResultPending(false);
     }
   };
 
@@ -338,12 +265,12 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
   };
 
   const handleSaveDocument = async () => {
+    setIsDocumentSavePending(true);
     try {
       const payload = {
         doc_name: fileName,
         doc_language: userInput1,
         doc_type: "TEXT",
-        // workbook,
         category: "text",
         doc_content: generatedContent,
       };
@@ -362,7 +289,7 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
       }
       console.error("Document Save failed:", error);
     } finally {
-      // setIsPending(false);
+      setIsDocumentSavePending(false);
     }
   };
 
@@ -372,7 +299,6 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
         doc_name: fileName,
         doc_language: userInput1,
         doc_type: "TEXT",
-        // workbook,
         category: "text",
         doc_content: generatedContent,
       };
@@ -390,17 +316,41 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
       }
       console.error("Document Save failed:", error);
     } finally {
-      // setIsPending(false);
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-  const handleBothActions = () => {
-    handleGenerateClick(); // Call ghandleGenerate function
-    handleSubmit(); // Call handleSubmit function
+  const handleFavourite = async (method: string, templateId: string) => {
+    try {
+      const response = await instance.put(API_URL + `/ai/api/v1/chat-template/fav-apps/${templateId}`, { type: method });
+      toast.success(response.data.message);
+
+      setAppTemplate((prevTemplateData: any) => ({
+        ...prevTemplateData,
+        favorite: !prevTemplateData.favorite,
+      }));
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error("Error:", error);
+    }
   };
+
+  if (!appTemplate) {
+    return router.push("/app/ai-apps");
+  }
+
+  if (loading) {
+    return (
+      <div className="flex-1 flex flex-col gap-5 justify-center items-center">
+        <Spinner color="black" size={100} />
+        Loading...
+      </div>
+    );
+  }
+
   return (
     <Fragment>
       <div className="flex items-center justify-between mt-10">
@@ -408,7 +358,7 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
           <Link href="/app/plan/ai-apps" className="hover:text-gray-600 transition-all">
             All AI templates
           </Link>
-          <ChevronRight size={20} /> <span className="text-[#3D817B] font-medium">{assistant.name}</span>
+          <ChevronRight size={20} /> <span className="text-[#3D817B] font-medium">{appTemplate.name}</span>
         </p>
         <Link href="/app/plan/ai-apps">
           <button className="text-primary-green hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-2.5 rounded-full font-semibold items-center">
@@ -417,23 +367,34 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
         </Link>
       </div>
       <div className="flex gap-5 mt-6">
-        <div className="w-full max-w-[600px] p-8 bg-white rounded-2xl border border-[#EDEFF0] space-y-4">
+        <div className="w-full h-full max-w-[600px] px-8 pb-8 pt-6 bg-white rounded-2xl border border-[#EDEFF0] space-y-4">
           <div className="mb-5 border-b border-[#EDEFF0]">
             <div className="flex items-center justify-between pb-5">
               <div className="flex flex-row items-center gap-3">
-                <div className="rounded" dangerouslySetInnerHTML={{ __html: assistant.icon }} />
+                <div className="rounded" dangerouslySetInnerHTML={{ __html: appTemplate.icon }} />
 
-                <h2 className="text-2xl font-semibold capitalize">{assistant.name}</h2>
+                <h2 className="text-2xl font-semibold capitalize">{appTemplate.name}</h2>
               </div>
-              <BsStarFill size={24} className="text-yellow-300" />
+              <div className="cursor-pointer w-full max-w-fit transition duration-300 hover:scale-125 flex justify-center items-center">
+                {appTemplate.favorite ? (
+                  <BsStarFill size={24} className="text-yellow-300" onClick={() => handleFavourite("remove", appTemplate._id)} />
+                ) : (
+                  <StarIcon className="text-[#ADADAD]" onClick={() => handleFavourite("add", appTemplate._id)} />
+                )}
+              </div>
             </div>
-            <p className="mb-5 text-md">{assistant.description}</p>
+            <p className="mb-5 text-md">{appTemplate.description}</p>
           </div>
-
+          <div className="flex items-center gap-2">
+            <Switch checked={isChecked} onCheckedChange={() => setIsChecked((prev) => !prev)} />
+            <label htmlFor="include-brand" className="text-sm">
+              Include your brand
+            </label>
+          </div>
           {isChecked && (
             <div>
               <Dropdown
-                label="Select Company"
+                label="Select Company / Brand"
                 placeholder="Select your Company / Brand"
                 items={brandNames}
                 value={brandName}
@@ -446,64 +407,7 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
           <div>
             <Dropdown
               label="Language"
-              items={[
-                "English (USA)",
-                "Spanish",
-                "French",
-                "German",
-                "Italian",
-                "Chinese (Simplified)",
-                "Chinese (Traditional)",
-                "Japanese",
-                "Korean",
-                "Portuguese",
-                "Russian",
-                "Arabic",
-                "Hindi",
-                "Bengali",
-                "Urdu",
-                "Indonesian",
-                "Dutch",
-                "Turkish",
-                "Vietnamese",
-                "Thai",
-                "Greek",
-                "Swedish",
-                "Norwegian",
-                "Danish",
-                "Finnish",
-                "Polish",
-                "Czech",
-                "Hungarian",
-                "Romanian",
-                "Hebrew",
-                "Malay",
-                "Filipino",
-                "Swahili",
-                "Zulu",
-                "Afrikaans",
-                "Serbian",
-                "Croatian",
-                "Bulgarian",
-                "Slovak",
-                "Slovenian",
-                "Lithuanian",
-                "Latvian",
-                "Estonian",
-                "Icelandic",
-                "Irish",
-                "Welsh",
-                "Maltese",
-                "Luxembourgish",
-                "Catalan",
-                "Galician",
-                "Basque",
-                "Scottish Gaelic",
-                "Breton",
-                "Corsican",
-                "Esperanto",
-                "Latin",
-              ]}
+              items={languageOptions.map((language) => language.label)}
               value={userInput1}
               onChange={(value: any) => {
                 handleDropdownChange("language", value);
@@ -512,7 +416,7 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
             />
           </div>
           <div className="space-y-3">
-            {assistant?.inputs?.map((input: any, index: number) => (
+            {appTemplate?.inputs?.map((input: any, index: number) => (
               <div key={index}>
                 <label className="font-medium flex justify-between" htmlFor={`user-prompt-${index}`}>
                   {input.title}
@@ -628,36 +532,20 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
               />
             </div>
           </div>
-          <button className="w-full h-14 py-2 text-white bg-primary-green rounded-lg mt-5 flex items-center justify-center" onClick={handleBothActions}>
-            <div className="flex items-center gap-2">{!isLoading ? "Generate" : <FaCircleNotch className="h-6 w-6 text-white animate-spin" />}</div>
+          <button className="w-full h-14 py-2 text-white bg-primary-green rounded-xl !mt-7 flex items-center justify-center" onClick={generateResult}>
+            <div className="flex items-center gap-2">{!isGeneratedResultPending ? "Generate" : <Spinner />}</div>
           </button>
         </div>
         <div className="w-full p-8 bg-white rounded-2xl border border-[#EDEFF0] flex flex-col">
           <div className="flex items-center justify-between mb-5 border-b pb-5">
-            <div className="flex items-center gap-2 w-full max-w-fit">
-              <input type="text" placeholder="Enter file name" value={fileName} onChange={(e) => setFileName(e.target.value)} />
-              {/* <Select
-                onValueChange={(e: any) => setWorkbook(e)}
-                defaultValue={workbook}
-              >
-                <SelectTrigger className="w-full border-none">
-                  <SelectValue placeholder="All Workbooks" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="All Workbook">All Workbook</SelectItem>
-                  <SelectItem value="Workbook 1">Workbook 1</SelectItem>
-                  <SelectItem value="Workbook 2">Workbook 2</SelectItem>
-                </SelectContent>
-              </Select> */}
-              {/* <div className="flex items-center gap-2 whitespace-nowrap">
-                <Switch />
-                <label
-                  htmlFor="include-brand"
-                  className="text-sm text-[#6E7687]"
-                >
-                  Internet Access
-                </label>
-              </div> */}
+            <div className="flex items-center gap-2 w-full max-w-lg border rounded-xl">
+              <input
+                type="text"
+                placeholder="Enter file name"
+                value={fileName}
+                onChange={(e) => setFileName(e.target.value)}
+                className="w-full h-12 px-4 rounded-xl"
+              />
             </div>
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
@@ -669,8 +557,8 @@ export default function AiAppPage({ params: { assistantId } }: { params: { assis
                   onChange={(value: any) => handleDownload(value)}
                 />
 
-                <button className="p-2 bg-gray-100 border rounded-lg" onClick={isEdit ? handleEditDocument : handleSaveDocument}>
-                  <Save size={20} className="text-gray-600" />
+                <button className="h-11 w-11 grid place-content-center p-2 bg-gray-100 rounded-lg" onClick={isEdit ? handleEditDocument : handleSaveDocument}>
+                  {isDocumentSavePending ? <Spinner color="black" /> : <Save size={24} className="text-gray-600" />}
                 </button>
               </div>
             </div>
