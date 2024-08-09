@@ -4,7 +4,7 @@ import 'aos/dist/aos.css';
 
 const VideoPreviewModal = ({
   isOpen,
-  videoUrl,
+  videoUrl, 
   onClose,
 }: {
   isOpen: boolean;
@@ -68,12 +68,12 @@ const VideoPreviewModal = ({
     >
       <div
         ref={modalRef}
-        className="bg-white p-6 rounded-lg shadow-lg w-[80%] max-w-3xl relative overflow-hidden"
+        className="bg-white rounded-lg shadow-lg w-[80%] max-w-3xl relative overflow-hidden"
         data-aos="zoom-in"
         data-aos-duration="600"
       >
         <button
-          className="absolute -top-2 -right-0.5 text-red-500 text-2xl font-semibold rounded-full p-2 hover:bg-gray-200 transition"
+          className="absolute -top-2 z-20 -right-0.5 text-red-500 text-2xl font-light rounded-full p-2 hover:bg-gray-200 transition"
           onClick={onClose}
           aria-label="Close"
         >

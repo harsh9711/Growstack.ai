@@ -1,18 +1,11 @@
 "use client";
 import instance from "@/config/axios.config";
 import { Download, MoreHorizontal, Search, Trash } from "lucide-react";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { Fragment, Suspense, useEffect, useRef, useState } from "react";
 import CreateVideoDialog from "./components/CreateVideoDialog";
 import { Template } from "./components/types";
 import toast from "react-hot-toast";
 import TemplateLoader from "./components/TemplateLoader";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-} from "@/components/ui/select";
 import "@/styles/editor.css";
 import ConfirmDialog from "./components/ConfirmDialog";
 import VideoPreviewModal from "./components/VideoPreview";
@@ -43,6 +36,24 @@ const VideoCard = ({
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  useEffect(() => {
+    const handleVideoGenerationSuccess = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      if (customEvent.type === "videoGenerationSuccess") {
+        window.location.reload();
+      }
+    };
+    window.addEventListener(
+      "videoGenerationSuccess",
+      handleVideoGenerationSuccess as EventListener
+    );
+    return () => {
+      window.removeEventListener(
+        "videoGenerationSuccess",
+        handleVideoGenerationSuccess as EventListener
+      );
+    };
+  }, []);
 
   const handleConfirmDelete = async () => {
     setIsDeleting(true);
@@ -87,7 +98,7 @@ const VideoCard = ({
 
           const link = document.createElement("a");
           link.href = url;
-          link.download = `${_id}.mp4`; // Ensure file extension is correct
+          link.download = `${_id}.mp4`;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
@@ -148,8 +159,8 @@ const VideoCard = ({
     );
   };
   return (
-    <div className="flex items-center h-[104px] border border-[#EBEBEB] mt-[20px] px-[20px] transition duration-300 hover:border-primary-green">
-      <div className="flex items-center w-full justify-between gap-4">
+    <div className="flex items-center w-full h-full 2xl:h-[104px] border border-[#EBEBEB] mt-[20px] 2xl:px-[20px] transition duration-300 hover:border-primary-green">
+      <div className="flex flex-col xl:flex-row md:flex-row lg:flex-row  flex-wrap 2xl:flex-row items-center w-full justify-between gap-4">
         <div
           className="w-[64px] h-[64px] cursor-pointer"
           onClick={() => onPreview(videoUrl)}
@@ -227,16 +238,15 @@ export default function TextToVideoPage() {
   };
 
   useEffect(() => {
-    // Fetch initial data
     fetchData();
 
-    // Set up WebSocket connection
-    const socket = new WebSocket("wss://your-websocket-server-url"); // Replace with your WebSocket server URL
+   
+    const socket = new WebSocket("wss://your-websocket-server-url");
 
     socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
       if (data.type === "update") {
-        fetchData(); // Refresh data when an update message is received
+        fetchData(); 
       }
     };
 
@@ -253,12 +263,11 @@ export default function TextToVideoPage() {
     };
 
     return () => {
-      socket.close(); // Clean up WebSocket connection on component unmount
+      socket.close(); 
     };
   }, []);
 
   const handleRemove = (id: string) => {
-    // Add your remove functionality here
   };
 
   const handlePreview = (url: string) => {
@@ -301,17 +310,19 @@ export default function TextToVideoPage() {
             </div>
           ) : filteredTemplates && filteredTemplates.length > 0 ? (
             filteredTemplates.map((template) => (
-              <VideoCard
-                key={template._id}
-                title={template.doc_name}
-                thumbnailUrl={template.doc_content.video_thumbnailUrl}
-                status={template.doc_content.status}
-                editedAt={template.updatedAt}
-                videoUrl={template.doc_content.video_url}
-                onRemove={handleRemove}
-                onPreview={handlePreview}
-                _id={template._id}
-              />
+              <Suspense fallback={<TemplateLoader />}>
+                <VideoCard
+                  key={template._id}
+                  title={template.doc_name}
+                  thumbnailUrl={template.doc_content.video_thumbnailUrl}
+                  status={template.doc_content.status}
+                  editedAt={template.updatedAt}
+                  videoUrl={template.doc_content.video_url}
+                  onRemove={handleRemove}
+                  onPreview={handlePreview}
+                  _id={template._id}
+                />{" "}
+              </Suspense>
             ))
           ) : (
             <div className="text-center text-gray-500 text-2xl font-semibold col-span-4">
