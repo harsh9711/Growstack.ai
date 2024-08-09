@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import clsx from "clsx";
 import { ChevronRight, Search } from "lucide-react";
 import Image from "next/image";
@@ -58,9 +53,7 @@ export default function Navbar() {
               <ChevronRight className="text-gray-500" />
             </div>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="ml-28">
-            {renderDropdownItems(item.subItems!)}
-          </DropdownMenuContent>
+          <DropdownMenuContent className="ml-28">{renderDropdownItems(item.subItems!)}</DropdownMenuContent>
         </DropdownMenu>
       ) : (
         <Link href={item.href!} key={index}>
@@ -68,26 +61,15 @@ export default function Navbar() {
             inset
             className={clsx(
               "min-w-[300px] flex justify-between gap-8 items-center my-1",
-              pathname === item.href &&
-                "bg-primary-green hover:!bg-primary-green"
-            )}
-          >
+              pathname === item.href && "bg-primary-green hover:!bg-primary-green"
+            )}>
             <div className="flex gap-3">
               {React.cloneElement(item.icon, {
                 className: clsx(pathname === item.href && "text-white"),
               })}
-              <h2 className={clsx(pathname === item.href && "text-white")}>
-                {item.name}
-              </h2>
+              <h2 className={clsx(pathname === item.href && "text-white")}>{item.name}</h2>
             </div>
-            {item.href && (
-              <ChevronRight
-                className={clsx(
-                  "text-gray-500",
-                  pathname === item.href && "text-white"
-                )}
-              />
-            )}
+            {item.href && <ChevronRight className={clsx("text-gray-500", pathname === item.href && "text-white")} />}
           </DropdownMenuItem>
         </Link>
       );
@@ -98,15 +80,7 @@ export default function Navbar() {
     <header className="bg-white shadow-2xl shadow-primary-green/10 py-4 px-10 rounded-[24px] w-full max-w-[90%] mx-auto fixed top-0 left-1/2 transform -translate-x-1/2 z-[5]">
       <nav className="flex justify-between items-center gap-5">
         <div className="border-r border-[#DEDEDE] pr-10">
-          <Image
-            src="/logo/growstack.svg"
-            alt=""
-            width={150}
-            height={40}
-            draggable={false}
-            className="select-none max-h-14"
-            priority
-          />
+          <Image src="/logo/growstack.png" alt="" width={150} height={40} draggable={false} className="select-none max-h-14" priority />
         </div>
         <div className="flex gap-3">
           {navLinks.map((link, index) => (
@@ -121,11 +95,7 @@ export default function Navbar() {
                 </DropdownMenuTrigger>
               )}
 
-              {link.sublinks && (
-                <DropdownMenuContent>
-                  {renderDropdownItems(link.sublinks)}
-                </DropdownMenuContent>
-              )}
+              {link.sublinks && <DropdownMenuContent>{renderDropdownItems(link.sublinks)}</DropdownMenuContent>}
             </DropdownMenu>
           ))}
         </div>
@@ -148,22 +118,13 @@ export default function Navbar() {
   );
 }
 
-const NavLinkBtn = ({
-  link,
-  isActive,
-}: {
-  link: NavLink;
-  isActive?: boolean;
-}) => {
+const NavLinkBtn = ({ link, isActive }: { link: NavLink; isActive?: boolean }) => {
   return (
     <div
       className={clsx(
         "flex justify-center items-center p-[9px] pr-6 rounded-2xl gap-4 text-[15px] transition-all duration-200",
-        isActive
-          ? "bg-primary-green text-white !hover:bg-primary-green hover:bg-opacity-90"
-          : "hover:bg-[#F1F1F1]"
-      )}
-    >
+        isActive ? "bg-primary-green text-white !hover:bg-primary-green hover:bg-opacity-90" : "hover:bg-[#F1F1F1]"
+      )}>
       <div className="bg-[#FAFAFB] p-2.5 rounded-lg">
         {React.cloneElement(link.icon, {
           className: clsx(isActive && "text-primary-green"),

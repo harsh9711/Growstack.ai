@@ -1,10 +1,4 @@
-import {
-  AnthropicClaude,
-  ChatGptIcon2,
-  GoogleGemini,
-  Llama,
-  Mistra,
-} from "@/components/svgs";
+import { AnthropicClaude, ChatGptIcon2, GoogleGemini, Llama, Mistra } from "@/components/svgs";
 
 export const aiModelOptions = [
   // { label: "ChatGPT 3.5", value: "gpt-3.5", icon: <ChatGptIcon2 /> },
@@ -96,13 +90,8 @@ export const povOptions = [
 ];
 export const languageOptions = [
   {
-    label: "English",
-    value: "english",
-    icon: "",
-  },
-  {
-    label: "Hindi",
-    value: "hindi",
+    label: "English (USA)",
+    value: "english_usa",
     icon: "",
   },
   {
@@ -113,6 +102,266 @@ export const languageOptions = [
   {
     label: "French",
     value: "french",
+    icon: "",
+  },
+  {
+    label: "German",
+    value: "german",
+    icon: "",
+  },
+  {
+    label: "Italian",
+    value: "italian",
+    icon: "",
+  },
+  {
+    label: "Chinese (Simplified)",
+    value: "chinese_simplified",
+    icon: "",
+  },
+  {
+    label: "Chinese (Traditional)",
+    value: "chinese_traditional",
+    icon: "",
+  },
+  {
+    label: "Japanese",
+    value: "japanese",
+    icon: "",
+  },
+  {
+    label: "Korean",
+    value: "korean",
+    icon: "",
+  },
+  {
+    label: "Portuguese",
+    value: "portuguese",
+    icon: "",
+  },
+  {
+    label: "Russian",
+    value: "russian",
+    icon: "",
+  },
+  {
+    label: "Arabic",
+    value: "arabic",
+    icon: "",
+  },
+  {
+    label: "Hindi",
+    value: "hindi",
+    icon: "",
+  },
+  {
+    label: "Bengali",
+    value: "bengali",
+    icon: "",
+  },
+  {
+    label: "Indonesian",
+    value: "indonesian",
+    icon: "",
+  },
+  {
+    label: "Dutch",
+    value: "dutch",
+    icon: "",
+  },
+  {
+    label: "Turkish",
+    value: "turkish",
+    icon: "",
+  },
+  {
+    label: "Vietnamese",
+    value: "vietnamese",
+    icon: "",
+  },
+  {
+    label: "Thai",
+    value: "thai",
+    icon: "",
+  },
+  {
+    label: "Greek",
+    value: "greek",
+    icon: "",
+  },
+  {
+    label: "Swedish",
+    value: "swedish",
+    icon: "",
+  },
+  {
+    label: "Norwegian",
+    value: "norwegian",
+    icon: "",
+  },
+  {
+    label: "Danish",
+    value: "danish",
+    icon: "",
+  },
+  {
+    label: "Finnish",
+    value: "finnish",
+    icon: "",
+  },
+  {
+    label: "Polish",
+    value: "polish",
+    icon: "",
+  },
+  {
+    label: "Czech",
+    value: "czech",
+    icon: "",
+  },
+  {
+    label: "Hungarian",
+    value: "hungarian",
+    icon: "",
+  },
+  {
+    label: "Romanian",
+    value: "romanian",
+    icon: "",
+  },
+  {
+    label: "Hebrew",
+    value: "hebrew",
+    icon: "",
+  },
+  {
+    label: "Malay",
+    value: "malay",
+    icon: "",
+  },
+  {
+    label: "Filipino",
+    value: "filipino",
+    icon: "",
+  },
+  {
+    label: "Swahili",
+    value: "swahili",
+    icon: "",
+  },
+  {
+    label: "Zulu",
+    value: "zulu",
+    icon: "",
+  },
+  {
+    label: "Afrikaans",
+    value: "afrikaans",
+    icon: "",
+  },
+  {
+    label: "Serbian",
+    value: "serbian",
+    icon: "",
+  },
+  {
+    label: "Croatian",
+    value: "croatian",
+    icon: "",
+  },
+  {
+    label: "Bulgarian",
+    value: "bulgarian",
+    icon: "",
+  },
+  {
+    label: "Slovak",
+    value: "slovak",
+    icon: "",
+  },
+  {
+    label: "Slovenian",
+    value: "slovenian",
+    icon: "",
+  },
+  {
+    label: "Lithuanian",
+    value: "lithuanian",
+    icon: "",
+  },
+  {
+    label: "Latvian",
+    value: "latvian",
+    icon: "",
+  },
+  {
+    label: "Estonian",
+    value: "estonian",
+    icon: "",
+  },
+  {
+    label: "Icelandic",
+    value: "icelandic",
+    icon: "",
+  },
+  {
+    label: "Irish",
+    value: "irish",
+    icon: "",
+  },
+  {
+    label: "Welsh",
+    value: "welsh",
+    icon: "",
+  },
+  {
+    label: "Maltese",
+    value: "maltese",
+    icon: "",
+  },
+  {
+    label: "Luxembourgish",
+    value: "luxembourgish",
+    icon: "",
+  },
+  {
+    label: "Catalan",
+    value: "catalan",
+    icon: "",
+  },
+  {
+    label: "Galician",
+    value: "galician",
+    icon: "",
+  },
+  {
+    label: "Basque",
+    value: "basque",
+    icon: "",
+  },
+  {
+    label: "Scottish Gaelic",
+    value: "scottish_gaelic",
+    icon: "",
+  },
+  {
+    label: "Breton",
+    value: "breton",
+    icon: "",
+  },
+  {
+    label: "Corsican",
+    value: "corsican",
+    icon: "",
+  },
+  {
+    label: "Esperanto",
+    value: "esperanto",
+    icon: "",
+  },
+  {
+    label: "Latin",
+    value: "latin",
     icon: "",
   },
 ];

@@ -1,8 +1,28 @@
-export type Template = {
-  createdAt: number;
+export interface Template {
+  _id: string;
+  user_id: string;
+  doc_type: string;
+  doc_name: string;
+  workbook: string;
+  category: string;
+  
+  doc_content: {
+    video_id: string;
+    status: string;
+    video_thumbnailUrl: string;
+    video_url:string;
+  };
+  createdAt: string;
+  updatedAt: string;
   created_by: string;
   id: string;
   lastUpdatedAt: number;
-  title: string;
-  variables: Record<string, any>; // Assuming variables can be any key-value pairs
-};
+  variables: Record<string, any>;
+  thumbnailUrl: string;
+  status: string;
+  author: string;
+  initial: string;
+  editedTime: string;
+  title:string;
+  onSuccess?: () => void; 
+}

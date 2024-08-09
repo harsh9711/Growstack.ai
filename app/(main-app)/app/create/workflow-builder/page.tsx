@@ -113,7 +113,7 @@ type CardProps = {
 };
 
 const Card: React.FC<CardProps> = ({ title, description, imageSrc }) => (
-  <div className="p-8 bg-white rounded-3xl border border-[#E8E8E8] hover:shadow-xl hover:shadow-gray-200/60 transition-all duration-300 cursor-pointer space-y-4 min-h-[320px]">
+  <div className="p-8 bg-white rounded-3xl border border-[#E8E8E8] hover:shadow-xl hover:shadow-gray-200/60 transition-all duration-300 cursor-pointer space-y-4 min-h-[300px]">
     <Image src={imageSrc} alt={title} width={400} height={400} className="w-full h-32 object-cover rounded-xl" />
     <h3 className="text-xl font-semibold leading-relaxed line-clamp-1 text-ellipsis overflow-hidden" title={title}>
       {title}

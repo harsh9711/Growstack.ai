@@ -32,6 +32,10 @@ export default function QuickPosting() {
         return <ScheduledPostsTable />;
     }
   };
+
+  const d = new Date();
+  let time = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+
   const handleValueChange = (value: string) => {
     setSelectedRadioValue(value);
     if (value === "Image") setIsVideo(false);
@@ -84,7 +88,7 @@ export default function QuickPosting() {
           platforms: selectedNetworks,
           mediaUrls,
           isVideo,
-          scheduleDate,
+          scheduleDate: scheduleDate + "T" + time + "Z",
         }
       );
       setContent("");
@@ -177,6 +181,16 @@ export default function QuickPosting() {
                   onChange={handleBrowsImgAndVideo}
                 />
               </div>
+              <div className="flex gap-2">
+                {mediaUrls.length > 0 &&
+                  mediaUrls?.map((img: any) => {
+                    return (
+                      <div className="w-16 h-16 bg-neutral-800 rounded-md ">
+                        <img src={img} alt="img" className=" rounded-md" />
+                      </div>
+                    );
+                  })}
+              </div>
             </section>
             <section className="w-full bg-white rounded-3xl border border-[#EDEFF0] px-10 py-6 mt-6">
               <h1 className="text-xl font-semibold border-b border-primary-black/10 pb-4">
@@ -205,7 +219,7 @@ export default function QuickPosting() {
                 <label className="font-medium">Facebook</label>
                 <Switch
                   onCheckedChange={(checked) =>
-                    handleSwitchChange("Facebook", checked)
+                    handleSwitchChange("facebook", checked)
                   }
                 />
               </div>
@@ -213,7 +227,7 @@ export default function QuickPosting() {
                 <label className="font-medium">Twitter</label>
                 <Switch
                   onCheckedChange={(checked) =>
-                    handleSwitchChange("Twitter", checked)
+                    handleSwitchChange("twitter", checked)
                   }
                 />
               </div>
@@ -221,7 +235,7 @@ export default function QuickPosting() {
                 <label className="font-medium">LinkedIn</label>
                 <Switch
                   onCheckedChange={(checked) =>
-                    handleSwitchChange("LinkedIn", checked)
+                    handleSwitchChange("linkedIn", checked)
                   }
                 />
               </div>
@@ -229,7 +243,7 @@ export default function QuickPosting() {
                 <label className="font-medium">Instagram</label>
                 <Switch
                   onCheckedChange={(checked) =>
-                    handleSwitchChange("Instagram", checked)
+                    handleSwitchChange("instagram", checked)
                   }
                 />
               </div>

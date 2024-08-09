@@ -25,7 +25,7 @@ const ForgotPassword = () => {
     <div className="h-screen w-full flex justify-center items-center">
       <div className="w-full max-w-2xl h-fit  p-14 bg-[#F7FAFC] rounded-[30px]">
         <div className="w-full h-full max-w-[460px] mx-auto flex flex-col justify-between items-center space-y-10">
-          <Image src={"/logo/growstack.svg"} alt="growstack" height={180} width={180} className="max-h-14" />
+          <Image src={"/logo/growstack.png"} alt="growstack" height={180} width={180} className="max-h-14" />
           <Image src={"/assets/forgot-login-password.svg"} alt="" height={400} width={400} className="max-h-[300px]" />
           <div className="w-full">
             {step === 1 && <EmailForm onEmailSubmitted={handleEmailSubmitted} />}

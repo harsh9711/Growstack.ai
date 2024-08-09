@@ -1,44 +1,49 @@
-import { X } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Plus } from "lucide-react";
+import { useState } from "react";
 
 interface NewChatAlertProps {
-  setToggleModal: React.Dispatch<React.SetStateAction<boolean>>;
   handleNewChat: () => void;
 }
 
-const NewChatAlert = ({ setToggleModal, handleNewChat }: NewChatAlertProps) => {
+const NewChatAlert = ({ handleNewChat }: NewChatAlertProps) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
   return (
-    <>
-      <div className="relative bg-white z-40 px-4 py-3 border-b border-gray-300">
-        <button className="absolute top-1 right-1 rounded-lg transition-opacity p-2 hover:bg-[#ff00001f] hover:opacity-100 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-          <X
-            className="h-5 w-5 text-[#ff00009d]"
-            onClick={() => setToggleModal(false)}
-          />
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <button type="button" className="bg-primary-green p-3 rounded-[16px] text-white">
+          <Plus size={32} />w
         </button>
-        <div className="font-semibold text-[22px] text-header">New Chat</div>
-      </div>
-      <div className=" px-4 py-3">
-        <div className="flex">
-          <div>Do you want to continue to a new chat?</div>
+      </DialogTrigger>
+      <DialogContent className="max-w-3xl pt-0">
+        <DialogHeader className="border-b border-gray-200 py-4">
+          <DialogTitle>New chat</DialogTitle>
+        </DialogHeader>
+        <div className="">
+          <div className="flex">
+            <div>Do you want to continue to a new chat?</div>
+          </div>
+          <div className="flex justify-end mt-8 space-x-3">
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="text-[14px] h-12 border border-red-500 bg-white text-red-500 px-5 rounded-xl">
+              Cancel
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                handleNewChat();
+                setIsOpen(false);
+              }}
+              className="text-[14px] h-12 bg-primary-green text-white px-5 rounded-xl">
+              Continue
+            </button>
+          </div>
         </div>
-        <div className="flex justify-end mt-8">
-          <button
-            type="button"
-            onClick={() => setToggleModal(false)}
-            className="text-[14px] border border-red-500 bg-white text-red-500 px-[20px] py-[6px] rounded-md mr-[10px]"
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            onClick={handleNewChat}
-            className="text-[14px] w-[95px] bg-primary-green text-white px-[20px] py-[6px] rounded-md mr-[10px]"
-          >
-            Continue
-          </button>
-        </div>
-      </div>
-    </>
+      </DialogContent>
+    </Dialog>
   );
 };
 

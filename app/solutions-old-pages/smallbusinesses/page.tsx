@@ -8,7 +8,7 @@ import TestimonialsSlider from "./components/Slider";
 import LoadingBar from "./components/Loading";
 import HeroSection from "./components/Hero";
 import GridComponent from "./components/GridBoxes";
-import ImageGalleryLine from "../midmarketenterprise/components/ImageGalleryline";
+import ImageGalleryLine from "./components/ImageGalleryline";
 
 const Home = () => {
   const totalItems = 5;
@@ -32,7 +32,7 @@ const Home = () => {
       </section>
       <section className="px-36 pt-20">
         <div className="flex flex-col   max-h-[1163px] h-full justify-center mx-auto relative   bg-gradient-to-b to-[#ffffff]/30 from-[#61C453]/20  w-full   items-center gap-4  ">
-          <ImageGalleryLine />
+          <ImageGalleryLine/>
         </div>
       </section>
       <section className="relative  mx-auto items-center justify-center pb-10 px-36">
