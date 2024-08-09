@@ -131,7 +131,6 @@ const languageFlags = {
 //               const response = await instance.delete(
 //                 `${API_URL}/users/api/v1/docs/:${id}`
 //               );
-//               console.log("FFFFF", response);
 //             } catch (error) {
 //               toast.error("Error deleting document");
 //             }
