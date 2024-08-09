@@ -1,5 +1,5 @@
-import { Plus, X } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Plus } from "lucide-react";
 import { useState } from "react";
 
 interface NewChatAlertProps {
@@ -13,7 +13,7 @@ const NewChatAlert = ({ handleNewChat }: NewChatAlertProps) => {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <button type="button" className="bg-primary-green p-3 rounded-[16px] text-white">
-          <Plus size={32} />
+          <Plus size={32} />w
         </button>
       </DialogTrigger>
       <DialogContent className="max-w-3xl pt-0">

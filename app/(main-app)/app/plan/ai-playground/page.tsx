@@ -1,15 +1,13 @@
 "use client";
 
-import { History, Plus } from "lucide-react";
-import ChatArea from "./component/chatArea";
-import { useEffect, useRef, useState } from "react";
-import { modelData } from "../../create/ai-articles/constants/options";
-import { Message } from "./interface/playground";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
+import { useState } from "react";
 import toast from "react-hot-toast";
-import Modal from "../contacts/components/modal";
+import { modelData } from "../../create/ai-articles/constants/options";
+import ChatArea from "./component/chatArea";
 import NewChatAlert from "./component/newChatArea";
+import { Message } from "./interface/playground";
 
 const initialChat = [
   {

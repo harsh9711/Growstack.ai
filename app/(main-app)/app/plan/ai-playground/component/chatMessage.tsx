@@ -1,13 +1,13 @@
-import React, { useEffect, useRef } from "react";
-import ReactMarkdown from "react-markdown";
 import DotsLoader from "@/components/DotLoader";
-import remarkGfm from "remark-gfm";
-import remarkBreaks from "remark-breaks";
-import rehypeRaw from "rehype-raw";
-import { Message } from "../interface/playground";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getCurrentUser } from "@/lib/features/auth/auth.selector";
 import Image from "next/image";
+import React, { useEffect, useRef } from "react";
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import remarkBreaks from "remark-breaks";
+import remarkGfm from "remark-gfm";
+import { Message } from "../interface/playground";
 
 interface ChatMessagesProps {
   conversation: Message[];

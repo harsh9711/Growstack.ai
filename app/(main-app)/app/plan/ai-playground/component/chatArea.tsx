@@ -1,13 +1,13 @@
 "use client";
-import React from "react";
 import { OpenTabIcon, SendIcon2 } from "@/components/svgs";
-import { Link, MoreHorizontal, Plus, Settings2, Trash, Trash2Icon } from "lucide-react";
-import { modelData } from "../../../create/ai-articles/constants/options";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import "@/styles/editor.css";
 import clsx from "clsx";
+import { MoreHorizontal, Plus, Trash2Icon } from "lucide-react";
+import React from "react";
+import { modelData } from "../../../create/ai-articles/constants/options";
 import { Message } from "../interface/playground";
 import ChatMessages from "./chatMessage";
-import "@/styles/editor.css";
 
 interface ChatAreaProps {
   selectedModel: string;
