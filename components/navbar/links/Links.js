@@ -22,9 +22,8 @@ const links = [
   },
   {
     title: "Solutions",
-    path: "",
+    path: "/solutions",
     submenu: [
-          { title: "Marketing", path: "/solutions/marketing" },
           { title: "Large Enterprise", path: "/solutions/largeenterprise" },
           { title: "MidMarket Enterprise",path: "/solutions/midmarketenterprise"  },
           { title: "Small businesses",path: "/solutions/smallbusinesses"  },
