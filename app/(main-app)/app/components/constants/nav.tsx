@@ -195,12 +195,12 @@ const navLinks: NavLink[] = [
       {
         icon: <TridentIcon />,
         name: "Web scraping",
-        href: "/app/plan/web-scraping",
+        href: "/app/engage/web-scraping",
       },
       {
         icon: <UserIcon />,
         name: "Contact",
-        href: "/app/plan/contacts",
+        href: "/app/engage/contacts",
       },
     ],
     title: "Engage",
