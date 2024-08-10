@@ -5,7 +5,7 @@ import { useRouter } from "next-nprogress-bar";
 import { Checkbox } from "@/components/ui/checkbox";
 import { API_URL } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
+import axios from "@/config/axios.config";
 import clsx from "clsx";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -51,7 +51,10 @@ export default function Login() {
         sameSite: "none",
         expires: new Date(Date.now() + 2 * 60 * 60 * 1000),
       });
-      dispatch(login(response.data.data));
+
+      const userData = await handleGetProfileData();
+      console.log(userData);
+      dispatch(login(userData));
       router.push("/app");
       toast.success(response.data.message);
     } catch (error: any) {
@@ -63,6 +66,16 @@ export default function Login() {
       console.error("Login failed:", error);
     } finally {
       setIsPending(false);
+    }
+  };
+
+  const handleGetProfileData = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/users/api/v1`);
+      const userData = response?.data?.data;
+      return userData
+    } catch (error) {
+      console.log(error);
     }
   };
 

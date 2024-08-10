@@ -1,8 +1,12 @@
 "use client";
 
 import Motion from "@/components/Motion";
+import Spinner from "@/components/Spinner";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import instance from "@/config/axios.config";
+import { API_URL } from "@/lib/api";
+import { editDocument, savedDecument } from "@/lib/features/documents/document.slice";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -19,17 +23,13 @@ import {
 import clsx from "clsx";
 import { Edit, FileDown, Search, Delete } from "lucide-react";
 import { MdDelete } from "react-icons/md";
+import moment from "moment";
+import { useRouter } from "next-nprogress-bar";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-// import { documents } from "./data";
-import instance from "@/config/axios.config";
-import { API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
-import swal from "sweetalert";
-import { useRouter } from "next-nprogress-bar";
 import { useDispatch } from "react-redux";
-import { editDocument, savedDecument } from "@/lib/features/documents/document.slice";
-import moment from "moment";
+import swal from "sweetalert";
 
 interface Document {
   name: string;
@@ -40,12 +40,6 @@ interface Document {
   wordsUsed: number;
   _id: string;
 }
-
-const categoryColors = {
-  active: "text-green-500",
-  inactive: "text-yellow-500",
-  disabled: "text-red-500",
-};
 
 const languageFlags = {
   "English (USA)": "/assets/flags/us.svg",
@@ -170,6 +164,7 @@ export default function DocumentsTable() {
     pageSize: 10,
   });
   const [documents, setDocuments] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const columns: ColumnDef<Document>[] = [
     {
@@ -187,29 +182,34 @@ export default function DocumentsTable() {
     {
       accessorKey: "category",
       header: () => <div className="uppercase">Category</div>,
-      cell: ({ row }) => (
-        <div className={clsx("capitalize", categoryColors[row.getValue("category") as keyof typeof categoryColors])}>{row.getValue("category")}</div>
-      ),
+      cell: ({ row }) => <div className={clsx("uppercase bg-gray-100 px-2 py-1.5 max-w-fit rounded-md text-[13px]")}>{row.getValue("category")}</div>,
     },
     {
       accessorKey: "createdAt",
       header: () => <div className="uppercase">Created</div>,
-      cell: ({ row }: any) => <div className="capitalize">{row.original.createdAt ? moment(row.original.createdAt).format("MMMM DD YYYY hh:mm A") : ""}</div>,
+      cell: ({ row }: any) => (
+        <div className="capitalize">{row.original.createdAt ? moment(row.original.createdAt).format("MMMM DD YYYY • hh:mm A") : "—"}</div>
+      ),
     },
     {
       accessorKey: "doc_language",
       header: () => <div className="uppercase">Language</div>,
-      cell: ({ row }: any) => (
-        <div className="flex items-center gap-2.5">
-          {row.original.doc_language && <Image src={languageFlags[row.getValue("doc_language") as keyof typeof languageFlags]} alt="" width={20} height={20} />}{" "}
-          {row.getValue("doc_language")}
-        </div>
-      ),
+      cell: ({ row }: any) =>
+        row.original.language ? (
+          <div className="flex items-center gap-2.5">
+            {row.original.doc_language && (
+              <Image src={languageFlags[row.getValue("doc_language") as keyof typeof languageFlags]} alt="" width={20} height={20} />
+            )}
+            {row.getValue("doc_language")}
+          </div>
+        ) : (
+          <div>—</div>
+        ),
     },
     {
       accessorKey: "doc_words",
       header: () => <div className="uppercase">Words Used</div>,
-      cell: ({ row }) => <div>{row.getValue("doc_words")}</div>,
+      cell: ({ row }) => (row.getValue("doc_words") ? <div>{row.getValue("doc_words")}</div> : <div>—</div>),
     },
     {
       id: "actions",
@@ -254,6 +254,7 @@ export default function DocumentsTable() {
   });
 
   useEffect(() => {
+    setLoading(true);
     handleGetDocumentsData();
   }, [pagination.pageIndex]);
 
@@ -279,6 +280,8 @@ export default function DocumentsTable() {
     } catch (error) {
       console.log("Error fetching Documents:", error);
       toast.error("Error fetching Documents data");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -305,7 +308,17 @@ export default function DocumentsTable() {
   };
 
   const handleEdit = (row: any) => {
-    router.push(`/app/plan/ai-templates/${row._id}`);
+    switch (row.doc_type) {
+      case "TEXT":
+        //TODO: remove this static ID
+        return router.push(`/app/plan/ai-templates/668fba4cda6b851455c8caf0`);
+      case "HTML":
+        return router.push(`/app/create/website-builder`);
+      case "VIDEO":
+        return router.push(`/app/plan/text-to-video`);
+      case "IMAGE":
+        return router.push(`/app/create/product-ai`);
+    }
     dispatch(editDocument(true));
     dispatch(savedDecument(row));
   };
@@ -320,63 +333,72 @@ export default function DocumentsTable() {
             <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" />
           </div>
         </div>
-        <div className="bg-white rounded-lg border overflow-hidden mt-5 min-h-[50vh]">
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id} className="bg-[#0347370D]">
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="bg-white">
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow className="hover:bg-white">
-                  <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-        {table.getRowModel().rows?.length ? (
-          <div className="flex items-center justify-end space-x-2 py-4">
-            <div className="space-x-2 flex">
-              <Button
-                variant="outline"
-                size="sm"
-                className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px]"
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}>
-                Previous
-              </Button>
-              <div>
-                <div>{paginationButtons.map((u) => u)}</div>
-              </div>
-              <Button
-                variant="outline"
-                size="sm"
-                className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px] px-4"
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}>
-                Next
-              </Button>
-            </div>
+        {loading ? (
+          <div className="min-h-[50vh] flex-1 flex flex-col gap-5 justify-center items-center">
+            <Spinner color="black" size={70} />
+            Loading...
           </div>
-        ) : null}
+        ) : (
+          <>
+            <div className="bg-white rounded-lg border border-x-0 overflow-hidden mt-5 min-h-[50vh]">
+              <Table>
+                <TableHeader>
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <TableRow key={headerGroup.id} className="bg-[#0347370D]">
+                      {headerGroup.headers.map((header) => {
+                        return (
+                          <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>
+                        );
+                      })}
+                    </TableRow>
+                  ))}
+                </TableHeader>
+                <TableBody>
+                  {table.getRowModel().rows?.length ? (
+                    table.getRowModel().rows.map((row) => (
+                      <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="bg-white">
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                        ))}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow className="hover:bg-white">
+                      <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
+                        No results.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+            {table.getRowModel().rows?.length ? (
+              <div className="flex items-center justify-end space-x-2 py-4">
+                <div className="space-x-2 flex">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px]"
+                    onClick={() => table.previousPage()}
+                    disabled={!table.getCanPreviousPage()}>
+                    Previous
+                  </Button>
+                  <div>
+                    <div>{paginationButtons.map((u) => u)}</div>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px] px-4"
+                    onClick={() => table.nextPage()}
+                    disabled={!table.getCanNextPage()}>
+                    Next
+                  </Button>
+                </div>
+              </div>
+            ) : null}
+          </>
+        )}
       </div>
     </Motion>
   );

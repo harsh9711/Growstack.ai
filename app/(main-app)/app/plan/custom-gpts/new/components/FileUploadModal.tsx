@@ -1,15 +1,17 @@
-import { Trash } from "lucide-react";
+import { PlusIcon, Trash } from "lucide-react";
 import { useState } from "react";
 import FileUploaderDropZone from "./FileUploaderDropZone";
 import { API_URL } from "@/lib/api";
 import instance from "@/config/axios.config";
 import toast from "react-hot-toast";
 import Spinner from "../../../../../../../public/svgs/spinner";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import clsx from "clsx";
 
 type CustomFile = File & { id?: string; name?: string };
 
 interface UploadFileModalProps {
-  onClose: () => void;
+  disabled: boolean;
   onFileUpload: (file: File) => void;
   uploadedFiles: CustomFile[];
   setUploadedFiles: (files: File[]) => void;
@@ -20,7 +22,6 @@ interface UploadFileModalProps {
 }
 
 const FileUploadModal: React.FC<UploadFileModalProps> = ({
-  onClose,
   onFileUpload,
   uploadedFiles,
   setUploadedFiles,
@@ -28,7 +29,10 @@ const FileUploadModal: React.FC<UploadFileModalProps> = ({
   setIsAPILoading,
   type,
   handleAttachSearchFiles,
+  disabled,
 }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const removeFile = async (id: any) => {
     try {
       setIsAPILoading(true);
@@ -49,103 +53,77 @@ const FileUploadModal: React.FC<UploadFileModalProps> = ({
   };
 
   return (
-    <div className="fixed z-10 inset-0 bg-opacity-70">
-      <div className="flex items-center justify-center max-h-60 pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <div className="fixed inset-0 transition-opacity" aria-hidden="true">
-          <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-        </div>
-        <span
-          className="hidden sm:inline-block sm:align-middle sm:h-screen"
-          aria-hidden="true"
-        >
-          &#8203;
-        </span>
-        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-          {uploadedFiles.length === 0 && (
-            <div>
-              <FileUploaderDropZone onFileUpload={onFileUpload} type={type} />
-            </div>
-          )}
-          {isAPILoading && (
-            <svg
-              className="animate-spin h-5 w-5 mr-3"
-              viewBox="0 0 24 24"
-            ></svg>
-          )}
-          {uploadedFiles.length > 0 && (
-            <div className="mt-4 px-8">
-              <label className="block text-[14px] font-semibold text-gray-700">
-                Uploaded Files
-              </label>
-              <div className="border-b border-gray-200 pr-4 mt-2 mb-2"></div>
-              {uploadedFiles.map((file, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between mt-3 bg-gray-100 p-2 rounded-md"
-                >
-                  <span>{file.name}</span>
-                  <button
-                    onClick={() => removeFile(file.id)}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    <Trash size={20} />
-                  </button>
-                </div>
-              ))}
-              {isAPILoading && (
-                <div className="mt-2">
-                  <Spinner />
-                </div>
-              )}
-              <div className="mt-4">
-                <input
-                  type="file"
-                  id="file-input"
-                  className="hidden"
-                  onChange={(e) => {
-                    if (e.target.files) {
-                      onFileUpload(e.target.files[0]);
-                    }
-                  }}
-                />
-                <label
-                  htmlFor="file-input"
-                  className="inline-flex items-center px-4 py-2 bg-green-600 text-white font-semibold text-sm rounded-md cursor-pointer hover:bg-gren-700"
-                >
-                  + Add files
-                </label>
-              </div>
-            </div>
-          )}
-          <div className="bg-gray-50 px-4 py-3 sm:px-6 mt-20 justify-between w-full flex flex-row">
-            <button
-              className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm"
-              onClick={onClose} // Optional: Close the modal after file selection
-            >
-              Select Vector Store
-            </button>
-            <div className="flex gap-2">
-              <button
-                onClick={onClose}
-                className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:w-auto sm:text-sm"
-              >
-                Cancel
-              </button>
-              {type === "file_search" && (
-                <button
-                  onClick={() =>
-                    handleAttachSearchFiles && handleAttachSearchFiles()
-                  }
-                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-green-600 text-base font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:ml-3 sm:w-auto sm:text-sm"
-                >
-                  Attach
+    <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+      <DialogTrigger asChild>
+        <button
+          disabled={disabled}
+          className={`bg-gray-200 px-4 rounded-xl flex flex-row items-center space-x-2 ${disabled ? "cursor-not-allowed opacity-50" : "cursor-pointer "}`}>
+          <PlusIcon size={20} />
+          <span className="text-sm">Files</span>
+        </button>
+      </DialogTrigger>
+      <DialogContent className="max-w-3xl">
+        <DialogHeader>
+          <DialogTitle className="text-xl leading-6 font-semibold text-gray-900 mb-4">
+            {type === "file_search" ? "Attach files to file search" : "Attach files to code intepreter"}
+          </DialogTitle>
+        </DialogHeader>
+        {uploadedFiles.length === 0 && (
+          <div>
+            <FileUploaderDropZone onFileUpload={onFileUpload} type={type} />
+          </div>
+        )}
+        {isAPILoading && <Spinner />}
+        {uploadedFiles.length > 0 && (
+          <div>
+            <label className="block text-[14px] font-medium text-gray-700">Uploaded Files</label>
+            <div className="border-b border-gray-200 pr-4 mt-3 mb-3"></div>
+            {uploadedFiles.map((file, index) => (
+              <div key={index} className="flex items-center justify-between mt-3 bg-gray-100 p-2 rounded-xl">
+                <span>{file.name}</span>
+                <button onClick={() => removeFile(file.id)} className="text-red-500 hover:text-red-700">
+                  <Trash size={20} />
                 </button>
-              )}
+              </div>
+            ))}
+            {isAPILoading && (
+              <div className="mt-2">
+                <Spinner />
+              </div>
+            )}
+            <div className="mt-4 flex justify-end">
+              <input
+                type="file"
+                id="file-input"
+                className="hidden"
+                onChange={(e) => {
+                  if (e.target.files) {
+                    onFileUpload(e.target.files[0]);
+                  }
+                }}
+              />
+              <label
+                htmlFor="file-input"
+                className="flex gap-2 px-4 py-2 h-12 items-center justify-center bg-primary-green text-white font-semibold text-sm rounded-xl cursor-pointer sheen">
+                <PlusIcon size={20} /> Add files
+              </label>
             </div>
           </div>
+        )}
+        <div className="flex justify-end gap-2">
+          <button
+            onClick={() => setIsModalOpen(false)}
+            className="flex  rounded-xl border border-gray-300 shadow-sm px-6 py-2 h-12 items-center justify-center bg-white text-base font-medium text-gray-700 hover:bg-gray-50">
+            Cancel
+          </button>
+          <button
+            onClick={() => handleAttachSearchFiles && handleAttachSearchFiles()}
+            className="flex rounded-xl border border-transparent shadow-sm px-6 py-2 h-12 items-center justify-center bg-primary-green text-base font-medium text-white sheen">
+            Attach
+          </button>
         </div>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 

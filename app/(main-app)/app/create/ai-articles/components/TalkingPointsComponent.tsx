@@ -78,7 +78,7 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
       model: aiModel,
       creativity: creativity,
       tone: writingTone,
-      langauge: language,
+      language: language,
     };
 
     setTalkingPoints([]);

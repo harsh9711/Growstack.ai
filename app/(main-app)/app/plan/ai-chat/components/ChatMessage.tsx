@@ -40,7 +40,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ conversation, selectedConve
           <div className={`mt-4 flex ${chat.role === "user" ? "flex-row-reverse" : ""} justify-start items-start gap-4`}>
             {chat.role === "user" ? (
               <Avatar className="w-11 h-11 rounded-xl">
-                <AvatarImage src={currentUser?.avatar} />
+                <AvatarImage src={currentUser?.profile_img} />
                 <AvatarFallback>{currentUser?.email?.slice(0, 1)}</AvatarFallback>
               </Avatar>
             ) : (
@@ -51,7 +51,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ conversation, selectedConve
             <div
               className={`max-w-5xl ${
                 chat.role === "user" ? "bg-primary-green text-white" : "bg-[#F1F1F1] text-primary-black"
-              } py-3 px-5 rounded-xl text-[14.5px] leading-relaxed`}>
+              } py-3 px-5 rounded-xl text-[14.5px] leading-relaxed min-h-11 flex justify-center`}>
               {chat.loading ? (
                 <DotsLoader />
               ) : chat.role === "user" ? (

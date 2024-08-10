@@ -45,7 +45,6 @@ export function ProfileButton() {
         <div className="p-4 flex items-center gap-3">
           <Avatar>
             <AvatarImage src={currentUser?.profile_img} />
-
             <AvatarFallback>{currentUser?.email?.slice(0, 1)}</AvatarFallback>
           </Avatar>
           <div>

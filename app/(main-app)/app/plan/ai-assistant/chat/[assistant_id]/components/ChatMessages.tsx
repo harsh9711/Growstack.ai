@@ -44,7 +44,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ conversation, assistant }) 
             <div key={chat._id} className="p-4">
               <div className="mt-4 flex flex-row-reverse justify-start items-start gap-4">
                 <Avatar className="w-11 h-11 rounded-xl">
-                  <AvatarImage src={currentUser?.avatar} />
+                  <AvatarImage src={currentUser?.profile_img} />
                   <AvatarFallback>{currentUser?.email?.slice(0, 1)}</AvatarFallback>
                 </Avatar>
                 <div className="max-w-5xl bg-primary-green text-white py-3 px-5 rounded-xl text-[14.5px] leading-relaxed">{chat.prompt}</div>

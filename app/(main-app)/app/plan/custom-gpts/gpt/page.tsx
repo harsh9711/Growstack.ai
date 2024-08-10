@@ -1,12 +1,14 @@
 "use client";
 
+import Spinner from "@/components/Spinner";
+import { ArrowBack } from "@/components/svgs";
 import instance from "@/config/axios.config";
-import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import Topbar from "../new/components/Topbar";
 import { API_URL } from "@/lib/api";
-import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import ChatInput from "./components/ChatInput";
 import ChatMessage from "./components/ChatMessage";
 
@@ -38,6 +40,7 @@ type Conversation = {
 
 const Page = () => {
   const [isAPICalled, setIsAPICalled] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const searchParams = useSearchParams();
   const [customeGptData, setCustomGptData] = useState<CustomGptData>({
     name: "",
@@ -49,8 +52,10 @@ const Page = () => {
   });
   const [chatMessages, setChatMessages] = useState<ChatMessageType[]>([]);
   const [conversation, setConversation] = useState<Conversation[]>([]);
+  const router = useRouter();
 
   const getCustomGptData = async (id: string | null) => {
+    setLoading(true);
     try {
       const {
         data: {
@@ -68,8 +73,16 @@ const Page = () => {
           images: chat.image_attachments.map((image: any) => image.url),
         }))
       );
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
+      if (error.response) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error(error.message);
+      }
+      router.push("/app/plan/custom-gpts");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -128,54 +141,48 @@ const Page = () => {
   }, []);
 
   return (
-    <div className="flex-1 flex flex-col h-full w-full !bg-gray-100 shadow-box mt-8 border">
-      <Topbar
-        handleCreateConversation={() => {}}
-        isAPICalled={isAPICalled}
-        from="UPDATE"
-        title={customeGptData.name}
-      />
-      <div className="flex-1 h-full flex gap-4 mt-10 overflow-auto bg-gray-100 rounded-2xl relative flex-col">
-        {conversation.length === 0 && (
-          <>
-            <div className="w-full p-4 px-8 mt-4 flex flex-col flex-grow">
-              <span className="mt-4 flex flex-col flex-grow">
-                <span className="flex flex-col ">
-                  <h2 className="font-bold text-4xl text-center">Preview</h2>
-                </span>
+    <div className="flex-1 flex flex-col h-full w-full bg-gray-100 mt-10 border rounded-3xl">
+      {loading ? (
+        <div className="flex-1 flex flex-col gap-5 justify-center items-center">
+          <Spinner color="black" size={100} />
+          Loading...
+        </div>
+      ) : (
+        <>
+          <div className="flex justify-between p-4">
+            <Link href="/app/plan/custom-gpts">
+              <button className="text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-1.5 rounded-full font-medium items-center">
+                <ArrowBack />
+                Back
+              </button>
+            </Link>
+            <h2 className="text-lg">{customeGptData.name}</h2>
+            <div />
+          </div>
+          <div className="flex-1 h-full overflow-auto flex flex-col px-5 pb-5">
+            {conversation.length === 0 && (
+              <div className="flex-1 flex flex-col gap-4 justify-center items-center">
                 <div className="mx-auto items-center justify-center flex flex-col gap-y-8">
-                  <img
-                    src={customeGptData?.icon}
-                    alt="Icon"
-                    className="rounded-full items-center w-28 h-28"
-                  />
-                  <span className="items-center justify-center flex flex-col">
-                    <h2 className="font-bold text-[18px]">
-                      {customeGptData?.name}
-                    </h2>
-                    <p className="text-[14px]">{customeGptData?.description}</p>
+                  <Image src={customeGptData?.icon} alt="Icon" width={200} height={200} className="rounded-full items-center w-32 h-32" />
+                  <span className="items-center justify-center flex flex-col space-y-3">
+                    <h2 className="font-bold text-2xl">{customeGptData?.name}</h2>
+                    <p className="text-[15px] text-gray-500">{customeGptData?.description}</p>
                   </span>
                 </div>
-              </span>
-            </div>
-            <div className="!min-h-[100px] grid grid-cols-4 gap-4">
-              {customeGptData.conversation_starter.map((starter, index) => (
-                <button
-                  key={index}
-                  className="p-4 border rounded-lg shadow-md bg-white"
-                  onClick={() => handleSend(starter)}
-                >
-                  <span className="text-sm">{starter}</span>
-                </button>
-              ))}
-            </div>
-          </>
-        )}
-        <ChatMessage conversation={conversation} icon={customeGptData.icon} />
-        <div className="flex-grow flex items-end">
-          <div className="w-full px-4 py-2">
-            {/* Ensure ChatInput is always at the bottom */}
-            <div className="sticky bottom-0 bg-white">
+                <div className="grid grid-cols-4 gap-4 max-w-7xl mx-auto mt-5">
+                  {customeGptData.conversation_starter.map((starter, index) => (
+                    <button
+                      key={index}
+                      className="flex justify-start items-start text-left p-5 border rounded-2xl shadow-lg shadow-gray-200 hover:shadow-xl bg-white transition-all duration-300 cursor-pointer"
+                      onClick={() => handleSend(starter)}>
+                      <span className="text-[14px] leading-relaxed">{starter}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+            <ChatMessage conversation={conversation} icon={customeGptData.icon} />
+            <div className="w-full flex-grow flex items-end">
               <ChatInput
                 onSend={onSend}
                 addMessage={addMessage}
@@ -185,8 +192,8 @@ const Page = () => {
               />
             </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 };

@@ -154,11 +154,11 @@ export default function CreateAssistantPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold mt-5">Create your own assistant</h1>
+      <h1 className="text-2xl font-semibold mt-5">Create your own AI template</h1>
       <section className="bg-white border border-[#E4E4E4] rounded-3xl p-10 mt-5">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-5">
-            <h1 className="text-xl font-semibold flex items-center gap-2">Own assistant generator</h1>
+            <h1 className="text-xl font-semibold flex items-center gap-2">AI template generator</h1>
             <div className="grid grid-cols-2 gap-8 border-t border-[#EBEBEB] pb-4 pt-8">
               <div className="space-y-2">
                 <label className="font-medium">

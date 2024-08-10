@@ -3,13 +3,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface DocumentState {
   isEdit: boolean;
   savedDocumentData: any;
-  loader: boolean
+  loader: boolean;
 }
 
 const initialState: DocumentState = {
   isEdit: false,
   savedDocumentData: null,
-  loader: false
+  loader: false,
 };
 
 const documentSlice = createSlice({
@@ -20,12 +20,12 @@ const documentSlice = createSlice({
       state.isEdit = action.payload;
     },
     savedDecument: (state, action: PayloadAction<any>) => {
-        state.savedDocumentData = action.payload;
-      },
+      state.savedDocumentData = action.payload;
+    },
 
-      isActiveLoader: (state, action: PayloadAction<any>) => {
-        state.loader = action.payload;
-      },
+    isActiveLoader: (state, action: PayloadAction<any>) => {
+      state.loader = action.payload;
+    },
   },
 });
 

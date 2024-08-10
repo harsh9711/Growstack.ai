@@ -52,7 +52,7 @@ const ChangePassword = () => {
     }
   };
   return (
-    <div>
+    <div className="w-full">
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-full !bg-white shadow-box p-10 rounded-xl flex flex-col"
@@ -60,7 +60,7 @@ const ChangePassword = () => {
         <div className="flex-1">
           <h1 className="border-b pb-4 flex items-center gap-3 font-semibold text-xl">
             <Edit size={20} />
-            Edit your profile
+            Edit your password
           </h1>
           <div>
             <div className="grid grid-cols-2 gap-x-5 gap-y-6 mt-6">

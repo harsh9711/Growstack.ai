@@ -196,6 +196,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
                   key={item._id}
                   _id={item._id}
                   title={item.title}
+                  selectedConversation={selectedConversation!}
                   onSelect={() => setSelectedConversation(item._id)}
                   onDelete={handleDelete}
                   onRename={handleRename}

@@ -1,22 +1,8 @@
 "use client";
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { getCurrentUser } from "@/lib/features/auth/auth.selector";
-import {
-  Edit,
-  KeyIcon,
-  Settings2Icon,
-  ShieldCheckIcon,
-  UserIcon as UserIcon2,
-  UserX2,
-} from "lucide-react";
+import { Edit, ImageIcon, KeyIcon, Settings2Icon, ShieldCheckIcon, UserIcon as UserIcon2, UserX2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -35,6 +21,7 @@ import { login } from "@/lib/features/auth/auth.slice";
 import { useDispatch } from "react-redux";
 import { countries } from "./data";
 import { useRouter } from "next-nprogress-bar";
+import clsx from "clsx";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -44,6 +31,7 @@ export default function ProfilePage() {
   const [avatarLink, setAvatarLink] = useState<any>({});
   const [changePasswordEnable, setChangePasswordEnable] = useState(false);
   const [isPending, setIsPending] = useState(false);
+  const [selectedAvatarFileName, setSelectedAvatarFileName] = useState("");
 
   const ValidationSchema = z.object({
     email: z.string().email("Please enter a valid email address"),
@@ -109,6 +97,7 @@ export default function ProfilePage() {
       title: "Delete Account",
     },
   ];
+  const [activeTab, setActiveTab] = useState(options[0]);
 
   useEffect(() => {
     handleGetProfileData();
@@ -136,15 +125,13 @@ export default function ProfilePage() {
   };
 
   const handleChangeAvatar = async (event: ChangeEvent<HTMLInputElement>) => {
+    handleAvatarPreview(event);
     const file = event.target.files?.[0];
     if (file) {
       const formData = new FormData();
       formData.append("document", file);
       try {
-        const response = await instance.post(
-          `${API_URL}/users/api/v1/file/upload`,
-          formData
-        );
+        const response = await instance.post(`${API_URL}/users/api/v1/file/upload`, formData);
         setAvatarLink(response.data.data.fileUrl);
       } catch (error) {
         toast.error("Error uploading avatar");
@@ -168,7 +155,7 @@ export default function ProfilePage() {
     try {
       const validatedData = ValidationSchema.parse({
         ...data,
-        ...(Object.keys(avatarLink).length > 0 && { profile_img: avatarLink })
+        ...(Object.keys(avatarLink).length > 0 && { profile_img: avatarLink }),
       });
       const payload = removeNullProperties(validatedData);
 
@@ -185,23 +172,27 @@ export default function ProfilePage() {
       } else {
         toast.error(error.message);
       }
-      console.error("Profile Upa]date failed:", error);
+      console.error("Profile Update failed:", error);
     } finally {
       setIsPending(false);
     }
   };
 
-  // const handleImageUpload = (e: any) => {
-  //   const file = e.target.files[0];
-  //   const reader = new FileReader();
-  //   reader.readAsDataURL(file);
-  //   reader.onloadend = () => {
-  //     const result = reader.result;
-  //     setPreviewImage(result);
-  //   };
-  // };
+  const handleAvatarPreview = (e: any) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setSelectedAvatarFileName(file.name);
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      const result = reader.result;
+      setPreviewImage(result);
+    };
+  };
 
   const handleMenuClick = (title: string) => {
+    setActiveTab(title as any);
     if (title === "Delete Account") handleDeleteProfile();
     if (title === "Change password") setChangePasswordEnable(true);
     if (title === "View profile") setChangePasswordEnable(false);
@@ -229,13 +220,10 @@ export default function ProfilePage() {
 
   return (
     <div className="flex-1 flex mt-10 gap-8">
-      <div className="w-full max-w-md !bg-white shadow-box p-10 rounded-xl flex flex-col divide-y divide-gray-200 space-y-5">
-        <div className="space-y-2 flex flex-col items-center">
-          <div className="max-w-fit space-y-6">
-            <label
-              htmlFor="profileImage"
-              className="relative group flex w-full justify-center h-28 rounded-full overflow-hidden"
-            >
+      <div className="w-full max-w-md !bg-white shadow-box p-10 rounded-xl flex flex-col divide-y divide-gray-100 space-y-5">
+        <div className="space-y-2 flex flex-col">
+          <div className="space-y-6">
+            <label htmlFor="profile-image" className="relative group flex justify-center w-28 h-28 rounded-full overflow-hidden mx-auto">
               <div className="w-28 h-28">
                 {previewImage ? (
                   <Image
@@ -251,58 +239,34 @@ export default function ProfilePage() {
                   </div>
                 )}
               </div>
-              {/* <div className="w-28 h-28 rounded-full absolute inset-0 bg-black opacity-0 group-hover:bg-black/50 group-hover:opacity-100 z-10 flex flex-col items-center justify-center text-white cursor-pointer transition">
-                <BiPencil size={35} />
-              </div> */}
+              <div className="w-28 h-28 rounded-full absolute inset-0 bg-black opacity-0 group-hover:bg-black/20 group-hover:opacity-100 z-10 flex flex-col items-center justify-center text-white cursor-pointer transition">
+                <ImageIcon size={35} />
+              </div>
             </label>
-            {/* <input
-              type="file"
-              id="profileImage"
-              accept="image/*"
-              // className="hidden"
-              onChange={handleImageUpload}
-            /> */}
 
-            <div className="hidden sm:flex h-[54px] w-full bg-white border border-[#eee] rounded-xl text-sm justify-between">
-              <div className="flex-1 flex items-center px-4">
-                <h1>Choose your avatar...</h1>
+            <div className="flex h-[54px] w-full bg-white border border-[#eee] rounded-xl text-sm justify-between">
+              <div className="w-full flex items-center px-4 overflow-hidden">
+                <h1 className="whitespace-nowrap overflow-hidden w-full text-ellipsis"> {selectedAvatarFileName || "Choose your avatar..."}</h1>
               </div>
 
               <label
                 htmlFor="profile-image"
-                className="bg-primary-green text-white h-[54px] px-8 rounded-r-xl flex items-center justify-center cursor-pointer"
-              >
+                className="w-full max-w-fit bg-primary-green text-white h-[54px] px-8 rounded-r-xl flex items-center justify-center cursor-pointer">
                 Browse
               </label>
-              <input
-                type="file"
-                id="profile-image"
-                accept="images/*"
-                className="hidden"
-                onChange={handleChangeAvatar}
-              />
+              <input type="file" id="profile-image" accept="images/*" className="hidden" onChange={handleChangeAvatar} />
             </div>
           </div>
-          {/* <h2 className="text-2xl font-semibold">Admin</h2>
-          <p>Administrator</p> */}
         </div>
-        <div className="flex justify-between pt-6">
-          <div className="flex flex-col items-center gap-1">
-            <h2 className="text-2xl font-semibold">981.2K</h2>
-            <p className="text-gray-400">Words Left</p>
-          </div>
-          <div className="flex flex-col items-center gap-1">
-            <h2 className="text-2xl font-semibold">981.2K</h2>
-            <p className="text-gray-400">Words Left</p>
-          </div>
-        </div>
-        <div className="space-y-1.5 mt-8 pt-6">
+        <div className="space-y-1.5 pt-3">
           {options.map((option, index) => (
             <div
-              className="flex gap-3 items-center p-3 hover:bg-gray-50 rounded-lg transition capitalize"
+              className={clsx(
+                "flex gap-3 items-center p-3 hover:bg-gray-50 rounded-lg transition capitalize cursor-pointer",
+                activeTab === option && "bg-gray-100"
+              )}
               key={index}
-              onClick={() => handleMenuClick(option.title)}
-            >
+              onClick={() => handleMenuClick(option.title)}>
               {option.icon}
               <h1 className="text-sm">{option.title}</h1>
             </div>
@@ -310,136 +274,77 @@ export default function ProfilePage() {
         </div>
       </div>
       {!changePasswordEnable ? (
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="w-full !bg-white shadow-box p-10 rounded-xl flex flex-col"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="w-full !bg-white shadow-box p-10 rounded-xl flex flex-col">
           <div className="flex-1">
             <h1 className="border-b pb-4 flex items-center gap-3 font-semibold text-xl">
               <Edit size={20} />
               Edit your profile
             </h1>
             <div>
-              {/* <form onSubmit={handleSubmit(onSubmit)}> */}
               <div className="grid grid-cols-2 gap-x-5 gap-y-6 mt-6">
                 <div className="space-y-3 w-full">
                   <label>Full Name</label>
                   <input
                     type="text"
                     id="name"
-                    // name="fullName"
                     placeholder="Full Name"
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("name")}
                   />
-                  {errors.name && (
-                    <span className="text-rose-600 text-sm">
-                      {errors.name?.message}
-                    </span>
-                  )}
+                  {errors.name && <span className="text-rose-600 text-sm">{errors.name?.message}</span>}
                 </div>
                 <div className="space-y-3 w-full">
                   <label>Role job</label>
                   <input
                     type="text"
-                    // name="role"
                     placeholder="Enter your role job"
-                    // value="Administrator"
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("job_role")}
                   />
-                  {errors.job_role && (
-                    <span className="text-rose-600 text-sm">
-                      {errors.job_role?.message}
-                    </span>
-                  )}
+                  {errors.job_role && <span className="text-rose-600 text-sm">{errors.job_role?.message}</span>}
                 </div>
                 <div className="space-y-3 w-full">
                   <label>Email</label>
                   <input
                     id="email"
                     type="text"
-                    // name="email"
                     placeholder="Enter your email"
-                    // value="admin@gmail.com"
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("email")}
                   />
-                  {errors.email && (
-                    <span className="text-rose-600 text-sm">
-                      {errors.email?.message}
-                    </span>
-                  )}
+                  {errors.email && <span className="text-rose-600 text-sm">{errors.email?.message}</span>}
                 </div>
-                {/* <div className="flex items-center gap-5">
-                  <div className="w-full space-y-3">
-                    <h1>Change avatar</h1>
-                    <div className="hidden sm:flex h-[54px] w-full bg-white border border-[#eee] rounded-xl text-sm justify-between">
-                      <div className="flex-1 flex items-center px-4">
-                        <h1>Choose your avatar...</h1>
-                      </div>
 
-                      <label
-                        htmlFor="profile-image"
-                        className="bg-primary-green text-white h-[54px] px-8 rounded-r-xl flex items-center justify-center cursor-pointer"
-                      >
-                        Browse
-                      </label>
-                      <input
-                        type="file"
-                        id="profile-image"
-                        accept="images/*"
-                        className="hidden"
-                        onChange={handleChangeAvatar}
-                      />
-                    </div>
-                  </div>
-                </div> */}
                 <div className="space-y-3 w-full">
                   <label>Company name</label>
                   <input
                     type="text"
-                    // name="company-name"
                     placeholder="Enter your Company name"
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("company_name")}
                   />
-                  {errors.company_name && (
-                    <span className="text-rose-600 text-sm">
-                      {errors.company_name?.message}
-                    </span>
-                  )}
+                  {errors.company_name && <span className="text-rose-600 text-sm">{errors.company_name?.message}</span>}
                 </div>
                 <div className="space-y-3 w-full">
                   <label>Company website</label>
                   <input
                     type="url"
-                    // name="company-website"
                     placeholder="Enter your Company website"
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("company_website")}
                   />
-                  {errors.company_website && (
-                    <span className="text-rose-600 text-sm">
-                      {errors.company_website?.message}
-                    </span>
-                  )}
+                  {errors.company_website && <span className="text-rose-600 text-sm">{errors.company_website?.message}</span>}
                 </div>
 
                 <div className="space-y-3 w-full">
                   <label>Address Line</label>
                   <input
                     type="text"
-                    // name="address-line"
                     placeholder="Your Address Line"
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("address_line")}
                   />
-                  {errors.address_line && (
-                    <span className="text-rose-600 text-sm">
-                      {errors.address_line?.message}
-                    </span>
-                  )}
+                  {errors.address_line && <span className="text-rose-600 text-sm">{errors.address_line?.message}</span>}
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-x-5 gap-y-6 mt-6">
@@ -447,31 +352,21 @@ export default function ProfilePage() {
                   <label>City</label>
                   <input
                     type="text"
-                    // name="city"
                     placeholder="Enter your City"
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("city")}
                   />
-                  {errors.city && (
-                    <span className="text-rose-600 text-sm">
-                      {errors.city?.message}
-                    </span>
-                  )}
+                  {errors.city && <span className="text-rose-600 text-sm">{errors.city?.message}</span>}
                 </div>
                 <div className="space-y-3 w-full">
                   <label>Postal Code</label>
                   <input
                     type="text"
-                    // name="postal-code"
                     placeholder="Enter your Postal Code"
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("postal_code")}
                   />
-                  {errors.postal_code && (
-                    <span className="text-rose-600 text-sm">
-                      {errors.postal_code?.message}
-                    </span>
-                  )}
+                  {errors.postal_code && <span className="text-rose-600 text-sm">{errors.postal_code?.message}</span>}
                 </div>
 
                 <div className="space-y-3 w-full">
@@ -480,48 +375,29 @@ export default function ProfilePage() {
                     name="country"
                     control={control}
                     render={({ field }) => (
-                      <Select
-                        onValueChange={(value) => field.onChange(value)}
-                        value={field.value}
-                      >
+                      <Select onValueChange={(value) => field.onChange(value)} value={field.value}>
                         <SelectTrigger className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm bg-white">
                           <SelectValue placeholder="Select" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectGroup>
                             {countries.map((country) => {
-                              return (
-                                <SelectItem value={country.country}>
-                                  {country.country}
-                                </SelectItem>
-                              );
+                              return <SelectItem value={country.country}>{country.country}</SelectItem>;
                             })}
                           </SelectGroup>
                         </SelectContent>
                       </Select>
                     )}
                   />
-                  {errors.country && (
-                    <span className="text-rose-600 text-sm">
-                      {errors.country?.message}
-                    </span>
-                  )}
+                  {errors.country && <span className="text-rose-600 text-sm">{errors.country?.message}</span>}
                 </div>
               </div>
-              {/* </form> */}
             </div>
           </div>
           <div className="flex justify-end gap-4">
             <button
               type="submit"
-              className="h-12 py-3 px-3 w-full max-w-[150px] uppercase border border-primary-green text-primary-green hover:bg-primary-green/10 rounded-xl mt-6"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="h-12 py-3 px-3 flex justify-center w-full max-w-[150px] uppercase bg-primary-green sheen rounded-xl text-white mt-6"
-            >
+              className="h-12 py-3 px-3 flex justify-center w-full max-w-[150px] uppercase bg-primary-green sheen rounded-xl text-white mt-6">
               {isPending ? <Spinner /> : " Update"}
             </button>
           </div>

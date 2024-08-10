@@ -48,7 +48,7 @@ const SaveProspects = ({ places }: { places: Place[] }) => {
       toast.success("Data saved successfully!");
 
       setTimeout(() => {
-        router.push(`/app/plan/contacts?tab=1`);
+        router.push(`/app/engage/contacts?tab=1`);
       }, 10);
     } catch (error: any) {
       console.error("Error:", error);
