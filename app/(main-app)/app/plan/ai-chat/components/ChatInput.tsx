@@ -37,17 +37,18 @@ const ChatInput: React.FC<ChatInputProps> = ({
   const [input, setInput] = useState("");
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const { startRecognition, stopRecognition, textToSpeech } = useSpeechRecognition(
-    selectedLanguage,
-    (transcript: string) => {
-      setInput(transcript);
-      handleSend(transcript, true);
-    },
-    () => {
-      setOpen(false);
-      setIsAnimating(false);
-    }
-  );
+  const { startRecognition, stopRecognition, textToSpeech } =
+    useSpeechRecognition(
+      selectedLanguage,
+      (transcript: string) => {
+        setInput(transcript);
+        handleSend(transcript, true);
+      },
+      () => {
+        setOpen(false);
+        setIsAnimating(false);
+      }
+    );
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -75,14 +76,20 @@ const ChatInput: React.FC<ChatInputProps> = ({
       autosize.update(textareaRef.current);
     }
     try {
-      setIsAnimating(false);
-      setOpen(false);
+      if (fromMic) {
+        setIsAnimating(false);
+        setOpen(false);
+      }
       const conversation = await instance.post(
-        `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${selectedConversation ? selectedConversation : ""}&model=${selectedOption}`,
+        `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${
+          selectedConversation ? selectedConversation : ""
+        }&model=${selectedOption}`,
         { user_prompt: prompt }
       );
-      setIsAnimating(true);
-      setOpen(true);
+      if (fromMic) {
+        setIsAnimating(true);
+        setOpen(true);
+      }
       const response = conversation.data.data.response;
       setSelectedConversation(conversation.data.data.conversation_id);
       if (!selectedConversation) fetchConversations();
@@ -126,14 +133,22 @@ const ChatInput: React.FC<ChatInputProps> = ({
       if (textareaRef.current) {
         textareaRef.current.value = newInput;
         textareaRef.current.focus();
-        textareaRef.current.selectionStart = textareaRef.current.selectionEnd = newInput.length;
+        textareaRef.current.selectionStart = textareaRef.current.selectionEnd =
+          newInput.length;
       }
     }, 500);
   };
 
   return (
     <div className="flex p-2 border gap-2 rounded-xl items-end">
-      <Image src="/logo/growstack-mini.png" alt="" width={25} height={25} draggable={false} className="select-none ml-2 mb-3" />
+      <Image
+        src="/logo/growstack-mini.png"
+        alt=""
+        width={25}
+        height={25}
+        draggable={false}
+        className="select-none ml-2 mb-3"
+      />
       <textarea
         ref={textareaRef}
         value={input}
@@ -143,16 +158,24 @@ const ChatInput: React.FC<ChatInputProps> = ({
         className="w-full flex-1 p-2 bg-transparent resize-none overflow-auto min-h-11 max-h-[300px]"
         placeholder="What's in your mind?"
       />
-      <ToolsDialog setInput={(description: string) => promptInput(description)} />
+      <ToolsDialog
+        setInput={(description: string) => promptInput(description)}
+      />
       <button
         // onClick={startRecognition}
-        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
+        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
+      >
         {/* <MicrophoneIcon /> */}
-        <Microphone open={open} isAnimating={isAnimating} handleOpenChange={handleOpenChange} />
+        <Microphone
+          open={open}
+          isAnimating={isAnimating}
+          handleOpenChange={handleOpenChange}
+        />
       </button>
       <button
         onClick={() => handleSend()}
-        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
+        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
+      >
         <SendIcon2 />
       </button>
     </div>
