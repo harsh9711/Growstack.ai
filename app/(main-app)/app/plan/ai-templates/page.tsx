@@ -158,7 +158,7 @@ export default function AiAppTemplatesPage() {
               <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" value={searchQuery} onChange={handleSearch} />
             </div>
 
-            <Link href="/app/plan/ai-templates/create-assistant">
+            <Link href="/app/plan/ai-templates/create-template">
               <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
                 <Plus size={20} />
                 Create AI template

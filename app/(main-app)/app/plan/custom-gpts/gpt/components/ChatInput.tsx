@@ -1,12 +1,9 @@
-import { MicrophoneIcon, SendIcon2 } from "@/components/svgs";
-import autosize from "autosize";
-import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
+import { SendIcon2 } from "@/components/svgs";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
+import { BookText, Plus, Trash, X } from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import ToolsDialog from "../../../ai-chat/components/ToolsDialog";
-import { BookText, File, Plus, Trash, X } from "lucide-react";
 
 type ChatMessageType = {
   thread_id: string;
@@ -39,20 +36,12 @@ type CustomGptType = {
   assistant_id: string;
 };
 
-const ChatInput: React.FC<ChatInputProps> = ({
-  onSend,
-  chatMessages,
-  addMessage,
-  customeGptData,
-  setChatMessages,
-}) => {
+const ChatInput: React.FC<ChatInputProps> = ({ onSend, chatMessages, addMessage, customeGptData, setChatMessages }) => {
   const [input, setInput] = useState("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isApiCall, setIsApiCall] = useState(false);
   const [imageUrl, setImageUrl] = useState<string[]>([]);
-  const [file, setFile] = useState<
-    { file_type: string; file_id: string; file_name: string }[]
-  >([]);
+  const [file, setFile] = useState<{ file_type: string; file_id: string; file_name: string }[]>([]);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -111,12 +100,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
   };
 
   const handleUploadFile = async (file: File) => {
-    const imageFileTypes = [
-      "image/png",
-      "image/jpeg",
-      "image/jpg",
-      "image/gif",
-    ];
+    const imageFileTypes = ["image/png", "image/jpeg", "image/jpg", "image/gif"];
     const pdfFileTypes = ["application/pdf"];
     try {
       if (pdfFileTypes.includes(file.type)) {
@@ -124,14 +108,8 @@ const ChatInput: React.FC<ChatInputProps> = ({
         formData.append("file", file);
         const {
           data: { data },
-        } = await instance.post(
-          `${API_URL}/ai/api/v1/customgpt/upload`,
-          formData
-        );
-        setFile((prev) => [
-          ...prev,
-          { file_name: file.name, file_id: data.id, file_type: "FILE" },
-        ]);
+        } = await instance.post(`${API_URL}/ai/api/v1/customgpt/upload`, formData);
+        setFile((prev) => [...prev, { file_name: file.name, file_id: data.id, file_type: "FILE" }]);
       } else if (imageFileTypes.includes(file.type)) {
         const formData = new FormData();
         formData.append("document", file);
@@ -139,10 +117,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
           data: {
             data: { fileUrl },
           },
-        } = await instance.post(
-          `${API_URL}/users/api/v1/file/upload`,
-          formData
-        );
+        } = await instance.post(`${API_URL}/users/api/v1/file/upload`, formData);
         setImageUrl((prev) => [...prev, fileUrl]);
       }
     } catch (error) {
@@ -152,11 +127,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
   };
 
   return (
-    <div
-      className={`shadow-lg  flex border gap-2 rounded-xl p-2 ${
-        imageUrl.length ? "items-end" : "items-center"
-      }`}
-    >
+    <div className={`w-full bg-white shadow-lg flex border gap-2 rounded-2xl overflow-hidden px-4 py-3.5 ${imageUrl.length ? "items-end" : "items-center"}`}>
       <div className="justify-end">
         <input
           type="file"
@@ -172,10 +143,9 @@ const ChatInput: React.FC<ChatInputProps> = ({
         />
         <label
           htmlFor="fileUpload"
-          className={`p-1 rounded-full flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white ${
+          className={`h-11 w-11 rounded-full flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white ${
             isApiCall ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
-          }`}
-        >
+          }`}>
           <Plus />
         </label>
       </div>
@@ -188,15 +158,13 @@ const ChatInput: React.FC<ChatInputProps> = ({
                 className="group relative inline-block text-sm text-token-text-primary"
                 onClick={() => {
                   setImageUrl((prev) => prev.filter((_, i) => i !== index));
-                }}
-              >
+                }}>
                 <div className="relative overflow-hidden rounded-xl border border-token-border-light bg-token-main-surface-primary">
                   <div className="h-14 w-14">
                     <button className="h-full w-full">
                       <span
                         className="flex items-center h-full w-full justify-center bg-gray-500 dark:bg-gray-700 bg-cover bg-center text-white"
-                        style={{ backgroundImage: `url(${url})` }}
-                      ></span>
+                        style={{ backgroundImage: `url(${url})` }}></span>
                     </button>
                   </div>
                 </div>
@@ -204,8 +172,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
                   className="bg-white absolute right-1 top-1 -translate-y-1/2 translate-x-1/2 rounded-full border  p-0.5  transition-colors hover:opacity-100 group-hover:opacity-100 md:opacity-0"
                   onClick={() => {
                     setImageUrl((prev) => prev.filter((_, i) => i !== index));
-                  }}
-                >
+                  }}>
                   <X size={10} />
                 </button>
               </div>
@@ -217,20 +184,14 @@ const ChatInput: React.FC<ChatInputProps> = ({
             {file.length > 0 && (
               <div className="flex gap-2 flex-wrap">
                 {file.map((file, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center bg-gray-100 p-2 rounded-md"
-                  >
+                  <div key={index} className="flex items-center bg-gray-100 p-2 rounded-md">
                     <BookText size={24} />
-                    <span className="text-sm truncate ml-2 mr-2">
-                      {file.file_name}
-                    </span>
+                    <span className="text-sm truncate ml-2 mr-2">{file.file_name}</span>
                     <button
                       className="ml-auto focus:outline-none"
                       onClick={() => {
                         setFile((prev) => prev.filter((_, i) => i !== index));
-                      }}
-                    >
+                      }}>
                       <Trash size={20} />
                     </button>
                   </div>
@@ -252,12 +213,11 @@ const ChatInput: React.FC<ChatInputProps> = ({
       </div>
 
       <button
-        className={`h-8 w-8 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl ${
-          isApiCall || input === "" ? "opacity-50 cursor-not-allowed" : ""
+        className={`h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl ${
+          isApiCall || input === "" ? "opacity-70 cursor-not-allowed" : ""
         }`}
         onClick={handleSend}
-        disabled={isApiCall || input === ""}
-      >
+        disabled={isApiCall || input === ""}>
         <SendIcon2 />
       </button>
     </div>

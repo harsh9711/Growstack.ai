@@ -9,10 +9,11 @@ interface SidebarItemProps {
   onRename: (_id: string, newTitle: string) => void;
   onDelete: (_id: string) => void;
   onSelect: () => void;
+  selectedConversation: string;
   setSidebarItems: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ _id, title, onRename, onSelect, setSidebarItems, onDelete }) => {
+const SidebarItem: React.FC<SidebarItemProps> = ({ _id, title, onRename, onSelect, setSidebarItems, onDelete, selectedConversation }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [newTitle, setNewTitle] = useState(title);
   const [editing, setEditing] = useState(false);
@@ -63,7 +64,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ _id, title, onRename, onSelec
 
   return (
     <div
-      className={clsx("flex gap-4 w-full p-4 hover:bg-gray-100 cursor-pointer rounded-full items-center group relative")}
+      className={clsx("flex gap-4 w-full mb-1.5 px-4 py-[15px] hover:bg-gray-200/80 cursor-pointer rounded-full items-center group relative transition-all duration-300", selectedConversation === _id && "bg-gray-100")}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onSelect} // Trigger onSelect when item is clicked

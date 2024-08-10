@@ -89,7 +89,6 @@ const AddProspectModal: React.FC<AddProspectProps> = ({ onProspectAdded }) => {
     });
   };
 
-  console.log(formData);
   return (
     <>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>

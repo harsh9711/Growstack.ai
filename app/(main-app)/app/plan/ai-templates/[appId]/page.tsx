@@ -1,30 +1,26 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { EditorState, convertToRaw } from "draft-js";
 import { saveAs } from "file-saver";
 import { jsPDF } from "jspdf";
 import "jspdf-autotable";
-import { ArrowLeft, ChevronRight, Info, Save, StarIcon } from "lucide-react";
+import { ArrowLeft, ChevronRight, Save, StarIcon } from "lucide-react";
 import Link from "next/link";
 import { Fragment, useEffect, useState } from "react";
 import { BsStarFill } from "react-icons/bs";
 import Editor from "./components/Editor";
-
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-
 import Spinner from "@/components/Spinner";
+import { Switch } from "@/components/ui/switch";
 import { getSavedDecumentForEdit, isEditDecument } from "@/lib/features/documents/document.selector";
-import { editDocument } from "@/lib/features/documents/document.slice";
+import { editDocument, savedDecument } from "@/lib/features/documents/document.slice";
 import { useRouter } from "next-nprogress-bar";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { languageOptions } from "../../../create/ai-articles/constants/options";
 import Dropdown from "./components/Dropdown";
-import { Switch } from "@/components/ui/switch";
 
 export default function AiAppPage({ params: { appTemplateId } }: { params: { appTemplateId: string } }) {
   const router = useRouter();
@@ -92,7 +88,6 @@ export default function AiAppPage({ params: { appTemplateId } }: { params: { app
         }
       } finally {
         setLoading(false);
-        setGeneratedContent("");
       }
     };
 
@@ -124,6 +119,8 @@ export default function AiAppPage({ params: { appTemplateId } }: { params: { app
       setUserInput1(editDocumentData?.doc_language);
       // setWorkbook(editDocumentData?.workbook);
       setGeneratedContent(editDocumentData?.doc_content);
+      dispatch(editDocument(false));
+      dispatch(savedDecument(null));
     }
   }, [editDocumentData]);
 

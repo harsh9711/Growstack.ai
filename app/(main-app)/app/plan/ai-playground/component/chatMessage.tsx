@@ -35,7 +35,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ conversation }) => {
           <div className={`mt-4 flex ${chat.role === "user" ? "flex-row-reverse" : ""} justify-start items-start gap-4`}>
             {chat.role === "user" ? (
               <Avatar className="w-11 h-11 rounded-xl">
-                <AvatarImage src={currentUser?.avatar} />
+                <AvatarImage src={currentUser?.profile_img} />
                 <AvatarFallback>{currentUser?.email?.slice(0, 1)}</AvatarFallback>
               </Avatar>
             ) : (

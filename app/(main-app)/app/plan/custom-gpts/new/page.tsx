@@ -1,18 +1,12 @@
 "use client";
 
 import instance from "@/config/axios.config";
-import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import Topbar from "./components/Topbar";
-import ChatSection from "./components/ChatSection";
-import Sidebar from "./components/Sidebar";
-import Sidebargpt from "./components/Sidebar";
-import { Assistant } from "@/types/assistants";
-import { Conversation } from "../../ai-assistant/components/types";
-import Sidebargpt1 from "./components/Sidebar1";
-import Downbar from "./components/Downbar";
 import { API_URL } from "@/lib/api";
 import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
+import ConfigureGPTSection from "./components/ConfigureGPTSection";
+import Topbar from "./components/Topbar";
 
 interface PageProps {
   params: {
@@ -41,33 +35,16 @@ type ConversationPayLoad = {
   icon?: string;
 };
 
-const AssistantsChats: React.FC<PageProps> = ({
-  params: { assistant_id },
-}: PageProps) => {
-  const [assistantData, setAssistantData] = useState<Assistant | null>(null);
-  const [assistantConversation, setAssistantConversation] =
-    useState<Conversation | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-  const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+const CreateNewGPTPage: React.FC<PageProps> = ({ params: { assistant_id } }: PageProps) => {
   const [isAPICalled, setIsAPICalled] = useState<boolean>(false);
   const router = useRouter();
 
-  // states for sidebar
-  const [conversationStarters, setConversationStarters] = useState<string[]>([
-    "",
-  ]);
-  const [isToggleCheckedForSearch, setIsToggleCheckedForSearch] =
-    useState(false);
-  const [isToggleCheckedForInterpreter, setIsToggleCheckedForInterpreter] =
-    useState(false);
+  const [conversationStarters, setConversationStarters] = useState<string[]>([""]);
+  const [isToggleCheckedForSearch, setIsToggleCheckedForSearch] = useState(false);
+  const [isToggleCheckedForInterpreter, setIsToggleCheckedForInterpreter] = useState(false);
   const [vectorStoreId, setVectorStoreId] = useState<string | null>(null);
-  const [uploadedIntepreterFiles, setUploadedIntepreterFiles] = useState<
-    CustomFile[]
-  >([]);
-  const [uploadedSerachFiles, setUploadedSerachFiles] = useState<CustomFile[]>(
-    []
-  );
+  const [uploadedIntepreterFiles, setUploadedIntepreterFiles] = useState<CustomFile[]>([]);
+  const [uploadedSerachFiles, setUploadedSerachFiles] = useState<CustomFile[]>([]);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [capabilities, setCapabilities] = useState<{
     IMAGE: boolean;
@@ -128,13 +105,8 @@ const AssistantsChats: React.FC<PageProps> = ({
       if (Object.keys(tool_resources).length) {
         payload.tool_resources = tool_resources;
       }
-      if (
-        conversationStarters.length > 1 ||
-        (conversationStarters.length === 1 && conversationStarters[0] !== "")
-      ) {
-        payload.conversation_starter = conversationStarters.filter(
-          (starter) => starter !== ""
-        );
+      if (conversationStarters.length > 1 || (conversationStarters.length === 1 && conversationStarters[0] !== "")) {
+        payload.conversation_starter = conversationStarters.filter((starter) => starter !== "");
       }
       if (capabilities.IMAGE || capabilities.WEB_BROWSING) {
         if (capabilities.IMAGE) {
@@ -167,13 +139,9 @@ const AssistantsChats: React.FC<PageProps> = ({
   return (
     <div className="flex-1 flex flex-col h-full w-full">
       <div className="flex flex-col h-full !bg-gray-100 shadow-box mt-8 border">
-        <Topbar
-          handleCreateConversation={handleCreateConversation}
-          isAPICalled={isAPICalled}
-          from="CREATE"
-        />
+        <Topbar handleCreateConversation={handleCreateConversation} isAPICalled={isAPICalled} from="CREATE" />
         <div className="h-full">
-          <Sidebargpt
+          <ConfigureGPTSection
             conversationStarters={conversationStarters}
             isToggleCheckedForSearch={isToggleCheckedForSearch}
             isToggleCheckedForInterpreter={isToggleCheckedForInterpreter}
@@ -196,10 +164,9 @@ const AssistantsChats: React.FC<PageProps> = ({
             setIconImage={setIconImage}
           />
         </div>
-        <Downbar />
       </div>
     </div>
   );
 };
 
-export default AssistantsChats;
+export default CreateNewGPTPage;
