@@ -40,6 +40,6 @@ export default function RootLayout({
         </StateProvider>
       </body>
       <GoogleAnalytics gaId="G-4F6RLEFEVZ" />
-    </html>
-  );
+    </html>
+  );
 }

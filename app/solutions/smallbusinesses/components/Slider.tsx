@@ -1,17 +1,14 @@
-import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { GoArrowLeft, GoArrowRight } from "react-icons/go";
-import { testimonialsdatathirdpage } from "@/types/data";
-import { Navigation } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
+import React from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { GoArrowLeft, GoArrowRight } from 'react-icons/go';
+import { testimonialsdatathirdpage } from '@/types/data';
+import { Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 const TestimonialsSlider = () => {
   return (
-    <div
-      className="max-w-[1820px] mx-auto relative mb-32"
-      data-aos="fade-right"
-    >
+    <div className="max-w-[1820px] mx-auto relative mb-32" data-aos="fade-right">
       <Swiper
         modules={[Navigation]}
         spaceBetween={30}

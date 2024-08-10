@@ -1,10 +1,10 @@
-import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { GoArrowLeft, GoArrowRight } from "react-icons/go";
-import { testimonials } from "@/types/data";
-import { Navigation } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
+import React from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { GoArrowLeft, GoArrowRight } from 'react-icons/go';
+import { testimonials } from '@/types/data';
+import { Navigation } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 const TestimonialsSlider = () => {
   return (
@@ -19,10 +19,8 @@ const TestimonialsSlider = () => {
         }}
         pagination={false}
         className="swiper-container2"
-      >
-        {" "}
-        <div className="custom-swiper-button-prev swiper-button-prev">
-          <button className="bg-[#03473714] -ml-2 lg:-ml-4 flex justify-center items-center w-10 h-10 rounded-full shadow focus:outline-none">
+      > <div className="custom-swiper-button-prev swiper-button-prev">
+      <button className="bg-[#03473714] -ml-2 lg:-ml-4 flex justify-center items-center w-10 h-10 rounded-full shadow focus:outline-none">
             <svg
               viewBox="0 0 20 20"
               fill="currentColor"
@@ -35,7 +33,7 @@ const TestimonialsSlider = () => {
               ></path>
             </svg>
           </button>
-        </div>
+    </div>
         {testimonials.map((item, index) => (
           <SwiperSlide key={index}>
             <div className="w-[599px] h-[468px] bg-white rounded-[17px] border border-[#e9e7e7] flex flex-col p-6 mx-4">
@@ -62,12 +60,13 @@ const TestimonialsSlider = () => {
       </Swiper>
 
       {/* Custom Navigation Buttons */}
-
+     
       <div className="custom-swiper-button-next swiper-button-next">
         <GoArrowRight />
       </div>
 
       {/* Custom styles for navigation buttons */}
+  
     </div>
   );
 };
