@@ -166,7 +166,7 @@ export default function AiAppTemplatesPage() {
             </Link>
           </div>
         </div>
-        <div className="flex gap-2 mt-10">
+        <div className="flex flex-wrap gap-2 mt-10">
           {tags.map((tag, index) => (
             <div
               key={index}
@@ -176,7 +176,7 @@ export default function AiAppTemplatesPage() {
                 selectedTag === tag.name ? "bg-primary-green text-white" : "bg-[#E9E9E9] text-primary-green"
               )}>
               <Image src={tag.icon} alt="" width={20} height={20} />
-              <span>{tag.name}</span>
+              <span className="whitespace-nowrap">{tag.name}</span>
             </div>
           ))}
         </div>
