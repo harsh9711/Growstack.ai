@@ -4,7 +4,6 @@ type User = {
   avatar: string;
   user_name: string;
   profile_img: string;
-  profile_img: string;
   name: string;
   id: string;
   address_line: string;
