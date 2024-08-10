@@ -1,0 +1,604 @@
+"use client";
+
+import { VideoMedia } from "@/components/svgs";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import Image from "next/image";
+import { ChevronRight, Plus, Search } from "lucide-react";
+import { TbTemplate } from "react-icons/tb";
+import PptDialog from "./PptDialog";
+import VideoTemplateCard from "./VideoTemplateCard";
+import { Template } from "./types";
+import Motion from "@/components/Motion";
+import Spinner from "@/components/Spinner";
+import { GenerateAi } from "@/components/svgs";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { API_URL } from "@/lib/api";
+import instance from "@/config/axios.config";
+import clsx from "clsx";
+import { AnimatePresence, motion } from "framer-motion";
+import { Base64 } from "js-base64";
+import { Minus } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { HiOutlineQuestionMarkCircle } from "react-icons/hi2";
+import { z } from "zod";
+import AvatarSelection from "./AvatarSelection";
+import AudioBox from "./AudioBox";
+import { CustomSelect } from "./Select";
+import TemplateLoader from "./TemplateLoader";
+export interface VideoStatus {
+  createdAt: number;
+  download: string;
+  duration: string;
+  id: string;
+  lastUpdatedAt: number;
+  status: "complete" | "in_progress";
+  title: string;
+  visibility: "public" | "private";
+}
+
+const CreateVideoDialog = ({
+  templates,
+}: {
+  templates: Array<Template> | null;
+}) => {
+  const formSchema = z.object({
+    title: z.string().min(1, "Title is required"),
+    objective: z.string().min(1, "Objective is required"),
+    language: z.string().optional(),
+    tone: z.string().optional(),
+    speaker: z.string().optional(),
+    audience: z.string().optional(),
+  });
+
+  type FormSchema = z.infer<typeof formSchema>;
+
+  type FieldsState = {
+    objective: boolean;
+    language: boolean;
+    tone: boolean;
+    speaker: boolean;
+    audience: boolean;
+  };
+
+  interface Avatar {
+    thumbnailUrl: string;
+    avatar: string;
+    name: string;
+    role: string;
+    id: string;
+  }
+
+  interface Voice {
+    id: string;
+    name: string;
+  }
+
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
+  const [step, setStep] = useState(0);
+  const [videoScript, setVideoScript] = useState("");
+  const [outputVideo, setOutputVideo] = useState<VideoStatus | null>(null);
+  const [assistants, setAssistants] = useState<Avatar[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [clicked, setClicked] = useState(false);
+  const [fields, setFields] = useState<FieldsState>({
+    objective: false,
+    language: false,
+    tone: false,
+    speaker: false,
+    audience: false,
+  });
+  const [scriptIndex, setScriptIndex] = useState(0);
+  const [formData, setFormData] = useState<FormSchema>({
+    title: "",
+    objective: "",
+    language: "",
+    tone: "",
+    speaker: "",
+    audience: "",
+  });
+  const [selectedAvatar, setSelectedAvatar] = useState<Avatar | null>(null);
+  const [selectedAvatarId, setSelectedAvatarId] = useState<string | null>(null);
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [voices, setVoices] = useState<
+    Array<{ id: string; name: string; sampleUrl: string }>
+  >([]);
+  const [generatingVideo, setGeneratingVideo] = useState(false);
+  const [selectedVoice, setSelectedVoice] = useState<string | null>(null);
+  const [playingSampleUrl, setPlayingSampleUrl] = useState<string | null>(null);
+  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("");
+  const [tone, settone] = useState<string>("");
+  const handleVoiceSelect = (voiceId: string) => {
+    setSelectedVoice(voiceId);
+  };
+  const handleSubmit = async () => {
+    const validation = formSchema.safeParse(formData);
+    if (!validation.success) {
+      toast.error(validation.error.errors[0].message);
+      return;
+    }
+    if (!selectedAvatar) {
+      toast.error("Please select an avatar");
+      return;
+    }
+
+    setStep(1);
+    try {
+      const scriptResponse = await instance.post(
+        `${API_URL}/ai/api/v1/generate/video/video-script`,
+        formData
+      );
+
+      if (scriptResponse.data.success) {
+        setVideoScript(scriptResponse.data.data.script);
+        await generateVideo(scriptResponse.data.data.script);
+      } else {
+        toast.error("Failed to generate script");
+      }
+    } catch (error) {
+      toast.error("Error submitting the form");
+    }
+  };
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement
+    >
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+  const handleButtonClick = async () => {
+    setLoading2(true);
+  
+    requestAnimationFrame(async () => {
+      const validation = formSchema.safeParse(formData);
+      if (!validation.success) {
+        toast.error(validation.error.errors[0].message);
+        setLoading2(false);
+        return;
+      }
+      if (!selectedAvatar) {
+        toast.error("Please select an avatar");
+        setLoading2(false);
+        return;
+      }
+  
+      // Form is valid and avatar is selected
+      setClicked(true);
+      setStep(1);
+      
+      try {
+        const scriptResponse = await instance.post(
+          `${API_URL}/ai/api/v1/generate/video/video-script`,
+          formData
+        );
+  
+        if (scriptResponse.data.success) {
+          setVideoScript(scriptResponse.data.data.script);
+          await generateVideo(scriptResponse.data.data.script);
+        } else {
+          toast.error("Failed to generate script");
+        }
+      } catch (error) {
+        toast.error("Error submitting the form");
+      } finally {
+        setLoading2(false);
+        setLoading(true);
+  
+        setTimeout(() => {
+          setDialogOpen(false);
+          resetForm();
+        }, 0);
+      }
+    });
+  };
+  
+  useEffect(() => {
+    const loadAvatars = async () => {
+      try {
+        const response = await instance.get(
+          `${API_URL}/ai/api/v1/video/avatars`
+        );
+        setAssistants(
+          response.data.data.map((item: any) => ({
+            id: item.id,
+            name: item.name,
+            thumbnailUrl: item.thumbnailUrl,
+          }))
+        );
+      } catch (error) {
+        toast.error("Error fetching avatars");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const loadVoices = async () => {
+      try {
+        const response = await instance.get(
+          `${API_URL}/ai/api/v1/video/voices`
+        );
+        setVoices(response.data.data);
+      } catch (error) {
+        toast.error("Error fetching voices");
+      }
+    };
+
+    loadAvatars();
+    loadVoices();
+  }, []);
+
+  
+  const LoadingOverlay = ({ progress }: { progress: number }) => {
+    const [displayText, setDisplayText] = useState("Let AI do the magic");
+
+    useEffect(() => {
+      const timer = setTimeout(() => {
+        setDisplayText("Your video is getting generated");
+      }, 2000);
+      return () => clearTimeout(timer);
+    }, []);
+
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm z-50">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="relative w-full max-w-sm bg-gray-200 rounded-lg">
+            <div
+              className="absolute top-0 left-0 h-full bg-primary-green rounded-lg"
+              style={{ width: `${progress}%`, transition: "width 0.5s ease" }}
+            />
+          </div>
+          <Image src="/image.png" width={40} height={40} alt="growstack" />
+          <p className="text-white text-lg font-medium transition-opacity duration-1000">
+            {displayText}
+          </p>
+        </div>
+      </div>
+    );
+  };
+
+  const generateVideo = async (scriptElements: string[]) => {
+    if (!selectedAvatar) {
+      toast.error("Please select an avatar");
+      setLoading2(false);
+      return;
+    }
+
+    setGeneratingVideo(true);
+    setLoading(true);
+
+    try {
+      const moments = scriptElements.map((scriptElement) => ({
+        transcript: scriptElement,
+        avatarId: selectedAvatar.id,
+        voiceId: selectedVoice || "",
+      }));
+
+      const videoData = {
+        title: formData.title,
+        input: moments,
+        thumbnailUrl: selectedAvatar.thumbnailUrl,
+      };
+
+      const videoResponse = await instance.post(
+        `${API_URL}/ai/api/v1/generate/video`,
+        videoData
+      );
+
+      if (videoResponse.data.success) {
+        // toast.success("Video generation request successful");
+        setOutputVideo(videoResponse.data.data);
+        setStep(3);
+        window.dispatchEvent(
+          new CustomEvent("videoGenerationSuccess", {
+            detail: videoResponse.data.data,
+          })
+        );
+      } else {
+        toast.error("Failed to generate video");
+        setStep(0);
+      }
+    } catch (error) {
+      toast.error("Error generating video");
+      setStep(0);
+    } finally {
+      setLoading(false);
+      setGeneratingVideo(false);
+    }
+  };
+
+ 
+
+  const handleAvatarSelect = (avatar: Avatar) => {
+    setSelectedAvatar(avatar);
+  };
+
+  const resetForm = () => {
+    setFormData({
+      title: "",
+      objective: "",
+      language: "",
+      tone: "",
+      speaker: "",
+      audience: "",
+    });
+    setFields({
+      objective: false,
+      language: false,
+      tone: false,
+      speaker: false,
+      audience: false,
+    });
+    setVideoScript("");
+    setOutputVideo(null);
+    setSelectedAvatar(null);
+    setSelectedAvatarId(null);
+    setSelectedVoice(null);
+    setStep(0);
+    setLoading(false);
+    setError(null);
+  };
+
+  const handleClose = () => {
+    // if (clicked) {
+    //   setLoading(true);
+    //   setTimeout(() => {
+    //     setLoading(false);
+    //   }, 16000);
+    // }
+    setClicked(false);
+    setDialogOpen(false);
+    resetForm();
+  };
+
+  const filteredAvatars = assistants.filter((avatar) =>
+    avatar.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  if (loading) return <LoadingOverlay progress={(step / 3) * 100} />;
+  if (error) return <p>{error}</p>;
+  const progress = (step / 3) * 100;
+  // const handleDialogClose = () => {
+  //   handleClose(false);
+  // };
+  return (
+    <div className="relative">
+      {" "}
+      {loading2 && <LoadingOverlay progress={progress} />}
+      <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
+        <DialogTrigger>
+          <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2">
+            <Plus size={20} />
+            Create new video with AI
+          </button>
+        </DialogTrigger>
+        <DialogContent
+          className="w-full 2xl:max-w-[90%] h-full 2xl:h-[90vh] px-10 py-7"
+          onCloseAutoFocus={handleClose}
+        >
+          <div className="relative w-full space-y-6 text-[12px] h-full flex flex-col">
+            <main className="flex flex-col gap-x-10">
+              <div className="w-full flex xl:flex-row sm:flex-col lg:flex-row md:flex-row flex-col 2xl:flex-row gap-y-4 2xl:gap-x-10 mb-6 ">
+                <div className="flex w-full 2xl:w-2/3 flex-col gap-y-6 gap-x-4">
+                  <div className="flex flex-col w-full">
+                    <div className="w-full space-y-2">
+                      <label
+                        htmlFor="title"
+                        className="flex items-center w-full font-semibold gap-x-3"
+                      >
+                        <span className="space-x-2 text-[15px] ">
+                          Title <span className="text-[#F93939]">*</span>
+                        </span>
+                      </label>
+                      <input
+                        type="text"
+                        name="title"
+                        placeholder="Type video title"
+                        value={formData.title}
+                        onChange={handleInputChange}
+                        className="border border-[#DEDEDE] bg-[#F5F5F5] h-[54px] w-full rounded-xl outline-none focus:border-primary-green transition-all p-4"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex xl:flex-row md:flex-row lg:flex-row flex-col 2xl:flex-row gap-x-6 w-full">
+                    <div className="flex flex-col w-full space-y-2">
+                      <label
+                        htmlFor="objective"
+                        className="flex items-center w-full font-semibold gap-x-3"
+                      >
+                        <span className="space-x-2 text-[15px] ">
+                          Objective <span className="text-[#F93939]">*</span>
+                        </span>
+                      </label>
+                      <textarea
+                        name="objective"
+                        placeholder="Introduction to financial well-being"
+                        value={formData.objective}
+                        onChange={handleInputChange}
+                        className="border border-[#DEDEDE] bg-[#F5F5F5] resize-none h-[160px] w-full rounded-xl outline-none focus:border-primary-green transition-all p-4"
+                      ></textarea>
+                    </div>
+                    <div className="flex flex-col w-full gap-y-4">
+                      <div className="flex flex-col w-full space-y-2">
+                        <label
+                          htmlFor="speaker"
+                          className="flex items-center font-semibold gap-x-3"
+                        >
+                          <span className="space-x-2 text-[15px] ">
+                            Speaker
+                          </span>
+                        </label>
+                        <motion.input
+                          animate={{ opacity: 1 }}
+                          initial={{ opacity: 0 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.25 }}
+                          type="text"
+                          name="speaker"
+                          placeholder="Give a name or title to the speaker"
+                          value={formData.speaker}
+                          onChange={handleInputChange}
+                          className="border border-[#DEDEDE] bg-[#F5F5F5] h-[54px] w-full rounded-xl outline-none focus:border-primary-green transition-all p-4"
+                        />
+                      </div>
+
+                      <div className="flex flex-col w-full space-y-2">
+                        <label
+                          htmlFor="audience"
+                          className="flex items-center font-semibold gap-x-3"
+                        >
+                          <span className="space-x-2 text-[15px] ">
+                            Target Audience{" "}
+                          </span>
+                        </label>
+                        <motion.input
+                          animate={{ opacity: 1 }}
+                          initial={{ opacity: 0 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.25 }}
+                          type="text"
+                          name="audience"
+                          placeholder="Who will be watching this video?"
+                          value={formData.audience}
+                          onChange={handleInputChange}
+                          className="border border-[#DEDEDE] bg-[#F5F5F5] h-[54px] w-full rounded-xl outline-none focus:border-primary-green transition-all p-4"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-y-4 w-full 2xl:w-1/3">
+                  <div className="flex relative z-30 flex-col gap-y-2 mb-2">
+                    <label
+                      htmlFor="language"
+                      className="flex items-center font-semibold gap-x-3"
+                    >
+                      <span className="space-x-2 text-[15px]">Language</span>
+                    </label>
+                    <CustomSelect
+                      placeholder="Select Language"
+                      options={[
+                        "English",
+                        "Spanish",
+                        "French",
+                        "German",
+                        "Chinese",
+                        "Japanese",
+                        "Korean",
+                        "Russian",
+                        "Portuguese",
+                        "Italian",
+                      ]}
+                      value={selectedLanguage}
+                      onChange={(value: string) => setSelectedLanguage(value)}
+                    />
+                  </div>
+
+                  <div className="flex relative z-20 flex-col gap-y-2">
+                    <label
+                      htmlFor="tone"
+                      className="flex items-center font-semibold gap-x-3"
+                    >
+                      <span className="space-x-2 text-[15px]">Tone</span>
+                    </label>
+                    <CustomSelect
+                      placeholder="Select Tone"
+                      options={["Professional", "Casual", "Friendly"]}
+                      value={tone}
+                      onChange={(value: string) => settone(value)}
+                    />
+                  </div>
+
+                  <div className="relative z-10">
+                    <AudioBox
+                      selectedVoice={selectedVoice}
+                      onVoiceSelect={handleVoiceSelect}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="w-full flex relative z-0">
+                {loading ? (
+                  <div className="flex flex-col items-center w-full 2xl:max-w-3xl mx-auto space-y-4">
+                    {/* <LoadingBar progress={progress} /> */}
+                  </div>
+                ) : (
+                  <Motion
+                    transition={{ duration: 0.5 }}
+                    variants={{
+                      hidden: { opacity: 0 },
+                      visible: { opacity: 1 },
+                    }}
+                    classNames="flex  w-full h-full grid relative z-10 place-content-center"
+                  >
+                    <div>
+                      <div className="flex flex-col xl:flex-row md:flex-row lg:flex-row 2xl:flex-row w-full 2xl:w-[1640px] mb-6">
+                        <div className="flex-1 flex items-center">
+                          <h2 className="text-lg font-semibold mb-4 xl:mb-0">
+                            Select your Avatar
+                          </h2>
+                        </div>
+                  
+
+                        <div className="flex flex-col xl:flex-row md:flex-row lg:flex-row 2xl:flex-row flex-1 justify-end items-center gap-x-6">
+                          <div className="bg-white border text-[13px] border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-[300px]">
+                            <Search className="text-gray-500" size={20} />
+                            <input
+                              type="text"
+                              placeholder="Search Avatars..."
+                              value={searchQuery}
+                              onChange={(e) => setSearchQuery(e.target.value)}
+                              className="p-2 rounded"
+                            />
+                          </div>
+
+                          <button
+                            disabled={loading}
+                            className={clsx(
+                              "bg-primary-green text-[15px] text-white py-3.5 px-20 w-full max-w-[300px] rounded-xl flex items-center justify-center",
+                              {
+                                "opacity-80 cursor-not-allowed": loading,
+                              }
+                            )}
+                            onClick={handleButtonClick }
+                          >
+                            {loading ? (
+                              <Spinner />
+                            ) : clicked ? (
+                              "Video Generating..."
+                            ) : (
+                              "Generate Video"
+                            )}
+                          </button>
+                        </div>
+                      </div>
+
+                      <AvatarSelection
+                        avatars={filteredAvatars}
+                        onSelect={handleAvatarSelect}
+                      />
+                    </div>
+                  </Motion>
+                )}
+              </div>
+            </main>
+          </div>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
+
+export default CreateVideoDialog;

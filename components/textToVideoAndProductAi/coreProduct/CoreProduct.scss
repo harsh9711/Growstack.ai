@@ -1,0 +1,117 @@
+@import "../../../app/variables.scss";
+
+.coreProduct {
+  padding: 90px 0;
+  @media screen and (max-width: $breakpoint_mobile_portrait) {
+    padding: 40px 0;
+  }
+  .wrapper {
+    overflow: hidden;
+    background-color: rgba(226, 240, 203, 0.6);
+    padding: 40px;
+    border-radius: 60px;
+    @media screen and (max-width: $breakpoint_mobile_portrait) {
+      padding: 20px;
+      border-radius: 30px;
+    }
+    .contentBlock {
+      .content {
+        padding-left: 30px;
+        @media screen and (max-width: $breakpoint_tablet) {
+          padding-left: 0;
+        }
+        .block {
+          margin-bottom: 30px;
+          position: relative;
+          &:last-child {
+            &:after { display: none; }
+            padding-bottom: 0;
+            margin: 0;
+          }
+          &:after {
+            content: '';
+            position: absolute;
+            left: -33px;
+            top: 25px;
+            width: 2px;
+            border-left: 2px dashed #034737;
+            height: 100%;
+            @media (max-width: $breakpoint_tablet) {
+              display: none;
+            }
+          }
+          &:before {
+            @media (max-width: $breakpoint_tablet) {
+              display: none;
+            }
+            content: '';
+            z-index: 1;
+            transition: all 0.4s ease-in-out;
+            position: absolute;
+            left: -33px;
+            width: 20px;
+            height: 20px;
+            top: 0;
+            background: #C7C7C7;
+            border: 4px solid #dddfde;
+            border-radius: 100%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: 900;
+          }
+          &.in-view {
+            &:after {
+              border-left-color: #a2afac;
+            }
+            &:before {
+              background-color: #034737;
+              border-color: #a2afac;
+            }
+            h3 {
+              color: #034737; /* Change the color when in view */
+            }
+          }
+          &:nth-child(1) {
+            h3 {
+              color: #034737;
+            }
+          }
+          h3 {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            @media screen and (max-width: $breakpoint_mini_laptop) {
+              font-size: 18px;
+            }
+          }
+          p {
+            font-size: 16px;
+            margin-bottom: 0;
+            @media screen and (max-width: $breakpoint_mini_laptop) {
+              font-size: 14px;
+            }
+          }
+        }
+      }
+      img {
+        width: 100%;
+        @media screen and (max-width: $breakpoint_tablet) {
+          margin-top: 30px;
+        }
+      }
+    }
+  }
+  .title {
+    &.in-view {
+      span.user {
+        color: #034737; /* Change the color when in view */
+      }
+    }
+    span.user {
+      transition: color 0.4s ease-in-out;
+    }
+  }
+}

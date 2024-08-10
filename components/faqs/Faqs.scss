@@ -1,0 +1,65 @@
+@import "../../app/variables.scss";
+
+.faqsSection{
+    padding: 70px 0;
+    overflow: hidden;
+    @media (max-width:$breakpoint_mobile_portrait) {
+        padding: 40px 0;
+    }
+    .image-fluid{
+        width: 100%;
+        height: auto;
+    }
+    .accordion{ 
+        .accordion-item{
+            margin-bottom: 20px;
+            border: 1px solid #E7E7E7;
+            border-radius: 15px !important;
+
+        }
+        .accordion-button{
+            border-radius: 15px !important;
+        }
+        .accordion-button:not(.collapsed){
+            background-color: transparent;
+            box-shadow: none;
+        }
+        .accordion-button:focus{
+            box-shadow: none;
+        }
+        .accordion-collapse.collapse.show{
+            border-bottom: 7px solid #D9D9D9;
+            border-radius: 15px;
+        }
+        .accordion-button{
+            padding: 30px 30px 30px;
+            color: #000;
+            font-size: 16px;
+            font-weight: bold;
+            justify-content: space-between;
+           @media (max-width: $breakpoint_tablet) {
+                font-size: 14px;
+                line-height: 22px;
+            }
+            
+           }
+           .accordion-body{
+            padding: 0 30px 30px;
+            font-size: 14px;
+        }
+        .accordion-button::after{
+            background-image: url(../../public/images_growstack/home/faqArrow2.svg);
+            width: 35px;
+            height: 35px;
+            background-size: contain;
+            transform: rotate(0deg);
+            @media (max-width: $breakpoint_mobile_portrait) {
+                margin-left: 30px;
+            }
+
+        }
+        .accordion-button:not(.collapsed)::after{
+            background-image: url(../../public/images_growstack/home/faqArrow1.svg);
+        }
+        }
+}

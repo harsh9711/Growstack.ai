@@ -1,0 +1,23 @@
+.ql-snow{
+  border: none !important;
+}
+
+.ql-container{
+  background-color: #F2F2F2;
+  border-radius: 20px;
+  margin-top: 12px;
+}
+
+.ql-editor-fr .ql-container {
+  height: 124px !important;
+  padding: 0 !important;
+  border-radius: 10px !important;
+}
+
+.remove-caret .cus-caret {
+  display: none !important;
+}
+
+.change-bg button {
+  background-color: #FBFBFB !important;
+}

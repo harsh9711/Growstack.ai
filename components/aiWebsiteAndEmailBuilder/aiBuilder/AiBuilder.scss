@@ -1,0 +1,113 @@
+@import "../../../app/variables.scss";
+
+.aiBuilder {
+    padding: 90px 0;
+    overflow: hidden;
+    @media screen and (max-width: $breakpoint_mobile_portrait) {
+        padding: 40px 0;
+    }
+
+    .head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 50px;
+
+        @media screen and (max-width: $breakpoint_tablet) {
+            margin-bottom: 30px;
+            flex-direction: column;
+            justify-content: start;
+            align-items: flex-start;
+        }
+
+        .content {
+            max-width: 560px;
+        }
+
+        .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+            background-color: #034737 !important;
+            color: #fff;
+        }
+
+        .nav {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            gap: 15px;
+            @media screen and (max-width: $breakpoint_mobile_portrait) {
+                margin-top: 20px;
+            }
+            @media screen and (max-width: $breakpoint_tablet) {
+                margin: 20px auto;                
+            }
+
+            .nav-link {
+                color: #034737;
+                font-size: 16px;
+                font-weight: 500;
+                padding: 10px;
+                border-radius: 10px;
+                transition: all 0.3s;
+            }
+        }
+    }
+
+    .tabsBlock {
+        .contentBlock {
+            .block {
+                h3 {
+                    font-size: 28px;
+                    font-weight: bold;
+                    margin-bottom: 40px;
+                    color: #14171B;
+                    max-width: 352px;
+                    @media screen and (max-width: $breakpoint_tablet) {
+                        font-size: 24px;
+                        margin-bottom: 30px;
+                        
+                    }
+                }
+
+                .description {
+                    max-width: 487px;
+                    margin-bottom: 20px;
+
+                    &:first-of-type {
+                        border-left: 2px solid #034737;
+                        padding-left: 10px;
+
+                        h5 {
+                            color: #034737;
+                        }
+                    }
+
+                    h5 {
+                        font-size: 18px;
+                        font-weight: bold;
+                        margin-bottom: 10px;
+                        color: #14171B;
+                    }
+
+                    p {
+                        font-size: 14px;
+                        font-weight: 400;
+                        color: #14171B;
+                    }
+                }
+            }
+
+            img {
+                width: 100%;
+                height: auto;
+                @media screen and (max-width: $breakpoint_tablet) {
+                    margin-top: 10px;
+                    
+                }
+            }
+        }
+    }
+}

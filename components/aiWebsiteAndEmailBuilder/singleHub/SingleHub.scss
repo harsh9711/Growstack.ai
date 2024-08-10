@@ -1,0 +1,193 @@
+@import "../../../app/variables.scss";
+
+.singleHub{
+    padding: 90px 0;
+    background: #FAFBFC;
+    overflow: hidden;
+    @media screen and (max-width: $breakpoint_mobile_portrait) {
+        padding: 40px 0 20px; 
+    }
+    .head{
+        h2{
+            font-size: 32px;
+            font-weight: bold;
+            color: #14171B;
+            max-width: 454px;
+            margin-bottom: 20px;
+            line-height: normal;
+            @media screen and (max-width: $breakpoint_mobile_portrait) {
+                font-size: 24px;
+            }
+        }
+        p{
+            @media screen and (max-width: $breakpoint_mobile_portrait) {
+                padding: 0 0 20px;
+                
+            }
+        }
+    }
+    .block{
+        &:last-child{
+              padding-bottom: 0;
+        }
+      padding-bottom: 90px;
+      @media screen and (max-width: $breakpoint_tablet) {
+        padding-bottom: 40px;
+      }
+      @media screen and (max-width: $breakpoint_mobile_portrait) {
+        padding-bottom: 0px;
+      }
+      .imgBlock{
+          @media screen and (max-width: $breakpoint_mobile_portrait) {
+              padding: 0 0 20px;
+          }
+          .sbtn{
+            margin: 0;
+            a{
+                @media screen and (max-width: $breakpoint_tablet) {
+                    font-size: 14px;
+                }
+            }
+          }
+          img{
+              width: 100%;
+              height: auto;
+              &:last-child{
+                width: 455px;
+                @media screen and (max-width: $breakpoint_tablet) {
+                    width: 100%;
+                    
+                }
+          }
+          }
+      }
+      .content{
+          @media screen and (max-width: $breakpoint_mobile_portrait) {
+              padding: 0 0 20px;
+          }
+          h3{
+            font-size: 32px;
+            font-weight: bold;
+            color: #14171B;
+            max-width: 610px;
+            margin-bottom: 20px;
+            line-height: normal;
+            @media screen and (max-width: $breakpoint_tablet) {
+                font-size: 22px;
+                
+            }
+
+          }
+          p{
+              font-size: 16px;
+              font-weight: 400;
+              color: #14171B;
+              margin-bottom: 30px;
+              line-height: 26px;
+              max-width: 610px;
+              @media screen and (max-width: $breakpoint_tablet) {
+                  font-size: 14px;
+              }
+          }
+          .description {
+            max-width: 610px;
+            margin-bottom: 20px;
+
+            h5 {
+                font-size: 18px;
+                font-weight: bold;
+                margin-bottom: 10px;
+                color: #14171B;
+            }
+
+            p {
+                font-size: 14px;
+                font-weight: 400;
+                color: #14171B;
+            }
+        }
+          .accordionBlock{
+            .accordion{
+                background-color: #FAFBFC;
+                border-radius: 0;
+                border: 0;
+                .accordion-header{
+                    background-color: #FAFBFC;
+                    color: #fff;
+                    border-radius: 0;
+                    cursor: pointer;
+                    .accordion-title{
+                        font-size: 20px;
+                        font-weight: bold;
+                    }
+                }
+                .accordion-button{
+                    background-color: #FAFBFC;
+                    border-radius: 0;
+                    padding: 20px 0 20px;
+                    cursor: pointer;
+                    color: #034737;
+                    font-weight: 600;
+                    &.collapsed{
+                        font-weight: 400;
+                        color: #14171B;
+                    }
+                    &:focus{
+                        box-shadow: none;
+                    }
+                    .accordion-title{
+                        font-size: 20px;
+                        font-weight: bold;
+                    }
+                }
+                .accordion-item{
+                    border: 0;
+                    border-bottom: 1px solid #E8E8E8;
+                }
+                .accordion-body{
+                    border: 0;
+                    background-color: #FAFBFC;
+                    padding: 15px 0;
+                }
+                .accordion-button::after{
+                    background-image: url(../../../public/images_growstack/emailBuilder/arrow2.svg);
+                    width: 25px;
+                    height: 25px;
+                    background-size: contain;
+                    transform: rotate(0deg);
+                    @media (max-width: $breakpoint_mobile_portrait) {
+                        margin-left: 30px;
+                    }
+        
+                }
+                .accordion-button:not(.collapsed)::after{
+                    background-image: url(../../../public/images_growstack/emailBuilder/arrow1.svg);
+                    transform: rotate(90deg);
+                }
+            }
+
+          }
+      }
+    }
+    .company{
+        .mySwiper{
+            .imgBlock{
+                img{
+                    width: 100%;
+                    height: auto;
+                }
+            }
+            .swiper-pagination{
+                bottom: 20px;
+                text-align: left;
+                .swiper-pagination-bullet-active{
+                    background-color: #034737;
+                }
+                .swiper-pagination-bullet {
+                    width: 10px;
+                    height: 10px;
+                }
+            }
+        }
+    }
+}

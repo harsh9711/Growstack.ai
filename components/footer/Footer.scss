@@ -1,0 +1,253 @@
+@import "../../app/variables.scss";
+
+.footer {
+  background: #F4F4F4;
+  overflow: hidden;
+  padding: 50px 30px 0;
+  border-radius: 40px 40px 0px 0px;
+
+  @media (max-width: $breakpoint_mobile_portrait) {
+    padding: 40px 15px 0px;
+  }
+
+  .demo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 50px;
+    @media (max-width: $breakpoint_mobile_portrait) {
+      margin-bottom: 35px;
+      
+    }
+    h3 {
+      font-size: 42px;
+      color: #034737;
+      margin: 0;
+      max-width: 450px;
+      font-family: 'PoppinsMedium';
+      @media (max-width: $breakpoint_tablet) {
+        font-size: 32px;
+        
+      }
+      @media (max-width: $breakpoint_mobile_portrait) {
+        font-size: 24px;
+      }
+    }
+
+    .fbtn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 20px;
+      gap: 20px;
+
+      @media (max-width: $breakpoint_mobile_portrait) {
+        margin-top: 20px;
+      }
+
+      a {
+        background: #fff;
+        color: #034737;
+        padding: 10px 20px;
+        border-radius: 10px;
+        font-size: 18px;
+        font-family: 'PoppinsMedium';
+        text-decoration: none;
+        transition: all 0.3s ease;
+        text-align: center;
+
+        &:hover {
+          background: #034737;
+          color: #fff;
+        }
+
+        &:last-child {
+          background-color: transparent;
+          border: 1px solid #034737;
+
+          &:hover {
+            background: #034737;
+            color: #fff;
+          }
+        }
+
+        @media (max-width: $breakpoint_mobile_portrait) {
+          padding: 10px 15px;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+
+  .innerBlock {
+    background-color: #034737;
+    padding: 70px 30px 0;
+    border-radius: 40px 40px 0px 0px;
+
+    @media (max-width: $breakpoint_mobile_portrait) {
+      padding: 40px 15px 0px;
+    }
+
+    .footerLogo {
+      @media (max-width: $breakpoint_mobile_portrait) {
+        margin-bottom: 15px;
+        
+      }
+      img {
+        width: 152px;
+        height: 20px;
+        margin: 0 -11px 0;
+      }
+    }
+
+    h4 {
+      font-size: 20px;
+      color: #fff;
+      margin: 0 0 30px;
+      font-family: 'PoppinsMedium';
+      @media (max-width: $breakpoint_tablet) {
+        margin: 40px 0 10px;
+        
+      }
+      @media (max-width: $breakpoint_mobile_portrait) {
+        font-size: 18px;
+        margin: 5px 0 10px;
+        padding-top: 20px;
+      }
+    }
+    p{
+      font-size: 16px;
+      color: #EBEBEB;
+      font-family: 'PoppinsRegular';
+      margin-bottom: 20px;
+
+      @media (max-width: $breakpoint_mobile_portrait) {
+        font-size: 14px;
+      }
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        margin-bottom: 10px;
+        a {
+          font-size: 16px;
+          color: #EBEBEB;
+          font-family: 'PoppinsRegular';
+          text-decoration: none;
+
+          &:hover {
+            text-decoration: underline;
+          }
+
+          @media (max-width: $breakpoint_mobile_portrait) {
+            font-size: 14px;
+          }
+        }
+      }
+    }
+    .input-group{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      border: 1px solid #EBEBEB;
+      padding: 5px 5px 5px 10px;
+      border-radius: 10px;
+      input{
+        border: 0;
+        box-shadow: none;
+        background: transparent;
+        color: #EBEBEB;
+        &:focus{
+          border: 0;
+          box-shadow: none;
+        }
+        &::placeholder{
+          color: #EBEBEB;
+        }
+      }
+    .input-group-append{
+      button{
+        background: #A9FF9B;
+        padding: 10px 17px;
+        border-radius: 10px;
+        border: 0;
+        font-size: 18px;
+        font-family: 'PoppinsMedium';
+        text-decoration: none;
+        margin-left: 10px;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: #87e279;
+        }
+
+        @media (max-width: $breakpoint_mobile_portrait) {
+          padding: 10px 15px;
+          font-size: 16px;
+          margin-right: 10px;
+        }
+      }
+    }
+
+    }
+    .copyRight{
+      margin-top: 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      border-top: 1px solid #EBEBEB;
+      padding: 20px 0;
+      @media (max-width: $breakpoint_mobile_portrait) {
+        justify-content: center;
+        gap: 15px;
+        margin-top: 30px;
+        
+      }
+      p{
+        font-size: 14px;
+        color: #EBEBEB;
+        font-family: 'PoppinsRegular';
+        margin-bottom: 0;
+
+        @media (max-width: $breakpoint_mobile_portrait) {
+          font-size: 14px;
+        }
+      }
+      .social{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        a{
+          border: 1px solid #EBEBEB;
+          padding: 10px;
+          border-radius: 50%;
+          transition: all 0.3s ease;
+          width: 40px;
+          height: 40px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          &:hover{
+            background: #EBEBEB;
+            img{
+              filter: invert(1);
+            
+            }
+          }
+          img{
+            width: 15px;
+            height: 15px;
+
+          }
+        }
+        }
+    }
+  }
+}

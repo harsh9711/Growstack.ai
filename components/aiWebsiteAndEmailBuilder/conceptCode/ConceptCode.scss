@@ -1,0 +1,44 @@
+@import "../../../app/variables.scss";
+
+.conceptCode{
+    background-color: #FAE8F1;
+    margin: 0 20px;
+    padding: 50px 0;
+    border-radius: 60px;
+    overflow: hidden;
+    @media screen and (max-width: $breakpoint_mobile_portrait){
+        margin: 0 10px;
+        padding: 30px 0;
+        border-radius: 25px;        
+    }
+    .content{
+        h3{
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #14171B;
+            @media screen and (max-width: $breakpoint_tablet){
+                font-size: 20px;
+                
+            }
+            @media screen and (max-width: $breakpoint_mobile_portrait){
+                padding-top: 30px;
+            }
+        }
+        img{
+            box-shadow: 0 0 20px 0 rgba(0,0,0,0.1);
+            width: 100%;
+            height: auto;
+        }
+        .cbtn{
+            a{
+                color: #14171B;
+                border: 1px solid #14171B;
+                &:hover{
+                    color: #fff;
+                }
+            }
+        }
+
+    }
+}

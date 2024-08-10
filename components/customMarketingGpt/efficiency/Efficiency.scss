@@ -1,0 +1,51 @@
+@import "../../../app/variables.scss";
+
+.efficiency{
+    padding: 90px 0;
+    overflow: hidden;
+    @media screen and (max-width: $breakpoint_mobile_portrait){
+        padding: 50px 0 40px;
+    }
+    .borderline{
+        border: 4px dashed #D9D9D9;
+        border-radius: 20px;
+        margin-top: 30px;
+        .card{
+            background-color: #F9F9F9;
+            border-radius: 20px;
+            padding: 10px 30px;
+            border: none;
+            margin: 10px;
+           
+            .block{
+                position: relative;
+                margin: 40px 0;
+                &:last-child{
+                    &::after{
+                        display: none;
+                    }
+                }
+                &::after{
+                    content: "";
+                    position: absolute;
+                    width: 100%;
+                    height: 1px;
+                    background-color: #E5E5E5;
+                    bottom: -20px;
+                    left: 50px;
+                    max-width: 250px;
+                }
+                h4{
+                    font-size: 16px;
+                    font-weight: 700;
+                    margin-bottom: 2px;
+                }
+                p{
+                    font-size: 14px;
+                    line-height: 1.5;
+                    margin: 0;
+                }
+            }
+        }
+    }
+}
