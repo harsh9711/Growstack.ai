@@ -1,10 +1,10 @@
-import React from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { GoArrowLeft, GoArrowRight } from 'react-icons/go';
-import { testimonialsdata } from '@/types/data';
-import { Navigation } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
+import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { GoArrowLeft, GoArrowRight } from "react-icons/go";
+import { testimonialsdata } from "@/types/data";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
 
 const TestimonialsSlider = () => {
   return (
