@@ -1,14 +1,21 @@
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { RiFacebookLine, RiLinkedinLine, RiPinterestLine, RiTwitterXLine } from "react-icons/ri";
+import {
+  RiFacebookLine,
+  RiLinkedinLine,
+  RiPinterestLine,
+  RiTwitterXLine,
+} from "react-icons/ri";
 import "@/styles/button.css";
 
 export default function Footer() {
   return (
-<footer className="rounded-t-[50px] px-10 md:px-12 bg-primary-light-gray ">
-<div className="flex rounded-full justify-between max-w-[1480px] mx-auto py-20 items-center">
-        <h1 className="text-[42px] font-semibold max-w-lg leading-relaxed text-primary-green">Ready to see a personalized demo?</h1>
+    <footer className="rounded-t-[50px] px-10 md:px-12 bg-primary-light-gray ">
+      <div className="flex rounded-full justify-between max-w-[1480px] mx-auto py-20 items-center">
+        <h1 className="text-[42px] font-semibold max-w-lg leading-relaxed text-primary-green">
+          Ready to see a personalized demo?
+        </h1>
         <div className="flex items-center gap-4">
           <button className="bg-white hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-10 py-5 rounded-xl font-semibold">
             View Demo
@@ -49,13 +56,18 @@ export default function Footer() {
                     <Link href="#">Research assistant</Link>
                   </li>
                   <li className="hover:underline">
-                    <Link href="#">AI Marketing & Sales <br/> Apps</Link>
+                    <Link href="#">
+                      AI Marketing & Sales <br /> Apps
+                    </Link>
                   </li>
                   <li className="hover:underline">
                     <Link href="#">Imaginate app</Link>
                   </li>
                   <li className="hover:underline">
-                    <Link href="#">Marketing and sales <br/>assistants</Link>
+                    <Link href="#">
+                      Marketing and sales <br />
+                      assistants
+                    </Link>
                   </li>
                 </ul>
               </div>
@@ -80,7 +92,13 @@ export default function Footer() {
                 <h1 className="font-semibold text-lg">Newsletter</h1>
                 <p className="mt-12 text-white">Subscribe to our newsletter</p>
                 <div className="bg-transparent border border-[white]/80 p-2 flex rounded-2xl gap-2 mt-6">
-                  <Image src="/icons/sms.svg" alt="sms" width={22} height={22} className="ml-4" />
+                  <Image
+                    src="/icons/sms.svg"
+                    alt="sms"
+                    width={22}
+                    height={22}
+                    className="ml-4"
+                  />
                   <input
                     type="text"
                     className="bg-transparent w-full flex-1 outline-none px-2 rounded-xl placeholder:text-white text-white"
@@ -94,30 +112,36 @@ export default function Footer() {
             </div>
           </div>
           <div className="border-t border-[#E0E4EB] text-white flex flex-col-reverse md:flex-row gap-8 justify-between items-center py-10 mt-20">
-            <p className="text-white">©2024 Company Name. All right reserved.</p>
+            <p className="text-white">
+              ©2024 Company Name. All right reserved.
+            </p>
             <div className="flex gap-4">
               <Link
                 href="https://instagram.com"
                 target="_blank"
-                className="bg-transparent hover:bg-white text-white hover:text-primary-green border border-[white]/80 p-4 flex justify-center items-center rounded-full hover:bg-primary-blue transition duration-300">
+                className="bg-transparent hover:bg-white text-white hover:text-primary-green border border-[white]/80 p-4 flex justify-center items-center rounded-full hover:bg-primary-blue transition duration-300"
+              >
                 <RiTwitterXLine size={20} />
               </Link>
               <Link
                 href="https://facebook.com"
                 target="_blank"
-                className="bg-transparent hover:bg-white text-white hover:text-primary-green border border-[white]/80 p-4 flex justify-center items-center rounded-full hover:bg-primary-blue transition duration-300">
+                className="bg-transparent hover:bg-white text-white hover:text-primary-green border border-[white]/80 p-4 flex justify-center items-center rounded-full hover:bg-primary-blue transition duration-300"
+              >
                 <RiFacebookLine size={20} />
               </Link>
               <Link
                 href="https://x.com"
                 target="_blank"
-                className="bg-transparent hover:bg-white text-white hover:text-primary-green border border-[white]/80 p-4 flex justify-center items-center rounded-full hover:bg-primary-blue transition duration-300">
+                className="bg-transparent hover:bg-white text-white hover:text-primary-green border border-[white]/80 p-4 flex justify-center items-center rounded-full hover:bg-primary-blue transition duration-300"
+              >
                 <RiLinkedinLine size={20} />
               </Link>
               <Link
                 href="https://linkedin.com"
                 target="_blank"
-                className="bg-transparent hover:bg-white text-white hover:text-primary-green border border-[white]/80 p-4 flex justify-center items-center rounded-full hover:bg-primary-blue transition duration-300">
+                className="bg-transparent hover:bg-white text-white hover:text-primary-green border border-[white]/80 p-4 flex justify-center items-center rounded-full hover:bg-primary-blue transition duration-300"
+              >
                 <RiPinterestLine size={20} />
               </Link>
             </div>

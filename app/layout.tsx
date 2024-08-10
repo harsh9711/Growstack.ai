@@ -8,7 +8,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import StateProvider from "@/providers/StateProvider";
 import SuspenseLoader from "@/components/SuspenseLoader";
 import "./layout.scss";
-import 'aos/dist/aos.css';
+import "aos/dist/aos.css";
 import "../styles/new.css";
 
 const poppins = Poppins({

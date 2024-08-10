@@ -1,0 +1,15 @@
+@import "../../../app/variables.scss";
+.marketingAutomate{
+    padding: 90px 0;
+    background: #fff;
+    overflow: hidden;
+    @media screen and (max-width: $breakpoint_mobile_portrait) {
+        padding: 40px 0;
+    }
+    .flipImg{
+        img{
+            width: 100%;
+            height: auto;
+        }
+    }
+}   
