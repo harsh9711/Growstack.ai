@@ -38,7 +38,7 @@ const HeroSection: React.FC = () => {
                   </p>
                   <div className="relative flex flex-row items-end gap-x-20" data-aos="fade-up" data-aos-delay="200">
               <Image
-                src="/solutions/heropage3rd/hero1.png"
+                src="/hero1.svg"
                 width={1951}
                 height={448}
                 alt="img"
@@ -58,22 +58,16 @@ const HeroSection: React.FC = () => {
                     <div className="relative flex flex-row gap-x-20" data-aos="fade-up">
             
                  <Image
-                src="/solutions/heropage3rd/hero2.png"
-                width={1951}
-                height={448}
-                alt="img"
-                className="w-[300px] h-[200px]"
-              />   <Image
-              src="/solutions/heropage3rd/hero3.png"
+              src="/hero2.svg"
               width={1951}
               height={448}
               alt="img"
-              className="w-[300px] h-[200px]"
+              className="w-[500px] h-[200px]"
             />
             
             </div>
                   </div>     <Image
-                src="/solutions/heropage3rd/hero4.png"
+                src="/hero3.svg"
                 width={1951}
                 height={448}
                 alt="img"
@@ -86,7 +80,7 @@ const HeroSection: React.FC = () => {
           </div>
         </div>
       </section>
-      <div className="flex flex-row w-full max-w-[1660px] mx-auto">
+      <div className="flex flex-row w-full max-w-[1550px] mx-auto">
                     <Image
                         src="/playstore.svg"
                         alt="image"
