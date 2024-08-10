@@ -82,20 +82,26 @@ export default function QuickPosting() {
   };
 
   const handlePublish = async () => {
-    // setIsPending(true);
-    const localDateTime = new Date(`${scheduleDate}T${time}`);
-    const utcDateTime = localDateTime.toISOString();
+    let utcDateTime = null;
+    if (scheduleDate && time) {
+      const localDateTime = new Date(`${scheduleDate}T${time}`);
+      utcDateTime = localDateTime.toISOString();
+    }
 
     try {
+      const requestData: any = {
+        post: content + " " + link,
+        platforms: selectedNetworks,
+        mediaUrls,
+        isVideo,
+      };
+      if (utcDateTime) {
+        requestData.scheduleDate = utcDateTime;
+      }
+
       const response = await instance.post(
         API_URL + "/users/api/v1/social-media/quickpost",
-        {
-          post: content + " " + link,
-          platforms: selectedNetworks,
-          mediaUrls,
-          isVideo,
-          scheduleDate: utcDateTime,
-        }
+        requestData
       );
       setContent("");
       setIsVideo(false);

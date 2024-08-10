@@ -5,4 +5,5 @@ type User = {
   avatar: string;
   user_name: string;
   profile_img: string;
+  name: string;
 };

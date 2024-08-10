@@ -217,9 +217,9 @@ export default function DocumentsTable() {
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-2">
-            <button className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300" onClick={() => handleEdit(row?.original)}>
+            {/* <button className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300" onClick={() => handleEdit(row?.original)}>
               <Edit size={20} className="text-gray-800 cursor-pointer" />
-            </button>
+            </button> */}
             <button className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300" onClick={() => handleDeleteDocs(row?.original?._id)}>
               <MdDelete size={20} className="text-gray-800 cursor-pointer" />
             </button>

@@ -137,7 +137,6 @@ export default function ProfilePage() {
 
   const handleChangeAvatar = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    console.log("FIL", file);
     if (file) {
       const formData = new FormData();
       formData.append("document", file);
@@ -153,6 +152,17 @@ export default function ProfilePage() {
     }
   };
 
+  function removeNullProperties(obj: any) {
+    const filteredObject = {};
+    Object.keys(obj).forEach(key => {
+      if (obj[key] !== null) {
+        // @ts-ignore
+        filteredObject[key] = obj[key];
+      }
+    });
+    return filteredObject;
+  }
+
   const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
     setIsPending(true);
     try {
@@ -160,9 +170,11 @@ export default function ProfilePage() {
         ...data,
         ...(Object.keys(avatarLink).length > 0 && { profile_img: avatarLink })
       });
+      const payload = removeNullProperties(validatedData);
+
       const response = await instance.put(
         API_URL + "/users/api/v1",
-        validatedData
+        payload
       );
       handleGetProfileData();
 

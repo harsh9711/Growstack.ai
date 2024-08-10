@@ -31,6 +31,8 @@ export function ProfileButton() {
     router.push("/auth/login");
   };
 
+  console.log("currentUser", currentUser)
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -47,7 +49,7 @@ export function ProfileButton() {
             <AvatarFallback>{currentUser?.email?.slice(0, 1)}</AvatarFallback>
           </Avatar>
           <div>
-            <h1 className="text-xl font-semibold capitalize">{currentUser?.user_name ?? "Growstack User"}</h1>
+            <h1 className="text-xl font-semibold capitalize">{currentUser?.user_name ?? currentUser?.name ?? "Growstack User"}</h1>
             <p className="text-primary-grey text-sm">{currentUser?.email}</p>
           </div>
         </div>

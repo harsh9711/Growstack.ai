@@ -123,11 +123,11 @@ const navLinks: NavLink[] = [
             name: "Quick posting",
             href: "/app/publish/scheduler/quick-posting/profiles",
           },
-          {
-            icon: <MultiPostingIcon />,
-            name: "Multi Posting",
-            href: "/app/publish/scheduler/multi-posting",
-          },
+          // {
+          //   icon: <MultiPostingIcon />,
+          //   name: "Multi Posting",
+          //   href: "/app/publish/scheduler/multi-posting",
+          // },
           {
             icon: <SettingsIcon />,
             name: "Settings",
