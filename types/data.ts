@@ -11,7 +11,7 @@ export const testimonials = [
       id: 2,
       imageUrl: "/carousel/c2.svg",
       name: "Strategy and content creation",
-      role: "Generate and refine data-driven ideas using AI Chat and Apps, effortlessly brainstorming and creating initial drafts",
+      role: "Develop comprehensive strategies with AI Assistants and create high-quality content with AI Article Wizard, Website, Email Builders.",
       description:
         "",
     },
@@ -20,21 +20,21 @@ export const testimonials = [
       id: 3,
       imageUrl: "/carousel/c3.svg",
       name: "Workflow automation and scheduling",
-      role:  "Generate and refine data-driven ideas using AI Chat and Apps, effortlessly brainstorming and creating initial drafts",
+      role:  "Automate tasks and streamline workflows with AI Workflows, scheduling and managing campaigns seamlessly for timely content distribution.",
       companyImage: "No doubt, Spend.In is the best!",
     },
     {
       id: 4,
       imageUrl: "/carousel/c4.svg",
       name: "Engagement and performance monitoring",
-      role: "Generate and refine data-driven ideas using AI Chat and Apps, effortlessly brainstorming and creating initial drafts",
+      role: "Centralize social media interactions with the Social Media Conversation Hub, monitor performance with Social Media Analytics, and maintain brand reputation.",
       companyImage: "No doubt, Spend.In is the best!",
     },
     {
       id: 5,
       imageUrl: "/carousel/c5.svg",
       name: "Continuous improvement and coordination",
-      role: "Refine strategies using AI Assistants, integrate processes with AI Apps, and ensure coordinated messaging and efficient data management across all platforms.",
+      role: "Refine strategies using AI Assistants, integrate processes with AI Apps, and ensure coordinated messaging and efficient data management across all platforms. ",
       companyImage: "No doubt, Spend.In is the best!",
     },
   ];
@@ -79,7 +79,7 @@ export const testimonials = [
     },
     {
       id: 6,
-      imageUrl: "/carousel2/c1.svg",
+      imageUrl: "/carousel2/c6.svg",
       name: "Scale operations",
       role: "Scale your business with tools for customer targeting, campaign optimization, and growth strategies.",
       companyImage: "No doubt, Spend.In is the best!",

@@ -8,6 +8,7 @@ import ImageGalleryLine from "./components/ImageGalleryline";
 import Navbar from "@/components/navbar/Navbar";
 import TestimonialsSlider from "./components/SwiperSlide";
 import LoadingBar from "./components/Loading";
+import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
 
 const page = () => {
   return (
@@ -402,29 +403,17 @@ const page = () => {
         </div>
       </section>
       <section className="bg-[#E2F0CB] overflow-hidden   ">
-        <div className="items-center justify-center flex flex-col gap-y-4 mt-20 overflow-hidden ">
+        <div className="items-center justify-center flex flex-col gap-y-4  overflow-hidden ">
           <Image
             src="/solutions/design.svg"
             width={1000}
             height={1800}
             alt="arrow"
-            className="w-full overflow-hidden  absolute translate-y-80 -rotate-6 z-0"
+            className="w-full overflow-hidden  absolute translate-y-[500px] -rotate-6 z-0"
           />
-          <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit">
-            {" "}
-            Optimize
-          </div>
-          <h1 className="text-center flex flex-col  text-[42px] leading-normal">
-            <span className="relative text-black font-semibold">
-              Your ultimate guide to optimizing
-            </span>
-            <span className="text-black font-extralight  ">
-              {" "}
-              business processes with GrowStack
-            </span>
-          </h1>
+       
         </div>
-        <TestimonialsSlider />
+       <MarketingStreamline/>
       </section>
     </main>
   );
