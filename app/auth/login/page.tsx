@@ -26,7 +26,10 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const ValidationSchema = z.object({
     email: z.string().email("Please enter a valid email address"),
-    password: z.string().min(8, "Password must be at least 8 characters").max(20, "Password can't exceed 20 characters"),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .max(20, "Password can't exceed 20 characters"),
   });
   const [isPending, setIsPending] = useState(false);
 
@@ -44,7 +47,10 @@ export default function Login() {
     setIsPending(true);
     try {
       const validatedData = ValidationSchema.parse(data);
-      const response = await axios.post(API_URL + "/users/api/v1/auth/login", validatedData);
+      const response = await axios.post(
+        API_URL + "/users/api/v1/auth/login",
+        validatedData
+      );
       setCookie("token", response.data.data.token, {
         secure: true,
         // path: "/",
@@ -73,33 +79,59 @@ export default function Login() {
     try {
       const response = await axios.get(`${API_URL}/users/api/v1`);
       const userData = response?.data?.data;
-      return userData
+      return userData;
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <motion.main initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+    <motion.main
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+    >
       <div className=" flex flex-col xl:flex-row h-screen overflow-y-auto gap-10">
         <section className="w-full h-full flex justify-center items-center bg-white">
           <div className="w-full max-w-2xl max-h-[840px] h-full p-14 bg-[#F7FAFC] rounded-[30px]">
             <div className="slide-reveal w-full h-full max-w-[460px] mx-auto flex flex-col justify-between items-center md:items-start space-y-10">
-              <Image src={"/logo/growstack.png"} alt="growstack" height={180} width={180} className="max-h-14" />
+              <Image
+                src={"/logo/growstack.png"}
+                alt="growstack"
+                height={180}
+                width={180}
+                className="max-h-14"
+              />
               <div className="space-y-6 w-full">
                 <div className="space-y-3">
-                  <h1 className="text-3xl font-bold text-center md:text-left">Sign in to your account</h1>
-                  <p className="text-[#002030B2] text-base text-center md:text-left">Welcome back! Nice too see you again</p>
+                  <h1 className="text-3xl font-bold text-center md:text-left">
+                    Sign in to your account
+                  </h1>
+                  <p className="text-[#002030B2] text-base text-center md:text-left">
+                    Welcome back! Nice too see you again
+                  </p>
                 </div>
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-7 !mt-7 w-full">
+                <form
+                  onSubmit={handleSubmit(onSubmit)}
+                  className="space-y-7 !mt-7 w-full"
+                >
                   {/* styled input field for email */}
                   <div>
                     <div
                       className={clsx(
                         "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
-                        errors["email"] && "border-rose-600 focus-within:border-rose-600"
-                      )}>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16" fill="none">
+                        errors["email"] &&
+                          "border-rose-600 focus-within:border-rose-600"
+                      )}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
                         <path
                           fillRule="evenodd"
                           clipRule="evenodd"
@@ -117,7 +149,11 @@ export default function Login() {
                         />
                       </div>
                     </div>
-                    {errors.email && <span className="text-rose-600 text-sm">{errors.email?.message}</span>}
+                    {errors.email && (
+                      <span className="text-rose-600 text-sm">
+                        {errors.email?.message}
+                      </span>
+                    )}
                   </div>
 
                   {/* styled input field for password */}
@@ -125,9 +161,17 @@ export default function Login() {
                     <div
                       className={clsx(
                         "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
-                        errors["password"] && "border-rose-600 focus-within:border-rose-600"
-                      )}>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16" fill="none">
+                        errors["password"] &&
+                          "border-rose-600 focus-within:border-rose-600"
+                      )}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
                         <path
                           fillRule="evenodd"
                           clipRule="evenodd"
@@ -141,12 +185,18 @@ export default function Login() {
                           id="password"
                           autoComplete="password"
                           placeholder="Enter your password..."
-                          className={clsx("text-sm peer focus:ring-0 h-[60px] w-full")}
+                          className={clsx(
+                            "text-sm peer focus:ring-0 h-[60px] w-full"
+                          )}
                           {...register("password")}
                         />
                       </div>
                     </div>
-                    {errors.password && <span className="text-rose-600 text-sm">{errors.password?.message}</span>}
+                    {errors.password && (
+                      <span className="text-rose-600 text-sm">
+                        {errors.password?.message}
+                      </span>
+                    )}
                   </div>
 
                   <div className="flex justify-between items-center gap-4">
@@ -154,17 +204,22 @@ export default function Login() {
                       <Checkbox id="remember-me" />
                       <label
                         htmlFor="remember-me"
-                        className="text-sm font-medium text-[#667085] leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                        className="text-sm font-medium text-[#667085] leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
                         Remember me
                       </label>
                     </div>
-                    <Link href="/auth/forgot-password" className="text-primary-green">
+                    <Link
+                      href="/auth/forgot-password"
+                      className="text-primary-green"
+                    >
                       Forgot password?
                     </Link>
                   </div>
                   <button
                     type="submit"
-                    className="bg-primary-green hover:bg-primary-green/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center">
+                    className="bg-primary-green hover:bg-primary-green/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center"
+                  >
                     {isPending ? <Spinner /> : "Login"}
                   </button>
                 </form>
@@ -177,21 +232,36 @@ export default function Login() {
                 <div className="space-y-3">
                   <Link
                     href={`${API_URL}/users/api/v1/auth/facebook`}
-                    className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021]">
-                    <Image src="/icons/facebook.svg" alt="" width={20} height={20} />
+                    className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021] decorationNone"
+                  >
+                    <Image
+                      src="/icons/facebook.svg"
+                      alt=""
+                      width={20}
+                      height={20}
+                    />
                     Continue with Facebook
                   </Link>
                   <Link
                     href={`${API_URL}/users/api/v1/auth/google`}
-                    className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021]">
-                    <Image src="/icons/google.svg" alt="" width={20} height={20} />
+                    className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021] decorationNone"
+                  >
+                    <Image
+                      src="/icons/google.svg"
+                      alt=""
+                      width={20}
+                      height={20}
+                    />
                     Continue with Google
                   </Link>
                 </div>
 
                 <p className="text-center text-[#667085]">
                   Do not have an account?{" "}
-                  <Link href="/auth/register" className="text-primary-green font-semibold">
+                  <Link
+                    href="/auth/register"
+                    className="text-primary-green font-semibold"
+                  >
                     Register Now
                   </Link>
                 </p>
