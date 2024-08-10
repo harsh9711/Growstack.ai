@@ -3,7 +3,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
-import { Plus } from "lucide-react";
+import { Plus, XCircle } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { BsQuestion } from "react-icons/bs";
 import QuickPostsTable from "./components/QuickPostsTable";
@@ -122,6 +122,10 @@ export default function QuickPosting() {
     });
   };
 
+  const handleRemoveMediaUrls = (index: number) => {
+    setMediaUrls((prevUrls) => prevUrls.filter((_, i) => i !== index));
+  };
+
   return (
     <Fragment>
       <div className="flex flex-col h-full flex-1">
@@ -187,9 +191,16 @@ export default function QuickPosting() {
               </div>
               <div className="flex gap-2">
                 {mediaUrls.length > 0 &&
-                  mediaUrls?.map((img: any) => {
+                  mediaUrls?.map((img: any, index: number) => {
                     return (
-                      <div className="w-16 h-16 bg-neutral-800 rounded-md ">
+                      <div className="w-16 h-16 rounded-md ">
+                        <div
+                          className=" absolute ml-12"
+                          style={{ marginTop: "-5px" }}
+                          onClick={() => handleRemoveMediaUrls(index)}
+                        >
+                          <XCircle size={18} />
+                        </div>
                         <img src={img} alt="img" className=" rounded-md" />
                       </div>
                     );

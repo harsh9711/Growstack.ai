@@ -40,7 +40,9 @@ export default function QuickPostsTable() {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [tableData, setTableDate] = useState<any>([]);
+  const [tableData, setTableData] = useState<any>([]);
+  const [filteredTableData, setFilteredTableData] = useState<any>([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 5,
@@ -65,7 +67,6 @@ export default function QuickPostsTable() {
         </div>
       ),
       cell: ({ row }) => {
-        console.log('row', row.original)
         return (
           <div className="capitalize flex items-center gap-3">
             <Checkbox
@@ -109,7 +110,7 @@ export default function QuickPostsTable() {
   ];
 
   const table = useReactTable({
-    data: tableData,
+    data: filteredTableData,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -129,6 +130,10 @@ export default function QuickPostsTable() {
       rowSelection,
     },
   });
+
+  useEffect(() => {
+    setFilteredTableData(tableData);
+  }, [tableData]);
 
   const paginationButtons = [];
   for (let i = 0; i < table.getPageCount(); i++) {
@@ -182,12 +187,28 @@ export default function QuickPostsTable() {
           pagination.pageIndex + 1
         }&type=published&status=error`
       );
-      setTableDate(response.data.data.history);
+      setTableData(response.data.data.history);
     } catch (error) {
       console.log("Error fetching table data:", error);
       toast.error("Error fetching table data");
     }
   };
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value.toLowerCase());
+  };
+
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setFilteredTableData(tableData);
+    } else {
+      setFilteredTableData(
+        tableData.filter((contant: any) =>
+          contant.post.toLowerCase().includes(searchQuery)
+        )
+      );
+    }
+  }, [searchQuery]);
 
   useEffect(() => {
     handleGetScheduleData();
@@ -205,6 +226,8 @@ export default function QuickPostsTable() {
             type="search"
             className="outline-none h-[35px] w-full"
             placeholder="Search"
+            value={searchQuery}
+            onChange={handleSearch}
           />
         </div>
         <div className="rounded-lg border overflow-hidden mt-5 bg-white min-h-[30vh]">
