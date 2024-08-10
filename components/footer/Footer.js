@@ -4,7 +4,6 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import "./Footer.scss";
 import Link from "next/link";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 function Footer() {
   useEffect(() => {
@@ -14,12 +13,7 @@ function Footer() {
     <React.Fragment>
       <div className="footer">
         <div className="container">
-          <div
-            className="demo"
-            data-aos="fade-up"
-            data-aos-easing="ease-in-sine"
-            data-aos-duration="1000"
-          >
+          <div className="demo" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
             <h3>Ready to see a personalized demo?</h3>
             <div className="btns fbtn">
               <Link href="/auth/register" className="sheen">
@@ -75,9 +69,7 @@ function Footer() {
                     <Link href="/auth/register">Imaginate app</Link>
                   </li>
                   <li>
-                    <Link href="/auth/register">
-                      Marketing and sales assistants
-                    </Link>
+                    <Link href="/auth/register">Marketing and sales assistants</Link>
                   </li>
                 </ul>
               </div>
@@ -103,17 +95,10 @@ function Footer() {
                 <p>Subscribe to our newsletter</p>
                 <div className="input-group">
                   <img src="/images_growstack/footer/letter.svg" alt="letter" />
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Enter your email"
-                  />
+                  <input type="text" className="form-control" placeholder="Enter your email" />
                   <div className="input-group-append">
                     <button className="sheen" type="button">
-                      <img
-                        src="/images_growstack/footer/newsletter.svg"
-                        alt="newsletter"
-                      />
+                      <img src="/images_growstack/footer/newsletter.svg" alt="newsletter" />
                     </button>
                   </div>
                 </div>
@@ -123,28 +108,16 @@ function Footer() {
               <p>Copyright © 2024 growstack</p>
               <div className="social">
                 <Link href="/auth/register">
-                  <img
-                    src="/images_growstack/footer/youtube.svg"
-                    alt="youtube"
-                  />
+                  <img src="/images_growstack/footer/youtube.svg" alt="youtube" />
                 </Link>
                 <Link href="/auth/register">
-                  <img
-                    src="/images_growstack/footer/facebook.svg"
-                    alt="facebook"
-                  />
+                  <img src="/images_growstack/footer/facebook.svg" alt="facebook" />
                 </Link>
                 <Link href="/auth/register">
-                  <img
-                    src="/images_growstack/footer/twitter.svg"
-                    alt="twitter"
-                  />
+                  <img src="/images_growstack/footer/twitter.svg" alt="twitter" />
                 </Link>
                 <Link href="/auth/register">
-                  <img
-                    src="/images_growstack/footer/linkedin.svg"
-                    alt="linkedin"
-                  />
+                  <img src="/images_growstack/footer/linkedin.svg" alt="linkedin" />
                 </Link>
               </div>
             </div>

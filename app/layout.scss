@@ -138,7 +138,7 @@ p {
 
 .transNav{
     .trans{
-        background: transparent;
+        background-color: transparent;
         padding: 15px 0;
         box-shadow: none;
         position: absolute;
@@ -162,7 +162,7 @@ p {
 }
 .clrNav{
     .trans{
-        background: transparent;
+        background-color: transparent;
         padding: 15px 0;
         box-shadow: none;
         position: absolute;
@@ -265,8 +265,4 @@ p {
             padding-top: 110px;
         }
     }
-}
-.decorationNone{
-    text-decoration: none !important;
-    color: #303542 !important;
 }

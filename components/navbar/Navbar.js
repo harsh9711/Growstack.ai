@@ -4,7 +4,6 @@ import Image from "next/image";
 import Links from "./links/Links";
 import SocialLinks from "./socialLinks/SocialLinks";
 import styles from "./navbar.module.scss";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 function Navbar({ logoUrl = "/images/logo.png", logoAlt = "logo" }) {
   return (

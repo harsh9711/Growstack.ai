@@ -3,7 +3,6 @@ import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import React from "react";
 
-
 export const metadata: Metadata = {
   title: "GrowStack | The All-in-One Platform for AI Marketing Tools",
   description:

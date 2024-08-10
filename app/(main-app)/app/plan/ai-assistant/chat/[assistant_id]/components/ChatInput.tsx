@@ -35,15 +35,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateM
   useEffect(() => {
     if (textareaRef.current) {
       autosize(textareaRef.current);
-      textareaRef.current.style.overflow = "auto";
     }
   }, []);
-
-  useEffect(() => {
-    if (textareaRef.current) {
-      autosize.update(textareaRef.current);
-    }
-  }, [input]);
 
   const handleSend = async (user_prompt?: string, fromMic: boolean = false) => {
     if (user_prompt) {
@@ -54,10 +47,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateM
 
     setInput("");
     addMessage(prompt, "");
-
-    if (textareaRef.current) {
-      autosize.update(textareaRef.current);
-    }
 
     try {
       const response = await instance.post(`/ai/api/v1/assistant/chat/${assistant_id}`, {
