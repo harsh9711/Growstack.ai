@@ -141,7 +141,7 @@ const VideoTable: React.FC<{
           <MoreHorizontal size={20} />
         </button>
         {isOpen && (
-          <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
+          <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-40">
             <div className="py-1">
               {outputType.map(({ label, value, icon }) => (
                 <button
@@ -172,7 +172,7 @@ const VideoTable: React.FC<{
     );
   };
   return (
-    <div className="rounded-lg border overflow-hidden mt-5 bg-white min-h-[50vh]">
+    <div className="rounded-lg border z-20 overflow-hidden mt-5 bg-white min-h-[50vh]">
 
     <Table >
       <TableHeader>
