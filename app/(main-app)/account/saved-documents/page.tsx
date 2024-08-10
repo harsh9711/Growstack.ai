@@ -3,7 +3,7 @@
 import React from "react";
 import DocumentsTable from "./DocumentsTable";
 import { ArrowBack } from "@/components/svgs";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function SavedDocuments() {
   const router = useRouter();
