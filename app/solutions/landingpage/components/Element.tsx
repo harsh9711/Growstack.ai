@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import DraggableButton from "./Drag";
+import DraggableButton from "./DraggableButton";
 import { features } from "../utils/features_data";
 import { createPortal } from "react-dom";
 
