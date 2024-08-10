@@ -217,12 +217,9 @@ const VideoTable: React.FC<{
                 }
               })()}
             </TableCell>
-         <TableCell className="relative z-40">
-  <div className="relative">
-    <CustomSelect videoUrl={video.videoUrl} _id={video._id} />
-  </div>
-</TableCell>
-
+            <TableCell className="">
+              <CustomSelect videoUrl={video.videoUrl} _id={video._id} />
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
