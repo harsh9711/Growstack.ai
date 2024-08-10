@@ -9,6 +9,7 @@ import LoadingBar from "./components/Loading";
 import HeroSection from "./components/Hero";
 import GridComponent from "./components/GridBoxes";
 import ImageGalleryLine from "./components/ImageGalleryline";
+import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
 
 const Home = () => {
   const totalItems = 5;
@@ -58,31 +59,19 @@ const Home = () => {
       </section>
 
       <section className=" overflow-hidden  ">
-        <div className="items-center justify-center flex flex-col gap-y-4 mt-24 overflow-hidden ">
+        <div className="items-center justify-center flex flex-col gap-y-4  overflow-hidden ">
           <Image
             src="/desing.png"
             width={1200}
             height={1000}
-            className="w-full absolute h-[1000px]  transform scale-y-[-1]  translate-x-10  z-0 translate-y-72 "
+            className="w-full absolute h-[1000px]  transform scale-y-[-1]  translate-x-10  z-0 translate-y-[500px]"
             alt="image"
           />
 
-          <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 z-20 rounded-full text-[12px] font-semibold text-[#034737] uppercase max-w-fit">
-            {" "}
-            optimize
-          </div>
-          <h1 className="text-center flex flex-col  text-[42px] leading-normal">
-            <span className="relative text-black font-semibold">
-            Your ultimate guide to optimizing 
-            </span>
-            <span className="text-black font-extralight  ">
-              {" "}
-              business processes with GrowStack
-            </span>
-          </h1>
+         
         </div>
-        <TestimonialsSlider />
-      </section>
+
+<MarketingStreamline/>      </section>
     </main>
   );
 };

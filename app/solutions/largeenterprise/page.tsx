@@ -1,15 +1,15 @@
 "use client";
 import Image from "next/image";
-import { ArrowLeft, ArrowRight, Video } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import {ArrowRight } from "lucide-react";
+import React from "react";
 import { useInView } from "react-intersection-observer";
 import Navbar from "@/components/navbar/Navbar";
 import { motion } from "framer-motion";
-
 import "swiper/css/navigation";
-import SwiperSlider from "./components/SwiperSlider";
 import ImageGallery from "./components/ZoomEffect";
 import TestimonialsSlider from "./components/Slider";
+import MarketingTechnology from "./components/marketingTechnology/MarketingTechnology";
+import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
 
 const Home = () => {
   const totalItems = 5;
@@ -95,31 +95,9 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section className="px-4">
-        <div className="relative flex items-center w-full h-full  rounded-[40px]  pb-40 bg-gradient-to-b from-[#FFFFFF]/30 to-[#E2F0CB]/30 ">
-          <div className="w-full  mx-auto flex flex-col  justify-between  h-full max-h-[800px] max-w-[1920px] items-center">
-            <div className="flex flex-col items-center justify-center mx-auto w-full">
-              <div className=" w-full gap-y-4 flex flex-col items-center justify-center mx-auto">
-                <div className="bg-[#0347371A]  whitespace-nowrap  text-[#034737] py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest  font-semibold uppercase w-full max-w-[139px] ">
-                  Consistency
-                </div>
-
-                <div className="  items-center flex flex-col gap-y-4 justify-center  mx-auto ">
-                  <h1 className="text-[42px]  leading-12 flex  gap-4  items-center justify-center text-black">
-                    <span className="font-semibold text-center">
-                      Global alignment
-                    </span>
-                    <span className="font-light text-center">
-                      and consistency
-                    </span>
-                  </h1>
-                </div>
-              </div>
-            </div>
-
-            <SwiperSlider />
-          </div>
-        </div>
+      <section className="">
+            <MarketingTechnology/>
+    
       </section>
       <section className="">
         <div className="relative flex items-center w-full h-full py-40 bg-white overflow-hidden">
@@ -151,7 +129,7 @@ const Home = () => {
               </div>
               <div
                 ref={ref}
-                className="mt-20 relative w-full h-[580px] max-w-[1028px] flex items-center justify-center overflow-hidden bg-white brightness-105"
+                className="mt-6 relative w-full h-[580px] max-w-[1028px] flex items-center justify-center overflow-hidden bg-white brightness-105"
               >
                 <motion.div
                   className="absolute top-0 left-0 w-full h-full"
@@ -210,30 +188,17 @@ const Home = () => {
       </section>
 
       <section className=" overflow-hidden  ">
-        <div className="items-center justify-center flex flex-col gap-y-4 mt-24 overflow-hidden ">
+        <div className="items-center justify-center flex flex-col gap-y-4  overflow-hidden ">
           <Image
             src="/desing.png"
             width={1200}
             height={1000}
-            className="w-full absolute h-[1000px]  transform scale-y-[-1]  translate-x-10  z-0 translate-y-72 "
+            className="w-full absolute h-[1000px]  transform scale-y-[-1]  translate-x-10  z-0 translate-y-[500px] "
             alt="image"
           />
-
-          <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 z-20 rounded-full text-[12px] font-semibold text-[#034737] uppercase max-w-fit">
-            {" "}
-            Streamline
-          </div>
-          <h1 className="text-center flex flex-col  text-[42px] leading-normal">
-            <span className="relative text-black font-semibold">
-              Streamline your entire marketing process
-            </span>
-            <span className="text-black font-extralight  ">
-              {" "}
-              from to execution and beyond{" "}
-            </span>
-          </h1>
         </div>
-        <TestimonialsSlider />
+        
+        <MarketingStreamline/>
       </section>
     </main>
   );
