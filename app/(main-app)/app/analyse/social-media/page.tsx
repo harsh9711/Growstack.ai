@@ -14,10 +14,12 @@ import DetailsTable from "./components/DetailsTable";
 import { API_URL } from "@/lib/api";
 import instance from "@/config/axios.config";
 import toast from "react-hot-toast";
+import Spinner from "@/components/Spinner";
 
 export default function SocialMediaAnalyticsPage() {
   const [selectedPlatform, setSelectedPlatform] = useState("Instagram");
   const [errorMessage, setErrorMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [metaData, setMetaData] = useState<any>({});
   const [graphData, setGraphData] = useState<any>({});
   const [analyticsData, setAnalyticsData] = useState<{
@@ -28,6 +30,7 @@ export default function SocialMediaAnalyticsPage() {
   } | null>(null);
 
   const fetchAnalytics = async (platform: string) => {
+    setLoading(true)
     try {
       const response = await instance.get(
         `${API_URL}/users/api/v1/social-media/analytics?platform=${platform.toLowerCase()}`
@@ -39,6 +42,9 @@ export default function SocialMediaAnalyticsPage() {
     } catch (error: any) {
       // toast.error(error.response.data.message);
       setErrorMessage(error.response.data.message);
+      setAnalyticsData(null)
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -123,7 +129,12 @@ export default function SocialMediaAnalyticsPage() {
           </div>
 
           <div className="w-full bg-white border border-[#DFDFDF] rounded-3xl">
-            {analyticsData ? (
+            {loading ? (
+              <div className="flex-1 h-full flex flex-col gap-5 justify-center items-center">
+                <Spinner color="black" size={100} />
+                Loading...
+              </div>
+            ) : analyticsData ? (
               <>
                 <div className="px-10 py-5">
                   <div className="flex items-center justify-between">
@@ -137,13 +148,13 @@ export default function SocialMediaAnalyticsPage() {
                       <h1 className="text-3xl font-semibold">
                         {metaData?.followersCount || 0}
                       </h1>
-                      <div className="flex gap-2">
+                      {/* <div className="flex gap-2">
                         <TrendingUp className="text-[#00B69B]" />
                         <span className="text-[#00B69B] font-semibold">
-                          8.5%{" "}
+                          0%{" "}
                         </span>
                         Up from yesterday
-                      </div>
+                      </div> */}
                     </div>
                     <div className="space-y-5">
                       <p className="text-[15px] text-primary-black text-opacity-50">
@@ -153,8 +164,10 @@ export default function SocialMediaAnalyticsPage() {
                         {metaData?.currentMonthAccountReach}
                       </h1>
                       <div className="flex gap-2">
-                        <TrendingDown className="text-[#F93C65]" />
-                        <span className="text-[#F93C65] font-semibold">
+                        {/* <TrendingDown className="text-[#F93C65]" />
+                        <span className="text-[#F93C65] font-semibold"> */}
+                        <TrendingUp className="text-[#00B69B]" />
+                        <span className="text-[#00B69B] font-semibold">
                           {metaData?.accountReachIncreasePercentage}%{" "}
                         </span>
                         Down from yesterday
@@ -196,6 +209,7 @@ export default function SocialMediaAnalyticsPage() {
                     </p>
                   </div>
                   <div className="h-[500px] mt-8">
+                    {/* @ts-ignore */}
                     <BarGraph graphData={graphData} />
                   </div>
                 </div>

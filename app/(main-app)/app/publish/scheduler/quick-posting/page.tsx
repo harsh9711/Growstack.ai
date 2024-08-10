@@ -59,7 +59,8 @@ export default function QuickPosting() {
   const handleBrowsImgAndVideo = async (
     event: ChangeEvent<HTMLInputElement>
   ) => {
-    const file = event.target.files?.[0];
+    const fileInput = event.target;
+    const file = fileInput.files?.[0];
     if (file) {
       const formData = new FormData();
       formData.append("document", file);
@@ -74,6 +75,8 @@ export default function QuickPosting() {
         ]);
       } catch (error) {
         toast.error("Error uploading image and video");
+      } finally {
+        fileInput.value = "";
       }
     }
   };
@@ -196,12 +199,12 @@ export default function QuickPosting() {
                       <div className="w-16 h-16 rounded-md ">
                         <div
                           className=" absolute ml-12"
-                          style={{ marginTop: "-5px" }}
+                          style={{ marginTop: 0 }}
                           onClick={() => handleRemoveMediaUrls(index)}
                         >
-                          <XCircle size={18} />
+                          <XCircle size={18} color="grey" />
                         </div>
-                        <img src={img} alt="img" className=" rounded-md" />
+                        <img src={img} alt="img" className="h-full w-full object-cover rounded-md" />
                       </div>
                     );
                   })}
