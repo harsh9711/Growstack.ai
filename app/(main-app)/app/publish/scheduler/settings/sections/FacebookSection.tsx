@@ -2,7 +2,7 @@ import Motion from "@/components/Motion";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Plus } from "lucide-react";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import {
   Select,
   SelectContent,
@@ -12,7 +12,21 @@ import {
 } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-export default function FacebookSection({ setMessagingActive, handleOnConnect }: any) {
+export default function FacebookSection({
+  setMessagingActive,
+  handleOnConnect,
+  socialProfileData,
+  messagingActive,
+}: any) {
+  const facebookAccount = socialProfileData?.find((item: any) => {
+    return item.platform === "facebook";
+  });
+
+  useEffect(() => {
+    if (facebookAccount?.messagingActive) {
+      setMessagingActive(facebookAccount?.messagingActive);
+    }
+  }, [facebookAccount]);
   return (
     <Fragment>
       <Motion
@@ -28,6 +42,7 @@ export default function FacebookSection({ setMessagingActive, handleOnConnect }:
               <div className="flex items-center">
                 <label className="w-full max-w-[400px]">Enable messaging</label>
                 <Switch
+                  checked={messagingActive}
                   onCheckedChange={(checked) => setMessagingActive(checked)}
                 />
               </div>
@@ -63,7 +78,10 @@ export default function FacebookSection({ setMessagingActive, handleOnConnect }:
                   <label htmlFor="r2">Facebook graph API</label>
                 </div> */}
               </RadioGroup>
-              <button onClick={handleOnConnect} className="w-full max-w-fit h-12 px-4 py-3 font-medium border border-primary-green text-primary-green rounded-xl flex gap-3 hover:bg-primary-green hover:text-white sheen transition-all duration-300">
+              <button
+                onClick={handleOnConnect}
+                className="w-full max-w-fit h-12 px-4 py-3 font-medium border border-primary-green text-primary-green rounded-xl flex gap-3 hover:bg-primary-green hover:text-white sheen transition-all duration-300"
+              >
                 <Plus size={20} />
                 Add Facebook account
               </button>

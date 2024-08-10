@@ -139,6 +139,17 @@ export default function ProfilePage() {
     }
   };
 
+  function removeNullProperties(obj: any) {
+    const filteredObject = {};
+    Object.keys(obj).forEach(key => {
+      if (obj[key] !== null) {
+        // @ts-ignore
+        filteredObject[key] = obj[key];
+      }
+    });
+    return filteredObject;
+  }
+
   const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
     setIsPending(true);
     try {
@@ -146,7 +157,12 @@ export default function ProfilePage() {
         ...data,
         ...(Object.keys(avatarLink).length > 0 && { profile_img: avatarLink }),
       });
-      const response = await instance.put(API_URL + "/users/api/v1", validatedData);
+      const payload = removeNullProperties(validatedData);
+
+      const response = await instance.put(
+        API_URL + "/users/api/v1",
+        payload
+      );
       handleGetProfileData();
 
       toast.success(response.data.message);
@@ -210,7 +226,13 @@ export default function ProfilePage() {
             <label htmlFor="profile-image" className="relative group flex justify-center w-28 h-28 rounded-full overflow-hidden mx-auto">
               <div className="w-28 h-28">
                 {previewImage ? (
-                  <Image src={previewImage} alt="" width={100} height={100} className="h-28 w-28 object-cover rounded-full" />
+                  <Image
+                    src={Object(avatarLink).length ? avatarLink : previewImage}
+                    alt=""
+                    width={100}
+                    height={100}
+                    className="h-28 w-28 object-cover rounded-full"
+                  />
                 ) : (
                   <div className="h-28 w-28 bg-gray-200 rounded-full grid place-content-center text-3xl font-medium uppercase">
                     {currentUser?.email?.slice(0, 1)}

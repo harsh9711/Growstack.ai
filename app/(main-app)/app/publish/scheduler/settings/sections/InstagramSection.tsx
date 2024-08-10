@@ -9,9 +9,23 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Plus } from "lucide-react";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 
-export default function InstagramSection({ setMessagingActive, handleOnConnect }: any) {
+export default function InstagramSection({
+  setMessagingActive,
+  handleOnConnect,
+  socialProfileData,
+  messagingActive,
+}: any) {
+  const intagramAccount = socialProfileData?.find((item: any) => {
+    return item.platform === "intagram";
+  });
+
+  useEffect(() => {
+    if (intagramAccount?.messagingActive) {
+      setMessagingActive(intagramAccount?.messagingActive);
+    }
+  }, [intagramAccount]);
   return (
     <Fragment>
       <Motion
@@ -26,6 +40,7 @@ export default function InstagramSection({ setMessagingActive, handleOnConnect }
             <div className="flex items-center">
               <label className="w-full max-w-[400px]">Enable messaging</label>
               <Switch
+                checked={messagingActive}
                 onCheckedChange={(checked) => setMessagingActive(checked)}
               />
             </div>
@@ -36,7 +51,10 @@ export default function InstagramSection({ setMessagingActive, handleOnConnect }
             Instagram API settings
           </h1>
 
-          <button onClick={handleOnConnect} className="w-full max-w-fit h-12 px-4 py-3 font-medium border border-primary-green text-primary-green rounded-xl flex gap-3 hover:bg-primary-green hover:text-white sheen transition-all duration-300">
+          <button
+            onClick={handleOnConnect}
+            className="w-full max-w-fit h-12 px-4 py-3 font-medium border border-primary-green text-primary-green rounded-xl flex gap-3 hover:bg-primary-green hover:text-white sheen transition-all duration-300"
+          >
             <Plus size={20} />
             Add Instagram account
           </button>

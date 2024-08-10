@@ -262,6 +262,9 @@ export default function AiAppPage({ params: { appTemplateId } }: { params: { app
   };
 
   const handleSaveDocument = async () => {
+    if (!fileName) {
+      return toast.error("Please enter document name")
+    }
     setIsDocumentSavePending(true);
     try {
       const payload = {

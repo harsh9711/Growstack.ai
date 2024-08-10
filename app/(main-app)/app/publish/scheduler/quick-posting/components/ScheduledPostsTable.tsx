@@ -44,7 +44,9 @@ export default function ScheduledPostsTable() {
     pageIndex: 0,
     pageSize: 5,
   });
-  const [tableData, setTableDate] = useState<any>("");
+  const [tableData, setTableData] = useState<any>("");
+  const [filteredTableData, setFilteredTableData] = useState<any>([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const columns: ColumnDef<any>[] = [
     {
@@ -109,7 +111,7 @@ export default function ScheduledPostsTable() {
   ];
 
   const table = useReactTable({
-    data: tableData,
+    data: filteredTableData,
     columns,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
@@ -129,6 +131,10 @@ export default function ScheduledPostsTable() {
       rowSelection,
     },
   });
+
+  useEffect(() => {
+    setFilteredTableData(tableData);
+  }, [tableData]);
 
   const paginationButtons = [];
   for (let i = 0; i < table.getPageCount(); i++) {
@@ -182,13 +188,28 @@ export default function ScheduledPostsTable() {
           pagination.pageIndex + 1
         }&type=scheduled&status=error`
       );
-      setTableDate(response.data.data.history);
-      console.log("DAT", response);
+      setTableData(response.data.data.history);
     } catch (error) {
       console.log("Error fetching table data:", error);
       toast.error("Error fetching table data");
     }
   };
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value.toLowerCase());
+  };
+
+  useEffect(() => {
+    if (searchQuery.trim() === "") {
+      setFilteredTableData(tableData);
+    } else {
+      setFilteredTableData(
+        tableData.filter((contant: any) =>
+          contant.post.toLowerCase().includes(searchQuery)
+        )
+      );
+    }
+  }, [searchQuery]);
 
   useEffect(() => {
     handleGetScheduleData();
@@ -206,6 +227,8 @@ export default function ScheduledPostsTable() {
             type="search"
             className="outline-none h-[35px] w-full"
             placeholder="Search"
+            value={searchQuery}
+            onChange={handleSearch}
           />
         </div>
         <div className="rounded-lg border overflow-hidden mt-5 bg-white min-h-[30vh]">

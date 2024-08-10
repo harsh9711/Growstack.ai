@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import BloggerSection from "./sections/BloggerSection";
 import FacebookSection from "./sections/FacebookSection";
 import GeneralSection from "./sections/GeneralSection";
@@ -22,32 +22,74 @@ export default function page() {
   const tabs = ["Facebook", "Twitter", "Linkedin", "Instagram"];
   const [tabName, setTabName] = useState("Facebook");
   const [messagingActive, setMessagingActive] = useState(false);
+  const [socialProfileData, setSocialProfileData] = useState<any[]>([]);
 
   const handleOnConnect = async () => {
     try {
-      const response = await instance.get(API_URL + '/users/api/v1/social-media/connect');
-      console.log('response', response)
-      const url = response?.data.data
+      const response = await instance.get(
+        API_URL + "/users/api/v1/social-media/connect"
+      );
+
+      const url = response?.data.data;
       if (url) {
         window.location.href = url;
       }
     } catch (error: any) {
-      toast.error(error.response.data.message)
+      toast.error(error.response.data.message);
     }
-  }
+  };
+
+  const handleGetSocialProfile = async () => {
+    try {
+      const response = await instance.get(
+        API_URL + "/users/api/v1/social-media/profile"
+      );
+      setSocialProfileData(response.data.data.activeSocialAccounts);
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+    }
+  };
 
   const renderContent = () => {
     switch (selectedTabIndex) {
       // case 0:
       //   return <GeneralSection />;
       case 0:
-        return <FacebookSection setMessagingActive={setMessagingActive} handleOnConnect={handleOnConnect} />;
+        return (
+          <FacebookSection
+            setMessagingActive={setMessagingActive}
+            handleOnConnect={handleOnConnect}
+            socialProfileData={socialProfileData}
+            messagingActive={messagingActive}
+          />
+        );
       case 1:
-        return <TwitterSection setMessagingActive={setMessagingActive} handleOnConnect={handleOnConnect} />;
+        return (
+          <TwitterSection
+            setMessagingActive={setMessagingActive}
+            handleOnConnect={handleOnConnect}
+            socialProfileData={socialProfileData}
+            messagingActive={messagingActive}
+          />
+        );
       case 2:
-        return <LinkedInSection setMessagingActive={setMessagingActive} handleOnConnect={handleOnConnect} />;
+        return (
+          <LinkedInSection
+            setMessagingActive={setMessagingActive}
+            handleOnConnect={handleOnConnect}
+            socialProfileData={socialProfileData}
+            messagingActive={messagingActive}
+          />
+        );
       case 3:
-        return <InstagramSection setMessagingActive={setMessagingActive} handleOnConnect={handleOnConnect} />;
+        return (
+          <InstagramSection
+            setMessagingActive={setMessagingActive}
+            handleOnConnect={handleOnConnect}
+            socialProfileData={socialProfileData}
+            messagingActive={messagingActive}
+          />
+        );
       // case 5:
       //   return <TumblrSection />;
       // case 6:
@@ -83,6 +125,10 @@ export default function page() {
       // setIsPending(false);
     }
   };
+
+  useEffect(() => {
+    handleGetSocialProfile();
+  }, []);
 
   return (
     <Fragment>
