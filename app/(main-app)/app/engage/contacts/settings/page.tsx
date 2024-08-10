@@ -21,7 +21,7 @@ export default function SettingsPage() {
 
   return (
     <div className="mt-8">
-      <Link href="/app/plan/contacts">
+      <Link href="/app/engage/contacts">
         <button className="text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-2 rounded-full font-medium items-center">
           <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
             <path
