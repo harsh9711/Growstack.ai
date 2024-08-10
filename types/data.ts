@@ -41,7 +41,7 @@ export const testimonials = [
    export const testimonialsdata = [
     {
       id: 1,
-      imageUrl: "/carousel/c1.svg",
+      imageUrl: "/carousel2/c1.svg",
       name: "Identify needs and plan",
       role: "Identify your needs and plan effectively with AI-driven insights and tailored solutions.",
       description:
@@ -49,7 +49,7 @@ export const testimonials = [
     },
     {
       id: 2,
-      imageUrl: "/carousel/c2.svg",
+      imageUrl: "/carousel2/c2.svg",
       name: "Create and develop content",
       role: "Create high-quality content quickly with Growstacks AI-powered tools for text and video.",
       description:
@@ -58,28 +58,28 @@ export const testimonials = [
    
     {
       id: 3,
-      imageUrl: "/carousel/c3.svg",
+      imageUrl: "/carousel2/c3.svg",
       name: "Automate marketing efforts",
       role:  "Automate marketing tasks and streamline workflows for efficient and consistent operations.",
       companyImage: "No doubt, Spend.In is the best!",
     },
     {
       id: 4,
-      imageUrl: "/carousel/c4.svg",
+      imageUrl: "/carousel2/c4.svg",
       name: "Engage with audiences",
       role: "Enhance customer engagement and brand reach through real-time interactions and advocacy.",
       companyImage: "No doubt, Spend.In is the best!",
     },
     {
       id: 5,
-      imageUrl: "/carousel/c5.svg",
+      imageUrl: "/carousel2/c5.svg",
       name: "Analyze and optimize strategies",
       role: "Analyze performance and optimize strategies for better results and effective marketing.",
       companyImage: "No doubt, Spend.In is the best!",
     },
     {
       id: 6,
-      imageUrl: "/carousel/c1.svg",
+      imageUrl: "/carousel2/c1.svg",
       name: "Scale operations",
       role: "Scale your business with tools for customer targeting, campaign optimization, and growth strategies.",
       companyImage: "No doubt, Spend.In is the best!",
@@ -88,7 +88,7 @@ export const testimonials = [
   export const testimonialsdatathirdpage = [
     {
       id: 1,
-      img1: "/carousel/c1.png",
+      imageUrl: "/carousel3/c1.svg",
       name: "Strategic planning and research",
       role: "Develop a clear marketing strategy and gather insights for effective execution.",
       description:
@@ -96,8 +96,7 @@ export const testimonials = [
     },
     {
       id: 2,
-      img1: "/carousel/c1.png",
-      name: "Content creation and campaign development",
+      imageUrl: "/carousel3/c2.svg",      name: "Content creation and campaign development",
       role: "Create high-quality content and develop effective marketing campaigns.",
       description:
         "",
@@ -105,22 +104,19 @@ export const testimonials = [
    
     {
       id: 3,
-      img1: "/carousel/c1.png",
-      name: "Content distribution and scheduling",
+      imageUrl: "/carousel3/c3.svg",      name: "Content distribution and scheduling",
       role:  "Distribute content effectively and manage marketing campaigns.",
       companyImage: "No doubt, Spend.In is the best!",
     },
     {
       id: 4,
-      img1: "/carousel/c1.png",
-      name: "Customer engagement and support",
+      imageUrl: "/carousel3/c4.svg",      name: "Customer engagement and support",
       role: "Engage with customers and provide effective support. ",
       companyImage: "No doubt, Spend.In is the best!",
     },
     {
       id: 5,
-      img1: "/carousel/c1.png",
-      name: "Analyze and optimize strategies",
+      imageUrl: "/carousel3/c5.svg",      name: "Analyze and optimize strategies",
       role: "Measure performance and refine marketing strategies",
       companyImage: "No doubt, Spend.In is the best!",
     },
