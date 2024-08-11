@@ -30,10 +30,12 @@ export default function SocialMediaAnalyticsPage() {
   } | null>(null);
 
   const fetchAnalytics = async (platform: string) => {
-    setLoading(true)
+    setLoading(true);
     try {
       const response = await instance.get(
-        `${API_URL}/users/api/v1/social-media/analytics?platform=${platform.toLowerCase()}`
+        `${API_URL}/users/api/v1/social-media/analytics?platform=${
+          platform === "Twitter (X)" ? "twitter" : platform.toLowerCase()
+        }`
       );
       setAnalyticsData(response.data);
       setMetaData(response.data.data.metadata);
@@ -42,9 +44,9 @@ export default function SocialMediaAnalyticsPage() {
     } catch (error: any) {
       // toast.error(error.response.data.message);
       setErrorMessage(error.response.data.message);
-      setAnalyticsData(null)
+      setAnalyticsData(null);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 

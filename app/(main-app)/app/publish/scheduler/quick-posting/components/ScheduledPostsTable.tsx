@@ -172,6 +172,7 @@ export default function ScheduledPostsTable() {
           );
           if (response.data.success) {
             handleGetScheduleData();
+            toast.success(response.data.message);
           }
         } catch (error) {
           toast.error("Error deleting document");
@@ -184,7 +185,7 @@ export default function ScheduledPostsTable() {
   const handleGetScheduleData = async () => {
     try {
       const response = await instance.get(
-        `${API_URL}/users/api/v1/social-media/posts/history?limit=2&page=${
+        `${API_URL}/users/api/v1/social-media/posts/history?limit=5&page=${
           pagination.pageIndex + 1
         }&type=scheduled&status=error`
       );
