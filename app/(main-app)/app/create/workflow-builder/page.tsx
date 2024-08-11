@@ -55,7 +55,7 @@ export default function WorkflowBuilder() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {preBuiltTemplates.length > 0
               ? preBuiltTemplates.map((template) => (
-                  <Link key={template._id} href={`/app/create/workflow-builder/template/${template.slug}?workflow_id=${template.workflow_id}`}>
+                  <Link key={template._id} href={`/app/create/workflow-builder/workflows/${template.slug || "template-workflow"}?workflow_id=${template.workflow_id}`}>
                     <Card title={template.name} description={template.description} imageSrc={template.image} />
                   </Link>
                 ))

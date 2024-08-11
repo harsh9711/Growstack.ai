@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import { Assistant, Chat, Conversation } from "../../../components/types";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import "../../../../../../../../styles/markdown.css";
 import DotsLoader from "@/components/DotLoader";
 import Image from "next/image";
 import { getCurrentUser } from "@/lib/features/auth/auth.selector";

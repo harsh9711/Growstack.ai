@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import ChatInput from "./components/ChatInput";
 import ChatMessage from "./components/ChatMessage";
+import clsx from "clsx";
 
 type CustomGptData = {
   name: string;
@@ -169,7 +170,17 @@ const Page = () => {
                     <p className="text-[15px] text-gray-500">{customeGptData?.description}</p>
                   </span>
                 </div>
-                <div className="grid grid-cols-4 gap-4 max-w-7xl mx-auto mt-5">
+                <div
+                  className={clsx(
+                    "grid gap-4 max-w-7xl mx-auto mt-5",
+                    customeGptData.conversation_starter.length === 1
+                      ? "grid-cols-1"
+                      : customeGptData.conversation_starter.length === 2
+                      ? "grid-cols-2"
+                      : customeGptData.conversation_starter.length === 3
+                      ? "grid-cols-3"
+                      : "grid-cols-4"
+                  )}>
                   {customeGptData.conversation_starter.map((starter, index) => (
                     <button
                       key={index}

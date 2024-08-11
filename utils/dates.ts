@@ -1,4 +1,4 @@
-import { differenceInDays, differenceInMonths, differenceInYears } from "date-fns";
+import { differenceInDays, differenceInMonths, differenceInYears, format } from "date-fns";
 
 export const formatRelativeDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -23,4 +23,11 @@ export const formatRelativeDate = (dateString: string) => {
   } else {
     return "A long time ago";
   }
+};
+
+
+export const formatDateTime = (dateString: string) => {
+  const date = new Date(dateString);
+  const formattedDate = format(date, "dd MMMM yyyy  •  hh:mm a");
+  return formattedDate;
 };

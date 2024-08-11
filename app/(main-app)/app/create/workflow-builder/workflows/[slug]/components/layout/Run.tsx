@@ -1,17 +1,17 @@
 "use client";
+
 import DotsLoader from "@/components/DotLoader";
+import Motion from "@/components/Motion";
 import Spinner from "@/components/Spinner";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import clsx from "clsx";
 import { Edit } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FaPlay } from "react-icons/fa6";
-import OutputCard from "./components/OutputCard";
+import OutputCard from "../OutputCard";
 
 type WorkFlowData = {
   actions: any[];
@@ -36,48 +36,12 @@ type WorkFlowResults = {
   workflow_runner_id: string;
 };
 
-const Page = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const buildRef = useRef<HTMLDivElement>(null);
-  const runRef = useRef<HTMLDivElement>(null);
-  const tableRef = useRef<HTMLDivElement>(null);
-  const [tableData, setTableData] = useState<any[]>([]); // Placeholder for table data
-  const [workflowId, setWorkflowId] = useState("");
-  const [hovered, setHovered] = useState(false);
-  const [hovered2, setHovered2] = useState(false);
-  const deleteButtonTimeoutRef = useRef<number | null>(null);
-  const deleteButtonTimeoutRef2 = useRef<number | null>(null);
+interface Props {
+  workflowId: string;
+}
 
-  const handleHover = () => {
-    setHovered(true);
-    if (deleteButtonTimeoutRef.current !== null) {
-      clearTimeout(deleteButtonTimeoutRef.current);
-    }
-  };
-  const handleMouseLeave = () => {
-    if (deleteButtonTimeoutRef.current !== null) {
-      clearTimeout(deleteButtonTimeoutRef.current);
-    }
-    deleteButtonTimeoutRef.current = window.setTimeout(() => {
-      setHovered(false);
-    }, 500);
-  };
-
-  const handleHover2 = () => {
-    setHovered2(true);
-    if (deleteButtonTimeoutRef2.current !== null) {
-      clearTimeout(deleteButtonTimeoutRef2.current);
-    }
-  };
-  const handleMouseLeave2 = () => {
-    if (deleteButtonTimeoutRef2.current !== null) {
-      clearTimeout(deleteButtonTimeoutRef2.current);
-    }
-    deleteButtonTimeoutRef2.current = window.setTimeout(() => {
-      setHovered2(false);
-    }, 500);
-  };
-
+const Run: React.FC<Props> = ({ workflowId }) => {
+  const [loading, setLoading] = useState(true);
   const [workFlowResults, setWorkFlowResults] = useState<WorkFlowResults>({
     outputs: [],
     status: true,
@@ -85,34 +49,32 @@ const Page = () => {
     temp_outputs: [],
     workflow_runner_id: "",
   });
-
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalPages, setTotalPages] = useState<number>(Math.ceil(tableData.length / 10)); // Placeholder for total pages
-  const searchParams = useSearchParams();
-  const [isWorkFlowFetched, setIsWorkFlowFetched] = useState<boolean>(true);
-
   const [workFlowData, setWorkFlowData] = useState<WorkFlowData>({
     actions: [],
     input_configs: [],
     output_configs: [],
     name: "",
   });
+  const [isWorkFlowFetched, setIsWorkFlowFetched] = useState(true);
+  const [workFlowResuming, setWorkFlowResuming] = useState(false);
+
   const fetchWorkflowData = async (id: string) => {
+    setLoading(true);
     try {
       const response = await instance.get(`${API_URL}/workflow/api/v1/${id}`);
       setWorkFlowData(response.data.data);
     } catch (error) {
-      console.log("Error fetching workflow data:", error);
+      console.error("Error fetching workflow data:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleRunWorkFlow = async () => {
+    setIsWorkFlowFetched(false);
     try {
-      setIsWorkFlowFetched(false);
       const payload = {
-        actions_with_runs: workFlowData.actions.map((action) => ({
-          action: action._id,
-        })),
+        actions_with_runs: workFlowData.actions.map((action) => ({ action: action._id })),
         inputs: workFlowData.input_configs.map((input) => ({
           variable_name: input.variable_name,
           variable_value: input.default_value,
@@ -124,57 +86,20 @@ const Page = () => {
         })),
       };
       const response = await instance.post(`${API_URL}/workflow/api/v1/${workflowId}/runner`, payload);
-
       setWorkFlowResults(response.data.data);
-      setIsWorkFlowFetched(true);
     } catch (error) {
-      console.log("Error running workflow:", error);
+      console.error("Error running workflow:", error);
       toast.error("Error running workflow");
+    } finally {
       setIsWorkFlowFetched(true);
     }
   };
-  useEffect(() => {
-    const id = searchParams.get("workflow_id");
-    if (id) {
-      setWorkflowId(id);
-      fetchWorkflowData(id);
-    }
-  }, [searchParams]);
 
   const handleChangeInput = (value: string, idx: number) => {
-    const updatedInputs = workFlowData.input_configs.map((input, index) => {
-      if (index === idx) {
-        return { ...input, default_value: value };
-      }
-      return input;
-    });
+    const updatedInputs = [...workFlowData.input_configs];
+    updatedInputs[idx].default_value = value;
     setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
   };
-
-  const addNewRow = () => {
-    // Placeholder logic to add a new row to the table
-    const newRow = {}; // Define your new row object structure here
-    setTableData([...tableData, newRow]);
-  };
-
-  const goToPage = (page: number) => {
-    setCurrentPage(page);
-    // Logic to fetch data for the selected page if using pagination with API
-  };
-
-  const previousPage = () => {
-    if (currentPage > 1) {
-      goToPage(currentPage - 1);
-    }
-  };
-
-  const nextPage = () => {
-    if (currentPage < totalPages) {
-      goToPage(currentPage + 1);
-    }
-  };
-
-  const [workFlowResuming, setWorkFlowResuming] = useState(false);
 
   const handleResumeWorkflow = async (choice: boolean) => {
     setWorkFlowResuming(true);
@@ -183,46 +108,35 @@ const Page = () => {
       setWorkFlowResults(response.data.data);
     } catch (error: any) {
       console.error("Error resuming workflow:", error);
-      if (error.response) {
-        toast.error(error.response.data.error);
-      }
+      toast.error(error.response?.data?.error || "Error resuming workflow");
     } finally {
       setWorkFlowResuming(false);
     }
   };
 
-  return (
-    <div>
-      <div className="grid grid-cols-3 py-10">
-        <div>
-          <Link href="/app/create/workflow-builder">
-            <button className="text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-2 rounded-full font-medium items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
-                <path
-                  d="M11.8687 15.6313C12.2104 15.973 12.2104 16.527 11.8687 16.8687C11.527 17.2104 10.973 17.2104 10.6313 16.8687L11.8687 15.6313ZM6.25 11.25L5.63128 11.8687C5.46719 11.7046 5.375 11.4821 5.375 11.25C5.375 11.0179 5.46719 10.7954 5.63128 10.6313L6.25 11.25ZM10.6313 5.63128C10.973 5.28957 11.527 5.28957 11.8687 5.63128C12.2104 5.97299 12.2104 6.52701 11.8687 6.86872L10.6313 5.63128ZM6.25 12.125C5.76675 12.125 5.375 11.7332 5.375 11.25C5.375 10.7667 5.76675 10.375 6.25 10.375L6.25 12.125ZM18.75 22.125C18.2667 22.125 17.875 21.7332 17.875 21.25C17.875 20.7667 18.2667 20.375 18.75 20.375L18.75 22.125ZM10.6313 16.8687L5.63128 11.8687L6.86872 10.6313L11.8687 15.6313L10.6313 16.8687ZM5.63128 10.6313L10.6313 5.63128L11.8687 6.86872L6.86872 11.8687L5.63128 10.6313ZM6.25 10.375L20 10.375L20 12.125L6.25 12.125L6.25 10.375ZM20 10.375C23.2447 10.375 25.875 13.0053 25.875 16.25L24.125 16.25C24.125 13.9718 22.2782 12.125 20 12.125L20 10.375ZM25.875 16.25C25.875 19.4947 23.2447 22.125 20 22.125L20 20.375C22.2782 20.375 24.125 18.5282 24.125 16.25L25.875 16.25ZM20 22.125L18.75 22.125L18.75 20.375L20 20.375L20 22.125Z"
-                  fill="#212833"
-                />
-              </svg>
-              <h2 className="text-[17px] font-semibold whitespace-nowrap">Back / {workFlowData.name}</h2>
-            </button>
-          </Link>
-        </div>
-        <div className="flex flex-row justify-center items-center gap-10 text-md font-medium">
-          <h2
-            className={`cursor-pointer text-lg 
-            border-b-4 border-green-800`}>
-            Run
-          </h2>
-        </div>
-        <div />
-      </div>
+  useEffect(() => {
+    if (workflowId) {
+      fetchWorkflowData(workflowId);
+    }
+  }, [workflowId]);
 
-      <div ref={runRef} className="flex-shrink-0 w-full min-w-[1000px] bg-white p-10 snap-center space-y-6 rounded-3xl flex flex-col">
+  if (loading) {
+    return (
+      <div className="flex-1 flex flex-col gap-5 justify-center items-center min-h-[30vh]">
+        <Spinner color="black" size={50} />
+        Loading...
+      </div>
+    );
+  }
+
+  return (
+    <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+      <div className="mt-6 w-full bg-white p-10 space-y-6 rounded-3xl flex flex-col">
         <div className="flex flex-col gap-2 items-start">
           <h1 className="text-2xl font-semibold text-left">Run workflow</h1>
           <p className="text-[#14171B]/80">Fill in the input to kick off your workflow.</p>
         </div>
-        <div className="border rounded-2xl flex flex-col gap-6 p-6 ">
+        <div className="border rounded-2xl flex flex-col gap-6 p-6">
           <div className="flex flex-row items-center gap-2">
             <div className="bg-primary-green p-2.5 rounded-[10px] text-white">
               <Edit size={18} />
@@ -242,16 +156,15 @@ const Page = () => {
               />
             </div>
           ))}
-
           <button
             disabled={!isWorkFlowFetched}
             className={clsx(
               "bg-[#03473729] flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 text-primary-green",
               !isWorkFlowFetched && "text-opacity-70 cursor-not-allowed"
             )}
-            onClick={() => handleRunWorkFlow()}>
+            onClick={handleRunWorkFlow}>
             {!isWorkFlowFetched ? <Spinner color="#034737" /> : <FaPlay />}
-            <h2 className="text-[#14171B] font"> Run Workflow</h2>
+            <h2 className="text-[#14171B] font">Run Workflow</h2>
           </button>
         </div>
 
@@ -261,10 +174,9 @@ const Page = () => {
             <h1 className="text-2xl font-semibold text-left">Results</h1>
             <p className="text-[#14171B]/80">Your output will appear below.</p>
           </div>
-
           {!workFlowResults.outputs.length &&
             workFlowData.output_configs.map((output, idx) => (
-              <div className="border rounded-2xl flex flex-col gap-4 p-5 bg-white">
+              <div key={idx} className="border rounded-2xl flex flex-col gap-4 p-5 bg-white">
                 <div className="flex flex-row items-center gap-4">
                   <Image src="/leaf.png" alt="go" width={45} height={45} />
                   <h2 className="font-medium text-[17px]">
@@ -292,9 +204,7 @@ const Page = () => {
                   onClick={() => handleResumeWorkflow(true)}>
                   {workFlowResuming ? <Spinner /> : "Satisfied & Continue"}
                 </button>
-                <button
-                  className="h-12 w-[150px] bg-red-500 text-white px-4 py-2 rounded-xl flex justify-center items-center"
-                  onClick={() => handleRunWorkFlow()}>
+                <button className="h-12 w-[150px] bg-red-500 text-white px-4 py-2 rounded-xl flex justify-center items-center" onClick={handleRunWorkFlow}>
                   {!isWorkFlowFetched ? <Spinner /> : "Regenerate"}
                 </button>
               </div>
@@ -302,8 +212,8 @@ const Page = () => {
           )}
         </div>
       </div>
-    </div>
+    </Motion>
   );
 };
 
-export default Page;
+export default Run;

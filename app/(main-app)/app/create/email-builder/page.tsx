@@ -128,7 +128,7 @@ const Home: React.FC = () => {
                     </div>
                   </div>
                 </div>
-              ))}
+              ))}w
             </div>
           </div>
         </section>

@@ -80,7 +80,7 @@ var editor = new Editor({
   uploadTemplateCallback: function (response) {
     window.location = response.url;
   },
-  saveUrl: "/api/email-builder/save-to-disk",
+  saveUrl: "/api/email-builder/save",
   saveMethod: "POST",
   data: {
     _token: "CSRF_TOKEN", // Replace with your CSRF token if applicable

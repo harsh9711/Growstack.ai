@@ -1,0 +1,133 @@
+"use client";
+import { ArrowBack } from "@/components/svgs";
+import instance from "@/config/axios.config";
+import { API_URL } from "@/lib/api";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import History from "./components/layout/History";
+import Run from "./components/layout/Run";
+
+type WorkFlowData = {
+  actions: any[];
+  input_configs: any[];
+  output_configs: any[];
+  name: string;
+};
+
+type TempOutput = {
+  variable_name: string;
+  variable_type: string;
+  variable_value: string;
+  _id: string;
+};
+
+type WorkFlowResults = {
+  outputs: any[];
+  status: boolean;
+  failed_step: number;
+  paused?: boolean;
+  temp_outputs: TempOutput[];
+  workflow_runner_id: string;
+};
+
+const Page = () => {
+  const [workflowId, setWorkflowId] = useState("");
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const tabQueryParam = searchParams.get("tab");
+
+  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+  const [tabDistanceFromLeft, setDistanceFromLeft] = useState(0);
+  const tabs = ["Run", "History"];
+
+  useEffect(() => {
+    const tab = tabQueryParam ? Number(tabQueryParam) : 0;
+    setSelectedTabIndex(tab);
+    const totalTabs = tabs.length;
+    const percentage = (tab / totalTabs) * 100;
+    setDistanceFromLeft(percentage);
+  }, [tabQueryParam]);
+
+  const handleTabClick = (index: number) => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("tab", index.toString());
+    router.push(`?${params.toString()}`);
+  };
+
+  const [workFlowData, setWorkFlowData] = useState<WorkFlowData>({
+    actions: [],
+    input_configs: [],
+    output_configs: [],
+    name: "",
+  });
+
+  const fetchWorkflowData = async (id: string) => {
+    try {
+      const response = await instance.get(`${API_URL}/workflow/api/v1/${id}`);
+      setWorkFlowData(response.data.data);
+    } catch (error) {
+      console.log("Error fetching workflow data:", error);
+    }
+  };
+
+  useEffect(() => {
+    const id = searchParams.get("workflow_id");
+    if (id) {
+      setWorkflowId(id);
+      fetchWorkflowData(id);
+    }
+  }, [searchParams]);
+
+  const renderContent = (selectedTabIndex: number) => {
+    switch (selectedTabIndex) {
+      case 0:
+        return <Run workflowId={workflowId} />;
+      case 1:
+        return <History workflowId={workflowId} />;
+    }
+  };
+
+  return (
+    <div className="mt-10">
+      <div className="grid grid-cols-3">
+        <Link href="/app/create/workflow-builder">
+          <button className="text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-2 rounded-full font-medium items-center">
+            <ArrowBack />
+            <h2 className="text-md font-medium">Back / {workFlowData.name}</h2>
+          </button>
+        </Link>
+        <div className="flex justify-center">
+          <div className="w-full max-w-[250px]">
+            <div className="w-full flex relative">
+              {tabs.map((tab, index) => (
+                <div
+                  key={index}
+                  className={`w-full h-[40px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
+                    selectedTabIndex === index ? "!text-primary-green" : "!text-primary-grey"
+                  }`}
+                  onClick={() => handleTabClick(index)}>
+                  {tab}
+                </div>
+              ))}
+
+              <div
+                className="absolute bottom-0 h-[40px] bg-gray-100 custom-transition rounded-lg"
+                style={{
+                  left: `calc(${tabDistanceFromLeft}%)`,
+                  width: `${100 / tabs.length}%`,
+                }}></div>
+            </div>
+          </div>
+        </div>
+        <div />
+      </div>
+      <div>
+        <div className="mt-5">{renderContent(selectedTabIndex)}</div>
+      </div>
+    </div>
+  );
+};
+
+export default Page;

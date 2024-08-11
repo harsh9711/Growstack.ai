@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import "../../../../../../styles/markdown.css";
 import DotsLoader from "@/components/DotLoader";
 import { Share2 } from "lucide-react";
 import instance from "@/config/axios.config";

@@ -3,11 +3,11 @@
 import React from "react";
 import Navbar from "./app/components/Navbar";
 import "@/styles/button.css";
+import "@/styles/markdown.css";
 import PageTransition from "@/providers/PageTransition";
 import { usePathname } from "next/navigation";
 import clsx from "clsx";
 import AuthProvider from "@/providers/AuthProvider";
-
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 

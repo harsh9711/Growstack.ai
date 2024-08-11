@@ -2,7 +2,6 @@ import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import Image from "next/image";
 import remarkGfm from "remark-gfm";
-// import "../../../../../../../../styles/markdown.css";
 
 type OutputCardProps = {
   index: number;
@@ -34,7 +33,7 @@ const OutputCard = ({ index, output }: OutputCardProps) => {
           {!copied ? "Copy" : "Copied!"}
         </button>
       </div>
-      <div className="bg-gray-100 p-4 rounded-lg break-words max-h-[550px] overflow-y-auto hidden-scrollbar">
+      <div className="bg-gray-100 p-4 rounded-lg break-words whitespace-pre-line max-h-[500px] overflow-y-auto hidden-scrollbar">
         <ReactMarkdown className="prose" remarkPlugins={[remarkGfm]}>
           {output.variable_value}
         </ReactMarkdown>
