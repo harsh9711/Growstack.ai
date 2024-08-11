@@ -2,12 +2,6 @@ import axios from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { NextRequest, NextResponse } from "next/server";
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
 export async function POST(request: NextRequest) {
   try {
     const form = await request.formData();
