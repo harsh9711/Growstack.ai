@@ -272,7 +272,7 @@ export default function QuickPosting() {
                   <label className="font-medium">LinkedIn</label>
                   <Switch
                     onCheckedChange={(checked) =>
-                      handleSwitchChange("linkedIn", checked)
+                      handleSwitchChange("linkedin", checked)
                     }
                   />
                 </div>
