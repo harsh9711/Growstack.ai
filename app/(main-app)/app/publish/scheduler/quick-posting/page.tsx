@@ -3,7 +3,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
-import { Plus } from "lucide-react";
+import { Plus, XCircle } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { BsQuestion } from "react-icons/bs";
 import QuickPostsTable from "./components/QuickPostsTable";
@@ -59,7 +59,8 @@ export default function QuickPosting() {
   const handleBrowsImgAndVideo = async (
     event: ChangeEvent<HTMLInputElement>
   ) => {
-    const file = event.target.files?.[0];
+    const fileInput = event.target;
+    const file = fileInput.files?.[0];
     if (file) {
       const formData = new FormData();
       formData.append("document", file);
@@ -74,22 +75,33 @@ export default function QuickPosting() {
         ]);
       } catch (error) {
         toast.error("Error uploading image and video");
+      } finally {
+        fileInput.value = "";
       }
     }
   };
 
   const handlePublish = async () => {
-    // setIsPending(true);
+    let utcDateTime = null;
+    if (scheduleDate && time) {
+      const localDateTime = new Date(`${scheduleDate}T${time}`);
+      utcDateTime = localDateTime.toISOString();
+    }
+
     try {
+      const requestData: any = {
+        post: content + " " + link,
+        platforms: selectedNetworks,
+        mediaUrls,
+        isVideo,
+      };
+      if (utcDateTime) {
+        requestData.scheduleDate = utcDateTime;
+      }
+
       const response = await instance.post(
         API_URL + "/users/api/v1/social-media/quickpost",
-        {
-          post: content + " " + link,
-          platforms: selectedNetworks,
-          mediaUrls,
-          isVideo,
-          scheduleDate: scheduleDate + "T" + time + "Z",
-        }
+        requestData
       );
       setContent("");
       setIsVideo(false);
@@ -117,6 +129,10 @@ export default function QuickPosting() {
         return prevState.filter((item) => item !== network);
       }
     });
+  };
+
+  const handleRemoveMediaUrls = (index: number) => {
+    setMediaUrls((prevUrls) => prevUrls.filter((_, i) => i !== index));
   };
 
   return (
@@ -167,26 +183,34 @@ export default function QuickPosting() {
                     <label htmlFor="r2">Video</label>
                   </div>
                 </RadioGroup>
-                <button className="h-12 w-full max-w-[180px] bg-primary-green py-3 px-4 sheen flex justify-center items-center gap-3 rounded-xl text-white cursor-pointer">
+                <label
+                  htmlFor="profile-image"
+                  className="h-12 w-full max-w-[180px] bg-primary-green py-3 px-4 sheen flex justify-center items-center gap-3 rounded-xl text-white cursor-pointer"
+                >
                   <Plus size={20} />
-                  <label htmlFor="profile-image" className="font-medium">
-                    Browse...
-                  </label>
-                </button>
-                <input
-                  type="file"
-                  id="profile-image"
-                  accept="image/*,video/*"
-                  className="hidden"
-                  onChange={handleBrowsImgAndVideo}
-                />
+                  <span className="font-medium">Browse...</span>
+                  <input
+                    type="file"
+                    id="profile-image"
+                    accept="image/*,video/*"
+                    className="hidden"
+                    onChange={handleBrowsImgAndVideo}
+                  />
+                </label>
               </div>
               <div className="flex gap-2">
                 {mediaUrls.length > 0 &&
-                  mediaUrls?.map((img: any) => {
+                  mediaUrls?.map((img: any, index: number) => {
                     return (
-                      <div className="w-16 h-16 bg-neutral-800 rounded-md ">
-                        <img src={img} alt="img" className=" rounded-md" />
+                      <div className="w-16 h-16 rounded-md ">
+                        <div
+                          className=" absolute ml-12"
+                          style={{ marginTop: 0 }}
+                          onClick={() => handleRemoveMediaUrls(index)}
+                        >
+                          <XCircle size={18} color="grey" />
+                        </div>
+                        <img src={img} alt="img" className="h-full w-full object-cover rounded-md" />
                       </div>
                     );
                   })}

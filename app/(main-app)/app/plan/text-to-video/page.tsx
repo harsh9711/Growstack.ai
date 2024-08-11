@@ -81,7 +81,6 @@ const VideoTable: React.FC<{
   const CustomSelect: React.FC<{ videoUrl: string; _id: string }> = ({ videoUrl, _id }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<string | null>(null);
-  
     const dropdownRef = useRef<HTMLDivElement | null>(null);
   
     const handleClickOutside = (event: MouseEvent) => {
@@ -105,7 +104,6 @@ const VideoTable: React.FC<{
         setCurrentVideoId(_id);
         setIsDialogOpen(true);
       } else if (value === 'download') {
-     
         try {
           const response = await fetch(videoUrl);
           if (!response.ok) {
@@ -141,7 +139,9 @@ const VideoTable: React.FC<{
           <MoreHorizontal size={20} />
         </button>
         {isOpen && (
-          <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
+
+          <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-50">
+
             <div className="py-1">
               {outputType.map(({ label, value, icon }) => (
                 <button
@@ -149,11 +149,11 @@ const VideoTable: React.FC<{
                   onClick={() => {
                     // Check if the value is already selected
                     if (value === selectedValue) {
-                      setSelectedValue(" ");
+                      setSelectedValue(null);
                       handleSelectChange('', videoUrl, _id);
                     } else {
                       handleSelectChange(value, videoUrl, _id);
-                      setSelectedValue("");
+                      setSelectedValue(value);
                     }
                     setIsOpen(false);
                   }}
@@ -171,10 +171,12 @@ const VideoTable: React.FC<{
       </div>
     );
   };
+  
   return (
-    <div className="rounded-lg border overflow-hidden mt-5 bg-white min-h-[50vh]">
+    <div className="rounded-lg border   mt-5 bg-white min-h-[50vh]">
 
-    <Table >
+
+    <Table className="" >
       <TableHeader>
         <TableRow className="bg-[#0347370D]">
           <TableHead>Thumbnail</TableHead>
@@ -218,7 +220,7 @@ const VideoTable: React.FC<{
                 }
               })()}
             </TableCell>
-            <TableCell>
+            <TableCell className="">
               <CustomSelect videoUrl={video.videoUrl} _id={video._id} />
             </TableCell>
           </TableRow>
@@ -238,8 +240,6 @@ const VideoTable: React.FC<{
     </div>
   );
 };
-
-
 
 
 export default function TextToVideoPage() {
@@ -277,29 +277,14 @@ export default function TextToVideoPage() {
   useEffect(() => {
     fetchData();
 
-    const socket = new WebSocket("wss://your-websocket-server-url");
-
-    socket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.type === "update") {
-        fetchData();
-      }
+    const handleVideoGenerationSuccess = () => {
+      fetchData(); // Refresh the data when the custom event is received
     };
 
-    socket.onopen = () => {
-      console.log("WebSocket connection established");
-    };
-
-    socket.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
-
-    socket.onclose = () => {
-      console.log("WebSocket connection closed");
-    };
+    window.addEventListener("videoGenerationSuccess", handleVideoGenerationSuccess);
 
     return () => {
-      socket.close();
+      window.removeEventListener("videoGenerationSuccess", handleVideoGenerationSuccess);
     };
   }, []);
 
@@ -324,17 +309,17 @@ export default function TextToVideoPage() {
   };
 
   const filteredTemplates = templates
-  ?.filter((template) =>
-    template.doc_name.toLowerCase().includes(searchQuery.toLowerCase())
-  )
-  .map((template) => ({
-    _id: template._id,
-    title: template.doc_name,
-    thumbnailUrl: template.doc_content.video_thumbnailUrl,
-    status: template.doc_content.status,
-    editedAt: template.updatedAt,
-    videoUrl: template.doc_content.video_url,
-  }));
+    ?.filter((template) =>
+      template.doc_name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+    .map((template) => ({
+      _id: template._id,
+      title: template.doc_name,
+      thumbnailUrl: template.doc_content.video_thumbnailUrl,
+      status: template.doc_content.status,
+      editedAt: template.updatedAt,
+      videoUrl: template.doc_content.video_url,
+    }));
 
   return (
     <>

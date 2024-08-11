@@ -5,21 +5,14 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import Loader from "@/components/Loader";
-import { useDispatch } from "react-redux";
-import { loaderSelector } from "@/lib/features/documents/document.selector";
-import { isActiveLoader } from "@/lib/features/documents/document.slice";
+import Spinner from "@/components/Spinner";
 
 export default function SchedulerPage() {
   const router = useRouter();
-  const loader = loaderSelector();
-  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(true);
   const [profile, setProfile] = useState<any>([]);
 
-  console.log("LDR", loader);
-
   useEffect(() => {
-    // const activeSocialAccounts = localStorage.getItem("activeSocialAccounts");
     if (profile?.activeSocialAccounts?.length > 0) {
       router.push("/app/publish/scheduler/quick-posting");
     } else {
@@ -32,18 +25,17 @@ export default function SchedulerPage() {
 
   const handleGetProfileData = async () => {
     try {
+      setLoading(true)
       const response = await instance.get(
         `${API_URL}/users/api/v1/social-media/profile`
       );
       if (response.data.data.activeSocialAccounts.length > 0) {
-        dispatch(isActiveLoader(true));
         setProfile(response.data.data);
-      } else {
-        dispatch(isActiveLoader(false));
       }
     } catch (error) {
       console.log("Error fetching social profile:", error);
-      toast.error("Error fetching social profile data");
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -61,6 +53,15 @@ export default function SchedulerPage() {
       toast.error(error.response.data.message);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="flex-1 flex flex-col gap-5 justify-center items-center">
+        <Spinner color="black" size={100} />
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <>
@@ -165,7 +166,6 @@ export default function SchedulerPage() {
         </Link> */}
         </div>
       </div>
-      <Loader display={loader} />
     </>
   );
 }
