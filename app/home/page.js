@@ -19,7 +19,8 @@ function Page() {
   return (
     <React.Fragment>
       <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
-      <DragFeatures />
+      {/* <DragFeatures /> */}
+      <Banner/>
       <OurProcess />
       <Features />
       <Premium />
