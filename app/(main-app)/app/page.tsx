@@ -11,6 +11,7 @@ import ContentLoader from "react-content-loader";
 import toast from "react-hot-toast";
 import { BsStarFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
+// import "bootstrap/dist/css/bootstrap.min.css";
 
 interface AiApp {
   _id: string;
@@ -47,7 +48,8 @@ export default function Dashboard() {
   >([]);
   const [aiAppsloading, setAiAppsLoading] = useState(true);
   const [aiAssistantsloading, setAiAssistantsLoading] = useState(true);
-
+  const hasRefreshed = localStorage.getItem("hasRefreshed");
+  const [refreshed, setRefreshed] = useState(hasRefreshed || false);
   const fetchAssistants = async () => {
     try {
       const response = await instance.get(`${API_URL}/ai/api/v1/assistant`);
@@ -130,6 +132,10 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
+    if (hasRefreshed !== "true") {
+      localStorage.setItem("hasRefreshed", "true");
+      window.location.reload();
+    }
     setAiAppsLoading(true);
     setAiAssistantsLoading(true);
 
@@ -139,7 +145,9 @@ export default function Dashboard() {
     fetchSocialMediaProfile();
   }, []);
 
-  return (
+  return !refreshed ? (
+    <></>
+  ) : (
     <main className="">
       <div className="bg-[#EBF0F6] h-80 w-full max-w-[95%] mx-auto absolute top-0 left-0 right-0 rounded-b-[60px]" />
       <div className="relative z-[1]">
