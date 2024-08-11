@@ -23,6 +23,9 @@ import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { AiOutlineMessage } from "react-icons/ai";
 import { BiReset } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
+import { API_URL } from "@/lib/api";
+import instance from "@/config/axios.config";
+import toast from "react-hot-toast";
 
 interface SidebarItem {
   _id: string;
@@ -373,6 +376,35 @@ const Layout = () => {
   const handleButtonClick = (index: number) => {
     setActiveIndex(index);
   };
+
+  const handleGetMessages = async () => {
+    try {
+      const response = await instance.get(
+        `${API_URL}/users/api/v1/social-media/profile/messages`
+      );
+      // setTableData(response.data.data.history);
+    } catch (error) {
+      console.log("Error fetching table data:", error);
+      toast.error("Error fetching table data");
+    }
+  };
+
+  const handleGetComments = async () => {
+    try {
+      const response = await instance.get(
+        `${API_URL} /users/api/v1/social-media/posts/facebook?5`
+      );
+      // setTableData(response.data.data.history);
+    } catch (error) {
+      console.log("Error fetching table data:", error);
+      toast.error("Error fetching table data");
+    }
+  };
+
+  useEffect(() => {
+    handleGetMessages();
+    handleGetComments();
+  }, []);
 
   return (
     <div className="flex-1 max-h-[780px] flex  mt-10 shadow-lg rounded-3xl text-ellipsis">
