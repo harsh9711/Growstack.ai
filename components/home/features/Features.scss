@@ -1,135 +1,190 @@
 @import "../../../app/variables.scss";
 
 .features {
-    padding: 90px 0 0;
+    padding: 0px 0 220px;
     @media (max-width: $breakpoint_tablet) {
-        padding: 70px 0 0;
+        padding:0 0 70px;
     }
     @media (max-width: $breakpoint_mobile_portrait) {
         overflow: hidden;
         text-align: center;
+        padding:0 0 40px;
     }
-    
-    .block {
-        padding: 0 30px;
-        @media screen and (max-width: $breakpoint_mini_laptop) {
-            padding: 0 15px;
-            
+      
+      
+        .feature-blocks {
+          position: relative;
+          padding-top: 60px;
+          @media screen and (max-width: $breakpoint_tablet) {
+            padding-top: 20px;
+          }
+          .row{
+            @media screen and (max-width: $breakpoint_mobile_portrait) {
+                gap: 40px;
+              }
+          }
+           .curveLine{
+            position: relative;
+            .curveImg{
+                position: absolute;
+                top: 65%;
+                left: 48%;
+                transform: translate(-50%, -50%);
+                @media screen and (max-width: $breakpoint_tablet) {
+                    display: none;
+                 }
+            }
+           } 
+          @media (max-width: $breakpoint_mobile_portrait) {
+            padding-top: 30px;
         }
-        .writter {
-            position: sticky;
-            top: 15px;
-            margin-top: 40px;
-            height: 100vh;
-            padding: 30px 50px;
-            border-radius: 60px;
-            background-color: #DCEFFF;
+          .feature-block {
+            background-color: white;
+            box-shadow: 0px 11px 13px -2px rgba(0, 0, 0, 0.1019607843);
+            border-radius: 30px;
+            padding: 30px;
+            border: 1px solid #DADADA;
+            position: relative;
+            margin-bottom: 220px;
+            width: 100%;
+            opacity: 1 !important;
+            @media screen and (max-width: $breakpoint_tablet) {
+               margin-bottom: 40px;
+               &:last-child{
+                   margin-bottom: 0;
+               }
+             }
+            &:nth-child(odd) {
+                border-left: 6px solid #034737;
+              }
+        
+              &:nth-child(even) {
+                border-right: 6px solid #034737;
+              }
+            h3 {
+              font-size: 36px;
+              margin-bottom: 15px;
+              @media screen and (max-width: $breakpoint_mobile_portrait) {
+                font-size: 28px;
+              }
+            }
+      
+            p {
+                font-size: 18px;
+              margin-bottom: 15px;
+              @media screen and (max-width: $breakpoint_mobile_portrait) {
+                font-size: 16px;
+              }
+            }
+      
+            ul {
+              list-style: none;
+              padding-left: 40px;
+      
+              li {
+                margin-bottom: 15px;
+                font-size: 18px;
+                position: relative;
+                font-weight: 500;
+                @media screen and (max-width: $breakpoint_mobile_portrait) {
+                    font-size: 16px;
+                  }
+                &:last-child {
+                  margin-bottom: 0;
+                }
+                &::after{
+                    content: '';
+                    display: block;
+                    width: 20px;
+                    height: 20px;
+                    background: url("../../../public/images_growstack/home/check.svg");
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    position: absolute;
+                    top: 6px;
+                    left: -40px;
+
+                }
+              }
+            }
+      
+            .feature-image {
+             width: 100%;
+            height: auto;
+            max-width: 500px;
+            }
+          }
+          .feature-block-flex{
             display: flex;
             align-items: center;
-            justify-content: center;
-            @media (max-width: $breakpoint_tablet) {
-               height: auto;
-               top: 10px !important;
-               padding: 30px 25px;
-               border-radius: 40px;
-             }
-             @media (max-width: $breakpoint_mobile_portrait) {
-               position: relative;
-               padding: 30px 15px;
-               margin-top: 20px;
-               overflow: hidden;
-               top: 0 !important;
-               border-radius: 20px;
-             }
-            .content{
-                max-width: 450px;
-                span{
-                    font-size: 18px;
-                    font-weight: 700;
-                    color: #000;
-                    letter-spacing: 1px;
-                    @media (max-width: $breakpoint_mini_laptop) {
-                       font-size: 16px;
-                    }
-                }
-               h3{
-                    font-size: 34px;
-                    font-weight: 700;
-                    color: #000;
-                    margin: 0px 0 15px;
-                    line-height: 50px;
-                    @media (max-width: $breakpoint_mini_laptop) {
-                        font-size: 26px;
-                        margin-bottom: 10px;
-                        line-height: 34px;
-                     }
-                }
-                p{
-                    @media (max-width: $breakpoint_mini_laptop) {
-                        font-size: 16px;
-                        margin-bottom: 10px;
-                     }
-                }
-                ul{
-                    display: flex; 
-                    flex-direction: column;
-                    gap: 5px;
-                    list-style: none;
-                    padding: 0;
-                    margin: 0;
-                    li{
-                        img{
-                            margin-right: 10px;
-                        }
-                        display: flex;
-                        flex-direction: row;
-                        font-size: 18px;
-                        color: #000;
-                        font-weight: 600;
-                        margin-bottom: 10px;
-                        @media (max-width: $breakpoint_mini_laptop) {
-                            font-size: 16px;
-                         }
-                    }
-                }
-                a{
-                    display: inline-block;
-                    background: transparent;
-                    color: #000;
-                    border: 1px solid #000;
-                    padding: 13px 20px;
-                    border-radius: 10px;
-                    font-size: 16px;
-                    font-family: 'PoppinsMedium';
-                    text-decoration: none;
-                    transition: all 0.3s ease;
-                    margin-top: 15px;
-                    display: flex;
-                    flex-direction: row;
-                    width: fit-content;
-                    @media (max-width: $breakpoint_mini_laptop) {
-                        font-size: 14px;
-                        margin-bottom: 10px;
-                     }
-                    &:hover{
-                        background: #000;
-                        color: #fff;
-                        img{
-                            filter: invert(1);
-                        }
-                    }   
-                    img{
-                        margin-left: 10px;
-                        
-                    }
-                }
+            justify-content: space-between;
+            gap: 200px;
+            position: relative;
+            @media screen and (max-width: $breakpoint_tablet) {
+                gap: 0;
+                flex-direction: column;
+                margin: 40px 0;
+              }
+            .boxLineImg{
+                position: absolute;
+                top: 47%;
+                left: 50%;
+                transform: translate(-52%, -50%);
+                z-index: 9;
+                @media screen and (max-width: $breakpoint_tablet) {
+                    display: none;
+                 }
             }
-           
-            .writterImg{
+            .feature-block{
+                z-index: 99;
                 img{
-                    width: 100%;
+                    margin-bottom: 30px;
+                    @media screen and (max-width: $breakpoint_tablet) {
+                      margin: 0 auto 30px;
+                      }
+                }
+                &:nth-child(odd) {
+                    text-align: end;
+                    @media screen and (max-width: $breakpoint_tablet) {
+                       text-align: left;
+                      }
+                    ul{
+                        padding-right: 40px;
+                        @media screen and (max-width: $breakpoint_tablet) {
+                           padding-left: 40px;
+                            padding-right: 0;
+                          }
+                        li{
+                            &::after{
+                                left: auto;
+                                right: -40px;
+                                @media screen and (max-width: $breakpoint_tablet) {
+                                    left: -40px;
+                                    right: auto;
+                                  }
+                            }
+                        }
+                    }
+                  }
+            }
+          }
+          .trophyLine{
+            position: relative;
+            margin-top: -40px;
+            @media screen and (max-width: $breakpoint_tablet) {
+               margin: 0;
+              }
+            .trophyImg{
+                position: absolute;
+                top: 61%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                @media screen and (max-width: $breakpoint_tablet) {
+                   display: none;
                 }
             }
+           }
         }
-    }
+      
+
 }

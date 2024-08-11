@@ -9,7 +9,7 @@ import UseCases from "@/components/customMarketingGpt/useCases/UseCases";
 import CoreFeatures from "@/components/customMarketingGpt/coreFeatures/CoreFeatures";
 import Faqs from "@/components/customMarketingGpt/faq/Faqs";
 // I commented this bootstrapp CDN because of conflicting styles with tailwindcss, NB: I'll uncomment it as soon as reliable solution is found
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Page() {
   return (

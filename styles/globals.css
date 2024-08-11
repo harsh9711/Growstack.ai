@@ -848,10 +848,6 @@ body {
   }
 }
 
-* {
-  font-family: "Poppins", sans-serif;
-}
-
 .ReactCollapse--collapse {
   transition: height 300ms;
 }
