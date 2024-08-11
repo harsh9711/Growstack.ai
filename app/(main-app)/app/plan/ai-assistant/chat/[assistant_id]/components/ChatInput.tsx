@@ -38,6 +38,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateM
     }
   }, []);
 
+  useEffect(() => {
+    if (textareaRef.current) {
+      autosize.update(textareaRef.current);
+    }
+  }, [input]);
+
   const handleSend = async (user_prompt?: string, fromMic: boolean = false) => {
     if (user_prompt) {
       user_prompt = user_prompt.trim();
