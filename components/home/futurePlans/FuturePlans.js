@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import AOS from "aos";
 import "aos/dist/aos.css";
 import './FuturePlans.scss';
@@ -7,107 +7,91 @@ function FuturePlans() {
     useEffect(() => {
         AOS.init();
     }, []);
+
     return (
-        <React.Fragment>
-            <div className="futurePlans">
-                <div className="container">
-                    <div className="row">
-                        <div className="title" data-aos="fade-up"
-                            data-aos-easing="ease-in-sine"
-                            data-aos-duration="1000">
-                            <span className="user">Future plans</span>
-                            <h3 className="heading">
-                                <span>Growing with you: </span>Our exciting roadmap
-                            </h3>
-                            <p>We're committed to continually enhancing our platform with love and innovation.</p>
+        <div className="futurePlans">
+            <div className="container">
+                <div className="title" data-aos="fade-up"
+                    data-aos-easing="ease-in-sine"
+                    data-aos-duration="1000">
+                    <span className="user">Future plans</span>
+                    <h3 className="heading">
+                        <span>Growing with you: </span>Our exciting roadmap
+                    </h3>
+                    <p>We're committed to continually enhancing our platform with love and innovation.</p>
+                </div>
+
+                <div className="plan-card-block">
+                    <div className="plan-card-flex">
+                        <div className="cards-flex">
+                        {/* May 2024 Section */}
+                        <div className="plan-card" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000" style={{ backgroundColor: '#e6edeb4d', borderLeft:"4px solid #00B783" }}>
+                            <h4>May 2024: <br /> GTM marketing</h4>
+                            <ul>
+                                <li>AI content generation</li>
+                                <li>Article writer</li>
+                                <li>Code generator</li>
+                                <li>AI assistants</li>
+                                <li>++Web app++</li>
+                            </ul>
                         </div>
-                        <div className="timeLine" data-aos="fade-up"
-                            data-aos-easing="ease-in-sine"
-                            data-aos-duration="1000">
-                            <section className="main-timeline-section">
-                                <div className="conference-center-line"></div>
-                                <div className="conference-timeline-content">
-                                    <div className="timeline-article timeline-article-bottom green">
-                                        <div className="meta-date">
-                                            <span>May 25</span>
-                                        </div>
-                                        <div className="content-box">
-                                            <h3>May2025: GTM Verticals</h3>
-                                            <ul>
-                                                <li>AI Agri</li>
-                                                <li>AI Retail</li>
-                                                <li>AI Manufacturing</li>
-                                                <li>2000+ Workflows</li>
-                                                <li>++Work Offline++</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div className="timeline-article timeline-article-top froze">
-                                        <div className="meta-date">
-                                            <span>Dec 24</span>
-                                        </div>
-                                        <div className="content-box">
-                                            <h3>December 2024: GTM Business</h3>
-                                            <ul>
-                                                <li>AI Finance</li>
-                                                <li>AI Customer Service</li>
-                                                <li>500+ Workflow Automation</li>
-                                                <li>++ Desktop Apps++</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div className="timeline-article timeline-article-bottom pink">
-                                        <div className="meta-date">
-                                            <span>Oct 24</span>
-                                        </div>
-                                        <div className="content-box">
-                                            <h3>October 2024: GTM Sales</h3>
-                                            <ul>
-                                                <li>AI-Assisted Lead Nurturing</li>
-                                                <li>AI Magic Ads</li>
-                                                <li>200+ Workflow Automations</li>
-                                                <li>++ Chrome Extension ++</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div className="timeline-article timeline-article-top yellow">
-                                        <div className="meta-date">
-                                            <span>July / Aug 24</span>
-                                        </div>
-                                        <div className="content-box">
-                                            <h3>July/August 2024: GTM Marketing</h3>
-                                            <ul>
-                                                <li>Workflow Builder (20+ Workflows)</li>
-                                                <li>Image Generator, Text To Videos</li>
-                                                <li>Website & Email Builder</li>
-                                                <li>Social Media Advocacy & Management</li>
-                                                <li>Performance Analytics</li>
-                                                <li>++Web App++</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div className="timeline-article timeline-article-bottom dGreen">
-                                        <div className="meta-date">
-                                            <span>May 24</span>
-                                        </div>
-                                        <div className="content-box">
-                                            <h3>May 2024: GTM Marketing</h3>
-                                            <ul>
-                                                <li>AI Content Generation</li>
-                                                <li>Article Writer</li>
-                                                <li>Code Generator</li>
-                                                <li>AI Assistants</li>
-                                                <li>++Web App++</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
+
+                    {/* July/August 2024 Section */}
+                        <div className="plan-card" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000" style={{ backgroundColor: '#fef6d44d', borderRight:"4px solid #E7C226" }}>
+                            <h4>July/August 2024: <br /> GTM marketing</h4>
+                            <ul>
+                                <li>Workflow builder (20+ workflows)</li>
+                                <li>Image generator</li>
+                                <li>Text to Videos</li>
+                                <li>Website & Email builder</li>
+                                <li>Social media advocacy & management</li>
+                                <li>Performance analytics</li>
+                                <li>++Web app++</li>
+                            </ul>
+                        </div>
+                        </div>
+                        <img src="/images_growstack/home/roadmapLine.svg" alt="roadmapLine" />
+                        <div className="cards-flex">
+                    {/* October 2024 Section */}
+                    <div className="plan-card" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000" style={{ backgroundColor: '#fae8f14d', borderLeft:"4px solid #D75395" }}>
+                            <h4>October 2024: <br /> GTM sales</h4>
+                            <ul>
+                                <li>AI-assisted lead nurturing</li>
+                                <li>AI magic ads</li>
+                                <li>200+ workflow automations</li>
+                                <li>AI assistants</li>
+                                <li>++Chrome extension++</li>
+                            </ul>
+                        </div>
+
+                    {/* December 2024 Section */}
+                        <div className="plan-card" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000" style={{ backgroundColor: '#e1faf84d', borderRight:"4px solid #06D2C2" }}>
+                            <h4>December 2024: <br /> GTM business</h4>
+                            <ul>
+                                <li>AI finance</li>
+                                <li>AI customer service</li>
+                                <li>500+ workflow automation</li>
+                                <li>++Web app++</li>
+                            </ul>
+                        </div>
                         </div>
                     </div>
+
+                    {/* May 2025 Section */}
+                        <div className="plan-card verticalCard" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000" style={{ backgroundColor: '#e2f0cb4d', borderTop:"4px solid #8CBD3B" }}>
+                            <h4>May 2025: <br /> GTM Verticals</h4>
+                            <img src="/images_growstack/home/verticalArrow.svg" alt="verticalArrow" />
+                            <ul>
+                                <li>AI agri</li>
+                                <li>AI retail</li>
+                                <li>AI Manufacturing</li>
+                                <li>2000+ workflows</li>
+                                <li>++Work Offline++</li>
+                            </ul>
+                        </div>
                 </div>
             </div>
-        </React.Fragment>
+        </div>
     );
 }
 

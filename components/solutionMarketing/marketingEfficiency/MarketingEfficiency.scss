@@ -1,0 +1,150 @@
+@import "../../../app/variables.scss";
+
+.marketingEfficiency{
+    padding: 90px 0;
+    background: url("../../../public/images_growstack/solutions/efficiencyBack.png") no-repeat;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    @media screen and (max-width: $breakpoint_mobile_portrait) {
+        padding: 40px 0;
+    }
+    .efficiencyImages{
+        padding-top: 90px;
+        position: relative;
+        z-index: 1;
+        @media screen and (max-width: $breakpoint_mobile_portrait) {
+            padding-top: 0px;
+            
+        }
+        &::after{
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("../../../public/images_growstack/solutions/efficiencyBack.svg") no-repeat;
+            background-size: contain;
+            background-position: center;
+            z-index: -1;
+            opacity: 20%;
+        }
+        .col-md-4{
+            &:nth-child(1){
+                .imgBlock{
+                    p{
+                        margin-left:20px ;
+                    }
+                }
+            }
+            &:nth-child(2){
+                .imgBlock{
+                    margin-top: -40px;
+                    text-align: center;
+                }
+            }
+            &:nth-child(3){
+                .imgBlock{
+                    margin-top: -80px;
+                    text-align: end;
+                    p{
+                        margin-right: 20px;
+                    }
+                }
+            }
+            &:nth-child(4){
+                .imgBlock{
+                    p{
+                        margin-left: 20px;
+                    }
+                }
+            }
+            &:nth-child(5){
+                .imgBlock{
+                    margin-top: -40px;
+                    text-align: end;
+                }
+                p{
+                    margin-right: 20px;
+                }
+            }
+            .imgBlock{
+                margin: 20px auto 20px;
+                max-width: 250px;
+                cursor: pointer;
+                @media screen and (max-width: $breakpoint_mobile_portrait) {
+                    text-align: center !important;
+                    margin: 20px auto 0 !important;
+
+                }
+                &:hover{
+                    img{
+                        transform: scale(1.05);
+                    }
+                }
+                img{
+                    transition: all 0.5s ease;
+                    width: 100%;
+                    height: auto;
+                }
+                p{
+                    font-size: 18px;
+                    color: #14171B;
+                    font-weight: 500;
+                    margin-top: 10px;
+                    margin-bottom: 0;
+                    @media screen and (max-width: $breakpoint_mobile_portrait) {
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
+    }
+}
+.modal{
+
+    .btn-close{
+        position: absolute;
+        right: -20px;
+        top: -20px;
+        background-color: #ffffff;
+        width: 30px;
+        height: 30px;
+        border-radius: 100px;
+        opacity: 1;
+        filter: invert(1);
+        @media screen and (max-width: $breakpoint_mobile_portrait) {
+            right: -3px;
+        }
+    }
+    .modal-body{
+        padding: 0;
+        
+        .swiper{
+            .swiper-slide{
+                padding: 20px 20px 60px !important;
+                @media screen and (max-width: $breakpoint_mobile_portrait) {
+                    width: 100% !important;
+                    height: auto !important;
+                    padding: 20px 5px 60px !important;
+                }
+                img{
+                    border-radius: 0 !important;
+                    @media screen and (max-width: $breakpoint_mobile_portrait) {
+                        width: 100% !important;
+                        object-fit: contain !important;
+                        height: auto !important;
+                    }
+                }
+            }
+            .swiper-pagination{
+                padding-bottom: 10px;
+                width: 100% !important;
+                .swiper-pagination-bullet-active{
+                    background: #14171B !important;
+                }
+            }
+        }
+    }
+}

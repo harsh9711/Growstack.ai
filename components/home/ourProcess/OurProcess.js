@@ -12,17 +12,28 @@ function OurProcess() {
       <div className="ourProcess">
         <div className="container">
           <div className="content">
-            <div className="title" data-aos="fade-up"
+            <div className="row align-items-center">
+            <div className="col-md-4" data-aos="fade-right"
             data-aos-easing="ease-in-sine"
             data-aos-duration="1000">
               <span className='user'>Our process</span>
               <h2 className='heading'><span>Effortlessly create</span> AI magicflow!</h2>
               <p>Build AI-driven workflows with ease. Automate tasks and collaborate seamlessly with our fun no-code tool.</p>
             </div>
-            <div data-aos="fade-up"
+              <div className="col-md-8">
+                <div className="animate" data-aos="fade-up"
+            data-aos-easing="ease-in-sine"
+            data-aos-duration="1000">
+                <img src="/images_growstack/home/animate.svg" alt="process" />
+                </div>
+              </div>
+            </div>
+            <div>
+            <div className="process" data-aos="flip-up"
             data-aos-easing="ease-in-sine"
             data-aos-duration="1000">
             <img src="/images_growstack/home/process.svg" alt="process" />
+            </div>
             </div>
           </div>
         </div>
