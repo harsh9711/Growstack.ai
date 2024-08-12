@@ -110,7 +110,7 @@ const HeroSection: React.FC = () => {
                         className="relative -top-24" data-aos="fade-up"
                       />
                     </button></div>
-      <div className="absolute top-[1210px]">
+      <div className="absolute top-[1220px]">
         <RepeatText />
       </div>
     </>

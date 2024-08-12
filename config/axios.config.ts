@@ -5,6 +5,7 @@ import { getCookie } from "cookies-next";
 const instance = axios.create({
   baseURL: API_URL,
   withCredentials: true, // TODO: uncomment this line when cors origins are configured
+  timeout: 10000,
 });
 
 instance.interceptors.request.use(
