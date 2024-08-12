@@ -8,16 +8,7 @@ import Spinner from "@/components/Spinner";
 import { Clock, Edit, Trash2 } from "lucide-react";
 import { formatDateTime } from "@/utils/dates";
 import SchedulerModal from "../SchedulerModal";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 interface Props {
   workflowId: string;
 }
@@ -142,60 +133,56 @@ const Schedules: React.FC<Props> = ({ workflowId }) => {
                 Schedule Details
               </h1>
               <button
-              className="w-full max-w-fit bg-primary-green text-white sheen transition duration-500 px-5 h-12 rounded-xl flex items-center gap-2 whitespace-nowrap"
-              onClick={() => setIsSchedulerModalOpen(true)}>
-              Create a new schedule
-            </button>
+                className="w-full max-w-fit bg-primary-green text-white sheen transition duration-500 px-5 h-12 rounded-xl flex items-center gap-2 whitespace-nowrap"
+                onClick={() => setIsSchedulerModalOpen(true)}>
+                Create a new schedule
+              </button>
             </div>
-
-              <div className="rounded-lg border   mt-5 bg-white ">
-
- <Table className="">
-      <TableHeader>
-      <TableRow className="bg-[#0347370D]">
-
-          <TableHead>Frequency:</TableHead>
-          <TableHead>Number of Triggers:</TableHead>
-          <TableHead>Created On:</TableHead>
-          {schedule.frequency === "weekly" && <TableHead>Day of Week:</TableHead>}
-          <TableHead>Time:</TableHead>
-          <TableHead>Timezone:</TableHead>
-          <TableHead>Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        <TableRow>
-          <TableCell className="bg-gray-50 text-gray-500 capitalize">{schedule.frequency}</TableCell>
-          <TableCell className="bg-gray-50 text-gray-500">
-            {schedule.triggered_times.length} time{schedule.triggered_times.length !== 1 && "s"}
-          </TableCell>
-          <TableCell className="bg-gray-50 text-gray-500">{formatDateTime(schedule.createdAt)}</TableCell>
-          {schedule.frequency === "weekly" && (
-            <TableCell className="bg-gray-50 text-gray-500">{schedule.day_of_week}</TableCell>
-          )}
-          <TableCell className="bg-gray-50 text-gray-500">{schedule.time}</TableCell>
-          <TableCell className="bg-gray-50 text-gray-500">{schedule.timezone}</TableCell>
-          <TableCell className="bg-gray-50 text-gray-500">  
-             <div className="flex  items-center">
-                <button
-                  onClick={() => {
-                    setIsSchedulerModalOpen(true);
-                  }}
-                  className=" h-12 w-12 rounded-xl grid place-content-center text-green-500 cursor-pointer">
-                  {deleteRequestPending ? <Spinner color="#f43f5e" /> : <Edit size={20} />}
-                </button>
-                <button onClick={handleDeleteSchedule} className=" h-12 w-12 rounded-xl grid place-content-center text-rose-500 cursor-pointer">
-                  {deleteRequestPending ? <Spinner color="#f43f5e" /> : <Trash2 size={20} />}
-                </button>
-              </div></TableCell>
-        </TableRow>
-      </TableBody>
-      <TableFooter>
-        <TableRow>
-    
-        </TableRow>
-      </TableFooter>
-    </Table>        </div> </div>
+            <div className="rounded-lg border   mt-5 bg-white ">
+              <Table className="">
+                <TableHeader>
+                  <TableRow className="bg-[#0347370D]">
+                    <TableHead>Frequency</TableHead>
+                    <TableHead>Number of Triggers</TableHead>
+                    <TableHead>Created On</TableHead>
+                    {schedule.frequency === "weekly" && <TableHead>Day of Week:</TableHead>}
+                    <TableHead>Time</TableHead>
+                    <TableHead>Timezone</TableHead>
+                    <TableHead>Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableCell className="bg-gray-50 text-gray-500 capitalize">{schedule.frequency}</TableCell>
+                    <TableCell className="bg-gray-50 text-gray-500">
+                      {schedule.triggered_times.length} time{schedule.triggered_times.length !== 1 && "s"}
+                    </TableCell>
+                    <TableCell className="bg-gray-50 text-gray-500">{formatDateTime(schedule.createdAt)}</TableCell>
+                    {schedule.frequency === "weekly" && <TableCell className="bg-gray-50 text-gray-500">{schedule.day_of_week}</TableCell>}
+                    <TableCell className="bg-gray-50 text-gray-500">{schedule.time}</TableCell>
+                    <TableCell className="bg-gray-50 text-gray-500">{schedule.timezone}</TableCell>
+                    <TableCell className="bg-gray-50 text-gray-500">
+                      <div className="flex  items-center">
+                        <button
+                          onClick={() => {
+                            setIsSchedulerModalOpen(true);
+                          }}
+                          className=" h-12 w-12 rounded-xl grid place-content-center text-green-500 cursor-pointer">
+                          <Edit size={20} />
+                        </button>
+                        <button onClick={handleDeleteSchedule} className=" h-12 w-12 rounded-xl grid place-content-center text-rose-500 cursor-pointer">
+                          {deleteRequestPending ? <Spinner color="#f43f5e" /> : <Trash2 size={20} />}
+                        </button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+                <TableFooter>
+                  <TableRow></TableRow>
+                </TableFooter>
+              </Table>{" "}
+            </div>{" "}
+          </div>
         )}
       </div>
       <SchedulerModal

@@ -13,21 +13,19 @@ interface DropdownProps {
   disabled?: boolean;
 }
 
-const Dropdown = ({ label, items, value, onChange, title, showTitle, required = true, disabled = false }: DropdownProps) =>{
+const Dropdown = ({ label, items, value, onChange, title, showTitle, required = true, disabled = false }: DropdownProps) => {
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredItems = items.filter((item) =>
-    item.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-return(
-  <div className="space-y-2">
-    {showTitle && <label className="text-[15px]">{title}</label>}
-    <Select disabled={disabled} value={value} onValueChange={onChange} required={required}>
-      <SelectTrigger className="w-full border-none">
-        <SelectValue placeholder={label} />
-      </SelectTrigger>
-      <SelectContent>
-      <div className="sticky top-0 p-3  rounded-t-lg z-10">
+  const filteredItems = items.filter((item) => item.toLowerCase().includes(searchTerm.toLowerCase()));
+  return (
+    <div className="space-y-2">
+      {showTitle && <label className="text-[15px]">{title}</label>}
+      <Select disabled={disabled} value={value} onValueChange={onChange} required={required}>
+        <SelectTrigger className="w-full border-none">
+          <SelectValue placeholder={label} />
+        </SelectTrigger>
+        <SelectContent className="pt-14">
+          <div className="fixed top-0 left-0 right-0 p-3 rounded-t-lg z-10">
             <div className="flex items-center bg-white border border-gray-300 rounded-md">
               <Search className="h-5 w-5 text-gray-400 mx-2" />
               <input
@@ -46,10 +44,10 @@ return(
               </SelectItem>
             ))}
           </SelectGroup>
-      </SelectContent>
-    </Select>
-  </div>
-);
-}
+        </SelectContent>
+      </Select>
+    </div>
+  );
+};
 
 export default Dropdown;
