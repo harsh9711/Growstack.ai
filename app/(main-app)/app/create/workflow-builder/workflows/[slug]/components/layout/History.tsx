@@ -128,6 +128,7 @@ const History: React.FC<Props> = ({ workflowId }) => {
                 <DropdownMenuItem onClick={() => navigator.clipboard.writeText(historyItem.workflow_runner_id)}>Copy workflow Runner ID</DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => handleRedirect(0, historyItem.workflow_runner_id)}>Rerun Workflow</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => handleDeleteHistoryItem(historyItem.workflow_runner_id)}>Delete item</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -182,6 +183,19 @@ const History: React.FC<Props> = ({ workflowId }) => {
     } finally {
       setIsDeleteRequestPending(false);
       setIsDeleteHistoryModalOpen(false);
+    }
+  };
+  const handleDeleteHistoryItem = async (runner_id: string) => {
+    try {
+      const response = await instance.delete(`${API_URL}/workflow/api/v1/runner/${runner_id}`);
+      await fetchWorkflowHistory(workflowId);
+      toast.success(response.data.message);
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error(error.message);
+      }
     }
   };
 

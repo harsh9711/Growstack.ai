@@ -78,12 +78,10 @@ export function ProfileButton() {
           </Link> */}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <Link href="#">
-          <DropdownMenuItem className="flex gap-3 px-4">
-            <Info size={22} />
-            intercom - free for one year
-          </DropdownMenuItem>
-        </Link>
+        <DropdownMenuItem className="flex gap-3 px-4" id="intercom-launcher">
+          <Info size={22} />
+          Help & Intercom Chat
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <button
           onClick={handleLogout}
