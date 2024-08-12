@@ -1,0 +1,115 @@
+@import "../../../app/variables.scss";
+
+.futurePlans{
+  background-color: #FAFBFC;
+  padding: 90px 0;
+  @media screen and (max-width: $breakpoint_mobile_portrait) {
+    padding: 40px 0;
+  }
+
+    .plan-card-block {
+      padding-top: 40px;
+      .plan-card{
+        border-radius: 25px;
+        padding: 30px;
+        height: auto;
+        width: 100%;
+        margin-bottom: 47px;
+        @media screen and (max-width: $breakpoint_tablet) {
+          &:last-child{
+            margin-bottom: 0;
+          }
+        }
+        
+        h4 {
+            font-size: 36px;
+            margin-bottom: 25px;
+            @media screen and (max-width: $breakpoint_mobile_portrait) {
+                font-size: 28px;
+              
+            }
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+
+            li {
+                font-size: 18px;
+                padding-left: 40px;
+                position: relative;
+                margin-bottom: 20px;
+                font-weight: 600;
+                @media screen and (max-width: $breakpoint_mobile_portrait) {
+                    font-size: 16px;
+                    margin-bottom: 15px;
+                  
+                }
+                &:last-child {
+                    margin-bottom: 0;
+                }
+                @media screen and (max-width: $breakpoint_mobile_portrait) {
+                    font-size: 16px;
+                }
+                &::before {
+                    content: "";
+                    color: #000;
+                    position: absolute;
+                    left: 0;
+                    top: 5px;
+                    background: url("../../../public/images_growstack/home/check.svg");
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    width: 18px;
+                    height: 18px;
+                    transform: translateY(0.2rem);
+                }
+            }
+        }
+      }
+      .verticalCard{
+        margin-bottom: 0;
+        display: flex;
+       align-items: center;
+       justify-content: center;
+        gap: 70px;
+        @media screen and (max-width: $breakpoint_mobile_portrait) {
+          flex-direction: column;
+          gap: 0;
+          justify-content: left;
+          align-items: flex-start;
+          img{
+            display: none;
+          }
+        }
+        img{
+          width: 63px;
+          height: 16px;
+        }
+      }
+        .plan-card-flex{
+          position: relative;
+          img{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            @media screen and (max-width: $breakpoint_tablet) {
+              display: none;
+              
+            }
+          }
+          .cards-flex{
+            display: flex;
+            justify-content: space-between;
+            gap: 220px;
+            @media screen and (max-width: $breakpoint_tablet) {
+              gap: 0;
+              flex-direction: column;
+              margin: 40px 0;
+            }
+          }
+        }
+    }
+}
+

@@ -70,16 +70,17 @@
             }
             img{
                 width: 100%;
-                height: auto;
+                height: 300px;
+                object-fit: contain;
             }
             span{
                 font-size: 14px;
             }
             h4{
-                margin-top: 200px;
+                margin-top: 40px;
                 font-size: 20px;
                 color: #14171B;
-                font-weight: 500;
+                font-weight: 600;
                 margin-bottom: 0;
                 @media screen and (max-width: $breakpoint_mobile_portrait){
                     font-size: 18px;
