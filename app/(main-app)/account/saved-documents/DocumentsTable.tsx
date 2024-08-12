@@ -60,108 +60,6 @@ const languageFlags = {
   Hindi: "/assets/flags/india.svg",
 };
 
-// export const columns: ColumnDef<Document>[] = [
-//   {
-//     accessorKey: "doc_name",
-//     header: () => <div className="uppercase">Document Name</div>,
-//     cell: ({ row }) => (
-//       <div className="capitalize">{row.getValue("doc_name")}</div>
-//     ),
-//   },
-//   {
-//     accessorKey: "workbook",
-//     header: () => <div className="uppercase">Workbook</div>,
-//     cell: ({ row }) => (
-//       <div className="capitalize">{row.getValue("workbook")}</div>
-//     ),
-//   },
-//   {
-//     accessorKey: "category",
-//     header: () => <div className="uppercase">Category</div>,
-//     cell: ({ row }) => (
-//       <div
-//         className={clsx(
-//           "capitalize",
-//           categoryColors[
-//             row.getValue("category") as keyof typeof categoryColors
-//           ]
-//         )}
-//       >
-//         {row.getValue("category")}
-//       </div>
-//     ),
-//   },
-//   {
-//     accessorKey: "createdAt",
-//     header: () => <div className="uppercase">Created</div>,
-//     cell: ({ row }) => <div>{row.getValue("createdAt")}</div>,
-//   },
-//   {
-//     accessorKey: "doc_language",
-//     header: () => <div className="uppercase">Language</div>,
-//     cell: ({ row }) => (
-//       <div className="flex items-center gap-2.5">
-//         <Image
-//           src={
-//             languageFlags[
-//               row.getValue("doc_language") as keyof typeof languageFlags
-//             ]
-//           }
-//           alt=""
-//           width={20}
-//           height={20}
-//         />{" "}
-//         {row.getValue("doc_language")}
-//       </div>
-//     ),
-//   },
-//   {
-//     accessorKey: "doc_words",
-//     header: () => <div className="uppercase">Words Used</div>,
-//     cell: ({ row }) => <div>{row.getValue("doc_words")}</div>,
-//   },
-//   {
-//     id: "actions",
-//     header: () => <div className="uppercase">Action</div>,
-//     cell: ({ row }) => {
-//       const handleDeleteDocs = (id: string) => {
-//         swal({
-//           title: "Delete Document",
-//           text: "Are you sure you want to delete it?",
-//           icon: "warning",
-//           buttons: ["Cancel", "Delete"],
-//           dangerMode: true,
-//         }).then(async (willDelete) => {
-//           if (willDelete) {
-//             try {
-//               const response = await instance.delete(
-//                 `${API_URL}/users/api/v1/docs/:${id}`
-//               );
-//             } catch (error) {
-//               toast.error("Error deleting document");
-//             }
-//           } else {
-//           }
-//         });
-//       };
-//       return (
-//         <div className="flex items-center gap-2">
-//           <button className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300">
-//             <Edit size={20} className="text-gray-800 cursor-pointer" />
-//           </button>
-//           <button
-//             className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300"
-//             onClick={() => handleDeleteDocs(row.original._id)}
-//           >
-//             <Delete size={20} className="text-gray-800 cursor-pointer" />
-//           </button>
-//         </div>
-//       );
-//     },
-//     enableSorting: false,
-//     enableHiding: false,
-//   },
-// ];
 
 export default function DocumentsTable() {
   const router = useRouter();
@@ -217,19 +115,19 @@ export default function DocumentsTable() {
     //     <div className="capitalize">{row.getValue("workbook")}</div>
     //   ),
     // },
-    {
-      accessorKey: "category",
-      header: () => <div className="uppercase">Category</div>,
-      cell: ({ row }) => (
-        <div
-          className={clsx(
-            "uppercase bg-gray-100 px-2 py-1.5 max-w-fit rounded-md text-[13px]"
-          )}
-        >
-          {row.getValue("category")}
-        </div>
-      ),
-    },
+    // {
+    //   accessorKey: "category",
+    //   header: () => <div className="uppercase">Category</div>,
+    //   cell: ({ row }) => (
+    //     <div
+    //       className={clsx(
+    //         "uppercase bg-gray-100 px-2 py-1.5 max-w-fit rounded-md text-[13px]"
+    //       )}
+    //     >
+    //       {row.getValue("category")}
+    //     </div>
+    //   ),
+    // },
     {
       accessorKey: "createdAt",
       header: () => <div className="uppercase">Created</div>,

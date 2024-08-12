@@ -81,7 +81,7 @@ export function ProfileButton() {
         <Link href="#">
           <DropdownMenuItem className="flex gap-3 px-4">
             <Info size={22} />
-            intercom - free for one year
+            Help
           </DropdownMenuItem>
         </Link>
         <DropdownMenuSeparator />
