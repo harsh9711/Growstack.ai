@@ -9,8 +9,16 @@ import TemplateLoader from "./components/TemplateLoader";
 import "@/styles/editor.css";
 import ConfirmDialog from "./components/ConfirmDialog";
 import VideoPreviewModal from "./components/VideoPreview";
-import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const VideoTable: React.FC<{
   videos: Array<{
@@ -27,19 +35,26 @@ const VideoTable: React.FC<{
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentVideoId, setCurrentVideoId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [videoDuration, setVideoDuration] = useState<{ [key: string]: string }>({});
+  const [videoDuration, setVideoDuration] = useState<{ [key: string]: string }>(
+    {}
+  );
 
   useEffect(() => {
-    videos.forEach(video => {
-      const videoElement = document.createElement('video');
+    videos.forEach((video) => {
+      const videoElement = document.createElement("video");
       videoElement.src = video.videoUrl;
 
-      videoElement.addEventListener('loadedmetadata', () => {
+      videoElement.addEventListener("loadedmetadata", () => {
         const totalSeconds = Math.floor(videoElement.duration);
         const minutes = Math.floor(totalSeconds / 60);
         const seconds = totalSeconds % 60;
-        const formattedDuration = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-        setVideoDuration(prev => ({ ...prev, [video._id]: formattedDuration }));
+        const formattedDuration = `${String(minutes).padStart(2, "0")}:${String(
+          seconds
+        ).padStart(2, "0")}`;
+        setVideoDuration((prev) => ({
+          ...prev,
+          [video._id]: formattedDuration,
+        }));
       });
     });
 
@@ -55,34 +70,38 @@ const VideoTable: React.FC<{
     try {
       await instance.delete(`/users/api/v1/docs/${currentVideoId}`);
       onRemove(currentVideoId);
-      toast.success('Video removed');
+      toast.success("Video removed");
     } catch (error) {
-      toast.error('Failed to remove video');
-      console.error('Remove error:', error);
+      toast.error("Failed to remove video");
+      console.error("Remove error:", error);
     } finally {
       setIsDeleting(false);
       setIsDialogOpen(false);
     }
   };
 
- 
   interface OutputType {
     label: string;
     value: string;
     icon: JSX.Element;
   }
-  
+
   const outputType: OutputType[] = [
-      { label: 'Delete', value: 'delete', icon: <span>🗑️</span> },
-      { label: 'Download', value: 'download', icon: <span>📥</span> }
-  
+    { label: "Delete", value: "delete", icon: <span>🗑️</span> },
+    { label: "Download", value: "download", icon: <span>📥</span> },
   ];
-  
-  const CustomSelect: React.FC<{ videoUrl: string; _id: string }> = ({ videoUrl, _id }) => {
+
+  const CustomSelect: React.FC<{ videoUrl: string; _id: string }> = ({
+    videoUrl,
+    _id,
+  }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedValue, setSelectedValue] = useState<string | null>(null);
     const dropdownRef = useRef<HTMLDivElement | null>(null);
-  
+    const [downloadProgress, setDownloadProgress] = useState<number | null>(
+      null
+    );
+
     const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
@@ -91,44 +110,65 @@ const VideoTable: React.FC<{
         setIsOpen(false);
       }
     };
-  
+
     useEffect(() => {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
       return () => {
-        document.removeEventListener('mousedown', handleClickOutside);
+        document.removeEventListener("mousedown", handleClickOutside);
       };
     }, []);
-  
-    const handleSelectChange = async (value: string, videoUrl: string, _id: string) => {
-      if (value === 'delete') {
+
+    const handleSelectChange = async (
+      value: string,
+      videoUrl: string,
+      _id: string
+    ) => {
+      if (value === "delete") {
         setCurrentVideoId(_id);
         setIsDialogOpen(true);
-      } else if (value === 'download') {
+      } else if (value === "download") {
         try {
           const response = await fetch(videoUrl);
           if (!response.ok) {
-            throw new Error('File not found');
+            throw new Error("File not found");
           }
-  
-          const blob = await response.blob();
+
+          const totalSize = +response.headers.get("content-length")!;
+          let loadedSize = 0;
+
+          const reader = response.body!.getReader();
+          const chunks: Uint8Array[] = [];
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            chunks.push(value);
+            loadedSize += value.length;
+
+            setDownloadProgress(Math.round((loadedSize / totalSize) * 100));
+          }
+
+          const blob = new Blob(chunks);
           const url = URL.createObjectURL(blob);
-  
-          const link = document.createElement('a');
+
+          const link = document.createElement("a");
           link.href = url;
           link.download = `${_id}.mp4`;
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);
           URL.revokeObjectURL(url);
-  
-          toast.success('Download started');
+
+          setDownloadProgress(null);
+          toast.success("Download completed");
         } catch (error) {
-          toast.error('Failed to download video');
-          console.error('Download error:', error);
+          toast.error("Failed to download video");
+          console.error("Download error:", error);
+          setDownloadProgress(null);
         }
       }
     };
-  
+
     return (
       <div className="relative inline-block text-left" ref={dropdownRef}>
         <button
@@ -139,9 +179,7 @@ const VideoTable: React.FC<{
           <MoreHorizontal size={20} />
         </button>
         {isOpen && (
-
           <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-50">
-
             <div className="py-1">
               {outputType.map(({ label, value, icon }) => (
                 <button
@@ -150,7 +188,7 @@ const VideoTable: React.FC<{
                     // Check if the value is already selected
                     if (value === selectedValue) {
                       setSelectedValue(null);
-                      handleSelectChange('', videoUrl, _id);
+                      handleSelectChange("", videoUrl, _id);
                     } else {
                       handleSelectChange(value, videoUrl, _id);
                       setSelectedValue(value);
@@ -158,7 +196,7 @@ const VideoTable: React.FC<{
                     setIsOpen(false);
                   }}
                   className={`flex items-center gap-2 px-4 py-2 w-full text-left ${
-                    value === selectedValue ? 'bg-gray-100' : ''
+                    value === selectedValue ? "bg-gray-100" : ""
                   }`}
                 >
                   {icon}
@@ -168,69 +206,95 @@ const VideoTable: React.FC<{
             </div>
           </div>
         )}
+        {downloadProgress !== null && (
+          <div className="absolute bottom-0 left-0 w-full bg-gray-200 rounded-b-lg">
+            <div
+              className="bg-blue-500 text-xs font-medium text-white text-center p-0.5 leading-none rounded-b-lg"
+              style={{ width: `${downloadProgress}%` }}
+            >
+              {downloadProgress}%
+            </div>
+          </div>
+        )}
       </div>
     );
   };
-  
+
   return (
     <div className="rounded-lg border   mt-5 bg-white min-h-[50vh]">
-
-
-    <Table className="" >
-      <TableHeader>
-        <TableRow className="bg-[#0347370D]">
-          <TableHead>Thumbnail</TableHead>
-          <TableHead>Title</TableHead>
-          <TableHead>Duration</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Edited At</TableHead>
-          <TableHead>Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {videos.map((video) => (
-          <TableRow key={video._id}>
-            <TableCell onClick={() => onPreview(video.videoUrl)}>
-              <img
-                className="object-cover w-[64px] h-[64px] rounded-2xl"
-                src={video.thumbnailUrl}
-                alt="video thumbnail"
-              />
-            </TableCell>
-            <TableCell className="text-[16px] font-medium truncate max-w-[200px]">
-              {video.title}
-            </TableCell>
-            <TableCell className="text-[14px] text-gray-500">
-              {videoDuration[video._id] || 'Loading...'}
-            </TableCell>
-            <TableCell className="text-[14px] ">
-              {video.status}
-            </TableCell>
-            <TableCell className="text-[16px] text-[#151B23]">
-              {(() => {
-                const timeDifference = new Date().getTime() - new Date(video.editedAt).getTime();
-                const totalMinutes = Math.floor(timeDifference / 60000);
-                const totalSeconds = Math.floor((timeDifference % 60000) / 1000);
-
-                if (totalMinutes >= 60) {
-                  const hours = Math.floor(totalMinutes / 60);
-                  return `Created about ${hours} ${hours === 1 ? 'hr' : 'hrs'} ago`;
-                } else {
-                  return `Created about ${totalMinutes} ${totalMinutes === 1 ? 'min' : 'mins'} and ${totalSeconds} ${totalSeconds === 1 ? 'sec' : 'secs'} ago`;
-                }
-              })()}
-            </TableCell>
-            <TableCell className="">
-              <CustomSelect videoUrl={video.videoUrl} _id={video._id} />
-            </TableCell>
+      <Table className="">
+        <TableHeader>
+          <TableRow className="bg-[#0347370D]">
+            <TableHead>Thumbnail</TableHead>
+            <TableHead>Title</TableHead>
+            <TableHead>Duration</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead>Edited At</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-      <TableFooter>
-      </TableFooter>
-      {/* <TableCaption>Your video table caption here</TableCaption> */}
-    </Table>
-    <ConfirmDialog
+        </TableHeader>
+        <TableBody>
+          {videos.map((video) => (
+            <TableRow key={video._id}>
+              <TableCell onClick={() => onPreview(video.videoUrl)}>
+                <img
+                  className="object-cover w-[64px] h-[64px] rounded-2xl"
+                  src={video.thumbnailUrl}
+                  alt="video thumbnail"
+                />
+              </TableCell>
+              <TableCell className="text-[16px] font-medium truncate max-w-[200px]">
+                {video.title}
+              </TableCell>
+              <TableCell className="text-[14px] text-gray-500">
+                {videoDuration[video._id] || "Loading..."}
+              </TableCell>
+              <TableCell
+                className={`text-[14px] ${
+                  video.status === "Success"
+                    ? "text-green-500"
+                    : video.status === "Pending"
+                    ? "text-yellow-500"
+                    : video.status === "Failed"
+                    ? "text-red-500"
+                    : ""
+                }`}
+              >
+                {video.status}
+              </TableCell>
+              <TableCell className="text-[16px] text-[#151B23]">
+                {(() => {
+                  const timeDifference =
+                    new Date().getTime() - new Date(video.editedAt).getTime();
+                  const totalMinutes = Math.floor(timeDifference / 60000);
+                  const totalSeconds = Math.floor(
+                    (timeDifference % 60000) / 1000
+                  );
+
+                  if (totalMinutes >= 60) {
+                    const hours = Math.floor(totalMinutes / 60);
+                    return `Created about ${hours} ${
+                      hours === 1 ? "hr" : "hrs"
+                    } ago`;
+                  } else {
+                    return `Created about ${totalMinutes} ${
+                      totalMinutes === 1 ? "min" : "mins"
+                    } and ${totalSeconds} ${
+                      totalSeconds === 1 ? "sec" : "secs"
+                    } ago`;
+                  }
+                })()}
+              </TableCell>
+              <TableCell className="">
+                <CustomSelect videoUrl={video.videoUrl} _id={video._id} />
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+        <TableFooter></TableFooter>
+        {/* <TableCaption>Your video table caption here</TableCaption> */}
+      </Table>
+      <ConfirmDialog
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
         onConfirm={handleConfirmDelete}
@@ -240,7 +304,6 @@ const VideoTable: React.FC<{
     </div>
   );
 };
-
 
 export default function TextToVideoPage() {
   const [templates, setTemplates] = useState<Template[] | null>(null);
@@ -281,10 +344,16 @@ export default function TextToVideoPage() {
       fetchData(); // Refresh the data when the custom event is received
     };
 
-    window.addEventListener("videoGenerationSuccess", handleVideoGenerationSuccess);
+    window.addEventListener(
+      "videoGenerationSuccess",
+      handleVideoGenerationSuccess
+    );
 
     return () => {
-      window.removeEventListener("videoGenerationSuccess", handleVideoGenerationSuccess);
+      window.removeEventListener(
+        "videoGenerationSuccess",
+        handleVideoGenerationSuccess
+      );
     };
   }, []);
 
@@ -292,7 +361,7 @@ export default function TextToVideoPage() {
     try {
       await instance.delete(`/users/api/v1/docs/${id}`);
       toast.success("Video removed successfully");
-      fetchData(); 
+      fetchData();
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.error);

@@ -1,5 +1,16 @@
 export const frequency_options = ["daily", "weekly", "monthly"];
-export const days_of_week = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+export const days_of_week = [
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+  "Sunday",
+];
+export const days_of_month = Array.from({ length: 31 }, (_, i) =>
+  (i + 1).toString()
+);
 export const timezones = [
   "Africa",
   "Africa/Abidjan",
