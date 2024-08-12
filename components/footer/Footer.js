@@ -57,19 +57,16 @@ function Footer() {
                 <h4>Features</h4>
                 <ul>
                   <li>
-                    <Link href="/auth/register">Features</Link>
-                  </li>
-                  <li>
                     <Link href="/auth/register">Research assistant</Link>
                   </li>
                   <li>
-                    <Link href="/auth/register">AI Marketing & Sales Apps</Link>
+                    <Link href="/ai-marketing-and-sales-app">AI Marketing & Sales Apps</Link>
                   </li>
                   <li>
                     <Link href="/auth/register">Imaginate app</Link>
                   </li>
                   <li>
-                    <Link href="/auth/register">Marketing and sales assistants</Link>
+                    <Link href="/marketing-and-sales-assistant">Marketing and sales assistants</Link>
                   </li>
                 </ul>
               </div>
