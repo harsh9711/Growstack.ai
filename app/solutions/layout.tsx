@@ -17,7 +17,7 @@ export default function Layout({
      {/* <Navbar textColor="#ffffff" loginBgColor="#ffffff" />  */}
 
       <div className="">{children}</div>
-    <div className=" bg-white"> <Footer/></div>
+    {/* <div className=" bg-white"> <Footer/></div> */}
     </div>
   );
 }
