@@ -80,7 +80,7 @@ export function ProfileButton() {
         <DropdownMenuSeparator />
         <DropdownMenuItem className="flex gap-3 px-4" id="intercom-launcher">
           <Info size={22} />
-          Help & Intercom Chat
+          Help
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <button
