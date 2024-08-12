@@ -231,12 +231,12 @@ export default function ContactsTable() {
           <div className="flex justify-center items-center space-x-2">
             <AddContact getContacts={getContacts} />
             <DeleteContact getContacts={getContacts} selectedIds={selectedIds} />
-            <SendSMS contacts={contacts} selectedIds={selectedIds} />
-            <SendEmail contacts={contacts} selectedIds={selectedIds} />
+            {/* <SendSMS contacts={contacts} selectedIds={selectedIds} /> */}
+            {/* <SendEmail contacts={contacts} selectedIds={selectedIds} /> */}
             {/* <button className="w-[45px] h-[45px] border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black">
               <UploadIcon />
             </button> */}
-            <FilterSheet />
+            {/* <FilterSheet /> */}
           </div>
         </div>
         <div className="rounded-lg border overflow-hidden mt-5 flex justify-center">

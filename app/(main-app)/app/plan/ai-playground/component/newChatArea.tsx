@@ -13,7 +13,7 @@ const NewChatAlert = ({ handleNewChat }: NewChatAlertProps) => {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <button type="button" className="bg-primary-green p-3 rounded-[16px] text-white">
-          <Plus size={32} />w
+          <Plus size={32} />
         </button>
       </DialogTrigger>
       <DialogContent className="max-w-3xl pt-0">
