@@ -106,7 +106,7 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
               <label className="font-medium" htmlFor="title">
                 Title <span className="text-rose-600">*</span>
               </label>
-              <span className="text-primary-black text-opacity-50 text-sm">0/2000</span>
+              <span className="text-primary-black text-opacity-50 text-sm">{articleTitle.length}/2000</span>
             </div>
             <input
               type="text"
@@ -126,6 +126,7 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
               name="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              maxLength={2000}
               placeholder="Describe what your image is about"
               className="h-[128px] w-full bg-[#F5F5F5] rounded-xl block resize-none p-4 text-[15px]"></textarea>
           </div>

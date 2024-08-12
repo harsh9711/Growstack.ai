@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import { creativityOptions, languageOptions, povOptions, writingToneOptions } from "../constants/options";
 import { IOutline } from "../types";
 import AdvancedOptions from "./AdvancedOptions";
+import { title } from "process";
 
 interface OutlinesComponentProps {
   currentStep: number;
@@ -106,13 +107,14 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
               <label className="font-medium" htmlFor="title">
                 Title <span className="text-rose-600">*</span>
               </label>
-              <span className="text-primary-black text-opacity-50 text-sm">0/2000</span>
+              <span className="text-primary-black text-opacity-50 text-sm">{articleTitle.length}/2000</span>
             </div>
             <input
               type="text"
               id="title"
               value={articleTitle}
               onChange={(e) => setArticleTitle(e.target.value)}
+              maxLength={2000}
               placeholder="Enter the title"
               className="flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2"
             />

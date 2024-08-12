@@ -15,7 +15,7 @@ export default function DeleteAssistantDialog({
     <Dialog>
       <DialogTrigger asChild>
         <button className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300">
-          <Trash2 size={15} />
+          <Trash2 size={20} />
         </button>
       </DialogTrigger>
       <DialogContent className="max-w-[520px]">

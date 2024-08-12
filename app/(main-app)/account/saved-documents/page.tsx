@@ -15,7 +15,7 @@ export default function SavedDocuments() {
           <h1 className="text-2xl font-semibold">All documents</h1>
           <button
             onClick={() => router.back()}
-            className="text-[#212833] bg-primary-green/10 hover:bg-primary-green/20 sheen flex gap-2 px-3.5 py-1.5 rounded-full font-medium items-center">
+            className="text-[#212833] bg-primary-green/10 hover:bg-primary-green/20 sheen flex gap-2 px-3.5 py-1.5 rounded-full font-medium items-center  transition-all duration-300">
             <ArrowBack />
             Back
           </button>

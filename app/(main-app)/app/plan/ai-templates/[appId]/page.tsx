@@ -252,8 +252,7 @@ export default function AiAppPage({ params: { appTemplateId } }: { params: { app
     });
   };
 
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>, index: number) => {
-    const { value } = e.target;
+  const handleSelectChange = (value: string, index: number) => {
     setUserPrompts((prevPrompts) => {
       const updatedPrompts = [...prevPrompts];
       updatedPrompts[index] = value.trim();
@@ -263,7 +262,7 @@ export default function AiAppPage({ params: { appTemplateId } }: { params: { app
 
   const handleSaveDocument = async () => {
     if (!fileName) {
-      return toast.error("Please enter document name")
+      return toast.error("Please enter document name");
     }
     setIsDocumentSavePending(true);
     try {
@@ -319,7 +318,7 @@ export default function AiAppPage({ params: { appTemplateId } }: { params: { app
     }
   };
 
-  const handleFavourite = async (method: string, templateId: string) => {
+  const handleFavorite = async (method: string, templateId: string) => {
     try {
       const response = await instance.put(API_URL + `/ai/api/v1/chat-template/fav-apps/${templateId}`, { type: method });
       toast.success(response.data.message);
@@ -377,9 +376,9 @@ export default function AiAppPage({ params: { appTemplateId } }: { params: { app
               </div>
               <div className="cursor-pointer w-full max-w-fit transition duration-300 hover:scale-125 flex justify-center items-center">
                 {appTemplate.favorite ? (
-                  <BsStarFill size={24} className="text-yellow-300" onClick={() => handleFavourite("remove", appTemplate._id)} />
+                  <BsStarFill size={24} className="text-yellow-300" onClick={() => handleFavorite("remove", appTemplate._id)} />
                 ) : (
-                  <StarIcon className="text-[#ADADAD]" onClick={() => handleFavourite("add", appTemplate._id)} />
+                  <StarIcon className="text-[#ADADAD]" onClick={() => handleFavorite("add", appTemplate._id)} />
                 )}
               </div>
             </div>
@@ -457,6 +456,7 @@ export default function AiAppPage({ params: { appTemplateId } }: { params: { app
                 {input.field_type === "Select list field" && (
                   <Dropdown
                     label={input.title}
+                    hideLabel
                     items={input.description.split(",").map((option: string) => option.trim())}
                     value={userPrompts[index]}
                     onChange={(value: any) => handleSelectChange(value, index)}

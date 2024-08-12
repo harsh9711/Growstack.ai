@@ -152,7 +152,7 @@ const Page = () => {
         <>
           <div className="flex justify-between p-4">
             <Link href="/app/plan/custom-gpts">
-              <button className="text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-1.5 rounded-full font-medium items-center">
+              <button className="text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-1.5 rounded-full font-medium items-center  transition-all duration-300">
                 <ArrowBack />
                 Back
               </button>

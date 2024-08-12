@@ -158,27 +158,27 @@ const navLinks: NavLink[] = [
           {
             icon: <WhatsappIcon />,
             name: "WhatsApp overview",
-            href: "/app/engage/integration/whatsapp-automation",
+            href: "/app/engage/automation/whatsapp-automation",
           },
           {
             icon: <TelegramIcon />,
             name: "Telegram overview",
-            href: "/app/engage/integration/telegram-automation",
+            href: "/app/engage/automation/telegram-automation",
           },
           // {
           //   icon: <CampaignIcon />,
           //   name: "Campaigns",
-          //   href: "/app/engage/integration/campaigns",
+          //   href: "/app/engage/automation/campaigns",
           // },
           // {
           //   icon: <AiAssistantIcon />,
           //   name: "AI assistant",
-          //   href: "/app/engage/integration/ai-assistant",
+          //   href: "/app/engage/automation/ai-assistant",
           // },
           // {
           //   icon: <SettingsIcon />,
           //   name: "Settings",
-          //   href: "/app/engage/integration/settings",
+          //   href: "/app/engage/automation/settings",
           // },
         ],
       },

@@ -20,7 +20,7 @@ export default function Topbar({
           <div>
             <p className="flex items-center gap-2 text-primary-black text-opacity-70">
               <Link href="/app/plan/custom-gpts">
-                <button className="text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-1.5 rounded-full font-medium items-center">
+                <button className="text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-1.5 rounded-full font-medium items-center  transition-all duration-300">
                   <ArrowBack />
                   <h2 className="text-sm font-medium">{from === "CREATE" ? "New GPT" : title}</h2>
                 </button>

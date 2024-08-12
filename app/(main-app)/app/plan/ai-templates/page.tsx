@@ -65,10 +65,8 @@ export default function AiAppTemplatesPage() {
   const [allAssistantsData, setAllAppTemplates] = useState<Assistant[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [isPending, setIsPending] = useState(false);
 
   const fetchAppTemplates = async () => {
-    setIsPending(true);
     try {
       let apiUrl = `${API_URL}/ai/api/v1/chat-template?category=${selectedTag}`;
       if (selectedTag === "My Assistants") {
@@ -77,7 +75,7 @@ export default function AiAppTemplatesPage() {
 
       const response = await instance.get(apiUrl);
 
-      const data = selectedTag === "My Assistants" ? response.data.data : response.data.data;
+      const data = response.data.data;
       if (data) {
         const formattedAssistants = data.map((assistant: any) => ({
           _id: assistant._id,
@@ -93,12 +91,11 @@ export default function AiAppTemplatesPage() {
     } catch (error) {
       console.error("Error fetching assistants:", error);
     } finally {
-      setIsPending(false);
       setLoading(false);
     }
   };
 
-  const handleFavourite = async (method: string, templateId: string) => {
+  const handleFavorite = async (method: string, templateId: string) => {
     try {
       const response = await instance.put(API_URL + `/ai/api/v1/chat-template/fav-apps/${templateId}`, { type: method });
       toast.success(response.data.message);
@@ -208,9 +205,9 @@ export default function AiAppTemplatesPage() {
                   </Link>
                   <div className="cursor-pointer w-full max-w-fit transition duration-300 hover:scale-125 flex justify-center items-center">
                     {appTemplate.favorite ? (
-                      <BsStarFill size={24} className="text-yellow-300" onClick={() => handleFavourite("remove", appTemplate._id)} />
+                      <BsStarFill size={24} className="text-yellow-300" onClick={() => handleFavorite("remove", appTemplate._id)} />
                     ) : (
-                      <StarIcon className="text-[#ADADAD]" onClick={() => handleFavourite("add", appTemplate._id)} />
+                      <StarIcon className="text-[#ADADAD]" onClick={() => handleFavorite("add", appTemplate._id)} />
                     )}
                   </div>
                 </div>

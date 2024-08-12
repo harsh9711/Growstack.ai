@@ -1,18 +1,20 @@
 "use client";
-import { useEffect, useState } from "react";
+import Spinner from "@/components/Spinner";
+import { ArrowBack } from "@/components/svgs";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Minus, Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Minus, Plus } from "lucide-react";
-import { Assistant } from "@/types/assistants";
-import AssistantsTable from "@/app/(main-app)/app/plan/ai-templates/components/AssistantsDataTable";
+import TemplatesTable from "../components/TemplatesDataTable";
 
-export default function CreateAssistantPage() {
+export default function CreateTemplatePage() {
   type UserInput = {
     title: string;
     description: string;
@@ -55,7 +57,7 @@ export default function CreateAssistantPage() {
   });
 
   const [isPending, setIsPending] = useState(false);
-  const [refreshAssistantsTable, setRefreshAssistantsTable] = useState(true);
+  const [refreshTemplatesTable, setRefreshTemplatesTable] = useState(true);
 
   type ValidationSchemaType = z.infer<typeof ValidationSchema>;
 
@@ -68,8 +70,6 @@ export default function CreateAssistantPage() {
   } = useForm<ValidationSchemaType>({
     resolver: zodResolver(ValidationSchema),
   });
-
-  const [assistants, setAssistants] = useState<Assistant[]>([]); // Initialize with an empty array
 
   const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
     setIsPending(true);
@@ -105,9 +105,7 @@ export default function CreateAssistantPage() {
       });
       setCategory(""); // Clear category after submission
       setUserInputs([{ title: "", description: "", type: "", required: "Optional" }]); // Reset userInputs
-      setRefreshAssistantsTable(true);
-      // Log userInputs to the console
-      console.log("User Inputs:", userInputFields);
+      setRefreshTemplatesTable(true);
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
@@ -152,9 +150,18 @@ export default function CreateAssistantPage() {
     });
   };
 
+  const router = useRouter();
   return (
-    <div>
-      <h1 className="text-2xl font-semibold mt-5">Create your own AI template</h1>
+    <div className="mt-10">
+      <div className="flex justify-between">
+        <h1 className="text-2xl font-semibold">Create your own AI template</h1>
+        <button
+          onClick={() => router.back()}
+          className="text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-1.5 rounded-full font-medium items-center  transition-all duration-300">
+          <ArrowBack />
+          Back
+        </button>
+      </div>
       <section className="bg-white border border-[#E4E4E4] rounded-3xl p-10 mt-5">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-5">
@@ -203,7 +210,7 @@ export default function CreateAssistantPage() {
                 </label>
                 <Input
                   type="text"
-                  placeholder="ex:<i class='fa-solid fa-books'></i>"
+                  placeholder="ex:<i class='fa-solid fa-books'></i> or SVG"
                   {...register("icon")}
                   value={formData.icon}
                   onChange={(e) => {
@@ -322,14 +329,14 @@ export default function CreateAssistantPage() {
             </div>
           </div>
           <div className="flex justify-end gap-4">
-            <button className="py-3.5 px-6 bg-primary-green sheen rounded-xl text-white mt-6" type="submit">
-              Create your own assistant
+            <button className="min-w-[200px] py-3.5 px-6 bg-primary-green sheen rounded-xl text-white mt-6 flex justify-center items-center" type="submit">
+              {isPending ? <Spinner /> : "Create your own AI template"}
             </button>
           </div>
         </form>
       </section>
       <section className="bg-white border border-[#E4E4E4] rounded-3xl p-10 mt-7">
-        <AssistantsTable refreshAssistantsTable={refreshAssistantsTable} setRefreshAssistantsTable={setRefreshAssistantsTable} />
+        <TemplatesTable refreshTemplatesTable={refreshTemplatesTable} setRefreshTemplatesTable={setRefreshTemplatesTable} />
       </section>
     </div>
   );

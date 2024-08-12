@@ -13,6 +13,7 @@ import ChatMessage from "./ChatMessage";
 import SidebarItem from "./SidebarItem";
 import { formatRelativeDate } from "@/utils/dates";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 interface LayoutProps {
   sidebarItems: ISidebarItem[];
@@ -90,12 +91,23 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
       console.error("Error renaming chat:", error);
     }
   };
+
+  // delete chat functions
+  const [deleteRequestPending, setDeleteRequestPending] = useState(false);
   const handleDelete = async (_id: string) => {
+    setDeleteRequestPending(true);
     try {
       await instance.delete(`${API_URL}/ai/api/v1/conversation/${_id}`);
       fetchConversations();
-    } catch (error) {
-      console.error("Error renaming chat:", error);
+    } catch (error: any) {
+      console.error("Error deleting chat:", error);
+      if (error.response) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error(error.message);
+      }
+    } finally {
+      setDeleteRequestPending(false);
     }
   };
 
@@ -136,8 +148,8 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
   const groupedFilteredSidebarItems = groupByDate(filteredSidebarItems);
 
   return (
-    <div className="flex-1 flex gap-4 mt-10 ">
-      <aside className="flex flex-col w-[380px] border bg-white rounded-3xl h-[calc(100vh-176px)]">
+    <div className="flex-1 flex gap-4">
+      <aside className="flex flex-col w-[380px] border bg-white rounded-3xl h-[calc(100vh-212px)]">
         <div className="flex gap-2 p-5">
           <Select value={selectedOption} onValueChange={setSelectedOption}>
             <SelectTrigger className="w-[200px] h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4">
@@ -187,7 +199,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
         <div className="border-y border-[#EFEFEF] flex items-center justify-between py-3 px-6">
           <h2 className="font-semibold">Your conversations</h2>
         </div>
-        <div className="flex-1 overflow-y-auto p-5 space-y-5">
+        <div className="flex-1 overflow-y-auto p-5 space-y-4">
           {Object.entries(groupedFilteredSidebarItems).map(([date, items]) => (
             <div key={date}>
               <h3 className="text-gray-400 px-3 mb-2 capitalize">{formatRelativeDate(date)}</h3>
@@ -200,9 +212,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
                   onSelect={() => setSelectedConversation(item._id)}
                   onDelete={handleDelete}
                   onRename={handleRename}
-                  setSidebarItems={(value: React.SetStateAction<any[]>) => {
-                    throw new Error("Function not implemented.");
-                  }}
+                  deletePending={deleteRequestPending}
                 />
               ))}
             </div>
@@ -210,7 +220,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
         </div>
         <div className="h-20 w-full bg-gradient-to-b from-transparent via-white to-white rounded-b-3xl" />
       </aside>
-      <main className="w-full flex-1 flex flex-col bg-white p-4 rounded-3xl border h-[calc(100vh-176px)]">
+      <main className="w-full flex-1 flex flex-col bg-white p-4 rounded-3xl border h-[calc(100vh-212px)]">
         <div className="flex-1 p-4 overflow-y-auto flex flex-col">
           {!messages.length ? (
             <div className="flex-1 flex flex-col justify-center items-center pb-40 space-y-4">

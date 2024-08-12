@@ -102,7 +102,6 @@ const ChatInput: React.FC<ChatInputProps> = ({
       removeMessage();
     }
   };
-  console.log("hereeee", { isAnimating, open });
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {

@@ -99,7 +99,7 @@ export default function Sidebar({ isOpen, onClose, assistant_id }: IProps) {
               Loading....
             </div>
           ) : (
-            <div className="flex flex-col gap-3 max-h-[65vh] overflow-y-auto hidden-scrollbar">
+            <div className="flex flex-col gap-3 max-h-[calc(100vh-412px)] overflow-y-auto hidden-scrollbar">
               {filteredAssistants.map((assistant) => (
                 <Link
                   key={assistant.id}
