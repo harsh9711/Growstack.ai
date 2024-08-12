@@ -5,8 +5,9 @@ import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
 import Spinner from "@/components/Spinner";
-import { Clock, Trash2 } from "lucide-react";
+import { Clock, Edit, Trash2 } from "lucide-react";
 import { formatDateTime } from "@/utils/dates";
+import SchedulerModal from "../SchedulerModal";
 
 interface Props {
   workflowId: string;
@@ -30,7 +31,35 @@ type WorkflowSchedule = {
 
 const Schedules: React.FC<Props> = ({ workflowId }) => {
   const [loading, setLoading] = useState(false);
+  const [isSchedulerModalOpen, setIsSchedulerModalOpen] = useState(false);
   const [schedule, setSchedule] = useState<WorkflowSchedule | null>(null);
+  const [isNewScheduleAdded, setIsNewScheduleAdded] = useState(false);
+  const [workFlowData, setWorkFlowData] = useState<WorkFlowData>({
+    name: "",
+    actions: [],
+    input_configs: [],
+    output_configs: [],
+    social_media_requirement: false,
+    status: "",
+    workflow_id: "",
+  });
+
+  const fetchWorkflowData = async (id: string) => {
+    setLoading(true);
+    try {
+      const response = await instance.get(`${API_URL}/workflow/api/v1/${id}`);
+      setWorkFlowData(response.data.data);
+    } catch (error: any) {
+      console.error("Error fetching workflow data:", error);
+      if (error.response) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const fetchSchedule = async (id: string) => {
     try {
@@ -48,7 +77,6 @@ const Schedules: React.FC<Props> = ({ workflowId }) => {
       setLoading(false);
     }
   };
-console.log(schedule);
   const [deleteRequestPending, setDeleteRequestPending] = useState(false);
   const handleDeleteSchedule = async () => {
     setDeleteRequestPending(true);
@@ -71,8 +99,9 @@ console.log(schedule);
     if (workflowId) {
       setLoading(true);
       fetchSchedule(workflowId);
+      fetchWorkflowData(workflowId);
     }
-  }, [workflowId]);
+  }, [workflowId, isNewScheduleAdded]);
 
   if (loading) {
     return (
@@ -90,6 +119,11 @@ console.log(schedule);
           <div className="h-60 flex flex-col justify-center items-center gap-3">
             <h1 className="text-xl">Oops!</h1>
             <p>No schedules planned for this work flow</p>
+            <button
+              className="w-full max-w-fit bg-primary-green text-white sheen transition duration-500 px-5 h-12 rounded-xl flex items-center gap-2 whitespace-nowrap"
+              onClick={() => setIsSchedulerModalOpen(true)}>
+              Create a new schedule
+            </button>
           </div>
         ) : (
           <div>
@@ -98,15 +132,24 @@ console.log(schedule);
                 <Clock size={22} />
                 Schedule Details
               </h1>
-              <button onClick={handleDeleteSchedule} className="bg-red-100 h-12 w-12 rounded-xl grid place-content-center text-rose-500 cursor-pointer">
-                {deleteRequestPending ? <Spinner color="#f43f5e" /> : <Trash2 size={20} />}
-              </button>
+              <div className="flex gap-2 items-center">
+                <button
+                  onClick={() => {
+                    setIsSchedulerModalOpen(true);
+                  }}
+                  className="bg-green-100 h-12 w-12 rounded-xl grid place-content-center text-green-500 cursor-pointer">
+                  {deleteRequestPending ? <Spinner color="#f43f5e" /> : <Edit size={20} />}
+                </button>
+                <button onClick={handleDeleteSchedule} className="bg-red-100 h-12 w-12 rounded-xl grid place-content-center text-rose-500 cursor-pointer">
+                  {deleteRequestPending ? <Spinner color="#f43f5e" /> : <Trash2 size={20} />}
+                </button>
+              </div>
             </div>
 
             <div className="space-y-4 divide-y mt-3">
               <p className="flex items-center pt-4">
                 <span className="w-full max-w-[220px] font-medium text-gray-700">Frequency:</span>
-                <span className="w-full bg-gray-50 px-3 py-3 text-[15px] text-gray-500 rounded-lg">{schedule.frequency}</span>
+                <span className="w-full bg-gray-50 px-3 py-3 text-[15px] text-gray-500 rounded-lg capitalize">{schedule.frequency}</span>
               </p>
               <p className="flex items-center pt-4">
                 <span className="w-full max-w-[220px] font-medium text-gray-700">Number of Triggers:</span>
@@ -118,10 +161,12 @@ console.log(schedule);
                 <span className="w-full max-w-[220px] font-medium text-gray-700">Created On:</span>
                 <span className="w-full bg-gray-50 px-3 py-3 text-[15px] text-gray-500 rounded-lg">{formatDateTime(schedule.createdAt)}</span>
               </p>
-              <p className="flex items-center pt-4">
-                <span className="w-full max-w-[220px] font-medium text-gray-700">Day of Week:</span>
-                <span className="w-full bg-gray-50 px-3 py-3 text-[15px] text-gray-500 rounded-lg">{schedule.day_of_week}</span>
-              </p>
+              {schedule.frequency === "weekly" && (
+                <p className="flex items-center pt-4">
+                  <span className="w-full max-w-[220px] font-medium text-gray-700">Day of Week:</span>
+                  <span className="w-full bg-gray-50 px-3 py-3 text-[15px] text-gray-500 rounded-lg">{schedule.day_of_week}</span>
+                </p>
+              )}
               <p className="flex items-center pt-4">
                 <span className="w-full max-w-[220px] font-medium text-gray-700">Time:</span>
                 <span className="w-full bg-gray-50 px-3 py-3 text-[15px] text-gray-500 rounded-lg">{schedule.time}</span>
@@ -134,6 +179,13 @@ console.log(schedule);
           </div>
         )}
       </div>
+      <SchedulerModal
+        show={isSchedulerModalOpen}
+        setShow={setIsSchedulerModalOpen}
+        workFlowData={workFlowData}
+        setWorkFlowData={setWorkFlowData}
+        onAddSchedule={() => setIsNewScheduleAdded(true)}
+      />
     </div>
   );
 };

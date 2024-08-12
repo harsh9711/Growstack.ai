@@ -17,6 +17,7 @@ interface SchedulerModalProps {
   setShow: (value: boolean) => void;
   workFlowData: WorkFlowData;
   setWorkFlowData: (workflow: WorkFlowData) => void;
+  onAddSchedule?: () => void;
 }
 
 type Fields = {
@@ -26,7 +27,7 @@ type Fields = {
   timezone: string;
 };
 
-function SchedulerModal({ show, setShow: onHide, workFlowData, setWorkFlowData }: SchedulerModalProps) {
+function SchedulerModal({ show, setShow: onHide, workFlowData, setWorkFlowData, onAddSchedule }: SchedulerModalProps) {
   const router = useRouter();
   const [fields, setFields] = useState<Fields>({
     frequency: "",
@@ -74,6 +75,7 @@ function SchedulerModal({ show, setShow: onHide, workFlowData, setWorkFlowData }
       }
     } finally {
       setIsPending(false);
+      onAddSchedule && onAddSchedule();
     }
   };
 
@@ -145,7 +147,7 @@ function SchedulerModal({ show, setShow: onHide, workFlowData, setWorkFlowData }
                 <input
                   type="text"
                   placeholder={input.placeholder}
-                  className="w-full p-4 h-[46px] border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
+                  className="w-full p-4 h-[46px] border border-gray-100 bg-[#F5F5F5] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
                   value={input.default_value}
                   onChange={(e) => handleChangeInput(e.target.value, idx)}
                 />

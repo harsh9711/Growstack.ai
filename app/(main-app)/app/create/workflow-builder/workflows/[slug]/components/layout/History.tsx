@@ -25,6 +25,7 @@ import DeleteHistoryModal from "../DeleteHistoryModal";
 import toast from "react-hot-toast";
 import { formatDateTime } from "@/utils/dates";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface Props {
   workflowId: string;
@@ -64,77 +65,80 @@ type WorkflowHistoryResponse = {
   };
 };
 
-export const columns: ColumnDef<RunnerDetail>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-        onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => <Checkbox checked={row.getIsSelected()} onCheckedChange={(value: any) => row.toggleSelected(!!value)} aria-label="Select row" />,
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "workflow_runner_id",
-    header: "Workflow Runner ID",
-    cell: ({ row }) => <div>{row.getValue("workflow_runner_id")}</div>,
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => (
-      <div className={clsx("py-1.5 px-2 rounded max-w-fit", row.original.status === "Success" ? "text-green-600 bg-green-100" : "text-red-600 bg-red-100")}>
-        {row.getValue("status")}
-      </div>
-    ),
-  },
-  {
-    accessorKey: "updatedAt",
-    header: "Updated At",
-    cell: ({ row }) => <div>{formatDateTime(row.getValue("updatedAt"))}</div>,
-  },
-
-  {
-    id: "actions",
-    enableHiding: false,
-    header: "Actions",
-    cell: ({ row }) => {
-      const historyItem = row.original;
-
-      return (
-        <div className="flex items-center space-x-3">
-          <Button variant="outline" className="!bg-white hover:shadow-lg hover:shadow-gray-200 rounded-lg transition-all duration-300 h-10">
-            View Details
-          </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Link href={``}>
-                <Button variant="outline" className="h-8 w-8 p-0 !bg-white">
-                  <MoreHorizontal className="h-4 w-4" />
-                </Button>
-              </Link>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => navigator.clipboard.writeText(historyItem.workflow_runner_id)}>Copy workflow Runner ID</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Rerun Workflow</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      );
-    },
-  },
-];
-
 const History: React.FC<Props> = ({ workflowId }) => {
+  const columns: ColumnDef<RunnerDetail>[] = [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+          onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => <Checkbox checked={row.getIsSelected()} onCheckedChange={(value: any) => row.toggleSelected(!!value)} aria-label="Select row" />,
+      enableSorting: false,
+      enableHiding: false,
+    },
+    {
+      accessorKey: "workflow_runner_id",
+      header: "Workflow Runner ID",
+      cell: ({ row }) => <div>{row.getValue("workflow_runner_id")}</div>,
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      cell: ({ row }) => (
+        <div className={clsx("py-1.5 px-2 rounded max-w-fit", row.original.status === "Success" ? "text-green-600 bg-green-100" : "text-red-600 bg-red-100")}>
+          {row.getValue("status")}
+        </div>
+      ),
+    },
+    {
+      accessorKey: "updatedAt",
+      header: "Updated At",
+      cell: ({ row }) => <div>{formatDateTime(row.getValue("updatedAt"))}</div>,
+    },
+
+    {
+      id: "actions",
+      enableHiding: false,
+      header: "Actions",
+      cell: ({ row }) => {
+        const historyItem = row.original;
+
+        return (
+          <div className="flex items-center space-x-3">
+            <Button
+              onClick={() => handleRedirect(0, historyItem.workflow_runner_id)}
+              variant="outline"
+              className="!bg-white hover:shadow-lg hover:shadow-gray-200 rounded-lg transition-all duration-300 h-10">
+              View Details
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Link href={``}>
+                  <Button variant="outline" className="h-8 w-8 p-0 !bg-white">
+                    <MoreHorizontal className="h-4 w-4" />
+                  </Button>
+                </Link>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuItem onClick={() => navigator.clipboard.writeText(historyItem.workflow_runner_id)}>Copy workflow Runner ID</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => handleRedirect(0, historyItem.workflow_runner_id)}>Rerun Workflow</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        );
+      },
+    },
+  ];
   const [workFlowHistory, setWorkFlowHistory] = useState<WorkflowHistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [sorting, setSorting] = useState<SortingState>([]);
+  const router = useRouter();
 
   const fetchWorkflowHistory = async (id: string) => {
     try {
@@ -179,6 +183,14 @@ const History: React.FC<Props> = ({ workflowId }) => {
       setIsDeleteRequestPending(false);
       setIsDeleteHistoryModalOpen(false);
     }
+  };
+
+  const handleRedirect = (index: number, runner_id: string) => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("tab", index.toString());
+    params.set("pre_filled", "true");
+    params.set("runner_id", runner_id);
+    router.push(`?${params.toString()}`);
   };
 
   const runnerDetails = workFlowHistory[0]?.runnerDetails || [];

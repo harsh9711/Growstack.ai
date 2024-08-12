@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FaPlay } from "react-icons/fa6";
 import OutputCard from "../OutputCard";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import SchedulerModal from "../SchedulerModal";
 
 type TempOutput = {
@@ -38,6 +38,7 @@ interface Props {
 const Run: React.FC<Props> = ({ workflowId }) => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const searchParams = useSearchParams(); // Use this to get URL parameters
   const [workFlowResults, setWorkFlowResults] = useState<WorkFlowResults>({
     outputs: [],
     status: true,
@@ -45,7 +46,7 @@ const Run: React.FC<Props> = ({ workflowId }) => {
     temp_outputs: [],
     workflow_runner_id: "",
   });
-  
+
   const [workFlowData, setWorkFlowData] = useState<WorkFlowData>({
     name: "",
     actions: [],
@@ -72,8 +73,6 @@ const Run: React.FC<Props> = ({ workflowId }) => {
       } else {
         toast.error(error.message);
       }
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -143,9 +142,50 @@ const Run: React.FC<Props> = ({ workflowId }) => {
     }
   };
 
+  //This function for viewing runner history
+  const fetchRunnerData = async (runnerId: string) => {
+    try {
+      const response = await instance.get(`${API_URL}/workflow/api/v1/runner/${runnerId}`);
+      const runnerData = response.data.data;
+
+      setWorkFlowData((prevData) => {
+        const updatedInputConfigs = prevData.input_configs.map((config) => {
+          const matchedInput = runnerData.inputs.find((input: any) => input.variable_name === config.variable_name);
+          return matchedInput ? { ...config, default_value: matchedInput.variable_value } : config;
+        });
+
+        return {
+          ...prevData,
+          input_configs: updatedInputConfigs,
+        };
+      });
+
+      setWorkFlowResults(runnerData);
+    } catch (error) {
+      console.error("Error fetching runner data:", error);
+    } finally {
+      const params = new URLSearchParams(window.location.search);
+      params.delete("tab");
+      params.delete("pre_filled");
+      params.delete("runner_id");
+
+      router.replace(`?${params.toString()}`, undefined);
+    }
+  };
+
   useEffect(() => {
+    const tab = searchParams.get("tab");
+    const preFilled = searchParams.get("pre_filled");
+    const runnerId = searchParams.get("runner_id");
+
     if (workflowId) {
-      fetchWorkflowData(workflowId);
+      fetchWorkflowData(workflowId)
+        .then(() => {
+          if (tab && preFilled && runnerId) {
+            fetchRunnerData(runnerId);
+          }
+        })
+        .finally(() => setLoading(false));
     }
   }, [workflowId]);
 
@@ -203,14 +243,12 @@ const Run: React.FC<Props> = ({ workflowId }) => {
                   className={clsx("w-full bg-[#03473729] flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 text-primary-green")}
                   onClick={() => setIsSchedulerModalOpen(true)}>
                   <Clock size={20} />
-                  <h2 className="text-[#14171B]">Schedule a workflow run time.</h2>
+                  <h2 className="text-[#14171B]">Schedule Workflow</h2>
                 </button>
               </div>
             )}
           </div>
-
-          {/* Results Section */}
-          <div className="flex flex-col gap-7 !mt-10">
+          <div className="flex flex-col gap-6 mt-6">
             <div className="flex flex-col gap-2 items-start">
               <h1 className="text-2xl font-semibold text-left">Results</h1>
               <p className="text-[#14171B]/80">Your output will appear below.</p>

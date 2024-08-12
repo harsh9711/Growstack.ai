@@ -1,4 +1,5 @@
 "use client";
+
 import { ArrowBack } from "@/components/svgs";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
@@ -16,22 +17,6 @@ const Page = () => {
   const tabQueryParam = searchParams.get("tab");
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabDistanceFromLeft, setDistanceFromLeft] = useState(0);
-  const tabs = ["Run", "History", "Schedules"];
-
-  useEffect(() => {
-    const tab = tabQueryParam ? Number(tabQueryParam) : 0;
-    setSelectedTabIndex(tab);
-    const totalTabs = tabs.length;
-    const percentage = (tab / totalTabs) * 100;
-    setDistanceFromLeft(percentage);
-  }, [tabQueryParam]);
-
-  const handleTabClick = (index: number) => {
-    const params = new URLSearchParams(window.location.search);
-    params.set("tab", index.toString());
-    router.push(`?${params.toString()}`);
-  };
-
   const [workFlowData, setWorkFlowData] = useState<WorkFlowData>({
     name: "",
     actions: [],
@@ -41,6 +26,34 @@ const Page = () => {
     status: "",
     workflow_id: "",
   });
+  const [tabs, setTabs] = useState(["Run", "History", "Schedules"]);
+
+  useEffect(() => {
+    const tab = tabQueryParam ? Number(tabQueryParam) : 0;
+    setSelectedTabIndex(tab);
+    const totalTabs = tabs.length;
+    const percentage = (tab / totalTabs) * 100;
+    setDistanceFromLeft(percentage);
+  }, [tabQueryParam, tabs]);
+
+  useEffect(() => {
+    const id = searchParams.get("workflow_id");
+    if (id) {
+      setWorkflowId(id);
+      fetchWorkflowData(id);
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (!workFlowData.social_media_requirement) {
+      setTabs(["Run", "History"]); // Remove "Schedules" tab if condition is false
+      if (selectedTabIndex === 2) {
+        setSelectedTabIndex(0); // Switch to the first tab if "Schedules" was selected
+      }
+    } else {
+      setTabs(["Run", "History", "Schedules"]); // Restore "Schedules" tab if condition is true
+    }
+  }, [workFlowData]);
 
   const fetchWorkflowData = async (id: string) => {
     try {
@@ -51,13 +64,11 @@ const Page = () => {
     }
   };
 
-  useEffect(() => {
-    const id = searchParams.get("workflow_id");
-    if (id) {
-      setWorkflowId(id);
-      fetchWorkflowData(id);
-    }
-  }, [searchParams]);
+  const handleTabClick = (index: number) => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("tab", index.toString());
+    router.push(`?${params.toString()}`);
+  };
 
   const renderContent = (selectedTabIndex: number) => {
     switch (selectedTabIndex) {
@@ -66,7 +77,9 @@ const Page = () => {
       case 1:
         return <History workflowId={workflowId} />;
       case 2:
-        return <Schedules workflowId={workflowId}/>;
+        return <Schedules workflowId={workflowId} />;
+      default:
+        return <Run workflowId={workflowId} />;
     }
   };
 
@@ -92,7 +105,6 @@ const Page = () => {
                   {tab}
                 </div>
               ))}
-
               <div
                 className="absolute bottom-0 h-[40px] bg-gray-100 custom-transition rounded-lg"
                 style={{
