@@ -1,37 +1,22 @@
 "use client";
-
-import { VideoMedia } from "@/components/svgs";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Image from "next/image";
-import { ChevronRight, Plus, Search } from "lucide-react";
-import { TbTemplate } from "react-icons/tb";
-import PptDialog from "./PptDialog";
-import VideoTemplateCard from "./VideoTemplateCard";
+import {  Plus, Search } from "lucide-react";
 import { Template } from "./types";
 import Motion from "@/components/Motion";
 import Spinner from "@/components/Spinner";
-import { GenerateAi } from "@/components/svgs";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+
 import { API_URL } from "@/lib/api";
 import instance from "@/config/axios.config";
 import clsx from "clsx";
-import { AnimatePresence, motion } from "framer-motion";
-import { Base64 } from "js-base64";
-import { Minus } from "lucide-react";
+import {  motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { HiOutlineQuestionMarkCircle } from "react-icons/hi2";
 import { z } from "zod";
 import AvatarSelection from "./AvatarSelection";
 import AudioBox from "./AudioBox";
 import { CustomSelect } from "./Select";
-import TemplateLoader from "./TemplateLoader";
 export interface VideoStatus {
   createdAt: number;
   download: string;

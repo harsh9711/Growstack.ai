@@ -1,6 +1,11 @@
 "use client";
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import Spinner from "@/public/svgs/spinner";
 import { useRouter } from "next/navigation";
 import instance from "@/config/axios.config";
@@ -9,7 +14,12 @@ import Dropdown from "@/components/Dropdown";
 import toast from "react-hot-toast";
 import { API_URL } from "@/lib/api";
 import { useState } from "react";
-import { days_of_week, frequency_options, timezones } from "./constants/data";
+import {
+  days_of_week,
+  frequency_options,
+  timezones,
+  days_of_month,
+} from "./constants/data";
 import { Input } from "@/components/ui/input";
 
 interface SchedulerModalProps {
@@ -23,15 +33,23 @@ interface SchedulerModalProps {
 type Fields = {
   frequency: string;
   day_of_week: string;
+  day_of_month: string;
   time: string;
   timezone: string;
 };
 
-function SchedulerModal({ show, setShow: onHide, workFlowData, setWorkFlowData, onAddSchedule }: SchedulerModalProps) {
+function SchedulerModal({
+  show,
+  setShow: onHide,
+  workFlowData,
+  setWorkFlowData,
+  onAddSchedule,
+}: SchedulerModalProps) {
   const router = useRouter();
   const [fields, setFields] = useState<Fields>({
     frequency: "",
     day_of_week: "",
+    day_of_month: "",
     time: "",
     timezone: "",
   });
@@ -48,7 +66,9 @@ function SchedulerModal({ show, setShow: onHide, workFlowData, setWorkFlowData, 
 
     try {
       const runner_payload = {
-        actions_with_runs: workFlowData.actions.map((action) => ({ action: action._id })),
+        actions_with_runs: workFlowData.actions.map((action) => ({
+          action: action._id,
+        })),
         inputs: workFlowData.input_configs.map((input) => ({
           variable_name: input.variable_name,
           variable_value: input.default_value,
@@ -59,11 +79,14 @@ function SchedulerModal({ show, setShow: onHide, workFlowData, setWorkFlowData, 
           variable_type: output.type,
         })),
       };
-      const response = await instance.post(`${API_URL}/workflow/api/v1/schedule`, {
-        workflow_id: workFlowData.workflow_id,
-        ...fields,
-        runner_payload,
-      });
+      const response = await instance.post(
+        `${API_URL}/workflow/api/v1/schedule`,
+        {
+          workflow_id: workFlowData.workflow_id,
+          ...fields,
+          runner_payload,
+        }
+      );
       toast.success(response.data.message);
       onHide(false);
     } catch (error: any) {
@@ -125,25 +148,47 @@ function SchedulerModal({ show, setShow: onHide, workFlowData, setWorkFlowData, 
                 onChange={(value) => handleChangeField("timezone", value)}
                 required={true}
               />
-              <Dropdown
-                label="Select day of the week"
-                items={days_of_week}
-                showTitle={true}
-                title="Day of the week"
-                value={fields.day_of_week}
-                onChange={(value) => handleChangeField("day_of_week", value)}
-                required={fields.frequency === "weekly"} // Only required if frequency is "weekly"
-                disabled={fields.frequency !== "weekly"}
-              />
+
+              {fields.frequency === "weekly" && (
+                <Dropdown
+                  label="Select day of the week"
+                  items={days_of_week}
+                  showTitle={true}
+                  title="Day of the Week"
+                  value={fields.day_of_week}
+                  onChange={(value) => handleChangeField("day_of_week", value)}
+                  required={true}
+                />
+              )}
+
+              {fields.frequency === "monthly" && (
+                <Dropdown
+                  label="Select day of the month"
+                  items={days_of_month}
+                  showTitle={true}
+                  title="Day of the Month"
+                  value={fields.day_of_month}
+                  onChange={(value) => handleChangeField("day_of_month", value)}
+                  required={true}
+                />
+              )}
+
               <div className="space-y-2">
                 <label className="text-[15px]">Time</label>
-                <Input type="time" value={fields.time} onChange={(e) => handleChangeField("time", e.target.value)} />
+                <Input
+                  type="time"
+                  value={fields.time}
+                  onChange={(e) => handleChangeField("time", e.target.value)}
+                  required={true}
+                />
               </div>
             </div>
             {workFlowData.input_configs.map((input, idx) => (
               <div key={idx}>
                 <h2 className="font-medium">{input.display_name}</h2>
-                <div className="font-light mt-3 mb-2 text-[14px]">{input.description}</div>
+                <div className="font-light mt-3 mb-2 text-[14px]">
+                  {input.description}
+                </div>
                 <input
                   type="text"
                   placeholder={input.placeholder}
@@ -157,12 +202,14 @@ function SchedulerModal({ show, setShow: onHide, workFlowData, setWorkFlowData, 
           <div className="flex justify-end gap-3 w-full">
             <button
               className="h-12 w-full max-w-[100px] px-6 bg-white border text-primary-green border-primary-green rounded-xl mt-6"
-              onClick={() => onHide(false)}>
+              onClick={() => onHide(false)}
+            >
               Cancel
             </button>
             <button
               className="h-12 w-full max-w-[160px] px-6 bg-primary-green sheen rounded-xl text-white mt-6 flex items-center justify-center gap-3 whitespace-nowrap"
-              onClick={handleScheduleWorkflow}>
+              onClick={handleScheduleWorkflow}
+            >
               {isPending && <Spinner />}
               Continue
             </button>
