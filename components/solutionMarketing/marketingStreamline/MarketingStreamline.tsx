@@ -2,10 +2,9 @@ import React, { useEffect } from 'react'
 import AOS from "aos";
 import "aos/dist/aos.css";
 import './MarketingStreamline.scss'
-import { Autoplay, Navigation } from 'swiper/modules';
+import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import 'swiper/css/navigation';
 const MarketingStreamline: React.FC = () => {
   useEffect(() => {
     AOS.init();
@@ -31,8 +30,7 @@ const MarketingStreamline: React.FC = () => {
           loop={true}
           speed={5000}
           // centeredSlides={true}
-          navigation={true}
-          modules={[Autoplay, Navigation]}
+          modules={[Autoplay]}
           className="mySwiper"
           breakpoints={{
             1400: {
@@ -56,6 +54,7 @@ const MarketingStreamline: React.FC = () => {
           <SwiperSlide>
             <div className="card">
                 <span>01</span>
+                <img src="/images_growstack/solutions/marketSol1.svg" alt="marketsolimg" />
                 <h4>Strategic planning and ideation</h4>
                 <p>Develop a comprehensive marketing strategy and plan that aligns with your business goals.</p>
             </div>
@@ -63,6 +62,7 @@ const MarketingStreamline: React.FC = () => {
           <SwiperSlide>
             <div className="card">
                 <span>02</span>
+                <img src="/images_growstack/solutions/marketSol2.svg" alt="marketsolimg" />
                 <h4>Content creation and development</h4>
                 <p>Create engaging, high-quality content for various marketing channels.</p>
             </div>
@@ -70,6 +70,7 @@ const MarketingStreamline: React.FC = () => {
           <SwiperSlide>
             <div className="card">
                 <span>03</span>
+                <img src="/images_growstack/solutions/marketSol3.svg" alt="marketsolimg" />
                 <h4>Campaign management and execution</h4>
                 <p>Execute marketing campaigns efficiently and nage day-to-day tasks.</p>
             </div>
@@ -77,6 +78,7 @@ const MarketingStreamline: React.FC = () => {
           <SwiperSlide>
             <div className="card">
                 <span>04</span>
+                <img src="/images_growstack/solutions/marketSol4.svg" alt="marketsolimg" />
                 <h4>Engaging with your audience</h4>
                 <p>Analyze campaign performance and optimize strategies for better results.</p>
             </div>
@@ -84,6 +86,7 @@ const MarketingStreamline: React.FC = () => {
           <SwiperSlide>
             <div className="card">
                 <span>05</span>
+                <img src="/images_growstack/solutions/marketSol5.svg" alt="marketsolimg" />
                 <h4>Data analysis and optimization</h4>
                 <p>Analyze campaign performance and optimize strategies for better results.</p>
             </div>
@@ -91,6 +94,7 @@ const MarketingStreamline: React.FC = () => {
           <SwiperSlide>
             <div className="card">
                 <span>06</span>
+                <img src="/images_growstack/solutions/marketSol6.svg" alt="marketsolimg" />
                 <h4>Integrating technologies and exploring new tools</h4>
                 <p>Adopt new technologies and integrate tools for enhanced marketing capabilities.</p>
             </div>

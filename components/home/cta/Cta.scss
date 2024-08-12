@@ -35,7 +35,7 @@
     p{
         color: white;
     }
-    a{
+    .getStart{
         display: inline-block;
         background: #034737;
         color: #fff;
@@ -46,7 +46,7 @@
         font-family: "PoppinsMedium";
         text-decoration: none;
         transition: all 0.3s ease;
-        margin-top: 10px;
+        margin-top: 25px;
         display: flex;
         align-items: center;
         flex-direction: row;
@@ -73,6 +73,20 @@
                 fill: #fff;
             }
 
+        }
+    }
+    .store{
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-top: 25px;
+        a{
+            img{
+                height: 51px;
+                @media screen and (max-width: $breakpoint_mobile_portrait) {
+                    height: 45px;
+                }
+            }
         }
     }
     .ctaImg{

@@ -1,0 +1,191 @@
+@import "../../../app/variables.scss";
+
+.features {
+    padding: 0px 0 220px;
+    @media (max-width: $breakpoint_tablet) {
+        padding:0 0 70px;
+    }
+    @media (max-width: $breakpoint_mobile_portrait) {
+        overflow: hidden;
+        text-align: center;
+        padding:0 0 40px;
+    }
+      
+      
+        .feature-blocks {
+          position: relative;
+          padding-top: 60px;
+          @media screen and (max-width: $breakpoint_tablet) {
+            padding-top: 20px;
+          }
+          .row{
+            @media screen and (max-width: $breakpoint_mobile_portrait) {
+                gap: 40px;
+              }
+          }
+           .curveLine{
+            position: relative;
+            .curveImg{
+              height: 1451px;
+                position: absolute;
+                top: 65%;
+                left: 48%;
+                transform: translate(-50%, -50%);
+                @media screen and (max-width: $breakpoint_tablet) {
+                    display: none;
+                 }
+            }
+           } 
+          @media (max-width: $breakpoint_mobile_portrait) {
+            padding-top: 30px;
+        }
+          .feature-block {
+            background-color: white;
+            box-shadow: 0px 11px 13px -2px rgba(0, 0, 0, 0.1019607843);
+            border-radius: 30px;
+            padding: 30px;
+            border: 1px solid #DADADA;
+            position: relative;
+            margin-bottom: 220px;
+            width: 100%;
+            opacity: 1 !important;
+            @media screen and (max-width: $breakpoint_tablet) {
+               margin-bottom: 40px;
+               &:last-child{
+                   margin-bottom: 0;
+               }
+             }
+            &:nth-child(odd) {
+                border-left: 6px solid #034737;
+              }
+        
+              &:nth-child(even) {
+                border-right: 6px solid #034737;
+              }
+            h3 {
+              font-size: 36px;
+              margin-bottom: 15px;
+              @media screen and (max-width: $breakpoint_mobile_portrait) {
+                font-size: 28px;
+              }
+            }
+      
+            p {
+                font-size: 18px;
+              margin-bottom: 15px;
+              @media screen and (max-width: $breakpoint_mobile_portrait) {
+                font-size: 16px;
+              }
+            }
+      
+            ul {
+              list-style: none;
+              padding-left: 40px;
+      
+              li {
+                margin-bottom: 15px;
+                font-size: 18px;
+                position: relative;
+                font-weight: 500;
+                @media screen and (max-width: $breakpoint_mobile_portrait) {
+                    font-size: 16px;
+                  }
+                &:last-child {
+                  margin-bottom: 0;
+                }
+                &::after{
+                    content: '';
+                    display: block;
+                    width: 20px;
+                    height: 20px;
+                    background: url("../../../public/images_growstack/home/check.svg");
+                    background-size: contain;
+                    background-repeat: no-repeat;
+                    position: absolute;
+                    top: 6px;
+                    left: -40px;
+
+                }
+              }
+            }
+      
+            .feature-image {
+             width: 100%;
+            height: auto;
+            max-width: 500px;
+            }
+          }
+          .feature-block-flex{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 200px;
+            position: relative;
+            @media screen and (max-width: $breakpoint_tablet) {
+                gap: 0;
+                flex-direction: column;
+                margin: 40px 0;
+              }
+            .boxLineImg{
+                position: absolute;
+                top: 40%;
+                left: 50%;
+                transform: translate(-51%, -50%);
+                z-index: 9;
+                @media screen and (max-width: $breakpoint_tablet) {
+                    display: none;
+                 }
+            }
+            .feature-block{
+                z-index: 99;
+                img{
+                    margin-bottom: 30px;
+                    @media screen and (max-width: $breakpoint_tablet) {
+                      margin: 0 auto 30px;
+                      }
+                }
+                &:nth-child(odd) {
+                    text-align: end;
+                    @media screen and (max-width: $breakpoint_tablet) {
+                       text-align: left;
+                      }
+                    ul{
+                        padding-right: 40px;
+                        @media screen and (max-width: $breakpoint_tablet) {
+                           padding-left: 40px;
+                            padding-right: 0;
+                          }
+                        li{
+                            &::after{
+                                left: auto;
+                                right: -40px;
+                                @media screen and (max-width: $breakpoint_tablet) {
+                                    left: -40px;
+                                    right: auto;
+                                  }
+                            }
+                        }
+                    }
+                  }
+            }
+          }
+          .trophyLine{
+            position: relative;
+            margin-top: -40px;
+            @media screen and (max-width: $breakpoint_tablet) {
+               margin: 0;
+              }
+            .trophyImg{
+                position: absolute;
+                top: 61%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                @media screen and (max-width: $breakpoint_tablet) {
+                   display: none;
+                }
+            }
+           }
+        }
+      
+
+}

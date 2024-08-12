@@ -16,51 +16,45 @@ const MarketingTechnology: React.FC = () => {
     }, []);
     const slideData = [
         {
-            title: 'Contacts',
+            title: 'Tech Exploration',
             imageSrc: '/sliderimages/slider1.svg',
-            subtitle: 'Boost productivity Optimize ROI by 20%',
-            tags: ['Custom solutions'],
-            description: 'AI Custom GPT Offers tailored AI applications for specific marketing needs, delivering customized solutions for content creation, campaign management, and customer engagement.',
+            tags: ['AI playground'],
+            description: 'AI Playground Provides a platform for comparing and exploring the latest AI models and technologies, helping you stay ahead of trends and find the best solutions for your needs.',
             icon: '/images_growstack/solutions/contacts.svg'
         },
         {
-            title: 'AI Playground',
+            title: 'Automated Messages',
             imageSrc: '/sliderimages/slider2.svg',
-            subtitle: 'Reduce decision-making time by 40% increase efficiency',
-            tags: ['Tech Exploration'],
-            description: 'AI Playground Provides a platform for comparing and exploring the latest AI models and technologies, helping you stay ahead of trends and find the best solutions for your needs.',
+            tags: ['WA and TELE Automation'],
+            description: 'WhatsApp and Telegram Automation Automates messaging on WhatsApp and Telegram to streamline communication and maintain consistent interactions across popular platforms.',
             icon: '/images_growstack/solutions/aiPlay.svg'
         },
         {
-            title: 'AI Article Wizard',
+            title: 'Custom Solutions',
             imageSrc: '/sliderimages/slider3.svg',
-            subtitle: 'Reduce decision-making time by 40% increase efficiency',
-            tags: ['WhatsApp and Telegram automation'],
-            description: 'Uses advanced data scraping and analysis to find and connect with potential customers. helping you gather valuable insights and target the right prospects.',
+            tags: ['AI Custom GPT'],
+            description: 'AI Custom GPT Offers tailored AI applications for specific marketing needs, delivering customized solutions for content creation, campaign management, and customer engagement. ',
             icon: '/images_growstack/solutions/aiaWizard.svg'
         },
         {
-            title: 'Contacts',
+            title: 'Tech Exploration',
             imageSrc: '/sliderimages/slider1.svg',
-            subtitle: 'Boost productivity Optimize ROI by 20%',
-            tags: ['Custom solutions'],
-            description: 'AI Custom GPT Offers tailored AI applications for specific marketing needs, delivering customized solutions for content creation, campaign management, and customer engagement.',
+            tags: ['AI playground'],
+            description: 'AI Playground Provides a platform for comparing and exploring the latest AI models and technologies, helping you stay ahead of trends and find the best solutions for your needs.',
             icon: '/images_growstack/solutions/contacts.svg'
         },
         {
-            title: 'AI Playground',
+            title: 'Automated Messages',
             imageSrc: '/sliderimages/slider2.svg',
-            subtitle: 'Reduce decision-making time by 40% increase efficiency',
-            tags: ['Tech Exploration'],
-            description: 'AI Playground Provides a platform for comparing and exploring the latest AI models and technologies, helping you stay ahead of trends and find the best solutions for your needs.',
+            tags: ['WA and TELE Automation'],
+            description: 'WhatsApp and Telegram Automation Automates messaging on WhatsApp and Telegram to streamline communication and maintain consistent interactions across popular platforms.',
             icon: '/images_growstack/solutions/aiPlay.svg'
         },
         {
-            title: 'AI Article Wizard',
+            title: 'Custom Solutions',
             imageSrc: '/sliderimages/slider3.svg',
-            subtitle: 'Reduce decision-making time by 40% increase efficiency',
-            tags: ['WhatsApp and Telegram automation'],
-            description: 'Uses advanced data scraping and analysis to find and connect with potential customers. helping you gather valuable insights and target the right prospects.',
+            tags: ['AI Custom GPT'],
+            description: 'AI Custom GPT Offers tailored AI applications for specific marketing needs, delivering customized solutions for content creation, campaign management, and customer engagement. ',
             icon: '/images_growstack/solutions/aiaWizard.svg'
         },
     ]
@@ -128,7 +122,6 @@ const MarketingTechnology: React.FC = () => {
         <div className="image-wrapper">
           <img src={item.imageSrc} alt={item.title} />
         </div>
-        <h2 className="slide-subtitle">{item.subtitle}</h2>
         <div className="tags-wrapper">
           {item.tags.map((tag, tagIndex) => (
             <span key={tagIndex} className="tag">
