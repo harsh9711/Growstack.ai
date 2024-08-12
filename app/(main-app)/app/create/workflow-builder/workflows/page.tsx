@@ -3,7 +3,7 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
-import { Edit, History, MoreVertical, Plus, Trash2 } from "lucide-react";
+import { Edit, History, MoreVertical, Plus, Trash2, WorkflowIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
@@ -12,6 +12,7 @@ import { FaPlay } from "react-icons/fa6";
 import { formatUpdatedAt } from "./utils";
 import EditModal from "./components/EditModal";
 import Spinner from "@/components/Spinner";
+import { WorkflowsIcon, WorkflowsIcon2 } from "@/components/svgs";
 
 type Workflow = {
   [key: string]: string;
@@ -25,7 +26,10 @@ export default function Workflows() {
   const [editWorkFlow, setEditWorkFlow] = useState<Workflow>({});
   const [loading, setLoading] = useState(false);
 
+  const [isCreateWorkflowReqPending, setIsCreateWorkflowReqPending] = useState(false);
+  const [clickedBtnIdx, setClickedBtnIdx] = useState<number | null>(null);
   const createWorkflow = async () => {
+    setIsCreateWorkflowReqPending(true);
     try {
       const response = await instance.post(`${API_URL}/workflow/api/v1`);
       const newWorkflowId = response.data.data.workflow_id;
@@ -34,6 +38,8 @@ export default function Workflows() {
     } catch (error) {
       console.error("Error creating workflow:", error);
       toast.error("Error creating workflow");
+    } finally {
+      setIsCreateWorkflowReqPending(false);
     }
   };
 
@@ -59,16 +65,22 @@ export default function Workflows() {
       console.log("Error deleting workflow:", error);
     }
   };
-
+  const [isEditRequestPending, setIsEditRequestPending] = useState(false);
   const handleEditWorkFlow = async () => {
+    setIsEditRequestPending(true);
     try {
+      if (!editWorkFlow.name) {
+        toast.error("please provide a name");
+      }
       await instance.put(`${API_URL}/workflow/api/v1/${editWorkFlow.workflow_id}`, { name: editWorkFlow.name });
       toast.success("Workflow edited successfully");
       setShowEditModal(false);
       getAllWorkFlows();
     } catch (error) {
-      toast.error("Error editing workflow");
+      toast.error("Something went wrong editing workflow");
       console.log(error);
+    } finally {
+      setIsEditRequestPending(false);
     }
   };
 
@@ -93,14 +105,16 @@ export default function Workflows() {
           <div className="space-y-2 w-full">
             <h1 className="text-2xl font-semibold">Workflows</h1>
           </div>
-          <Link href="/app/create/workflow-builder/create-workflow" className="min-w-fit">
-            <button
-              className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2 whitespace-nowrap"
-              onClick={createWorkflow}>
-              <Plus size={20} />
-              Create workflow
-            </button>
-          </Link>
+          <button
+            disabled={isCreateWorkflowReqPending}
+            className="w-full max-w-fit bg-primary-green text-white sheen transition duration-500 px-5 h-12 rounded-xl flex items-center gap-2 whitespace-nowrap"
+            onClick={() => {
+              setClickedBtnIdx(0);
+              createWorkflow();
+            }}>
+            {isCreateWorkflowReqPending && clickedBtnIdx === 0 ? <Spinner /> : <Plus size={20} />}
+            Create workflow
+          </button>
         </div>
         <div className="grid grid-cols-2 gap-5 mt-5">
           {loading ? (
@@ -117,11 +131,22 @@ export default function Workflows() {
               </p>
               <div className="flex space-x-3 items-center">
                 <Link href="/app/create/workflow-builder/">
-                  <button className="bg-primary-green text-white h-14 px-6 rounded-xl sheen">Explore prebuilt workflows</button>
+                  <button className="w-full max-w-fit bg-primary-green text-white sheen transition duration-500 px-5 h-14 rounded-xl flex items-center gap-2 whitespace-nowrap">
+                    <WorkflowsIcon size={20}/>
+                    <WorkflowsIcon2 size={20}/>
+                    Explore prebuilt workflows
+                  </button>
                 </Link>
-                <Link href="/app/create/workflow-builder/create-workflow">
-                  <button className="bg-primary-green text-white h-14 px-6 rounded-xl sheen">Create your own workflow</button>
-                </Link>
+                <button
+                  disabled={isCreateWorkflowReqPending}
+                  className="w-full max-w-fit bg-primary-green text-white sheen transition duration-500 px-5 h-14 rounded-xl flex items-center gap-2 whitespace-nowrap"
+                  onClick={() => {
+                    setClickedBtnIdx(1);
+                    createWorkflow();
+                  }}>
+                  {isCreateWorkflowReqPending && clickedBtnIdx === 1 ? <Spinner /> : <Plus size={20} />}
+                  Create your own workflow
+                </button>
               </div>
             </div>
           ) : (
@@ -188,9 +213,9 @@ export default function Workflows() {
       <EditModal
         show={showEditModal}
         onHide={setShowEditModal}
+        isEditRequestPending={isEditRequestPending}
         editWorkFlow={editWorkFlow}
         setEditWorkFlow={setEditWorkFlow}
-        workflow={editWorkFlow}
         onSave={handleEditWorkFlow}
       />
     </Fragment>

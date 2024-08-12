@@ -31,8 +31,6 @@ export function ProfileButton() {
     router.push("/auth/login");
   };
 
-  console.log("currentUser", currentUser)
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

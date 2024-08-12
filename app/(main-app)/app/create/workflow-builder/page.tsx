@@ -1,13 +1,10 @@
 "use client";
 
-import { WorkflowsIcon, WorkflowsIcon2 } from "@/components/svgs";
-import { API_URL } from "@/lib/api";
 import instance from "@/config/axios.config";
-import { Plus, Search } from "lucide-react";
+import { API_URL } from "@/lib/api";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useEffect, useState } from "react";
 import WorkflowLoader from "./components/WorkflowLoader";
 
 type PreBuiltTemplate = {
@@ -20,9 +17,7 @@ type PreBuiltTemplate = {
 };
 
 export default function WorkflowBuilder() {
-  const [workflowId, setWorkflowId] = useState(null);
   const [preBuiltTemplates, setPreBuiltTemplates] = useState<PreBuiltTemplate[]>([]);
-  const router = useRouter();
   const getPreBuiltTemplates = async () => {
     try {
       const response = await instance.get(`${API_URL}/workflow/api/v1?pre_built=true`);
@@ -113,8 +108,8 @@ type CardProps = {
 };
 
 const Card: React.FC<CardProps> = ({ title, description, imageSrc }) => (
-  <div className="p-8 bg-white rounded-3xl border border-[#E8E8E8] hover:shadow-xl hover:shadow-gray-200/60 transition-all duration-300 cursor-pointer space-y-4 min-h-[300px]">
-    <Image src={imageSrc} alt={title} width={400} height={400} className="w-full h-32 object-cover rounded-xl" />
+  <div className="p-5 bg-white rounded-3xl border border-[#E8E8E8] hover:shadow-xl hover:shadow-gray-200/60 transition-all duration-300 cursor-pointer space-y-4 min-h-[315px]">
+    <Image src={imageSrc} alt={title} width={400} height={400} className="w-full h-40 object-cover rounded-xl" />
     <h3 className="text-xl font-semibold leading-relaxed line-clamp-1 text-ellipsis overflow-hidden" title={title}>
       {title}
     </h3>

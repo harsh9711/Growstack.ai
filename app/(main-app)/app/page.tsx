@@ -162,7 +162,7 @@ export default function Dashboard() {
             </p> */}
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mt-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mt-5">
           <div className="bg-white py-7 px-8 rounded-3xl flex justify-between items-center shadow-2xl shadow-gray-200">
             <div className="space-y-3">
               <p className="text-[#4B4B4B]">Total balance</p>

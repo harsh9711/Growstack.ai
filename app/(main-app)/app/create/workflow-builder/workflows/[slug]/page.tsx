@@ -6,41 +6,17 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import History from "./components/layout/History";
+import Schedules from "./components/layout/Schedules";
 import Run from "./components/layout/Run";
-
-type WorkFlowData = {
-  actions: any[];
-  input_configs: any[];
-  output_configs: any[];
-  name: string;
-};
-
-type TempOutput = {
-  variable_name: string;
-  variable_type: string;
-  variable_value: string;
-  _id: string;
-};
-
-type WorkFlowResults = {
-  outputs: any[];
-  status: boolean;
-  failed_step: number;
-  paused?: boolean;
-  temp_outputs: TempOutput[];
-  workflow_runner_id: string;
-};
 
 const Page = () => {
   const [workflowId, setWorkflowId] = useState("");
-
   const router = useRouter();
   const searchParams = useSearchParams();
   const tabQueryParam = searchParams.get("tab");
-
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabDistanceFromLeft, setDistanceFromLeft] = useState(0);
-  const tabs = ["Run", "History"];
+  const tabs = ["Run", "History", "Schedules"];
 
   useEffect(() => {
     const tab = tabQueryParam ? Number(tabQueryParam) : 0;
@@ -57,10 +33,13 @@ const Page = () => {
   };
 
   const [workFlowData, setWorkFlowData] = useState<WorkFlowData>({
+    name: "",
     actions: [],
     input_configs: [],
     output_configs: [],
-    name: "",
+    social_media_requirement: false,
+    status: "",
+    workflow_id: "",
   });
 
   const fetchWorkflowData = async (id: string) => {
@@ -86,6 +65,8 @@ const Page = () => {
         return <Run workflowId={workflowId} />;
       case 1:
         return <History workflowId={workflowId} />;
+      case 2:
+        return <Schedules workflowId={workflowId}/>;
     }
   };
 
@@ -99,7 +80,7 @@ const Page = () => {
           </button>
         </Link>
         <div className="flex justify-center">
-          <div className="w-full max-w-[250px]">
+          <div className="w-full max-w-[320px]">
             <div className="w-full flex relative">
               {tabs.map((tab, index) => (
                 <div

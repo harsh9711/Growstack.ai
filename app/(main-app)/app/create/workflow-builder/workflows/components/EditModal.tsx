@@ -3,6 +3,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
+import Spinner from "@/public/svgs/spinner";
 import { Edit } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -15,11 +16,11 @@ interface EditModalProps {
   onHide: (value: boolean) => void;
   editWorkFlow: Workflow;
   setEditWorkFlow: (params: Workflow) => void;
+  isEditRequestPending: boolean;
   onSave: () => void;
-  workflow: Workflow;
 }
 
-function EditModal({ show, onHide, editWorkFlow, setEditWorkFlow, onSave, workflow }: EditModalProps) {
+function EditModal({ show, onHide, editWorkFlow, setEditWorkFlow, onSave, isEditRequestPending }: EditModalProps) {
   const router = useRouter();
   return (
     <Dialog open={show} onOpenChange={onHide}>
@@ -53,8 +54,10 @@ function EditModal({ show, onHide, editWorkFlow, setEditWorkFlow, onSave, workfl
                 Cancel
               </button>
               <button
+                disabled={isEditRequestPending}
                 className="py-3.5 h-14 w-full max-w-[200px] px-6 bg-primary-green sheen rounded-xl text-white mt-6 flex items-center justify-center gap-3 whitespace-nowrap"
                 onClick={onSave}>
+                {isEditRequestPending && <Spinner />}
                 Save
               </button>
             </div>

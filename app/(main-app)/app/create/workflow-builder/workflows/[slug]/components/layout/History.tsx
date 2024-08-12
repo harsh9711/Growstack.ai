@@ -140,8 +140,13 @@ const History: React.FC<Props> = ({ workflowId }) => {
     try {
       const response = await instance.get<WorkflowHistoryResponse>(`${API_URL}/workflow/api/v1/history/${id}`);
       setWorkFlowHistory(response.data.data.data);
-    } catch (error) {
+    } catch (error: any) {
       console.log("Error fetching workflow data:", error);
+      if (error.response) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error(error.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -156,10 +161,13 @@ const History: React.FC<Props> = ({ workflowId }) => {
 
   const [isDeleteHistoryModalOpen, setIsDeleteHistoryModalOpen] = useState(false);
   const [isDeleteRequestPending, setIsDeleteRequestPending] = useState(false);
+
   const handleDeleteHistory = async (workflowId: string) => {
     setIsDeleteRequestPending(true);
     try {
-      await instance.delete(`${API_URL}/workflow/api/v1/history/${workflowId}`);
+      const response = await instance.delete(`${API_URL}/workflow/api/v1/history/${workflowId}`);
+      await fetchWorkflowHistory(workflowId);
+      toast.success(response.data.message);
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.error);
@@ -168,7 +176,6 @@ const History: React.FC<Props> = ({ workflowId }) => {
       }
       console.error("Error deleting workflow history:", error);
     } finally {
-      await fetchWorkflowHistory(workflowId);
       setIsDeleteRequestPending(false);
       setIsDeleteHistoryModalOpen(false);
     }

@@ -1,0 +1,141 @@
+"use client";
+
+import React, { useEffect, useState } from "react";
+import instance from "@/config/axios.config";
+import { API_URL } from "@/lib/api";
+import toast from "react-hot-toast";
+import Spinner from "@/components/Spinner";
+import { Clock, Trash2 } from "lucide-react";
+import { formatDateTime } from "@/utils/dates";
+
+interface Props {
+  workflowId: string;
+}
+
+type WorkflowSchedule = {
+  _id: string;
+  user_id: string;
+  workflow_id: string;
+  frequency: "daily" | "weekly" | "monthly";
+  day_of_week?: string;
+  time: string;
+  timezone: string;
+  cronJobId: string;
+  triggered_times: string[];
+  cronExpression: string;
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+};
+
+const Schedules: React.FC<Props> = ({ workflowId }) => {
+  const [loading, setLoading] = useState(false);
+  const [schedule, setSchedule] = useState<WorkflowSchedule | null>(null);
+
+  const fetchSchedule = async (id: string) => {
+    try {
+      const response = await instance.get(`${API_URL}/workflow/api/v1/schedule/${id}`);
+      const scheduleData = response.data.data.length === 0 ? null : response.data.data;
+      setSchedule(scheduleData);
+    } catch (error: any) {
+      console.error("Error fetching schedule:", error);
+      if (error.response) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+console.log(schedule);
+  const [deleteRequestPending, setDeleteRequestPending] = useState(false);
+  const handleDeleteSchedule = async () => {
+    setDeleteRequestPending(true);
+    try {
+      const response = await instance.delete(`${API_URL}/workflow/api/v1/schedule/${workflowId}`);
+      fetchSchedule(workflowId);
+      toast.success(response.data.message);
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error(error.message);
+      }
+    } finally {
+      setDeleteRequestPending(false);
+    }
+  };
+
+  useEffect(() => {
+    if (workflowId) {
+      setLoading(true);
+      fetchSchedule(workflowId);
+    }
+  }, [workflowId]);
+
+  if (loading) {
+    return (
+      <div className="flex-1 flex flex-col gap-5 justify-center items-center min-h-[30vh]">
+        <Spinner color="black" size={50} />
+        Loading...
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-3">
+      <div className="!bg-white p-8 rounded-3xl shadow-gray-200 shadow-2xl mt-5">
+        {!schedule ? (
+          <div className="h-60 flex flex-col justify-center items-center gap-3">
+            <h1 className="text-xl">Oops!</h1>
+            <p>No schedules planned for this work flow</p>
+          </div>
+        ) : (
+          <div>
+            <div className="flex items-center justify-between">
+              <h1 className="text-xl font-medium flex items-center gap-2">
+                <Clock size={22} />
+                Schedule Details
+              </h1>
+              <button onClick={handleDeleteSchedule} className="bg-red-100 h-12 w-12 rounded-xl grid place-content-center text-rose-500 cursor-pointer">
+                {deleteRequestPending ? <Spinner color="#f43f5e" /> : <Trash2 size={20} />}
+              </button>
+            </div>
+
+            <div className="space-y-4 divide-y mt-3">
+              <p className="flex items-center pt-4">
+                <span className="w-full max-w-[220px] font-medium text-gray-700">Frequency:</span>
+                <span className="w-full bg-gray-50 px-3 py-3 text-[15px] text-gray-500 rounded-lg">{schedule.frequency}</span>
+              </p>
+              <p className="flex items-center pt-4">
+                <span className="w-full max-w-[220px] font-medium text-gray-700">Number of Triggers:</span>
+                <span className="w-full bg-gray-50 px-3 py-3 text-[15px] text-gray-500 rounded-lg">
+                  {schedule.triggered_times.length} time{schedule.triggered_times.length !== 1 && "s"}
+                </span>
+              </p>
+              <p className="flex items-center pt-4">
+                <span className="w-full max-w-[220px] font-medium text-gray-700">Created On:</span>
+                <span className="w-full bg-gray-50 px-3 py-3 text-[15px] text-gray-500 rounded-lg">{formatDateTime(schedule.createdAt)}</span>
+              </p>
+              <p className="flex items-center pt-4">
+                <span className="w-full max-w-[220px] font-medium text-gray-700">Day of Week:</span>
+                <span className="w-full bg-gray-50 px-3 py-3 text-[15px] text-gray-500 rounded-lg">{schedule.day_of_week}</span>
+              </p>
+              <p className="flex items-center pt-4">
+                <span className="w-full max-w-[220px] font-medium text-gray-700">Time:</span>
+                <span className="w-full bg-gray-50 px-3 py-3 text-[15px] text-gray-500 rounded-lg">{schedule.time}</span>
+              </p>
+              <p className="flex items-center pt-4">
+                <span className="w-full max-w-[220px] font-medium text-gray-700">Timezone:</span>
+                <span className="w-full bg-gray-50 px-3 py-3 text-[15px] text-gray-500 rounded-lg">{schedule.timezone}</span>
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Schedules;
