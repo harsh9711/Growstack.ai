@@ -12,6 +12,7 @@ import MarketingStreamline from "./components/marketingStreamline/MarketingStrea
 import AOS from "aos";
 import "aos/dist/aos.css";
 import MarketingEfficiency from "./components/marketingEfficiency/MarketingEfficiency";
+import GridComponentSecond from "./components/GridBoxes2";
 
 const page = () => {
   useEffect(() => {
@@ -426,10 +427,41 @@ const page = () => {
           <ImageGalleryLine />
         </div>
       </section>
+      <section className="relative mx-auto items-center justify-center py-20 bg-white">
+  <div className="flex flex-col items-center justify-center mx-auto gap-2">
+    <div
+      data-aos="fade-up"
+      data-aos-duration="1200"
+      data-aos-offset="200"
+      className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit"
+    >
+    track
+    </div>
+
+    <h1
+      data-aos="fade-up"
+      data-aos-duration="1500"
+      data-aos-delay="300"
+      className="text-center text-[32px] 2xl:text-[42px] leading-normal"
+    >
+      <span className="text-black font-bold">Track and optimize</span>
+      <span className="text-black font-extralight"> sales performance</span>
+    </h1>
+
+    <div
+      data-aos="fade-up"
+      data-aos-duration="1800"
+      data-aos-delay="600"
+      className="items-center justify-center mx-auto relative 2xl:right-12 2xl:top-10"
+    >
+      <GridComponentSecond />
+    </div>
+  </div>
+</section>
   {/* <section>
     <MarketingEfficiency/>
   </section> */}
-      <section className="bg-[#E2F0CB] overflow-hidden   ">
+      {/* <section className="bg-[#E2F0CB] overflow-hidden   ">
         <div className="items-center justify-center flex flex-col gap-y-4  overflow-hidden ">
           <Image
             src="/solutions/design.svg"
@@ -440,7 +472,7 @@ const page = () => {
           />
         </div>
         <MarketingStreamline />
-      </section>
+      </section> */}
     </main>
   );
 };

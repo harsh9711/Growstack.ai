@@ -79,4 +79,19 @@
   .hover-boxsales4:hover {
     content: url('/solutions/sales/boxes/changedbox/box3.svg');
   }
+  .hover-boxsales1001:hover {
+    content: url('/solutions/sales2/boxes/changedbox/box1.svg');
+  }
+  
+  .hover-boxsales2001:hover {
+    content: url('/solutions/sales2/boxes/changedbox/box2.svg');
+  }
+  
+  .hover-boxsales3001:hover {
+    content: url('/solutions/sales2/boxes/changedbox/box4.svg');
+  }
+  
+  .hover-boxsales4001:hover {
+    content: url('/solutions/sales2/boxes/changedbox/box3.svg');
+  }
   
