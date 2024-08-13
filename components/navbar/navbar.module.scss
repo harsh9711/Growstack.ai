@@ -1,29 +1,35 @@
+.navbar {
+  --navbar-bg-color: linear-gradient(to bottom, #fff, transparent);
 
-.navbar{
-  background: linear-gradient(to bottom, #fff, transparent);
+  background: var(--navbar-bg-color);
   padding: 15px 0;
-  .flex{
+
+  .flex {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     .logo {
-      img{
+      img {
         width: 155px;
         height: 44px;
       }
     }
-    .items{
+
+    .items {
       display: flex;
       align-items: center;
       margin: 0;
     }
-    .flext{
+
+    .flext {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 70px;
+
       @media (max-width: 1200px) {
-       gap:45px;
+        gap: 45px;
       }
     }
   }

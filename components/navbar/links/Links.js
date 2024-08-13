@@ -28,6 +28,7 @@ const links = [
           { title: "Large Enterprise", path: "/solutions/largeenterprise" },
           { title: "MidMarket Enterprise",path: "/solutions/midmarketenterprise"  },
           { title: "Small businesses",path: "/solutions/smallbusinesses"  },
+          { title: "Sales",path: "/solutions/sales"  },
          
         ],
   },
