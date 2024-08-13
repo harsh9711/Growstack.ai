@@ -21,7 +21,7 @@ const MarketingStreamline: React.FC = () => {
                     </div>
                 </div>
                 <Swiper
-          slidesPerView={2.5}
+          slidesPerView={3.5}
           spaceBetween={10}
           autoplay={{
             delay: 500,
@@ -34,7 +34,7 @@ const MarketingStreamline: React.FC = () => {
           className="mySwiper"
           breakpoints={{
             1400: {
-              slidesPerView: 2.5,
+              slidesPerView: 3.5,
               spaceBetween: 10,
             },
             1000: {
