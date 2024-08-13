@@ -89,6 +89,7 @@ function SchedulerModal({
       );
       toast.success(response.data.message);
       onHide(false);
+      // router.refresh();
     } catch (error: any) {
       console.error("Error running workflow:", error);
       if (error.response) {
@@ -99,19 +100,20 @@ function SchedulerModal({
     } finally {
       setIsPending(false);
       onAddSchedule && onAddSchedule();
+      window.location.reload();
     }
   };
 
   const handleChangeField = (field: keyof Fields, value: string) => {
     setFields((prevFields) => ({
       ...prevFields,
-      [field]: value,
+      [field]: value || "-",
     }));
   };
 
   const handleChangeInput = (value: string, idx: number) => {
     const updatedInputs = [...workFlowData.input_configs];
-    updatedInputs[idx].default_value = value;
+    updatedInputs[idx].default_value = value || "-"; 
     setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
   };
 

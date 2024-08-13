@@ -1,0 +1,82 @@
+.hover-box1:hover {
+    content: url('/solutions/boxes/changedboxes/box1.svg');
+  }
+  
+  .hover-box2:hover {
+    content: url('/solutions/boxes/changedboxes/box2.svg');
+  }
+  
+  .hover-box3:hover {
+    content: url('/solutions/boxes/changedboxes/box4.svg');
+  }
+  
+  .hover-box4:hover {
+    content: url('/solutions/boxes/changedboxes/box3.svg');
+  }
+  
+  .hover\:scale-up:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease-in-out;
+  }
+  .hover-box11:hover {
+    content: url('/solutions/boxes/changedlines/box1.svg');
+  }
+  
+  .hover-box21:hover {
+    content: url('/solutions/boxes/changedlines/box2.svg');
+  }
+  
+  .hover-box31:hover {
+    content: url('/solutions/boxes/changedlines/box4.svg');
+  }
+  
+  .hover-box41:hover {
+    content: url('/solutions/boxes/changedlines/box3.svg');
+  }
+  .hover-box111:hover {
+    content: url('/solutions/boxes/changedsmall/box1.svg');
+  }
+  
+  .hover-box211:hover {
+    content: url('/solutions/boxes/changedsmall/box2.svg');
+  }
+  
+  .hover-box311:hover {
+    content: url('/solutions/boxes/changedsmall/box4.svg');
+  }
+  
+  .hover-box411:hover {
+    content: url('/solutions/boxes/changedsmall/box3.svg');
+  }
+  .hover-box10:hover {
+    content: url('/solutions/boxes/changedbox/box1.svg');
+  }
+  
+  .hover-box20:hover {
+    content: url('/solutions/boxes/changedbox/box2.svg');
+  }
+  
+  .hover-box30:hover {
+    content: url('/solutions/boxes/changedbox/box4.svg');
+  }
+  
+  .hover-box40:hover {
+    content: url('/solutions/boxes/changedbox/box3.svg');
+  }
+  
+  .hover-boxsales1:hover {
+    content: url('/solutions/sales/boxes/changedbox/box1.svg');
+  }
+  
+  .hover-boxsales2:hover {
+    content: url('/solutions/sales/boxes/changedbox/box2.svg');
+  }
+  
+  .hover-boxsales3:hover {
+    content: url('/solutions/sales/boxes/changedbox/box4.svg');
+  }
+  
+  .hover-boxsales4:hover {
+    content: url('/solutions/sales/boxes/changedbox/box3.svg');
+  }
+  
