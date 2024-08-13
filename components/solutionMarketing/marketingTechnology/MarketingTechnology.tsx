@@ -66,7 +66,7 @@ const MarketingTechnology: React.FC = () => {
                     <div className="title" data-aos="fade-up"
                         data-aos-easing="ease-in-sine"
                         data-aos-duration="1000">
-                        <span className="user">Lorem Ipsum 🔥</span>
+                        <span className="user">Technology</span>
                         <h2 className='heading mt-2'><span>Adopt and integrate </span>new technologies</h2>
                     </div>
                     <div data-aos="flip-up"

@@ -15,7 +15,7 @@ const MarketingAutomate: React.FC = () => {
                     <div className="title" data-aos="fade-up"
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
-                        <span className="user">Automate 🔥</span>
+                        <span className="user">Automate</span>
                         <h2 className='heading mt-2'><span>Streamline complex </span>marketing workflows</h2>
                         <p>Marketing workflows, ensuring consistency and efficiency across all marketing activates and helping you manage both daily tasks and strategic initiatives.</p>
                     </div>
