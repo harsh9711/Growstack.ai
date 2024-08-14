@@ -17,7 +17,7 @@ function Banner() {
               <div className="bannerContent">
                 <span className="user">AI assistants</span>
                 <h2 className="mtitle">
-                  <span>AI powered</span> <br /> assistants
+                  <span>AI powered</span> <br /> <h2 className="assist">assistants</h2>
                 </h2>
                 <p>
                   Revolutionize your organization with our AI-powered assistants, offering tailored experiences, boosting efficiency, and achieving maximum ROI
@@ -55,14 +55,14 @@ function Banner() {
               </div>
             </div>
             <div className="col-lg-6 bannerImg">
-              <img src="/images_growstack/salesMarketing/banner.png" alt="banner" />
+              <img src="/images_growstack/salesMarketing/banner.svg" alt="banner" />
             </div>
           </div>
         </div>
       </div>
       <div className="container">
         <div className="underBanner" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
-          <img src="/images_growstack/salesMarketing/underBanner.png" alt="salesMarketing" />
+          <img src="/aiassis.png" alt="salesMarketing" />
         </div>
       </div>
     </React.Fragment>

@@ -15,7 +15,7 @@ function CraftBrand() {
                             data-aos-duration="1000">
                 <span className="user">Efficiency unleashed</span>
                 <h3 className="heading">
-                    <span>Instantly craft, brand, and launch </span> <br /> your custom AI chatbot
+                    <span>Instantly craft, brand, and launch </span> <br />your custom AI chat
                 </h3>
             </div>
       <div className="appraoch_support_content">
@@ -29,9 +29,9 @@ function CraftBrand() {
                             <section data-aos="fade-left"
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
-                                <h3>Create your chatbot</h3>
+                                <h3>Create your AI chat</h3>
                                 <h5 className='heading'>Train on your data</h5>
-                                <p>Quickly upload files and websites to create a custom AI chatbot. No coding required.</p>
+                                <p>Quickly upload files and websites to create a custom AI chat. No coding required.</p>
                             </section>
                         </li>
                         <li>
@@ -43,9 +43,9 @@ function CraftBrand() {
                             <section data-aos="fade-left"
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
-                            <h3>Customize your chatbot</h3>
+                            <h3>Customize your chat</h3>
                                 <h5 className='heading'>Personalize and configure</h5>
-                                <p>Add details to tailor your chatbot’s personality and functionality to your needs.</p>
+                                <p>Add details to tailor your AI chat's personality and functionality to your needs.</p>
                             </section>
                         </li>
                         <li>
@@ -59,7 +59,7 @@ function CraftBrand() {
                             data-aos-duration="1000">
                             <h3>Launch and share</h3>
                                 <h5 className='heading'>Deploy with one click</h5>
-                                <p>Easily share your chatbot with friends, embed it on your website, or create a chat bubble.</p>
+                                <p>Easily share your AI chat with friends, embed it on your website.</p>
                             </section>
                         </li>
                     </ul>
