@@ -25836,7 +25836,8 @@ hr.hr--cs {
 footer.footer {
   width: 100%;
   height: 30px;
-  background: #424952;
+  background-color: #034737;
+  color: white;
   display: flex;
   position: fixed;
   z-index: 1050;
@@ -25855,7 +25856,7 @@ footer.footer .footer-left a.back {
   display: inline-block;
   height: 100%;
   align-items: center;
-  color: #2d9bc4;
+  color: white;
   font-size: 14px;
   text-decoration: none;
   width: 200px;
@@ -25876,8 +25877,10 @@ footer.footer .footer-left a.back i.fa-angle-left {
 
 footer.footer .footer-left a.back p {
   font-weight: 400;
+  font-size: 14px;
   float: left;
   margin-bottom: 0;
+  color: white;
   height: 95%;
   align-items: center;
   display: flex
@@ -29516,7 +29519,7 @@ select.form-control {
   align-items: center;
   cursor: pointer;
   border: 1px solid gray;
-  background: #424952
+  background: #034737
 }
 
 .box-popup-right i.icon-box {
@@ -31484,4 +31487,25 @@ body.swal2-no-backdrop .swal2-shown.swal2-bottom-right {
   body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) .swal2-container {
     position: static !important
   }
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+}
+
+*::-webkit-scrollbar-track {
+  background: white !important;
+  border-radius: 5px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #034737;
+  border-radius: 14px;
+  border: none;
+}
+
+.loading-page-overlay {
+  width: 100vw;
+  height: 100vh;
+  display: flex !important;
 }

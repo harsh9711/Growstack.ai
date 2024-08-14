@@ -1,105 +1,78 @@
-import { NextResponse } from "next/server";
-import path from "path";
+import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
-import { readdirSync, createReadStream } from "fs";
-import archiver from "archiver";
-import formidable from "formidable";
+import path from "path";
+import JSZip from "jszip";
+import { parse } from "qs";
 
-// Helper function to parse the incoming FormData
-async function parseFormData(req: Request) {
-  const form = formidable({ multiples: false });
-
-  return new Promise<{ fields: any }>((resolve, reject) => {
-    form.parse(req as any, (err, fields) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve({ fields });
-      }
-    });
-  });
-}
-
-// This will be the handler for POST requests to the API route
-export async function POST(req: Request) {
+export async function POST(request: NextRequest) {
   try {
-    // Parse the form data
-    const { fields } = await parseFormData(req);
+    const formData = await request.text();
+    const parsedData = parse(formData);
 
-    const template_id = fields.template_id;
-    const type = fields.type;
-    const content = fields.content;
+    const { template_id, type, content, ...extraData } = parsedData;
 
-    console.log(fields);
     if (!template_id || !type || !content) {
-      return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
+      return NextResponse.json({ message: "Missing required parameters" }, { status: 400 });
     }
 
-    // Get the directory path of the specified template
-    const dir = path.join(process.cwd(), "templates", type, template_id);
+    const dir = path.join(process.cwd(), "public/builderjs/templates", type as string, template_id as string);
     const filePath = path.join(dir, "index.html");
 
-    // Check if the file exists
     if (!fs.existsSync(filePath)) {
       return NextResponse.json({ message: `File not found: ${filePath}` }, { status: 404 });
     }
 
-    // Save the HTML content to the corresponding template's index.html file
-    fs.writeFileSync(filePath, content);
+    fs.writeFileSync(filePath, content as string);
 
-    // Create tmp directory if it doesn't exist
     const tmpDir = path.join(process.cwd(), "tmp");
     if (!fs.existsSync(tmpDir)) {
       fs.mkdirSync(tmpDir, { recursive: true });
     }
 
-    // Initialize archive object
-    const zipFile = path.join(tmpDir, `${template_id}.zip`);
-    const output = fs.createWriteStream(zipFile);
-    const archive = archiver("zip", { zlib: { level: 9 } });
+    const zipFileName = `${template_id}.zip`;
+    const zipFilePath = path.join(tmpDir, zipFileName);
+    const zip = new JSZip();
 
-    output.on("close", function () {
-      console.log(archive.pointer() + " total bytes");
-      console.log("Archiver has been finalized and the output file descriptor has closed.");
-    });
+    const addFolderToZip = (folderPath: string, zipFolder: JSZip) => {
+      const items = fs.readdirSync(folderPath, { withFileTypes: true });
 
-    archive.on("error", function (err) {
-      throw err;
-    });
+      for (const item of items) {
+        const fullPath = path.join(folderPath, item.name);
 
-    // Pipe the archive data to the file
-    archive.pipe(output);
-
-    // Append files to the archive
-    const files = readdirSync(dir);
-    files.forEach((file) => {
-      const fullPath = path.join(dir, file);
-      if (fs.lstatSync(fullPath).isFile()) {
-        archive.file(fullPath, { name: file });
+        if (item.isDirectory()) {
+          const folder = zipFolder.folder(item.name);
+          addFolderToZip(fullPath, folder!);
+        } else {
+          const fileContent = fs.readFileSync(fullPath);
+          zipFolder.file(item.name, fileContent);
+        }
       }
-    });
+    };
 
-    // Finalize the archive
-    await archive.finalize();
+    addFolderToZip(dir, zip);
 
-    // Prepare the response for downloading
-    const stats = fs.statSync(zipFile);
-    const fileStream = createReadStream(zipFile);
+    if (Object.keys(extraData).length > 0) {
+      zip.file("extraData.json", JSON.stringify(extraData));
+    }
 
-    return NextResponse.json(fileStream, {
-      headers: {
-        "Content-Description": "File Transfer",
-        "Content-Type": "application/octet-stream",
-        "Content-Disposition": `attachment; filename=${path.basename(zipFile)}`,
-        "Content-Transfer-Encoding": "binary",
-        Expires: "0",
-        "Cache-Control": "must-revalidate",
-        Pragma: "public",
-        "Content-Length": stats.size.toString(),
-      },
-    });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ message: "Server error" }, { status: 500 });
+    const zipContent = await zip.generateAsync({ type: "nodebuffer" });
+    fs.writeFileSync(zipFilePath, zipContent);
+
+    // Prepare the download response
+    const headers = {
+      "Content-Description": "File Transfer",
+      "Content-Type": "application/octet-stream",
+      "Content-Disposition": `attachment; filename=${zipFileName}`,
+      "Content-Transfer-Encoding": "binary",
+      Expires: "0",
+      "Cache-Control": "must-revalidate",
+      Pragma: "public",
+      "Content-Length": zipContent.length.toString(),
+    };
+
+    return new NextResponse(zipContent, { headers });
+  } catch (error: any) {
+    console.error("Error processing request:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
