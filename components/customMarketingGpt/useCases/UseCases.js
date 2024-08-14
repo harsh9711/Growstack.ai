@@ -15,13 +15,12 @@ function UseCases() {
             <div className="col-md-4" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
               <span className="user">Cases</span>
               <h3 className="heading">
-                <span>Use</span> casess
+                <span>Use</span> cases
               </h3>
             </div>
             <div className="col-md-8" data-aos="fade-left" data-aos-easing="ease-in-sine" data-aos-duration="1000">
               <p>
-                Custom GPTs aim to help you develop safe AGI tailored for any role you need, whether it's for customer service, customer engagement, or document
-                research
+              Custom GPTs aim to help you develop safe AI tailored for any role you need, whether it's for customer service, customer engagement, or document research
               </p>
             </div>
           </div>
