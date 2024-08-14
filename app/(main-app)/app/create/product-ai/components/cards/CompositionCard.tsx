@@ -5,7 +5,7 @@ import { formatDate } from "@/lib/utils";
 
 const CompositionCard = ({ img_url, updatedAt, doc_name }: historyProps) => {
   return (
-    <div className="hover-card-sm px-3 py-4 rounded-[14px] cursor-pointer space-y-5 ring-1 ring-[#D6D6D6]/40 ring-inset mb-2">
+    <div className="hover-card-sm px-3 py-4 rounded-[14px] cursor-pointer space-y-5 ring-1 ring-[#D6D6D6]/40 ring-inset mb-4">
       <div className="w-full h-[150px]">
         <Image
           src={img_url}

@@ -239,27 +239,28 @@ export default function Page() {
   };
 
   return (
-    <main className="mt-8 px-4">
-      <div className="flex gap-8">
-        <section className="w-full min-h-[200px] max-w-[450px] bg-white rounded-[20px] p-7 space-y-6">
-          <div className="border border-[#DBDBDB] bg-white p-1 rounded-xl">
-            <div className="flex relative">
+    <main className="flex-1 h-full mt-10 flex flex-col">
+      <div className="flex-1 flex gap-8">
+        <section className="relative w-full min-h-[200px] max-w-[450px] bg-white rounded-[20px] overflow-y-auto h-[calc(100vh-175px)]">
+          <div className="sticky top-0 px-7 py-4 bg-white">
+            <div className=" border border-[#DBDBDB] bg-white p-1 rounded-xl">
               <div
-                className={`w-full h-[40px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 text-[16px] ${"!text-white"}`}>
+                className={`w-full h-[40px] flex justify-center items-center cursor-pointer transition-all duration-500 text-[16px] !text-white bg-primary-green rounded-lg hover:bg-opacity-90`}>
                 History
               </div>
-              <div className="absolute bottom-0 w-[100%] h-[40px] bg-primary-green custom-transition rounded-lg"></div>
             </div>
           </div>
-          {historyLoading ? (
-            <div className="w-full h-[100px] flex justify-center items-center">
-              <Spinner size={25} color="black" />
-            </div>
-          ) : history.length > 0 ? (
-            <div>{<History history={history} />}</div>
-          ) : (
-            <div className="w-full h-[100px] text-center">No result</div>
-          )}
+          <div className="px-7 p-2">
+            {historyLoading ? (
+              <div className="w-full h-[100px] flex justify-center items-center">
+                <Spinner size={25} color="black" />
+              </div>
+            ) : history.length > 0 ? (
+              <div>{<History history={history} />}</div>
+            ) : (
+              <div className="w-full h-[100px] text-center">No result</div>
+            )}
+          </div>
         </section>
         <section className="w-full">
           {result ? (
@@ -287,14 +288,14 @@ export default function Page() {
             </>
           ) : (
             <form onSubmit={handleSubmit} className="bg-white border-gradient-blue-to-gray-to-r rounded-[28px] px-10 pb-6 space-y-8">
-              <div className="relative z-[1] max-w-5xl mx-auto">
+              <div className="relative z-[1] max-w-5xl mx-auto mt-4">
                 {fileUploadLoading ? (
-                  <div className="h-[250px] w-full flex justify-center items-center border border-[#F2F2F2]">
+                  <div className="h-[396px] w-full flex justify-center items-center border border-[#F2F2F2] rounded-xl">
                     <Spinner color="black" size={35} />
                   </div>
                 ) : productAI.img_url ? (
                   <>
-                    <div className="h-[250px] w-full mt-2 border border-[#F2F2F2]">
+                    <div className="h-[396px] w-full border border-[#F2F2F2] rounded-xl">
                       <img src={productAI.img_url} alt="Logo" className="w-full h-full object-contain" />
                     </div>
                     <div className="flex justify-end m-2">
@@ -324,7 +325,7 @@ export default function Page() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="text-[16px] w-[95px] flex justify-center bg-primary-green text-white px-[20px] py-[6px] rounded-md mr-[10px]">
+                    className="text-[16px] w-[120px] h-12 flex justify-center items-center bg-primary-green text-white rounded-xl">
                     {loading ? <Spinner /> : "Submit"}
                   </button>
                 </div>
