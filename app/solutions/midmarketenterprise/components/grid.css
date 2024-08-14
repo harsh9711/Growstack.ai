@@ -64,18 +64,18 @@
     content: url('/solutions/boxes/changedbox/box3.svg');
   }
   .hover-box101:hover {
-    content: url('/solutions/sales/boxes/changedbox/box1.svg');
+    content: url('/solutions/sales/boxes/hover/hover1.svg');
   }
   
   .hover-box202:hover {
-    content: url('/solutions/sales/boxes/changedbox/box2.svg');
-  }
-  
-  .hover-box303:hover {
-    content: url('/solutions/sales/boxes/changedbox/box4.svg');
+    content: url('/solutions/sales/boxes/hover/hover2.svg');
   }
   
   .hover-box404:hover {
-    content: url('/solutions/sales/boxes/changedbox/box3.svg');
+    content: url('/solutions/sales/boxes/hover/hover3.svg');
+  }
+  
+  .hover-box303:hover {
+    content: url('/solutions/sales/boxes/hover/hover4.svg');
   }
   

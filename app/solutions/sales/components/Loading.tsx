@@ -120,17 +120,17 @@ const LoadingBar: React.FC = () => {
 
     return (
         <div className='flex flex-col gap-y-10'>
-            <div className="">
+            <div className=" 2xl:items-start items-center justify-center flex flex-col gap-y-4 ">
                 <div
                     data-aos="fade-up"
                     data-aos-duration="1000"
-                    className="bg-white/10 hover:shadow-md  whitespace-nowrap  text-white py-2 px-4 flex items-center text-center text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[151px]">
+                    className="bg-white/10 hover:shadow-md   whitespace-nowrap  text-white  justify-center py-2 2xl:px-4 flex items-center text-center text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[130px] 2xl:max-w-[151px]">
                     Distinction
                 </div>
                <h1
                     data-aos="fade-up"
                     data-aos-duration="1100"
-                    className="text-center flex flex-row gap-4 text-[42px] leading-normal"
+                    className="text-center items-center justify-center flex flex-wrap gap-2 text-[26px] 2xl:text-[42px] leading-normal"
                 >
                     <span className="relative text-white font-semibold">
                     Streamline sales 
@@ -139,58 +139,55 @@ const LoadingBar: React.FC = () => {
                     processes for success                    </span>
                 </h1>
             </div>
-            <div className="gallery-container " ref={galleryRef}>
-                <div className="selected-content">
-                    {contents.map((content, index) => (
-                        <div
-                            key={index}
-                            onClick={() => handleClick(index)}
-                            className={`content-item ${clickedIndex === index ? 'clicked' : ''}`}
-                           
-                        >
-                            {content}
-                            <div className="progress-container">
-                                <div className="progress-bar-background"></div>
-                                {progress[index] > 0 && (
-                                    <div
-                                        className="progress-bar"
-                                        style={{
-                                            width: `${progress[index]}%`,
-                                            backgroundColor: progressColors[index]
-                                        }}
-                                    ></div>
-                                )}
-                                {(progress[index] > 0 && progress[index] < 100) || clickedIndex === index ? (
-                                    <div className="justify-end flex -translate-y-16 -translate-x-6">
-                                        <FaArrowRightLong className='text-white text-2xl' />
-                                    </div>
-                                ) : null}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-                <div className="image-thumbnails translate-y-6">
-                    {images.map((image, index) => (
-                        <div
-                            key={index}
-                            className={`thumbnail ${index === currentIndex ? 'active' : ''}`}
-                            style={{
-                                display: index === currentIndex ? 'block' : 'none',
-                                width: '600px',
-                                height: '600px',
-                                overflow: 'hidden',
-                            }}
-                          
-                        >
-                            <img
-                                src={image}
-                                alt={`Thumbnail ${index + 1}`}
-                                className="thumbnail-img"
-                            />
-                        </div>
-                    ))}
-                </div>
+            <div className="gallery-wrapper" ref={galleryRef}>
+  <div className="content-display">
+    {contents.map((content, index) => (
+      <div
+        key={index}
+        onClick={() => handleClick(index)}
+        className={`display-item ${clickedIndex === index ? 'active' : ''}`}
+      >
+        {content}
+        <div className="progress-wrapper">
+          <div className="progress-bg"></div>
+          {progress[index] > 0 && (
+            <div
+              className="progress-bar"
+              style={{
+                width: `${progress[index]}%`,
+                backgroundColor: progressColors[index],
+              }}
+            ></div>
+          )}
+          {(progress[index] > 0 && progress[index] < 100) || clickedIndex === index ? (
+            <div className="arrow-icon-wrapper">
+              <FaArrowRightLong className="arrow-icon" />
             </div>
+          ) : null}
+        </div>
+      </div>
+    ))}
+  </div>
+  <div className="thumbnail-gallery">
+    {images.map((image, index) => (
+        <div
+            key={index}
+            className={`thumbnail-item ${index === currentIndex ? 'current' : ''}`}
+            style={{
+                display: index === currentIndex ? 'block' : 'none',
+            }}
+        >
+            <img
+                src={image}
+                alt={`Thumbnail ${index + 1}`}
+                className="thumbnail-image"
+            />
+        </div>
+    ))}
+</div>
+
+</div>
+
         </div>
     );
 };

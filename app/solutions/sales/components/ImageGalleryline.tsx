@@ -23,7 +23,7 @@ const ImageGalleryLine = () => {
       relatedImages: [
         { src: '/sales/solution3rdpage/sideimages/rep.svg', alt: 'Related Image 1-1', id: 2 },
         { src: '/sales/solution3rdpage/sideimages/ai.svg', alt: 'Related Image 1-2', id: 4 },
-        { src: '/sales/solution3rdpage/sideimages/social.svg', alt: 'Related Image 1-3', id: 3 },
+        { src: '/sales/solution3rdpage/sideimages/lead.svg', alt: 'Related Image 1-3', id: 3 },
       ],
     },
     {
@@ -31,9 +31,9 @@ const ImageGalleryLine = () => {
       alt: 'Image 2',
       id: 2,
       relatedImages: [
-        { src: '/sales/solution3rdpage/sideimages/lead.svg', alt: 'Related Image 2-1', id: 1 },
+        { src: '/sales/solution3rdpage/sideimages/lead.svg', alt: 'Related Image 2-1', id: 3 },
         { src: '/sales/solution3rdpage/sideimages/ai.svg', alt: 'Related Image 1-2', id: 4 },
-        { src: '/sales/solution3rdpage/sideimages/social.svg', alt: 'Related Image 1-3', id: 3 },
+        { src: '/sales/solution3rdpage/sideimages/social.svg', alt: 'Related Image 1-3', id: 1 },
       ],
     },
     {
@@ -42,7 +42,7 @@ const ImageGalleryLine = () => {
       id: 3,
       relatedImages: [
         { src: '/sales/solution3rdpage/sideimages/rep.svg', alt: 'Related Image 3-2', id: 2 },
-        { src: '/sales/solution3rdpage/sideimages/lead.svg', alt: 'Related Image 2-1', id: 1 },
+        { src: '/sales/solution3rdpage/sideimages/social.svg', alt: 'Related Image 2-1', id: 1 },
         { src: '/sales/solution3rdpage/sideimages/ai.svg', alt: 'Related Image 1-2', id: 4 },
       ],
     },
@@ -52,8 +52,8 @@ const ImageGalleryLine = () => {
       id: 4,
       relatedImages: [
         { src: '/sales/solution3rdpage/sideimages/rep.svg', alt: 'Related Image 3-2', id: 2 },
-        { src: '/sales/solution3rdpage/sideimages/lead.svg', alt: 'Related Image 2-1', id: 1 },
-        { src: '/sales/solution3rdpage/sideimages/social.svg', alt: 'Related Image 1-3', id: 3 },
+        { src: '/sales/solution3rdpage/sideimages/lead.svg', alt: 'Related Image 2-1', id: 3 },
+        { src: '/sales/solution3rdpage/sideimages/social.svg', alt: 'Related Image 1-3', id: 1 },
       ],
     },
   ];

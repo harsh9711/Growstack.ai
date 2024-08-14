@@ -73,11 +73,11 @@
   }
   
   .hover-boxsales3:hover {
-    content: url('/solutions/sales/boxes/changedbox/box4.svg');
+    content: url('/solutions/sales/boxes/changedbox/box3.svg');
   }
   
   .hover-boxsales4:hover {
-    content: url('/solutions/sales/boxes/changedbox/box3.svg');
+    content: url('/solutions/sales/boxes/changedbox/box4.svg');
   }
   .hover-boxsales1001:hover {
     content: url('/solutions/sales2/boxes/changedbox/box1.svg');
