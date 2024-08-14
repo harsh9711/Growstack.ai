@@ -5,7 +5,7 @@ import './MarketingStreamline.scss';
 import { Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import { testimonials, testimonialsdata } from '@/types/data';
+import { testimonials } from '@/types/data';
 import Image from 'next/image';
 
 const MarketingStreamline: React.FC = () => {
@@ -25,13 +25,13 @@ const MarketingStreamline: React.FC = () => {
           >
             <span className="user">Streamline</span>
             <h3 className="heading">
-              <span>Your ultimate guide to optimizing </span> 
-              business processes with GrowStack
+              <span>Streamline your entire marketing process</span> 
+              from to execution and beyond
             </h3>
           </div>
         </div>
         <Swiper
-          slidesPerView={3.5}  // Default slides per view
+          slidesPerView={3.5} 
           spaceBetween={10}
           autoplay={{
             delay: 500,
@@ -60,7 +60,7 @@ const MarketingStreamline: React.FC = () => {
             },
           }}
         >
-  {testimonialsdata.map((item, index) => (
+  {testimonials.map((item, index) => (
     <SwiperSlide key={index}>
       <div className="card">
       <div className="flex flex-col ">

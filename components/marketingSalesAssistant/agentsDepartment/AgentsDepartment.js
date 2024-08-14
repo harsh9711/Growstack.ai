@@ -31,8 +31,8 @@ function AgentsDepartment() {
                         <img src="/images_growstack/salesMarketing/legal.svg" alt="icon" />
                       </div>
                       <h5 className="heading">
-                        <span>Legal & compliance</span>
-                        agents
+                        <span>Insight </span>
+                        analysts
                       </h5>
                       <p className="card-text">
                         Ensure your business stays compliant with the ever-evolving legal landscape. Our Legal & Compliance AI Agents offer precise, real-time
@@ -82,8 +82,8 @@ function AgentsDepartment() {
                         <img src="/images_growstack/salesMarketing/legal.svg" alt="icon" />
                       </div>
                       <h5 className="heading">
-                        <span>C-level</span>
-                        agents
+                        <span>Customer success</span>
+                        architects
                       </h5>
                       <p className="card-text">
                         Optimize your executive workflows with our AI-powered C-Level Agents. Provide C-suite leaders with data-driven insights, and enhance
@@ -99,8 +99,8 @@ function AgentsDepartment() {
                         <img src="/images_growstack/salesMarketing/legal.svg" alt="icon" />
                       </div>
                       <h5 className="heading">
-                        <span>HR</span>
-                        agents
+                        <span>Tech</span>
+                        wizards
                       </h5>
                       <p className="card-text">
                         Elevate your human resources functions with our AI-enabled HR Agents. From recruitment to employee engagement, our intelligent solutions
