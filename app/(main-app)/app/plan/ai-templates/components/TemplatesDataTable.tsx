@@ -116,7 +116,7 @@ const columns = (
           {row.original.favorite ? (
             <BsHeartFill size={20} className="text-rose-300" onClick={() => handleFavorite("remove", row.original._id)} />
           ) : (
-            <Heart size={20} onClick={() => handleDelete(row.original._id)} />
+            <Heart size={20} onClick={() => handleFavorite("add", row.original._id)} />
           )}
         </button>
       </div>

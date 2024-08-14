@@ -115,19 +115,19 @@ export default function DocumentsTable() {
     //     <div className="capitalize">{row.getValue("workbook")}</div>
     //   ),
     // },
-    // {
-    //   accessorKey: "category",
-    //   header: () => <div className="uppercase">Category</div>,
-    //   cell: ({ row }) => (
-    //     <div
-    //       className={clsx(
-    //         "uppercase bg-gray-100 px-2 py-1.5 max-w-fit rounded-md text-[13px]"
-    //       )}
-    //     >
-    //       {row.getValue("category")}
-    //     </div>
-    //   ),
-    // },
+    {
+      accessorKey: "category",
+      header: () => <div className="uppercase">Category</div>,
+      cell: ({ row }) => (
+        <div
+          className={clsx(
+            "uppercase bg-gray-100 px-2 py-1.5 max-w-fit rounded-md text-[13px]"
+          )}
+        >
+          {row.getValue("category")}
+        </div>
+      ),
+    },
     {
       accessorKey: "createdAt",
       header: () => <div className="uppercase">Created</div>,

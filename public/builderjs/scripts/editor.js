@@ -83,7 +83,6 @@ var editor = new Editor({
   saveUrl: "/api/email-builder/save",
   saveMethod: "POST",
   data: {
-    _token: "CSRF_TOKEN", // Replace with your CSRF token if applicable
     type: type,
     template_id: id,
   },
