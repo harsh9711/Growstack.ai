@@ -4,6 +4,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import "./Footer.scss";
 import Link from "next/link";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Footer() {
   useEffect(() => {
