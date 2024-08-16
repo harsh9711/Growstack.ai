@@ -23,10 +23,10 @@ const MarketingStreamline: React.FC = () => {
             data-aos-easing="ease-in-sine"
             data-aos-duration="1000"
           >
-            <span className="user">Streamline</span>
+            <span className="user"> optimize</span>
             <h3 className="heading">
-              <span>Streamline your entire marketing process</span> 
-              from to execution and beyond
+              <span>Your ultimate guide to optimizing </span> 
+            business processes with GrowStack
             </h3>
           </div>
         </div>

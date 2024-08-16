@@ -94,4 +94,33 @@
   .hover-boxsales4001:hover {
     content: url('/solutions/sales2/boxes/changedbox/box3.svg');
   }
+    .hover-boxsalesrevops1:hover {
+    content: url('/solutions/salesrevops/boxes/changedbox/box1.svg');
+  }
   
+  .hover-boxsalesrevops2:hover {
+    content: url('/solutions/salesrevops/boxes/changedbox/box2.svg');
+  }
+  
+  .hover-boxsalesrevops3:hover {
+    content: url('/solutions/salesrevops/boxes/changedbox/box4.svg');
+  }
+  
+  .hover-boxsalesrevops4:hover {
+    content: url('/solutions/salesrevops/boxes/changedbox/box3.svg');
+  }
+      .hover-boxsalesrevops11:hover {
+    content: url('/solutions/salesrevops2/boxes/changedbox/box1.svg');
+  }
+  
+  .hover-boxsalesrevops21:hover {
+    content: url('/solutions/salesrevops2/boxes/changedbox/box2.svg');
+  }
+  
+  .hover-boxsalesrevops31:hover {
+    content: url('/solutions/salesrevops2/boxes/changedbox/box4.svg');
+  }
+  
+  .hover-boxsalesrevops41:hover {
+    content: url('/solutions/salesrevops2/boxes/changedbox/box3.svg');
+  }
