@@ -2,17 +2,17 @@
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect } from "react";
-import ImageGalleryLine from "./components/ImageGalleryline";
+import ImageGalleryLine from "../revops copy/components/ImageGalleryline";
 import Navbar from "@/components/navbar/Navbar";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import GridComponent from "./components/GridBoxes";
-import GridComponentSecond from "./components/GridBoxes2";
-import ImageGalleryLineResponsive from "./components/ImageGallerylineresponsive";
-import LoadingBar from "./components/Loading";
-import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
+import GridComponent from "../revops copy/components/GridBoxes";
+import GridComponentSecond from "../revops copy/components/GridBoxes2";
+import ImageGalleryLineResponsive from "../revops copy/components/ImageGallerylineresponsive";
+import LoadingBar from "../revops copy/components/Loading";
+import MarketingStreamline from "../revops copy/components/marketingStreamline/MarketingStreamline";
 import Footer from "@/components/footer/Footer";
-import LoadingBarSecond from "./components/LoadingBar";
+import LoadingBarSecond from "../revops copy/components/LoadingBar";
 
 const page = () => {
   useEffect(() => {
@@ -33,7 +33,7 @@ const page = () => {
               <div
                 data-aos="fade-right"
                 data-aos-duration="1200"
-                className="bg-white text-black py-2 2xl:px-4 text-center items-center justify-center flex text-[10px] 2xl:text-[12px] rounded-full font-semibold uppercase max-w-[300px] 2xl:max-w-[372px]  shadow-lg w-full tracking-widest"
+                className="bg-white text-black py-2 2xl:px-4 text-center items-center justify-center flex text-[10px] 2xl:text-[12px] rounded-full font-semibold uppercase max-w-[200px] 2xl:max-w-[372px] shadow-lg w-full tracking-widest"
               >
                 Growstack for Revenue operations Team
               </div>
@@ -370,14 +370,14 @@ const page = () => {
               </div>
             </div>
 
-            <div className="2xl:flex xl:flex lg:flex  hidden items-center justify-center">
+            <div className="2xl:flex hidden items-center justify-center">
               <div
                 data-aos="fade-left"
                 data-aos-duration="1500"
-                className="absolute z-0 lg:-right-56 xl:-right-20 2xl:right-52"
+                className="absolute z-0 2xl:right-52"
               >
                 <Image
-                  className="w-[900px] 2xl:w-[925px] h-[450px] 2xl:h-[548px]"
+                  className="w-[450px] 2xl:w-[925px] h-[250px] 2xl:h-[548px]"
                   src="/solutions/herorevops.svg"
                   alt="Center Image"
                   width={842}
