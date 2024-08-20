@@ -136,72 +136,71 @@ const ImageGalleryLine = () => {
           </div>
         ) : (
           <div className="relative 2xl:translate-y-24 ">
-       <svg className='2xl:flex hidden' width="1747" height="600" viewBox="0 0 1747 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M207 449V324.573C207 313.527 198.046 304.573 187 304.573H21C9.95431 304.573 1 295.618 1 284.573V74C1 62.9543 9.95431 54 21 54H98.7372" stroke="#034737"/>
-<path d="M1647.5 60H1726.5C1737.55 60 1746.5 68.9543 1746.5 80V240C1746.5 251.046 1737.55 260 1726.5 260H1513C1501.95 260 1493 268.954 1493 280V451.5" stroke="#034737"/>
-<path d="M440 50H854.683C865.729 50 874.683 41.0457 874.683 30V21C874.683 9.9543 883.638 1 894.683 1H1307" stroke="#034737"/>
-<path d="M1233 599H886.723C875.677 599 866.723 590.046 866.723 579V537C866.723 525.954 857.768 517 846.723 517H535" stroke="#034737"/>
-</svg>
-
-
-            <div className="items-center justify-center flex flex-col gap-y-2 2xl:translate-y-[180px] absolute top-0 left-0 right-0">
-              <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit mx-auto">
-              maintain
-              </div>
-              <h1 className="text-center text-[42px] leading-normal">
-                <span className="text-black font-bold">Maintain data quality </span>
-                <span className="text-black font-extralight">and management</span>
-              </h1>
-            </div>
-            <div className="relative 2xl:-top-[700px] 2xl:left-[40px]">
-              <Image
-                src="/salesrevops/wire/wire1.svg"
-                width={970}
-                height={600} 
-              className="w-[420px] h-[315px] hover-boxrevops1"
-                alt="Image 1"
-                onClick={() => handleImageClick(images[0])}
-                style={{ cursor: 'pointer' }}
-                data-aos="zoom-in"
-              />
-            </div>
-            <div className="relative 2xl:-top-[1050px] 2xl:left-[1290px]">
-              <Image
-                src="/salesrevops/wire/wire2.svg"
-                width={980}
-                height={600} 
-              className="w-[420px] h-[315px] hover-boxrevops2"
-                alt="Image 2"
-                onClick={() => handleImageClick(images[1])}
-                style={{ cursor: 'pointer' }}
-                data-aos="zoom-in"
-              />
-            </div>
-            <div className="relative 2xl:-top-[830px] z-[90] 2xl:left-[1200px]">
-              <Image
-                src="/salesrevops/wire/wire3.svg"
-                width={980}
-                height={600} 
-              className="w-[420px] h-[315px] hover-boxrevops3"
-                alt="Image 3"
-                onClick={() => handleImageClick(images[2])}
-                style={{ cursor: 'pointer' }}
-                data-aos="zoom-in"
-              />
-            </div>
-            <div className="relative 2xl:-top-[1150px] z-[60] 2xl:left-[140px]">
-              <Image
-                src="/salesrevops/wire/wire4.svg"
-                width={970}
-                height={600} 
-              className="w-[420px] h-[315px] hover-boxrevops4"
-                alt="Image 4"
-                onClick={() => handleImageClick(images[3])}
-                style={{ cursor: 'pointer' }}
-                data-aos="zoom-in"
-              />
-            </div>
-          </div>
+          <svg className='2xl:flex hidden' width="1401" height="544" viewBox="0 0 1601 544" fill="none" xmlns="http://www.w3.org/2000/svg">
+   <path d="M1509.01 58H1580C1591.05 58 1600 66.9543 1600 78V237.745C1600 248.79 1591.05 257.745 1580 257.745H1387C1375.95 257.745 1367 266.699 1367 277.745V449" stroke="#034737"/>
+   <path d="M206.5 401.5V297C206.5 285.954 197.546 277 186.5 277H21C9.9543 277 1 268.046 1 257V81C1 69.9543 9.95431 61 21 61H98.5" stroke="#034737"/>
+   <path d="M438 50H784.999C796.045 50 804.999 41.0457 804.999 30V21C804.999 9.9543 813.953 1 824.999 1H1170" stroke="#034737"/>
+   <path d="M1230 543H816.03C804.984 543 796.03 534.046 796.03 523V481C796.03 469.954 787.075 461 776.03 461H403" stroke="#034737"/>
+   </svg>
+   
+               <div className="items-center justify-center flex flex-col gap-y-2 2xl:translate-y-[180px] absolute top-0 left-0 right-0">
+                 <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit mx-auto">
+                 maintain
+                 </div>
+                 <h1 className="text-center text-[42px] leading-normal">
+                   <span className="text-black font-bold">Maintain data quality </span><br/>
+                   <span className="text-black font-extralight">and management</span>
+                 </h1>
+               </div>
+               <div className="relative 2xl:-top-[630px] 2xl:left-[20px]">
+                 <Image
+                   src="/salesrevops/wire/wire1.svg"
+                   width={970}
+                   height={600} 
+                 className="w-[420px] h-[315px] hover-box101"
+                   alt="Image 1"
+                   onClick={() => handleImageClick(images[0])}
+                   style={{ cursor: 'pointer' }}
+                   data-aos="zoom-in"
+                 />
+               </div>
+               <div className="relative 2xl:-top-[960px] 2xl:left-[940px]">
+                 <Image
+                   src="/salesrevops/wire/wire2.svg"
+                   width={980}
+                   height={600} 
+                 className="w-[420px] h-[315px] hover-box202"
+                   alt="Image 2"
+                   onClick={() => handleImageClick(images[1])}
+                   style={{ cursor: 'pointer' }}
+                   data-aos="zoom-in"
+                 />
+               </div>
+               <div className="relative 2xl:-top-[800px] z-[90] 2xl:left-[920px]">
+                 <Image
+                   src="/salesrevops/wire/wire3.svg"
+                   width={980}
+                   height={600} 
+                 className="w-[420px] h-[315px] hover-box404"
+                   alt="Image 3"
+                   onClick={() => handleImageClick(images[2])}
+                   style={{ cursor: 'pointer' }}
+                   data-aos="zoom-in"
+                 />
+               </div>
+               <div className="relative 2xl:-top-[1150px] z-[60] 2xl:left-[10px]">
+                 <Image
+                   src="/salesrevops/wire/wire4.svg"
+                   width={970}
+                   height={600} 
+                 className="w-[420px] h-[315px] hover-box303"
+                   alt="Image 4"
+                   onClick={() => handleImageClick(images[3])}
+                   style={{ cursor: 'pointer' }}
+                   data-aos="zoom-in"
+                 />
+               </div>
+             </div>
         )}
       </div>
        {selectedImage && (
