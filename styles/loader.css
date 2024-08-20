@@ -1,0 +1,111 @@
+.gallery-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+    padding: 10px;
+  }
+  
+  .thumbnail-gallery {
+
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  
+  .thumbnail-item {
+    width: 100%; /* Full width on small screens */
+    max-width: 100%;
+    height: auto;
+    overflow: hidden;
+  }
+  
+  .thumbnail-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover; /* Ensures the image covers the thumbnail area */
+  }
+  .content-display {
+    position: relative;
+    gap: 15px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 0px;
+    text-align: center;
+    width: 100%;
+    max-width: 100%; /* Full width on small screens */
+  }
+  
+  .progress-wrapper2 {
+    margin-top: 20px;
+    position: relative;
+    width: 100%;
+    height: 2px;
+    background-color: #6A6A6A26;
+  }
+  
+  .arrow-icon-wrapper {
+    justify-content: end;
+    display: flex;
+    transform: translate(-24px, -64px);
+  }
+  
+  .arrow-icon2 {
+    color: #034737;
+    font-size: 24px;
+  }
+  
+  /* Responsive Design */
+  @media (min-width: 768px) {
+    .gallery-wrapper {
+      flex-direction: row;
+      gap: 60px;
+      align-items: flex-start;
+      justify-content: space-between;
+    }
+  
+    .content-display {
+      gap: 30px;
+      margin-top: 50px;
+      max-width: 600px; /* Restore max-width for larger screens */
+    }
+  
+    .thumbnail-gallery {
+      justify-content: flex-start;
+    }
+  
+    .thumbnail-item {
+      width: 80%; /* Scale up the width on medium screens */
+      max-width: 800px; /* Restrict maximum width for larger screens */
+      height: auto; /* Maintain aspect ratio */
+    }
+  
+    .thumbnail-image {
+      width: 100%;
+      height: auto;
+      max-height: 800px; /* Restrict maximum height for larger screens */
+      object-fit: cover;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .gallery-wrapper {
+      width: 1150px;
+    }
+  
+    .content-display {
+      gap: 30px;
+    }
+    .thumbnail-item {
+      width: 90%; /* Increase the width on larger screens */
+      max-width: 1000px; /* Allow it to be even larger on big screens */
+    }
+  
+    .thumbnail-image {
+      max-height: 1000px; /* Restrict maximum height to maintain aspect ratio */
+    }
+  }
+  

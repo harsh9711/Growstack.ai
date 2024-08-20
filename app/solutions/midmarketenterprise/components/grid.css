@@ -78,4 +78,18 @@
   .hover-box303:hover {
     content: url('/solutions/sales/boxes/hover/hover4.svg');
   }
+  .hover-boxrevops1:hover {
+    content: url('/salesrevops/hover/hover1.svg');
+  }
   
+  .hover-boxrevops2:hover {
+    content: url('/salesrevops/hover/hover2.svg');
+  }
+  
+  .hover-boxrevops3:hover {
+    content: url('/salesrevops/hover/hover3.svg');
+  }
+  
+  .hover-boxrevops4:hover {
+    content: url('/salesrevops/hover/hover4.svg');
+  }
