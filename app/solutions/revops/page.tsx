@@ -20,7 +20,7 @@ const page = () => {
   }, []);
   return (
     <main className="">
-      <section className="bg-[#E2F0CB] w-full mb-10 2xl:mb-20">
+      <section className="bg-[#E2F0CB] w-full mb-10 2xl:mb-20 items-center justify-center mx-auto">
         <Navbar
           logoUrl="/images/logo.png"
           logoAlt="Custom Logo"
@@ -28,7 +28,7 @@ const page = () => {
         />
 
         <div className="relative flex items-center max-w-[1920px] 2xl:p-0 p-4 w-full 2xl:max-h-[1000px] h-full justify-center mx-auto">
-          <div className="w-full flex flex-row justify-between brightness-110 relative 2xl:left-52 items-center mt-10 mb-10 2xl:mt-32 2xl:mb-20 ">
+          <div className="w-full mx-auto flex flex-row justify-between brightness-110 relative 2xl:left-52 items-center mt-10 mb-10 2xl:mt-32 2xl:mb-20 ">
             <div className="w-full gap-y-4 flex flex-col">
               <div
                 data-aos="fade-right"
@@ -370,14 +370,14 @@ const page = () => {
               </div>
             </div>
 
-            <div className="2xl:flex xl:flex lg:flex  hidden items-center justify-center">
+            <div className="2xl:flex xl:flex lg:flex  hidden items-center justify-center mx-auto ">
               <div
                 data-aos="fade-left"
                 data-aos-duration="1500"
-                className="absolute z-0 lg:-right-56 xl:-right-20 2xl:right-52"
+                className="w-full relative z-0 2xl:right-60 "
               >
                 <Image
-                  className="w-[900px] 2xl:w-[925px] h-[450px] 2xl:h-[548px]"
+                  className="w-[1000px] h-full"
                   src="/solutions/herorevops.svg"
                   alt="Center Image"
                   width={842}

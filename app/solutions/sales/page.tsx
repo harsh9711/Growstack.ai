@@ -22,7 +22,7 @@ const page = () => {
   }, []);
   return (
     <main className="bg-white">
-      <section className="bg-gradient-to-r to-[#FFF4CB]/100 via-[#E6FFE2]/100 from-[#A9FF9B]/50 w-full mb-10 2xl:mb-20">
+      <section className="bg-gradient-to-r to-[#FFF4CB]/100 via-[#E6FFE2]/100 from-[#A9FF9B]/50 w-full mb-10 2xl:mb-20 overflow-hidden">
         <Navbar
           logoUrl="/images/logo.png"
           logoAlt="Custom Logo"
@@ -368,14 +368,14 @@ const page = () => {
               </div>
             </div>
 
-            <div className="2xl:flex xl:flex lg:flex hidden items-center justify-center">
+            <div className="2xl:flex xl:flex lg:flex hidden items-center justify-center overflow-hidden">
               <div
                 data-aos="fade-left"
                 data-aos-duration="1500"
-                className="absolute z-0 lg:-right-44 xl:-right-20 2xl:right-52"
+                className="w-full relative z-0 right-0"
               >
                 <Image
-                  className="w-[750px] 2xl:w-[925px] h-[450px] 2xl:h-[548px]"
+                  className="w-[1200px] h-full"
                   src="/solutions/herosales.svg"
                   alt="Center Image"
                   width={842}
