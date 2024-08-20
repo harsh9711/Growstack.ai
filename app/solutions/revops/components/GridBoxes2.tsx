@@ -77,77 +77,81 @@ const GridComponentSecond = () => {
       switch (selected) {
         case 1:
           return (
-            <div className="flex flex-col gap-y-8  items-center justify-center w-full mb-40">
+            <div className="flex flex-col gap-y-4  items-center justify-center w-full ">
               
             <div className="rounded-2xl flex justify-center items-center relative z-[20] opacity-100">
-              <Image src="/salesrevops/solution3rdpage/boxsvgs/boxsvg1.svg" alt="Box 1" width={940} height={555} className="w-[1100px] bg-cover z-[20]" />
+              <Image src="/salesrevops2/boxsvgs/boxsvg1.svg" alt="Box 1" width={940} height={555} className="w-[1000px] bg-cover z-[20]" />
             </div>
-            <div className="flex z-[80] flex-row gap-2 w-full max-w-[1070px] justify-center relative">
-              <div onClick={() => handleClick(2)} className="bg-white/14 border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-              Efficient organization
+            <div className="flex z-[80] flex-row gap-2 w-full max-w-[950px] justify-center relative">
+              <div onClick={() => handleClick(2)} className="bg-white border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+              Campaign tracking
               </div>
-              <div onClick={() => handleClick(3)} className="bg-white/14 border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-              Knowledge growth
+              <div onClick={() => handleClick(3)} className="bg-white border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+             Comprehensive
+              reports
               </div>
-              <div onClick={() => handleClick(4)} className="bg-white/14 border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-              Custom training
+              <div onClick={() => handleClick(4)} className="bg-white border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+              Performance insights
               </div>
             </div>
           </div>
           );
         case 2:
           return (
-            <div className="flex flex-col gap-y-8 items-center justify-center w-full mb-40">
+            <div className="flex flex-col gap-y-4 items-center justify-center w-full">
           <div className="rounded-2xl flex justify-center items-center relative z-[40] opacity-100">
-              <Image src="/salesrevops/solution3rdpage/boxsvgs/boxsvg2.svg" alt="Box 1" width={1240} height={755} className="w-[1100px]  bg-cover z-[20]" />
+              <Image src="/salesrevops2/boxsvgs/boxsvg2.svg" alt="Box 1" width={1240} height={755} className="w-[1000px]  bg-cover z-[20]" />
               </div>
-              <div className="flex  z-[80] flex-row items-center left-0 justify-center gap-2 w-full max-w-[1070px]   relative">
-                <div onClick={() => handleClick(1)} className="bg-white/14 border whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-                Targeted leads
+              <div className="flex  z-[80] flex-row items-center left-0 justify-center gap-2 w-full  max-w-[950px]   relative">
+                <div onClick={() => handleClick(1)} className="bg-white border whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+             Engagement metrics
                 </div>
-                <div onClick={() => handleClick(3)} className="bg-white/14 border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-              Knowledge growth
+                <div onClick={() => handleClick(3)} className="bg-white border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+             Comprehensive
+              reports
               </div>
-              <div onClick={() => handleClick(4)} className="bg-white/14 border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-              Custom training
+              <div onClick={() => handleClick(4)} className="bg-white border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+              Performance insights 
               </div>
               </div>
             </div>
           );
         case 3:
           return (
-            <div className="flex flex-col gap-y-8 items-center justify-center w-full mb-40">
+            <div className="flex flex-col gap-y-4 items-center justify-center w-full">
           <div className="rounded-2xl flex justify-center relative  z-[40] items-center">
-              <Image src="/salesrevops/solution3rdpage/boxsvgs/boxsvg3.svg" alt="Box 1" width={1240} height={755} className="w-[1100px]  bg-cover z-[20]" />
+              <Image src="/salesrevops2/boxsvgs/boxsvg3.svg" alt="Box 1" width={1240} height={755} className="w-[1000px]  bg-cover z-[20]" />
               </div>
-              <div className="flex z-[80] flex-row gap-2 w-full max-w-[1070px] justify-center relative">
-              <div onClick={() => handleClick(1)} className="bg-white/14 border whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-                Targeted leads
+              <div className="flex z-[80] flex-row gap-2 w-full max-w-[950px] justify-center relative">
+             <div onClick={() => handleClick(1)} className="bg-white border whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+             Engagement metrics
+
                 </div>
-                <div onClick={() => handleClick(2)} className="bg-white/14 border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-              Efficient organization
+                <div onClick={() => handleClick(2)} className="bg-white border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+              Campaign tracking
               </div>
-                <div onClick={() => handleClick(4)} className="bg-white/14 border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-              Custom training
+                <div onClick={() => handleClick(4)} className="bg-white border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+                Performance insights 
               </div>
               </div>
             </div>
           );
         case 4:
           return (
-            <div className="flex flex-col gap-y-8 items-center justify-center w-full mb-40">
+            <div className="flex flex-col gap-y-4 items-center justify-center w-full ">
             <div className="rounded-2xl flex justify-center items-center relative z-[40]">
-              <Image src="/salesrevops/solution3rdpage/boxsvgs/boxsvg4.svg" alt="Box 1" width={1240} height={755} className="w-[1100px]  bg-cover z-[20]" />
+              <Image src="/salesrevops2/boxsvgs/boxsvg4.svg" alt="Box 1" width={1240} height={755} className="w-[1000px]  bg-cover z-[20]" />
             </div>
-            <div className="flex z-[80] flex-row gap-2 w-full max-w-[1070px] justify-center relative">
-            <div onClick={() => handleClick(1)} className="bg-white/14 border whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-                Targeted leads
+            <div className="flex z-[80] flex-row gap-2 w-full  max-w-[950px] justify-center relative">
+           <div onClick={() => handleClick(1)} className="bg-white border whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+           Engagement metrics
                 </div>
-              <div onClick={() => handleClick(2)} className="bg-white/14 border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-              Efficient organization
+                <div onClick={() => handleClick(2)} className="bg-white border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+              Campaign tracking
               </div>
-              <div onClick={() => handleClick(3)} className="bg-white/14 border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-              Knowledge growth
+              <div onClick={() => handleClick(3)} className="bg-white border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+             Comprehensive
+              reports
               </div>
             </div>
           </div>

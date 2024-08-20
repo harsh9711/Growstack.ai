@@ -17,22 +17,22 @@ const ImageGalleryLineResponsive = () => {
 
   const images: ImageData[] = [
     {
-      src: "/sales/solution3rdpage/imageshown/imageshown1.svg",
+      src: "/solutions/salesrevops2/imageshown/imageshown1.svg",
       alt: "Image 1",
       id: 1,
     },
     {
-      src: "/sales/solution3rdpage/imageshown/imageshown3.svg",
+      src: "/solutions/salesrevops2/imageshown/imageshown2.svg",
       alt: "Image 2",
       id: 2,
     },
     {
-      src: "/sales/solution3rdpage/imageshown/imageshown4.svg",
+      src: "/solutions/salesrevops2/imageshown/imageshown3.svg",
       alt: "Image 3",
       id: 3,
     },
     {
-      src: "/sales/solution3rdpage/imageshown/imageshown2.svg",
+      src: "/solutions/salesrevops2/imageshown/imageshown4.svg",
       alt: "Image 4",
       id: 4,
     },
@@ -105,7 +105,7 @@ const ImageGalleryLineResponsive = () => {
                   {images.map((img) => (
                     <div className="relative" key={img.id}>
                       <Image
-                        src={`/sales/solution3rdpage/wire/wire${img.id}.svg`}
+                        src={`/salesrevops/wire/wire${img.id}.svg`}
                         width={970}
                         height={600}
                         className="w-full h-full"

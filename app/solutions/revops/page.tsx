@@ -27,8 +27,8 @@ const page = () => {
           backgroundColor="transparent"
         />
 
-        <div className="relative flex items-center max-w-[1920px] 2xl:p-0 p-4 w-full 2xl:max-h-[1112px] h-full justify-center mx-auto">
-          <div className="w-full flex flex-row justify-between brightness-110 relative 2xl:left-52 items-center mt-10 mb-10 2xl:mt-32 2xl:mb-60">
+        <div className="relative flex items-center max-w-[1920px] 2xl:p-0 p-4 w-full 2xl:max-h-[1000px] h-full justify-center mx-auto">
+          <div className="w-full flex flex-row justify-between brightness-110 relative 2xl:left-52 items-center mt-10 mb-10 2xl:mt-32 2xl:mb-20 ">
             <div className="w-full gap-y-4 flex flex-col">
               <div
                 data-aos="fade-right"
@@ -44,28 +44,35 @@ const page = () => {
                   data-aos-duration="1500"
                   className="text-[26px] 2xl:text-[56px] max-w-3xl leading-12 text-black"
                 >
-                  <span className="font-semibold">Optimize your revenue </span>
+                  <span className="font-bold">Optimize your revenue </span>
                   <br />{" "}
-                  <span className="font-light w-full 2xL:whitespace-nowrap">strategy with Growstack</span>
+                  <span className="font-light w-full 2xL:whitespace-nowrap">
+                    strategy with Growstack
+                  </span>
                 </h1>
                 <p
                   data-aos="fade-right"
                   data-aos-duration="1500"
                   className="text-[16px] 2xl:text-[18px] text-black mt-4 w-full max-w-[600px] leading-loose font-light"
                 >
-                  Take your revenue operations to the next level with Growstack’s cutting-edge tools and solutions. From optimizing data management to enhancing team alignment, our platform addresses your key challenges and drives your team towards achieving exceptional results.
+                  Take your revenue operations to the next level with
+                  Growstack’s cutting-edge tools and solutions. From optimizing
+                  data management to enhancing team alignment, our platform
+                  addresses your key challenges and drives your team towards
+                  achieving exceptional results.
                 </p>
 
-                <div className="flex flex-col gap-20 mt-10">
+                <div className="flex flex-col gap-28 mt-10">
                   <div
                     data-aos="fade-right"
                     data-aos-duration="1500"
                     className="flex flex-row gap-8 group text-[12px] 2xl:text-[18px]"
                   >
-                    <button className="bg-white font-medium flex items-center gap-2 text-[#034737] 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
-                      Free trial<ArrowRight />
+                    <button className="bg-white font-medium flex items-center gap-2 text-[#034737] 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-lg">
+                      Free trial
+                      <ArrowRight />
                     </button>
-                    <button className="border border-black flex items-center gap-2 text-black hover:font-bold font-medium 2xl:py-4 py-2 px-2  2xl:px-7 rounded-xl shadow-md shadow-[#00000025]">
+                    <button className="border border-black flex items-center gap-2 text-black hover:font-bold font-medium 2xl:py-4 py-2 px-2  2xl:px-7 rounded-xl shadow-md shadow-[#00000025] hover:shadow-lg">
                       See demo
                       <ArrowRight className="text-black" />
                     </button>
@@ -351,7 +358,7 @@ const page = () => {
                     </button>
                     <button className="flex items-center gap-2   text-primary-green rounded-xl">
                       <Image
-                        className="2xl:w-[197px] w-full  h-full "
+                        className="2xl:w-[197px] w-full 2xl:h-[60px] h-full "
                         src="/apple.png"
                         alt="Apple"
                         width={180}
@@ -393,7 +400,8 @@ const page = () => {
           </div>
         </div>
       </section>
-      <section className="relative mx-auto items-center justify-center 2xl:py-20 bg-[#E2F0CB4D]/30">
+    <section className=" p-20">
+        <div className="relative mx-auto rounded-t-[40px] items-center justify-center 2xl:py-20 bg-[#E2F0CB4D]/30">
         <div className="flex flex-col items-center justify-center mx-auto gap-2">
           <div
             data-aos="fade-up"
@@ -401,7 +409,7 @@ const page = () => {
             data-aos-offset="200"
             className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit"
           >
-            align
+           maintain
           </div>
 
           <h1
@@ -410,20 +418,23 @@ const page = () => {
             data-aos-delay="300"
             className="text-center text-[22px] 2xl:text-[42px] leading-normal"
           >
-            <span className="text-black font-extbold">Ensure </span>
-            <span className="text-black font-extralight"> departmental alignment </span>
+            <span className="text-black font-extrabold">Maintain data quality  </span>
+            <span className="text-black font-extralight">
+              {" "}
+              and management
+            </span>
           </h1>
 
           <div
             data-aos="fade-up"
             data-aos-duration="1800"
             data-aos-delay="600"
-            className="items-center justify-center mx-auto relative 2xl:right-12 2xl:top-10"
+            className="items-center justify-center mx-auto relative 2xl:right-12 "
           >
             <GridComponent />
           </div>
         </div>
-      </section>
+      </div></section>
       <section className="relative w-full 2xl:mt-20">
         <div className="2xl:flex hidden flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
           <ImageGalleryLine />
@@ -433,15 +444,8 @@ const page = () => {
         </div>
       </section>
 
-
-      <section className="relative mx-auto w-full items-center justify-center mt-10 2xl:mt-0 py-20 bg-[#FAFBFC]">
-        <Image
-          src="/solutions/background.svg"
-          width={100}
-          height={100}
-          alt="design"
-          className="w-full absolute"
-        />
+      <section className="relative mx-auto w-full items-center justify-center mt-10 2xl:mt-0 py-10 bg-[#FAFBFC]">
+      
         <div className="flex flex-col items-center justify-center mx-auto gap-2">
           <div
             data-aos="fade-up"
@@ -469,13 +473,13 @@ const page = () => {
             data-aos="fade-up"
             data-aos-duration="1800"
             data-aos-delay="600"
-            className="items-center justify-center mx-auto relative 2xl:right-12 2xl:top-4"
+            className="items-center justify-center mx-auto relative 2xl:right-12 "
           >
             <GridComponentSecond />
           </div>
         </div>
       </section>
-      <section className="mx-auto w-full flex items-center justify-center py-10 2xl:py-20 ">
+      <section className="mx-auto w-full flex items-center justify-center py-10 2xl:py-40 ">
         <div
           data-aos="fade-up"
           data-aos-duration="1800"
