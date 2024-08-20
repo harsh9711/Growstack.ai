@@ -30,7 +30,7 @@ const links = [
           { title: "Small businesses",path: "/solutions/smallbusinesses"  },
           { title: "Sales",path: "/solutions/sales"  },
           { title: "Revops",path: "/solutions/revops"  },
-          { title: "Customer Service",path: "/solutions/customer_service"  },
+          // { title: "Customer Service",path: "/solutions/customer_service"  },
         ],
   },
   // {
