@@ -368,14 +368,14 @@ const page = () => {
               </div>
             </div>
 
-            <div className="2xl:flex hidden items-center justify-center">
+            <div className="2xl:flex xl:flex lg:flex hidden items-center justify-center">
               <div
                 data-aos="fade-left"
                 data-aos-duration="1500"
-                className="absolute z-0 2xl:right-52"
+                className="absolute z-0 lg:-right-44 xl:-right-20 2xl:right-52"
               >
                 <Image
-                  className="w-[450px] 2xl:w-[925px] h-[250px] 2xl:h-[548px]"
+                  className="w-[750px] 2xl:w-[925px] h-[450px] 2xl:h-[548px]"
                   src="/solutions/herosales.svg"
                   alt="Center Image"
                   width={842}
