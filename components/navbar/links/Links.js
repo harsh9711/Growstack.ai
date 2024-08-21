@@ -33,14 +33,7 @@ const links = [
           { title: "Customer Service",path: "/solutions/customer_service"  },
         ],
   },
-  // {
-  //   title: "Resources",
-  //   path:"/resources"
-  // },
-  // {
-  //   title: "Pricing ",
-  //   path:"/pricing "
-  // }
+
 ];
 
 
@@ -62,26 +55,8 @@ const Links = () => {
 
   return (
     <React.Fragment>
-      <div className="links">
-        {links.map((link) => (
-          <NavLink
-            item={{ ...link, isOpen: openSubmenu === link.title }}
-            key={link.title}
-            onToggleSubmenu={handleToggleSubmenu}
-            onCloseMobileMenu={handleCloseMobileMenu}
-          />
-        ))}
-      </div>
-      <Image
-        className="menuButton"
-        src="/images_growstack/banner/hamburger.png"
-        alt="hamburger"
-        width={30}
-        height={30}
-        onClick={toggleMobileMenu}
-      />
-      {isMobileMenuOpen && (
-        <div className="mobileLinks">
+      <div className="white-background-links"> {/* Add this class */}
+        <div className="links">
           {links.map((link) => (
             <NavLink
               item={{ ...link, isOpen: openSubmenu === link.title }}
@@ -91,9 +66,30 @@ const Links = () => {
             />
           ))}
         </div>
-      )}
+        <Image
+          className="menuButton"
+          src="/images_growstack/banner/hamburger.png"
+          alt="hamburger"
+          width={30}
+          height={30}
+          onClick={toggleMobileMenu}
+        />
+        {isMobileMenuOpen && (
+          <div className="mobileLinks">
+            {links.map((link) => (
+              <NavLink
+                item={{ ...link, isOpen: openSubmenu === link.title }}
+                key={link.title}
+                onToggleSubmenu={handleToggleSubmenu}
+                onCloseMobileMenu={handleCloseMobileMenu}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </React.Fragment>
   );
 };
+
 
 export default Links;

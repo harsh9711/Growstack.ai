@@ -1,24 +1,27 @@
+/* Default styles for menu items */
 .menu_item {
   border-radius: 20px;
   font-size: 16px;
   font-weight: 500;
   text-align: center;
   cursor: pointer;
-  color: #034737;
+  color: #034737; // Default color
   position: relative;
+  display: block; 
+  padding: 5px 0px;
+  text-decoration: none;
   
   &.active {
-    color: #034737;
     font-weight: 600;
-    
+
     &::before {
       content: '';
       position: absolute;
       width: 100%;
       height: 2px;
       border-radius: 100px;
-      background-color: #034737;
-      bottom: 0px;
+      background-color: #034737; // Default underline color
+      bottom: 0;
       left: 0;
       
       @media (max-width: 768px) {
@@ -26,19 +29,33 @@
       }
     }
   }
+  
   &:hover {
     color: #034737;
-    
+
     &::before {
       content: '';
       position: absolute;
       width: 100%;
       height: 2px;
       border-radius: 100px;
-      background-color: #034737;
+      background-color: #034737; // Underline color on hover
       bottom: 0;
       left: 0;
     }
+  }
+}
+
+/* Apply styles when inside a specific background */
+.background-container {
+  background-color: #034737; // Specific background color
+
+  .menu_item.active {
+    color: white; // Active state color on specific background
+  }
+
+  .menu_item.active::before {
+    background-color: white; // Active state underline color on specific background
   }
 }
 
@@ -47,21 +64,8 @@
   display: flex;
   align-items: center;
   
-
-  
   @media (max-width: 768px) {
     height: 33px;
-  }
-}
-
-.menu_item {
-  display: block; 
-  position: relative;
-  padding: 5px 0px;
-  text-decoration: none;
-  
-  @media (max-width: 768px) {
-    padding: 5px 0;
   }
 }
 
@@ -102,12 +106,13 @@
   justify-content: space-between;
   gap: 10px;
 }
-.mainLink{
+
+.mainLink {
   display: flex;
   align-items: center;
   gap: 10px;
-
 }
+
 .submenu_item:hover {
   background-color: #f1f1f1; 
   border-radius: 5px;

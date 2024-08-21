@@ -31,14 +31,15 @@ const page = () => {
         />
 
   <Banner/>
-  <svg className="relative 2xl:flex xl:flex z-20 hidden translate-y-[113px] -translate-x-[200.5px] w-[2300px]" width="2176" height="156" viewBox="0 0 2176 156" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M2.26667 0H2176V97.4667L2039.83 131.871C1918.58 162.504 1791.73 163.437 1670.04 134.588L1263.79 38.2782C1184.18 19.4038 1101.43 17.9238 1021.19 33.9393L598.772 118.254C400.272 157.874 195.275 150.757 0 97.4667V97.4667L2.26667 0Z" fill="#034737"/>
+  <svg className="relative 2xl:flex xl:flex z-20 hidden translate-y-[120px] -translate-x-[200.5px] w-[2300px]" width="1945" height="139" viewBox="0 0 1945 139" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0.617188 9.5L1945 0V87.0921L1823.32 117.834C1714.98 145.207 1601.63 146.04 1492.89 120.262L1129.89 34.2038C1058.75 17.3384 984.809 16.016 913.111 30.3267L535.654 105.666C358.283 141.069 175.106 134.71 0.617188 87.0921V87.0921V9.5Z" fill="#034737"/>
 </svg>
+
 
 
       </section>
 
-      <section className=" mx-auto w-full flex items-center justify-center 2xl:mb-20 py-10 2xl:py-20 ">
+      <section className=" mx-auto w-full flex items-center justify-center 2xl:mb-0 py-10 2xl:py-40 ">
         <div
        
        

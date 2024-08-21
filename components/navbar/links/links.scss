@@ -5,7 +5,16 @@
   align-items: center;
   gap: 25px;
   margin: 0;
+  a {
+    color: black; // Default link color
+    text-decoration: none;
+    &:hover {
+      color: black; // Default hover color
+    }
+  }
 }
+
+
 
 .logout {
   padding: 10px;
