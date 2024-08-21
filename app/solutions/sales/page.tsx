@@ -16,6 +16,7 @@ import MarketingStreamline from "./components/marketingStreamline/MarketingStrea
 import { motion, inView } from "framer-motion";
 import MarketingTechnology from "../largeenterprise/components/marketingTechnology/MarketingTechnology";
 import Footer from "@/app/(landing)/components/Footer";
+import Banner from "./banner/Banner";
 const page = () => {
   useEffect(() => {
     AOS.init({ duration: 500 });
@@ -29,7 +30,7 @@ const page = () => {
           backgroundColor="transparent"
         />
 
-        <div className="relative flex items-center max-w-[1920px] 2xl:p-0 p-4 w-full 2xl:max-h-[1112px] h-full justify-center mx-auto">
+        {/* <div className="relative flex items-center max-w-[1920px] 2xl:p-0 p-4 w-full 2xl:max-h-[1112px] h-full justify-center mx-auto">
           <div className="w-full flex flex-row justify-between brightness-110 relative 2xl:left-52 items-center mt-10 mb-10 2xl:mt-32 2xl:mb-60">
             <div className="w-full gap-y-4 flex flex-col">
               <div
@@ -384,7 +385,8 @@ const page = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
+        <Banner/>
       </section>
 
       <section className="relative mx-auto items-center justify-center 2xl:py-20 bg-white">

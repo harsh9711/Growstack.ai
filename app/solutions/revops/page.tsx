@@ -13,6 +13,7 @@ import LoadingBar from "./components/Loading";
 import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
 import Footer from "@/components/footer/Footer";
 import LoadingBarSecond from "./components/LoadingBar";
+import Banner from "./banner/Banner";
 
 const page = () => {
   useEffect(() => {
@@ -27,7 +28,7 @@ const page = () => {
           backgroundColor="transparent"
         />
 
-        <div className="relative flex items-center max-w-[1920px] 2xl:p-0 p-4 w-full 2xl:max-h-[1000px] h-full justify-center mx-auto">
+        {/* <div className="relative flex items-center max-w-[1920px] 2xl:p-0 p-4 w-full 2xl:max-h-[1000px] h-full justify-center mx-auto">
           <div className="w-full mx-auto flex flex-row justify-between brightness-110 relative 2xl:left-52 items-center mt-10 mb-10 2xl:mt-32 2xl:mb-20 ">
             <div className="w-full gap-y-4 flex flex-col">
               <div
@@ -386,7 +387,7 @@ const page = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}<Banner/>
       </section>
       <section className=" mx-auto w-full flex items-center justify-center 2xl:mb-20 py-10 2xl:py-20 ">
         <div

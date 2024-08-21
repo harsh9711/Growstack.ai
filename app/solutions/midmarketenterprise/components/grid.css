@@ -1,3 +1,6 @@
+.headings{
+  font-weight: 700;
+}
 .hover-box1:hover {
     content: url('/solutions/boxes/changedboxes/box1.svg');
   }
