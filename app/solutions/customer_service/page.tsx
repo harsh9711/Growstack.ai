@@ -16,6 +16,7 @@ import Banner from "./components/banner/Banner";
 import Navbar from "@/components/navbar/Navbar";
 import ImageGallery from "./components/ZoomEffect";
 import ImageGalleryResponsive from "./components/ZoomEffectrespopnsive";
+import MarketingTechnology from "./components/marketingTechnology/MarketingTechnology";
 
 const page = () => {
   useEffect(() => {
@@ -27,11 +28,11 @@ const page = () => {
         <Navbar
           logoUrl="/white.png"
           logoAlt="Custom Logo"
-          backgroundColor="transparent"
+          backgroundColor="white"
         />
 
   <Banner/>
-  <svg className="relative 2xl:flex xl:flex z-20 hidden translate-y-[120px] -translate-x-[200.5px] w-[2300px]" width="1945" height="139" viewBox="0 0 1945 139" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg className="relative 2xl:flex  z-20 hidden translate-y-[120px] -translate-x-[200.5px] w-[2300px]" width="1945" height="139" viewBox="0 0 1945 139" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M0.617188 9.5L1945 0V87.0921L1823.32 117.834C1714.98 145.207 1601.63 146.04 1492.89 120.262L1129.89 34.2038C1058.75 17.3384 984.809 16.016 913.111 30.3267L535.654 105.666C358.283 141.069 175.106 134.71 0.617188 87.0921V87.0921V9.5Z" fill="#034737"/>
 </svg>
 
@@ -67,6 +68,10 @@ const page = () => {
           </div>
         </div>
       </section>
+      {/* <section className="">
+            <MarketingTechnology/>
+    
+      </section> */}
     {/* <section className=" p-20">
         <div className="relative mx-auto rounded-t-[40px] items-center justify-center 2xl:py-20 bg-[#E2F0CB4D]/30">
         <div className="flex flex-col items-center justify-center mx-auto gap-2">

@@ -155,7 +155,7 @@ const GridComponent = () => {
           return (
     <>      
 
-          <div className="2xl:grid grid-cols-3 relative 2xl:gap-x-16 2xl:left-72 justify-center items-center">
+          <div className="xl:grid 2xl:grid grid-cols-3 relative 2xl:gap-x-16 2xl:left-72 xl:left-60 justify-center items-center">
   <div
     onClick={() => handleClick(1)}
     className="rounded-[30px] flex justify-center items-center z-[60] cursor-pointer hover:scale-105 transition-transform duration-300"

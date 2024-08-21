@@ -108,9 +108,9 @@ const ImageGalleryLine = () => {
   return (
     <div style={{ position: 'relative', width: '1700px', height: '1163px' }} className="w-full h-full">
      
-      <div className='flex flex-col 2xl:flex-row items-start mt-24 justify-center'>
+      <div className='flex flex-col 2xl:flex-row xl:flex-row items-start mt-24 justify-center'>
       <div className="relative flex items-center justify-center">
-        {selectedImage ? (
+        {selectedImage ? (    
           <div className="flex flex-col items-center">
             <div className="items-center justify-center flex flex-col gap-y-2 mb-4">
               <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit mx-auto">
@@ -123,7 +123,7 @@ const ImageGalleryLine = () => {
             </div>
             <div>
               <Image
-                className="2xl:w-[1108px] w-full h-full 2xl:h-[560px] mt-6"
+                className="2xl:w-[1108px] xl:w-[1108px] w-full h-full 2xl:h-[560px] xl:h-[560px] mt-6"
                 src={selectedImage.src}
                 width={1108}
                 height={560}
@@ -135,15 +135,15 @@ const ImageGalleryLine = () => {
             </div>
           </div>
         ) : (
-          <div className="relative 2xl:translate-y-24 ">
-       <svg className='2xl:flex hidden' width="1401" height="544" viewBox="0 0 1601 544" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div className="relative xl:translate-y-24 2xl:translate-y-24 ">
+       <svg className='2xl:flex xl:flex hidden' width="1401" height="544" viewBox="0 0 1601 544" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M1509.01 58H1580C1591.05 58 1600 66.9543 1600 78V237.745C1600 248.79 1591.05 257.745 1580 257.745H1387C1375.95 257.745 1367 266.699 1367 277.745V449" stroke="#034737"/>
 <path d="M206.5 401.5V297C206.5 285.954 197.546 277 186.5 277H21C9.9543 277 1 268.046 1 257V81C1 69.9543 9.95431 61 21 61H98.5" stroke="#034737"/>
 <path d="M438 50H784.999C796.045 50 804.999 41.0457 804.999 30V21C804.999 9.9543 813.953 1 824.999 1H1170" stroke="#034737"/>
 <path d="M1230 543H816.03C804.984 543 796.03 534.046 796.03 523V481C796.03 469.954 787.075 461 776.03 461H403" stroke="#034737"/>
 </svg>
 
-            <div className="items-center justify-center flex flex-col gap-y-2 2xl:translate-y-[180px] absolute top-0 left-0 right-0">
+            <div className="items-center justify-center flex flex-col gap-y-2 2xl:translate-y-[180px] xl:translate-y-[180px] absolute top-0 left-0 right-0">
               <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit mx-auto">
               engagement
               </div>
@@ -152,7 +152,7 @@ const ImageGalleryLine = () => {
                 <span className="text-black font-extralight">with AI-driven strategies</span>
               </h1>
             </div>
-            <div className="relative 2xl:-top-[630px] 2xl:left-[20px]">
+            <div className="relative 2xl:-top-[630px] 2xl:left-[20px] xl:-top-[630px] xl:left-[20px]">
               <Image
                 src="/sales/solution3rdpage/wire/wire1.svg"
                 width={970}
@@ -164,7 +164,7 @@ const ImageGalleryLine = () => {
                 data-aos="zoom-in"
               />
             </div>
-            <div className="relative 2xl:-top-[960px] 2xl:left-[940px]">
+            <div className="relative 2xl:-top-[960px] 2xl:left-[940px] xl:-top-[960px] xl:left-[940px]">
               <Image
                 src="/sales/solution3rdpage/wire/wire2.svg"
                 width={980}
@@ -176,7 +176,7 @@ const ImageGalleryLine = () => {
                 data-aos="zoom-in"
               />
             </div>
-            <div className="relative 2xl:-top-[800px] z-[90] 2xl:left-[920px]">
+            <div className="relative 2xl:-top-[800px] z-[90] 2xl:left-[920px] xl:-top-[800px] xl:left-[920px]">
               <Image
                 src="/sales/solution3rdpage/wire/wire3.svg"
                 width={980}
@@ -188,7 +188,7 @@ const ImageGalleryLine = () => {
                 data-aos="zoom-in"
               />
             </div>
-            <div className="relative 2xl:-top-[1150px] z-[60] 2xl:left-[10px]">
+            <div className="relative 2xl:-top-[1150px] z-[60] 2xl:left-[10px] xl:-top-[1150px]  xl:left-[10px]" >
               <Image
                 src="/sales/solution3rdpage/wire/wire4.svg"
                 width={970}

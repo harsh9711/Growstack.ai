@@ -7,7 +7,7 @@ import "@/styles/button.css";
 export default function Footer() {
   return (
 <footer className="rounded-t-[50px] px-10 md:px-12 bg-primary-light-gray ">
-<div className="flex rounded-full justify-between max-w-[1480px] mx-auto py-20 items-center">
+<div className="flex rounded-full justify-between max-w-[1480px] gap-6 flex-wrap  mx-auto py-20 items-center">
         <h1 className="text-[42px] font-semibold max-w-lg leading-relaxed text-primary-green">Ready to see a personalized demo?</h1>
         <div className="flex items-center gap-4">
           <button className="bg-white hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-10 py-5 rounded-xl font-semibold">
