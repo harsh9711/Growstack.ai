@@ -137,7 +137,7 @@ const LoadingBar: React.FC = () => {
                     Break down
                     </span>
                     <span className="text-black font-extralight">
-                    sata silos                  </span>
+                    data silos                  </span>
                 </h1>
             </div>
             <div className="gallery-wrapper" ref={galleryRef}>

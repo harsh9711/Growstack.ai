@@ -18,7 +18,7 @@ const Banner: React.FC = () => {
                             <div className="bannerContent">
                                 <span className='user'>Growstack for Revenue operations Team</span>
                                 <h2 className='solsheading'><span>Optimize your revenue </span> <br />strategy with Growstack</h2>
-                                <p>STake your revenue operations to the next level with Growstack’s cutting-edge tools and solutions. From optimizing data management to enhancing team alignment, our platform addresses your key challenges and drives your team towards achieving exceptional results.</p>
+                                <p>Take your revenue operations to the next level with Growstack’s cutting-edge tools and solutions. From optimizing data management to enhancing team alignment, our platform addresses your key challenges and drives your team towards achieving exceptional results.</p>
                                 <div className="btns reverse">
                                     <Link href="/register" className='sheen'>
                                     Free  trial

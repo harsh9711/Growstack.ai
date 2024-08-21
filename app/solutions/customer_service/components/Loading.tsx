@@ -15,33 +15,30 @@ const LoadingBar: React.FC = () => {
     const galleryRef = useRef<HTMLDivElement | null>(null);
 
     const images: string[] = [
-        '/loading/sales2/loading1.svg',
-        '/loading/sales2/loading2.svg',
-        '/loading/sales2/loading3.svg',
-        '/loading/sales2/loading4.svg',
+        '/loadingcustomer/loading1.svg',
+        '/loadingcustomer/loading2.svg',
+        '/loadingcustomer/loading3.svg',
+        '/loadingcustomer/loading4.svg',
     ];
     const [clickedIndex, setClickedIndex] = useState<number | null>(null);
 
     const contents = [
-        <div key="1"  className={`flex flex-row items-center gap-x-10 ${clickedIndex === 0 ? 'text-[#FFEDE6] font-semibold' : ''}`}>
-            <Image src="/iconsdiv/icons1.svg" alt="Icon 1" width={50} height={50} />
-            <p className='text-black '>Unified data</p>
+        <div key="1"  className={`flex flex-row items-center gap-x-10 ${clickedIndex === 0 ? 'text-[#FFEDE6] font-semibold' : 'text-white'}`}>
+            <Image src="/iconsdivcustomer/icons1.svg" alt="Icon 1" width={50} height={50} />
+            <p className='text-white mt-2'>Consistent messaging</p>
         </div>,
-        <div key="2"  className={`flex flex-row items-center gap-x-10 ${clickedIndex === 1 ? 'text-[#9AEEE7] font-semibold' : ''}`}>
-            <Image src="/iconsdiv/icons2.svg" alt="Icon 2" width={50} height={50} />
-            <p className='text-black '>Consolidated sources</p>
+        <div key="2"  className={`flex flex-row items-center gap-x-10 ${clickedIndex === 1 ? 'text-[#9AEEE7] font-semibold' : 'text-white'}`}>
+            <Image src="/iconsdivcustomer/icons2.svg" alt="Icon 2" width={50} height={50} />
+            <p className='text-white mt-2 '>Personalized service</p>
         </div>,
-        <div key="3"  className={`flex flex-row items-center gap-x-10 ${clickedIndex === 2 ? 'text-[#D9CFEE] font-semibold' : ''}`}>
-            <Image src="/iconsdiv/icons3.svg" alt="Icon 3" width={50} height={50} />
-            <p className='text-black '>Integrated insights</p>
+        <div key="3"  className={`flex flex-row items-center gap-x-10 ${clickedIndex === 2 ? 'text-[#D9CFEE] font-semibold' : 'text-white'}`}>
+            <Image src="/iconsdivcustomer/icons3.svg" alt="Icon 3" width={50} height={50} />
+            <p className='text-white mt-2' >Brand trust</p>
         </div>,
-        <div key="4"  className={`flex flex-row items-center gap-x-10 ${clickedIndex === 3 ? 'text-[#F0FFC3] font-semibold' : ''}`}>
-            <Image src="/iconsdiv/icons4.svg" alt="Icon 4" width={50} height={50} />
-            <p className='text-black '>Cohesive strategy</p>
-        </div>,
+       
     ];
 
-    const progressColors = ['#FFEDE6', '#9AEEE7', '#D9CFEE', '#FEE4F1'];
+    const progressColors = ['#FFEDE6', '#9AEEE7', '#D9CFEE'];
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
@@ -119,25 +116,25 @@ const LoadingBar: React.FC = () => {
     }, []);
 
     return (
-        <div className='flex flex-col '>
+        <div className='flex flex-col gap-y-6'>
             <div className=" 2xl:items-start items-center justify-center flex flex-col gap-y-4 ">
                 <div
                     data-aos="fade-up"
                     data-aos-duration="1000"
-                     className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit">
+                     className="bg-[#FFFFFF]/20 text-white py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit">
                     {" "}
-                    stay connected
+                    consistent
                 </div>  
                <h1
                     data-aos="fade-up"
                     data-aos-duration="1100"
-                    className="text-center items-center justify-center flex flex-wrap gap-2 text-[26px] 2xl:text-[42px] leading-normal"
+                    className="text-center items-center justify-center flex flex-wrap gap-4 text-[26px] 2xl:text-[42px] leading-normal"
                 >
-                    <span className="relative text-black font-semibold">
-                    Break down
+                    <span className="relative text-[white] font-semibold">
+                    Maintain consistent 
                     </span>
-                    <span className="text-black font-extralight">
-                    sata silos                  </span>
+                    <span className="text-[#61C453] font-normal">
+                    service standards                 </span>
                 </h1>
             </div>
             <div className="gallery-wrapper" ref={galleryRef}>
@@ -146,7 +143,7 @@ const LoadingBar: React.FC = () => {
       <div
         key={index}
         onClick={() => handleClick(index)}
-        className={`display-item ${clickedIndex === index ? 'active' : ''}`}
+        className={`display-item text-white ${clickedIndex === index ? 'active' : ''}`}
       >
         {content}
         <div className="progress-wrapper2">
