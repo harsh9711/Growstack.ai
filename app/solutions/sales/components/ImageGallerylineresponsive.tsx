@@ -101,7 +101,7 @@ const ImageGalleryLineResponsive = () => {
           
               <div className="relative flex flex-col gap-y-6  items-center justify-center">
               
-                <div className="flex flex-col items-center justify-center gap-y-6 p-4">
+                <div className="flex flex-col items-center justify-center px-4">
                   {images.map((img) => (
                     <div className="relative" key={img.id}>
                       <Image
