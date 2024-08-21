@@ -23,7 +23,7 @@ const page = () => {
   }, []);
   return (
     <main className="bg-white">
-     <section className="bg-[#034737] w-full mb-10 2xl:mb-20">
+     <section className="bg-[#034737] w-full mb-10 2xl:mb-20 z-0 relative">
         <Navbar
           logoUrl="/white.png"
           logoAlt="Custom Logo"
@@ -31,9 +31,11 @@ const page = () => {
         />
 
   <Banner/>
-  {/* <svg className="relativet" width="2020" height="164" viewBox="0 0 2020 164" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M0 0H1920V112L1799.85 142.356C1692.86 169.386 1580.94 170.209 1473.56 144.754L1115.11 59.7749C1044.86 43.121 971.851 41.8152 901.052 55.9464L528.328 130.341C353.181 165.301 172.301 159.021 0 112V0Z" fill="#034737"/>
-</svg> */}
+  <svg className="relative 2xl:flex xl:flex z-20 hidden translate-y-[113px] -translate-x-[200.5px] w-[2300px]" width="2176" height="156" viewBox="0 0 2176 156" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M2.26667 0H2176V97.4667L2039.83 131.871C1918.58 162.504 1791.73 163.437 1670.04 134.588L1263.79 38.2782C1184.18 19.4038 1101.43 17.9238 1021.19 33.9393L598.772 118.254C400.272 157.874 195.275 150.757 0 97.4667V97.4667L2.26667 0Z" fill="#034737"/>
+</svg>
+
+
       </section>
 
       <section className=" mx-auto w-full flex items-center justify-center 2xl:mb-20 py-10 2xl:py-20 ">
@@ -48,7 +50,10 @@ const page = () => {
           <ImageGalleryResponsive />
         </div>
         </div>
-      </section> 
+      </section> <svg className="w-full 2xl:flex xl:flex hidden translate-y-8" width="1920" height="128" viewBox="0 0 1920 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M1920 128L-0.00012207 128L-0.000119154 94.6427L859.015 5.52817C926.49 -1.47178 994.509 -1.46814 1061.98 5.53904L1920 94.6428L1920 128Z" fill="#14171B"/>
+</svg>
+
        <section className="bg-[#14171B] mx-auto w-full flex items-center justify-center 2xl:mb-20 py-10 2xl:py-20 ">
         <div
           data-aos="fade-up"
@@ -61,7 +66,7 @@ const page = () => {
           </div>
         </div>
       </section>
-    <section className=" p-20">
+    {/* <section className=" p-20">
         <div className="relative mx-auto rounded-t-[40px] items-center justify-center 2xl:py-20 bg-[#E2F0CB4D]/30">
         <div className="flex flex-col items-center justify-center mx-auto gap-2">
           <div
@@ -165,7 +170,7 @@ const page = () => {
         </div>
 
         <MarketingStreamline />
-      </section>
+      </section> */}
       <Footer />
     </main>
   );

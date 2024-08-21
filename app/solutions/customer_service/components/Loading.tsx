@@ -159,7 +159,7 @@ const LoadingBar: React.FC = () => {
           )}
           {(progress[index] > 0 && progress[index] < 100) || clickedIndex === index ? (
             <div className="arrow-icon-wrapper">
-              <FaArrowRightLong className="arrow-icon2" />
+              <FaArrowRightLong className="arrow-icon" />
             </div>
           ) : null}
         </div>
