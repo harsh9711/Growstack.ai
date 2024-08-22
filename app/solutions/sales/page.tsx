@@ -22,7 +22,7 @@ const page = () => {
     AOS.init({ duration: 500 });
   }, []);
   return (
-    <main className="bg-white">
+    <main className="bg-white overflow-hidden">
       <section className="bg-gradient-to-r to-[#FFF4CB]/100 via-[#E6FFE2]/100 from-[#A9FF9B]/50 w-full mb-10 2xl:mb-20 overflow-hidden">
         <Navbar
 
@@ -83,7 +83,7 @@ const page = () => {
                     data-aos-duration="1500"
                     className="flex xl:flex-row flex-col  2xl:flex-row  gap-4 2xl:gap-4"
                   >
-                    <button className=" flex items-center gap-2  text-primary-green rounded-xl  ">
+                    {/* <button className=" flex items-center gap-2  text-primary-green rounded-xl  ">
                       <svg
                         className="2xl:w-[192px] xl:w-[192px] lg:w-[192px] w-full  h-full max-h-[64.06px]"
                         width="197"
@@ -355,11 +355,20 @@ const page = () => {
                           </linearGradient>
                         </defs>
                       </svg>
+                    </button> */}
+                      <button className="flex items-center gap-2   text-primary-green rounded-xl">
+                      <Image
+                        className=" w-full  h-full "
+                        src="/playstore.svg"
+                        alt="Apple"
+                        width={180}
+                        height={400}
+                      />
                     </button>
                     <button className="flex items-center gap-2   text-primary-green rounded-xl">
                       <Image
-                        className="2xl:w-[192px] xl:w-[192px] lg:w-[192px] w-full  h-full max-h-[64.06px]"
-                        src="/apple.png"
+                        className=" w-full  h-full "
+                        src="/apple.svg"
                         alt="Apple"
                         width={180}
                         height={400}

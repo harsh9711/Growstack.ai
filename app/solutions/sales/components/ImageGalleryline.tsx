@@ -152,48 +152,48 @@ const ImageGalleryLine = () => {
                 <span className="text-black font-extralight">with AI-driven strategies</span>
               </h1>
             </div>
-            <div className="relative 2xl:-top-[630px] 2xl:left-[20px] xl:-top-[630px] xl:left-[20px]">
+            <div className="relative 2xl:-top-[580px] 2xl:left-[50px] xl:-top-[600px] xl:left-[50px]">
               <Image
                 src="/sales/solution3rdpage/wire/wire1.svg"
                 width={970}
                 height={600} 
-              className="w-[420px] h-[315px] hover-box101"
+              className="w-[350px] h-[262.5px] hover-box101"
                 alt="Image 1"
                 onClick={() => handleImageClick(images[0])}
                 style={{ cursor: 'pointer' }}
                 data-aos="zoom-in"
               />
             </div>
-            <div className="relative 2xl:-top-[960px] 2xl:left-[940px] xl:-top-[960px] xl:left-[940px]">
+            <div className="relative 2xl:-top-[920px] 2xl:left-[935px] xl:-top-[960px] xl:left-[940px]">
               <Image
                 src="/sales/solution3rdpage/wire/wire2.svg"
                 width={980}
                 height={600} 
-              className="w-[420px] h-[315px] hover-box202"
+              className=" w-[430px] h-[322.5px] hover-box202"
                 alt="Image 2"
                 onClick={() => handleImageClick(images[1])}
                 style={{ cursor: 'pointer' }}
                 data-aos="zoom-in"
               />
             </div>
-            <div className="relative 2xl:-top-[800px] z-[90] 2xl:left-[920px] xl:-top-[800px] xl:left-[920px]">
+            <div className="relative 2xl:-top-[750px] z-[90] 2xl:left-[920px] xl:-top-[800px] xl:left-[920px]">
               <Image
                 src="/sales/solution3rdpage/wire/wire3.svg"
                 width={980}
                 height={600} 
-              className="w-[420px] h-[315px] hover-box404"
+              className="w-[350px] h-[262.5px] hover-box404"
                 alt="Image 3"
                 onClick={() => handleImageClick(images[2])}
                 style={{ cursor: 'pointer' }}
                 data-aos="zoom-in"
               />
             </div>
-            <div className="relative 2xl:-top-[1150px] z-[60] 2xl:left-[10px] xl:-top-[1150px]  xl:left-[10px]" >
+            <div className="relative 2xl:-top-[1080px] z-[60] 2xl:left-[40px] xl:-top-[1150px]  xl:left-[10px]" >
               <Image
                 src="/sales/solution3rdpage/wire/wire4.svg"
                 width={970}
                 height={600} 
-              className="w-[420px] h-[315px] hover-box303"
+              className="w-[350px] h-[262.5px] hover-box303"
                 alt="Image 4"
                 onClick={() => handleImageClick(images[3])}
                 style={{ cursor: 'pointer' }}
