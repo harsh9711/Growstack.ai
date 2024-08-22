@@ -106,7 +106,7 @@ const ImageGalleryLine = () => {
   }, [currentRelatedIndex, timerActive, selectedImage, imagesShownCount]);
 
   return (
-    <div style={{ position: 'relative', width: '1700px', height: '1163px' }} className="w-full h-full overflow-x-hidden">
+    <div style={{ position: 'relative', width: '1700px', height: '1163px' }} className="w-full h-full overflow-x-hidden ">
      
       <div className='flex flex-col 2xl:flex-row xl:flex-row items-start mt-24 justify-center'>
       <div className="relative flex items-center justify-center">
@@ -135,8 +135,8 @@ const ImageGalleryLine = () => {
             </div>
           </div>
         ) : (
-          <div className="relative xl:translate-y-24 2xl:translate-y-24 ">
-   <svg width="1679" height="600" viewBox="0 0 1679 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div className="relative w-full  xl:translate-y-24 2xl:translate-y-24 ">
+   <svg width="1479" height="600" viewBox="0 0 1679 600" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M1402.5 60H1658.5C1669.55 60 1678.5 68.9543 1678.5 80V240C1678.5 251.046 1669.55 260 1658.5 260H1445C1433.95 260 1425 268.954 1425 280V595" stroke="#034737"/>
 <path d="M233.5 50H820.097C831.143 50 840.097 41.0457 840.097 30V21C840.097 9.9543 849.052 1 860.097 1L1406.5 1V62" stroke="#034737"/>
 <path d="M207 516.5V324.573C207 313.527 198.046 304.573 187 304.573H21C9.95431 304.573 1 295.618 1 284.573V74C1 62.9543 9.9543 54 21 54H232" stroke="#034737"/>
@@ -165,7 +165,7 @@ const ImageGalleryLine = () => {
                 data-aos="zoom-in"
               />
             </div>
-            <div className="relative 2xl:-top-[980px] 2xl:left-[1075px] xl:-top-[980px] xl:left-[1075px] overflow-x-hidden">
+            <div className="relative 2xl:-top-[980px] 2xl:left-[1000px] xl:-top-[980px] xl:left-[1000px] overflow-x-hidden">
               <Image
                 src="/sales/solution3rdpage/wire/wire2.svg"
                 width={980}
@@ -177,7 +177,7 @@ const ImageGalleryLine = () => {
                 data-aos="zoom-in"
               />
             </div>
-            <div className="relative 2xl:-top-[750px] z-[90] 2xl:left-[1240px] xl:-top-[800px] xl:left-[920px] overflow-x-hidden">
+            <div className="relative 2xl:-top-[750px] z-[90] 2xl:left-[1040px] xl:-top-[800px] xl:left-[920px] overflow-x-hidden">
               <Image
                 src="/sales/solution3rdpage/wire/wire3.svg"
                 width={980}
