@@ -155,7 +155,7 @@ const GridComponent = () => {
           return (
     <>      
 
-          <div className="2xl:grid grid-cols-3 relative 2xl:gap-x-16 2xl:left-72 justify-center items-center">
+          <div className="2xl:grid xl:grid grid-cols-3 relative 2xl:gap-x-16 xl:left-52 2xl:left-72 justify-center items-center">
   <div
     onClick={() => handleClick(1)}
     className="rounded-[30px] flex justify-center items-center z-[60] cursor-pointer hover:scale-105 transition-transform duration-300"
@@ -180,7 +180,7 @@ const GridComponent = () => {
       className="w-[480px] h-[357px] hover-boxsalesrevops2"
     />
   </div>
-  <div className="rounded-[30px] relative right-[810px] 2xl:top-44 2xl:flex xl:flex hidden flex justify-center items-center hover:scale-150 transition-transform duration-300">
+  <div className="rounded-[30px] relative right-[810px] 2xl:top-44  flex justify-center items-center hover:scale-150 transition-transform duration-300">
     <Image
       src="/solutions/salesrevops/boxes/main.svg"
       alt="Main"

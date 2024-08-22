@@ -33,7 +33,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section className="xl:px-36 2xl:px-36 pt-20">
+      <section className="xl:px-36 2xl:px-36 pt-20 overf">
         <div className=" 2xl:flex hidden flex-col   max-h-[1163px] h-full justify-center mx-auto relative   bg-gradient-to-b to-[#ffffff]/30 from-[#61C453]/20  w-full   items-center gap-4  ">
           <ImageGalleryLineB />
         </div>

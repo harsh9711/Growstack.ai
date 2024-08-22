@@ -106,7 +106,7 @@ const ImageGalleryLine = () => {
   }, [currentRelatedIndex, timerActive, selectedImage, imagesShownCount]);
 
   return (
-    <div style={{ position: 'relative', width: '1821px', height: '1163px' }} className="w-full h-full overflow-x-hidden">
+    <div style={{ position: 'relative', width: '1821px', height: '1163px',overflow: 'hidden' }} className="w-full h-full overflow-x-hidden">
      
       <div className='flex flex-col 2xl:flex-row items-start mt-24 justify-center'>
       <div className="relative flex items-center justify-center">

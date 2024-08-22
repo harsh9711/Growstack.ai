@@ -45,7 +45,7 @@ const page = () => {
                 <h1
                   data-aos="fade-right"
                   data-aos-duration="1500"
-                  className="text-[26px] xl:text-[48px] 2xl:text-[56px] w-full leading-normal text-black"
+                  className="text-[26px] xl:text-[48px]   w-full leading-normal text-black"
                 >
                   <span className="font-semibold">Transform your sales</span>
                   <br />{" "}
@@ -84,7 +84,6 @@ const page = () => {
                     data-aos-duration="1500"
                     className="flex  flex-wrap gap-4"
                   >
-                  
                     <button className="flex items-center gap-2   text-primary-green rounded-xl">
                       <Image
                         className="w-full  h-full"

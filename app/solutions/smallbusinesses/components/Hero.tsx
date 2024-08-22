@@ -29,7 +29,7 @@ const HeroSection: React.FC = () => {
                 </div>
 
                 <div className="  items-center flex flex-col gap-y-4 justify-center  mx-auto ">
-                  <h1 className="xl:text-[48px] text-[24px]2xl:text-[56px]  leading-12 flex flex-col  items-center justify-center text-[#14171B] bg-clip-text ">
+                  <h1 className="xl:text-[48px] text-[24px]   leading-12 flex flex-col  items-center justify-center text-[#14171B] bg-clip-text ">
                     <span className="font-semibold text-center">
                       Maximize efficiency
                     </span>
