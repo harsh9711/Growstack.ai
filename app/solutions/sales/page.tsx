@@ -25,14 +25,13 @@ const page = () => {
     <main className="bg-white">
       <section className="bg-gradient-to-r to-[#FFF4CB]/100 via-[#E6FFE2]/100 from-[#A9FF9B]/50 w-full mb-10 2xl:mb-20 overflow-hidden">
         <Navbar
-
           logoUrl="/images/logo.png"
           logoAlt="Custom Logo"
           backgroundColor="transparent"
         />
 
-        <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1800px] 2xl:p-0 p-4 w-full 2xl:max-h-[1112px] h-full justify-center mx-auto">
-          <div className="w-full flex flex-row justify-between brightness-110 relative 2xl:left-52 items-center mt-10 mb-10 2xl:mt-32 2xl:mb-60">
+        <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1350px] 2xl:p-0 p-4 w-full 2xl:max-h-[1112px] h-full justify-center mx-auto">
+          <div className="w-full flex flex-row justify-between brightness-110 relative  items-center mt-10 mb-10 2xl:mt-32 2xl:mb-60">
             <div className="w-full max-w-[700px] gap-y-4 flex flex-col">
               <div
                 data-aos="fade-right"
@@ -46,16 +45,18 @@ const page = () => {
                 <h1
                   data-aos="fade-right"
                   data-aos-duration="1500"
-                  className="text-[26px] xl:text-[48px] 2xl:text-[56px] max-w-2xl leading-normal text-black"
+                  className="text-[26px] xl:text-[48px] 2xl:text-[56px] w-full leading-normal text-black"
                 >
                   <span className="font-semibold">Transform your sales</span>
                   <br />{" "}
-                  <span className="font-light">process with Growstack</span>
+                  <span className="font-light 2xl:whitespace-nowrap">
+                    process with Growstack
+                  </span>
                 </h1>
                 <p
                   data-aos="fade-right"
                   data-aos-duration="1500"
-                  className="text-[16px] 2xl:text-[18px] text-black mt-4 w-full max-w-[600px] leading-loose font-light"
+                  className="text-[16px] 2xl:text-[18px] text-black mt-4 w-full max-w-[600px] leading-normal font-light"
                 >
                   Unlock the full potential of your sales team with Growstack's
                   advanced suite of tools and features. Our platform addresses
@@ -81,7 +82,7 @@ const page = () => {
                   <div
                     data-aos="fade-right"
                     data-aos-duration="1500"
-                    className="flex  flex-wrap"
+                    className="flex  flex-wrap gap-4"
                   >
                     {/* <button className=" flex items-center gap-2  text-primary-green rounded-xl  ">
                       <svg
@@ -356,19 +357,19 @@ const page = () => {
                         </defs>
                       </svg>
                     </button> */}
-                      <button className="flex items-center gap-2   text-primary-green rounded-xl">
+                    <button className="flex items-center gap-2   text-primary-green rounded-xl">
                       <Image
-                        className="w-[200px]  h-full"
-                        src="/store.png"
+                        className="w-full  h-full"
+                        src="/play2.png"
                         alt="Apple"
                         width={180}
                         height={400}
                       />
-                      </button>
+                    </button>
                     <button className="flex items-center gap-2   text-primary-green rounded-xl">
                       <Image
                         className="w-full  h-full "
-                        src="/app.png"
+                        src="/apple2.png"
                         alt="Apple"
                         width={180}
                         height={400}
@@ -379,14 +380,14 @@ const page = () => {
               </div>
             </div>
 
-            <div className="2xl:flex xl:flex lg:flex hidden items-center relative left-32 2xl:left-10 justify-end ">
+            <div className="2xl:flex xl:flex lg:flex md:flex hidden items-center relative left-32 2xl:left-72 justify-end ">
               <div
                 data-aos="fade-left"
                 data-aos-duration="1500"
                 className="w-full relative z-0 "
               >
                 <Image
-                  className="w-[900px] h-full"
+                  className="xl:w-[1500px] w-full 2xl:w-[1500px] h-full"
                   src="/solutions/herosales.svg"
                   alt="Center Image"
                   width={842}
@@ -424,7 +425,7 @@ const page = () => {
             data-aos="fade-up"
             data-aos-duration="1800"
             data-aos-delay="600"
-            className="items-center justify-center mx-auto relative 2xl:right-12  2xl:top-10"
+            className="items-center justify-center mx-auto relative 2xl:right-12  2xl:top-4"
           >
             <GridComponent />
           </div>
@@ -486,7 +487,7 @@ const page = () => {
             data-aos="fade-up"
             data-aos-duration="1800"
             data-aos-delay="600"
-            className="items-center justify-center mx-auto relative 2xl:right-12 2xl:top-4 overflow-hidden"
+            className="items-center justify-center mx-auto relative 2xl:right-12 2xl:top-4 "
           >
             <GridComponentSecond />
           </div>
@@ -521,13 +522,13 @@ const page = () => {
       </section>
       <section className=" overflow-hidden  ">
         <div className="items-center justify-center flex flex-col gap-y-4  overflow-hidden ">
-          <Image
+          {/* <Image
             src="/desing.png"
             width={1200}
             height={1000}
             className="w-full absolute h-[1000px]  transform scale-y-[-1]  translate-x-10  z-0 translate-y-[500px] "
             alt="image"
-          />
+          /> */}
         </div>
 
         <MarketingStreamline />
