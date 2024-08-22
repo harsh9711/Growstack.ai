@@ -16,8 +16,8 @@ const LoadingBar: React.FC = () => {
 
     const images: string[] = [
         '/loading/sales/loading1.svg',
-        '/loading/sales/loading2.svg',
-        '/loading/sales/loading3.svg',
+        '/loading/sales/loading3.svg',  
+         '/loading/sales/loading2.svg',
         '/loading/sales/loading4.svg',
     ];
     const [clickedIndex, setClickedIndex] = useState<number | null>(null);

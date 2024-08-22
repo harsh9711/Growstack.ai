@@ -22,7 +22,7 @@ const page = () => {
     AOS.init({ duration: 500 });
   }, []);
   return (
-    <main className="bg-white overflow-hidden">
+    <main className="bg-white">
       <section className="bg-gradient-to-r to-[#FFF4CB]/100 via-[#E6FFE2]/100 from-[#A9FF9B]/50 w-full mb-10 2xl:mb-20 overflow-hidden">
         <Navbar
 
@@ -33,7 +33,7 @@ const page = () => {
 
         <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1800px] 2xl:p-0 p-4 w-full 2xl:max-h-[1112px] h-full justify-center mx-auto">
           <div className="w-full flex flex-row justify-between brightness-110 relative 2xl:left-52 items-center mt-10 mb-10 2xl:mt-32 2xl:mb-60">
-            <div className="w-full gap-y-4 flex flex-col">
+            <div className="w-full max-w-[700px] gap-y-4 flex flex-col">
               <div
                 data-aos="fade-right"
                 data-aos-duration="1200"
@@ -46,7 +46,7 @@ const page = () => {
                 <h1
                   data-aos="fade-right"
                   data-aos-duration="1500"
-                  className="text-[26px] 2xl:text-[56px] max-w-2xl leading-12 text-black"
+                  className="text-[26px] xl:text-[48px] 2xl:text-[56px] max-w-2xl leading-normal text-black"
                 >
                   <span className="font-semibold">Transform your sales</span>
                   <br />{" "}
@@ -81,7 +81,7 @@ const page = () => {
                   <div
                     data-aos="fade-right"
                     data-aos-duration="1500"
-                    className="flex xl:flex-row flex-col  2xl:flex-row  gap-4 2xl:gap-4"
+                    className="flex  flex-wrap"
                   >
                     {/* <button className=" flex items-center gap-2  text-primary-green rounded-xl  ">
                       <svg
@@ -358,17 +358,17 @@ const page = () => {
                     </button> */}
                       <button className="flex items-center gap-2   text-primary-green rounded-xl">
                       <Image
-                        className=" w-full  h-full "
-                        src="/playstore.svg"
+                        className="w-[200px]  h-full"
+                        src="/store.png"
                         alt="Apple"
                         width={180}
                         height={400}
                       />
-                    </button>
+                      </button>
                     <button className="flex items-center gap-2   text-primary-green rounded-xl">
                       <Image
-                        className=" w-full  h-full "
-                        src="/apple.svg"
+                        className="w-full  h-full "
+                        src="/app.png"
                         alt="Apple"
                         width={180}
                         height={400}
@@ -386,7 +386,7 @@ const page = () => {
                 className="w-full relative z-0 "
               >
                 <Image
-                  className="w-[1200px] h-full"
+                  className="w-[900px] h-full"
                   src="/solutions/herosales.svg"
                   alt="Center Image"
                   width={842}
@@ -486,7 +486,7 @@ const page = () => {
             data-aos="fade-up"
             data-aos-duration="1800"
             data-aos-delay="600"
-            className="items-center justify-center mx-auto relative 2xl:right-12 2xl:top-4"
+            className="items-center justify-center mx-auto relative 2xl:right-12 2xl:top-4 overflow-hidden"
           >
             <GridComponentSecond />
           </div>
