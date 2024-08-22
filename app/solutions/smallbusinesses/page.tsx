@@ -10,7 +10,7 @@ import HeroSection from "./components/Hero";
 import GridComponent from "./components/GridBoxes";
 import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
 import ImageGalleryLineResponsive from "./components/ImageGalleryline";
-import ImageGalleryLineB from "./components/ImageGalleryline copy";
+import ImageGalleryLineB from "./components/ImageGallerylineresponsive";
 import Footer from "@/components/footer/Footer";
 
 const Home = () => {
@@ -33,11 +33,11 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section className=" 2xl:px-36 pt-20 overflow-hidden">
-        <div className=" 2xl:flex hidden flex-col   max-h-[1163px] h-full justify-center mx-auto relative   bg-gradient-to-b to-[#ffffff]/30 from-[#61C453]/20  w-full   items-center gap-4  ">
+      <section className="  pt-20 overflow-hidden">
+        <div className=" 2xl:flex xl:flex hidden flex-col   max-h-[1163px] h-full justify-center mx-auto relative   bg-gradient-to-b to-[#ffffff]/30 from-[#61C453]/20  w-full   items-center gap-4  ">
           <ImageGalleryLineB />
         </div>
-        <div className="2xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px]  bg-gradient-to-b to-[#ffffff]/30 from-[#61C453]/20 h-full justify-center mx-auto   items-center gap-4  ">
+        <div className="2xl:hidden xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px]  bg-gradient-to-b to-[#ffffff]/30 from-[#61C453]/20 h-full justify-center mx-auto   items-center gap-4  ">
           <ImageGalleryLineResponsive />
         </div>
       </section>
