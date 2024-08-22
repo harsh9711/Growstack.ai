@@ -31,7 +31,7 @@ const page = () => {
         />
 
         <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1350px] 2xl:p-0 p-4 w-full 2xl:max-h-[1112px] h-full justify-center mx-auto">
-          <div className="w-full flex flex-row justify-between brightness-110 relative  items-center mt-10 mb-10 2xl:mt-32 2xl:mb-60">
+          <div className="w-full flex flex-row justify-between brightness-110 relative   mt-10 mb-10 2xl:mt-32 2xl:mb-60">
             <div className="w-full max-w-[700px] gap-y-4 flex flex-col">
               <div
                 data-aos="fade-right"
@@ -380,21 +380,17 @@ const page = () => {
               </div>
             </div>
 
-            <div className="2xl:flex xl:flex lg:flex md:flex hidden items-center relative left-32 2xl:left-72 justify-end ">
-              <div
-                data-aos="fade-left"
-                data-aos-duration="1500"
-                className="w-full relative z-0 "
-              >
+           
+          
                 <Image
-                  className="xl:w-[1500px] w-full 2xl:w-[1500px] h-full"
-                  src="/solutions/herosales.svg"
+        className="relative left-80 bottom-0  max-w-full h-auto"
+        src="/solutions/herosales.svg"
                   alt="Center Image"
                   width={842}
                   height={463}
                 />
-              </div>
-            </div>
+            
+        
           </div>
         </div>
         {/* <Banner /> */}
