@@ -217,7 +217,7 @@ const GridComponent = () => {
           );
       }
     };
-    return <div className="flex flex-col justify-center 2xl:text-[14px] text-[8px] 2xl:p-0 p-4 relative 2xl:left-8 mx-auto items-center" onClick={handleComponentClick}>  
+    return <div className="flex flex-col justify-center 2xl:text-[14px] text-[8px] 2xl:p-0 p-4 relative 2xl:left-8 mx-auto items-center overflow-x-hidden" onClick={handleComponentClick}>  
 {renderContent()}</div>;
   };
   export default GridComponent
