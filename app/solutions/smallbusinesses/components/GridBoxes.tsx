@@ -161,7 +161,7 @@ const GridComponent = () => {
           default:
           return (
     <>      
-            <div data-aos="fade-up"  className="grid grid-cols-3 relative gap-x-16 gap-y-16  left-72 justify-center items-center ">
+            <div data-aos="fade-up"     className="2xl:grid grid-cols-3 relative 2xl:gap-x-16 2xl:left-72 justify-center items-center">
               <div onClick={() => handleClick(1)} className="rounded-[30px] flex justify-center items-center z-[60] cursor-pointer  hover:scale-105  transition-transform duration-300">
                 <Image src="/solution3rdpage/boxes/box1.svg" alt="Box 1" width={400} height={420} className="w-[480px] h-[357px]  hover-box111" />
               </div>
@@ -181,7 +181,7 @@ const GridComponent = () => {
           );
       }
     };
-    return <div className="flex flex-col justify-center relative left-8 mt-4 mx-auto items-center" onClick={handleComponentClick}>  
+    return <div className="flex flex-col justify-center 2xl:text-[14px] text-[8px] 2xl:p-0 p-4 relative 2xl:left-8 mx-auto items-center overflow-x-hidden" onClick={handleComponentClick}>  
 {renderContent()}</div>;
   };
   export default GridComponent

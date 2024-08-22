@@ -231,7 +231,7 @@ const page = () => {
             src="/desing.png"
             width={1200}
             height={1000}
-            className="w-full absolute h-[1000px] 2xl:flex hidden  transform scale-y-[-1]  translate-x-10  z-0 translate-y-[500px] "
+            className="w-full  xl:flex  absolute h-[1000px] 2xl:flex hidden  transform scale-y-[-1]  translate-x-10  z-0 translate-y-[500px] "
             alt="image"
           />
         </div>

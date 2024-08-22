@@ -250,13 +250,13 @@ const page = () => {
       </section>
       <section className=" overflow-hidden  ">
         <div className="items-center justify-center flex flex-col gap-y-4  overflow-hidden ">
-          {/* <Image
+          <Image
             src="/desing.png"
             width={1200}
             height={1000}
-            className="w-full absolute h-[1000px]  transform scale-y-[-1]  translate-x-10  z-0 translate-y-[500px] "
+            className="w-full absolute h-[1000px]  2xl:flex xl:flex hidden transform scale-y-[-1]  translate-x-10  z-0 translate-y-[500px] "
             alt="image"
-          /> */}
+          />
         </div>
 
         <MarketingStreamline />

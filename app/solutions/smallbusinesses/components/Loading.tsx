@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { FaArrowRightLong } from "react-icons/fa6";
 import "aos/dist/aos.css";
 import AOS from "aos";
+import "../../../../styles/loader.css";
 
 const LoadingBar: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -12,7 +13,6 @@ const LoadingBar: React.FC = () => {
   const [progress, setProgress] = useState<number[]>([0, 0, 0, 0]);
   const [isComplete, setIsComplete] = useState<boolean>(false);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-  const [clickedIndex, setClickedIndex] = useState<number | null>(null);
   const galleryRef = useRef<HTMLDivElement | null>(null);
 
   const images: string[] = [
@@ -23,74 +23,70 @@ const LoadingBar: React.FC = () => {
     "/solution3rdpage/loading/loading5.svg",
     "/solution3rdpage/loading/loading6.svg",
   ];
+  const [clickedIndex, setClickedIndex] = useState<number | null>(null);
+
   const contents = [
-    <div key="1" className="flex flex-row font-light items-center gap-x-10">
+    <div
+      key="1"
+      className={`flex flex-row items-center gap-x-10 ${
+        clickedIndex === 0 ? "text-[#FFEDE6] font-semibold" : ""
+      }`}
+    >
       <Image
         src="/solution3rdpage/loadingicon/icon1.svg"
         alt="Icon 1"
         width={50}
         height={50}
       />
-      <p
-        className={`text ${
-          clickedIndex === 0 ? "font-semibold text-[#034737]" : ""
-        }`}
-      >
-        Market smartly
-      </p>
+      <p className="text-black ">Process automation</p>
     </div>,
-    <div key="2" className="flex flex-row font-light items-center gap-x-10">
+    <div
+      key="2"
+      className={`flex flex-row items-center gap-x-10 ${
+        clickedIndex === 1 ? "text-[#9AEEE7] font-semibold" : ""
+      }`}
+    >
       <Image
         src="/solution3rdpage/loadingicon/icon2.svg"
-        alt="Icon 1"
+        alt="Icon 2"
         width={50}
         height={50}
       />
-      <p
-        className={`text ${
-          clickedIndex === 1 ? "font-semibold text-[#034737]" : ""
-        }`}
-      >
-        Email effectively
-      </p>
+      <p className="text-black ">Email effectively</p>
     </div>,
-    <div key="3" className="flex flex-row font-light items-center gap-x-10">
+    <div
+      key="3"
+      className={`flex flex-row items-center gap-x-10 ${
+        clickedIndex === 2 ? "text-[#D9CFEE] font-semibold" : ""
+      }`}
+    >
       <Image
         src="/solution3rdpage/loadingicon/icon3.svg"
-        alt="Icon 1"
+        alt="Icon 3"
         width={50}
         height={50}
       />
-      <p
-        className={`text ${
-          clickedIndex === 2 ? "font-semibold text-[#034737]" : ""
-        }`}
-      >
-        Design affordably
-      </p>
+      <p className="text-black ">Design affordably</p>
     </div>,
-    <div key="4" className="flex flex-row font-light items-center gap-x-10">
+    <div
+      key="4"
+      className={`flex flex-row items-center gap-x-10 ${
+        clickedIndex === 3 ? "text-[#F0FFC3] font-semibold" : ""
+      }`}
+    >
       <Image
         src="/solution3rdpage/loadingicon/icon4.svg"
-        alt="Icon 1"
+        alt="Icon 4"
         width={50}
         height={50}
       />
-      <p
-        className={`text ${
-          clickedIndex === 3 ? "font-semibold text-[#034737]" : ""
-        }`}
-      >
-        Create quickly
-      </p>
+      <p className="text-black ">Create quickly</p>
     </div>,
   ];
 
   const progressColors = ["#FFEDE6", "#9AEEE7", "#D9CFEE", "#FEE4F1"];
 
   useEffect(() => {
-    AOS.init({ duration: 1000, once: true }); // Initialize AOS
-
     let interval: NodeJS.Timeout;
     if (loading && selectedIndex === null) {
       interval = setInterval(() => {
@@ -166,41 +162,41 @@ const LoadingBar: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-y-16">
-      <div className="text-center">
+    <div className="flex flex-col gap-y-10">
+      <div className=" 2xl:items-start items-center justify-center flex flex-col gap-y-4 ">
         <div
-          className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit"
           data-aos="fade-up"
+          data-aos-duration="1000"
+          className="bg-[#03473714] hover:shadow-md   whitespace-nowrap  text-black  justify-center py-2 2xl:px-4 flex items-center text-center text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[130px] 2xl:max-w-[151px]"
         >
-          IMPACT{" "}
+          Distinction
         </div>
         <h1
-          className="text-center flex flex-row gap-4 text-[42px] mt-2 leading-normal"
-          data-aos="fade-down"
+          data-aos="fade-up"
+          data-aos-duration="1100"
+          className="text-center items-center justify-center flex flex-wrap gap-2 text-[26px] 2xl:text-[42px] leading-normal"
         >
           <span className="relative text-black font-semibold">
-            Maximize your marketing
+            Streamline sales
           </span>
           <span className="text-black font-extralight">
-            {" "}
-            impact on a small budget{" "}
+            processes for success{" "}
           </span>
         </h1>
       </div>
-      <div className="gallery-container" ref={galleryRef}>
-        <div className="selected-content">
+      <div className="gallery-wrapper" ref={galleryRef}>
+        <div className="content-display">
           {contents.map((content, index) => (
             <div
               key={index}
               onClick={() => handleClick(index)}
-              className={`content-item ${
-                clickedIndex === index ? "clicked" : ""
+              className={`display-item ${
+                clickedIndex === index ? "active" : ""
               }`}
-              data-aos="zoom-in"
             >
               {content}
-              <div className="progress-container">
-                <div className="progress-bar-background"></div>
+              <div className="progress-wrapper2">
+                <div className="progress-bg"></div>
                 {progress[index] > 0 && (
                   <div
                     className="progress-bar"
@@ -212,31 +208,29 @@ const LoadingBar: React.FC = () => {
                 )}
                 {(progress[index] > 0 && progress[index] < 100) ||
                 clickedIndex === index ? (
-                  <div className="justify-end flex -translate-y-16 text-[#034737] -translate-x-6">
-                    <FaArrowRightLong className="text-[#034737] text-2xl" />
+                  <div className="arrow-icon-wrapper">
+                    <FaArrowRightLong className="arrow-icon2" />
                   </div>
                 ) : null}
               </div>
             </div>
           ))}
         </div>
-        <div className="image-thumbnails">
+        <div className="thumbnail-gallery">
           {images.map((image, index) => (
             <div
               key={index}
-              className={`thumbnail ${index === currentIndex ? "active" : ""}`}
+              className={`thumbnail-item ${
+                index === currentIndex ? "current" : ""
+              }`}
               style={{
                 display: index === currentIndex ? "block" : "none",
-                width: "500px",
-                height: "500px",
-                overflow: "hidden",
               }}
-              data-aos="fade-right"
             >
               <img
                 src={image}
                 alt={`Thumbnail ${index + 1}`}
-                className="thumbnail-img"
+                className="thumbnail-image"
               />
             </div>
           ))}
