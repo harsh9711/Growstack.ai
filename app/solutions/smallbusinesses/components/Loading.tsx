@@ -38,7 +38,7 @@ const LoadingBar: React.FC = () => {
         width={50}
         height={50}
       />
-      <p className="text-black ">Process automation</p>
+      <p className="text-black ">Market smartly</p>
     </div>,
     <div
       key="2"

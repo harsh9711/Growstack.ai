@@ -26,14 +26,14 @@ const Home = () => {
       <section className=" ">
         <HeroSection />
       </section>
-      <section className="items-center justify-center mx-auto py-20  xl:px-36 2xl:px-36">
+      <section className="items-center justify-center mx-auto py-20   2xl:px-36">
         <div className="flex flex-col items-center gap-y-10  ">
           <div>
             <LoadingBar />
           </div>
         </div>
       </section>
-      <section className="xl:px-36 2xl:px-36 pt-20 overf">
+      <section className=" 2xl:px-36 pt-20 overflow-hidden">
         <div className=" 2xl:flex hidden flex-col   max-h-[1163px] h-full justify-center mx-auto relative   bg-gradient-to-b to-[#ffffff]/30 from-[#61C453]/20  w-full   items-center gap-4  ">
           <ImageGalleryLineB />
         </div>
@@ -41,7 +41,7 @@ const Home = () => {
           <ImageGalleryLineResponsive />
         </div>
       </section>
-      <section className="relative  mx-auto items-center justify-center pt-20 2xl:pt-0 pb-10 xl:px-36 2xl:px-36">
+      <section className="relative  mx-auto items-center justify-center pt-20 2xl:pt-0 pb-10  2xl:px-auto">
         <div className="flex flex-col items-center  xl:items-start 2xl:items-start justify-center mx-auto gap-2 ">
           <div className=" mx-auto justify-center 2xl:items-start xl:items-start items-center  flex flex-col gap-y-2">
             {" "}

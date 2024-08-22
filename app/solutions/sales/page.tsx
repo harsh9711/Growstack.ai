@@ -172,14 +172,14 @@ const page = () => {
       </section>
 
       <section className="relative w-full 2xl:mt-20">
-        <div className="2xl:flex   hidden   2xl:max-w-[1921px] w-full h-full justify-center mx-auto   items-center gap-4  ">
+        <div className="2xl:flex  xl:flex hidden   2xl:max-w-[1921px] w-full h-full justify-center mx-auto   items-center gap-4  ">
           <ImageGalleryLine />
         </div>
-        <div className="2xl:hidden   flex 2xl:max-w-[1921px] w-full h-full justify-center mx-auto   items-center gap-4  ">
+        <div className="2xl:hidden  xl:hidden flex 2xl:max-w-[1921px] w-full h-full justify-center mx-auto   items-center gap-4  ">
           <ImageGalleryLineResponsive />
         </div>
       </section>
-      <section className="relative mx-auto w-full items-center justify-center mt-10 2xl:mt-0 py-20 bg-[#E2F0CB4D]">
+      <section className="relative mx-auto w-full items-center justify-center xl:mt-0 mt-10 2xl:mt-0 py-20 bg-[#E2F0CB4D]">
         <Image
           src="/solutions/background.svg"
           width={100}
