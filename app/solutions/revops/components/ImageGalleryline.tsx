@@ -135,15 +135,21 @@ const ImageGalleryLine = () => {
             </div>
           </div>
         ) : (
-          <div className="relative 2xl:translate-y-24 ">
-          <svg className='2xl:flex hidden' width="1401" height="544" viewBox="0 0 1601 544" fill="none" xmlns="http://www.w3.org/2000/svg">
-   <path d="M1509.01 58H1580C1591.05 58 1600 66.9543 1600 78V237.745C1600 248.79 1591.05 257.745 1580 257.745H1387C1375.95 257.745 1367 266.699 1367 277.745V449" stroke="#034737"/>
-   <path d="M206.5 401.5V297C206.5 285.954 197.546 277 186.5 277H21C9.9543 277 1 268.046 1 257V81C1 69.9543 9.95431 61 21 61H98.5" stroke="#034737"/>
-   <path d="M438 50H784.999C796.045 50 804.999 41.0457 804.999 30V21C804.999 9.9543 813.953 1 824.999 1H1170" stroke="#034737"/>
-   <path d="M1230 543H816.03C804.984 543 796.03 534.046 796.03 523V481C796.03 469.954 787.075 461 776.03 461H403" stroke="#034737"/>
-   </svg>
-   
-               <div className="items-center justify-center flex flex-col gap-y-2 2xl:translate-y-[180px] absolute top-0 left-0 right-0">
+          <div className="relative w-full  xl:translate-y-24 2xl:translate-y-24 ">
+          <svg className="2xl:flex hidden" width="1479" height="600" viewBox="0 0 1679 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+       <path d="M1402.5 60H1658.5C1669.55 60 1678.5 68.9543 1678.5 80V240C1678.5 251.046 1669.55 260 1658.5 260H1445C1433.95 260 1425 268.954 1425 280V595" stroke="#034737"/>
+       <path d="M233.5 50H820.097C831.143 50 840.097 41.0457 840.097 30V21C840.097 9.9543 849.052 1 860.097 1L1406.5 1V62" stroke="#034737"/>
+       <path d="M207 516.5V324.573C207 313.527 198.046 304.573 187 304.573H21C9.95431 304.573 1 295.618 1 284.573V74C1 62.9543 9.9543 54 21 54H232" stroke="#034737"/>
+       <path d="M1425.5 599H850.515C839.469 599 830.515 590.046 830.515 579V537C830.515 525.954 821.561 517 810.515 517H208.5" stroke="#034737"/>
+       </svg>
+       <svg className="2xl:hidden xl:flex hidden translate-x-64" width="1279" height="458" viewBox="0 0 1279 458" fill="none" xmlns="http://www.w3.org/2000/svg">
+       <path d="M1067.87 46.2783H1258C1269.05 46.2783 1278 55.2326 1278 66.2783V178.546C1278 189.592 1269.05 198.546 1258 198.546H1105C1093.95 198.546 1085 207.501 1085 218.546V453.596" stroke="#034737"/>
+       <path d="M177.863 38.6651H621.038C631.339 38.6651 639.691 30.3139 639.691 20.0122V20.0122C639.691 9.71054 648.042 1.35938 658.343 1.35938L1070.92 1.35938V47.8012" stroke="#034737"/>
+       <path d="M157.688 393.831V252.482C157.688 241.436 148.733 232.482 137.688 232.482H20.8516C9.8059 232.482 0.851562 223.527 0.851562 212.482V61.7105C0.851562 50.6648 9.80587 41.7104 20.8516 41.7104H176.721" stroke="#034737"/>
+       <path d="M1085.38 456.641H652.395C641.35 456.641 632.395 447.687 632.395 436.641V414.211C632.395 403.166 623.441 394.211 612.395 394.211H158.83" stroke="#034737"/>
+       </svg>
+
+               <div className="items-center justify-center flex flex-col gap-y-2 xl:translate-y-[120px] xl:translate-x-60 2xl:translate-x-0 2xl:translate-y-[180px] absolute top-0 left-0 right-0">
                  <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit mx-auto">
                  maintain
                  </div>
@@ -152,7 +158,7 @@ const ImageGalleryLine = () => {
                    <span className="text-black font-extralight">and management</span>
                  </h1>
                </div>
-               <div className="relative 2xl:-top-[580px] 2xl:left-[50px]">
+               <div className="relative 2xl:-top-[660px] 2xl:left-[100px] xl:-top-[550px] xl:left-[350px] overflow-x-hidden">
                  <Image
                    src="/salesrevops/wire/wire1.svg"
                    width={970}
@@ -164,8 +170,8 @@ const ImageGalleryLine = () => {
                    data-aos="zoom-in"
                  />
                </div>
-               <div className="relative 2xl:-top-[890px] 2xl:left-[1010px]">
-                 <Image
+               <div className="relative 2xl:-top-[920px] 2xl:left-[1000px] xl:-top-[850px] xl:left-[1150px] overflow-x-hidden">
+               <Image
                    src="/salesrevops/wire/wire2.svg"
                    width={980}
                    height={600} 
@@ -176,8 +182,8 @@ const ImageGalleryLine = () => {
                    data-aos="zoom-in"
                  />
                </div>
-               <div className="relative 2xl:-top-[700px] z-[90] 2xl:left-[980px]">
-                 <Image
+               <div className="relative 2xl:-top-[700px] z-[90] 2xl:left-[1040px] xl:-top-[650px] xl:left-[1120px] overflow-x-hidden">
+               <Image
                    src="/salesrevops/wire/wire3.svg"
                    width={980}
                    height={600} 
@@ -188,8 +194,8 @@ const ImageGalleryLine = () => {
                    data-aos="zoom-in"
                  />
                </div>
-               <div className="relative 2xl:-top-[1000px] z-[60] 2xl:left-[8px]">
-                 <Image
+               <div className="relative 2xl:-top-[1030px] z-[60] 2xl:left-[40px] xl:-top-[950px]  xl:left-[270px] overflow-x-hidden " >
+               <Image
                    src="/salesrevops/wire/wire4.svg"
                    width={970}
                    height={600} 

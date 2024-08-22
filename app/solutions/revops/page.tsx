@@ -175,15 +175,15 @@ const page = () => {
         </div>
       </section>
       <section className="relative w-full 2xl:mt-20">
-        <div className="2xl:flex hidden flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
+        <div className="2xl:flex xl:flex hidden flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
           <ImageGalleryLine />
         </div>
-        <div className="2xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
+        <div className="2xl:hidden xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
           <ImageGalleryLineResponsive />
         </div>
       </section>
 
-      <section className="relative mx-auto w-full items-center justify-center mt-10 2xl:mt-0 py-10 bg-[#FAFBFC]">
+      <section className="relative mx-auto w-full items-center justify-center xl:mt-0 mt-10 2xl:mt-0 py-10 bg-[#FAFBFC]">
         <div className="flex flex-col items-center justify-center mx-auto gap-2">
           <div
             data-aos="fade-up"
