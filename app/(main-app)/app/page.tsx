@@ -11,6 +11,7 @@ import ContentLoader from "react-content-loader";
 import toast from "react-hot-toast";
 import { BsStarFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
+import ChatComponent from "./components/ChatComponent";
 // import "bootstrap/dist/css/bootstrap.min.css";
 
 interface AiApp {
@@ -148,139 +149,9 @@ export default function Dashboard() {
             </p> */}
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mt-5">
-          <div className="bg-white py-7 px-8 rounded-3xl flex justify-between items-center shadow-2xl shadow-gray-200">
-            <div className="space-y-3">
-              <p className="text-[#4B4B4B]">Total balance</p>
-              <h1 className="text-[40px] font-semibold">$500.00</h1>
-              <p className="text-[#F4360C]">- 122.1M (1%)</p>
-            </div>
-            <Image src="/icons/dollar.svg" alt="" width={100} height={100} />
-          </div>
-          <div className="bg-white py-7 px-8 rounded-3xl flex justify-between items-center shadow-2xl shadow-gray-200">
-            <div className="space-y-3">
-              <p className="text-[#4B4B4B]">Total tokens</p>
-              <h1 className="text-[40px] font-semibold">175,000</h1>
-              <p className="text-[#F4360C]">- 42.1M (2%)</p>
-            </div>
-            <Image src="/icons/coin.svg" alt="" width={100} height={100} />
-          </div>
-          <div className="bg-white py-7 px-8 rounded-3xl flex justify-between items-center shadow-2xl shadow-gray-200">
-            <div className="space-y-3">
-              <p className="text-[#4B4B4B]">Token used</p>
-              <h1 className="text-[40px] font-semibold">85,000</h1>
-              <p className="text-[#1D8F6D]">+ 21%</p>
-            </div>
-            <Image src="/icons/payment.svg" alt="" width={100} height={100} />
-          </div>
-          <div className="bg-white py-7 px-8 rounded-3xl flex justify-between items-center shadow-2xl shadow-gray-200">
-            <div className="space-y-3">
-              <p className="text-[#4B4B4B]">Money used</p>
-              <h1 className="text-[40px] font-semibold">$300.00</h1>
-              <p className="text-[#1D8F6D]">+ 21%</p>
-            </div>
-            <Image src="/icons/payment-dollar.svg" alt="" width={100} height={100} />
-          </div>
-        </div>
-        <div className="w-full flex flex-col-reverse 2xl:flex-row gap-6 mt-10">
+        <div className="w-full flex flex-col-reverse 2xl:flex-row gap-6 mt-4">
           <div className="w-full space-y-6">
-            <div className="w-full bg-white border border-[#E8E8E8] rounded-3xl p-6">
-              <div className="flex items-center justify-between">
-                <h1 className="text-xl font-semibold text-center">Favorite AI writer templates</h1>
-                <Link href="/app/plan/ai-templates">
-                  <button className="bg-[#F5F7FA] py-3 px-5 rounded-lg sheen">View all</button>
-                </Link>
-              </div>
-              <div className="max-h-[450px] overflow-y-auto mt-6 scrollbar-primary-sm">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 pr-5">
-                  {aiAppsloading ? (
-                    Array(15)
-                      .fill(null)
-                      .map((_, index) => <AiAppSkeletonLoader key={index} />)
-                  ) : favoriteAssistants.length < 1 ? (
-                    <div className="flex flex-col justify-center items-center space-y-3 col-span-2 py-8">
-                      <h2 className="text-lg text-center font-semibold">You have no AI writer templates added to your favorites list.</h2>
-                      <p> Explore more templates to find the ones you like most.</p>
-                      <Link href="/app/plan/ai-templates">
-                        <button className="bg-primary-green text-white py-3 px-5 rounded-lg sheen">Explore more</button>
-                      </Link>
-                    </div>
-                  ) : (
-                    favoriteAssistants.map((assistant, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between gap-5 bg-white border border-[#EEF0F4] rounded-2xl p-6 shadow-xl shadow-gray-100 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer">
-                        <Link href={`/app/plan/ai-templates/${assistant._id}`} className="flex gap-4 items-start flex-grow overflow-hidden">
-                          <div
-                            dangerouslySetInnerHTML={{
-                              __html: assistant.icon,
-                            }}
-                            className="w-[64px] h-[64px] flex-shrink-0"
-                          />
-                          <div className="space-y-2 overflow-hidden flex-grow">
-                            <h1 className="text-lg font-semibold overflow-hidden text-ellipsis whitespace-nowrap">{assistant.name}</h1>
-                            <p
-                              className="text-primary-black text-opacity-70 text-[14px] leading-relaxed overflow-hidden text-ellipsis"
-                              style={{
-                                display: "-webkit-box",
-                                WebkitLineClamp: 3,
-                                WebkitBoxOrient: "vertical",
-                              }}>
-                              {assistant.description}
-                            </p>
-                          </div>
-                        </Link>
-                        <div className="cursor-pointer w-full max-w-fit transition duration-300 hover:scale-125 flex justify-center items-center">
-                          <BsStarFill size={24} className="text-yellow-300" onClick={() => handleFavorite("remove", assistant._id)} />
-                        </div>
-                      </div>
-                    ))
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="w-full flex gap-6 mt-10">
-              <div className="w-full space-y-6">
-                <div className="w-full bg-white border border-[#E8E8E8] rounded-3xl p-6">
-                  <div className="flex items-center justify-between">
-                    <h1 className="text-xl font-semibold text-center">AI chat assistants</h1>
-                    <Link href="/app/plan/ai-assistant">
-                      <button className="bg-[#F5F7FA] py-3 px-5 rounded-lg sheen">View all</button>
-                    </Link>
-                  </div>
-                  <div className="max-h-[450px] overflow-y-auto mt-6 scrollbar-primary-sm">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 pr-5">
-                      {aiAssistantsloading
-                        ? Array(15)
-                            .fill(null)
-                            .map((_, index) => <AiAssistantSkeletonLoader key={index} />)
-                        : assistants.map(({ avatar, id, name, role }, index) => (
-                            <div key={index} className="bg-white border border-[#E8E8E8] rounded-2xl p-4 flex items-center justify-between">
-                              <div className="flex items-center gap-4">
-                                <Image
-                                  src={avatar || "/assets/avatar_placeholder.png"}
-                                  alt=""
-                                  width={200}
-                                  height={200}
-                                  className="h-[56px] w-[56px] rounded-xl object-cover shadow-md shadow-gray-200"
-                                />
-                                <div className="space-y-1">
-                                  <h2 className="text-[18px] font-semibold">{name}</h2>
-                                  <p className="text-gray-400 text-sm">{role} </p>
-                                </div>
-                              </div>
-                              <Link href={`/app/plan/ai-assistant/chat/${id}`}>
-                                <button className="bg-white text-primary-green border border-primary-green h-12 w-full px-6 rounded-xl hover:bg-primary-green hover:text-white transition-all duration-300">
-                                  Chat now
-                                </button>
-                              </Link>
-                            </div>
-                          ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <ChatComponent />
           </div>
           <div className="w-full 2xl:w-[50%] bg-white p-8 rounded-3xl border borer-[#E8E8E8] space-y-5">
             <div className="space-y-3">

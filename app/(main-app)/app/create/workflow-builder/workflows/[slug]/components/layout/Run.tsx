@@ -96,7 +96,7 @@ const Run: React.FC<Props> = ({ workflowId }) => {
       const profileData = await handleGetProfile();
       if (!profileData || profileData.activeSocialAccounts.length === 0) {
         toast.error("Connect a social profile to your account to use this workflow");
-        return router.push("/app/publish/scheduler/quick-posting/profile");
+        return router.push("/app/publish/scheduler/quick-posting/profiles");
       }
     }
 
