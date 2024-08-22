@@ -12,18 +12,18 @@ import MarketingStreamline from "./components/marketingStreamline/MarketingStrea
 
 const page = () => {
   return (
-    <main className="flex flex-col overflow-hidden">
-      <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
+    <main className="flex flex-col relative overflow-hidden">
+      <span className="relatvie z-20"><Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" /></span>
       <section className="bg-[#034737] w-full  mb-20">
-        <div className="relative flex items-center max-w-[1920px] w-full max-h-[1112px] h-full justify-center mx-auto">
-          <div className="w-full flex flex-row justify-between brightness-110 relative left-52 items-center mt-52 mb-60">
-            <div className=" w-full gap-y-4 flex flex-col">
+      <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1350px] 2xl:p-0 p-4 w-full 2xl:max-h-[1112px] h-full justify-center mx-auto">
+      <div className="w-full flex flex-row justify-between brightness-110 relative   items-center mt-10 mb-10 2xl:mt-32 2xl:mb-60">
+      <div className="w-full max-w-[700px] gap-y-4 flex flex-col">
               <div className="bg-[#FFFFFF]/10 text-white py-2 px-4 text-center items-center justify-center flex   text-[12px] rounded-full font-semibold uppercase max-w-[377px] w-full tracking-widest">
                 Growstack for Mid - Market Organization
               </div>
 
               <div className="max-w-3xl  brightness-95   ">
-                <h1 className="text-[56px] max-w-2xl leading-12  text-white ">
+                <h1 className="text-[24px] xl:text-[48px] max-w-2xl leading-12  text-white ">
                   <span className="font-semibold">Conquer resources </span>
                   <br /> <span className="font-light">constraints with </span>
                   <br />
@@ -333,15 +333,15 @@ const page = () => {
               </div>
             </div>
 
-            <div className="  flex items-center justify-center">
+            <div className="  2xl:flex xl:flex hidden items-center justify-center">
               <Image
-                className="w-full relative  z-0 -top-10 -left-52 "
+                className="w-full relative 2xl:flex xl:flex hidden  z-0 top-10 xl:left-[360px] 2xl:left-[570px] "
                 src="/solutions/circle.svg"
                 alt="Center Image"
                 width={1048}
                 height={1000}
               />
-              <div className=" absolute z-0 right-96">
+              <div className=" absolute z-0 2xl:-right-60 2xl:top-96 xl:-right">
                 <Image
                   className="w-full"
                   src="/solutions/hero.svg"
@@ -354,11 +354,11 @@ const page = () => {
           </div>
         </div>
       </section>
-      <div className="bg-black z-[40] relative -top-40 max-w-[1240px] max-h-[244px]  py-4 h-full w-full rounded-[20px] items-center justify-center mx-auto text-white">
-        <h2 className="font-bold text-[56px]  text-center">
+      <div className="2xl:flex xl:flex hidden flex-col bg-black z-[40] relative -top-40 xl:max-w-[1240px] max-w-[700px] max-h-[244px]  py-4 h-full w-full rounded-[20px] items-center justify-center mx-auto text-white">
+        <h2 className="font-bold text-[24px] xl:text-[48px]  text-center">
           Innovative AI solutions
         </h2>
-        <h2 className="font-light text-[56px] text-center ">
+        <h2 className="font-light text-[24px] xl:text-[48px] text-center ">
           for mid-market growth and efficiency
         </h2>
 
@@ -367,7 +367,7 @@ const page = () => {
           organizations to overcome challenges
         </p>
       </div>
-      <div className="absolute top-[1250px]">
+      <div className="absolute max-w-[1920px] w-full 2xl:flex xl:flex hidden overflow-hidden top-[1250px]">
         <RepeatText />
       </div>
       <section className="relative  mx-auto items-center justify-center py-20 ">
@@ -411,9 +411,8 @@ const page = () => {
             alt="arrow"
             className="w-full overflow-hidden  absolute translate-y-[500px] -rotate-6 z-0"
           />
-       
         </div>
-       <MarketingStreamline/>
+        <MarketingStreamline />
       </section>
     </main>
   );
