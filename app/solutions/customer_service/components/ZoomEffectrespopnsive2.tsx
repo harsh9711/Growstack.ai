@@ -8,7 +8,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-const ImageGalleryResponsive = () => {
+const ImageGalleryResponsiveSecond = () => {
   type ImageData = {
     src: string;
     alt: string;
@@ -19,33 +19,27 @@ const ImageGalleryResponsive = () => {
 
   const images: ImageData[] = [
     {
-      src: "/images_growstackcustomer/solutions/aichat.svg",
+      src: "/images_growstack/solutions/aiassis.svg",
       alt: "Image 1",
       id: 1,
-      source: "data1",
-      buttonText: "Swift resolution",
+      source: "data6",
+      buttonText: "Agent satisfaction",
     },
     {
-      src: "/images_growstackcustomer/solutions/aiapps.svg",
+      src: "/images_growstack/solutions/aicontact.svg",
       alt: "Image 2",
       id: 2,
-      source: "data3",
-      buttonText: "Operational streamlining",
+      source: "data7",
+      buttonText: "Team coordination",
     },
     {
-      src: "/images_growstackcustomer/solutions/sociail2.svg",
+      src: "/images_growstack/solutions/aiarticle2.svg",
       alt: "Image 3",
       id: 3,
-      source: "data4",
-      buttonText: "Timely Management",
+      source: "data8",
+      buttonText: "Training efficiency",
     },
-    {
-      src: "/images_growstackcustomer/solutions/wat.svg",
-      alt: "Image 4",
-      id: 4,
-      source: "data2",
-      buttonText: "Workload efficiency",
-    },
+   
   ];
 
   const [selectedImage, setSelectedImage] = useState<ImageData | null>(null);
@@ -62,6 +56,7 @@ const ImageGalleryResponsive = () => {
 
   return (
     <div className="w-full h-full">
+       
       <div className="items-center justify-center flex flex-col gap-y-2"></div>
       {showSwiper ? (
         <div className="swiper-container p-4">
@@ -121,4 +116,4 @@ const ImageGalleryResponsive = () => {
   );
 };
 
-export default ImageGalleryResponsive;
+export default ImageGalleryResponsiveSecond;

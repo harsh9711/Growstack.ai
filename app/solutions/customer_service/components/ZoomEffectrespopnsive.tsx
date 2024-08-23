@@ -8,7 +8,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-const ImageGalleryResponsiveSecond = () => {
+const ImageGalleryResponsive = () => {
   type ImageData = {
     src: string;
     alt: string;
@@ -121,4 +121,4 @@ const ImageGalleryResponsiveSecond = () => {
   );
 };
 
-export default ImageGalleryResponsiveSecond;
+export default ImageGalleryResponsive;
