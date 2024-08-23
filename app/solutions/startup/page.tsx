@@ -107,6 +107,9 @@ const page = () => {
             <span className="text-black font-extralight">
               {" "}
               reporting and analytics
+
+
+              
             </span>
           </h1>
 
