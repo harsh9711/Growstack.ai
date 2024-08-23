@@ -19,31 +19,31 @@ const ImageGalleryResponsive = () => {
 
   const images: ImageData[] = [
     {
-      src: "/images_growstackcustomer/solutions/aichat.svg",
+      src: "aichat",
       alt: "Image 1",
       id: 1,
-      source: "data1",
+      source: "/images_growstackcustomer/solutions/data1.svg",
       buttonText: "Swift resolution",
     },
     {
-      src: "/images_growstackcustomer/solutions/aiapps.svg",
+      src: "aiapps",
       alt: "Image 2",
       id: 2,
-      source: "data3",
+      source: "/images_growstackcustomer/solutions/data3.svg",
       buttonText: "Operational streamlining",
     },
     {
-      src: "/images_growstackcustomer/solutions/sociail2.svg",
+      src: "sociail2",
       alt: "Image 3",
       id: 3,
-      source: "data4",
+      source: "/images_growstackcustomer/solutions/data4.svg",
       buttonText: "Timely Management",
     },
     {
-      src: "/images_growstackcustomer/solutions/wat.svg",
+      src: "wat",
       alt: "Image 4",
       id: 4,
-      source: "data2",
+      source: "/images_growstackcustomer/solutions/data2.svg",
       buttonText: "Workload efficiency",
     },
   ];
@@ -81,7 +81,7 @@ const ImageGalleryResponsive = () => {
             {images.map((img) => (
               <SwiperSlide key={img.id}>
                 <Image
-                  src={img.src}
+                  src={img.source}
                   width={1108}
                   height={560}
                   alt={img.alt}
@@ -100,7 +100,7 @@ const ImageGalleryResponsive = () => {
                 key={img.id}
               >
                 <Image
-                  src={`/images_growstackcustomer/solutions/${img.source}.svg`}
+                  src={`/images_growstackcustomer/solutions/${img.src}.svg`}
                   width={970}
                   height={600}
                   className="w-full h-full"

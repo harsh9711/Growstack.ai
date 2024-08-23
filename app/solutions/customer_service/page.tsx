@@ -71,7 +71,7 @@ const page = () => {
         <MarketingTechnology />
       </section>
 
-      <section className="bg-[url('/pink.png')] bg-cover flex flex-col w-full pb-40 pt-20 mb-10 2xl:mb-20 items-center justify-center mx-auto">
+      <section className="bg-[url('/pink.png')] bg-cover flex flex-col 2xl:mt-20 w-full mb-20 2xl:mb-10  items-center justify-center mx-auto">
         <div className="">
           <div className="2xl:flex hidden  w-full h-full items-center justify-center mx-auto">
             <ImageGallerySecond />
@@ -81,7 +81,7 @@ const page = () => {
           </div>
         </div>
       </section>
-      <section className="relative mx-auto items-center justify-center 2xl:py-20 bg-white overflow-hidden">
+      <section className="relative mx-auto items-center justify-center 2xl:py-20 bg-white overflow-hidden  w-full">
         <div className="flex flex-col items-center justify-center mx-auto gap-2">
           <div
             data-aos="fade-up"
@@ -98,7 +98,7 @@ const page = () => {
             data-aos-delay="300"
             className="text-center text-[22px] 2xl:text-[42px] leading-normal"
           >
-            <span className="text-black font-bold">Adapt to technologica </span>
+            <span className="text-black font-bold">Adapt to technological </span>
             <span className="text-black font-extralight"> changes</span>
           </h1>
 
