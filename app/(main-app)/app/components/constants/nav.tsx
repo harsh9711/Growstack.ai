@@ -47,8 +47,13 @@ const navLinks: NavLink[] = [
     icon: <PlanIcon />,
     sublinks: [
       {
+        icon: <AiPlaygroundIcon />,
+        name: "AI playground",
+        href: "/app/plan/ai-playground",
+      },
+      {
         icon: <BotIcon />,
-        name: "AI chat",
+        name: "AI Secured chat",
         href: "/app/plan/ai-chat",
       },
       {
@@ -70,11 +75,6 @@ const navLinks: NavLink[] = [
         icon: <TextToVideoIcon />,
         name: "Text to video",
         href: "/app/plan/text-to-video",
-      },
-      {
-        icon: <AiPlaygroundIcon />,
-        name: "AI playground",
-        href: "/app/plan/ai-playground",
       },
       {
         icon: <ProductAiIcon />,
