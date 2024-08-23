@@ -172,7 +172,7 @@ const page = () => {
       </section>
 
       <section className="relative w-full 2xl:mt-20">
-        <div className="2xl:flex  xl:flex hidden   2xl:max-w-[1921px] w-full h-full justify-center mx-auto   items-center gap-4  ">
+        <div className="2xl:flex  xl:flex hidden overflow-hidden   2xl:max-w-[1921px] w-full h-full justify-center mx-auto   items-center gap-4  ">
           <ImageGalleryLine />
         </div>
         <div className="2xl:hidden  xl:hidden flex 2xl:max-w-[1921px] w-full h-full justify-center mx-auto   items-center gap-4  ">
@@ -220,7 +220,7 @@ const page = () => {
           </div>
         </div>
       </section>
-      <section className="items-center justify-center mx-auto w-full py-20">
+      <section className="items-center flex flex-col justify-center mx-auto w-full py-20">
         <div className="w-full gap-y-4 flex flex-col items-center justify-center mx-auto ">
           <div
             data-aos="fade-up"
@@ -240,12 +240,12 @@ const page = () => {
             </h1>
           </div>
         </div>
-        <div className="2xl:flex xl:flex hidden mt-20 xl:mt-0 items-center justify-center mx-auto">
+       <div> <div className="2xl:flex xl:flex hidden mt-20 w-full h-full items-center justify-center mx-auto">
           <ImageGallery />
         </div>
         <div className="2xl:hidden xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
           <ImageGalleryResponsive />
-        </div>
+        </div></div>
       </section>
       <section className=" overflow-hidden  ">
         <div className="items-center justify-center flex flex-col gap-y-4  overflow-hidden ">
