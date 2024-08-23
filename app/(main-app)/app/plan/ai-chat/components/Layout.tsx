@@ -136,8 +136,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
     });
   };
 
-  const [selectedOption, setSelectedOption] = useState(aiModelOptions[0].value);
-  const selectedOptionLabel = aiModelOptions.find((option) => option.value === selectedOption)?.label;
+  const selectedModelLabel = aiModelOptions.find((option) => option.value === selectedModel)?.label;
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -151,13 +150,13 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
     <div className="flex-1 flex gap-4">
       <aside className="flex flex-col w-[380px] border bg-white rounded-3xl h-[calc(100vh-212px)]">
         <div className="flex gap-2 p-5">
-          <Select value={selectedOption} onValueChange={setSelectedOption}>
+          <Select value={selectedModel} onValueChange={setSelectedModel}>
             <SelectTrigger className="w-[200px] h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4">
               <SelectValue placeholder="Select an option">
-                {selectedOptionLabel && (
+                {selectedModelLabel && (
                   <div className="flex items-center gap-2">
-                    <span className="min-w-fit">{aiModelOptions.find((option) => option.value === selectedOption)?.icon}</span>
-                    {selectedOptionLabel}
+                    <span className="min-w-fit">{aiModelOptions.find((option) => option.value === selectedModel)?.icon}</span>
+                    {selectedModelLabel}
                   </div>
                 )}
               </SelectValue>
@@ -166,7 +165,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
               <SelectGroup>
                 {aiModelOptions.map(({ icon, label, value }) => (
                   <SelectItem key={value} value={value}>
-                    <div className={clsx("flex items-center gap-2", selectedOption === value && "text-primary-green font-medium")}>
+                    <div className={clsx("flex items-center gap-2", selectedModel === value && "text-primary-green font-medium")}>
                       <span className="min-w-fit">{icon}</span>
                       {label}
                     </div>
@@ -218,7 +217,6 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
             </div>
           ))}
         </div>
-        <div className="h-20 w-full bg-gradient-to-b from-transparent via-white to-white rounded-b-3xl" />
       </aside>
       <main className="w-full flex-1 flex flex-col bg-white p-4 rounded-3xl border h-[calc(100vh-212px)]">
         <div className="flex-1 p-4 overflow-y-auto flex flex-col">
@@ -237,11 +235,10 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
         </div>
         <ChatInput
           onSend={updateMessage}
-          selectedModel={selectedModel}
           fetchConversations={fetchConversations}
           selectedConversation={selectedConversation}
           setSelectedConversation={setSelectedConversation}
-          selectedOption={selectedOption}
+          selectedModel={selectedModel}
           addMessage={addMessage}
           removeMessage={removeMessage}
         />

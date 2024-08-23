@@ -44,7 +44,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ conversation, selectedConve
                 <AvatarFallback>{currentUser?.email?.slice(0, 1)}</AvatarFallback>
               </Avatar>
             ) : (
-              <div className="w-11 h-11 mt-2 rounded-xl relative">
+              <div className="w-11 h-11 rounded-xl relative min-w-11">
                 <Image src="/logo/growstack-mini.png" alt="growstack_ai_chat" fill />
               </div>
             )}

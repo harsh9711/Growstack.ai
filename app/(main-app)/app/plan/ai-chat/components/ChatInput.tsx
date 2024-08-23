@@ -16,17 +16,15 @@ interface ChatInputProps {
   fetchConversations: () => void;
   removeMessage: () => void;
   selectedConversation: string | null;
-  selectedOption: string;
   addMessage: (role: string, content: string, loading: boolean) => void;
   setSelectedConversation: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const ChatInput: React.FC<ChatInputProps> = ({
   onSend,
-  selectedModel,
   fetchConversations,
   selectedConversation,
-  selectedOption,
+  selectedModel,
   addMessage,
   setSelectedConversation,
   removeMessage,
@@ -81,7 +79,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
       const conversation = await instance.post(
         `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${
           selectedConversation ? selectedConversation : ""
-        }&model=${selectedOption}`,
+        }&model=${selectedModel}`,
         { user_prompt: prompt }
       );
       const response = conversation.data.data.response;

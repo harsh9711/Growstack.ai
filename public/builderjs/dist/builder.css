@@ -29424,6 +29424,7 @@ select.form-control {
   border: 1px solid gray;
   background: #034737;
   border-radius: 12px 0 0 12px;
+  overflow: hidden;
 }
 
 .box-popup-right i.icon-box {
