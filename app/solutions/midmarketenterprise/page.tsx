@@ -9,6 +9,7 @@ import Navbar from "@/components/navbar/Navbar";
 import TestimonialsSlider from "./components/SwiperSlide";
 import LoadingBar from "./components/Loading";
 import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
+import ImageGalleryLineResponsive from "./components/ImageGallerylineresponsive";
 
 const page = () => {
   return (
@@ -370,7 +371,7 @@ const page = () => {
       <div className="absolute max-w-[1920px] w-full 2xl:flex xl:flex hidden overflow-hidden top-[1250px]">
         <RepeatText />
       </div>
-      <section className="relative  mx-auto items-center justify-center py-20 ">
+      <section className="relative  mx-auto items-center justify-center pb-48 ">
         <div className="flex flex-col items-center justify-center mx-auto gap-2 ">
           <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit">
             {" "}
@@ -391,8 +392,11 @@ const page = () => {
       </section>
 
       <section className="relative bg-[#FAFBFC] w-full">
-        <div className="flex flex-col  max-w-[1921px] w-full max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
+        <div className="2xl:flex xl:flex hidden flex flex-col  max-w-[1921px] w-full py-10 h-full justify-center mx-auto   items-center gap-4  ">
           <ImageGalleryLine />
+        </div>
+        <div className="2xl:hidden xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
+          <ImageGalleryLineResponsive />
         </div>
       </section>
       <section className="items-center justify-center mx-auto py-40 ">

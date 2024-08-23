@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import {ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import React from "react";
 import { useInView } from "react-intersection-observer";
 import Navbar from "@/components/navbar/Navbar";
@@ -10,6 +10,7 @@ import ImageGallery from "./components/ZoomEffect";
 import TestimonialsSlider from "./components/Slider";
 import MarketingTechnology from "./components/marketingTechnology/MarketingTechnology";
 import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
+import ImageGalleryResponsive from "./components/ZoomEffectrespopnsive";
 
 const Home = () => {
   const totalItems = 5;
@@ -19,10 +20,10 @@ const Home = () => {
   });
 
   return (
-    <main className="bg-white">
+    <main className=" overflow-hidden">
       <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
       <section className="">
-        <div className="relative flex items-center w-full h-full  rounded-b-[40px]  pt-40 bg-[#F3F7F6] ">
+        <div className="relative flex items-center w-full h-full  rounded-b-[40px] pt-20  xl:pt-40 bg-[#F3F7F6] ">
           <div className="w-full h-full mx-auto flex flex-col  justify-between max-h-[870px] max-w-[1920px] items-center">
             <div className="flex flex-col items-center justify-center mx-auto w-full">
               <div className=" w-full gap-y-4 flex flex-col items-center justify-center mx-auto">
@@ -31,7 +32,7 @@ const Home = () => {
                 </div>
 
                 <div className="  items-center flex flex-col gap-y-4 justify-center  mx-auto ">
-                  <h1 className="text-[56px]  leading-12 flex flex-col  items-center justify-center bg-gradient-to-b from-black to-black/30 bg-clip-text text-transparent">
+                  <h1 className="text-[24px] xl:text-[56px]  leading-12 flex flex-col  items-center justify-center bg-gradient-to-b from-black to-black/30 bg-clip-text text-transparent">
                     <span className="font-semibold text-center">
                       Streamline complex
                     </span>
@@ -59,7 +60,7 @@ const Home = () => {
                 </div>
               </div>
             </div>
-            <div className="relative translate-y-16 flex -translate-x-60 ">
+            <div className="2xl:flex xl:flex hidden relative translate-y-16  -translate-x-60 ">
               <Image
                 src="/solutions/dlk.svg"
                 width={1951}
@@ -73,14 +74,14 @@ const Home = () => {
 
       <section className=" mt-10">
         <div
-          className=" w-full max-w-[1920px] h-[602px] gap-y-4 flex flex-col items-center justify-center mx-auto"
+          className=" w-full max-w-[1920px] h-full xl:h-[602px] gap-y-4 flex flex-col items-center justify-center mx-auto"
           style={{
             backgroundImage: "url(/solutions/background.svg)",
             maxWidth: "2000px",
           }}
         >
           <div className="relative flex flex-col gap-y-4 justify-center items-center mx-auto bg-cover py-20 bg-center bg-no-repeat">
-            <h1 className="text-[56px] leading-12 flex flex-col items-center justify-center bg-gradient-to-b from-black to-black/30 bg-clip-text text-transparent relative z-10">
+            <h1 className="text-[24px] xl:text-[56px] leading-12 flex flex-col items-center justify-center bg-gradient-to-b from-black to-black/30 bg-clip-text text-transparent relative z-10">
               <span className="font-semibold text-center">
                 Comprehensive solution for
               </span>
@@ -96,8 +97,7 @@ const Home = () => {
         </div>
       </section>
       <section className="">
-            <MarketingTechnology/>
-    
+        <MarketingTechnology />
       </section>
       <section className="">
         <div className="relative flex items-center w-full h-full py-40 bg-white overflow-hidden">
@@ -168,23 +168,26 @@ const Home = () => {
           </div>
 
           <div className="items-center flex flex-col gap-y-4 justify-center mx-auto">
-            <h1 className="text-[42px] leading-12 flex gap-4 items-center justify-center text-white">
+            <h1 className="text-[22px] 2xl:text-[42px] leading-12 2xl:flex-row xl:flex-row flex-col flex gap-2  items-center justify-center text-white">
               <span className="font-semibold text-center">
                 Managing complex,
               </span>
               <span className="font-light text-center">global operations</span>
             </h1>
-            <p className="text-center text-white/30 tracking-normal items-center justify-center w-full max-w-[1026px]">
+            {/* <p className="text-center text-white/30 tracking-normal items-center justify-center w-full max-w-[1026px]">
               In <span className="text-[#A9FF9B]">large enterprises,</span>{" "}
               various teams collaborate to manage operations, develop
               strategies, and handle day-to-day functions.
-            </p>
+            </p> */}
           </div>
         </div>
 
-        <div className="item-cen w-full  overflow-hidden">
+        <div> <div className="2xl:flex xl:flex hidden mt-20 w-full h-full items-center justify-center mx-auto">
           <ImageGallery />
         </div>
+        <div className="2xl:hidden xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
+          <ImageGalleryResponsive />
+        </div></div>
       </section>
 
       <section className=" overflow-hidden  ">
@@ -193,12 +196,12 @@ const Home = () => {
             src="/desing.png"
             width={1200}
             height={1000}
-            className="w-full absolute h-[1000px]  transform scale-y-[-1]  translate-x-10  z-0 translate-y-[500px] "
+            className="w-full absolute h-[1000px] 2xl:flex xl:flex hidden  transform scale-y-[-1]  translate-x-10  z-0 translate-y-[500px] "
             alt="image"
           />
         </div>
-        
-        <MarketingStreamline/>
+
+        <MarketingStreamline />
       </section>
     </main>
   );

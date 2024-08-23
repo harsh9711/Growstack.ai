@@ -9,17 +9,19 @@ const ImageGallery = () => {
     document.body.style.overflow = clickedImage ? "hidden" : "auto";
 
     if (clickedImage) {
-      const imageElement = document.querySelector<HTMLImageElement>('.zoomed-image');
+      const imageElement =
+        document.querySelector<HTMLImageElement>(".zoomed-image");
       if (imageElement) {
         const rect = imageElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
         const scrollUpOffset = 290;
 
-        const offsetTop = rect.top + window.pageYOffset - (viewportHeight / 2) + (rect.height / 2);
-        
+        const offsetTop =
+          rect.top + window.pageYOffset - viewportHeight / 2 + rect.height / 2;
+
         window.scrollTo({
           top: offsetTop,
-          behavior: 'smooth'
+          behavior: "smooth",
         });
       }
     }
@@ -39,32 +41,34 @@ const ImageGallery = () => {
   type ImageType = {
     src: string;
     largeSrc: string;
-    className?: string; 
+    className?: string;
     buttonText: string;
   };
 
   const images: ImageType[] = [
     {
       src: "/images_growstackcustomer/solutions/aichat.svg",
-      className: "w-[301px] h-[200px] -translate-y-72 -translate-x-40 z-60",
+      className: "w-[301px] h-[200px] -translate-y-60 -translate-x-40 z-60",
       largeSrc: "/images_growstackcustomer/solutions/data1.svg",
       buttonText: "Swift resolution",
     },
     {
       src: "/images_growstackcustomer/solutions/aiapps.svg",
-      className: "w-[290.5px] h-[200px] translate-x-[500px] z-60 -translate-y-72",
+      className:
+        "w-[290.5px] h-[200px] translate-x-[300px] z-60 -translate-y-60",
       largeSrc: "/images_growstackcustomer/solutions/data3.svg",
       buttonText: "Operational streamlining",
     },
     {
       src: "/images_growstackcustomer/solutions/sociail2.svg",
-      className: "w-[301px] h-[200px] translate-x-[200px] z-60 translate-y-44",
+      className: "w-[301px] h-[200px] translate-x-[00px] z-60 translate-y-44",
       largeSrc: "/images_growstackcustomer/solutions/data4.svg",
       buttonText: "Timely Management",
     },
     {
       src: "/images_growstackcustomer/solutions/wat.svg",
-      className: "w-[301px] h-[200px] z-60 translate-y-44 -translate-x-[1100px]",
+      className:
+        "w-[301px] h-[200px] z-60 translate-y-44 -translate-x-[1150px]",
       largeSrc: "/images_growstackcustomer/solutions/data2.svg",
       buttonText: "Workload efficiency",
     },
@@ -103,36 +107,38 @@ const ImageGallery = () => {
               </button>
             </motion.div>
           ))}
-          <div className="items-center justify-center flex flex-col gap-y-2 2xl:translate-y-[10px] absolute top-0 left-0 right-72">
+          <div className="items-center justify-center flex flex-col gap-y-2  absolute top-0 left-0 right-[500px]">
             <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit mx-auto">
               manage
             </div>
             <h1 className="text-center text-[42px] leading-normal">
               <span className="text-black font-bold">Handle high</span>
-              <span className="text-black font-extralight"> volume inquiries</span>
+              <span className="text-black font-extralight">
+                {" "}
+                volume inquiries
+              </span>
             </h1>
           </div>
         </motion.div>
 
         <div
           className={`mx-auto z-30 items-center justify-center inset-0 transition-opacity duration-500 ${
-            clickedImage ? "opacity-0" : "opacity-10"
+            clickedImage ? "opacity-0" : "opacity-60"
           }`}
         >
           <Image
-            src="/customer.png"
+            src="/customer2.svg"
             width={1000}
             height={227}
             alt="Dashboard Image"
-            className="rounded-3xl w-[1240px] h-[627px]"
+            className="rounded-3xl w-[1000px] h-[600px] "
           />
         </div>
 
         {clickedImage && (
           <div
-          className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50"
-           
-          onClick={handleClose}
+            className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50"
+            onClick={handleClose}
           >
             <div
               className="relative max-w-full max-h-full p-4 rounded-lg"
@@ -142,7 +148,6 @@ const ImageGallery = () => {
                 <span className="text-lg font-semibold opacity-0">
                   Image Preview
                 </span>
-              
               </div>
               <Image
                 src={clickedImage}

@@ -2,12 +2,28 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
+
 const ImageGallery = () => {
   const [clickedImage, setClickedImage] = useState<string | null>(null);
 
   useEffect(() => {
-    // Lock/unlock scrolling based on image zoom
     document.body.style.overflow = clickedImage ? "hidden" : "auto";
+
+    if (clickedImage) {
+      const imageElement = document.querySelector<HTMLImageElement>('.zoomed-image');
+      if (imageElement) {
+        const rect = imageElement.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        const scrollUpOffset = 290;
+
+        const offsetTop = rect.top + window.pageYOffset - (viewportHeight / 2) + (rect.height / 2);
+        
+        window.scrollTo({
+          top: offsetTop,
+          behavior: 'smooth'
+        });
+      }
+    }
     return () => {
       document.body.style.overflow = "auto";
     };
@@ -24,8 +40,8 @@ const ImageGallery = () => {
   type ImageType = {
     src: string;
     largeSrc: string;
-    className?: string;
-    buttonText: string; // Added buttonText property
+    className?: string; 
+    buttonText: string;
   };
 
   const images: ImageType[] = [
@@ -58,9 +74,9 @@ const ImageGallery = () => {
 
   return (
     <>
-      <div className="">
+      <div className="w-full">
         <motion.div
-          className="flex gap-4 mt-52 ml-32 absolute "
+          className="flex gap-4 mt-52 ml-32 absolute"
           initial={{ opacity: 1, scale: 1 }}
           animate={{
             opacity: clickedImage ? 1 : 1,
@@ -71,24 +87,25 @@ const ImageGallery = () => {
           {images.map((image, index) => (
             <motion.div
               key={index}
-              className={`relative opacity-100 flex flex-col  transition-transform duration-300 ease-in-out hover:scale-105 items-center justify-center z-40 ${image.className}`}
+              className={`relative opacity-100 flex flex-col transition-transform duration-300 ease-in-out hover:scale-105 items-center justify-center z-40 ${image.className}`}
               onClick={() => handleClick(image.largeSrc)}
               layout
             >
               <Image
                 src={image.src}
                 alt={`Image ${index}`}
-            width={100}
-            height={100}
-                className={`relative w-[1260px] h-[360px]  ${
+                width={100}
+                height={100}
+                className={`relative w-[1260px] h-[360px] ${
                   clickedImage === image.largeSrc ? "opacity-50" : ""
                 }`}
               />
-              <button className="absolute -bottom-10 text-center  bg-white hover:text-[#034737] max-w-[250px] w-full py-2 rounded-2xl shadow-md ">
+                <button className="absolute -bottom-10 text-center  bg-white hover:text-[#034737] max-w-[250px] w-full py-2 rounded-2xl shadow-md ">
                 {image.buttonText}
               </button>
             </motion.div>
           ))}
+       
         </motion.div>
 
         <div
@@ -97,7 +114,8 @@ const ImageGallery = () => {
           }`}
         >
           <Image
-            src="/images_growstack/solutions/efficiency.svg"
+                      src="/images_growstack/solutions/efficiency.svg"
+
             width={1000}
             height={227}
             alt="Dashboard Image"
@@ -107,31 +125,26 @@ const ImageGallery = () => {
 
         {clickedImage && (
           <div
-            className="fixed bg-black bg-opacity-40 inset-0 flex items-center justify-center"
-            onClick={handleClose}
+          className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50"
+           
+          onClick={handleClose}
           >
             <div
-              className="relative max-w-full max-h-full p-4  rounded-lg"
+              className="relative max-w-full max-h-full p-4 rounded-lg"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="absolute top-0 left-0 right-0  text-white p-6 flex items-center justify-between rounded-t-lg">
+              <div className="absolute top-0 left-0 right-0  text-white p-8 flex items-center justify-between rounded-t-lg">
                 <span className="text-lg font-semibold opacity-0">
                   Image Preview
                 </span>
-                <button
-                  className="text-black p-1 rounded-full"
-                  onClick={handleClose}
-                >
-                  &times;
-                </button>
+              
               </div>
               <Image
                 src={clickedImage}
                 alt="Zoomed Image"
-                width={1000}
-                height={1000}
-                objectFit="contain"
-                className="rounded-lg mt-8"
+                width={700}
+                height={700}
+                className="zoomed-image rounded-lg items-center relative  justify-center mx-auto mt-8"
               />
             </div>
           </div>
