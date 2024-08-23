@@ -48,20 +48,20 @@ const ImageGallerySecond = () => {
   const images: ImageType[] = [
     {
       src: "/images_growstack/solutions/aiassis.svg",
-      className: "w-[301px] h-[200px] -translate-y-60 -translate-x-40 z-60",
+      className: "w-[301px] h-[200px] -translate-y-20 -translate-x-72 z-60",
       largeSrc: "/images_growstackcustomer/solutions/data6.svg",
       buttonText: "Agent satisfaction",
     },
     {
       src: "/images_growstack/solutions/aicontact.svg",
       className:
-        "w-[290.5px] h-[200px] translate-x-[300px] z-60 -translate-y-60",
+        "w-[290.5px] h-[200px] translate-x-[480px] z-60 -translate-y-20",
       largeSrc: "/images_growstackcustomer/solutions/data7.svg",
       buttonText: "Team coordination",
     },
     {
       src: "/images_growstack/solutions/aiarticle2.svg",
-      className: "w-[301px] h-[200px] translate-x-[00px] z-60 translate-y-44",
+      className: "w-[301px] h-[200px] -translate-x-[400px] z-60 translate-y-32",
       largeSrc: "/images_growstackcustomer/solutions/data8.svg",
       buttonText: "Training efficiency",
     },
@@ -100,11 +100,11 @@ const ImageGallerySecond = () => {
               </button>
             </motion.div>
           ))}
-          <div className="items-center justify-center flex flex-col gap-y-2  absolute top-0 left-0 right-[500px]">
+          <div className="items-center justify-center flex flex-col gap-y-2 w-full  absolute -top-10 -left-14 right-[6700px]">
             <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit mx-auto">
               support
             </div>
-            <h1 className="text-center text-[42px] leading-normal">
+            <h1 className="text-center text-[42px] leading-normal flex gap-2">
               <span className="text-black font-bold">Support employee </span>
               <span className="text-black font-extralight">well-being</span>
             </h1>
@@ -117,7 +117,7 @@ const ImageGallerySecond = () => {
           }`}
         >
           <Image
-            src="/customer2.svg"
+            src="/home.svg"
             width={1000}
             height={227}
             alt="Dashboard Image"
