@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import "aos/dist/aos.css";
 import Aos from "aos";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
-const ImageGalleryResponsive = () => {
+const ImageGalleryResponsiveSecond = () => {
   type ImageData = {
     src: string;
     alt: string;
@@ -95,7 +95,10 @@ const ImageGalleryResponsive = () => {
         <div className="relative flex flex-col gap-y-6 items-center justify-center">
           <div className="flex flex-col items-center justify-center gap-y-16 p-4">
             {images.map((img) => (
-              <div className="relative flex flex-col items-center justify-center" key={img.id}>
+              <div
+                className="relative flex flex-col items-center justify-center"
+                key={img.id}
+              >
                 <Image
                   src={`/images_growstackcustomer/solutions/${img.source}.svg`}
                   width={970}
@@ -118,4 +121,4 @@ const ImageGalleryResponsive = () => {
   );
 };
 
-export default ImageGalleryResponsive;
+export default ImageGalleryResponsiveSecond;
