@@ -135,7 +135,7 @@ export default function ChatComponent() {
               <div className="flex items-start space-x-3 relative">
                 <Image src="/logo/growstack-mini.png" alt="growstack_ai_chat" width={35} height={35} className="mt-1" />
                 <div>
-                  <h1 className="text-2xl font-medium">Hello, {currentUser.name ?? currentUser.user_name ?? "Growstack User"}!</h1>
+                  <h1 className="text-2xl font-medium">Hello, {currentUser?.name ?? currentUser?.user_name ?? "Growstack User"}!</h1>
                   <p className="mt-3">How can I help you today?</p>
                 </div>
               </div>
