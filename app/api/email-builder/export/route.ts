@@ -23,7 +23,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: `File not found: ${filePath}` }, { status: 404 });
     }
 
-    fs.writeFileSync(filePath, content as string);
 
     const zip = new JSZip();
 

@@ -23209,17 +23209,27 @@ ul.action-lang.show-action {
 
 .top .top-right .menu-bar-action.btn-close {
   right: -20px;
-  background: rgba(255, 255, 255, .1);
+  background: #ff0000;
   border: none;
-  width: 34px;
+  width: 30px;
+  height: 30px;
   padding: 10px;
-  color: rgba(255, 255, 255, .4)
+  color: rgba(255, 255, 255)
 }
 
 .top .top-right .menu-bar-action.btn-close i {
-  font-size: 22px
+  font-size: 18px
 }
 
+.top .top-right .menu-bar-action.btn-save {
+  background-color: white !important;
+  color: #034737;
+}
+
+.top .top-right .menu-bar-action.btn-save:hover {
+  background-color: white !important;
+  color: #034737;
+}
 .top .top-right .menu-bar-action.btn-save-and-close {
   background: rgba(255, 255, 255, .1);
   border-color: transparent
