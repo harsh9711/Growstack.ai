@@ -22621,14 +22621,8 @@ button.close-preview i.icon-close-circle {
   color: #fff
 }
 
-.ask-help .icon {
-  font-size: 18px;
-  color: #555;
-  font-weight: normal;
-  position: relative;
-  display: inline-block;
-  line-height: 1;
-  margin-left: -4px
+.ask-help {
+  display: none !important;
 }
 
 .display i.fa-eye {
@@ -24018,21 +24012,6 @@ a {
   display: flex;
   align-items: center;
   padding: 0
-}
-
-.top .top-right ul.icons li.ask-help {
-  position: relative;
-  display: flex;
-  align-items: center;
-  cursor: pointer
-}
-
-.top .top-right ul.icons li.ask-help:hover .icon {
-  color: #fff
-}
-
-.top .top-right ul.icons li.ask-help:hover span.help {
-  color: #fff
 }
 
 .top .top-right ul.icons li {

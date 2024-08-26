@@ -6,63 +6,29 @@ import Spinner from "@/components/Spinner";
 
 const DesignPage: React.FC = () => {
   useEffect(() => {
-    // Function to load scripts
+    // Function to load a script and return a promise
+    const loadScript = (src: string) => {
+      return new Promise<void>((resolve, reject) => {
+        const script = document.createElement("script");
+        script.src = src;
+        script.async = true;
+        script.onload = () => resolve();
+        script.onerror = () => reject(new Error(`Failed to load script ${src}`));
+        document.body.appendChild(script);
+      });
+    };
+
+    // Function to load all scripts
     const loadScripts = async () => {
       try {
-        // Load builder.js script
-        const builderScript = document.createElement("script");
-        builderScript.src = "/builderjs/dist/builder.js";
-        builderScript.async = true;
-        document.body.appendChild(builderScript);
+        // Load builder.js
+        await loadScript("/builderjs/dist/builder.js");
 
-        // Wait for builder.js to load
-        await new Promise<void>((resolve, reject) => {
-          builderScript.onload = () => resolve();
-          builderScript.onerror = (error) => reject(error);
-        });
-
-        // rss scripts
-        const rssElementScript = document.createElement("script");
-        rssElementScript.src = "/builderjs/plugins/rss/RssElement.js";
-        rssElementScript.async = true;
-        document.body.appendChild(rssElementScript);
-
-        await new Promise<void>((resolve, reject) => {
-          rssElementScript.onload = () => resolve();
-          rssElementScript.onerror = (error) => reject(error);
-        });
-
-        const rssControlScript = document.createElement("script");
-        rssControlScript.src = "/builderjs/plugins/rss/RssControl.js";
-        rssControlScript.async = true;
-        document.body.appendChild(rssControlScript);
-
-        await new Promise<void>((resolve, reject) => {
-          rssControlScript.onload = () => resolve();
-          rssControlScript.onerror = (error) => reject(error);
-        });
-
-        const rssWidgetScript = document.createElement("script");
-        rssWidgetScript.src = "/builderjs/plugins/rss/RssWidget.js";
-        rssWidgetScript.async = true;
-        document.body.appendChild(rssWidgetScript);
-
-        await new Promise<void>((resolve, reject) => {
-          rssWidgetScript.onload = () => resolve();
-          rssWidgetScript.onerror = (error) => reject(error);
-        });
-
-        // Load editor.js script
-        const editorScript = document.createElement("script");
-        editorScript.src = "/builderjs/scripts/editor.js";
-        editorScript.async = true;
-        document.body.appendChild(editorScript);
-
-        // Wait for editor.js to load
-        await new Promise<void>((resolve, reject) => {
-          editorScript.onload = () => resolve();
-          editorScript.onerror = (error) => reject(error);
-        });
+        // Load other scripts in sequence
+        await loadScript("/builderjs/plugins/rss/RssElement.js");
+        await loadScript("/builderjs/plugins/rss/RssControl.js");
+        await loadScript("/builderjs/plugins/rss/RssWidget.js");
+        await loadScript("/builderjs/scripts/editor.js");
       } catch (error) {
         console.error("Error loading scripts:", error);
       }
@@ -72,8 +38,19 @@ const DesignPage: React.FC = () => {
 
     // Cleanup function to remove scripts
     return () => {
-      document.querySelectorAll('script[src="/builderjs/dist/builder.js"], script[src="/builderjs/scripts/editor.js"]').forEach((script) => {
-        document.body.removeChild(script);
+      const scripts = [
+        "/builderjs/dist/builder.js",
+        "/builderjs/plugins/rss/RssElement.js",
+        "/builderjs/plugins/rss/RssControl.js",
+        "/builderjs/plugins/rss/RssWidget.js",
+        "/builderjs/scripts/editor.js",
+      ];
+
+      scripts.forEach((src) => {
+        const script = document.querySelector(`script[src="${src}"]`);
+        if (script) {
+          document.body.removeChild(script);
+        }
       });
     };
   }, []);
