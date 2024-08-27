@@ -4,13 +4,13 @@ import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Navbar from "@/components/navbar/Navbar";
-import GridComponent from "./components/GridBoxes";
 import HeroSection from "./components/HeroSection";
-import ImageGalleryLine from "./components/ImageGalleryline";
 import ImageGalleryLineResponsive from "./components/ImageGallerylineresponsive";
 import LoadingBarSecond from "./components/LoadingBar";
 import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
 import Footer from "@/components/footer/Footer";
+import GridComponent from "./components/GridBoxes";
+import ImageGalleryLine from "./components/ImageGalleryline";
 
 
 const page = () => {
