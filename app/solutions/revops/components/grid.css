@@ -124,3 +124,18 @@
   .hover-boxsalesrevops41:hover {
     content: url('/solutions/salesrevops2/boxes/changedbox/box3.svg');
   }
+      .hover-boxstartup1:hover {
+    content: url('/solutions/startup/boxes/box5.svg');
+  }
+  
+  .hover-boxstartup2:hover {
+    content: url('/solutions/startup/boxes/box6.svg');
+  }
+  
+  .hover-boxstartup3:hover {
+    content: url('/solutions/startup/boxes/box7.svg');
+  }
+  
+  .hover-boxstartup4:hover {
+    content: url('/solutions/startup/boxes/box8.svg');
+  }

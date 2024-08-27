@@ -31,6 +31,7 @@ const links = [
           { title: "Sales",path: "/solutions/sales"  },
           { title: "Revops",path: "/solutions/revops"  },
           { title: "Customer Service",path: "/solutions/customer_service"  },
+          { title: "Startup",path: "/solutions/startup"  },
         ],
   },
 

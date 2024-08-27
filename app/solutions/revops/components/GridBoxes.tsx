@@ -78,7 +78,7 @@ const GridComponent = () => {
             <div className="flex flex-col gap-y-8  items-center justify-center w-full mb-40">
               
             <div className="rounded-2xl flex justify-center items-center relative z-[20] opacity-100">
-              <Image src="/salesrevops/boxsvgs/boxsvg4.svg" alt="Box 1" width={940} height={555} className="w-[1100px] bg-cover z-[20]" />
+              <Image src="/startup/boxsvgs/boxsvg4.svg" alt="Box 1" width={940} height={555} className="w-[1100px] bg-cover z-[20]" />
             </div>
             <div className="flex z-[80] flex-row gap-2 w-full max-w-[1070px] justify-center relative">
               <div onClick={() => handleClick(2)} className="bg-white border font-medium text-[24px]  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
