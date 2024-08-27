@@ -32,6 +32,7 @@ const links = [
           { title: "Revops",path: "/solutions/revops"  },
           { title: "Customer Service",path: "/solutions/customer_service"  },
           { title: "Startup",path: "/solutions/startup"  },
+      { title: "Business Operations", path: "/solutions/operations" },
         ],
   },
 
