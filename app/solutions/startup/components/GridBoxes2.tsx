@@ -5,7 +5,6 @@ import { ArrowRight, Circle } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import useInView from "../useInView";
-import "./grid.css"
 const GridComponentSecond = () => {
   const [selected, setSelected] = useState<number | null>(null);
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
@@ -187,7 +186,7 @@ const GridComponentSecond = () => {
       className="w-[480px] h-[357px] hover-boxsalesrevops21"
     />
   </div>
-  <div className="rounded-[30px] relative right-[810px] 2xl:top-44 flex justify-center items-center hover:scale-150 transition-transform duration-300">
+  <div className="rounded-[30px] relative right-[8710px] 2xl:top-44 flex justify-center items-center hover:scale-150 transition-transform duration-300">
     <Image
       src="/solutions/salesrevops2/boxes/main.svg"
       alt="Main"

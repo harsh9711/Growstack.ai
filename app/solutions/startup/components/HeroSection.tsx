@@ -7,7 +7,7 @@ const HeroSection = () => {
     <section className="bg-[url('/backgroundb5.png')] bg-cover  w-full mb-10 2xl:mb-0 items-center justify-center mx-auto">
       <div      data-aos="fade-left"
               data-aos-duration="1500" className="relative flex flex-col items-center max-w-[1220px] 2xl:max-w-[1350px] 2xl:p-0 p-4 w-full  h-full justify-center mx-auto">
-        <div className="w-full flex flex-row justify-between brightness-110 relative gap-x-20 items-center 2xl:mt-32 2xl:mb-20   ">
+        <div className="w-full flex flex-row justify-between brightness-110 relative gap-x-20 items-center mt-20 2xl:mt-24 2xl:mb-20   ">
           <div className="w-full max-w-[700px] gap-y-4 flex flex-col">
             <div
               data-aos="fade-right"
@@ -24,13 +24,17 @@ const HeroSection = () => {
                 className="text-[26px] xl:text-[48px] w-full leading-normal text-white"
               >
                 <span className="font-semibold">
-                  Supercharge Growth and Market Penetration{" "}
+                  Supercharge growth 
                 </span>
                 <br />
                 <span className="font-light 2xl:whitespace-nowrap">
-                  with Integrated
+                and market penetration{" "}  
                 </span>
-                <span className="font-extralight text-[#61C453] 2xl:whitespace-nowrap">
+                    <br />
+                 <span className="font-light 2xl:whitespace-nowrap">
+              with integrated
+                </span>
+                <span className="ml-2 font-extralight text-[#61C453] 2xl:whitespace-nowrap">
                   AI Tools
                 </span>
               </h1>
@@ -46,7 +50,7 @@ const HeroSection = () => {
                 market presence and accelerate their growth trajectory.
               </p>
 
-              <div className="flex flex-col gap-20 mt-10">
+              <div className="flex flex-col gap-16 mt-10">
                 <div
                   data-aos="fade-right"
                   data-aos-duration="1500"
@@ -105,7 +109,7 @@ const HeroSection = () => {
             </div>
           </div>
         </div>
-        <div className=" w-full brightness-95 2xl:mb-40">
+        <div className=" w-full brightness-95 mt-20 mb-64">
               <h1
              
                 className="text-[26px] xl:text-[48px] w-full gap-2 leading-normal text-[#61C453]"
@@ -114,7 +118,7 @@ const HeroSection = () => {
                   Revolutionizing startup success
                 </span>
 
-                <span className="text-white font-light 2xl:whitespace-nowrap">
+                <span className="ml-2 text-white font-light 2xl:whitespace-nowrap">
                   with<br/><span> Innovative AI Solutions</span>
                 </span>
               </h1>

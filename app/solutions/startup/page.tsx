@@ -2,18 +2,19 @@
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect } from "react";
-import ImageGalleryLine from "../revops/components/ImageGalleryline";
-import Navbar from "@/components/navbar/Navbar";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import GridComponent from "../revops/components/GridBoxes";
-import GridComponentSecond from "../revops/components/GridBoxes2";
-import ImageGalleryLineResponsive from "../revops/components/ImageGallerylineresponsive";
-import LoadingBar from "../revops/components/Loading";
-import MarketingStreamline from "../revops/components/marketingStreamline/MarketingStreamline";
-import Footer from "@/components/footer/Footer";
-import LoadingBarSecond from "../revops/components/LoadingBar";
+import Navbar from "@/components/navbar/Navbar";
+import { Footer } from "docx";
+import GridComponent from "./components/GridBoxes";
+import GridComponentSecond from "./components/GridBoxes2";
 import HeroSection from "./components/HeroSection";
+import ImageGalleryLine from "./components/ImageGalleryline";
+import ImageGalleryLineResponsive from "./components/ImageGallerylineresponsive";
+import LoadingBar from "./components/Loading";
+import LoadingBarSecond from "./components/LoadingBar";
+import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
+
 
 const page = () => {
   useEffect(() => {
@@ -27,45 +28,29 @@ const page = () => {
           backgroundColor="transparent"
         />   
     <HeroSection/>
-      <section className=" mx-auto w-full flex items-center justify-center 2xl:mb-20 py-10 2xl:py-20 ">
-        <div
-          data-aos="fade-up"
-          data-aos-duration="1800"
-          data-aos-delay="600"
-          className="flex flex-col items-center justify-center gap-y-10"
-        >
-          <div>
-            <LoadingBar />
-          </div>
-        </div>
-      </section>
-      <section className=" p-20">
-        <div className="relative mx-auto rounded-t-[40px] items-center justify-center py-10 2xl:py-20 bg-[#E2F0CB4D]/30">
+        <section className=" p-20">
+        <div className="relative mx-auto rounded-t-[40px] items-center justify-center py-10 2xl:py-20 ">
           <div className="flex flex-col items-center justify-center mx-auto gap-2">
-            <div
-              data-aos="fade-up"
-              data-aos-duration="1200"
-              data-aos-offset="200"
-              className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit"
-            >
-              maintain
+          <div className="text-black 2xl:items-start items-center justify-center flex flex-col gap-y-4 ">
+                <div
+                    data-aos="fade-up"
+                    data-aos-duration="1000"
+                     className="bg-[#03473714]/10 text-[#034737] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit">
+                    {" "}
+                  manage
+                </div>  
+               <h1
+                    data-aos="fade-up"
+                    data-aos-duration="1100"
+                    className="text-center tect-black items-center justify-center flex flex-wrap gap-4 text-[26px] 2xl:text-[42px] leading-normal"
+                >
+                    <span className="relative text-black text-[white] font-semibold">
+                    Maintain consistent 
+                    </span>
+                    <span className="text-[#61C453] text-black font-normal">
+                    service standards                 </span>
+                </h1>
             </div>
-
-            <h1
-              data-aos="fade-up"
-              data-aos-duration="1500"
-              data-aos-delay="300"
-              className="text-center text-[22px] 2xl:text-[42px] leading-normal"
-            >
-              <span className="text-black font-extrabold">
-                Maintain data quality{" "}
-              </span>
-              <span className="text-black font-extralight">
-                {" "}
-                and management
-              </span>
-            </h1>
-
             <div
               data-aos="fade-up"
               data-aos-duration="1800"
@@ -77,7 +62,7 @@ const page = () => {
           </div>
         </div>
       </section>
-      <section className="bg-[url('/linetop.png')] bg-cover relative w-full 2xl:mt-20">
+       <section className="bg-[url('/linetop.png')] bg-cover relative w-full 2xl:mt-20">
         <div className="2xl:flex xl:flex hidden flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
           <ImageGalleryLine />
         </div>
@@ -85,6 +70,20 @@ const page = () => {
           <ImageGalleryLineResponsive />
         </div>
       </section>
+  
+        <section className=" mx-auto w-full flex items-center justify-center 2xl:mb-20 py-10 2xl:py-20 ">
+        <div
+          data-aos="fade-up"
+          data-aos-duration="1800"
+          data-aos-delay="600"
+          className="flex flex-col items-center justify-center gap-y-10"
+        >
+          <div>
+            <LoadingBar />
+          </div>
+        </div>
+      </section>
+   
 
       <section className="relative mx-auto w-full items-center justify-center xl:mt-0 mt-10 2xl:mt-0 py-10 bg-[#FAFBFC]">
         <div className="flex flex-col items-center justify-center mx-auto gap-2">
@@ -149,7 +148,7 @@ const page = () => {
 
         <MarketingStreamline />
       </section>
-      <Footer />
+      {/* <Footer/> */}
     </main>
   );
 };

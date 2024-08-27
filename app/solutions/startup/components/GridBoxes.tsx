@@ -1,9 +1,8 @@
 "use client";
-import { ArrowRight, Circle } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import useInView from "../useInView";
-import "./grid.css"
+import "../../../../styles/grid.css"
 const GridComponent = () => {
   const [selected, setSelected] = useState<number | null>(null);
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
@@ -161,11 +160,11 @@ const GridComponent = () => {
     className="rounded-[30px] flex justify-center items-center z-[60] cursor-pointer hover:scale-105 transition-transform duration-300"
   >
     <Image
-      src="/solutions/salesrevops/boxes/box1.svg"
+      src="/solutions/startup/boxes/box1.svg"
       alt="Box 1"
       width={400}
       height={420}
-      className="w-[480px] h-[357px] hover-boxsalesrevops1"
+      className="w-[480px] h-[357px] hover-boxstartup1"
     />
   </div>
   <div
@@ -173,14 +172,14 @@ const GridComponent = () => {
     className="rounded-[30px] flex justify-center items-center z-[60] cursor-pointer hover:scale-105  transition-transform duration-300"
   >
     <Image
-      src="/solutions/salesrevops/boxes/box2.svg"
+      src="/solutions/startup/boxes/box2.svg"
       alt="Box 2"
       width={400}
       height={400}
-      className="w-[480px] h-[357px] hover-boxsalesrevops2"
+      className="w-[480px] h-[357px] hover-boxstartup2"
     />
   </div>
-  <div className="rounded-[30px] relative right-[810px] 2xl:top-44  flex justify-center items-center hover:scale-150 transition-transform duration-300">
+  <div className="rounded-[30px] relative right-[750px] 2xl:top-44  flex justify-center items-center hover:scale-150 transition-transform duration-300">
     <Image
       src="/solutions/salesrevops/boxes/main.svg"
       alt="Main"
@@ -194,22 +193,22 @@ const GridComponent = () => {
     className="rounded-[30px] relative top-2 flex justify-center items-center z-[60] cursor-pointer hover:scale-105  transition-transform duration-300"
   >
     <Image
-      src="/solutions/salesrevops/boxes/box3.svg"
+      src="/solutions/startup/boxes/box3.svg"
       alt="Box 3"
       width={380}
       height={400}
-      className="w-[480px] h-[357px] hover-boxsalesrevops3"
+      className="w-[480px] h-[357px] hover-boxstartup3"
     />
   </div><div
     onClick={() => handleClick(4)}
     className="rounded-[30px] flex relative top-2 justify-center items-center z-[60] cursor-pointer hover:scale-105 transition-transform duration-300"
   >
     <Image
-      src="/solutions/salesrevops/boxes/box4.svg"
+      src="/solutions/startup/boxes/box4.svg"
       alt="Box 4"
       width={380}
       height={420}
-      className="w-[480px] h-[357px] hover-boxsalesrevops4"
+      className="w-[480px] h-[357px] hover-boxstartup4"
     />
   </div>
 </div>
