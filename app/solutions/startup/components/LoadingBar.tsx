@@ -15,28 +15,28 @@ const LoadingBarSecond: React.FC = () => {
     const galleryRef = useRef<HTMLDivElement | null>(null);
 
     const images: string[] = [
-        '/loadingrevops/loading1.svg',
-        '/loadingrevops/loading2.svg',
-        '/loadingrevops/loading3.svg',
-        '/loadingrevops/loading4.svg',
+        '/loadingstartup/loading1.svg',
+        '/loadingstartup/loading2.svg',
+        '/loadingstartup/loading3.svg',
+        '/loadingstartup/loading4.svg',
     ];
     const [clickedIndex, setClickedIndex] = useState<number | null>(null);
 
     const contents = [
         <div key="1"  className={`flex flex-row items-center gap-x-10 ${clickedIndex === 0 ? 'text-[#FFEDE6] font-semibold' : ''}`}>
-            <Image src="/iconsdivrevops/icons1.svg" alt="Icon 1" width={50} height={50} />
-            <p className='text-black '>Centralized engagement</p>
+            <Image src="/iconsdivstartup/icons1.svg" alt="Icon 1" width={50} height={50} />
+            <p className='text-black '>Engage effectively</p>
         </div>,
         <div key="2"  className={`flex flex-row items-center gap-x-10 ${clickedIndex === 1 ? 'text-[#9AEEE7] font-semibold' : ''}`}>
-            <Image src="/iconsdivrevops/icons2.svg" alt="Icon 2" width={50} height={50} />
+            <Image src="/iconsdivstartup/icons2.svg" alt="Icon 2" width={50} height={50} />
             <p className='text-black '>Intelligent assistance</p>
         </div>,
         <div key="3"  className={`flex flex-row items-center gap-x-10 ${clickedIndex === 2 ? 'text-[#D9CFEE] font-semibold' : ''}`}>
-            <Image src="/iconsdivrevops/icons3.svg" alt="Icon 3" width={50} height={50} />
+            <Image src="/iconsdivstartup/icons3.svg" alt="Icon 3" width={50} height={50} />
             <p className='text-black '>Effective communication</p>
         </div>,
         <div key="4"  className={`flex flex-row items-center gap-x-10 ${clickedIndex === 3 ? 'text-[#F0FFC3] font-semibold' : ''}`}>
-            <Image src="/iconsdivrevops/icons4.svg" alt="Icon 4" width={50} height={50} />
+            <Image src="/iconsdivstartup/icons4.svg" alt="Icon 4" width={50} height={50} />
             <p className='text-black '>Automated processes</p>
         </div>,
     ];
@@ -126,7 +126,7 @@ const LoadingBarSecond: React.FC = () => {
                     data-aos-duration="1000"
                      className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit">
                     {" "}
-                   communication
+                  visibility
                 </div>  
                <h1
                     data-aos="fade-up"
@@ -134,10 +134,10 @@ const LoadingBarSecond: React.FC = () => {
                     className="text-center items-center justify-center flex flex-wrap gap-2 text-[26px] 2xl:text-[42px] leading-normal"
                 >
                     <span className="relative text-black font-semibold">
-                 Improve communication 
+                Boost your brand's
                     </span>
                     <span className="text-black font-extralight">
-                and collaboration       </span>
+              visibility and reputation     </span>
                 </h1>
             </div>
             <div className="gallery-wrapper" ref={galleryRef}>

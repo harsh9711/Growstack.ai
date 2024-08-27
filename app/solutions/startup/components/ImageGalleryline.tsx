@@ -31,9 +31,9 @@ const ImageGalleryLine = () => {
       alt: 'Image 2',
       id: 2,
       relatedImages: [
-        { src: '/solutions/startup/sideimages/ai.svg', alt: 'Related Image 1-1', id: 2 },
-        { src: '/solutions/startup/sideimages/contacts.svg', alt: 'Related Image 1-2', id: 1 },
-        { src: '/solutions/startup/sideimages/scheduler.svg', alt: 'Related Image 1-3', id: 3 },
+       { src: '/solutions/startup/sideimages/web.svg', alt: 'Related Image 1-1', id: 2 },
+        { src: '/solutions/startup/sideimages/social.svg', alt: 'Related Image 1-2', id: 3 },
+        { src: '/solutions/startup/sideimages/chat.svg', alt: 'Related Image 1-3', id: 1 },
       ],
     },
     {
@@ -41,9 +41,9 @@ const ImageGalleryLine = () => {
       alt: 'Image 3',
       id: 3,
       relatedImages: [
-        { src: '/solutions/startup/sideimages/lead.svg', alt: 'Related Image 1-1', id: 4 },
-        { src: '/solutions/startup/sideimages/contacts.svg', alt: 'Related Image 1-2', id: 1 },
-        { src: '/solutions/startup/sideimages/scheduler.svg', alt: 'Related Image 1-3', id: 3 },
+      { src: '/solutions/startup/sideimages/article.svg', alt: 'Related Image 1-1', id: 4 },
+        { src: '/solutions/startup/sideimages/social.svg', alt: 'Related Image 1-2', id: 3 },
+        { src: '/solutions/startup/sideimages/chat.svg', alt: 'Related Image 1-3', id: 1 },
       ],
     },
     {
@@ -51,9 +51,9 @@ const ImageGalleryLine = () => {
       alt: 'Image 4',
       id: 4,
       relatedImages: [
-        { src: '/solutions/startup/sideimages/ai.svg', alt: 'Related Image 1-1', id: 2 },
-        { src: '/solutions/startup/sideimages/contacts.svg', alt: 'Related Image 1-2', id: 1 },
-        { src: '/solutions/startup/sideimages/lead.svg', alt: 'Related Image 1-3', id: 4 },
+      { src: '/solutions/startup/sideimages/article.svg', alt: 'Related Image 1-1', id: 4 },
+        { src: '/solutions/startup/sideimages/web.svg', alt: 'Related Image 1-2', id: 2 },
+        { src: '/solutions/startup/sideimages/chat.svg', alt: 'Related Image 1-3', id: 1 },
       ],
     },
   ];
@@ -112,12 +112,12 @@ const ImageGalleryLine = () => {
       <div className="relative flex items-center justify-center">
         {selectedImage ? (
           <div className="flex flex-col  items-center">
-            <div className="items-center justify-center relative translate-y-32 
+            <div className="items-center justify-center relative  
              flex flex-col gap-y-2 mb-4">
               <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit mx-auto">
            market fit
               </div>
-              <h1 className="text-center text-[42px] leading-normal">
+              <h1 className="text-center text-white  text-[42px] leading-normal">
                 <span className="font-extrabold">Find your market </span>
                 <span className="font-extralight text-[#A9FF9B]">  fit faster</span>
               </h1>

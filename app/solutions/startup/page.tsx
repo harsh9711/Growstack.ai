@@ -1,17 +1,13 @@
 "use client";
-import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Navbar from "@/components/navbar/Navbar";
-import { Footer } from "docx";
 import GridComponent from "./components/GridBoxes";
-import GridComponentSecond from "./components/GridBoxes2";
 import HeroSection from "./components/HeroSection";
 import ImageGalleryLine from "./components/ImageGalleryline";
 import ImageGalleryLineResponsive from "./components/ImageGallerylineresponsive";
-import LoadingBar from "./components/Loading";
 import LoadingBarSecond from "./components/LoadingBar";
 import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
 
@@ -30,8 +26,8 @@ const page = () => {
     <HeroSection/>
         <section className=" p-20">
         <div className="relative mx-auto rounded-t-[40px] items-center justify-center py-10 2xl:py-20 ">
-          <div className="flex flex-col items-center justify-center mx-auto gap-2">
-          <div className="text-black 2xl:items-start items-center justify-center flex flex-col gap-y-4 ">
+          <div className="flex flex-col 2xl:justify-start items-center justify-center mx-auto gap-2">
+          <div className="2xl:-translate-x-10 text-black 2xl:items-start items-center justify-center flex flex-col gap-y-4 ">
                 <div
                     data-aos="fade-up"
                     data-aos-duration="1000"
@@ -71,57 +67,9 @@ const page = () => {
         </div>
       </section>
   
-        <section className=" mx-auto w-full flex items-center justify-center 2xl:mb-20 py-10 2xl:py-20 ">
-        <div
-          data-aos="fade-up"
-          data-aos-duration="1800"
-          data-aos-delay="600"
-          className="flex flex-col items-center justify-center gap-y-10"
-        >
-          <div>
-            <LoadingBar />
-          </div>
-        </div>
-      </section>
-   
-
-      <section className="relative mx-auto w-full items-center justify-center xl:mt-0 mt-10 2xl:mt-0 py-10 bg-[#FAFBFC]">
-        <div className="flex flex-col items-center justify-center mx-auto gap-2">
-          <div
-            data-aos="fade-up"
-            data-aos-duration="1200"
-            data-aos-offset="200"
-            className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit"
-          >
-            analytics
-          </div>
-
-          <h1
-            data-aos="fade-up"
-            data-aos-duration="1500"
-            data-aos-delay="300"
-            className="text-center text-[32px] 2xl:text-[42px] leading-normal"
-          >
-            <span className="text-black font-bold">Enhance</span>
-            <span className="text-black font-extralight">
-              {" "}
-              reporting and analytics
+    
 
 
-              
-            </span>
-          </h1>
-
-          <div
-            data-aos="fade-up"
-            data-aos-duration="1800"
-            data-aos-delay="600"
-            className="items-center justify-center mx-auto relative 2xl:right-12 "
-          >
-            <GridComponentSecond />
-          </div>
-        </div>
-      </section>
       <section className="mx-auto w-full flex items-center justify-center py-10 2xl:py-40 ">
         <div
           data-aos="fade-up"
@@ -135,13 +83,13 @@ const page = () => {
         </div>
       </section>
 
-      <section className=" overflow-hidden bg-[#E2F0CB]  ">
+     <section className=" overflow-hidden  ">
         <div className="items-center justify-center flex flex-col gap-y-4  overflow-hidden ">
           <Image
             src="/desing.png"
             width={1200}
             height={1000}
-            className="w-full  xl:flex  absolute h-[1000px] 2xl:flex hidden  transform scale-y-[-1]  translate-x-10  z-0 translate-y-[500px] "
+            className="w-full absolute h-[1000px] 2xl:flex xl:flex hidden  transform scale-y-[-1]  translate-x-10  z-0 translate-y-[500px] "
             alt="image"
           />
         </div>
