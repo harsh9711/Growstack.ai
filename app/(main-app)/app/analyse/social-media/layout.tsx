@@ -78,7 +78,7 @@ export default function ComingSoon() {
       </div>
       <h1 className="text-3xl uppercase font-semibold mb-4">Coming Soon</h1>
       <p className="mb-10 max-w-2xl leading-loose">
-        We’re currently working on creating something fantastic. We’ll be here soon. Subscribe to the newsletter to be notified.
+        We’rescsa currently working on creating something fantastic. We’ll be here soon. Subscribe to the newsletter to be notified.
       </p>
       <form className="w-full max-w-md">
         <div className="flex items-center border-b-2 border-primary-green py-2">
