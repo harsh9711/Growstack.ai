@@ -10,6 +10,7 @@ import ImageGalleryLine from "./components/ImageGalleryline";
 import ImageGalleryLineResponsive from "./components/ImageGallerylineresponsive";
 import LoadingBarSecond from "./components/LoadingBar";
 import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
+import Footer from "@/components/footer/Footer";
 
 
 const page = () => {
@@ -96,7 +97,7 @@ const page = () => {
 
         <MarketingStreamline />
       </section>
-      {/* <Footer/> */}
+      <Footer/>
     </main>
   );
 };
