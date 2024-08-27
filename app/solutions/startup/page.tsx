@@ -25,7 +25,7 @@ const page = () => {
         />   
     <HeroSection/>
         <section className=" p-20">
-        <div className="relative mx-auto rounded-t-[40px] items-center justify-center py-10 2xl:py-20 ">
+        <div className="relative mx-auto rounded-t-[40px] items-center justify-center py-10 ">
           <div className="flex flex-col 2xl:justify-start items-center justify-center mx-auto gap-2">
           <div className="2xl:-translate-x-10 text-black 2xl:items-start items-center justify-center flex flex-col gap-y-4 ">
                 <div
