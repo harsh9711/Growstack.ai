@@ -1,7 +1,7 @@
 @import "../../../../variables.scss";
 .marketingTechnology{
-    padding: 90px 0;
-    background: url("../../../../../public/solutionsmarketing/background.svg") no-repeat;
+    padding: 20px 0;
+    // background: url("../../../../../public/solutionsmarketing/background.svg") no-repeat;
     background-size: cover;
     background-position: center;
     overflow: hidden;
@@ -45,7 +45,7 @@
             border-radius: 30px;
             display: flex;
             flex-direction: column;
-            height: 650px;
+            height: 500px;
             // min-height: 625px;
             border-radius: 17px;
             gap: 16px;

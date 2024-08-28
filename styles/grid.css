@@ -154,3 +154,18 @@
   .hover-boxstartup41:hover {
     content: url('/startup/box/box4.svg');
   }
+  .hover-boxoperations1001:hover {
+    content: url('/solutions/operations/boxes/changedbox/box1.svg');
+  }
+  
+  .hover-boxoperations2001:hover {
+    content: url('/solutions/operations/boxes/changedbox/box2.svg');
+  }
+  
+  .hover-boxoperations3001:hover {
+    content: url('/solutions/operations/boxes/changedbox/box3.svg');
+  }
+  
+  .hover-boxoperations4001:hover {
+    content: url('/solutions/operations/boxes/changedbox/box4.svg');
+  }

@@ -1,28 +1,28 @@
-import React from 'react';
-import Image from 'next/image';
+import React from "react";
+import Image from "next/image";
 import Navbar from "@/components/navbar/Navbar";
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight } from "lucide-react";
 
 const HeroSection = ({
-  logoUrl = '/images/logo.png',
-  logoAlt = 'Custom Logo',
-  bgGradient = 'bg-[#14171B]',
-  title = 'Streamline your business',
-  subtitle = 'operations with Growstack',
+  logoUrl = "/images/logo.png",
+  logoAlt = "Custom Logo",
+  bgGradient = "bg-[#14171B]",
+  title = "Streamline your business",
+  subtitle = "operations with Growstack",
   description = "Optimize processes and enhance communication with Growstack’s innovative solutions. Empower your team to overcome challenges and drive operational excellence.",
-  primaryButtonText = 'Free trial',
-  secondaryButtonText = 'See demo',
-  playStoreImage = '/play2.png',
-  appleStoreImage = '/apple2.png',
-  heroImage = '/operationshero.svg',
-  heroImageAlt = 'Center Image',
+  primaryButtonText = "Free trial",
+  secondaryButtonText = "See demo",
+  playStoreImage = "/play2.png",
+  appleStoreImage = "/apple2.png",
+  heroImage = "/operationshero.svg",
+  heroImageAlt = "Center Image",
 }) => {
   return (
     <section className={`${bgGradient} w-full mb-10 2xl:mb-20 overflow-hidden`}>
       <Navbar logoUrl={logoUrl} logoAlt={logoAlt} backgroundColor="white" />
 
       <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1350px] 2xl:p-0 p-4 w-full  h-full justify-center mx-auto">
-        <div className="w-full flex flex-row justify-between brightness-110 relative items-center mt-10 mb-10 2xl:mt-32 2xl:mb-4">
+        <div className="w-full flex flex-row justify-between brightness-110 relative items-center mt-10 mb-10 2xl:mt-32 2xl:mb-20">
           <div className="w-full max-w-[700px] gap-y-4 flex flex-col">
             <div
               data-aos="fade-right"
@@ -40,7 +40,9 @@ const HeroSection = ({
               >
                 <span className="font-semibold text-white">{title}</span>
                 <br />
-                <span className="font-light 2xl:whitespace-nowrap text-white">{subtitle}</span>
+                <span className="font-light 2xl:whitespace-nowrap text-white">
+                  {subtitle}
+                </span>
               </h1>
               <p
                 data-aos="fade-right"
@@ -70,16 +72,34 @@ const HeroSection = ({
                   className="flex  flex-wrap gap-4"
                 >
                   <button className="flex items-center gap-2 text-primary-green rounded-xl">
-                    <Image className="w-full h-full" src={playStoreImage} alt="Play Store" width={180} height={400} />
+                    <Image
+                      className="w-full h-full"
+                      src={playStoreImage}
+                      alt="Play Store"
+                      width={180}
+                      height={400}
+                    />
                   </button>
                   <button className="flex items-center gap-2 text-primary-green rounded-xl">
-                    <Image className="w-full h-full" src={appleStoreImage} alt="Apple Store" width={180} height={400} />
+                    <Image
+                      className="w-full h-full"
+                      src={appleStoreImage}
+                      alt="Apple Store"
+                      width={180}
+                      height={400}
+                    />
                   </button>
                 </div>
               </div>
             </div>
           </div>
-<Image src="/greenarrow.svg" alt="green" width={100} height={100}  className='w-[200px] absolute translate-x-[700px] -translate-y-40'/>
+          <Image
+            src="/greenarrow.svg"
+            alt="green"
+            width={100}
+            height={100}
+            className="w-[200px] 2xl:flex xl:flex hidden absolute translate-x-[700px] -translate-y-40"
+          />
           <div className="2xl:flex mt-10 xl:flex lg:flex md:flex hidden items-end relative w-full justify-end">
             <div
               data-aos="fade-left"
@@ -87,7 +107,7 @@ const HeroSection = ({
               className="w-full relative z-0"
             >
               <Image
-                className="xl:w-[1500px] w-full 2xl:w-full  2xl:translate-x-40 xl:translate-x-72 h-full"
+                className="xl:w-[1500px] w-full 2xl:w-full  2xl:translate-x-40 xl:translate-x-40 h-full"
                 src={heroImage}
                 alt={heroImageAlt}
                 width={842}

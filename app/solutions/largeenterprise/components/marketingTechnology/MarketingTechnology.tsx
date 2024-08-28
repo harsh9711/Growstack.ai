@@ -16,65 +16,60 @@ const MarketingTechnology: React.FC = () => {
     }, []);
     const slideData = [
         {
-            title: 'Standardize communications',
-            imageSrc: '/sliderimagesfolder/slider2.svg',
+            title: 'Timeliness',
+            imageSrc:'/solutions/slideroperations/slider4.svg',
             subtitle: 'Reduce decision-making time by 40% increase efficiency',
-            tags: ['AI chat'],
-            description: 'Offers advanced market research capabilities and industry insights through top LLMs for in-depth, multi- region market analysis, competitive intelligence, and strategic global decision- making.',
-            icon: '/solutionsmarketing/contacts.svg'
+            tags: ['Schedule & Quick Posting'],
+            description: 'Automates scheduling and communication processes, ensuring timely updates and adherence to compliance deadlines.',
+            icon: '/solutions/slideroperations/slider1.svg'
         },
         {
-            title: 'Unify messaging',
-            imageSrc: '/sliderimagesfolder/slider1.svg',
+            title: 'Collaboration',
+            imageSrc:'/solutions/slideroperations/slider5.svg',
             subtitle: 'Boost productivity Optimize Return Of Invest by 20%',
-            tags: ['AI APPS'],
-            description: 'Offers a broad suite of over 60 AI-powered applications with multi-modal functionality and advanced features for high-level content creation, lead generation, and sales forecasting.',
-            icon: '/solutionsmarketing/aiPlay.svg'
+            tags: ['WA and Tele Automation'],
+            description: 'Facilitates real-time communication among team members, ensuring everyone stays informed and aligned.',
+            icon: '/solutions/slideroperations/slider2.svg'
         },
         {
-            title: 'Harmonize campaigns ',
-            imageSrc: '/sliderimages/slider3.svg',
+            title: 'Efficiency ',
+            imageSrc:'/solutions/slideroperations/slider6.svg',
             subtitle: 'Automate routine tasks Save employees time by 50%',
-            tags: ['AI assistant'],
-            description: 'Customizable AI assistants for automating high-level research, routine tasks, data analysis, and operational efficiency, tailored to support various departments and scalable for enterprise-wide operations.',
-            icon: '/solutionsmarketing/aiaWizard.svg'
+            tags: ['Assistants'],
+            description: 'Employ Answer Bot AI to provide instant responses to common operational queries, enhancing communication and information sharing.',
+            icon: '/solutions/slideroperations/slider3.svg'
         },
         {
-          title: 'Standardize communications',
-          imageSrc: '/sliderimagesfolder/slider2.svg',
+          title: 'Timeliness',
+          imageSrc:'/solutions/slideroperations/slider4.svg',
           subtitle: 'Reduce decision-making time by 40% increase efficiency',
-          tags: ['AI chat'],
-          description: 'Offers advanced market research capabilities and industry insights through top LLMs for in-depth, multi- region market analysis, competitive intelligence, and strategic global decision- making.',
-          icon: '/solutionsmarketing/contacts.svg'
+          tags: ['Schedule & Quick Posting'],
+          description: 'Automates scheduling and communication processes, ensuring timely updates and adherence to compliance deadlines.',
+          icon: '/solutions/slideroperations/slider1.svg'
       },
       {
-          title: 'Unify messaging',
-          imageSrc: '/sliderimagesfolder/slider1.svg',
+          title: 'Collaboration',
+          imageSrc:'/solutions/slideroperations/slider5.svg',
           subtitle: 'Boost productivity Optimize Return Of Invest by 20%',
-          tags: ['AI APPS'],
-          description: 'Offers a broad suite of over 60 AI-powered applications with multi-modal functionality and advanced features for high-level content creation, lead generation, and sales forecasting.',
-          icon: '/solutionsmarketing/aiPlay.svg'
+          tags: ['WA and Tele Automation'],
+          description: 'Facilitates real-time communication among team members, ensuring everyone stays informed and aligned.',
+          icon: '/solutions/slideroperations/slider2.svg'
       },
       {
-          title: 'Harmonize campaigns ',
-          imageSrc: '/sliderimages/slider3.svg',
+          title: 'Efficiency ',
+          imageSrc:'/solutions/slideroperations/slider6.svg',
           subtitle: 'Automate routine tasks Save employees time by 50%',
-          tags: ['AI assistant'],
-          description: 'Customizable AI assistants for automating high-level research, routine tasks, data analysis, and operational efficiency, tailored to support various departments and scalable for enterprise-wide operations.',
-          icon: '/solutionsmarketing/aiaWizard.svg'
-      },
+          tags: ['Assistants'],
+          description: 'Employ Answer Bot AI to provide instant responses to common operational queries, enhancing communication and information sharing.',
+          icon: '/solutions/slideroperations/slider3.svg'
+      }
     ]
     const swiperRef = useRef(null);
     return (
         <React.Fragment>
             <div className="marketingTechnology">
                 <div className="container">
-                    <div className="title" data-aos="fade-up"
-                        data-aos-easing="ease-in-sine"
-                        data-aos-duration="1000">
-                        <span className="user">Consistency</span>
-                        <h2 className='heading mt-2'><span>Global  alignment </span>and consistency</h2>
-                    </div>
+           
                     <div data-aos="flip-up"
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
@@ -128,7 +123,6 @@ const MarketingTechnology: React.FC = () => {
         <div className="image-wrapper">
           <img src={item.imageSrc} alt={item.title} className=''/>
         </div>
-        <h2 className="slide-subtitle">{item.subtitle}</h2>
         <div className="tags-wrapper">
           {item.tags.map((tag, tagIndex) => (
             <span key={tagIndex} className="tag">

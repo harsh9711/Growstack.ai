@@ -5,6 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { FaArrowRightLong } from "react-icons/fa6";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import "../../../../styles/loader.css"
 
 const LoadingBar: React.FC = () => {
     const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -15,33 +16,29 @@ const LoadingBar: React.FC = () => {
     const galleryRef = useRef<HTMLDivElement | null>(null);
 
     const images: string[] = [
-        '/loading/sales/loading1.svg',
-        '/loading/sales/loading3.svg',  
-         '/loading/sales/loading2.svg',
-        '/loading/sales/loading4.svg',
+        '/solutions/operations/boxes/loader/loading1.png',
+        '/solutions/operations/boxes/loader/loading2.png',  
+         '/solutions/operations/boxes/loader/loading3.png',
     ];
     const [clickedIndex, setClickedIndex] = useState<number | null>(null);
 
     const contents = [
         <div key="1"  className={`flex flex-row items-center gap-x-10 ${clickedIndex === 0 ? 'text-[#FFEDE6] font-semibold' : ''}`}>
-            <Image src="/iconsdiv/icons1.svg" alt="Icon 1" width={50} height={50} />
-            <p className='text-white '>Process automation</p>
+            <Image src="/iconsoperations/icon1.svg" alt="Icon 1" width={50} height={50} />
+            <p className='text-black '>Clarity</p>
         </div>,
         <div key="2"  className={`flex flex-row items-center gap-x-10 ${clickedIndex === 1 ? 'text-[#9AEEE7] font-semibold' : ''}`}>
-            <Image src="/iconsdiv/icons2.svg" alt="Icon 2" width={50} height={50} />
-            <p className='text-white '>Data insights</p>
+            <Image src="/iconsoperations/icon2.svg" alt="Icon 2" width={50} height={50} />
+            <p className='text-black '>Analysis</p>
         </div>,
         <div key="3"  className={`flex flex-row items-center gap-x-10 ${clickedIndex === 2 ? 'text-[#D9CFEE] font-semibold' : ''}`}>
-            <Image src="/iconsdiv/icons3.svg" alt="Icon 3" width={50} height={50} />
-            <p className='text-white '>Efficient conversion</p>
+            <Image src="/iconsoperations/icon3.svg" alt="Icon 3" width={50} height={50} />
+            <p className='text-black '>Segmentation</p>
         </div>,
-        <div key="4"  className={`flex flex-row items-center gap-x-10 ${clickedIndex === 3 ? 'text-[#F0FFC3] font-semibold' : ''}`}>
-            <Image src="/iconsdiv/icons4.svg" alt="Icon 4" width={50} height={50} />
-            <p className='text-white '>Market analysis</p>
-        </div>,
+     
     ];
 
-    const progressColors = ['#FFEDE6', '#9AEEE7', '#D9CFEE', '#FEE4F1'];
+    const progressColors = ['#FFEDE6', '#9AEEE7', '#D9CFEE'];
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
@@ -119,25 +116,25 @@ const LoadingBar: React.FC = () => {
     }, []);
 
     return (
-        <div className='flex flex-col gap-y-10'>
-            <div className=" 2xl:items-start items-center justify-center flex flex-col gap-y-4 ">
+        <div className='flex flex-col gap-y-4 2xl:gap-y-10'>
+            <div className=" 2xl:items-start xl:p-0 px-6 items-center justify-center flex flex-col gap-y-4 ">
                 <div
                     data-aos="fade-up"
                     data-aos-duration="1000"
-                    className="bg-white/10 hover:shadow-md   whitespace-nowrap  text-white  justify-center py-2 2xl:px-4 flex items-center text-center text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[130px] 2xl:max-w-[151px]">
-                    Distinction
+                    className="bg-[#03473714] py-2 px-3.5  flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit">
+                    Data
                 </div>
-               <h1
+             <div>  <h1
                     data-aos="fade-up"
                     data-aos-duration="1100"
-                    className="text-center items-center justify-center flex flex-wrap gap-2 text-[26px] 2xl:text-[42px] leading-normal"
+                    className="text-left items-start justify-start gap-2 text-[20px] 2xl:text-[42px] leading-normal"
                 >
-                    <span className="relative text-white font-semibold">
-                    Streamline sales 
-                    </span>
-                    <span className="text-white font-extralight">
-                    processes for success                    </span>
-                </h1>
+                    <span className="relative text-black font-semibold">
+                    Manage data efficiently and 
+                    </span><br className='2xl:flex xl:flex hidden'/>
+                    <span className="xl:ml-0 ml-2 text-black font-extralight">
+                    monitor performance effectively                   </span>
+                </h1></div>
             </div>
             <div className="gallery-wrapper" ref={galleryRef}>
   <div className="content-display">
@@ -148,7 +145,7 @@ const LoadingBar: React.FC = () => {
         className={`display-item ${clickedIndex === index ? 'active' : ''}`}
       >
         {content}
-        <div className="progress-wrapper">
+        <div className="progress-wrapper2">
           <div className="progress-bg"></div>
           {progress[index] > 0 && (
             <div
@@ -161,7 +158,7 @@ const LoadingBar: React.FC = () => {
           )}
           {(progress[index] > 0 && progress[index] < 100) || clickedIndex === index ? (
             <div className="arrow-icon-wrapper">
-              <FaArrowRightLong className="arrow-icon" />
+              <FaArrowRightLong className="arrow-icon2" />
             </div>
           ) : null}
         </div>
@@ -187,6 +184,7 @@ const LoadingBar: React.FC = () => {
 </div>
 
 </div>
+
 
         </div>
     );
