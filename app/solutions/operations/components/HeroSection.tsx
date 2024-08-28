@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Navbar from "@/components/navbar/Navbar";
 import { ArrowRight } from "lucide-react";
-
+import "../../../../styles/myanimation.css";
 const HeroSection = ({
   logoUrl = "/images/logo.png",
   logoAlt = "Custom Logo",
@@ -27,9 +27,9 @@ const HeroSection = ({
             <div
               data-aos="fade-right"
               data-aos-duration="1200"
-              className="bg-white text-black py-2 2xl:px-4 text-center items-center justify-center flex text-[10px] 2xl:text-[12px] rounded-full font-semibold uppercase max-w-[200px] 2xl:max-w-[252px] shadow-lg w-full tracking-widest"
+              className="bg-[#0347374D]/10 text-white py-2 2xl:px-4 text-center items-center justify-center flex text-[10px] 2xl:text-[12px] rounded-full font-semibold uppercase max-w-[350px] 2xl:max-w-[340px] shadow-lg w-full tracking-widest"
             >
-              Growstack for Sales Team
+             Growstack for Business Operations
             </div>
 
             <div className="2xl:max-w-3xl w-full brightness-95">
@@ -93,13 +93,42 @@ const HeroSection = ({
               </div>
             </div>
           </div>
-          <Image
-            src="/greenarrow.svg"
-            alt="green"
-            width={100}
-            height={100}
-            className="w-[200px] 2xl:flex xl:flex hidden absolute translate-x-[700px] -translate-y-40"
-          />
+          <svg
+            className="w-[200px] 2xl:flex xl:flex hidden absolute translate-x-[700px] -translate-y-60"
+            width="175"
+            height="171"
+            viewBox="0 0 175 171"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g clip-path="url(#clip0_7234_30783)">
+              <path
+               className="arrow-path"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M6.97437 77.731C62.7688 47.56 115.397 68.7594 149.998 105.372C150.594 105.999 151.7 105.968 152.465 105.297C153.231 104.626 153.373 103.57 152.777 102.943C117.209 65.3029 62.9696 43.8839 5.61239 74.901C4.71807 75.3826 4.29756 76.409 4.67284 77.1936C5.04583 77.9749 6.07624 78.2153 6.97437 77.731Z"
+                fill="#A9FF9B"
+              />
+              <path
+               className="arrow-path"
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M150.738 103.469C147.888 102.774 144.329 101.862 143.92 101.77C132.837 99.2847 121.663 98.6423 109.742 99.5587C108.775 99.6319 107.928 100.438 107.853 101.354C107.778 102.271 108.506 102.955 109.473 102.881C121.033 101.989 131.87 102.609 142.621 105.022C143.248 105.162 151.246 107.217 152.916 107.511C153.6 107.635 154.062 107.495 154.169 107.453C154.744 107.247 155.063 106.899 155.259 106.594C155.478 106.25 155.704 105.618 155.502 104.851C155.286 104.05 154.39 102.565 154.199 102.168C151.335 96.1666 147.54 89.7906 145.43 83.0294C143.417 76.5819 142.936 69.7757 146.574 62.6006C147.017 61.7273 146.673 60.7851 145.81 60.4981C144.947 60.2111 143.885 60.6907 143.442 61.5639C139.376 69.5864 139.792 77.21 142.04 84.4153C144.139 91.1362 147.849 97.49 150.738 103.469Z"
+                fill="#A9FF9B"
+              />
+            </g>
+            <defs>
+              <clipPath id="clip0_7234_30783">
+                <rect
+                  width="113.284"
+                  height="133.882"
+                  fill="white"
+                  transform="translate(65.7031 170.608) rotate(-125.45)"
+                />
+              </clipPath>
+            </defs>
+          </svg>
+
           <div className="2xl:flex mt-10 xl:flex lg:flex md:flex hidden items-end relative w-full justify-end">
             <div
               data-aos="fade-left"
@@ -107,7 +136,7 @@ const HeroSection = ({
               className="w-full relative z-0"
             >
               <Image
-                className="xl:w-[1500px] w-full 2xl:w-full  2xl:translate-x-40 xl:translate-x-40 h-full"
+                className="xl:w-[1500px] w-full 2xl:w-full  2xl:translate-x-80 xl:translate-x-40 h-full"
                 src={heroImage}
                 alt={heroImageAlt}
                 width={842}

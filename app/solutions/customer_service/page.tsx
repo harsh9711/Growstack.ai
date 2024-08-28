@@ -106,7 +106,7 @@ const page = () => {
             data-aos="fade-up"
             data-aos-duration="1800"
             data-aos-delay="600"
-            className="items-center justify-center mx-auto relative 2xl:right-12  2xl:top-4"
+            className="items-center justify-center mx-auto relative 2xl:right-12 "
           >
             <GridComponent />
           </div>

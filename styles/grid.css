@@ -169,3 +169,29 @@
   .hover-boxoperations4001:hover {
     content: url('/solutions/operations/boxes/changedbox/box4.svg');
   }
+  .hover-boxfinance211:hover {
+    content: url('/solutions/finance/boxes/changedsmall/box2.svg');
+  }
+  
+  .hover-boxfinance311:hover {
+    content: url('/solutions/finance/boxes/changedsmall/box4.svg');
+  }
+  
+  .hover-boxfinance411:hover {
+    content: url('/solutions/finance/boxes/changedsmall/box3.svg');
+  }
+  .hover-boxfinance11:hover {
+    content: url('/solutions/boxes/changedlines/box5.svg');
+  }
+  
+  .hover-boxfinance21:hover {
+    content: url('/solutions/boxes/changedlines/box6.svg');
+  }
+  
+  .hover-boxfinance31:hover {
+    content: url('/solutions/boxes/changedlines/box7.svg');
+  }
+  
+  .hover-boxfinance41:hover {
+    content: url('/solutions/boxes/changedlines/box8.svg');
+  }
