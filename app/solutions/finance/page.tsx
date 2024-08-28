@@ -27,7 +27,7 @@ const page = () => {
       <HeroSection />
 
       <section className="flex flex-col 2xl:pt-20">
-        <div className="w-full gap-y-4 flex flex-col items-center justify-center  mx-auto">
+        <div className="w-full gap-y-4 flex flex-col 2xl:p-0 p-4 items-center justify-center  mx-auto">
           <div
             data-aos="fade-up"
             data-aos-duration="1000"
@@ -37,13 +37,13 @@ const page = () => {
             Data
           </div>
 
-          <div className="flex flex-col items-start gap-y-4">
-            <h1 className="text-[22px] xl:text-[42px]  leading-12  items-center justify-start text-black">
-              <span className="font-semibold text-left">
+          <div className="flex flex-col 2xl:items-start xl:items-start items-center gap-y-4">
+            <h1 className="text-[20px] xl:text-[42px]  leading-12  items-center  justify-center xl:justify-start 2xl:justify-start text-black">
+              <span className="font-semibold xl:text-left text-center 2xl:text-left">
                 Streamline data management and
               </span>
-              <br />
-              <span className="font-light">
+              <br className="2xl:flex xl:flex hidden " />
+              <span className="font-light 2xl:ml-0 xl:ml-0 ml-2 xl:text-left text-center 2xl:text-left">
                 seamlessly integrate technology
               </span>
             </h1>

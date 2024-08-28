@@ -84,16 +84,16 @@ const GridComponent = () => {
                 className="w-[1100px] bg-cover z-[20]"
               />
             </div>
-            <div className="flex z-[80] flex-row gap-60 w-full max-w-[1070px] justify-center relative">
+            <div className="flex z-[80] flex-row justify-between w-full max-w-[2000px] relative">
               <div
                 onClick={() => handleClick(2)}
-                className="bg-white border font-medium text-[24px]  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
+                className="bg-white border font-medium text-[18px]  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
            Whatsapp and Telegram Automation
               </div>
               <div
                 onClick={() => handleClick(3)}
-                className="bg-white border font-medium text-[24px]  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
+                className="bg-white border font-medium text-[20px]  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
             AI Assistants
               </div>
@@ -113,16 +113,16 @@ const GridComponent = () => {
                 className="w-[1100px]  bg-cover z-[20]"
               />
             </div>
-            <div className="flex  z-[80] flex-row items-center left-0 justify-center gap-60 w-full max-w-[1070px]   relative">
+            <div className="flex z-[80] flex-row justify-between w-full max-w-[2000px] relative">
               <div
                 onClick={() => handleClick(1)}
-                className="bg-white border  font-medium text-[24px] whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
+                className="bg-white border  font-medium text-[20px]  whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
            Schedule & quick posting
               </div>
               <div
                 onClick={() => handleClick(3)}
-                className="bg-white border  font-medium text-[24px] shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
+                className="bg-white border  font-medium text-[20px]  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
             AI Assistants
               </div>
@@ -142,16 +142,16 @@ const GridComponent = () => {
                 className="w-[1100px]  bg-cover z-[20]"
               />
             </div>
-            <div className="flex z-[80] flex-row gap-60 w-full max-w-[1070px] justify-center relative">
+            <div className="flex z-[80] flex-row justify-between w-full max-w-[2000px] relative">
               <div
                 onClick={() => handleClick(1)}
-                className="bg-white border  font-medium text-[24px] whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
+                className="bg-white border  font-medium text-[20px]  whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
            Schedule & quick posting
               </div>
               <div
                 onClick={() => handleClick(2)}
-                className="bg-white border  font-medium text-[24px] shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
+                className="bg-white border font-medium text-[18px]  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
           Whatsapp and Telegram Automation
               </div>
@@ -173,7 +173,7 @@ const GridComponent = () => {
                   alt="Box 1"
                   width={400}
                   height={420}
-                  className="w-[480px] h-[357px] hover-boxfinance211"
+                  className="w-full h-full hover-boxfinance211"
                 />
               </div>
               <div
@@ -185,7 +185,7 @@ const GridComponent = () => {
                   alt="Box 2"
                   width={400}
                   height={400}
-                  className="w-[480px] h-[357px] hover-boxfinance311"
+                  className="w-full h-full hover-boxfinance311"
                 />
               </div>
 
@@ -198,7 +198,7 @@ const GridComponent = () => {
                   alt="Box 3"
                   width={380}
                   height={400}
-                  className="w-[480px] h-[357px] hover-boxfinance411"
+                  className="w-full h-full hover-boxfinance411"
                 />
               </div>
             </div>
