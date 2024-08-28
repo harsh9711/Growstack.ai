@@ -10,15 +10,15 @@ const HeroSection = () => {
       data-aos="fade-in"
       data-aos-duration="2000"
       data-aos-delay="500"
-      className="2xl:bg-[url('/animation3.png')] lg:bg-[url('/animation3.png')] md:bg-[url('/animation3.png')]xl:bg-[url('/animation3.png')]  h-full bg-gradient-to-b from-[#EFEBFA] to-[#FFFFFF] bg-cover  w-full mb-10 2xl:mb-20 items-center  bg-[100%] justify-center mx-auto"
+      className="max-h-screen  bg-transparent  w-full mb-10 2xl:mb-20  items-center justify-center mx-auto"
     >
-        <Navbar
+      <Navbar
         logoUrl="/white.png"
         logoAlt="Custom Logo"
-        backgroundColor="transparent"
+        backgroundColor="white"
       />
-      <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1350px] 2xl:p-0 p-4 w-full 2xl:max-h-[1112px] h-full justify-center mx-auto">
-        <div className="w-full flex flex-row justify-between brightness-110 relative gap-x-20 items-center mt-10 mb-10 2xl:mt-36 2xl:mb-40">
+      <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1350px] p-4 w-full h-full justify-center mx-auto">
+        <div className="w-full flex flex-row justify-between brightness-110 relative gap-x-20 items-center mt-10 mb-10 2xl:mt-20 2xl:mb-40">
           <div className="w-full max-w-[900px] gap-y-4 flex flex-col">
             <div
               data-aos="fade-right"
@@ -28,11 +28,11 @@ const HeroSection = () => {
               Growstack for Finance
             </div>
 
-            <div className=" w-full brightness-95">
+            <div className="w-full brightness-95">
               <h1
                 data-aos="fade-right"
                 data-aos-duration="1500"
-                className="text-[26px] xl:text-[48px] w-full leading-normal text-black"
+                className="text-[26px] xl:text-[48px] w-full leading-normal text-white"
               >
                 <span className="font-semibold w-full 2xl:whitespace-nowrap">
                   Transform finance operations{" "}
@@ -45,10 +45,10 @@ const HeroSection = () => {
               <p
                 data-aos="fade-right"
                 data-aos-duration="1500"
-                className="text-[16px] 2xl:text-[18px]  text-black mt-4 w-full max-w-[600px] leading-normal font-light"
+                className="text-[16px] 2xl:text-[18px] text-white mt-4 w-full max-w-[600px] leading-normal font-light"
               >
                 Streamline financial processes, enhance data accuracy, and drive
-                smarter decisions with Growstack’s AI tools. Optimize your
+                smarter decisions with Growstack's AI tools. Optimize your
                 finance operations for efficiency and clarity.
               </p>
 
@@ -58,12 +58,12 @@ const HeroSection = () => {
                   data-aos-duration="1500"
                   className="flex flex-row gap-8 group text-[12px] 2xl:text-[18px]"
                 >
-                  <button className="bg-white hover:bg-[#034737] font-medium flex items-center gap-2 text-[#034737] 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
-                    free trial <ArrowRight />
+                  <button className="bg-white hover:bg-[#034737] font-medium flex items-center gap-2 text-[#034737] 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md">
+                    Free trial <ArrowRight />
                   </button>
-                  <button className="border border-white flex items-center bg-white gap-2 text-black hover:font-bold font-medium 2xl:py-4 py-2 px-2 2xl:px-7 rounded-xl shadow-md shadow-[#00000025]">
+                  <button className="border border-white flex items-center gap-2 text-white hover:font-bold font-medium 2xl:py-4 py-2 px-2 2xl:px-7 rounded-xl shadow-md shadow-[#00000025]">
                     See demo
-                    <ArrowRight className="text-black" />
+                    <ArrowRight className="text-white" />
                   </button>
                 </div>
 
@@ -95,22 +95,23 @@ const HeroSection = () => {
             </div>
           </div>
 
-          <div className="2xl:flex xl:flex lg:flex md:flex hidden items-end relative w-full justify-end">
+          <div className="2xl:flex xl:flex lg:flex md:flex hidden translate-x-80 items-end relative w-full justify-end rounded-2xl shadow-3xl ">
             <div
               data-aos="fade-left"
               data-aos-duration="1500"
               className="w-full relative z-0"
             >
-              {/*           
+              <div className="absolute inset-0 translate-y-6 bg-opacity-30 -translate-x-6 w-full h-full bg-[#000000] rounded-2xl"></div>
               <Image
-                className="xl:w-[1500px] w-full 2xl:w-[1500px] h-full"
-                src="/customer.svg"
+                className=" w-full  h-full rounded-2xl border shadow-3xl relative z-10"
+                src="/dashboardchain.png"
                 alt="Center Image"
                 width={842}
                 height={463}
-              /> */}
+              />
             </div>
           </div>
+
         </div>
       </div>
     </section>

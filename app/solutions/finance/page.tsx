@@ -19,11 +19,7 @@ const page = () => {
   }, []);
   return (
     <main className="bg-white overflow-hidden">
-      <Navbar
-        logoUrl="/white.png"
-        logoAlt="Custom Logo"
-        backgroundColor="#EFEBFA"
-      />
+    
       <HeroSection />
 
       <section className="flex flex-col 2xl:pt-20">
