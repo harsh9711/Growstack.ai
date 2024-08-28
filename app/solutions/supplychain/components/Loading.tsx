@@ -16,23 +16,23 @@ const LoadingBar: React.FC = () => {
     const galleryRef = useRef<HTMLDivElement | null>(null);
 
     const images: string[] = [
-        '/solutions/operations/boxes/loader/loading1.png',
-        '/solutions/operations/boxes/loader/loading2.png',  
-         '/solutions/operations/boxes/loader/loading3.png',
+        '/solutions/chain/boxes/loader/loading1.svg',
+        '/solutions/chain/boxes/loader/loading2.svg',  
+         '/solutions/chain/boxes/loader/loading3.svg',
     ];
     const [clickedIndex, setClickedIndex] = useState<number | null>(null);
 
     const contents = [
         <div key="1"  className={`flex flex-row items-center gap-x-10 ${clickedIndex === 0 ? 'text-[#FFEDE6] font-semibold' : ''}`}>
-            <Image src="/iconsoperations/icon1.svg" alt="Icon 1" width={50} height={50} />
+            <Image src="/iconsdivloaderchain/icon1.svg" alt="Icon 1" width={50} height={50} />
             <p className='text-black '>Accurate forecasts</p>
         </div>,
         <div key="2"  className={`flex flex-row items-center gap-x-10 ${clickedIndex === 1 ? 'text-[#9AEEE7] font-semibold' : ''}`}>
-            <Image src="/iconsoperations/icon2.svg" alt="Icon 2" width={50} height={50} />
+            <Image src="/iconsdivloaderchain/icon2.svg" alt="Icon 2" width={50} height={50} />
             <p className='text-black '>Efficiency</p>
         </div>,
         <div key="3"  className={`flex flex-row items-center gap-x-10 ${clickedIndex === 2 ? 'text-[#D9CFEE] font-semibold' : ''}`}>
-            <Image src="/iconsoperations/icon3.svg" alt="Icon 3" width={50} height={50} />
+            <Image src="/iconsdivloaderchain/icon3.svg" alt="Icon 3" width={50} height={50} />
             <p className='text-black '>Actionable insights</p>
         </div>,
      
