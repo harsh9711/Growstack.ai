@@ -1,0 +1,101 @@
+@import "../../../../app/variables.scss";
+
+.solMarketingBanner {
+    background-size: cover;
+    background-position: center;
+    padding: 230px 0 70px;
+    position: relative;
+    overflow: hidden;
+    z-index: 9;
+    @media screen and (max-width: $breakpoint_tablet) {
+        padding: 100px 0 40px;
+    }
+
+    .bannerContent {
+        .user{
+            background-color: #fff;
+            color: #034737;
+            box-shadow: 0px 6.65px 5.32px 0px rgba(0, 0, 0, 0.070), 
+            0px 6.65px 5.32px 0px rgba(0, 0, 0, 0.0503);
+        }
+        .solsheading {
+            font-size: 48px;
+            margin: 25px 0 15px;
+            color: #14171B;
+            font-weight: 300;
+                        span {
+                color: #14171B;
+                font-weight: 600;
+                position: relative;
+        
+              
+            }
+            img{
+                margin-left: 10px;
+                width: 40px;
+                display: inline-block;
+            }
+            @media (max-width: $breakpoint_mobile_portrait) {
+                font-size: 40px;
+            }
+            @media screen and (max-width: $breakpoint_mobile_portrait) {
+                font-size: 26px;
+            }
+        }
+        .sale{
+            text-align: end;
+            padding: 50px 0;
+            @media screen and (max-width: $breakpoint_tablet) {
+                text-align: left;
+                padding: 30px 0 15px;
+            }
+            a{
+            background: #fff;
+            border-radius: 100px;
+            padding: 7px 10px;
+            color: #10A1F3;
+            font-size: 12px;
+            font-family: "PoppinsMedium";
+            letter-spacing: 1px;
+            display: inline-block;
+            text-decoration: none;
+            @media screen and (max-width: $breakpoint_mobile_portrait) {
+                font-size: 10px;
+            }
+            }
+            img{
+                margin-top: -35px;
+                margin-left: 10px;
+            }
+            
+        }
+        .store{
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            a{
+                img{
+                    height: 45px;
+                   box-shadow: 0px 26.65px 25.32px 0px rgba(0, 0, 0, 0.070), 
+            0px 26.65px 25.32px 0px rgba(0, 0, 0, 0.0503);
+                    border-radius: 10px;
+                    @media screen and (max-width: $breakpoint_mobile_portrait) {
+                        height: 40px;
+                    }
+                }
+            }
+        }
+    }
+    .solMarketingSideImg{
+        @media screen and (max-width: $breakpoint_tablet) {
+            display: none;
+            
+        }
+        img{
+            position: relative;
+            left:350px;
+            width: 100%;
+            height: auto;
+        }
+    }
+}
