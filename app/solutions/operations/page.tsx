@@ -6,11 +6,11 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import GridComponentSecond from "./components/GridBoxes2";
 import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
-import MarketingTechnology from "../largeenterprise/components/marketingTechnology/MarketingTechnology";
 import Footer from "@/app/(landing)/components/Footer";
 import HeroSection from "./components/HeroSection";
 import ImageGallerySecond from "./components/ZoomEffect2";
 import ImageGalleryResponsiveSecond from "./components/ZoomEffectrespopnsive2";
+import MarketingTechnology from "./components/marketingTechnology/MarketingTechnology";
 const page = () => {
   useEffect(() => {
     AOS.init({ duration: 500 });

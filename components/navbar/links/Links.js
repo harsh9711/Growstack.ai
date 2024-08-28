@@ -33,6 +33,7 @@ const links = [
           { title: "Customer Service",path: "/solutions/customer_service"  },
           { title: "Startup",path: "/solutions/startup"  },
       { title: "Business Operations", path: "/solutions/operations" },
+      { title: "Finance", path: "/solutions/finance" },
         ],
   },
 
