@@ -31411,3 +31411,7 @@ body.swal2-no-backdrop .swal2-shown.swal2-bottom-right {
   height: 100vh;
   overflow: hidden;
 }
+
+.loading-page-overlay img {
+  margin: 0 auto;
+}
