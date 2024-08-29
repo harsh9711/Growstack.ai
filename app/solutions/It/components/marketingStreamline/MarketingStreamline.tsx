@@ -25,8 +25,8 @@ const MarketingStreamline: React.FC = () => {
           >
             <span className="user">Streamline</span>
             <h3 className="heading">
-              <span>Streamline your entire marketing process</span> 
-              from to execution and beyond
+              <span>Your ultimate guide to optimizing </span> 
+              business processes with GrowStack
             </h3>
           </div>
         </div>

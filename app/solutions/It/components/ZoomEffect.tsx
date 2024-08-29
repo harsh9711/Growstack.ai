@@ -94,7 +94,7 @@ const ImageGallery = () => {
                   clickedImage === image.largeSrc ? "opacity-50" : ""
                 }`}
               />
-              <button className="absolute text-white -bottom-6 text-left right-4 hover:text-[#14171B] text-[20px] font-semibold max-w-[250px] w-full py-2 rounded-2xl">
+              <button className="absolute text-white -bottom-6 text-center hover:text-[#14171B] text-[24px] font-semibold max-w-[250px] w-full py-2 rounded-2xl">
                 {image.buttonText}
               </button>
             </motion.div>
