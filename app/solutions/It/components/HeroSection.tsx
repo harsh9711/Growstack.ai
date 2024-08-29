@@ -28,7 +28,7 @@ const HeroSection = () => {
               Growstack for IT
             </div>
             <svg
-              className="absolute drawing-svg2 2xl:flex hidden -translate-y-52 translate-x-40"
+              className="absolute drawing-svg 2xl:flex hidden -translate-y-52 translate-x-40"
               width="291"
               height="148"
               viewBox="0 0 291 148"
