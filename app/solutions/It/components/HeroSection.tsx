@@ -10,7 +10,7 @@ const HeroSection = () => {
       data-aos="fade-in"
       data-aos-duration="2000"
       data-aos-delay="500"
-      className="2xl:bg-[url('/lining.png')] overflow-hidden  min-h-screen bg-cover  w-full mb-10 2xl:mb-10 items-center  bg-[200%] justify-center mx-auto " // Added `relative` for absolute positioning of SVGs
+      className="2xl:bg-[url('/lining.png')] overflow-hidden  min-h-screen bg-cover  w-full mb-10 2xl:mb-10 items-center  bg-[200%] justify-center mx-auto "
     >
     <div className="relative z-40">  <Navbar
         logoUrl="/white.png"

@@ -19,25 +19,25 @@ const ImageGalleryResponsiveSecond = () => {
 
   const images: ImageData[] = [
     {
-      src: "/images_growstack/solutions/aiassis.svg",
+      src: "/images_growstack/solutions/time.svg",
       alt: "Image 1",
       id: 1,
-      source: "data6",
-      buttonText: "Agent satisfaction",
+      source: "data16",
+      buttonText: "Timely communication",
     },
     {
-      src: "/images_growstack/solutions/aicontact.svg",
+      src: "/images_growstack/solutions/opti.svg",
       alt: "Image 2",
       id: 2,
-      source: "data7",
-      buttonText: "Team coordination",
+      source: "data17",
+      buttonText: "Optimal logistics partners",
     },
     {
-      src: "/images_growstack/solutions/aiarticle2.svg",
+      src: "/images_growstack/solutions/camp.svg",
       alt: "Image 3",
       id: 3,
-      source: "data8",
-      buttonText: "Training efficiency",
+      source: "data18",
+      buttonText: " Engagement strategies",
     },
    
   ];
@@ -95,7 +95,7 @@ const ImageGalleryResponsiveSecond = () => {
                 key={img.id}
               >
                 <Image
-                  src={`/images_growstackcustomer/solutions/${img.source}.svg`}
+                  src={`/images_growstack/solutions/${img.source}.svg`}
                   width={970}
                   height={600}
                   className="w-full h-full"

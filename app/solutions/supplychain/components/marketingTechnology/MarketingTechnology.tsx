@@ -16,53 +16,54 @@ const MarketingTechnology: React.FC = () => {
     }, []);
     const slideData = [
         {
-            title: 'Timeliness',
+            title: 'Real-time insights',
             imageSrc:'/solutions/slideroperations/slider4.svg',
             subtitle: 'Reduce decision-making time by 40% increase efficiency',
-            tags: ['Schedule & Quick Posting'],
-            description: 'Automates scheduling and communication processes, ensuring timely updates and adherence to compliance deadlines.',
+            tags: ['Social Media Analytics'],
+            description: 'Monitors market trends and customer feedback, providing insights into supply chain performance.',
             icon: '/solutions/slideroperations/slider1.svg'
         },
         {
-            title: 'Collaboration',
+            title: 'Comprehensive view',
             imageSrc:'/solutions/slideroperations/slider5.svg',
             subtitle: 'Boost productivity Optimize Return Of Invest by 20%',
-            tags: ['WA and Tele Automation'],
-            description: 'Facilitates real-time communication among team members, ensuring everyone stays informed and aligned.',
+            tags: ['AI Assistant - CRMIntegrator AI'],
+            description: 'Integrates various data sources for a comprehensive view of the supply chain, enhancing decision-making.',
             icon: '/solutions/slideroperations/slider2.svg'
         },
         {
-            title: 'Efficiency ',
+            title: 'Clear visualizations ',
             imageSrc:'/solutions/slideroperations/slider6.svg',
             subtitle: 'Automate routine tasks Save employees time by 50%',
-            tags: ['Assistants'],
-            description: 'Employ Answer Bot AI to provide instant responses to common operational queries, enhancing communication and information sharing.',
+            tags: ['AI Assistant - Data Visualizer AI'],
+            description: 'Transforms complex supply chain data into clear visualizations for easier analysis.',
             icon: '/solutions/slideroperations/slider3.svg'
         },
         {
-          title: 'Timeliness',
+          title: 'Real-time insights',
           imageSrc:'/solutions/slideroperations/slider4.svg',
           subtitle: 'Reduce decision-making time by 40% increase efficiency',
-          tags: ['Schedule & Quick Posting'],
-          description: 'Automates scheduling and communication processes, ensuring timely updates and adherence to compliance deadlines.',
+          tags: ['Social Media Analytics'],
+          description: 'Monitors market trends and customer feedback, providing insights into supply chain performance.',
           icon: '/solutions/slideroperations/slider1.svg'
       },
       {
-          title: 'Collaboration',
+          title: 'Comprehensive view',
           imageSrc:'/solutions/slideroperations/slider5.svg',
           subtitle: 'Boost productivity Optimize Return Of Invest by 20%',
-          tags: ['WA and Tele Automation'],
-          description: 'Facilitates real-time communication among team members, ensuring everyone stays informed and aligned.',
+          tags: ['AI Assistant - CRMIntegrator AI'],
+          description: 'Integrates various data sources for a comprehensive view of the supply chain, enhancing decision-making.',
           icon: '/solutions/slideroperations/slider2.svg'
       },
       {
-          title: 'Efficiency ',
+          title: 'Clear visualizations ',
           imageSrc:'/solutions/slideroperations/slider6.svg',
           subtitle: 'Automate routine tasks Save employees time by 50%',
-          tags: ['Assistants'],
-          description: 'Employ Answer Bot AI to provide instant responses to common operational queries, enhancing communication and information sharing.',
+          tags: ['AI Assistant - Data Visualizer AI'],
+          description: 'Transforms complex supply chain data into clear visualizations for easier analysis.',
           icon: '/solutions/slideroperations/slider3.svg'
-      }
+      },
+      
     ]
     const swiperRef = useRef(null);
     return (

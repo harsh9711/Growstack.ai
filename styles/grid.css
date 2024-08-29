@@ -220,4 +220,20 @@
     content: url('/solutions/it/boxes/changedsmall/box6.svg');
 
   }
+  .hover-boxsupply1001:hover{
+    content: url('/solutions/supply/boxes/changedsmall/box1.svg');
+
+  }
+  .hover-boxsupply2001:hover{
+    content: url('/solutions/supply/boxes/changedsmall/box2.svg');
+
+  }
+  .hover-boxsupply3001:hover{
+    content: url('/solutions/supply/boxes/changedsmall/box4.svg');
+
+  }
+  .hover-boxsupply4001:hover{
+    content: url('/solutions/supply/boxes/changedsmall/box3.svg');
+
+  }
  
