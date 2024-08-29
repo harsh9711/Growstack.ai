@@ -77,17 +77,17 @@ const GridComponentSecond = () => {
             <div className="flex flex-col gap-y-8  items-center justify-center w-full mb-40">
               
             <div className="rounded-2xl flex justify-center items-center relative z-[20] opacity-100">
-              <Image src="/solutions/operations/boxes/boxsvgs/boxsvg1.svg" alt="Box 1" width={940} height={555} className="w-[900px] h-[500px] bg-cover z-[20]" />
+              <Image src="/solutions/it/boxes/boxsvgs/boxsvg1.svg" alt="Box 1" width={940} height={555} className="w-[900px] h-[500px] bg-cover z-[20]" />
             </div>
             <div className="flex z-[80] flex-row gap-2 w-full max-w-[850px] justify-center relative">
               <div onClick={() => handleClick(2)} className="bg-white/14 border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-              Social media analytics
+              Workflow builder
               </div>
               <div onClick={() => handleClick(3)} className="bg-white/14 border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-              AI assistants
+              AI templates
               </div>
               <div onClick={() => handleClick(4)} className="bg-white/14 border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-              Optimization
+        Data visualizer AI
               </div>
             </div>
           </div>
@@ -96,17 +96,18 @@ const GridComponentSecond = () => {
           return (
             <div className="flex flex-col gap-y-8 items-center justify-center w-full mb-40">
           <div className="rounded-2xl flex justify-center items-center relative z-[40] opacity-100">
-              <Image src="/solutions/operations/boxes/boxsvgs/boxsvg2.svg" alt="Box 1" width={1240} height={755} className="w-[900px] h-[500px]   bg-cover z-[20]" />
+              <Image src="/solutions/it/boxes/boxsvgs/boxsvg2.svg" alt="Box 1" width={1240} height={755} className="w-[900px] h-[500px]   bg-cover z-[20]" />
               </div>
               <div className="flex  z-[80] flex-row items-center left-0 justify-center gap-2 w-full max-w-[850px]   relative">
                 <div onClick={() => handleClick(1)} className="bg-white/14 border whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-                AI templates
+                AI assistants
                 </div>
-                <div onClick={() => handleClick(3)} className="bg-white/14 border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-              AI assistants
+               
+              <div onClick={() => handleClick(3)} className="bg-white/14 border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
+              AI templates
               </div>
               <div onClick={() => handleClick(4)} className="bg-white/14 border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-              Optimization
+        Data visualizer AI
               </div>
               </div>
             </div>
@@ -115,18 +116,18 @@ const GridComponentSecond = () => {
           return (
             <div className="flex flex-col gap-y-8 items-center justify-center w-full mb-40">
           <div className="rounded-2xl flex justify-center relative  z-[40] items-center">
-              <Image src="/solutions/operations/boxes/boxsvgs/boxsvg3.svg" alt="Box 1" width={1240} height={755} className="w-[900px] h-[500px]   bg-cover z-[20]" />
+              <Image src="/solutions/it/boxes/boxsvgs/boxsvg3.svg" alt="Box 1" width={1240} height={755} className="w-[900px] h-[500px]   bg-cover z-[20]" />
               </div>
               <div className="flex z-[80] flex-row gap-2 w-full max-w-[850px] justify-center relative">
               <div onClick={() => handleClick(1)} className="bg-white/14 border whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-                AI templates
+                AI assistants
                 </div>
                 <div onClick={() => handleClick(2)} className="bg-white/14 border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-              Social media analytics
+              Workflow builder
               </div>
           
               <div onClick={() => handleClick(4)} className="bg-white/14 border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-              Optimization
+        Data visualizer AI
               </div>
               </div>
             </div>
@@ -135,18 +136,19 @@ const GridComponentSecond = () => {
           return (
             <div className="flex flex-col gap-y-8 items-center justify-center w-full mb-40">
             <div className="rounded-2xl flex justify-center items-center relative z-[40]">
-              <Image src="/solutions/operations/boxes/boxsvgs/boxsvg5.png" alt="Box 1" width={1240} height={755} className="w-[900px] h-[500px]   bg-cover z-[20]" />
+              <Image src="/solutions/it/boxes/boxsvgs/boxsvg4.svg" alt="Box 1" width={1240} height={755} className="w-[900px] h-[500px]   bg-cover z-[20]" />
             </div>
             <div className="flex z-[80] flex-row gap-2 w-full max-w-[850px] justify-center relative">
             <div onClick={() => handleClick(1)} className="bg-white/14 border whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-                AI templates
+                AI assistants
                 </div>
                 <div onClick={() => handleClick(2)} className="bg-white/14 border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-              Social media analytics
+              Workflow builder
               </div>
+          
               <div onClick={() => handleClick(3)} className="bg-white/14 border shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-              AI assistants
-              </div>  
+              AI templates
+              </div>
             </div>
           </div>
           
@@ -162,11 +164,11 @@ const GridComponentSecond = () => {
     className="rounded-[30px] flex justify-center items-center z-[60] cursor-pointer hover:scale-105 transition-transform duration-300"
   >
     <Image
-      src="/solutions/operations/boxes/box1.svg"
+      src="/solutions/it/boxes/box1.svg"
       alt="Box 1"
       width={400}
       height={420}
-      className="w-[480px] h-[357px] hover-boxoperations1001"
+      className="w-[480px] h-[357px] hover-boxit1001"
     />
   </div>
   <div
@@ -174,16 +176,16 @@ const GridComponentSecond = () => {
     className="rounded-[30px] flex justify-center items-center z-[60] cursor-pointer hover:scale-105  transition-transform duration-300"
   >
     <Image
-      src="/solutions/operations/boxes/box2.svg"
+      src="/solutions/it/boxes/box2.svg"
       alt="Box 2"
       width={400}
       height={400}
-      className="w-[480px] h-[357px] hover-boxoperations2001"
+      className="w-[480px] h-[357px] hover-boxit2001"
     />
   </div>
   <div className="rounded-[30px] relative 2xl:right-[810px] xl:right-[720px] top-44 flex justify-center items-center hover:scale-150 transition-transform duration-300">
     <Image
-      src="/solutions/operations/boxes/main.svg"
+      src="/solutions/it/boxes/main.svg"
       alt="Main"
       width={50}
       height={50}
@@ -194,11 +196,11 @@ const GridComponentSecond = () => {
     className="rounded-[30px] relative top-2 flex justify-center items-center z-[60] cursor-pointer hover:scale-105  transition-transform duration-300"
   >
     <Image
-      src="/solutions/operations/boxes/box4.svg"
+      src="/solutions/it/boxes/box4.svg"
       alt="Box 3"
       width={380}
       height={400}
-      className="w-[480px] h-[357px] hover-boxoperations3001"
+      className="w-[480px] h-[357px] hover-boxit3001"
     />
   </div>
   <div
@@ -206,11 +208,11 @@ const GridComponentSecond = () => {
     className="rounded-[30px] flex relative top-2 justify-center items-center z-[60] cursor-pointer hover:scale-105 transition-transform duration-300"
   >
     <Image
-      src="/solutions/operations/boxes/box3.svg"
+      src="/solutions/it/boxes/box3.svg"
       alt="Box 4"
       width={380}
       height={420}
-      className="w-[480px] h-[357px] hover-boxoperations4001"
+      className="w-[480px] h-[357px] hover-boxit4001"
     />
   </div>
 </div>

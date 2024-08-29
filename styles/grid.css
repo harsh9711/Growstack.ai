@@ -195,3 +195,17 @@
   .hover-boxfinance41:hover {
     content: url('/solutions/boxes/changedlines/box8.svg');
   }
+  .hover-boxit1001:hover{
+    content: url('/solutions/it/boxes/changedlines/box1.svg');
+
+  }.hover-boxit2001:hover{
+    content: url('/solutions/it/boxes/changedlines/box2.svg');
+
+  }
+  .hover-boxit3001:hover{
+    content: url('/solutions/it/boxes/changedlines/box4.svg');
+
+  }
+  .hover-boxit4001:hover{
+    content: url('/solutions/it/boxes/changedlines/box3.svg');
+  }
