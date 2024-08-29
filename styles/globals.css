@@ -2,6 +2,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@keyframes flight {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.icon-flight {
+  animation: flight 1s infinite;
+}
+
 .red-color{
   background-color: red;
 }

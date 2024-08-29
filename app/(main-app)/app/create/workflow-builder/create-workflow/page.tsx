@@ -1,7 +1,7 @@
 "use client";
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Code, Copy, Database, HelpCircle, History, Play, Send, X, ClipboardCopy, Zap } from "lucide-react";
+import { Code, Copy, Database, HelpCircle, History, Play, Send, X, ClipboardCopy } from "lucide-react";
 import Link from "next/link";
 import { Fragment, useEffect, useState } from "react";
 import WorkFlowBuilderComponent from "./components/WorkFlowBuilderComponent";
@@ -68,7 +68,9 @@ function PublishModal({ show, onHide, workflowId }: PublishModalProps) {
 export default function CreateWorkflowPage() {
   const [showPublishModal, setShowPublishModal] = useState(false);
   const [workflowId, setWorkflowId] = useState("");
+  const [isPublishing, setIsPublishing] = useState(false);
   const searchParams = useSearchParams();
+
   useEffect(() => {
     const id = searchParams.get("workflow_id");
     if (id) {
@@ -77,6 +79,7 @@ export default function CreateWorkflowPage() {
   }, [searchParams]);
 
   const handlePublishWorkFlow = async () => {
+    setIsPublishing(true);
     try {
       await instance.put(`${API_URL}/workflow/api/v1/${workflowId}`, {
         status: "Published",
@@ -86,6 +89,8 @@ export default function CreateWorkflowPage() {
     } catch (error) {
       toast.error("Failed to publish workflow");
       console.log(error);
+    } finally {
+      setIsPublishing(false); 
     }
   };
 
@@ -110,50 +115,33 @@ export default function CreateWorkflowPage() {
                 {workflowId}
                 <TooltipProvider>
                   <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button
-                        className="cursor-pointer text-primary-green"
-                        onClick={() => {
-                          navigator.clipboard.writeText("wkf_VzfU33gpxzoNGU");
-                          toast.success("Copied to clipboard");
-                        }}>
-                        <Copy size={16} />
-                      </button>
+                    <TooltipTrigger>
+                      <HelpCircle size={18} />
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>Copy</p>
+                      <div className="text-sm font-light">
+                        An identifier for your workflow. You'll need this to reference it in API calls.
+                      </div>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <button className="p-1.5 hover:bg-primary-light-gray rounded-lg flex items-center gap-1.5 text-sm transition-all duration-300">
-              Help
-              <HelpCircle size={18} />
-            </button>
-            <button className="border border-[#E8E8E8] bg-white h-12 w-full min-w-[52px] max-w-[52px] rounded-xl grid place-content-center shadow-md shadow-gray-100">
-              <History size={22} />
-            </button>
-            <button className="border border-[#E8E8E8] bg-white h-12 w-full min-w-[52px] max-w-[52px] rounded-xl grid place-content-center shadow-md shadow-gray-100">
-              <Code size={20} />
-            </button>
-            <button className="border border-[#E8E8E8] bg-white h-12 w-full min-w-[52px] max-w-[52px] rounded-xl grid place-content-center shadow-md shadow-gray-100">
-              <Database size={20} />
-            </button>
-         
+          <div className="flex gap-5">
             <button
-              className="bg-primary-green text-white sheen transition duration-500 px-6 py-4 h-12 w-full rounded-xl flex items-center gap-2"
-              onClick={handlePublishWorkFlow}>
-              <Send size={20} />
+              onClick={handlePublishWorkFlow}
+              className={`bg-primary-green text-white px-6 py-2 rounded-lg flex items-center gap-2 transition duration-300 ${
+                isPublishing ? "opacity-70 cursor-not-allowed" : ""
+              }`}>
+              {isPublishing && <Send className="icon-flight" size={20} />} 
               Publish
             </button>
           </div>
         </div>
         <WorkFlowBuilderComponent />
-        <PublishModal show={showPublishModal} onHide={() => setShowPublishModal(false)} workflowId={workflowId} />
       </main>
+      <PublishModal show={showPublishModal} onHide={setShowPublishModal} workflowId={workflowId} />
     </Fragment>
   );
 }

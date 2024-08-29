@@ -96,7 +96,7 @@ const ActionsSection = ({
     >
       <div className="flex items-center gap-4 pb-8">
         <div className="w-full flex flex-row items-center gap-2">
-          <img src={activeAction.icon} height="56" width="56" />
+          <img src={activeAction.icon} height="56" width="56" className='w-10 h-10 rounded-2xl'/>
           <div className="flex flex-col gap-2 w-full text-xl border-2 p-2.5 rounded-md">
             {activeAction.name}
           </div>
