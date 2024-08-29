@@ -19,24 +19,24 @@ const ImageGalleryResponsive= () => {
 
   const images: ImageData[] = [
     {
-      src: "/images_growstack/solutions/aiassis.svg",
+      src: "/images_growstackcustomer/solutions/custom.svg",
       alt: "Image 1",
       id: 1,
-      source: "data6",
+      source: "data12",
       buttonText: "Agent satisfaction",
     },
     {
-      src: "/images_growstack/solutions/aicontact.svg",
+      src: "/images_growstackcustomer/solutions/assis.svg",
       alt: "Image 2",
       id: 2,
-      source: "data7",
+      source: "data13",
       buttonText: "Team coordination",
     },
     {
-      src: "/images_growstack/solutions/aiarticle2.svg",
+      src: "/images_growstackcustomer/solutions/workflow.svg",
       alt: "Image 3",
       id: 3,
-      source: "data8",
+      source: "data14",
       buttonText: "Training efficiency",
     },
    

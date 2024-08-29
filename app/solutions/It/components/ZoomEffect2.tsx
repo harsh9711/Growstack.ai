@@ -47,26 +47,25 @@ const ImageGallerySecond = () => {
 
   const images: ImageType[] = [
     {
-      src: "/images_growstack/solutions/aiassis.svg",
+      src: "/images_growstack/solutions/scheduler.svg",
       className: "w-[301px] h-[200px] -translate-y-52 -translate-x-72 z-60",
-      largeSrc: "/images_growstackcustomer/solutions/data6.svg",
-      buttonText: "Agent satisfaction",
+      largeSrc: "/images_growstackcustomer/solutions/data12.svg",
+      buttonText: "Coordination",
     },
     {
-      src: "/images_growstack/solutions/aicontact.svg",
+      src: "/images_growstack/solutions/opt.svg",
       className:
         "w-[290.5px] h-[200px] translate-x-[480px] z-60 -translate-y-52",
-      largeSrc: "/images_growstackcustomer/solutions/data7.svg",
-      buttonText: "Team coordination",
+      largeSrc: "/images_growstackcustomer/solutions/data13.svg",
+      buttonText: "Optimization",
     },
     {
-      src: "/images_growstack/solutions/aiarticle2.svg",
+      src: "/images_growstack/solutions/social2.svg",
       className: "w-[301px] h-[200px] -translate-x-[400px] z-60 translate-y-60",
-      largeSrc: "/images_growstackcustomer/solutions/data8.svg",
-      buttonText: "Training efficiency",
+      largeSrc: "/images_growstackcustomer/solutions/data14.svg",
+      buttonText: "Insights",
     },
   ];
-
   return (
     <>
       <div className="w-full">
@@ -95,18 +94,19 @@ const ImageGallerySecond = () => {
                   clickedImage === image.largeSrc ? "opacity-50" : ""
                 }`}
               />
-              <button className="absolute -bottom-6 text-left right-4 hover:text-[#14171B] text-[20px] font-semibold max-w-[250px] w-full py-2 rounded-2xl">
+              <button className="absolute -bottom-6 text-left right-4 text-white hover:text-[#14171B] text-[20px] font-semibold max-w-[250px] w-full py-2 rounded-2xl">
                 {image.buttonText}
               </button>
             </motion.div>
           ))}
           <div className="items-center justify-center flex flex-col gap-y-2 w-full  absolute -top-4 -left-14 right-[6700px]">
-            <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit mx-auto">
-              support
+            <div className="bg-[#FFFFFF]/10 text-white py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit mx-auto">
+            Efficiency
             </div>
             <h1 className="text-center text-[42px] leading-normal ">
-              <span className="text-black font-bold">Overcome process inefficiencies </span><br/>
-              <span className="text-black font-extralight">and effectively manage change</span>
+              <span className="text-white font-bold">Enhance reliability and 
+              </span><br/>
+              <span className="text-white font-extralight"> minimize downtime</span>
             </h1>
           </div>
         </motion.div>

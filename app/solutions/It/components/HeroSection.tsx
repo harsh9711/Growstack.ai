@@ -10,14 +10,14 @@ const HeroSection = () => {
       data-aos="fade-in"
       data-aos-duration="2000"
       data-aos-delay="500"
-      className="2xl:bg-[url('/lining.png')] overflow-hidden  min-h-screen bg-cover  w-full mb-10 2xl:mb-10 items-center justify-center bg-[200%] justify-center mx-auto relative" // Added `relative` for absolute positioning of SVGs
+      className="2xl:bg-[url('/lining.png')] overflow-hidden  min-h-screen bg-cover  w-full mb-10 2xl:mb-10 items-center  bg-[200%] justify-center mx-auto " // Added `relative` for absolute positioning of SVGs
     >
-      <Navbar
+    <div className="relative z-40">  <Navbar
         logoUrl="/white.png"
         logoAlt="Custom Logo"
         backgroundColor="transparent"
-      />
-      <div className="relative flex items-center 2xl:p-0 p-4 w-full  h-full justify-center mx-auto">
+      /></div>
+      <div className="relative flex items-center 2xl:p-0 p-4 w-full z-20  h-full justify-center mx-auto">
         <div className="w-full flex flex-row justify-between brightness-110 2xl:w-[1600px] relative gap-x-20 items-center mt-10 mb-10 2xl:mt-20 2xl:mb-40">
           <div className="w-full max-w-[1600px] gap-y-4 item-center justify-center mx-auto flex flex-col">
             <div
@@ -216,7 +216,7 @@ const HeroSection = () => {
                       height={400}
                     />
                   </button>
-                  <button className="flex   relative z-20 items-center gap-2 text-primary-green rounded-xl">
+                  <button className="flex   relative z-80 items-center gap-2 text-primary-green rounded-xl">
                     <Image
                       className="w-full h-full"
                       src="/apple2.png"
@@ -366,7 +366,7 @@ const HeroSection = () => {
       </div>
 
       {/* Add SVGs here */}
-      <div className="z-10 absolute bottom-0 w-full">
+      <div className="absolute 2xl:opacity-100 xl:opacity-100 lg:opacity-100 md:opacity-100 opacity-0  bottom-0 z-10">
         <svg
           className="relative z-0 drawing-effect"
           width="1920"

@@ -84,7 +84,11 @@
   stroke-dashoffset: 1000;
   animation: drawPath 8s ease-in-out forwards;
 }
-
+.drawing-effect4 {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: drawPath 12s ease-in-out forwards;
+}
 .doodle-effect {
   stroke-width: 2;
   stroke: #FF4040;

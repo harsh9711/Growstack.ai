@@ -209,3 +209,15 @@
   .hover-boxit4001:hover{
     content: url('/solutions/it/boxes/changedlines/box3.svg');
   }
+  .hover-boxit1:hover{
+    content: url('/solutions/it/boxes/changedsmall/box4.svg');
+
+  }.hover-boxit2:hover{
+    content: url('/solutions/it/boxes/changedsmall/box5.svg');
+
+  }
+  .hover-boxit3:hover{
+    content: url('/solutions/it/boxes/changedsmall/box6.svg');
+
+  }
+ 

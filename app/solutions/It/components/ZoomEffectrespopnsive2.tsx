@@ -19,25 +19,25 @@ const ImageGalleryResponsiveSecond = () => {
 
   const images: ImageData[] = [
     {
-      src: "/images_growstack/solutions/aiassis.svg",
+      src: "/images_growstack/solutions/scheduler.svg",
       alt: "Image 1",
       id: 1,
-      source: "data6",
-      buttonText: "Agent satisfaction",
+      source: "data12",
+      buttonText: "Coordination",
     },
     {
-      src: "/images_growstack/solutions/aicontact.svg",
+      src: "/images_growstackcustomer/solutions/opt.svg",
       alt: "Image 2",
       id: 2,
-      source: "data7",
-      buttonText: "Team coordination",
+      source: "data13",
+      buttonText: "Optimization",
     },
     {
-      src: "/images_growstack/solutions/aiarticle2.svg",
+      src: "/images_growstackcustomer/solutions/social2.svg",
       alt: "Image 3",
       id: 3,
-      source: "data8",
-      buttonText: "Training efficiency",
+      source: "data14",
+      buttonText: "Insights",
     },
    
   ];

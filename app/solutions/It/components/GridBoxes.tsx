@@ -77,7 +77,7 @@ const GridComponent = () => {
           <div className="flex flex-col gap-y-8  items-center justify-center w-full mb-40">
             <div className="rounded-2xl flex justify-center items-center relative z-[20] opacity-100">
               <Image
-                src="/solutions/finance/boxsvgs/boxsvg1.svg"
+                src="/solutions/it/boxes/boxsvgs/boxsvg1.svg"
                 alt="Box 1"
                 width={940}
                 height={555}
@@ -89,13 +89,12 @@ const GridComponent = () => {
                 onClick={() => handleClick(2)}
                 className="bg-white border font-medium text-[18px]  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
-           Whatsapp and Telegram Automation
-              </div>
+GENX AI              </div>
               <div
                 onClick={() => handleClick(3)}
                 className="bg-white border font-medium text-[20px]  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
-            AI Assistants
+           ARTICLE WIZARD
               </div>
            
             </div>
@@ -106,7 +105,7 @@ const GridComponent = () => {
           <div className="flex flex-col gap-y-8 items-center justify-center w-full mb-40">
             <div className="rounded-2xl flex justify-center items-center relative z-[40] opacity-100">
               <Image
-                src="/solutions/finance/boxsvgs/boxsvg2.svg"
+                src="/solutions/it/boxes/boxsvgs/boxsvg2.svg"
                 alt="Box 1"
                 width={1240}
                 height={755}
@@ -118,13 +117,13 @@ const GridComponent = () => {
                 onClick={() => handleClick(1)}
                 className="bg-white border  font-medium text-[20px]  whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
-           Schedule & quick posting
+        AI assistants
               </div>
               <div
                 onClick={() => handleClick(3)}
                 className="bg-white border  font-medium text-[20px]  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
-            AI Assistants
+        ARTICLE WIZARD
               </div>
              
             </div>
@@ -135,7 +134,7 @@ const GridComponent = () => {
           <div className="flex flex-col gap-y-8 items-center justify-center w-full mb-40">
             <div className="rounded-2xl flex justify-center relative  z-[40] items-center">
               <Image
-                src="/solutions/finance/boxsvgs/boxsvg3.svg"
+                src="/solutions/it/boxes/boxsvgs/boxsvg3.svg"
                 alt="Box 1"
                 width={1240}
                 height={755}
@@ -147,14 +146,13 @@ const GridComponent = () => {
                 onClick={() => handleClick(1)}
                 className="bg-white border  font-medium text-[20px]  whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
-           Schedule & quick posting
+         AI assistants
               </div>
               <div
                 onClick={() => handleClick(2)}
                 className="bg-white border font-medium text-[18px]  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
-          Whatsapp and Telegram Automation
-              </div>
+GENX AI              </div>
          
             </div>
           </div>
@@ -169,11 +167,11 @@ const GridComponent = () => {
                 className="rounded-[30px] flex justify-center items-center z-[60] cursor-pointer hover:scale-105 transition-transform duration-300"
               >
                 <Image
-                  src="/solutions/finance/boxes/box1.svg"
+                  src="/solutions/it/boxes/changedsmall/box1.svg"
                   alt="Box 1"
                   width={400}
                   height={420}
-                  className="w-full h-full hover-boxfinance211"
+                  className="w-full h-full hover-boxit1"
                 />
               </div>
               <div
@@ -181,11 +179,11 @@ const GridComponent = () => {
                 className="rounded-[30px] flex justify-center items-center z-[60] cursor-pointer hover:scale-105  transition-transform duration-300"
               >
                 <Image
-                  src="/solutions/finance/boxes/box2.svg"
+                  src="/solutions/it/boxes/changedsmall/box2.svg"
                   alt="Box 2"
                   width={400}
                   height={400}
-                  className="w-full h-full hover-boxfinance311"
+                  className="w-full h-full hover-boxit2"
                 />
               </div>
 
@@ -194,11 +192,11 @@ const GridComponent = () => {
                 className="rounded-[30px] relative top-2 flex justify-center items-center z-[60] cursor-pointer hover:scale-105  transition-transform duration-300"
               >
                 <Image
-                  src="/solutions/finance/boxes/box3.svg"
+                  src="/solutions/it/boxes/changedsmall/box3.svg"
                   alt="Box 3"
                   width={380}
                   height={400}
-                  className="w-full h-full hover-boxfinance411"
+                  className="w-full h-full hover-boxit3"
                 />
               </div>
             </div>

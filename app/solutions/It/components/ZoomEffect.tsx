@@ -48,20 +48,19 @@ const ImageGallery = () => {
   const images: ImageType[] = [
     {
       src: "/images_growstackcustomer/solutions/custom.svg",
-      className: "w-[301px] h-[200px] z-60",
+      className: "w-full h-full z-60",
       largeSrc: "/images_growstackcustomer/solutions/data9.svg",
       buttonText: "Integration",
     },
     {
       src: "/images_growstackcustomer/solutions/assis.svg",
-      className:
-        "w-[290.5px] h-[200px] z-60 ",
+      className: "w-full h-full z-60",
       largeSrc: "/images_growstackcustomer/solutions/data10.svg",
       buttonText: "Enhancement",
     },
     {
       src: "/images_growstackcustomer/solutions/workflow.svg",
-      className: "w-[301px] h-[200px] z-60 ",
+      className: "w-full h-full z-60",
       largeSrc: "/images_growstackcustomer/solutions/data11.svg",
       buttonText: "Streamlining",
     },
@@ -95,7 +94,7 @@ const ImageGallery = () => {
                   clickedImage === image.largeSrc ? "opacity-50" : ""
                 }`}
               />
-              <button className="absolute -bottom-6 text-left right-4 hover:text-[#14171B] text-[20px] font-semibold max-w-[250px] w-full py-2 rounded-2xl">
+              <button className="absolute text-white -bottom-6 text-left right-4 hover:text-[#14171B] text-[20px] font-semibold max-w-[250px] w-full py-2 rounded-2xl">
                 {image.buttonText}
               </button>
             </motion.div>
