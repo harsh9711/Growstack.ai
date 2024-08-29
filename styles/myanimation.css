@@ -110,7 +110,7 @@
   stroke-width: 1.3044;
   stroke-dasharray: 1000; /* A large value to ensure the stroke covers all the path */
   stroke-dashoffset: 1000; /* Start with the stroke hidden */
-  animation: draw 20s ease forwards; /* Adjust duration as needed */
+  animation: draw 12s ease forwards; /* Adjust duration as needed */
 }
 
 @keyframes draw {
