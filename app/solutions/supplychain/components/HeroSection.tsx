@@ -7,10 +7,10 @@ import Navbar from "@/components/navbar/Navbar";
 const HeroSection = () => {
   return (
     <section
-      data-aos="fade-in"
-      data-aos-duration="2000"
-      data-aos-delay="500"
-      className="max-h-screen  bg-transparent  w-full mb-10 2xl:mb-20  items-center justify-center mx-auto"
+    data-aos="fade-in"
+    data-aos-duration="2000"
+    data-aos-delay="500"
+      className="max-h-screen  xl:bg-transparent bg-[#034737] 2xl:bg-transparent  w-full mb-10 2xl:mb-20  items-center justify-center mx-auto"
     >
       <Navbar
         logoUrl="/white.png"
