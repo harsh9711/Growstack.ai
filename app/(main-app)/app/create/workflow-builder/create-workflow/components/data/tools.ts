@@ -6259,7 +6259,7 @@ export const tools: Tool[] = [
       description: "Remove background from image",
       name: "Background Remover",
       category: "Image",
-      icon: "bg-remover.svg",
+      icon: "/bg-remover.svg",
       provider: "Claid",
       subtype: "api",
       preset_json: {
@@ -6283,7 +6283,7 @@ export const tools: Tool[] = [
       description: "Enhance background of image",
       name: "Background Enhancer",
       category: "Image",
-      icon: "bg-enhancer.svg",
+      icon: "/bg-enhancer.svg",
       provider: "Claid",
       subtype: "api",
       preset_json: {
