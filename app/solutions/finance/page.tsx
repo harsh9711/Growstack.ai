@@ -72,7 +72,7 @@ const page = () => {
         </div>
       </section>
       <section className="2xl:px-20 xl:px-20">
-        <div className="  bg-[#FAFBFC] mx-auto w-full flex items-center justify-center 2xl:py-28 py-16 ">
+        <div className="  bg-[#FAFBFC] mx-auto w-full flex items-center justify-center 2xl:py-64 py-16 ">
           <div className="flex flex-col items-center justify-center mx-auto gap-2">
             <div
               data-aos="fade-up"

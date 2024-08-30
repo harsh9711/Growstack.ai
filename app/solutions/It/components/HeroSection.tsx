@@ -3,6 +3,7 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import "../../../../styles/myanimation.css"; // This will contain your CSS animations
 import Navbar from "@/components/navbar/Navbar";
+import Link from "next/link";
 
 const HeroSection = () => {
   return (
@@ -12,11 +13,14 @@ const HeroSection = () => {
       data-aos-delay="500"
       className="2xl:bg-[url('/lining.png')] overflow-hidden  min-h-screen bg-cover  w-full mb-10 2xl:mb-10 items-center  bg-[200%] justify-center mx-auto "
     >
-    <div className="relative z-40">  <Navbar
-        logoUrl="/white.png"
-        logoAlt="Custom Logo"
-        backgroundColor="transparent"
-      /></div>
+      <div className="relative z-40">
+        {" "}
+        <Navbar
+          logoUrl="/white.png"
+          logoAlt="Custom Logo"
+          backgroundColor="transparent"
+        />
+      </div>
       <div className="relative flex items-center 2xl:p-0 p-4 w-full z-20  h-full justify-center mx-auto">
         <div className="w-full flex flex-row justify-between brightness-110 2xl:w-[1600px] relative gap-x-20 items-center mt-10 mb-10 2xl:mt-20 2xl:mb-40">
           <div className="w-full max-w-[1600px] gap-y-4 item-center justify-center mx-auto flex flex-col">
@@ -193,13 +197,13 @@ const HeroSection = () => {
                   data-aos-duration="1500"
                   className="flex flex-row gap-8 group mx-auto text-[12px] 2xl:text-[18px]"
                 >
-                  <button className="bg-[#034737] font-medium flex items-center gap-2 text-white 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
+               <Link href="/auth/register" className="no-underline">   <button className="bg-[#034737] font-medium flex items-center gap-2 text-white 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
                     Free trial <ArrowRight />
-                  </button>
-                  <button className="border border-white flex items-center bg-white gap-2 text-black hover:font-bold font-medium 2xl:py-4 py-2 px-2 2xl:px-7 rounded-xl shadow-md shadow-[#00000025]">
+                  </button></Link>
+                  <Link href="/auth/register" className="no-underline">  <button className="border border-white flex items-center bg-white gap-2 text-black hover:font-bold font-medium 2xl:py-4 py-2 px-2 2xl:px-7 rounded-xl shadow-md shadow-[#00000025]">
                     See demo
                     <ArrowRight className="text-black" />
-                  </button>
+                  </button></Link>
                 </div>
 
                 <div

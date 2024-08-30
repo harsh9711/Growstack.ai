@@ -45,7 +45,7 @@ const page = () => {
       </section>
       <section className="flex flex-col 2xl:mt-40">
         <div className="w-full gap-y-4 flex flex-col items-center justify-center  mx-auto">
-          <div className="bg-[#034737]/20 hover:shadow-md whitespace-nowrap text-black py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[96px]">
+          <div className="bg-[#034737]/20 hover:shadow-md whitespace-nowrap text-black py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[106px]">
             Visibility
           </div>
 

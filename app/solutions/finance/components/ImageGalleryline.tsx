@@ -3,6 +3,7 @@ import Image from "next/image";
 import "aos/dist/aos.css";
 import Aos from "aos";
 import "../../../../styles/grid.css";
+import "../../../../styles/myanimation.css";
 const ImageGalleryLine = () => {
   type ImageData = {
     src: string;
@@ -199,7 +200,7 @@ const ImageGalleryLine = () => {
           ) : (
             <div className="relative w-full  xl:translate-y-24 2xl:translate-y-24 ">
               <svg
-                className="2xl:flex hidden"
+                className="2xl:flex loading-svg hidden"
                 width="1479"
                 height="600"
                 viewBox="0 0 1679 600"
@@ -224,7 +225,7 @@ const ImageGalleryLine = () => {
                 />
               </svg>
               <svg
-                className="2xl:hidden xl:flex hidden"
+                className="2xl:hidden laoding-svg xl:flex hidden"
                 width="1279"
                 height="458"
                 viewBox="0 0 1279 458"

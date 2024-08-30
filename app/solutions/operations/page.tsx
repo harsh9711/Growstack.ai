@@ -86,9 +86,9 @@ const page = () => {
           </div>
         </div>
       </section>
-      <section className="flex flex-col py-20 bg-black">
+      <section className="flex flex-col py-10 xl:py-32 bg-black">
         <div className="w-full gap-y-4 flex flex-col items-center justify-center  mx-auto">
-          <div className="bg-[#FFFFFF]/20 hover:shadow-md whitespace-nowrap text-white py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[166px]">
+          <div className="bg-[#FFFFFF]/20 hover:shadow-md whitespace-nowrap text-white py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[156px]">
           Communication
           </div>
 
