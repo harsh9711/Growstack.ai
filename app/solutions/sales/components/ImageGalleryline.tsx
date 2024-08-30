@@ -3,6 +3,7 @@ import Image from 'next/image';
 import 'aos/dist/aos.css';
 import Aos from 'aos';
 import "../../midmarketenterprise/components/grid.css"
+import "../../../../styles/myanimation.css"
 const ImageGalleryLine = () => {
   type ImageData = {
     src: string;
@@ -135,14 +136,14 @@ const ImageGalleryLine = () => {
             </div>
           </div>
         ) : (
-          <div className="relative w-full  xl:translate-y-24 2xl:translate-y-24 ">
+          <div className="loading-svg relative w-full  xl:translate-y-24 2xl:translate-y-24 ">
    <svg className="2xl:flex hidden" width="1479" height="600" viewBox="0 0 1679 600" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M1402.5 60H1658.5C1669.55 60 1678.5 68.9543 1678.5 80V240C1678.5 251.046 1669.55 260 1658.5 260H1445C1433.95 260 1425 268.954 1425 280V595" stroke="#034737"/>
 <path d="M233.5 50H820.097C831.143 50 840.097 41.0457 840.097 30V21C840.097 9.9543 849.052 1 860.097 1L1406.5 1V62" stroke="#034737"/>
 <path d="M207 516.5V324.573C207 313.527 198.046 304.573 187 304.573H21C9.95431 304.573 1 295.618 1 284.573V74C1 62.9543 9.9543 54 21 54H232" stroke="#034737"/>
 <path d="M1425.5 599H850.515C839.469 599 830.515 590.046 830.515 579V537C830.515 525.954 821.561 517 810.515 517H208.5" stroke="#034737"/>
 </svg>
-<svg className="2xl:hidden xl:flex hidden" width="1279" height="458" viewBox="0 0 1279 458" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg className="2xl:hidden loading-svg xl:flex hidden" width="1279" height="458" viewBox="0 0 1279 458" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M1067.87 46.2783H1258C1269.05 46.2783 1278 55.2326 1278 66.2783V178.546C1278 189.592 1269.05 198.546 1258 198.546H1105C1093.95 198.546 1085 207.501 1085 218.546V453.596" stroke="#034737"/>
 <path d="M177.863 38.6651H621.038C631.339 38.6651 639.691 30.3139 639.691 20.0122V20.0122C639.691 9.71054 648.042 1.35938 658.343 1.35938L1070.92 1.35938V47.8012" stroke="#034737"/>
 <path d="M157.688 393.831V252.482C157.688 241.436 148.733 232.482 137.688 232.482H20.8516C9.8059 232.482 0.851562 223.527 0.851562 212.482V61.7105C0.851562 50.6648 9.80587 41.7104 20.8516 41.7104H176.721" stroke="#034737"/>
@@ -156,8 +157,8 @@ const ImageGalleryLine = () => {
               Build
 
               </div>
-              <h1 className="text-center text-[42px] leading-normal">
-                <span className="text-black font-bold">Build strong</span><br/>
+              <h1 className="text-center text-[42px] flex gap-2 leading-normal">
+                <span className="text-black font-bold">Build strong</span>
                 <span className="text-black font-extralight">customer relationships</span>
               </h1>
             </div>

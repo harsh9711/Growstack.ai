@@ -17,6 +17,7 @@ import { motion, inView } from "framer-motion";
 import MarketingTechnology from "../largeenterprise/components/marketingTechnology/MarketingTechnology";
 import Footer from "@/app/(landing)/components/Footer";
 import Banner from "./banner/Banner";
+import Link from "next/link";
 const page = () => {
   useEffect(() => {
     AOS.init({ duration: 500 });
@@ -70,13 +71,18 @@ const page = () => {
                     data-aos-duration="1500"
                     className="flex flex-row gap-8 group text-[12px] 2xl:text-[18px]"
                   >
-                    <button className="bg-white font-medium flex items-center gap-2 text-[#034737] 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
-                      Get free trial <ArrowRight />
-                    </button>
-                    <button className="border border-black flex items-center gap-2 text-black hover:font-bold font-medium 2xl:py-4 py-2 px-2  2xl:px-7 rounded-xl shadow-md shadow-[#00000025]">
-                      See demo
-                      <ArrowRight className="text-black" />
-                    </button>
+                    <Link href="/auth/register" className="no-underline">
+                      {" "}
+                      <button className="bg-white font-medium flex items-center gap-2 text-[#034737] 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
+                        Get free trial <ArrowRight />
+                      </button>
+                    </Link>
+                    <Link href="/auth/register" className="no-underline">
+                      <button className="border border-black flex items-center gap-2 text-black hover:font-bold font-medium 2xl:py-4 py-2 px-2  2xl:px-7 rounded-xl shadow-md shadow-[#00000025]">
+                        See demo
+                        <ArrowRight className="text-black" />
+                      </button>{" "}
+                    </Link>
                   </div>
 
                   <div
@@ -240,12 +246,15 @@ const page = () => {
             </h1>
           </div>
         </div>
-       <div> <div className="2xl:flex xl:flex hidden mt-20 w-full h-full items-center justify-center mx-auto">
-          <ImageGallery />
+        <div>
+          {" "}
+          <div className="2xl:flex xl:flex hidden mt-20 w-full h-full items-center justify-center mx-auto">
+            <ImageGallery />
+          </div>
+          <div className="2xl:hidden xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
+            <ImageGalleryResponsive />
+          </div>
         </div>
-        <div className="2xl:hidden xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
-          <ImageGalleryResponsive />
-        </div></div>
       </section>
       <section className=" overflow-hidden  ">
         <div className="items-center justify-center flex flex-col gap-y-4  overflow-hidden ">

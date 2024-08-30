@@ -5,6 +5,7 @@ import "aos/dist/aos.css"; // Import AOS styles
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import RepeatText from "../../midmarketenterprise/components/RepeatText";
+import Link from "next/link";
 
 const HeroSection: React.FC = () => {
   useEffect(() => {
@@ -61,18 +62,24 @@ const HeroSection: React.FC = () => {
 
                     <div className="flex flex-col flex-wrap gap-y-24 mt-4 items-center justify-center ">
                       <div className="flex flex-row flex-wrap items-center justify-center gap-8 ">
-                        <button
-                          className="bg-white text-[#034737] font-medium flex items-center gap-2 py-4 px-7 rounded-xl hover:font-bold shadow-md shadow-[#00000025]"
-                          data-aos="fade-right"
-                        >
-                          Free trial <ArrowRight className="text-[#034737]" />
-                        </button>
-                        <button
-                          className="border border-[#14171B] flex items-center gap-2 text-[#14171B] hover:font-bold font-medium py-4 px-7 rounded-xl shadow-md shadow-[#00000025]"
-                          data-aos="fade-left"
-                        >
-                          See demo <ArrowRight className="text-[#14171B]" />
-                        </button>
+                        <Link href="/auth/register" className="no-underline">
+                          {" "}
+                          <button
+                            className="bg-white text-[#034737] font-medium flex items-center gap-2 py-4 px-7 rounded-xl hover:font-bold shadow-md shadow-[#00000025]"
+                            data-aos="fade-right"
+                          >
+                            Free trial <ArrowRight className="text-[#034737]" />
+                          </button>
+                        </Link>
+                        <Link href="/auth/register" className="no-underline">
+                          {" "}
+                          <button
+                            className="border border-[#14171B] flex items-center gap-2 text-[#14171B] hover:font-bold font-medium py-4 px-7 rounded-xl shadow-md shadow-[#00000025]"
+                            data-aos="fade-left"
+                          >
+                            See demo <ArrowRight className="text-[#14171B]" />
+                          </button>{" "}
+                        </Link>
                       </div>
                       <div
                         className="relative flex flex-row gap-x-20"

@@ -60,19 +60,19 @@ export default function AddInput({
     },
     {
       icon: <LongText />,
-      name: "Long text",
+      name: "LONG_TEXT",
     },
     {
       icon: <SwitchIcon />,
-      name: "Yes/No",
+      name: "BOOLEAN",
     },
     {
       icon: <NumberHashtag />,
-      name: "Number",
+      name: "NUMBER",
     },
     {
       icon: <FileUpload />,
-      name: "File Upload",
+      name: "FILE_UPLOAD",
     },
   ];
 
@@ -87,7 +87,7 @@ export default function AddInput({
             setVariableNameError={setVariableNameError}
           />
         );
-      case "Long text":
+      case "LONG_TEXT":
         return (
           <LongTextInputSection
             onParamsChange={setInputParams}
@@ -96,7 +96,7 @@ export default function AddInput({
             setVariableNameError={setVariableNameError}
           />
         );
-      case "Yes/No":
+      case "BOOLEAN":
         return (
           <YesOrNoInputSection
             onParamsChange={setInputParams}
@@ -105,7 +105,7 @@ export default function AddInput({
             setVariableNameError={setVariableNameError}
           />
         );
-      case "Number":
+      case "NUMBER":
         return (
           <NumberInputSection
             onParamsChange={setInputParams}
@@ -114,7 +114,7 @@ export default function AddInput({
             setVariableNameError={setVariableNameError}
           />
         );
-      case "File Upload":
+      case "FILE_UPLOAD":
         return (
           <FileUploadInputSection
             onParamsChange={setInputParams}
