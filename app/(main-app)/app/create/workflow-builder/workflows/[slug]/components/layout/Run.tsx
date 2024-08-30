@@ -80,7 +80,9 @@ const Run: React.FC<Props> = ({ workflowId }) => {
 
   const handleGetProfile = async () => {
     try {
-      const response = await instance.get(`${API_URL}/users/api/v1/social-media/profile`);
+      const response = await instance.get(
+        `${API_URL}/users/api/v1/social-media/profile`
+      );
       if (response.data.data.activeSocialAccounts.length > 0) {
         return response.data.data;
       }
@@ -91,47 +93,53 @@ const Run: React.FC<Props> = ({ workflowId }) => {
     }
   };
   const handleFileUploaded = (fileUrl: string, idx: number) => {
-   setFileUrl2(fileUrl);
-   console.log("File URL in handlefileupload:", fileUrl);
-   const updatedInputs = [...workFlowData.input_configs];
+    setFileUrl2(fileUrl);
+    console.log("File URL in handlefileupload:", fileUrl);
+    const updatedInputs = [...workFlowData.input_configs];
     updatedInputs[idx].default_value = fileUrl;
     setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
   };
-const handleRunWorkFlow = async () => {
-  console.log("File URL in handleRunWorkFlow:", fileUrl2); // Verify the value of fileUrl2 here
-  setIsWorkFlowFetched(false);
+  const handleRunWorkFlow = async () => {
+    console.log("File URL in handleRunWorkFlow:", fileUrl2); // Verify the value of fileUrl2 here
+    setIsWorkFlowFetched(false);
 
-  if (workFlowData.social_media_requirement) {
-    const profileData = await handleGetProfile();
-    if (!profileData || profileData.activeSocialAccounts.length === 0) {
-      toast.error("Connect a social profile to your account to use this workflow");
-      return router.push("/app/publish/scheduler/quick-posting/profiles");
+    if (workFlowData.social_media_requirement) {
+      const profileData = await handleGetProfile();
+      if (!profileData || profileData.activeSocialAccounts.length === 0) {
+        toast.error(
+          "Connect a social profile to your account to use this workflow"
+        );
+        return router.push("/app/publish/scheduler/quick-posting/profiles");
+      }
     }
-  }
 
-  try {
-    const payload = {
-      actions_with_runs: workFlowData.actions.map((action) => ({ action: action._id })),
-      inputs: workFlowData.input_configs.map((input) => ({
-        variable_name: input.variable_name,
-        variable_value: input.default_value || fileUrl2, 
-      })),
-      outputs: workFlowData.output_configs.map((output) => ({
-        variable_name: output.display_name,
-        variable_value: output.value,
-        variable_type: output.type,
-      })),
-    };
-    const response = await instance.post(`${API_URL}/workflow/api/v1/${workflowId}/runner`, payload);
-    setWorkFlowResults(response.data.data);
-  } catch (error) {
-    console.error("Error running workflow:", error);
-    toast.error("Error running workflow");
-  } finally {
-    setIsWorkFlowFetched(true);
-  }
-};
-
+    try {
+      const payload = {
+        actions_with_runs: workFlowData.actions.map((action) => ({
+          action: action._id,
+        })),
+        inputs: workFlowData.input_configs.map((input) => ({
+          variable_name: input.variable_name,
+          variable_value: input.default_value || fileUrl2,
+        })),
+        outputs: workFlowData.output_configs.map((output) => ({
+          variable_name: output.display_name,
+          variable_value: output.value,
+          variable_type: output.type,
+        })),
+      };
+      const response = await instance.post(
+        `${API_URL}/workflow/api/v1/${workflowId}/runner`,
+        payload
+      );
+      setWorkFlowResults(response.data.data);
+    } catch (error) {
+      console.error("Error running workflow:", error);
+      toast.error("Error running workflow");
+    } finally {
+      setIsWorkFlowFetched(true);
+    }
+  };
 
   const handleChangeInput = (value: string, idx: number) => {
     const updatedInputs = [...workFlowData.input_configs];
@@ -142,7 +150,9 @@ const handleRunWorkFlow = async () => {
   const handleResumeWorkflow = async (choice: boolean) => {
     setWorkFlowResuming(true);
     try {
-      const response = await instance.get(`${API_URL}/workflow/api/v1/wrun/resume/${workFlowResults.workflow_runner_id}?ctaAction=${choice}`);
+      const response = await instance.get(
+        `${API_URL}/workflow/api/v1/wrun/resume/${workFlowResults.workflow_runner_id}?ctaAction=${choice}`
+      );
       setWorkFlowResults(response.data.data);
     } catch (error: any) {
       console.error("Error resuming workflow:", error);
@@ -151,17 +161,23 @@ const handleRunWorkFlow = async () => {
       setWorkFlowResuming(false);
     }
   };
-  //File Upload code 
- 
+  //File Upload code
+
   const fetchRunnerData = async (runnerId: string) => {
     try {
-      const response = await instance.get(`${API_URL}/workflow/api/v1/runner/${runnerId}`);
+      const response = await instance.get(
+        `${API_URL}/workflow/api/v1/runner/${runnerId}`
+      );
       const runnerData = response.data.data;
 
       setWorkFlowData((prevData) => {
         const updatedInputConfigs = prevData.input_configs.map((config) => {
-          const matchedInput = runnerData.inputs.find((input: any) => input.variable_name === config.variable_name);
-          return matchedInput ? { ...config, default_value: matchedInput.variable_value } : config;
+          const matchedInput = runnerData.inputs.find(
+            (input: any) => input.variable_name === config.variable_name
+          );
+          return matchedInput
+            ? { ...config, default_value: matchedInput.variable_value }
+            : config;
         });
 
         return {
@@ -210,11 +226,16 @@ const handleRunWorkFlow = async () => {
 
   return (
     <>
-      <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+      <Motion
+        transition={{ duration: 0.5 }}
+        variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+      >
         <div className="mt-6 w-full bg-white p-10 space-y-6 rounded-3xl flex flex-col">
           <div className="flex flex-col gap-2 items-start">
             <h1 className="text-2xl font-semibold text-left">Run workflow</h1>
-            <p className="text-[#14171B]/80">Fill in the input to kick off your workflow.</p>
+            <p className="text-[#14171B]/80">
+              Fill in the input to kick off your workflow.
+            </p>
           </div>
           <div className="border rounded-2xl flex flex-col gap-6 p-6">
             <div className="flex flex-row items-center gap-2">
@@ -226,21 +247,25 @@ const handleRunWorkFlow = async () => {
             {workFlowData.input_configs.map((input, idx) => (
               <div key={idx}>
                 <h2 className="font-medium">{input.display_name}</h2>
-                <div className="font-light mt-3 mb-2 text-[14px]">{input.description}</div>
-                {input.type!=="File Upload"?(
-                <input
-                  type="text"
-                  placeholder={input.placeholder}
-                  className="w-full p-4 h-[46px] border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
-                  value={input.default_value}
-                  onChange={(e) => handleChangeInput(e.target.value, idx)}
-                />):(
-<FileUpload
-        onFileUploaded={(fileUrl) => handleFileUploaded(fileUrl, idx)}
-        acceptedFileTypes={input.file_type || '*/*'}
-      />
-                )
-              }
+                <div className="font-light mt-3 mb-2 text-[14px]">
+                  {input.description}
+                </div>
+                {input.type !== "FILE_UPLOAD" ? (
+                  <input
+                    type="text"
+                    placeholder={input.placeholder}
+                    className="w-full p-4 h-[46px] border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
+                    value={input.default_value}
+                    onChange={(e) => handleChangeInput(e.target.value, idx)}
+                  />
+                ) : (
+                  <FileUpload
+                    onFileUploaded={(fileUrl) =>
+                      handleFileUploaded(fileUrl, idx)
+                    }
+                    acceptedFileTypes={input.file_type || "*/*"}
+                  />
+                )}
               </div>
             ))}
             <button
@@ -249,7 +274,8 @@ const handleRunWorkFlow = async () => {
                 "bg-[#03473729] flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 text-primary-green",
                 !isWorkFlowFetched && "text-opacity-70 cursor-not-allowed"
               )}
-              onClick={handleRunWorkFlow}>
+              onClick={handleRunWorkFlow}
+            >
               {!isWorkFlowFetched ? <Spinner color="#034737" /> : <FaPlay />}
               <h2 className="text-[#14171B]">Run Workflow</h2>
             </button>
@@ -257,8 +283,11 @@ const handleRunWorkFlow = async () => {
               <div className="w-full space-y-5">
                 <p className="text-center text-gray-400">Or</p>
                 <button
-                  className={clsx("w-full bg-[#03473729] flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 text-primary-green")}
-                  onClick={() => setIsSchedulerModalOpen(true)}>
+                  className={clsx(
+                    "w-full bg-[#03473729] flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 text-primary-green"
+                  )}
+                  onClick={() => setIsSchedulerModalOpen(true)}
+                >
                   <Clock size={20} />
                   <h2 className="text-[#14171B]">Schedule Workflow</h2>
                 </button>
@@ -268,11 +297,16 @@ const handleRunWorkFlow = async () => {
           <div className="flex flex-col gap-6 mt-6">
             <div className="flex flex-col gap-2 items-start">
               <h1 className="text-2xl font-semibold text-left">Results</h1>
-              <p className="text-[#14171B]/80">Your output will appear below.</p>
+              <p className="text-[#14171B]/80">
+                Your output will appear below.
+              </p>
             </div>
             {!workFlowResults.outputs.length &&
               workFlowData.output_configs.map((output, idx) => (
-                <div key={idx} className="border rounded-2xl flex flex-col gap-4 p-5 bg-white">
+                <div
+                  key={idx}
+                  className="border rounded-2xl flex flex-col gap-4 p-5 bg-white"
+                >
                   <div className="flex flex-row items-center gap-4">
                     <Image src="/leaf.png" alt="go" width={45} height={45} />
                     <h2 className="font-medium text-[17px]">
@@ -284,23 +318,39 @@ const handleRunWorkFlow = async () => {
               ))}
             {!workFlowResults.paused &&
               workFlowResults.outputs.map((output, idx) => (
-                <>{workFlowResults.status && workFlowResults.failed_step <= idx + 1 && <OutputCard key={idx} index={idx} output={output} />}</>
+                <>
+                  {workFlowResults.status &&
+                    workFlowResults.failed_step <= idx + 1 && (
+                      <OutputCard key={idx} index={idx} output={output} />
+                    )}
+                </>
               ))}
             {workFlowResults.paused &&
               workFlowResults.temp_outputs.map((output, idx) => (
-                <>{workFlowResults.status && workFlowResults.failed_step <= idx + 1 && <OutputCard key={idx} index={idx} output={output} />}</>
+                <>
+                  {workFlowResults.status &&
+                    workFlowResults.failed_step <= idx + 1 && (
+                      <OutputCard key={idx} index={idx} output={output} />
+                    )}
+                </>
               ))}
 
             {workFlowResults.paused && (
               <div>
-                <h2 className="text-[17px] font-medium text-center text-gray-400">Please review this response</h2>
+                <h2 className="text-[17px] font-medium text-center text-gray-400">
+                  Please review this response
+                </h2>
                 <div className="flex flex-row gap-4 items-center justify-center mt-4">
                   <button
                     className="h-12 w-[200px] bg-primary-green text-white px-4 py-2 rounded-xl flex justify-center items-center"
-                    onClick={() => handleResumeWorkflow(true)}>
+                    onClick={() => handleResumeWorkflow(true)}
+                  >
                     {workFlowResuming ? <Spinner /> : "Satisfied & Continue"}
                   </button>
-                  <button className="h-12 w-[150px] bg-red-500 text-white px-4 py-2 rounded-xl flex justify-center items-center" onClick={handleRunWorkFlow}>
+                  <button
+                    className="h-12 w-[150px] bg-red-500 text-white px-4 py-2 rounded-xl flex justify-center items-center"
+                    onClick={handleRunWorkFlow}
+                  >
                     {!isWorkFlowFetched ? <Spinner /> : "Regenerate"}
                   </button>
                 </div>
@@ -309,7 +359,12 @@ const handleRunWorkFlow = async () => {
           </div>
         </div>
       </Motion>
-      <SchedulerModal show={isSchedulerModalOpen} setShow={setIsSchedulerModalOpen} workFlowData={workFlowData} setWorkFlowData={setWorkFlowData} />
+      <SchedulerModal
+        show={isSchedulerModalOpen}
+        setShow={setIsSchedulerModalOpen}
+        workFlowData={workFlowData}
+        setWorkFlowData={setWorkFlowData}
+      />
     </>
   );
 };

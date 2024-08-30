@@ -6253,6 +6253,61 @@ export const tools: Tool[] = [
       },
       "event_execute": "processTextToImage",
       role: ""
-    }
+    },
+    {
+      id: 125,
+      description: "Remove background from image",
+      name: "Background Remover",
+      category: "Image",
+      icon: "bg-remover.svg",
+      provider: "Claid",
+      subtype: "api",
+      preset_json: {
+        body: {
+          inputs: [
+            {
+              input_type: "TEXT_AREA",
+              input_label: "Image",
+              input_default_value: "",
+              input_values: "",
+              "input_placeholder": "it will take image url as input"
+            },
+          ],
+        },
+      },
+      event_execute: "processImageBackGroundRemoval",
+      role: ""
+    },
+    {
+      id: 126,
+      description: "Enhance background of image",
+      name: "Background Enhancer",
+      category: "Image",
+      icon: "bg-enhancer.svg",
+      provider: "Claid",
+      subtype: "api",
+      preset_json: {
+        body: {
+          inputs: [
+            {
+              input_type: "TEXT_AREA",
+              input_label: "Image",
+              input_default_value: "",
+              input_values: "",
+              "input_placeholder": "it will take image url as input"
+            },
+            {
+              input_type: "TEXT_AREA",
+              input_label: "Instruction",
+              input_default_value: "",
+              input_values: "",
+              "input_placeholder": "write your prompt here"
+            },
+          ],
+        },
+      },
+      event_execute: "processImageBackgroundEnhancement",
+      role: ""
+    },
  
 ]
