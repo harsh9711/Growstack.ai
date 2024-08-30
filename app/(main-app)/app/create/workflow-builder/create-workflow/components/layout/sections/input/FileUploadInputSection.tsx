@@ -6,49 +6,57 @@ import { z } from "zod";
 import { variableNameSchema } from "./utils/validations";
 
 interface FileUploadInputSectionProps {
-  onParamsChange: (params: ShortTextParams) => void;
+  onParamsChange: (params: FileParams) => void;
+  inputParams: FileParams | {};
+  variableNameError: string;
+  setVariableNameError: (params: string) => void;
 }
 
-interface ShortTextParams {
+interface FileParams {
   display_name: string;
   description: string;
   required: boolean;
   variable_name: string;
   multiple_files: boolean;
-  file_type: string; 
+  file_type: string;
 }
-export default function FileUploadInputSection({ onParamsChange }: FileUploadInputSectionProps) {
-  const [params, setParams] = useState<ShortTextParams>({
-    display_name: "",
-    description: "",
-    required: false,
-    variable_name: "",
-    multiple_files: false,
-    file_type: "IMAGE",
-    
-  });
-  const [variableNameError, setVariableNameError] = useState('');
 
+export default function FileUploadInputSection({
+  onParamsChange,
+  inputParams,
+  variableNameError,
+  setVariableNameError
+}: FileUploadInputSectionProps) {
+  const [params, setParams] = useState<FileParams>({
+    display_name: (inputParams as FileParams).display_name || "",
+    description: (inputParams as FileParams).description || "",
+    required: (inputParams as FileParams).required || false,
+    variable_name: (inputParams as FileParams).variable_name || "",
+    multiple_files: (inputParams as FileParams).multiple_files || false,
+    file_type: (inputParams as FileParams).file_type || "IMAGE",
+  });
 
   useEffect(() => {
     onParamsChange(params);
   }, [params, onParamsChange]);
 
-  const updateParams = (updates: Partial<ShortTextParams>) => {
+  const updateParams = (updates: Partial<FileParams>) => {
     const updatedParams = { ...params, ...updates };
 
     if (updates.display_name) {
-      updatedParams.variable_name = updates.display_name.trim().toLowerCase().replace(/\s+/g, "_");
-    }
-    else if (updates.display_name === "") {
-      updatedParams.variable_name = ""
+      updatedParams.variable_name = updates.display_name
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "_");
+    } else if (updates.display_name === "") {
+      updatedParams.variable_name = "";
     }
 
     setParams(updatedParams);
-    if ('variable_name' in updatedParams) {
+    if ("variable_name" in updatedParams) {
       try {
         variableNameSchema.parse(updatedParams.variable_name);
-        setVariableNameError('');
+        setVariableNameError("");
       } catch (err) {
         if (err instanceof z.ZodError) {
           setVariableNameError(err.errors[0].message);
@@ -82,13 +90,6 @@ export default function FileUploadInputSection({ onParamsChange }: FileUploadInp
             className="bg-[#F2F2F2] p-3 h-[120px] block resize-none w-full rounded-xl"
           ></textarea>
         </div>
-        {/* <div className="space-y-2">
-          <label className="font-medium flex gap-2 items-center">Accept multiple files</label>
-          <Switch
-            checked={params.multiple_files}
-            onCheckedChange={(checked) => updateParams({ multiple_files: checked })}
-          />
-        </div> */}
 
         <div className="space-y-2">
           <label className="font-medium flex gap-2 items-center">Required</label>
@@ -97,33 +98,36 @@ export default function FileUploadInputSection({ onParamsChange }: FileUploadInp
             onCheckedChange={(checked) => updateParams({ required: checked })}
           />
         </div>
+
         <div className="space-y-2">
-  <label className="font-medium text-sm">File Type</label>
-  <div className="relative">
-    <select
-      value={params.file_type}
-      onChange={(e) => updateParams({ file_type: e.target.value })}
-      className="block w-full px-4 py-3 pr-8 leading-tight bg-[#F2F2F2]  text-gray-700 rounded-xl  appearance-none  transition ease-in-out duration-150"
-    >
-      <option value="IMAGE">IMAGE</option>
-      <option value="VIDEO">VIDEO</option>
-      <option value="AUDIO">AUDIO</option>
-      <option value="PDF">PDF</option>
-      <option value="DOC">DOC</option>
-      <option value="DOCX">DOCX</option>
-      <option value="XLS">XLS</option>
-      <option value="XLSX">XLSX</option>
-      <option value="TXT">TXT</option>
-      <option value="CSV">CSV</option>
-      <option value="OTHERS">OTHERS</option>
-    </select>
-    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-      <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-        <path d="M7 10l5 5 5-5H7z" />
-      </svg>
-    </div>
-  </div>
-</div>
+          <label className="font-medium text-sm">File Type</label>
+          <div className="relative">
+            <select
+            required
+              value={params.file_type}
+              onChange={(e) => updateParams({ file_type: e.target.value })}
+              className="block w-full px-4 py-3 pr-8 leading-tight bg-[#F2F2F2] text-gray-700 rounded-xl appearance-none transition ease-in-out duration-150"
+            >
+              <option value="IMAGE">IMAGE</option>
+              <option value="VIDEO">VIDEO</option>
+              <option value="AUDIO">AUDIO</option>
+              <option value="PDF">PDF</option>
+              <option value="DOC">DOC</option>
+              <option value="DOCX">DOCX</option>
+              <option value="XLS">XLS</option>
+              <option value="XLSX">XLSX</option>
+              <option value="TXT">TXT</option>
+              <option value="CSV">CSV</option>
+              <option value="OTHERS">OTHERS</option>
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path d="M7 10l5 5 5-5H7z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
         <div className="space-y-2">
           <label className="font-medium text-sm">Variable name</label>
           <Input
