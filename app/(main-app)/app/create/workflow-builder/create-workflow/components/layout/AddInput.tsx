@@ -21,30 +21,47 @@ import YesOrNoInputSection from "./sections/input/YesOrNoInputSection";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 
+interface InputParams {
+  variable_name?: string;
+  type?: string;
+  required?: boolean;
+  placeholder?: string;
+  display_name?: string;
+  description?: string;
+  default_value?: string;
+}
+
+interface InputConfig {
+  _id: string;
+  variable_name: string;
+  type: string;
+  required?: boolean;
+  placeholder?: string;
+  display_name?: string;
+  description?: string;
+  default_value?: string;
+}
+
 interface AddInputProps {
   setAddNewInput: (params: boolean) => void;
-  inputConfig: any[];
-  setInputConfigs: (params: any) => void;
+  inputConfig: InputConfig[];
+  setInputConfigs: (params: InputConfig[]) => void;
   onSelectAction: (params: any, index: number) => void;
 }
 
-export default function AddInput({
+const AddInput: React.FC<AddInputProps> = ({
   setAddNewInput,
   inputConfig,
   setInputConfigs,
   onSelectAction
-}: AddInputProps) {
-  const [inputType, setInputType] = useState("Short text");
-  const [viewAllInputs, setViewAllInputs] = useState(inputConfig.length !== 0);
-  const [loading, setLoading] = useState(false);
-  const [inputParams, setInputParams] = useState<{ variable_name?: string }>(
-    {}
-  );
+}) => {
+  const [inputType, setInputType] = useState<string>("Short text");
+  const [viewAllInputs, setViewAllInputs] = useState<boolean>(inputConfig.length !== 0);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [inputParams, setInputParams] = useState<InputParams>({});
   const [workflowId, setWorkflowId] = useState<string | null>(null);
-  const [editID, setEditID] = useState("");
-  const [variableNameError, setVariableNameError] = useState(
-    "Must be at least 1 character long"
-  );
+  const [editID, setEditID] = useState<string>("");
+  const [variableNameError, setVariableNameError] = useState<string>("Must be at least 1 character long");
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -53,6 +70,7 @@ export default function AddInput({
       setWorkflowId(id);
     }
   }, []);
+
   const inputTypes = [
     {
       icon: <ShortText />,
@@ -70,10 +88,10 @@ export default function AddInput({
       icon: <NumberHashtag />,
       name: "Number",
     },
-    // {
-    //   icon: <FileUpload />,
-    //   name: "File Upload",
-    // },
+    {
+      icon: <FileUpload />,
+      name: "File Upload",
+    },
   ];
 
   const renderInputSection = () => {
@@ -114,10 +132,15 @@ export default function AddInput({
             setVariableNameError={setVariableNameError}
           />
         );
-      // case "File Upload":
-      //   return <FileUploadInputSection onParamsChange={setInputParams} variableNameError={variableNameError} setVariableNameError={setVariableNameError} />;
+      case "File Upload":
+        return (
+          <FileUploadInputSection
+            onParamsChange={setInputParams}
+          />
+        );
     }
   };
+
   const handleAddClick = async () => {
     try {
       setLoading(true);
@@ -137,11 +160,11 @@ export default function AddInput({
       setViewAllInputs(true);
     } catch (error) {
       console.error("Error adding input:", error);
-    }
-    finally {
+    } finally {
       setLoading(false); 
     }
   };
+
   const handleDeleteInput = async (inputId: string) => {
     try {
       if (!workflowId) {
@@ -159,6 +182,7 @@ export default function AddInput({
       console.error("Error deleting input:", error);
     }
   };
+
   const handleEditClick = async (inputId: string) => {
     try {
       // Find the input to update
@@ -183,7 +207,7 @@ export default function AddInput({
       );
       setInputConfigs(updatedInputs);
       const payload = updatedInputs.find((input) => input._id === editID);
-      const response = await instance.put(
+      await instance.put(
         `${API_URL}/workflow/api/v1/${workflowId}/inputconfig/${editID}`,
         {
           "input_configs.$.type": payload?.type,
@@ -200,8 +224,7 @@ export default function AddInput({
     } catch (error) {
       console.log(error);
       toast.error("Error updating input");
-    }
-    finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -233,7 +256,9 @@ export default function AddInput({
           onClick={
             inputConfig.length
               ? () => {
-                  setViewAllInputs(true), setEditID(""), setInputParams({});
+                  setViewAllInputs(true);
+                  setEditID("");
+                  setInputParams({});
                 }
               : () => setAddNewInput(false)
           }
@@ -241,15 +266,14 @@ export default function AddInput({
           Cancel
         </button>
         <button
-  onClick={editID ? updateInput : handleAddClick}
-  className={`py-3 px-6 bg-primary-green rounded-xl text-white mt-6 hover:bg-primary-green/90 transition-all duration-300 ${
-    variableNameError && "opacity-50"
-  }`}
-  disabled={!!variableNameError || loading} 
->
-  {loading ? <div className="loader"></div> : editID ? "Save" : "Add"}
-</button>
-
+          onClick={editID ? updateInput : handleAddClick}
+          className={`py-3 px-6 bg-primary-green rounded-xl text-white mt-6 hover:bg-primary-green/90 transition-all duration-300 ${
+            variableNameError ? "opacity-50" : ""
+          }`}
+          disabled={!!variableNameError || loading}
+        >
+          {loading ? <div className="loader"></div> : editID ? "Save" : "Add"}
+        </button>
       </div>
     </div>
   ) : (
@@ -302,4 +326,6 @@ export default function AddInput({
       </div>
     </Motion>
   );
-}
+};
+
+export default AddInput;
