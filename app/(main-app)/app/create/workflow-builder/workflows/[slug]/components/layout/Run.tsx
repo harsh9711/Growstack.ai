@@ -14,6 +14,7 @@ import { FaPlay } from "react-icons/fa6";
 import OutputCard from "../OutputCard";
 import { useRouter, useSearchParams } from "next/navigation";
 import SchedulerModal from "../SchedulerModal";
+import FileUpload from "../FileUpload";
 
 type TempOutput = {
   variable_name: string;
@@ -37,6 +38,7 @@ interface Props {
 
 const Run: React.FC<Props> = ({ workflowId }) => {
   const [loading, setLoading] = useState(true);
+  const [fileUrl2, setFileUrl2] = useState<string>("");
   const router = useRouter();
   const searchParams = useSearchParams(); // Use this to get URL parameters
   const [workFlowResults, setWorkFlowResults] = useState<WorkFlowResults>({
@@ -88,40 +90,48 @@ const Run: React.FC<Props> = ({ workflowId }) => {
       return null;
     }
   };
-
-  const handleRunWorkFlow = async () => {
-    setIsWorkFlowFetched(false);
-
-    if (workFlowData.social_media_requirement) {
-      const profileData = await handleGetProfile();
-      if (!profileData || profileData.activeSocialAccounts.length === 0) {
-        toast.error("Connect a social profile to your account to use this workflow");
-        return router.push("/app/publish/scheduler/quick-posting/profiles");
-      }
-    }
-
-    try {
-      const payload = {
-        actions_with_runs: workFlowData.actions.map((action) => ({ action: action._id })),
-        inputs: workFlowData.input_configs.map((input) => ({
-          variable_name: input.variable_name,
-          variable_value: input.default_value,
-        })),
-        outputs: workFlowData.output_configs.map((output) => ({
-          variable_name: output.display_name,
-          variable_value: output.value,
-          variable_type: output.type,
-        })),
-      };
-      const response = await instance.post(`${API_URL}/workflow/api/v1/${workflowId}/runner`, payload);
-      setWorkFlowResults(response.data.data);
-    } catch (error) {
-      console.error("Error running workflow:", error);
-      toast.error("Error running workflow");
-    } finally {
-      setIsWorkFlowFetched(true);
-    }
+  const handleFileUploaded = (fileUrl: string, idx: number) => {
+   setFileUrl2(fileUrl);
+   console.log("File URL in handlefileupload:", fileUrl);
+   const updatedInputs = [...workFlowData.input_configs];
+    updatedInputs[idx].default_value = fileUrl;
+    setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
   };
+const handleRunWorkFlow = async () => {
+  console.log("File URL in handleRunWorkFlow:", fileUrl2); // Verify the value of fileUrl2 here
+  setIsWorkFlowFetched(false);
+
+  if (workFlowData.social_media_requirement) {
+    const profileData = await handleGetProfile();
+    if (!profileData || profileData.activeSocialAccounts.length === 0) {
+      toast.error("Connect a social profile to your account to use this workflow");
+      return router.push("/app/publish/scheduler/quick-posting/profiles");
+    }
+  }
+
+  try {
+    const payload = {
+      actions_with_runs: workFlowData.actions.map((action) => ({ action: action._id })),
+      inputs: workFlowData.input_configs.map((input) => ({
+        variable_name: input.variable_name,
+        variable_value: input.default_value || fileUrl2, 
+      })),
+      outputs: workFlowData.output_configs.map((output) => ({
+        variable_name: output.display_name,
+        variable_value: output.value,
+        variable_type: output.type,
+      })),
+    };
+    const response = await instance.post(`${API_URL}/workflow/api/v1/${workflowId}/runner`, payload);
+    setWorkFlowResults(response.data.data);
+  } catch (error) {
+    console.error("Error running workflow:", error);
+    toast.error("Error running workflow");
+  } finally {
+    setIsWorkFlowFetched(true);
+  }
+};
+
 
   const handleChangeInput = (value: string, idx: number) => {
     const updatedInputs = [...workFlowData.input_configs];
@@ -141,8 +151,8 @@ const Run: React.FC<Props> = ({ workflowId }) => {
       setWorkFlowResuming(false);
     }
   };
-
-  //This function for viewing runner history
+  //File Upload code 
+ 
   const fetchRunnerData = async (runnerId: string) => {
     try {
       const response = await instance.get(`${API_URL}/workflow/api/v1/runner/${runnerId}`);
@@ -217,13 +227,20 @@ const Run: React.FC<Props> = ({ workflowId }) => {
               <div key={idx}>
                 <h2 className="font-medium">{input.display_name}</h2>
                 <div className="font-light mt-3 mb-2 text-[14px]">{input.description}</div>
+                {input.type!=="File Upload"?(
                 <input
                   type="text"
                   placeholder={input.placeholder}
                   className="w-full p-4 h-[46px] border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
                   value={input.default_value}
                   onChange={(e) => handleChangeInput(e.target.value, idx)}
-                />
+                />):(
+<FileUpload
+        onFileUploaded={(fileUrl) => handleFileUploaded(fileUrl, idx)}
+        acceptedFileTypes={input.file_type || '*/*'}
+      />
+                )
+              }
               </div>
             ))}
             <button

@@ -15,6 +15,7 @@ interface ShortTextParams {
   required: boolean;
   variable_name: string;
   multiple_files: boolean;
+  file_type: string; 
 }
 export default function FileUploadInputSection({ onParamsChange }: FileUploadInputSectionProps) {
   const [params, setParams] = useState<ShortTextParams>({
@@ -23,6 +24,8 @@ export default function FileUploadInputSection({ onParamsChange }: FileUploadInp
     required: false,
     variable_name: "",
     multiple_files: false,
+    file_type: "IMAGE",
+    
   });
   const [variableNameError, setVariableNameError] = useState('');
 
@@ -79,13 +82,13 @@ export default function FileUploadInputSection({ onParamsChange }: FileUploadInp
             className="bg-[#F2F2F2] p-3 h-[120px] block resize-none w-full rounded-xl"
           ></textarea>
         </div>
-        <div className="space-y-2">
+        {/* <div className="space-y-2">
           <label className="font-medium flex gap-2 items-center">Accept multiple files</label>
           <Switch
             checked={params.multiple_files}
             onCheckedChange={(checked) => updateParams({ multiple_files: checked })}
           />
-        </div>
+        </div> */}
 
         <div className="space-y-2">
           <label className="font-medium flex gap-2 items-center">Required</label>
@@ -94,6 +97,33 @@ export default function FileUploadInputSection({ onParamsChange }: FileUploadInp
             onCheckedChange={(checked) => updateParams({ required: checked })}
           />
         </div>
+        <div className="space-y-2">
+  <label className="font-medium text-sm">File Type</label>
+  <div className="relative">
+    <select
+      value={params.file_type}
+      onChange={(e) => updateParams({ file_type: e.target.value })}
+      className="block w-full px-4 py-3 pr-8 leading-tight bg-[#F2F2F2]  text-gray-700 rounded-xl  appearance-none  transition ease-in-out duration-150"
+    >
+      <option value="IMAGE">IMAGE</option>
+      <option value="VIDEO">VIDEO</option>
+      <option value="AUDIO">AUDIO</option>
+      <option value="PDF">PDF</option>
+      <option value="DOC">DOC</option>
+      <option value="DOCX">DOCX</option>
+      <option value="XLS">XLS</option>
+      <option value="XLSX">XLSX</option>
+      <option value="TXT">TXT</option>
+      <option value="CSV">CSV</option>
+      <option value="OTHERS">OTHERS</option>
+    </select>
+    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+      <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+        <path d="M7 10l5 5 5-5H7z" />
+      </svg>
+    </div>
+  </div>
+</div>
         <div className="space-y-2">
           <label className="font-medium text-sm">Variable name</label>
           <Input

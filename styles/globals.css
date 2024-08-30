@@ -2,6 +2,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 .loader {
   display: inline-block;
   width: 24px;
