@@ -15,9 +15,9 @@ import ImageGalleryResponsive from "./components/ZoomEffectrespopnsive";
 import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
 import { motion, inView } from "framer-motion";
 import MarketingTechnology from "../largeenterprise/components/marketingTechnology/MarketingTechnology";
-import Footer from "@/app/(landing)/components/Footer";
 import Banner from "./banner/Banner";
 import Link from "next/link";
+import Footer from "@/app/(landing)/components/Footer";
 const page = () => {
   useEffect(() => {
     AOS.init({ duration: 500 });
