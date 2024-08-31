@@ -120,8 +120,8 @@ const TextArea = ({
         name="description"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        placeholder="Please write here"
-        className="h-[100px] w-full bg-[#F5F5F5] rounded-xl block resize-none p-4 text-[15px]"
+          placeholder={option.input_placeholder ? option.input_placeholder : "Please write here"}
+    className="h-[100px] w-full bg-[#F5F5F5] rounded-xl block resize-none p-4 text-[15px]"
       ></textarea>
       <SuggestionDropdown
         dropdownRef={dropdownRef}

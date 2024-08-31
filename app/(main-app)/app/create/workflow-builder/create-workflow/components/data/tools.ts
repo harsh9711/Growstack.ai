@@ -6617,7 +6617,7 @@ export const tools: Tool[] = [
             input_label: "Image",
             input_default_value: "",
             input_values: "",
-            input_placeholder: "it will take image url as input",
+            input_placeholder: "It will take image url as input",
           },
         ],
       },
@@ -6641,7 +6641,7 @@ export const tools: Tool[] = [
             input_label: "Image",
             input_default_value: "",
             input_values: "",
-            input_placeholder: "it will take image url as input",
+            input_placeholder: "It will take image url as input",
           },
           {
             input_type: "TEXT_AREA",
