@@ -106,6 +106,8 @@ const CreateVideoDialog = ({
   const handleVoiceSelect = (voiceId: string) => {
     setSelectedVoice(voiceId);
   };
+
+  // code optimization 
   const handleSubmit = async () => {
     const validation = formSchema.safeParse(formData);
     if (!validation.success) {
