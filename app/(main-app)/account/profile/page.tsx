@@ -22,6 +22,7 @@ import { useDispatch } from "react-redux";
 import { countries } from "./data";
 import { useRouter } from "next-nprogress-bar";
 import clsx from "clsx";
+import "@/styles/profile.css";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -34,14 +35,14 @@ export default function ProfilePage() {
   const [selectedAvatarFileName, setSelectedAvatarFileName] = useState("");
 
   const ValidationSchema = z.object({
-    email: z.string().email("Please enter a valid email address"),
-    name: z.string().nonempty("Please enter a Full Name"),
-    job_role: z.string().nonempty("Please enter a role"),
-    company_name: z.string().nonempty("Please enter a Company Name"),
-    company_website: z.string().url("Please enter a Company Website"),
-    address_line: z.string().nonempty("Please enter a Address Line"),
-    city: z.string().nonempty("Please enter a city"),
-    postal_code: z.string().nonempty("Please enter a Postal Code"),
+    email: z.string().email("Please enter a valid email address"), // required
+    name: z.string().nonempty("Please enter a Full Name"), // required
+    job_role: z.string().optional(),
+    company_name: z.string().optional(),
+    company_website: z.string().optional(),
+    address_line: z.string().optional(),
+    city: z.string().optional(),
+    postal_code: z.string().optional(),
     country: z.string().optional(),
     profile_img: z.any().optional(),
   });
@@ -283,7 +284,7 @@ export default function ProfilePage() {
             <div>
               <div className="grid grid-cols-2 gap-x-5 gap-y-6 mt-6">
                 <div className="space-y-3 w-full">
-                  <label>Full Name</label>
+                  <label>Full Name<span className="imp ml-1">*</span></label>
                   <input
                     type="text"
                     id="name"
@@ -304,7 +305,7 @@ export default function ProfilePage() {
                   {errors.job_role && <span className="text-rose-600 text-sm">{errors.job_role?.message}</span>}
                 </div>
                 <div className="space-y-3 w-full">
-                  <label>Email</label>
+                  <label>Email<span className="imp ml-1">*</span></label>
                   <input
                     id="email"
                     type="text"

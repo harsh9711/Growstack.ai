@@ -69,8 +69,8 @@ const ChangePassword = () => {
                 <input
                   type="text"
                   id="name"
-                  // name="fullName"
-                  placeholder="Full Name"
+                  // name="oldPassword"
+                  placeholder="Enter Your Old Password"
                   className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                   {...register("oldPassword")}
                 />
@@ -85,7 +85,7 @@ const ChangePassword = () => {
                 <input
                   type="text"
                   // name="role"
-                  placeholder="Enter your role job"
+                  placeholder="Enter Your New Password"
                   // value="Administrator"
                   className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                   {...register("newPassword")}
