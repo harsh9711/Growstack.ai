@@ -35,7 +35,7 @@ export default function Footer() {
                 <h1 className="font-semibold text-lg">Company</h1>
                 <ul className="space-y-5">
                   <li className="hover:underline">
-                    <Link href="#">Pricing</Link>
+                  <Link href="/Pricing">Pricing</Link>
                   </li>
                   <li className="hover:underline">
                     <Link href="#">Get the App</Link>
