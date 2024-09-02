@@ -43,7 +43,7 @@
     "draft-js": "^0.11.7",
     "file-saver": "^2.0.5",
     "formidable": "^3.5.1",
-    "framer-motion": "^11.2.10",
+    "framer-motion": "^11.3.31",
     "fs-extra": "^11.2.0",
     "growstack": "file:",
     "input-otp": "^1.2.4",

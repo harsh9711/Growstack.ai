@@ -1,130 +1,131 @@
 @import "../../../../variables.scss";
-.marketingTechnology{
-    padding: 90px 0;
-    background: url("../../../../../public/solutionsmarketing/background.svg") no-repeat;
-    background-size: cover;
-    background-position: center;
-    overflow: hidden;
-    @media screen and (max-width: $breakpoint_mobile_portrait) {
-        padding: 40px 0;
+.marketingTechnology {
+  padding:0 0 120px   0;
+  background: url("../../../../../public/solutionsmarketing/background.svg")
+    no-repeat;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+  @media screen and (max-width: $breakpoint_mobile_portrait) {
+    padding: 40px 0;
+  }
+  .swiper_container {
+    height: auto !important;
+    padding: 20px 0;
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 106%;
+      background: url("../../../../../public/solutionsmarketing/techBack.svg")
+        no-repeat;
+      background-size: cover;
+      background-position: center;
+      z-index: -1;
+      border-radius: 30px;
+      // border: 4px solid #e8f5ed;
     }
-    .swiper_container {
-        height: auto !important;
-        padding: 20px 0;
-        &::after{
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 106%;
-            // background: url("../../../../../public/solutionsmarketing/techBack.svg") no-repeat;
-            background-size: cover;
-            background-position: center;
-            z-index: -1;
-            border-radius: 30px;
-            // border: 4px solid #e8f5ed;
+    .swiper-slide {
+      height: 100% !important;
+      border-radius: 17px;
+      z-index: 10;
+      position: relative;
+      display: flex;
+      transition: transform 0.3s;
+      transform: scale(1);
+      @media screen and (max-width: $breakpoint_mobile_portrait) {
+        width: 100% !important;
+      }
+      &.swiper-slide-active {
+        box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+      }
+      .slide-content {
+        border: 1px solid #d1d1d1;
+        background-color: #fff;
+        border-radius: 30px;
+        display: flex;
+        flex-direction: column;
+        height: 630px;
+        // min-height: 625px;
+        border-radius: 17px;
+        gap: 16px;
+        z-index: 40;
+        overflow: hidden;
+        @media screen and (max-width: $breakpoint_mobile_portrait) {
+          min-height: auto;
         }
-        .swiper-slide {
-            height: 100% !important;
-          border-radius: 17px;
-          z-index: 10;
-          position: relative;
-          display: flex;
-          transition: transform 0.3s;
-          transform: scale(1);
-          @media screen and (max-width:$breakpoint_mobile_portrait) {
+        .slide-title {
+          font-weight: 600;
+          color: #034737;
+          font-size: 21px;
+          text-align: center;
+          padding: 32px 64px 0;
+        }
+
+        .image-wrapper {
+          padding: 0 40px;
+
+          img {
             width: 100% !important;
+            height: auto !important;
+            object-fit: cover;
+            // border: 1px solid #D1D1D1;
+            border-radius: 10px;
           }
-            &.swiper-slide-active{
-                box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.1);
-            }
-          .slide-content {
-            border: 1px solid #D1D1D1;
-            background-color: #fff;
-            border-radius: 30px;
+        }
+
+        .slide-subtitle {
+          font-weight: 500;
+          font-size: 21px;
+          width: 100%;
+          padding: 0 40px;
+        }
+
+        .tags-wrapper {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+          gap: 10px;
+          margin-top: 4px;
+          align-items: center;
+
+          .tag {
+            border: 1px solid #d8d8d8;
+            padding: 8px 20px;
             display: flex;
-            flex-direction: column;
-            height: 650px;
-            // min-height: 625px;
-            border-radius: 17px;
-            gap: 16px;
-            z-index: 40;
-            overflow: hidden;
-            @media screen and (max-width:$breakpoint_mobile_portrait) {
-              min-height: auto;
-            }
-            .slide-title {
+            align-items: center;
+            justify-content: flex-start;
+            border-radius: 0 100px 100px 0;
+            width: 100%;
+            color: #14171b;
+            text-transform: uppercase;
+            h2 {
+              margin-left: 20px;
+              font-size: 17px;
               font-weight: 600;
-              color: #034737;
-              font-size: 21px;
-              text-align: center;
-              padding: 32px 64px 0;
-            }
-      
-            .image-wrapper {
-              padding: 0 40px;
-      
-              img {
-                width: 100% !important;
-                height: auto !important;
-                object-fit: cover;
-                // border: 1px solid #D1D1D1;
-                border-radius: 10px;
-              }
-            }
-      
-            .slide-subtitle {
-              font-weight: 500;
-              font-size: 21px;
-              width: 100%;
-              padding: 0 40px;
-            }
-      
-            .tags-wrapper {
-              display: flex;
-              justify-content: space-between;
-              width: 100%;
-              gap: 10px;
               margin-top: 4px;
-              align-items: center;
-              
-              .tag {
-                border: 1px solid #D8D8D8;
-                padding: 8px 20px;
-                display: flex;
-                align-items: center;
-                justify-content: flex-start;
-                border-radius: 0 100px 100px 0;
-                width: 100%;
-                color: #14171B;
-                text-transform: uppercase;
-                h2 {
-                  margin-left:20px;
-                  font-size: 17px;
-                  font-weight: 600;
-                  margin-top: 4px;
-                }
-              }
-      
-              .icon {
-                margin-right: 40px;
-                width: 46px !important;
-                height: 46px !important;
-                border-radius: 0;
-                object-fit: contain;
-              }
-            }
-      
-            .slide-description {
-              padding: 10px 40px;
-              color: #14171B;
-              margin-top: 4px;
-              margin-bottom: 20px;
-              letter-spacing: 2px;
             }
           }
+
+          .icon {
+            margin-right: 40px;
+            width: 46px !important;
+            height: 46px !important;
+            border-radius: 0;
+            object-fit: contain;
+          }
+        }
+
+        .slide-description {
+          padding: 10px 40px;
+          color: #14171b;
+          margin-top: 4px;
+          margin-bottom: 20px;
+          letter-spacing: 2px;
         }
       }
-      
-}   
+    }
+  }
+}

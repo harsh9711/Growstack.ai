@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import JSZip from "jszip";
 import { parse } from "qs";
+import { Readable } from "stream";
 
 export async function POST(request: NextRequest) {
   try {
@@ -22,15 +23,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: `File not found: ${filePath}` }, { status: 404 });
     }
 
-    fs.writeFileSync(filePath, content as string);
 
-    const tmpDir = path.join(process.cwd(), "tmp");
-    if (!fs.existsSync(tmpDir)) {
-      fs.mkdirSync(tmpDir, { recursive: true });
-    }
-
-    const zipFileName = `${template_id}.zip`;
-    const zipFilePath = path.join(tmpDir, zipFileName);
     const zip = new JSZip();
 
     const addFolderToZip = (folderPath: string, zipFolder: JSZip) => {
@@ -55,14 +48,19 @@ export async function POST(request: NextRequest) {
       zip.file("extraData.json", JSON.stringify(extraData));
     }
 
+    // Generate zip content in memory
     const zipContent = await zip.generateAsync({ type: "nodebuffer" });
-    fs.writeFileSync(zipFilePath, zipContent);
 
-    // Prepare the download response
+    // Create a readable stream from the zip content
+    const zipStream = new Readable();
+    zipStream.push(zipContent);
+    zipStream.push(null); // End of stream
+
+    // Prepare the response
     const headers = {
       "Content-Description": "File Transfer",
-      "Content-Type": "application/octet-stream",
-      "Content-Disposition": `attachment; filename=${zipFileName}`,
+      "Content-Type": "application/zip",
+      "Content-Disposition": `attachment; filename=${template_id}.zip`,
       "Content-Transfer-Encoding": "binary",
       Expires: "0",
       "Cache-Control": "must-revalidate",
@@ -70,7 +68,7 @@ export async function POST(request: NextRequest) {
       "Content-Length": zipContent.length.toString(),
     };
 
-    return new NextResponse(zipContent, { headers });
+    return new NextResponse(zipStream as any, { headers });
   } catch (error: any) {
     console.error("Error processing request:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });

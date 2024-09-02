@@ -11,6 +11,7 @@ import TestimonialsSlider from "./components/Slider";
 import MarketingTechnology from "./components/marketingTechnology/MarketingTechnology";
 import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
 import ImageGalleryResponsive from "./components/ZoomEffectrespopnsive";
+import Footer from "@/components/footer/Footer";
 
 const Home = () => {
   const totalItems = 5;
@@ -203,6 +204,7 @@ const Home = () => {
 
         <MarketingStreamline />
       </section>
+      <Footer/>
     </main>
   );
 };

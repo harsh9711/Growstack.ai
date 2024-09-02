@@ -78,10 +78,14 @@ function Footer() {
                     <Link href="/auth/register">Support</Link>
                   </li>
                   <li>
-                    <Link href="/auth/register">Terms & Condition</Link>
+                  <Link href="/Tos">Terms & Condition</Link>
                   </li>
                   <li>
-                    <Link href="/auth/register">Privacy Policy</Link>
+                  <Link href="/Tnc">Privacy Policy</Link>
+                  </li>
+                  <li>
+                  <Link href="/Rrp">Refund &
+                  return policy</Link>
                   </li>
                   <li>
                     <Link href="/auth/register">Community</Link>

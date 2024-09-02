@@ -14,11 +14,13 @@ import ImageGalleryLineResponsive from "./components/ImageGallerylineresponsive"
 const page = () => {
   return (
     <main className="flex flex-col relative overflow-hidden">
-      <span className="relatvie z-20"><Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" /></span>
+      <span className="relatvie z-20">
+        <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
+      </span>
       <section className="bg-[#034737] w-full  mb-20">
-      <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1350px] 2xl:p-0 p-4 w-full 2xl:max-h-[1112px] h-full justify-center mx-auto">
-      <div className="w-full flex flex-row justify-between brightness-110 relative   items-center mt-10 mb-10 2xl:mt-32 2xl:mb-60">
-      <div className="w-full max-w-[700px] gap-y-4 flex flex-col">
+        <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1350px] 2xl:p-0 p-4 w-full 2xl:max-h-[1112px] h-full justify-center mx-auto">
+          <div className="w-full flex flex-row justify-between brightness-110 relative   items-center mt-10 mb-10 2xl:mt-32 2xl:mb-60">
+            <div className="w-full max-w-[700px] gap-y-4 flex flex-col">
               <div className="bg-[#FFFFFF]/10 text-white py-2 px-4 text-center items-center justify-center flex   text-[12px] rounded-full font-semibold uppercase max-w-[377px] w-full tracking-widest">
                 Growstack for Mid - Market Organization
               </div>

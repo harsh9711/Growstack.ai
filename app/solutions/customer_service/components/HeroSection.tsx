@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 const HeroSection = () => {
   return (
@@ -44,19 +45,25 @@ const HeroSection = () => {
                 exceptional results.
               </p>
 
-              <div className="flex flex-col gap-20 mt-10">
+              <div className="flex flex-col gap-16 mt-10">
                 <div
                   data-aos="fade-right"
                   data-aos-duration="1500"
                   className="flex flex-row gap-8 group text-[12px] 2xl:text-[18px]"
                 >
-                  <button className="bg-white font-medium flex items-center gap-2 text-[#034737] 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
-                    Get free trial <ArrowRight />
-                  </button>
-                  <button className="border border-white flex items-center gap-2 text-white hover:font-bold font-medium 2xl:py-4 py-2 px-2 2xl:px-7 rounded-xl shadow-md shadow-[#00000025]">
-                    See demo
-                    <ArrowRight className="text-white" />
-                  </button>
+                  <Link href="/auth/register" className="no-underline">
+                    {" "}
+                    <button className="bg-white font-medium flex items-center gap-2 text-[#034737] 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
+                      Get free trial <ArrowRight />
+                    </button>
+                  </Link>
+                  <Link href="/auth/register" className="no-underline">
+                    {" "}
+                    <button className="border border-white flex items-center gap-2 text-white hover:font-bold font-medium 2xl:py-4 py-2 px-2 2xl:px-7 rounded-xl shadow-md shadow-[#00000025]">
+                      See demo
+                      <ArrowRight className="text-white" />
+                    </button>
+                  </Link>
                 </div>
 
                 <div

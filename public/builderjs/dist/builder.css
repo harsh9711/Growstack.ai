@@ -21747,7 +21747,6 @@ body {
   line-height: normal;
   margin-top: 0;
   margin-bottom: 4px;
-  font-family: Frutiger Next W01, Helvetica, Arial, sans-serif;
   font-style: inherit;
   color: #555
 }
@@ -21765,7 +21764,6 @@ body {
 .divider-mode-container {
   width: 100%;
   height: auto;
-  font-family: Frutiger Next W01, Helvetica, Arial, sans-serif;
   font-size: 12px;
   color: #555
 }
@@ -22621,14 +22619,8 @@ button.close-preview i.icon-close-circle {
   color: #fff
 }
 
-.ask-help .icon {
-  font-size: 18px;
-  color: #555;
-  font-weight: normal;
-  position: relative;
-  display: inline-block;
-  line-height: 1;
-  margin-left: -4px
+.ask-help {
+  display: none !important;
 }
 
 .display i.fa-eye {
@@ -23215,17 +23207,27 @@ ul.action-lang.show-action {
 
 .top .top-right .menu-bar-action.btn-close {
   right: -20px;
-  background: rgba(255, 255, 255, .1);
+  background: #ff0000;
   border: none;
-  width: 34px;
+  width: 30px;
+  height: 30px;
   padding: 10px;
-  color: rgba(255, 255, 255, .4)
+  color: rgba(255, 255, 255)
 }
 
 .top .top-right .menu-bar-action.btn-close i {
-  font-size: 22px
+  font-size: 18px
 }
 
+.top .top-right .menu-bar-action.btn-save {
+  background-color: white !important;
+  color: #034737;
+}
+
+.top .top-right .menu-bar-action.btn-save:hover {
+  background-color: white !important;
+  color: #034737;
+}
 .top .top-right .menu-bar-action.btn-save-and-close {
   background: rgba(255, 255, 255, .1);
   border-color: transparent
@@ -23554,7 +23556,6 @@ a {
   height: 55px;
   background-color: transparent;
   padding-right: 17px;
-  font-family: Frutiger Next W01, Helvetica, Arial, sans-serif;
   cursor: pointer
 }
 
@@ -23648,7 +23649,6 @@ a {
   height: 55px;
   background-color: transparent;
   padding-right: 17px;
-  font-family: Frutiger Next W01, Helvetica, Arial, sans-serif;
   cursor: pointer
 }
 
@@ -23742,7 +23742,6 @@ a {
   height: 55px;
   background-color: transparent;
   padding-right: 17px;
-  font-family: Frutiger Next W01, Helvetica, Arial, sans-serif;
   cursor: pointer
 }
 
@@ -23825,7 +23824,6 @@ a {
   height: 55px;
   background-color: transparent;
   padding-right: 17px;
-  font-family: Frutiger Next W01, Helvetica, Arial, sans-serif;
   cursor: pointer
 }
 
@@ -23960,7 +23958,6 @@ a {
   color: #fff;
   margin-left: 27px;
   line-height: 21px;
-  font-family: Frutiger Next W01, Helvetica, Arial, sans-serif;
   cursor: pointer
 }
 
@@ -24020,27 +24017,11 @@ a {
   padding: 0
 }
 
-.top .top-right ul.icons li.ask-help {
-  position: relative;
-  display: flex;
-  align-items: center;
-  cursor: pointer
-}
-
-.top .top-right ul.icons li.ask-help:hover .icon {
-  color: #fff
-}
-
-.top .top-right ul.icons li.ask-help:hover span.help {
-  color: #fff
-}
-
 .top .top-right ul.icons li {
   display: inline-block;
   width: auto;
   margin-right: 0;
   color: #fff;
-  font-family: Frutiger Next W01, Helvetica, Arial, sans-serif;
   padding: 3px 20px;
   max-height: 45px
 }
@@ -31429,4 +31410,8 @@ body.swal2-no-backdrop .swal2-shown.swal2-bottom-right {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+}
+
+.loading-page-overlay img {
+  margin: 0 auto;
 }

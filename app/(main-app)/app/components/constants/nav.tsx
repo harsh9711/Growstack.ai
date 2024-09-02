@@ -151,37 +151,37 @@ const navLinks: NavLink[] = [
   {
     icon: <EngageIcon />,
     sublinks: [
-      {
-        icon: <AutomationIcon />,
-        name: "WhatsApp and telegram automation with our apps",
-        subItems: [
-          {
-            icon: <WhatsappIcon />,
-            name: "WhatsApp overview",
-            href: "/app/engage/automation/whatsapp-automation",
-          },
-          {
-            icon: <TelegramIcon />,
-            name: "Telegram overview",
-            href: "/app/engage/automation/telegram-automation",
-          },
-          // {
-          //   icon: <CampaignIcon />,
-          //   name: "Campaigns",
-          //   href: "/app/engage/automation/campaigns",
-          // },
-          // {
-          //   icon: <AiAssistantIcon />,
-          //   name: "AI assistant",
-          //   href: "/app/engage/automation/ai-assistant",
-          // },
-          // {
-          //   icon: <SettingsIcon />,
-          //   name: "Settings",
-          //   href: "/app/engage/automation/settings",
-          // },
-        ],
-      },
+      // {
+      //   icon: <AutomationIcon />,
+      //   name: "WhatsApp and telegram automation with our apps",
+      //   subItems: [
+      //     {
+      //       icon: <WhatsappIcon />,
+      //       name: "WhatsApp overview",
+      //       href: "/app/engage/automation/whatsapp-automation",
+      //     },
+      //     {
+      //       icon: <TelegramIcon />,
+      //       name: "Telegram overview",
+      //       href: "/app/engage/automation/telegram-automation",
+      //     },
+      //     {
+      //       icon: <CampaignIcon />,
+      //       name: "Campaigns",
+      //       href: "/app/engage/automation/campaigns",
+      //     },
+      //     {
+      //       icon: <AiAssistantIcon />,
+      //       name: "AI assistant",
+      //       href: "/app/engage/automation/ai-assistant",
+      //     },
+      //     {
+      //       icon: <SettingsIcon />,
+      //       name: "Settings",
+      //       href: "/app/engage/automation/settings",
+      //     },
+      //   ],
+      // },
       {
         icon: <SquareShapeIcon />,
         name: "Social media conversation hub",
@@ -213,11 +213,11 @@ const navLinks: NavLink[] = [
         name: "Social media analytics",
         href: "/app/analyse/social-media",
       },
-      {
-        icon: <ReputationIcon />,
-        name: "Reputation mgmt. system",
-        href: "/app/analyse/reputation-manager",
-      },
+      // {
+      //   icon: <ReputationIcon />,
+      //   name: "Reputation mgmt. system",
+      //   href: "/app/analyse/reputation-manager",
+      // },
       // {
       //   icon: <AdsAnalyticsIcon />,
       //   name: "Ads analytics",

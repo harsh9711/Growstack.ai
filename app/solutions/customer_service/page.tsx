@@ -29,7 +29,7 @@ const page = () => {
       />
       <HeroSection />
 
-      <section className=" mx-auto w-full flex items-center justify-center 2xl:mb-24 py-10 2xl:py-10 ">
+      <section className=" mx-auto w-full flex items-center justify-center 2xl:mb-24 py-10 xl:py-28 ">
         <div>
           <div className="2xl:flex xl:flex hidden  w-full h-full items-center justify-center mx-auto">
             <ImageGallery />
@@ -40,7 +40,7 @@ const page = () => {
         </div>
       </section>
 
-      <section className="bg-[url('/black.png')] bg-cover mx-auto w-full flex items-center justify-center pt-20 py-10 2xl:pt-40">
+      <section className="bg-[url('/black.png')] bg-cover mx-auto w-full flex items-center justify-center pt-20 py-32 2xl:pt-40">
         <div
           data-aos="fade-up"
           data-aos-duration="1800"
@@ -54,7 +54,7 @@ const page = () => {
       </section>
       <section className="flex flex-col pt-32">
         <div className="w-full gap-y-4 flex flex-col items-center justify-center  mx-auto">
-          <div className="bg-[#0347371A] hover:shadow-md whitespace-nowrap text-[#034737] py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[166px]">
+          <div className="bg-[#0347371A] hover:shadow-md whitespace-nowrap text-[#034737] py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[146px]">
             expectations
           </div>
 
@@ -71,8 +71,8 @@ const page = () => {
         <MarketingTechnology />
       </section>
 
-      <section className="bg-[url('/pink.png')] bg-cover flex flex-col 2xl:mt-20 w-full mb-20 2xl:mb-10  items-center justify-center mx-auto">
-        <div className="">
+      <section className="bg-[url('/pink.png')] bg-cover flex flex-col 2xl:mt-40 w-full mb-20 2xl:mb-10  items-center justify-center mx-auto">
+        <div className="xl:py-60">
           <div className="2xl:flex hidden  w-full h-full items-center justify-center mx-auto">
             <ImageGallerySecond />
           </div>
@@ -81,7 +81,7 @@ const page = () => {
           </div>
         </div>
       </section>
-      <section className="relative mx-auto items-center justify-center 2xl:py-20 bg-white overflow-hidden  w-full">
+      <section className="relative mx-auto items-center justify-center xl:py-40 bg-white overflow-hidden  w-full">
         <div className="flex flex-col items-center justify-center mx-auto gap-2">
           <div
             data-aos="fade-up"
@@ -106,7 +106,7 @@ const page = () => {
             data-aos="fade-up"
             data-aos-duration="1800"
             data-aos-delay="600"
-            className="items-center justify-center mx-auto relative 2xl:right-12  2xl:top-4"
+            className="items-center justify-center mx-auto relative 2xl:right-12 "
           >
             <GridComponent />
           </div>

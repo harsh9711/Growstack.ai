@@ -81,7 +81,7 @@ const GridComponent = () => {
                 alt="Box 1"
                 width={940}
                 height={555}
-                className="w-[1100px] bg-cover z-[20]"
+                className="w-[900px] bg-cover z-[20]"
               />
             </div>
             <div className="flex z-[80] flex-row gap-60 w-full max-w-[1070px] justify-center relative">
@@ -110,7 +110,7 @@ const GridComponent = () => {
                 alt="Box 1"
                 width={1240}
                 height={755}
-                className="w-[1100px]  bg-cover z-[20]"
+                className="w-[900px]  bg-cover z-[20]"
               />
             </div>
             <div className="flex  z-[80] flex-row items-center left-0 justify-center gap-60 w-full max-w-[1070px]   relative">
@@ -139,7 +139,7 @@ const GridComponent = () => {
                 alt="Box 1"
                 width={1240}
                 height={755}
-                className="w-[1100px]  bg-cover z-[20]"
+                className="w-[900px]  bg-cover z-[20]"
               />
             </div>
             <div className="flex z-[80] flex-row gap-60 w-full max-w-[1070px] justify-center relative">
@@ -173,7 +173,7 @@ const GridComponent = () => {
                   alt="Box 1"
                   width={400}
                   height={420}
-                  className="w-[480px] h-[357px] hover-boxsalesrevops211"
+                  className="w-full h-full hover-boxsalesrevops211"
                 />
               </div>
               <div
@@ -185,7 +185,7 @@ const GridComponent = () => {
                   alt="Box 2"
                   width={400}
                   height={400}
-                  className="w-[480px] h-[357px] hover-boxsalesrevops311"
+                  className="w-full h-full hover-boxsalesrevops311"
                 />
               </div>
 
@@ -198,7 +198,7 @@ const GridComponent = () => {
                   alt="Box 3"
                   width={380}
                   height={400}
-                  className="w-[480px] h-[357px] hover-boxsalesrevops411"
+                  className="w-full h-full hover-boxsalesrevops411"
                 />
               </div>
             </div>
