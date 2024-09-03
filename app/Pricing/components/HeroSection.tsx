@@ -24,7 +24,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       data-aos="fade-up"
     >
       <div
-        className="xl:p-4 p-0 mx-auto flex xl:flex-row  flex-col max-w-[1300px] overflow-hidden w-full text-white xl:mt-10 items-center justify-between"
+        className="xl:p-4 p-0 mx-auto flex xl:flex-row  flex-col max-w-[1020px] gap-10 overflow-hidden w-full text-white xl:mt-10 items-center justify-between"
         data-aos="fade-right"
       >
         <svg
@@ -44,13 +44,13 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           />
         </svg>
 
-        <div className="flex  xl:p-0 p-4 flex-col gap-4" data-aos="fade-up">
-          <h2 className="text-white max-w-[1900px] font-bold xl:text-[42px] text-[24px] tracking-widest">
+        <div className="flex  xl:p-0 p-4 flex-col w-full gap-4" data-aos="fade-up">
+          <h2 className="text-white w-full font-bold xl:text-[42px] text-[24px] tracking-normal">
             {title}
           </h2>
          
         </div>
-        <div className="mt-6 xl:p-0 p-4  max-w-[500px] w-full flex justify-end" data-aos="fade-left">
+        <div className="mt-6 xl:p-0 p-4  max-w-[400px] w-full flex justify-end" data-aos="fade-left">
           <p className="justify-end text-white text-[18px] font-extralight">
             {description}
           </p>

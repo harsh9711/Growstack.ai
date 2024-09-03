@@ -8,12 +8,12 @@ const ContentBox: React.FC<ContentBoxProps> = ({ sections }) => {
   const allFeatures = sections.flatMap((section) => section.features);
 
   return (
-    <div className="max-w-[1125px] w-full px-4 mx-auto">
+    <div className="max-w-[1240px] w-full px-4 mx-auto">
       {" "}
       <div className="flex flex-row justify-between text-[20px] font-semibold">
         <h2>Details</h2>
-        <span className="flex gap-4">
-          <h2>Basic</h2>
+        <span className="flex gap-[211px]">
+          <h2>Pro user</h2>
           <h2>Business</h2>
         </span>
       </div>{" "}
@@ -39,11 +39,11 @@ const ContentBox: React.FC<ContentBoxProps> = ({ sections }) => {
                     <h2 className="font-bold text-[18px] sm:text-[20px]">
                       {feature.title}
                     </h2>
-                    <p className="text-[#000000]/60 max-w-[700px] w-full">
+                    <p className="text-[#000000]/60 max-w-[500px] w-full">
                       {feature.description}
                     </p>
                   </span>
-                  <span className="flex items-center gap-20 ">
+                  <span className="flex flex-row mr-6 items-center  gap-[280px]">
                     {feature.hasDash && <DashIcon />}
                     {feature.tickCount &&
                       Array.from({ length: feature.tickCount }, (_, i) => (
