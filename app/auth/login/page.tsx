@@ -55,7 +55,7 @@ export default function Login() {
       const userData = await handleGetProfileData();
       console.log(userData);
       dispatch(login(userData));
-      router.push("/app");
+      router.push("/Payment");
       toast.success(response.data.message);
     } catch (error: any) {
       if (error.response) {
