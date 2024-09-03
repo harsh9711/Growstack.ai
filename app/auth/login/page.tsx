@@ -24,9 +24,17 @@ export default function Login() {
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
   const ValidationSchema = z.object({
     email: z.string().email("Please enter a valid email address"),
-    password: z.string().min(8, "Password must be at least 8 characters").max(20, "Password can't exceed 20 characters"),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .max(20, "Password can't exceed 20 characters"),
   });
   const [isPending, setIsPending] = useState(false);
 
@@ -44,7 +52,10 @@ export default function Login() {
     setIsPending(true);
     try {
       const validatedData = ValidationSchema.parse(data);
-      const response = await axios.post(API_URL + "/users/api/v1/auth/login", validatedData);
+      const response = await axios.post(
+        API_URL + "/users/api/v1/auth/login",
+        validatedData
+      );
       setCookie("token", response.data.data.token, {
         secure: true,
         // path: "/",
@@ -73,33 +84,59 @@ export default function Login() {
     try {
       const response = await axios.get(`${API_URL}/users/api/v1`);
       const userData = response?.data?.data;
-      return userData
+      return userData;
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <motion.main initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+    <motion.main
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+    >
       <div className=" flex flex-col xl:flex-row h-screen overflow-y-auto gap-10">
         <section className="w-full h-full flex justify-center items-center bg-white">
           <div className="w-full max-w-2xl max-h-[840px] h-full p-14 bg-[#F7FAFC] rounded-[30px]">
             <div className="slide-reveal w-full h-full max-w-[460px] mx-auto flex flex-col justify-between items-center md:items-start space-y-10">
-              <Image src={"/logo/growstack.png"} alt="growstack" height={180} width={180} className="max-h-14" />
+              <Image
+                src={"/logo/growstack.png"}
+                alt="growstack"
+                height={180}
+                width={180}
+                className="max-h-14"
+              />
               <div className="space-y-6 w-full">
                 <div className="space-y-3">
-                  <h1 className="text-3xl font-bold text-center md:text-left">Sign in to your account</h1>
-                  <p className="text-[#002030B2] text-base text-center md:text-left">Welcome back! Nice too see you again</p>
+                  <h1 className="text-3xl font-bold text-center md:text-left">
+                    Sign in to your account
+                  </h1>
+                  <p className="text-[#002030B2] text-base text-center md:text-left">
+                    Welcome back! Nice too see you again
+                  </p>
                 </div>
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-7 !mt-7 w-full">
+                <form
+                  onSubmit={handleSubmit(onSubmit)}
+                  className="space-y-7 !mt-7 w-full"
+                >
                   {/* styled input field for email */}
                   <div>
                     <div
                       className={clsx(
                         "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
-                        errors["email"] && "border-rose-600 focus-within:border-rose-600"
-                      )}>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16" fill="none">
+                        errors["email"] &&
+                          "border-rose-600 focus-within:border-rose-600"
+                      )}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
                         <path
                           fillRule="evenodd"
                           clipRule="evenodd"
@@ -117,7 +154,11 @@ export default function Login() {
                         />
                       </div>
                     </div>
-                    {errors.email && <span className="text-rose-600 text-sm">{errors.email?.message}</span>}
+                    {errors.email && (
+                      <span className="text-rose-600 text-sm">
+                        {errors.email?.message}
+                      </span>
+                    )}
                   </div>
 
                   {/* styled input field for password */}
@@ -125,9 +166,17 @@ export default function Login() {
                     <div
                       className={clsx(
                         "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
-                        errors["password"] && "border-rose-600 focus-within:border-rose-600"
-                      )}>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16" fill="none">
+                        errors["password"] &&
+                          "border-rose-600 focus-within:border-rose-600"
+                      )}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
                         <path
                           fillRule="evenodd"
                           clipRule="evenodd"
@@ -135,18 +184,48 @@ export default function Login() {
                           fill="#667085"
                         />
                       </svg>
-                      <div className="relative group space-y-2 cursor-text w-full">
+                      <div className="relative w-full">
                         <input
-                          type="password"
+                          type={passwordVisible ? "text" : "password"}
                           id="password"
                           autoComplete="password"
                           placeholder="Enter your password..."
-                          className={clsx("text-sm peer focus:ring-0 h-[60px] w-full")}
+                          className={clsx(
+                            "text-sm peer focus:ring-0 h-[60px] w-full"
+                          )}
                           {...register("password")}
                         />
+                        <span
+                          onClick={togglePasswordVisibility}
+                          className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                        >
+                          {passwordVisible ? (
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                          ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M1 12C1 12 5 20 12 20C19 20 23 12 23 12" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <circle cx="12" cy="12" r="3" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></circle> </g></svg>
+                          ) : (
+                            <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="w-6 h-6"
+                          ><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2 2L22 22" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M6.71277 6.7226C3.66479 8.79527 2 12 2 12C2 12 5.63636 19 12 19C14.0503 19 15.8174 18.2734 17.2711 17.2884M11 5.05822C11.3254 5.02013 11.6588 5 12 5C18.3636 5 22 12 22 12C22 12 21.3082 13.3317 20 14.8335" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M14 14.2362C13.4692 14.7112 12.7684 15.0001 12 15.0001C10.3431 15.0001 9 13.657 9 12.0001C9 11.1764 9.33193 10.4303 9.86932 9.88818" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                          )}
+                        </span>
                       </div>
                     </div>
-                    {errors.password && <span className="text-rose-600 text-sm">{errors.password?.message}</span>}
+                    {errors.password && (
+                      <span className="text-rose-600 text-sm">
+                        {errors.password?.message}
+                      </span>
+                    )}
                   </div>
 
                   <div className="flex justify-between items-center gap-4">
@@ -154,17 +233,22 @@ export default function Login() {
                       <Checkbox id="remember-me" />
                       <label
                         htmlFor="remember-me"
-                        className="text-sm font-medium text-[#667085] leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                        className="text-sm font-medium text-[#667085] leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
                         Remember me
                       </label>
                     </div>
-                    <Link href="/auth/forgot-password" className="text-primary-green">
+                    <Link
+                      href="/auth/forgot-password"
+                      className="text-primary-green"
+                    >
                       Forgot password?
                     </Link>
                   </div>
                   <button
                     type="submit"
-                    className="bg-primary-green hover:bg-primary-green/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center">
+                    className="bg-primary-green hover:bg-primary-green/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center"
+                  >
                     {isPending ? <Spinner /> : "Login"}
                   </button>
                 </form>
@@ -177,21 +261,36 @@ export default function Login() {
                 <div className="space-y-3">
                   <Link
                     href={`${API_URL}/users/api/v1/auth/facebook`}
-                    className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021] textDecorationNone">
-                    <Image src="/icons/facebook.svg" alt="" width={20} height={20} />
+                    className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021] textDecorationNone"
+                  >
+                    <Image
+                      src="/icons/facebook.svg"
+                      alt=""
+                      width={20}
+                      height={20}
+                    />
                     Continue with Facebook
                   </Link>
                   <Link
                     href={`${API_URL}/users/api/v1/auth/google`}
-                    className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021] textDecorationNone">
-                    <Image src="/icons/google.svg" alt="" width={20} height={20} />
+                    className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021] textDecorationNone"
+                  >
+                    <Image
+                      src="/icons/google.svg"
+                      alt=""
+                      width={20}
+                      height={20}
+                    />
                     Continue with Google
                   </Link>
                 </div>
 
                 <p className="text-center text-[#667085]">
                   Do not have an account?{" "}
-                  <Link href="/auth/register" className="text-primary-green font-semibold">
+                  <Link
+                    href="/auth/register"
+                    className="text-primary-green font-semibold"
+                  >
                     Register Now
                   </Link>
                 </p>

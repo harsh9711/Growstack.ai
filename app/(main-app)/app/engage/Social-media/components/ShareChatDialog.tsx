@@ -14,7 +14,7 @@ export default function ShareChatDialog() {
       <DialogTrigger asChild>
         <button className="bg-primary-green p-3.5 rounded-xl hover:bg-primary-green/90 text-white fixed bottom-6 right-8 shadow-xl shadow-[#2fff0038]">
           <IoIosShareAlt size={30} />
-        </button>
+        </button> 
       </DialogTrigger>
       <DialogContent className="max-w-[630px] p-0">
         <DialogHeader className="border-b py-5 px-6">
@@ -25,7 +25,8 @@ export default function ShareChatDialog() {
             <div className="flex justify-between items-center border-b pb-4">
               <div className="space-y-2">
                 <h1 className="text-lg font-semibold">Export format</h1>
-                <p className="text-[15px] text-primary-black text-opacity-80">Markdown or PNG image</p>
+                <p className="text-[15px] text-primary-black text-opacity-80">Text,PDF and Docx</p>
+                
               </div>
               <Select>
                 <SelectTrigger className="p-3 w-[90px] bg-primary-light-gray border-0 h-10">
