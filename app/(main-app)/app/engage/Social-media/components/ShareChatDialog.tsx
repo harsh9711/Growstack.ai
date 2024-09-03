@@ -25,7 +25,7 @@ export default function ShareChatDialog() {
             <div className="flex justify-between items-center border-b pb-4">
               <div className="space-y-2">
                 <h1 className="text-lg font-semibold">Export format</h1>
-                <p className="text-[15px] text-primary-black text-opacity-80">Markdown or PNG image</p>
+                <p className="text-[15px] text-primary-black text-opacity-80">Text, PDF and DOCX</p>
               </div>
               <Select>
                 <SelectTrigger className="p-3 w-[90px] bg-primary-light-gray border-0 h-10">

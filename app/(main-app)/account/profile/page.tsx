@@ -35,13 +35,13 @@ export default function ProfilePage() {
 
   const ValidationSchema = z.object({
     email: z.string().email("Please enter a valid email address"),
-    name: z.string().nonempty("Please enter a Full Name"),
-    job_role: z.string().nonempty("Please enter a role"),
-    company_name: z.string().nonempty("Please enter a Company Name"),
-    company_website: z.string().url("Please enter a Company Website"),
-    address_line: z.string().nonempty("Please enter a Address Line"),
-    city: z.string().nonempty("Please enter a city"),
-    postal_code: z.string().nonempty("Please enter a Postal Code"),
+    name: z.string().min(1, "Please enter a Full Name"),
+    job_role: z.string().optional(),
+    company_name: z.string().optional(),
+    company_website: z.string().optional(),
+    address_line: z.string().optional(),
+    city: z.string().optional(),
+    postal_code: z.string().optional(),
     country: z.string().optional(),
     profile_img: z.any().optional(),
   });
@@ -246,7 +246,7 @@ export default function ProfilePage() {
 
             <div className="flex h-[54px] w-full bg-white border border-[#eee] rounded-xl text-sm justify-between">
               <div className="w-full flex items-center px-4 overflow-hidden">
-                <h1 className="whitespace-nowrap overflow-hidden w-full text-ellipsis"> {selectedAvatarFileName || "Choose your avatar..."}</h1>
+                <h1 className="whitespace-nowrap overflow-hidden w-full text-ellipsis"> {selectedAvatarFileName || previewImage ? "Change your avatar..." : "Choose your avatar..."}</h1>
               </div>
 
               <label
@@ -287,7 +287,7 @@ export default function ProfilePage() {
                   <input
                     type="text"
                     id="name"
-                    placeholder="Full Name"
+                    placeholder="Enter your Full Name"
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("name")}
                   />
@@ -297,7 +297,7 @@ export default function ProfilePage() {
                   <label>Role job</label>
                   <input
                     type="text"
-                    placeholder="Enter your role job"
+                    placeholder="Enter your Role Job"
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("job_role")}
                   />
@@ -308,7 +308,7 @@ export default function ProfilePage() {
                   <input
                     id="email"
                     type="text"
-                    placeholder="Enter your email"
+                    placeholder="Enter your Email"
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("email")}
                   />
@@ -340,7 +340,7 @@ export default function ProfilePage() {
                   <label>Address Line</label>
                   <input
                     type="text"
-                    placeholder="Your Address Line"
+                    placeholder="Enter your Address Line"
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("address_line")}
                   />

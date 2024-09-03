@@ -142,7 +142,7 @@ export default function AiPlayground() {
     <>
       <div className="flex-1 h-full flex flex-col mt-10 overflow-x-auto">
         <form onSubmit={handleSubmit} className="flex-1 h-full flex gap-6">
-          <div className="!bg-white h-full flex flex-col border border-[#E8E8E8] shadow-box p-5 space-y-5">
+          <div className="!bg-white h-full flex flex-col border border-[#E8E8E8] normal-box p-5 space-y-5">
             <NewChatAlert handleNewChat={() => setChatAreas(initialChat)} />
             {/* <button
             type="button"

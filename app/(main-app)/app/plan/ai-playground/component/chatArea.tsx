@@ -25,7 +25,7 @@ const ChatArea = ({ selectedModel, addChatArea, onModelChange, conversation, han
   const selectedOption = modelData.flatMap((provider) => provider.models).find((model) => model.value === selectedModel);
 
   return (
-    <div className="flex-1 flex flex-col !bg-white border border-[#E8E8E8] shadow-box p-7 w-full justify-between min-w-[400px]">
+    <div className="flex-1 flex flex-col !bg-white border border-[#E8E8E8] normal-box p-7 w-full justify-between min-w-[400px]">
       <div className="flex items-start justify-between mb-[10px]">
         <AIModel selectedOption={selectedModel} setSelectedOption={onModelChange} selectedOptionLabel={selectedOption?.label} />
         <div className="flex items-center gap-2">
@@ -64,7 +64,7 @@ const ChatArea = ({ selectedModel, addChatArea, onModelChange, conversation, han
       <div className="flex-1 flex flex-col max-h-[68vh] overflow-y-auto">
         {conversation.length > 0 ? <ChatMessages conversation={conversation} /> : <></>}
       </div>
-      <div className="border border-gray-200 bg-[#F5F5F5] flex items-center gap-3 p-1 pl-4 rounded-xl">
+      <div className="border border-gray-200 bg-[#F5F5F5] flex items-center gap-3 p-1 pl-4 rounded-xl mt-4">
         {/* <Link size={20} className="text-primary-green" /> */}
         <input
           type="text"
