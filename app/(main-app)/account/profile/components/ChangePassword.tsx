@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from 'react';
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { z } from "zod";
@@ -6,13 +6,22 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Edit } from "lucide-react";
 import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash, FaEdit } from 'react-icons/fa';
+
 
 const ChangePassword = () => {
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+
   const ValidationSchema = z.object({
     newPassword: z
       .string()
       .min(8, "Password must be at least 8 characters")
-      .max(20, "Password can't exceed 20 characters"),
+      .max(20, "Password can't exceed 20 characters")
+      .regex(
+        /^(?=.*[A-Z])(?=.*[!@#$%^&*()_+{}[\]:;<>,.?~\\/-])/,
+        "Password must contain at least one uppercase letter and one special character"
+      ),
     oldPassword: z
       .string()
       .min(8, "Password must be at least 8 characters")
@@ -24,14 +33,12 @@ const ChangePassword = () => {
   const {
     register,
     handleSubmit,
-
     formState: { errors },
   } = useForm<ValidationSchemaType>({
     resolver: zodResolver(ValidationSchema),
   });
 
   const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
-    // setIsPending(true);
     try {
       const validatedData = ValidationSchema.parse(data);
       const response = await instance.put(
@@ -46,11 +53,10 @@ const ChangePassword = () => {
       } else {
         toast.error(error.message);
       }
-      console.error("Login failed:", error);
-    } finally {
-      // setIsPending(false);
+      console.error("Change password failed:", error);
     }
   };
+
   return (
     <div className="w-full">
       <form
@@ -59,37 +65,47 @@ const ChangePassword = () => {
       >
         <div className="flex-1">
           <h1 className="border-b pb-4 flex items-center gap-3 font-semibold text-xl">
-            <Edit size={20} />
+            <FaEdit size={20} />
             Edit your password
           </h1>
           <div>
             <div className="grid grid-cols-2 gap-x-5 gap-y-6 mt-6">
-              <div className="space-y-3 w-full">
+              <div className="space-y-3 w-full relative">
                 <label>Old Password</label>
                 <input
-                  type="text"
-                  id="name"
-                  // name="oldPassword"
+                  type={showOldPassword ? "text" : "password"}
                   placeholder="Enter Your Old Password"
-                  className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
+                  className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm pr-10"
                   {...register("oldPassword")}
                 />
+                <div
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+                  style={{ marginTop:"34px" }}
+                  onClick={() => setShowOldPassword(!showOldPassword)}
+                >
+                  {showOldPassword ? <FaEye />  : <FaEyeSlash />}
+                </div>
                 {errors.oldPassword && (
                   <span className="text-rose-600 text-sm">
                     {errors.oldPassword?.message}
                   </span>
                 )}
               </div>
-              <div className="space-y-3 w-full">
+              <div className="space-y-3 w-full relative">
                 <label>New Password</label>
                 <input
-                  type="text"
-                  // name="role"
+                  type={showNewPassword ? "text" : "password"}
                   placeholder="Enter Your New Password"
-                  // value="Administrator"
-                  className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
+                  className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm pr-10"
                   {...register("newPassword")}
                 />
+                <div
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+                  style={{ marginTop:"34px" }}
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                >
+                  {showNewPassword ? <FaEye />  : <FaEyeSlash />}
+                </div>
                 {errors.newPassword && (
                   <span className="text-rose-600 text-sm">
                     {errors.newPassword?.message}
@@ -101,7 +117,7 @@ const ChangePassword = () => {
         </div>
         <div className="flex justify-end gap-4">
           <button
-            type="submit"
+            type="button"
             className="h-12 py-3 px-3 w-full max-w-[150px] uppercase border border-primary-green text-primary-green hover:bg-primary-green/10 rounded-xl mt-6"
           >
             Cancel

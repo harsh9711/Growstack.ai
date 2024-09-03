@@ -35,7 +35,7 @@ export default function MobileSidebar({ onClose, isOpen }: Props) {
       } overflow-hidden bg-white fixed right-0 top-0 bottom-0 h-screen shadow-2xl z-[9999999] transition-[width] duration-500`}>
       <div className="pl-8 flex flex-col justify-between pt-6 pb-10 px-4 h-full">
         <div className="flex items-center justify-between w-full">
-          <Logo />
+          <Logo />***
           <div className="w-10 grid place-content-center ml-6">
             <div
               className="flex flex-col items-end justify-center rounded-md transition duration-100 p-2 space-y-[7px] cursor-pointer  group"
@@ -53,7 +53,7 @@ export default function MobileSidebar({ onClose, isOpen }: Props) {
             </div>
           </div>
         </div>
-
+        ***********
         <div className="flex flex-col gap-10">
           {navLinks.map((link, index) => (
             <Link href={link.href} key={index}>

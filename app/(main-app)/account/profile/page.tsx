@@ -35,8 +35,8 @@ export default function ProfilePage() {
   const [selectedAvatarFileName, setSelectedAvatarFileName] = useState("");
 
   const ValidationSchema = z.object({
-    email: z.string().email("Please enter a valid email address"), // required
-    name: z.string().nonempty("Please enter a Full Name"), // required
+    email: z.string().email("Please enter a valid email address"),
+    name: z.string().nonempty("Please enter a Full Name"),
     job_role: z.string().optional(),
     company_name: z.string().optional(),
     company_website: z.string().optional(),
@@ -247,7 +247,8 @@ export default function ProfilePage() {
 
             <div className="flex h-[54px] w-full bg-white border border-[#eee] rounded-xl text-sm justify-between">
               <div className="w-full flex items-center px-4 overflow-hidden">
-                <h1 className="whitespace-nowrap overflow-hidden w-full text-ellipsis"> {selectedAvatarFileName || "Choose your avatar..."}</h1>
+                <h1 className="whitespace-nowrap overflow-hidden w-full text-ellipsis"> {avatarLink && Object(avatarLink).length ? selectedAvatarFileName || "Choose your avatar..." : "Change the avatar"}
+                </h1>
               </div>
 
               <label
