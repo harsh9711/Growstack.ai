@@ -21,3 +21,9 @@
 .change-bg button {
   background-color: #FBFBFB !important;
 }
+
+
+.shadow-box{
+  box-shadow: 8px 0px 84px 0px rgba(0, 0, 0, 0.02), 0px 0px 8px 0px rgba(0, 0, 0, 0.02), 0px 0px 0px -3px rgba(0, 0, 0, 0.02), 0px 3px 2px 0px rgba(0, 0, 0, 0.02), 0px 1px 1px 0px rgba(0, 0, 0, 0.01);
+
+}
