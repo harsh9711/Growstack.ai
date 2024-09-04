@@ -44,6 +44,12 @@ export default function RootLayout({
             gtag('config', 'G-CLCETMEDBL');
           `}
         </Script>
+        <Script
+          src="https://app.10xlaunch.ai/widget"
+          data-app-id="889a8e5c-0c2c-44cb-8494-a1978142001e"
+          async
+          defer
+        ></Script>
       </head>
       <body className={poppins.className}>
         <StateProvider>
