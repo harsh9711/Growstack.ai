@@ -8,8 +8,9 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import StateProvider from "@/providers/StateProvider";
 import SuspenseLoader from "@/components/SuspenseLoader";
 import "./layout.scss";
-import 'aos/dist/aos.css';
+import "aos/dist/aos.css";
 import "../styles/new.css";
+import Script from "next/script";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -30,6 +31,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-CLCETMEDBL"
+        ></Script>
+        <Script id="google-analytics">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-CLCETMEDBL');
+          `}
+        </Script>
+      </head>
       <body className={poppins.className}>
         <StateProvider>
           <Suspense fallback={<SuspenseLoader />}>
