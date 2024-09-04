@@ -142,7 +142,11 @@ export default function ShareChatDialog({
             <div className="space-y-2">
               <h1 className="text-lg font-semibold">Export format</h1>
               <p className="text-[15px] text-primary-black text-opacity-80">
+<<<<<<< HEAD
                 Text, PDF and DOCX
+=======
+               Text,PDF and Docx
+>>>>>>> 3547413437b6b1fea3c49b32241dd9551d008795
               </p>
             </div>
             <Select

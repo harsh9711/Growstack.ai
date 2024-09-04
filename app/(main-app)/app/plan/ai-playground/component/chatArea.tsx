@@ -61,7 +61,7 @@ const ChatArea = ({ selectedModel, addChatArea, onModelChange, conversation, han
           </div>
         </div>
       </div>
-      <div className="flex-1 flex flex-col max-h-[68vh] overflow-y-auto">
+      <div className="flex-1 flex flex-col max-h-[68vh] overflow-y-auto mb-3">
         {conversation.length > 0 ? <ChatMessages conversation={conversation} /> : <></>}
       </div>
       <div className="border border-gray-200 bg-[#F5F5F5] flex items-center gap-3 p-1 pl-4 rounded-xl mt-4">

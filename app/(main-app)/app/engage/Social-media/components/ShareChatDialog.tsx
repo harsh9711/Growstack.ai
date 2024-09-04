@@ -14,7 +14,7 @@ export default function ShareChatDialog() {
       <DialogTrigger asChild>
         <button className="bg-primary-green p-3.5 rounded-xl hover:bg-primary-green/90 text-white fixed bottom-6 right-8 shadow-xl shadow-[#2fff0038]">
           <IoIosShareAlt size={30} />
-        </button>
+        </button> 
       </DialogTrigger>
       <DialogContent className="max-w-[630px] p-0">
         <DialogHeader className="border-b py-5 px-6">

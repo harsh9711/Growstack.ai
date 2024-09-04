@@ -10,9 +10,11 @@ import React from "react";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import navLinks from "./constants/nav";
 import { ProfileButton } from "./ProfileButton";
+import { useRouter } from "next-nprogress-bar";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
 
   const isLinkActive = (link: NavLink): boolean => {
     if (link.href && pathname === link.href) {
@@ -77,11 +79,13 @@ export default function Navbar() {
   };
 
   return (
-    <header className="bg-white shadow-2xl shadow-primary-green/10 py-4 px-10 rounded-[24px] w-full max-w-[90%] mx-auto fixed top-0 left-1/2 transform -translate-x-1/2 z-[5]">
+    <header className="bg-white shadow-2xl shadow-primary-green/10 py-4 px-10 rounded-[24px] w-full max-w-[90%] mx-auto fixed top-0 left-1/2 transform -translate-x-1/2 z-[5]" style={{marginTop: "15px"}}>
       <nav className="flex justify-between items-center gap-5">
-        <Link href="/app"><div className="border-r border-[#DEDEDE] pr-10">
+        <div className="border-r border-[#DEDEDE] pr-10" style={{cursor: "pointer"}} onClick={() => {
+          router.push("/app");
+        }}>
           <Image src="/logo/growstack.png" alt="" width={150} height={40} draggable={false} className="select-none max-h-14" priority />
-        </div></Link>
+        </div>
         <div className="flex gap-3">
           {navLinks.map((link, index) => (
             <DropdownMenu key={index}>

@@ -22,6 +22,7 @@ import { useDispatch } from "react-redux";
 import { countries } from "./data";
 import { useRouter } from "next-nprogress-bar";
 import clsx from "clsx";
+import "@/styles/profile.css";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -246,7 +247,8 @@ export default function ProfilePage() {
 
             <div className="flex h-[54px] w-full bg-white border border-[#eee] rounded-xl text-sm justify-between">
               <div className="w-full flex items-center px-4 overflow-hidden">
-                <h1 className="whitespace-nowrap overflow-hidden w-full text-ellipsis"> {selectedAvatarFileName || previewImage ? "Change your avatar..." : "Choose your avatar..."}</h1>
+                <h1 className="whitespace-nowrap overflow-hidden w-full text-ellipsis"> {avatarLink && Object(avatarLink).length ? selectedAvatarFileName || "Choose your avatar..." : "Change the avatar"}
+                </h1>
               </div>
 
               <label
@@ -283,7 +285,7 @@ export default function ProfilePage() {
             <div>
               <div className="grid grid-cols-2 gap-x-5 gap-y-6 mt-6">
                 <div className="space-y-3 w-full">
-                  <label>Full Name</label>
+                  <label>Full Name<span className="imp ml-1">*</span></label>
                   <input
                     type="text"
                     id="name"
@@ -304,7 +306,7 @@ export default function ProfilePage() {
                   {errors.job_role && <span className="text-rose-600 text-sm">{errors.job_role?.message}</span>}
                 </div>
                 <div className="space-y-3 w-full">
-                  <label>Email</label>
+                  <label>Email<span className="imp ml-1">*</span></label>
                   <input
                     id="email"
                     type="text"

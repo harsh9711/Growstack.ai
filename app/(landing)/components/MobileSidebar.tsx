@@ -53,7 +53,6 @@ export default function MobileSidebar({ onClose, isOpen }: Props) {
             </div>
           </div>
         </div>
-
         <div className="flex flex-col gap-10">
           {navLinks.map((link, index) => (
             <Link href={link.href} key={index}>
