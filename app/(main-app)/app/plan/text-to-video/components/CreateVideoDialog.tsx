@@ -1,7 +1,7 @@
 "use client";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Image from "next/image";
-import {  Plus, Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { Template } from "./types";
 import Motion from "@/components/Motion";
 import Spinner from "@/components/Spinner";
@@ -9,7 +9,7 @@ import Spinner from "@/components/Spinner";
 import { API_URL } from "@/lib/api";
 import instance from "@/config/axios.config";
 import clsx from "clsx";
-import {  motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -35,7 +35,12 @@ const CreateVideoDialog = ({
 }) => {
   const formSchema = z.object({
     title: z.string().min(1, "Title is required"),
-    objective: z.string().min(1, "Objective is required"),
+    objective: z
+      .string()
+      .min(1, "Objective is required")
+      .refine((value) => value.trim().split(/\s+/).length >= 10, {
+        message: " Objective must be at least 10 words",
+      }),
     language: z.string().optional(),
     tone: z.string().optional(),
     speaker: z.string().optional(),
@@ -106,8 +111,12 @@ const CreateVideoDialog = ({
   const handleVoiceSelect = (voiceId: string) => {
     setSelectedVoice(voiceId);
   };
-
-  // code optimization 
+  const [formErrors, setFormErrors] = useState<{
+    title?: { _errors: string[] };
+    objective?: { _errors: string[] };
+    speaker?: { _errors: string[] };
+    audience?: { _errors: string[] };
+  }>({});
   const handleSubmit = async () => {
     const validation = formSchema.safeParse(formData);
     if (!validation.success) {
@@ -142,14 +151,40 @@ const CreateVideoDialog = ({
     >
   ) => {
     const { name, value } = e.target;
+
+    // Update the form data with the new value
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+
+    // Validate the updated form data
+    const validation = formSchema.safeParse({
+      ...formData,
+      [name]: value,
+    });
+
+    if (validation.success) {
+      // Clear any previous errors for this field
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: undefined,
+      }));
+    } else {
+      // Extract and set the validation errors
+      const errors = validation.error.format();
+      setFormErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: errors[name as keyof typeof formData], // Cast to the correct key type
+      }));
+    }
   };
+
   const handleButtonClick = async () => {
     setLoading2(true);
-  
+
     requestAnimationFrame(async () => {
       const validation = formSchema.safeParse(formData);
       if (!validation.success) {
+        const errors = validation.error.format();
+        setFormErrors(errors);
         toast.error(validation.error.errors[0].message);
         setLoading2(false);
         return;
@@ -159,17 +194,17 @@ const CreateVideoDialog = ({
         setLoading2(false);
         return;
       }
-  
+
       // Form is valid and avatar is selected
       setClicked(true);
       setStep(1);
-      
+
       try {
         const scriptResponse = await instance.post(
           `${API_URL}/ai/api/v1/generate/video/video-script`,
           formData
         );
-  
+
         if (scriptResponse.data.success) {
           setVideoScript(scriptResponse.data.data.script);
           await generateVideo(scriptResponse.data.data.script);
@@ -177,11 +212,11 @@ const CreateVideoDialog = ({
           toast.error("Failed to generate script");
         }
       } catch (error) {
-        toast.error("Error submitting the form");
+        toast.error(`Error submitting the form ${error}`);
       } finally {
         setLoading2(false);
         setLoading(true);
-  
+
         setTimeout(() => {
           setDialogOpen(false);
           resetForm();
@@ -189,7 +224,7 @@ const CreateVideoDialog = ({
       }
     });
   };
-  
+
   useEffect(() => {
     const loadAvatars = async () => {
       try {
@@ -225,7 +260,6 @@ const CreateVideoDialog = ({
     loadVoices();
   }, []);
 
-  
   const LoadingOverlay = ({ progress }: { progress: number }) => {
     const [displayText, setDisplayText] = useState("Let AI do the magic");
 
@@ -303,8 +337,6 @@ const CreateVideoDialog = ({
       setGeneratingVideo(false);
     }
   };
-
- 
 
   const handleAvatarSelect = (avatar: Avatar) => {
     setSelectedAvatar(avatar);
@@ -395,6 +427,11 @@ const CreateVideoDialog = ({
                         onChange={handleInputChange}
                         className="border border-[#DEDEDE] bg-[#F5F5F5] h-[54px] w-full rounded-xl outline-none focus:border-primary-green transition-all p-4"
                       />
+                      {formErrors.title && (
+                        <span className="text-red-500 text-sm">
+                          {formErrors.title._errors}
+                        </span>
+                      )}
                     </div>
                   </div>
                   <div className="flex xl:flex-row md:flex-row lg:flex-row flex-col 2xl:flex-row gap-x-6 w-full">
@@ -414,6 +451,11 @@ const CreateVideoDialog = ({
                         onChange={handleInputChange}
                         className="border border-[#DEDEDE] bg-[#F5F5F5] resize-none h-[160px] w-full rounded-xl outline-none focus:border-primary-green transition-all p-4"
                       ></textarea>
+                      {formErrors.objective && (
+                        <span className="text-red-500 text-sm">
+                          {formErrors.objective._errors}<br></br>
+                        </span>
+                      )}
                     </div>
                     <div className="flex flex-col w-full gap-y-4">
                       <div className="flex flex-col w-full space-y-2">
@@ -537,7 +579,6 @@ const CreateVideoDialog = ({
                             Select your Avatar
                           </h2>
                         </div>
-                  
 
                         <div className="flex flex-col xl:flex-row md:flex-row lg:flex-row 2xl:flex-row flex-1 justify-end items-center gap-x-6">
                           <div className="bg-white border text-[13px] border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-[300px]">
@@ -559,7 +600,7 @@ const CreateVideoDialog = ({
                                 "opacity-80 cursor-not-allowed": loading,
                               }
                             )}
-                            onClick={handleButtonClick }
+                            onClick={handleButtonClick}
                           >
                             {loading ? (
                               <Spinner />
