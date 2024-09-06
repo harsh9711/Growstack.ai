@@ -273,7 +273,7 @@ export default function CreateTemplatePage() {
               </div>
               <div className="space-y-2">
                 <label className="font-medium">
-                  Icon (SVG or Font Awesome){" "}
+                  Upload Icon
                   <span className="text-[#F00]">*</span>
                 </label>
                 <div
