@@ -82,6 +82,12 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, onFileUpload }) =>
     <div className="shadow-lg rounded-lg bg-white">
       <div className="flex flex-col p-2 border-b border-gray-200 rounded-t-lg">
         <div className="flex items-center">
+        <button
+          className="text-gray-600"
+          onClick={handleAttachClick}
+        >
+          <IoIosAttach size={30} />
+        </button>
         {fileInfo && (
           <div className="flex items-center justify-between  mt-2 p-2 bg-gray-100 border border-gray-300 rounded-lg">
             <div className="flex items-center space-x-2">
@@ -112,6 +118,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, onFileUpload }) =>
           >
             <IoMdSend size={30} />
           </button>
+          <button className="mr-3" onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
+          <IoMdHappy size={30} />
+        </button>
         </div>
 
 
@@ -126,16 +135,8 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, onFileUpload }) =>
         )}
       </div>
 
-      <div className="flex items-center p-2 border-t border-gray-200 rounded-b-lg bg-white">
-        <button
-          className="text-gray-600"
-          onClick={handleAttachClick}
-        >
-          <IoIosAttach size={30} />
-        </button>
-        <button className="mr-3" onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
-          <IoMdHappy size={30} />
-        </button>
+
+       
         {showEmojiPicker && (
           <div className="absolute bottom-16 z-50">
             <Picker onEmojiClick={handleEmojiClick} />
@@ -147,7 +148,6 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, onFileUpload }) =>
           className="hidden"
           onChange={handleFileChange}
         />
-      </div>
     </div>
   );
 };

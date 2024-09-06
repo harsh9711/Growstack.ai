@@ -187,21 +187,10 @@ const Layout = () => {
 
   const handleSendMessage = async (message: string) => {
     setMessages(message);
-    const payloaddata = {
-      senderId: "1800863858682187776",
-      attachments: [],
-      created: {},
-      conversationId: "1788791796136361984-1800863858682187776",
-      recipientId: "1788791796136361984",
-      id: "1831577242255671718",
-      message: message,
-      action: "sent",
-      senderDetails: {
-        name: "GrowStack AI",
-        username: "Growstackai",
-      },
-    };
+    let file
+
     if (uploadedFile) {
+      // selectedMessage.message.push(payloaddata);
       const formData = new FormData();
       formData.append("document", uploadedFile);
       try {
@@ -209,7 +198,15 @@ const Layout = () => {
           API_URL + "/users/api/v1/file/upload",
           formData
         );
-        console.log("response", response);
+
+        const payload = {
+          recipientId: "1788791796136361984",
+          message: message,
+          mediaUrls: [response.data.data.fileUrl],
+        };
+        sendMessage(payload);
+        console.log("response", response.data.data.fileUrl );
+        file=response.data.data.fileUrl
         setUploadedFile(null);
         setMessages("");
         // toast.success(response.data.message);
@@ -224,9 +221,7 @@ const Layout = () => {
         // setIsPending(false);
       }
     } else {
-      selectedMessage.message.push(payloaddata);
       console.log("selectedMessage", selectedMessage);
-
       const payload = {
         recipientId: "1788791796136361984",
         message: message,
@@ -236,6 +231,24 @@ const Layout = () => {
       setUploadedFile(null);
       setMessages("");
     }
+    const payloaddata = {
+      senderId: "1800863858682187776",
+      attachments: file?[{"type": "image","url":file}]:[],
+      created: {},
+      conversationId: "1788791796136361984-1800863858682187776",
+      recipientId: "1788791796136361984",
+      id: "1831577242255671718",
+      message: message?message:'',
+      action: "sent",
+      senderDetails: {
+        name: "GrowStack AI",
+        username: "Growstackai",
+      },
+    };
+    setSelectedMessage((prevSelectedMessage: any) => ({
+      ...prevSelectedMessage,
+      message: [...prevSelectedMessage.message, payloaddata],
+    }));
 
     // alert(message)
   };
@@ -399,19 +412,7 @@ const Layout = () => {
     handleGetComments();
   }, []);
 
-  const [selectedMessage, setSelectedMessage] = useState<{
-    title: string;
-    time: string;
-    author: string;
-    message: any;
-    imageUrl: string;
-  }>({
-    title: "",
-    time: "",
-    author: "",
-    message: [],
-    imageUrl: "",
-  });
+  const [selectedMessage, setSelectedMessage] = useState<any>();
 
   const handleSelectMessage = (message: {
     title: string;
@@ -485,124 +486,84 @@ const Layout = () => {
         {/* <div className="h-20 w-full bg-gradient-to-b from-transparent via-white to-white absolute bottom-0 rounde" /> */}
       </aside>
       {isOpened && selectedMessage && (
-        <main
-          className="flex-1 w-full flex flex-col bg-gray-100 p-4 border"
-          style={{ ...hideScrollbarStyles, ...hideScrollbarWebkit }}
-        >
-          <div className="flex flex-row gap-4 items-center">
-            <Image src="/facebook.png" alt="facebook" width={50} height={50} />
-            <h2 className="font-semibold text-[18px]">
-              {selectedMessage.title}
-            </h2>
-          </div>
-          <div className="border-[0.1px] border-gray-200 my-4 w-[1400px] -translate-x-4"></div>
+  <main
+    className="flex-1 w-full flex flex-col bg-gray-100 p-4 border"
+    style={{ ...hideScrollbarStyles, ...hideScrollbarWebkit }}
+  >
+    {/* Message Header */}
+    <div className="flex flex-row gap-4 items-center">
+      <Image src="/facebook.png" alt="facebook" width={50} height={50} />
+      <h2 className="font-semibold text-[18px]">{selectedMessage.title}</h2>
+    </div>
 
-          <div
-            className="flex-1 p-4"
-            style={{ ...hideScrollbarStyles, ...hideScrollbarWebkit }}
-          >
-            <div className="flex flex-col gap-4">
-              {/* Updated check */}
+    {/* Divider */}
+    <div className="border-[0.1px] border-gray-200 my-4 w-[1400px] -translate-x-4"></div>
 
-              {Array.isArray(selectedMessage.message) &&
-              selectedMessage.message.length > 0 ? (
-                selectedMessage.message.map((msg, index) => (
-                  <div key={index} className="flex flex-row gap-4">
-                    <ChatMessage
-                      message={
-                        <>
-                          {msg.message}
-                          {/* Render attachments if they exist */}
-                          {msg.attachments &&
-                            msg.attachments.length > 0 &&
-                            msg.attachments.map(
-                              (attachment: any, attIndex: any) => (
-                                <div key={attIndex}>
-                                  {attachment.type === "image" && (
-                                    // <>{attachment.url}</>
-                                    <Image
-                                      src={"/logo/growstack-mini.png"}
-                                      onError={(e) =>
-                                        (e.currentTarget.src =
-                                          "/logo/growstack-mini.png")
-                                      }
-                                      alt={`attachment-${attIndex}`}
-                                      width={100}
-                                      height={300}
-                                      className="rounded-xl border mt-2"
-                                    />
-                                  )}
-                                </div>
-                              )
-                            )}
-                        </>
-                      }
-                      imageUrl={
-                        msg.senderDetails?.profileImage ||
-                        "/logo/growstack-mini.png"
-                      }
-                      title={msg.senderDetails?.name || "Unknown"}
-                      time={formatRelativeDate(msg.created)}
-                    />
-                    <div className="flex flex-row items-center relative ml-3">
-                      <h2 className="text-[12px] font-light mr-2">
-                        {/* {formatRelativeDate(msg.created)} */}
-                      </h2>
-                      {/* {show && (
-                  <button className="items-center flex flex-row px-4 p-2 bg-white text-white gap-2 translate-y-8 rounded-xl group">
-                    <svg
-                      width="21"
-                      height="20"
-                      viewBox="0 0 21 20"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M9.66732 5.82812H5.50065C4.58018 5.82812 3.83398 6.57432 3.83398 7.49479V14.9948C3.83398 15.9153 4.58018 16.6615 5.50065 16.6615H13.0007C13.9211 16.6615 14.6673 15.9153 14.6673 14.9948V10.8281"
-                        stroke="#14171B"
-                        strokeWidth="1.45833"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M8.83398 11.6615L17.1673 3.32812"
-                        stroke="#14171B"
-                        strokeWidth="1.45833"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M13 3.32812H17.1667V7.49479"
-                        stroke="#14171B"
-                        strokeWidth="1.45833"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    <h2 className="text-black transform transition-transform duration-200 ease-in-out group-hover:scale-110">
-                      Open on network
-                    </h2>
-                  </button>
-                )} */}
-                      <BsThreeDotsVertical
-                        className="text-xl"
-                        onClick={handleDotsClick}
-                      />
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p>{Array.isArray(selectedMessage)}No messages available</p>
-              )}
+    {/* Message Content */}
+    <div className="flex-1 p-4" style={{ ...hideScrollbarStyles, ...hideScrollbarWebkit }}>
+      <div className="flex flex-col gap-4">
+        {/* Check if there are messages */}
+        {Array.isArray(selectedMessage.message) && selectedMessage.message.length > 0 ? (
+          selectedMessage.message.map((msg: { message: any; attachments: any[]; senderDetails: { profileImage: any; name: any; }; created: string; }, index: React.Key | null | undefined) => (
+            <div key={index} className="flex flex-row gap-4">
+              <ChatMessage
+                message={
+                  <>
+                    {msg.message}
+                    {/* Render attachments */}
+                    {msg.attachments &&
+                      msg.attachments.length > 0 &&
+                      msg.attachments.map((attachment: any, attIndex: any) => (
+                        // src={attachment.url?attachment.url:"/logo/growstack-mini.png"}
+                        <div key={attIndex}>
+                        {attachment.url.includes("ton.twitter.com")}
+
+                          {attachment.type === "image" ? (
+                            <Image
+                              src={"/logo/growstack-mini.png"}
+                              alt={`attachment-${attIndex}`}
+                              width={100}
+                              height={300}
+                              className="rounded-xl border mt-2"
+                              onError={(e) =>
+                                (e.currentTarget.src = "/logo/growstack-mini.png")
+                              }
+                            />
+                          ) : (
+                            <a href={attachment.url} target="_blank" rel="noopener noreferrer">
+                              View Attachment
+                            </a>
+                          )}
+                        </div>
+                      ))}
+                  </>
+                }
+                imageUrl={msg.senderDetails?.profileImage || "/logo/growstack-mini.png"}
+                title={msg.senderDetails?.name || "Unknown"}
+                time={formatRelativeDate(msg.created)}
+              />
+              {/* <div className="flex flex-row items-center relative ml-3">
+                <BsThreeDotsVertical
+                  className="text-xl"
+                  onClick={handleDotsClick}
+                />
+              </div> */}
             </div>
-          </div>
-          <div className="mt-8"></div>
-          <ChatInput
-            onSendMessage={handleSendMessage}
-            onFileUpload={handleFileUpload}
-          />
-        </main>
-      )}
+          ))
+        ) : (
+          <p>No messages available</p>
+        )}
+      </div>
+    </div>
+
+    {/* Chat Input */}
+    <ChatInput
+      onSendMessage={handleSendMessage}
+      onFileUpload={handleFileUpload}
+    />
+  </main>
+)}
+
 
       {!isOpened && (
         <main className="w-full  bg-white">
