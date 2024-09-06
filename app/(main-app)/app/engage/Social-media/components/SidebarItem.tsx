@@ -3,11 +3,11 @@ import clsx from "clsx";
 import Image from "next/image";
 
 interface SidebarItemProps {
-  title: string;
-  time: string;
-  author: string;
-  message: string;
-  imageUrl: string;
+  title: string;       // Maps to senderDetails.name
+  time: any;        // Maps to created time
+  author: string;      // Maps to senderDetails.username
+  message: any;     // Maps to message content
+  imageUrl: string;    // Maps to senderDetails.profileImage
   onClick?: () => void; 
 }
 
@@ -26,7 +26,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
     if (onClick) {
       onClick(); 
     }
-    setIsOpened(true);
+    setIsOpened(!isOpened);
   };
 
   return (
@@ -40,14 +40,20 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
         onMouseLeave={() => setIsHovered(false)}
         onClick={handleItemClick}
       >
-        <Image src={imageUrl} alt="contact" width={50} height={50} className="-translate-y-1" />
+        <Image
+          src={imageUrl || "/default-profile.png"}  // Fallback to default image if no imageUrl
+          alt={title || "Profile image"} 
+          width={50} 
+          height={50} 
+          className="-translate-y-1"
+        />
         <div className="flex-1">
-          <div className="flex flex-row justify-between ">
+          <div className="flex flex-row justify-between">
             <h2 className="font-semibold">{title}</h2>
             <h2 className="font-extralight text-sm">{time}</h2>
           </div>
           <h2>{author}</h2>
-          <h2 className="font-extralight text-[12px]">{message}</h2>
+          <h2 className="font-extralight text-[12px] truncate">{message}</h2>
         </div>
       </div>
      

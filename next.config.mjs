@@ -49,6 +49,11 @@ const nextConfig = {
         hostname: "argildotai.s3-accelerate.amazonaws.com",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "ton.twitter.com",
+        port: "",
+      },
     ],
   },
   async headers() {

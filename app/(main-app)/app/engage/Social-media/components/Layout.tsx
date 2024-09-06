@@ -26,7 +26,9 @@ import { MdDelete } from "react-icons/md";
 import { API_URL } from "@/lib/api";
 import instance from "@/config/axios.config";
 import toast from "react-hot-toast";
-
+import MessageList from "./SidebarAccount";
+import { StaticImport } from "next/dist/shared/lib/get-img-props";
+import { formatRelativeDate } from "@/utils/dateformate";
 interface SidebarItem {
   _id: string;
   title: string;
@@ -179,99 +181,90 @@ const Layout = () => {
       icon: <CiSettings className="text-xl translate-x-48" />,
     },
   ];
-  const sidebarData = [
-    [
-      {
-        title: "GrowStack AI",
-        time: "12m",
-        author: "Vale Ferreira",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact2.png",
-      },
-      {
-        title: "GrowStack AI",
-        time: "30m",
-        author: "Laila Fernanda",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact3.png",
-      },
-      {
-        title: "GrowStack AI",
-        time: "12m",
-        author: "Jenny Wilson",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact2.png",
-      },
-      {
-        title: "GrowStack AI",
-        time: "12m",
-        author: "Esther Howard",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact2.png",
-      },
-      {
-        title: "GrowStack AI",
-        time: "12m",
-        author: "Jane Cooper",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact3.png",
-      },
-    ],
-    [
-      {
-        title: "GrowStack AI",
-        time: "12m",
-        author: "Jenny Wilson",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact2.png",
-      },
-      {
-        title: "GrowStack AI",
-        time: "12m",
-        author: "Esther Howard",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact2.png",
-      },
-      {
-        title: "GrowStack AI",
-        time: "12m",
-        author: "Jane Cooper",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact3.png",
-      },
-      {
-        title: "GrowStack AI",
-        time: "12m",
-        author: "Esther Howard",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact2.png",
-      },
-    ],
-    [
-      {
-        title: "GrowStack AI",
-        time: "12m",
-        author: "Esther Howard",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact2.png",
-      },
-      {
-        title: "GrowStack AI",
-        time: "12m",
-        author: "Jane Cooper",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact3.png",
-      },
-      {
-        title: "GrowStack AI",
-        time: "12m",
-        author: "Jenny Wilson",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact2.png",
-      },
-    ],
-  ];
+  const sidebarData = [];
+  const [messages, setMessages] = useState("");
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
+  const handleSendMessage = async (message: string) => {
+    setMessages(message);
+    const payloaddata = {
+      senderId: "1800863858682187776",
+      attachments: [],
+      created: {},
+      conversationId: "1788791796136361984-1800863858682187776",
+      recipientId: "1788791796136361984",
+      id: "1831577242255671718",
+      message: message,
+      action: "sent",
+      senderDetails: {
+        name: "GrowStack AI",
+        username: "Growstackai",
+      },
+    };
+    if (uploadedFile) {
+      const formData = new FormData();
+      formData.append("document", uploadedFile);
+      try {
+        const response: any = await instance.post(
+          API_URL + "/users/api/v1/file/upload",
+          formData
+        );
+        console.log("response", response);
+        setUploadedFile(null);
+        setMessages("");
+        // toast.success(response.data.message);
+      } catch (error: any) {
+        if (error.response) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error(error.message);
+        }
+        console.error(error);
+      } finally {
+        // setIsPending(false);
+      }
+    } else {
+      selectedMessage.message.push(payloaddata);
+      console.log("selectedMessage", selectedMessage);
+
+      const payload = {
+        recipientId: "1788791796136361984",
+        message: message,
+        mediaUrls: [],
+      };
+      sendMessage(payload);
+      setUploadedFile(null);
+      setMessages("");
+    }
+
+    // alert(message)
+  };
+
+  const sendMessage = async (payload: {}) => {
+    try {
+      const response: any = await instance.post(
+        API_URL +
+          "/users/api/v1/social-media/profile/messages?platform=twitter",
+        payload
+      );
+      toast.success(response.data.message);
+      return response;
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error(error);
+    } finally {
+      // setIsPending(false);
+    }
+  };
+
+  const handleFileUpload = (file: File) => {
+    setUploadedFile(file);
+    console.log("File uploaded:", file);
+  };
   const [showRightSidebar, setShowRightSidebar] = useState(false);
   const [MenuRotated, setMenuRotated] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -283,14 +276,14 @@ const Layout = () => {
   const [selectedOption, setSelectedOption] = useState(options[0].value);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
-  const [isOpened, setIsOpened] = useState(false);
+  const [isOpened, setIsOpened] = useState(true);
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
   const filterMenuRef = useRef<HTMLDivElement>(null);
   const [showDelete, setShowDelete] = useState(false);
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredData, setFilteredData] = useState(sidebarData[0]);
+  // const [filteredData, setFilteredData] = useState(sidebarData[0]);
 
   const handleDotsClick = () => {
     setShowDelete(!showDelete);
@@ -315,17 +308,17 @@ const Layout = () => {
     }
   };
 
-  useEffect(() => {
-    if (searchQuery.trim() === "") {
-      setFilteredData(sidebarData[0]);
-    } else {
-      setFilteredData(
-        sidebarData[0].filter((project: any) =>
-          project?.author?.toLowerCase().includes(searchQuery)
-        )
-      );
-    }
-  }, [searchQuery]);
+  // useEffect(() => {
+  //   if (searchQuery.trim() === "") {
+  //     setFilteredData(sidebarData[0]);
+  //   } else {
+  //     setFilteredData(
+  //       sidebarData[0].filter((project: any) =>
+  //         project?.author?.toLowerCase().includes(searchQuery)
+  //       )
+  //     );
+  //   }
+  // }, [searchQuery]);
 
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
@@ -406,8 +399,33 @@ const Layout = () => {
     handleGetComments();
   }, []);
 
+  const [selectedMessage, setSelectedMessage] = useState<{
+    title: string;
+    time: string;
+    author: string;
+    message: any;
+    imageUrl: string;
+  }>({
+    title: "",
+    time: "",
+    author: "",
+    message: [],
+    imageUrl: "",
+  });
+
+  const handleSelectMessage = (message: {
+    title: string;
+    time: string;
+    author: string;
+    message: any;
+    imageUrl: string;
+  }) => {
+    console.log("Selected message:", message);
+    setSelectedMessage(message);
+  };
+
   return (
-    <div className="flex-1 max-h-[780px] flex  mt-10 shadow-lg rounded-3xl text-ellipsis">
+    <div className="flex-1 max-h-[730px] flex  mt-10 shadow-lg rounded-3xl text-ellipsis">
       <aside
         className={clsx(
           "w-full max-w-[350px] relative border bg-white   flex flex-col",
@@ -451,7 +469,8 @@ const Layout = () => {
           />
         </div>
         <div className="relative p-5 flex-1 overflow-y-auto max-h-[calc(100vh-280px)]">
-          {filteredData?.map((item, idx) => (
+          <MessageList onSelectMessage={handleSelectMessage} />
+          {/* {filteredData?.map((item, idx) => (
             <SidebarItem
               key={idx}
               title={item.title}
@@ -461,54 +480,75 @@ const Layout = () => {
               imageUrl={item.imageUrl}
               onClick={() => handleMessage(item)} // Using 'item.title' as an example
             />
-          ))}
+          ))} */}
         </div>
         {/* <div className="h-20 w-full bg-gradient-to-b from-transparent via-white to-white absolute bottom-0 rounde" /> */}
       </aside>
-      {isOpened && (
+      {isOpened && selectedMessage && (
         <main
           className="flex-1 w-full flex flex-col bg-gray-100 p-4 border"
           style={{ ...hideScrollbarStyles, ...hideScrollbarWebkit }}
         >
           <div className="flex flex-row gap-4 items-center">
-            {" "}
             <Image src="/facebook.png" alt="facebook" width={50} height={50} />
-            <h2 className="font-semibold text-[18px]">Post comments</h2>
+            <h2 className="font-semibold text-[18px]">
+              {selectedMessage.title}
+            </h2>
           </div>
           <div className="border-[0.1px] border-gray-200 my-4 w-[1400px] -translate-x-4"></div>
+
           <div
             className="flex-1 p-4"
             style={{ ...hideScrollbarStyles, ...hideScrollbarWebkit }}
           >
-            <div className="flex flex-row justify-between">
-              {" "}
-              <ChatMessage
-                message={
-                  <>
-                    Lorem ipsum dolor sit amet consectetur. Non mattis tempor in
-                    sed ante venenatis ornare. Ultrices at bibendum at vitae ac
-                    diam habitasse. Ac cras Https://www.link.com. Imperdiet non
-                    potenti fermentum vitae sit id cras porta urna. Dignissim
-                    sit enim vitae elit semper pellentesque massa nulla. Nullam
-                    congue magna.
-                    <Image
-                      src="/pic.png"
-                      alt="pic"
-                      width={60}
-                      height={80}
-                      className="rounded-xl border mt-2"
+            <div className="flex flex-col gap-4">
+              {/* Updated check */}
+
+              {Array.isArray(selectedMessage.message) &&
+              selectedMessage.message.length > 0 ? (
+                selectedMessage.message.map((msg, index) => (
+                  <div key={index} className="flex flex-row gap-4">
+                    <ChatMessage
+                      message={
+                        <>
+                          {msg.message}
+                          {/* Render attachments if they exist */}
+                          {msg.attachments &&
+                            msg.attachments.length > 0 &&
+                            msg.attachments.map(
+                              (attachment: any, attIndex: any) => (
+                                <div key={attIndex}>
+                                  {attachment.type === "image" && (
+                                    // <>{attachment.url}</>
+                                    <Image
+                                      src={"/logo/growstack-mini.png"}
+                                      onError={(e) =>
+                                        (e.currentTarget.src =
+                                          "/logo/growstack-mini.png")
+                                      }
+                                      alt={`attachment-${attIndex}`}
+                                      width={100}
+                                      height={300}
+                                      className="rounded-xl border mt-2"
+                                    />
+                                  )}
+                                </div>
+                              )
+                            )}
+                        </>
+                      }
+                      imageUrl={
+                        msg.senderDetails?.profileImage ||
+                        "/logo/growstack-mini.png"
+                      }
+                      title={msg.senderDetails?.name || "Unknown"}
+                      time={formatRelativeDate(msg.created)}
                     />
-                  </>
-                }
-                imageUrl={"/contact2.png"}
-                title={"Growstack-AI"}
-                time={"Facebook Post"}
-              />
-              <div className="flex flex-row items-center relative -translate-y-24">
-                <h2 className="text-[12px] font-light mr-2  ">
-                  2023-03-06 , 11:00 PM
-                </h2>
-                {show && (
+                    <div className="flex flex-row items-center relative ml-3">
+                      <h2 className="text-[12px] font-light mr-2">
+                        {/* {formatRelativeDate(msg.created)} */}
+                      </h2>
+                      {/* {show && (
                   <button className="items-center flex flex-row px-4 p-2 bg-white text-white gap-2 translate-y-8 rounded-xl group">
                     <svg
                       width="21"
@@ -539,140 +579,31 @@ const Layout = () => {
                         strokeLinejoin="round"
                       />
                     </svg>
-                    <h2 className="text-black  transform transition-transform  duration-200 ease-in-out group-hover:scale-110 ">
+                    <h2 className="text-black transform transition-transform duration-200 ease-in-out group-hover:scale-110">
                       Open on network
                     </h2>
                   </button>
-                )}
-                <BsThreeDotsVertical
-                  className="text-xl "
-                  onClick={handleDotsClick2}
-                />
-              </div>
-            </div>{" "}
-            <div className="flex flex-row justify-between">
-              {" "}
-              <ChatMessage
-                message="omg, this is amazing"
-                imageUrl={"/contact2.png"}
-                title={"Vale Ferreira"}
-                time={""}
-              />
-              <div className="flex flex-row items-center relative">
-                <h2 className="text-[12px] font-light mr-2">
-                  2023-03-06 , 11:00 PM
-                </h2>
-                {show2 && (
-                  <button className="items-center flex flex-row px-4 p-2 bg-white text-white gap-2 translate-y-8 rounded-xl group">
-                    <svg
-                      width="21"
-                      height="20"
-                      viewBox="0 0 21 20"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M9.66732 5.82812H5.50065C4.58018 5.82812 3.83398 6.57432 3.83398 7.49479V14.9948C3.83398 15.9153 4.58018 16.6615 5.50065 16.6615H13.0007C13.9211 16.6615 14.6673 15.9153 14.6673 14.9948V10.8281"
-                        stroke="#14171B"
-                        strokeWidth="1.45833"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
+                )} */}
+                      <BsThreeDotsVertical
+                        className="text-xl"
+                        onClick={handleDotsClick}
                       />
-                      <path
-                        d="M8.83398 11.6615L17.1673 3.32812"
-                        stroke="#14171B"
-                        strokeWidth="1.45833"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M13 3.32812H17.1667V7.49479"
-                        stroke="#14171B"
-                        strokeWidth="1.45833"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    <h2 className="text-black  transform transition-transform  duration-200 ease-in-out group-hover:scale-110 ">
-                      Open on network
-                    </h2>
-                  </button>
-                )}
-                <BsThreeDotsVertical
-                  className="text-xl "
-                  onClick={handleDotsClick3}
-                />
-              </div>{" "}
-            </div>{" "}
-            <div className="flex flex-col items-start translate-x-14">
-              <p className="py-2 px-4 bg-white max-w-[600px] rounded-lg text-sm">
-                perfect! ✅{" "}
-              </p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>{Array.isArray(selectedMessage)}No messages available</p>
+              )}
             </div>
-            <div className="flex flex-col items-start mt-4 translate-x-14">
-              <p className="py-2 px-4 bg-white max-w-[600px] rounded-lg text-sm">
-                Wow, this is really epic{" "}
-              </p>
-            </div>
-          </div>
-          <div className="flex flex-row w-full justify-between">
-            <div className="flex flex-col items-start -translate-y-0 translate-x-16  border-l-4 border-green-900 w-[500px] rounded-xl shadow-green-900">
-              <p className="py-2 px-4 bg-white max-w-[600px] rounded-lg text-sm">
-                <span className="flex flex-row gap-2 item-center">
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 18 18"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M10 17V11C10 10.4477 10.4477 10 11 10H17V3C17 1.89543 16.1046 1 15 1H3C1.89543 1 1 1.89543 1 3V15C1 16.1046 1.89543 17 3 17H10"
-                      stroke="#034737"
-                      strokeWidth="1.75"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  Hey, Rosa! Can you make sure to include a link to our
-                  tutorial? Thanks!
-                </span>
-                <label className="flex p-2 items-center rounded-md flex-row justify-between">
-                  <span className="flex flex-row">
-                    <Image
-                      src="/contact.png"
-                      alt="contact"
-                      width="20"
-                      height={10}
-                    />
-                    <span className="ml-2 text-black text-md">
-                      Leslie Alexander
-                    </span>
-                  </span>
-                </label>
-              </p>
-            </div>
-            {showDelete && (
-              <button
-                className=" h-[50px] items-center flex flex-row px-4 bg-white text-white gap-2 rounded-xl  translate-y-2 translate-x-48 group "
-                onClick={() => alert("Delete action triggered")}
-              >
-                <MdDelete className="text-red-500 text-2xl transform transition-transform duration-200 ease-in-out group-hover:scale-110" />
-                <h2 className="text-black transform transition-transform duration-200 ease-in-out group-hover:scale-110">
-                  {" "}
-                  Delete
-                </h2>
-              </button>
-            )}
-            <BsThreeDotsVertical
-              className="-translate-x-[20px] -translate-y-4 text-xl cursor-pointer"
-              onClick={handleDotsClick}
-            />
           </div>
           <div className="mt-8"></div>
-          <ChatInput />
+          <ChatInput
+            onSendMessage={handleSendMessage}
+            onFileUpload={handleFileUpload}
+          />
         </main>
       )}
+
       {!isOpened && (
         <main className="w-full  bg-white">
           <div className="flex items-center bg-white  h-full text-[16px] justify-center font-bold text-gray-700">

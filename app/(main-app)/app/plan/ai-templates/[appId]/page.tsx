@@ -483,11 +483,9 @@ export default function AiAppPage({
                   }}
                 />
               ) : (
-                <Link href="/account/create-brand-voice/">
-                  <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
+                <Link href="/account/create-brand-voice/" className="flex" style={{color:"green"}}>
                     <Plus size={20} />
-                    Create brand voice
-                  </button>
+                   <strong className="ml-2" >Create brand voice</strong> 
                 </Link>
               )}
             </div>
