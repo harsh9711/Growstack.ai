@@ -10,7 +10,7 @@ import { API_URL } from "@/lib/api";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import ContentLoader from "react-content-loader";
-import debounce from "lodash/debounce";
+// import debounce from "lodash/debounce";
 interface Assistant {
   _id: string;
   "ASSISTANT NAME": string;
