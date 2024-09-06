@@ -41,7 +41,7 @@ function Footer() {
                     <Link href="/auth/register">Company</Link>
                   </li>
                   <li>
-                    <Link href="/auth/register">Pricing</Link>
+                    <Link href="/Pricing">Pricing</Link>
                   </li>
                   <li>
                     <Link href="/auth/register">Get the App</Link>

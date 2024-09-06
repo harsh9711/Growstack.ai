@@ -107,6 +107,11 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
         toast.error(error.message);
       }
     } finally {
+      if (selectedConversation === _id){
+        setSelectedConversation(null);
+        setMessages([]);
+        setShowNewChatInput(true);
+      }
       setDeleteRequestPending(false);
     }
   };

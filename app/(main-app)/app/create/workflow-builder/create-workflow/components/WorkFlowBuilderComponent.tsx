@@ -308,7 +308,11 @@ export default function WorkFlowBuilderComponent() {
                 )}
               >
                 <div className="">
-                  <img src={action.icon} alt="" className="w-10 h-10 rounded-2xl"/>
+                  <img
+                    src={action.icon}
+                    alt=""
+                    className="w-10 h-10 rounded-2xl"
+                  />
                 </div>
                 <div className="space-y-1 flex flex-col items-start">
                   <h3 className="text-[17px] font-medium">{action.name}</h3>
@@ -406,7 +410,6 @@ export default function WorkFlowBuilderComponent() {
           </button>
         </div>
 
-        {/* Right section - Input configuration */}
         <div className="border-l border-[#F0F0F0] w-full max-w-[482px] md:w-1/3 p-10 flex flex-col">
           {renderSection()}
         </div>

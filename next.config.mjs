@@ -51,7 +51,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "ton.twitter.com",
+        hostname: "img.ayrshare.com",
         port: "",
       },
     ],

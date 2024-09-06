@@ -13,7 +13,8 @@ import { BsStarFill } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import ChatComponent from "./components/ChatComponent";
 // import "bootstrap/dist/css/bootstrap.min.css";
-
+import AOS from 'aos';
+import 'aos/dist/aos.css'
 interface AiApp {
   _id: string;
   "ASSISTANT NAME": string;
@@ -49,6 +50,10 @@ export default function Dashboard() {
   const [aiAssistantsloading, setAiAssistantsLoading] = useState(true);
   const hasRefreshed = localStorage.getItem("hasRefreshed");
   const [refreshed, setRefreshed] = useState(hasRefreshed || false);
+  useEffect(() => {
+    AOS.init({ duration: 1000 }); 
+    AOS.refresh();
+  }, []);
   const fetchAssistants = async () => {
     try {
       const response = await instance.get(`${API_URL}/ai/api/v1/assistant`);
@@ -138,8 +143,8 @@ export default function Dashboard() {
     <main className="">
       <div className="bg-[#EBF0F6] h-80 w-full max-w-[95%] mx-auto absolute top-0 left-0 right-0 rounded-b-[60px]" />
       <div className="relative z-[1]">
-        <div className="flex justify-between items-center mt-8">
-          <div className="space-y-2">
+      <div className="flex justify-between items-center mt-8" data-aos="fade-down">
+      <div className="space-y-2">
             <h1 className="text-2xl font-semibold">Dashboard</h1>
             {/* <p className="flex items-center gap-2 text-[#3D3D3D] text-[15px]">
               23 August - 23 September 2024
@@ -150,17 +155,17 @@ export default function Dashboard() {
           </div>
         </div>
         <div className="w-full flex flex-col-reverse 2xl:flex-row gap-6 mt-4">
-          <div className="w-full space-y-6">
-            <ChatComponent />
+        <div className="w-full space-y-6" data-aos="fade-up">
+        <ChatComponent />
           </div>
-          <div className="w-full 2xl:w-[50%] bg-white p-8 rounded-3xl border borer-[#E8E8E8] space-y-5">
+          <div className="w-full 2xl:w-[50%] bg-white p-8 rounded-3xl border border-[#E8E8E8] space-y-5" data-aos="fade-right">
             <div className="space-y-3">
               <h1 className="text-xl font-semibold text-center">Unlock the power of AI</h1>
               <p className="text-[#6C7275] text-center">Chat with the smartest AI - Experience the power of AI with us</p>
             </div>
             <Link href="/app/plan/ai-chat">
-              <div className="!mt-7 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
-                <div className="flex gap-4 items-center">
+            <div className="!mt-7 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10" data-aos="fade-up">
+            <div className="flex gap-4 items-center">
                   <Image src="/icons/ai-chat.svg" alt="" width={60} height={60} />
                   <h2 className="font-medium">AI chat</h2>
                 </div>
@@ -170,8 +175,8 @@ export default function Dashboard() {
               </div>
             </Link>
             <Link href="/app/plan/ai-templates">
-              <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
-                <div className="flex gap-4 items-center">
+            <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10" data-aos="fade-up">
+            <div className="flex gap-4 items-center">
                   <Image src="/icons/ai-templates.svg" alt="" width={60} height={60} />
                   <h2 className="font-medium">AI templates </h2>
                 </div>
@@ -181,7 +186,7 @@ export default function Dashboard() {
               </div>
             </Link>
             <Link href="/app/plan/ai-assistant">
-              <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
+            <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10" data-aos="fade-up">
                 <div className="flex gap-4 items-center">
                   <Image src="/icons/chatbot.svg" alt="" width={60} height={60} />
                   <h2 className="font-medium">AI assistants</h2>
@@ -192,7 +197,7 @@ export default function Dashboard() {
               </div>
             </Link>
             <Link href="/app/plan/custom-gpts">
-              <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
+            <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10" data-aos="fade-up">
                 <div className="flex gap-4 items-center">
                   <Image src="/icons/custom-gpts.svg" alt="" width={60} height={60} />
                   <h2 className="font-medium">AI custom GPT </h2>
@@ -203,7 +208,7 @@ export default function Dashboard() {
               </div>
             </Link>
             <Link href="/app/plan/text-to-video">
-              <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
+            <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10" data-aos="fade-up">
                 <div className="flex gap-4 items-center">
                   <Image src="/icons/media.svg" alt="" width={60} height={60} />
                   <h2 className="font-medium">Text to video </h2>
@@ -214,7 +219,7 @@ export default function Dashboard() {
               </div>
             </Link>
             <Link href="/app/create/workflow-builder">
-              <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
+            <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10" data-aos="fade-up">
                 <div className="flex gap-4 items-center">
                   <Image src="/icons/workflow-builder.svg" alt="" width={60} height={60} />
                   <h2 className="font-medium">Workflow builder</h2>
@@ -225,7 +230,7 @@ export default function Dashboard() {
               </div>
             </Link>
             <Link href="/app/create/ai-articles">
-              <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
+            <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10" data-aos="fade-up">
                 <div className="flex gap-4 items-center">
                   <Image src="/icons/text-generator.svg" alt="" width={60} height={60} />
                   <h2 className="font-medium">AI article wizard</h2>

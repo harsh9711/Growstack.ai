@@ -11,6 +11,7 @@ import MarketingStreamline from "./components/marketingStreamline/MarketingStrea
 import Footer from "@/components/footer/Footer";
 import GridComponent from "./components/GridBoxes";
 import ImageGalleryLine from "./components/ImageGalleryline";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const page = () => {
