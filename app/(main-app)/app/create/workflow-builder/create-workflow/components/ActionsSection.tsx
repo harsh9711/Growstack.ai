@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Motion from "@/components/Motion";
 import DotsLoader from "@/components/DotLoader";
 import { MenuIcon } from "lucide-react";
@@ -6,6 +6,12 @@ import SuggestionDropdown from "./SuggestionDropdown";
 import Dropdown from "./Dropdown";
 import TextArea from "./TextArea";
 import ShortTextArea from "./ShortTextArea";
+import Boolean from "./Boolean"; // Import Boolean component
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Switch } from "@/components/ui/switch";
+import { CheckBox } from "docx";
+import CheckboxComponent from "./Check";
+import ScheduleComponent from "./Schedule";
 
 interface ActionsSectionProps {
   activeAction: any;
@@ -16,21 +22,22 @@ interface ActionsSectionProps {
   inputConfigs: any;
 }
 
+type SubOption = {
+  label: string;
+  value: string;
+  name: string;
+  show: boolean;
+};
+
 type SuggestionOption = {
   type: string;
   name: string;
   label: string;
-  icon: any;
+  icon: JSX.Element;
   index: number;
   isExpanded: boolean;
+  show: boolean;
   subOptions: SubOption[];
-  show: boolean;
-};
-
-type SubOption = {
-  label: string;
-  name: string;
-  show: boolean;
 };
 
 const ActionsSection = ({
@@ -44,6 +51,10 @@ const ActionsSection = ({
   const [suggestionOptions, setSuggestionOptions] = useState<
     SuggestionOption[]
   >([]);
+  const [selectedRadioValue, setSelectedRadioValue] = useState<string>("Image");
+  const [isVideo, setIsVideo] = useState(false);
+  const [mediaUrls, setMediaUrls] = useState<any[]>([]);
+  const [selectedNetworks, setSelectedNetworks] = React.useState<string[]>([]);
 
   useEffect(() => {
     setSuggestionOptions([
@@ -90,7 +101,27 @@ const ActionsSection = ({
           ],
         })),
     ]);
-  }, []);
+  }, [actions, activeAction.index, inputConfigs]);
+
+  const handleValueChange = (value: string) => {
+    setSelectedRadioValue(value);
+    setIsVideo(value === "Video");
+    setActiveAction((prevAction: any) => ({
+      ...prevAction,
+      mediaType: value,
+    }));
+    console.log(value);
+  };
+
+  const handleSwitchChange = (network: string, isChecked: boolean) => {
+    setSelectedNetworks((prevState) => {
+      if (isChecked) {
+        return [...prevState, network];
+      } else {
+        return prevState.filter((item) => item !== network);
+      }
+    });
+  };
 
   return (
     <Motion
@@ -146,6 +177,44 @@ const ActionsSection = ({
                     index={index}
                     suggestionOptions={suggestionOptions}
                     setSuggestionOptions={setSuggestionOptions}
+                    setActiveAction={setActiveAction}
+                  />
+                </div>
+              );
+            }
+            if (option.input_type === "BOOLEAN" && !option.is_prompt) {
+              return (
+                <div key={index} className="mt-8">
+                  <Boolean
+                    option={option}
+                    index={index}
+                    setActiveAction={setActiveAction}
+                    suggestionOptions={suggestionOptions}
+                    setSuggestionOptions={setSuggestionOptions}
+                  />
+                </div>
+              );
+            }
+
+            if (option.input_type === "CHECKBOX" && !option.is_prompt) {
+              return (
+                <div key={index} className="mt-8">
+                  <CheckboxComponent
+                    option={option}
+                    index={index}
+                    setActiveAction={setActiveAction}
+                    suggestionOptions={suggestionOptions}
+                    setSuggestionOptions={setSuggestionOptions}
+                  />
+                </div>
+              );
+            }
+            if (option.input_type === "TIME" && !option.is_prompt) {
+              return (
+                <div key={index} className="mt-8">
+                  <ScheduleComponent
+                    option={option}
+                    index={index}
                     setActiveAction={setActiveAction}
                   />
                 </div>
