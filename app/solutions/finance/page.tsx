@@ -12,6 +12,7 @@ import HeroSection from "./components/HeroSection";
 import MarketingTechnology from "./components/marketingTechnology/MarketingTechnology";
 import ImageGalleryLine from "./components/ImageGalleryline";
 import ImageGalleryLineResponsive from "./components/ImageGallerylineresponsive";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const page = () => {
   useEffect(() => {
