@@ -26,6 +26,8 @@ import { MdDelete } from "react-icons/md";
 import { API_URL } from "@/lib/api";
 import instance from "@/config/axios.config";
 import toast from "react-hot-toast";
+import { timeDiffFromNow } from "@/utils/dates";
+import mockResponse from './mock.json';
 
 interface SidebarItem {
   _id: string;
@@ -179,97 +181,14 @@ const Layout = () => {
       icon: <CiSettings className="text-xl translate-x-48" />,
     },
   ];
-  const sidebarData = [
-    [
-      {
-        title: "GrowStack AI",
-        time: "12m",
-        author: "Vale Ferreira",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact2.png",
-      },
-      {
-        title: "GrowStack AI",
-        time: "30m",
-        author: "Laila Fernanda",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact3.png",
-      },
-      {
-        title: "GrowStack AI",
-        time: "12m",
-        author: "Jenny Wilson",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact2.png",
-      },
-      {
-        title: "GrowStack AI",
-        time: "12m",
-        author: "Esther Howard",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact2.png",
-      },
-      {
-        title: "GrowStack AI",
-        time: "12m",
-        author: "Jane Cooper",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact3.png",
-      },
-    ],
-    [
-      {
-        title: "GrowStack AI",
-        time: "12m",
-        author: "Jenny Wilson",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact2.png",
-      },
-      {
-        title: "GrowStack AI",
-        time: "12m",
-        author: "Esther Howard",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact2.png",
-      },
-      {
-        title: "GrowStack AI",
-        time: "12m",
-        author: "Jane Cooper",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact3.png",
-      },
-      {
-        title: "GrowStack AI",
-        time: "12m",
-        author: "Esther Howard",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact2.png",
-      },
-    ],
-    [
-      {
-        title: "GrowStack AI",
-        time: "12m",
-        author: "Esther Howard",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact2.png",
-      },
-      {
-        title: "GrowStack AI",
-        time: "12m",
-        author: "Jane Cooper",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact3.png",
-      },
-      {
-        title: "GrowStack AI",
-        time: "12m",
-        author: "Jenny Wilson",
-        message: "How can I connect my accounts",
-        imageUrl: "/contact2.png",
-      },
-    ],
+  const sidebarData:any = [
+    // {
+    //   title: "GrowStack AI",
+    //   time: "12m",
+    //   author: "Vale Ferreira",
+    //   message: "How can I connect my accounts",
+    //   imageUrl: "/contact2.png",
+    // },
   ];
 
   const [showRightSidebar, setShowRightSidebar] = useState(false);
@@ -290,7 +209,9 @@ const Layout = () => {
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredData, setFilteredData] = useState(sidebarData[0]);
+  const [filteredData, setFilteredData] = useState(sidebarData);
+  const [selectedPostComments, setSelectedPostComments] = useState<any>([]);
+
 
   const handleDotsClick = () => {
     setShowDelete(!showDelete);
@@ -317,10 +238,10 @@ const Layout = () => {
 
   useEffect(() => {
     if (searchQuery.trim() === "") {
-      setFilteredData(sidebarData[0]);
+      setFilteredData(sidebarData);
     } else {
       setFilteredData(
-        sidebarData[0].filter((project: any) =>
+        sidebarData.filter((project: any) =>
           project?.author?.toLowerCase().includes(searchQuery)
         )
       );
@@ -343,16 +264,20 @@ const Layout = () => {
     setIsFilterOpen(!isFilterOpen);
     setIsArrowRotated(!isArrowRotated);
   };
-  const handleMessage = (itemId: {
-    title: string;
-    time: string;
-    author: string;
-    message: string;
-    imageUrl: string;
-  }) => {
-    console.log("good");
-    setIsOpened(!isOpened);
+  const onClickSidebarItem = async (item : any) => {
+    setIsOpened(true);
+    const platform = item.platform as keyof typeof mockResponse.data;
+    setSelectedPostComments(mockResponse.data[platform])
+    try {
+      const response = await instance.get(
+        `${API_URL}/users/api/v1/social-media/comments/${item.id}`
+      );
+    } catch (error) {
+      console.log("Error fetching table data:", error);
+      toast.error("Error fetching table data");
+    }
   };
+  console.log(selectedPostComments)
   const toggleMenu = () => {
     setShowRightSidebar(!showRightSidebar);
     setMenuOpen(!MenuOpen);
@@ -377,6 +302,12 @@ const Layout = () => {
     setActiveIndex(index);
   };
 
+  useEffect(() => {
+    if(activeIndex === 1){
+      handleGetComments()
+    }
+  },[activeIndex])
+
   const handleGetMessages = async () => {
     try {
       const response = await instance.get(
@@ -391,10 +322,27 @@ const Layout = () => {
 
   const handleGetComments = async () => {
     try {
-      const response = await instance.get(
-        `${API_URL} /users/api/v1/social-media/posts/facebook?5`
+      let response = await instance.get(
+        `${API_URL}/users/api/v1/social-media/posts/history`
       );
-      // setTableData(response.data.data.history);
+      if(response?.data?.data?.history?.length > 0){
+        let result :any = []
+        response?.data?.data?.history?.forEach((ele:any) => {
+          ele?.platforms?.forEach((platform : any) => {
+            result.push({
+              id : ele?.id,
+              title: ele?.primary?.profiles?.[platform]?.displayName,
+              time: timeDiffFromNow(ele?.created),
+              author: "",
+              message: ele?.post,
+              imageUrl: ele?.primary?.profiles?.[platform]?.default_profile_image || "/contact2.png",
+              postUrl : ele?.postIds?.[0]?.postUrl || "",
+              platform : platform
+            })
+          })
+        });
+        setFilteredData(result)
+      }
     } catch (error) {
       console.log("Error fetching table data:", error);
       toast.error("Error fetching table data");
@@ -451,7 +399,7 @@ const Layout = () => {
           />
         </div>
         <div className="relative p-5 flex-1 overflow-y-auto max-h-[calc(100vh-280px)]">
-          {filteredData?.map((item, idx) => (
+          {filteredData?.map((item:any, idx:number) => (
             <SidebarItem
               key={idx}
               title={item.title}
@@ -459,7 +407,7 @@ const Layout = () => {
               author={item.author}
               message={item.message}
               imageUrl={item.imageUrl}
-              onClick={() => handleMessage(item)} // Using 'item.title' as an example
+              onClick={() => onClickSidebarItem(item)} // Using 'item.title' as an example
             />
           ))}
         </div>

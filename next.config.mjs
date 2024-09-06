@@ -49,6 +49,11 @@ const nextConfig = {
         hostname: "argildotai.s3-accelerate.amazonaws.com",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "img.ayrshare.com",
+        port: "",
+      },
     ],
   },
   async headers() {
