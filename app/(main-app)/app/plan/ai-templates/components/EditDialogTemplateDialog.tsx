@@ -24,6 +24,7 @@ import {
   DialogContent,
   DialogClose,
 } from "@/components/ui/dialog";
+import { useDropzone } from 'react-dropzone';
 
 type UserInput = {
   title: string;
@@ -59,6 +60,8 @@ const EditAssistantDialog = ({ id }: { id: string }) => {
   const [isPending, setIsPending] = useState(false);
   const [title, setTitle] = useState("");
   const [idescription, setIdescription] = useState("");
+  const [iconPreview, setIconPreview] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -66,6 +69,22 @@ const EditAssistantDialog = ({ id }: { id: string }) => {
     reset,
   } = useForm<ValidationSchemaType>({
     resolver: zodResolver(ValidationSchema),
+  });
+
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: {
+      'image/*': [] 
+    },
+    onDrop: (acceptedFiles) => {
+      const file = acceptedFiles[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setIconPreview(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+      }
+    },
   });
 
   useEffect(() => {
@@ -93,6 +112,7 @@ const EditAssistantDialog = ({ id }: { id: string }) => {
             idescription: assistantData.inputs[0].description, // Set the title from the first input
             type: assistantData.inputs[0].field_type, // Set the title from the first input
           });
+          setIconPreview(assistantData.icon); // Set initial preview
         } catch (error) {
           console.error("Error fetching assistant:", error);
         } finally {
@@ -136,7 +156,7 @@ const EditAssistantDialog = ({ id }: { id: string }) => {
       const changedFields: Partial<Assistant> = {
         name: data.name,
         description: data.description,
-        icon: data.icon,
+        icon: iconPreview || data.icon,
         custom_prompt: data.custom_prompt,
         category: data.category,
         title: data.title, // Include title in changedFields
@@ -218,9 +238,15 @@ const EditAssistantDialog = ({ id }: { id: string }) => {
                     </div>
                     <div className="space-y-2">
                       <label className="font-medium">
-                        Template Icon <span className="text-[#F00]">*</span>
+                      Upload Icon <span className="text-[#F00]">*</span>
                       </label>
-                      <Input type="text" placeholder="Type assistant icon" {...register("icon")} />
+                      <div {...getRootProps()} className="border-dashed border-2 border-gray-300 p-4">
+                        <input {...getInputProps()} />
+                        <p>Drag & drop an image here, or click to select one</p>
+                      </div>
+                      {iconPreview && (
+                        <img src={iconPreview} alt="" className="" />
+                      )}
                       {errors.icon && <p className="text-rose-600">{errors.icon.message}</p>}
                     </div>
                   </div>

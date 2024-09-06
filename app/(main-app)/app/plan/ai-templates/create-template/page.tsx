@@ -13,6 +13,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 import TemplatesTable from "../components/TemplatesDataTable";
+import { useDropzone } from "react-dropzone";
 
 export default function CreateTemplatePage() {
   type UserInput = {
@@ -50,11 +51,11 @@ export default function CreateTemplatePage() {
 
   const ValidationSchema = z.object({
     name: z.string().min(3, "Name must be at least 3 characters long"),
-    description: z.string().min(10, "Description must be at least 10 characters").max(200, "Description can't exceed 200 characters"),
-    icon: z.string().refine((value) => svgPattern.test(value) || fontAwesomePattern.test(value), {
-      message: "Invalid icon format. Only SVG tags or Font Awesome icons are allowed.",
-    }),
-  });
+    description: z.string()
+      .min(10, "Description must be at least 10 characters")
+      .max(200, "Description can't exceed 200 characters"),
+    icon: z.string().optional() 
+  });  
 
   const [isPending, setIsPending] = useState(false);
   const [refreshTemplatesTable, setRefreshTemplatesTable] = useState(true);
@@ -75,27 +76,27 @@ export default function CreateTemplatePage() {
     setIsPending(true);
     try {
       const { name, description, icon, custom_prompt } = formData;
-
+  
       // Prepare userInputs to be sent with the POST request
       const userInputFields = userInputs.map((input) => ({
         title: input.title,
         description: input.description,
         field_type: input.type,
-        requirement: input.required === "Required", // Assuming 'required' is a boolean field in your API
+        requirement: input.required === "Required",
         options: input.options ? input.options.split(",") : undefined,
       }));
-
+  
       const response = await instance.post(`${API_URL}/ai/api/v1/chat-template/create`, {
         name,
         description,
         icon,
         custom_prompt,
         category,
-        inputs: userInputFields, // Include userInputs in the request body
+        inputs: userInputFields,
       });
-
+  
       toast.success(response.data.message);
-
+  
       // Clear form data after successful submission
       setFormData({
         name: "",
@@ -103,8 +104,8 @@ export default function CreateTemplatePage() {
         icon: "",
         custom_prompt: "",
       });
-      setCategory(""); // Clear category after submission
-      setUserInputs([{ title: "", description: "", type: "", required: "Optional" }]); // Reset userInputs
+      setCategory("");
+      setUserInputs([{ title: "", description: "", type: "", required: "Optional" }]);
       setRefreshTemplatesTable(true);
     } catch (error: any) {
       if (error.response) {
@@ -117,6 +118,7 @@ export default function CreateTemplatePage() {
       setIsPending(false);
     }
   };
+  
 
   const handleChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
@@ -149,7 +151,25 @@ export default function CreateTemplatePage() {
       return updatedInputs;
     });
   };
-
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    accept: { 'image/*': [] },
+    onDrop: (acceptedFiles) => {
+      // Handle the dropped file
+      const file = acceptedFiles[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          // Update the icon with the base64 string
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+            icon: `<img src="${reader.result}" alt="Uploaded icon" />`,
+          }));
+        };
+        reader.readAsDataURL(file);
+      }
+    },
+  });
+  
   const router = useRouter();
   return (
     <div className="mt-10">
@@ -206,29 +226,22 @@ export default function CreateTemplatePage() {
               </div>
               <div className="space-y-2">
                 <label className="font-medium">
-                  Template icon <span className="text-[#F00]">*</span>
+                  Icon (SVG or Font Awesome) <span className="text-[#F00]">*</span>
                 </label>
-                <Input
-                  type="text"
-                  placeholder="ex:<i class='fa-solid fa-books'></i> or SVG"
-                  {...register("icon")}
-                  value={formData.icon}
-                  onChange={(e) => {
-                    const { value } = e.target;
-                    setFormData((prevFormData) => ({
-                      ...prevFormData,
-                      icon: value,
-                    }));
-                    if (!svgPattern.test(value) && !fontAwesomePattern.test(value)) {
-                      setError("icon", {
-                        type: "manual",
-                        message: "Invalid icon format. Only SVG tags or Font Awesome icons are allowed.",
-                      });
-                    } else {
-                      clearErrors("icon");
-                    }
-                  }}
-                />
+                <div {...getRootProps({ className: 'dropzone' })} className="border-2 border-dashed border-gray-300 p-4 rounded-md">
+                  <input {...getInputProps()} />
+                  {isDragActive ? (
+                    <p className="text-gray-500">Drop the file here ...</p>
+                  ) : (
+                    <p className="text-gray-500">Drag 'n' drop an icon file here, or click to select one</p>
+                  )}
+                  {formData.icon && (
+                    <div className="mt-2">
+                      <label className="block font-medium">Preview:</label>
+                      <div dangerouslySetInnerHTML={{ __html: formData.icon }} />
+                    </div>
+                  )}
+                </div>
                 {errors.icon && <p className="text-rose-600 text-sm">{errors.icon.message}</p>}
               </div>
             </div>
