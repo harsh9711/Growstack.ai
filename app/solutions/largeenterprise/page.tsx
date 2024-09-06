@@ -12,6 +12,7 @@ import MarketingTechnology from "./components/marketingTechnology/MarketingTechn
 import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
 import ImageGalleryResponsive from "./components/ZoomEffectrespopnsive";
 import Footer from "@/components/footer/Footer";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Home = () => {
   const totalItems = 5;
@@ -183,12 +184,15 @@ const Home = () => {
           </div>
         </div>
 
-        <div> <div className="2xl:flex xl:flex hidden mt-20 w-full h-full items-center justify-center mx-auto">
-          <ImageGallery />
+        <div>
+          {" "}
+          <div className="2xl:flex xl:flex hidden mt-20 w-full h-full items-center justify-center mx-auto">
+            <ImageGallery />
+          </div>
+          <div className="2xl:hidden xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
+            <ImageGalleryResponsive />
+          </div>
         </div>
-        <div className="2xl:hidden xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
-          <ImageGalleryResponsive />
-        </div></div>
       </section>
 
       <section className=" overflow-hidden  ">
@@ -204,7 +208,7 @@ const Home = () => {
 
         <MarketingStreamline />
       </section>
-      <Footer/>
+      <Footer />
     </main>
   );
 };

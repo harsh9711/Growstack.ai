@@ -11,6 +11,8 @@ import HeroSection from "./components/HeroSection";
 import ImageGallerySecond from "./components/ZoomEffect2";
 import ImageGalleryResponsiveSecond from "./components/ZoomEffectrespopnsive2";
 import MarketingTechnology from "./components/marketingTechnology/MarketingTechnology";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 const page = () => {
   useEffect(() => {
     AOS.init({ duration: 500 });

@@ -18,6 +18,8 @@ import MarketingTechnology from "../largeenterprise/components/marketingTechnolo
 import Banner from "./banner/Banner";
 import Link from "next/link";
 import Footer from "@/app/(landing)/components/Footer";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 const page = () => {
   useEffect(() => {
     AOS.init({ duration: 500 });
