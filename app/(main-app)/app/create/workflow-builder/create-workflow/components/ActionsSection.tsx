@@ -9,7 +9,6 @@ import ShortTextArea from "./ShortTextArea";
 import Boolean from "./Boolean"; // Import Boolean component
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
-import { CheckBox } from "docx";
 import CheckboxComponent from "./Check";
 import ScheduleComponent from "./Schedule";
 
@@ -48,13 +47,14 @@ const ActionsSection = ({
   isAPICalling,
   inputConfigs,
 }: ActionsSectionProps) => {
-  const [suggestionOptions, setSuggestionOptions] = useState<
-    SuggestionOption[]
-  >([]);
+  const [suggestionOptions, setSuggestionOptions] = useState<SuggestionOption[]>([]);
   const [selectedRadioValue, setSelectedRadioValue] = useState<string>("Image");
   const [isVideo, setIsVideo] = useState(false);
   const [mediaUrls, setMediaUrls] = useState<any[]>([]);
   const [selectedNetworks, setSelectedNetworks] = React.useState<string[]>([]);
+
+  // State to manage editable fields
+  const [editableFields, setEditableFields] = useState<any>(activeAction.preset_json.body);
 
   useEffect(() => {
     setSuggestionOptions([
@@ -123,12 +123,39 @@ const ActionsSection = ({
     });
   };
 
+  const handleFieldChange = (key: string, value: any) => {
+    setEditableFields((prevFields: any) => ({
+      ...prevFields,
+      [key]: value,
+    }));
+    setActiveAction((prevAction: any) => ({
+      ...prevAction,
+      preset_json: {
+        ...prevAction.preset_json,
+        body: {
+          ...prevAction.preset_json.body,
+          [key]: value,
+        },
+      },
+    }));
+  };
+  const formatString = (str: string | undefined, values: Record<string, string>): string => {
+    if (typeof str !== 'string') {
+      return '';
+    }
+    
+    return str.replace(/\${(.*?)}/g, (_, key) => values[key] || `{${key}}`);
+  };
+  
+  
+  
+  const formattedText = formatString(editableFields.someField || '', { sender_profile_url: 'http://example.com' });
   return (
     <Motion
       transition={{ duration: 0.5 }}
       variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
     >
-      <div className="flex items-center gap-4 pb-8">
+      <div className="flex flex-col items-start gap-4 pb-8">
         <div className="w-full flex flex-row items-center gap-2">
           <img
             src={activeAction.icon}
@@ -136,15 +163,40 @@ const ActionsSection = ({
             width="56"
             className="w-10 h-10 rounded-2xl"
           />
-          <div className="flex flex-col gap-2 w-full text-xl border-2 p-2.5 rounded-md">
-            {activeAction.name}
+          <div className="flex flex-col gap-2 w-full text-xl border-2 p-2.5 rounded-xl">
+            <div className="text-start items-start font-bold">
+              {editableFields?.instruction ? "Instruction" : "URL"}
+            </div>
+            {editableFields && (
+     <div className="bg-gray-100 p-4 rounded-md">
+     {Object.entries(editableFields).map(([key, value], index) => (
+       <div key={index} className="mb-2">
+         <div className="font-bold">{key}:</div>
+         <div className="text-gray-700">
+           <input
+             type="text"
+             value={formatString(String(value), { sender_profile_url: 'http://example.com' })}
+             onChange={(e) => handleFieldChange(key, e.target.value)}
+             className="border p-1 rounded"
+           />
+         </div>
+       </div>
+     ))}
+   </div>
+   
+            )}
+            {activeAction.label && (
+              <div className="text-sm text-gray-600 mt-2">
+                {activeAction.label}
+              </div>
+            )}
           </div>
         </div>
       </div>
+
       <div>
-{activeAction?.preset_json?.body?.inputs?.length > 0 &&
-  activeAction.preset_json.body.inputs.map(
-          (option: any, index: number) => {
+        {activeAction?.preset_json?.body?.inputs?.length > 0 &&
+          activeAction.preset_json.body.inputs.map((option: any, index: number) => {
             if (option.input_type === "DROPDOWN") {
               return (
                 <div key={index}>
@@ -222,14 +274,17 @@ const ActionsSection = ({
               );
             }
             return null;
-          }
-        )}
+          })}
       </div>
+
       <button
         className="flex items-center justify-center h-15 py-3.5 px-16 bg-primary-green sheen rounded-xl text-white mt-6 w-full text-center"
         disabled={isAPICalling}
         type="button"
-        onClick={() => onSaveAction(activeAction)}
+        onClick={() => {
+          console.log("Button clicked, activeAction:", activeAction); 
+          onSaveAction(activeAction);
+        }}
       >
         {isAPICalling ? (
           <div className="flex items-center justify-center h-full">
