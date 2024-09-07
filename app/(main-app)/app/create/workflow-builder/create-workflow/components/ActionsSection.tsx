@@ -142,7 +142,8 @@ const ActionsSection = ({
         </div>
       </div>
       <div>
-        {activeAction.preset_json.body.inputs.map(
+{activeAction?.preset_json?.body?.inputs?.length > 0 &&
+  activeAction.preset_json.body.inputs.map(
           (option: any, index: number) => {
             if (option.input_type === "DROPDOWN") {
               return (

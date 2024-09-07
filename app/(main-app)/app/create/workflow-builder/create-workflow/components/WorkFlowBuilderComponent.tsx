@@ -38,7 +38,7 @@ export default function WorkFlowBuilderComponent() {
       acc[input.input_label] = input.input_default_value;
 
       if (input.is_prompt && !promptValue) {
-        promptValue = input.prompt; // Save the first encountered prompt value
+        promptValue = input.prompt; 
         acc.prompt = promptValue;
       }
 
