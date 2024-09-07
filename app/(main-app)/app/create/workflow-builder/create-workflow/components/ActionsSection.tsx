@@ -11,6 +11,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
 import CheckboxComponent from "./Check";
 import ScheduleComponent from "./Schedule";
+import instance from "@/config/axios.config";
 
 interface ActionsSectionProps {
   activeAction: any;
@@ -38,6 +39,28 @@ type SuggestionOption = {
   show: boolean;
   subOptions: SubOption[];
 };
+interface DropdownProps {
+  options: string[];
+  selectedOption: string;
+  onOptionChange: (value: string) => void;
+}
+
+const Dropdown2: React.FC<DropdownProps> = ({ options, selectedOption, onOptionChange }) => {
+  return (
+    <select
+      value={selectedOption}
+      onChange={(e) => onOptionChange(e.target.value)}
+      className="border w-64 p-1 rounded-xl"
+    >
+      {options.map((option, index) => (
+        <option key={index} value={option}>
+          {option}
+        </option>
+      ))}
+    </select>
+  );
+};
+
 
 const ActionsSection = ({
   actions,
@@ -46,15 +69,21 @@ const ActionsSection = ({
   onSaveAction,
   isAPICalling,
   inputConfigs,
-}: ActionsSectionProps) => {
-  const [suggestionOptions, setSuggestionOptions] = useState<SuggestionOption[]>([]);
+  workflowId, // Add workflowId
+  actionId, // Add actionId
+}: ActionsSectionProps & { workflowId: string; actionId: string }) => {
+  const [suggestionOptions, setSuggestionOptions] = useState<
+    SuggestionOption[]
+  >([]);
   const [selectedRadioValue, setSelectedRadioValue] = useState<string>("Image");
   const [isVideo, setIsVideo] = useState(false);
   const [mediaUrls, setMediaUrls] = useState<any[]>([]);
   const [selectedNetworks, setSelectedNetworks] = React.useState<string[]>([]);
 
   // State to manage editable fields
-  const [editableFields, setEditableFields] = useState<any>(activeAction.preset_json.body);
+  const [editableFields, setEditableFields] = useState<any>(
+    activeAction.preset_json.body
+  );
 
   useEffect(() => {
     setSuggestionOptions([
@@ -139,17 +168,48 @@ const ActionsSection = ({
       },
     }));
   };
-  const formatString = (str: string | undefined, values: Record<string, string>): string => {
-    if (typeof str !== 'string') {
-      return '';
+  const formatString = (
+    str: string | undefined,
+    values: Record<string, string>
+  ): string => {
+    if (typeof str !== "string") {
+      return "";
     }
-    
+
     return str.replace(/\${(.*?)}/g, (_, key) => values[key] || `{${key}}`);
   };
-  
-  
-  
-  const formattedText = formatString(editableFields.someField || '', { sender_profile_url: 'http://example.com' });
+
+  const handleSaveAction = async () => {
+    try {
+      const response = await instance.put(
+        `workflow/api/v1/${workflowId}/actions/${actionId}`,
+        {
+          ...activeAction,
+          preset_json: {
+            ...activeAction.preset_json,
+            body: editableFields,
+          },
+        }
+      );
+      console.log("API response:", response.data);
+    } catch (error) {
+      console.error("Error saving action:", error);
+    }
+  };
+  const modalOptions = [
+    "gpt-4",
+    "gpt-3.5-turbo",
+    "gpt-4o",
+    "gemini-1.5-pro",
+    "gemini-1.5-flash",
+    "claude-3-opus-20240229",
+    "claude-3-sonnet-20240229",
+    "claude-3-haiku-20240307",
+    "claude-3-5-sonnet-20240620",
+  ];
+  const formattedText = formatString(editableFields.someField || "", {
+    sender_profile_url: "http://example.com",
+  });
   return (
     <Motion
       transition={{ duration: 0.5 }}
@@ -165,25 +225,38 @@ const ActionsSection = ({
           />
           <div className="flex flex-col gap-2 w-full text-xl border-2 p-2.5 rounded-xl">
             <div className="text-start items-start font-bold">
-              {editableFields?.instruction ? "Instruction" : "URL"}
+              {/* {editableFields?.instruction ? "Instruction" : "URL"} */}
             </div>
             {editableFields && (
-     <div className="bg-gray-100 p-4 rounded-md">
-     {Object.entries(editableFields).map(([key, value], index) => (
-       <div key={index} className="mb-2">
-         <div className="font-bold">{key}:</div>
-         <div className="text-gray-700">
-           <input
-             type="text"
-             value={formatString(String(value), { sender_profile_url: 'http://example.com' })}
-             onChange={(e) => handleFieldChange(key, e.target.value)}
-             className="border p-1 rounded"
-           />
-         </div>
-       </div>
-     ))}
-   </div>
-   
+              <div className="bg-gray-100 p-4 rounded-md">
+                {Object.entries(editableFields).map(([key, value], index) => (
+                  <div key={index} className="mb-2">
+                    <div className="font-bold">{key}:</div>
+                    <div className="text-gray-700">
+                      {key === "model" ? (
+                         <Dropdown2
+                         options={modalOptions}
+                         selectedOption={String(value)}
+                         onOptionChange={(newValue) =>
+                           handleFieldChange(key, newValue)
+                         }
+                       />
+                      ) : (
+                        <input
+                          type="text"
+                          value={formatString(String(value) || "No URL", {
+                            sender_profile_url: "http://example.com",
+                          })}
+                          onChange={(e) =>
+                            handleFieldChange(key, e.target.value)
+                          }
+                          className="border p-1 rounded"
+                        />
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
             )}
             {activeAction.label && (
               <div className="text-sm text-gray-600 mt-2">
@@ -196,85 +269,90 @@ const ActionsSection = ({
 
       <div>
         {activeAction?.preset_json?.body?.inputs?.length > 0 &&
-          activeAction.preset_json.body.inputs.map((option: any, index: number) => {
-            if (option.input_type === "DROPDOWN") {
-              return (
-                <div key={index}>
-                  <Dropdown
-                    option={option}
-                    setActiveAction={setActiveAction}
-                    index={index}
-                  />
-                </div>
-              );
-            }
+          activeAction.preset_json.body.inputs.map(
+            (option: any, index: number) => {
+              if (option.input_type === "DROPDOWN") {
+                return (
+                  <div key={index}>
+                    <Dropdown
+                      option={option}
+                      setActiveAction={setActiveAction}
+                      index={index}
+                    />
+                  </div>
+                );
+              }
 
-            if (option.input_type === "TEXT_AREA" && !option.is_prompt) {
-              return (
-                <div key={index} className="mt-8 ">
-                  <TextArea
-                    option={option}
-                    index={index}
-                    suggestionOptions={suggestionOptions}
-                    setSuggestionOptions={setSuggestionOptions}
-                    setActiveAction={setActiveAction}
-                  />
-                </div>
-              );
-            }
-            if (option.input_type === "SHORT_TEXT_AREA" && !option.is_prompt) {
-              return (
-                <div key={index} className="mt-8 ">
-                  <ShortTextArea
-                    option={option}
-                    index={index}
-                    suggestionOptions={suggestionOptions}
-                    setSuggestionOptions={setSuggestionOptions}
-                    setActiveAction={setActiveAction}
-                  />
-                </div>
-              );
-            }
-            if (option.input_type === "BOOLEAN" && !option.is_prompt) {
-              return (
-                <div key={index} className="mt-8">
-                  <Boolean
-                    option={option}
-                    index={index}
-                    setActiveAction={setActiveAction}
-                    suggestionOptions={suggestionOptions}
-                    setSuggestionOptions={setSuggestionOptions}
-                  />
-                </div>
-              );
-            }
+              if (option.input_type === "TEXT_AREA" && !option.is_prompt) {
+                return (
+                  <div key={index} className="mt-8 ">
+                    <TextArea
+                      option={option}
+                      index={index}
+                      suggestionOptions={suggestionOptions}
+                      setSuggestionOptions={setSuggestionOptions}
+                      setActiveAction={setActiveAction}
+                    />
+                  </div>
+                );
+              }
+              if (
+                option.input_type === "SHORT_TEXT_AREA" &&
+                !option.is_prompt
+              ) {
+                return (
+                  <div key={index} className="mt-8 ">
+                    <ShortTextArea
+                      option={option}
+                      index={index}
+                      suggestionOptions={suggestionOptions}
+                      setSuggestionOptions={setSuggestionOptions}
+                      setActiveAction={setActiveAction}
+                    />
+                  </div>
+                );
+              }
+              if (option.input_type === "BOOLEAN" && !option.is_prompt) {
+                return (
+                  <div key={index} className="mt-8">
+                    <Boolean
+                      option={option}
+                      index={index}
+                      setActiveAction={setActiveAction}
+                      suggestionOptions={suggestionOptions}
+                      setSuggestionOptions={setSuggestionOptions}
+                    />
+                  </div>
+                );
+              }
 
-            if (option.input_type === "CHECKBOX" && !option.is_prompt) {
-              return (
-                <div key={index} className="mt-8">
-                  <CheckboxComponent
-                    option={option}
-                    index={index}
-                    setActiveAction={setActiveAction}
-                    suggestionOptions={suggestionOptions}
-                    setSuggestionOptions={setSuggestionOptions}
-                  />
-                </div>
-              );
+              if (option.input_type === "CHECKBOX" && !option.is_prompt) {
+                return (
+                  <div key={index} className="mt-8">
+                    <CheckboxComponent
+                      option={option}
+                      index={index}
+                      setActiveAction={setActiveAction}
+                      suggestionOptions={suggestionOptions}
+                      setSuggestionOptions={setSuggestionOptions}
+                    />
+                  </div>
+                );
+              }
+              if (option.input_type === "TIME" && !option.is_prompt) {
+                return (
+                  <div key={index} className="mt-8">
+                    <ScheduleComponent
+                      option={option}
+                      index={index}
+                      setActiveAction={setActiveAction}
+                    />
+                  </div>
+                );
+              }
+              return null;
             }
-            if (option.input_type === "TIME" && !option.is_prompt) {
-              return (
-                <div key={index} className="mt-8">
-                  <ScheduleComponent
-                    option={option}
-                    index={index}
-                    setActiveAction={setActiveAction}
-                  />
-                </div>
-              );
-            }
-            return null;
-          })}
+          )}
       </div>
 
       <button
@@ -282,8 +360,9 @@ const ActionsSection = ({
         disabled={isAPICalling}
         type="button"
         onClick={() => {
-          console.log("Button clicked, activeAction:", activeAction); 
-          onSaveAction(activeAction);
+          console.log("Button clicked, activeAction:", activeAction);
+          // onSaveAction(activeAction);
+          handleSaveAction();
         }}
       >
         {isAPICalling ? (

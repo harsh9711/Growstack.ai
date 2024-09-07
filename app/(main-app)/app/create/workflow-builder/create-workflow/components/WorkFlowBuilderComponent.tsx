@@ -76,6 +76,7 @@ export default function WorkFlowBuilderComponent() {
 
   const onSaveAction = async (action: any) => {
     setIsAPICalling(true);
+    
     try {
       const payload = {
         preset_json: {
@@ -287,7 +288,18 @@ const getWorkFlowDetails = async (id: string | number) => {
       toast.error("Failed to add action");
     }
   };
-
+  const handleSaveAction = (changedFields: any) => {
+    setIsAPICalling(true);
+   const updatedAction = { ...activeAction, preset_json: { ...activeAction.preset_json, body: { ...activeAction.preset_json.body, ...changedFields } } };
+    
+    setTimeout(() => {
+      setActions((prevActions) =>
+        prevActions.map((action) => (action.id === activeAction.id ? updatedAction : action))
+      );
+      setActiveAction(updatedAction);
+      setIsAPICalling(false);
+    }, 1000);
+  };
   const renderSection = () => {
     switch (activeTag) {
       case "Input":
@@ -311,14 +323,13 @@ const getWorkFlowDetails = async (id: string | number) => {
       case "Actions":
         return (
           <ActionsSection
-          key={activeAction.action_id}
-          activeAction={activeAction}
-          setActiveAction={setActiveAction}
-          onSaveAction={onSaveAction}
-          isAPICalling={isAPICalling}
-          actions={actions}
-          inputConfigs={inputConfigs}
-        />
+            key={activeAction.action_id}
+            activeAction={activeAction}
+            setActiveAction={setActiveAction}
+            onSaveAction={onSaveAction}
+            isAPICalling={isAPICalling}
+            actions={actions}
+            inputConfigs={inputConfigs} workflowId={""} actionId={""}        />
         );
     }
   };
