@@ -8,19 +8,31 @@ import { modelData } from "../../create/ai-articles/constants/options";
 import ChatArea from "./component/chatArea";
 import NewChatAlert from "./component/newChatArea";
 import { Message } from "./interface/playground";
+interface ChatAreaType {
+  id: number;
+  selectedModel: string;
+  provider: string;
+  conversation: Message[];
+  awaitingUpdate: boolean;
+  previousMessages: Message[];
+}
 
-const initialChat = [
+const initialChat: ChatAreaType[] = [
   {
     id: 0,
     selectedModel: modelData[0].models[0].value,
     provider: modelData[0].provider,
     conversation: [],
+    awaitingUpdate: false,
+    previousMessages: [],
   },
   {
     id: 1,
     selectedModel: modelData[0].models[0].value,
     provider: modelData[0].provider,
     conversation: [],
+    awaitingUpdate: false,
+    previousMessages: [],
   },
 ];
 
@@ -28,6 +40,7 @@ export default function AiPlayground() {
   const [userPrompt, setUserPrompt] = useState<string>("");
   const [chatAreas, setChatAreas] = useState<
     {
+      [x: string]: any;
       id: number;
       selectedModel: string;
       provider: string;
@@ -82,61 +95,107 @@ export default function AiPlayground() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (userPrompt.trim() === "") return;
-
+  
     const newMessage: Message = {
       content: userPrompt,
       role: "user",
       loading: false,
     };
-
+  
     const loadingAssistantMessage: Message = {
       content: "",
       role: "assistant",
       loading: true,
     };
-
+  
+    // Add the new user message and the initial loading message
     setChatAreas((prevChatAreas) =>
       prevChatAreas.map((chatArea) => ({
         ...chatArea,
         conversation: [...chatArea.conversation, newMessage, loadingAssistantMessage],
+        awaitingUpdate: true, // Mark this chat area as awaiting update
+        previousMessages: [], // Reset previous messages for this chat area
       }))
     );
-
-    await Promise.all(
-      chatAreas.map(async (chatArea, index) => {
-        const payload = {
-          user_prompt: userPrompt,
-          model: chatArea.selectedModel,
-          provider: chatArea.provider,
-        };
-
-        try {
-          const response = await instance.post(`${API_URL}/ai/api/v1/playground`, payload);
-
-          const assistantMessage: Message = {
-            content: response.data.data,
-            role: "assistant",
-            loading: false,
+  
+    try {
+      // Handle the first API call
+      const responses = await Promise.all(
+        chatAreas.map(async (chatArea) => {
+          const payload = {
+            user_prompt: userPrompt,
+            model: chatArea.selectedModel,
+            provider: chatArea.provider,
           };
-
-          setChatAreas((prevChatAreas) =>
-            prevChatAreas.map((ca, caIndex) =>
-              ca.id === chatArea.id
-                ? {
-                    ...ca,
-                    conversation: ca.conversation.map((msg, msgIndex) => (msgIndex === ca.conversation.length - 1 ? assistantMessage : msg)),
-                  }
-                : ca
-            )
-          );
-        } catch (error) {
-          console.error("Error sending prompt:", error);
-        }
-      })
-    );
-
+  
+          const response = await instance.post(`${API_URL}/ai/api/v1/playground`, payload);
+  
+          const initialText = response.data.data.text;
+          const updatedMessages = response.data.data.updatedMessages;
+  
+          return { chatArea, initialText, updatedMessages };
+        })
+      );
+  
+      setChatAreas((prevChatAreas) =>
+        prevChatAreas.map((chatArea) => {
+          const response = responses.find((res) => res.chatArea.id === chatArea.id);
+          if (response) {
+            const { initialText, updatedMessages } = response;
+  
+            return {
+              ...chatArea,
+              conversation: chatArea.awaitingUpdate
+                ? [
+                    ...chatArea.conversation.slice(0, -1), // Replace the last loading message
+                    { ...chatArea.conversation[chatArea.conversation.length - 1], content: initialText, loading: false },
+                  ]
+                : chatArea.conversation,
+              awaitingUpdate: updatedMessages.length > 0,
+              previousMessages: updatedMessages,
+            };
+          }
+          return chatArea;
+        })
+      );
+  
+      await Promise.all(
+        responses.map(async ({ chatArea, updatedMessages }) => {
+          if (updatedMessages.length > 0) {
+            const payload = {
+              user_prompt: updatedMessages.map((msg: { content: any; }) => msg.content).join(" "), // Use updated messages as user prompt
+              model: chatArea.selectedModel,
+              provider: chatArea.provider,
+            };
+  
+            await instance.post(`${API_URL}/ai/api/v1/playground`, payload);
+  
+            // Update the chat area with the new messages
+            setChatAreas((prevChatAreas) =>
+              prevChatAreas.map((ca) =>
+                ca.id === chatArea.id
+                  ? {
+                      ...ca,
+                      conversation: [
+                        ...ca.conversation,
+                        ...updatedMessages,
+                      ],
+                      awaitingUpdate: false, // Clear the flag after update
+                    }
+                  : ca
+              )
+            );
+          }
+        })
+      );
+    } catch (error) {
+      console.error("Error sending prompt:", error);
+    }
+  
     setUserPrompt("");
   };
+  
+  
 
   return (
     <>
