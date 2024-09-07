@@ -177,15 +177,19 @@ export default function CreateTemplatePage() {
       // Handle the dropped file
       const file = acceptedFiles[0];
       if (file) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          // Update the icon with the base64 string
-          setFormData((prevFormData) => ({
-            ...prevFormData,
-            icon: `<img src="${reader.result}" alt="Uploaded icon" />`,
-          }));
-        };
-        reader.readAsDataURL(file);
+        if (file.size > 3.5 * 1024 * 1024) {
+          toast.error("File size should be less than 3.5 MB");
+        } else {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            // Update the icon with the base64 string
+            setFormData((prevFormData) => ({
+              ...prevFormData,
+              icon: `<img src="${reader.result}" alt="Uploaded icon" />`,
+            }));
+          };
+          reader.readAsDataURL(file);
+        }
       }
     },
   });

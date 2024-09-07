@@ -78,11 +78,16 @@ const EditAssistantDialog = ({ id }: { id: string }) => {
     onDrop: (acceptedFiles) => {
       const file = acceptedFiles[0];
       if (file) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setIconPreview(reader.result as string);
-        };
-        reader.readAsDataURL(file);
+        if (file.size > 3.5 * 1024 * 1024) {
+          // 3.5 MB in bytes
+          toast.error("File size should be less than 3.5 MB");
+        } else {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setIconPreview(reader.result as string);
+          };
+          reader.readAsDataURL(file);
+        }
       }
     },
   });
