@@ -68,7 +68,6 @@ export default function Login() {
       console.log(userData);
       dispatch(login(userData));
       router.push("/app");
-      window.location.reload();
       toast.success(response.data.message);
     } catch (error: any) {
       if (error.response) {

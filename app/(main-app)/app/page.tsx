@@ -15,6 +15,7 @@ import ChatComponent from "./components/ChatComponent";
 // import "bootstrap/dist/css/bootstrap.min.css";
 import AOS from 'aos';
 import 'aos/dist/aos.css'
+import '@/styles/globals.css'
 interface AiApp {
   _id: string;
   "ASSISTANT NAME": string;
@@ -48,8 +49,8 @@ export default function Dashboard() {
   const [favoriteAssistants, setFavoriteAssistants] = useState<FavoriteAssistant[]>([]);
   const [aiAppsloading, setAiAppsLoading] = useState(true);
   const [aiAssistantsloading, setAiAssistantsLoading] = useState(true);
-  const hasRefreshed = localStorage.getItem("hasRefreshed");
-  const [refreshed, setRefreshed] = useState(hasRefreshed || false);
+  // const hasRefreshed = localStorage.getItem("hasRefreshed");
+  // const [refreshed, setRefreshed] = useState(hasRefreshed || false);
   useEffect(() => {
     AOS.init({ duration: 1000 }); 
     AOS.refresh();
@@ -124,22 +125,15 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    if (hasRefreshed !== "true") {
-      localStorage.setItem("hasRefreshed", "true");
-      window.location.reload();
-    }
     setAiAppsLoading(true);
     setAiAssistantsLoading(true);
-
     handleGetProfileData();
     fetchAssistants();
     fetchFavoriteAssistants();
     fetchSocialMediaProfile();
   }, []);
 
-  return !refreshed ? (
-    <></>
-  ) : (
+  return  (
     <main className="">
       <div className="bg-[#EBF0F6] h-80 w-full max-w-[95%] mx-auto absolute top-0 left-0 right-0 rounded-b-[60px]" />
       <div className="relative z-[1]">
