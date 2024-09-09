@@ -237,7 +237,8 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
         className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50"
         data-aos="fade-in"
       >
-        <div className="bg-white p-6 rounded-lg w-80 max-w-lg" data-aos="zoom-in">
+        
+        <div className="bg-white p-6 rounded-lg w-80 max-w-lg flex flex-col items-center" data-aos="zoom-in">
           <h2 className="text-lg font-semibold">Confirm Duplicate</h2>
           <p className="mt-2">
             Are you sure you want to duplicate this workflow?

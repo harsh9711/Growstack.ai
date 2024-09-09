@@ -103,19 +103,22 @@ const ShortTextArea = ({
       const endPos = textarea.selectionEnd;
       const newDescription =
         description.substring(0, startPos) +
-        `{$` +
-        `{${subOption.name}}}` +
+        `{$${subOption.name}}` +
         description.substring(endPos);
       setDescription(newDescription);
-      setTimeout(() => {
-        textarea.setSelectionRange(
-          startPos + subOption.name.length + 5,
-          startPos + subOption.name.length + 5
-        );
-        textarea.focus();
-      }, 0);
+  
+  
+      const placeholderIndex = newDescription.indexOf(`{${subOption.name}}`);
+  
+      const totalPlaceholders = newDescription.split('{').length - 1;
+  
+      const newCursorPos = placeholderIndex + subOption.name.length + 2 * (totalPlaceholders - 1);
+  
+      textarea.setSelectionRange(newCursorPos, newCursorPos);
+      textarea.focus();
     }
   };
+  
   const handleVoiceSelect = (voiceId: string) => {
     if (textareaRef.current) {
       const textarea = textareaRef.current;

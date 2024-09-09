@@ -1,8 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { categoryItems as mainCategories } from "./data";
-
+import { categoryItems as mainCategories } from "./data";  
 import DragingBoard from "./DragingBoard";
 import SectionHeader from "./SectionHeader";
 import FeaturesCategory from "./category/FeaturesCategory";

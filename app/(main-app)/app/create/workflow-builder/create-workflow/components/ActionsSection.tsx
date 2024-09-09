@@ -115,9 +115,9 @@ const ActionsSection = ({
             <img
               src={action.icon}
               alt={action.name}
-              width="24"
-              height="24"
-              className="flex-shrink-0 rounded-md object-contain min-h-[24px] min-w-[24px]"
+              width='24'
+              height='24'
+              className='flex-shrink-0 rounded-md object-contain min-h-[24px] min-w-[24px]'
             />
           ),
           subOptions: [
@@ -219,9 +219,9 @@ const ActionsSection = ({
         <div className="w-full flex flex-row items-center gap-2">
           <img
             src={activeAction.icon}
-            height="56"
-            width="56"
-            className="w-10 h-10 rounded-2xl"
+            height='56'
+            width='56'
+            className='w-10 h-10 rounded-2xl'
           />
           <div className="flex flex-col gap-2 w-full text-xl border-2 p-2.5 rounded-xl">
             <div className="text-start items-start font-bold">
@@ -356,7 +356,7 @@ const ActionsSection = ({
       </div>
 
       <button
-        className="flex items-center justify-center h-15 py-3.5 px-16 bg-primary-green sheen rounded-xl text-white mt-6 w-full text-center"
+        className='flex items-center justify-center h-15 py-3.5 px-16 bg-primary-green sheen rounded-xl text-white mt-6 w-full text-center'
         disabled={isAPICalling}
         type="button"
         onClick={() => {
@@ -366,7 +366,7 @@ const ActionsSection = ({
         }}
       >
         {isAPICalling ? (
-          <div className="flex items-center justify-center h-full">
+          <div className='flex items-center justify-center h-full'>
             <DotsLoader />
           </div>
         ) : (
