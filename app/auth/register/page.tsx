@@ -1,5 +1,5 @@
 "use client";
-
+ 
 import Spinner from "@/components/Spinner";
 import { Checkbox } from "@/components/ui/checkbox";
 import { API_URL } from "@/lib/api";
@@ -15,11 +15,11 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { login } from "@/lib/features/auth/auth.slice";
-
+ 
 export default function Register() {
   const router = useRouter();
   const dispatch = useDispatch();
-
+ 
   const ValidationSchema = z
   .object({
     email: z
@@ -49,9 +49,9 @@ export default function Register() {
 
 
   const [isPending, setIsPending] = useState(false);
-
+ 
   type ValidationSchemaType = z.infer<typeof ValidationSchema>;
-
+ 
   const {
     register,
     handleSubmit,
@@ -61,7 +61,7 @@ export default function Register() {
     resolver: zodResolver(ValidationSchema),
     defaultValues: { agreeToTerms: false },
   });
-
+ 
   const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
     setIsPending(true);
     try {
@@ -84,7 +84,7 @@ export default function Register() {
       setIsPending(false);
     }
   };
-
+ 
   return (
     <main>
       <div className="flex flex-col-reverse xl:flex-row-reverse h-screen overflow-y-auto gap-10">
@@ -125,7 +125,7 @@ export default function Register() {
                     </div>
                     {errors.email && <span className="text-rose-600 text-sm">{errors.email?.message}</span>}
                   </div>
-
+ 
                   {/* styled input field for password */}
                   <div>
                     <div
@@ -154,7 +154,7 @@ export default function Register() {
                     </div>
                     {errors.password && <span className="text-rose-600 text-sm">{errors.password?.message}</span>}
                   </div>
-
+ 
                   {/* styled input field for password confirmation*/}
                   <div>
                     <div
@@ -183,7 +183,7 @@ export default function Register() {
                     </div>
                     {errors.confirmPassword && <span className="text-rose-600 text-sm">{errors.confirmPassword?.message}</span>}
                   </div>
-
+ 
                   <div>
                     <div className="flex items-center space-x-2">
                       <Checkbox id="agree-to-terms" defaultChecked={false} onCheckedChange={(checked) => setValue("agreeToTerms", Boolean(checked))} />
@@ -208,7 +208,7 @@ export default function Register() {
                     {isPending ? <Spinner /> : "Register"}
                   </button>
                 </form>
-
+ 
                 <div className="flex items-center text-[#667085] gap-2">
                   <div className="h-[2px] w-full bg-[#EFEFF4]" />
                   <span className="whitespace-nowrap">or, Sign up with</span>
@@ -247,3 +247,5 @@ export default function Register() {
     </main>
   );
 }
+ 
+ 

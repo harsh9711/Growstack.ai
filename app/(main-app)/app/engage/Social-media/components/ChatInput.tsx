@@ -60,7 +60,7 @@ const items: FilterItem[] = [
   // Add other items as needed
 ];
 
-const ChatInput= () => {
+const ChatInput= (props : any) => {
   const [input, setInput] = useState("");
   const [showFilterSheet, setShowFilterSheet] = useState(false);  
    const [isOpen2, setIsOpen2] = useState(false);
@@ -226,8 +226,17 @@ const ChatInput= () => {
       <div className="flex bg-white  p-2 border gap-2 rounded-t-xl items-end">
       <textarea
         ref={textareaRef}
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
+        value={props.chatInput}
+        onChange={(e) => {
+          setInput(e.target.value);
+          props.handleChatInputCallback(e);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            props.handlePostComment((e.target as HTMLInputElement).value);
+          }
+        }}
         rows={1}
         className="w-full flex-1 p-2 bg-transparent resize-none overflow-hidden min-h-11 max-h-[300px]"
         placeholder="Write a note..."

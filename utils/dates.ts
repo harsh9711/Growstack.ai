@@ -25,6 +25,34 @@ export const formatRelativeDate = (dateString: string) => {
   }
 };
 
+export function timeDiffFromNow(inputDate: string): string {
+  const now = new Date();
+  const diffInMs = now.getTime() - new Date(inputDate).getTime();
+
+  const minute = 60 * 1000;
+  const hour = 60 * minute;
+  const day = 24 * hour;
+  const week = 7 * day;
+  const month = 30 * day;
+  const year = 365 * day;
+
+  if (diffInMs < hour) {
+      return `${Math.floor(diffInMs / minute)}m`;
+  } else if (diffInMs < day) {
+      return `${Math.floor(diffInMs / hour)}h`;
+  } else if (diffInMs < week) {
+      return `${Math.floor(diffInMs / day)}d`;
+  } else if (diffInMs < month) {
+      return `${Math.floor(diffInMs / week)}w`;
+  } else if (diffInMs < year) {
+      return `${Math.floor(diffInMs / month)}M`;
+  } else {
+      return `${Math.floor(diffInMs / year)}Y`;
+  }
+}
+
+
+
 
 export const formatDateTime = (dateString: string) => {
   const date = new Date(dateString);
