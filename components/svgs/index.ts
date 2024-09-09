@@ -1,4 +1,4 @@
-export { default as AnalyseIcon } from "@/public/svgs/analyse.svg";
+export { default as AnalyseIcon } from "/public/svgs/analyse.svg";
 export { default as CreateIcon } from "@/public/svgs/create.svg";
 export { default as DashboardIcon } from "@/public/svgs/dashboard.svg";
 export { default as EngageIcon } from "@/public/svgs/engage.svg";
@@ -48,7 +48,7 @@ export { default as GenerateAi } from "@/public/svgs/ai-video-generate.svg";
 export { default as Ppt } from "@/public/svgs/ppt.svg";
 export { default as MessageDotsIcon } from "@/public/svgs/message-dots.svg";
 export { default as CancelIcon } from "@/public/svgs/cancel.svg";
-export { default as UploadIcon } from "@/public/icons/upload.svg";
+export { default as UploadIcon } from "/public/icons/upload.svg";
 export { default as SendIcon } from "@/public/svgs/send.svg";
 export { default as AiArticleIcon } from "@/public/svgs/ai-text-generator.svg";
 export { default as WorkflowsIcon } from "@/public/icons/workflow.svg";
