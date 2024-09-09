@@ -112,8 +112,9 @@ const ChatArea = ({
           <></>
         )}
       </div>
-      <div className="border border-gray-200 bg-[#F5F5F5] flex items-center gap-3 p-1 pl-4 rounded-xl mt-4">
-        {/* <Link size={20} className="text-primary-green" /> */}
+      <div className="border border-gray-200 bg-[#F5F5F5] flex items-center gap-3 p-1 pl-4 rounded-xl mt-4"
+      data-aos="fade-up"
+      >
         <input
           type="text"
           placeholder="Type your message..."
