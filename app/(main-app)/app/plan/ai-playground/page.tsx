@@ -8,32 +8,39 @@ import { modelData } from "../../create/ai-articles/constants/options";
 import ChatArea from "./component/chatArea";
 import NewChatAlert from "./component/newChatArea";
 import { Message } from "./interface/playground";
+interface ChatAreaType {
+  id: number;
+  selectedModel: string;
+  provider: string;
+  conversation: Message[];
+  awaitingUpdate: boolean;
+  messages: Message[];
+}
 
-const initialChat = [
+const initialChat: ChatAreaType[] = [
   {
     id: 0,
     selectedModel: modelData[0].models[0].value,
     provider: modelData[0].provider,
     conversation: [],
+    awaitingUpdate: false,
+    messages: [],
   },
   {
     id: 1,
     selectedModel: modelData[0].models[0].value,
     provider: modelData[0].provider,
     conversation: [],
+    awaitingUpdate: false,
+    messages: [],
   },
 ];
 
 export default function AiPlayground() {
   const [userPrompt, setUserPrompt] = useState<string>("");
-  const [chatAreas, setChatAreas] = useState<
-    {
-      id: number;
-      selectedModel: string;
-      provider: string;
-      conversation: Message[];
-    }[]
-  >(initialChat);
+  const [chatAreas, setChatAreas] = useState(initialChat);
+
+  const [retainedMessage, setRetainedMessage] = useState<string>("");
 
   const addChatArea = () => {
     if (chatAreas.length > 2) {
@@ -47,12 +54,16 @@ export default function AiPlayground() {
         selectedModel: modelData[0].models[0].value,
         provider: modelData[0].provider,
         conversation: [],
+        awaitingUpdate: false,
+        messages: [],
       },
     ]);
   };
 
   const updateChatAreaModel = (id: number, newModel: string) => {
-    const newProvider = modelData.find((provider) => provider.models.some((model) => model.value === newModel))?.provider;
+    const newProvider = modelData.find((provider) =>
+      provider.models.some((model) => model.value === newModel)
+    )?.provider;
 
     setChatAreas(
       chatAreas.map((chatArea) =>
@@ -98,73 +109,96 @@ export default function AiPlayground() {
     setChatAreas((prevChatAreas) =>
       prevChatAreas.map((chatArea) => ({
         ...chatArea,
-        conversation: [...chatArea.conversation, newMessage, loadingAssistantMessage],
+        conversation: [
+          ...chatArea.conversation,
+          newMessage,
+          loadingAssistantMessage,
+        ],
+        awaitingUpdate: true,
+        messages: chatArea.messages,
       }))
     );
 
-    await Promise.all(
-      chatAreas.map(async (chatArea, index) => {
-        const payload = {
-          user_prompt: userPrompt,
-          model: chatArea.selectedModel,
-          provider: chatArea.provider,
-        };
-
-        try {
-          const response = await instance.post(`${API_URL}/ai/api/v1/playground`, payload);
-
-          const assistantMessage: Message = {
-            content: response.data.data,
-            role: "assistant",
-            loading: false,
+    try {
+      const responses = await Promise.all(
+        chatAreas.map(async (chatArea) => {
+          const payload = {
+            user_prompt: userPrompt,
+            model: chatArea.selectedModel,
+            provider: chatArea.provider,
+            messages: chatArea.messages,
           };
 
-          setChatAreas((prevChatAreas) =>
-            prevChatAreas.map((ca, caIndex) =>
-              ca.id === chatArea.id
-                ? {
-                    ...ca,
-                    conversation: ca.conversation.map((msg, msgIndex) => (msgIndex === ca.conversation.length - 1 ? assistantMessage : msg)),
-                  }
-                : ca
-            )
+          const response = await instance.post(
+            `${API_URL}/ai/api/v1/playground`,
+            payload
           );
-        } catch (error) {
-          console.error("Error sending prompt:", error);
-        }
-      })
-    );
+
+          const initialText = response.data.data.text;
+          const updatedMessages = response.data.data.updatedMessages;
+
+          return { chatArea, initialText, updatedMessages };
+        })
+      );
+
+      setChatAreas((prevChatAreas) =>
+        prevChatAreas.map((chatArea) => {
+          const response = responses.find(
+            (res) => res.chatArea.id === chatArea.id
+          );
+          if (response) {
+            const { initialText, updatedMessages } = response;
+
+            return {
+              ...chatArea,
+              conversation: chatArea.awaitingUpdate
+                ? [
+                    ...chatArea.conversation.slice(0, -1),
+                    {
+                      ...chatArea.conversation[
+                        chatArea.conversation.length - 1
+                      ],
+                      content: initialText,
+                      loading: false,
+                    },
+                  ]
+                : chatArea.conversation,
+              awaitingUpdate: updatedMessages.length > 0,
+              message: initialText,
+              messages: updatedMessages,
+            };
+          }
+          return chatArea;
+        })
+      );
+    } catch (error) {
+      console.error("Error sending prompt:", error);
+    }
 
     setUserPrompt("");
   };
 
   return (
-    <>
-      <div className="flex-1 h-full flex flex-col mt-10 overflow-x-auto">
-        <form onSubmit={handleSubmit} className="flex-1 h-full flex gap-6">
-          <div className="!bg-white h-full flex flex-col border border-[#E8E8E8] normal-box p-5 space-y-5">
-            <NewChatAlert handleNewChat={() => setChatAreas(initialChat)} />
-            {/* <button
-            type="button"
-            className="bg-primary-green p-3 rounded-[16px] text-white"
-          >
-            <History size={32} />
-          </button> */}
-          </div>
-          {chatAreas.map((chatArea) => (
-            <ChatArea
-              key={chatArea.id}
-              selectedModel={chatArea.selectedModel}
-              addChatArea={addChatArea}
-              onModelChange={(newModel) => updateChatAreaModel(chatArea.id, newModel)}
-              handleChange={handleChange}
-              conversation={chatArea.conversation}
-              userPrompt={userPrompt}
-              handleDelete={() => handleDelete(chatArea.id)}
-            />
-          ))}
-        </form>
-      </div>
-    </>
+    <div className="flex-1 h-full flex flex-col mt-10 overflow-x-auto">
+      <form onSubmit={handleSubmit} className="flex-1 h-full flex gap-6">
+        <div className="!bg-white h-full flex flex-col border border-[#E8E8E8] shadow-box p-5 space-y-5">
+          <NewChatAlert handleNewChat={() => setChatAreas(initialChat)} />
+        </div>
+        {chatAreas.map((chatArea) => (
+          <ChatArea
+            key={chatArea.id}
+            selectedModel={chatArea.selectedModel}
+            addChatArea={addChatArea}
+            onModelChange={(newModel) =>
+              updateChatAreaModel(chatArea.id, newModel)
+            }
+            handleChange={handleChange}
+            conversation={chatArea.conversation}
+            userPrompt={userPrompt}
+            handleDelete={() => handleDelete(chatArea.id)}
+          />
+        ))}
+      </form>
+    </div>
   );
 }

@@ -67,6 +67,9 @@ export default function AiAppPage({
   const [brandName, setBrandName] = useState("");
   const [selectedBrandVoice, setSelectedBrandVoice] = useState({});
   const [isChecked, setIsChecked] = useState(false);
+  const [userInput1Error, setUserInput1Error] = useState('');
+  const [userPromptError, setUserPromptError] = useState('');
+  const [userInput1, setUserInput1] = useState("");
   const brandNames = allBrandVoices?.map((item: any) => item.brand_name);
 
   const stripHtmlTags = (html: string) => {
@@ -74,6 +77,7 @@ export default function AiAppPage({
     temp.innerHTML = html;
     return temp.textContent || temp.innerText || "";
   };
+
   const handleChange = (e: { target: { value: string; name: any } }) => {
     let newValue = parseInt(e.target.value, 10);
 
@@ -90,6 +94,7 @@ export default function AiAppPage({
     });
     setSelectedBrandVoice(findedBrandvoice);
   }, [brandName]);
+
   useEffect(() => {
     const fetchAppTemplate = async () => {
       try {
@@ -211,6 +216,20 @@ export default function AiAppPage({
   };
 
   const generateResult = async () => {
+    if (userInput1.trim() === ''){
+      setUserInput1Error('Please Select Language');
+      return;
+    } else {
+      setUserInput1Error('');
+    }
+
+    // if (userInput.user_prompt === ""){
+    //   setUserPromptError('Please Enter Your Prompt');
+    //   return;
+    // } else {
+    //   setUserPromptError('');
+    // }
+
     setIsGeneratedResultPending(true);
     try {
       const formattedUserPrompt = appTemplate?.inputs
@@ -242,7 +261,7 @@ export default function AiAppPage({
   const handleEditorChange = (content: string) => {
     setGeneratedContent(content);
   };
-  const [userInput1, setUserInput1] = useState("");
+
   const handleDropdownChange = (field: string, value: any) => {
     setUserInput((prevInput) => ({
       ...prevInput,
@@ -261,6 +280,7 @@ export default function AiAppPage({
       return updatedPrompts;
     });
   };
+
   const handleCheckboxChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     index: number
@@ -483,11 +503,8 @@ export default function AiAppPage({
                   }}
                 />
               ) : (
-                <Link href="/account/create-brand-voice/">
-                  <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
-                    <Plus size={20} />
-                    Create brand voice
-                  </button>
+                <Link href="/account/create-brand-voice/" className="flex" style={{color:"green"}}>
+                    <Plus size={20} /><span className="ml-2">Create brand voice</span>
                 </Link>
               )}
             </div>
@@ -503,7 +520,9 @@ export default function AiAppPage({
                 setUserInput1(value);
               }}
             />
+            {userInput1Error && <p style={{color: 'red'}}>{userInput1Error}</p>}
           </div>
+
           <div className="space-y-3">
             {appTemplate?.inputs?.map((input: any, index: number) => (
               <div key={index}>
@@ -536,6 +555,7 @@ export default function AiAppPage({
                               option.trim()
                             )}
                             onChange={(e) => handleCheckboxChange(e, index)}
+                            required
                           />
                           <span className="ml-2">{option.trim()}</span>
                         </label>
@@ -556,6 +576,7 @@ export default function AiAppPage({
                             value={option.trim()}
                             checked={userPrompts[index] === option.trim()}
                             onChange={(e) => handleRadioChange(e, index)}
+                            required
                           />
                           <span className="ml-2">{option.trim()}</span>
                         </label>
@@ -571,6 +592,7 @@ export default function AiAppPage({
                       .map((option: string) => option.trim())}
                     value={userPrompts[index]}
                     onChange={(value: any) => handleSelectChange(value, index)}
+                    required
                   />
                 )}
                 {input.field_type !== "Checkbox list field" &&
@@ -586,6 +608,7 @@ export default function AiAppPage({
                       maxLength={2000}
                     ></textarea>
                   )}
+                  {userPromptError && <p style={{color: "red"}}>{userPromptError}</p>}
               </div>
             ))}
           </div>
