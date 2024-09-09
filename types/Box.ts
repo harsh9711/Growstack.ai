@@ -1,4 +1,5 @@
 export interface Feature {
+  plan_id: string | null;
   stripe_price_id: any;
   planType: string;
   hasDash?: boolean;

@@ -6,6 +6,7 @@ import { DollarSign, Plus } from "lucide-react";
 import { API_URL } from '@/lib/api';
 import toast from 'react-hot-toast';
 import instance from '@/config/axios.config';
+import Link from 'next/link';
 
 // Define the PlanUsage type
 interface PlanUsage {
@@ -73,12 +74,12 @@ export default function AddCreditDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300">
-          <Plus size={20} />
-          Add to credit balance
-        </button>
+      <Link href="/Upgrade">  <button className="w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300">
+          {/* <Plus size={20} /> */}
+          Upgrade Plan
+        </button></Link>
       </DialogTrigger>
-      <DialogContent className="max-w-[584px]">
+      {/* <DialogContent className="max-w-[584px]">
         <DialogHeader>
           <DialogTitle>Add to credit balance</DialogTitle>
         </DialogHeader>
@@ -108,7 +109,7 @@ export default function AddCreditDialog() {
             Add Amount
           </button>
         </div>
-      </DialogContent>
+      </DialogContent> */}
     </Dialog>
   );
 }

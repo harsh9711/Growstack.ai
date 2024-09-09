@@ -116,7 +116,7 @@ export default function ProfilePage() {
     {
       link: "/account/billings",
       icon: (
-        <FaMoneyBill1 />
+        <FaMoneyBill1 className="text-3xl" />
 
       ),
       title: "Billing",
