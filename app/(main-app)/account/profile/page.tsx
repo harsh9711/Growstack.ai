@@ -36,7 +36,7 @@ export default function ProfilePage() {
 
   const ValidationSchema = z.object({
     email: z.string().email("Please enter a valid email address"),
-    name: z.string().nonempty("Please enter a Full Name"),
+    name: z.string().min(1, "Please enter a Full Name"),
     job_role: z.string().optional(),
     company_name: z.string().optional(),
     company_website: z.string().optional(),
@@ -289,7 +289,7 @@ export default function ProfilePage() {
                   <input
                     type="text"
                     id="name"
-                    placeholder="Full Name"
+                    placeholder="Enter your Full Name"
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("name")}
                   />
@@ -299,7 +299,7 @@ export default function ProfilePage() {
                   <label>Role job</label>
                   <input
                     type="text"
-                    placeholder="Enter your role job"
+                    placeholder="Enter your Role Job"
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("job_role")}
                   />
@@ -310,7 +310,7 @@ export default function ProfilePage() {
                   <input
                     id="email"
                     type="text"
-                    placeholder="Enter your email"
+                    placeholder="Enter your Email"
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("email")}
                   />
@@ -342,7 +342,7 @@ export default function ProfilePage() {
                   <label>Address Line</label>
                   <input
                     type="text"
-                    placeholder="Your Address Line"
+                    placeholder="Enter your Address Line"
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("address_line")}
                   />

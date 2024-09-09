@@ -145,6 +145,7 @@ const CreateVideoDialog = ({
       toast.error("Error submitting the form");
     }
   };
+
   const handleInputChange = (
     e: React.ChangeEvent<
       HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement
@@ -407,7 +408,7 @@ const CreateVideoDialog = ({
         >
           <div className="relative w-full max-w-full space-y-6 text-[12px] h-full flex flex-col overflow-x-hidden">
             <main className="flex flex-col gap-x-10">
-              <div className="w-full flex xl:flex-row sm:flex-col lg:flex-row md:flex-row flex-col 2xl:flex-row gap-y-4 2xl:gap-x-10 mb-6 overflow-x-hidden ">
+              <div className="w-full flex xl:flex-row sm:flex-col lg:flex-row md:flex-row flex-col 2xl:flex-row gap-y-4 2xl:gap-x-10 mb-6 overflow-x-hidden">
                 <div className="flex w-full 2xl:w-2/3 flex-col gap-y-6 gap-x-4">
                   <div className="flex flex-col w-full">
                     <div className="w-full space-y-2">
@@ -558,7 +559,7 @@ const CreateVideoDialog = ({
                 </div>
               </div>
 
-              <div className="w-full flex relative z-0 overflow-x-hidden" >
+              <div className="w-full flex relative z-0 overflow-hidden">
                 {loading ? (
                   <div className="flex flex-col items-center w-full 2xl:max-w-3xl mx-auto space-y-4">
                     {/* <LoadingBar progress={progress} /> */}
@@ -570,7 +571,7 @@ const CreateVideoDialog = ({
                       hidden: { opacity: 0 },
                       visible: { opacity: 1 },
                     }}
-                    classNames="flex  w-full h-full grid relative z-10 place-content-center overflow-x-hidden"
+                    classNames="flex w-full h-full grid relative z-10 place-content-center overflow-x-hidden"
                   >
                     <div className="w-full flex xl:flex-col sm:flex-col lg:flex-row md:flex-col flex-col 2xl:flex-col gap-y-4 2xl:gap-x-10 mb-6 overflow-x-hidden">
                       <div className="flex xl:flex-row md:flex-row sm:flex-col lg:flex-row 2xl:flex-row">
