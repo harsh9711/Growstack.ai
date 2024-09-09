@@ -223,12 +223,12 @@ export default function AiAppPage({
       setUserInput1Error('');
     }
 
-    if (userInput.user_prompt === ""){
-      setUserPromptError('Please Enter Your Prompt');
-      return;
-    } else {
-      setUserPromptError('');
-    }
+    // if (userInput.user_prompt === ""){
+    //   setUserPromptError('Please Enter Your Prompt');
+    //   return;
+    // } else {
+    //   setUserPromptError('');
+    // }
 
     setIsGeneratedResultPending(true);
     try {
