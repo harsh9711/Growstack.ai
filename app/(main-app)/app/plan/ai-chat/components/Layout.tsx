@@ -224,7 +224,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
         </div>
       </aside>
       <main className="w-full flex-1 flex flex-col bg-white p-4 rounded-3xl border h-[calc(100vh-212px)]">
-        <div className="flex-1 p-4 overflow-y-auto flex flex-col">
+        <div className="flex-1 p-5 overflow-y-auto flex flex-col ">
           {!messages.length ? (
             <div className="flex-1 flex flex-col justify-center items-center pb-40 space-y-4">
               <div className="h-14 w-14 relative">

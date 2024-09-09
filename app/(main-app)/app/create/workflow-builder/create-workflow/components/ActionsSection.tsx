@@ -86,9 +86,9 @@ const ActionsSection = ({
             <img
               src={action.icon}
               alt={action.name}
-              width="24"
-              height="24"
-              className="flex-shrink-0 rounded-md object-contain min-h-[24px] min-w-[24px]"
+              width='24'
+              height='24'
+              className='flex-shrink-0 rounded-md object-contain min-h-[24px] min-w-[24px]'
             />
           ),
           subOptions: [
@@ -128,110 +128,114 @@ const ActionsSection = ({
       transition={{ duration: 0.5 }}
       variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
     >
-      <div className="flex items-center gap-4 pb-8">
-        <div className="w-full flex flex-row items-center gap-2">
+      <div className='flex items-center gap-4 pb-8'>
+        <div className='w-full flex flex-row items-center gap-2'>
           <img
             src={activeAction.icon}
-            height="56"
-            width="56"
-            className="w-10 h-10 rounded-2xl"
+            height='56'
+            width='56'
+            className='w-10 h-10 rounded-2xl'
           />
-          <div className="flex flex-col gap-2 w-full text-xl border-2 p-2.5 rounded-md">
+          <div className='flex flex-col gap-2 w-full text-xl border-2 p-2.5 rounded-md'>
             {activeAction.name}
           </div>
         </div>
       </div>
       <div>
-        {activeAction.preset_json.body.inputs.map(
-          (option: any, index: number) => {
-            if (option.input_type === "DROPDOWN") {
-              return (
-                <div key={index}>
-                  <Dropdown
-                    option={option}
-                    setActiveAction={setActiveAction}
-                    index={index}
-                  />
-                </div>
-              );
-            }
+        {activeAction.preset_json.body.inputs &&
+          activeAction.preset_json.body.inputs.map(
+            (option: any, index: number) => {
+              if (option.input_type === "DROPDOWN") {
+                return (
+                  <div key={index}>
+                    <Dropdown
+                      option={option}
+                      setActiveAction={setActiveAction}
+                      index={index}
+                    />
+                  </div>
+                );
+              }
 
-            if (option.input_type === "TEXT_AREA" && !option.is_prompt) {
-              return (
-                <div key={index} className="mt-8 ">
-                  <TextArea
-                    option={option}
-                    index={index}
-                    suggestionOptions={suggestionOptions}
-                    setSuggestionOptions={setSuggestionOptions}
-                    setActiveAction={setActiveAction}
-                  />
-                </div>
-              );
-            }
-            if (option.input_type === "SHORT_TEXT_AREA" && !option.is_prompt) {
-              return (
-                <div key={index} className="mt-8 ">
-                  <ShortTextArea
-                    option={option}
-                    index={index}
-                    suggestionOptions={suggestionOptions}
-                    setSuggestionOptions={setSuggestionOptions}
-                    setActiveAction={setActiveAction}
-                  />
-                </div>
-              );
-            }
-            if (option.input_type === "BOOLEAN" && !option.is_prompt) {
-              return (
-                <div key={index} className="mt-8">
-                  <Boolean
-                    option={option}
-                    index={index}
-                    setActiveAction={setActiveAction}
-                    suggestionOptions={suggestionOptions}
-                    setSuggestionOptions={setSuggestionOptions}
-                  />
-                </div>
-              );
-            }
+              if (option.input_type === "TEXT_AREA" && !option.is_prompt) {
+                return (
+                  <div key={index} className='mt-8 '>
+                    <TextArea
+                      option={option}
+                      index={index}
+                      suggestionOptions={suggestionOptions}
+                      setSuggestionOptions={setSuggestionOptions}
+                      setActiveAction={setActiveAction}
+                    />
+                  </div>
+                );
+              }
+              if (
+                option.input_type === "SHORT_TEXT_AREA" &&
+                !option.is_prompt
+              ) {
+                return (
+                  <div key={index} className='mt-8 '>
+                    <ShortTextArea
+                      option={option}
+                      index={index}
+                      suggestionOptions={suggestionOptions}
+                      setSuggestionOptions={setSuggestionOptions}
+                      setActiveAction={setActiveAction}
+                    />
+                  </div>
+                );
+              }
+              if (option.input_type === "BOOLEAN" && !option.is_prompt) {
+                return (
+                  <div key={index} className='mt-8'>
+                    <Boolean
+                      option={option}
+                      index={index}
+                      setActiveAction={setActiveAction}
+                      suggestionOptions={suggestionOptions}
+                      setSuggestionOptions={setSuggestionOptions}
+                    />
+                  </div>
+                );
+              }
 
-            if (option.input_type === "CHECKBOX" && !option.is_prompt) {
-              return (
-                <div key={index} className="mt-8">
-                  <CheckboxComponent
-                    option={option}
-                    index={index}
-                    setActiveAction={setActiveAction}
-                    suggestionOptions={suggestionOptions}
-                    setSuggestionOptions={setSuggestionOptions}
-                  />
-                </div>
-              );
+              if (option.input_type === "CHECKBOX" && !option.is_prompt) {
+                return (
+                  <div key={index} className='mt-8'>
+                    <CheckboxComponent
+                      option={option}
+                      index={index}
+                      setActiveAction={setActiveAction}
+                      suggestionOptions={suggestionOptions}
+                      setSuggestionOptions={setSuggestionOptions}
+                    />
+                  </div>
+                );
+              }
+              if (option.input_type === "TIME" && !option.is_prompt) {
+                return (
+                  <div key={index} className='mt-8'>
+                    <ScheduleComponent
+                      option={option}
+                      index={index}
+                      setActiveAction={setActiveAction}
+                    />
+                  </div>
+                );
+              }
+              return null;
             }
-            if (option.input_type === "TIME" && !option.is_prompt) {
-              return (
-                <div key={index} className="mt-8">
-                  <ScheduleComponent
-                    option={option}
-                    index={index}
-                    setActiveAction={setActiveAction}
-                  />
-                </div>
-              );
-            }
-            return null;
-          }
-        )}
+          )}
       </div>
       <button
-        className="flex items-center justify-center h-15 py-3.5 px-16 bg-primary-green sheen rounded-xl text-white mt-6 w-full text-center"
+        className='flex items-center justify-center h-15 py-3.5 px-16 bg-primary-green sheen rounded-xl text-white mt-6 w-full text-center'
         disabled={isAPICalling}
-        type="button"
+        type='button'
         onClick={() => onSaveAction(activeAction)}
       >
         {isAPICalling ? (
-          <div className="flex items-center justify-center h-full">
+          <div className='flex items-center justify-center h-full'>
             <DotsLoader />
           </div>
         ) : (
