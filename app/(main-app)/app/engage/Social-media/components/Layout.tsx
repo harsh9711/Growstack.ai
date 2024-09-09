@@ -427,7 +427,7 @@ const Layout = () => {
 
   return (
     <div className="flex-1 max-h-[730px] flex  mt-10 shadow-lg rounded-3xl text-ellipsis">
-      <aside
+    <aside
         className={clsx(
           "w-full max-w-[350px] relative border bg-white   flex flex-col",
           showRightSidebar ? "" : "rounded-l-3xl"
@@ -469,7 +469,7 @@ const Layout = () => {
             setSearchQuery={setSearchQuery}
           />
         </div>
-        <div className="relative p-5 flex-1 overflow-y-auto max-h-[calc(100vh-280px)]">
+        <div className="relative p-5 flex-1 overflow-y-auto max-h-[calc(100vh - 172px)]">
           <MessageList onSelectMessage={handleSelectMessage} />
           {/* {filteredData?.map((item, idx) => (
             <SidebarItem
@@ -486,10 +486,10 @@ const Layout = () => {
         {/* <div className="h-20 w-full bg-gradient-to-b from-transparent via-white to-white absolute bottom-0 rounde" /> */}
       </aside>
       {isOpened && selectedMessage && (
-  <main
-    className="flex-1 w-full flex flex-col bg-gray-100 p-4 border"
-    style={{ ...hideScrollbarStyles, ...hideScrollbarWebkit }}
-  >
+        <main
+  className="flex-1 w-full flex flex-col bg-gray-100 p-4 border rounded-r-3xl"
+  style={{ height: 'calc(100vh - 172px)', ...hideScrollbarStyles, ...hideScrollbarWebkit }}
+>
     {/* Message Header */}
     <div className="flex flex-row gap-4 items-center">
       <Image src="/facebook.png" alt="facebook" width={50} height={50} />
@@ -500,7 +500,7 @@ const Layout = () => {
     <div className="border-[0.1px] border-gray-200 my-4 w-[1400px] -translate-x-4"></div>
 
     {/* Message Content */}
-    <div className="flex-1 p-4" style={{ ...hideScrollbarStyles, ...hideScrollbarWebkit }}>
+    <div className="flex-1 p-4" style={{height: 'calc(100vh - 150px)', ...hideScrollbarStyles, ...hideScrollbarWebkit }}>
       <div className="flex flex-col gap-4">
         {/* Check if there are messages */}
         {Array.isArray(selectedMessage.message) && selectedMessage.message.length > 0 ? (

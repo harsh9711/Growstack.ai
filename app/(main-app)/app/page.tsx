@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import ContentLoader from "react-content-loader";
 import toast from "react-hot-toast";
 import { BsStarFill } from "react-icons/bs";
+import { getCurrentUser } from "@/lib/features/auth/auth.selector";
 import { useDispatch } from "react-redux";
 import ChatComponent from "./components/ChatComponent";
 // import "bootstrap/dist/css/bootstrap.min.css";
@@ -49,6 +50,7 @@ export default function Dashboard() {
   const [favoriteAssistants, setFavoriteAssistants] = useState<FavoriteAssistant[]>([]);
   const [aiAppsloading, setAiAppsLoading] = useState(true);
   const [aiAssistantsloading, setAiAssistantsLoading] = useState(true);
+  const currentUser = getCurrentUser();
   // const hasRefreshed = localStorage.getItem("hasRefreshed");
   // const [refreshed, setRefreshed] = useState(hasRefreshed || false);
   useEffect(() => {
@@ -134,12 +136,12 @@ export default function Dashboard() {
   }, []);
 
   return  (
-    <main className="">
-      <div className="bg-[#EBF0F6] h-80 w-full max-w-[95%] mx-auto absolute top-0 left-0 right-0 rounded-b-[60px]" />
+    <main className="" >
+      <div className="bg-[#EBF0F6] h-80 w-full max-w-[96%] mx-auto absolute top-0 left-0 right-0 rounded-b-[60px]" />
       <div className="relative z-[1]">
       <div className="flex justify-between items-center mt-8" data-aos="fade-down">
       <div className="space-y-2">
-            <h1 className="text-2xl font-semibold">Dashboard</h1>
+            <h1 className="text-2xl font-semibold">Welcome back, {currentUser.user_name ? currentUser.name : currentUser?.email?.split('.')[0]} </h1>
             {/* <p className="flex items-center gap-2 text-[#3D3D3D] text-[15px]">
               23 August - 23 September 2024
               <span>
@@ -148,11 +150,11 @@ export default function Dashboard() {
             </p> */}
           </div>
         </div>
-        <div className="w-full flex flex-col-reverse 2xl:flex-row gap-6 mt-4">
-        <div className="w-full space-y-6" data-aos="fade-up">
+        <div className="w-full flex gap-3 mt-4">
+        <div className="w-full space-y-6 " data-aos="fade-left">
         <ChatComponent />
           </div>
-          <div className="w-full 2xl:w-[50%] bg-white p-8 rounded-3xl border border-[#E8E8E8] space-y-5" data-aos="fade-right">
+          <div className="w-[60%] 2xl:w-[50%] bg-white p-8 rounded-3xl border border-[#E8E8E8] space-y-5" data-aos="fade-right">
             <div className="space-y-3">
               <h1 className="text-xl font-semibold text-center">Unlock the power of AI</h1>
               <p className="text-[#6C7275] text-center">Chat with the smartest AI - Experience the power of AI with us</p>
@@ -234,7 +236,7 @@ export default function Dashboard() {
                 </button>
               </div>
             </Link>
-          </div>
+          </div>  
         </div>
       </div>
     </main>
