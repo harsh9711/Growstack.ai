@@ -46,7 +46,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <ChevronRight size={20} />
             </div>
           </Link>
-          <Link href="/account/billings/settings/credits">
+          {/* <Link href="/account/billings/settings/credits">
             <div
               className={clsx(
                 "w-full flex justify-between p-3 hover:bg-gray-50 rounded-xl cursor-pointer transition mt-3",
@@ -58,7 +58,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               </div>
               <ChevronRight size={20} />
             </div>
-          </Link>
+          </Link> */}
           <Link href="/account/billings/settings/integrations">
             <div
               className={clsx(
