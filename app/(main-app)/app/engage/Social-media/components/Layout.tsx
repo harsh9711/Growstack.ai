@@ -18,8 +18,9 @@ import ChatInput from "./ChatInput";
 import { CiSettings } from "react-icons/ci";
 import SidebarAccount from "./SidebarAccount";
 import { BsPlus, BsThreeDotsVertical } from "react-icons/bs";
-import { CiCircleInfo } from "react-icons/ci";
+import { CiCircleInfo,CiEdit } from "react-icons/ci";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
+import { MdOutlineDelete } from "react-icons/md";
 import { AiOutlineMessage } from "react-icons/ai";
 import { BiReset } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
@@ -27,7 +28,7 @@ import { API_URL } from "@/lib/api";
 import instance from "@/config/axios.config";
 import toast from "react-hot-toast";
 import { timeDiffFromNow } from "@/utils/dates";
-import mockResponse from './mock.json';
+import moment from 'moment';
 
 interface SidebarItem {
   _id: string;
@@ -187,7 +188,7 @@ const Layout = () => {
     //   time: "12m",
     //   author: "Vale Ferreira",
     //   message: "How can I connect my accounts",
-    //   imageUrl: "/contact2.png",
+    //   imageUrl: "/contact.png",
     // },
   ];
 
@@ -210,8 +211,9 @@ const Layout = () => {
   const [show2, setShow2] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredData, setFilteredData] = useState(sidebarData);
+  const [selectedPost, setSelectedPost] = useState<any>({});
   const [selectedPostComments, setSelectedPostComments] = useState<any>([]);
-
+  const [chatInput, setChatInput] = useState("");
 
   const handleDotsClick = () => {
     setShowDelete(!showDelete);
@@ -265,19 +267,21 @@ const Layout = () => {
     setIsArrowRotated(!isArrowRotated);
   };
   const onClickSidebarItem = async (item : any) => {
+    setSelectedPostComments([]);
     setIsOpened(true);
-    const platform = item.platform as keyof typeof mockResponse.data;
-    setSelectedPostComments(mockResponse.data[platform])
     try {
       const response = await instance.get(
         `${API_URL}/users/api/v1/social-media/comments/${item.id}`
       );
+      setSelectedPost(item);
+      let tempData = response?.data?.data?.[selectedPost?.platform]
+      setSelectedPostComments(tempData);
     } catch (error) {
       console.log("Error fetching table data:", error);
       toast.error("Error fetching table data");
     }
   };
-  console.log(selectedPostComments)
+
   const toggleMenu = () => {
     setShowRightSidebar(!showRightSidebar);
     setMenuOpen(!MenuOpen);
@@ -306,7 +310,33 @@ const Layout = () => {
     if(activeIndex === 1){
       handleGetComments()
     }
-  },[activeIndex])
+  },[activeIndex]);
+
+  const handleChatInputCallback = (e:any) => {
+    setChatInput(e.target.value);
+    // handlePostComment(e.target.value)
+  };
+
+  const handlePostComment = async (value :string) => {
+    try {
+      const payload : any = {
+        "comment": value,
+        "platforms":[selectedPost?.platform],
+        "mediaUrls": []
+    };
+      const response = await instance.post(
+        `${API_URL}/users/api/v1/social-media/comments/${selectedPost.id}`,payload
+      );
+      if(response.data?.data?.status === "success"){
+        toast.success("Comment posted successfully");
+        setChatInput("")
+        handleGetComments();
+      }
+    } catch (error) {
+      console.log("Error Posting the Comment:", error);
+      toast.error("Error Posting the Comment");
+    }
+  }
 
   const handleGetMessages = async () => {
     try {
@@ -335,7 +365,7 @@ const Layout = () => {
               time: timeDiffFromNow(ele?.created),
               author: "",
               message: ele?.post,
-              imageUrl: ele?.primary?.profiles?.[platform]?.default_profile_image || "/contact2.png",
+              imageUrl: ele?.primary?.profiles?.[platform]?.default_profile_image || "/contact.png",
               postUrl : ele?.postIds?.[0]?.postUrl || "",
               platform : platform
             })
@@ -353,6 +383,22 @@ const Layout = () => {
     handleGetMessages();
     handleGetComments();
   }, []);
+
+  const handleDeleteComment = async (eachComment : any) => {
+    try {
+      const response = await instance.delete(
+        `${API_URL}/users/api/v1/social-media/comments/${eachComment.id}`
+      );
+      if(response.data?.data?.status === "success"){
+        toast.success("Comment Deleted successfully");
+        setChatInput("")
+        handleGetComments();
+      }
+    } catch (error) {
+      console.log("Error Deleting the Comment:", error);
+      toast.error("Error Deleting the Comment");
+    }
+  }
 
   return (
     <div className="flex-1 max-h-[780px] flex  mt-10 shadow-lg rounded-3xl text-ellipsis">
@@ -428,197 +474,89 @@ const Layout = () => {
             className="flex-1 p-4"
             style={{ ...hideScrollbarStyles, ...hideScrollbarWebkit }}
           >
-            <div className="flex flex-row justify-between">
-              {" "}
-              <ChatMessage
-                message={
-                  <>
-                    Lorem ipsum dolor sit amet consectetur. Non mattis tempor in
-                    sed ante venenatis ornare. Ultrices at bibendum at vitae ac
-                    diam habitasse. Ac cras Https://www.link.com. Imperdiet non
-                    potenti fermentum vitae sit id cras porta urna. Dignissim
-                    sit enim vitae elit semper pellentesque massa nulla. Nullam
-                    congue magna.
-                    <Image
-                      src="/pic.png"
-                      alt="pic"
-                      width={60}
-                      height={80}
-                      className="rounded-xl border mt-2"
-                    />
-                  </>
-                }
-                imageUrl={"/contact2.png"}
-                title={"Growstack-AI"}
-                time={"Facebook Post"}
-              />
-              <div className="flex flex-row items-center relative -translate-y-24">
-                <h2 className="text-[12px] font-light mr-2  ">
-                  2023-03-06 , 11:00 PM
-                </h2>
-                {show && (
-                  <button className="items-center flex flex-row px-4 p-2 bg-white text-white gap-2 translate-y-8 rounded-xl group">
-                    <svg
-                      width="21"
-                      height="20"
-                      viewBox="0 0 21 20"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M9.66732 5.82812H5.50065C4.58018 5.82812 3.83398 6.57432 3.83398 7.49479V14.9948C3.83398 15.9153 4.58018 16.6615 5.50065 16.6615H13.0007C13.9211 16.6615 14.6673 15.9153 14.6673 14.9948V10.8281"
-                        stroke="#14171B"
-                        strokeWidth="1.45833"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M8.83398 11.6615L17.1673 3.32812"
-                        stroke="#14171B"
-                        strokeWidth="1.45833"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M13 3.32812H17.1667V7.49479"
-                        stroke="#14171B"
-                        strokeWidth="1.45833"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    <h2 className="text-black  transform transition-transform  duration-200 ease-in-out group-hover:scale-110 ">
-                      Open on network
-                    </h2>
-                  </button>
-                )}
-                <BsThreeDotsVertical
-                  className="text-xl "
-                  onClick={handleDotsClick2}
-                />
-              </div>
-            </div>{" "}
-            <div className="flex flex-row justify-between">
-              {" "}
-              <ChatMessage
-                message="omg, this is amazing"
-                imageUrl={"/contact2.png"}
-                title={"Vale Ferreira"}
-                time={""}
-              />
-              <div className="flex flex-row items-center relative">
-                <h2 className="text-[12px] font-light mr-2">
-                  2023-03-06 , 11:00 PM
-                </h2>
-                {show2 && (
-                  <button className="items-center flex flex-row px-4 p-2 bg-white text-white gap-2 translate-y-8 rounded-xl group">
-                    <svg
-                      width="21"
-                      height="20"
-                      viewBox="0 0 21 20"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M9.66732 5.82812H5.50065C4.58018 5.82812 3.83398 6.57432 3.83398 7.49479V14.9948C3.83398 15.9153 4.58018 16.6615 5.50065 16.6615H13.0007C13.9211 16.6615 14.6673 15.9153 14.6673 14.9948V10.8281"
-                        stroke="#14171B"
-                        strokeWidth="1.45833"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M8.83398 11.6615L17.1673 3.32812"
-                        stroke="#14171B"
-                        strokeWidth="1.45833"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M13 3.32812H17.1667V7.49479"
-                        stroke="#14171B"
-                        strokeWidth="1.45833"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    <h2 className="text-black  transform transition-transform  duration-200 ease-in-out group-hover:scale-110 ">
-                      Open on network
-                    </h2>
-                  </button>
-                )}
-                <BsThreeDotsVertical
-                  className="text-xl "
-                  onClick={handleDotsClick3}
-                />
-              </div>{" "}
-            </div>{" "}
-            <div className="flex flex-col items-start translate-x-14">
-              <p className="py-2 px-4 bg-white max-w-[600px] rounded-lg text-sm">
-                perfect! ✅{" "}
-              </p>
-            </div>
-            <div className="flex flex-col items-start mt-4 translate-x-14">
-              <p className="py-2 px-4 bg-white max-w-[600px] rounded-lg text-sm">
-                Wow, this is really epic{" "}
-              </p>
-            </div>
-          </div>
-          <div className="flex flex-row w-full justify-between">
-            <div className="flex flex-col items-start -translate-y-0 translate-x-16  border-l-4 border-green-900 w-[500px] rounded-xl shadow-green-900">
-              <p className="py-2 px-4 bg-white max-w-[600px] rounded-lg text-sm">
-                <span className="flex flex-row gap-2 item-center">
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 18 18"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M10 17V11C10 10.4477 10.4477 10 11 10H17V3C17 1.89543 16.1046 1 15 1H3C1.89543 1 1 1.89543 1 3V15C1 16.1046 1.89543 17 3 17H10"
-                      stroke="#034737"
-                      strokeWidth="1.75"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  Hey, Rosa! Can you make sure to include a link to our
-                  tutorial? Thanks!
-                </span>
-                <label className="flex p-2 items-center rounded-md flex-row justify-between">
-                  <span className="flex flex-row">
-                    <Image
-                      src="/contact.png"
-                      alt="contact"
-                      width="20"
-                      height={10}
-                    />
-                    <span className="ml-2 text-black text-md">
-                      Leslie Alexander
-                    </span>
-                  </span>
-                </label>
-              </p>
-            </div>
-            {showDelete && (
-              <button
-                className=" h-[50px] items-center flex flex-row px-4 bg-white text-white gap-2 rounded-xl  translate-y-2 translate-x-48 group "
-                onClick={() => alert("Delete action triggered")}
-              >
-                <MdDelete className="text-red-500 text-2xl transform transition-transform duration-200 ease-in-out group-hover:scale-110" />
-                <h2 className="text-black transform transition-transform duration-200 ease-in-out group-hover:scale-110">
-                  {" "}
-                  Delete
-                </h2>
-              </button>
-            )}
-            <BsThreeDotsVertical
-              className="-translate-x-[20px] -translate-y-4 text-xl cursor-pointer"
-              onClick={handleDotsClick}
+            {selectedPostComments?.map((eachComment: any) => (
+  <div className="flex flex-row justify-between" key={eachComment.id}>
+    <ChatMessage
+      message={
+        <>
+          {eachComment?.comment}
+          {/* <Image
+            src="/pic.png"
+            alt="pic"
+            width={60}
+            height={80}
+            className="rounded-xl border mt-2"
+          /> */}
+        </>
+      }
+      imageUrl={"/contact.png"}
+      title={eachComment?.name}
+      time={`${eachComment?.platform} Post`}
+    />
+    <div className="flex flex-row items-center relative -translate-y-24">
+      <h2 className="text-[12px] font-light mr-2">
+      {moment(eachComment?.created).format('YYYY/MM/DD HH:mm')}
+      </h2>
+      {show && (
+        <button className="items-center px-4 p-2 bg-white text-white gap-2 translate-y-8 rounded-xl group">
+          <div className="items-center flex flex-row">
+          <svg
+            width="21"
+            height="20"
+            viewBox="0 0 21 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9.66732 5.82812H5.50065C4.58018 5.82812 3.83398 6.57432 3.83398 7.49479V14.9948C3.83398 15.9153 4.58018 16.6615 5.50065 16.6615H13.0007C13.9211 16.6615 14.6673 15.9153 14.6673 14.9948V10.8281"
+              stroke="#14171B"
+              strokeWidth="1.45833"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
+            <path
+              d="M8.83398 11.6615L17.1673 3.32812"
+              stroke="#14171B"
+              strokeWidth="1.45833"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M13 3.32812H17.1667V7.49479"
+              stroke="#14171B"
+              strokeWidth="1.45833"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <h2 className="text-black transform transition-transform duration-200 ease-in-out">
+           <small> Open on network</small>
+          </h2>
           </div>
-          <div className="mt-8"></div>
-          <ChatInput />
+          {/* <div className="items-center flex flex-row text-black" onClick={() => handleEditComment(eachComment)}>
+            <CiEdit />
+          <small className="ml-8">Edit</small>
+          </div> */}
+          <div className="items-center flex flex-row text-black" onClick={() => handleDeleteComment(eachComment)}>
+            <MdOutlineDelete />
+          <small className="ml-8">Delete</small>
+          </div>
+        </button>
+      )}
+      <BsThreeDotsVertical
+        className="text-xl"
+        onClick={handleDotsClick2}
+      />
+    </div>
+  </div>
+))}
+
+          </div>
+          <ChatInput 
+        chatInput={chatInput} 
+        handleChatInputCallback={handleChatInputCallback} 
+        handlePostComment={handlePostComment}
+      />
         </main>
       )}
       {!isOpened && (
@@ -711,34 +649,31 @@ const Layout = () => {
               <div className="flex flex-row justify-between mb-4">
                 <div className="flex flex-col">
                   <span className="flex flex-row items-center w-full justify-between gap-x-24">
-                    <h2 className="text-[14px] font-semibold">GrowStack AI</h2>{" "}
+                    <h2 className="text-[14px] font-semibold">{selectedPost?.title}</h2>{" "}
                     <h2 className="font-extralight text-[10px]">
-                      2023-03-06 , 11:00 PM
+                    {selectedPost?.time}
                     </h2>
                   </span>
-                  <p className="text-[12px] font-light">Facebook post</p>
+                  <p className="text-[12px] font-light">{selectedPost?.platform} post</p>
                 </div>
               </div>
 
               <div className="flex flex-col gap-2 justify-between bg-[#F8F8F8] p-4 rounded-xl mb-4">
                 <h2 className="font-light text-[10px] text-black text-ellipsis">
-                  Lorem ipsum dolor sit amet consectetur. Non mattis tempor in
-                  sed ante venenatis ornare. Ultrices at bibendum at vitae ac
-                  diam habitasse. Ac cras Https://www.link.com. Imperdiet non
-                  potenti fermentum vitae sit id cras porta urna. Dignissim sit
-                  enim vitae elit semper pellentesque massa nulla. Nullam congue
-                  magna.
+                {selectedPost?.message}
                 </h2>
-                <Image
+                {/* <Image
                   src="/pic.png"
                   alt="pic"
                   width={60}
                   height={80}
                   className="rounded-xl"
-                />
+                /> */}
               </div>
 
-              <button className="text-white text-ellipsis hover:font-medium bg-primary-green shadow-lg hover:bg-primary-green/90 w-32 justify-center flex gap-2 items-center h-10 font-light rounded-xl transition-all duration-300 text-sm">
+              <button className="text-white text-ellipsis hover:font-medium bg-primary-green shadow-lg hover:bg-primary-green/90 w-32 justify-center flex gap-2 items-center h-10 font-light rounded-xl transition-all duration-300 text-sm" onClick={() => {
+                window.open(selectedPost?.postUrl, '_blank');
+              }}>
                 <svg
                   width="21"
                   height="20"
