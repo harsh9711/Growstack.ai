@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Tooltip,
   TooltipContent,
@@ -156,11 +155,10 @@ export default function CreateWorkflowPage() {
   };
 
   const handleRunDashboard = () => {
-    setIsLoading(true); // Set loading state to true
+    setIsLoading(true); 
     setTimeout(() => {
-      // Simulate loading state for demonstration
       window.location.href = `/app/create/workflow-builder/workflows/user-work-flow?workflow_id=${workflowId}`;
-    }, 500); // Adjust timeout as needed
+    }, 500);
   };
 
   return (
