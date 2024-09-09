@@ -14,7 +14,7 @@ interface ChatAreaType {
   provider: string;
   conversation: Message[];
   awaitingUpdate: boolean;
-  previousMessages: Message[];
+  messages: Message[];
 }
 
 const initialChat: ChatAreaType[] = [
@@ -24,7 +24,7 @@ const initialChat: ChatAreaType[] = [
     provider: modelData[0].provider,
     conversation: [],
     awaitingUpdate: false,
-    previousMessages: [],
+    messages: [],
   },
   {
     id: 1,
@@ -32,21 +32,15 @@ const initialChat: ChatAreaType[] = [
     provider: modelData[0].provider,
     conversation: [],
     awaitingUpdate: false,
-    previousMessages: [],
+    messages: [],
   },
 ];
 
 export default function AiPlayground() {
   const [userPrompt, setUserPrompt] = useState<string>("");
-  const [chatAreas, setChatAreas] = useState<
-    {
-      [x: string]: any;
-      id: number;
-      selectedModel: string;
-      provider: string;
-      conversation: Message[];
-    }[]
-  >(initialChat);
+  const [chatAreas, setChatAreas] = useState(initialChat);
+
+  const [retainedMessage, setRetainedMessage] = useState<string>("");
 
   const addChatArea = () => {
     if (chatAreas.length > 2) {
@@ -60,12 +54,16 @@ export default function AiPlayground() {
         selectedModel: modelData[0].models[0].value,
         provider: modelData[0].provider,
         conversation: [],
+        awaitingUpdate: false,
+        messages: [],
       },
     ]);
   };
 
   const updateChatAreaModel = (id: number, newModel: string) => {
-    const newProvider = modelData.find((provider) => provider.models.some((model) => model.value === newModel))?.provider;
+    const newProvider = modelData.find((provider) =>
+      provider.models.some((model) => model.value === newModel)
+    )?.provider;
 
     setChatAreas(
       chatAreas.map((chatArea) =>
@@ -95,135 +93,112 @@ export default function AiPlayground() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (userPrompt.trim() === "") return;
-  
+
     const newMessage: Message = {
       content: userPrompt,
       role: "user",
       loading: false,
     };
-  
+
     const loadingAssistantMessage: Message = {
       content: "",
       role: "assistant",
       loading: true,
     };
-  
-    // Add the new user message and the initial loading message
+
     setChatAreas((prevChatAreas) =>
       prevChatAreas.map((chatArea) => ({
         ...chatArea,
-        conversation: [...chatArea.conversation, newMessage, loadingAssistantMessage],
-        awaitingUpdate: true, // Mark this chat area as awaiting update
-        previousMessages: [], // Reset previous messages for this chat area
+        conversation: [
+          ...chatArea.conversation,
+          newMessage,
+          loadingAssistantMessage,
+        ],
+        awaitingUpdate: true,
+        messages: chatArea.messages,
       }))
     );
-  
+
     try {
-      // Handle the first API call
       const responses = await Promise.all(
         chatAreas.map(async (chatArea) => {
           const payload = {
             user_prompt: userPrompt,
             model: chatArea.selectedModel,
             provider: chatArea.provider,
+            messages: chatArea.messages,
           };
-  
-          const response = await instance.post(`${API_URL}/ai/api/v1/playground`, payload);
-  
+
+          const response = await instance.post(
+            `${API_URL}/ai/api/v1/playground`,
+            payload
+          );
+
           const initialText = response.data.data.text;
           const updatedMessages = response.data.data.updatedMessages;
-  
+
           return { chatArea, initialText, updatedMessages };
         })
       );
-  
+
       setChatAreas((prevChatAreas) =>
         prevChatAreas.map((chatArea) => {
-          const response = responses.find((res) => res.chatArea.id === chatArea.id);
+          const response = responses.find(
+            (res) => res.chatArea.id === chatArea.id
+          );
           if (response) {
             const { initialText, updatedMessages } = response;
-  
+
             return {
               ...chatArea,
               conversation: chatArea.awaitingUpdate
                 ? [
-                    ...chatArea.conversation.slice(0, -1), // Replace the last loading message
-                    { ...chatArea.conversation[chatArea.conversation.length - 1], content: initialText, loading: false },
+                    ...chatArea.conversation.slice(0, -1),
+                    {
+                      ...chatArea.conversation[
+                        chatArea.conversation.length - 1
+                      ],
+                      content: initialText,
+                      loading: false,
+                    },
                   ]
                 : chatArea.conversation,
               awaitingUpdate: updatedMessages.length > 0,
-              previousMessages: updatedMessages,
+              message: initialText,
+              messages: updatedMessages,
             };
           }
           return chatArea;
         })
       );
-  
-      await Promise.all(
-        responses.map(async ({ chatArea, updatedMessages }) => {
-          if (updatedMessages.length > 0) {
-            const payload = {
-              user_prompt: updatedMessages.map((msg: { content: any; }) => msg.content).join(" "), // Use updated messages as user prompt
-              model: chatArea.selectedModel,
-              provider: chatArea.provider,
-            };
-  
-            await instance.post(`${API_URL}/ai/api/v1/playground`, payload);
-  
-            // Update the chat area with the new messages
-            setChatAreas((prevChatAreas) =>
-              prevChatAreas.map((ca) =>
-                ca.id === chatArea.id
-                  ? {
-                      ...ca,
-                      conversation: [
-                        ...ca.conversation,
-                        ...updatedMessages,
-                      ],
-                      awaitingUpdate: false, // Clear the flag after update
-                    }
-                  : ca
-              )
-            );
-          }
-        })
-      );
     } catch (error) {
       console.error("Error sending prompt:", error);
     }
-  
+
     setUserPrompt("");
   };
-  
-  
 
   return (
-    <>
-      <div className="flex-1 h-full flex flex-col mt-10 overflow-x-auto">
-        <form onSubmit={handleSubmit} className="flex-1 h-full flex gap-6">
-          <div className="!bg-white h-full flex flex-col border border-[#E8E8E8] shadow-box p-5 space-y-5">
-            <NewChatAlert handleNewChat={() => setChatAreas(initialChat)} />
-            {/* <button
-            type="button"
-            className="bg-primary-green p-3 rounded-[16px] text-white"
-          >
-            <History size={32} />
-          </button> */}
-          </div>
-          {chatAreas.map((chatArea) => (
-            <ChatArea
-              key={chatArea.id}
-              selectedModel={chatArea.selectedModel}
-              addChatArea={addChatArea}
-              onModelChange={(newModel) => updateChatAreaModel(chatArea.id, newModel)}
-              handleChange={handleChange}
-              conversation={chatArea.conversation}
-              userPrompt={userPrompt}
-              handleDelete={() => handleDelete(chatArea.id)}
-            />
-          ))}
-        </form>
-      </div>
-    </>
+    <div className="flex-1 h-full flex flex-col mt-10 overflow-x-auto">
+      <form onSubmit={handleSubmit} className="flex-1 h-full flex gap-6">
+        <div className="!bg-white h-full flex flex-col border border-[#E8E8E8] shadow-box p-5 space-y-5">
+          <NewChatAlert handleNewChat={() => setChatAreas(initialChat)} />
+        </div>
+        {chatAreas.map((chatArea) => (
+          <ChatArea
+            key={chatArea.id}
+            selectedModel={chatArea.selectedModel}
+            addChatArea={addChatArea}
+            onModelChange={(newModel) =>
+              updateChatAreaModel(chatArea.id, newModel)
+            }
+            handleChange={handleChange}
+            conversation={chatArea.conversation}
+            userPrompt={userPrompt}
+            handleDelete={() => handleDelete(chatArea.id)}
+          />
+        ))}
+      </form>
+    </div>
   );
 }

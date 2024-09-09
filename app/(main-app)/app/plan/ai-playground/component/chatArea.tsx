@@ -55,21 +55,41 @@ const ChatArea = ({
       className="flex-1 flex flex-col !bg-white border border-[#E8E8E8] shadow-box p-7 w-full justify-between min-w-[400px]"
       data-aos="fade-up"
     >
-      <div className="flex items-start justify-between mb-[10px]" data-aos="fade-right">
-        <AIModel selectedOption={selectedModel} setSelectedOption={onModelChange} selectedOptionLabel={selectedOption?.label} />
+      <div
+        className="flex items-start justify-between mb-[10px]"
+        data-aos="fade-right"
+      >
+        <AIModel
+          selectedOption={selectedModel}
+          setSelectedOption={onModelChange}
+          selectedOptionLabel={selectedOption?.label}
+        />
         <div className="flex items-center gap-2">
-          <button type="button" onClick={addChatArea} className="p-1 hover:bg-gray-100 rounded-lg" data-aos="zoom-in">
+          <button
+            type="button"
+            onClick={addChatArea}
+            className="p-1 hover:bg-gray-100 rounded-lg"
+            data-aos="zoom-in"
+          >
             <Plus size={20} />
           </button>
           <div className="remove-caret">
             <Select onValueChange={handleDelete}>
-              <SelectTrigger className="px-1 py-[5px] bg-white border-0 h-fit hover:bg-gray-100 rounded-lg" data-aos="zoom-in">
+              <SelectTrigger
+                className="px-1 py-[5px] bg-white border-0 h-fit hover:bg-gray-100 rounded-lg"
+                data-aos="zoom-in"
+              >
                 <MoreHorizontal size={20} />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
                   {outputType.map(({ label, value, icon }) => (
-                    <SelectItem value={value} key={value} className="pl-2 cursor-pointer" data-aos="fade-up">
+                    <SelectItem
+                      value={value}
+                      key={value}
+                      className="pl-2 cursor-pointer"
+                      data-aos="fade-up"
+                    >
                       <div className="flex gap-x-2">
                         {icon}
                         {label}
@@ -82,10 +102,20 @@ const ChatArea = ({
           </div>
         </div>
       </div>
-      <div className="flex-1 flex flex-col max-h-[68vh] overflow-y-auto mb-3" data-aos="fade-up">
-        {conversation.length > 0 ? <ChatMessages conversation={conversation} /> : <></>}
+      <div
+        className="flex-1 flex flex-col max-h-[68vh] overflow-y-auto mb-3"
+        data-aos="fade-up"
+      >
+        {conversation.length > 0 ? (
+          <ChatMessages conversation={conversation} />
+        ) : (
+          <></>
+        )}
       </div>
-      <div className="border border-gray-200 bg-[#F5F5F5] flex items-center gap-3 p-1 pl-4 rounded-xl" data-aos="fade-up">
+      <div
+        className="border border-gray-200 bg-[#F5F5F5] flex items-center gap-3 p-1 pl-4 rounded-xl"
+        data-aos="fade-up"
+      >
         <input
           type="text"
           placeholder="Type your message..."
