@@ -179,7 +179,7 @@ const VideoTable: React.FC<{
           <MoreHorizontal size={20} />
         </button>
         {isOpen && (
-          <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-50">
+          <div className="absolute  -translate-y-[70px] right-8 mt-2 w-44 bg-white  border border-gray-300 rounded-lg shadow-lg z-50">
             <div className="py-1">
               {outputType.map(({ label, value, icon }) => (
                 <button
@@ -196,7 +196,7 @@ const VideoTable: React.FC<{
                     setIsOpen(false);
                   }}
                   className={`flex items-center gap-2 px-4 py-2 w-full text-left ${
-                    value === selectedValue ? "bg-gray-100" : ""
+                    value === selectedValue ? "bg-gray-100" : "hover:bg-blue-50"
                   }`}
                 >
                   {icon}
