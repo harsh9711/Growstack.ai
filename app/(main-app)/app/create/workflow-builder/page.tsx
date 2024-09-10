@@ -11,6 +11,7 @@ import WorkflowLoader from "./components/WorkflowLoader";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react"; // Headless UI for dropdown
 import { useRouter } from "next/navigation";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import toast from "react-hot-toast";
 
 type PreBuiltTemplate = {
   _id: number;
@@ -169,8 +170,9 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
       } else {
         console.error("New workflow ID not found in the response");
       }
-    } catch (error) {
+    } catch (error:any) {
       console.error("Error duplicating workflow:", error);
+      toast.error(error?.response?.data?.error || "Failed to duplicate workflow");
     }finally {
       setTimeout(() => {
         setLoading(false);
