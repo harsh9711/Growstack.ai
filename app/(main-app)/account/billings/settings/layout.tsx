@@ -14,22 +14,24 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (pathname === "/account/billings/settings") {
       setActiveLinkIndex(0);
-    } else if (pathname === "/account/billings/settings/credits") {
+    } else if (pathname === "/account/billings/settings/history") {
       setActiveLinkIndex(1);
-    } else if (pathname === "/account/billings/settings/integrations") {
-      setActiveLinkIndex(2);
     }
   }, [pathname]);
 
   return (
     <main className="mt-10">
-      <div className="flex gap-2">
-        <span>Settings</span>
+      {/* <div className="flex gap-2">
+        <Link href="/account/billings/settings">
+          <span className="cursor-pointer">Settings</span>
+        </Link>
         <ChevronRight size={20} />
-        <span className="text-primary-green font-medium">
-          {activeLinkIndex === 0 ? "Billing Overview" : activeLinkIndex === 1 ? "Credits" : "Integrations"}
-        </span>
-      </div>
+        <Link href={activeLinkIndex === 0 ? "/account/billings/settings" : "/account/billings/settings/history"}>
+          <span className="text-primary-green font-medium cursor-pointer">
+            {activeLinkIndex === 0 ? "Billing Overview" : "Billing History"}
+          </span>
+        </Link>
+      </div> */}
 
       <div className="w-full flex items-start gap-8 mt-5">
         <div className="!bg-white shadow-box p-5 !rounded-3xl w-full max-w-[350px]">
@@ -41,12 +43,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               )}>
               <div className="flex items-center gap-2">
                 <BrowserCheckIcon />
-                <span>Billing</span>
+                <span>Billing Overview</span>
               </div>
               <ChevronRight size={20} />
             </div>
           </Link>
-          {/* <Link href="/account/billings/settings/credits">
+             {/* <Link href="/account/billings/settings/credits">
             <div
               className={clsx(
                 "w-full flex justify-between p-3 hover:bg-gray-50 rounded-xl cursor-pointer transition mt-3",
@@ -59,15 +61,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <ChevronRight size={20} />
             </div>
           </Link> */}
-          <Link href="/account/billings/settings/integrations">
+          <Link href="/account/billings/settings/history">
             <div
               className={clsx(
                 "w-full flex justify-between p-3 hover:bg-gray-50 rounded-xl cursor-pointer transition mt-3",
-                pathname === "/account/billings/settings/integrations" && "bg-primary-green text-white hover:bg-primary-green/90"
+                pathname === "/account/billings/settings/history" && "bg-primary-green text-white hover:bg-primary-green/90"
               )}>
               <div className="flex items-center gap-2">
                 <SurveyIcon />
-                <span>Integrations</span>
+                <span>Billing History</span>
               </div>
               <ChevronRight size={20} />
             </div>

@@ -4,7 +4,7 @@ import Motion from '@/components/Motion';
 import instance from '@/config/axios.config';
 import { API_URL } from '@/lib/api';
 import toast from 'react-hot-toast';
-
+import "../../../../../../styles/loading.css"
 interface PlanUsage {
   usage_amount: number;
 }
@@ -56,7 +56,18 @@ export default function OverViewSection() {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>; 
+    return  <div className="loading-container">
+    <div className="loading-card">
+      <div className="card-chip"></div>
+      <div className="card-lines">
+        <div className="line"></div>
+        <div className="line"></div>
+        <div className="line"></div>
+      </div>
+      <div className="card-wave"></div>
+    </div>
+    <p>Showing your credits...</p>
+  </div>; 
   }
 
   return (

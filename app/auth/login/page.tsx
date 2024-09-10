@@ -52,58 +52,35 @@ export default function Login() {
   const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
     setIsPending(true);
     try {
-      // Validate input data using schema
       const validatedData = ValidationSchema.parse(data);
-  
-      // Send login request
-      const response = await axios.post(API_URL + "/users/api/v1/auth/login", validatedData);
-  
-      // Set token in cookies
+      const response = await axios.post(
+        API_URL + "/users/api/v1/auth/login",
+        validatedData
+      );
       setCookie("token", response.data.data.token, {
         secure: true,
+        // path: "/",
         sameSite: "none",
-        expires: new Date(Date.now() + 2 * 60 * 60 * 1000), // Expires in 2 hours
+        expires: new Date(Date.now() + 2 * 60 * 60 * 1000),
       });
-  
-      // Fetch user profile data
+
       const userData = await handleGetProfileData();
       console.log(userData);
       dispatch(login(userData));
-  
-      // Redirect to payment page after login
-      router.push("/Payment");
-      toast.success(response.data.message);
-  
-      // Fetch plan usage data
-      const planUsageData = response.data.data.plan_usage;
-      console.log("plans",planUsageData);
-
-      const currentDate = new Date();
-      const expiryDate = new Date(planUsageData?.usage_expiry_date);
-  
-      if (isNaN(expiryDate.getTime())) {
-        toast.error("Invalid expiration date");
-      } else if (expiryDate <= currentDate) {
-        toast.error("Unauthorized: Trial expired");
-        router.push("/account/billings/settings");
-      } else {
-        toast.success("Authorized: Trial is active");
-        router.push("/app");
-      }
-    } catch (error: any) {
-      // Handle errors during login or fetching plan usage
+      router.push("/app");
+      // toast.success(response.data.message);
+    } 
+    catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
       } else {
         toast.error(error.message);
       }
-      console.error("Login or plan usage failed:", error);
+      console.error("Login failed:", error);
     } finally {
-      // Stop loading indicator
       setIsPending(false);
     }
   };
-  
 
   const handleGetProfileData = async () => {
     try {

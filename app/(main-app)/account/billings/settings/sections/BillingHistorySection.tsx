@@ -15,6 +15,8 @@ import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 // import { BillHistory } from "@/types/billHistory";
 import clsx from "clsx";
+import "../../../../../../styles/loading.css";
+
 interface BillingHistoryItem {
   amount: ReactNode;
   payment_id: ReactNode;
@@ -61,7 +63,18 @@ export default function BillingHistorySection() {
       <div className="w-full">
         <div className="rounded-lg border overflow-hidden mt-10 bg-white min-h-[50vh]">
           {loading ? (
-            <div>Loading...</div>
+            <div className="loading-container">
+            <div className="loading-card">
+              <div className="card-chip"></div>
+              <div className="card-lines">
+                <div className="line"></div>
+                <div className="line"></div>
+                <div className="line"></div>
+              </div>
+              <div className="card-wave"></div>
+            </div>
+            <p>Billing History...</p>
+          </div>
           ) : error ? (
             <div>Error: {error}</div>
           ) : (
