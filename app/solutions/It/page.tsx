@@ -8,7 +8,7 @@ import MarketingStreamline from "./components/marketingStreamline/MarketingStrea
 import MarketingTechnology from "./components/marketingTechnology/MarketingTechnology";
 import ImageGallerySecond from "./components/ZoomEffect2";
 import ImageGalleryResponsiveSecond from "./components/ZoomEffectrespopnsive2";
-import Footer from "@/app/(landing)/components/Footer";
+import Footer from "@/components/footer/Footer";
 import HeroSection from "./components/HeroSection";
 import LoadingBar from "./components/Loading";
 import GridComponent from "./components/GridBoxes";

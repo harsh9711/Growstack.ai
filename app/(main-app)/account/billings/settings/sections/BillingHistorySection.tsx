@@ -2,225 +2,130 @@
 
 import Motion from "@/components/Motion";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
-  ColumnDef,
-  ColumnFiltersState,
-  PaginationState,
-  SortingState,
-  VisibilityState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from "@tanstack/react-table";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { ReactNode, useEffect, useState } from "react";
+import instance from "@/config/axios.config";
+import { API_URL } from "@/lib/api";
+// import { BillHistory } from "@/types/billHistory";
 import clsx from "clsx";
-import { MailIcon, Phone, Search } from "lucide-react";
-import Image from "next/image";
-import { useState } from "react";
-import { billHistoryData } from "./data/billhistory";
-import { BillHistory } from "@/types/billHistory";
+import "../../../../../../styles/loading.css";
 
-const statusStyles = {
-  Overdue: {
-    text: "text-[#CF0000]",
-    bg: "bg-[#FF00001A]",
-  },
-  Paid: {
-    text: "text-primary-green",
-    bg: "bg-[#0347371A]",
-  },
-  Pending: {
-    text: "text-yellow-800",
-    bg: "bg-yellow-100",
-  },
-};
-
-export const columns: ColumnDef<BillHistory>[] = [
-  {
-    accessorKey: "invoice",
-    header: ({ table }) => (
-      <div className="uppercase flex gap-5">
-        <Checkbox
-          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-          onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-          className="w-[18px] h-[18px]"
-        />
-        <span className="uppercase">Invoice</span>
-      </div>
-    ),
-    cell: ({ row }) => (
-      <div className="capitalize flex items-center gap-5">
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value: any) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-          className="w-[18px] h-[18px]"
-        />
-        <span className="uppercase">{row.getValue("invoice")}</span>
-      </div>
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "status",
-    header: () => <div className="uppercase">Status</div>,
-    cell: ({ row }) => {
-      const status = row.getValue("status") as "Pending" | "Paid" | "Overdue";
-      const statusClass = statusStyles[status] || { text: "", bg: "" };
-
-      return (
-        <div className={`flex gap-2 items-center py-2 px-3 rounded-lg max-w-fit ${statusClass.bg}`}>
-          <p className={statusClass.text}>{status}</p>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "amount",
-    header: () => <div className="uppercase">Status</div>,
-    cell: ({ row }) => (
-      <div className="flex gap-2 items-center">
-        <p>${row.getValue("amount")}</p>
-      </div>
-    ),
-  },
-  {
-    accessorKey: "created_on",
-    header: () => <div className="uppercase">Created</div>,
-    cell: ({ row }) => (
-      <div className="flex gap-3">
-        <span>{row.original.created_on.date}</span>
-        <span>{row.original.created_on.time}</span>
-      </div>
-    ),
-  },
-  {
-    id: "actions",
-    header: () => <div className="uppercase">Action</div>,
-    cell: ({ row }) => {
-      return (
-        <div className="flex items-center justify-between max-w-[200px]">
-          <button className="hover:bg-primary-green/10 sheen px-3 py-2 text-primary-green font-medium rounded-lg transition-all duration-300">View</button>
-          <button className="hover:bg-primary-green/10 sheen px-3 py-2 text-primary-green font-medium rounded-lg transition-all duration-300">Pay</button>
-        </div>
-      );
-    },
-  },
-];
-
+interface BillingHistoryItem {
+  amount: ReactNode;
+  payment_id: ReactNode;
+  updatedAt: string | number | Date;
+  plan_id: string;
+  status: string;
+  created_at: string;
+  invoice: string;
+}
 export default function BillingHistorySection() {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = useState({});
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
+  const [data, setData] = useState<BillingHistoryItem[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const table = useReactTable({
-    data: billHistoryData,
-    columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
-    onPaginationChange: setPagination,
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await instance.get(`${API_URL}/users/api/v1/payments`);
+        if (!response) {
+          throw new Error("Network response was not ok");
+        }
+        const result = response.data.data;
+        console.log("r", result);
+        setData(result);
+      } catch (error: any) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    state: {
-      pagination,
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
-  });
+    fetchData();
+  }, []);
 
-  const paginationButtons = [];
-  for (let i = 0; i < table.getPageCount(); i++) {
-    paginationButtons.push(
-      <button
-        key={i}
-        onClick={() => table.setPageIndex(i)}
-        className={clsx(
-          "w-12 h-[45px] rounded-lg mx-1 bg-[#4B465C14] transition-all duration-300",
-          i === table.getState().pagination.pageIndex ? "!bg-primary-green hover:bg-opacity-50 text-white" : "hover:bg-[#4B465C29]"
-        )}>
-        {i + 1}
-      </button>
-    );
+  function handleAction(invoice: string): void {
+    throw new Error("Function not implemented.");
   }
 
   return (
-    <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion
+      transition={{ duration: 0.2 }}
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+    >
       <div className="w-full">
         <div className="rounded-lg border overflow-hidden mt-10 bg-white min-h-[50vh]">
-          <Table>
-            <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id} className="bg-[#0347370D]">
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="bg-white">
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow className="hover:bg-white">
-                  <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
-        {table.getRowModel().rows?.length ? (
-          <div className="flex items-center justify-end space-x-2 py-4">
-            <div className="space-x-2 flex">
-              <Button
-                variant="outline"
-                size="sm"
-                className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px]"
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}>
-                Previous
-              </Button>
-              <div>
-                <div>{paginationButtons.map((u) => u)}</div>
+          {loading ? (
+            <div className="loading-container">
+            <div className="loading-card">
+              <div className="card-chip"></div>
+              <div className="card-lines">
+                <div className="line"></div>
+                <div className="line"></div>
+                <div className="line"></div>
               </div>
-              <Button
-                variant="outline"
-                size="sm"
-                className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px] px-4"
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}>
-                Next
-              </Button>
+              <div className="card-wave"></div>
             </div>
+            <p>Billing History...</p>
           </div>
-        ) : null}
+          ) : error ? (
+            <div>Error: {error}</div>
+          ) : (
+            <Table className="">
+              <TableHeader>
+                <TableRow className="bg-[#0347370D]">
+                  <TableHead>Payment_ID</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Amount</TableHead>
+                  <TableHead>Payment Date</TableHead>
+                  <TableHead>Action</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {data.map((item) => (
+                  <TableRow key={item.plan_id}>
+                    <TableCell className="text-[16px] font-medium">
+                      {item.payment_id}
+                    </TableCell>
+                    <TableCell
+                      className={clsx(
+                        "text-[14px] flex gap-2 items-center justify-center py-2 mt-4 px-3 rounded-lg max-w-fit",
+                        item.status === "SUCCESS"
+                          ? " text-primary-green bg-[#0347371A]"
+                          : item.status === " Pending"
+                          ? "text-yellow-8 bg-yellow-100"
+                          : "text-[#CF0000] bg-[#FF00001A]"
+                      )}
+                    >
+                      {item.status}
+                    </TableCell>
+                    <TableCell className="text-[16px] font-semibold">
+                      ${item.amount}
+                    </TableCell>
+                    <TableCell className="text-[14px] text-gray-500">
+                      {new Date(item.updatedAt).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell>
+                      <Button
+                        className="bg-blue-500 text-white"
+                        onClick={() => handleAction(item.invoice)}
+                      >
+                        View
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
+        </div>
       </div>
     </Motion>
   );

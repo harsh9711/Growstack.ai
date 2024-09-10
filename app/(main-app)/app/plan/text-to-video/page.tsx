@@ -19,6 +19,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { API_URL } from "@/lib/api";
 
 const VideoTable: React.FC<{
   videos: Array<{
@@ -85,6 +86,34 @@ const VideoTable: React.FC<{
     value: string;
     icon: JSX.Element;
   }
+  const [planUsage, setPlanUsage] = useState(null);
+
+  const fetchPlanUsage = async () => {
+    try {
+      const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
+      const data = response.data.data;
+      console.log(data.usage_amount)
+      setPlanUsage(data);
+
+      if (data.usage_amount === 0) {
+        toast.error('Trial expired');
+        window.location.href = '/Payment';
+
+        
+      }
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error('Error fetching plan usage:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPlanUsage();
+  }, []); 
 
   const outputType: OutputType[] = [
     { label: "Delete", value: "delete", icon: <span>🗑️</span> },
@@ -116,6 +145,7 @@ const VideoTable: React.FC<{
       return () => {
         document.removeEventListener("mousedown", handleClickOutside);
       };
+      
     }, []);
 
     const handleSelectChange = async (
@@ -168,7 +198,6 @@ const VideoTable: React.FC<{
         }
       }
     };
-
     return (
       <div className="relative inline-block text-left" ref={dropdownRef}>
         <button
@@ -179,7 +208,7 @@ const VideoTable: React.FC<{
           <MoreHorizontal size={20} />
         </button>
         {isOpen && (
-          <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg z-50">
+          <div className="absolute  -translate-y-[70px] right-8 mt-2 w-44 bg-white  border border-gray-300 rounded-lg shadow-lg z-50">
             <div className="py-1">
               {outputType.map(({ label, value, icon }) => (
                 <button
@@ -196,7 +225,7 @@ const VideoTable: React.FC<{
                     setIsOpen(false);
                   }}
                   className={`flex items-center gap-2 px-4 py-2 w-full text-left ${
-                    value === selectedValue ? "bg-gray-100" : ""
+                    value === selectedValue ? "bg-gray-100" : "hover:bg-blue-50"
                   }`}
                 >
                   {icon}
@@ -206,6 +235,7 @@ const VideoTable: React.FC<{
             </div>
           </div>
         )}
+        
         {downloadProgress !== null && (
           <div className="absolute bottom-0 left-0 w-full bg-gray-200 rounded-b-lg">
             <div

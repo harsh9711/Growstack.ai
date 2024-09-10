@@ -18,6 +18,7 @@ import { TbReportMoney } from "react-icons/tb";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { deleteCookie } from "cookies-next";
+import Image from "next/image";
 
 export function ProfileButton() {
   const router = useRouter();
@@ -70,6 +71,13 @@ export function ProfileButton() {
               Brand voice
             </DropdownMenuItem>
           </Link>
+          <Link href="/account/billings/settings">
+            <DropdownMenuItem className="flex gap-3 px-4">
+           
+           <Image src="/billing.svg" width={25} height={25} alt="width"/>
+              Billing
+            </DropdownMenuItem>
+          </Link>
           {/* <Link href="/account/billings/settings">
             <DropdownMenuItem className="flex gap-3 px-4">
               <TbReportMoney size={22} />
@@ -93,3 +101,4 @@ export function ProfileButton() {
     </DropdownMenu>
   );
 }
+ 

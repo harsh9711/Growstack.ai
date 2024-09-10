@@ -66,7 +66,7 @@ const MessageList = ({ onSelectMessage }: { onSelectMessage: (message: SidebarIt
           key={index}
           title={dataItem.platform}  
           time={formatRelativeDate(dataItem.messages.lastUpdated)}  
-          author={`${dataItem.messages.messages[0]?.senderDetails.username}`} 
+          author={dataItem.messages.messages[0]?.senderDetails.username || ""} 
           message={dataItem.messages.messages[0]?.message || "No message available"} 
           imageUrl={dataItem.messages.messages[0]?.senderDetails.profileImage || "/logo/growstack-mini.png"}
           onClick={() =>

@@ -15,7 +15,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: "Always the newest models",
@@ -26,7 +29,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: "Recent news & cite sources",
@@ -37,7 +43,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: "30+ languages",
@@ -48,7 +57,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
     ],
   }, {
@@ -63,7 +75,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: "Company knowledge",
@@ -74,7 +89,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: "Brand voice",
@@ -85,7 +103,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
     ],
   },
@@ -101,7 +122,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: "Custom workflows & templates",
@@ -112,7 +136,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: "Savable tasks",
@@ -123,7 +150,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: "Campaigns",
@@ -134,7 +164,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: "Remix content",
@@ -145,7 +178,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: "Plagiarism checker",
@@ -156,7 +192,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: "Documents",
@@ -167,7 +206,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: "Rephrase & rewrite",
@@ -178,7 +220,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: "Dynamic templates",
@@ -189,7 +234,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: "50+ templates",
@@ -200,7 +248,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: "Chat",
@@ -211,7 +262,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: "Lookback",
@@ -222,7 +276,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
     ],
   },
@@ -239,7 +296,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: "Image generation",
@@ -250,7 +310,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: "Replace image background",
@@ -261,7 +324,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: "Image upscaling",
@@ -272,7 +338,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: "Reimagine image",
@@ -283,7 +352,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: "Remove image background",
@@ -294,7 +366,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: "Make image square",
@@ -305,7 +380,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: "Remove image text",
@@ -316,7 +394,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
     ],
   },
@@ -332,7 +413,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: 'API integrations',
@@ -343,7 +427,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: 'Clipdrop API',
@@ -354,7 +441,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: 'Integrations',
@@ -365,7 +455,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: 'SEO mode',
@@ -376,7 +469,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: 'Browser extension',
@@ -387,7 +483,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       }, ],
     },
     {
@@ -402,7 +501,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: 'Advanced admin controls',
@@ -413,7 +515,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: 'Sharing & project management',
@@ -424,7 +529,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: 'User management',
@@ -435,7 +543,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: 'Personal usage analytics',
@@ -446,7 +557,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: 'History & backups',
@@ -457,7 +571,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: 'Save, star, tag',
@@ -468,7 +585,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: 'User logins',
@@ -479,7 +599,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
     ],
     },
@@ -495,7 +618,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: 'Enterprise security',
@@ -506,7 +632,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: 'Role-based permissions',
@@ -517,7 +646,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: 'Security',
@@ -528,7 +660,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: 'SOC2 compliant',
@@ -539,7 +674,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: 'Reliability',
@@ -550,7 +688,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: 'Data privacy',
@@ -561,7 +702,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
     ]
 },
@@ -577,7 +721,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: 'Product training',
@@ -588,7 +735,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
       {
         title: 'Support',
@@ -599,7 +749,10 @@ const sections: Section[] = [
         price: "",
         buttonLabel: "",
         buttonStyle: "",
-        featureList: []
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null
       },
     ],
   },

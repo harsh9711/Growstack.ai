@@ -527,7 +527,12 @@ const Layout = () => {
         >
           {/* Message Header */}
           <div className="flex flex-row gap-4 items-center">
-            <Image src="/logo/growstack-mini.png" alt="facebook" width={50} height={50} />
+            <Image
+              src="/logo/growstack-mini.png"
+              alt="facebook"
+              width={50}
+              height={50}
+            />
             <h2 className="font-semibold text-[18px]">
               {selectedMessage.title}
             </h2>
@@ -569,18 +574,29 @@ const Layout = () => {
                                   <div key={attIndex}>
                                     {attachment.type === "image" ? (
                                       <>
-                                  {attachment.url && (<>{attachment.url}</>)}
+                                        {attachment.url && (
+                                          <>{attachment.url}</>
+                                        )}
 
-                                  <Image
-                                  src={(attachment.url && !attachment.url.includes("ton.twitter.com"))? attachment.url : "/logo/growstack-mini.png"}
-                                  alt={`attachment-${attIndex}`}
-                                  width={100}
-                                  height={300}
-                                  className="rounded-xl border mt-2"
-                                  onError={(e) => {
-                                    e.currentTarget.src = "/logo/growstack-mini.png";
-                                  }}
-                                /></>
+                                        <Image
+                                          src={
+                                            attachment.url &&
+                                            !attachment.url.includes(
+                                              "ton.twitter.com"
+                                            )
+                                              ? attachment.url
+                                              : "/logo/growstack-mini.png"
+                                          }
+                                          alt={`attachment-${attIndex}`}
+                                          width={100}
+                                          height={300}
+                                          className="rounded-xl border mt-2"
+                                          onError={(e) => {
+                                            e.currentTarget.src =
+                                              "/logo/growstack-mini.png";
+                                          }}
+                                        />
+                                      </>
                                     ) : (
                                       <a
                                         href={attachment.url}
@@ -622,9 +638,17 @@ const Layout = () => {
             onSendMessage={handleSendMessage}
             onFileUpload={handleFileUpload}
           />
+
+     
         </main>
       )}
-      
+{!selectedMessage && (
+            <main className="w-full  bg-white">
+              <div className="flex items-center bg-white  h-full text-[16px] justify-center font-bold text-gray-700">
+                Select a conversation to see details{" "}
+              </div>
+            </main>
+          )}
     </div>
   );
 };

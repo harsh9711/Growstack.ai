@@ -32,19 +32,35 @@ export default function WorkFlowBuilderComponent() {
   const [inputConfigs, setInputConfigs] = useState<any[]>([]);
   const [outputConfigs, setOutputConfigs] = useState<any[]>([]);
 
-  const createPayloadBody = (inputs: any) => {
-    let promptValue: any = null;
-    return inputs.reduce((acc: any, input: any) => {
-      acc[input.input_label] = input.input_default_value;
-
-      if (input.is_prompt && !promptValue) {
-        promptValue = input.prompt; // Save the first encountered prompt value
+  interface Input {
+    input_label: string;
+    input_default_value: any; 
+    is_prompt: boolean;
+    prompt?: string;
+  }
+  const createPayloadBody = (inputs: Input[] | undefined) => {
+    if (!inputs) {
+      console.error("Inputs is undefined");
+      return {};
+    }
+  
+    let promptValue: string | null = null;
+  
+    return inputs.reduce((acc: Record<string, any>, input: Input) => {
+      if (input.input_label !== undefined && input.input_default_value !== undefined) {
+        acc[input.input_label] = input.input_default_value;
+      }
+  
+      if (input.is_prompt && !promptValue && input.prompt) {
+        promptValue = input.prompt;
         acc.prompt = promptValue;
       }
-
+  
       return acc;
     }, {});
   };
+  
+  
   const handleAddStep = () => {};
 
   const postAction = async (action: any, index: any) => {
@@ -60,6 +76,7 @@ export default function WorkFlowBuilderComponent() {
 
   const onSaveAction = async (action: any) => {
     setIsAPICalling(true);
+    
     try {
       const payload = {
         preset_json: {
@@ -67,6 +84,7 @@ export default function WorkFlowBuilderComponent() {
         },
         event_execute: action.event_execute,
       };
+
       const {
         data: {
           data: { updateAction },
@@ -75,8 +93,9 @@ export default function WorkFlowBuilderComponent() {
         `${API_URL}/workflow/api/v1/${workflowId}/actions/${action.action_id}`,
         payload
       );
-      setActions(
-        actions.map((act) =>
+
+      setActions((prevActions) =>
+        prevActions.map((act) =>
           act.action_id === action.action_id
             ? {
                 ...updateAction,
@@ -89,46 +108,97 @@ export default function WorkFlowBuilderComponent() {
       setIsAPICalling(false);
       toast.success("Action saved successfully");
     } catch (error) {
+      console.error("Failed to save action:", error);
       toast.error("Failed to save action");
       setIsAPICalling(false);
     }
   };
-
-  const getWorkFlowDetails = async (id: string) => {
-    try {
-      const {
-        data: {
-          data: { input_configs, actions, output_configs },
-        },
-      } = await instance.get(`${API_URL}/workflow/api/v1/${id}`);
-      setActions(
-        actions.map((action: any) => {
-          const tool: any = tools.find((tool) => tool.name === action.name);
-          return {
-            ...action,
-            icon: tool?.icon,
-            preset_json: {
-              ...tool?.preset_json,
-              body: {
-                ...tool?.preset_json.body,
-                inputs: tool?.preset_json.body.inputs.map((input: any) => ({
-                  ...input,
-                  input_default_value:
-                    action.preset_json.body[input.input_label] ??
-                    input.input_default_value,
-                })),
-              },
-            },
-          };
-        })
-      );
-      setInputConfigs(input_configs);
-      setOutputConfigs(output_configs);
-    } catch (error) {
-      toast.error("Failed to fetch workflow details");
-    }
+  
+  
+  interface PresetJsonBodyType {
+    inputs: InputType[];
+  }
+  
+  interface PresetJsonType {
+    body: {
+      inputs: InputType[];
+    };
+  }
+  interface Tool {
+  name: string;
+  icon: string;
+  preset_json: PresetJsonType;
+}
+type ActionType = {
+  name: string;
+  icon?: string;
+  preset_json: {
+    body: {
+      [key: string]: any; 
+      inputs: InputType[];
+    };
   };
+};
 
+type ToolType = {
+  name: string;
+  icon?: string;
+  preset_json?: {
+    body: {
+      inputs: InputType[];
+    };
+  };
+};
+
+type InputType = {
+  input_label: string;
+  input_default_value: string | null;
+};
+  
+const mapActionInputs = (actions: ActionType[], tools: ToolType[]) => {
+  return actions.map((action: ActionType) => {
+    const tool = tools.find((tool) => tool.name === action.name);
+
+    if (!tool || !tool.preset_json) {
+      return action;
+    }
+
+    return {
+      ...action, // Spread the current action
+      icon: tool.icon,
+      preset_json: {
+        ...tool.preset_json,
+        body: {
+          ...tool.preset_json.body,
+          inputs: tool.preset_json.body.inputs.map((input: InputType) => ({
+            ...input,
+            input_default_value:
+              action.preset_json.body.inputs?.find((i) => i.input_label === input.input_label)?.input_default_value ??
+              input.input_default_value,
+          })),
+        },
+      },
+    };
+  });
+};
+
+
+const getWorkFlowDetails = async (id: string | number) => {
+  try {
+    const {
+      data: {
+        data: { input_configs, actions, output_configs },
+      },
+    } = await instance.get(`${API_URL}/workflow/api/v1/${id}`);
+    setActions(mapActionInputs(actions, tools as unknown as ToolType[]));
+    setInputConfigs(input_configs);
+    setOutputConfigs(output_configs);
+  } catch (error) {
+    toast.error("Failed to fetch workflow details");
+  }
+};
+
+  
   const deleteAction = async (actionId: string, index: number) => {
     try {
       await instance.delete(
@@ -218,7 +288,18 @@ export default function WorkFlowBuilderComponent() {
       toast.error("Failed to add action");
     }
   };
-
+  const handleSaveAction = (changedFields: any) => {
+    setIsAPICalling(true);
+   const updatedAction = { ...activeAction, preset_json: { ...activeAction.preset_json, body: { ...activeAction.preset_json.body, ...changedFields } } };
+    
+    setTimeout(() => {
+      setActions((prevActions) =>
+        prevActions.map((action) => (action.id === activeAction.id ? updatedAction : action))
+      );
+      setActiveAction(updatedAction);
+      setIsAPICalling(false);
+    }, 1000);
+  };
   const renderSection = () => {
     switch (activeTag) {
       case "Input":
@@ -248,8 +329,7 @@ export default function WorkFlowBuilderComponent() {
             onSaveAction={onSaveAction}
             isAPICalling={isAPICalling}
             actions={actions}
-            inputConfigs={inputConfigs}
-          />
+            inputConfigs={inputConfigs} workflowId={""} actionId={""}        />
         );
     }
   };

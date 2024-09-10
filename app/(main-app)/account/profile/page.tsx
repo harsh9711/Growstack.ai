@@ -1,8 +1,23 @@
 "use client";
 
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { getCurrentUser } from "@/lib/features/auth/auth.selector";
-import { Edit, ImageIcon, KeyIcon, Settings2Icon, ShieldCheckIcon, UserIcon as UserIcon2, UserX2 } from "lucide-react";
+import {
+  Edit,
+  ImageIcon,
+  KeyIcon,
+  Settings2Icon,
+  ShieldCheckIcon,
+  UserIcon as UserIcon2,
+  UserX2,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -23,6 +38,7 @@ import { countries } from "./data";
 import { useRouter } from "next-nprogress-bar";
 import clsx from "clsx";
 import "@/styles/profile.css";
+import { FaMoneyBill1 } from "react-icons/fa6";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -36,7 +52,7 @@ export default function ProfilePage() {
 
   const ValidationSchema = z.object({
     email: z.string().email("Please enter a valid email address"),
-    name: z.string().nonempty("Please enter a Full Name"),
+    name: z.string().min(1, "Please enter a Full Name"),
     job_role: z.string().optional(),
     company_name: z.string().optional(),
     company_website: z.string().optional(),
@@ -97,6 +113,14 @@ export default function ProfilePage() {
       icon: <UserX2 />,
       title: "Delete Account",
     },
+    // {
+    //   link: "/account/billings",
+    //   icon: (
+    //     <FaMoneyBill1 className="text-3xl" />
+
+    //   ),
+    //   title: "Billing",
+    // },
   ];
   const [activeTab, setActiveTab] = useState(options[0]);
 
@@ -132,7 +156,10 @@ export default function ProfilePage() {
       const formData = new FormData();
       formData.append("document", file);
       try {
-        const response = await instance.post(`${API_URL}/users/api/v1/file/upload`, formData);
+        const response = await instance.post(
+          `${API_URL}/users/api/v1/file/upload`,
+          formData
+        );
         setAvatarLink(response.data.data.fileUrl);
       } catch (error) {
         toast.error("Error uploading avatar");
@@ -142,7 +169,7 @@ export default function ProfilePage() {
 
   function removeNullProperties(obj: any) {
     const filteredObject = {};
-    Object.keys(obj).forEach(key => {
+    Object.keys(obj).forEach((key) => {
       if (obj[key] !== null) {
         // @ts-ignore
         filteredObject[key] = obj[key];
@@ -160,10 +187,7 @@ export default function ProfilePage() {
       });
       const payload = removeNullProperties(validatedData);
 
-      const response = await instance.put(
-        API_URL + "/users/api/v1",
-        payload
-      );
+      const response = await instance.put(API_URL + "/users/api/v1", payload);
       handleGetProfileData();
 
       toast.success(response.data.message);
@@ -197,6 +221,10 @@ export default function ProfilePage() {
     if (title === "Delete Account") handleDeleteProfile();
     if (title === "Change password") setChangePasswordEnable(true);
     if (title === "View profile") setChangePasswordEnable(false);
+    if (title === "Billing"){
+      window.location.href='/account/billings/settings'
+    }
+
   };
 
   const handleDeleteProfile = () => {
@@ -224,7 +252,10 @@ export default function ProfilePage() {
       <div className="w-full max-w-md !bg-white shadow-box p-10 rounded-xl flex flex-col divide-y divide-gray-100 space-y-5">
         <div className="space-y-2 flex flex-col">
           <div className="space-y-6">
-            <label htmlFor="profile-image" className="relative group flex justify-center w-28 h-28 rounded-full overflow-hidden mx-auto">
+            <label
+              htmlFor="profile-image"
+              className="relative group flex justify-center w-28 h-28 rounded-full overflow-hidden mx-auto"
+            >
               <div className="w-28 h-28">
                 {previewImage ? (
                   <Image
@@ -247,16 +278,27 @@ export default function ProfilePage() {
 
             <div className="flex h-[54px] w-full bg-white border border-[#eee] rounded-xl text-sm justify-between">
               <div className="w-full flex items-center px-4 overflow-hidden">
-                <h1 className="whitespace-nowrap overflow-hidden w-full text-ellipsis"> {avatarLink && Object(avatarLink).length ? selectedAvatarFileName || "Choose your avatar..." : "Change the avatar"}
+                <h1 className="whitespace-nowrap overflow-hidden w-full text-ellipsis">
+                  {" "}
+                  {avatarLink && Object(avatarLink).length
+                    ? selectedAvatarFileName || "Choose your avatar..."
+                    : "Change the avatar"}
                 </h1>
               </div>
 
               <label
                 htmlFor="profile-image"
-                className="w-full max-w-fit bg-primary-green text-white h-[54px] px-8 rounded-r-xl flex items-center justify-center cursor-pointer">
+                className="w-full max-w-fit bg-primary-green text-white h-[54px] px-8 rounded-r-xl flex items-center justify-center cursor-pointer"
+              >
                 Browse
               </label>
-              <input type="file" id="profile-image" accept="images/*" className="hidden" onChange={handleChangeAvatar} />
+              <input
+                type="file"
+                id="profile-image"
+                accept="images/*"
+                className="hidden"
+                onChange={handleChangeAvatar}
+              />
             </div>
           </div>
         </div>
@@ -268,7 +310,8 @@ export default function ProfilePage() {
                 activeTab === option && "bg-gray-100"
               )}
               key={index}
-              onClick={() => handleMenuClick(option.title)}>
+              onClick={() => handleMenuClick(option.title)}
+            >
               {option.icon}
               <h1 className="text-sm">{option.title}</h1>
             </div>
@@ -276,7 +319,10 @@ export default function ProfilePage() {
         </div>
       </div>
       {!changePasswordEnable ? (
-        <form onSubmit={handleSubmit(onSubmit)} className="w-full !bg-white shadow-box p-10 rounded-xl flex flex-col">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-full !bg-white shadow-box p-10 rounded-xl flex flex-col"
+        >
           <div className="flex-1">
             <h1 className="border-b pb-4 flex items-center gap-3 font-semibold text-xl">
               <Edit size={20} />
@@ -285,36 +331,52 @@ export default function ProfilePage() {
             <div>
               <div className="grid grid-cols-2 gap-x-5 gap-y-6 mt-6">
                 <div className="space-y-3 w-full">
-                  <label>Full Name<span className="imp ml-1">*</span></label>
+                  <label>
+                    Full Name<span className="imp ml-1">*</span>
+                  </label>
                   <input
                     type="text"
                     id="name"
-                    placeholder="Full Name"
+                    placeholder="Enter your Full Name"
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("name")}
                   />
-                  {errors.name && <span className="text-rose-600 text-sm">{errors.name?.message}</span>}
+                  {errors.name && (
+                    <span className="text-rose-600 text-sm">
+                      {errors.name?.message}
+                    </span>
+                  )}
                 </div>
                 <div className="space-y-3 w-full">
                   <label>Role job</label>
                   <input
                     type="text"
-                    placeholder="Enter your role job"
+                    placeholder="Enter your Role Job"
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("job_role")}
                   />
-                  {errors.job_role && <span className="text-rose-600 text-sm">{errors.job_role?.message}</span>}
+                  {errors.job_role && (
+                    <span className="text-rose-600 text-sm">
+                      {errors.job_role?.message}
+                    </span>
+                  )}
                 </div>
                 <div className="space-y-3 w-full">
-                  <label>Email<span className="imp ml-1">*</span></label>
+                  <label>
+                    Email<span className="imp ml-1">*</span>
+                  </label>
                   <input
                     id="email"
                     type="text"
-                    placeholder="Enter your email"
+                    placeholder="Enter your Email"
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("email")}
                   />
-                  {errors.email && <span className="text-rose-600 text-sm">{errors.email?.message}</span>}
+                  {errors.email && (
+                    <span className="text-rose-600 text-sm">
+                      {errors.email?.message}
+                    </span>
+                  )}
                 </div>
 
                 <div className="space-y-3 w-full">
@@ -325,7 +387,11 @@ export default function ProfilePage() {
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("company_name")}
                   />
-                  {errors.company_name && <span className="text-rose-600 text-sm">{errors.company_name?.message}</span>}
+                  {errors.company_name && (
+                    <span className="text-rose-600 text-sm">
+                      {errors.company_name?.message}
+                    </span>
+                  )}
                 </div>
                 <div className="space-y-3 w-full">
                   <label>Company website</label>
@@ -335,18 +401,26 @@ export default function ProfilePage() {
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("company_website")}
                   />
-                  {errors.company_website && <span className="text-rose-600 text-sm">{errors.company_website?.message}</span>}
+                  {errors.company_website && (
+                    <span className="text-rose-600 text-sm">
+                      {errors.company_website?.message}
+                    </span>
+                  )}
                 </div>
 
                 <div className="space-y-3 w-full">
                   <label>Address Line</label>
                   <input
                     type="text"
-                    placeholder="Your Address Line"
+                    placeholder="Enter your Address Line"
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("address_line")}
                   />
-                  {errors.address_line && <span className="text-rose-600 text-sm">{errors.address_line?.message}</span>}
+                  {errors.address_line && (
+                    <span className="text-rose-600 text-sm">
+                      {errors.address_line?.message}
+                    </span>
+                  )}
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-x-5 gap-y-6 mt-6">
@@ -358,7 +432,11 @@ export default function ProfilePage() {
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("city")}
                   />
-                  {errors.city && <span className="text-rose-600 text-sm">{errors.city?.message}</span>}
+                  {errors.city && (
+                    <span className="text-rose-600 text-sm">
+                      {errors.city?.message}
+                    </span>
+                  )}
                 </div>
                 <div className="space-y-3 w-full">
                   <label>Postal Code</label>
@@ -368,7 +446,11 @@ export default function ProfilePage() {
                     className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm"
                     {...register("postal_code")}
                   />
-                  {errors.postal_code && <span className="text-rose-600 text-sm">{errors.postal_code?.message}</span>}
+                  {errors.postal_code && (
+                    <span className="text-rose-600 text-sm">
+                      {errors.postal_code?.message}
+                    </span>
+                  )}
                 </div>
 
                 <div className="space-y-3 w-full">
@@ -377,21 +459,32 @@ export default function ProfilePage() {
                     name="country"
                     control={control}
                     render={({ field }) => (
-                      <Select onValueChange={(value) => field.onChange(value)} value={field.value}>
+                      <Select
+                        onValueChange={(value) => field.onChange(value)}
+                        value={field.value}
+                      >
                         <SelectTrigger className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm bg-white">
                           <SelectValue placeholder="Select" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectGroup>
                             {countries.map((country) => {
-                              return <SelectItem value={country.country}>{country.country}</SelectItem>;
+                              return (
+                                <SelectItem value={country.country}>
+                                  {country.country}
+                                </SelectItem>
+                              );
                             })}
                           </SelectGroup>
                         </SelectContent>
                       </Select>
                     )}
                   />
-                  {errors.country && <span className="text-rose-600 text-sm">{errors.country?.message}</span>}
+                  {errors.country && (
+                    <span className="text-rose-600 text-sm">
+                      {errors.country?.message}
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
@@ -399,7 +492,8 @@ export default function ProfilePage() {
           <div className="flex justify-end gap-4">
             <button
               type="submit"
-              className="h-12 py-3 px-3 flex justify-center w-full max-w-[150px] uppercase bg-primary-green sheen rounded-xl text-white mt-6">
+              className="h-12 py-3 px-3 flex justify-center w-full max-w-[150px] uppercase bg-primary-green sheen rounded-xl text-white mt-6"
+            >
               {isPending ? <Spinner /> : " Update"}
             </button>
           </div>

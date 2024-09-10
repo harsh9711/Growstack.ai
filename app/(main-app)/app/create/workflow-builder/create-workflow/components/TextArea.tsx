@@ -110,18 +110,22 @@ const TextArea = ({
   };
   return (
     <>
-      <div className="font-medium  text-xl mb-2 capitalize">
+      <div className='font-medium  text-xl mb-2 capitalize'>
         {option.input_label}
       </div>
       <textarea
         ref={textareaRef}
         onFocus={handleTextareaFocus}
-        id="description"
-        name="description"
+        id='description'
+        name='description'
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-          placeholder={option.input_placeholder ? option.input_placeholder : "Please write here"}
-    className="h-[100px] w-full bg-[#F5F5F5] rounded-xl block resize-none p-4 text-[15px]"
+        placeholder={
+          option.input_placeholder
+            ? option.input_placeholder
+            : "Please write here"
+        }
+        className='h-[100px] w-full bg-[#F5F5F5] rounded-xl block resize-none p-4 text-[15px]'
       ></textarea>
       <SuggestionDropdown
         dropdownRef={dropdownRef}

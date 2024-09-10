@@ -1,19 +1,109 @@
+"use client"
+import { useState, useEffect } from 'react';
+import axios from 'axios'; // Import axios for API requests
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { DollarSign, Plus } from "lucide-react";
-import Image from "next/image";
-import AddPaymentDialog from "./AddPaymentDialog";
+import { API_URL } from '@/lib/api';
+import toast from 'react-hot-toast';
+import instance from '@/config/axios.config';
+import Link from 'next/link';
+
+// Define the PlanUsage type
+interface PlanUsage {
+  plan_id: string;
+  plan_type: string;
+  stripe_subscription_id: string;
+}
 
 export default function AddCreditDialog() {
+  const [amount, setAmount] = useState<number | ''>(0); // Allow '' to handle empty state
+  const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [cancelLoading, setCancelLoading] = useState<boolean>(false); // Add state for cancel button loading
+  const fetchPlanUsage = async () => {
+    try {
+      const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
+      const data: PlanUsage = response.data;
+      setPlanUsage(response.data.data);
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error('Error fetching plan usage:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPlanUsage();
+  }, []);
+
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const numberValue = Number(value);
+    if (value === '' || (numberValue >= 5 && numberValue <= 250)) {
+      setAmount(value === '' ? '' : numberValue);
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const product = {
+        plan_id: planUsage?.plan_id,
+        plan_type: planUsage?.plan_type,
+        subscription_id: planUsage?.stripe_subscription_id,
+        amount: amount,
+      };
+
+     const response= await instance.post(`${API_URL}/users/api/v1/payments/adds-on`, {product});
+      window.location.href=response.data.url;
+      // toast.success('Payment added successfully');
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error('Error adding payment:', error);
+    }
+  };
+  const handleCancelSubscription = async () => {
+    setCancelLoading(true); 
+    try {
+      const response = await instance.put(`${API_URL}/users/api/v1/payments/cancel-subscription`);
+      toast.success('Subscription canceled successfully');
+      window.location.href='/Payment';
+      console.log('Cancel Subscription Response:', response.data);
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error('Error cancelling subscription:', error);
+    } finally {
+      setCancelLoading(false); 
+    }
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300">
-          <Plus size={20} />
-          Add to credit balance
-        </button>
+      <Link href="/Upgrade"> 
+      
+        <button
+            className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300 ${
+              cancelLoading ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+            onClick={handleCancelSubscription}
+            disabled={cancelLoading} 
+          >
+            {cancelLoading ? 'Redirecting...' : '   Upgrade Plan'}
+          </button></Link>
       </DialogTrigger>
-      <DialogContent className="max-w-[584px]">
+      {/* <DialogContent className="max-w-[584px]">
         <DialogHeader>
           <DialogTitle>Add to credit balance</DialogTitle>
         </DialogHeader>
@@ -22,52 +112,28 @@ export default function AddCreditDialog() {
             <label className="font-semibold">Amount to add</label>
             <div className="border border-primary-green rounded-xl p-2 flex items-center gap-2">
               <DollarSign className="text-primary-green" />
-              <input className="h-10 w-full" />
+              <input
+                type="number"
+                min="5"
+                max="250"
+                step="any"
+                className="h-10 w-full"
+                value={amount === '' ? '' : amount} 
+                onChange={handleAmountChange}
+              />
             </div>
             <p className="text-primary-black text-opacity-50">
               Enter an amount between <span>$</span>5 and <span>$</span>250
             </p>
           </div>
-          <div className="mt-7 space-y-2">
-            <label className="font-semibold">Payment method</label>
-            <Select>
-              <SelectTrigger className="w-full h-20 px-4">
-                <SelectValue placeholder="Select" />
-              </SelectTrigger>
-              <SelectContent defaultValue={paymentsCards[0].cardnumber}>
-                <SelectGroup>
-                  {paymentsCards.map((card, index) => (
-                    <SelectItem key={index} value={card.cardnumber}>
-                      <div className="flex items-center gap-4">
-                        <Image src={card.icon} alt="" width={200} height={200} className="w-full h-14 object-cover" />
-                        <div className="space-y-1">
-                          <h1 className="text-lg">{maskCardNumber(card.cardnumber)}</h1>
-                          <p className="text-primary-black text-opacity-50 text-left">{card.expires}</p>
-                        </div>
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-          <AddPaymentDialog />
+          <button
+            className="w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300 mt-5"
+            onClick={handleSubmit}
+          >
+            Add Amount
+          </button>
         </div>
-      </DialogContent>
+      </DialogContent> */}
     </Dialog>
   );
 }
-const maskCardNumber = (cardNumber: string): string => {
-  const visibleDigits = 4;
-  const maskedPart = "*".repeat(cardNumber.length - visibleDigits);
-  const visiblePart = cardNumber.slice(-visibleDigits);
-  return maskedPart + visiblePart;
-};
-
-const paymentsCards = [
-  {
-    icon: "/assets/master-card.svg",
-    cardnumber: "424242424242424242",
-    expires: "Expires 11/2026",
-  },
-];

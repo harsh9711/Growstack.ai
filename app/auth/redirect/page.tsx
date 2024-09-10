@@ -23,6 +23,9 @@ export default function Login() {
       const id = searchParams.get("id");
       const email = searchParams.get("email");
       const avatar = searchParams.get("avatar");
+      const isSubscribed = searchParams.get("isSubscribed");
+      const isExpired = searchParams.get("isExpired");
+
       //   console.log(token);
       setCookie("token", token, {
         secure: true,
@@ -35,10 +38,18 @@ export default function Login() {
         email,
         id,
         avatar,
+        isSubscribed: isSubscribed == "true" ? true : false,
+        isExpired: isExpired == "true" ? true : false,
       };
-      dispatch(login(user));
 
-      router.push("/app");
+      dispatch(login(user));
+      if (isSubscribed == "false") {
+        router.push("/Payment");
+      } else if (isSubscribed == "true" && isExpired == "true") {
+        router.push("/account/billings/settings/due");
+      } else {
+        router.push("/app");
+      }
       toast.success("Successfully logged in...");
     } else {
       router.push("/auth/login");

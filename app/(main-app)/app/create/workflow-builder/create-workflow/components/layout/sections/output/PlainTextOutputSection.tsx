@@ -135,14 +135,25 @@ export default function PlainTextOutputSection({ actions, inputConfigs, outputPa
       const textarea = textareaRef.current;
       const startPos = textarea.selectionStart;
       const endPos = textarea.selectionEnd;
-      const newDescription = params.value.substring(0, startPos) + `{$` + `{${subOption.name}}}` + params.value.substring(endPos);
+      const newDescription = params.value.substring(0, startPos) + `{$${subOption.name}}` + params.value.substring(endPos);
       updateParams({ value: newDescription });
-      setTimeout(() => {
-        textarea.setSelectionRange(startPos + subOption.name.length + 4, startPos + subOption.name.length + 4);
-        textarea.focus();
-      }, 0);
+  
+      
+      const placeholderIndex = newDescription.indexOf(`{${subOption.name}}`);
+  
+      const totalPlaceholders = newDescription.split('{').length - 1;
+  
+      const newCursorPos = placeholderIndex + subOption.name.length + 2 * (totalPlaceholders - 1);
+  
+     
+      textarea.setSelectionRange(newCursorPos, newCursorPos);
+      textarea.focus();
+
+     
     }
   };
+  
+  
 
   return (
     <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
@@ -158,7 +169,7 @@ export default function PlainTextOutputSection({ actions, inputConfigs, outputPa
         </div>
 
         <div className="space-y-2">
-          <label className="font-medium flex gap-2 items-center">Value </label>
+          <label className="font-medium flex gap-2 items-center">Value </label> 
           <textarea
             ref={textareaRef}
             value={params.value}

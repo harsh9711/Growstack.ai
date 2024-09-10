@@ -237,7 +237,34 @@ export default function Page() {
         .catch((error) => console.error("Download error:", error));
     }
   };
+  const [planUsage, setPlanUsage] = useState(null);
 
+  const fetchPlanUsage = async () => {
+    try {
+      const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
+      const data = response.data.data;
+      console.log(data.usage_amount)
+      setPlanUsage(data);
+
+      if (data.usage_amount === 0) {
+        toast.error('Trial expired');
+        window.location.href = '/Payment';
+
+        
+      }
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error('Error fetching plan usage:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPlanUsage();
+  }, []); 
   return (
     <main className="flex-1 h-full mt-10 flex flex-col">
       <div className="flex-1 flex gap-8">

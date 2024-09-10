@@ -8,9 +8,7 @@ import { Feature } from "@/types/Box";
 import toast from "react-hot-toast";
 import { API_URL } from "@/lib/api";
 import Link from "next/link";
-interface PlanUsage {
-  usage_amount: number;
-}
+
 const PricingPage: React.FC = () => {
   useEffect(() => {
     AOS.init();
@@ -23,7 +21,7 @@ const PricingPage: React.FC = () => {
   const [tabDistanceFromLeft, setDistanceFromLeft] = useState(0);
   const [plans, setPlans] = useState<Feature[]>([]);
   const [loading, setLoading] = useState(false);
-  const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
+  const [currentUsagePlanId, setCurrentUsagePlanId] = useState<string | null>(null); 
 
   const formatFeatureText = (text: string, value: string) => {
     return (
@@ -35,7 +33,21 @@ const PricingPage: React.FC = () => {
       </span>
     );
   };
-
+ useEffect(() => {
+    const fetchPlanUsage = async () => {
+      setLoading(true);
+      try {
+        const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
+        console.log("plan",response.data.data.plan_id);
+       setCurrentUsagePlanId(response.data.data.plan_id);
+      } catch (error: any) {
+        toast.error(error.response?.data?.message || "An error occurred while fetching usage data");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPlanUsage();
+  }, []);
   useEffect(() => {
     const tab = tabQueryParam ? Number(tabQueryParam) : 0;
     setSelectedTabIndex(tab);
@@ -45,6 +57,7 @@ const PricingPage: React.FC = () => {
   }, [tabQueryParam]);
 
   useEffect(() => {
+    
     const fetchPlans = async () => {
       setLoading(true);
       try {
@@ -181,6 +194,7 @@ const PricingPage: React.FC = () => {
     setSelectedTabIndex(index);
   };
   const PlanCard = ({ plan }: { plan: Feature }) => {
+        const isCurrentPlan = plan.id === currentUsagePlanId;
     const tickIcon = (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -201,13 +215,13 @@ const PricingPage: React.FC = () => {
       try {
         const product = {
           plan_id: plan.id,
-          plan_type: plan.title,
+          plan_type: plan.planType,
           price_id: plan.stripe_price_id,
         };
 
-        const currency = "usd";
-        const response = await instance.post(
-          `${API_URL}/users/api/v1/payments/create-checkout-session`,
+        // const currency = "usd";
+        const response = await instance.put(
+          `${API_URL}/users/api/v1/payments/update-subscription`,
           { product }
         );
         const { url } = response.data;
@@ -226,43 +240,14 @@ const PricingPage: React.FC = () => {
 
     const suffix = selectedTabIndex === 0 ? "/mo" : "/yr";
     const marginBottom = plan.title === "INFLUENCER" ? "mb-20" : "mb-4";
-    const fetchPlanUsage = async () => {
-      try {
-        const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
-        const data = response.data.data;
-        console.log(data);
-        setPlanUsage(data);
-    
-        const currentDate = new Date();
-        const expiryDate = new Date(data?.usage_expiry_date);
-    
-        if (isNaN(expiryDate.getTime())) {
-          console.log(expiryDate)
-          // toast.error('Invalid expiration date');
-        } else if (expiryDate <= currentDate) {
-          // toast.error('Unauthorized: Trial expired');
-        } else {
-          toast.success('Authorized: Trial is active');
-          window.location.href = '/app';
 
-        }
-      } catch (error: any) {
-        if (error.response) {
-          toast.error(error.response.data.message);
-        } else {
-          toast.error(error.message);
-        }
-        console.error('Error fetching plan usage:', error);
-      }
-    };
-    
-  
-    useEffect(() => {
-      fetchPlanUsage();
-    }, []);
     return (
-      <div
-        className="items-center justify-center mx-auto max-w-[550px] xl:max-h-[650px] h-full w-full bg-[#F5F5F5] rounded-xl flex flex-col py-6 transition-all duration-300 border border-transparent hover:border-[#034737] hover:shadow-lg hover:bg-white hover:scale-105 shadow-sm hover:border-[4px]"
+ <div
+        className={`mx-auto max-w-[550px] xl:max-h-[650px] w-full bg-[#F5F5F5] rounded-xl flex flex-col py-6 transition-all duration-300 border ${
+          isCurrentPlan ? "border-[#034737] border-6 scale-105 hover:shadow-lg" : "border-transparent hover:scale-105 hover:border-[#034737]"
+        }`}
+      
+
         data-aos="fade-up"
         data-aos-delay="200"
       >
@@ -319,7 +304,7 @@ const PricingPage: React.FC = () => {
             {loading ? (
               <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-white mx-auto"></div>
             ) : (
-              <h2>Select plan</h2>
+           <h2>   {isCurrentPlan?"Selected plan":"Upgrade Plan"}</h2>
             )}
           </button>
         </div>
