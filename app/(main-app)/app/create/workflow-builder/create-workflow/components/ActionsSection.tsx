@@ -211,7 +211,6 @@ const ActionsSection = ({
   const formattedText = formatString(editableFields.someField || "", {
     sender_profile_url: "http://example.com",
   });
-  console.log(activeAction)
   return (
     <Motion
       transition={{ duration: 0.5 }}

@@ -378,7 +378,6 @@ const getWorkFlowDetails = async (id: string | number) => {
                 key={index}
                 onClick={() => {
                   setActiveTag("Actions");
-                  console.log(action,index)
                   setActiveAction({ ...action, index });
                 }}
                 className={clsx(
