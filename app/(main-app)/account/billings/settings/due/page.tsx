@@ -86,7 +86,7 @@ export default function BillingHistorySection() {
                 </div>
                 <div className="card-wave"></div>
               </div>
-              <p className="text-center mt-4">Loading Billing History...</p>
+              <p className="text-center mt-4"> Showing Dues</p>
             </div>
           ) : error ? (
             <div className="text-red-500 text-center mt-4">Error: {error}</div>
@@ -103,7 +103,7 @@ export default function BillingHistorySection() {
                         <TableHead className="py-3 px-4 text-left">Currency</TableHead>
                         <TableHead className="py-3 px-4 text-left">Due Date</TableHead>
                         <TableHead className="py-3 px-4 text-left">Subscription</TableHead>
-                        <TableHead className="py-3 px-4 text-left">Action</TableHead>
+                        {/* <TableHead className="py-3 px-4 text-left">Action</TableHead> */}
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -123,9 +123,9 @@ export default function BillingHistorySection() {
                         <TableCell className="py-3 px-4 text-gray-700">
                           {upcomingData.subscription}
                         </TableCell>
-                        <TableCell className="py-3 px-4">
+                        {/* <TableCell className="py-3 px-4">
                         <AddCreditDialog2 onAddCredit={handleAddCreditClick} />
-                        </TableCell>
+                        </TableCell> */}
                       </TableRow>
                     </TableBody>
                   </Table>
@@ -164,13 +164,8 @@ export default function BillingHistorySection() {
                             {item.subscription}
                           </TableCell>
                           <TableCell className="py-3 px-4">
-                            <Button
-                              className="bg-blue-500 text-white hover:bg-blue-600"
-                              onClick={() => handleAction(item.invoice)}
-                            >
-                              View
-                            </Button>
-                          </TableCell>
+                        <AddCreditDialog2 onAddCredit={handleAddCreditClick} />
+                        </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>

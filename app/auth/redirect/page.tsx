@@ -38,18 +38,17 @@ export default function Login() {
         email,
         id,
         avatar,
-        isSubscribed,
-        isExpired,
+        isSubscribed: isSubscribed == "true" ? true : false,
+        isExpired: isExpired == "true" ? true : false,
       };
 
-      console.log(isSubscribed);
       dispatch(login(user));
-      if (!isSubscribed) {
+      if (isSubscribed == "false") {
         router.push("/Payment");
-      } else if (isSubscribed && isExpired) {
+      } else if (isSubscribed == "true" && isExpired == "true") {
         router.push("/account/billings/settings/due");
-      }else {
-        router.push("/app")
+      } else {
+        router.push("/app");
       }
       toast.success("Successfully logged in...");
     } else {

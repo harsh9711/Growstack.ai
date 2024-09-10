@@ -262,7 +262,7 @@ const PricingPage: React.FC = () => {
             className="px-8 text-[24px] xl:text-[48px] text-center justify-center font-bold flex gap-2 items-center text-[#034737]"
             data-aos="fade-up"
           >
-            {selectedTabIndex === 0
+            ${selectedTabIndex === 0
               ? plan.monthlyPrice
                 ? parseFloat(plan.monthlyPrice).toFixed(2)
                 : "N/A"

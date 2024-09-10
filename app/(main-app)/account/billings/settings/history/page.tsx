@@ -19,8 +19,11 @@ import { API_URL } from "@/lib/api";
 import clsx from "clsx";
 // import "../../../../../../../styles/loading.css";
 import AddCreditDialog from "../components/AddCreditDialog";
+import Link from "next/link";
+import router from "next/navigation";
 
 interface BillingHistoryItem {
+  payment_receipt_url: string;
   amount: ReactNode;
   payment_id: ReactNode;
   updatedAt: string | number | Date;
@@ -55,7 +58,7 @@ const BillingHistorySection=() =>{
   }, []);
 
   function handleAction(invoice: string): void {
-    throw new Error("Function not implemented.");
+  window.location.href= `${invoice}`; 
   }
 
   return (
@@ -117,8 +120,8 @@ const BillingHistorySection=() =>{
                     </TableCell>
                     <TableCell>
                       <Button
-                        className="bg-blue-500 text-white"
-                        onClick={() => handleAction(item.invoice)}
+                        className="bg-primary-green text-white"
+                        onClick={() => handleAction(item.payment_receipt_url)}
                       >
                         View
                       </Button>
