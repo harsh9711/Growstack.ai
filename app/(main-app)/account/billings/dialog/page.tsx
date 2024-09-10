@@ -1,3 +1,4 @@
+"use client"
 import {
   Dialog,
   DialogContent,
@@ -13,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { DollarSign, Rss } from "lucide-react";
+import { DollarSign} from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect, ReactNode } from "react";
 import instance from "@/config/axios.config";
@@ -178,12 +179,15 @@ const AddCreditDialog2: React.FC<AddCreditDialog2Props> = ({ onAddCredit }) => {
               </SelectContent>
             </Select>
           </div>
-         <div className="flex flex-col items-end"> <button
-            onClick={handlePay}
-            className="font-medium flex  gap-3 px-3 py-4 bg-primary-green mt-4 justify-end text-white items-end transition-all duration-300 rounded-lg"
-          >
-            Pay
-          </button></div>
+          <div className="flex flex-col items-end">
+            {" "}
+            <button
+              onClick={handlePay}
+              className="font-medium flex  gap-3 px-3 py-4 bg-primary-green mt-4 justify-end text-white items-end transition-all duration-300 rounded-lg"
+            >
+              Pay
+            </button>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
