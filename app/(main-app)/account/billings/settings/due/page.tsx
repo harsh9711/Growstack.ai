@@ -13,36 +13,37 @@ import {
 import { ReactNode, useEffect, useState } from "react";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
-// import { BillHistory } from "@/types/billHistory";
 import clsx from "clsx";
 import "../../../../../../styles/loading.css";
+import AddCreditDialog2 from "../../dialog/page";
 
 interface BillingHistoryItem {
   amount_due: ReactNode;
-  amount: ReactNode;
-  payment_id: ReactNode;
-  updatedAt: string | number | Date;
-  plan_id: string;
-  status: string;
-  created_at: string;
+  currency: string;
+  due_date: string;
+  subscription: string;
   invoice: string;
+  status?: string; // Optional status field
 }
+
 export default function BillingHistorySection() {
-  const [data, setData] = useState<BillingHistoryItem[]>([]);
+  const [upcomingData, setUpcomingData] = useState<BillingHistoryItem | null>(null);
+  const [unpaidData, setUnpaidData] = useState<BillingHistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await instance.get(`${API_URL}/users/api/v1/payments/pending-dues`);
+        const response = await instance.get(
+          `${API_URL}/users/api/v1/payments/pending-dues`
+        );
         if (!response) {
           throw new Error("Network response was not ok");
         }
-        const result = response.data.pendingDues.unpaid;
-        const upcoming = response.data.pendingDues.upcoming;
-        console.log("r", result);
-        setData(result);
+        const { upcoming, unpaid } = response.data.pendingDues;
+        setUpcomingData(upcoming);
+        setUnpaidData(unpaid);
       } catch (error: any) {
         setError(error.message);
       } finally {
@@ -54,78 +55,131 @@ export default function BillingHistorySection() {
   }, []);
 
   function handleAction(invoice: string): void {
-    throw new Error("Function not implemented.");
+    console.log("View action for invoice:", invoice);
   }
-
+  const handleAddCreditClick = async () => {
+    try {
+      const response = await instance.get(
+        `${API_URL}/users/api/v1/payments/payment-methods`
+      );
+      console.log("Payment methods:", response.data);
+    } catch (error) {
+      console.error("Failed to fetch payment methods", error);
+    }
+  };
+  
   return (
     <Motion
       transition={{ duration: 0.2 }}
       variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
     >
-      <div className="w-full">
-        <div className="rounded-lg border overflow-hidden mt-10 bg-white min-h-[50vh]">
+      <div className="w-full p-6">
+        <div className="rounded-lg border shadow-lg overflow-hidden bg-white">
           {loading ? (
             <div className="loading-container">
-            <div className="loading-card">
-              <div className="card-chip"></div>
-              <div className="card-lines">
-                <div className="line"></div>
-                <div className="line"></div>
-                <div className="line"></div>
+              <div className="loading-card">
+                <div className="card-chip"></div>
+                <div className="card-lines">
+                  <div className="line"></div>
+                  <div className="line"></div>
+                  <div className="line"></div>
+                </div>
+                <div className="card-wave"></div>
               </div>
-              <div className="card-wave"></div>
+              <p className="text-center mt-4">Loading Billing History...</p>
             </div>
-            <p>Billing History...</p>
-          </div>
           ) : error ? (
-            <div>Error: {error}</div>
+            <div className="text-red-500 text-center mt-4">Error: {error}</div>
           ) : (
-            <Table className="">
-              <TableHeader>
-                <TableRow className="bg-[#0347370D]">
-                  <TableHead>Payment_ID</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Amount</TableHead>
-                  <TableHead>Payment Date</TableHead>
-                  <TableHead>Action</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {data?.map((item) => (
-                  <TableRow key={item.plan_id}>
-                    <TableCell className="text-[16px] font-medium">
-                      {item.amount_due}
-                    </TableCell>
-                    <TableCell
-                      className={clsx(
-                        "text-[14px] flex gap-2 items-center justify-center py-2 mt-4 px-3 rounded-lg max-w-fit",
-                        item.status === "SUCCESS"
-                          ? " text-primary-green bg-[#0347371A]"
-                          : item.status === " Pending"
-                          ? "text-yellow-8 bg-yellow-100"
-                          : "text-[#CF0000] bg-[#FF00001A]"
-                      )}
-                    >
-                      {item.status}
-                    </TableCell>
-                    <TableCell className="text-[16px] font-semibold">
-                      ${item.amount}
-                    </TableCell>
-                    <TableCell className="text-[14px] text-gray-500">
-                      {new Date(item.updatedAt).toLocaleDateString()}
-                    </TableCell>
-                    <TableCell>
-                      <Button
-                        className="bg-blue-500 text-white"
-                        onClick={() => handleAction(item.invoice)}
+            <div className="space-y-6">
+              {/* Upcoming Dues Table */}
+              {upcomingData ? (
+                <div className="p-4 bg-[#034737] rounded-lg shadow-md">
+                  <h2 className="text-2xl font-bold mb-4 text-white">Upcoming Dues</h2>
+                  <Table>
+                    <TableHeader>
+                    <TableRow className="bg-[#034737] text-white">
+                    <TableHead className="py-3 px-4 text-left">Amount Due</TableHead>
+                        <TableHead className="py-3 px-4 text-left">Currency</TableHead>
+                        <TableHead className="py-3 px-4 text-left">Due Date</TableHead>
+                        <TableHead className="py-3 px-4 text-left">Subscription</TableHead>
+                        <TableHead className="py-3 px-4 text-left">Action</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      <TableRow
+                        key={upcomingData.invoice}
+                        className="bg-white shadow-sm rounded-lg mb-2 hover:bg-blue-50"
                       >
-                        View
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                        <TableCell className="py-3 px-4 font-bold text-gray-700">
+                          $ {upcomingData.amount_due}
+                        </TableCell>
+                        <TableCell className="py-3 px-4 text-gray-700">
+                          {upcomingData.currency}
+                        </TableCell>
+                        <TableCell className="py-3 px-4 text-gray-500">
+                          {new Date(upcomingData.due_date).toLocaleDateString()}
+                        </TableCell>
+                        <TableCell className="py-3 px-4 text-gray-700">
+                          {upcomingData.subscription}
+                        </TableCell>
+                        <TableCell className="py-3 px-4">
+                        <AddCreditDialog2 onAddCredit={handleAddCreditClick} />
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </div>
+              ) : (
+                <div className="text-center text-gray-500">No upcoming dues available</div>
+              )}
+
+              {/* Unpaid Dues Table */}
+              {unpaidData.length > 0 ? (
+                <div>
+                  <h2 className="text-xl font-semibold mb-4 text-red-600">Unpaid Dues</h2>
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-[#0347370D] text-gray-700">
+                        <TableHead className="py-3 px-4 text-left">Amount Due</TableHead>
+                        <TableHead className="py-3 px-4 text-left">Currency</TableHead>
+                        <TableHead className="py-3 px-4 text-left">Due Date</TableHead>
+                        <TableHead className="py-3 px-4 text-left">Subscription</TableHead>
+                        <TableHead className="py-3 px-4 text-left">Action</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {unpaidData.map((item) => (
+                        <TableRow key={item.invoice}>
+                          <TableCell className="py-3 px-4 font-bold text-gray-700">
+                            $ {item.amount_due}
+                          </TableCell>
+                          <TableCell className="py-3 px-4 font-semibold text-gray-700">
+                            {item.currency}
+                          </TableCell>
+                          <TableCell className="py-3 px-4 text-gray-500">
+                            {new Date(item.due_date).toLocaleDateString()}
+                          </TableCell>
+                          <TableCell className="py-3 px-4 font-medium text-gray-700">
+                            {item.subscription}
+                          </TableCell>
+                          <TableCell className="py-3 px-4">
+                            <Button
+                              className="bg-blue-500 text-white hover:bg-blue-600"
+                              onClick={() => handleAction(item.invoice)}
+                            >
+                              View
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              ) : (
+                <div className="text-center text-gray-500">No unpaid dues available</div>
+              )}
+            </div>
           )}
         </div>
       </div>

@@ -113,14 +113,14 @@ export default function ProfilePage() {
       icon: <UserX2 />,
       title: "Delete Account",
     },
-    {
-      link: "/account/billings",
-      icon: (
-        <FaMoneyBill1 className="text-3xl" />
+    // {
+    //   link: "/account/billings",
+    //   icon: (
+    //     <FaMoneyBill1 className="text-3xl" />
 
-      ),
-      title: "Billing",
-    },
+    //   ),
+    //   title: "Billing",
+    // },
   ];
   const [activeTab, setActiveTab] = useState(options[0]);
 
