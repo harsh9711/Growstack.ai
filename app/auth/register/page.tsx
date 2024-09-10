@@ -72,18 +72,49 @@ export default function Register() {
       });
       toast.success(response.data.message);
       dispatch(login(response.data.data));
-      router.push("/app");
+
+      router.push("/Payment");
+      const planUsageData = response.data.data.plan_usage;
+      console.log("plans", planUsageData);
+  
+      const currentDate = new Date();
+      const expiryDate = new Date(planUsageData?.usage_expiry_date);
+  
+      if (isNaN(expiryDate.getTime())) {
+        // toast.error("Invalid expiration date");
+      } else if (expiryDate <= currentDate) {
+        toast.error("Unauthorized: Trial expired");
+        router.push("/Payment");
+      } else {
+        toast.success("Authorized: Trial is active");
+        router.push("/app");
+      }
     } catch (error: any) {
+      // Handle errors during login or fetching plan usage
       if (error.response) {
         toast.error(error.response.data.message);
       } else {
         toast.error(error.message);
       }
-      console.error("Login failed:", error);
+      console.error("Login or plan usage failed:", error);
     } finally {
+      // Stop loading indicator
       setIsPending(false);
     }
-  };
+  
+      // router.push("/app");
+    }
+    // catch (error: any) {
+    //   if (error.response) {
+    //     toast.error(error.response.data.message);
+    //   } else {
+    //     toast.error(error.message);
+    //   }
+    //   console.error("Login failed:", error);
+    // } finally {
+    //   setIsPending(false);
+    // }
+
  
   return (
     <main>

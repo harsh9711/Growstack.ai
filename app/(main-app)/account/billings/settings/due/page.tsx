@@ -18,6 +18,7 @@ import clsx from "clsx";
 import "../../../../../../styles/loading.css";
 
 interface BillingHistoryItem {
+  amount_due: ReactNode;
   amount: ReactNode;
   payment_id: ReactNode;
   updatedAt: string | number | Date;
@@ -34,11 +35,12 @@ export default function BillingHistorySection() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await instance.get(`${API_URL}/users/api/v1/payments`);
+        const response = await instance.get(`${API_URL}/users/api/v1/payments/pending-dues`);
         if (!response) {
           throw new Error("Network response was not ok");
         }
-        const result = response.data.data;
+        const result = response.data.pendingDues.unpaid;
+        const upcoming = response.data.pendingDues.upcoming;
         console.log("r", result);
         setData(result);
       } catch (error: any) {
@@ -89,10 +91,10 @@ export default function BillingHistorySection() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data.map((item) => (
+                {data?.map((item) => (
                   <TableRow key={item.plan_id}>
                     <TableCell className="text-[16px] font-medium">
-                      {item.payment_id}
+                      {item.amount_due}
                     </TableCell>
                     <TableCell
                       className={clsx(

@@ -152,7 +152,8 @@ export default function Dashboard() {
       const expiryDate = new Date(data?.usage_expiry_date);
   
       if (isNaN(expiryDate.getTime())) {
-        toast.error('Invalid expiration date');
+        console.log(expiryDate)
+        // toast.error('Invalid expiration date');
       } else if (expiryDate <= currentDate) {
         toast.error('Unauthorized: Trial expired');
         window.location.href = '/Payment';

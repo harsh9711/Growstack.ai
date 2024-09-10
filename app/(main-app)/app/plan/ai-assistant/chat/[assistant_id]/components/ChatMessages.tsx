@@ -14,18 +14,17 @@ interface ChatMessagesProps {
 
 const ChatMessages: React.FC<ChatMessagesProps> = ({ conversation, assistant }) => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const currentUser = getCurrentUser();
 
   const scrollToBottom = () => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
   };
 
   useEffect(() => {
     scrollToBottom();
-  }, [conversation]);
-
-  const currentUser = getCurrentUser();
+  }, [conversation.chats]);
 
   return (
     <>
