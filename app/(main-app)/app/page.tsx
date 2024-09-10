@@ -14,9 +14,9 @@ import { getCurrentUser } from "@/lib/features/auth/auth.selector";
 import { useDispatch } from "react-redux";
 import ChatComponent from "./components/ChatComponent";
 // import "bootstrap/dist/css/bootstrap.min.css";
-import AOS from 'aos';
-import 'aos/dist/aos.css'
-import '@/styles/globals.css'
+import AOS from "aos";
+import "aos/dist/aos.css";
+import "@/styles/globals.css";
 interface AiApp {
   _id: string;
   "ASSISTANT NAME": string;
@@ -47,14 +47,16 @@ export interface FavoriteAssistant {
 export default function Dashboard() {
   const dispatch = useDispatch();
   const [assistants, setAssistants] = useState<Assistant[]>([]);
-  const [favoriteAssistants, setFavoriteAssistants] = useState<FavoriteAssistant[]>([]);
+  const [favoriteAssistants, setFavoriteAssistants] = useState<
+    FavoriteAssistant[]
+  >([]);
   const [aiAppsloading, setAiAppsLoading] = useState(true);
   const [aiAssistantsloading, setAiAssistantsLoading] = useState(true);
   const currentUser = getCurrentUser();
   // const hasRefreshed = localStorage.getItem("hasRefreshed");
   // const [refreshed, setRefreshed] = useState(hasRefreshed || false);
   useEffect(() => {
-    AOS.init({ duration: 1000 }); 
+    AOS.init({ duration: 1000 });
     AOS.refresh();
   }, []);
   const fetchAssistants = async () => {
@@ -75,7 +77,9 @@ export default function Dashboard() {
 
   const fetchFavoriteAssistants = async () => {
     try {
-      const response = await instance.get(`${API_URL}/ai/api/v1/chat-template/fav-apps`);
+      const response = await instance.get(
+        `${API_URL}/ai/api/v1/chat-template/fav-apps`
+      );
       setFavoriteAssistants(response.data.data);
     } catch (error: any) {
       if (error.response) {
@@ -91,9 +95,14 @@ export default function Dashboard() {
 
   const handleFavorite = async (method: string, templateId: string) => {
     try {
-      const response = await instance.put(API_URL + `/ai/api/v1/chat-template/fav-apps/${templateId}`, { type: method });
+      const response = await instance.put(
+        API_URL + `/ai/api/v1/chat-template/fav-apps/${templateId}`,
+        { type: method }
+      );
       toast.success(response.data.message);
-      setFavoriteAssistants((prevFavoriteApps) => prevFavoriteApps.filter((favApp) => favApp._id !== templateId));
+      setFavoriteAssistants((prevFavoriteApps) =>
+        prevFavoriteApps.filter((favApp) => favApp._id !== templateId)
+      );
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
@@ -106,9 +115,14 @@ export default function Dashboard() {
 
   const fetchSocialMediaProfile = async () => {
     try {
-      const response = await instance.get(`${API_URL}/users/api/v1/social-media/profile`);
+      const response = await instance.get(
+        `${API_URL}/users/api/v1/social-media/profile`
+      );
       if (response?.data?.data?.activeSocialAccounts?.length > 0) {
-        localStorage.setItem("activeSocialAccounts", JSON.stringify(response?.data?.data?.activeSocialAccounts));
+        localStorage.setItem(
+          "activeSocialAccounts",
+          JSON.stringify(response?.data?.data?.activeSocialAccounts)
+        );
       }
     } catch (error: any) {
       console.log(error);
@@ -135,13 +149,21 @@ export default function Dashboard() {
     fetchSocialMediaProfile();
   }, []);
 
-  return  (
-    <main className="" >
+  return (
+    <main className="">
       <div className="bg-[#EBF0F6] h-80 w-full max-w-[96%] mx-auto absolute top-0 left-0 right-0 rounded-b-[60px]" />
       <div className="relative z-[1]">
-      <div className="flex justify-between items-center mt-8" data-aos="fade-down">
-      <div className="space-y-2">
-            <h1 className="text-2xl font-semibold">Welcome back, {currentUser.user_name ? currentUser.name : currentUser?.email?.split('.')[0]} </h1>
+        <div
+          className="flex justify-between items-center mt-8"
+          data-aos="fade-down"
+        >
+          <div className="space-y-2">
+            <h1 className="text-2xl font-semibold">
+              Welcome back,{" "}
+              {currentUser.name
+                ? currentUser.name
+                : currentUser.email.split(/[@.]/)[0]}
+            </h1>
             {/* <p className="flex items-center gap-2 text-[#3D3D3D] text-[15px]">
               23 August - 23 September 2024
               <span>
@@ -150,19 +172,34 @@ export default function Dashboard() {
             </p> */}
           </div>
         </div>
-        <div className="w-full flex gap-3 mt-4">
-        <div className="w-full space-y-6 " data-aos="fade-left">
-        <ChatComponent />
+        <div className="w-full  flex flex-col lg:flex-row gap-3 mt-4">
+          <div className="w-full space-y-6 " data-aos="fade-left">
+            <ChatComponent />
           </div>
-          <div className="w-[60%] 2xl:w-[50%] bg-white p-8 rounded-3xl border border-[#E8E8E8] space-y-5" data-aos="fade-right">
+          <div
+            className="w-full max-w-[40%] bg-white p-8 rounded-3xl border border-[#E8E8E8] "
+            data-aos="fade-right"
+          >
             <div className="space-y-3">
-              <h1 className="text-xl font-semibold text-center">Unlock the power of AI</h1>
-              <p className="text-[#6C7275] text-center">Chat with the smartest AI - Experience the power of AI with us</p>
+              <h1 className="text-xl font-semibold text-center">
+                Unlock the power of AI
+              </h1>
+              <p className="text-[#6C7275] text-center">
+                Chat with the smartest AI - Experience the power of AI with us
+              </p>
             </div>
             <Link href="/app/plan/ai-chat">
-            <div className="!mt-7 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10" data-aos="fade-up">
-            <div className="flex gap-4 items-center">
-                  <Image src="/icons/ai-chat.svg" alt="" width={60} height={60} />
+              <div
+                className="!mt-7 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
+                data-aos="fade-up"
+              >
+                <div className="flex gap-4 items-center">
+                  <Image
+                    src="/icons/ai-chat.svg"
+                    alt=""
+                    width={60}
+                    height={60}
+                  />
                   <h2 className="font-medium">AI chat</h2>
                 </div>
                 <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
@@ -171,9 +208,17 @@ export default function Dashboard() {
               </div>
             </Link>
             <Link href="/app/plan/ai-templates">
-            <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10" data-aos="fade-up">
-            <div className="flex gap-4 items-center">
-                  <Image src="/icons/ai-templates.svg" alt="" width={60} height={60} />
+              <div
+                className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
+                data-aos="fade-up"
+              >
+                <div className="flex gap-4 items-center">
+                  <Image
+                    src="/icons/ai-templates.svg"
+                    alt=""
+                    width={60}
+                    height={60}
+                  />
                   <h2 className="font-medium">AI templates </h2>
                 </div>
                 <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
@@ -182,9 +227,17 @@ export default function Dashboard() {
               </div>
             </Link>
             <Link href="/app/plan/ai-assistant">
-            <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10" data-aos="fade-up">
+              <div
+                className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
+                data-aos="fade-up"
+              >
                 <div className="flex gap-4 items-center">
-                  <Image src="/icons/chatbot.svg" alt="" width={60} height={60} />
+                  <Image
+                    src="/icons/chatbot.svg"
+                    alt=""
+                    width={60}
+                    height={60}
+                  />
                   <h2 className="font-medium">AI assistants</h2>
                 </div>
                 <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
@@ -193,9 +246,17 @@ export default function Dashboard() {
               </div>
             </Link>
             <Link href="/app/plan/custom-gpts">
-            <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10" data-aos="fade-up">
+              <div
+                className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
+                data-aos="fade-up"
+              >
                 <div className="flex gap-4 items-center">
-                  <Image src="/icons/custom-gpts.svg" alt="" width={60} height={60} />
+                  <Image
+                    src="/icons/custom-gpts.svg"
+                    alt=""
+                    width={60}
+                    height={60}
+                  />
                   <h2 className="font-medium">AI custom GPT </h2>
                 </div>
                 <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
@@ -204,7 +265,10 @@ export default function Dashboard() {
               </div>
             </Link>
             <Link href="/app/plan/text-to-video">
-            <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10" data-aos="fade-up">
+              <div
+                className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
+                data-aos="fade-up"
+              >
                 <div className="flex gap-4 items-center">
                   <Image src="/icons/media.svg" alt="" width={60} height={60} />
                   <h2 className="font-medium">Text to video </h2>
@@ -215,9 +279,17 @@ export default function Dashboard() {
               </div>
             </Link>
             <Link href="/app/create/workflow-builder">
-            <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10" data-aos="fade-up">
+              <div
+                className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
+                data-aos="fade-up"
+              >
                 <div className="flex gap-4 items-center">
-                  <Image src="/icons/workflow-builder.svg" alt="" width={60} height={60} />
+                  <Image
+                    src="/icons/workflow-builder.svg"
+                    alt=""
+                    width={60}
+                    height={60}
+                  />
                   <h2 className="font-medium">Workflow builder</h2>
                 </div>
                 <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
@@ -226,9 +298,17 @@ export default function Dashboard() {
               </div>
             </Link>
             <Link href="/app/create/ai-articles">
-            <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10" data-aos="fade-up">
+              <div
+                className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
+                data-aos="fade-up"
+              >
                 <div className="flex gap-4 items-center">
-                  <Image src="/icons/text-generator.svg" alt="" width={60} height={60} />
+                  <Image
+                    src="/icons/text-generator.svg"
+                    alt=""
+                    width={60}
+                    height={60}
+                  />
                   <h2 className="font-medium">AI article wizard</h2>
                 </div>
                 <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
@@ -236,7 +316,7 @@ export default function Dashboard() {
                 </button>
               </div>
             </Link>
-          </div>  
+          </div>
         </div>
       </div>
     </main>
@@ -245,7 +325,15 @@ export default function Dashboard() {
 
 const AiAppSkeletonLoader: React.FC = () => {
   return (
-    <ContentLoader speed={2} width="100%" height="80px" viewBox="0 0 600 80" backgroundColor="#f3f3f3" foregroundColor="#ecebeb" className="w-full">
+    <ContentLoader
+      speed={2}
+      width="100%"
+      height="80px"
+      viewBox="0 0 600 80"
+      backgroundColor="#f3f3f3"
+      foregroundColor="#ecebeb"
+      className="w-full"
+    >
       <rect x="0" y="0" rx="10" ry="10" width="70" height="70" />
       <rect x="90" y="10" rx="8" ry="8" width="350" height="15" />
       <rect x="90" y="35" rx="8" ry="8" width="420" height="15" />
@@ -254,7 +342,15 @@ const AiAppSkeletonLoader: React.FC = () => {
 };
 const AiAssistantSkeletonLoader: React.FC = () => {
   return (
-    <ContentLoader speed={2} width="100%" height="80px" viewBox="0 0 600 80" backgroundColor="#f3f3f3" foregroundColor="#ecebeb" className="w-full">
+    <ContentLoader
+      speed={2}
+      width="100%"
+      height="80px"
+      viewBox="0 0 600 80"
+      backgroundColor="#f3f3f3"
+      foregroundColor="#ecebeb"
+      className="w-full"
+    >
       <rect x="0" y="0" rx="10" ry="10" width="70" height="70" />
       <rect x="90" y="13" rx="8" ry="8" width="250" height="15" />
       <rect x="90" y="38" rx="8" ry="8" width="200" height="15" />

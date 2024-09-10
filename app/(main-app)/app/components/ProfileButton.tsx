@@ -46,7 +46,7 @@ export function ProfileButton() {
             <AvatarFallback>{currentUser?.email?.slice(0, 1)}</AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
-            <h1 className="text-xl font-semibold capitalize truncate">{currentUser?.user_name ?? currentUser?.name ?? "Growstack User"}</h1>
+            <h1 className="text-xl font-semibold capitalize truncate">{currentUser?.name ?? currentUser?.name ?? "Growstack User"}</h1>
             <p className="text-primary-grey text-sm truncate">{currentUser?.email}</p>
           </div>
         </div>

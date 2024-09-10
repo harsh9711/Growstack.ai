@@ -135,7 +135,7 @@ export default function ChatComponent() {
       <div className="flex items-start space-x-3 relative" data-aos="fade-right">
         <Image src="/logo/growstack-mini.png" alt="growstack_ai_chat" width={35} height={35} className="mt-1" />
         <div>
-          <h1 className="text-xl sm:text-xs md:text-lg font-medium">Hello, {currentUser.name ? currentUser.user_name : currentUser?.email?.split('.')[0]}!</h1>
+          <h1 className="text-xl sm:text-xs md:text-lg font-medium">Hello, {currentUser.name ? currentUser.name : currentUser.email.split(/[@.]/)[0]}!</h1>
           <p className="mt-3 text-base sm:text-sm md:text-xl">How can I help you today?</p>
         </div>
       </div>
