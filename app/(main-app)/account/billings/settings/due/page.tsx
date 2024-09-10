@@ -56,9 +56,18 @@ export default function BillingHistorySection() {
 
   function handleAction(invoice: string): void {
     console.log("View action for invoice:", invoice);
-    // Implement the action logic here
   }
-
+  const handleAddCreditClick = async () => {
+    try {
+      const response = await instance.get(
+        `${API_URL}/users/api/v1/payments/payment-methods`
+      );
+      console.log("Payment methods:", response.data);
+    } catch (error) {
+      console.error("Failed to fetch payment methods", error);
+    }
+  };
+  
   return (
     <Motion
       transition={{ duration: 0.2 }}
@@ -89,8 +98,8 @@ export default function BillingHistorySection() {
                   <h2 className="text-2xl font-bold mb-4 text-white">Upcoming Dues</h2>
                   <Table>
                     <TableHeader>
-                      <TableRow className=" text-white">
-                        <TableHead className="py-3 px-4 text-left">Amount Due</TableHead>
+                    <TableRow className="bg-[#034737] text-white">
+                    <TableHead className="py-3 px-4 text-left">Amount Due</TableHead>
                         <TableHead className="py-3 px-4 text-left">Currency</TableHead>
                         <TableHead className="py-3 px-4 text-left">Due Date</TableHead>
                         <TableHead className="py-3 px-4 text-left">Subscription</TableHead>
@@ -115,7 +124,7 @@ export default function BillingHistorySection() {
                           {upcomingData.subscription}
                         </TableCell>
                         <TableCell className="py-3 px-4">
-                          <AddCreditDialog2 />
+                        <AddCreditDialog2 onAddCredit={handleAddCreditClick} />
                         </TableCell>
                       </TableRow>
                     </TableBody>

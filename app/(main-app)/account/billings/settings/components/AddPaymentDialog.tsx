@@ -10,13 +10,13 @@ export default function AddPaymentDialog() {
     <Dialog>
       <DialogTrigger asChild>
         <div className="flex justify-end mt-4">
-          <button className="text-primary-green font-medium flex items-center gap-3 px-3 py-4 hover:bg-primary-green/10 sheen transition-all duration-300 rounded-lg">
-            <Plus />
-            Add payment method
+          <button className="font-medium flex items-center gap-3 px-3 py-4  bg-primary-green text-white sheen transition-all duration-300 rounded-lg">
+            {/* <Plus /> */}
+        Pay
           </button>
         </div>
       </DialogTrigger>
-      <DialogContent className="max-w-[584px]">
+      {/* <DialogContent className="max-w-[584px]">
         <DialogHeader className="space-y-3">
           <DialogTitle>Add payment method</DialogTitle>
           <DialogDescription>Add your credit card details below. This card will be saved to youraccount and can be removed at any time.</DialogDescription>
@@ -53,7 +53,7 @@ export default function AddPaymentDialog() {
             <button className="w-full py-3.5 px-4 bg-primary-green sheen rounded-xl text-white mt-6">Add payment method</button>
           </div>
         </div>
-      </DialogContent>
+      </DialogContent> */}
     </Dialog>
   );
 }

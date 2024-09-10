@@ -44,13 +44,13 @@ export default function Login() {
 
       console.log(isSubscribed);
       dispatch(login(user));
-      // if (!isSubscribed) {
-      //   router.push("/Payment");
-      // } else if (isSubscribed && isExpired) {
-      //   router.push("/account/billings/settings/due");
-      // }else {
-      //   router.push("/app")
-      // }
+      if (!isSubscribed) {
+        router.push("/Payment");
+      } else if (isSubscribed && isExpired) {
+        router.push("/account/billings/settings/due");
+      }else {
+        router.push("/app")
+      }
       toast.success("Successfully logged in...");
     } else {
       router.push("/auth/login");
