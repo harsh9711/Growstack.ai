@@ -226,7 +226,7 @@ const Layout = () => {
     }
 
     const payloaddata = {
-      senderId: selectedMessage.message[0].senderId,
+      senderId: "1788791796136361984", //selectedMessage.message[0].senderId,
       attachments: file ? [{ type: "image", url: file }] : [],
       created: {},
       conversationId: selectedMessage.message[0].conversationId,
@@ -320,7 +320,7 @@ const Layout = () => {
   };
   const [showRightSidebar, setShowRightSidebar] = useState(false);
   const [MenuRotated, setMenuRotated] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(1);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [MenuOpen, setMenuOpen] = useState(false);
   const [isArrowRotated, setIsArrowRotated] = useState(false);
@@ -471,14 +471,14 @@ const Layout = () => {
             >
               Messages
             </button>
-            <button
+            {/* <button
               onClick={() => handleButtonClick(2)}
               className={`transition-all text-[16px] duration-300 w-1/2 ${
                 activeIndex === 2 ? "text-green-800 font-semibold" : ""
               }`}
             >
               Comments
-            </button>
+            </button> */}
 
             <div
               className={`absolute -bottom-3 h-1 bg-green-800 transition-all duration-300  ${
@@ -527,16 +527,13 @@ const Layout = () => {
         >
           {/* Message Header */}
           <div className="flex flex-row gap-4 items-center">
-            <Image src="/facebook.png" alt="facebook" width={50} height={50} />
+            <Image src="/logo/growstack-mini.png" alt="facebook" width={50} height={50} />
             <h2 className="font-semibold text-[18px]">
               {selectedMessage.title}
             </h2>
           </div>
 
-          {/* Divider */}
           <div className="border-[0.1px] border-gray-200 my-4 w-[1400px] -translate-x-4"></div>
-          {/* {selectedMessage.message && (<>{JSON.stringify(selectedMessage.message)}</>)} */}
-          {/* Message Content */}
           <div
             className="flex-1 p-4"
             style={{
@@ -564,27 +561,26 @@ const Layout = () => {
                         message={
                           <>
                             {msg.message}
-                            {/* Render attachments */}
                             {msg.attachments &&
                               msg.attachments.length > 0 &&
                               msg.attachments.map(
                                 (attachment: any, attIndex: any) => (
                                   // src={attachment.url?attachment.url:"/logo/growstack-mini.png"}
                                   <div key={attIndex}>
-                                    {attachment.url.includes("ton.twitter.com")}
-
                                     {attachment.type === "image" ? (
-                                      <Image
-                                        src={"/logo/growstack-mini.png"}
-                                        alt={`attachment-${attIndex}`}
-                                        width={100}
-                                        height={300}
-                                        className="rounded-xl border mt-2"
-                                        onError={(e) =>
-                                          (e.currentTarget.src =
-                                            "/logo/growstack-mini.png")
-                                        }
-                                      />
+                                      <>
+                                  {attachment.url && (<>{attachment.url}</>)}
+
+                                  <Image
+                                  src={(attachment.url && !attachment.url.includes("ton.twitter.com"))? attachment.url : "/logo/growstack-mini.png"}
+                                  alt={`attachment-${attIndex}`}
+                                  width={100}
+                                  height={300}
+                                  className="rounded-xl border mt-2"
+                                  onError={(e) => {
+                                    e.currentTarget.src = "/logo/growstack-mini.png";
+                                  }}
+                                /></>
                                     ) : (
                                       <a
                                         href={attachment.url}
@@ -628,366 +624,7 @@ const Layout = () => {
           />
         </main>
       )}
-      {!isOpened && (
-        <main className="w-full  bg-white">
-          <div className="flex items-center bg-white  h-full text-[16px] justify-center font-bold text-gray-700">
-            Select a conversation to see details{" "}
-          </div>
-        </main>
-      )}
-      {activeIndex === 2 && (
-        <main
-          className="flex-1 w-full flex flex-col bg-gray-100 p-4 border"
-          style={{ ...hideScrollbarStyles, ...hideScrollbarWebkit }}
-        >
-          <div className="flex flex-row gap-4 items-center">
-            {" "}
-            <Image src="/facebook.png" alt="facebook" width={50} height={50} />
-            <h2 className="font-semibold text-[18px]">Post comments</h2>
-          </div>
-          <div className="border-[0.1px] border-gray-200 my-4 w-[1400px] -translate-x-4"></div>
-          <div
-            className="flex-1 p-4"
-            style={{ ...hideScrollbarStyles, ...hideScrollbarWebkit }}
-          >
-            {selectedPostComments?.map((eachComment: any) => (
-              <div
-                className="flex flex-row justify-between"
-                key={eachComment.id}
-              >
-                <ChatMessage
-                  message={
-                    <>
-                      {eachComment?.comment}
-                    </>
-                  }
-                  imageUrl={"/contact.png"}
-                  title={eachComment?.name}
-                  time={`${eachComment?.platform} Post`}
-                /> 
-                    {show && (
-                    <button className="items-center bg-white text-white rounded-xl group">
-                      <div
-                        className="items-center flex flex-row text-black"
-                        onClick={() => handleDeleteComment(eachComment)}
-                      >
-                        <MdOutlineDelete />
-                        <small className="ml-8">Delete</small>
-                      </div>
-                    </button>
-                  )}
-                <BsThreeDotsVertical
-                className="text-xl"
-                onClick={handleDotsClick2}
-              />
-               
-              </div>
-            ))}
-          </div>
-          <CommentChatInput
-            chatInput={chatInput}
-            handleChatInputCallback={handleChatInputCallback}
-            handlePostComment={handlePostComment}
-          />
-        </main>
-      )}
-
-      {activeIndex === 2 ? (
-        <aside
-          className={clsx(
-            "w-full max-w-[350px] relative border bg-white rounded-r-3xl  flex flex-col"
-          )}
-        >
-          <div className="flex flex-col justify-between px-6 pt-6 pb-2">
-            <div
-              className="relative w-full flex flex-row justify-between font-normal items-center cursor-pointer"
-              onClick={toggleSubMenu}
-            >
-              <div className="flex flex-row gap-2 items-center text-ellipsis">
-                <CiCircleInfo className="text-2xl" />
-                <h2 className="text-[18px] font-medium">
-                  Conversation details
-                </h2>
-              </div>
-              {isOpen ? (
-                <IoIosArrowUp className="text-xl" />
-              ) : (
-                <IoIosArrowDown className="text-xl" />
-              )}
-            </div>
-            <div
-              className={`dropdown-content ${
-                isOpen ? "dropdown-open" : "dropdown-closed"
-              }`}
-            >
-              <div className="border-[0.5px] border-gray-200 mt-4"></div>
-
-              <div className="flex flex-row items-center mt-4 mb-4">
-                <AiOutlineMessage className="text-lg" />
-                <h2 className="text-[16px] font-medium items-center ml-2 text-ellipsis">
-                  {" "}
-                  Post comments
-                </h2>
-              </div>
-              <div className="flex flex-row justify-between ">
-                <span>
-                  <h2 className="text-[13px]">Started</h2>
-                  <h2 className="text-[13px] font-medium">Mar 24, 2024</h2>
-                </span>
-                <span>
-                  <h2 className="text-[13px]">Last update</h2>
-                  <h2 className="text-[13px] font-medium">Mar 31, 2024</h2>
-                </span>
-              </div>
-            </div>
-          </div>
-          <div className="border-[0.5px] border-gray-200 my-4"></div>
-
-          <div className="flex flex-col justify-between px-6 pb-2">
-            <div
-              className="relative w-full flex flex-row justify-between font-normal items-center cursor-pointer"
-              onClick={toggleSubMenu2}
-            >
-              <div className="flex flex-row gap-2 items-center">
-                <Image
-                  src="/f.png"
-                  alt="facebook"
-                  width={25}
-                  height={25}
-                  className="text-2xl"
-                />
-                <h2 className="text-[18px] font-medium">Post</h2>
-              </div>
-              {isOpen2 ? (
-                <IoIosArrowUp className="text-xl" />
-              ) : (
-                <IoIosArrowDown className="text-xl" />
-              )}
-            </div>
-
-            <div
-              className={`dropdown-content2 ${
-                isOpen2 ? "dropdown-open" : "dropdown-closed"
-              }`}
-            >
-              <div className="border-[0.5px] border-gray-200 my-4"></div>
-
-              <div className="flex flex-row justify-between mb-4">
-                <div className="flex flex-col">
-                  <span className="flex flex-row items-center w-full justify-between gap-x-24">
-                    <h2 className="text-[14px] font-semibold">
-                      {selectedPost?.title}
-                    </h2>{" "}
-                    <h2 className="font-extralight text-[10px]">
-                      {selectedPost?.time}
-                    </h2>
-                  </span>
-                  <p className="text-[12px] font-light">
-                    {selectedPost?.platform} post
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-2 justify-between bg-[#F8F8F8] p-4 rounded-xl mb-4">
-                <h2 className="font-light text-[10px] text-black text-ellipsis">
-                  {selectedPost?.message}
-                </h2>
-                {/* <Image
-                  src="/pic.png"
-                  alt="pic"
-                  width={60}
-                  height={80}
-                  className="rounded-xl"
-                /> */}
-              </div>
-
-              <button
-                className="text-white text-ellipsis hover:font-medium bg-primary-green shadow-lg hover:bg-primary-green/90 w-32 justify-center flex gap-2 items-center h-10 font-light rounded-xl transition-all duration-300 text-sm"
-                onClick={() => {
-                  window.open(selectedPost?.postUrl, "_blank");
-                }}
-              >
-                <svg
-                  width="21"
-                  height="20"
-                  viewBox="0 0 21 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M9.66732 5.82812H5.50065C4.58018 5.82812 3.83398 6.57432 3.83398 7.49479V14.9948C3.83398 15.9153 4.58018 16.6615 5.50065 16.6615H13.0007C13.9211 16.6615 14.6673 15.9153 14.6673 14.9948V10.8281"
-                    stroke="white"
-                    strokeWidth="1.45833"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M8.83398 11.6615L17.1673 3.32812"
-                    stroke="white"
-                    strokeWidth="1.45833"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M13 3.32812H17.1667V7.49479"
-                    stroke="white"
-                    strokeWidth="1.45833"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                Open post
-              </button>
-            </div>
-          </div>
-          <div className="border-[0.5px] border-gray-200 my-4"></div>
-          <div className="relative">
-            {isFilterMenuOpen && (
-              <div
-                ref={filterMenuRef}
-                className="absolute z-20 mt-2 -top-80 right-40 MAX-W-[300px] bg-white border-[0.5px] border-gray-200 rounded-2xl shadow-lg"
-              >
-                <div className="p-4">
-                  <div className="flex items-center w-full bg-gray-100   border-[0.5px] border-gray-200  px-2 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-green-800">
-                    <input
-                      type="text"
-                      placeholder="Search..."
-                      className="flex-grow  bg-gray-100 text-sm focus:outline-none"
-                    />
-                    <button className=" right-0 ">
-                      <svg
-                        width="24"
-                        height="34"
-                        viewBox="0 0 34 34"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M12.0205 12.0527L21.92 21.9522"
-                          stroke="#4B465C"
-                          stroke-width="1.75"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M12.0205 12.0527L21.92 21.9522"
-                          stroke="white"
-                          stroke-opacity="0.2"
-                          stroke-width="1.75"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M12.0205 21.9473L21.92 12.0478"
-                          stroke="#4B465C"
-                          stroke-width="1.75"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M12.0205 21.9473L21.92 12.0478"
-                          stroke="white"
-                          stroke-opacity="0.2"
-                          stroke-width="1.75"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                  <div className="mt-2 space-y-2">
-                    {/* Example checkboxes */}
-                    <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md  flex-row justify-between">
-                      <span className="flex flex-row">
-                        <Image
-                          src="/contact.png"
-                          alt="contact"
-                          width="20"
-                          height={10}
-                        />
-                        <span className="ml-2 text-black text-md ">
-                          Carlos Jairo
-                        </span>
-                      </span>
-                    </label>
-                    <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md  flex-row justify-between">
-                      <span className="flex flex-row">
-                        <Image
-                          src="/contact.png"
-                          alt="contact"
-                          width="20"
-                          height={10}
-                        />
-                        <span className="ml-2 text-black text-md ">
-                          Leslie Alexander
-                        </span>
-                      </span>
-                    </label>
-                    <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md  flex-row justify-between">
-                      <span className="flex flex-row">
-                        <Image
-                          src="/contact.png"
-                          alt="contact"
-                          width="20"
-                          height={10}
-                        />
-                        <span className="ml-2 text-black text-md ">
-                          Kathryn Murphy
-                        </span>
-                      </span>
-                    </label>
-                    <label className="flex bg-[#FAFBFC] p-2 items-center  rounded-md flex-row justify-between">
-                      <span className="flex flex-row">
-                        <Image
-                          src="/contact.png"
-                          alt="contact"
-                          width="20"
-                          height={10}
-                        />
-                        <span className="ml-2 text-black text-md ">
-                          Marvin McKinney
-                        </span>
-                      </span>
-                    </label>
-                    <label className="flex bg-[#FAFBFC] items-center  rounded-md flex-row p-2 stify-between">
-                      <span className="flex flex-row w-full justify-between">
-                        <span className="flex flex-row">
-                          {" "}
-                          <Image
-                            src="/contact.png"
-                            alt="contact"
-                            width="20"
-                            height={10}
-                          />
-                          <h2 className="ml-2 text-black text-md ">
-                            Guy Hawkins
-                          </h2>
-                        </span>
-                        <span className=" bg-[#03473729] rounded-md">
-                          <h2 className="p-1 text-[10px]">Assign user</h2>
-                        </span>
-                      </span>
-                    </label>
-                    <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md  flex-row justify-between">
-                      <span className="flex flex-row">
-                        <Image
-                          src="/contact.png"
-                          alt="contact"
-                          width="20"
-                          height={10}
-                        />
-                        <span className="ml-2 text-black text-md ">
-                          Jenny Wilson
-                        </span>
-                      </span>
-                    </label>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </aside>
-      ) : null}
+      
     </div>
   );
 };

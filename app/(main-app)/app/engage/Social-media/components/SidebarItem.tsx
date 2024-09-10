@@ -53,7 +53,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
             <h2 className="font-semibold">{title}</h2>
             <h2 className="font-extralight text-sm">{time}</h2>
           </div>
-          <h2>{author}</h2>
+          <h2>{author?author:""}</h2>
             <div className="font-extralight text-[12px] truncate-text">
               {message}
             </div>
