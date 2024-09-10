@@ -51,6 +51,7 @@ const Dropdown2: React.FC<DropdownProps> = ({ options, selectedOption, onOptionC
       value={selectedOption}
       onChange={(e) => onOptionChange(e.target.value)}
       className="border w-64 p-1 rounded-xl"
+      style={{ fontSize: '12px', width : "100%" }}
     >
       {options.map((option, index) => (
         <option key={index} value={option}>
@@ -210,6 +211,7 @@ const ActionsSection = ({
   const formattedText = formatString(editableFields.someField || "", {
     sender_profile_url: "http://example.com",
   });
+  console.log(activeAction)
   return (
     <Motion
       transition={{ duration: 0.5 }}
@@ -217,12 +219,12 @@ const ActionsSection = ({
     >
       <div className="flex flex-col items-start gap-4 pb-8">
         <div className="w-full flex flex-row items-center gap-2">
-          <img
+          {activeAction.icon && <img
             src={activeAction.icon}
             height='56'
             width='56'
             className='w-10 h-10 rounded-2xl'
-          />
+           /> }
           <div className="flex flex-col gap-2 w-full text-xl border-2 p-2.5 rounded-xl">
             <div className="text-start items-start font-bold">
               {/* {editableFields?.instruction ? "Instruction" : "URL"} */}
@@ -231,7 +233,7 @@ const ActionsSection = ({
               <div className="bg-gray-100 p-4 rounded-md">
                 {Object.entries(editableFields).map(([key, value], index) => (
                   <div key={index} className="mb-2">
-                    <div className="font-bold">{key}:</div>
+                    <div className="font-bold">{key?.charAt(0)?.toUpperCase() + key?.slice(1)}:</div>
                     <div className="text-gray-700">
                       {key === "model" ? (
                          <Dropdown2
@@ -250,6 +252,7 @@ const ActionsSection = ({
                           onChange={(e) =>
                             handleFieldChange(key, e.target.value)
                           }
+                          style={{ fontSize: '12px', width : "100%" }}
                           className="border p-1 rounded"
                         />
                       )}
