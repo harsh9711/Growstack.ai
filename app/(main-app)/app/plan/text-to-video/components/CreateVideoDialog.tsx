@@ -408,7 +408,7 @@ const CreateVideoDialog = ({
         >
           <div className="relative w-full max-w-full space-y-6 text-[12px] h-full flex flex-col overflow-x-hidden">
             <main className="flex flex-col gap-x-10">
-              <div className="w-full flex xl:flex-row sm:flex-col lg:flex-row md:flex-row flex-col 2xl:flex-row gap-y-4 2xl:gap-x-10 mb-6 overflow-x-hidden">
+              <div className="w-full flex xl:flex-row sm:flex-col lg:flex-row md:flex-row flex-col 2xl:flex-row gap-y-4 2xl:gap-x-10 mb-6">
                 <div className="flex w-full 2xl:w-2/3 flex-col gap-y-6 gap-x-4">
                   <div className="flex flex-col w-full">
                     <div className="w-full space-y-2">
