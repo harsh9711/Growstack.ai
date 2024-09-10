@@ -68,9 +68,8 @@ export default function Login() {
       console.log(userData);
       dispatch(login(userData));
       router.push("/app");
-      // toast.success(response.data.message);
-    } 
-    catch (error: any) {
+      toast.success(response.data.message);
+    } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
       } else {
