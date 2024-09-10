@@ -74,6 +74,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <ChevronRight size={20} />
             </div>
           </Link>
+          <Link href="/account/billings/settings/due">
+            <div
+              className={clsx(
+                "w-full flex justify-between p-3 hover:bg-gray-50 rounded-xl cursor-pointer transition mt-3",
+                pathname === "/account/billings/settings/due" && "bg-primary-green text-white hover:bg-primary-green/90"
+              )}>
+              <div className="flex items-center gap-2">
+                <SurveyIcon />
+                <span>Due</span>
+              </div>
+              <ChevronRight size={20} />
+            </div>
+          </Link>
         </div>
         <div className="w-full">{children}</div>
       </div>
