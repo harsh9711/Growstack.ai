@@ -1,71 +1,88 @@
-import React, { useState } from "react";
-import clsx from "clsx";
-import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Image from "next/image";
+import React, { useState, useEffect } from "react";
+import SidebarItem from "./SidebarItem"; // Adjust the import path if necessary
+import instance from "@/config/axios.config";
+import {formatRelativeDate} from "@/utils/dateformate"
+
+interface MessageData {
+  senderId: string;
+  message: string;
+  created: string;
+  senderDetails: {
+    name: string;
+    username: string;
+    profileImage?: string;
+  };
+  attachments?: { type: string; url: string }[];
+}
+
+interface DataArray {
+  platform: string;
+  messages: any;
+  lastUpdated:any;
+}
 
 interface SidebarItemProps {
   title: string;
+  time: string;
   author: string;
+  message: any;
   imageUrl: string;
+  onClick?: () => void;
 }
 
-const SidebarAccount: React.FC<SidebarItemProps> = ({
-  title,
-  author,
-  imageUrl,
-}) => {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isActive, setIsActive] = useState(false);
+const MessageList = ({ onSelectMessage }: { onSelectMessage: (message: SidebarItemProps) => void }) => {
+  const [dataArray, setDataArray] = useState<DataArray[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const toggleActiveState = () => {
-    setIsActive(!isActive);
-    if (!isActive) {
-      toast.success(`Notification: ${title} is active.`);
-    } else {
-      toast.warning(`Notification: ${title} is inactive.`);
-    }
-  };
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const response = await instance.get("/users/api/v1/social-media/profile/messages");
+        if (response.data.success) {
+          setDataArray(response.data.data); // Setting data array directly
+        } else {
+          setError("Failed to fetch messages.");
+        }
+      } catch (err) {
+        setError("An error occurred while fetching messages.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMessages();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
-    <>
-      <div
-        className={clsx(
-          "flex gap-4 w-full p-4 hover:bg-gray-100 cursor-pointer rounded-md items-center group relative",
-          isHovered && "pr-4",
-          !isActive && "opacity-50" 
-        )}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-      >
-        <Image src={imageUrl} alt="contact" width={60} height={50} />
-        <div className="flex flex-row items-center gap-16 w-full justify-between">
-          <div className="flex flex-col gap-1">
-            <h2 className="font-semibold text-[14px]">{title}</h2>
-            <h2 className="text-[12px] font-medium">{author}</h2>
-          </div>
-          <div className="flex flex-row gap-2">
-            {isActive ? (
-              <FaRegEye
-                className="text-2xl cursor-pointer"
-                onClick={toggleActiveState}
-              />
-            ) : (
-              <FaRegEyeSlash
-                className="text-2xl cursor-pointer"
-                onClick={toggleActiveState}
-              />
-            )}
-            <BsThreeDotsVertical className="text-2xl" />
-          </div>
-        </div>
-      </div>
-      <div className="border-[0.5px] border-gray-200 my-1"></div>
-      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
-    </>
+    <div>
+      {/* Loop through the data array */}
+      {dataArray.map((dataItem, index) => (
+        <>
+        <SidebarItem
+          key={index}
+          title={dataItem.platform}  
+          time={formatRelativeDate(dataItem.messages.lastUpdated)}  
+          author={dataItem.messages.messages[0]?.senderDetails.username || ""} 
+          message={dataItem.messages.messages[0]?.message || "No message available"} 
+          imageUrl={dataItem.messages.messages[0]?.senderDetails.profileImage || "/logo/growstack-mini.png"}
+          onClick={() =>
+            onSelectMessage({
+              title: dataItem.platform,
+              time:formatRelativeDate(dataItem.messages.messages[0]?.created),
+              author: `${dataItem.messages.messages[0]?.senderDetails.username}`,
+              message: dataItem.messages.messages,
+              imageUrl: dataItem.messages.messages[0]?.senderDetails.profileImage || "/logo/growstack-mini.png",
+            })
+          }
+        />
+        </>
+      ))}
+    </div>
   );
 };
 
-export default SidebarAccount;
+export default MessageList;

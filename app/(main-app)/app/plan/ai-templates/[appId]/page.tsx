@@ -504,7 +504,8 @@ export default function AiAppPage({
                 />
               ) : (
                 <Link href="/account/create-brand-voice/" className="flex" style={{color:"green"}}>
-                    <Plus size={20} /><span className="ml-2">Create brand voice</span>
+                    <Plus size={20} />
+                   <strong className="ml-2" >Create brand voice</strong> 
                 </Link>
               )}
             </div>

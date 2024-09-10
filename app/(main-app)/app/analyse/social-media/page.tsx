@@ -78,8 +78,8 @@ export default function SocialMediaAnalyticsPage() {
             {platforms.map((platform) => (
               <div
                 key={platform.name}
-                className={`group bg-white border border-[#F3F3F3] rounded-xl p-3 flex gap-4 items-center cursor-pointer transition duration-300 hover:shadow-xl hover:shadow-gray-100 ${
-                  selectedPlatform === platform.name ? "bg-gray-100" : ""
+                className={`group bg-white border rounded-xl p-3 flex gap-4 items-center cursor-pointer transition duration-300 hover:shadow-xl hover:shadow-gray-100 ${
+                  selectedPlatform === platform.name ? "border-[#32a850] border-2" : "border-gray-200"
                 }`}
                 onClick={() => setSelectedPlatform(platform.name)}
               >
@@ -91,16 +91,16 @@ export default function SocialMediaAnalyticsPage() {
               <h1 className="text-[17px] font-semibold">Account</h1>
               <div className="flex flex-col justify-center items-center space-y-4 mt-4">
                 <Image
-                  src="/logo/growstack-mini.png"
+                  src={metaData.profileImageUrl || "/logo/growstack-mini.png"}
                   alt=""
                   width={50}
                   height={50}
                 />
                 <h2 className="text-[17px] font-medium text-center">
-                  GrowStack_AI
+                  {metaData.displayName}
                 </h2>
                 <p className="text-primary-black text-opacity-50 text-sm text-center !mt-2">
-                  @growstack_ai
+                  {metaData.username}
                 </p>
               </div>
               <div className="flex justify-between mt-8">

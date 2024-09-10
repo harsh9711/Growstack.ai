@@ -6,8 +6,8 @@ import { ChevronRight, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
-import { IoIosNotificationsOutline } from "react-icons/io";
+import React, { useState } from "react";
+import { IoIosNotificationsOutline, IoIosMenu } from "react-icons/io";
 import navLinks from "./constants/nav";
 import { ProfileButton } from "./ProfileButton";
 import { useRouter } from "next-nprogress-bar";
@@ -15,6 +15,7 @@ import { useRouter } from "next-nprogress-bar";
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // Toggle menu for smaller screens
 
   const isLinkActive = (link: NavLink): boolean => {
     if (link.href && pathname === link.href) {
@@ -79,14 +80,15 @@ export default function Navbar() {
   };
 
   return (
-    <header className="bg-white shadow-2xl shadow-primary-green/10 py-4 px-10 rounded-[24px] w-full max-w-[90%] mx-auto fixed top-0 left-1/2 transform -translate-x-1/2 z-[5]" style={{marginTop: "15px"}}>
+    <header className="bg-white shadow-2xl shadow-primary-green/10 py-4 px-10 rounded-[24px] w-full max-w-[90%] mx-auto fixed top-0 left-1/2 transform -translate-x-1/2 z-[5]" style={{ marginTop: "15px", zoom: "0.8" }}>
       <nav className="flex justify-between items-center gap-5">
-        <div className="border-r border-[#DEDEDE] pr-10" style={{cursor: "pointer"}} onClick={() => {
-          router.push("/app");
-        }}>
+        {/* Logo */}
+        <div className="border-r border-[#DEDEDE] pr-10 cursor-pointer" onClick={() => router.push("/app")}>
           <Image src="/logo/growstack.png" alt="" width={150} height={40} draggable={false} className="select-none max-h-14" priority />
         </div>
-        <div className="flex gap-3">
+
+        {/* Links (Visible only for screens >= 1024px) */}
+        <div className="hidden lg:flex gap-3">
           {navLinks.map((link, index) => (
             <DropdownMenu key={index}>
               {!link.sublinks && link.href ? (
@@ -103,21 +105,37 @@ export default function Navbar() {
             </DropdownMenu>
           ))}
         </div>
+   
+
         <div className="flex items-center gap-5">
-          {/* <div className="bg-[#F4F4F4] p-3.5 max-w-3xl mx-auto flex items-center gap-4 rounded-xl">
-            <Search className="text-[#14171BB8]" />
-            <input
-              type="text"
-              placeholder="Search"
-              className="w-full flex items-center bg-transparent text-[#14171BB8] placeholder:text-[#14171BB8]"
-            />
-          </div> */}
-          {/* <button className="cursor-pointer bg-[#F4F4F4] py-3 px-3 rounded-xl">
-            <IoIosNotificationsOutline size={26} />
-          </button> */}
+        <div className="lg:hidden">
+          <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            <IoIosMenu size={30} />
+          </button>
+        </div>
           <ProfileButton />
         </div>
       </nav>
+
+      {isMenuOpen && (
+        <div className="lg:hidden flex flex-col mt-4 space-y-4">
+          {navLinks.map((link, index) => (
+            <DropdownMenu key={index}>
+              {!link.sublinks && link.href ? (
+                <Link href={link.href} onClick={() => setIsMenuOpen(false)}>
+                  <NavLinkBtn link={link} isActive={isLinkActive(link)} />
+                </Link>
+              ) : (
+                <DropdownMenuTrigger>
+                  <NavLinkBtn link={link} isActive={isLinkActive(link)} />
+                </DropdownMenuTrigger>
+              )}
+
+              {link.sublinks && <DropdownMenuContent>{renderDropdownItems(link.sublinks)}</DropdownMenuContent>}
+            </DropdownMenu>
+          ))}
+        </div>
+      )}
     </header>
   );
 }
