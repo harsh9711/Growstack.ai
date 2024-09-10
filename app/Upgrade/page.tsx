@@ -215,7 +215,7 @@ const PricingPage: React.FC = () => {
       try {
         const product = {
           plan_id: plan.id,
-          plan_type: plan.title,
+          plan_type: plan.planType,
           price_id: plan.stripe_price_id,
         };
 

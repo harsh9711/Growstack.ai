@@ -19,7 +19,7 @@ export default function AddCreditDialog() {
   const [amount, setAmount] = useState<number | ''>(0); // Allow '' to handle empty state
   const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-
+  const [cancelLoading, setCancelLoading] = useState<boolean>(false); // Add state for cancel button loading
   const fetchPlanUsage = async () => {
     try {
       const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
@@ -70,14 +70,38 @@ export default function AddCreditDialog() {
       console.error('Error adding payment:', error);
     }
   };
-
+  const handleCancelSubscription = async () => {
+    setCancelLoading(true); 
+    try {
+      const response = await instance.put(`${API_URL}/users/api/v1/payments/cancel-subscription`);
+      toast.success('Subscription canceled successfully');
+      window.location.href='/Payment';
+      console.log('Cancel Subscription Response:', response.data);
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error('Error cancelling subscription:', error);
+    } finally {
+      setCancelLoading(false); 
+    }
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
-      <Link href="/Upgrade">  <button className="w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300">
-          {/* <Plus size={20} /> */}
-          Upgrade Plan
-        </button></Link>
+      <Link href="/Upgrade"> 
+      
+        <button
+            className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300 ${
+              cancelLoading ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+            onClick={handleCancelSubscription}
+            disabled={cancelLoading} 
+          >
+            {cancelLoading ? 'Redirecting...' : '   Upgrade Plan'}
+          </button></Link>
       </DialogTrigger>
       {/* <DialogContent className="max-w-[584px]">
         <DialogHeader>

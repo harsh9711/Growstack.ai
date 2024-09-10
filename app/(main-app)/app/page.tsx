@@ -149,7 +149,7 @@ export default function Dashboard() {
       setPlanUsage(data);
   
       const currentDate = new Date();
-      const expiryDate = new Date(data.usage_expiry_date);
+      const expiryDate = new Date(data?.usage_expiry_date);
   
       if (isNaN(expiryDate.getTime())) {
         toast.error('Invalid expiration date');

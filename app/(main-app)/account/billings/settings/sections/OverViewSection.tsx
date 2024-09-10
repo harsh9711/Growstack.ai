@@ -66,10 +66,10 @@ export default function OverViewSection() {
           <h2 className="text-primary-black text-opacity-50">Credit balance</h2>
           <h1 className="text-4xl font-semibold">{planUsage?.usage_amount}</h1>
         </div>
-        <div className="flex flex-col gap-y-6 items-end">
+        <div className="flex flex-row gap-x-6 items-end">
           <AddCreditDialog />
           <button
-            className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300 ${
+            className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-white border-red-500 border hover:font-semibold hover:border-2 text-red-500 sheen transition-all duration-300 ${
               cancelLoading ? 'opacity-50 cursor-not-allowed' : ''
             }`}
             onClick={handleCancelSubscription}
