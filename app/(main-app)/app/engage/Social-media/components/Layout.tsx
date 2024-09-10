@@ -232,17 +232,17 @@ const Layout = () => {
       setMessages("");
     }
     const payloaddata = {
-      senderId: "1800863858682187776",
+      senderId: selectedMessage.message[0].senderId,
       attachments: file?[{"type": "image","url":file}]:[],
       created: {},
-      conversationId: "1788791796136361984-1800863858682187776",
-      recipientId: "1788791796136361984",
+      conversationId: selectedMessage.message[0].conversationId,
+      recipientId: selectedMessage.message[0].recipientId,
       id: "1831577242255671718",
       message: message?message:'',
       action: "sent",
       senderDetails: {
-        name: "GrowStack AI",
-        username: "Growstackai",
+        name: selectedMessage.message[0].senderDetails.name,
+        username:selectedMessage.message[0].senderDetails.username,
       },
     };
     setSelectedMessage((prevSelectedMessage: any) => ({
@@ -498,7 +498,7 @@ const Layout = () => {
 
     {/* Divider */}
     <div className="border-[0.1px] border-gray-200 my-4 w-[1400px] -translate-x-4"></div>
-
+{/* {selectedMessage.message && (<>{JSON.stringify(selectedMessage.message)}</>)} */}
     {/* Message Content */}
     <div className="flex-1 p-4" style={{height: 'calc(100vh - 150px)', ...hideScrollbarStyles, ...hideScrollbarWebkit }}>
       <div className="flex flex-col gap-4">
