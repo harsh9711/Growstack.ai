@@ -387,13 +387,19 @@ const getWorkFlowDetails = async (id: string | number) => {
                     "!border-primary-green"
                 )}
               >
-                <div className="">
-                  <img
-                    src={action.icon}
-                    alt=""
-                    className="w-10 h-10 rounded-2xl"
-                  />
-                </div>
+                {action?.icon ? (
+                  <div className="">
+                    <img
+                      src={action.icon}
+                      alt=""
+                      className="w-10 h-10 rounded-2xl"
+                    />
+                  </div>
+                ) : (
+                  <div className="bg-primary-green p-4 rounded-lg">
+                    <InputIcon2 className="text-white" />
+                  </div>
+                )}
                 <div className="space-y-1 flex flex-col items-start">
                   <h3 className="text-[17px] font-medium">{action.name}</h3>
                   <p className="text-sm text-primary-black text-opacity-50">
