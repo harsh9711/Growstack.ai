@@ -48,6 +48,8 @@ export default function Login() {
         router.push("/Payment");
       } else if (isSubscribed && isExpired) {
         router.push("/account/billings/settings/due");
+      }else {
+        router.push("/app")
       }
       toast.success("Successfully logged in...");
     } else {
