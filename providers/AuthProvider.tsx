@@ -19,7 +19,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (pathname !== "/auth/redirect" && !isLoggedIn) {
       toast.error("Login to view this page!");
       router.push("/auth/login");
-    } else if (pathname !== "/auth/redirect" && !isSubscribed) {
+    } else if (
+      pathname !== "/auth/redirect" &&
+      pathname !== "/Payment" &&
+      !isSubscribed
+    ) {
       toast.error("You need a subscription to view this page!");
       router.push("/Payment"); // Redirect to subscription page if not subscribed
     }
