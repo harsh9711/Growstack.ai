@@ -8,9 +8,9 @@ export default function AddCreditDialog2() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300">
-          <Plus size={20} />
-          Add to credit balance
+        <button className="w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white transition-all duration-300">
+          {/* <Plus size={20} /> */}
+         Pay
         </button>
       </DialogTrigger>
       <DialogContent className="max-w-[584px]">
