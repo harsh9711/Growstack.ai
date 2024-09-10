@@ -10,12 +10,13 @@ import { useEffect, useState } from "react";
 import ContentLoader from "react-content-loader";
 import toast from "react-hot-toast";
 import { BsStarFill } from "react-icons/bs";
+import { getCurrentUser } from "@/lib/features/auth/auth.selector";
 import { useDispatch } from "react-redux";
 import ChatComponent from "./components/ChatComponent";
 // import "bootstrap/dist/css/bootstrap.min.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { getCookie } from "cookies-next";
+import "@/styles/globals.css";
 interface AiApp {
   _id: string;
   "ASSISTANT NAME": string;
@@ -51,9 +52,9 @@ export default function Dashboard() {
   >([]);
   const [aiAppsloading, setAiAppsLoading] = useState(true);
   const [aiAssistantsloading, setAiAssistantsLoading] = useState(true);
-  const hasRefreshed = localStorage.getItem("hasRefreshed");
-  const [refreshed, setRefreshed] = useState(hasRefreshed || false);
-
+  const currentUser = getCurrentUser();
+  // const hasRefreshed = localStorage.getItem("hasRefreshed");
+  // const [refreshed, setRefreshed] = useState(hasRefreshed || false);
   useEffect(() => {
     AOS.init({ duration: 1000 });
     AOS.refresh();
@@ -138,70 +139,31 @@ export default function Dashboard() {
       toast.error("Error fetching profile data");
     }
   };
- 
-  const [planUsage, setPlanUsage] = useState(null);
-
-  const fetchPlanUsage = async () => {
-    try {
-      const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
-      const data = response.data.data;
-      console.log(data);
-      setPlanUsage(data);
-  
-      const currentDate = new Date();
-      const expiryDate = new Date(data?.usage_expiry_date);
-  
-      if (isNaN(expiryDate.getTime())) {
-        console.log(expiryDate)
-        // toast.error('Invalid expiration date');
-      } else if (expiryDate <= currentDate) {
-        toast.error('Unauthorized: Trial expired');
-        window.location.href = '/Payment';
-      } else {
-        toast.success('Authorized: Trial is active');
-      }
-    } catch (error: any) {
-      if (error.response) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error(error.message);
-      }
-      console.error('Error fetching plan usage:', error);
-    }
-  };
-  
-  
-  
 
   useEffect(() => {
-    fetchPlanUsage();
-  }, []); 
-  useEffect(() => {
-    if (hasRefreshed !== "true") {
-      localStorage.setItem("hasRefreshed", "true");
-      window.location.reload();
-    }
     setAiAppsLoading(true);
     setAiAssistantsLoading(true);
-
     handleGetProfileData();
     fetchAssistants();
     fetchFavoriteAssistants();
     fetchSocialMediaProfile();
   }, []);
 
-  return !refreshed ? (
-    <></>
-  ) : (
+  return (
     <main className="">
-      <div className="bg-[#EBF0F6] h-80 w-full max-w-[95%] mx-auto absolute top-0 left-0 right-0 rounded-b-[60px]" />
+      <div className="bg-[#EBF0F6] h-80 w-full max-w-[96%] mx-auto absolute top-0 left-0 right-0 rounded-b-[60px]" />
       <div className="relative z-[1]">
         <div
           className="flex justify-between items-center mt-8"
           data-aos="fade-down"
         >
           <div className="space-y-2">
-            <h1 className="text-2xl font-semibold">Dashboard</h1>
+            <h1 className="text-2xl font-semibold">
+              Welcome back,{" "}
+              {currentUser.name
+                ? currentUser.name
+                : currentUser.email.split(/[@.]/)[0]}
+            </h1>
             {/* <p className="flex items-center gap-2 text-[#3D3D3D] text-[15px]">
               23 August - 23 September 2024
               <span>
@@ -210,12 +172,12 @@ export default function Dashboard() {
             </p> */}
           </div>
         </div>
-        <div className="w-full flex flex-col-reverse 2xl:flex-row gap-6 mt-4">
-          <div className="w-full space-y-6" data-aos="fade-up">
+        <div className="w-full  flex flex-col lg:flex-row gap-3 mt-4">
+          <div className="w-full space-y-6 " data-aos="fade-left">
             <ChatComponent />
           </div>
           <div
-            className="w-full 2xl:w-[50%] bg-white p-8 rounded-3xl border border-[#E8E8E8] space-y-5"
+            className="w-full max-w-[40%] bg-white p-8 rounded-3xl border border-[#E8E8E8] "
             data-aos="fade-right"
           >
             <div className="space-y-3">

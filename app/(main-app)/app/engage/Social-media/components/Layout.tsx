@@ -1,12 +1,5 @@
 "use client";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import React, { useEffect, useRef, useState } from "react";
 import ChatMessage from "./ChatMessage";
 import clsx from "clsx";
@@ -16,20 +9,19 @@ import { FaFilter } from "react-icons/fa";
 import SidebarItem from "./SidebarItem";
 import ChatInput from "./ChatInput";
 import { CiSettings } from "react-icons/ci";
-import SidebarAccount from "./SidebarAccount";
-import { BsPlus, BsThreeDotsVertical } from "react-icons/bs";
-import { CiCircleInfo,CiEdit } from "react-icons/ci";
+import { CiCircleInfo } from "react-icons/ci";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
-import { MdOutlineDelete } from "react-icons/md";
 import { AiOutlineMessage } from "react-icons/ai";
 import { BiReset } from "react-icons/bi";
-import { MdDelete } from "react-icons/md";
 import { API_URL } from "@/lib/api";
 import instance from "@/config/axios.config";
 import toast from "react-hot-toast";
-import { timeDiffFromNow } from "@/utils/dates";
-import moment from 'moment';
-
+import MessageList from "./SidebarAccount";
+import { formatRelativeDate, timeDiffFromNow } from "@/utils/dateformate";
+import moment from "moment";
+import { MdOutlineDelete } from "react-icons/md";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import CommentChatInput from "./commentChartInput";
 interface SidebarItem {
   _id: string;
   title: string;
@@ -50,6 +42,7 @@ const hideScrollbarWebkit: React.CSSProperties = {
   scrollbarWidth: "none", // Firefox
   WebkitOverflowScrolling: "touch", // Optional for touch devices
 };
+
 const SearchBar = ({ searchQuery, setSearchQuery }: any) => {
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
   const filterMenuRef = useRef<HTMLDivElement>(null);
@@ -182,19 +175,152 @@ const Layout = () => {
       icon: <CiSettings className="text-xl translate-x-48" />,
     },
   ];
-  const sidebarData:any = [
-    // {
-    //   title: "GrowStack AI",
-    //   time: "12m",
-    //   author: "Vale Ferreira",
-    //   message: "How can I connect my accounts",
-    //   imageUrl: "/contact.png",
-    // },
-  ];
+  const [messages, setMessages] = useState("");
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
+  const handleSendMessage = async (message: string) => {
+    setMessages(message);
+    let file;
+
+    if (uploadedFile) {
+      // selectedMessage.message.push(payloaddata);
+      const formData = new FormData();
+      formData.append("document", uploadedFile);
+      try {
+        const response: any = await instance.post(
+          API_URL + "/users/api/v1/file/upload",
+          formData
+        );
+
+        const payload = {
+          recipientId: "1788791796136361984",
+          message: message,
+          mediaUrls: [response.data.data.fileUrl],
+        };
+        sendMessage(payload);
+        console.log("response", response.data.data.fileUrl);
+        file = response.data.data.fileUrl;
+        setUploadedFile(null);
+        setMessages("");
+        // toast.success(response.data.message);
+      } catch (error: any) {
+        if (error.response) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error(error.message);
+        }
+        console.error(error);
+      } finally {
+        // setIsPending(false);
+      }
+    } else {
+      console.log("selectedMessage", selectedMessage);
+      const payload = {
+        recipientId: "1788791796136361984",
+        message: message,
+        mediaUrls: [],
+      };
+      sendMessage(payload);
+      setUploadedFile(null);
+      setMessages("");
+    }
+
+    const payloaddata = {
+      senderId: "1788791796136361984", //selectedMessage.message[0].senderId,
+      attachments: file ? [{ type: "image", url: file }] : [],
+      created: {},
+      conversationId: selectedMessage.message[0].conversationId,
+      recipientId: selectedMessage.message[0].recipientId,
+      id: "1831577242255671718",
+      message: message ? message : "",
+      action: "sent",
+      senderDetails: {
+        name: selectedMessage.message[0].senderDetails.name,
+        username: selectedMessage.message[0].senderDetails.username,
+      },
+    };
+    setSelectedMessage((prevSelectedMessage: any) => ({
+      ...prevSelectedMessage,
+      message: [...prevSelectedMessage.message, payloaddata],
+    }));
+
+    // alert(message)
+  };
+
+  const onClickSidebarItem = async (item: any) => {
+    setSelectedPostComments([]);
+    setIsOpened(true);
+    try {
+      const response = await instance.get(
+        `${API_URL}/users/api/v1/social-media/comments/${item.id}`
+      );
+      setSelectedPost(item);
+      let tempData = response?.data?.data?.[selectedPost?.platform];
+      setSelectedPostComments(tempData);
+    } catch (error) {
+      console.log("Error fetching table data:", error);
+      toast.error("Error fetching table data");
+    }
+  };
+
+  const handleGetComments = async () => {
+    try {
+      let response = await instance.get(
+        `${API_URL}/users/api/v1/social-media/posts/history`
+      );
+      if (response?.data?.data?.history?.length > 0) {
+        let result: any = [];
+        response?.data?.data?.history?.forEach((ele: any) => {
+          ele?.platforms?.forEach((platform: any) => {
+            result.push({
+              id: ele?.id,
+              title: ele?.primary?.profiles?.[platform]?.displayName,
+              time: timeDiffFromNow(ele?.created),
+              author: "",
+              message: ele?.post,
+              imageUrl:
+                ele?.primary?.profiles?.[platform]?.default_profile_image ||
+                "/contact.png",
+              postUrl: ele?.postIds?.[0]?.postUrl || "",
+              platform: platform,
+            });
+          });
+        });
+        setFilteredData(result);
+      }
+    } catch (error) {
+      console.log("Error fetching table data:", error);
+      toast.error("Error fetching table data");
+    }
+  };
+  const sendMessage = async (payload: {}) => {
+    try {
+      const response: any = await instance.post(
+        API_URL +
+          "/users/api/v1/social-media/profile/messages?platform=twitter",
+        payload
+      );
+      toast.success(response.data.message);
+      return response;
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error(error);
+    } finally {
+      // setIsPending(false);
+    }
+  };
+
+  const handleFileUpload = (file: File) => {
+    setUploadedFile(file);
+    console.log("File uploaded:", file);
+  };
   const [showRightSidebar, setShowRightSidebar] = useState(false);
   const [MenuRotated, setMenuRotated] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(1);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [MenuOpen, setMenuOpen] = useState(false);
   const [isArrowRotated, setIsArrowRotated] = useState(false);
@@ -203,17 +329,13 @@ const Layout = () => {
   const [selectedOption, setSelectedOption] = useState(options[0].value);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
-  const [isOpened, setIsOpened] = useState(false);
+  const [isOpened, setIsOpened] = useState(true);
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
   const filterMenuRef = useRef<HTMLDivElement>(null);
   const [showDelete, setShowDelete] = useState(false);
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredData, setFilteredData] = useState(sidebarData);
-  const [selectedPost, setSelectedPost] = useState<any>({});
-  const [selectedPostComments, setSelectedPostComments] = useState<any>([]);
-  const [chatInput, setChatInput] = useState("");
 
   const handleDotsClick = () => {
     setShowDelete(!showDelete);
@@ -239,18 +361,6 @@ const Layout = () => {
   };
 
   useEffect(() => {
-    if (searchQuery.trim() === "") {
-      setFilteredData(sidebarData);
-    } else {
-      setFilteredData(
-        sidebarData.filter((project: any) =>
-          project?.author?.toLowerCase().includes(searchQuery)
-        )
-      );
-    }
-  }, [searchQuery]);
-
-  useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -262,81 +372,10 @@ const Layout = () => {
   const toggleSubMenu2 = () => {
     setIsOpen2(!isOpen2);
   };
-  const toggleFilter = () => {
-    setIsFilterOpen(!isFilterOpen);
-    setIsArrowRotated(!isArrowRotated);
-  };
-  const onClickSidebarItem = async (item : any) => {
-    setSelectedPostComments([]);
-    setIsOpened(true);
-    try {
-      const response = await instance.get(
-        `${API_URL}/users/api/v1/social-media/comments/${item.id}`
-      );
-      setSelectedPost(item);
-      let tempData = response?.data?.data?.[selectedPost?.platform]
-      setSelectedPostComments(tempData);
-    } catch (error) {
-      console.log("Error fetching table data:", error);
-      toast.error("Error fetching table data");
-    }
-  };
 
-  const toggleMenu = () => {
-    setShowRightSidebar(!showRightSidebar);
-    setMenuOpen(!MenuOpen);
-    setMenuRotated(!MenuRotated);
-    setShowNewSidebar((prev) => !prev);
-  };
-
-  const handleApplyFilters = () => {
-    console.log("Filters applied");
-    setIsFilterOpen(false);
-  };
-
-  const handleCancelFilters = () => {
-    console.log("Filters canceled");
-    setIsFilterOpen(false);
-  };
-
-  const selectedOptionLabel = options.find(
-    (option) => option.value === selectedOption
-  )?.label;
   const handleButtonClick = (index: number) => {
     setActiveIndex(index);
   };
-
-  useEffect(() => {
-    if(activeIndex === 1){
-      handleGetComments()
-    }
-  },[activeIndex]);
-
-  const handleChatInputCallback = (e:any) => {
-    setChatInput(e.target.value);
-    // handlePostComment(e.target.value)
-  };
-
-  const handlePostComment = async (value :string) => {
-    try {
-      const payload : any = {
-        "comment": value,
-        "platforms":[selectedPost?.platform],
-        "mediaUrls": []
-    };
-      const response = await instance.post(
-        `${API_URL}/users/api/v1/social-media/comments/${selectedPost.id}`,payload
-      );
-      if(response.data?.data?.status === "success"){
-        toast.success("Comment posted successfully");
-        setChatInput("")
-        handleGetComments();
-      }
-    } catch (error) {
-      console.log("Error Posting the Comment:", error);
-      toast.error("Error Posting the Comment");
-    }
-  }
 
   const handleGetMessages = async () => {
     try {
@@ -350,58 +389,72 @@ const Layout = () => {
     }
   };
 
-  const handleGetComments = async () => {
-    try {
-      let response = await instance.get(
-        `${API_URL}/users/api/v1/social-media/posts/history`
-      );
-      if(response?.data?.data?.history?.length > 0){
-        let result :any = []
-        response?.data?.data?.history?.forEach((ele:any) => {
-          ele?.platforms?.forEach((platform : any) => {
-            result.push({
-              id : ele?.id,
-              title: ele?.primary?.profiles?.[platform]?.displayName,
-              time: timeDiffFromNow(ele?.created),
-              author: "",
-              message: ele?.post,
-              imageUrl: ele?.primary?.profiles?.[platform]?.default_profile_image || "/contact.png",
-              postUrl : ele?.postIds?.[0]?.postUrl || "",
-              platform : platform
-            })
-          })
-        });
-        setFilteredData(result)
-      }
-    } catch (error) {
-      console.log("Error fetching table data:", error);
-      toast.error("Error fetching table data");
-    }
-  };
-
-  useEffect(() => {
-    handleGetMessages();
-    handleGetComments();
-  }, []);
-
-  const handleDeleteComment = async (eachComment : any) => {
+  const handleDeleteComment = async (eachComment: any) => {
     try {
       const response = await instance.delete(
         `${API_URL}/users/api/v1/social-media/comments/${eachComment.id}`
       );
-      if(response.data?.data?.status === "success"){
+      if (response.data?.data?.status === "success") {
         toast.success("Comment Deleted successfully");
-        setChatInput("")
+        setChatInput("");
         handleGetComments();
       }
     } catch (error) {
       console.log("Error Deleting the Comment:", error);
       toast.error("Error Deleting the Comment");
     }
-  }
+  };
+  useEffect(() => {
+    handleGetMessages();
+    handleGetComments();
+  }, []);
 
+  const [selectedMessage, setSelectedMessage] = useState<any>();
+  const handleChatInputCallback = (e: any) => {
+    setChatInput(e.target.value);
+    // handlePostComment(e.target.value)
+  };
+
+  const handlePostComment = async (value: string) => {
+    try {
+      const payload: any = {
+        comment: value,
+        platforms: [selectedPost?.platform],
+        mediaUrls: [],
+      };
+      const response = await instance.post(
+        `${API_URL}/users/api/v1/social-media/comments/${selectedPost.id}`,
+        payload
+      );
+      if (response.data?.data?.status === "success") {
+        toast.success("Comment posted successfully");
+        setChatInput("");
+        handleGetComments();
+      }
+    } catch (error) {
+      console.log("Error Posting the Comment:", error);
+      toast.error("Error Posting the Comment");
+    }
+  };
+  const handleSelectMessage = (message: {
+    title: string;
+    time: string;
+    author: string;
+    message: any;
+    imageUrl: string;
+  }) => {
+    console.log("Selected message:", message);
+    setSelectedMessage(message);
+  };
+
+  const sidebarData: any = [];
+  const [filteredData, setFilteredData] = useState(sidebarData);
+  const [selectedPost, setSelectedPost] = useState<any>({});
+
+  const [selectedPostComments, setSelectedPostComments] = useState<any>([]);
+  const [chatInput, setChatInput] = useState("");
   return (
-    <div className="flex-1 max-h-[780px] flex  mt-10 shadow-lg rounded-3xl text-ellipsis">
+    <div className="flex-1 max-h-[730px] flex  mt-10 shadow-lg rounded-3xl text-ellipsis">
       <aside
         className={clsx(
           "w-full max-w-[350px] relative border bg-white   flex flex-col",
@@ -412,20 +465,20 @@ const Layout = () => {
           <div className="relative w-full flex flex-row gap-8 font-normal text-ellipsis">
             <button
               onClick={() => handleButtonClick(1)}
-              className={`transition-all text-[16px] duration-300 w-1/2 ${
-                activeIndex === 1 ? "text-green-800 font-semibold" : ""
-              }`}
-            >
-              Comments
-            </button>
-            <button
-              onClick={() => handleButtonClick(2)}
               className={`transition-all duration-300 text-[16px] w-1/2 ${
-                activeIndex === 2 ? "text-green-800 font-semibold" : ""
+                activeIndex === 1 ? "text-green-800 font-semibold" : ""
               }`}
             >
               Messages
             </button>
+            {/* <button
+              onClick={() => handleButtonClick(2)}
+              className={`transition-all text-[16px] duration-300 w-1/2 ${
+                activeIndex === 2 ? "text-green-800 font-semibold" : ""
+              }`}
+            >
+              Comments
+            </button> */}
 
             <div
               className={`absolute -bottom-3 h-1 bg-green-800 transition-all duration-300  ${
@@ -444,564 +497,160 @@ const Layout = () => {
             setSearchQuery={setSearchQuery}
           />
         </div>
-        <div className="relative p-5 flex-1 overflow-y-auto max-h-[calc(100vh-280px)]">
-          {filteredData?.map((item:any, idx:number) => (
-            <SidebarItem
-              key={idx}
-              title={item.title}
-              time={item.time}
-              author={item.author}
-              message={item.message}
-              imageUrl={item.imageUrl}
-              onClick={() => onClickSidebarItem(item)} // Using 'item.title' as an example
-            />
-          ))}
+        <div className="relative p-5 flex-1 overflow-y-auto max-h-[calc(100vh - 172px)]">
+          {activeIndex === 1 && (
+            <MessageList onSelectMessage={handleSelectMessage} />
+          )}
+          {activeIndex === 2 &&
+            filteredData?.map((item: any, idx: number) => (
+              <SidebarItem
+                key={idx}
+                title={item.title}
+                time={item.time}
+                author={item.author}
+                message={item.message}
+                imageUrl={item.imageUrl}
+                onClick={() => onClickSidebarItem(item)} // Using 'item.title' as an example
+              />
+            ))}
         </div>
         {/* <div className="h-20 w-full bg-gradient-to-b from-transparent via-white to-white absolute bottom-0 rounde" /> */}
       </aside>
-      {isOpened && (
+      {activeIndex === 1 && isOpened && selectedMessage && (
         <main
-          className="flex-1 w-full flex flex-col bg-gray-100 p-4 border"
-          style={{ ...hideScrollbarStyles, ...hideScrollbarWebkit }}
+          className="flex-1 w-full flex flex-col bg-gray-100 p-4 border rounded-r-3xl"
+          style={{
+            height: "calc(100vh - 172px)",
+            ...hideScrollbarStyles,
+            ...hideScrollbarWebkit,
+          }}
         >
+          {/* Message Header */}
           <div className="flex flex-row gap-4 items-center">
-            {" "}
-            <Image src="/facebook.png" alt="facebook" width={50} height={50} />
-            <h2 className="font-semibold text-[18px]">Post comments</h2>
+            <Image
+              src="/logo/growstack-mini.png"
+              alt="facebook"
+              width={50}
+              height={50}
+            />
+            <h2 className="font-semibold text-[18px]">
+              {selectedMessage.title}
+            </h2>
           </div>
+
           <div className="border-[0.1px] border-gray-200 my-4 w-[1400px] -translate-x-4"></div>
           <div
             className="flex-1 p-4"
-            style={{ ...hideScrollbarStyles, ...hideScrollbarWebkit }}
+            style={{
+              height: "calc(100vh - 150px)",
+              ...hideScrollbarStyles,
+              ...hideScrollbarWebkit,
+            }}
           >
-            {selectedPostComments?.map((eachComment: any) => (
-  <div className="flex flex-row justify-between" key={eachComment.id}>
-    <ChatMessage
-      message={
-        <>
-          {eachComment?.comment}
-          {/* <Image
-            src="/pic.png"
-            alt="pic"
-            width={60}
-            height={80}
-            className="rounded-xl border mt-2"
-          /> */}
-        </>
-      }
-      imageUrl={"/contact.png"}
-      title={eachComment?.name}
-      time={`${eachComment?.platform} Post`}
-    />
-    <div className="flex flex-row items-center relative -translate-y-24">
-      <h2 className="text-[12px] font-light mr-2">
-      {moment(eachComment?.created).format('YYYY/MM/DD HH:mm')}
-      </h2>
-      {show && (
-        <button className="items-center px-4 p-2 bg-white text-white gap-2 translate-y-8 rounded-xl group">
-          <div className="items-center flex flex-row">
-          <svg
-            width="21"
-            height="20"
-            viewBox="0 0 21 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M9.66732 5.82812H5.50065C4.58018 5.82812 3.83398 6.57432 3.83398 7.49479V14.9948C3.83398 15.9153 4.58018 16.6615 5.50065 16.6615H13.0007C13.9211 16.6615 14.6673 15.9153 14.6673 14.9948V10.8281"
-              stroke="#14171B"
-              strokeWidth="1.45833"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M8.83398 11.6615L17.1673 3.32812"
-              stroke="#14171B"
-              strokeWidth="1.45833"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M13 3.32812H17.1667V7.49479"
-              stroke="#14171B"
-              strokeWidth="1.45833"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <h2 className="text-black transform transition-transform duration-200 ease-in-out">
-           <small> Open on network</small>
-          </h2>
-          </div>
-          {/* <div className="items-center flex flex-row text-black" onClick={() => handleEditComment(eachComment)}>
-            <CiEdit />
-          <small className="ml-8">Edit</small>
-          </div> */}
-          <div className="items-center flex flex-row text-black" onClick={() => handleDeleteComment(eachComment)}>
-            <MdOutlineDelete />
-          <small className="ml-8">Delete</small>
-          </div>
-        </button>
-      )}
-      <BsThreeDotsVertical
-        className="text-xl"
-        onClick={handleDotsClick2}
-      />
-    </div>
-  </div>
-))}
+            <div className="flex flex-col gap-4">
+              {/* Check if there are messages */}
+              {Array.isArray(selectedMessage.message) &&
+              selectedMessage.message.length > 0 ? (
+                selectedMessage.message.map(
+                  (
+                    msg: {
+                      message: any;
+                      attachments: any[];
+                      senderDetails: { profileImage: any; name: any };
+                      created: string;
+                    },
+                    index: React.Key | null | undefined
+                  ) => (
+                    <div key={index} className="flex flex-row gap-4">
+                      <ChatMessage
+                        message={
+                          <>
+                            {msg.message}
+                            {msg.attachments &&
+                              msg.attachments.length > 0 &&
+                              msg.attachments.map(
+                                (attachment: any, attIndex: any) => (
+                                  // src={attachment.url?attachment.url:"/logo/growstack-mini.png"}
+                                  <div key={attIndex}>
+                                    {attachment.type === "image" ? (
+                                      <>
+                                        {attachment.url && (
+                                          <>{attachment.url}</>
+                                        )}
 
-          </div>
-          <ChatInput 
-        chatInput={chatInput} 
-        handleChatInputCallback={handleChatInputCallback} 
-        handlePostComment={handlePostComment}
-      />
-        </main>
-      )}
-      {!isOpened && (
-        <main className="w-full  bg-white">
-          <div className="flex items-center bg-white  h-full text-[16px] justify-center font-bold text-gray-700">
-            Select a conversation to see details{" "}
-          </div>
-        </main>
-      )}
-      {isOpened && activeIndex === 1 ? (
-        <aside
-          className={clsx(
-            "w-full max-w-[350px] relative border bg-white rounded-r-3xl  flex flex-col"
-          )}
-        >
-          <div className="flex flex-col justify-between px-6 pt-6 pb-2">
-            <div
-              className="relative w-full flex flex-row justify-between font-normal items-center cursor-pointer"
-              onClick={toggleSubMenu}
-            >
-              <div className="flex flex-row gap-2 items-center text-ellipsis">
-                <CiCircleInfo className="text-2xl" />
-                <h2 className="text-[18px] font-medium">
-                  Conversation details
-                </h2>
-              </div>
-              {isOpen ? (
-                <IoIosArrowUp className="text-xl" />
-              ) : (
-                <IoIosArrowDown className="text-xl" />
-              )}
-            </div>
-            <div
-              className={`dropdown-content ${
-                isOpen ? "dropdown-open" : "dropdown-closed"
-              }`}
-            >
-              <div className="border-[0.5px] border-gray-200 mt-4"></div>
-
-              <div className="flex flex-row items-center mt-4 mb-4">
-                <AiOutlineMessage className="text-lg" />
-                <h2 className="text-[16px] font-medium items-center ml-2 text-ellipsis">
-                  {" "}
-                  Post comments
-                </h2>
-              </div>
-              <div className="flex flex-row justify-between ">
-                <span>
-                  <h2 className="text-[13px]">Started</h2>
-                  <h2 className="text-[13px] font-medium">Mar 24, 2024</h2>
-                </span>
-                <span>
-                  <h2 className="text-[13px]">Last update</h2>
-                  <h2 className="text-[13px] font-medium">Mar 31, 2024</h2>
-                </span>
-              </div>
-            </div>
-          </div>
-          <div className="border-[0.5px] border-gray-200 my-4"></div>
-
-          <div className="flex flex-col justify-between px-6 pb-2">
-            <div
-              className="relative w-full flex flex-row justify-between font-normal items-center cursor-pointer"
-              onClick={toggleSubMenu2}
-            >
-              <div className="flex flex-row gap-2 items-center">
-                <Image
-                  src="/f.png"
-                  alt="facebook"
-                  width={25}
-                  height={25}
-                  className="text-2xl"
+                                        <Image
+                                          src={
+                                            attachment.url &&
+                                            !attachment.url.includes(
+                                              "ton.twitter.com"
+                                            )
+                                              ? attachment.url
+                                              : "/logo/growstack-mini.png"
+                                          }
+                                          alt={`attachment-${attIndex}`}
+                                          width={100}
+                                          height={300}
+                                          className="rounded-xl border mt-2"
+                                          onError={(e) => {
+                                            e.currentTarget.src =
+                                              "/logo/growstack-mini.png";
+                                          }}
+                                        />
+                                      </>
+                                    ) : (
+                                      <a
+                                        href={attachment.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                      >
+                                        View Attachment
+                                      </a>
+                                    )}
+                                  </div>
+                                )
+                              )}
+                          </>
+                        }
+                        imageUrl={
+                          msg.senderDetails?.profileImage ||
+                          "/logo/growstack-mini.png"
+                        }
+                        title={msg.senderDetails?.name || "Unknown"}
+                        time={formatRelativeDate(msg.created)}
+                      />
+                      {/* <div className="flex flex-row items-center relative ml-3">
+                <BsThreeDotsVertical
+                  className="text-xl"
+                  onClick={handleDotsClick}
                 />
-                <h2 className="text-[18px] font-medium">Post</h2>
-              </div>
-              {isOpen2 ? (
-                <IoIosArrowUp className="text-xl" />
+              </div> */}
+                    </div>
+                  )
+                )
               ) : (
-                <IoIosArrowDown className="text-xl" />
+                <p>No messages available</p>
               )}
             </div>
-
-            <div
-              className={`dropdown-content2 ${
-                isOpen2 ? "dropdown-open" : "dropdown-closed"
-              }`}
-            >
-              <div className="border-[0.5px] border-gray-200 my-4"></div>
-
-              <div className="flex flex-row justify-between mb-4">
-                <div className="flex flex-col">
-                  <span className="flex flex-row items-center w-full justify-between gap-x-24">
-                    <h2 className="text-[14px] font-semibold">{selectedPost?.title}</h2>{" "}
-                    <h2 className="font-extralight text-[10px]">
-                    {selectedPost?.time}
-                    </h2>
-                  </span>
-                  <p className="text-[12px] font-light">{selectedPost?.platform} post</p>
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-2 justify-between bg-[#F8F8F8] p-4 rounded-xl mb-4">
-                <h2 className="font-light text-[10px] text-black text-ellipsis">
-                {selectedPost?.message}
-                </h2>
-                {/* <Image
-                  src="/pic.png"
-                  alt="pic"
-                  width={60}
-                  height={80}
-                  className="rounded-xl"
-                /> */}
-              </div>
-
-              <button className="text-white text-ellipsis hover:font-medium bg-primary-green shadow-lg hover:bg-primary-green/90 w-32 justify-center flex gap-2 items-center h-10 font-light rounded-xl transition-all duration-300 text-sm" onClick={() => {
-                window.open(selectedPost?.postUrl, '_blank');
-              }}>
-                <svg
-                  width="21"
-                  height="20"
-                  viewBox="0 0 21 20"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M9.66732 5.82812H5.50065C4.58018 5.82812 3.83398 6.57432 3.83398 7.49479V14.9948C3.83398 15.9153 4.58018 16.6615 5.50065 16.6615H13.0007C13.9211 16.6615 14.6673 15.9153 14.6673 14.9948V10.8281"
-                    stroke="white"
-                    strokeWidth="1.45833"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M8.83398 11.6615L17.1673 3.32812"
-                    stroke="white"
-                    strokeWidth="1.45833"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M13 3.32812H17.1667V7.49479"
-                    stroke="white"
-                    strokeWidth="1.45833"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                Open post
-              </button>
-            </div>
           </div>
-          <div className="border-[0.5px] border-gray-200 my-4"></div>
-          {/* <div className="flex flex-row items-center gap-4  px-6">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle
-              cx="6.00065"
-              cy="4.66667"
-              r="2.66667"
-              stroke="#034737"
-              stroke-width="1.16667"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M2 14V12.6667C2 11.1939 3.19391 10 4.66667 10H7.33333C8.80609 10 10 11.1939 10 12.6667V14"
-              stroke="#034737"
-              stroke-width="1.16667"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M10.666 2.08594C11.846 2.38805 12.6712 3.45126 12.6712 4.66927C12.6712 5.88728 11.846 6.95049 10.666 7.2526"
-              stroke="#034737"
-              stroke-width="1.16667"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M14 14.0016V12.6682C13.993 11.4579 13.1719 10.4041 12 10.1016"
-              stroke="#034737"
-              stroke-width="1.16667"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-          <h2 className="text-[16px] font-medium"> Assignees</h2>
-        </div> */}
-          <div className="relative">
-            {/* <div className="px-6 py-2 cursor-pointer" onClick={toggleFilterMenu}>
-            <Image src="/circlec.png" alt="cicle" width={50} height={50} />
-          </div> */}
 
-            {isFilterMenuOpen && (
-              <div
-                ref={filterMenuRef}
-                className="absolute z-20 mt-2 -top-80 right-40 MAX-W-[300px] bg-white border-[0.5px] border-gray-200 rounded-2xl shadow-lg"
-              >
-                <div className="p-4">
-                  <div className="flex items-center w-full bg-gray-100   border-[0.5px] border-gray-200  px-2 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-green-800">
-                    <input
-                      type="text"
-                      placeholder="Search..."
-                      className="flex-grow  bg-gray-100 text-sm focus:outline-none"
-                    />
-                    <button className=" right-0 ">
-                      <svg
-                        width="24"
-                        height="34"
-                        viewBox="0 0 34 34"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M12.0205 12.0527L21.92 21.9522"
-                          stroke="#4B465C"
-                          stroke-width="1.75"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M12.0205 12.0527L21.92 21.9522"
-                          stroke="white"
-                          stroke-opacity="0.2"
-                          stroke-width="1.75"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M12.0205 21.9473L21.92 12.0478"
-                          stroke="#4B465C"
-                          stroke-width="1.75"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M12.0205 21.9473L21.92 12.0478"
-                          stroke="white"
-                          stroke-opacity="0.2"
-                          stroke-width="1.75"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                  <div className="mt-2 space-y-2">
-                    {/* Example checkboxes */}
-                    <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md  flex-row justify-between">
-                      <span className="flex flex-row">
-                        <Image
-                          src="/contact.png"
-                          alt="contact"
-                          width="20"
-                          height={10}
-                        />
-                        <span className="ml-2 text-black text-md ">
-                          Carlos Jairo
-                        </span>
-                      </span>
-                    </label>
-                    <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md  flex-row justify-between">
-                      <span className="flex flex-row">
-                        <Image
-                          src="/contact.png"
-                          alt="contact"
-                          width="20"
-                          height={10}
-                        />
-                        <span className="ml-2 text-black text-md ">
-                          Leslie Alexander
-                        </span>
-                      </span>
-                    </label>
-                    <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md  flex-row justify-between">
-                      <span className="flex flex-row">
-                        <Image
-                          src="/contact.png"
-                          alt="contact"
-                          width="20"
-                          height={10}
-                        />
-                        <span className="ml-2 text-black text-md ">
-                          Kathryn Murphy
-                        </span>
-                      </span>
-                    </label>
-                    <label className="flex bg-[#FAFBFC] p-2 items-center  rounded-md flex-row justify-between">
-                      <span className="flex flex-row">
-                        <Image
-                          src="/contact.png"
-                          alt="contact"
-                          width="20"
-                          height={10}
-                        />
-                        <span className="ml-2 text-black text-md ">
-                          Marvin McKinney
-                        </span>
-                      </span>
-                    </label>
-                    <label className="flex bg-[#FAFBFC] items-center  rounded-md flex-row p-2 stify-between">
-                      <span className="flex flex-row w-full justify-between">
-                        <span className="flex flex-row">
-                          {" "}
-                          <Image
-                            src="/contact.png"
-                            alt="contact"
-                            width="20"
-                            height={10}
-                          />
-                          <h2 className="ml-2 text-black text-md ">
-                            Guy Hawkins
-                          </h2>
-                        </span>
-                        <span className=" bg-[#03473729] rounded-md">
-                          <h2 className="p-1 text-[10px]">Assign user</h2>
-                        </span>
-                      </span>
-                    </label>
-                    <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md  flex-row justify-between">
-                      <span className="flex flex-row">
-                        <Image
-                          src="/contact.png"
-                          alt="contact"
-                          width="20"
-                          height={10}
-                        />
-                        <span className="ml-2 text-black text-md ">
-                          Jenny Wilson
-                        </span>
-                      </span>
-                    </label>
-                  </div>
-                </div>
+          {/* Chat Input */}
+          <ChatInput
+            onSendMessage={handleSendMessage}
+            onFileUpload={handleFileUpload}
+          />
+
+     
+        </main>
+      )}
+{!selectedMessage && (
+            <main className="w-full  bg-white">
+              <div className="flex items-center bg-white  h-full text-[16px] justify-center font-bold text-gray-700">
+                Select a conversation to see details{" "}
               </div>
-            )}
-          </div>
-        </aside>
-      ) : null}
+            </main>
+          )}
     </div>
   );
 };
 
 export default Layout;
-//NOTICE: delete this layout.tsx to remove coming-soon page
-
-// "use client";
-
-// import Image from "next/image";
-// import React, { useEffect, useState, useRef } from "react";
-
-// interface TimeLeft {
-//   days: number;
-//   hours: number;
-//   minutes: number;
-//   seconds: number;
-// }
-
-// const calculateTimeLeft = (endTime: number): TimeLeft => {
-//   const difference = endTime - new Date().getTime();
-//   let timeLeft: TimeLeft = {
-//     days: 0,
-//     hours: 0,
-//     minutes: 0,
-//     seconds: 0,
-//   };
-
-//   if (difference > 0) {
-//     timeLeft = {
-//       days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-//       hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-//       minutes: Math.floor((difference / 1000 / 60) % 60),
-//       seconds: Math.floor((difference / 1000) % 60),
-//     };
-//   }
-
-//   return timeLeft;
-// };
-
-// export default function ComingSoon() {
-//   const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-
-//   const endTimeRef = useRef<number>(new Date().getTime() + 4 * 24 * 60 * 60 * 1000);
-
-//   useEffect(() => {
-//     const updateTimer = () => {
-//       setTimeLeft(calculateTimeLeft(endTimeRef.current));
-//     };
-
-//     updateTimer();
-//     const timer = setInterval(updateTimer, 1000);
-
-//     return () => clearInterval(timer);
-//   }, []);
-
-//   return (
-//     <div className="flex-1 h-full w-full flex flex-col items-center justify-center text-center">
-//       <Image src="/logo/growstack-mini.png" alt="" width={60} height={60} className="mb-10" />
-//       <div className="text-6xl font-medium mb-12">
-//         {timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0 ? (
-//           <div>Time's up!</div>
-//         ) : (
-//           <div className="flex space-x-10 bg-white py-6 px-10 shadow-xl shadow-gray-100 rounded-3xl">
-//             <div>
-//               <span>{timeLeft.days}</span>
-//               <span className="block text-sm">days</span>
-//             </div>
-//             <div>
-//               <span>{timeLeft.hours}</span>
-//               <span className="block text-sm">hours</span>
-//             </div>
-//             <div>
-//               <span>{timeLeft.minutes}</span>
-//               <span className="block text-sm">minutes</span>
-//             </div>
-//             <div>
-//               <span>{timeLeft.seconds}</span>
-//               <span className="block text-sm">seconds</span>
-//             </div>
-//           </div>
-//         )}
-//       </div>
-//       <h1 className="text-3xl uppercase font-semibold mb-4">Coming Soon</h1>
-//       <p className="mb-10 max-w-2xl leading-loose">
-//         We’re currently working on creating something fantastic. We’ll be here soon. Subscribe to the newsletter to be notified.
-//       </p>
-//       <form className="w-full max-w-md">
-//         <div className="flex items-center border-b-2 border-primary-green py-2">
-//           <input
-//             className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
-//             type="email"
-//             placeholder="Your Email"
-//             aria-label="Email"
-//           />
-//           <button
-//             className="flex-shrink-0 bg-primary-green hover:bg-primary-green border-primary-green hover:border-primary-green text-sm border-4 text-white py-1.5 px-2.5 rounded-lg"
-//             type="button">
-//             Subscribe
-//           </button>
-//         </div>
-//       </form>
-//     </div>
-//   );
-// }
