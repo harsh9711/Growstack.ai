@@ -1,12 +1,5 @@
 "use client";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import React, { useEffect, useRef, useState } from "react";
 import ChatMessage from "./ChatMessage";
 import clsx from "clsx";
@@ -16,19 +9,19 @@ import { FaFilter } from "react-icons/fa";
 import SidebarItem from "./SidebarItem";
 import ChatInput from "./ChatInput";
 import { CiSettings } from "react-icons/ci";
-import SidebarAccount from "./SidebarAccount";
-import { BsPlus, BsThreeDotsVertical } from "react-icons/bs";
 import { CiCircleInfo } from "react-icons/ci";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { AiOutlineMessage } from "react-icons/ai";
 import { BiReset } from "react-icons/bi";
-import { MdDelete } from "react-icons/md";
 import { API_URL } from "@/lib/api";
 import instance from "@/config/axios.config";
 import toast from "react-hot-toast";
 import MessageList from "./SidebarAccount";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
-import { formatRelativeDate } from "@/utils/dateformate";
+import { formatRelativeDate, timeDiffFromNow } from "@/utils/dateformate";
+import moment from "moment";
+import { MdOutlineDelete } from "react-icons/md";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import CommentChatInput from "./commentChartInput";
 interface SidebarItem {
   _id: string;
   title: string;
@@ -49,6 +42,7 @@ const hideScrollbarWebkit: React.CSSProperties = {
   scrollbarWidth: "none", // Firefox
   WebkitOverflowScrolling: "touch", // Optional for touch devices
 };
+
 const SearchBar = ({ searchQuery, setSearchQuery }: any) => {
   const [isFilterMenuOpen, setIsFilterMenuOpen] = useState(false);
   const filterMenuRef = useRef<HTMLDivElement>(null);
@@ -181,13 +175,12 @@ const Layout = () => {
       icon: <CiSettings className="text-xl translate-x-48" />,
     },
   ];
-  const sidebarData = [];
   const [messages, setMessages] = useState("");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
   const handleSendMessage = async (message: string) => {
     setMessages(message);
-    let file
+    let file;
 
     if (uploadedFile) {
       // selectedMessage.message.push(payloaddata);
@@ -205,8 +198,8 @@ const Layout = () => {
           mediaUrls: [response.data.data.fileUrl],
         };
         sendMessage(payload);
-        console.log("response", response.data.data.fileUrl );
-        file=response.data.data.fileUrl
+        console.log("response", response.data.data.fileUrl);
+        file = response.data.data.fileUrl;
         setUploadedFile(null);
         setMessages("");
         // toast.success(response.data.message);
@@ -231,18 +224,19 @@ const Layout = () => {
       setUploadedFile(null);
       setMessages("");
     }
+
     const payloaddata = {
       senderId: selectedMessage.message[0].senderId,
-      attachments: file?[{"type": "image","url":file}]:[],
+      attachments: file ? [{ type: "image", url: file }] : [],
       created: {},
       conversationId: selectedMessage.message[0].conversationId,
       recipientId: selectedMessage.message[0].recipientId,
       id: "1831577242255671718",
-      message: message?message:'',
+      message: message ? message : "",
       action: "sent",
       senderDetails: {
         name: selectedMessage.message[0].senderDetails.name,
-        username:selectedMessage.message[0].senderDetails.username,
+        username: selectedMessage.message[0].senderDetails.username,
       },
     };
     setSelectedMessage((prevSelectedMessage: any) => ({
@@ -253,6 +247,52 @@ const Layout = () => {
     // alert(message)
   };
 
+  const onClickSidebarItem = async (item: any) => {
+    setSelectedPostComments([]);
+    setIsOpened(true);
+    try {
+      const response = await instance.get(
+        `${API_URL}/users/api/v1/social-media/comments/${item.id}`
+      );
+      setSelectedPost(item);
+      let tempData = response?.data?.data?.[selectedPost?.platform];
+      setSelectedPostComments(tempData);
+    } catch (error) {
+      console.log("Error fetching table data:", error);
+      toast.error("Error fetching table data");
+    }
+  };
+
+  const handleGetComments = async () => {
+    try {
+      let response = await instance.get(
+        `${API_URL}/users/api/v1/social-media/posts/history`
+      );
+      if (response?.data?.data?.history?.length > 0) {
+        let result: any = [];
+        response?.data?.data?.history?.forEach((ele: any) => {
+          ele?.platforms?.forEach((platform: any) => {
+            result.push({
+              id: ele?.id,
+              title: ele?.primary?.profiles?.[platform]?.displayName,
+              time: timeDiffFromNow(ele?.created),
+              author: "",
+              message: ele?.post,
+              imageUrl:
+                ele?.primary?.profiles?.[platform]?.default_profile_image ||
+                "/contact.png",
+              postUrl: ele?.postIds?.[0]?.postUrl || "",
+              platform: platform,
+            });
+          });
+        });
+        setFilteredData(result);
+      }
+    } catch (error) {
+      console.log("Error fetching table data:", error);
+      toast.error("Error fetching table data");
+    }
+  };
   const sendMessage = async (payload: {}) => {
     try {
       const response: any = await instance.post(
@@ -296,7 +336,6 @@ const Layout = () => {
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  // const [filteredData, setFilteredData] = useState(sidebarData[0]);
 
   const handleDotsClick = () => {
     setShowDelete(!showDelete);
@@ -321,18 +360,6 @@ const Layout = () => {
     }
   };
 
-  // useEffect(() => {
-  //   if (searchQuery.trim() === "") {
-  //     setFilteredData(sidebarData[0]);
-  //   } else {
-  //     setFilteredData(
-  //       sidebarData[0].filter((project: any) =>
-  //         project?.author?.toLowerCase().includes(searchQuery)
-  //       )
-  //     );
-  //   }
-  // }, [searchQuery]);
-
   useEffect(() => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -345,40 +372,7 @@ const Layout = () => {
   const toggleSubMenu2 = () => {
     setIsOpen2(!isOpen2);
   };
-  const toggleFilter = () => {
-    setIsFilterOpen(!isFilterOpen);
-    setIsArrowRotated(!isArrowRotated);
-  };
-  const handleMessage = (itemId: {
-    title: string;
-    time: string;
-    author: string;
-    message: string;
-    imageUrl: string;
-  }) => {
-    console.log("good");
-    setIsOpened(!isOpened);
-  };
-  const toggleMenu = () => {
-    setShowRightSidebar(!showRightSidebar);
-    setMenuOpen(!MenuOpen);
-    setMenuRotated(!MenuRotated);
-    setShowNewSidebar((prev) => !prev);
-  };
 
-  const handleApplyFilters = () => {
-    console.log("Filters applied");
-    setIsFilterOpen(false);
-  };
-
-  const handleCancelFilters = () => {
-    console.log("Filters canceled");
-    setIsFilterOpen(false);
-  };
-
-  const selectedOptionLabel = options.find(
-    (option) => option.value === selectedOption
-  )?.label;
   const handleButtonClick = (index: number) => {
     setActiveIndex(index);
   };
@@ -395,25 +389,53 @@ const Layout = () => {
     }
   };
 
-  const handleGetComments = async () => {
+  const handleDeleteComment = async (eachComment: any) => {
     try {
-      const response = await instance.get(
-        `${API_URL} /users/api/v1/social-media/posts/facebook?5`
+      const response = await instance.delete(
+        `${API_URL}/users/api/v1/social-media/comments/${eachComment.id}`
       );
-      // setTableData(response.data.data.history);
+      if (response.data?.data?.status === "success") {
+        toast.success("Comment Deleted successfully");
+        setChatInput("");
+        handleGetComments();
+      }
     } catch (error) {
-      console.log("Error fetching table data:", error);
-      toast.error("Error fetching table data");
+      console.log("Error Deleting the Comment:", error);
+      toast.error("Error Deleting the Comment");
     }
   };
-
   useEffect(() => {
     handleGetMessages();
     handleGetComments();
   }, []);
 
   const [selectedMessage, setSelectedMessage] = useState<any>();
+  const handleChatInputCallback = (e: any) => {
+    setChatInput(e.target.value);
+    // handlePostComment(e.target.value)
+  };
 
+  const handlePostComment = async (value: string) => {
+    try {
+      const payload: any = {
+        comment: value,
+        platforms: [selectedPost?.platform],
+        mediaUrls: [],
+      };
+      const response = await instance.post(
+        `${API_URL}/users/api/v1/social-media/comments/${selectedPost.id}`,
+        payload
+      );
+      if (response.data?.data?.status === "success") {
+        toast.success("Comment posted successfully");
+        setChatInput("");
+        handleGetComments();
+      }
+    } catch (error) {
+      console.log("Error Posting the Comment:", error);
+      toast.error("Error Posting the Comment");
+    }
+  };
   const handleSelectMessage = (message: {
     title: string;
     time: string;
@@ -425,9 +447,15 @@ const Layout = () => {
     setSelectedMessage(message);
   };
 
+  const sidebarData: any = [];
+  const [filteredData, setFilteredData] = useState(sidebarData);
+  const [selectedPost, setSelectedPost] = useState<any>({});
+
+  const [selectedPostComments, setSelectedPostComments] = useState<any>([]);
+  const [chatInput, setChatInput] = useState("");
   return (
     <div className="flex-1 max-h-[730px] flex  mt-10 shadow-lg rounded-3xl text-ellipsis">
-    <aside
+      <aside
         className={clsx(
           "w-full max-w-[350px] relative border bg-white   flex flex-col",
           showRightSidebar ? "" : "rounded-l-3xl"
@@ -437,19 +465,19 @@ const Layout = () => {
           <div className="relative w-full flex flex-row gap-8 font-normal text-ellipsis">
             <button
               onClick={() => handleButtonClick(1)}
-              className={`transition-all text-[16px] duration-300 w-1/2 ${
+              className={`transition-all duration-300 text-[16px] w-1/2 ${
                 activeIndex === 1 ? "text-green-800 font-semibold" : ""
               }`}
             >
-              Comments
+              Messages
             </button>
             <button
               onClick={() => handleButtonClick(2)}
-              className={`transition-all duration-300 text-[16px] w-1/2 ${
+              className={`transition-all text-[16px] duration-300 w-1/2 ${
                 activeIndex === 2 ? "text-green-800 font-semibold" : ""
               }`}
             >
-              Messages
+              Comments
             </button>
 
             <div
@@ -470,101 +498,136 @@ const Layout = () => {
           />
         </div>
         <div className="relative p-5 flex-1 overflow-y-auto max-h-[calc(100vh - 172px)]">
-          <MessageList onSelectMessage={handleSelectMessage} />
-          {/* {filteredData?.map((item, idx) => (
-            <SidebarItem
-              key={idx}
-              title={item.title}
-              time={item.time}
-              author={item.author}
-              message={item.message}
-              imageUrl={item.imageUrl}
-              onClick={() => handleMessage(item)} // Using 'item.title' as an example
-            />
-          ))} */}
+          {activeIndex === 1 && (
+            <MessageList onSelectMessage={handleSelectMessage} />
+          )}
+          {activeIndex === 2 &&
+            filteredData?.map((item: any, idx: number) => (
+              <SidebarItem
+                key={idx}
+                title={item.title}
+                time={item.time}
+                author={item.author}
+                message={item.message}
+                imageUrl={item.imageUrl}
+                onClick={() => onClickSidebarItem(item)} // Using 'item.title' as an example
+              />
+            ))}
         </div>
         {/* <div className="h-20 w-full bg-gradient-to-b from-transparent via-white to-white absolute bottom-0 rounde" /> */}
       </aside>
-      {isOpened && selectedMessage && (
+      {activeIndex === 1 && isOpened && selectedMessage && (
         <main
-  className="flex-1 w-full flex flex-col bg-gray-100 p-4 border rounded-r-3xl"
-  style={{ height: 'calc(100vh - 172px)', ...hideScrollbarStyles, ...hideScrollbarWebkit }}
->
-    {/* Message Header */}
-    <div className="flex flex-row gap-4 items-center">
-      <Image src="/facebook.png" alt="facebook" width={50} height={50} />
-      <h2 className="font-semibold text-[18px]">{selectedMessage.title}</h2>
-    </div>
+          className="flex-1 w-full flex flex-col bg-gray-100 p-4 border rounded-r-3xl"
+          style={{
+            height: "calc(100vh - 172px)",
+            ...hideScrollbarStyles,
+            ...hideScrollbarWebkit,
+          }}
+        >
+          {/* Message Header */}
+          <div className="flex flex-row gap-4 items-center">
+            <Image src="/facebook.png" alt="facebook" width={50} height={50} />
+            <h2 className="font-semibold text-[18px]">
+              {selectedMessage.title}
+            </h2>
+          </div>
 
-    {/* Divider */}
-    <div className="border-[0.1px] border-gray-200 my-4 w-[1400px] -translate-x-4"></div>
-{/* {selectedMessage.message && (<>{JSON.stringify(selectedMessage.message)}</>)} */}
-    {/* Message Content */}
-    <div className="flex-1 p-4" style={{height: 'calc(100vh - 150px)', ...hideScrollbarStyles, ...hideScrollbarWebkit }}>
-      <div className="flex flex-col gap-4">
-        {/* Check if there are messages */}
-        {Array.isArray(selectedMessage.message) && selectedMessage.message.length > 0 ? (
-          selectedMessage.message.map((msg: { message: any; attachments: any[]; senderDetails: { profileImage: any; name: any; }; created: string; }, index: React.Key | null | undefined) => (
-            <div key={index} className="flex flex-row gap-4">
-              <ChatMessage
-                message={
-                  <>
-                    {msg.message}
-                    {/* Render attachments */}
-                    {msg.attachments &&
-                      msg.attachments.length > 0 &&
-                      msg.attachments.map((attachment: any, attIndex: any) => (
-                        // src={attachment.url?attachment.url:"/logo/growstack-mini.png"}
-                        <div key={attIndex}>
-                        {attachment.url.includes("ton.twitter.com")}
+          {/* Divider */}
+          <div className="border-[0.1px] border-gray-200 my-4 w-[1400px] -translate-x-4"></div>
+          {/* {selectedMessage.message && (<>{JSON.stringify(selectedMessage.message)}</>)} */}
+          {/* Message Content */}
+          <div
+            className="flex-1 p-4"
+            style={{
+              height: "calc(100vh - 150px)",
+              ...hideScrollbarStyles,
+              ...hideScrollbarWebkit,
+            }}
+          >
+            <div className="flex flex-col gap-4">
+              {/* Check if there are messages */}
+              {Array.isArray(selectedMessage.message) &&
+              selectedMessage.message.length > 0 ? (
+                selectedMessage.message.map(
+                  (
+                    msg: {
+                      message: any;
+                      attachments: any[];
+                      senderDetails: { profileImage: any; name: any };
+                      created: string;
+                    },
+                    index: React.Key | null | undefined
+                  ) => (
+                    <div key={index} className="flex flex-row gap-4">
+                      <ChatMessage
+                        message={
+                          <>
+                            {msg.message}
+                            {/* Render attachments */}
+                            {msg.attachments &&
+                              msg.attachments.length > 0 &&
+                              msg.attachments.map(
+                                (attachment: any, attIndex: any) => (
+                                  // src={attachment.url?attachment.url:"/logo/growstack-mini.png"}
+                                  <div key={attIndex}>
+                                    {attachment.url.includes("ton.twitter.com")}
 
-                          {attachment.type === "image" ? (
-                            <Image
-                              src={"/logo/growstack-mini.png"}
-                              alt={`attachment-${attIndex}`}
-                              width={100}
-                              height={300}
-                              className="rounded-xl border mt-2"
-                              onError={(e) =>
-                                (e.currentTarget.src = "/logo/growstack-mini.png")
-                              }
-                            />
-                          ) : (
-                            <a href={attachment.url} target="_blank" rel="noopener noreferrer">
-                              View Attachment
-                            </a>
-                          )}
-                        </div>
-                      ))}
-                  </>
-                }
-                imageUrl={msg.senderDetails?.profileImage || "/logo/growstack-mini.png"}
-                title={msg.senderDetails?.name || "Unknown"}
-                time={formatRelativeDate(msg.created)}
-              />
-              {/* <div className="flex flex-row items-center relative ml-3">
+                                    {attachment.type === "image" ? (
+                                      <Image
+                                        src={"/logo/growstack-mini.png"}
+                                        alt={`attachment-${attIndex}`}
+                                        width={100}
+                                        height={300}
+                                        className="rounded-xl border mt-2"
+                                        onError={(e) =>
+                                          (e.currentTarget.src =
+                                            "/logo/growstack-mini.png")
+                                        }
+                                      />
+                                    ) : (
+                                      <a
+                                        href={attachment.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                      >
+                                        View Attachment
+                                      </a>
+                                    )}
+                                  </div>
+                                )
+                              )}
+                          </>
+                        }
+                        imageUrl={
+                          msg.senderDetails?.profileImage ||
+                          "/logo/growstack-mini.png"
+                        }
+                        title={msg.senderDetails?.name || "Unknown"}
+                        time={formatRelativeDate(msg.created)}
+                      />
+                      {/* <div className="flex flex-row items-center relative ml-3">
                 <BsThreeDotsVertical
                   className="text-xl"
                   onClick={handleDotsClick}
                 />
               </div> */}
+                    </div>
+                  )
+                )
+              ) : (
+                <p>No messages available</p>
+              )}
             </div>
-          ))
-        ) : (
-          <p>No messages available</p>
-        )}
-      </div>
-    </div>
+          </div>
 
-    {/* Chat Input */}
-    <ChatInput
-      onSendMessage={handleSendMessage}
-      onFileUpload={handleFileUpload}
-    />
-  </main>
-)}
-
-
+          {/* Chat Input */}
+          <ChatInput
+            onSendMessage={handleSendMessage}
+            onFileUpload={handleFileUpload}
+          />
+        </main>
+      )}
       {!isOpened && (
         <main className="w-full  bg-white">
           <div className="flex items-center bg-white  h-full text-[16px] justify-center font-bold text-gray-700">
@@ -572,7 +635,64 @@ const Layout = () => {
           </div>
         </main>
       )}
-      {isOpened && activeIndex === 1 ? (
+      {activeIndex === 2 && (
+        <main
+          className="flex-1 w-full flex flex-col bg-gray-100 p-4 border"
+          style={{ ...hideScrollbarStyles, ...hideScrollbarWebkit }}
+        >
+          <div className="flex flex-row gap-4 items-center">
+            {" "}
+            <Image src="/facebook.png" alt="facebook" width={50} height={50} />
+            <h2 className="font-semibold text-[18px]">Post comments</h2>
+          </div>
+          <div className="border-[0.1px] border-gray-200 my-4 w-[1400px] -translate-x-4"></div>
+          <div
+            className="flex-1 p-4"
+            style={{ ...hideScrollbarStyles, ...hideScrollbarWebkit }}
+          >
+            {selectedPostComments?.map((eachComment: any) => (
+              <div
+                className="flex flex-row justify-between"
+                key={eachComment.id}
+              >
+                <ChatMessage
+                  message={
+                    <>
+                      {eachComment?.comment}
+                    </>
+                  }
+                  imageUrl={"/contact.png"}
+                  title={eachComment?.name}
+                  time={`${eachComment?.platform} Post`}
+                /> 
+                    {show && (
+                    <button className="items-center bg-white text-white rounded-xl group">
+                      <div
+                        className="items-center flex flex-row text-black"
+                        onClick={() => handleDeleteComment(eachComment)}
+                      >
+                        <MdOutlineDelete />
+                        <small className="ml-8">Delete</small>
+                      </div>
+                    </button>
+                  )}
+                <BsThreeDotsVertical
+                className="text-xl"
+                onClick={handleDotsClick2}
+              />
+               
+              </div>
+            ))}
+          </div>
+          <CommentChatInput
+            chatInput={chatInput}
+            handleChatInputCallback={handleChatInputCallback}
+            handlePostComment={handlePostComment}
+          />
+        </main>
+      )}
+
+      {activeIndex === 2 ? (
         <aside
           className={clsx(
             "w-full max-w-[350px] relative border bg-white rounded-r-3xl  flex flex-col"
@@ -655,34 +775,38 @@ const Layout = () => {
               <div className="flex flex-row justify-between mb-4">
                 <div className="flex flex-col">
                   <span className="flex flex-row items-center w-full justify-between gap-x-24">
-                    <h2 className="text-[14px] font-semibold">GrowStack AI</h2>{" "}
+                    <h2 className="text-[14px] font-semibold">
+                      {selectedPost?.title}
+                    </h2>{" "}
                     <h2 className="font-extralight text-[10px]">
-                      2023-03-06 , 11:00 PM
+                      {selectedPost?.time}
                     </h2>
                   </span>
-                  <p className="text-[12px] font-light">Facebook post</p>
+                  <p className="text-[12px] font-light">
+                    {selectedPost?.platform} post
+                  </p>
                 </div>
               </div>
 
               <div className="flex flex-col gap-2 justify-between bg-[#F8F8F8] p-4 rounded-xl mb-4">
                 <h2 className="font-light text-[10px] text-black text-ellipsis">
-                  Lorem ipsum dolor sit amet consectetur. Non mattis tempor in
-                  sed ante venenatis ornare. Ultrices at bibendum at vitae ac
-                  diam habitasse. Ac cras Https://www.link.com. Imperdiet non
-                  potenti fermentum vitae sit id cras porta urna. Dignissim sit
-                  enim vitae elit semper pellentesque massa nulla. Nullam congue
-                  magna.
+                  {selectedPost?.message}
                 </h2>
-                <Image
+                {/* <Image
                   src="/pic.png"
                   alt="pic"
                   width={60}
                   height={80}
                   className="rounded-xl"
-                />
+                /> */}
               </div>
 
-              <button className="text-white text-ellipsis hover:font-medium bg-primary-green shadow-lg hover:bg-primary-green/90 w-32 justify-center flex gap-2 items-center h-10 font-light rounded-xl transition-all duration-300 text-sm">
+              <button
+                className="text-white text-ellipsis hover:font-medium bg-primary-green shadow-lg hover:bg-primary-green/90 w-32 justify-center flex gap-2 items-center h-10 font-light rounded-xl transition-all duration-300 text-sm"
+                onClick={() => {
+                  window.open(selectedPost?.postUrl, "_blank");
+                }}
+              >
                 <svg
                   width="21"
                   height="20"
@@ -717,52 +841,7 @@ const Layout = () => {
             </div>
           </div>
           <div className="border-[0.5px] border-gray-200 my-4"></div>
-          {/* <div className="flex flex-row items-center gap-4  px-6">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <circle
-              cx="6.00065"
-              cy="4.66667"
-              r="2.66667"
-              stroke="#034737"
-              stroke-width="1.16667"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M2 14V12.6667C2 11.1939 3.19391 10 4.66667 10H7.33333C8.80609 10 10 11.1939 10 12.6667V14"
-              stroke="#034737"
-              stroke-width="1.16667"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M10.666 2.08594C11.846 2.38805 12.6712 3.45126 12.6712 4.66927C12.6712 5.88728 11.846 6.95049 10.666 7.2526"
-              stroke="#034737"
-              stroke-width="1.16667"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-            <path
-              d="M14 14.0016V12.6682C13.993 11.4579 13.1719 10.4041 12 10.1016"
-              stroke="#034737"
-              stroke-width="1.16667"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-          <h2 className="text-[16px] font-medium"> Assignees</h2>
-        </div> */}
           <div className="relative">
-            {/* <div className="px-6 py-2 cursor-pointer" onClick={toggleFilterMenu}>
-            <Image src="/circlec.png" alt="cicle" width={50} height={50} />
-          </div> */}
-
             {isFilterMenuOpen && (
               <div
                 ref={filterMenuRef}
@@ -914,103 +993,3 @@ const Layout = () => {
 };
 
 export default Layout;
-//NOTICE: delete this layout.tsx to remove coming-soon page
-
-// "use client";
-
-// import Image from "next/image";
-// import React, { useEffect, useState, useRef } from "react";
-
-// interface TimeLeft {
-//   days: number;
-//   hours: number;
-//   minutes: number;
-//   seconds: number;
-// }
-
-// const calculateTimeLeft = (endTime: number): TimeLeft => {
-//   const difference = endTime - new Date().getTime();
-//   let timeLeft: TimeLeft = {
-//     days: 0,
-//     hours: 0,
-//     minutes: 0,
-//     seconds: 0,
-//   };
-
-//   if (difference > 0) {
-//     timeLeft = {
-//       days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-//       hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-//       minutes: Math.floor((difference / 1000 / 60) % 60),
-//       seconds: Math.floor((difference / 1000) % 60),
-//     };
-//   }
-
-//   return timeLeft;
-// };
-
-// export default function ComingSoon() {
-//   const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-
-//   const endTimeRef = useRef<number>(new Date().getTime() + 4 * 24 * 60 * 60 * 1000);
-
-//   useEffect(() => {
-//     const updateTimer = () => {
-//       setTimeLeft(calculateTimeLeft(endTimeRef.current));
-//     };
-
-//     updateTimer();
-//     const timer = setInterval(updateTimer, 1000);
-
-//     return () => clearInterval(timer);
-//   }, []);
-
-//   return (
-//     <div className="flex-1 h-full w-full flex flex-col items-center justify-center text-center">
-//       <Image src="/logo/growstack-mini.png" alt="" width={60} height={60} className="mb-10" />
-//       <div className="text-6xl font-medium mb-12">
-//         {timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0 ? (
-//           <div>Time's up!</div>
-//         ) : (
-//           <div className="flex space-x-10 bg-white py-6 px-10 shadow-xl shadow-gray-100 rounded-3xl">
-//             <div>
-//               <span>{timeLeft.days}</span>
-//               <span className="block text-sm">days</span>
-//             </div>
-//             <div>
-//               <span>{timeLeft.hours}</span>
-//               <span className="block text-sm">hours</span>
-//             </div>
-//             <div>
-//               <span>{timeLeft.minutes}</span>
-//               <span className="block text-sm">minutes</span>
-//             </div>
-//             <div>
-//               <span>{timeLeft.seconds}</span>
-//               <span className="block text-sm">seconds</span>
-//             </div>
-//           </div>
-//         )}
-//       </div>
-//       <h1 className="text-3xl uppercase font-semibold mb-4">Coming Soon</h1>
-//       <p className="mb-10 max-w-2xl leading-loose">
-//         We’re currently working on creating something fantastic. We’ll be here soon. Subscribe to the newsletter to be notified.
-//       </p>
-//       <form className="w-full max-w-md">
-//         <div className="flex items-center border-b-2 border-primary-green py-2">
-//           <input
-//             className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
-//             type="email"
-//             placeholder="Your Email"
-//             aria-label="Email"
-//           />
-//           <button
-//             className="flex-shrink-0 bg-primary-green hover:bg-primary-green border-primary-green hover:border-primary-green text-sm border-4 text-white py-1.5 px-2.5 rounded-lg"
-//             type="button">
-//             Subscribe
-//           </button>
-//         </div>
-//       </form>
-//     </div>
-//   );
-// }
