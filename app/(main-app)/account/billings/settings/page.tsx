@@ -19,6 +19,7 @@ import { ReactNode } from "react";
 import { API_URL } from "@/lib/api";
 // import { BillHistory } from "@/types/billHistory";
 import clsx from "clsx";
+import { PlanUsage } from "@/types/common";
 
 interface BillingHistoryItem {
   amount: ReactNode;
@@ -30,14 +31,12 @@ interface BillingHistoryItem {
   invoice: string;
 }
 
-interface PlanUsage {
-  usage_amount: number;
-}
 
 const OverViewSection = () => {
   const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [cancelLoading, setCancelLoading] = useState<boolean>(false); // Add state for cancel button loading
+  const [isCreditLoading, setIsCreditLoading] = useState<boolean>(false);
 
   const fetchPlanUsage = async () => {
     try {
@@ -54,6 +53,32 @@ const OverViewSection = () => {
       console.error("Error fetching plan usage:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  console.log(planUsage)
+
+  const handleCreditClick = async () => {
+    try {
+      setIsCreditLoading(true);
+      const product = {
+        plan_id: planUsage?.plan_id,
+        plan_type: planUsage?.plan_type,
+        subscription_id: planUsage?.stripe_subscription_id,
+        amount: 100,
+      };
+      const response = await instance.post(`${API_URL}/users/api/v1/payments/adds-on`, { product, currency: "usd" });
+      window.location.href = response.data.url;
+      toast.success('Payment added successfully');
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error('Error adding payment:', error);
+    } finally {
+      setIsCreditLoading(false);
     }
   };
 
@@ -107,7 +132,18 @@ const OverViewSection = () => {
       <div className="mt-10 flex items-center justify-between">
         <div className="space-y-2">
           <h2 className="text-primary-black text-opacity-50">Credit balance</h2>
-          <h1 className="text-4xl font-semibold">{planUsage?.usage_amount}</h1>
+          <div className=" flex gap-3 items-center">
+
+            <h1 className="text-4xl font-semibold">{planUsage?.usage_amount}</h1>
+            <button
+              className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300 ${isCreditLoading ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+              onClick={handleCreditClick}
+              disabled={isCreditLoading}
+            >
+              {isCreditLoading ? 'Redirecting...' : 'Add Credit'}
+            </button>
+          </div>
         </div>
         {/* <div className="flex flex-row gap-x-6 items-end">
           <AddCreditDialog />
@@ -196,9 +232,8 @@ export default function SettingsPage() {
         </div> <div className="flex flex-row gap-x-6 items-end">
           <AddCreditDialog />
           <button
-            className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-white border-red-500 border hover:font-semibold hover:border-2 text-red-500 sheen transition-all duration-300 ${
-              cancelLoading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+            className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-white border-red-500 border hover:font-semibold hover:border-2 text-red-500 sheen transition-all duration-300 ${cancelLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             onClick={handleCancelSubscription}
             disabled={cancelLoading} // Disable button while canceling
           >

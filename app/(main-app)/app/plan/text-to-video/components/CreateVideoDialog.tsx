@@ -17,6 +17,9 @@ import { z } from "zod";
 import AvatarSelection from "./AvatarSelection";
 import AudioBox from "./AudioBox";
 import { CustomSelect } from "./Select";
+import GlobalModal from "@/components/modal/global.modal";
+import { PlanUsage } from "@/types/common";
+import Link from "next/link";
 export interface VideoStatus {
   createdAt: number;
   download: string;
@@ -70,9 +73,11 @@ const CreateVideoDialog = ({
     name: string;
   }
 
+  const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
+  const [isPlanUsageLoading, setIsPlanUsageLoading] = useState(false);
   const [step, setStep] = useState(0);
   const [videoScript, setVideoScript] = useState("");
   const [outputVideo, setOutputVideo] = useState<VideoStatus | null>(null);
@@ -108,6 +113,7 @@ const CreateVideoDialog = ({
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
   const [tone, settone] = useState<string>("");
+  const [isAddOnModalOpen, setIsAddOnModalOpen] = useState<boolean>(false);
   const handleVoiceSelect = (voiceId: string) => {
     setSelectedVoice(voiceId);
   };
@@ -117,6 +123,25 @@ const CreateVideoDialog = ({
     speaker?: { _errors: string[] };
     audience?: { _errors: string[] };
   }>({});
+
+  const fetchPlanUsage = async () => {
+    try {
+      setIsPlanUsageLoading(true)
+      const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
+      const data: PlanUsage = response.data.data;
+      setPlanUsage(data);
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error("Error fetching plan usage:", error);
+    } finally {
+      setIsPlanUsageLoading(false);
+    }
+  };
+
   const handleSubmit = async () => {
     const validation = formSchema.safeParse(formData);
     if (!validation.success) {
@@ -381,6 +406,10 @@ const CreateVideoDialog = ({
     resetForm();
   };
 
+  useEffect(() => {
+    fetchPlanUsage();
+  }, []);
+
   const filteredAvatars = assistants.filter((avatar) =>
     avatar.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -388,244 +417,41 @@ const CreateVideoDialog = ({
   if (loading) return <LoadingOverlay progress={(step / 3) * 100} />;
   if (error) return <p>{error}</p>;
   const progress = (step / 3) * 100;
-  // const handleDialogClose = () => {
-  //   handleClose(false);
-  // };
+
   return (
     <div className="relative">
       {" "}
       {loading2 && <LoadingOverlay progress={progress} />}
-      <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
-        <DialogTrigger>
-          <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2">
-            <Plus size={20} />
-            Create new video with AI
-          </button>
-        </DialogTrigger>
-        <DialogContent
-          className="w-full 2xl:max-w-[90%] h-full 2xl:h-[90vh] px-10 py-7 overflow-x-hidden"
-          onCloseAutoFocus={handleClose}
-        >
-          <div className="relative w-full max-w-full space-y-6 text-[12px] h-full flex flex-col overflow-x-hidden">
-            <main className="flex flex-col gap-x-10">
-              <div className="w-full flex xl:flex-row sm:flex-col lg:flex-row md:flex-row flex-col 2xl:flex-row gap-y-4 2xl:gap-x-10 mb-6">
-                <div className="flex w-full 2xl:w-2/3 flex-col gap-y-6 gap-x-4">
-                  <div className="flex flex-col w-full">
-                    <div className="w-full space-y-2">
-                      <label
-                        htmlFor="title"
-                        className="flex items-center w-full font-semibold gap-x-3"
-                      >
-                        <span className="space-x-2 text-[15px] ">
-                          Title <span className="text-[#F93939]">*</span>
-                        </span>
-                      </label>
-                      <input
-                        type="text"
-                        name="title"
-                        placeholder="Type video title"
-                        value={formData.title}
-                        onChange={handleInputChange}
-                        className="border border-[#DEDEDE] bg-[#F5F5F5] h-[54px] w-full rounded-xl outline-none focus:border-primary-green transition-all p-4"
-                      />
-                      {formErrors.title && (
-                        <span className="text-red-500 text-sm">
-                          {formErrors.title._errors}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex xl:flex-row md:flex-row lg:flex-row flex-col 2xl:flex-row gap-x-6 w-full">
-                    <div className="flex flex-col w-full space-y-2">
-                      <label
-                        htmlFor="objective"
-                        className="flex items-center w-full font-semibold gap-x-3"
-                      >
-                        <span className="space-x-2 text-[15px] ">
-                          Objective <span className="text-[#F93939]">*</span>
-                        </span>
-                      </label>
-                      <textarea
-                        name="objective"
-                        placeholder="Introduction to financial well-being"
-                        value={formData.objective}
-                        onChange={handleInputChange}
-                        className="border border-[#DEDEDE] bg-[#F5F5F5] resize-none h-[160px] w-full rounded-xl outline-none focus:border-primary-green transition-all p-4"
-                      ></textarea>
-                      {formErrors.objective && (
-                        <span className="text-red-500 text-sm">
-                          {formErrors.objective._errors}<br></br>
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex flex-col w-full gap-y-4">
-                      <div className="flex flex-col w-full space-y-2">
-                        <label
-                          htmlFor="speaker"
-                          className="flex items-center font-semibold gap-x-3"
-                        >
-                          <span className="space-x-2 text-[15px] ">
-                            Speaker
-                          </span>
-                        </label>
-                        <motion.input
-                          animate={{ opacity: 1 }}
-                          initial={{ opacity: 0 }}
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.25 }}
-                          type="text"
-                          name="speaker"
-                          placeholder="Give a name or title to the speaker"
-                          value={formData.speaker}
-                          onChange={handleInputChange}
-                          className="border border-[#DEDEDE] bg-[#F5F5F5] h-[54px] w-full rounded-xl outline-none focus:border-primary-green transition-all p-4"
-                        />
-                      </div>
+      <button
+        disabled={isPlanUsageLoading}
+        onClick={(e) => {
+          e.stopPropagation();
+          if (!planUsage?.usage_amount || planUsage?.usage_amount <= 0) {
+            setIsAddOnModalOpen(true)
+          } else {
+            setDialogOpen(true)
+          }
+        }}
+        className="bg-primary-green text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2">
+        <Plus size={20} />
+        Create new video with AI
+      </button>
 
-                      <div className="flex flex-col w-full space-y-2">
-                        <label
-                          htmlFor="audience"
-                          className="flex items-center font-semibold gap-x-3"
-                        >
-                          <span className="space-x-2 text-[15px] ">
-                            Target Audience{" "}
-                          </span>
-                        </label>
-                        <motion.input
-                          animate={{ opacity: 1 }}
-                          initial={{ opacity: 0 }}
-                          exit={{ opacity: 0 }}
-                          transition={{ duration: 0.25 }}
-                          type="text"
-                          name="audience"
-                          placeholder="Who will be watching this video?"
-                          value={formData.audience}
-                          onChange={handleInputChange}
-                          className="border border-[#DEDEDE] bg-[#F5F5F5] h-[54px] w-full rounded-xl outline-none focus:border-primary-green transition-all p-4"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
+      <GlobalModal title=" Add Credit to Your Wallet" open={isAddOnModalOpen} setOpen={() => { setIsAddOnModalOpen(false) }}>
+        <div className="flex flex-row items-center justify-center px-4 pb-4 space-x-6">
+          <p className="text-start text-gray-700 text-sm md:text-base px-4">
+            To access this feature, please add credits to your wallet. You need sufficient balance to proceed with the video creation.
+          </p>
+          <Link
+            className="bg-primary-green text-white text-nowrap py-2 px-6 rounded-md transition duration-300 hover:bg-green-600"
+            href="/account/billings/settings">
+            Add Credit
+            
+          </Link>
+        </div>
+      </GlobalModal>
 
-                <div className="flex flex-col gap-y-4 w-full 2xl:w-1/3">
-                  <div className="flex relative z-30 flex-col gap-y-2 mb-2">
-                    <label
-                      htmlFor="language"
-                      className="flex items-center font-semibold gap-x-3"
-                    >
-                      <span className="space-x-2 text-[15px]">Language</span>
-                    </label>
-                    <CustomSelect
-                      placeholder="Select Language"
-                      options={[
-                        "English",
-                        "Spanish",
-                        "French",
-                        "German",
-                        "Chinese",
-                        "Japanese",
-                        "Korean",
-                        "Russian",
-                        "Portuguese",
-                        "Italian",
-                      ]}
-                      value={selectedLanguage}
-                      onChange={(value: string) => setSelectedLanguage(value)}
-                    />
-                  </div>
 
-                  <div className="flex relative z-20 flex-col gap-y-2">
-                    <label
-                      htmlFor="tone"
-                      className="flex items-center font-semibold gap-x-3"
-                    >
-                      <span className="space-x-2 text-[15px]">Tone</span>
-                    </label>
-                    <CustomSelect
-                      placeholder="Select Tone"
-                      options={["Professional", "Casual", "Friendly"]}
-                      value={tone}
-                      onChange={(value: string) => settone(value)}
-                    />
-                  </div>
-
-                  <div className="relative z-10">
-                    <AudioBox
-                      selectedVoice={selectedVoice}
-                      onVoiceSelect={handleVoiceSelect}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="w-full flex relative z-0 overflow-hidden">
-                {loading ? (
-                  <div className="flex flex-col items-center w-full 2xl:max-w-3xl mx-auto space-y-4">
-                    {/* <LoadingBar progress={progress} /> */}
-                  </div>
-                ) : (
-                  <Motion
-                    transition={{ duration: 0.5 }}
-                    variants={{
-                      hidden: { opacity: 0 },
-                      visible: { opacity: 1 },
-                    }}
-                    classNames="flex w-full h-full grid relative z-10 place-content-center overflow-x-hidden"
-                  >
-                    <div className="w-full flex xl:flex-col sm:flex-col lg:flex-row md:flex-col flex-col 2xl:flex-col gap-y-4 2xl:gap-x-10 mb-6 overflow-x-hidden">
-                      <div className="flex xl:flex-row md:flex-row sm:flex-col lg:flex-row 2xl:flex-row">
-                        <div className="flex-1 flex items-center">
-                          <h2 className="text-lg font-semibold mb-4 xl:mb-0">
-                            Select your Avatar
-                          </h2>
-                        </div>
-
-                        <div className="flex flex-col xl:flex-row md:flex-row lg:flex-row 2xl:flex-row flex-1 justify-end items-center gap-x-6">
-                          <div className="bg-white border text-[13px] border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-[300px]">
-                            <Search className="text-gray-500" size={20} />
-                            <input
-                              type="text"
-                              placeholder="Search Avatars..."
-                              value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
-                              className="p-2 rounded"
-                            />
-                          </div>
-
-                          <button
-                            disabled={loading}
-                            className={clsx(
-                              "bg-primary-green text-[15px] text-white py-3.5 px-20 w-full max-w-[300px] rounded-xl flex items-center justify-center",
-                              {
-                                "opacity-80 cursor-not-allowed": loading,
-                              }
-                            )}
-                            onClick={handleButtonClick}
-                          >
-                            {loading ? (
-                              <Spinner />
-                            ) : clicked ? (
-                              "Video Generating..."
-                            ) : (
-                              "Generate Video"
-                            )}
-                          </button>
-                        </div>
-                      </div>
-
-                      <AvatarSelection
-                        avatars={filteredAvatars}
-                        onSelect={handleAvatarSelect}
-                      />
-                    </div>
-                  </Motion>
-                )}
-              </div>
-            </main>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
