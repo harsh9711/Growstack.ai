@@ -14,6 +14,7 @@ import { historyProps } from "./interface/history";
 import GlobalModal from "@/components/modal/global.modal";
 import Link from "next/link";
 import { PlanUsage } from "@/types/common";
+import Lock from "@/components/svgs/lock";
 
 interface Product {
   img_url: string;
@@ -121,7 +122,7 @@ export default function Page() {
     }));
   };
 
-  const handleSubmit = async (event: React.FormEvent) => {  
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!planUsage?.usage_amount || planUsage?.usage_amount <= 0) {
       setIsAddOnModalOpen(true);
@@ -251,10 +252,9 @@ export default function Page() {
     try {
       const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
       const data = response.data.data;
-      console.log(data.usage_amount)
       setPlanUsage(data);
 
-      if (data.usage_amount === 0) {
+      if (!planUsage?.usage_amount || planUsage?.usage_amount <= 0) {
         setIsAddOnModalOpen(true)
       }
     } catch (error: any) {
@@ -368,16 +368,26 @@ export default function Page() {
           </section>
         </div>
       </main>
-      <GlobalModal title=" Add Credit to Your Wallet" open={isAddOnModalOpen} setOpen={() => { setIsAddOnModalOpen(false) }}>
-        <div className="flex flex-row items-center justify-center px-4 pb-4 space-x-6">
-          <p className="text-start text-gray-700 text-sm md:text-base px-4">
-            To access this feature, please add credits to your wallet. You need sufficient balance to proceed with the video creation.
+      <GlobalModal showCloseButton={false} open={isAddOnModalOpen} setOpen={() => { setIsAddOnModalOpen(false) }}>
+        <div className="flex flex-col items-center justify-center px-6 pt-4 pb-8 gap-6 space-x-6">
+          <Lock/>
+          <h3 className="text-center text-[28px] font-semibold">You don’t have enough credit.</h3>
+          <p className="text-center text-gray-700 text-sm md:text-base px-4">
+            You don’t have enough credits in your wallet to use this feature. It is an add-on, and requires additional credit to access. Please add credits to continue.
           </p>
-          <Link
-            className="bg-primary-green text-white text-nowrap py-2 px-6 rounded-md transition duration-300 hover:bg-green-600"
-            href="/account/billings/settings">
-            Add Credit
-          </Link>
+          <div className="flex items-center justify-between gap-3">  
+            <button
+              className="text-red-500 border border-red-500 bg-transparent text-nowrap py-2 px-8 rounded-md transition duration-300"
+              onClick={()=> setIsAddOnModalOpen(false)}
+            >
+              Cancel
+            </button>
+            <Link
+              className="bg-primary-green text-white text-nowrap py-2 px-6 rounded-md transition duration-300 hover:bg-green-600"
+              href="/account/billings/settings">
+              Add Credit
+            </Link>
+          </div>
         </div>
       </GlobalModal>
     </>
