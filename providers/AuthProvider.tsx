@@ -32,7 +32,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // }
   }, [
     isLoggedIn,
-    router,
+    // router,
     //  isSubscribed, pathname, router
   ]);
 

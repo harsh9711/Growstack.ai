@@ -86,11 +86,12 @@ export default function Register() {
       const expiryDate = new Date(planUsageData?.usage_expiry_date);
 
       // if (isEmptyObject(planUsageData) || expiryDate <= currentDate) {
-      //   toast.error("Unauthorized: Trial expired");
-      //   router.push("/Payment");
+      // toast.error("Unauthorized: Trial expired");
+      // router.push("/Payment");
+      router.push("/app");
       // } else {
       //   toast.success("Authorized: Trial is active");
-      router.push("/app");
+      //   router.push("/app");
       // }
     } catch (error: any) {
       // Handle errors from the API request

@@ -179,124 +179,120 @@ const PricingPage: React.FC = () => {
   }, [tabQueryParam]);
 
   useEffect(() => {
-    const fetchPlans = async () => {
-      try {
-        const response = await instance.get(
-          `${API_URL}/users/api/v1/payments/plans`
-        );
-        console.log(response.data.data[0]);
-
-        const fetchedPlans = response.data.data.map((plan: any) => {
-          let description = "";
-          let featureList = [];
-          switch (plan.plan) {
-            case "INFLUENCER":
-              description =
-                "Powerful AI features to create & improve your content everywhere you work online.";
-              featureList = [
-                "AI Apps, AI Chat, AI Assistants, AI Playground, Custom GPT",
-                "Mobile App + Chrome Extension, AI Article Wizard, Image Generation",
-                formatFeatureText(
-                  "Product AI",
-                  `$${plan.product_ai_pricing} per image`
-                ),
-                formatFeatureText(
-                  "Text to Video",
-                  `$${plan.text_to_video_pricing} per video`
-                ),
-                formatFeatureText(
-                  "Max discount for yearly plans",
-                  `${plan.max_yearly_discount}% Off`
-                ),
-                "AI Workflows : Based on images, video & text",
-              ];
-              break;
-            case "PRO":
-              description =
-                "Personalized AI features with additional control, security, team training & tech support.";
-              featureList = [
-                "AI Apps, AI Chat, AI Assistants, AI Playground, Custom GPT",
-                "Mobile App + Chrome Extension, AI Article Wizard, Image Generation",
-                formatFeatureText(
-                  "Product AI",
-                  `$${plan.product_ai_pricing} per image`
-                ),
-                formatFeatureText(
-                  "Text to Video",
-                  `$${plan.text_to_video_pricing} per video`
-                ),
-                "Webscraping, Contact (Consent & Verification is extra): Credit based",
-                formatFeatureText(
-                  "Max discount for yearly plans",
-                  `${plan.max_yearly_discount}% Off`
-                ),
-                "Social Media Analytics",
-              ];
-              break;
-            case "BUSINESS":
-              description =
-                "Personalized AI features with additional control, security, team training & tech support.";
-              featureList = [
-                "AI Apps, AI Chat, AI Assistants, AI Playground, Custom GPT",
-                "Mobile App + Chrome Extension, AI Article Wizard, Image Generation",
-                formatFeatureText(
-                  "Product AI",
-                  `$${plan.product_ai_pricing} per image`
-                ),
-                formatFeatureText(
-                  "Text to Video",
-                  `$${plan.text_to_video_pricing} per video`
-                ),
-                formatFeatureText(
-                  "Max discount for yearly plans",
-                  `${plan.max_yearly_discount}% Off`
-                ),
-                "AI Workflows : Based on images, video & text",
-                "Social Media Analytics",
-                "Webscraping, Contact (Consent & Verification is extra): Credit based",
-              ];
-              break;
-            default:
-              description = "Standard AI features for various needs.";
-              featureList = ["AI Apps, AI Chat, AI Assistants, AI Playground"];
-          }
-
-          return {
-            id: plan.plan_id,
-            stripe_price_id: plan.stripe_price_id,
-            title: plan.plan,
-            monthlyPrice: `${plan.price}$`,
-            yearlyPrice: `${plan.price * 12}$`,
-            priceSuffix: "/mo",
-            description,
-            planType: plan.plan_type,
-            buttonLabel: "Contact sales",
-            buttonStyle: "bg-[#034737]/10 text-[#034737]",
-            featureList: featureList,
-          };
-        });
-
-        setPlans(fetchedPlans);
-      } catch (error: any) {
-        if (error.response) {
-          toast.error(error.response.data.message || "An error occurred");
-        } else {
-          toast.error(error.message || "An error occurred");
-        }
-        console.error("Error fetching plans:", error);
-      } finally {
-      }
-    };
-
-    fetchPlans();
+    // const fetchPlans = async () => {
+    //   try {
+    //     const response = await instance.get(
+    //       `${API_URL}/users/api/v1/payments/plans`
+    //     );
+    //     console.log(response.data.data[0]);
+    //     const fetchedPlans = response.data.data.map((plan: any) => {
+    //       let description = "";
+    //       let featureList = [];
+    //       switch (plan.plan) {
+    //         case "INFLUENCER":
+    //           description =
+    //             "Powerful AI features to create & improve your content everywhere you work online.";
+    //           featureList = [
+    //             "AI Apps, AI Chat, AI Assistants, AI Playground, Custom GPT",
+    //             "Mobile App + Chrome Extension, AI Article Wizard, Image Generation",
+    //             formatFeatureText(
+    //               "Product AI",
+    //               `$${plan.product_ai_pricing} per image`
+    //             ),
+    //             formatFeatureText(
+    //               "Text to Video",
+    //               `$${plan.text_to_video_pricing} per video`
+    //             ),
+    //             formatFeatureText(
+    //               "Max discount for yearly plans",
+    //               `${plan.max_yearly_discount}% Off`
+    //             ),
+    //             "AI Workflows : Based on images, video & text",
+    //           ];
+    //           break;
+    //         case "PRO":
+    //           description =
+    //             "Personalized AI features with additional control, security, team training & tech support.";
+    //           featureList = [
+    //             "AI Apps, AI Chat, AI Assistants, AI Playground, Custom GPT",
+    //             "Mobile App + Chrome Extension, AI Article Wizard, Image Generation",
+    //             formatFeatureText(
+    //               "Product AI",
+    //               `$${plan.product_ai_pricing} per image`
+    //             ),
+    //             formatFeatureText(
+    //               "Text to Video",
+    //               `$${plan.text_to_video_pricing} per video`
+    //             ),
+    //             "Webscraping, Contact (Consent & Verification is extra): Credit based",
+    //             formatFeatureText(
+    //               "Max discount for yearly plans",
+    //               `${plan.max_yearly_discount}% Off`
+    //             ),
+    //             "Social Media Analytics",
+    //           ];
+    //           break;
+    //         case "BUSINESS":
+    //           description =
+    //             "Personalized AI features with additional control, security, team training & tech support.";
+    //           featureList = [
+    //             "AI Apps, AI Chat, AI Assistants, AI Playground, Custom GPT",
+    //             "Mobile App + Chrome Extension, AI Article Wizard, Image Generation",
+    //             formatFeatureText(
+    //               "Product AI",
+    //               `$${plan.product_ai_pricing} per image`
+    //             ),
+    //             formatFeatureText(
+    //               "Text to Video",
+    //               `$${plan.text_to_video_pricing} per video`
+    //             ),
+    //             formatFeatureText(
+    //               "Max discount for yearly plans",
+    //               `${plan.max_yearly_discount}% Off`
+    //             ),
+    //             "AI Workflows : Based on images, video & text",
+    //             "Social Media Analytics",
+    //             "Webscraping, Contact (Consent & Verification is extra): Credit based",
+    //           ];
+    //           break;
+    //         default:
+    //           description = "Standard AI features for various needs.";
+    //           featureList = ["AI Apps, AI Chat, AI Assistants, AI Playground"];
+    //       }
+    //       return {
+    //         id: plan.plan_id,
+    //         stripe_price_id: plan.stripe_price_id,
+    //         title: plan.plan,
+    //         monthlyPrice: `${plan.price}$`,
+    //         yearlyPrice: `${plan.price * 12}$`,
+    //         priceSuffix: "/mo",
+    //         description,
+    //         planType: plan.plan_type,
+    //         buttonLabel: "Contact sales",
+    //         buttonStyle: "bg-[#034737]/10 text-[#034737]",
+    //         featureList: featureList,
+    //       };
+    //     });
+    //     setPlans(fetchedPlans);
+    //   } catch (error: any) {
+    //     if (error.response) {
+    //       toast.error(error.response.data.message || "An error occurred");
+    //     } else {
+    //       toast.error(error.message || "An error occurred");
+    //     }
+    //     console.error("Error fetching plans:", error);
+    //   } finally {
+    //   }
+    // };
+    // fetchPlans();
   }, []);
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const tab = params.get("tab");
-    if (tab) {
-      setSelectedTabIndex(parseInt(tab, 10));
-    }
-  }, [location.search]);
+  // useEffect(() => {
+  //   const params = new URLSearchParams(location.search);
+  //   const tab = params.get("tab");
+  //   if (tab) {
+  //     setSelectedTabIndex(parseInt(tab, 10));
+  //   }
+  // }, [location.search]);
 
   const view = selectedTabIndex === 0 ? "monthly" : "yearly";
 
