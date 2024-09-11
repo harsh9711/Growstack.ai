@@ -28,6 +28,7 @@
     "@react-leaflet/core": "^2.1.0",
     "@reduxjs/toolkit": "^2.2.6",
     "@tanstack/react-table": "^8.17.3",
+    "@types/jquery": "^3.5.30",
     "@types/lodash": "^4.17.7",
     "@types/qs": "^6.9.15",
     "@types/react-collapse": "^5.0.4",

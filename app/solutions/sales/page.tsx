@@ -17,8 +17,8 @@ import { motion, inView } from "framer-motion";
 import MarketingTechnology from "../largeenterprise/components/marketingTechnology/MarketingTechnology";
 import Banner from "./banner/Banner";
 import Link from "next/link";
-import Footer from "@/app/(landing)/components/Footer";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Footer from "@/components/footer/Footer";
 
 const page = () => {
   useEffect(() => {
@@ -268,7 +268,6 @@ const page = () => {
             alt="image"
           />
         </div>
-
         <MarketingStreamline />
       </section>
       <Footer />

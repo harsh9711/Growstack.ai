@@ -2126,6 +2126,13 @@
     "@types/react" "*"
     hoist-non-react-statics "^3.3.0"
 
+"@types/jquery@^3.5.30":
+  version "3.5.30"
+  resolved "https://registry.npmjs.org/@types/jquery/-/jquery-3.5.30.tgz"
+  integrity sha512-nbWKkkyb919DOUxjmRVk8vwtDb0/k8FKncmUKFi+NY+QXqWltooxTrswvz4LspQwxvLdvzBN1TImr6cw3aQx2A==
+  dependencies:
+    "@types/sizzle" "*"
+
 "@types/jsonfile@*":
   version "6.1.4"
   resolved "https://registry.npmjs.org/@types/jsonfile/-/jsonfile-6.1.4.tgz"
@@ -2264,6 +2271,11 @@
   integrity sha512-raiuEPUYqXu+nvtY2Pe8s8FEmZ3x5yAH4VkLdihcPdalvsHltomrRC9BzuStrJ9yk06470hS0Crw0f1pXqD+Hg==
   dependencies:
     "@types/node" "*"
+
+"@types/sizzle@*":
+  version "2.3.8"
+  resolved "https://registry.npmjs.org/@types/sizzle/-/sizzle-2.3.8.tgz"
+  integrity sha512-0vWLNK2D5MT9dg0iOo8GlKguPAU02QjmZitPEsXRuJXU/OGIOt9vT9Fc26wtYuavLxtO45v9PGleoL9Z0k1LHg==
 
 "@types/unist@*", "@types/unist@^3.0.0":
   version "3.0.2"
@@ -3484,6 +3496,7 @@ graceful-fs@^4.1.6, graceful-fs@^4.2.0, graceful-fs@^4.2.11, graceful-fs@^4.2.2:
     "@headlessui/react" "^2.1.2"
     "@hookform/resolvers" "^3.6.0"
     "@intercom/messenger-js-sdk" "^0.0.13"
+    "@material-tailwind/react" "^2.1.10"
     "@next/third-parties" "^14.2.4"
     "@radix-ui/react-avatar" "^1.1.0"
     "@radix-ui/react-checkbox" "^1.0.4"
