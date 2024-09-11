@@ -1,5 +1,5 @@
 "use client";
- 
+
 import Spinner from "@/components/Spinner";
 import { Checkbox } from "@/components/ui/checkbox";
 import { API_URL } from "@/lib/api";
@@ -15,43 +15,45 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { login } from "@/lib/features/auth/auth.slice";
- 
+import { isEmptyObject } from "@/lib/utils";
+import { setCookie } from "cookies-next";
+
 export default function Register() {
   const router = useRouter();
   const dispatch = useDispatch();
- 
+
   const ValidationSchema = z
-  .object({
-    email: z
-      .string()
-      .email("Please enter a valid email address") // Basic email validation
-      .regex(
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-        "Email must be a valid format (e.g., user@example.com)"
-      ), // Stricter regex for proper email format
-    password: z
-      .string()
-      .min(8, "Password must be at least 8 characters")
-      .max(20, "Password can't exceed 20 characters")
-      .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-      .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-      .regex(/[0-9]/, "Password must contain at least one number")
-      .regex(/[\W_]/, "Password must contain at least one special character"),
-    confirmPassword: z.string(),
-    agreeToTerms: z.boolean().refine((val) => val === true, {
-      message: "You must agree to the terms and conditions",
-    }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
+    .object({
+      email: z
+        .string()
+        .email("Please enter a valid email address") // Basic email validation
+        .regex(
+          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+          "Email must be a valid format (e.g., user@example.com)"
+        ), // Stricter regex for proper email format
+      password: z
+        .string()
+        .min(8, "Password must be at least 8 characters")
+        .max(20, "Password can't exceed 20 characters")
+        .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+        .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+        .regex(/[0-9]/, "Password must contain at least one number")
+        .regex(/[\W_]/, "Password must contain at least one special character"),
+      confirmPassword: z.string(),
+      agreeToTerms: z.boolean().refine((val) => val === true, {
+        message: "You must agree to the terms and conditions",
+      }),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: "Passwords don't match",
+      path: ["confirmPassword"],
+    });
 
 
   const [isPending, setIsPending] = useState(false);
- 
+
   type ValidationSchemaType = z.infer<typeof ValidationSchema>;
- 
+
   const {
     register,
     handleSubmit,
@@ -61,28 +63,30 @@ export default function Register() {
     resolver: zodResolver(ValidationSchema),
     defaultValues: { agreeToTerms: false },
   });
- 
+
   const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
     setIsPending(true);
     try {
       const { email, password } = data;
+
       const response = await instance.post(API_URL + "/users/api/v1/signup", {
         email,
         password,
       });
+      setCookie("token", response.data.data.token, {
+        secure: true,
+        sameSite: "none",
+        expires: new Date(Date.now() + 2 * 60 * 60 * 1000),
+      });
+
       toast.success(response.data.message);
       dispatch(login(response.data.data));
 
-      router.push("/Payment");
       const planUsageData = response.data.data.plan_usage;
-      console.log("plans", planUsageData);
-  
       const currentDate = new Date();
       const expiryDate = new Date(planUsageData?.usage_expiry_date);
-  
-      if (isNaN(expiryDate.getTime())) {
-        // toast.error("Invalid expiration date");
-      } else if (expiryDate <= currentDate) {
+
+      if (isEmptyObject(planUsageData) || expiryDate <= currentDate) {
         toast.error("Unauthorized: Trial expired");
         router.push("/Payment");
       } else {
@@ -90,32 +94,20 @@ export default function Register() {
         router.push("/app");
       }
     } catch (error: any) {
-      // Handle errors during login or fetching plan usage
-      if (error.response) {
+      // Handle errors from the API request
+      if (error.response && error.response.data) {
         toast.error(error.response.data.message);
       } else {
-        toast.error(error.message);
+        toast.error("An unexpected error occurred");
       }
-      console.error("Login or plan usage failed:", error);
+      console.error("Signup or plan usage validation failed:", error);
     } finally {
-      // Stop loading indicator
+      // Reset the loading state
       setIsPending(false);
     }
-  
-      // router.push("/app");
-    }
-    // catch (error: any) {
-    //   if (error.response) {
-    //     toast.error(error.response.data.message);
-    //   } else {
-    //     toast.error(error.message);
-    //   }
-    //   console.error("Login failed:", error);
-    // } finally {
-    //   setIsPending(false);
-    // }
+  };
 
- 
+
   return (
     <main>
       <div className="flex flex-col-reverse xl:flex-row-reverse h-screen overflow-y-auto gap-10">
@@ -156,7 +148,7 @@ export default function Register() {
                     </div>
                     {errors.email && <span className="text-rose-600 text-sm">{errors.email?.message}</span>}
                   </div>
- 
+
                   {/* styled input field for password */}
                   <div>
                     <div
@@ -185,7 +177,7 @@ export default function Register() {
                     </div>
                     {errors.password && <span className="text-rose-600 text-sm">{errors.password?.message}</span>}
                   </div>
- 
+
                   {/* styled input field for password confirmation*/}
                   <div>
                     <div
@@ -214,7 +206,7 @@ export default function Register() {
                     </div>
                     {errors.confirmPassword && <span className="text-rose-600 text-sm">{errors.confirmPassword?.message}</span>}
                   </div>
- 
+
                   <div>
                     <div className="flex items-center space-x-2">
                       <Checkbox id="agree-to-terms" defaultChecked={false} onCheckedChange={(checked) => setValue("agreeToTerms", Boolean(checked))} />
@@ -239,7 +231,7 @@ export default function Register() {
                     {isPending ? <Spinner /> : "Register"}
                   </button>
                 </form>
- 
+
                 <div className="flex items-center text-[#667085] gap-2">
                   <div className="h-[2px] w-full bg-[#EFEFF4]" />
                   <span className="whitespace-nowrap">or, Sign up with</span>
@@ -278,5 +270,4 @@ export default function Register() {
     </main>
   );
 }
- 
- 
+
