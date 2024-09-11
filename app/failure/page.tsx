@@ -15,14 +15,14 @@ const PricingPage: React.FC = () => {
       setSeconds((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
-          router.push("/Payment");
+          // router.push("/Payment");
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
 
-    return () => clearInterval(timer); 
+    return () => clearInterval(timer);
   }, [router]);
 
   return (
@@ -34,7 +34,11 @@ const PricingPage: React.FC = () => {
           data-aos-duration="500"
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="text-center" data-aos="fade-up" data-aos-duration="1000">
+          <div
+            className="text-center"
+            data-aos="fade-up"
+            data-aos-duration="1000"
+          >
             <Image
               src="/failure.gif"
               width={100}
@@ -43,10 +47,16 @@ const PricingPage: React.FC = () => {
               className="mx-auto mb-4"
             />
             <h2 className="text-2xl font-bold text-green-600">Oh no!</h2>
-            <p className="text-lg text-gray-700 mt-2">We were unable to process</p>
+            <p className="text-lg text-gray-700 mt-2">
+              We were unable to process
+            </p>
             <div className="mt-6">
-              <p className="text-lg text-gray-600">Redirecting to dashboard in</p>
-              <h3 className="text-4xl font-bold text-red-600">{seconds} seconds</h3>
+              <p className="text-lg text-gray-600">
+                Redirecting to dashboard in
+              </p>
+              <h3 className="text-4xl font-bold text-red-600">
+                {seconds} seconds
+              </h3>
             </div>
           </div>
         </div>

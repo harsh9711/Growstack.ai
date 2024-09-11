@@ -13,8 +13,13 @@ interface PlanUsage {
   usage_amount: number;
 }
 
-
-const PlanCard = ({ plan, selectedTabIndex }: { plan: Feature, selectedTabIndex: number }) => {
+const PlanCard = ({
+  plan,
+  selectedTabIndex,
+}: {
+  plan: Feature;
+  selectedTabIndex: number;
+}) => {
   const [loading, setLoading] = useState(false);
 
   const handleButtonClick = async () => {
@@ -48,7 +53,6 @@ const PlanCard = ({ plan, selectedTabIndex }: { plan: Feature, selectedTabIndex:
   const suffix = selectedTabIndex === 0 ? "/mo" : "/yr";
   const marginBottom = plan.title === "INFLUENCER" ? "mb-20" : "mb-4";
 
-
   return (
     <div
       className="items-center justify-center mx-auto h-full w-full bg-[#F5F5F5] rounded-xl flex flex-col py-6 transition-all duration-300 border border-transparent hover:border-[#034737] hover:shadow-lg hover:bg-white hover:scale-105 shadow-sm hover:border-[4px]"
@@ -66,13 +70,14 @@ const PlanCard = ({ plan, selectedTabIndex }: { plan: Feature, selectedTabIndex:
           className="px-8 text-[24px] xl:text-[48px] text-center justify-center font-bold flex gap-2 items-center text-[#034737]"
           data-aos="fade-up"
         >
-          ${selectedTabIndex === 0
+          $
+          {selectedTabIndex === 0
             ? plan.monthlyPrice
               ? parseFloat(plan.monthlyPrice).toFixed(2)
               : "N/A"
             : plan.yearlyPrice
-              ? parseFloat(plan.yearlyPrice).toFixed(2)
-              : "N/A"}
+            ? parseFloat(plan.yearlyPrice).toFixed(2)
+            : "N/A"}
           <span className="text-[20px] xl:text-[28px] opacity-20 text-black">
             {suffix}
           </span>
@@ -93,7 +98,7 @@ const PlanCard = ({ plan, selectedTabIndex }: { plan: Feature, selectedTabIndex:
               className="flex text-[12px] xl:text-[18px] font-medium items-center gap-x-2"
               data-aos="fade-left"
             >
-              <Ticket/>
+              <Ticket />
               {feature}
             </p>
           </React.Fragment>
@@ -141,35 +146,30 @@ const PricingPage: React.FC = () => {
   };
 
   useEffect(() => {
-    const fetchPlanUsage = async () => {
-      try {
-        const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
-        const planUsageData = response.data.data;
-
-        if (planUsageData) {
-          const currentDate = new Date();
-          const expiryDate = new Date(planUsageData?.usage_expiry_date);
-
-          if (expiryDate > currentDate) {
-            toast.success('You are already subscribed. Redirecting to app...');
-            router.push("/app"); 
-          }
-        }
-
-
-      } catch (error: any) {
-        if (error.response) {
-          toast.error(error.response.data.message);
-        } else {
-          toast.error(error.message);
-        }
-        console.error('Error fetching plan usage:', error);
-      }
-    };
-
-    fetchPlanUsage();
+    // const fetchPlanUsage = async () => {
+    //   try {
+    //     const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
+    //     const planUsageData = response.data.data;
+    //     if (planUsageData) {
+    //       const currentDate = new Date();
+    //       const expiryDate = new Date(planUsageData?.usage_expiry_date);
+    //       if (expiryDate > currentDate) {
+    //         toast.success('You are already subscribed. Redirecting to app...');
+    //         router.push("/app");
+    //       }
+    //     }
+    //   } catch (error: any) {
+    //     if (error.response) {
+    //       toast.error(error.response.data.message);
+    //     } else {
+    //       toast.error(error.message);
+    //     }
+    //     console.error('Error fetching plan usage:', error);
+    //   }
+    // };
+    // fetchPlanUsage();
   }, []);
-  
+
   useEffect(() => {
     const tab = tabQueryParam ? Number(tabQueryParam) : 0;
     setSelectedTabIndex(tab);
@@ -313,7 +313,6 @@ const PricingPage: React.FC = () => {
     setSelectedTabIndex(index);
   };
 
-
   useEffect(() => {
     AOS.init({
       duration: 500,
@@ -365,16 +364,16 @@ const PricingPage: React.FC = () => {
                 {tabs.map((tab, index) => (
                   <div
                     key={index}
-                    className={`w-full flex p-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${selectedTabIndex === index
-                      ? "!text-white font-semibold bg-[#034737] custom-transition rounded-xl"
-                      : "!text-[#034737]"
-                      }`}
+                    className={`w-full flex p-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
+                      selectedTabIndex === index
+                        ? "!text-white font-semibold bg-[#034737] custom-transition rounded-xl"
+                        : "!text-[#034737]"
+                    }`}
                     onClick={() => handleTabClick(index)}
                   >
                     {tab}
                   </div>
                 ))}
-
               </div>
               <h2
                 className="!text-[#034737] mt-2.5 text-center w-fit transition-opacity duration-300"
@@ -388,7 +387,11 @@ const PricingPage: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-3 items-center justify-center mx-auto gap-6 mt-6">
               {filteredPlans.map((plan, idx) => (
-                <PlanCard key={idx} plan={plan} selectedTabIndex={selectedTabIndex} />
+                <PlanCard
+                  key={idx}
+                  plan={plan}
+                  selectedTabIndex={selectedTabIndex}
+                />
               ))}
             </div>
           </section>
@@ -399,5 +402,3 @@ const PricingPage: React.FC = () => {
 };
 
 export default PricingPage;
-
-
