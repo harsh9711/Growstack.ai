@@ -56,8 +56,6 @@ const OverViewSection = () => {
     }
   };
 
-  console.log(planUsage)
-
   const handleCreditClick = async () => {
     try {
       setIsCreditLoading(true);

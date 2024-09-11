@@ -9,9 +9,10 @@ interface GlobalModalProps {
   title?: string;
   children?: React.ReactNode;
   className?: string;
+  showCloseButton ?: boolean
 }
 
-export const GlobalModal: React.FC<GlobalModalProps> = ({ title, children, className, open , setOpen }) => {
+export const GlobalModal: React.FC<GlobalModalProps> = ({ title, children, className, open , setOpen, showCloseButton = true }) => {
 
   return (
     <>
@@ -20,7 +21,8 @@ export const GlobalModal: React.FC<GlobalModalProps> = ({ title, children, class
         onOpenChange={setOpen}  
       >
         <DialogContent
-          className={cn('w-[70%] md:w-[90%] max-w-3xl p-0 border-0', className)}
+          showCloseButton={showCloseButton}
+          className={cn('w-[80%] md:w-[980%] max-w-2xl p-0 border-0', className)}
         >
           <DialogHeader>
             {title && (

@@ -8,30 +8,14 @@ import { Feature } from "@/types/Box";
 import toast from "react-hot-toast";
 import { API_URL } from "@/lib/api";
 import Link from "next/link";
-import { isEmptyObject } from "@/lib/utils";
+import Ticket from "@/components/svgs/ticket";
 interface PlanUsage {
   usage_amount: number;
 }
 
 
 const PlanCard = ({ plan, selectedTabIndex }: { plan: Feature, selectedTabIndex: number }) => {
-  const tickIcon = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-      fill="currentColor"
-      className="w-5 h-5 text-[#034737]"
-    >
-      <path
-        fillRule="evenodd"
-        d="M16.707 5.293a1 1 0 00-1.414 0L8.5 12.086 4.707 8.293a1 1 0 00-1.414 1.414l4.5 4.5a1 1 0 001.414 0l7.5-7.5a1 1 0 000-1.414z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-
   const [loading, setLoading] = useState(false);
-
 
   const handleButtonClick = async () => {
     setLoading(true);
@@ -67,9 +51,9 @@ const PlanCard = ({ plan, selectedTabIndex }: { plan: Feature, selectedTabIndex:
 
   return (
     <div
-      className="items-center justify-center mx-auto max-w-[550px] xl:max-h-[650px] h-full w-full bg-[#F5F5F5] rounded-xl flex flex-col py-6 transition-all duration-300 border border-transparent hover:border-[#034737] hover:shadow-lg hover:bg-white hover:scale-105 shadow-sm hover:border-[4px]"
+      className="items-center justify-center mx-auto h-full w-full bg-[#F5F5F5] rounded-xl flex flex-col py-6 transition-all duration-300 border border-transparent hover:border-[#034737] hover:shadow-lg hover:bg-white hover:scale-105 shadow-sm hover:border-[4px]"
       data-aos="fade-up"
-      data-aos-delay="200"
+      data-aos-delay="100"
     >
       <div className="text-center w-full flex flex-col">
         <h2
@@ -109,13 +93,13 @@ const PlanCard = ({ plan, selectedTabIndex }: { plan: Feature, selectedTabIndex:
               className="flex text-[12px] xl:text-[18px] font-medium items-center gap-x-2"
               data-aos="fade-left"
             >
-              {tickIcon}
+              <Ticket/>
               {feature}
             </p>
           </React.Fragment>
         ))}
       </div>
-      <div className="flex items-center justify-center w-full mt-auto">
+      <div className="flex items-center justify-center w-full mt-auto px-3">
         <button
           className={` ${plan.buttonStyle} group-hover:bg-[#034737] items-center justify-center mx-auto border-[#034737] rounded-xl py-4 max-w-[405px] w-full transition-all duration-300 hover:bg-[#034737] hover:text-white`}
           onClick={handleButtonClick}
@@ -340,13 +324,13 @@ const PricingPage: React.FC = () => {
     <div className="flex flex-col min-h-screen">
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
         <div
-          className="relative bg-white  xl:max-h-[988px] h-full w-full max-w-[1800px] mx-4 sm:mx-6 md:mx-8 lg:mx-auto rounded-2xl shadow-lg"
+          className="relative overflow-y-auto bg-white  xl:max-h-[988px] h-full w-full max-w-[1800px] mx-4 sm:mx-6 md:mx-8 lg:mx-auto rounded-2xl shadow-lg"
           data-aos="zoom-in"
           data-aos-duration="500"
           onClick={(e) => e.stopPropagation()}
         >
           <div
-            className="p-6 mx-auto flex md:flex-row flex-col gap-10 overflow-hidden w-full  items-center justify-between"
+            className="p-6 mx-auto flex md:flex-row flex-col gap-y-4 gap-x-10 overflow-hidden w-full  items-center justify-between"
             data-aos="fade-right"
           >
             <div
@@ -364,7 +348,7 @@ const PricingPage: React.FC = () => {
               </p>
             </div>
             <div
-              className="mt-6 xl:p-0 p-4 max-w-[400px] border-[#034737] text-[#034737] w-full flex justify-end"
+              className="border-[#034737] text-[#034737] w-full flex justify-end"
               data-aos="fade-left"
             >
               <Link href="/">
@@ -375,13 +359,13 @@ const PricingPage: React.FC = () => {
             </div>
           </div>
           <div className="border "></div>
-          <section className="p-4">
+          <section className="p-4 overflow-y-auto">
             <div className="w-full border max-w-md flex gap-4 justify-center mx-auto item-center bg-[#F5F5F5] shadow-2xl shadow-gray-200 px-3 py-2 rounded-xl">
-              <div className="w-full flex gap-2 relative">
+              <div className="w-full flex gap-2 flex-1 relative">
                 {tabs.map((tab, index) => (
                   <div
                     key={index}
-                    className={`w-full h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${selectedTabIndex === index
+                    className={`w-full flex p-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${selectedTabIndex === index
                       ? "!text-white font-semibold bg-[#034737] custom-transition rounded-xl"
                       : "!text-[#034737]"
                       }`}
@@ -393,7 +377,7 @@ const PricingPage: React.FC = () => {
 
               </div>
               <h2
-                className="!text-[#034737] mt-3.5 text-center w-full max-w-[100px] transition-opacity duration-300"
+                className="!text-[#034737] mt-2.5 text-center w-fit transition-opacity duration-300"
                 style={{
                   opacity: selectedTabIndex === 1 ? 1 : 0.3,
                 }}
@@ -402,12 +386,11 @@ const PricingPage: React.FC = () => {
               </h2>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center mx-auto gap-4 mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 py-3 items-center justify-center mx-auto gap-6 mt-6">
               {filteredPlans.map((plan, idx) => (
                 <PlanCard key={idx} plan={plan} selectedTabIndex={selectedTabIndex} />
               ))}
             </div>
-
           </section>
         </div>
       </div>
