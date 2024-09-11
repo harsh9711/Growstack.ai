@@ -144,7 +144,7 @@ const ImageGallerySecond = () => {
                 alt="Zoomed Image"
                 width={700}
                 height={700}
-                className="zoomed-image w-[900px] 2xl:w-[1200px] h-full rounded-lg items-center relative  justify-center mx-auto mt-8"
+                className="zoomed-image w-[500px] xl:w-[900px] 2xl:w-[800px] h-full rounded-lg items-center relative  justify-center mx-auto mt-8"
               />
             </div>
           </div>

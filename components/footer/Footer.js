@@ -4,7 +4,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import "./Footer.scss";
 import Link from "next/link";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function Footer() {
   useEffect(() => {
@@ -14,7 +14,12 @@ function Footer() {
     <React.Fragment>
       <div className="footer">
         <div className="container">
-          <div className="demo" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
+          <div
+            className="demo"
+            data-aos="fade-up"
+            data-aos-easing="ease-in-sine"
+            data-aos-duration="1000"
+          >
             <h3>Ready to see a personalized demo?</h3>
             <div className="btns fbtn">
               <Link href="/auth/register" className="sheen">
@@ -29,15 +34,15 @@ function Footer() {
         <div className="innerBlock">
           <div className="container">
             <div className="row">
-              <div className="col-lg-3 col-md-12">
+              <div className="col-lg-2 col-md-12">
                 <div className="footerLogo">
                   <img src="/images_growstack/footer/logo.svg" alt="logo" />
                 </div>
               </div>
               <div className="col-lg-2 col-md-6">
                 <h4>Company</h4>
-                <ul>
-                  <li>
+                <ul >
+                  <li >
                     <Link href="/auth/register">Company</Link>
                   </li>
                   <li>
@@ -54,20 +59,36 @@ function Footer() {
                   </li>
                 </ul>
               </div>
-              <div className="col-lg-2 col-md-6">
+              <div className="col-lg-3 col-md-6">
                 <h4>Features</h4>
                 <ul>
                   <li>
-                    <Link href="/auth/register">Research assistant</Link>
+                    <Link href="/ai-marketing-and-sales-app">
+                      AI marketing and sales apps
+                    </Link>
                   </li>
                   <li>
-                    <Link href="/ai-marketing-and-sales-app">AI Marketing & Sales Apps</Link>
+                    <Link href="/text-to-video-and-product-ai">
+                      Text to videos and Product AI
+                    </Link>
                   </li>
                   <li>
-                    <Link href="/auth/register">Imaginate app</Link>
+                    <Link href="/marketing-and-sales-assistant">
+                      Marketing and sales assistants
+                    </Link>
                   </li>
                   <li>
-                    <Link href="/marketing-and-sales-assistant">Marketing and sales assistants</Link>
+                    <Link href="/ai-website-and-email-builder">
+                      AI Website landing page and email Builder
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/custom-marketing-gpt-apps">
+                      Custom marketing GPT apps
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/social-planner-hub">Social planner hub</Link>
                   </li>
                 </ul>
               </div>
@@ -78,14 +99,13 @@ function Footer() {
                     <Link href="/auth/register">Support</Link>
                   </li>
                   <li>
-                  <Link href="/Tos">Terms & Condition</Link>
+                    <Link href="/Tos">Terms & Condition</Link>
                   </li>
                   <li>
-                  <Link href="/Tnc">Privacy Policy</Link>
+                    <Link href="/Tnc">Privacy Policy</Link>
                   </li>
                   <li>
-                  <Link href="/Rrp">Refund &
-                  return policy</Link>
+                    <Link href="/Rrp">Refund & return policy</Link>
                   </li>
                   <li>
                     <Link href="/auth/register">Community</Link>
@@ -97,10 +117,17 @@ function Footer() {
                 <p>Subscribe to our newsletter</p>
                 <div className="input-group">
                   <img src="/images_growstack/footer/letter.svg" alt="letter" />
-                  <input type="text" className="form-control" placeholder="Enter your email" />
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter your email"
+                  />
                   <div className="input-group-append">
                     <button className="sheen" type="button">
-                      <img src="/images_growstack/footer/newsletter.svg" alt="newsletter" />
+                      <img
+                        src="/images_growstack/footer/newsletter.svg"
+                        alt="newsletter"
+                      />
                     </button>
                   </div>
                 </div>
@@ -110,16 +137,28 @@ function Footer() {
               <p>Copyright © 2024 growstack</p>
               <div className="social">
                 <Link href="/auth/register">
-                  <img src="/images_growstack/footer/youtube.svg" alt="youtube" />
+                  <img
+                    src="/images_growstack/footer/youtube.svg"
+                    alt="youtube"
+                  />
                 </Link>
                 <Link href="/auth/register">
-                  <img src="/images_growstack/footer/facebook.svg" alt="facebook" />
+                  <img
+                    src="/images_growstack/footer/facebook.svg"
+                    alt="facebook"
+                  />
                 </Link>
                 <Link href="/auth/register">
-                  <img src="/images_growstack/footer/twitter.svg" alt="twitter" />
+                  <img
+                    src="/images_growstack/footer/twitter.svg"
+                    alt="twitter"
+                  />
                 </Link>
                 <Link href="/auth/register">
-                  <img src="/images_growstack/footer/linkedin.svg" alt="linkedin" />
+                  <img
+                    src="/images_growstack/footer/linkedin.svg"
+                    alt="linkedin"
+                  />
                 </Link>
               </div>
             </div>
