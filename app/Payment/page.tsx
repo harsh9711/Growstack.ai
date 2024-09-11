@@ -162,23 +162,17 @@ const PricingPage: React.FC = () => {
         const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
         const planUsageData = response.data.data;
 
-        const currentDate = new Date();
-        const expiryDate = new Date(planUsageData?.usage_expiry_date);
+        if (planUsageData) {
+          const currentDate = new Date();
+          const expiryDate = new Date(planUsageData?.usage_expiry_date);
 
-        // if (isNaN(expiryDate.getTime())) {
-        //   console.log(expiryDate)
-        //   // toast.error('Invalid expiration date');
-        // } else if (expiryDate <= currentDate) {
-        //   // toast.error('Unauthorized: Trial expired');
-        // } else {
-        //   toast.success('Authorized: Trial is active');
-        //   window.location.href = '/app';
-        // }
+          if (expiryDate > currentDate) {
+            toast.success('You are already subscribed. Redirecting to app...');
+            router.push("/app"); 
+          }
+        }
 
-        // if (!(isEmptyObject(planUsageData) || expiryDate <= currentDate)) {
-        //   toast.success("Authorized: Trial is active");
-        //   router.push("/app");
-        // }
+
       } catch (error: any) {
         if (error.response) {
           toast.error(error.response.data.message);
@@ -191,7 +185,7 @@ const PricingPage: React.FC = () => {
 
     fetchPlanUsage();
   }, []);
-
+  
   useEffect(() => {
     const tab = tabQueryParam ? Number(tabQueryParam) : 0;
     setSelectedTabIndex(tab);
@@ -352,7 +346,7 @@ const PricingPage: React.FC = () => {
           onClick={(e) => e.stopPropagation()}
         >
           <div
-            className="p-6 mx-auto flex xl:flex-row flex-col gap-10 overflow-hidden w-full  items-center justify-between"
+            className="p-6 mx-auto flex md:flex-row flex-col gap-10 overflow-hidden w-full  items-center justify-between"
             data-aos="fade-right"
           >
             <div
