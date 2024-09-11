@@ -160,9 +160,9 @@ export default function Dashboard() {
           <div className="space-y-2">
             <h1 className="text-2xl font-semibold">
               Welcome back,{" "}
-              {currentUser.name
+              {currentUser?.name
                 ? currentUser.name
-                : currentUser.email.split(/[@.]/)[0]}
+                : currentUser?.email.split(/[@.]/)[0]}
             </h1>
             {/* <p className="flex items-center gap-2 text-[#3D3D3D] text-[15px]">
               23 August - 23 September 2024
