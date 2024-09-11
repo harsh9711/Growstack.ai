@@ -121,6 +121,7 @@ export default function Page() {
     event.preventDefault();
     const { img_url, user_prompt, remove_bg_toggle, category, negative_promt, color } = productAI;
 
+    console.log("URL of Image :", img_url)
     if (!img_url) {
       toast.error("Please upload an image.");
       return;
