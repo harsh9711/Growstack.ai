@@ -171,7 +171,9 @@ export default function AiPlayground() {
           return chatArea;
         })
       );
-    } catch (error) {
+    } catch (error : any) {
+      setChatAreas(chatAreas);
+      toast.error(error?.response?.data?.message || "Something went wrong");
       console.error("Error sending prompt:", error);
     }
 
