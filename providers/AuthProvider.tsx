@@ -30,7 +30,10 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     // } else if (isLoggedIn && isSubscribed && pathname === "/auth/login") {
     //   router.push("/app");
     // }
-  }, [isLoggedIn, isSubscribed, pathname, router]);
+  }, [
+    isLoggedIn,
+    //  isSubscribed, pathname, router
+  ]);
 
   if (!isLoggedIn || !isSubscribed) {
     return null;
