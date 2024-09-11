@@ -179,11 +179,11 @@ const Layout = () => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
   const handleSendMessage = async (message: string) => {
+    console.log("selectedMessage.message[0].recipientId",selectedMessage.recipientId);
+    
     setMessages(message);
     let file;
-
     if (uploadedFile) {
-      // selectedMessage.message.push(payloaddata);
       const formData = new FormData();
       formData.append("document", uploadedFile);
       try {
@@ -193,7 +193,7 @@ const Layout = () => {
         );
 
         const payload = {
-          recipientId: "1788791796136361984",
+          recipientId: selectedMessage.recipientId?selectedMessage.recipientId:"",
           message: message,
           mediaUrls: [response.data.data.fileUrl],
         };
@@ -214,9 +214,8 @@ const Layout = () => {
         // setIsPending(false);
       }
     } else {
-      console.log("selectedMessage", selectedMessage);
       const payload = {
-        recipientId: "1788791796136361984",
+        recipientId: selectedMessage.recipientId,
         message: message,
         mediaUrls: [],
       };
@@ -226,7 +225,7 @@ const Layout = () => {
     }
 
     const payloaddata = {
-      senderId: "1788791796136361984", //selectedMessage.message[0].senderId,
+      senderId:selectedMessage.message[0].recipientId?selectedMessage.message[0].recipientId:"", //selectedMessage.message[0].senderId,
       attachments: file ? [{ type: "image", url: file }] : [],
       created: {},
       conversationId: selectedMessage.message[0].conversationId,
@@ -336,7 +335,7 @@ const Layout = () => {
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [visibleMenuIndex, setVisibleMenuIndex] = useState<number | null>(null);
   const handleDotsClick = () => {
     setShowDelete(!showDelete);
   };
@@ -446,7 +445,24 @@ const Layout = () => {
     console.log("Selected message:", message);
     setSelectedMessage(message);
   };
+  const handleDeleteMessage = (index: number) => {
+    const updatedMessages = selectedMessage.message.filter(
+      (_: any, msgIndex: number) => msgIndex !== index
+    );
+    setSelectedMessage({ ...selectedMessage, message: updatedMessages });
+    setVisibleMenuIndex(null); // Close the menu after delete
+  };
 
+  // Handle edit message
+  const handleEditMessage = (index: number) => {
+    console.log("Edit message at index:", index);
+    setVisibleMenuIndex(null); // Close the menu after editing
+  };
+
+  // Toggle menu visibility
+  const toggleMenu = (index: number) => {
+    setVisibleMenuIndex(visibleMenuIndex === index ? null : index);
+  };
   const sidebarData: any = [];
   const [filteredData, setFilteredData] = useState(sidebarData);
   const [selectedPost, setSelectedPost] = useState<any>({});
@@ -454,7 +470,7 @@ const Layout = () => {
   const [selectedPostComments, setSelectedPostComments] = useState<any>([]);
   const [chatInput, setChatInput] = useState("");
   return (
-    <div className="flex-1 max-h-[730px] flex  mt-10 shadow-lg rounded-3xl text-ellipsis">
+    <div className="flex-1 max-h-[800px] flex  mt-10 shadow-lg rounded-3xl text-ellipsis">
       <aside
         className={clsx(
           "w-full max-w-[350px] relative border bg-white   flex flex-col",
@@ -514,7 +530,7 @@ const Layout = () => {
               />
             ))}
         </div>
-        {/* <div className="h-20 w-full bg-gradient-to-b from-transparent via-white to-white absolute bottom-0 rounde" /> */}
+        <div className="h-20 w-full bg-gradient-to-b from-transparent via-white to-white absolute bottom-0 rounde" />
       </aside>
       {activeIndex === 1 && isOpened && selectedMessage && (
         <main
@@ -548,7 +564,6 @@ const Layout = () => {
             }}
           >
             <div className="flex flex-col gap-4">
-              {/* Check if there are messages */}
               {Array.isArray(selectedMessage.message) &&
               selectedMessage.message.length > 0 ? (
                 selectedMessage.message.map(
@@ -561,7 +576,10 @@ const Layout = () => {
                     },
                     index: React.Key | null | undefined
                   ) => (
-                    <div key={index} className="flex flex-row gap-4">
+                    <div
+                      key={index}
+                      className="flex flex-row gap-4 items-start"
+                    >
                       <ChatMessage
                         message={
                           <>
@@ -570,7 +588,6 @@ const Layout = () => {
                               msg.attachments.length > 0 &&
                               msg.attachments.map(
                                 (attachment: any, attIndex: any) => (
-                                  // src={attachment.url?attachment.url:"/logo/growstack-mini.png"}
                                   <div key={attIndex}>
                                     {attachment.type === "image" ? (
                                       <>
@@ -618,12 +635,33 @@ const Layout = () => {
                         title={msg.senderDetails?.name || "Unknown"}
                         time={formatRelativeDate(msg.created)}
                       />
-                      {/* <div className="flex flex-row items-center relative ml-3">
-                <BsThreeDotsVertical
-                  className="text-xl"
-                  onClick={handleDotsClick}
-                />
-              </div> */}
+                      <div className="relative mt-2">
+                        <button
+                          className="p-2 rounded-full hover:bg-gray-200"
+                          onClick={() => toggleMenu(index as number)}
+                        >
+                          &#x22EE;
+                        </button>
+
+                        {visibleMenuIndex === index && (
+                          <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md z-10">
+                            {/* <button
+                              className="block px-4 py-2 text-gray-800 hover:bg-gray-100 w-full text-left"
+                              onClick={() => handleEditMessage(index as number)}
+                            >
+                              Edit
+                            </button>
+                            <button
+                              className="block px-4 py-2 text-gray-800 hover:bg-gray-100 w-full text-left"
+                              onClick={() =>
+                                handleDeleteMessage(index as number)
+                              }
+                            >
+                              Delete
+                            </button> */}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   )
                 )
@@ -638,17 +676,15 @@ const Layout = () => {
             onSendMessage={handleSendMessage}
             onFileUpload={handleFileUpload}
           />
-
-     
         </main>
       )}
-{!selectedMessage && (
-            <main className="w-full  bg-white">
-              <div className="flex items-center bg-white  h-full text-[16px] justify-center font-bold text-gray-700">
-                Select a conversation to see details{" "}
-              </div>
-            </main>
-          )}
+      {!selectedMessage && activeIndex === 1 && (
+        <main className="w-full  bg-white">
+          <div className="flex items-center bg-white  h-full text-[16px] justify-center font-bold text-gray-700">
+            Select a conversation to see details{" "}
+          </div>
+        </main>
+      )}
     </div>
   );
 };

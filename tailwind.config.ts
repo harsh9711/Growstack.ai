@@ -1,29 +1,35 @@
 import type { Config } from "tailwindcss";
 
-const config = {
-  darkMode: ["class"],
-  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
-  prefix: "",
+const config: Config = {
+  darkMode: ["class"], // Enable dark mode with class strategy
+  content: [
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ], // Ensure all relevant paths are included
+  prefix: "", // No prefix added to Tailwind classes
   theme: {
     container: {
-      center: true,
-      padding: "2rem",
+      center: true, // Center the container
+      padding: "2rem", // Set padding for the container
       screens: {
-        "2xl": "1400px",
+        "2xl": "1400px", // Set the max width for extra large screens
       },
     },
     extend: {
       inset: {
-        '-1.75rem': '-1.30rem',
+        '-1.75rem': '-1.30rem', // Custom inset values
         '-1.00rem': '-0.55rem',
       },
       spacing: {
-        '1.75': '7px',
+        '1.75': '7px', // Custom spacing
       },
       minWidth: {
-        '20rem': '20rem',
+        '20rem': '20rem', // Custom minimum width
       },
       colors: {
+        // Define custom colors
         "primary-green": "#034737",
         "primary-light-gray": "#F4F4F4",
         "primary-light-green": "#A9FF9B",
@@ -39,9 +45,6 @@ const config = {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
-        },
-        animation: {
-          spin: 'spin2 1s linear infinite',
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -69,9 +72,9 @@ const config = {
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "var(--radius)", // Custom large border radius
+        md: "calc(var(--radius) - 2px)", // Custom medium border radius
+        sm: "calc(var(--radius) - 4px)", // Custom small border radius
       },
       keyframes: {
         "accordion-down": {
@@ -90,14 +93,17 @@ const config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "caret-blink": "caret-blink 1.25s ease-out infinite",
+        "caret-blink": "caret-blink 1.25s ease-out infinite", // Blinking caret animation
       },
       borderColor: {
-        'custom-gray': '#EAEAEA',
+        'custom-gray': '#EAEAEA', // Custom border color
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
-} satisfies Config;
+  plugins: [
+    require("tailwindcss-animate"), // Animation plugin
+    require("@tailwindcss/typography"), // Typography plugin
+  ],
+};
 
 export default config;

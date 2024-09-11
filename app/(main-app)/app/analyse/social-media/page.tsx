@@ -104,8 +104,10 @@ export default function SocialMediaAnalyticsPage() {
                 </p>
               </div>
               <div className="flex justify-between mt-8">
+              <div className="space-y-2"></div>
+
                 <div className="space-y-2">
-                  <h1 className="text-xl font-semibold">
+                  <h1 className="text-xl font-semibold text-center">
                     {metaData?.followersCount || 0}
                   </h1>
                   <p className="text-sm text-primary-black text-opacity-50">
@@ -113,19 +115,21 @@ export default function SocialMediaAnalyticsPage() {
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <h1 className="text-xl font-semibold">
+                  <h1 className="text-xl font-semibold text-center">
                     {metaData?.followingCount || 0}
                   </h1>
                   <p className="text-sm text-primary-black text-opacity-50">
                     Following
                   </p>
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2"></div>
+                {/* <div className="space-y-2">
                   <h1 className="text-xl font-semibold">134</h1>
                   <p className="text-sm text-primary-black text-opacity-50">
                     Posts
                   </p>
-                </div>
+                </div> */}   
+                {/* as of now making post count comment beacuse from back end we are not the post count */}
               </div>
             </div>
           </div>
