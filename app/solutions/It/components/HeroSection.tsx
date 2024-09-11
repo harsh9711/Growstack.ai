@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
-import "../../../../styles/myanimation.css"; // This will contain your CSS animations
+import "../../../../styles/myanimation.css";
 import Navbar from "@/components/navbar/Navbar";
 import Link from "next/link";
 
