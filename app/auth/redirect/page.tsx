@@ -41,13 +41,13 @@ export default function Login() {
 
       dispatch(login(user));
 
-      // if (isSubscribed === "false") {
-      //   router.push("/Payment");
-      // } else if (isSubscribed === "true" && isExpired === "true") {
-      //   router.push("/account/billings/settings/due");
-      // } else {
-      router.push("/app");
-      // }
+      if (isSubscribed === "false") {
+        router.push("/Payment");
+      } else if (isSubscribed === "true" && isExpired === "true") {
+        router.push("/account/billings/settings/due");
+      } else {
+        router.push("/app");
+      }
 
       toast.success("Successfully logged in...");
     } else {
