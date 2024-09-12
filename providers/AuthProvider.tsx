@@ -36,7 +36,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     //  isSubscribed, pathname, router
   ]);
 
-  if (!isLoggedIn || !isSubscribed) {
+  if (!isLoggedIn) {
     return null;
   }
 
