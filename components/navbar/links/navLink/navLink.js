@@ -3,6 +3,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { useRef, useEffect } from "react";
 import "./navLink.scss";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 
