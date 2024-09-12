@@ -4,8 +4,6 @@ import Image from "next/image";
 import { useRef, useEffect } from "react";
 import "./navLink.scss";
 
-
-
 const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
   const pathName = usePathname();
   const hasSubmenu = item.submenu && item.submenu.length > 0;
@@ -28,34 +26,39 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
   };
 
   const handleSubmenuItemClick = () => {
-    onCloseMobileMenu(); 
+    onCloseMobileMenu();
     onToggleSubmenu(null);
   };
-
-
 
   const renderNestedNav = (list) => {
     return (
       <div className="flex justify-between gap-4 w-full">
         <div className="flex flex-col ">
-          <h3 className="font-bold text-lg mb-4">Company Type</h3>
+          <h3 className="font-extrabold text-sm text-gray-300 my-2">Company Type</h3>
           <div className="grid grid-cols-1">
             {list.slice(0, 4).map((nav) => {
               if (nav) {
                 return (
                   <Link
-                    href={nav.path}
-                    key={nav.title}
-                    className="p-2 rounded flex flex-row max-w-2xl gap-4 justify-between hover:bg-gray-300 transition-all duration-300 ease-in-out transform hover:scale-105"
-                    onClick={handleSubmenuItemClick}
-                  >
-                    {nav.title}{" "}
+                  href={nav.path}
+                  key={nav.title}
+                  className="p-2 rounded flex flex-row items-center max-w-[250px] whitespace-nowrap text-lg gap-2 justify-between hover:bg-gray-300 transition-all duration-300 ease-in-out transform hover:scale-105"
+                  onClick={handleSubmenuItemClick}
+                >
+                  <span className="flex gap-2 items-center overflow-hidden">
                     <img
-                      src="/images_growstack/header/arrow.svg"
-                      alt="arrow"
-                      className="w-2 overflow-hidden"
+                      src={nav.img}
+                      alt={nav.title}
+                      className="w-6 h-6 flex-shrink-0"
                     />
-                  </Link>
+                    <span className="truncate">{nav.title}</span>
+                  </span>
+                  <img
+                    src="/images_growstack/header/arrow.svg"
+                    alt="arrow"
+                    className="w-2 h-2 flex-shrink-0"
+                  />
+                </Link>
                 );
               }
             })}
@@ -67,24 +70,32 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
         </div>
 
         <div className="flex flex-col  ">
-          <h3 className="font-bold text-lg mb-4">Teams</h3>
+          <h3 className="font-extrabold text-gray-300  text-sm my-2">Teams</h3>
           <div className="grid grid-cols-2 gap-x-10  ">
             {list.slice(4, 12).map((nav) => {
               if (nav) {
                 return (
                   <Link
-                    href={nav.path}
-                    key={nav.title}
-                    className="p-2 rounded flex flex-row max-w-2xl gap-4 justify-between hover:bg-gray-300 transition-all duration-300 ease-in-out transform hover:scale-105"
-                    onClick={handleSubmenuItemClick}
-                  >
-                    {nav.title}{" "}
+                  href={nav.path}
+                  key={nav.title}
+                  className="p-2 rounded flex flex-row items-center max-w-[250px] whitespace-nowrap text-lg gap-2 justify-between hover:bg-gray-300 transition-all duration-300 ease-in-out transform hover:scale-105"
+                  onClick={handleSubmenuItemClick}
+                >
+                  <span className="flex gap-2 items-center overflow-hidden">
                     <img
-                      src="/images_growstack/header/arrow.svg"
-                      alt="arrow"
-                      className="w-2 overflow-hidden"
+                      src={nav.img}
+                      alt={nav.title}
+                      className="w-6 h-6 flex-shrink-0"
                     />
-                  </Link>
+                    <span className="truncate">{nav.title}</span>
+                  </span>
+                  <img
+                    src="/images_growstack/header/arrow.svg"
+                    alt="arrow"
+                    className="w-2 h-2 flex-shrink-0"
+                  />
+                </Link>
+                
                 );
               }
             })}
