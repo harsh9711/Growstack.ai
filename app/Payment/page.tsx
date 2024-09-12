@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -55,7 +55,7 @@ const PlanCard = ({
 
   return (
     <div
-      className="items-center justify-center mx-auto h-full w-full bg-[#F5F5F5] rounded-xl flex flex-col py-6 transition-all duration-300 border border-transparent hover:border-[#034737] hover:shadow-lg hover:bg-white hover:scale-105 shadow-sm hover:border-[4px]"
+      className="items-center justify-center mx-auto h-full w-full bg-[#F5F5F5] rounded-xl flex flex-col py-6 border-2 border-transparent hover:border-[#034737] hover:shadow-lg hover:bg-white  transition-all duration-500 shadow-sm hover:border-[4px]"
       data-aos="fade-up"
       data-aos-delay="100"
     >
@@ -76,8 +76,8 @@ const PlanCard = ({
               ? parseFloat(plan.monthlyPrice).toFixed(2)
               : "N/A"
             : plan.yearlyPrice
-            ? parseFloat(plan.yearlyPrice).toFixed(2)
-            : "N/A"}
+              ? parseFloat(plan.yearlyPrice).toFixed(2)
+              : "N/A"}
           <span className="text-[20px] xl:text-[28px] opacity-20 text-black">
             {suffix}
           </span>
@@ -133,6 +133,20 @@ const PricingPage: React.FC = () => {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabDistanceFromLeft, setDistanceFromLeft] = useState(0);
   const [plans, setPlans] = useState<Feature[]>([]);
+
+  const [hasRefreshed, setHasRefreshed] = useState(false);
+
+  useLayoutEffect(() => {
+    const hasRefreshedBefore = localStorage.getItem("hasRefreshed");
+
+    if (!hasRefreshedBefore) {
+      localStorage.setItem("hasRefreshed", "true");
+      setHasRefreshed(true);
+      router.refresh();
+    } else {
+      setHasRefreshed(true);
+    }
+  }, [router]);
 
   const formatFeatureText = (text: string, value: string) => {
     return (
@@ -195,14 +209,6 @@ const PricingPage: React.FC = () => {
                 "AI Apps, AI Chat, AI Assistants, AI Playground, Custom GPT",
                 "Mobile App + Chrome Extension, AI Article Wizard, Image Generation",
                 formatFeatureText(
-                  "Product AI",
-                  `$${plan.product_ai_pricing} per image`
-                ),
-                formatFeatureText(
-                  "Text to Video",
-                  `$${plan.text_to_video_pricing} per video`
-                ),
-                formatFeatureText(
                   "Max discount for yearly plans",
                   `${plan.max_yearly_discount}% Off`
                 ),
@@ -215,14 +221,6 @@ const PricingPage: React.FC = () => {
               featureList = [
                 "AI Apps, AI Chat, AI Assistants, AI Playground, Custom GPT",
                 "Mobile App + Chrome Extension, AI Article Wizard, Image Generation",
-                formatFeatureText(
-                  "Product AI",
-                  `$${plan.product_ai_pricing} per image`
-                ),
-                formatFeatureText(
-                  "Text to Video",
-                  `$${plan.text_to_video_pricing} per video`
-                ),
                 "Webscraping, Contact (Consent & Verification is extra): Credit based",
                 formatFeatureText(
                   "Max discount for yearly plans",
@@ -237,14 +235,6 @@ const PricingPage: React.FC = () => {
               featureList = [
                 "AI Apps, AI Chat, AI Assistants, AI Playground, Custom GPT",
                 "Mobile App + Chrome Extension, AI Article Wizard, Image Generation",
-                formatFeatureText(
-                  "Product AI",
-                  `$${plan.product_ai_pricing} per image`
-                ),
-                formatFeatureText(
-                  "Text to Video",
-                  `$${plan.text_to_video_pricing} per video`
-                ),
                 formatFeatureText(
                   "Max discount for yearly plans",
                   `${plan.max_yearly_discount}% Off`
@@ -314,11 +304,16 @@ const PricingPage: React.FC = () => {
       easing: "ease-in-out",
     });
   }, []);
+
+  if (!hasRefreshed) {
+    return null;
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 px-12">
         <div
-          className="relative overflow-y-auto bg-white  xl:max-h-[988px] h-full w-full max-w-[1800px] mx-4 sm:mx-6 md:mx-8 lg:mx-auto rounded-2xl shadow-lg"
+          className="relative overflow-y-auto bg-white w-full md:w-3xl h-fit xl:max-h-[988px]  max-w-[1400px] mx-4 sm:mx-6 md:mx-8 lg:mx-auto rounded-2xl shadow-lg"
           data-aos="zoom-in"
           data-aos-duration="500"
           onClick={(e) => e.stopPropagation()}
@@ -359,11 +354,10 @@ const PricingPage: React.FC = () => {
                 {tabs.map((tab, index) => (
                   <div
                     key={index}
-                    className={`w-full flex p-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
-                      selectedTabIndex === index
-                        ? "!text-white font-semibold bg-[#034737] custom-transition rounded-xl"
-                        : "!text-[#034737]"
-                    }`}
+                    className={`w-full flex p-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${selectedTabIndex === index
+                      ? "!text-white font-semibold bg-[#034737] custom-transition rounded-xl"
+                      : "!text-[#034737]"
+                      }`}
                     onClick={() => handleTabClick(index)}
                   >
                     {tab}
