@@ -106,7 +106,7 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
   };
 
   return (
-    <div className="navLink" ref={navbarRef}>
+    <div className="navLink">
       <div className="mainLink">
         <Link
           href={item.path}
