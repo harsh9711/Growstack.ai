@@ -50,7 +50,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ conversation }) => {
             <div
               className={`max-w-5xl ${
                 chat.role === "user" ? "bg-primary-green text-white" : "bg-[#F1F1F1] text-primary-black"
-              } py-3 px-5 rounded-xl text-[14.5px] leading-relaxed min-h-11 flex justify-center items-center`}
+              } py-3 px-5 rounded-xl text-[14.5px] leading-relaxed min-h-11 flex justify-center items-center text-justify`}
             >
               {chat.loading ? (
                 <DotsLoader />
@@ -75,4 +75,4 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ conversation }) => {
   );
 };
 
-export default ChatMessages;
+export default ChatMessages; 
