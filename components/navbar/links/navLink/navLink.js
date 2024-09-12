@@ -1,10 +1,10 @@
-"use client";
-
-import { useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { useRef, useEffect } from "react";
 import "./navLink.scss";
+
+
 
 const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
   const pathName = usePathname();
@@ -23,27 +23,17 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
     if (hasSubmenu) {
       e.preventDefault();
       onToggleSubmenu(item.title);
-    } else {
-      onCloseMobileMenu();
     }
+    onCloseMobileMenu();
   };
 
   const handleSubmenuItemClick = () => {
-    onCloseMobileMenu();
+    onCloseMobileMenu(); 
     onToggleSubmenu(null);
   };
-  const handleClickOutside = (event) => {
-    if (navbarRef.current && !navbarRef.current.contains(event.target)) {
-      onCloseMobileMenu();
-      onToggleSubmenu(null);
-    }
-  };
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+
+
+
   const renderNestedNav = (list) => {
     return (
       <div className="flex justify-between gap-4 w-full">
