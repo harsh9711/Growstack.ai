@@ -20,7 +20,7 @@ const PricingPage: React.FC = () => { // Renamed component to avoid naming confl
       </div>
       <HeroSection
         title="Get the AI copilot for better marketing results"
-        description="Lorem ipsum dolor sit amet consectetur. Morbi est at odio elementum ornare."
+        description="Flexible pricing for all business sizes—pay for only what you need with Growstack."
       />
             <svg
         className="absolute -translate-y-96 translate-x-64"
