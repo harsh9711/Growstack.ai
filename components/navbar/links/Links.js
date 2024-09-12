@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import "./links.scss";
 import NavLink from "./navLink/navLink";
 import Image from "next/image";
@@ -12,35 +12,50 @@ const links = [
     title: "Features",
     path: "",
     submenu: [
-          { title: "AI marketing and sales apps", path: "/ai-marketing-and-sales-app" },
-          { title: "Text to videos and Product AI", path: "/text-to-video-and-product-ai" },
-          { title: "Marketing and sales assistants", path: "/marketing-and-sales-assistant" },
-          { title: "AI Website landing page and email Builder", path: "/ai-website-and-email-builder" },
-          { title: "Custom marketing GPT apps", path: "/custom-marketing-gpt-apps" },
-          { title: "Social planner hub", path: "/social-planner-hub" },
-        ],
+      {
+        title: "AI marketing and sales apps",
+        path: "/ai-marketing-and-sales-app",
+      },
+      {
+        title: "Text to videos and Product AI",
+        path: "/text-to-video-and-product-ai",
+      },
+      {
+        title: "Marketing and sales assistants",
+        path: "/marketing-and-sales-assistant",
+      },
+      {
+        title: "AI Website landing page and email Builder",
+        path: "/ai-website-and-email-builder",
+      },
+      {
+        title: "Custom marketing GPT apps",
+        path: "/custom-marketing-gpt-apps",
+      },
+      { title: "Social planner hub", path: "/social-planner-hub" },
+    ],
   },
   {
     title: "Solutions",
     path: "",
     submenu: [
-          { title: "Marketing", path: "/solutions/marketing" },
-          { title: "Large Enterprise", path: "/solutions/largeenterprise" },
-          { title: "MidMarket Enterprise",path: "/solutions/midmarketenterprise"  },
-          { title: "Small businesses",path: "/solutions/smallbusinesses"  },
-          { title: "Sales",path: "/solutions/sales"  },
-          { title: "Revops",path: "/solutions/revops"  },
-          { title: "Customer Service",path: "/solutions/customer_service"  },
-          { title: "Startup",path: "/solutions/startup"  },
+      { title: "Large Enterprise", path: "/solutions/largeenterprise" },
+      { title: "MidMarket Enterprise", path: "/solutions/midmarketenterprise" },
+      { title: "Small businesses", path: "/solutions/smallbusinesses" },
+      { title: "Startup", path: "/solutions/startup" },
+
+      { title: "Marketing", path: "/solutions/marketing" },
+      { title: "Sales", path: "/solutions/sales" },
+      { title: "Revops", path: "/solutions/revops" },
+      { title: "Customer Service", path: "/solutions/customer_service" },
+
       { title: "Business Operations", path: "/solutions/operations" },
       { title: "Finance", path: "/solutions/finance" },
       { title: "Supply Chain", path: "/solutions/supplychain" },
       { title: "IT", path: "/solutions/It" },
-        ],
+    ],
   },
-
 ];
-
 
 const Links = () => {
   const [openSubmenu, setOpenSubmenu] = useState(null);
@@ -60,7 +75,9 @@ const Links = () => {
 
   return (
     <React.Fragment>
-      <div className="white-background-links"> {/* Add this class */}
+      <div className="white-background-links">
+        {" "}
+        {/* Add this class */}
         <div className="links">
           {links.map((link) => (
             <NavLink
@@ -95,6 +112,5 @@ const Links = () => {
     </React.Fragment>
   );
 };
-
 
 export default Links;
