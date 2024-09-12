@@ -41,19 +41,19 @@ export default function Login() {
 
       dispatch(login(user));
 
-      if (isSubscribed === "false") {
-        router.push("/Payment");
-      } else if (isSubscribed === "true" && isExpired === "true") {
-        router.push("/account/billings/settings/due");
-      } else {
-        router.push("/app");
-      }
-      
+      // if (isSubscribed === "false") {
+      //   router.push("/Payment");
+      // } else if (isSubscribed === "true" && isExpired === "true") {
+      //   router.push("/account/billings/settings/due");
+      // } else {
+      router.push("/app");
+      // }
+
       toast.success("Successfully logged in...");
     } else {
       router.push("/auth/login");
     }
-  }, [searchParams, router, dispatch]); 
+  }, [searchParams, router, dispatch]);
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">

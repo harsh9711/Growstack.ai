@@ -17,6 +17,10 @@ import { z } from "zod";
 import AvatarSelection from "./AvatarSelection";
 import AudioBox from "./AudioBox";
 import { CustomSelect } from "./Select";
+import GlobalModal from "@/components/modal/global.modal";
+import { PlanUsage } from "@/types/common";
+import Link from "next/link";
+import Lock from "@/components/svgs/lock";
 export interface VideoStatus {
   createdAt: number;
   download: string;
@@ -70,9 +74,11 @@ const CreateVideoDialog = ({
     name: string;
   }
 
+  const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
+  const [isPlanUsageLoading, setIsPlanUsageLoading] = useState(false);
   const [step, setStep] = useState(0);
   const [videoScript, setVideoScript] = useState("");
   const [outputVideo, setOutputVideo] = useState<VideoStatus | null>(null);
@@ -108,6 +114,7 @@ const CreateVideoDialog = ({
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const [selectedLanguage, setSelectedLanguage] = useState<string>("");
   const [tone, settone] = useState<string>("");
+  const [isAddOnModalOpen, setIsAddOnModalOpen] = useState<boolean>(false);
   const handleVoiceSelect = (voiceId: string) => {
     setSelectedVoice(voiceId);
   };
@@ -117,6 +124,29 @@ const CreateVideoDialog = ({
     speaker?: { _errors: string[] };
     audience?: { _errors: string[] };
   }>({});
+
+  const fetchPlanUsage = async () => {
+    try {
+      setIsPlanUsageLoading(true)
+      const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
+      const data: PlanUsage = response.data.data;
+      setPlanUsage(data);
+
+      if (!planUsage?.usage_amount || planUsage?.usage_amount <= 0) {
+        setIsAddOnModalOpen(true)
+      }
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error("Error fetching plan usage:", error);
+    } finally {
+      setIsPlanUsageLoading(false);
+    }
+  };
+
   const handleSubmit = async () => {
     const validation = formSchema.safeParse(formData);
     if (!validation.success) {
@@ -381,6 +411,10 @@ const CreateVideoDialog = ({
     resetForm();
   };
 
+  useEffect(() => {
+    fetchPlanUsage();
+  }, []);
+
   const filteredAvatars = assistants.filter((avatar) =>
     avatar.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -388,20 +422,51 @@ const CreateVideoDialog = ({
   if (loading) return <LoadingOverlay progress={(step / 3) * 100} />;
   if (error) return <p>{error}</p>;
   const progress = (step / 3) * 100;
-  // const handleDialogClose = () => {
-  //   handleClose(false);
-  // };
+
   return (
     <div className="relative">
       {" "}
       {loading2 && <LoadingOverlay progress={progress} />}
+      <button
+        disabled={isPlanUsageLoading}
+        onClick={(e) => {
+          e.stopPropagation();
+          if (!planUsage?.usage_amount || planUsage?.usage_amount <= 0) {
+            setIsAddOnModalOpen(true)
+
+          } else {
+            setDialogOpen(true)
+          }
+        }}
+        className="bg-primary-green text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2">
+        <Plus size={20} />
+        Create new video with AI
+      </button>
+
+      <GlobalModal  showCloseButton={false}  open={isAddOnModalOpen} setOpen={() => { setIsAddOnModalOpen(false) }}>
+        <div className="flex flex-col items-center justify-center px-6 pt-4 pb-8 gap-6 space-x-6">
+          <Lock />
+          <h3 className="text-center text-[28px] font-semibold">You don’t have enough credit.</h3>
+          <p className="text-center text-gray-700 text-sm md:text-base px-4">
+            You don’t have enough credits in your wallet to use this feature. It is an add-on, and requires additional credit to access. Please add credits to continue.
+          </p>
+          <div className="flex items-center justify-between gap-3">
+            <button
+              className="text-red-500 border border-red-500 bg-transparent text-nowrap py-2 px-6 rounded-md transition duration-300"
+              onClick={() => setIsAddOnModalOpen(false)}
+            >
+              Cancel
+            </button>
+            <Link
+              className="bg-primary-green text-white text-nowrap py-2 px-6 rounded-md transition duration-300 hover:bg-green-600"
+              href="/account/billings/settings">
+              Add Credit
+            </Link>
+          </div>
+        </div>
+      </GlobalModal>
+
       <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
-        <DialogTrigger>
-          <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2">
-            <Plus size={20} />
-            Create new video with AI
-          </button>
-        </DialogTrigger>
         <DialogContent
           className="w-full 2xl:max-w-[90%] h-full 2xl:h-[90vh] px-10 py-7 overflow-x-hidden"
           onCloseAutoFocus={handleClose}
@@ -626,6 +691,8 @@ const CreateVideoDialog = ({
           </div>
         </DialogContent>
       </Dialog>
+
+
     </div>
   );
 };

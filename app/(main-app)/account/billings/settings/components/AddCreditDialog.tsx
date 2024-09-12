@@ -93,11 +93,10 @@ export default function AddCreditDialog() {
       <DialogTrigger asChild>
       <Link href="/Upgrade"> 
       
-        <button
+              <button
             className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300 ${
               cancelLoading ? 'opacity-50 cursor-not-allowed' : ''
             }`}
-            onClick={handleCancelSubscription}
             disabled={cancelLoading} 
           >
             {cancelLoading ? 'Redirecting...' : '   Upgrade Plan'}
