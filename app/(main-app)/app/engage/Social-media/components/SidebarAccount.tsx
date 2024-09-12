@@ -57,7 +57,7 @@ const MessageList = ({ onSelectMessage }: { onSelectMessage: (message: SidebarIt
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
-  if (dataArray.length === 0) return <div>Comments: Channel not available.</div>;
+  if (dataArray.length === 0) return <div>Message: Channel not available.</div>;
   const date = new Date()
   return (
     <div>

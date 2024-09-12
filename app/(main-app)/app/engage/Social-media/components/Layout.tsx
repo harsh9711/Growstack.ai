@@ -566,7 +566,7 @@ const Layout = () => {
             ))}
           <>
             {" "}
-            {activeIndex === 2 && filteredData && (
+            {activeIndex === 2 && !filteredData && (
               <>Comments: Channel not available.</>
             )}
           </>
