@@ -158,7 +158,7 @@ export default function Dashboard() {
           data-aos="fade-down"
         >
           <div className="space-y-2">
-            <h1 className="text-2xl font-semibold">
+            <h1 className="text-2x2 font-normal">
               Welcome back,{" "}
               {currentUser.name
                 ? currentUser.name

@@ -21,11 +21,12 @@ export default function QuickPosting() {
   const [selectedRadioValue, setSelectedRadioValue] = useState<string>("Image");
   const [mediaUrls, setMediaUrls] = useState<any[]>([]);
   const [isVideo, setIsVideo] = useState(false);
-  const [scheduleDate, setSchuduleDate] = useState<string>("");
+  const [scheduleDate, setScheduleDate] = useState<string>("");
   const [selectedNetworks, setSelectedNetworks] = React.useState<string[]>([]);
   const [link, setLink] = useState("");
   const [loading, setLoading] = useState(false);
   const tabs = ["Published", "Scheduled"];
+  const [minDateTime, setMinDateTime] = useState('');
   const renderContent = (selectedTabIndex: number) => {
     switch (selectedTabIndex) {
       case 0:
@@ -34,10 +35,18 @@ export default function QuickPosting() {
         return <ScheduledPostsTable />;
     }
   };
-
-  const d = new Date();
-  let time = d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
-
+ useEffect(() => {
+    // Get the current date and time in the required format
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    
+    // Set the minimum date and time to the current date and time
+    setMinDateTime(`${year}-${month}-${day}`);
+  }, []);
   const handleValueChange = (value: string) => {
     setSelectedRadioValue(value);
     if (value === "Image") setIsVideo(false);
@@ -86,10 +95,10 @@ export default function QuickPosting() {
   const handlePublish = async () => {
     setLoading(true);
     let utcDateTime = null;
-    if (scheduleDate && time) {
-      const localDateTime = new Date(`${scheduleDate}T${time}`);
-      utcDateTime = localDateTime.toISOString();
-    }
+    // if (scheduleDate && time) {
+    //   const localDateTime = new Date(`${scheduleDate}T${time}`);
+    //   utcDateTime = localDateTime.toISOString();
+    // }
 
     try {
       const requestData: any = {
@@ -98,9 +107,7 @@ export default function QuickPosting() {
         mediaUrls,
         isVideo,
       };
-      if (utcDateTime) {
-        requestData.scheduleDate = utcDateTime;
-      }
+        requestData.scheduleDate = scheduleDate;
 
       const response = await instance.post(
         API_URL + "/users/api/v1/social-media/quickpost",
@@ -109,16 +116,17 @@ export default function QuickPosting() {
       setContent("");
       setIsVideo(false);
       setMediaUrls([]);
-      setSchuduleDate(""), setSelectedNetworks([]);
+      setScheduleDate(""), setSelectedNetworks([]);
       setLink("");
       toast.success(response.data.message);
     } catch (error: any) {
+      setSelectedNetworks([]);
       if (error.response) {
         toast.error(error.response.data.message);
       } else {
         toast.error(error.message);
       }
-      console.error("Profile Upa]date failed:", error);
+      console.error("Profile Update failed:", error);
     } finally {
       setLoading(false);
     }
@@ -346,7 +354,8 @@ export default function QuickPosting() {
                           type="date"
                           className="w-full bg-transparent outline-none"
                           value={scheduleDate}
-                          onChange={(e) => setSchuduleDate(e.target.value)}
+                          onChange={(e) => setScheduleDate(e.target.value)}
+                          min={minDateTime}
                         />
                       </div>
                       <button

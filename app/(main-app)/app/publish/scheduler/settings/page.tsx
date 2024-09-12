@@ -31,6 +31,8 @@ export default function page() {
       );
 
       const url = response?.data.data;
+      console.log("url",url);
+      
       if (url) {
         window.location.href = url;
       }

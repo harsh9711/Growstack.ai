@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SidebarItem from "./SidebarItem"; // Adjust the import path if necessary
 import instance from "@/config/axios.config";
-import {formatRelativeDate} from "@/utils/dateformate"
+import {formatRelativeDate, timeDiffFromNow} from "@/utils/dateformate"
 
 interface MessageData {
   senderId: string;
@@ -57,7 +57,8 @@ const MessageList = ({ onSelectMessage }: { onSelectMessage: (message: SidebarIt
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
-  if (dataArray.length === 0) return <div>No channels available</div>;
+  if (dataArray.length === 0) return <div>Comments: Channel not available.</div>;
+  const date = new Date()
   return (
     <div>
       {/* Loop through the data array */}
@@ -66,7 +67,7 @@ const MessageList = ({ onSelectMessage }: { onSelectMessage: (message: SidebarIt
         <SidebarItem
           key={index}
           title={dataItem.platform}  
-          time={formatRelativeDate(dataItem.messages.lastUpdated)}  
+          time={timeDiffFromNow(dataItem.messages.lastUpdated)}  
           author={dataItem.messages.messages[0]?.senderDetails.username || ""} 
           message={dataItem.messages.messages[0]?.message || "No message available"} 
           imageUrl={dataItem.messages.messages[0]?.senderDetails.profileImage || "/logo/growstack-mini.png"}
