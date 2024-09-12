@@ -12,6 +12,7 @@ import { Switch } from "@/components/ui/switch";
 import CheckboxComponent from "./Check";
 import ScheduleComponent from "./Schedule";
 import instance from "@/config/axios.config";
+import { InputType } from "@/types/common";
 
 interface ActionsSectionProps {
   activeAction: any;
@@ -51,7 +52,7 @@ const Dropdown2: React.FC<DropdownProps> = ({ options, selectedOption, onOptionC
       value={selectedOption}
       onChange={(e) => onOptionChange(e.target.value)}
       className="border w-64 p-1 rounded-xl"
-      style={{ fontSize: '12px', width : "100%" }}
+      style={{ fontSize: '12px', width: "100%" }}
     >
       {options.map((option, index) => (
         <option key={index} value={option}>
@@ -82,7 +83,7 @@ const ActionsSection = ({
   const [selectedNetworks, setSelectedNetworks] = React.useState<string[]>([]);
 
   // State to manage editable fields
-  const [editableFields, setEditableFields] = useState<any>(
+  const [editableFields, setEditableFields] = useState<InputType[]>(
     activeAction.preset_json.body
   );
 
@@ -153,7 +154,7 @@ const ActionsSection = ({
     });
   };
 
-  const handleFieldChange = (key: string, value: any) => {
+  const handleFieldChange = (key: number, value: any) => {
     setEditableFields((prevFields: any) => ({
       ...prevFields,
       [key]: value,
@@ -169,6 +170,7 @@ const ActionsSection = ({
       },
     }));
   };
+  
   const formatString = (
     str: string | undefined,
     values: Record<string, string>
@@ -208,9 +210,7 @@ const ActionsSection = ({
     "claude-3-haiku-20240307",
     "claude-3-5-sonnet-20240620",
   ];
-  const formattedText = formatString(editableFields.someField || "", {
-    sender_profile_url: "http://example.com",
-  });
+
   return (
     <Motion
       transition={{ duration: 0.5 }}
@@ -223,35 +223,30 @@ const ActionsSection = ({
             height='56'
             width='56'
             className='w-10 h-10 rounded-2xl'
-           /> }
+          />}
           <div className="flex flex-col gap-2 w-full text-xl border-2 p-2.5 rounded-xl">
             <div className="text-start items-start font-bold">
               {/* {editableFields?.instruction ? "Instruction" : "URL"} */}
             </div>
             {editableFields && (
               <div className="bg-gray-100 p-4 rounded-md">
-                {Object.entries(editableFields).map(([key, value], index) => (
+                {editableFields.map((item, index) => (
                   <div key={index} className="mb-2">
-                    <div className="font-bold">{key?.charAt(0)?.toUpperCase() + key?.slice(1)}:</div>
                     <div className="text-gray-700">
-                      {key === "model" ? (
-                         <Dropdown2
-                         options={modalOptions}
-                         selectedOption={String(value)}
-                         onOptionChange={(newValue) =>
-                           handleFieldChange(key, newValue)
-                         }
-                       />
+                      {item.variable_type === "model" ? (
+                        <Dropdown2
+                          options={modalOptions}
+                          selectedOption={item.variable_value}
+                          onOptionChange={(newValue) => handleFieldChange(index, newValue)}
+                        />
                       ) : (
                         <input
                           type="text"
-                          value={formatString(String(value) || "No URL", {
+                          value={formatString(String(item.variable_value) || "No URL", {
                             sender_profile_url: "http://example.com",
                           })}
-                          onChange={(e) =>
-                            handleFieldChange(key, e.target.value)
-                          }
-                          style={{ fontSize: '12px', width : "100%" }}
+                          onChange={(e) => handleFieldChange(index, e.target.value)}
+                          style={{ fontSize: '12px', width: "100%" }}
                           className="border p-1 rounded"
                         />
                       )}
@@ -260,6 +255,7 @@ const ActionsSection = ({
                 ))}
               </div>
             )}
+
             {activeAction.label && (
               <div className="text-sm text-gray-600 mt-2">
                 {activeAction.label}
@@ -270,10 +266,10 @@ const ActionsSection = ({
       </div>
 
       <div>
-        {activeAction?.preset_json?.body?.inputs?.length > 0 &&
-          activeAction.preset_json.body.inputs.map(
+        {activeAction?.preset_json?.body?.length > 0 &&
+          activeAction.preset_json.body.map(
             (option: any, index: number) => {
-              if (option.input_type === "DROPDOWN") {
+              if (option.variable_type === "DROPDOWN") {
                 return (
                   <div key={index}>
                     <Dropdown
@@ -285,7 +281,7 @@ const ActionsSection = ({
                 );
               }
 
-              if (option.input_type === "TEXT_AREA" && !option.is_prompt) {
+              if (option.variable_type === "TEXT_AREA" && !option.is_prompt) {
                 return (
                   <div key={index} className="mt-8 ">
                     <TextArea

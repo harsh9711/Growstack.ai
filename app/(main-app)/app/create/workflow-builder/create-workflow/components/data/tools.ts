@@ -4,8 +4,8 @@ export type Tool = {
   role: string;
   description: string;
   category: string;
-  socialMediaRequirement:boolean;
-    icon: string;
+  socialMediaRequirement: boolean;
+  icon: string;
   preset_json: Object;
   provider: string;
   subtype: string;
@@ -22,22 +22,20 @@ export const tools: Tool[] = [
     provider: "Openai",
     subtype: "gpt",
     preset_json: {
-      body: {
-        inputs: [
-          {
-            input_type: "DROPDOWN",
-            input_label: "model",
-            input_default_value: "gpt-4o",
-            input_values: ["gpt-4", "gpt-3.5-turbo", "gpt-4o"],
-          },
-          {
-            input_type: "TEXT_AREA",
-            input_label: "instruction",
-            input_default_value: "Tell me a joke about AI",
-            input_values: "",
-          },
-        ],
-      },
+      body: [
+        {
+          variable_type: "DROPDOWN",
+          variable_label: "model",
+          variable_value: "gpt-4o",
+          variable_values: ["gpt-4", "gpt-3.5-turbo", "gpt-4o"],
+        },
+        {
+          variable_type: "TEXT_AREA",
+          variable_label: "instruction",
+          variable_value: "Tell me a joke about AI",
+          variable_values: [],
+        },
+      ],
     },
     event_execute: "processLLM",
     role: "",

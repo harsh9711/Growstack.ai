@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import SuggestionDropdown from "./SuggestionDropdown";
+import { InputType } from "@/types/common";
 
 interface TextAreaProps {
   option: any;
@@ -33,12 +34,12 @@ const TextArea = ({
   suggestionOptions,
   setSuggestionOptions,
 }: TextAreaProps) => {
+  console.log(option)
   const [description, setDescription] = useState<string>(
-    option.input_default_value
+    option.variable_value
   );
   const [isDropdownVisible, setDropdownVisible] = useState(false);
 
-  // Refs for the dropdown and textarea elements
   const dropdownRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -47,20 +48,15 @@ const TextArea = ({
       ...prevState,
       preset_json: {
         ...prevState.preset_json,
-        body: {
-          ...prevState.preset_json.body,
-          inputs: prevState.preset_json.body.inputs.map(
-            (input: any, i: number) => {
-              if (i === index && input.input_type === "TEXT_AREA") {
-                return {
-                  ...input,
-                  input_default_value: description,
-                };
-              }
-              return input;
-            }
-          ),
-        },
+        body: prevState.preset_json.body.map((input: InputType, i: number) => {
+          if (i === index && input.variable_type === "TEXT_AREA") {
+            return {
+              ...input,
+              variable_value: description, 
+            };
+          }
+          return input;
+        }),
       },
     }));
   }, [description]);
@@ -111,7 +107,7 @@ const TextArea = ({
   return (
     <>
       <div className='font-medium  text-xl mb-2 capitalize'>
-        {option.input_label}
+        {option.variable_label}
       </div>
       <textarea
         ref={textareaRef}
@@ -121,7 +117,7 @@ const TextArea = ({
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         placeholder={
-          option.input_placeholder
+          option?.input_placeholder
             ? option.input_placeholder
             : "Please write here"
         }
