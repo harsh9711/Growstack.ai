@@ -1,10 +1,11 @@
   import React from "react";
   import Image from "next/image";
   import Navbar from "@/components/navbar/Navbar";
-  import Footer from "../(landing)/components/Footer";
   import HeroSection from "./components/HeroSection";
   import ContentBox from "./components/Box";
-  import { tnc } from "../../privacyPolicy";
+  import { tnc } from "../../privacyPolicy";import "bootstrap/dist/css/bootstrap.min.css";
+import Footer from "@/components/footer/Footer";
+
   const Tnc: React.FC = () => {
     return (
       <div className=" flex flex-col ">
