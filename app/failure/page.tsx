@@ -15,7 +15,7 @@ const PricingPage: React.FC = () => {
       setSeconds((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
-          // router.push("/Payment");
+          router.push("/Payment");
           return 0;
         }
         return prev - 1;

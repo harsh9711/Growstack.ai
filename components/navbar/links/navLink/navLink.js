@@ -3,6 +3,9 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { useRef, useEffect } from "react";
 import "./navLink.scss";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
 
 const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
   const pathName = usePathname();
@@ -26,10 +29,9 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
   };
 
   const handleSubmenuItemClick = () => {
-    onCloseMobileMenu();
+    onCloseMobileMenu(); 
     onToggleSubmenu(null);
   };
-
   const renderNestedNav = (list) => {
     return (
       <div className="flex justify-between gap-4 w-full">
