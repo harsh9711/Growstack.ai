@@ -1,5 +1,4 @@
 "use client";
-
 import Motion from "@/components/Motion";
 import { Button } from "@/components/ui/button";
 import {
@@ -27,7 +26,9 @@ interface BillingHistoryItem {
 }
 
 export default function BillingHistorySection() {
-  const [upcomingData, setUpcomingData] = useState<BillingHistoryItem | null>(null);
+  const [upcomingData, setUpcomingData] = useState<BillingHistoryItem | null>(
+    null
+  );
   const [unpaidData, setUnpaidData] = useState<BillingHistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -67,7 +68,7 @@ export default function BillingHistorySection() {
       console.error("Failed to fetch payment methods", error);
     }
   };
-  
+
   return (
     <Motion
       transition={{ duration: 0.2 }}
@@ -95,14 +96,24 @@ export default function BillingHistorySection() {
               {/* Upcoming Dues Table */}
               {upcomingData ? (
                 <div className="p-4 bg-[#034737] rounded-lg shadow-md">
-                  <h2 className="text-2xl font-bold mb-4 text-white">Upcoming Dues</h2>
+                  <h2 className="text-2xl font-bold mb-4 text-white">
+                    Upcoming Dues
+                  </h2>
                   <Table>
                     <TableHeader>
-                    <TableRow className="bg-[#034737] text-white">
-                    <TableHead className="py-3 px-4 text-left">Amount Due</TableHead>
-                        <TableHead className="py-3 px-4 text-left">Currency</TableHead>
-                        <TableHead className="py-3 px-4 text-left">Due Date</TableHead>
-                        <TableHead className="py-3 px-4 text-left">Subscription</TableHead>
+                      <TableRow className="bg-[#034737] text-white">
+                        <TableHead className="py-3 px-4 text-left">
+                          Amount Due
+                        </TableHead>
+                        <TableHead className="py-3 px-4 text-left">
+                          Currency
+                        </TableHead>
+                        <TableHead className="py-3 px-4 text-left">
+                          Due Date
+                        </TableHead>
+                        <TableHead className="py-3 px-4 text-left">
+                          Subscription
+                        </TableHead>
                         {/* <TableHead className="py-3 px-4 text-left">Action</TableHead> */}
                       </TableRow>
                     </TableHeader>
@@ -131,21 +142,35 @@ export default function BillingHistorySection() {
                   </Table>
                 </div>
               ) : (
-                <div className="text-center text-gray-500">No upcoming dues available</div>
+                <div className="text-center text-gray-500">
+                  No upcoming dues available
+                </div>
               )}
 
               {/* Unpaid Dues Table */}
               {unpaidData.length > 0 ? (
                 <div>
-                  <h2 className="text-xl font-semibold mb-4 text-red-600">Unpaid Dues</h2>
+                  <h2 className="text-xl font-semibold mb-4 text-red-600">
+                    Unpaid Dues
+                  </h2>
                   <Table>
                     <TableHeader>
                       <TableRow className="bg-[#0347370D] text-gray-700">
-                        <TableHead className="py-3 px-4 text-left">Amount Due</TableHead>
-                        <TableHead className="py-3 px-4 text-left">Currency</TableHead>
-                        <TableHead className="py-3 px-4 text-left">Due Date</TableHead>
-                        <TableHead className="py-3 px-4 text-left">Subscription</TableHead>
-                        <TableHead className="py-3 px-4 text-left">Action</TableHead>
+                        <TableHead className="py-3 px-4 text-left">
+                          Amount Due
+                        </TableHead>
+                        <TableHead className="py-3 px-4 text-left">
+                          Currency
+                        </TableHead>
+                        <TableHead className="py-3 px-4 text-left">
+                          Due Date
+                        </TableHead>
+                        <TableHead className="py-3 px-4 text-left">
+                          Subscription
+                        </TableHead>
+                        <TableHead className="py-3 px-4 text-left">
+                          Action
+                        </TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -164,15 +189,17 @@ export default function BillingHistorySection() {
                             {item.subscription}
                           </TableCell>
                           <TableCell className="py-3 px-4">
-                        <AddCreditDialog2 onAddCredit={handleAddCreditClick} />
-                        </TableCell>
+                            <AddCreditDialog2 />
+                          </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
                   </Table>
                 </div>
               ) : (
-                <div className="text-center text-gray-500">No unpaid dues available</div>
+                <div className="text-center text-gray-500">
+                  No unpaid dues available
+                </div>
               )}
             </div>
           )}

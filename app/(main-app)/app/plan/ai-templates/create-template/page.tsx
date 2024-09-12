@@ -293,7 +293,7 @@ export default function CreateTemplatePage() {
                     </p>
                   )}
                   {formData.icon && (
-                    <div className="mt-2">
+                    <div className="mt-2 w-6 h-6">
                       <label className="block font-medium">Preview:</label>
                       <div
                         dangerouslySetInnerHTML={{ __html: formData.icon }}

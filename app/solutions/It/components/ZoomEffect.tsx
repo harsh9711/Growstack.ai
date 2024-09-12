@@ -90,7 +90,7 @@ const ImageGallery = () => {
                 alt={`Image ${index}`}
                 width={100}
                 height={100}
-                className={`relative w-[1260px] h-[360px] ${
+                className={`relative w-[360px] h-[260px] ${
                   clickedImage === image.largeSrc ? "opacity-50" : ""
                 }`}
               />
@@ -123,7 +123,7 @@ const ImageGallery = () => {
                 alt="Zoomed Image"
                 width={700}
                 height={700}
-                className="zoomed-image rounded-lg items-center relative  justify-center mx-auto mt-8"
+                className="zoomed-image w-[500px] xl:w-[900px] 2xl:w-[800px] h-full rounded-lg items-center relative  justify-center mx-auto mt-8"
               />
             </div>
           </div>

@@ -16,7 +16,6 @@
     stroke-dasharray: 400, 0;
     animation: drawArrow 4s ease forwards;
   }
-   /* Apply stroke-dasharray and stroke-dashoffset for animation */
 #path1, #path2 {
     stroke-dasharray: 1000;
     stroke-dashoffset: 1000;
@@ -27,27 +26,24 @@
     animation-delay: 2s;
   }
   
-  /* Keyframe for drawing animation */
   @keyframes draw {
     to {
       stroke-dashoffset: 0;
     }
   }
   
-  /* Animation to show images after drawing */
   #image1, #image2 {
     animation: showImage 1s forwards;
   }
   
   #image1 {
-    animation-delay: 4s; /* Show after path1 finishes */
+    animation-delay: 4s;
   }
   
   #image2 {
-    animation-delay: 6s; /* Show after path2 finishes */
+    animation-delay: 6s;
   }
   
-  /* Keyframe for showing images */
   @keyframes showImage {
     from {
       opacity: 0;

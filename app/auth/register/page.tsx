@@ -1,5 +1,5 @@
 "use client";
- 
+
 import Spinner from "@/components/Spinner";
 import { Checkbox } from "@/components/ui/checkbox";
 import { API_URL } from "@/lib/api";
@@ -15,43 +15,44 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { login } from "@/lib/features/auth/auth.slice";
- 
+import { isEmptyObject } from "@/lib/utils";
+import { setCookie } from "cookies-next";
+
 export default function Register() {
   const router = useRouter();
   const dispatch = useDispatch();
- 
-  const ValidationSchema = z
-  .object({
-    email: z
-      .string()
-      .email("Please enter a valid email address") // Basic email validation
-      .regex(
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-        "Email must be a valid format (e.g., user@example.com)"
-      ), // Stricter regex for proper email format
-    password: z
-      .string()
-      .min(8, "Password must be at least 8 characters")
-      .max(20, "Password can't exceed 20 characters")
-      .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-      .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-      .regex(/[0-9]/, "Password must contain at least one number")
-      .regex(/[\W_]/, "Password must contain at least one special character"),
-    confirmPassword: z.string(),
-    agreeToTerms: z.boolean().refine((val) => val === true, {
-      message: "You must agree to the terms and conditions",
-    }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"],
-  });
 
+  const ValidationSchema = z
+    .object({
+      email: z
+        .string()
+        .email("Please enter a valid email address") // Basic email validation
+        .regex(
+          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+          "Email must be a valid format (e.g., user@example.com)"
+        ), // Stricter regex for proper email format
+      password: z
+        .string()
+        .min(8, "Password must be at least 8 characters")
+        .max(20, "Password can't exceed 20 characters")
+        .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+        .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+        .regex(/[0-9]/, "Password must contain at least one number")
+        .regex(/[\W_]/, "Password must contain at least one special character"),
+      confirmPassword: z.string(),
+      agreeToTerms: z.boolean().refine((val) => val === true, {
+        message: "You must agree to the terms and conditions",
+      }),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: "Passwords don't match",
+      path: ["confirmPassword"],
+    });
 
   const [isPending, setIsPending] = useState(false);
- 
+
   type ValidationSchemaType = z.infer<typeof ValidationSchema>;
- 
+
   const {
     register,
     handleSubmit,
@@ -61,82 +62,93 @@ export default function Register() {
     resolver: zodResolver(ValidationSchema),
     defaultValues: { agreeToTerms: false },
   });
- 
+
   const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
     setIsPending(true);
     try {
       const { email, password } = data;
+
       const response = await instance.post(API_URL + "/users/api/v1/signup", {
         email,
         password,
       });
+      setCookie("token", response.data.data.token, {
+        secure: true,
+        sameSite: "none",
+        expires: new Date(Date.now() + 2 * 60 * 60 * 1000),
+      });
+
       toast.success(response.data.message);
       dispatch(login(response.data.data));
 
-      router.push("/Payment");
       const planUsageData = response.data.data.plan_usage;
-      console.log("plans", planUsageData);
-  
       const currentDate = new Date();
       const expiryDate = new Date(planUsageData?.usage_expiry_date);
-  
-      if (isNaN(expiryDate.getTime())) {
-        // toast.error("Invalid expiration date");
-      } else if (expiryDate <= currentDate) {
-        toast.error("Unauthorized: Trial expired");
-        router.push("/Payment");
-      } else {
-        toast.success("Authorized: Trial is active");
-        router.push("/app");
-      }
+
+      // if (isEmptyObject(planUsageData) || expiryDate <= currentDate) {
+      // toast.error("Unauthorized: Trial expired");
+      // router.push("/Payment");
+      router.push("/app");
+      // } else {
+      //   toast.success("Authorized: Trial is active");
+      //   router.push("/app");
+      // }
     } catch (error: any) {
-      // Handle errors during login or fetching plan usage
-      if (error.response) {
+      // Handle errors from the API request
+      if (error.response && error.response.data) {
         toast.error(error.response.data.message);
       } else {
-        toast.error(error.message);
+        toast.error("An unexpected error occurred");
       }
-      console.error("Login or plan usage failed:", error);
+      console.error("Signup or plan usage validation failed:", error);
     } finally {
-      // Stop loading indicator
+      // Reset the loading state
       setIsPending(false);
     }
-  
-      // router.push("/app");
-    }
-    // catch (error: any) {
-    //   if (error.response) {
-    //     toast.error(error.response.data.message);
-    //   } else {
-    //     toast.error(error.message);
-    //   }
-    //   console.error("Login failed:", error);
-    // } finally {
-    //   setIsPending(false);
-    // }
+  };
 
- 
   return (
     <main>
       <div className="flex flex-col-reverse xl:flex-row-reverse h-screen overflow-y-auto gap-10">
         <section className="w-full h-full flex justify-center items-center bg-white">
           <div className="w-full max-w-2xl max-h-[900px] h-full p-14 bg-[#F7FAFC] rounded-[30px]">
             <div className="slide-reveal w-full h-full max-w-[460px] mx-auto flex flex-col justify-between items-center md:items-start space-y-10">
-              <Image src={"/logo/growstack.png"} alt="growstack" height={180} width={180} className="max-h-14" />
+              <Image
+                src={"/logo/growstack.png"}
+                alt="growstack"
+                height={180}
+                width={180}
+                className="max-h-14"
+              />
               <div className="space-y-6 w-full">
                 <div className="space-y-3">
-                  <h1 className="text-3xl font-bold text-center md:text-left">Get started</h1>
-                  <p className="text-[#002030B2] text-base text-center md:text-left">Create your account now.</p>
+                  <h1 className="text-3xl font-bold text-center md:text-left">
+                    Get started
+                  </h1>
+                  <p className="text-[#002030B2] text-base text-center md:text-left">
+                    Create your account now.
+                  </p>
                 </div>
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-7 !mt-7 w-full">
+                <form
+                  onSubmit={handleSubmit(onSubmit)}
+                  className="space-y-7 !mt-7 w-full"
+                >
                   {/* styled input field for email */}
                   <div>
                     <div
                       className={clsx(
                         "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
-                        errors["email"] && "border-rose-600 focus-within:border-rose-600"
-                      )}>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16" fill="none">
+                        errors["email"] &&
+                          "border-rose-600 focus-within:border-rose-600"
+                      )}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
                         <path
                           fillRule="evenodd"
                           clipRule="evenodd"
@@ -154,17 +166,29 @@ export default function Register() {
                         />
                       </div>
                     </div>
-                    {errors.email && <span className="text-rose-600 text-sm">{errors.email?.message}</span>}
+                    {errors.email && (
+                      <span className="text-rose-600 text-sm">
+                        {errors.email?.message}
+                      </span>
+                    )}
                   </div>
- 
+
                   {/* styled input field for password */}
                   <div>
                     <div
                       className={clsx(
                         "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
-                        errors["password"] && "border-rose-600 focus-within:border-rose-600"
-                      )}>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16" fill="none">
+                        errors["password"] &&
+                          "border-rose-600 focus-within:border-rose-600"
+                      )}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
                         <path
                           fillRule="evenodd"
                           clipRule="evenodd"
@@ -178,22 +202,36 @@ export default function Register() {
                           id="password"
                           autoComplete="password"
                           placeholder="Enter your password..."
-                          className={clsx("text-sm peer focus:ring-0 h-[60px] w-full")}
+                          className={clsx(
+                            "text-sm peer focus:ring-0 h-[60px] w-full"
+                          )}
                           {...register("password")}
                         />
                       </div>
                     </div>
-                    {errors.password && <span className="text-rose-600 text-sm">{errors.password?.message}</span>}
+                    {errors.password && (
+                      <span className="text-rose-600 text-sm">
+                        {errors.password?.message}
+                      </span>
+                    )}
                   </div>
- 
+
                   {/* styled input field for password confirmation*/}
                   <div>
                     <div
                       className={clsx(
                         "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
-                        errors["confirmPassword"] && "border-rose-600 focus-within:border-rose-600"
-                      )}>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16" fill="none">
+                        errors["confirmPassword"] &&
+                          "border-rose-600 focus-within:border-rose-600"
+                      )}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
                         <path
                           fillRule="evenodd"
                           clipRule="evenodd"
@@ -207,39 +245,63 @@ export default function Register() {
                           id="confirm-password"
                           autoComplete="confirm-password"
                           placeholder="Confirm password"
-                          className={clsx("text-sm peer focus:ring-0 h-[60px] w-full")}
+                          className={clsx(
+                            "text-sm peer focus:ring-0 h-[60px] w-full"
+                          )}
                           {...register("confirmPassword")}
                         />
                       </div>
                     </div>
-                    {errors.confirmPassword && <span className="text-rose-600 text-sm">{errors.confirmPassword?.message}</span>}
+                    {errors.confirmPassword && (
+                      <span className="text-rose-600 text-sm">
+                        {errors.confirmPassword?.message}
+                      </span>
+                    )}
                   </div>
- 
+
                   <div>
                     <div className="flex items-center space-x-2">
-                      <Checkbox id="agree-to-terms" defaultChecked={false} onCheckedChange={(checked) => setValue("agreeToTerms", Boolean(checked))} />
+                      <Checkbox
+                        id="agree-to-terms"
+                        defaultChecked={false}
+                        onCheckedChange={(checked) =>
+                          setValue("agreeToTerms", Boolean(checked))
+                        }
+                      />
                       <label
                         htmlFor="agree-to-terms"
-                        className="text-sm font-medium text-[#667085] leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                        className="text-sm font-medium text-[#667085] leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
                         I agree to the{" "}
-                        <Link href="/user-agreements/terms-and-conditions" className="text-primary-green">
+                        <Link
+                          href="/user-agreements/terms-and-conditions"
+                          className="text-primary-green"
+                        >
                           Terms & Conditions
                         </Link>{" "}
                         and{" "}
-                        <Link href="/user-agreements/privacy-policy" className="text-primary-green">
+                        <Link
+                          href="/user-agreements/privacy-policy"
+                          className="text-primary-green"
+                        >
                           Privacy Policy
                         </Link>
                       </label>
                     </div>
-                    {errors.agreeToTerms && <span className="text-rose-600 text-sm">{errors.agreeToTerms.message}</span>}
+                    {errors.agreeToTerms && (
+                      <span className="text-rose-600 text-sm">
+                        {errors.agreeToTerms.message}
+                      </span>
+                    )}
                   </div>
                   <button
                     type="submit"
-                    className="bg-primary-green hover:bg-primary-green/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center">
+                    className="bg-primary-green hover:bg-primary-green/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center"
+                  >
                     {isPending ? <Spinner /> : "Register"}
                   </button>
                 </form>
- 
+
                 <div className="flex items-center text-[#667085] gap-2">
                   <div className="h-[2px] w-full bg-[#EFEFF4]" />
                   <span className="whitespace-nowrap">or, Sign up with</span>
@@ -248,20 +310,35 @@ export default function Register() {
                 <div className="space-y-3">
                   <Link
                     href={`${API_URL}/users/api/v1/auth/facebook`}
-                    className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021] textDecorationNone">
-                    <Image src="/icons/facebook.svg" alt="" width={20} height={20} />
+                    className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021] textDecorationNone"
+                  >
+                    <Image
+                      src="/icons/facebook.svg"
+                      alt=""
+                      width={20}
+                      height={20}
+                    />
                     Continue with Facebook
                   </Link>
                   <Link
                     href={`${API_URL}/users/api/v1/auth/google`}
-                    className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021] textDecorationNone">
-                    <Image src="/icons/google.svg" alt="" width={20} height={20} />
+                    className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021] textDecorationNone"
+                  >
+                    <Image
+                      src="/icons/google.svg"
+                      alt=""
+                      width={20}
+                      height={20}
+                    />
                     Continue with Google
                   </Link>
                 </div>
                 <p className="text-center text-[#667085]">
                   Already have an account?{" "}
-                  <Link href="/auth/login" className="text-primary-green font-semibold">
+                  <Link
+                    href="/auth/login"
+                    className="text-primary-green font-semibold"
+                  >
                     Login Now
                   </Link>
                 </p>
@@ -278,5 +355,3 @@ export default function Register() {
     </main>
   );
 }
- 
- 

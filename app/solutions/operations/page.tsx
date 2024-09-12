@@ -6,7 +6,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import GridComponentSecond from "./components/GridBoxes2";
 import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
-import Footer from "@/app/(landing)/components/Footer";
+import Footer from "@/components/footer/Footer";
 import HeroSection from "./components/HeroSection";
 import ImageGallerySecond from "./components/ZoomEffect2";
 import ImageGalleryResponsiveSecond from "./components/ZoomEffectrespopnsive2";

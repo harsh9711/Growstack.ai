@@ -14,7 +14,7 @@ import LoadingBar from "./components/Loading";
 import GridComponent from "./components/GridBoxes";
 import ImageGallery from "./components/ZoomEffect";
 import ImageGalleryResponsive from "./components/ZoomEffectrespopnsive";
-import "../../../styles/myanimation.css";
+// import "../../../styles/myanimation.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const page = () => {
@@ -62,7 +62,7 @@ const page = () => {
       </section>
       <section className="overlflow-hidden flex flex-col py-20 xl:mt-10 w-full mb-20 2xl:mb-10  items-center justify-center mx-auto bg-[#034737]">
         <div className="w-full gap-y-4 flex flex-col 2xl:p-0 p-4 items-center justify-center  mx-auto">
-          <div className="bg-[#FFFFFF]/10 hover:shadow-md whitespace-nowrap text-white py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[120px]">
+          <div className="bg-[#FFFFFF]/10 hover:shadow-md whitespace-nowrap text-white py-2 px-3.5 flex items-center gap-3 text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[120px]">
             Integration
           </div>
 

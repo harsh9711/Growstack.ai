@@ -14,18 +14,29 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const router = useRouter();
   const pathname = usePathname();
-  console.log(isSubscribed);
+
   useEffect(() => {
     if (pathname !== "/auth/redirect" && !isLoggedIn) {
       toast.error("Login to view this page!");
       router.push("/auth/login");
-    } else if (pathname !== "/auth/redirect" && !isSubscribed) {
-      toast.error("You need a subscription to view this page!");
-      router.push("/Payment"); // Redirect to subscription page if not subscribed
     }
-  }, [isLoggedIn, isSubscribed, pathname, router]);
+    // else if (
+    //   pathname !== "/auth/redirect" &&
+    //   pathname !== "/Payment" &&
+    //   !isSubscribed
+    // ) {
+    //   toast.error("You need a subscription to view this page!");
+    //   // router.push("/Payment");
+    // } else if (isLoggedIn && isSubscribed && pathname === "/auth/login") {
+    //   router.push("/app");
+    // }
+  }, [
+    isLoggedIn,
+    // router,
+    //  isSubscribed, pathname, router
+  ]);
 
-  if (!isLoggedIn || !isSubscribed) {
+  if (!isLoggedIn) {
     return null;
   }
 

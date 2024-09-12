@@ -9,9 +9,9 @@ import MarketingStreamline from "./components/marketingStreamline/MarketingStrea
 import MarketingTechnology from "./components/marketingTechnology/MarketingTechnology";
 import ImageGallerySecond from "./components/ZoomEffect2";
 import ImageGalleryResponsiveSecond from "./components/ZoomEffectrespopnsive2";
-import Footer from "@/app/(landing)/components/Footer";
 import HeroSection from "./components/HeroSection";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Footer from "@/components/footer/Footer";
 
 const page = () => {
   useEffect(() => {

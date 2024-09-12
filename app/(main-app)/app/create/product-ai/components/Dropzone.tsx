@@ -3,6 +3,8 @@
 import Image from "next/image";
 import React, { useCallback, useState } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
+import { toast } from "react-hot-toast";
+
 interface Props {
   onFileDrop: (acceptedFiles: File[], rejectedFiles: FileRejection[]) => void;
 }
@@ -14,7 +16,12 @@ const acceptedFileTypes = {
 };
 
 export default function Dropzone({ onFileDrop: onFileDrop }: Props) {
-  const onDrop = useCallback(onFileDrop, [onFileDrop]);
+  const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
+    if (rejectedFiles.length > 0) {
+      toast.error("Please upload only image of type JPG/JPEG/PNG/WEBP/HEIC");
+    }
+    onFileDrop(acceptedFiles, rejectedFiles);
+  }, [onFileDrop]);
   
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -36,7 +43,7 @@ export default function Dropzone({ onFileDrop: onFileDrop }: Props) {
             <h2 className="text-lg text-center font-semibold !mt-2">
               <span className="text-primary-green">Click to upload</span> or drag and drop
             </h2>
-            <p className="text-xs text-center text-primary-grey">Formats: JPG, PNG, WEBP or HEIC (max. 10MB)</p>
+            <p className="text-xs text-center text-primary-grey">Formats: JPG, JPEG, PNG, WEBP or HEIC (max. 10MB)</p>
           </div>
         </div>
       )}

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   Dialog,
   DialogContent,
@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { DollarSign} from "lucide-react";
+import { DollarSign } from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect, ReactNode } from "react";
 import instance from "@/config/axios.config";
@@ -40,17 +40,10 @@ interface PaymentMethod {
 }
 
 interface AddCreditDialog2Props {
-  onAddCredit: () => Promise<void>;
+  //   onAddCredit: () => Promise<void>;
 }
 
-const maskCardNumber = (cardNumber: string): string => {
-  const visibleDigits = 4;
-  const maskedPart = "*".repeat(cardNumber.length - visibleDigits);
-  const visiblePart = cardNumber.slice(-visibleDigits);
-  return maskedPart + visiblePart;
-};
-
-const AddCreditDialog2: React.FC<AddCreditDialog2Props> = ({ onAddCredit }) => {
+const AddCreditDialog2: React.FC<AddCreditDialog2Props> = () => {
   const [upcomingData, setUpcomingData] = useState<BillingHistoryItem | null>(
     null
   );
@@ -95,6 +88,7 @@ const AddCreditDialog2: React.FC<AddCreditDialog2Props> = ({ onAddCredit }) => {
 
   const handlePay = async () => {
     try {
+      //   await onAddCredit(); // Call the onAddCredit prop function
       const response = await instance.post(
         `${API_URL}/users/api/v1/payments/pay-dues`,
         {
@@ -180,10 +174,9 @@ const AddCreditDialog2: React.FC<AddCreditDialog2Props> = ({ onAddCredit }) => {
             </Select>
           </div>
           <div className="flex flex-col items-end">
-            {" "}
             <button
               onClick={handlePay}
-              className="font-medium flex  gap-3 px-3 py-4 bg-primary-green mt-4 justify-end text-white items-end transition-all duration-300 rounded-lg"
+              className="font-medium flex gap-3 px-3 py-4 bg-primary-green mt-4 justify-end text-white items-end transition-all duration-300 rounded-lg"
             >
               Pay
             </button>
