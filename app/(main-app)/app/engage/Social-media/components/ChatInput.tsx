@@ -149,6 +149,9 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSendMessage, onFileUpload }) =>
           onChange={handleFileChange}
         />
     </div>
+
+
+
   );
 };
 
