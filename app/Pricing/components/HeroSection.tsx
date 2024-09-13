@@ -24,7 +24,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       data-aos="fade-up"
     >
       <div
-        className="xl:p-4 p-0 mx-auto flex xl:flex-row  flex-col max-w-[1020px] gap-10 overflow-hidden w-full text-white xl:mt-10 items-center justify-between"
+        className="xl:p-4 p-0 mx-auto flex xl:flex-row  flex-col max-w-[1420px] gap-10 overflow-hidden w-full text-white xl:mt-10 items-center justify-between"
         data-aos="fade-right"
       >
         <svg
