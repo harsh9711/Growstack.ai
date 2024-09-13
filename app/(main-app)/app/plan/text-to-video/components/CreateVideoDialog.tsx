@@ -132,7 +132,7 @@ const CreateVideoDialog = ({
       const data: PlanUsage = response.data.data;
       setPlanUsage(data);
 
-      if (!planUsage?.usage_amount || planUsage?.usage_amount <= 0) {
+      if (!data?.usage_amount || data?.usage_amount <= 0) {
         setIsAddOnModalOpen(true)
       }
     } catch (error: any) {
