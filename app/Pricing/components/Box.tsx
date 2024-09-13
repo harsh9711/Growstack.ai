@@ -8,12 +8,12 @@ const ContentBox: React.FC<ContentBoxProps> = ({ sections }) => {
   const allFeatures = sections.flatMap((section) => section.features);
 
   return (
-    <div className="max-w-[1240px] w-full px-4 mx-auto">
+    <div className="max-w-[1400px] w-full px-4 mx-auto">
       {" "}
       <div className="flex flex-row justify-between text-[20px] font-semibold">
         <h2>Details</h2>
-        <span className="flex gap-[211px]">
-          <h2>Pro user</h2>
+        <span className="flex gap-[161px]">
+          <h2>Pro</h2> <h2>Influencer</h2>
           <h2>Business</h2>
         </span>
       </div>{" "}
