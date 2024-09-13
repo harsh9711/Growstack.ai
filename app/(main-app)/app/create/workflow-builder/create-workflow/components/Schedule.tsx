@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ChangeEvent } from "react";
+import React, { useEffect, useState } from "react";
 import { BsQuestion } from "react-icons/bs";
 
 interface CheckboxProps {
@@ -7,7 +7,7 @@ interface CheckboxProps {
   setActiveAction: (params: any) => void;
 }
 
-const CheckboxComponent: React.FC<CheckboxProps> = ({
+const ScheduleComponent: React.FC<CheckboxProps> = ({
   option,
   index,
   setActiveAction,
@@ -18,7 +18,7 @@ const CheckboxComponent: React.FC<CheckboxProps> = ({
   const [isVideo, setIsVideo] = useState(false);
   const [scheduleDate, setScheduleDate] = useState<string>("");
   const [scheduleTime, setScheduleTime] = useState<string>("");
-  const [selectedNetworks, setSelectedNetworks] = React.useState<string[]>([]);
+  const [selectedNetworks, setSelectedNetworks] = useState<string[]>([]);
   const [link, setLink] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -34,7 +34,6 @@ const CheckboxComponent: React.FC<CheckboxProps> = ({
   }, []);
 
   useEffect(() => {
-    // Automatically call handlePublish when both scheduleDate and scheduleTime are selected
     if (scheduleDate && scheduleTime && !loading) {
       handlePublish();
     }
@@ -73,28 +72,21 @@ const CheckboxComponent: React.FC<CheckboxProps> = ({
         ...prevState,
         preset_json: {
           ...prevState.preset_json,
-          body: {
-            ...prevState.preset_json.body,
-            inputs: prevState.preset_json.body.inputs.map(
-              (input: any, i: number) => {
-                if (i === index && input.input_type === "TIME") {
-                  return {
-                    ...input,
-                    input_default_value: `${scheduleDate}T${scheduleTime}`, // Format as ISO string
-                  };
-                }
-                return input;
-              }
-            ),
-          },
+          body: prevState.preset_json.body.map((input: any, i: number) => {
+            if (i === index && input.variable_type === "TIME") {
+              return {
+                ...input,
+                variable_value: `${scheduleDate}T${scheduleTime}`, // Format as ISO string
+              };
+            }
+            return input;
+          }),
         },
       }));
 
       setContent("");
       setIsVideo(false);
       setMediaUrls([]);
-      // setScheduleDate("");
-      // setScheduleTime("");
       setSelectedNetworks([]);
       setLink("");
     } finally {
@@ -107,7 +99,7 @@ const CheckboxComponent: React.FC<CheckboxProps> = ({
   return (
     <div>
       <div className="font-medium text-xl mb-2 mt-8 capitalize">
-        {option.input_label}
+        {option.variable_label}
       </div>
 
       <div className="w-full flex justify-between mt-6">
@@ -176,7 +168,7 @@ const CheckboxComponent: React.FC<CheckboxProps> = ({
                 className="w-full bg-transparent outline-none"
                 value={scheduleTime}
                 onChange={(e) => setScheduleTime(e.target.value)}
-                min={scheduleDate ? `${scheduleDate}T00:00` : undefined} // Prevent selecting past times
+                min={scheduleDate ? `${scheduleDate}T00:00` : undefined}
               />
             </div>
           </div>
@@ -186,4 +178,4 @@ const CheckboxComponent: React.FC<CheckboxProps> = ({
   );
 };
 
-export default CheckboxComponent;
+export default ScheduleComponent;

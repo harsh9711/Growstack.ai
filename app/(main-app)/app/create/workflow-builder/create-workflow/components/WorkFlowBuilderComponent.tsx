@@ -19,6 +19,7 @@ import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
 import { tools } from "./data/tools";
+import { InputType } from "@/types/common";
 
 export default function WorkFlowBuilderComponent() {
   const [activeTag, setActiveTag] = useState<"Input" | "Output" | "Actions">(
@@ -38,28 +39,6 @@ export default function WorkFlowBuilderComponent() {
     is_prompt: boolean;
     prompt?: string;
   }
-  const createPayloadBody = (inputs: Input[] | undefined) => {
-    if (!inputs) {
-      console.error("Inputs is undefined");
-      return {};
-    }
-  
-    let promptValue: string | null = null;
-  
-    return inputs.reduce((acc: Record<string, any>, input: Input) => {
-      if (input.input_label !== undefined && input.input_default_value !== undefined) {
-        acc[input.input_label] = input.input_default_value;
-      }
-  
-      if (input.is_prompt && !promptValue && input.prompt) {
-        promptValue = input.prompt;
-        acc.prompt = promptValue;
-      }
-  
-      return acc;
-    }, {});
-  };
-  
   
   const handleAddStep = () => {};
 
@@ -80,7 +59,7 @@ export default function WorkFlowBuilderComponent() {
     try {
       const payload = {
         preset_json: {
-          body: createPayloadBody(action.preset_json.body.inputs),
+          body: action.preset_json.body,
         },
         event_execute: action.event_execute,
       };
@@ -133,10 +112,7 @@ type ActionType = {
   name: string;
   icon?: string;
   preset_json: {
-    body: {
-      [key: string]: any; 
-      inputs: InputType[];
-    };
+    body: InputType[];
   };
 };
 
@@ -150,10 +126,7 @@ type ToolType = {
   };
 };
 
-type InputType = {
-  input_label: string;
-  input_default_value: string | null;
-};
+
   
 const mapActionInputs = (actions: ActionType[], tools: ToolType[]) => {
   return actions.map((action: ActionType) => {
@@ -164,19 +137,11 @@ const mapActionInputs = (actions: ActionType[], tools: ToolType[]) => {
     }
 
     return {
-      ...action, // Spread the current action
+      ...action, 
       icon: tool.icon,
       preset_json: {
         ...tool.preset_json,
-        body: {
-          ...tool.preset_json.body,
-          inputs: tool.preset_json.body.inputs.map((input: InputType) => ({
-            ...input,
-            input_default_value:
-              action.preset_json.body.inputs?.find((i) => i.input_label === input.input_label)?.input_default_value ??
-              input.input_default_value,
-          })),
-        },
+        body: tool.preset_json.body,
       },
     };
   });
@@ -252,7 +217,7 @@ const getWorkFlowDetails = async (id: string | number) => {
       subtype: action.subtype,
       preset_id: action.id,
       preset_json: {
-        body: createPayloadBody(action.preset_json.body.inputs),
+        body: action.preset_json.body,
       },
       category: action.category,
       event_execute: action.event_execute,
@@ -328,8 +293,11 @@ const getWorkFlowDetails = async (id: string | number) => {
             setActiveAction={setActiveAction}
             onSaveAction={onSaveAction}
             isAPICalling={isAPICalling}
+            setIsAPICalling={setIsAPICalling}
             actions={actions}
-            inputConfigs={inputConfigs} workflowId={""} actionId={""}        />
+            inputConfigs={inputConfigs}
+            workflowId={workflowId}
+            />
         );
     }
   };
@@ -347,7 +315,7 @@ const getWorkFlowDetails = async (id: string | number) => {
     <>
       <div className="flex-1 flex flex-col md:flex-row bg-white rounded-3xl mt-6">
         {/* Left section - Workflow steps */}
-        <div className="flex-1 p-5 flex flex-col justify-center items-center gap-10">
+        <div className="flex-1 p-5 relative flex flex-col  justify-center items-center gap-10">
           <button
             onClick={() => setActiveTag("Input")}
             className={clsx(
@@ -496,8 +464,11 @@ const getWorkFlowDetails = async (id: string | number) => {
           </button>
         </div>
 
-        <div className="border-l border-[#F0F0F0] w-full max-w-[482px] md:w-1/3 p-10 flex flex-col">
+        <div className="border-l flex-1 border-[#F0F0F0] w-full max-w-[482px] md:w-1/3 p-10 flex flex-col">
+          <div className="sticky top-36">
+
           {renderSection()}
+          </div>
         </div>
       </div>
     </>

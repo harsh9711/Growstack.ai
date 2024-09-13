@@ -8,22 +8,34 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import clsx from 'clsx';
+import { InputType } from '@/types/common';
 
 interface DropdownProps {
-  option: any;
+  option: InputType;
   setActiveAction: (params: any) => void;
   index: number;
 }
 
 const Dropdown = ({ option, setActiveAction, index }: DropdownProps) => {
-  const [selectedOption, setSelectedOption] = useState(option.input_default_value);
+  const initialSelectedOption = option.variable_value || 
+    (Array.isArray(option.variable_values) && option.variable_values.length > 0 
+      ? option.variable_values[0] 
+      : '');
+      
+  const [selectedOption, setSelectedOption] = useState<string>(initialSelectedOption);
 
-  const dropDownOptions: { label: string; value: string }[] = option.input_values.map(
-    (option: any) => ({
-      label: option,
-      value: option,
-    })
-  );
+  let dropDownOptions: { label: string; value: string }[] = 
+    (Array.isArray(option.variable_values) ? option.variable_values : [option.variable_values])
+    .filter(value => value !== '')
+    .map((value: any) => ({
+      label: value,
+      value: value,
+    }));
+
+  if (dropDownOptions.length === 0 && option.variable_value) {
+    dropDownOptions = [{ label: option.variable_value, value: option.variable_value }];
+  }
+
   const selectedOptionLabel = dropDownOptions.find((opt) => opt.value === selectedOption)?.label;
 
   useEffect(() => {
@@ -31,25 +43,22 @@ const Dropdown = ({ option, setActiveAction, index }: DropdownProps) => {
       ...prevState,
       preset_json: {
         ...prevState.preset_json,
-        body: {
-          ...prevState.preset_json.body,
-          inputs: prevState.preset_json.body.inputs.map((input: any, i: number) => {
-            if (i === index && input.input_type === 'DROPDOWN') {
-              return {
-                ...input,
-                input_default_value: selectedOptionLabel,
-              };
-            }
-            return input;
-          }),
-        },
+        body: prevState.preset_json.body.map((input: InputType, i: number) => {
+          if (i === index && input.variable_type === 'DROPDOWN') {
+            return {
+              ...input,
+              variable_value: selectedOption,
+            };
+          }
+          return input;
+        }),
       },
     }));
   }, [selectedOption]);
 
   return (
     <React.Fragment>
-      <div className="font-medium mb-2 capitalize text-xl">{option.input_label}</div>
+      <div className="font-medium mb-2 capitalize text-xl">{option.variable_label}</div>
       <Select value={selectedOption} onValueChange={setSelectedOption}>
         <SelectTrigger className="w-full h-12 rounded-lg border border-primary-green bg-white text-primary-green">
           <SelectValue placeholder="Select an option">

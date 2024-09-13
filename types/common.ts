@@ -16,10 +16,19 @@ export interface PlanUsage {
     stripe_subscription_id: string;
     text_to_video_pricing: number;
     product_ai_pricing: number;
-    usage_start_date: string; 
-    usage_expiry_date: string; 
+    usage_start_date: string;
+    usage_expiry_date: string;
     usage_amount: number;
-    plan_type: "MONTHLY" | "YEARLY" | string; 
-    createdAt: string; 
-    updatedAt: string; 
+    plan_type: "MONTHLY" | "YEARLY" | string;
+    createdAt: string;
+    updatedAt: string;
 }
+
+
+export type InputType = {
+    variable_label: string;
+    variable_type: string;
+    variable_value: any;
+    variable_values: any;
+    is_prompt?: boolean;
+};
