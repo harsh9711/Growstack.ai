@@ -8,48 +8,52 @@ import { useDispatch } from "react-redux";
 import { login } from "@/lib/features/auth/auth.slice";
 import { setCookie } from "cookies-next";
 import { useSearchParams } from "next/navigation";
+import instance from "@/config/axios.config";
+import { API_URL } from "@/lib/api";
+
 
 export default function Login() {
   const router = useRouter();
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
 
+  const fetchUserAfterRedirectionSuccess = async () => {
+    try {
+      const userData = (await instance.get(`${API_URL}/users/api/v1`)).data?.data;
+      if (!userData) {
+        router.push("/auth/login");
+      }
+
+      dispatch(login(userData));
+
+      if (userData.isSubscribed === "false") {
+        router.push("/Payment");
+      } else if (userData.isSubscribed === "true" && userData.isExpired === "true") {
+        router.push("/account/billings/settings/due");
+      } else {
+        router.push("/app");
+      }
+      toast.success("Successfully logged in...");
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error("Login failed:", error);
+    } 
+  };
+
   useEffect(() => {
     const token = searchParams.get("token");
 
     if (token) {
-      const user_name = searchParams.get("user_name");
-      const id = searchParams.get("id");
-      const email = searchParams.get("email");
-      const avatar = searchParams.get("avatar");
-      const isSubscribed = searchParams.get("isSubscribed");
-      const isExpired = searchParams.get("isExpired");
-
       setCookie("token", token, {
         secure: true,
         sameSite: "none",
         expires: new Date(Date.now() + 2 * 60 * 60 * 1000),
       });
-      const user = {
-        user_name,
-        email,
-        id,
-        avatar,
-        isSubscribed: isSubscribed === "true",
-        isExpired: isExpired === "true",
-      };
-
-      dispatch(login(user));
-
-      // if (isSubscribed === "false") {
-      //   router.push("/Payment");
-      // } else if (isSubscribed === "true" && isExpired === "true") {
-      //   router.push("/account/billings/settings/due");
-      // } else {
-      router.push("/app");
-      // }
-
-      toast.success("Successfully logged in...");
+      fetchUserAfterRedirectionSuccess()
     } else {
       router.push("/auth/login");
     }

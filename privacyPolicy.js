@@ -47,25 +47,21 @@ export const tnc = {
 };
 export const tos = {
   heading: "Introduction",
-  introduction: "Welcome to WebBuddy privacy policy.",
+  introduction: "Welcome to Growstack privacy policy.",
   content:
-    "Lorem ipsum dolor sit amet consectetur. At eros nulla volutpat leo tincidunt. Mattis vulputate at dignissim neque proin enim nisl blandit risus. Orci rutrum lorem enim quisque. Donec ac mattis mi turpis turpis. Ac porttitor rhoncus blandit sapien. Vitae habitant vitae vestibulum malesuada elit eu libero integer in. Sed scelerisque orci sed tristique a dui in facilisi. Id cursus habitant tortor hac ullamcorper egestas nullam donec.",
+    "At GrowStack.ai, we prioritize your privacy and are committed to protecting the personal information you share with us. This privacy policy outlines how we collect, use, and safeguard your information, as well as your rights regarding your data.",
   links_section: {
-    heading: "1.  Acceptance of terms",
+    heading: "Links to other websites, apps and services",
     content:
-      "Lorem ipsum dolor sit amet consectetur. Justo felis nunc pellentesque dui neque sit. Erat a metus nec lectus vel scelerisque vulputate consequat. Aliquet ut pretium dui diam pharetra amet nulla euismod enim. Elit luctus neque donec aliquam amet id lorem. Nunc et suspendisse velit bibendum velit interdum ac sit at. Euismod faucibus orci purus elit diam turpis quisque sed egestas. Pellentesque sit quisque tristique ac. Eu purus feugiat congue leo platea accumsan. Convallis phasellus parturient nisl viverra congue sapien duis habitant. Ut faucibus faucibus justo sapien placerat eu ipsum.",
+      "Our platform, GrowStack.ai, may contain links to third-party websites, applications, or services that are not operated or controlled by us. These links are provided for your convenience and do not imply any endorsement or affiliation with the third-party services.Please be aware that once you leave our platform and access third-party websites, apps, or services, this privacy policy no longer applies. We do not have control over the content, privacy practices, or policies of these third-party services. As such, we encourage you to review the privacy policies and terms of service of any external websites, apps, or services before providing any personal information or using their services.GrowStack.ai is not responsible for the data collection, use, disclosure, or security practices of third-party websites, apps, or services, including any third-party social media platforms or other services that may be linked to or integrated with our platform.If you have any concerns about these external sites or their practices, we recommend contacting the administrators of those websites directly.",
   },
   links_sections: [
+  
     {
-      heading: "1. Acceptance of terms",
+      heading: "Links to other websites, apps, and services",
       content:
-        "Lorem ipsum dolor sit amet consectetur. Justo felis nunc pellentesque dui neque sit. Erat a metus nec lectus vel scelerisque vulputate consequat. Aliquet ut pretium dui diam pharetra amet nulla euismod enim. Elit luctus neque donec aliquam amet id lorem. Nunc et suspendisse velit bibendum velit interdum ac sit at. Euismod faucibus orci purus elit diam turpis quisque sed egestas. Pellentesque sit quisque tristique ac. Eu purus feugiat congue leo platea accumsan. Convallis phasellus parturient nisl viverra congue sapien duis habitant. Ut faucibus faucibus justo sapien placerat eu ipsum.",
-    },
-    {
-      heading: "2. Links to other websites, apps, and services",
-      content:
-        "Lorem ipsum dolor sit amet consectetur. Justo felis nunc pellentesque dui neque sit. Erat a metus nec lectus vel scelerisque vulputate consequat. Aliquet ut pretium dui diam pharetra amet nulla euismod enim. Elit luctus neque donec aliquam amet id lorem. Nunc et suspendisse velit bibendum velit interdum ac sit at. Euismod faucibus orci purus elit diam turpis quisque sed egestas. Pellentesque sit quisque tristique ac. Eu purus feugiat congue leo platea accumsan. Convallis phasellus parturient nisl viverra congue sapien duis habitant. Ut faucibus faucibus justo sapien placerat eu ipsum.",
-    },
+      "Our platform, GrowStack.ai, may contain links to third-party websites, applications, or services that are not operated or controlled by us. These links are provided for your convenience and do not imply any endorsement or affiliation with the third-party services.Please be aware that once you leave our platform and access third-party websites, apps, or services, this privacy policy no longer applies. We do not have control over the content, privacy practices, or policies of these third-party services. As such, we encourage you to review the privacy policies and terms of service of any external websites, apps, or services before providing any personal information or using their services.GrowStack.ai is not responsible for the data collection, use, disclosure, or security practices of third-party websites, apps, or services, including any third-party social media platforms or other services that may be linked to or integrated with our platform.If you have any concerns about these external sites or their practices, we recommend contacting the administrators of those websites directly.",
+  },
   ],
   how_your_information_may_be_used: {
     heading: "3.  How Your Information may be used",
@@ -88,24 +84,24 @@ export const tos = {
   },
   links_sections2: [
     {
-      heading: "4. Purchases; confidentiality",
+      heading: "Data Security",
       content:
-        "Lorem ipsum dolor sit amet consectetur. Justo felis nunc pellentesque dui neque sit. Erat a metus nec lectus vel scelerisque vulputate consequat. Aliquet ut pretium dui diam pharetra amet nulla euismod enim. Elit luctus neque donec aliquam amet id lorem. Nunc et suspendisse velit bibendum velit interdum ac sit at. Euismod faucibus orci purus elit diam turpis quisque sed egestas. Pellentesque sit quisque tristique ac. Eu purus feugiat congue leo platea accumsan. Convallis phasellus parturient nisl viverra congue sapien duis habitant. Ut faucibus faucibus justo sapien placerat eu ipsum.",
+        "We are committed to ensuring the security of your Personal Data and have implemented appropriate physical, technical, and organizational measures to protect it from loss, misuse, unauthorized access, disclosure, alteration, or destruction. Our security practices are designed to meet industry standards and safeguard your information.Despite our efforts to maintain robust security, no system is completely immune to cyber-attacks, malicious activities, or errors. We cannot guarantee absolute security of our Services or website. To the fullest extent permitted by applicable law, we disclaim liability for any unauthorized disclosure",
     },
     {
-      heading: "5. Intellectual property rights",
+      heading: "Your Rights and Choices",
       content:
-        "Lorem ipsum dolor sit amet consectetur. Justo felis nunc pellentesque dui neque sit. Erat a metus nec lectus vel scelerisque vulputate consequat. Aliquet ut pretium dui diam pharetra amet nulla euismod enim. Elit luctus neque donec aliquam amet id lorem. Nunc et suspendisse velit bibendum velit interdum ac sit at. Euismod faucibus orci purus elit diam turpis quisque sed egestas. Pellentesque sit quisque tristique ac. Eu purus feugiat congue leo platea accumsan. Convallis phasellus parturient nisl viverra congue sapien duis habitant. Ut faucibus faucibus justo sapien placerat eu ipsum.",
+        "We are committed to ensuring the security of your Personal Data and have implemented appropriate physical, technical, and organizational measures to protect it from loss, misuse, unauthorized access, disclosure, alteration, or destruction. Our security practices are designed to meet industry standards and safeguard your information.Despite our efforts to maintain robust security, no system is completely immune to cyber-attacks, malicious activities, or errors. We cannot guarantee absolute security of our Services or website. To the fullest extent permitted by applicable law, we disclaim liability for any unauthorized disclosure",
     },
     {
-      heading: "6. Disclaimers",
+      heading: "International Data Transfers",
       content:
-        "Lorem ipsum dolor sit amet consectetur. Justo felis nunc pellentesque dui neque sit. Erat a metus nec lectus vel scelerisque vulputate consequat. Aliquet ut pretium dui diam pharetra amet nulla euismod enim. Elit luctus neque donec aliquam amet id lorem. Nunc et suspendisse velit bibendum velit interdum ac sit at. Euismod faucibus orci purus elit diam turpis quisque sed egestas. Pellentesque sit quisque tristique ac. Eu purus feugiat congue leo platea accumsan. Convallis phasellus parturient nisl viverra congue sapien duis habitant. Ut faucibus faucibus justo sapien placerat eu ipsum.",
+        "We are committed to ensuring the security of your Personal Data and have implemented appropriate physical, technical, and organizational measures to protect it from loss, misuse, unauthorized access, disclosure, alteration, or destruction. Our security practices are designed to meet industry standards and safeguard your information.Despite our efforts to maintain robust security, no system is completely immune to cyber-attacks, malicious activities, or errors. We cannot guarantee absolute security of our Services or website. To the fullest extent permitted by applicable law, we disclaim liability for any unauthorized disclosure",
     },
     {
-      heading: "7. Limitation of liability",
+      heading: "Data Retention and Deletion",
       content:
-        "Lorem ipsum dolor sit amet consectetur. Justo felis nunc pellentesque dui neque sit. Erat a metus nec lectus vel scelerisque vulputate consequat. Aliquet ut pretium dui diam pharetra amet nulla euismod enim. Elit luctus neque donec aliquam amet id lorem. Nunc et suspendisse velit bibendum velit interdum ac sit at. Euismod faucibus orci purus elit diam turpis quisque sed egestas. Pellentesque sit quisque tristique ac. Eu purus feugiat congue leo platea accumsan. Convallis phasellus parturient nisl viverra congue sapien duis habitant. Ut faucibus faucibus justo sapien placerat eu ipsum.",
+        "We are committed to ensuring the security of your Personal Data and have implemented appropriate physical, technical, and organizational measures to protect it from loss, misuse, unauthorized access, disclosure, alteration, or destruction. Our security practices are designed to meet industry standards and safeguard your information.Despite our efforts to maintain robust security, no system is completely immune to cyber-attacks, malicious activities, or errors. We cannot guarantee absolute security of our Services or website. To the fullest extent permitted by applicable law, we disclaim liability for any unauthorized disclosure",
     },
   ],
 };

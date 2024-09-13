@@ -1,12 +1,14 @@
 import React from "react";
 import Image from "next/image";
 import Navbar from "@/components/navbar/Navbar";
-import Footer from "../(landing)/components/Footer";
 import HeroSection from "./components/HeroSection";
 import ContentBox from "./components/Box";
-import { tos } from "../../privacyPolicy"; // Importing the tos data
+import { tos } from "../../privacyPolicy"; 
+import "bootstrap/dist/css/bootstrap.min.css";
+import Footer from "@/components/footer/Footer";
 
-const TosPage: React.FC = () => { // Renamed component to avoid naming conflict
+const TosPage: React.FC = () => {
+  // Renamed component to avoid naming conflict
   return (
     <div className="flex flex-col">
       <div className="relative z-40">
@@ -18,8 +20,8 @@ const TosPage: React.FC = () => { // Renamed component to avoid naming conflict
       </div>
       <HeroSection
         title="Privacy policy"
-        description="Lorem ipsum dolor sit amet consectetur. Morbi est at odio elementum ornare."
-        lastUpdatedDate="28-08-2024"
+        description=" Your privacy matters to us. Review how we collect, use, and protect your personal information."
+        lastUpdatedDate="12-09-2024"
       />
       <section className="bg-white mt-20">
         <Image

@@ -49,7 +49,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ conversation, assistant }) 
               </div>
               <div className="mt-4 flex justify-start items-start gap-4">
                 <Image src={assistant.avatar} alt="Assistant" width={100} height={100} className="w-[45px] h-[45px] object-cover rounded-xl" />
-                <div className="max-w-5xl min-h-11 bg-[#F1F1F1] text-primary-black py-4 px-5 rounded-xl text-[15px] leading-[1.8] flex flex-col items-center justify-center">
+                <div className="max-w-5xl min-h-11 bg-[#F1F1F1] text-primary-black py-4 px-5 rounded-xl text-[15px] leading-[1.8] flex flex-col items-center justify-center text-justify">
                   {chat.response ? (
                     <ReactMarkdown key={chat._id} className="prose" remarkPlugins={[remarkGfm]}>
                       {chat.response}

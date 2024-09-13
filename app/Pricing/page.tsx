@@ -1,13 +1,14 @@
 import React from "react";
 import Image from "next/image";
 import Navbar from "@/components/navbar/Navbar";
-import Footer from "../(landing)/components/Footer";
 import HeroSection from "./components/HeroSection";
 import Pricing from "./components/Pricing";
 import MainBox from "./components/MainBox";
 import PricingNew from "./components/PricingNew";
+import Footer from "@/components/footer/Footer";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-const PricingPage: React.FC = () => { // Renamed component to avoid naming conflict
+const PricingPage: React.FC = () => {
   return (
     <div className="flex flex-col">
       <div className="relative z-40">
@@ -19,7 +20,7 @@ const PricingPage: React.FC = () => { // Renamed component to avoid naming confl
       </div>
       <HeroSection
         title="Get the AI copilot for better marketing results"
-        description="Lorem ipsum dolor sit amet consectetur. Morbi est at odio elementum ornare."
+        description="Flexible pricing for all business sizes—pay for only what you need with Growstack."
       />
             <svg
         className="absolute -translate-y-96 translate-x-64"

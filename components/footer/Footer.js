@@ -43,19 +43,19 @@ function Footer() {
                 <h4>Company</h4>
                 <ul >
                   <li >
-                    <Link href="/auth/register">Company</Link>
+                    {/* <Link href="/auth/register">Company</Link> */}
                   </li>
                   <li>
                     <Link href="/Pricing">Pricing</Link>
                   </li>
                   <li>
-                    <Link href="/auth/register">Get the App</Link>
+                    {/* <Link href="/auth/register">Get the App</Link> */}
                   </li>
                   <li>
-                    <Link href="/auth/register">Blog</Link>
+                    {/* <Link href="/auth/register">Blog</Link> */}
                   </li>
                   <li>
-                    <Link href="/auth/register">FAQ</Link>
+                    {/* <Link href="/auth/register">FAQ</Link> */}
                   </li>
                 </ul>
               </div>
@@ -96,45 +96,50 @@ function Footer() {
                 <h4>Support</h4>
                 <ul>
                   <li>
-                    <Link href="/auth/register">Support</Link>
+                    {/* <Link href="/auth/register">Support</Link> */}
                   </li>
                   <li>
-                    <Link href="/Tos">Terms & Condition</Link>
+                    <Link href="/Tnc">Terms & Condition</Link>
                   </li>
                   <li>
-                    <Link href="/Tnc">Privacy Policy</Link>
+                    <Link href="/Tos">Privacy Policy</Link>
                   </li>
                   <li>
                     <Link href="/Rrp">Refund & return policy</Link>
                   </li>
                   <li>
-                    <Link href="/auth/register">Community</Link>
+                    {/* <Link href="/auth/register">Community</Link> */}
                   </li>
                 </ul>
               </div>
               <div className="col-lg-3 col-md-6">
-                <h4>Newsletter</h4>
-                <p>Subscribe to our newsletter</p>
-                <div className="input-group">
-                  <img src="/images_growstack/footer/letter.svg" alt="letter" />
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Enter your email"
-                  />
-                  <div className="input-group-append">
-                    <button className="sheen" type="button">
-                      <img
-                        src="/images_growstack/footer/newsletter.svg"
-                        alt="newsletter"
-                      />
-                    </button>
-                  </div>
-                </div>
-              </div>
+  <h4>Newsletter</h4>
+  <p>Subscribe to our newsletter</p>
+  <form action="/" method="post">
+    <div className="input-group">
+      <img src="/images_growstack/footer/letter.svg" alt="letter" />
+      <input
+        type="email"
+        name="email"
+        className=""
+        placeholder="Enter your email"
+        required
+      />
+      <div className="input-group-append">
+        <button className="sheen" type="submit">
+          <img
+            src="/images_growstack/footer/newsletter.svg"
+            alt="newsletter"
+          />
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
             </div>
             <div className="copyRight">
-              <p>Copyright © 2024 growstack</p>
+              <p>Copyright © 2024 Growstack</p>
               <div className="social">
                 <Link href="/auth/register">
                   <img

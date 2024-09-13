@@ -27,7 +27,7 @@ function Page() {
       <OurProcess />
       <PoweredBy />
       <Features />
-      <Marketing/>
+      {/* <Marketing/> */}
       <Premium />
       <Capability />
       <WhyChoose />

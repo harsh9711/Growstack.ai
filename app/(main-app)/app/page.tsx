@@ -1,22 +1,20 @@
 "use client";
-
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { login } from "@/lib/features/auth/auth.slice";
 import { ArrowRight, StarIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import ContentLoader from "react-content-loader";
 import toast from "react-hot-toast";
-import { BsStarFill } from "react-icons/bs";
 import { getCurrentUser } from "@/lib/features/auth/auth.selector";
 import { useDispatch } from "react-redux";
 import ChatComponent from "./components/ChatComponent";
-// import "bootstrap/dist/css/bootstrap.min.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "@/styles/globals.css";
+import { useRouter } from "next/navigation";
 interface AiApp {
   _id: string;
   "ASSISTANT NAME": string;
@@ -53,8 +51,24 @@ export default function Dashboard() {
   const [aiAppsloading, setAiAppsLoading] = useState(true);
   const [aiAssistantsloading, setAiAssistantsLoading] = useState(true);
   const currentUser = getCurrentUser();
-  // const hasRefreshed = localStorage.getItem("hasRefreshed");
-  // const [refreshed, setRefreshed] = useState(hasRefreshed || false);
+
+  const [hasRefreshed, setHasRefreshed] = useState(false);
+  const router = useRouter();
+
+  useLayoutEffect(() => {
+    const hasRefreshedBefore = localStorage.getItem("hasRefreshed");
+
+    if (!hasRefreshedBefore) {
+      localStorage.setItem("hasRefreshed", "true");
+      setHasRefreshed(true);
+      router.refresh();
+    } else {
+      setHasRefreshed(true);
+    }
+  }, [router]);
+
+
+
   useEffect(() => {
     AOS.init({ duration: 1000 });
     AOS.refresh();
@@ -148,6 +162,12 @@ export default function Dashboard() {
     fetchFavoriteAssistants();
     fetchSocialMediaProfile();
   }, []);
+
+
+  if (!hasRefreshed) {
+    return null; 
+  }
+
 
   return (
     <main className="">

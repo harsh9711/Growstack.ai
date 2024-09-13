@@ -94,7 +94,7 @@ export default function AddCreditDialog() {
       <Link href="/Upgrade"> 
       
               <button
-            className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300 ${
+            className={`w-full max-w-fit text-[12px] xl:text-[18px] h-12 px-4 py-2 xl:py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300 ${
               cancelLoading ? 'opacity-50 cursor-not-allowed' : ''
             }`}
             disabled={cancelLoading} 
