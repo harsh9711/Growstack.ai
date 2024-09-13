@@ -67,8 +67,8 @@ export default function AiAppPage({
   const [brandName, setBrandName] = useState("");
   const [selectedBrandVoice, setSelectedBrandVoice] = useState({});
   const [isChecked, setIsChecked] = useState(false);
-  const [userInput1Error, setUserInput1Error] = useState('');
-  const [userPromptError, setUserPromptError] = useState('');
+  const [userInput1Error, setUserInput1Error] = useState("");
+  const [userPromptError, setUserPromptError] = useState("");
   const [userInput1, setUserInput1] = useState("");
   const brandNames = allBrandVoices?.map((item: any) => item.brand_name);
 
@@ -216,11 +216,11 @@ export default function AiAppPage({
   };
 
   const generateResult = async () => {
-    if (userInput1.trim() === ''){
-      setUserInput1Error('Please Select Language');
+    if (userInput1.trim() === "") {
+      setUserInput1Error("Please Select Language");
       return;
     } else {
-      setUserInput1Error('');
+      setUserInput1Error("");
     }
 
     // if (userInput.user_prompt === ""){
@@ -410,8 +410,8 @@ export default function AiAppPage({
 
   if (loading) {
     return (
-      <div className="flex-1 flex flex-col gap-5 justify-center items-center">
-        <Spinner color="black" size={100} />
+      <div className='flex-1 flex flex-col gap-5 justify-center items-center'>
+        <Spinner color='black' size={100} />
         Loading...
       </div>
     );
@@ -419,60 +419,67 @@ export default function AiAppPage({
 
   return (
     <Fragment>
-      <div className="flex items-center justify-between mt-10">
-        <p className="flex items-center gap-2 text-[#4B465C] text-opacity-50 text-[15px]">
+      <div className='flex items-center justify-between mt-10'>
+        <p className='flex items-center gap-2 text-[#4B465C] text-opacity-50 text-[15px]'>
           <Link
-            href="/app/plan/ai-templates"
-            className="hover:text-gray-600 transition-all"
+            href='/app/plan/ai-templates'
+            className='hover:text-gray-600 transition-all'
           >
             All AI templates
           </Link>
           <ChevronRight size={20} />{" "}
-          <span className="text-[#3D817B] font-medium">{appTemplate.name}</span>
+          <span className='text-[#3D817B] font-medium'>{appTemplate.name}</span>
         </p>
-        <Link href="/app/plan/ai-templates">
-          <button className="text-primary-green hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-2.5 rounded-full font-semibold items-center">
+        <Link href='/app/plan/ai-templates'>
+          <button className='text-primary-green hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-2.5 rounded-full font-semibold items-center'>
             <ArrowLeft size={20} /> Back
           </button>
         </Link>
       </div>
-      <div className="flex gap-5 mt-6">
-        <div className="w-full h-full max-w-[600px] px-8 pb-8 pt-6 bg-white rounded-2xl border border-[#EDEFF0] space-y-4">
-          <div className="mb-5 border-b border-[#EDEFF0]">
-            <div className="flex items-center justify-between pb-5">
-              <div className="flex flex-row items-center gap-3">
+      <div className='flex gap-5 mt-6'>
+        <div className='w-full h-full max-w-[600px] px-8 pb-8 pt-6 bg-white rounded-2xl border border-[#EDEFF0] space-y-4'>
+          <div className='mb-5 border-b border-[#EDEFF0]'>
+            <div className='flex items-center justify-between pb-5'>
+              <div className='flex flex-row items-center gap-3'>
                 <div
-                  className="rounded"
+                  style={{
+                    height: "8vh",
+                    width: "8vh",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
+                  className='rounded'
                   dangerouslySetInnerHTML={{ __html: appTemplate.icon }}
                 />
 
-                <h2 className="text-2xl font-semibold capitalize">
+                <h2 className='text-2xl font-semibold capitalize'>
                   {appTemplate.name}
                 </h2>
               </div>
-              <div className="cursor-pointer w-full max-w-fit transition duration-300 hover:scale-125 flex justify-center items-center">
+              <div className='cursor-pointer w-full max-w-fit transition duration-300 hover:scale-125 flex justify-center items-center'>
                 {appTemplate.favorite ? (
                   <BsStarFill
                     size={24}
-                    className="text-yellow-300"
+                    className='text-yellow-300'
                     onClick={() => handleFavorite("remove", appTemplate._id)}
                   />
                 ) : (
                   <StarIcon
-                    className="text-[#ADADAD]"
+                    className='text-[#ADADAD]'
                     onClick={() => handleFavorite("add", appTemplate._id)}
                   />
                 )}
               </div>
             </div>
-            <p className="mb-5 text-md">{appTemplate.description}</p>
+            <p className='mb-5 text-md'>{appTemplate.description}</p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className='flex items-center gap-2'>
             <Switch
               checked={isChecked}
               onCheckedChange={() => setIsChecked((prev) => !prev)}
             />
-            <label htmlFor="include-brand" className="text-sm">
+            <label htmlFor='include-brand' className='text-sm'>
               Include your brand
             </label>
           </div>
@@ -494,8 +501,8 @@ export default function AiAppPage({
             <div>
               {Array.isArray(brandNames) && brandNames.length > 0 ? (
                 <Dropdown
-                  label="Select Company / Brand"
-                  placeholder="Select your Company / Brand"
+                  label='Select Company / Brand'
+                  placeholder='Select your Company / Brand'
                   items={brandNames}
                   value={brandName}
                   onChange={(value: any) => {
@@ -503,9 +510,13 @@ export default function AiAppPage({
                   }}
                 />
               ) : (
-                <Link href="/account/create-brand-voice/" className="flex" style={{color:"green"}}>
-                    <Plus size={20} />
-                   <strong className="ml-2" >Create brand voice</strong> 
+                <Link
+                  href='/account/create-brand-voice/'
+                  className='flex'
+                  style={{ color: "green" }}
+                >
+                  <Plus size={20} />
+                  <strong className='ml-2'>Create brand voice</strong>
                 </Link>
               )}
             </div>
@@ -513,7 +524,7 @@ export default function AiAppPage({
 
           <div>
             <Dropdown
-              label="Language"
+              label='Language'
               items={languageOptions.map((language) => language.label)}
               value={userInput1}
               onChange={(value: any) => {
@@ -521,36 +532,38 @@ export default function AiAppPage({
                 setUserInput1(value);
               }}
             />
-            {userInput1Error && <p style={{color: 'red'}}>{userInput1Error}</p>}
+            {userInput1Error && (
+              <p style={{ color: "red" }}>{userInput1Error}</p>
+            )}
           </div>
 
-          <div className="space-y-3">
+          <div className='space-y-3'>
             {appTemplate?.inputs?.map((input: any, index: number) => (
               <div key={index}>
                 <label
-                  className="font-medium flex justify-between"
+                  className='font-medium flex justify-between'
                   htmlFor={`user-prompt-${index}`}
                 >
                   {input.title}
                   {input.field_type !== "Checkbox list field" &&
                     input.field_type !== "Radio buttons field" &&
                     input.field_type !== "Select list field" && (
-                      <span className="text-primary-black text-opacity-50 text-sm">
+                      <span className='text-primary-black text-opacity-50 text-sm'>
                         {userPrompts[index].length}/2000
                       </span>
                     )}
                 </label>
                 {input.field_type === "Checkbox list field" ? (
-                  <div className="flex flex-col space-y-2">
+                  <div className='flex flex-col space-y-2'>
                     {input.description
                       .split(",")
                       .map((option: string, optionIndex: number) => (
                         <label
                           key={optionIndex}
-                          className="flex items-center mt-4"
+                          className='flex items-center mt-4'
                         >
                           <input
-                            type="checkbox"
+                            type='checkbox'
                             value={option.trim()}
                             checked={userPrompts[index]?.includes(
                               option.trim()
@@ -558,28 +571,28 @@ export default function AiAppPage({
                             onChange={(e) => handleCheckboxChange(e, index)}
                             required
                           />
-                          <span className="ml-2">{option.trim()}</span>
+                          <span className='ml-2'>{option.trim()}</span>
                         </label>
                       ))}
                   </div>
                 ) : null}
                 {input.field_type === "Radio buttons field" && (
-                  <div className="flex flex-col space-y-2">
+                  <div className='flex flex-col space-y-2'>
                     {input.description
                       .split(",")
                       .map((option: string, optionIndex: number) => (
                         <label
                           key={optionIndex}
-                          className="flex items-center mt-4"
+                          className='flex items-center mt-4'
                         >
                           <input
-                            type="radio"
+                            type='radio'
                             value={option.trim()}
                             checked={userPrompts[index] === option.trim()}
                             onChange={(e) => handleRadioChange(e, index)}
                             required
                           />
-                          <span className="ml-2">{option.trim()}</span>
+                          <span className='ml-2'>{option.trim()}</span>
                         </label>
                       ))}
                   </div>
@@ -602,21 +615,23 @@ export default function AiAppPage({
                     <textarea
                       id={`user-prompt-${index}`}
                       rows={4}
-                      className="w-full p-4 rounded-xl resize-none bg-[#F2F2F2]"
+                      className='w-full p-4 rounded-xl resize-none bg-[#F2F2F2]'
                       placeholder={input.description}
                       value={userPrompts[index]}
                       onChange={(e) => handleUserPromptChange(e, index)}
                       maxLength={2000}
                     ></textarea>
                   )}
-                  {userPromptError && <p style={{color: "red"}}>{userPromptError}</p>}
+                {userPromptError && (
+                  <p style={{ color: "red" }}>{userPromptError}</p>
+                )}
               </div>
             ))}
           </div>
 
           <div>
             <Dropdown
-              label="AI Model"
+              label='AI Model'
               items={[
                 "gpt-3.5-turbo",
                 "gpt-4",
@@ -632,9 +647,9 @@ export default function AiAppPage({
               onChange={(value: any) => handleDropdownChange("model", value)}
             />
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className='grid grid-cols-2 gap-2'>
             <Dropdown
-              label="Creativity"
+              label='Creativity'
               infoIcon
               items={["Original", "Creative"]}
               value={userInput.creativity}
@@ -646,7 +661,7 @@ export default function AiAppPage({
               }
             />
             <Dropdown
-              label="Tone of Voice"
+              label='Tone of Voice'
               infoIcon
               items={["Professional", "Friendly", "Casual"]}
               value={userInput.tone_of_voice}
@@ -656,11 +671,11 @@ export default function AiAppPage({
               info={"Set result tone of the text as needed"}
             />
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className='grid grid-cols-2 gap-2'>
             <div>
               <label
-                className="block mb-2 text-sm font-medium flex items-center"
-                htmlFor="number-of-results"
+                className='block mb-2 text-sm font-medium flex items-center'
+                htmlFor='number-of-results'
               >
                 Number of Results
                 <TooltipProvider>
@@ -668,10 +683,10 @@ export default function AiAppPage({
                     <TooltipTrigger asChild>
                       <Info
                         size={18}
-                        className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
+                        className='ml-2 text-primary-black text-opacity-50 cursor-pointer'
                       />
                     </TooltipTrigger>
-                    <TooltipContent className="bg-white">
+                    <TooltipContent className='bg-white'>
                       <p>Maximum supported results is 50</p>
                     </TooltipContent>
                   </Tooltip>
@@ -679,17 +694,17 @@ export default function AiAppPage({
               </label>
 
               <Input
-                type="number"
-                id="number-of-results"
-                name="number_of_results"
+                type='number'
+                id='number-of-results'
+                name='number_of_results'
                 value={userInput.number_of_results}
                 onChange={handleChange}
               />
             </div>
             <div>
               <label
-                className="block mb-2 text-sm font-medium flex"
-                htmlFor="estimated-result-length"
+                className='block mb-2 text-sm font-medium flex'
+                htmlFor='estimated-result-length'
               >
                 Estimated Result Length
                 <TooltipProvider>
@@ -697,48 +712,50 @@ export default function AiAppPage({
                     <TooltipTrigger asChild>
                       <Info
                         size={18}
-                        className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
+                        className='ml-2 text-primary-black text-opacity-50 cursor-pointer'
                       />
                     </TooltipTrigger>
-                    <TooltipContent className="bg-white">
-                      <p>Estimated words length for each generated text result</p>
+                    <TooltipContent className='bg-white'>
+                      <p>
+                        Estimated words length for each generated text result
+                      </p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
               </label>
               <Input
-                type="number"
-                id="estimated-result-length"
-                name="estimated_result_length"
+                type='number'
+                id='estimated-result-length'
+                name='estimated_result_length'
                 value={userInput.estimated_result_length}
                 onChange={handleChange}
               />
             </div>
           </div>
           <button
-            className="w-full h-14 py-2 text-white bg-primary-green rounded-xl !mt-7 flex items-center justify-center"
+            className='w-full h-14 py-2 text-white bg-primary-green rounded-xl !mt-7 flex items-center justify-center'
             onClick={generateResult}
           >
-            <div className="flex items-center gap-2">
+            <div className='flex items-center gap-2'>
               {!isGeneratedResultPending ? "Generate" : <Spinner />}
             </div>
           </button>
         </div>
-        <div className="w-full p-8 bg-white rounded-2xl border border-[#EDEFF0] flex flex-col">
-          <div className="flex items-center justify-between mb-5 border-b pb-5">
-            <div className="flex items-center gap-2 w-full max-w-lg border rounded-xl">
+        <div className='w-full p-8 bg-white rounded-2xl border border-[#EDEFF0] flex flex-col'>
+          <div className='flex items-center justify-between mb-5 border-b pb-5'>
+            <div className='flex items-center gap-2 w-full max-w-lg border rounded-xl'>
               <input
-                type="text"
-                placeholder="Enter file name"
+                type='text'
+                placeholder='Enter file name'
                 value={fileName}
                 onChange={(e) => setFileName(e.target.value)}
-                className="w-full h-12 px-4 rounded-xl"
+                className='w-full h-12 px-4 rounded-xl'
               />
             </div>
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2">
+            <div className='flex items-center gap-3'>
+              <div className='flex items-center gap-2'>
                 <Dropdown
-                  label="Download"
+                  label='Download'
                   items={[
                     "Copy as Text",
                     "Copy as HTML",
@@ -747,24 +764,24 @@ export default function AiAppPage({
                     "Download as PDF",
                   ]}
                   hideLabel
-                  value="Copy as Text"
+                  value='Copy as Text'
                   onChange={(value: any) => handleDownload(value)}
                 />
 
                 <button
-                  className="h-11 w-11 grid place-content-center p-2 bg-gray-100 rounded-lg"
+                  className='h-11 w-11 grid place-content-center p-2 bg-gray-100 rounded-lg'
                   onClick={isEdit ? handleEditDocument : handleSaveDocument}
                 >
                   {isDocumentSavePending ? (
-                    <Spinner color="black" />
+                    <Spinner color='black' />
                   ) : (
-                    <Save size={24} className="text-gray-600" />
+                    <Save size={24} className='text-gray-600' />
                   )}
                 </button>
               </div>
             </div>
           </div>
-          <div className="flex-1">
+          <div className='flex-1'>
             <Editor content={generatedContent} onChange={handleEditorChange} />
           </div>
         </div>
