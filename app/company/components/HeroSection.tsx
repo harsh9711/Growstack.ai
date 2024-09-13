@@ -6,7 +6,7 @@ import "../../../styles/myanimation.css";
 const HeroSection = () => {
   return (
     <section className="">
-      <div className="relative flex items-center w-full h-full  rounded-b-[40px] pt-20  xl:pt-40 bg-white">
+      <div className="relative flex items-center w-full h-full  rounded-b-[40px] pt-20  xl:pt-20 bg-white">
         <div className="w-full h-full mx-auto flex flex-col  justify-between max-h-[870px] max-w-[1920px] items-center">
           <div className="flex flex-col items-center justify-center mx-auto w-full">
             <div className=" w-full gap-y-4 flex flex-col items-center justify-center mx-auto">
@@ -31,7 +31,7 @@ const HeroSection = () => {
                   enhances efficiency, reduces complexity, and provides a
                   seamless user experience.
                 </p>  <svg
-                className="absolute translate-x-64 translate-y-36"
+                className="absolute translate-x-64 translate-y-32"
               width="192"
               height="192"
               viewBox="0 0 192 192"
@@ -65,7 +65,7 @@ const HeroSection = () => {
             </div>
           </div>
           <div className="2xl:flex xl:flex flex-col hidden relative ">
-          <Image src="/circle.svg" width={1000} height={518} alt="img" className=""/>{" "}
+          <Image src="/circle.svg" width={900} height={518} alt="img" className=""/>{" "}
    
           </div>
         </div>
