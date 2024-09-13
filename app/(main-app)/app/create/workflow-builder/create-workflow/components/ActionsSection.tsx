@@ -238,7 +238,7 @@ const ActionsSection = ({
           <div className="flex flex-col gap-2 w-full text-xl border-2 p-2.5 rounded-xl">
             {editableFields && (
               <div className="bg-gray-100 p-4 rounded-md">
-                {editableFields.map((item, index) => (
+                {editableFields?.map((item, index) => (
                   <div key={index} className="mb-2">
                     <div className="text-gray-700">
                       {item.variable_type === "model" ? (
