@@ -3,7 +3,7 @@
 // components/WorkFlowBuilderComponent.tsx
 import { InputIcon2, OutputIcon2 } from "@/components/svgs";
 import clsx from "clsx";
-import { MoreVertical, Plus } from "lucide-react";
+import { BlocksIcon, MoreVertical, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import InputSection from "./InputSection";
 import OutputSection from "./OutputSection";
@@ -365,7 +365,7 @@ const getWorkFlowDetails = async (id: string | number) => {
                   </div>
                 ) : (
                   <div className="bg-primary-green p-4 rounded-lg">
-                    <InputIcon2 className="text-white" />
+                    <BlocksIcon className="text-white" />
                   </div>
                 )}
                 <div className="space-y-1 flex flex-col items-start">
