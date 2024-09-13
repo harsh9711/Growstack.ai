@@ -8,7 +8,7 @@ import PricingNew from "./components/PricingNew";
 import Footer from "@/components/footer/Footer";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const PricingPage: React.FC = () => { // Renamed component to avoid naming conflict
+const PricingPage: React.FC = () => {
   return (
     <div className="flex flex-col">
       <div className="relative z-40">
