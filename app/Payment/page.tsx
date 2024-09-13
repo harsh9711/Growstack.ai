@@ -252,8 +252,8 @@ const PricingPage: React.FC = () => {
             id: plan.plan_id,
             stripe_price_id: plan.stripe_price_id,
             title: plan.plan,
-            monthlyPrice: `${plan.price}$`,
-            yearlyPrice: `${plan.price * 12}$`,
+            monthlyPrice: plan.plan_type === "MONTHLY" ? plan.price : null,
+            yearlyPrice: plan.plan_type === "YEARLY" ? plan.price : null,
             priceSuffix: "/mo",
             description,
             planType: plan.plan_type,
@@ -275,6 +275,8 @@ const PricingPage: React.FC = () => {
     };
     fetchPlans();
   }, []);
+
+  
   // useEffect(() => {
   //   const params = new URLSearchParams(location.search);
   //   const tab = params.get("tab");
