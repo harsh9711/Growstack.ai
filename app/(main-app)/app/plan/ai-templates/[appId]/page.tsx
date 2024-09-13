@@ -72,9 +72,15 @@ export default function AiAppPage({
   const [userInput1, setUserInput1] = useState("");
   const brandNames = allBrandVoices?.map((item: any) => item.brand_name);
 
+  // const stripHtmlTags = (html: string) => {
+  //   const temp = document.createElement("div");
+  //   temp.innerHTML = html;
+  //   return temp.textContent || temp.innerText || "";
+  // };
+
   const stripHtmlTags = (html: string) => {
     const temp = document.createElement("div");
-    temp.innerHTML = html;
+    temp.innerHTML = html.replace(/<br\s*\/?>/gi, "\n").replace(/<\/p>/gi, "\n\n");
     return temp.textContent || temp.innerText || "";
   };
 
@@ -159,7 +165,7 @@ export default function AiAppPage({
 
     // Prepare different formats
     const formats = {
-      "Copy as Text": plainTextContent,
+      "Copy as Text": generatedContent,
       "Copy as HTML": formattedContent,
       "Download as DOC": plainTextContent,
       "Download as TXT": plainTextContent,
@@ -757,11 +763,11 @@ export default function AiAppPage({
                 <Dropdown
                   label='Download'
                   items={[
-                    "Copy as Text",
+                    // "Copy as Text",
                     "Copy as HTML",
                     "Download as DOC",
                     "Download as TXT",
-                    "Download as PDF",
+                    // "Download as PDF",
                   ]}
                   hideLabel
                   value='Copy as Text'
