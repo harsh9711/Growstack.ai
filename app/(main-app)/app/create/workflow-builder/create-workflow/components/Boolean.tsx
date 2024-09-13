@@ -6,8 +6,6 @@ interface BooleanProps {
   option: any;
   index: number;
   setActiveAction: (params: any) => void;
-  suggestionOptions: any[];
-  setSuggestionOptions: (options: any[]) => void;
 }
 
 const Boolean: React.FC<BooleanProps> = ({
@@ -16,7 +14,7 @@ const Boolean: React.FC<BooleanProps> = ({
   setActiveAction,
 }) => {
   const [isChecked, setIsChecked] = useState<boolean>(
-    option.input_default_value || false
+    option.variable_value || false
   );
   const [selectedRadioValue, setSelectedRadioValue] = useState<string>("Image");
 
@@ -31,31 +29,22 @@ const Boolean: React.FC<BooleanProps> = ({
       ...prevState,
       preset_json: {
         ...prevState.preset_json,
-        body: {
-          ...prevState.preset_json.body,
-          inputs: prevState.preset_json.body.inputs.map(
-            (input: any, i: number) => {
-              if (i === index && input.input_type === "BOOLEAN") {
-                return {
-                  ...input,
-                  input_default_value: isChecked,
-                };
-              }
-              return input;
-            }
-          ),
-        },
+        body: prevState.preset_json.body.map((input: any, i: number) => {
+          if (i === index && input.variable_type === "BOOLEAN") {
+            return {
+              ...input,
+              variable_value: isChecked,
+            };
+          }
+          return input;
+        }),
       },
     }));
   }, [selectedRadioValue, isChecked]);
 
   const handleValueChange = (value: string) => {
     setSelectedRadioValue(value);
-    if (value === "Video") {
-      setIsChecked(true);
-    } else {
-      setIsChecked(false);
-    }
+    setIsChecked(value === "Video");
   };
 
   const handleSwitchChange = (checked: boolean) => {
@@ -64,28 +53,23 @@ const Boolean: React.FC<BooleanProps> = ({
       ...prevState,
       preset_json: {
         ...prevState.preset_json,
-        body: {
-          ...prevState.preset_json.body,
-          inputs: prevState.preset_json.body.inputs.map(
-            (input: any, i: number) => {
-              if (i === index && input.input_type === "BOOLEAN") {
-                return {
-                  ...input,
-                  input_default_value: checked,
-                };
-              }
-              return input;
-            }
-          ),
-        },
+        body: prevState.preset_json.body.map((input: any, i: number) => {
+          if (i === index && input.variable_type === "BOOLEAN") {
+            return {
+              ...input,
+              variable_value: checked,
+            };
+          }
+          return input;
+        }),
       },
     }));
   };
 
   return (
     <div>
-      <div className="font-medium text-xl  capitalize">
-        {option.input_label}
+      <div className="font-medium text-xl capitalize">
+        {option.variable_label}
       </div>
       <Switch
         checked={isChecked}

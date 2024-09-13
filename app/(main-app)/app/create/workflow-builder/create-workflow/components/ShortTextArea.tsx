@@ -2,9 +2,10 @@ import React, { useEffect, useRef, useState } from "react";
 import SuggestionDropdown from "./SuggestionDropdown";
 import AvtarDropdown from "./AvtarDropdown";
 import VoiceDropdown from "./VoiceDropdown";
+import { InputType } from "@/types/common";
 
 interface TextAreaProps {
-  option: any;
+  option: InputType;
   setActiveAction: (params: any) => void;
   index: number;
   suggestionOptions: SuggestionOption[];
@@ -28,16 +29,14 @@ type SubOption = {
   show: boolean;
 };
 
-const ShortTextArea = ({
+const ShortTextArea: React.FC<TextAreaProps> = ({
   option,
   setActiveAction,
   index,
   suggestionOptions,
   setSuggestionOptions,
-}: TextAreaProps) => {
-  const [description, setDescription] = useState<string>(
-    option.input_default_value
-  );
+}) => {
+  const [description, setDescription] = useState<string>(option.variable_value || "");
   const [selectedVoice, setSelectedVoice] = useState<string | null>(null);
   const [isDropdownVisible, setDropdownVisible] = useState(false);
 
@@ -49,41 +48,32 @@ const ShortTextArea = ({
       ...prevState,
       preset_json: {
         ...prevState.preset_json,
-        body: {
-          ...prevState.preset_json.body,
-          inputs: prevState.preset_json.body.inputs.map(
-            (input: any, i: number) => {
-              if (i === index && input.input_type === "TEXT_AREA") {
-                return {
-                  ...input,
-                  input_default_value: description,
-                };
-              }
-              if (i === index && input.input_type === "SHORT_TEXT_AREA") {
-                return {
-                  ...input,
-                  input_default_value: description,
-                };
-              }
-              return input;
+        body: prevState.preset_json.body.map(
+          (input: InputType, i: number) => {
+            if (i === index && (input.variable_type === "TEXT_AREA" || input.variable_type === "SHORT_TEXT_AREA")) {
+              return {
+                ...input,
+                variable_value: description,
+              };
             }
-          ),
-        },
+            return input;
+          }
+        ),
       },
     }));
   }, [description]);
 
   useEffect(() => {
-    const handleClickOutside = (event: any) => {
+    const handleClickOutside = (event: MouseEvent) => {
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target) &&
+        !dropdownRef.current.contains(event.target as Node) &&
         textareaRef.current &&
-        !textareaRef.current.contains(event.target)
+        !textareaRef.current.contains(event.target as Node)
       ) {
         setDropdownVisible(false);
-        setSuggestionOptions((prevState: any) =>
-          prevState.map((option: any) => ({ ...option, isExpanded: false }))
+        setSuggestionOptions((prevState : any) =>
+          prevState.map((option : any) => ({ ...option, isExpanded: false }))
         );
       }
     };
@@ -99,38 +89,34 @@ const ShortTextArea = ({
   const handleSubOptionClick = (subOption: SubOption) => {
     if (textareaRef.current) {
       const textarea = textareaRef.current;
-      const startPos = textarea.selectionStart;
-      const endPos = textarea.selectionEnd;
+      const startPos = textarea.selectionStart ?? 0;
+      const endPos = textarea.selectionEnd ?? 0;
       const newDescription =
         description.substring(0, startPos) +
         `{$${subOption.name}}` +
         description.substring(endPos);
       setDescription(newDescription);
   
-  
       const placeholderIndex = newDescription.indexOf(`{${subOption.name}}`);
-  
       const totalPlaceholders = newDescription.split('{').length - 1;
-  
       const newCursorPos = placeholderIndex + subOption.name.length + 2 * (totalPlaceholders - 1);
   
       textarea.setSelectionRange(newCursorPos, newCursorPos);
       textarea.focus();
     }
   };
-  
+
   const handleVoiceSelect = (voiceId: string) => {
     if (textareaRef.current) {
       const textarea = textareaRef.current;
       const existingText = description;
-
       const voiceIdPattern = /\{[A-Za-z0-9_-]+\}/;
       let newDescription;
       if (voiceIdPattern.test(existingText)) {
         newDescription = existingText.replace(voiceIdPattern, `{${voiceId}}`);
       } else {
-        const startPos = textarea.selectionStart;
-        const endPos = textarea.selectionEnd;
+        const startPos = textarea.selectionStart ?? 0;
+        const endPos = textarea.selectionEnd ?? 0;
         newDescription =
           existingText.substring(0, startPos) +
           `{${voiceId}}` +
@@ -146,18 +132,18 @@ const ShortTextArea = ({
       }, 0);
     }
   };
+
   const handleAvatarSelect = (avatarId: string) => {
     if (textareaRef.current) {
       const textarea = textareaRef.current;
       const existingText = description;
-
       const avatarIdPattern = /\{[A-Za-z0-9_-]+\}/;
       let newDescription;
       if (avatarIdPattern.test(existingText)) {
         newDescription = existingText.replace(avatarIdPattern, `{${avatarId}}`);
       } else {
-        const startPos = textarea.selectionStart;
-        const endPos = textarea.selectionEnd;
+        const startPos = textarea.selectionStart ?? 0;
+        const endPos = textarea.selectionEnd ?? 0;
         newDescription =
           existingText.substring(0, startPos) +
           `{${avatarId}}` +
@@ -177,7 +163,7 @@ const ShortTextArea = ({
   return (
     <>
       <div className="font-medium text-xl mb-2 capitalize">
-        {option.input_label}
+        {option.variable_label}
       </div>
       <textarea
         ref={textareaRef}
@@ -190,7 +176,7 @@ const ShortTextArea = ({
         className="h-[50px] w-full bg-[#F5F5F5] rounded-xl block resize-none p-4 text-[15px]"
       ></textarea>
 
-      {option.input_label === "avatar_id" ? (
+      {option.variable_label === "avatar_id" ? (
         <AvtarDropdown
           dropdownRef={dropdownRef}
           isDropdownVisible={isDropdownVisible}
@@ -199,7 +185,7 @@ const ShortTextArea = ({
           setSuggestionOptions={setSuggestionOptions}
           onAvatarSelect={handleAvatarSelect}
         />
-      ) : option.input_label === "voice_id" ? (
+      ) : option.variable_label === "voice_id" ? (
         <VoiceDropdown
           dropdownRef={dropdownRef}
           isDropdownVisible={isDropdownVisible}

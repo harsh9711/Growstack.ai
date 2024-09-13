@@ -1,8 +1,9 @@
 import { Switch } from "@/components/ui/switch";
+import { InputType } from "@/types/common";
 import React, { useEffect, useState } from "react";
 
 interface CheckboxProps {
-  option: any;
+  option: InputType;
   index: number;
   setActiveAction: (params: any) => void;
   suggestionOptions: any[];
@@ -19,10 +20,10 @@ const CheckboxComponent: React.FC<CheckboxProps> = ({
   const [checkedValues, setCheckedValues] = useState<string[]>([]);
 
   useEffect(() => {
-    if (Array.isArray(option.input_default_value)) {
-      setCheckedValues(option.input_default_value);
+    if (Array.isArray(option.variable_value)) {
+      setCheckedValues(option.variable_value);
     }
-  }, [option.input_default_value]);
+  }, [option.variable_value]);
 
   const handleSwitchChange = (platform: string, checked: boolean) => {
     setCheckedValues((prev) => {
@@ -36,20 +37,17 @@ const CheckboxComponent: React.FC<CheckboxProps> = ({
         ...prevState,
         preset_json: {
           ...prevState.preset_json,
-          body: {
-            ...prevState.preset_json.body,
-            inputs: prevState.preset_json.body.inputs.map(
-              (input: any, i: number) => {
-                if (i === index && input.input_type === "CHECKBOX") {
-                  return {
-                    ...input,
-                    input_default_value: updatedValues,
-                  };
-                }
-                return input;
+          body: prevState.preset_json.body.map(
+            (input: InputType, i: number) => {
+              if (i === index && input.variable_type === "CHECKBOX") {
+                return {
+                  ...input,
+                  variable_value: updatedValues,
+                };
               }
-            ),
-          },
+              return input;
+            }
+          ),
         },
       }));
 
@@ -60,7 +58,7 @@ const CheckboxComponent: React.FC<CheckboxProps> = ({
   return (
     <div>
       <div className="font-medium text-xl mb-2 mt-8 capitalize">
-        {option.input_label}
+        {option.variable_label}
       </div>
       <div className="w-full flex justify-between mt-6 pb-6 border-b border-[#EDEFF0]">
         <label className="font-medium">Facebook</label>

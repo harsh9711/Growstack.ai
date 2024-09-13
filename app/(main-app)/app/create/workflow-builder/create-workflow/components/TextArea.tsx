@@ -34,7 +34,6 @@ const TextArea = ({
   suggestionOptions,
   setSuggestionOptions,
 }: TextAreaProps) => {
-  console.log(option)
   const [description, setDescription] = useState<string>(
     option.variable_value
   );
@@ -115,13 +114,14 @@ const TextArea = ({
         id='description'
         name='description'
         value={description}
+        rows={5}
         onChange={(e) => setDescription(e.target.value)}
         placeholder={
           option?.input_placeholder
             ? option.input_placeholder
             : "Please write here"
         }
-        className='h-[100px] w-full bg-[#F5F5F5] rounded-xl block resize-none p-4 text-[15px]'
+        className=' w-full bg-[#F5F5F5] rounded-xl block resize-none p-4 text-[15px]'
       ></textarea>
       <SuggestionDropdown
         dropdownRef={dropdownRef}

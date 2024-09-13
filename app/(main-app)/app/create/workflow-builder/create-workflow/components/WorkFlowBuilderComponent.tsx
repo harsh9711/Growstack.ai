@@ -293,8 +293,11 @@ const getWorkFlowDetails = async (id: string | number) => {
             setActiveAction={setActiveAction}
             onSaveAction={onSaveAction}
             isAPICalling={isAPICalling}
+            setIsAPICalling={setIsAPICalling}
             actions={actions}
-            inputConfigs={inputConfigs} workflowId={""} actionId={""}        />
+            inputConfigs={inputConfigs}
+            workflowId={workflowId}
+            />
         );
     }
   };
@@ -312,7 +315,7 @@ const getWorkFlowDetails = async (id: string | number) => {
     <>
       <div className="flex-1 flex flex-col md:flex-row bg-white rounded-3xl mt-6">
         {/* Left section - Workflow steps */}
-        <div className="flex-1 p-5 flex flex-col justify-center items-center gap-10">
+        <div className="flex-1 p-5 relative flex flex-col  justify-center items-center gap-10">
           <button
             onClick={() => setActiveTag("Input")}
             className={clsx(
@@ -461,8 +464,11 @@ const getWorkFlowDetails = async (id: string | number) => {
           </button>
         </div>
 
-        <div className="border-l border-[#F0F0F0] w-full max-w-[482px] md:w-1/3 p-10 flex flex-col">
+        <div className="border-l flex-1 border-[#F0F0F0] w-full max-w-[482px] md:w-1/3 p-10 flex flex-col">
+          <div className="sticky top-36">
+
           {renderSection()}
+          </div>
         </div>
       </div>
     </>

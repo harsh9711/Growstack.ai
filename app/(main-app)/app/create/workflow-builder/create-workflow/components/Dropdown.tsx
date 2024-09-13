@@ -17,14 +17,24 @@ interface DropdownProps {
 }
 
 const Dropdown = ({ option, setActiveAction, index }: DropdownProps) => {
-  const [selectedOption, setSelectedOption] = useState<string>(option.variable_value || '');
+  const initialSelectedOption = option.variable_value || 
+    (Array.isArray(option.variable_values) && option.variable_values.length > 0 
+      ? option.variable_values[0] 
+      : '');
+      
+  const [selectedOption, setSelectedOption] = useState<string>(initialSelectedOption);
 
-  const dropDownOptions: { label: string; value: string }[] = option.variable_values.map(
-    (value: any) => ({
-      label: value, 
+  let dropDownOptions: { label: string; value: string }[] = 
+    (Array.isArray(option.variable_values) ? option.variable_values : [option.variable_values])
+    .filter(value => value !== '')
+    .map((value: any) => ({
+      label: value,
       value: value,
-    })
-  );
+    }));
+
+  if (dropDownOptions.length === 0 && option.variable_value) {
+    dropDownOptions = [{ label: option.variable_value, value: option.variable_value }];
+  }
 
   const selectedOptionLabel = dropDownOptions.find((opt) => opt.value === selectedOption)?.label;
 
