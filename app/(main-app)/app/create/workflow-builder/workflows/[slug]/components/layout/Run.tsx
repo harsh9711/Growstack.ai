@@ -34,13 +34,14 @@ type WorkFlowResults = {
 
 interface Props {
   workflowId: string;
+  onTabChange:any
 }
 
-const Run: React.FC<Props> = ({ workflowId }) => {
+const Run: React.FC<Props> = ({ workflowId,onTabChange  }) => {
   const [loading, setLoading] = useState(true);
   const [fileUrl2, setFileUrl2] = useState<string>("");
   const router = useRouter();
-  const searchParams = useSearchParams(); // Use this to get URL parameters
+  const searchParams = useSearchParams();
   const [workFlowResults, setWorkFlowResults] = useState<WorkFlowResults>({
     outputs: [],
     status: true,
@@ -48,7 +49,11 @@ const Run: React.FC<Props> = ({ workflowId }) => {
     temp_outputs: [],
     workflow_runner_id: "",
   });
-
+  const handleSomeAction = (RunnerId:any) => {
+    if (onTabChange) {
+      onTabChange(RunnerId);
+    }
+  };
   const [workFlowData, setWorkFlowData] = useState<WorkFlowData>({
     name: "",
     actions: [],
@@ -88,21 +93,17 @@ const Run: React.FC<Props> = ({ workflowId }) => {
       }
       return null;
     } catch (error) {
-      console.log("Error fetching social profile:", error);
       return null;
     }
   };
   const handleFileUploaded = (fileUrl: string, idx: number) => {
     setFileUrl2(fileUrl);
-    console.log("File URL in handlefileupload:", fileUrl);
     const updatedInputs = [...workFlowData.input_configs];
     updatedInputs[idx].default_value = fileUrl;
     setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
   };
   const handleRunWorkFlow = async () => {
-    console.log("File URL in handleRunWorkFlow:", fileUrl2); // Verify the value of fileUrl2 here
     setIsWorkFlowFetched(false);
-
     if (workFlowData.social_media_requirement) {
       const profileData = await handleGetProfile();
       if (!profileData || profileData.activeSocialAccounts.length === 0) {
@@ -132,6 +133,8 @@ const Run: React.FC<Props> = ({ workflowId }) => {
         `${API_URL}/workflow/api/v1/${workflowId}/runner`,
         payload
       );
+      handleSomeAction(response.data.data.workflow_runner_id)
+      
       setWorkFlowResults(response.data.data);
     } catch (error) {
       console.error("Error running workflow:", error);
@@ -161,8 +164,6 @@ const Run: React.FC<Props> = ({ workflowId }) => {
       setWorkFlowResuming(false);
     }
   };
-  //File Upload code
-
   const fetchRunnerData = async (runnerId: string) => {
     try {
       const response = await instance.get(
@@ -301,7 +302,7 @@ const Run: React.FC<Props> = ({ workflowId }) => {
                 Your output will appear below.
               </p>
             </div>
-            {!workFlowResults.outputs.length &&
+            {!workFlowResults?.outputs?.length &&
               workFlowData.output_configs.map((output, idx) => (
                 <div
                   key={idx}
@@ -317,7 +318,7 @@ const Run: React.FC<Props> = ({ workflowId }) => {
                 </div>
               ))}
             {!workFlowResults.paused &&
-              workFlowResults.outputs.map((output, idx) => (
+              workFlowResults?.outputs?.map((output, idx) => (
                 <>
                   {workFlowResults.status &&
                     workFlowResults.failed_step <= idx + 1 && (
