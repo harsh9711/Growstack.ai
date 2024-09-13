@@ -15,8 +15,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message, imageUrl, title, tim
           src={imageUrl && !imageUrl.includes("ton.twitter.com")?imageUrl:"/logo/growstack-mini.png"}
           onError={(e) => (e.currentTarget.src = "/logo/growstack-mini.png")}
           alt="contact"
-          width={50}
-          height={50}
+          width={40}
+          height={40}
           className="rounded-full object-cover"
         />
         <div className="flex flex-col">

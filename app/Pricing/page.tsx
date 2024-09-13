@@ -45,7 +45,7 @@ const PricingPage: React.FC = () => {
           alt="image"
           className="absolute -translate-y-40 z-0 w-full h-full"
         /> */}
-        <div className="max-w-[1000px] mb-20 relative z-20 w-full justify-center items-center mx-auto">
+        <div className="max-w-[1600px] mb-20 relative z-20 w-full justify-center items-center mx-auto">
          <MainBox/>
         </div>
         {/* <Image

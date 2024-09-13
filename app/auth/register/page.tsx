@@ -87,7 +87,6 @@ export default function Register() {
       const expiryDate = new Date(planUsageData?.usage_expiry_date);
 
       if (isEmptyObject(planUsageData) || expiryDate <= currentDate) {
-        toast.error("Unauthorized: Trial expired");
         router.push("/Payment");
       } else {
         toast.success("Authorized: Trial is active");

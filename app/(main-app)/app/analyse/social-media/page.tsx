@@ -79,7 +79,9 @@ export default function SocialMediaAnalyticsPage() {
               <div
                 key={platform.name}
                 className={`group bg-white border rounded-xl p-3 flex gap-4 items-center cursor-pointer transition duration-300 hover:shadow-xl hover:shadow-gray-100 ${
-                  selectedPlatform === platform.name ? "border-[#32a850] border-2" : "border-gray-200"
+                  selectedPlatform === platform.name
+                    ? "border-[#32a850] border-2"
+                    : "border-gray-200"
                 }`}
                 onClick={() => setSelectedPlatform(platform.name)}
               >
@@ -104,8 +106,10 @@ export default function SocialMediaAnalyticsPage() {
                 </p>
               </div>
               <div className="flex justify-between mt-8">
+                <div className="space-y-2"></div>
+
                 <div className="space-y-2">
-                  <h1 className="text-xl font-semibold">
+                  <h1 className="text-xl font-semibold text-center">
                     {metaData?.followersCount || 0}
                   </h1>
                   <p className="text-sm text-primary-black text-opacity-50">
@@ -113,19 +117,14 @@ export default function SocialMediaAnalyticsPage() {
                   </p>
                 </div>
                 <div className="space-y-2">
-                  <h1 className="text-xl font-semibold">
+                  <h1 className="text-xl font-semibold text-center">
                     {metaData?.followingCount || 0}
                   </h1>
                   <p className="text-sm text-primary-black text-opacity-50">
                     Following
                   </p>
                 </div>
-                <div className="space-y-2">
-                  <h1 className="text-xl font-semibold">134</h1>
-                  <p className="text-sm text-primary-black text-opacity-50">
-                    Posts
-                  </p>
-                </div>
+                <div className="space-y-2"></div>
               </div>
             </div>
           </div>
@@ -150,13 +149,6 @@ export default function SocialMediaAnalyticsPage() {
                       <h1 className="text-3xl font-semibold">
                         {metaData?.followersCount || 0}
                       </h1>
-                      {/* <div className="flex gap-2">
-                        <TrendingUp className="text-[#00B69B]" />
-                        <span className="text-[#00B69B] font-semibold">
-                          0%{" "}
-                        </span>
-                        Up from yesterday
-                      </div> */}
                     </div>
                     <div className="space-y-5">
                       <p className="text-[15px] text-primary-black text-opacity-50">
@@ -166,13 +158,17 @@ export default function SocialMediaAnalyticsPage() {
                         {metaData?.currentMonthAccountReach}
                       </h1>
                       <div className="flex gap-2">
-                        {/* <TrendingDown className="text-[#F93C65]" />
-                        <span className="text-[#F93C65] font-semibold"> */}
-                        <TrendingUp className="text-[#00B69B]" />
+                        {metaData?.accountReachIncreasePercentage >= 0 ? (
+                          <TrendingUp className="text-[#00B69B]" />
+                        ) : (
+                          <TrendingDown className="text-[#00B69B]" />
+                        )}
                         <span className="text-[#00B69B] font-semibold">
                           {metaData?.accountReachIncreasePercentage}%{" "}
                         </span>
-                        Down from yesterday
+                        {metaData?.accountReachIncreasePercentage >= 0
+                          ? "Up from yesterday"
+                          : "Down from yesterday"}
                       </div>
                     </div>
                     <div className="space-y-5">
@@ -183,11 +179,17 @@ export default function SocialMediaAnalyticsPage() {
                         {metaData?.currentMonthPostActivity}
                       </h1>
                       <div className="flex gap-2">
-                        <TrendingUp className="text-[#00B69B]" />
+                        {metaData?.postActivityIncreasePercentage >= 0 ? (
+                          <TrendingUp className="text-[#00B69B]" />
+                        ) : (
+                          <TrendingDown className="text-[#00B69B]" />
+                        )}
                         <span className="text-[#00B69B] font-semibold">
                           {metaData?.postActivityIncreasePercentage}%{" "}
                         </span>
-                        Up from yesterday
+                        {metaData?.postActivityIncreasePercentage >= 0
+                          ? "Up from yesterday"
+                          : "Down from yesterday"}
                       </div>
                     </div>
                   </div>
