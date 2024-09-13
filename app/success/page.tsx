@@ -4,10 +4,40 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import instance from "@/config/axios.config";
+import { API_URL } from "@/lib/api";
+import { setCookie } from "cookies-next";
+import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
+import { login } from "@/lib/features/auth/auth.slice";
+import Spinner from "@/components/Spinner";
 
 const PricingPage: React.FC = () => {
   const [seconds, setSeconds] = useState(5);
   const router = useRouter();
+  const dispatch = useDispatch();
+  const [isPending, setIsPending] = useState(false);
+
+  const fetchUserAfterPaymentSuccess = async () => {
+    setIsPending(true);
+    try {
+      const userData = (await instance.get(`${API_URL}/users/api/v1`)).data?.data;
+      dispatch(login(userData));
+      router.push("/app");
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error("Login failed:", error);
+    } finally {
+      setIsPending(false);
+    }
+  };
+
+
+  useEffect(() => { fetchUserAfterPaymentSuccess() }, [])
 
   useEffect(() => {
     AOS.init();
@@ -22,7 +52,7 @@ const PricingPage: React.FC = () => {
       });
     }, 1000);
 
-    return () => clearInterval(timer); 
+    return () => clearInterval(timer);
   }, [router]);
 
   return (
@@ -46,7 +76,13 @@ const PricingPage: React.FC = () => {
             <p className="text-lg text-gray-700 mt-2">Your have successfully subscribed to a plan</p>
             <div className="mt-6">
               <p className="text-lg text-gray-600">Redirecting to dashboard in</p>
-              <h3 className="text-4xl font-bold text-red-600">{seconds} seconds</h3>
+              {
+                seconds ? (
+                  <h3 className="text-4xl font-bold text-red-600">{seconds} seconds</h3>
+                ) : (
+                  <Spinner />
+                )
+              }
             </div>
           </div>
         </div>
