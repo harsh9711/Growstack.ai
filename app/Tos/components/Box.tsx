@@ -43,7 +43,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({
   return (
     <div className="mb-40">
       <div
-        className="bg-[#FBFBFB] p-6 m-4 border border-gray-200 rounded-lg shadow-md"
+        className="bg-white p-8 m-4 border border-gray-300 rounded-lg shadow-lg transition-shadow hover:shadow-xl"
         data-aos="fade-up"
       >
         <h1 className="text-[16px] xl:text-[28px] font-bold mb-4">
@@ -61,7 +61,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({
       </div>
 
       <div
-        className="bg-[#FBFBFB] p-6 m-4 border border-gray-200 rounded-lg shadow-md"
+        className="bg-white p-8 m-4 border border-gray-300 rounded-lg shadow-lg transition-shadow hover:shadow-xl"
         data-aos="fade-up"
         data-aos-delay=""
       >
