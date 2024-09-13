@@ -20,7 +20,13 @@ import { API_URL } from "@/lib/api";
 // import { BillHistory } from "@/types/billHistory";
 import clsx from "clsx";
 import { PlanUsage } from "@/types/common";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { DollarSign } from "lucide-react";
 
 interface BillingHistoryItem {
@@ -33,14 +39,14 @@ interface BillingHistoryItem {
   invoice: string;
 }
 
-
 const OverViewSection = () => {
   const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [cancelLoading, setCancelLoading] = useState<boolean>(false); // Add state for cancel button loading
   const [isCreditLoading, setIsCreditLoading] = useState<boolean>(false);
-  const [isCreditInputDialogBoxOpen, setIsCreditInputDialogBoxOpen] = useState<boolean>(false);
-  const [amount, setAmount] = useState<number | ''>(0); 
+  const [isCreditInputDialogBoxOpen, setIsCreditInputDialogBoxOpen] =
+    useState<boolean>(false);
+  const [amount, setAmount] = useState<number | "">(0);
   const [isAmountError, setIsAmountError] = useState(false);
 
   const fetchPlanUsage = async () => {
@@ -75,16 +81,19 @@ const OverViewSection = () => {
         subscription_id: planUsage?.stripe_subscription_id,
         amount: amount,
       };
-      const response = await instance.post(`${API_URL}/users/api/v1/payments/adds-on`, { product, currency: "usd" });
+      const response = await instance.post(
+        `${API_URL}/users/api/v1/payments/adds-on`,
+        { product, currency: "usd" }
+      );
       window.location.href = response.data.url;
-      toast.success('Payment added successfully');
+      toast.success("Payment added successfully");
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
       } else {
         toast.error(error.message);
       }
-      console.error('Error adding payment:', error);
+      console.error("Error adding payment:", error);
     } finally {
       setIsCreditLoading(false);
     }
@@ -136,15 +145,15 @@ const OverViewSection = () => {
     setIsAmountError(false);
     const value = e.target.value;
     const numberValue = Number(value);
-    setAmount(value === '' ? '' : numberValue);
+    setAmount(value === "" ? "" : numberValue);
     if (value !== "" && !(numberValue >= 5 && numberValue <= 100)) {
       setIsAmountError(true);
     }
   };
 
   const closeInputDialogModal = () => {
-    setIsCreditInputDialogBoxOpen(false)
-  }
+    setIsCreditInputDialogBoxOpen(false);
+  };
 
   return (
     <Motion
@@ -155,13 +164,15 @@ const OverViewSection = () => {
         <div className="space-y-2">
           <h2 className="text-primary-black text-opacity-50">Credit balance</h2>
           <div className=" flex gap-3 items-center">
-
-            <h1 className="text-4xl font-semibold">{planUsage?.usage_amount}</h1>
+            <h1 className="text-4xl font-semibold">
+              {planUsage?.usage_amount}
+            </h1>
             <button
-              className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300 ${isCreditLoading ? 'opacity-50 cursor-not-allowed' : ''
-                }`}
+              className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300 ${
+                isCreditLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
               onClick={() => {
-                setIsCreditInputDialogBoxOpen(true)
+                setIsCreditInputDialogBoxOpen(true);
               }}
               disabled={isCreditLoading}
             >
@@ -169,7 +180,10 @@ const OverViewSection = () => {
             </button>
           </div>
         </div>
-        <Dialog open={isCreditInputDialogBoxOpen} onOpenChange={closeInputDialogModal}>
+        <Dialog
+          open={isCreditInputDialogBoxOpen}
+          onOpenChange={closeInputDialogModal}
+        >
           <DialogContent className="max-w-[584px]">
             <DialogHeader>
               <DialogTitle>Add to credit balance</DialogTitle>
@@ -182,11 +196,15 @@ const OverViewSection = () => {
                   <input
                     type="number"
                     className="h-10 w-full"
-                    value={amount === '' ? '' : amount}
+                    value={amount === "" ? "" : amount}
                     onChange={handleAmountChange}
                   />
                 </div>
-                <p className={` text-opacity-50 ${isAmountError ? "text-destructive" : "text-primary-black"}` }>
+                <p
+                  className={` text-opacity-50 ${
+                    isAmountError ? "text-destructive" : "text-primary-black"
+                  }`}
+                >
                   Enter an amount between <span>$</span>5 and <span>$</span>100
                 </p>
               </div>
@@ -194,7 +212,7 @@ const OverViewSection = () => {
                 className="w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300 mt-5"
                 onClick={handleCreditClick}
               >
-                {isCreditLoading ? 'Redirecting...' : 'Add Amount'}
+                {isCreditLoading ? "Redirecting..." : "Add Amount"}
               </button>
             </div>
           </DialogContent>
@@ -264,18 +282,20 @@ export default function SettingsPage() {
   }, []);
   return (
     <main>
-      <div className="flex justify-between">
+      <div className="flex flex-wrap gap-10 justify-between">
         <div className="space-y-3">
           <h1 className="text-2xl font-semibold">Billing</h1>
           <p className="text-primary-black text-opacity-50">
             We believe Growstack should be accessible to all companies, no
             matter the Size
           </p>
-        </div> <div className="flex flex-row gap-x-6 items-end">
+        </div>{" "}
+        <div className="flex flex-row gap-x-6 items-end">
           <AddCreditDialog />
           <button
-            className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-white border-red-500 border hover:font-semibold hover:border-2 text-red-500 sheen transition-all duration-300 ${cancelLoading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+            className={`w-full max-w-fit text-[12px] xl:text-[18px] h-12 px-4 py-2 xl:py-3 rounded-xl flex gap-3 bg-white border-red-500 border hover:font-semibold hover:border-2 text-red-500 sheen transition-all duration-300 ${
+              cancelLoading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
             onClick={handleCancelSubscription}
             disabled={cancelLoading} // Disable button while canceling
           >
