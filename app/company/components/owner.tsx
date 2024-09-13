@@ -21,8 +21,7 @@ const Owner = () => {
           <h2>behind GrowStack</h2>
         </div>
         <h2 className="text-[18px] max-w-[600px] w-full" data-aos="fade-up">
-          Lorem ipsum dolor sit amet consectetur. Scelerisque faucibus malesuada
-          eget mi in.
+        Driving marketing excellence with proven expertise through growstack
         </h2>
       </div>
 
@@ -68,12 +67,8 @@ const Owner = () => {
                 data-aos="fade-up"
               >
                 <p className="text-[16px] text-black flex flex-col gap-y-4">
-                  Lorem ipsum dolor sit amet consectetur. Montes amet sed in
-                  convallis. Amet tellus at ultricies arcu facilisis. Eget
-                  platea lorem molestie ultrices vitae faucibus. Habitasse arcu
-                  viverra massa iaculis pulvinar. Nullam pharetra odio nunc
-                  lorem. Euismod feugiat ultrices dolor tempor ornare amet
-                  fringilla.
+                Our founder, with over 10 years of marketing experience, excels at turning challenges into opportunities. With a focus on maximizing ROI and leading innovative solutions, he has successfully integrated sales and marketing projects. 
+
                 </p>
               </div>
 
@@ -83,12 +78,8 @@ const Owner = () => {
                 data-aos-delay="100"
               >
                 <p className="text-[16px] text-black flex flex-col gap-y-4">
-                  Cursus cursus tristique semper egestas placerat iaculis et.
-                  Morbi ultrices tincidunt orci vel arcu aliquet a turpis.
-                  Egestas egestas mi amet vulputate libero dolor neque tortor.
-                  Ornare eget lorem sit aenean interdum urna mattis. Elit nam mi
-                  amet est. Vestibulum in ac fames non sit id pellentesque eget
-                  viverra. Eu sagittis nunc lectus in risus.
+                Known for his data-driven approach and strategic vision, he simplifies complex projects into actionable strategies. Valuing progress over perfection, he drives team growth and exceeds goals, ensuring success in sales and marketing investments.
+
                 </p>
               </div>
             </div>

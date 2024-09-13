@@ -202,7 +202,7 @@ export const team = [
     id: 1,
     imageUrl: "/company/a.svg",
     name: "Narasimha Rao",
-    role: "CEO and Managing Director Balvantis Studio",
+    role: "CEO,    Managing Director Balvantis Studio",
     Url: "https://www.linkedin.com/in/narasimha-vadde/",
   },
   {
