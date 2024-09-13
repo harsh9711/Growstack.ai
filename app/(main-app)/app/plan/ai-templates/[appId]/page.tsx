@@ -771,6 +771,7 @@ export default function AiAppPage({
                   ]}
                   hideLabel
                   value="Copy as Text"
+                
                   onChange={(value: any) => handleDownload(value)}
                 />
 
