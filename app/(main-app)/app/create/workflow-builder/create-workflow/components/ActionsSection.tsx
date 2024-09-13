@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Motion from "@/components/Motion";
 import DotsLoader from "@/components/DotLoader";
 import { MenuIcon } from "lucide-react";
@@ -12,14 +12,18 @@ import { Switch } from "@/components/ui/switch";
 import CheckboxComponent from "./Check";
 import ScheduleComponent from "./Schedule";
 import instance from "@/config/axios.config";
+import { InputType } from "@/types/common";
+import toast from "react-hot-toast";
 
 interface ActionsSectionProps {
   activeAction: any;
   setActiveAction: (params: any) => void;
   onSaveAction: (params: any) => void;
   isAPICalling: boolean;
+  setIsAPICalling: Dispatch<SetStateAction<boolean>>;
   actions: any;
   inputConfigs: any;
+  workflowId: string | null;
 }
 
 type SubOption = {
@@ -51,7 +55,7 @@ const Dropdown2: React.FC<DropdownProps> = ({ options, selectedOption, onOptionC
       value={selectedOption}
       onChange={(e) => onOptionChange(e.target.value)}
       className="border w-64 p-1 rounded-xl"
-      style={{ fontSize: '12px', width : "100%" }}
+      style={{ fontSize: '12px', width: "100%" }}
     >
       {options.map((option, index) => (
         <option key={index} value={option}>
@@ -69,10 +73,10 @@ const ActionsSection = ({
   setActiveAction,
   onSaveAction,
   isAPICalling,
+  setIsAPICalling,
   inputConfigs,
-  workflowId, // Add workflowId
-  actionId, // Add actionId
-}: ActionsSectionProps & { workflowId: string; actionId: string }) => {
+  workflowId,
+}: ActionsSectionProps ) => {
   const [suggestionOptions, setSuggestionOptions] = useState<
     SuggestionOption[]
   >([]);
@@ -82,7 +86,7 @@ const ActionsSection = ({
   const [selectedNetworks, setSelectedNetworks] = React.useState<string[]>([]);
 
   // State to manage editable fields
-  const [editableFields, setEditableFields] = useState<any>(
+  const [editableFields, setEditableFields] = useState<InputType[]>(
     activeAction.preset_json.body
   );
 
@@ -153,22 +157,26 @@ const ActionsSection = ({
     });
   };
 
-  const handleFieldChange = (key: string, value: any) => {
-    setEditableFields((prevFields: any) => ({
-      ...prevFields,
-      [key]: value,
-    }));
+
+  const handleFieldChange = (key: number, value: any) => {
+    setEditableFields((prevFields) =>
+      prevFields.map((field, index) =>
+        index === key ? { ...field, variable_value: value } : field
+      )
+    );
+
     setActiveAction((prevAction: any) => ({
       ...prevAction,
       preset_json: {
         ...prevAction.preset_json,
-        body: {
-          ...prevAction.preset_json.body,
-          [key]: value,
-        },
+        body: prevAction.preset_json.body.map((field: any, index: number) =>
+          index === key ? { ...field, variable_value: value } : field
+        ),
       },
     }));
   };
+
+
   const formatString = (
     str: string | undefined,
     values: Record<string, string>
@@ -182,19 +190,18 @@ const ActionsSection = ({
 
   const handleSaveAction = async () => {
     try {
+      if (!workflowId) return;
+      setIsAPICalling(true);
       const response = await instance.put(
-        `workflow/api/v1/${workflowId}/actions/${actionId}`,
-        {
-          ...activeAction,
-          preset_json: {
-            ...activeAction.preset_json,
-            body: editableFields,
-          },
-        }
+        `workflow/api/v1/${workflowId}/actions/${activeAction.action_id}`,
+        activeAction
       );
       console.log("API response:", response.data);
+      toast.success("Action updated successfully");
     } catch (error) {
       console.error("Error saving action:", error);
+    } finally {
+      setIsAPICalling(false);
     }
   };
   const modalOptions = [
@@ -208,50 +215,46 @@ const ActionsSection = ({
     "claude-3-haiku-20240307",
     "claude-3-5-sonnet-20240620",
   ];
-  const formattedText = formatString(editableFields.someField || "", {
-    sender_profile_url: "http://example.com",
-  });
+
   return (
     <Motion
       transition={{ duration: 0.5 }}
       variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
     >
       <div className="flex flex-col items-start gap-4 pb-8">
-        <div className="w-full flex flex-row items-center gap-2">
-          {activeAction.icon && <img
-            src={activeAction.icon}
-            height='56'
-            width='56'
-            className='w-10 h-10 rounded-2xl'
-           /> }
-          <div className="flex flex-col gap-2 w-full text-xl border-2 p-2.5 rounded-xl">
-            <div className="text-start items-start font-bold">
-              {/* {editableFields?.instruction ? "Instruction" : "URL"} */}
+        <div className="w-full flex flex-col items-center gap-2">
+          <div className="w-full flex flex-row items-center gap-2">
+
+            {activeAction.icon && <img
+              src={activeAction.icon}
+              height='56'
+              width='56'
+              className='w-10 h-10 rounded-2xl'
+            />}
+            <div className="flex flex-col gap-2 w-full text-xl p-2.5 rounded-md">
+              {activeAction.name}
             </div>
+          </div>
+          <div className="flex flex-col gap-2 w-full text-xl border-2 p-2.5 rounded-xl">
             {editableFields && (
               <div className="bg-gray-100 p-4 rounded-md">
-                {Object.entries(editableFields).map(([key, value], index) => (
+                {editableFields?.map((item, index) => (
                   <div key={index} className="mb-2">
-                    <div className="font-bold">{key?.charAt(0)?.toUpperCase() + key?.slice(1)}:</div>
                     <div className="text-gray-700">
-                      {key === "model" ? (
-                         <Dropdown2
-                         options={modalOptions}
-                         selectedOption={String(value)}
-                         onOptionChange={(newValue) =>
-                           handleFieldChange(key, newValue)
-                         }
-                       />
+                      {item.variable_type === "model" ? (
+                        <Dropdown2
+                          options={modalOptions}
+                          selectedOption={item.variable_value}
+                          onOptionChange={(newValue) => handleFieldChange(index, newValue)}
+                        />
                       ) : (
                         <input
                           type="text"
-                          value={formatString(String(value) || "No URL", {
+                          value={formatString(String(item.variable_value) || "", {
                             sender_profile_url: "http://example.com",
                           })}
-                          onChange={(e) =>
-                            handleFieldChange(key, e.target.value)
-                          }
-                          style={{ fontSize: '12px', width : "100%" }}
+                          onChange={(e) => handleFieldChange(index, e.target.value)}
+                          style={{ fontSize: '12px', width: "100%" }}
                           className="border p-1 rounded"
                         />
                       )}
@@ -260,6 +263,7 @@ const ActionsSection = ({
                 ))}
               </div>
             )}
+
             {activeAction.label && (
               <div className="text-sm text-gray-600 mt-2">
                 {activeAction.label}
@@ -270,12 +274,12 @@ const ActionsSection = ({
       </div>
 
       <div>
-        {activeAction?.preset_json?.body?.inputs?.length > 0 &&
-          activeAction.preset_json.body.inputs.map(
+        {activeAction?.preset_json?.body?.length > 0 &&
+          activeAction.preset_json.body.map(
             (option: any, index: number) => {
-              if (option.input_type === "DROPDOWN") {
+              if (option.variable_type === "DROPDOWN") {
                 return (
-                  <div key={index}>
+                  <div key={index} className="mt-4 ">
                     <Dropdown
                       option={option}
                       setActiveAction={setActiveAction}
@@ -285,9 +289,9 @@ const ActionsSection = ({
                 );
               }
 
-              if (option.input_type === "TEXT_AREA" && !option.is_prompt) {
+              if (option.variable_type === "TEXT_AREA") {
                 return (
-                  <div key={index} className="mt-8 ">
+                  <div key={index} className="mt-4 ">
                     <TextArea
                       option={option}
                       index={index}
@@ -299,11 +303,10 @@ const ActionsSection = ({
                 );
               }
               if (
-                option.input_type === "SHORT_TEXT_AREA" &&
-                !option.is_prompt
+                option.variable_type === "SHORT_TEXT_AREA"
               ) {
                 return (
-                  <div key={index} className="mt-8 ">
+                  <div key={index} className="mt-12 ">
                     <ShortTextArea
                       option={option}
                       index={index}
@@ -314,21 +317,19 @@ const ActionsSection = ({
                   </div>
                 );
               }
-              if (option.input_type === "BOOLEAN" && !option.is_prompt) {
+              if (option.variable_type === "BOOLEAN") {
                 return (
                   <div key={index} className="mt-8">
                     <Boolean
                       option={option}
                       index={index}
                       setActiveAction={setActiveAction}
-                      suggestionOptions={suggestionOptions}
-                      setSuggestionOptions={setSuggestionOptions}
                     />
                   </div>
                 );
               }
 
-              if (option.input_type === "CHECKBOX" && !option.is_prompt) {
+              if (option.variable_type === "CHECKBOX") {
                 return (
                   <div key={index} className="mt-8">
                     <CheckboxComponent
@@ -341,7 +342,7 @@ const ActionsSection = ({
                   </div>
                 );
               }
-              if (option.input_type === "TIME" && !option.is_prompt) {
+              if (option.variable_type === "DATE" || option.variable_type === "TIME") {
                 return (
                   <div key={index} className="mt-8">
                     <ScheduleComponent
@@ -362,8 +363,6 @@ const ActionsSection = ({
         disabled={isAPICalling}
         type="button"
         onClick={() => {
-          console.log("Button clicked, activeAction:", activeAction);
-          // onSaveAction(activeAction);
           handleSaveAction();
         }}
       >
