@@ -7,7 +7,7 @@ const instance = axios.create({
   withCredentials: true, // TODO: uncomment this line when cors origins are configured
   timeout: 600000,
 });
-
+// just to deploy
 instance.interceptors.request.use(
   (config) => {
     var token = getCookie("token");

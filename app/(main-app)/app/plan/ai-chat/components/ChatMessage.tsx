@@ -101,7 +101,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
                 chat.role === "user"
                   ? "bg-primary-green text-white"
                   : "bg-[#F1F1F1] text-primary-black"
-              } py-3 px-5 rounded-xl text-[14.5px] leading-relaxed min-h-11 flex justify-center`}
+              } py-3 px-5 rounded-xl text-[14.5px] leading-relaxed min-h-11 flex justify-center text-justify`}
             >
               {chat.loading ? (
                 <DotsLoader />
