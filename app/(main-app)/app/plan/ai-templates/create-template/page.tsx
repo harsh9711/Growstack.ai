@@ -182,15 +182,23 @@ export default function CreateTemplatePage() {
         } else {
           const reader = new FileReader();
           reader.onloadend = () => {
-            // Update the icon with the base64 string
-            setFormData((prevFormData) => ({
-              ...prevFormData,
-              icon: `<img src="${reader.result}" alt="Uploaded icon" />`,
-            }));
+            const img = new Image();
+            img.onload = () => {
+              if (img.width <= 200 && img.height <= 200) {
+                setFormData((prevFormData) => ({
+                  ...prevFormData,
+                  icon: `<img src="${reader.result}" alt="Uploaded icon" />`,
+                }));
+              } else {
+                toast.error("Image should be 200x200 pixels or less.");
+              }
+            };
+            img.src = reader.result as string; // Set the image source to the base64 data URL
           };
           reader.readAsDataURL(file);
         }
       }
+      
     },
   });
 
@@ -283,6 +291,7 @@ export default function CreateTemplatePage() {
                 <div
                   {...getRootProps({ className: "dropzone" })}
                   className="border-2 border-dashed border-gray-300 p-4 rounded-md"
+                  style={{cursor: "pointer"}}
                 >
                   <input {...getInputProps()} />
                   {isDragActive ? (
@@ -293,9 +302,11 @@ export default function CreateTemplatePage() {
                     </p>
                   )}
                   {formData.icon && (
-                    <div className="mt-2 w-6 h-6">
-                      <label className="block font-medium">Preview:</label>
-                      <div
+                    <div className="mt-2 w-6 h-6" style={{display: "flex", flexDirection: "row", gap: "10px", width: "120px", height: "30px", alignItems: "center", justifyContent: "center"}}>
+                      <div style={{width: "50%"}}>
+                        <label className="block font-medium">Preview:</label>
+                      </div>
+                      <div style={{width: "50%"}}
                         dangerouslySetInnerHTML={{ __html: formData.icon }}
                       />
                     </div>
