@@ -164,12 +164,6 @@ export default function Dashboard() {
                 ? currentUser.name
                 : currentUser?.email.split(/[@.]/)[0]}
             </h1>
-            {/* <p className="flex items-center gap-2 text-[#3D3D3D] text-[15px]">
-              23 August - 23 September 2024
-              <span>
-                <Image src="/icons/calendar-edit.svg" alt="" width={20} height={20} className="select-none" />
-              </span>
-            </p> */}
           </div>
         </div>
         <div className="w-full  flex flex-col lg:flex-row gap-7 mt-4" >
