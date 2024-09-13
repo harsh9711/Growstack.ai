@@ -763,14 +763,14 @@ export default function AiAppPage({
                 <Dropdown
                   label='Download'
                   items={[
-                    // "Copy as Text",
+                    "Copy as Text",
                     "Copy as HTML",
                     "Download as DOC",
                     "Download as TXT",
                     // "Download as PDF",
                   ]}
                   hideLabel
-                  value="Download as TXT"
+                  value="Copy as Text"
                   onChange={(value: any) => handleDownload(value)}
                 />
 
