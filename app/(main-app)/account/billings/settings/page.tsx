@@ -20,6 +20,8 @@ import { API_URL } from "@/lib/api";
 // import { BillHistory } from "@/types/billHistory";
 import clsx from "clsx";
 import { PlanUsage } from "@/types/common";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { DollarSign } from "lucide-react";
 
 interface BillingHistoryItem {
   amount: ReactNode;
@@ -37,6 +39,9 @@ const OverViewSection = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [cancelLoading, setCancelLoading] = useState<boolean>(false); // Add state for cancel button loading
   const [isCreditLoading, setIsCreditLoading] = useState<boolean>(false);
+  const [isCreditInputDialogBoxOpen, setIsCreditInputDialogBoxOpen] = useState<boolean>(false);
+  const [amount, setAmount] = useState<number | ''>(0); 
+  const [isAmountError, setIsAmountError] = useState(false);
 
   const fetchPlanUsage = async () => {
     try {
@@ -57,13 +62,18 @@ const OverViewSection = () => {
   };
 
   const handleCreditClick = async () => {
+    if (Number(amount) < 5 || Number(amount) > 100) {
+      toast.error("Please enter an amount between $5 and $100.");
+      return;
+    }
+
     try {
       setIsCreditLoading(true);
       const product = {
         plan_id: planUsage?.plan_id,
         plan_type: planUsage?.plan_type,
         subscription_id: planUsage?.stripe_subscription_id,
-        amount: 100,
+        amount: amount,
       };
       const response = await instance.post(`${API_URL}/users/api/v1/payments/adds-on`, { product, currency: "usd" });
       window.location.href = response.data.url;
@@ -122,6 +132,20 @@ const OverViewSection = () => {
     );
   }
 
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setIsAmountError(false);
+    const value = e.target.value;
+    const numberValue = Number(value);
+    setAmount(value === '' ? '' : numberValue);
+    if (value !== "" && !(numberValue >= 5 && numberValue <= 100)) {
+      setIsAmountError(true);
+    }
+  };
+
+  const closeInputDialogModal = () => {
+    setIsCreditInputDialogBoxOpen(false)
+  }
+
   return (
     <Motion
       transition={{ duration: 0.5 }}
@@ -136,25 +160,45 @@ const OverViewSection = () => {
             <button
               className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300 ${isCreditLoading ? 'opacity-50 cursor-not-allowed' : ''
                 }`}
-              onClick={handleCreditClick}
+              onClick={() => {
+                setIsCreditInputDialogBoxOpen(true)
+              }}
               disabled={isCreditLoading}
             >
-              {isCreditLoading ? 'Redirecting...' : 'Add Credit'}
+              Add Credit
             </button>
           </div>
         </div>
-        {/* <div className="flex flex-row gap-x-6 items-end">
-          <AddCreditDialog />
-          <button
-            className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-white border-red-500 border hover:font-semibold hover:border-2 text-red-500 sheen transition-all duration-300 ${
-              cancelLoading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            onClick={handleCancelSubscription}
-            disabled={cancelLoading} // Disable button while canceling
-          >
-            {cancelLoading ? "Canceling..." : "Cancel Subscription"}
-          </button>
-        </div> */}
+        <Dialog open={isCreditInputDialogBoxOpen} onOpenChange={closeInputDialogModal}>
+          <DialogContent className="max-w-[584px]">
+            <DialogHeader>
+              <DialogTitle>Add to credit balance</DialogTitle>
+            </DialogHeader>
+            <div>
+              <div className="space-y-2 mt-3">
+                <label className="font-semibold">Amount to add</label>
+                <div className="border border-primary-green rounded-xl p-2 flex items-center gap-2">
+                  <DollarSign className="text-primary-green" />
+                  <input
+                    type="number"
+                    className="h-10 w-full"
+                    value={amount === '' ? '' : amount}
+                    onChange={handleAmountChange}
+                  />
+                </div>
+                <p className={` text-opacity-50 ${isAmountError ? "text-destructive" : "text-primary-black"}` }>
+                  Enter an amount between <span>$</span>5 and <span>$</span>100
+                </p>
+              </div>
+              <button
+                className="w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300 mt-5"
+                onClick={handleCreditClick}
+              >
+                {isCreditLoading ? 'Redirecting...' : 'Add Amount'}
+              </button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     </Motion>
   );
