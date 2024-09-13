@@ -93,6 +93,14 @@
   stroke-linejoin: round;
   stroke-dasharray: 4 2;
 }
+.doodle-effectgreen {
+  stroke-width: 2;
+  stroke: #034737;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 4 2;
+}
 .doodle-effect2 {
   stroke-width: 2;
   stroke: #25B72E;
@@ -160,4 +168,36 @@
 .loading-svg {
   animation: pulse 2s infinite;
 }
+.doodle-container {
+  position: relative;
+  display: inline-block;
+}
 
+.doodle-image {
+  width: 300px; /* Adjust size as needed */
+  height: auto;
+  animation: doodleAnimation 5s infinite;
+}
+
+@keyframes doodleAnimation {
+  0% {
+      transform: translate(0, 0);
+      filter: none;
+  }
+  25% {
+      transform: translate(-5px, 5px) rotate(-1deg);
+      filter: blur(1px);
+  }
+  50% {
+      transform: translate(5px, -5px) rotate(1deg);
+      filter: blur(2px);
+  }
+  75% {
+      transform: translate(-5px, 5px) rotate(-1deg);
+      filter: blur(1px);
+  }
+  100% {
+      transform: translate(0, 0);
+      filter: none;
+  }
+}
