@@ -103,11 +103,11 @@ const navLinks: NavLink[] = [
         name: "AI article wizard",
         href: "/app/create/ai-articles",
       },
-      {
-        icon: <MailIcon />,
-        name: "AI email builder",
-        href: "/app/create/email-builder",
-      },
+      // {
+      //   icon: <MailIcon />,
+      //   name: "AI email builder",
+      //   href: "/app/create/email-builder",
+      // },
     ],
     title: "Create",
   },
