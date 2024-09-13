@@ -165,7 +165,7 @@ const OverViewSection = () => {
           <h2 className="text-primary-black text-opacity-50">Credit balance</h2>
           <div className=" flex gap-3 items-center">
             <h1 className="text-4xl font-semibold">
-              {planUsage?.usage_amount}
+              ${planUsage?.usage_amount}
             </h1>
             <button
               className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300 ${
