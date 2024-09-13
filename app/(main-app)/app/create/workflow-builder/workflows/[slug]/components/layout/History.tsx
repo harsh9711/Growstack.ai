@@ -194,7 +194,7 @@ const History: React.FC<Props> = ({ workflowId, runnerId }) => {
   const [workFlowHistory, setWorkFlowHistory] = useState<WorkflowHistoryItem[]>(
     []
   );
-  const [runnerIdStatus,setRunnerIdStatus] = useState(false)
+  const [runnerIdStatus, setRunnerIdStatus] = useState(false)
   const [loading, setLoading] = useState(true);
   const [sorting, setSorting] = useState<SortingState>([]);
   const router = useRouter();
@@ -248,30 +248,30 @@ const History: React.FC<Props> = ({ workflowId, runnerId }) => {
     }
   };
   useEffect(() => {
-    let intervalId :any;
+    let intervalId: any;
     setRunnerIdStatus(true)
-    if(runnerId){
+    if (runnerId) {
       const fetchData = async () => {
         try {
           const response = await instance.get(
             `${API_URL}/workflow/api/v1/runner/${runnerId}/status`
           );
-          if(response.data.data!="Running"){
-          clearInterval(intervalId);
-          setRunnerIdStatus(false)
-          runnerId=null
-          fetchWorkflowHistory(workflowId);
+          if (response.data.data != "Running") {
+            clearInterval(intervalId);
+            setRunnerIdStatus(false)
+            runnerId = null
+            fetchWorkflowHistory(workflowId);
           }
         } catch (error) {
           clearInterval(intervalId);
           console.error("Error deleting status", error);
         }
       };
-  
+
       intervalId = setInterval(fetchData, 5000);
       return () => clearInterval(intervalId);
     }
- 
+
   }, [runnerId]);
 
   const handleDeleteHistoryItem = async (runner_id: string) => {
@@ -384,9 +384,9 @@ const History: React.FC<Props> = ({ workflowId, runnerId }) => {
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   ))}
                 </TableRow>
@@ -396,22 +396,22 @@ const History: React.FC<Props> = ({ workflowId, runnerId }) => {
               {table.getRowModel().rows?.length ? (
                 table.getRowModel().rows.map((row) => (
                   <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {cell.column.columnDef.header === "Status" && (
-                        row.original.workflow_runner_id === runnerId && runnerId!=null) && runnerIdStatus ? (
-                          < >
-                          <Spinner color="black" size={15}/>
-                          Loading...
-                          </>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {cell.column.columnDef.header === "Status" && (
+                          row.original.workflow_runner_id === runnerId && runnerId != null) && runnerIdStatus ? (
+                          <div className=" flex gap-2">
+                            <Spinner color="black" size={15} />
+                            Loading...
+                          </div>
                         ) : (
                           flexRender(cell.column.columnDef.cell, cell.getContext())
                         )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-                
-                
+                      </TableCell>
+                    ))}
+                  </TableRow>
+
+
                 ))
               ) : (
                 <TableRow className="hover:bg-white">
