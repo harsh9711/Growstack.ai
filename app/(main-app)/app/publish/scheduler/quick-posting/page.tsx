@@ -36,15 +36,12 @@ export default function QuickPosting() {
     }
   };
  useEffect(() => {
-    // Get the current date and time in the required format
     const now = new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
     const day = String(now.getDate()).padStart(2, '0');
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
-    
-    // Set the minimum date and time to the current date and time
     setMinDateTime(`${year}-${month}-${day}`);
   }, []);
   const handleValueChange = (value: string) => {
@@ -95,11 +92,6 @@ export default function QuickPosting() {
   const handlePublish = async () => {
     setLoading(true);
     let utcDateTime = null;
-    // if (scheduleDate && time) {
-    //   const localDateTime = new Date(`${scheduleDate}T${time}`);
-    //   utcDateTime = localDateTime.toISOString();
-    // }
-
     try {
       const requestData: any = {
         post: content + " " + link,
@@ -292,23 +284,6 @@ export default function QuickPosting() {
                     }
                   />
                 </div>
-
-                {/* <div className="w-full flex justify-between mt-6 pb-6 border-b border-[#EDEFF0]">
-                <label className="font-medium">Tumblr</label>
-                <Switch />
-              </div>
-              <div className="w-full flex justify-between mt-6 pb-6 border-b border-[#EDEFF0]">
-                <label className="font-medium">Pinterest</label>
-                <Switch defaultChecked={true} />
-              </div>
-              <div className="w-full flex justify-between mt-6 pb-6 border-b border-[#EDEFF0]">
-                <label className="font-medium">Google my business</label>
-                <Switch defaultChecked={true} />
-              </div>
-              <div className="w-full flex justify-between mt-6 pb-6 border-b border-[#EDEFF0]">
-                <label className="font-medium">Reddit</label>
-                <Switch />
-              </div> */}
               </section>
 
               <section className="w-full bg-white rounded-3xl border border-[#EDEFF0] px-10 py-6 mt-6">

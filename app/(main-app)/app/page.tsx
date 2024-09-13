@@ -158,7 +158,7 @@ export default function Dashboard() {
           data-aos="fade-down"
         >
           <div className="space-y-2">
-            <h1 className="text-2x2 font-normal">
+            <h1 className="text-base font-normal">
               Welcome back,{" "}
               {currentUser?.name
                 ? currentUser.name
@@ -172,12 +172,12 @@ export default function Dashboard() {
             </p> */}
           </div>
         </div>
-        <div className="w-full  flex flex-col lg:flex-row gap-3 mt-4">
+        <div className="w-full  flex flex-col lg:flex-row gap-7 mt-4" >
           <div className="w-full space-y-6 " data-aos="fade-left">
             <ChatComponent />
           </div>
           <div
-            className="w-full max-w-[40%] bg-white p-8 rounded-3xl border border-[#E8E8E8] "
+            className="w-full lg:max-w-[40%] bg-white p-8 rounded-3xl border border-[#E8E8E8] h-[930px]"
             data-aos="fade-right"
           >
             <div className="space-y-3">

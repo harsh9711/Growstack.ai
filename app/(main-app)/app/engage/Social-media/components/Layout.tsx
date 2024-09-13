@@ -34,13 +34,13 @@ interface SidebarItem {
 
 const hideScrollbarStyles: React.CSSProperties = {
   overflowY: "auto",
-  msOverflowStyle: "none", // IE and Edge
-  scrollbarWidth: "none", // Firefox
+  msOverflowStyle: "none",
+  scrollbarWidth: "none",
 };
 
 const hideScrollbarWebkit: React.CSSProperties = {
-  scrollbarWidth: "none", // Firefox
-  WebkitOverflowScrolling: "touch", // Optional for touch devices
+  scrollbarWidth: "none",
+  WebkitOverflowScrolling: "touch",
 };
 
 const SearchBar = ({ searchQuery, setSearchQuery }: any) => {
@@ -79,7 +79,6 @@ const SearchBar = ({ searchQuery, setSearchQuery }: any) => {
           placeholder="Search..."
           className="bg-gray-100 text-sm focus:outline-none -translate-x-6"
         />
-        {/* onClick={toggleFilterMenu}  */}
         <button className="p-2 translate-x-6">
           {isFilterMenuOpen ? (
             <FaFilter className="w-6 h-6 text-green-800" />
@@ -154,28 +153,6 @@ const SearchBar = ({ searchQuery, setSearchQuery }: any) => {
 };
 
 const Layout = () => {
-  const options = [
-    {
-      label: "All accounts",
-      value: "allaccounts",
-      icon: <CiSettings className="text-xl translate-x-40 opacity-0" />,
-    },
-    {
-      label: "GrowStack social",
-      value: "growStacksocial",
-      icon: <CiSettings className="text-xl translate-x-48" />,
-    },
-    {
-      label: "GrowStack video",
-      value: "growStackvideo",
-      icon: <CiSettings className="text-xl translate-x-48" />,
-    },
-    {
-      label: "Nike",
-      value: "nike",
-      icon: <CiSettings className="text-xl translate-x-48" />,
-    },
-  ];
   const [messages, setMessages] = useState("");
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [historyData, setHistoryData] = useState<any>([]);
@@ -209,7 +186,6 @@ const Layout = () => {
         file = response.data.data.fileUrl;
         setUploadedFile(null);
         setMessages("");
-        // toast.success(response.data.message);
       } catch (error: any) {
         if (error.response) {
           toast.error(error.response.data.message);
@@ -218,7 +194,6 @@ const Layout = () => {
         }
         console.error(error);
       } finally {
-        // setIsPending(false);
       }
     } else {
       const payload = {
@@ -234,7 +209,7 @@ const Layout = () => {
     const payloaddata = {
       senderId: selectedMessage.message[0].recipientId
         ? selectedMessage.message[0].recipientId
-        : "", //selectedMessage.message[0].senderId,
+        : "",
       attachments: file ? [{ type: "image", url: file }] : [],
       created: {},
       conversationId: selectedMessage.message[0].conversationId,
@@ -367,7 +342,6 @@ const Layout = () => {
       const response = await instance.get(
         `${API_URL}/users/api/v1/social-media/profile/messages`
       );
-      // setTableData(response.data.data.history);
     } catch (error) {
       console.log("Error fetching table data:", error);
       toast.error("Error fetching table data");
@@ -397,7 +371,6 @@ const Layout = () => {
   const [selectedMessage, setSelectedMessage] = useState<any>();
   const handleChatInputCallback = (e: any) => {
     setChatInput(e.target.value);
-    // handlePostComment(e.target.value)
   };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -482,12 +455,6 @@ const Layout = () => {
     setVisibleMenuIndex(null); // Close the menu after delete
   };
 
-  // // Handle edit message
-  // const handleEditMessage = (index: number) => {
-  //   console.log("Edit message at index:", index);
-  //   setVisibleMenuIndex(null); // Close the menu after editing
-  // };
-
   const toggleMenu = (index: number) => {
     setVisibleMenuIndex((prevIndex) => (prevIndex === index ? null : index));
   };
@@ -536,7 +503,6 @@ const Layout = () => {
                 activeIndex === 1 ? "-left-0" : "left-[52%]"
               }`}
               style={{
-                // transform: `translateX(${activeIndex * 100}%)`,
                 width: "50%",
               }}
             />
@@ -685,20 +651,7 @@ const Layout = () => {
 
                         {visibleMenuIndex === index && (
                           <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md z-10">
-                            {/* <button
-                              className="block px-4 py-2 text-gray-800 hover:bg-gray-100 w-full text-left"
-                              onClick={() => handleEditMessage(index as number)}
-                            >
-                              Edit
-                            </button>
-                            <button
-                              className="block px-4 py-2 text-gray-800 hover:bg-gray-100 w-full text-left"
-                              onClick={() =>
-                                handleDeleteMessage(index as number)
-                              }
-                            >
-                              Delete
-                            </button> */}
+                           
                           </div>
                         )}
                       </div>
@@ -806,7 +759,7 @@ const Layout = () => {
                                 setSelectedEditMessage(e.target.value)
                               }
                               className="w-full p-1 border border-gray-300 rounded-md pr-16 resize-none overflow-hidden" // Remove resize handle and hide overflow
-                              style={{ height: "auto" }} // Ensure height is set to auto
+                              style={{ height: "auto" }}
                             />
                             <button
                               className={`absolute right-2 bottom-2 p-2 ${
@@ -942,13 +895,7 @@ const Layout = () => {
                 <h2 className="font-light text-[10px] text-black text-ellipsis">
                   {selectedPost?.message}
                 </h2>
-                {/* <Image
-                  src="/pic.png"
-                  alt="pic"
-                  width={60}
-                  height={80}
-                  className="rounded-xl"
-                /> */}
+                
               </div>
 
               <button
@@ -1004,49 +951,8 @@ const Layout = () => {
                       placeholder="Search..."
                       className="flex-grow  bg-gray-100 text-sm focus:outline-none"
                     />
-                    {/* <button className=" right-0 ">
-                      <svg
-                        width="24"
-                        height="34"
-                        viewBox="0 0 34 34"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M12.0205 12.0527L21.92 21.9522"
-                          stroke="#4B465C"
-                          stroke-width="1.75"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M12.0205 12.0527L21.92 21.9522"
-                          stroke="white"
-                          stroke-opacity="0.2"
-                          stroke-width="1.75"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M12.0205 21.9473L21.92 12.0478"
-                          stroke="#4B465C"
-                          stroke-width="1.75"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M12.0205 21.9473L21.92 12.0478"
-                          stroke="white"
-                          stroke-opacity="0.2"
-                          stroke-width="1.75"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    </button> */}
                   </div>
                   <div className="mt-2 space-y-2">
-                    {/* Example checkboxes */}
                     <label className="flex bg-[#FAFBFC] p-2 items-center rounded-md  flex-row justify-between">
                       <span className="flex flex-row">
                         <Image

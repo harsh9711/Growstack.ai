@@ -4,8 +4,6 @@ import { IoMdSend } from "react-icons/io"; // Importing send icon
 const CommentChatInput = (props: any) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [input, setInput] = useState(props.chatInput);
-
-  // Determine if the send button should be enabled
   const canSend = input.trim() !== ""; 
 
   return (

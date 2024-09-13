@@ -18,7 +18,6 @@ import toast from "react-hot-toast";
 export default function page() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
-  // const tabs = ["General", "Facebook", "Twitter", "Linkedin", "Tumblr", "Pinterest", "GMB", "Reddit", "Instagram", "Blogger"];
   const tabs = ["Facebook", "Twitter", "Linkedin", "Instagram"];
   const [tabName, setTabName] = useState("Facebook");
   const [messagingActive, setMessagingActive] = useState(false);
@@ -27,12 +26,9 @@ export default function page() {
   const handleOnConnect = async () => {
     try {
       const response = await instance.get(
-        API_URL + "/users/api/v1/social-media/connect"
+        API_URL + "/users/api/v1/social-media/connect",{ headers: { 'Cache-Control': 'no-cache' } }
       );
-
       const url = response?.data.data;
-      console.log("url",url);
-      
       if (url) {
         window.location.href = url;
       }
@@ -54,8 +50,6 @@ export default function page() {
 
   const renderContent = () => {
     switch (selectedTabIndex) {
-      // case 0:
-      //   return <GeneralSection />;
       case 0:
         return (
           <FacebookSection
@@ -92,21 +86,10 @@ export default function page() {
             messagingActive={messagingActive}
           />
         );
-      // case 5:
-      //   return <TumblrSection />;
-      // case 6:
-      //   return <PinterestSection />;
-      // case 7:
-      //   return <GoogleSection />;
-      // case 8:
-      //   return <RedditSection />;
-      // case 9:
-      //   return <BloggerSection />;
     }
   };
 
   const handleAdd = async () => {
-    // setIsPending(true);
     try {
       const response = await instance.patch(
         API_URL + `/users/api/v1/social-media/profile/${tabName}`,
@@ -124,7 +107,6 @@ export default function page() {
       }
       console.error("Profile Upa]date failed:", error);
     } finally {
-      // setIsPending(false);
     }
   };
 
