@@ -212,10 +212,11 @@ export default function AdsAnalyticsPage() {
                   </p>
                   <h1 className="text-3xl font-semibold">49,612</h1>
                   <div className="flex gap-2">
-                    <TrendingDown className="text-[#00B69B]" />
-                    <span className="text-[#00B69B] font-semibold">4.2% </span>
+                    <TrendingDown className="text-[#F93C65]" />
+                    <span className="text-[#F93C65] font-semibold">4.2% </span>
                     Down from yesterday
                   </div>
+
                   <div className="h-16">
                     <AnalyticsGraph color="#CF0000" />
                   </div>
