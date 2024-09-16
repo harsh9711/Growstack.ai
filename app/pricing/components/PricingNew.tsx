@@ -15,21 +15,25 @@ const PricingRow: React.FC<PricingRowProps> = ({
   description,
   value1,
   value2,
+  value3,
   bgColor,
 }) => {
   return (
     <div
-      className={`mt-6 grid grid-cols-[1.2fr_1px_1fr] items-center gap-20 p-4 rounded-[20px] ${bgColor} font-semibold text-[12px] xl:text-[16px]`}
+      className={`mt-6 flex flex-row items-center gap-20 p-4 rounded-[20px] ${bgColor} font-semibold text-[12px] xl:text-[16px]`}
       data-aos="fade-up"
     >
-      <div className=" w-full">
+      <div className="w-1/6">
         <p>{description}</p>
       </div>
-      <div className="h-full border-l  -translate-x-6 border-[#B8B8B8] border-[1px]"></div>
-      <div className="text-[6px] justify-center items-center grid grid-cols-3 gap-6 w-full">
-        <h2 className="text-center text-[18px]">{value1}</h2>
-        <h2 className="text-center text-[18px]   ">{value2}</h2>
-        <h2 className="text-center text-[18px]">{value2}</h2>
+      {/* <div className="h-full border-l  -translate-x-6 border-[#B8B8B8] border-[1px]"></div> */}
+      <div className="flex-1 w-full text-[6px] justify-center items-center grid grid-cols-6 gap-6">
+        <h2 className="text-left text-[18px]">{value1}</h2>
+        <h2 className="text-left text-[18px]   ">{value2}</h2>
+        <h2 className="text-left text-[18px]">{value3}</h2>
+        <h2 className="text-left text-[18px]">{value1}</h2>
+        <h2 className="text-left text-[18px]   ">{value2}</h2>
+        <h2 className="text-left text-[18px]">{value3}</h2>
       </div>
     </div>
   );
@@ -127,7 +131,7 @@ const PricingNew: React.FC = () => {
   }, []);
   return (
     <div
-      className="bg-[#FBFBFB] border rounded-[20px] px-4 w-full max-w-[1400px] relative"
+      className="bg-[#FBFBFB] border rounded-[20px] px-2 w-full relative"
       data-aos="fade-up"
     >
       <svg
@@ -142,7 +146,7 @@ const PricingNew: React.FC = () => {
       </svg>
 
       <div className="flex flex-col xl:flex-row items-center justify-between gap-3 p-4">
-        <div className="w-full xl:w-1/5 relatives">
+        <div className="w-full xl:w-1/6 relatives">
           <div className="flex justify-between w-full gap-2 xl:hidden">
             <span className="flex gap-4">
               <CustomIcon />

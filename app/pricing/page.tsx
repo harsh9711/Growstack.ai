@@ -35,7 +35,7 @@ const PricingPage: React.FC = () => {
           fill="#034737"
         />
       </svg>
-      <div className="px-4 w-full mx-auto mt-40">
+      <div className="w-full max-w-[1600px] px-4 mx-auto !mt-40">
         <PricingNew />
       </div>
       <section className="bg-white mt-20">
