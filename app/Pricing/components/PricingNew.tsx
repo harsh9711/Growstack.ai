@@ -140,77 +140,147 @@ const PricingNew: React.FC = () => {
       >
         {/* SVG content */}
       </svg>
-      <div className="w-full max-w-[220px] rounded-2xl items-center justify-center flex flex-col py-4 bg-[#034737] absolute top-[-55px] left-[960px] z-10">
-        <h2 className="text-[16px] font-semibold mb-2 bg-white rounded-full px-10 py-2">
-          Best Value
-        </h2>
-        <h2 className="text-[18px] font-medium mb-2 text-white">Influencer</h2>
-        <h2 className="text-[18px] text-[#9F9F9F] font-semibold line-through">
-          {isMonthly ? "US$120.00" : "US$300.00"}
-        </h2>
-        <h2 className="text-[28px] font-semibold text-[#A9FF9B]">
-          {isMonthly ? "US$99.00" : "US$990.00"}
-        </h2>
-        <h2 className="text-[16px] text-[#9F9F9F] font-medium">
-          Per {billingPeriod.toLowerCase()}
-        </h2>
-        <button className="mt-6 bg-white text-[#034737] border-[#034737] font-semibold border rounded-[10px] px-10 py-2">
-          Subscribe now
-        </button>
-      </div>
 
-      <div className="border-[#B8B8B8] absolute left-[730px] border-[1px] h-full max-h-[180px] translate-y-4"></div>
+      <div className="flex flex-col xl:flex-row items-center justify-between gap-3 p-4">
+        <div className="w-full xl:w-1/5 relatives">
+          <div className="flex justify-between w-full gap-2 xl:hidden">
+            <span className="flex gap-4">
+              <CustomIcon />
+              <h2 className="font-bold">Pricing Strategy</h2>
+            </span>
+            <div>
+              <label htmlFor="billing-period">Plan:</label>
+              <select
+                id="billing-period"
+                value={billingPeriod}
+                onChange={handleBillingPeriodChange}
+                className="ml-2 border rounded-[10px] px-2 py-1"
+              >
+                <option value="Monthly">Monthly Plan</option>
+                <option value="Yearly">Yearly Plan</option>
+              </select>
+            </div>
 
-      <div className="flex flex-row items-center justify-between p-4">
-        <div>
-          <label htmlFor="billing-period">Plan:</label>
-          <select
-            id="billing-period"
-            value={billingPeriod}
-            onChange={handleBillingPeriodChange}
-            className="ml-2 border rounded-[10px] px-2 py-1"
-          >
-            <option value="Monthly">Monthly Plan</option>
-            <option value="Yearly">Yearly Plan</option>
-          </select>
-          <span className="flex gap-4 mt-2">
-            <CustomIcon />
-            <h2 className="font-bold">Pricing Strategy</h2>
-          </span>
+          </div>
+
+          <div className="hidden xl:block">
+            <label htmlFor="billing-period">Plan:</label>
+            <select
+              id="billing-period"
+              value={billingPeriod}
+              onChange={handleBillingPeriodChange}
+              className="ml-2 border rounded-[10px] px-2 py-1"
+            >
+              <option value="Monthly">Monthly Plan</option>
+              <option value="Yearly">Yearly Plan</option>
+            </select>
+            <span className="flex gap-4 mt-2">
+              <CustomIcon />
+              <h2 className="font-bold">Pricing Strategy</h2>
+            </span>
+          </div>
+          {/* <span className="border-[#B8B8B8] absolute left-64 top-2 border-[1px] h-full max-h-56 translate-y-4"></span> */}
         </div>
 
-        {/* Pro user section */}
-        <div className="flex flex-col  items-center relative left-24">
-          <h2 className="text-[20px] font-medium mb-2">Pro </h2>
-          <h2 className="text-[18px] text-[#9F9F9F] font-semibold line-through">
-            {isMonthly ? "US$30.00" : "US$300.00"}
-          </h2>
-          <h2 className="text-[28px] font-semibold">
-            {isMonthly ? "US$20.00" : "US$200.00"}
-          </h2>
-          <h2 className="text-[16px] text-[#9F9F9F] font-medium">
-            Per {billingPeriod.toLowerCase()}
-          </h2>
-          <button className="mt-4 text-[#034737] border-[#034737] font-semibold border rounded-[10px] px-10 py-2">
-            Subscribe now
-          </button>
-        </div>
+        <div className="w-full flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
 
-        {/* New row for Standard user */}
-        <div className="flex flex-col  items-center relative left-10">
-          <h2 className="text-[20px] font-medium mb-2">Business</h2>
-          <h2 className="text-[18px] text-[#9F9F9F] font-semibold line-through">
-            {isMonthly ? "US$199" : "US$150.00"}
-          </h2>
-          <h2 className="text-[28px] font-semibold">
-            {isMonthly ? "US$2388.00" : "US$100.00"}
-          </h2>
-          <h2 className="text-[16px] text-[#9F9F9F] font-medium">
-            Per {billingPeriod.toLowerCase()}
-          </h2>
-          <button className="mt-4 text-[#034737] border-[#034737] font-semibold border rounded-[10px] px-10 py-2">
-            Subscribe now
-          </button>
+          <div className="flex flex-col  items-center">
+            <h2 className="text-[20px] font-medium mb-2">Basic </h2>
+            <h2 className="text-[18px] text-[#9F9F9F] font-semibold line-through">
+              {isMonthly ? "US$30.00" : "US$300.00"}
+            </h2>
+            <h2 className="text-[28px] font-semibold">
+              {isMonthly ? "US$20.00" : "US$200.00"}
+            </h2>
+            <h2 className="text-[16px] text-[#9F9F9F] font-medium">
+              Per {billingPeriod.toLowerCase()}
+            </h2>
+            <button className="mt-4 text-[#034737] border-[#034737] font-semibold border rounded-[10px] px-10 py-2">
+              Subscribe now
+            </button>
+          </div>
+
+          {/* Pro user section */}
+          <div className="flex flex-col  items-center">
+            <h2 className="text-[20px] font-medium mb-2">Pro </h2>
+            <h2 className="text-[18px] text-[#9F9F9F] font-semibold line-through">
+              {isMonthly ? "US$30.00" : "US$300.00"}
+            </h2>
+            <h2 className="text-[28px] font-semibold">
+              {isMonthly ? "US$20.00" : "US$200.00"}
+            </h2>
+            <h2 className="text-[16px] text-[#9F9F9F] font-medium">
+              Per {billingPeriod.toLowerCase()}
+            </h2>
+            <button className="mt-4 text-[#034737] border-[#034737] font-semibold border rounded-[10px] px-10 py-2">
+              Subscribe now
+            </button>
+          </div>
+
+          {/* New row for Standard user */}
+          <div className="flex flex-col  items-center">
+            <h2 className="text-[20px] font-medium mb-2">Creator</h2>
+            <h2 className="text-[18px] text-[#9F9F9F] font-semibold line-through">
+              {isMonthly ? "US$199" : "US$150.00"}
+            </h2>
+            <h2 className="text-[28px] font-semibold">
+              {isMonthly ? "US$2388.00" : "US$100.00"}
+            </h2>
+            <h2 className="text-[16px] text-[#9F9F9F] font-medium">
+              Per {billingPeriod.toLowerCase()}
+            </h2>
+            <button className="mt-4 text-[#034737] border-[#034737] font-semibold border rounded-[10px] px-10 py-2">
+              Subscribe now
+            </button>
+          </div>
+
+          <div className="flex flex-col  items-center">
+            <h2 className="text-[20px] font-medium mb-2">Advanced Pro</h2>
+            <h2 className="text-[18px] text-[#9F9F9F] font-semibold line-through">
+              {isMonthly ? "US$199" : "US$150.00"}
+            </h2>
+            <h2 className="text-[28px] font-semibold">
+              {isMonthly ? "US$2388.00" : "US$100.00"}
+            </h2>
+            <h2 className="text-[16px] text-[#9F9F9F] font-medium">
+              Per {billingPeriod.toLowerCase()}
+            </h2>
+            <button className="mt-4 text-[#034737] border-[#034737] font-semibold border rounded-[10px] px-10 py-2">
+              Subscribe now
+            </button>
+          </div>
+
+          <div className="flex flex-col  items-center">
+            <h2 className="text-[20px] font-medium mb-2">Business</h2>
+            <h2 className="text-[18px] text-[#9F9F9F] font-semibold line-through">
+              {isMonthly ? "US$199" : "US$150.00"}
+            </h2>
+            <h2 className="text-[28px] font-semibold">
+              {isMonthly ? "US$2388.00" : "US$100.00"}
+            </h2>
+            <h2 className="text-[16px] text-[#9F9F9F] font-medium">
+              Per {billingPeriod.toLowerCase()}
+            </h2>
+            <button className="mt-4 text-[#034737] border-[#034737] font-semibold border rounded-[10px] px-10 py-2">
+              Subscribe now
+            </button>
+          </div>
+
+          <div className="flex flex-col  items-center">
+            <h2 className="text-[20px] font-medium mb-2">Enterprise</h2>
+            <h2 className="text-[18px] text-[#9F9F9F] font-semibold line-through">
+              {isMonthly ? "US$199" : "US$150.00"}
+            </h2>
+            <h2 className="text-[28px] font-semibold">
+              {isMonthly ? "US$2388.00" : "US$100.00"}
+            </h2>
+            <h2 className="text-[16px] text-[#9F9F9F] font-medium">
+              Per {billingPeriod.toLowerCase()}
+            </h2>
+            <button className="mt-4 text-[#034737] border-[#034737] font-semibold border rounded-[10px] px-10 py-2">
+              Subscribe now
+            </button>
+          </div>
         </div>
       </div>
 

@@ -14,3 +14,12 @@ export const isEmptyObject = (obj: object | undefined): boolean => {
     if (obj === undefined || obj === null) return true;
     return Object.keys(obj).length === 0;
 };
+
+export function isMobile() {
+  if (typeof window === 'undefined' || !window.matchMedia) {
+    return false;
+  }
+
+  const match = window.matchMedia('(pointer: coarse)');
+  return match && match.matches;
+}
