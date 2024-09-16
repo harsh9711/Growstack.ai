@@ -171,29 +171,6 @@ const PricingPage: React.FC = () => {
 
 
   useEffect(() => {
-    const fetchPlanUsage = async () => {
-      try {
-        setIsLoading(true);
-        const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
-        const planUsageData = response.data.data;
-        if (planUsageData) {
-          const currentDate = new Date();
-          const expiryDate = new Date(planUsageData?.usage_expiry_date);
-          if (expiryDate > currentDate) {
-            toast.success('You are already subscribed. Redirecting to app...');
-            router.push("/app");
-          }
-        }
-      } catch (error: any) {
-        console.error('Error fetching plan usage:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchPlanUsage();
-  }, []);
-
-  useEffect(() => {
     const tab = tabQueryParam ? Number(tabQueryParam) : 0;
     setSelectedTabIndex(tab);
     const totalTabs = tabs.length;
