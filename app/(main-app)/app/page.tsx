@@ -202,12 +202,12 @@ export default function Dashboard() {
                 Chat with the smartest AI - Experience the power of AI with us
               </p>
             </div>
-            <Link href="/app/plan/ai-chat">
+            {/* <Link href="/app/plan/ai-chat">
               <div
                 className="!mt-7 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
                 data-aos="fade-up"
               >
-                <div className="flex gap-4 items-center">
+                {/* <div className="flex gap-4 items-center">
                   <Image
                     src="/icons/ai-chat.svg"
                     alt=""
@@ -215,12 +215,12 @@ export default function Dashboard() {
                     height={60}
                   />
                   <h2 className="font-medium">AI chat</h2>
-                </div>
-                <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
+                </div> */}
+                {/* <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
                   <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
                 </button>
               </div>
-            </Link>
+            </Link> */} 
             <Link href="/app/plan/ai-templates">
               <div
                 className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
@@ -285,7 +285,7 @@ export default function Dashboard() {
               >
                 <div className="flex gap-4 items-center">
                   <Image src="/icons/media.svg" alt="" width={60} height={60} />
-                  <h2 className="font-medium">Text to video </h2>
+                  <h2 className="font-medium">Text to avatar </h2>
                 </div>
                 <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
                   <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
