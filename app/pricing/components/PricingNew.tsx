@@ -1,0 +1,305 @@
+"use client";
+import React, { useEffect, useState } from "react";
+import "../../../styles/myanimation.css";
+import "aos/dist/aos.css";
+import AOS from "aos";
+interface PricingRowProps {
+  description: string;
+  value1: string;
+  value2: string;
+  value3: string;
+  bgColor: string;
+}
+
+const PricingRow: React.FC<PricingRowProps> = ({
+  description,
+  value1,
+  value2,
+  value3,
+  bgColor,
+}) => {
+  return (
+    <div
+      className={`mt-6 flex flex-row items-center gap-20 p-4 rounded-[20px] ${bgColor} font-semibold text-[12px] xl:text-[16px]`}
+      data-aos="fade-up"
+    >
+      <div className="w-1/6">
+        <p>{description}</p>
+      </div>
+      {/* <div className="h-full border-l  -translate-x-6 border-[#B8B8B8] border-[1px]"></div> */}
+      <div className="flex-1 w-full text-[6px] justify-center items-center grid grid-cols-6 gap-6">
+        <h2 className="text-left text-[18px]">{value1}</h2>
+        <h2 className="text-left text-[18px]   ">{value2}</h2>
+        <h2 className="text-left text-[18px]">{value3}</h2>
+        <h2 className="text-left text-[18px]">{value1}</h2>
+        <h2 className="text-left text-[18px]   ">{value2}</h2>
+        <h2 className="text-left text-[18px]">{value3}</h2>
+      </div>
+    </div>
+  );
+};
+
+const PricingNew: React.FC = () => {
+  const CustomIcon = () => (
+    <svg
+      width="30"
+      height="33"
+      viewBox="0 0 30 33"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M30 1.63802C30 1.63802 29.0103 15.6437 26.2786 21.3244C21.1637 31.9686 15.0004 32.9899 15.0004 32.9899C15.0004 32.9899 8.8377 31.9686 3.7214 21.3244C0.991845 15.6437 0 1.63802 0 1.63802L14.9996 0L30 1.63802Z"
+        fill="#034737"
+      />
+      <path
+        d="M21.0562 10.1919L22.3012 11.4369L13.485 20.2531L9.09375 15.8597L10.3388 14.6154L13.4871 17.7638L21.0562 10.1919Z"
+        fill="white"
+      />
+    </svg>
+  );
+  const pricingData = [
+    {
+      description:
+        "AI Apps, AI Chat, AI Assistants, AI Playground, Custom GPT, Mobile App + Chrome Extension, AI Article Wizard, Image Generation",
+      value1: "Yes",
+      value2: "Yes",
+      value3: "Yes",
+      bgColor: "bg-[#034737]/10",
+    },
+    {
+      description: "Product AI",
+      value1: "$0.4 cents per image",
+      value2: "$0.3 Cents Per Image",
+      value3: "$0.3 Cents Per Image",
+      bgColor: "bg-[#FBFBFB]",
+    },
+    {
+      description: "Text to Videos",
+      value1: "$3 per video",
+      value2: "$2 per video",
+      value3: "$1.5 Per Video",
+      bgColor: "bg-[#034737]/10",
+    },
+    {
+      description:
+        "Social Media Sharing and Scheduler, Social Media Conversation hub",
+      value1: "No",
+      value2: "Yes",
+      value3: "Yes",
+      bgColor: "bg-[#FBFBFB]",
+    },
+    {
+      description: "AI Workflows",
+      value1: "No",
+      value2: "Yes",
+      value3: "Yes, Credit Based, 2k Workflow Credits / Mo.",
+      bgColor: "bg-[#034737]/10",
+    },
+    {
+      description: "Social Media Analytics",
+      value1: "No",
+      value2: "Yes",
+      value3: "Yes",
+      bgColor: "bg-[#FBFBFB]",
+    },
+    {
+      description: "Webscraping, Contact (Consent & Verification is extra)",
+      value1: "No",
+      value2: "No",
+      value3: "No",
+      bgColor: "bg-[#034737]/10",
+    },
+    {
+      description: "Max discount for yearly plans",
+      value1: "25% Off",
+      value2: "50% Discount",
+      value3: "30% Discount",
+      bgColor: "bg-[#FBFBFB]",
+    },
+  ];
+  const [billingPeriod, setBillingPeriod] = useState("Monthly");
+  const isMonthly = billingPeriod === "Monthly";
+
+  const handleBillingPeriodChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setBillingPeriod(e.target.value);
+  };
+  useEffect(() => {
+    AOS.init({ duration: 1000 });
+  }, []);
+  return (
+    <div
+      className="bg-[#FBFBFB] border rounded-[20px] px-2 w-full relative"
+      data-aos="fade-up"
+    >
+      <svg
+        className="absolute -translate-y-16 translate-x-[700px]"
+        width="31"
+        height="56"
+        viewBox="0 0 31 56"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        {/* SVG content */}
+      </svg>
+
+      <div className="flex flex-col xl:flex-row items-center justify-between gap-3 p-4">
+        <div className="w-full xl:w-1/6 relatives">
+          <div className="flex justify-between w-full gap-2 xl:hidden">
+            <span className="flex gap-4">
+              <CustomIcon />
+              <h2 className="font-bold">Pricing Strategy</h2>
+            </span>
+            <div>
+              <label htmlFor="billing-period">Plan:</label>
+              <select
+                id="billing-period"
+                value={billingPeriod}
+                onChange={handleBillingPeriodChange}
+                className="ml-2 border rounded-[10px] px-2 py-1"
+              >
+                <option value="Monthly">Monthly Plan</option>
+                <option value="Yearly">Yearly Plan</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div className="hidden xl:block">
+            <label htmlFor="billing-period">Plan:</label>
+            <select
+              id="billing-period"
+              value={billingPeriod}
+              onChange={handleBillingPeriodChange}
+              className="ml-2 border rounded-[10px] px-2 py-1"
+            >
+              <option value="Monthly">Monthly Plan</option>
+              <option value="Yearly">Yearly Plan</option>
+            </select>
+            <span className="flex gap-4 mt-2">
+              <CustomIcon />
+              <h2 className="font-bold">Pricing Strategy</h2>
+            </span>
+          </div>
+          {/* <span className="border-[#B8B8B8] absolute left-64 top-2 border-[1px] h-full max-h-56 translate-y-4"></span> */}
+        </div>
+
+        <div className="w-full flex-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3">
+
+          <div className="flex flex-col  items-center">
+            <h2 className="text-[20px] font-medium mb-2">Basic </h2>
+            <h2 className="text-[18px] text-[#9F9F9F] font-semibold line-through">
+              {isMonthly ? "US$30.00" : "US$300.00"}
+            </h2>
+            <h2 className="text-[28px] font-semibold">
+              {isMonthly ? "US$20.00" : "US$200.00"}
+            </h2>
+            <h2 className="text-[16px] text-[#9F9F9F] font-medium">
+              Per {billingPeriod.toLowerCase()}
+            </h2>
+            <button className="mt-4 text-[#034737] border-[#034737] font-semibold border rounded-[10px] px-10 py-2">
+              Subscribe now
+            </button>
+          </div>
+
+          {/* Pro user section */}
+          <div className="flex flex-col  items-center">
+            <h2 className="text-[20px] font-medium mb-2">Pro </h2>
+            <h2 className="text-[18px] text-[#9F9F9F] font-semibold line-through">
+              {isMonthly ? "US$30.00" : "US$300.00"}
+            </h2>
+            <h2 className="text-[28px] font-semibold">
+              {isMonthly ? "US$20.00" : "US$200.00"}
+            </h2>
+            <h2 className="text-[16px] text-[#9F9F9F] font-medium">
+              Per {billingPeriod.toLowerCase()}
+            </h2>
+            <button className="mt-4 text-[#034737] border-[#034737] font-semibold border rounded-[10px] px-10 py-2">
+              Subscribe now
+            </button>
+          </div>
+
+          {/* New row for Standard user */}
+          <div className="flex flex-col  items-center">
+            <h2 className="text-[20px] font-medium mb-2">Creator</h2>
+            <h2 className="text-[18px] text-[#9F9F9F] font-semibold line-through">
+              {isMonthly ? "US$199" : "US$150.00"}
+            </h2>
+            <h2 className="text-[28px] font-semibold">
+              {isMonthly ? "US$2388.00" : "US$100.00"}
+            </h2>
+            <h2 className="text-[16px] text-[#9F9F9F] font-medium">
+              Per {billingPeriod.toLowerCase()}
+            </h2>
+            <button className="mt-4 text-[#034737] border-[#034737] font-semibold border rounded-[10px] px-10 py-2">
+              Subscribe now
+            </button>
+          </div>
+
+          <div className="flex flex-col  items-center">
+            <h2 className="text-[20px] font-medium mb-2">Advanced Pro</h2>
+            <h2 className="text-[18px] text-[#9F9F9F] font-semibold line-through">
+              {isMonthly ? "US$199" : "US$150.00"}
+            </h2>
+            <h2 className="text-[28px] font-semibold">
+              {isMonthly ? "US$2388.00" : "US$100.00"}
+            </h2>
+            <h2 className="text-[16px] text-[#9F9F9F] font-medium">
+              Per {billingPeriod.toLowerCase()}
+            </h2>
+            <button className="mt-4 text-[#034737] border-[#034737] font-semibold border rounded-[10px] px-10 py-2">
+              Subscribe now
+            </button>
+          </div>
+
+          <div className="flex flex-col  items-center">
+            <h2 className="text-[20px] font-medium mb-2">Business</h2>
+            <h2 className="text-[18px] text-[#9F9F9F] font-semibold line-through">
+              {isMonthly ? "US$199" : "US$150.00"}
+            </h2>
+            <h2 className="text-[28px] font-semibold">
+              {isMonthly ? "US$2388.00" : "US$100.00"}
+            </h2>
+            <h2 className="text-[16px] text-[#9F9F9F] font-medium">
+              Per {billingPeriod.toLowerCase()}
+            </h2>
+            <button className="mt-4 text-[#034737] border-[#034737] font-semibold border rounded-[10px] px-10 py-2">
+              Subscribe now
+            </button>
+          </div>
+
+          <div className="flex flex-col  items-center">
+            <h2 className="text-[20px] font-medium mb-2">Enterprise</h2>
+            <h2 className="text-[18px] text-[#9F9F9F] font-semibold line-through">
+              {isMonthly ? "US$199" : "US$150.00"}
+            </h2>
+            <h2 className="text-[28px] font-semibold">
+              {isMonthly ? "US$2388.00" : "US$100.00"}
+            </h2>
+            <h2 className="text-[16px] text-[#9F9F9F] font-medium">
+              Per {billingPeriod.toLowerCase()}
+            </h2>
+            <button className="mt-4 text-[#034737] border-[#034737] font-semibold border rounded-[10px] px-10 py-2">
+              Subscribe now
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {pricingData.map((row, index) => (
+        <PricingRow
+          key={index}
+          description={row.description}
+          value1={row.value1}
+          value2={row.value2}
+          bgColor={row.bgColor}
+          value3={row.value3}
+        />
+      ))}
+    </div>
+  );
+};
+
+export default PricingNew;

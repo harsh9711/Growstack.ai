@@ -67,6 +67,7 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        grayLighter: "#e3e3e3",
       },
       borderRadius: {
         lg: "var(--radius)",

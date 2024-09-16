@@ -15,28 +15,30 @@ import WhyChoose from "@/components/home/whyChoose/WhyChoose";
 import FuturePlans from "@/components/home/futurePlans/FuturePlans";
 import Cta from "@/components/home/cta/Cta";
 import Faqs from "@/components/home/faq/Faqs";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import Facts from "@/components/home/facts/facts";
 // I commented this bootstrapp CDN because of conflicting styles with tailwindcss, NB: I'll uncomment it as soon as reliable solution is found
 
 function Page() {
-  return (
-    <React.Fragment>
-      <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
-      {/* <DragFeatures /> */}
-      <Banner/>
-      <OurProcess />
-      <PoweredBy />
-      <Features />
-      {/* <Marketing/> */}
-      <Premium />
-      <Capability />
-      <WhyChoose />
-      <FuturePlans />
-      <Cta />
-      <Faqs />
-      <Footer />
-    </React.Fragment>
-  );
+    return (
+        <React.Fragment>
+            <Navbar logoUrl='/images/logo.png' logoAlt='Custom Logo' />
+            {/* <DragFeatures /> */}
+            <Banner />
+            <OurProcess />
+            <PoweredBy />
+            <Features />
+            <Facts />
+            {/* <Marketing/> */}
+            <Premium />
+            <Capability />
+            <WhyChoose />
+            <FuturePlans />
+            <Cta />
+            <Faqs />
+            <Footer />
+        </React.Fragment>
+    );
 }
 
 export default Page;
