@@ -2,7 +2,6 @@ import React from "react";
 import Image from "next/image";
 import Navbar from "@/components/navbar/Navbar";
 import HeroSection from "./components/HeroSection";
-import Pricing from "./components/Pricing";
 import MainBox from "./components/MainBox";
 import PricingNew from "./components/PricingNew";
 import Footer from "@/components/footer/Footer";
