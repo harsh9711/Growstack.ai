@@ -48,12 +48,12 @@ const navLinks: NavLink[] = [
     sublinks: [
       {
         icon: <AiPlaygroundIcon />,
-        name: "AI playground",
+        name: "AI  LLM comparison",
         href: "/app/plan/ai-playground",
       },
       {
         icon: <BotIcon />,
-        name: "AI Secured chat",
+        name: "AI secured chat",
         href: "/app/plan/ai-chat",
       },
       {
@@ -71,16 +71,6 @@ const navLinks: NavLink[] = [
         name: "AI custom GPT",
         href: "/app/plan/custom-gpts",
       },
-      {
-        icon: <TextToVideoIcon />,
-        name: "Text to video",
-        href: "/app/plan/text-to-video",
-      },
-      {
-        icon: <ProductAiIcon />,
-        name: "Product AI ",
-        href: "/app/create/product-ai",
-      },
     ],
     title: "Plan",
   },
@@ -92,17 +82,27 @@ const navLinks: NavLink[] = [
       //   name: "AI website builder",
       //   href: "/app/create/website-builder",
       // },
-
-      {
-        icon: <ShapeIcon />,
-        name: "AI workflow builder",
-        href: "/app/create/workflow-builder",
-      },
       {
         icon: <AiArticleIcon />,
-        name: "AI article wizard",
+        name: "AI content wizard",
         href: "/app/create/ai-articles",
       },
+      {
+        icon: <TextToVideoIcon />,
+        name: "Text to avatar",
+        href: "/app/plan/text-to-video",
+      },
+      {
+        icon: <ProductAiIcon />,
+        name: "AI background generator ",
+        href: "/app/create/product-ai",
+      },
+      {
+        icon: <TextToVideoIcon />,
+        name: "Text to video (coming soon)",
+        href: "/account/profile",
+      },
+
       // {
       //   icon: <MailIcon />,
       //   name: "AI email builder",
@@ -110,6 +110,43 @@ const navLinks: NavLink[] = [
       // },
     ],
     title: "Create",
+  },
+  {
+    icon: <PlanIcon />,
+    sublinks: [
+      {
+        icon: <ShapeIcon />,
+        name: "AI workflow builder",
+        href: "/app/create/workflow-builder",
+      },
+
+      {
+        icon: <TridentIcon />,
+        name: "Prospect scraping",
+        href: "/app/engage/web-scraping",
+      },
+      {
+        icon: <UserIcon />,
+        name: "Contact repository",
+        href: "/app/engage/contacts",
+      },
+      {
+        icon: <BotIcon />,
+        name: "MDR agent (coming soon)",
+        href: "/account/profile",
+      },
+      {
+        icon: <BotIcon />,
+        name: "Linkedin agent (coming soon)",
+        href: "/account/profile",
+      },
+      {
+        icon: <BotIcon />,
+        name: "Contact intelligence (coming soon)",
+        href: "/account/profile",
+      },
+    ],
+    title: "Automate",
   },
   {
     icon: <PublishIcon />,
@@ -138,6 +175,7 @@ const navLinks: NavLink[] = [
             name: "Posting Logs",
             href: "/app/publish/scheduler/posting-logs",
           },
+
           // {
           //   icon: <DebugIcon />,
           //   name: "Posting debug logs",
@@ -145,12 +183,23 @@ const navLinks: NavLink[] = [
           // },
         ],
       },
+      {
+        icon: <PresentationAnalyticsIcon />,
+        name: "Content calender (coming soon)",
+        href: "/app/analyse/social-media",
+      },
+      {
+        icon: <PresentationAnalyticsIcon />,
+        name: "Posting logs",
+        href: "/app/analyse/social-media",
+      },
     ],
     title: "Publish",
   },
   {
     icon: <EngageIcon />,
     sublinks: [
+           
       // {
       //   icon: <AutomationIcon />,
       //   name: "WhatsApp and telegram automation with our apps",
@@ -187,21 +236,21 @@ const navLinks: NavLink[] = [
         name: "Social media conversation hub",
         href: "/app/engage/Social-media",
       },
+      {
+        icon: <WhatsappIcon />,
+        name: "WhatsApp automation (coming soon)",
+        href: "/app/engage/automation/whatsapp-automation",
+      },
+      {
+        icon: <TelegramIcon />,
+        name: "Telegram automation (coming soon)",
+        href: "/app/engage/automation/telegram-automation",
+      },
       // {
       //   icon: <DocumentIcon />,
       //   name: "Social advocacy",
       //   href: "/app/engage/social-advocacy",
       // },
-      {
-        icon: <TridentIcon />,
-        name: "Web scraping",
-        href: "/app/engage/web-scraping",
-      },
-      {
-        icon: <UserIcon />,
-        name: "Contact",
-        href: "/app/engage/contacts",
-      },
     ],
     title: "Engage",
   },
@@ -213,16 +262,17 @@ const navLinks: NavLink[] = [
         name: "Social media analytics",
         href: "/app/analyse/social-media",
       },
-      // {
-      //   icon: <ReputationIcon />,
-      //   name: "Reputation mgmt. system",
-      //   href: "/app/analyse/reputation-manager",
-      // },
-      // {
-      //   icon: <AdsAnalyticsIcon />,
-      //   name: "Ads analytics",
-      //   href: "/app/analyse/ads-analytics",
-      // },
+
+      {
+        icon: <ReputationIcon />,
+        name: "Social media AI insights (coming soon)",
+        href: "/app/analyse/reputation-manager",
+      },
+      {
+        icon: <AdsAnalyticsIcon />,
+        name: "Recommendation engine (coming soon)",
+        href: "/app/analyse/ads-analytics",
+      },
       // {
       //   icon: <ReportAnalyticsIcon />,
       //   name: "Email & SMS Analytics",
