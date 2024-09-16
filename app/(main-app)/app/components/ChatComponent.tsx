@@ -14,6 +14,9 @@ import Icon1 from "@/public/svgs/conversation-starter1.svg";
 import Icon2 from "@/public/svgs/conversation-starter2.svg";
 import Icon3 from "@/public/svgs/conversation-starter3.svg";
 import { getCurrentUser } from "@/lib/features/auth/auth.selector";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
+import { planIdsMap } from "@/lib/utils";
 
 type Message = {
   content: string;
@@ -22,6 +25,7 @@ type Message = {
 };
 
 export default function ChatComponent() {
+  const { currentPlan} = useSelector((rootState: RootState) => rootState.auth);
   const [messages, setMessages] = useState<Message[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
   const [selectedModel, setSelectedModel] = useState<string>("gpt-3.5-turbo");
@@ -103,6 +107,10 @@ export default function ChatComponent() {
 
   const currentUser = getCurrentUser();
 
+  const filteredAiModelOptions = currentPlan && planIdsMap.BASIC.some((val) => val ===  currentPlan.plan_id )
+    ? aiModelOptions.filter(option => option.value.startsWith("claude"))
+    : aiModelOptions;
+
   return (
     <div className=" flex flex-col bg-white p-10 pt-8 rounded-3xl border border-[#E8E8E8] h-[930px]" data-aos="fade-up">
     <div className="flex justify-between items-center border-b pb-4" data-aos="fade-left">
@@ -120,7 +128,7 @@ export default function ChatComponent() {
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            {aiModelOptions.map(({ icon, label, value }) => (
+            {filteredAiModelOptions.map(({ icon, label, value }) => (
               <SelectItem key={value} value={value}>
                 <div className={clsx("flex items-center gap-2", selectedModel === value && "text-primary-green font-medium")}>
                   <span className="min-w-fit">{icon}</span>

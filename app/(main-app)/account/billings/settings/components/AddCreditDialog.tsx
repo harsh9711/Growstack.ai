@@ -22,9 +22,9 @@ export default function AddCreditDialog() {
   const [cancelLoading, setCancelLoading] = useState<boolean>(false); // Add state for cancel button loading
   const fetchPlanUsage = async () => {
     try {
-      const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
-      const data: PlanUsage = response.data;
-      setPlanUsage(response.data.data);
+      const response = (await instance.get(`${API_URL}/users/api/v1/plan-usage`)).data;
+      const userCurrentPlan: PlanUsage = response.data;
+      setPlanUsage(userCurrentPlan);
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);

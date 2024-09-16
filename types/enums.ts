@@ -6,3 +6,4 @@ export enum PlanName {
     BASIC = "BASIC",
     ENTERPRISE = "ENTERPRISE"
 }
+
