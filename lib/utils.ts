@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { format, parseISO } from "date-fns";
+import { PlanName } from "@/types/enums";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -22,4 +23,20 @@ export function isMobile() {
 
   const match = window.matchMedia('(pointer: coarse)');
   return match && match.matches;
+}
+
+
+export function getUserFriendlyPlanName(planName: PlanName): string | undefined {
+  const userFriendlyPlanNameMap = new Map<PlanName, string>([
+    [PlanName.CREATOR, 'Creator'],
+    [PlanName.PRO, 'Pro'],
+    [PlanName.ADVANCED_PRO, 'Advanced Pro'],
+    [PlanName.BUSINESS, 'Business'],
+    [PlanName.BASIC, 'Basic'],
+    [PlanName.ENTERPRISE, 'Enterprise'],
+  ]);
+
+  const userFriendlyPlanName = userFriendlyPlanNameMap.get(planName);
+
+  return userFriendlyPlanName;
 }

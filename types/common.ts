@@ -24,6 +24,23 @@ export interface PlanUsage {
     updatedAt: string;
 }
 
+export interface Plan {
+    features: string[];
+    _id: string;
+    plan: string;
+    plan_type: string;
+    plan_id: string;
+    stripe_price_id: string;
+    price: number;
+    text_to_avatar_cost: number;
+    text_to_video_cost: number;
+    ai_background_generator_cost: number;
+    max_yearly_discount: number;
+    createdAt: string;
+    updatedAt: string;
+}
+
+
 
 export type InputType = {
     variable_label: string;
