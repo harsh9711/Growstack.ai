@@ -9,6 +9,7 @@ import InputSection from "./InputSection";
 import OutputSection from "./OutputSection";
 import ActionsSection from "./ActionsSection";
 import ProvidersDrawer from "./ProvidersDrawer";
+import Swal from 'sweetalert2';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -211,49 +212,61 @@ const getWorkFlowDetails = async (id: string | number) => {
 
   const onSelectAction = async (action: any, index: number) => {
     let updatedActions: any[] = [];
-    const payload = {
-      name: action.name,
-      description: action.description,
-      provider: action.provider,
-      subtype: action.subtype,
-      preset_id: action.id,
-      preset_json: {
-        body: action.preset_json.body,
-      },
-      category: action.category,
-      event_execute: action.event_execute,
-    };
-    try {
-      const response = await postAction(payload, index);
-      toast.success("Action added successfully");
-      const newAction = {
-        ...response.data.data.newAction,
-        index: index - 1,
-        preset_json: action.preset_json,
-        icon: action.icon,
-      };
-
-      if (index === 1) {
-        updatedActions = [newAction, ...actions];
-      } else {
-        updatedActions = [
-          ...actions.slice(0, index - 1),
-          newAction,
-          ...actions.slice(index - 1),
-        ];
+    if (['googlesheet', 'slack'].includes(action.name)) {
+      try {
+        await authenticateUser(action.name);
+      } catch (error) {
+        console.error('Authentication failed:', error);
       }
-
-      setActions(updatedActions);
-      setActiveAction({
-        ...action,
-        action_id: newAction.action_id,
-        index: index - 1,
-      });
-    } catch (error) {
-      console.log(error);
-      toast.error("Failed to add action");
+    }else{
+      const payload = {
+        name: action.name,
+        description: action.description,
+        provider: action.provider,
+        subtype: action.subtype,
+        preset_id: action.id,
+        preset_json: {
+          body: action.preset_json.body,
+        },
+        category: action.category,
+        event_execute: action.event_execute,
+      };
+    
+      try {
+        const response = await postAction(payload, index);
+        toast.success("Action added successfully");
+    
+        const newAction = {
+          ...response.data.data.newAction,
+          index: index - 1,
+          preset_json: action.preset_json,
+          icon: action.icon,
+        };
+        if (index === 1) {
+          updatedActions = [newAction, ...actions];
+        } else {
+          updatedActions = [
+            ...actions.slice(0, index - 1),
+            newAction,
+            ...actions.slice(index - 1),
+          ];
+        }
+        setActions(updatedActions);
+        setActiveAction({
+          ...action,
+          action_id: newAction.action_id,
+          index: index - 1,
+        });
+      } catch (error) {
+        console.log(error);
+        toast.error("Failed to add action");
+      }
     }
+    
+   
   };
+  
+  
   const handleSaveAction = (changedFields: any) => {
     setIsAPICalling(true);
    const updatedAction = { ...activeAction, preset_json: { ...activeAction.preset_json, body: { ...activeAction.preset_json.body, ...changedFields } } };
@@ -303,21 +316,37 @@ const getWorkFlowDetails = async (id: string | number) => {
     }
   };
 
-  const authenticateUser = async (integrationType:string) => {
+  const authenticateUser = async (integrationType: string) => {
     try {
-      const response = await instance.post(`${API_URL}/users/api/v1/connectors/connect`,{});
+      const response = await instance.post(`${API_URL}/users/api/v1/connectors/connect`, {});
       const token = response.data.data.token;
-
+  
       await paragon.authenticate('2dc0dcd7-005c-4c8e-a04a-3dfa9c69352e', token);
-
-      console.log("paragon.getIntegrationMetadata",paragon.getIntegrationMetadata());
-      const user = {...paragon.getUser()}
-      console.log("paragon.getUser()",user.authenticated?user.integrations[integrationType]?.enabled:"disable");
-      console.log("user*****",user);
-      if(user.authenticated && !user.integrations[integrationType]?.enabled){
-        paragon.connect(integrationType,{})
+  
+      console.log("paragon.getIntegrationMetadata", paragon.getIntegrationMetadata());
+      const user = { ...paragon.getUser() };
+      console.log("paragon.getUser()", user.authenticated ? user.integrations[integrationType]?.enabled : "disable");
+      
+      if (user.authenticated && !user.integrations[integrationType]?.enabled) {
+        const result = await Swal.fire({
+          title: 'Integration not enabled',
+          text: `Would you like to enable this ${integrationType} integration? `,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No'
+        });
+  
+        if (result.isConfirmed) {
+          await paragon.connect(integrationType, {});
+          console.log('Integration enabled successfully');
+        } else {
+          console.log('No action taken');
+        }
+      } else {
+        console.log('Integration is already enabled or user is not authenticated');
+        return true
       }
-      console.log('User authenticated successfully');
     } catch (error) {
       console.error('Error during authentication:', error);
     }

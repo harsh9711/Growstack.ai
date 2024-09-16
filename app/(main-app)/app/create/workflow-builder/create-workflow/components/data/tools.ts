@@ -6305,7 +6305,7 @@ export const tools: Tool[] = [
     {
     id: 130,
     description: "Send a message on slack",
-    name: "Slack Message",
+    name: "slack",
     category: "Integrations",
     icon: "/slack-new-logo.svg",
     provider: "Slack",
@@ -6334,9 +6334,57 @@ export const tools: Tool[] = [
   {
     id: 131,
     description: "Google Sheet Discription",
-    name: "Google Sheet",
+    name: "googlesheets",
     category: "Integrations",
     icon: "/google-sheets-icon.svg",
+    provider: "Paragon",
+    subtype: "api",
+    socialMediaRequirement: true,
+    preset_json: {
+      body: [
+        {
+          variable_type: "TEXT_AREA",
+          variable_label: "post",
+          variable_value: "",
+          variable_values: "",
+          "input_placeholder": "write your post content here"
+        },
+        {
+          variable_type: "TEXT_AREA",
+          variable_label: "mediaUrl",
+          variable_value: "",
+          variable_values: "",
+          "input_placeholder": "please provide media url"
+        },
+        {
+          variable_type: "BOOLEAN",
+          variable_label: "isVideo",
+          variable_value: "",
+          variable_values: "",
+        },
+        {
+          variable_type: "CHECKBOX",
+          variable_label: "platforms",
+          variable_value: "",
+          variable_values: [""],
+        },
+        {
+          variable_type: "TIME",
+          variable_label: "schedule",
+          variable_value: "",
+          variable_values: "",
+        },
+      ],
+    },
+    event_execute: "postOnSocialMedia",
+    role: ""
+  },
+  {
+    id: 132,
+    description: "LinkedIn Discription",
+    name: "LinkedIn",
+    category: "Integrations",
+    icon: "/icons8-linkedin.svg",
     provider: "Paragon",
     subtype: "api",
     socialMediaRequirement: true,
