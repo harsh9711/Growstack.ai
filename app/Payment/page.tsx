@@ -26,8 +26,13 @@ const PlanCard = ({
   selectedTabIndex: number;
 }) => {
   const [loading, setLoading] = useState(false);
+  const isLoggedIn = !!getCookie("token");
 
   const handleButtonClick = async () => {
+    if (!isLoggedIn) {
+    toast.error("Please log in to select a plan");
+    return;
+  }
     setLoading(true);
     try {
       const product = {
@@ -307,8 +312,6 @@ const PricingPage: React.FC = () => {
       return priceA - priceB;
     });
 
-  console.log(filteredPlans)
-
 
   const handleTabClick = (index: number) => {
     const params = new URLSearchParams(window.location.search);
@@ -357,7 +360,7 @@ const PricingPage: React.FC = () => {
               </p>
             </div>
             {
-              isLoggedIn && (
+              isLoggedIn ? (
                 <div
                   className="border-[#034737] text-[#034737] w-full flex justify-end"
                   data-aos="fade-left"
@@ -365,6 +368,17 @@ const PricingPage: React.FC = () => {
                   <Link href="/">
                     <button className="border-[#034737]  border rounded-xl font-semibold text-[#034737] px-10 py-4 ">
                       Sign out
+                    </button>
+                  </Link>
+                </div>
+              ) : (
+                  <div
+                  className="border-[#034737] text-[#034737] w-full flex justify-end"
+                  data-aos="fade-left"
+                >
+                  <Link href="/auth/register">
+                    <button className="border-[#034737]  border rounded-xl font-semibold text-[#034737] px-10 py-4 ">
+                      Register
                     </button>
                   </Link>
                 </div>
