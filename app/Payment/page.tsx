@@ -241,6 +241,7 @@ const PricingPage: React.FC = () => {
         }
         console.error("Error fetching plans:", error);
       } finally {
+        setIsLoading(false)
       }
     };
     fetchPlans();
