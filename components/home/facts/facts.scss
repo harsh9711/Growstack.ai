@@ -4,7 +4,7 @@
     padding: 60px 0;
 
     @media (max-width: $breakpoint_tablet) {
-        padding: 70px 0 0;
+        padding: 60px 0;
     }
 
     @media (max-width: $breakpoint_mobile_portrait) {
@@ -76,6 +76,18 @@
             font-size: 18px;
             text-align: center;
             text-wrap: nowrap
+        }
+
+        @media (max-width: $breakpoint_mobile_portrait) {
+            h3 {
+                font-weight: 600;
+                font-size: 40px;
+            }
+
+            span {
+                font-size: 14px;
+                text-wrap: pretty;
+            }
         }
 
         &:hover {

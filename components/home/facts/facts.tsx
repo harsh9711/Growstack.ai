@@ -33,7 +33,7 @@ function Facts() {
                         </div>
 
                         <div className='col-md-6' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div className="grid grid-cols-2 gap-4">
                                 <div className="stats">
                                     <h3>600+</h3>
                                     <span>Hours of development</span>
