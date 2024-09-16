@@ -6302,4 +6302,81 @@ export const tools: Tool[] = [
     event_execute: "postOnSocialMedia",
     role: ""
   },
+    {
+    id: 130,
+    description: "Send a message on slack",
+    name: "Slack Message",
+    category: "Integrations",
+    icon: "/slack-new-logo.svg",
+    provider: "Slack",
+    subtype: "api",
+    socialMediaRequirement: false,
+    preset_json: {
+      body: [
+        {
+          variable_type: "SHORT_TEXT_AREA",
+          variable_label: "channel_id",
+          variable_value: "C0709BM497Z",
+          variable_values: "",
+        },
+        {
+          variable_type: "TEXT_AREA",
+          variable_label: "message",
+          variable_value: "Hello World",
+          variable_values: "",
+        },
+
+      ],
+    },
+    event_execute: "processSlackMessage",
+    role: "",
+  },
+  {
+    id: 131,
+    description: "Google Sheet Discription",
+    name: "Google Sheet",
+    category: "Integrations",
+    icon: "/google-sheets-icon.svg",
+    provider: "Paragon",
+    subtype: "api",
+    socialMediaRequirement: true,
+    preset_json: {
+      body: [
+        {
+          variable_type: "TEXT_AREA",
+          variable_label: "post",
+          variable_value: "",
+          variable_values: "",
+          "input_placeholder": "write your post content here"
+        },
+        {
+          variable_type: "TEXT_AREA",
+          variable_label: "mediaUrl",
+          variable_value: "",
+          variable_values: "",
+          "input_placeholder": "please provide media url"
+        },
+        {
+          variable_type: "BOOLEAN",
+          variable_label: "isVideo",
+          variable_value: "",
+          variable_values: "",
+        },
+        {
+          variable_type: "CHECKBOX",
+          variable_label: "platforms",
+          variable_value: "",
+          variable_values: [""],
+        },
+        {
+          variable_type: "TIME",
+          variable_label: "schedule",
+          variable_value: "",
+          variable_values: "",
+        },
+      ],
+    },
+    event_execute: "postOnSocialMedia",
+    role: ""
+  },
 ];

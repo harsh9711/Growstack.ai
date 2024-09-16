@@ -20,6 +20,7 @@ import { API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
 import { tools } from "./data/tools";
 import { InputType } from "@/types/common";
+import { paragon } from '@useparagon/connect';
 
 export default function WorkFlowBuilderComponent() {
   const [activeTag, setActiveTag] = useState<"Input" | "Output" | "Actions">(
@@ -299,6 +300,26 @@ const getWorkFlowDetails = async (id: string | number) => {
             workflowId={workflowId}
             />
         );
+    }
+  };
+
+  const authenticateUser = async (integrationType:string) => {
+    try {
+      const response = await instance.post(`${API_URL}/users/api/v1/connectors/connect`,{});
+      const token = response.data.data.token;
+
+      await paragon.authenticate('2dc0dcd7-005c-4c8e-a04a-3dfa9c69352e', token);
+
+      console.log("paragon.getIntegrationMetadata",paragon.getIntegrationMetadata());
+      const user = {...paragon.getUser()}
+      console.log("paragon.getUser()",user.authenticated?user.integrations[integrationType]?.enabled:"disable");
+      console.log("user*****",user);
+      if(user.authenticated && !user.integrations[integrationType]?.enabled){
+        paragon.connect(integrationType,{})
+      }
+      console.log('User authenticated successfully');
+    } catch (error) {
+      console.error('Error during authentication:', error);
     }
   };
 
