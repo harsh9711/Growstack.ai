@@ -48,7 +48,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       pathname !== "/Payment" &&
       !isSubscribed
     ) {
-      toast.error("You need a subscription to view this page!");
+      console.log("You need a subscription to view this page!");
+      // toast.error("You need a subscription to view this page!");
       router.push("/Payment");
     } else if (isLoggedIn && isSubscribed && pathname === "/auth/login") {
       router.push("/app");
