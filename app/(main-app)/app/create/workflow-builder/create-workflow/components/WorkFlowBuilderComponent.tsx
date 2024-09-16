@@ -1,6 +1,5 @@
 "use client";
 
-// components/WorkFlowBuilderComponent.tsx
 import { InputIcon2, OutputIcon2 } from "@/components/svgs";
 import clsx from "clsx";
 import { BlocksIcon, MoreVertical, Plus } from "lucide-react";
@@ -212,7 +211,7 @@ const getWorkFlowDetails = async (id: string | number) => {
 
   const onSelectAction = async (action: any, index: number) => {
     let updatedActions: any[] = [];
-    if (['googlesheet', 'slack'].includes(action.name)) {
+    if (['googlesheet', 'slack','linkedin'].includes(action.name)) {
       try {
         await authenticateUser(action.name);
       } catch (error) {
@@ -321,7 +320,7 @@ const getWorkFlowDetails = async (id: string | number) => {
       const response = await instance.post(`${API_URL}/users/api/v1/connectors/connect`, {});
       const token = response.data.data.token;
   
-      await paragon.authenticate('2dc0dcd7-005c-4c8e-a04a-3dfa9c69352e', token);
+      await paragon.authenticate(process.env.NEXT_PUBLIC_PARAGON_PROJECT_ID, token);
   
       console.log("paragon.getIntegrationMetadata", paragon.getIntegrationMetadata());
       const user = { ...paragon.getUser() };

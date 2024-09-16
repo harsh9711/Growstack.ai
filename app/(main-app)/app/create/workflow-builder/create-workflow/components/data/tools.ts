@@ -6382,7 +6382,7 @@ export const tools: Tool[] = [
   {
     id: 132,
     description: "LinkedIn Discription",
-    name: "LinkedIn",
+    name: "linkedin",
     category: "Integrations",
     icon: "/icons8-linkedin.svg",
     provider: "Paragon",
