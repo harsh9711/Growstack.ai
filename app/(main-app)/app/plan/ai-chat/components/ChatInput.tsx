@@ -37,6 +37,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { startRecognition, stopRecognition, textToSpeech } = useSpeechRecognition(
     selectedLanguage,
+    open,
     (transcript: string) => {
       setInput(transcript);
       handleSend(transcript, true);
