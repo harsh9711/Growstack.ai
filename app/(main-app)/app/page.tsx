@@ -191,7 +191,7 @@ export default function Dashboard() {
             <ChatComponent />
           </div>
           <div
-            className="w-full lg:max-w-[40%] bg-white p-8 rounded-3xl border border-[#E8E8E8] h-[930px]"
+            className="w-full lg:max-w-[40%] bg-white p-8 rounded-3xl border border-[#E8E8E8] h-[780px]"
             data-aos="fade-right"
           >
             <div className="space-y-3">

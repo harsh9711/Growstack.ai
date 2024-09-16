@@ -104,7 +104,7 @@ export default function ChatComponent() {
   const currentUser = getCurrentUser();
 
   return (
-    <div className=" flex flex-col bg-white p-10 pt-8 rounded-3xl border border-[#E8E8E8] h-[930px]" data-aos="fade-up">
+    <div className=" flex flex-col bg-white p-10 pt-8 rounded-3xl border border-[#E8E8E8] h-[780px]" data-aos="fade-up">
     <div className="flex justify-between items-center border-b pb-4" data-aos="fade-left">
       <h1 className="text-xl font-semibold">AI Chat</h1>
       <Select value={selectedModel} onValueChange={setSelectedModel}>
