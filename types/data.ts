@@ -195,7 +195,6 @@ export const companyemployees = [
     role: "Assistant Backend ",
     imageUrlbox: "/company/1.1.svg",
   },
- 
 ];
 export const team = [
   {
@@ -227,6 +226,107 @@ export const team = [
     role: "MBA, GDC, Ireland",
     Url: "https://www.linkedin.com/in/krishna-anudeep-41128b10b/",
   },
-  
- 
+];
+export const solutions = [
+  {
+    id: 1,
+    imageUrl: "/solutionsicon/img1.svg",
+    name: "For large enterprises",
+    role: "   Streamline operation's with advance AI solutions",
+    bgcolor: "#034737",
+    textcolor: "#FFFFFF",
+  },
+  {
+    id: 2,
+    imageUrl: "/solutionsicon/img2.svg",
+    name: "Mid-market",
+    role: "Conquer resources constraints with AI tools",
+    bgcolor: "#13745D",
+    textcolor: "#FFFFFF",
+  },
+
+  {
+    id: 3,
+    imageUrl: "/solutionsicon/img3.svg",
+    name: "For small businesses",
+    role: "Maximize efficiency with all-in-one AI  marketing",
+    bgcolor: "#A4E2CC",
+    textcolor: "#034737",
+  },
+  {
+    id: 4,
+    imageUrl: "/solutionsicon/img4.svg",
+    name: "For startups",
+    role: "Maximize efficiency with all-in-one AI  marketing",
+    bgcolor: "#FFFFFF",
+    textcolor: "#034737",
+  },
+];
+export const solutionsteams = [
+  {
+    id: 1,
+    imageUrl: "/solutionsicon/img5.svg",
+    name: "Marketing",
+    role: "   Transform your marketing strategy with GrowStack",
+    bgcolor: "#034737",
+    textcolor: "#FFFFFF",
+  },
+  {
+    id: 2,
+    imageUrl: "/solutionsicon/img6.svg",
+    name: "Sales",
+    role: "Transform your sales process with Growstack",
+    bgcolor: "#0E5E4B",
+    textcolor: "#FFFFFF",
+  },
+
+  {
+    id: 3,
+    imageUrl: "/solutionsicon/img7.svg",
+    name: "RevOps",
+    role: "Optimize your revenue strategy with  Growstack",
+    bgcolor: "#13745D",
+    textcolor: "#FFFFFF",
+  },
+  {
+    id: 4,
+    imageUrl: "/solutionsicon/img8.svg",
+    name: "Customer service",
+    role: "Elevate customer service with advanced AI solutions",
+    bgcolor: "#55917E",
+    textcolor: "#FFFFFF",
+  },
+
+  {
+    id: 5,
+    imageUrl: "/solutionsicon/img9.svg",
+    name: "Finance",
+    role: "Transform finance operations with AI-Powered solutions",
+    bgcolor: "#7CB8A4",
+    textcolor: "#034737",
+  },
+  {
+    id: 6,
+    imageUrl: "/solutionsicon/img10.svg",
+    name: "Business operations",
+    role: "Streamline your business operations with Growstack",
+    bgcolor: "#A4E2CC",
+    textcolor: "#034737",
+  },
+  {
+    id: 7,
+    imageUrl: "/solutionsicon/img11.svg",
+    name: "Customer service",
+    role: "Elevate customer service with advanced AI solutions",
+    bgcolor: "#D2F1E6",
+    textcolor: "#FFFFFF",
+  },
+  {
+    id: 8,
+    imageUrl: "/solutionsicon/img13.svg",
+    name: "Supply chain",
+    role: "Revolutionize Your Supply Chain Operations with Growstack",
+    bgcolor: "#FFFFFF",
+    textcolor: "#034737",
+  },
 ];

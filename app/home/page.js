@@ -16,8 +16,8 @@ import FuturePlans from "@/components/home/futurePlans/FuturePlans";
 import Cta from "@/components/home/cta/Cta";
 import Faqs from "@/components/home/faq/Faqs";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Facts from "@/components/home/facts/facts";
-// I commented this bootstrapp CDN because of conflicting styles with tailwindcss, NB: I'll uncomment it as soon as reliable solution is found
+import Facts from "/components/home/facts/facts";
+import Carousel from "../carousel/page";
 
 function Page() {
     return (
@@ -29,6 +29,7 @@ function Page() {
             <PoweredBy />
             <Features />
             <Facts />
+            <Carousel/>
             {/* <Marketing/> */}
             <Premium />
             <Capability />
