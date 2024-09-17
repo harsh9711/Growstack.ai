@@ -6397,7 +6397,7 @@ export const tools: Tool[] = [
   {
     id: 134,
     description: "Create Google document",
-    name: "Creat Google Doc",
+    name: "Create Google Doc",
     thirdparty: "googledocs",
     category: "Integrations",
     icon: "/google-docs.svg",
