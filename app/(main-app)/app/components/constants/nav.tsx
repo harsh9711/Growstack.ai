@@ -77,6 +77,11 @@ const navLinks: NavLink[] = [
         href: "/app/plan/ai-templates",
       },
       {
+        icon: <TextToVideoIcon />,
+        name: "Text to avatar",
+        href: "/app/plan/text-to-video",
+      },
+      {
         icon: <AiAssistantIcon />,
         name: "AI assistant",
         href: "/app/plan/ai-assistant",
@@ -104,11 +109,6 @@ const navLinks: NavLink[] = [
         ,
         name: "AI content wizard",
         href: "/app/create/ai-articles",
-      },
-      {
-        icon: <TextToVideoIcon />,
-        name: "Text to avatar",
-        href: "/app/plan/text-to-video",
       },
       {
         icon: <ProductAiIcon />,
@@ -158,36 +158,22 @@ const navLinks: NavLink[] = [
         name: "Settings",
         href: "/app/publish/scheduler/settings",
       },
-      {
-        icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11.795 21H5C3.89543 21 3 20.1046 3 19V7C3 5.89543 3.89543 5 5 5H17C18.1046 5 19 5.89543 19 7V11" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M15 3V7" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M7 3V7" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M3 11H19" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M9.5 16.5L10.4675 17.6284L13.1642 14.8687" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M10.205 21H17C18.1046 21 19 20.1046 19 19V7C19 5.89543 18.1046 5 17 5H5C3.89543 5 3 5.89543 3 7V11" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-        ,
-        name: "Content calender (coming soon)",
-        href: "/app/analyse/social-media",
-      },
-      {
-        icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10.625 7.5C10.625 7.15482 10.3452 6.875 10 6.875C9.65482 6.875 9.375 7.15482 9.375 7.5V15C9.375 15.3452 9.65482 15.625 10 15.625C10.3452 15.625 10.625 15.3452 10.625 15V7.5Z" fill="#14171B" />
-          <path d="M14.1312 19.375H5.86928C4.33553 19.375 3.03928 18.2769 2.78678 16.7638L1.11866 6.76438C0.967407 5.85625 1.22178 4.9325 1.81678 4.23C2.41178 3.5275 3.28053 3.125 4.20053 3.125H15.7987C16.7193 3.125 17.588 3.52813 18.183 4.23063C18.778 4.93313 19.0318 5.85688 18.8805 6.76438L17.213 16.7644C16.9605 18.2775 15.6637 19.3756 14.1305 19.3756L14.1312 19.375ZM4.20116 4.375C3.64866 4.375 3.12741 4.61688 2.77116 5.03813C2.41428 5.45938 2.26116 6.01438 2.35178 6.55875L4.01991 16.5588C4.17116 17.4663 4.94866 18.125 5.86928 18.125H14.1312C15.0512 18.125 15.8287 17.4663 15.9805 16.5581L17.648 6.55813C17.7393 6.01313 17.5862 5.45938 17.2293 5.03813C16.873 4.61625 16.3512 4.37438 15.7987 4.37438L4.20116 4.375Z" fill="#14171B" />
-          <path d="M16.875 4.375H3.125V3.125C3.125 1.74625 4.24625 0.625 5.625 0.625H14.375C15.7537 0.625 16.875 1.74625 16.875 3.125V4.375ZM4.375 3.125H15.625C15.625 2.43562 15.0644 1.875 14.375 1.875H5.625C4.93562 1.875 4.375 2.43562 4.375 3.125Z" fill="#14171B" />
-          <path d="M13.75 10.625H6.25C5.90482 10.625 5.625 10.9048 5.625 11.25C5.625 11.5952 5.90482 11.875 6.25 11.875H13.75C14.0952 11.875 14.375 11.5952 14.375 11.25C14.375 10.9048 14.0952 10.625 13.75 10.625Z" fill="#14171B" />
-        </svg>
-        ,
-        name: "Posting logs",
-        href: "/app/analyse/social-media",
-      },
     ],
     title: "Publish",
   },
   {
     icon: <EngageIcon />,
     sublinks: [
+      {
+        icon: <UserIcon />,
+        name: "Contact repository",
+        href: "/app/engage/contacts",
+      },
+      {
+        icon: <TridentIcon />,
+        name: "Prospect scraping",
+        href: "/app/engage/web-scraping",
+      },
       // {
       //   icon: <AutomationIcon />,
       //   name: "WhatsApp and telegram automation with our apps",
@@ -239,6 +225,7 @@ const navLinks: NavLink[] = [
       //   name: "Social advocacy",
       //   href: "/app/engage/social-advocacy",
       // },
+
     ],
     title: "Engage",
   },
@@ -261,6 +248,30 @@ const navLinks: NavLink[] = [
         name: "Recommendation engine (coming soon)",
         href: "/app/analyse/ads-analytics",
       },
+      {
+        icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11.795 21H5C3.89543 21 3 20.1046 3 19V7C3 5.89543 3.89543 5 5 5H17C18.1046 5 19 5.89543 19 7V11" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M15 3V7" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M7 3V7" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M3 11H19" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M9.5 16.5L10.4675 17.6284L13.1642 14.8687" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M10.205 21H17C18.1046 21 19 20.1046 19 19V7C19 5.89543 18.1046 5 17 5H5C3.89543 5 3 5.89543 3 7V11" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        ,
+        name: "Content calender (coming soon)",
+        href: "/app/analyse/social-media",
+      },
+      {
+        icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10.625 7.5C10.625 7.15482 10.3452 6.875 10 6.875C9.65482 6.875 9.375 7.15482 9.375 7.5V15C9.375 15.3452 9.65482 15.625 10 15.625C10.3452 15.625 10.625 15.3452 10.625 15V7.5Z" fill="#14171B" />
+          <path d="M14.1312 19.375H5.86928C4.33553 19.375 3.03928 18.2769 2.78678 16.7638L1.11866 6.76438C0.967407 5.85625 1.22178 4.9325 1.81678 4.23C2.41178 3.5275 3.28053 3.125 4.20053 3.125H15.7987C16.7193 3.125 17.588 3.52813 18.183 4.23063C18.778 4.93313 19.0318 5.85688 18.8805 6.76438L17.213 16.7644C16.9605 18.2775 15.6637 19.3756 14.1305 19.3756L14.1312 19.375ZM4.20116 4.375C3.64866 4.375 3.12741 4.61688 2.77116 5.03813C2.41428 5.45938 2.26116 6.01438 2.35178 6.55875L4.01991 16.5588C4.17116 17.4663 4.94866 18.125 5.86928 18.125H14.1312C15.0512 18.125 15.8287 17.4663 15.9805 16.5581L17.648 6.55813C17.7393 6.01313 17.5862 5.45938 17.2293 5.03813C16.873 4.61625 16.3512 4.37438 15.7987 4.37438L4.20116 4.375Z" fill="#14171B" />
+          <path d="M16.875 4.375H3.125V3.125C3.125 1.74625 4.24625 0.625 5.625 0.625H14.375C15.7537 0.625 16.875 1.74625 16.875 3.125V4.375ZM4.375 3.125H15.625C15.625 2.43562 15.0644 1.875 14.375 1.875H5.625C4.93562 1.875 4.375 2.43562 4.375 3.125Z" fill="#14171B" />
+          <path d="M13.75 10.625H6.25C5.90482 10.625 5.625 10.9048 5.625 11.25C5.625 11.5952 5.90482 11.875 6.25 11.875H13.75C14.0952 11.875 14.375 11.5952 14.375 11.25C14.375 10.9048 14.0952 10.625 13.75 10.625Z" fill="#14171B" />
+        </svg>
+        ,
+        name: "Posting logs",
+        href: "/app/analyse/social-media",
+      },
       // {
       //   icon: <ReportAnalyticsIcon />,
       //   name: "Email & SMS Analytics",
@@ -278,16 +289,6 @@ const navLinks: NavLink[] = [
         href: "/app/create/workflow-builder",
       },
 
-      {
-        icon: <TridentIcon />,
-        name: "Prospect scraping",
-        href: "/app/engage/web-scraping",
-      },
-      {
-        icon: <UserIcon />,
-        name: "Contact repository",
-        href: "/app/engage/contacts",
-      },
       {
         icon: (
           <svg
