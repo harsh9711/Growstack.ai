@@ -105,3 +105,12 @@ export interface UserPlan {
   updatedAt: string;
   __v: number;
 }
+
+
+export interface ChatResponse {
+  response: string;
+  conversation_id: string;
+  response_type: 'TEXT' | 'IMAGE' | 'VIDEO';
+  noOfMessagesLeft?: number;
+  totalNoOfMessages?: number;
+}
