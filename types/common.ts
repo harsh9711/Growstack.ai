@@ -77,6 +77,21 @@ export interface Usage {
   mdr_agent: boolean;
 }
 
+interface ExceptRoute {
+  ancestorRoute: string;
+  exceptPath: string[];
+}
+
+interface Route {
+  path: string;
+  partialMatch: boolean;
+  excepts?: ExceptRoute[];
+}
+
+export interface FeatureRouteMap {
+  [key: string]: Route[];
+}
+
 export interface UserPlan {
   _id: string;
   plan_id: string;
