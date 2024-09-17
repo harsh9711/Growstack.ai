@@ -1,5 +1,5 @@
 "use client";
-import React, {useState } from "react";
+import React, { useState } from "react";
 import "aos/dist/aos.css";
 import instance from "@/config/axios.config";
 import { Feature } from "@/types/Box";
@@ -11,6 +11,7 @@ import { getUserFriendlyPlanName } from "@/lib/utils";
 import { getCookie } from "cookies-next";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
+import Link from "next/link";
 
 const PlanCard = ({
     plan,
@@ -114,12 +115,19 @@ const PlanCard = ({
             </div>
             <div className="flex items-center justify-center w-full mt-auto px-3">
                 {isCurrentPlan ? (
-                    <button
-                        className="bg-gray-300 text-gray-500 cursor-not-allowed rounded-xl py-4 max-w-[405px] w-full"
-                        disabled
-                    >
-                        Current Plan
-                    </button>
+                    <div className="flex gap-2 flex-col w-full">
+                        <button
+                            className="bg-gray-300 text-gray-500 cursor-not-allowed rounded-xl py-4 max-w-[405px] w-full"
+                            disabled
+                        >
+                            Current Plan
+                        </button>
+                        <Link
+                            className={` ${plan.buttonStyle}  text-center  group-hover:bg-[#034737] items-center justify-center mx-auto border-[#034737] rounded-xl py-4 max-w-[405px] w-full transition-all duration-300 hover:bg-[#034737] hover:text-white`}
+                            href="/app" >
+                            Go to Dashboard
+                        </Link>
+                    </div>
                 ) : (
                     <button
                         className={` ${plan.buttonStyle} group-hover:bg-[#034737] items-center justify-center mx-auto border-[#034737] rounded-xl py-4 max-w-[405px] w-full transition-all duration-300 hover:bg-[#034737] hover:text-white`}

@@ -13,7 +13,7 @@ import { setPlanLoading, setUserPlan } from "@/lib/features/auth/auth.slice";
 import GlobalModal from "@/components/modal/global.modal";
 import Link from "next/link";
 import Lock from "@/components/svgs/lock";
-import { hasAccessToRoute } from "@/lib/utils";
+import { hasAccessToRoute, planIdsMap } from "@/lib/utils";
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const isLoggedIn = !!getCookie("token");
@@ -45,21 +45,30 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+
   useEffect(() => {
-    if (pathname !== "/auth/redirect" && !isLoggedIn) {
+    if (!isLoggedIn) {
       router.push("/auth/login");
-    } else if (
+      return;
+    }
+
+    if (!currentPlan) {
+      return;
+    }
+
+
+    if (
       pathname !== "/auth/redirect" &&
       pathname !== "/Payment" &&
-      !isSubscribed
+      (!isSubscribed && !planIdsMap.BASIC.some((val) => val === currentPlan.plan_id))
     ) {
       console.log("You need a subscription to view this page!");
-      // toast.error("You need a subscription to view this page!");
       router.push("/Payment");
-    } else if (isLoggedIn && isSubscribed && pathname === "/auth/login") {
+    } else if (isLoggedIn && pathname === "/auth/login") {
       router.push("/app");
     }
-  }, [isLoggedIn, isSubscribed, pathname, router]);
+  }, [isLoggedIn, isSubscribed, pathname, router, currentPlan]);
+
 
   useEffect(() => {
     if (isLoggedIn && currentPlan) {
@@ -78,7 +87,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [isLoggedIn]);
 
-  if (isCurrentPlanFetching || !isLoggedIn || !isSubscribed) {
+  if (isCurrentPlanFetching || !isLoggedIn) {
     return <Spinner />;
   }
 

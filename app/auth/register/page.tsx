@@ -15,7 +15,7 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { login } from "@/lib/features/auth/auth.slice";
-import { isEmptyObject } from "@/lib/utils";
+import { isEmptyObject, planIdsMap } from "@/lib/utils";
 import { setCookie } from "cookies-next";
 
 export default function Register() {
@@ -84,9 +84,12 @@ export default function Register() {
 
       const planUsageData = response.data.data.plan_usage;
       const currentDate = new Date();
+      const currentPlanId = response.data.data.plan_id;
       const expiryDate = new Date(planUsageData?.usage_expiry_date);
 
-      if (isEmptyObject(planUsageData) || expiryDate <= currentDate) {
+      const isBasicPlan = planIdsMap.BASIC.some((val) => val === currentPlanId);
+
+      if (isEmptyObject(planUsageData) || expiryDate <= currentDate || isBasicPlan) {
         router.push("/Payment");
       } else {
         toast.success("Authorized: Trial is active");
