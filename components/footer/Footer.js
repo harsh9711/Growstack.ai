@@ -77,13 +77,13 @@ function Footer() {
                                 <ul>
                                     <li>{/* <Link href="/auth/register">Support</Link> */}</li>
                                     <li>
-                                        <Link href='/Tnc'>Terms & Condition</Link>
+                                        <Link href='/terms-of-service'>Terms of Service</Link>
                                     </li>
                                     <li>
-                                        <Link href='/Tos'>Privacy Policy</Link>
+                                        <Link href='/privacy-policy'>Privacy Policy</Link>
                                     </li>
                                     <li>
-                                        <Link href='/Rrp'>Refund & return policy</Link>
+                                        <Link href='/return-policy'>Refund & return policy</Link>
                                     </li>
                                     <li>{/* <Link href="/auth/register">Community</Link> */}</li>
                                 </ul>
