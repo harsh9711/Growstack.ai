@@ -9,7 +9,7 @@ export default function MyVideos() {
       <main className="">
         <div className="flex justify-between items-center mt-8">
           <div className="space-y-2 w-full">
-            <h1 className="text-2xl font-semibold">Text to video</h1>
+            <h1 className="text-2xl font-semibold">Text to avatar</h1>
             <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">My videos</p>
           </div>
           <div className="w-full flex justify-end gap-2">
