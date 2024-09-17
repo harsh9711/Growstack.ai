@@ -9,6 +9,7 @@ import Image from "next/image";
 
 const Carousel = () => {
   const [hoveredIndex, setHoveredIndex] = useState<null | number>(null);
+  const [hovered2Index, setHovered2Index] = useState<null | number>(null);
 
   useEffect(() => {
     AOS.init({ duration: 1000 });
@@ -17,7 +18,7 @@ const Carousel = () => {
   return (
     <div className="bg-[#F4F6F6] rounded-[60px]">
       {/* Header and Solution Title */}
-      <div className="w-full bg-[#F4F6F6] rounded-[60px] py-10 gap-y-4 flex flex-col items-center justify-center mx-auto">
+      <div className="w-full bg-[#F4F6F6] rounded-[60px] py-20 gap-y-4 flex flex-col items-center justify-center mx-auto">
         <div className="flex flex-col gap-y-6 items-center justify-center mx-auto">
           <div className="bg-[#0347371A] text-[#034737] py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest font-semibold uppercase max-w-[123px]">
             SOLUTIONS
@@ -88,7 +89,7 @@ const Carousel = () => {
             >
               <h2
                 style={{ color: item.textcolor }}
-                className="text-[24px]  text-[${item.textcolor}]  font-semibold"
+                className="text-[22px]  whitespace-nowrap text-[${item.textcolor}]  font-semibold"
               >
                 {item.name}
               </h2>
@@ -105,29 +106,32 @@ const Carousel = () => {
         ))}
       </div>
 
-      {/* Teams Section */}
-      <div className="flex items-center space-x-10 text-[28px] px-20 font-bold">
+      <div className="flex items-center mt-10 space-x-10 text-[28px] px-20 font-bold">
         <div className="flex-1 border-t-2 border-dashed border-gray-400"></div>
         <span className="text-[#034737]">Teams</span>
         <div className="flex-1 border-t-2 border-dashed border-gray-400"></div>
       </div>
 
       {/* Swiper Slider */}
-      <div className="flex mt-10 items-center justify-center mx-auto">
+      <div
+        data-aos="slide-right"
+        className="flex  pt-10 pb-16 items-center justify-center mx-auto"
+      >
         <Swiper
           slidesPerView={6.5}
-          spaceBetween={20}
+          spaceBetween={6}
           autoplay={{
             delay: 500,
             disableOnInteraction: true,
           }}
-          loop={true}
+          loop={false}
           speed={5000}
           modules={[Autoplay]}
+          className="mySwiper"
           breakpoints={{
             1400: {
               slidesPerView: 6.5,
-              spaceBetween: 10,
+              spaceBetween: 6,
             },
             1000: {
               slidesPerView: 4.5,
@@ -146,14 +150,16 @@ const Carousel = () => {
           {solutionsteams.map((item, index) => (
             <SwiperSlide key={index}>
               <div
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
+                onMouseEnter={() => setHovered2Index(index)}
+                onMouseLeave={() => setHovered2Index(null)}
                 style={{ backgroundColor: item.bgcolor }}
                 className={`p-4 flex ${
-                  hoveredIndex === index ? "flex-row" : "flex-col"
-                } max-w-${
-              hoveredIndex === index ? "[403px]" : "[250px]"
-            } h-[200px] transition-all duration-300 ease-in-out gap-6 justify-between text-white w-full rounded-[20px]`}
+                  hovered2Index === index ? "flex-row" : "flex-col"
+                } transition-all duration-300 ease-in-out gap-6 justify-between text-white w-full rounded-[20px] max-w-${
+                  hovered2Index === index ? "[450px]" : "[250px]"
+                } h-[200px] mx-auto ${
+                  hovered2Index === index ? "mx-[-50px]" : "mx-0"
+                }`}
               >
                 <div className="flex flex-col gap-y-6 items-center justify-center">
                   <div className="max-w-[92px] w-full">
@@ -165,7 +171,7 @@ const Carousel = () => {
                       className="transition-transform duration-300 transform hover:scale-105"
                     />
                   </div>
-                  {hoveredIndex === index && (
+                  {hovered2Index === index && (
                     <svg
                       width="21"
                       height="16"
@@ -184,12 +190,22 @@ const Carousel = () => {
                 <div
                   style={{ color: item.textcolor }}
                   className={`flex flex-col gap-y-4 ${
-                    hoveredIndex === index ? "items-start mt-4" : "items-center"
+                    hovered2Index === index
+                      ? "items-start mt-2"
+                      : "items-center"
                   }  w-full`}
                 >
-                  <h2 className="text-[24px] font-semibold">{item.name}</h2>
-                  {hoveredIndex === index && (
-                    <p className="text-[18px] font-medium max-w-[260px]">
+                  <h2
+                    style={{ color: item.textcolor }}
+                    className="text-[24px] font-semibold"
+                  >
+                    {item.name}
+                  </h2>
+                  {hovered2Index === index && (
+                    <p
+                      style={{ color: item.textcolor }}
+                      className="text-[18px] font-medium max-w-[260px]"
+                    >
                       {item.role}
                     </p>
                   )}

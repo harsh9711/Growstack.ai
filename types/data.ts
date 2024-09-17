@@ -231,7 +231,7 @@ export const solutions = [
   {
     id: 1,
     imageUrl: "/solutionsicon/img1.svg",
-    name: "For large enterprises",
+    name: "Large enterprises",
     role: "   Streamline operation's with advance AI solutions",
     bgcolor: "#034737",
     textcolor: "#FFFFFF",
@@ -248,7 +248,7 @@ export const solutions = [
   {
     id: 3,
     imageUrl: "/solutionsicon/img3.svg",
-    name: "For small businesses",
+    name: "Small businesses",
     role: "Maximize efficiency with all-in-one AI  marketing",
     bgcolor: "#A4E2CC",
     textcolor: "#034737",
@@ -256,7 +256,7 @@ export const solutions = [
   {
     id: 4,
     imageUrl: "/solutionsicon/img4.svg",
-    name: "For startups",
+    name: "Startups",
     role: "Maximize efficiency with all-in-one AI  marketing",
     bgcolor: "#FFFFFF",
     textcolor: "#034737",
@@ -316,10 +316,10 @@ export const solutionsteams = [
   {
     id: 7,
     imageUrl: "/solutionsicon/img11.svg",
-    name: "Customer service",
+    name: "IT",
     role: "Elevate customer service with advanced AI solutions",
     bgcolor: "#D2F1E6",
-    textcolor: "#FFFFFF",
+    textcolor: "#034737",
   },
   {
     id: 8,
