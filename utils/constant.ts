@@ -15,7 +15,15 @@ export enum ALL_ROUTES {
     SINGLE_AI_TEMPLATE = '/app/plan/ai-templates/:id',
     CREATE_AI_TEMPLATE = '/app/plan/ai-templates/create-template',
     AI_WIZARD = "/app/create/ai-articles",
-    CONTACT_REPOSITORY = "/app/engage/contacts"
+    CONTACT_REPOSITORY = "/app/engage/contacts",
+    WEB_SCRAPING = "/app/engage/web-scraping",
+    SOCIAL_MEDIA_POSTING = "/app/publish/scheduler/quick-posting/profiles",
+    SOCIAL_MEDIA_POSTING_CONNECT = "/app/publish/scheduler/quick-posting/profiles/connect-account",
+    SOCIAL_MEDIA_POSTING_CONNECT_FINISH = "/app/publish/scheduler/quick-posting/profiles/connect-account/finish",
+    SOCIAL_MEDIA_CONVERSATION_HUB = "/app/engage/Social-media",
+    SOCIAL_MEDIA_ANALYSIS = "/app/analyse/social-media"
+
+
 }
 
 export const featureRouteMap: FeatureRouteMap = {
@@ -51,8 +59,18 @@ export const featureRouteMap: FeatureRouteMap = {
     ai_wizard: [
         { path: ALL_ROUTES.AI_WIZARD, partialMatch: false },
     ],
-    social_media_posting: [
-        { path: "/social-media", partialMatch: false },
-        { path: "/social-media/:id", partialMatch: true },
+    webscraping: [
+        { path: ALL_ROUTES.WEB_SCRAPING, partialMatch: false },
     ],
+    social_media_posting: [
+        { path: ALL_ROUTES.SOCIAL_MEDIA_POSTING, partialMatch: false },
+        { path: ALL_ROUTES.SOCIAL_MEDIA_POSTING_CONNECT, partialMatch: false },
+        { path: ALL_ROUTES.SOCIAL_MEDIA_POSTING_CONNECT_FINISH, partialMatch: false },
+    ],
+    social_media_conversation: [
+        { path: ALL_ROUTES.SOCIAL_MEDIA_CONVERSATION_HUB, partialMatch: false },
+    ],
+    social_media_analytics: [
+        { path: ALL_ROUTES.SOCIAL_MEDIA_ANALYSIS, partialMatch: false },
+    ]
 };
