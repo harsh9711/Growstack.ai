@@ -235,6 +235,7 @@ export const solutions = [
     role: "   Streamline operation's with advance AI solutions",
     bgcolor: "#034737",
     textcolor: "#FFFFFF",
+    href: "/solutions/largeenterprise",
   },
   {
     id: 2,
@@ -243,6 +244,7 @@ export const solutions = [
     role: "Conquer resources constraints with AI tools",
     bgcolor: "#13745D",
     textcolor: "#FFFFFF",
+    href: "/solutions/midmarketenterprise",
   },
 
   {
@@ -252,6 +254,7 @@ export const solutions = [
     role: "Maximize efficiency with all-in-one AI  marketing",
     bgcolor: "#A4E2CC",
     textcolor: "#034737",
+    href: "/solutions/smallbusinesses",
   },
   {
     id: 4,
@@ -260,6 +263,7 @@ export const solutions = [
     role: "Maximize efficiency with all-in-one AI  marketing",
     bgcolor: "#FFFFFF",
     textcolor: "#034737",
+    href: "/solutions/startup",
   },
 ];
 export const solutionsteams = [
@@ -270,6 +274,7 @@ export const solutionsteams = [
     role: "   Transform your marketing strategy with GrowStack",
     bgcolor: "#034737",
     textcolor: "#FFFFFF",
+    href: "/solutions/marketing",
   },
   {
     id: 2,
@@ -278,6 +283,8 @@ export const solutionsteams = [
     role: "Transform your sales process with Growstack",
     bgcolor: "#0E5E4B",
     textcolor: "#FFFFFF",
+    href: "/solutions/sales",
+
   },
 
   {
@@ -287,6 +294,7 @@ export const solutionsteams = [
     role: "Optimize your revenue strategy with  Growstack",
     bgcolor: "#13745D",
     textcolor: "#FFFFFF",
+    href: "/solutions/revops",
   },
   {
     id: 4,
@@ -295,6 +303,8 @@ export const solutionsteams = [
     role: "Elevate customer service with advanced AI solutions",
     bgcolor: "#55917E",
     textcolor: "#FFFFFF",
+    href: "/solutions/customer_service",
+
   },
 
   {
@@ -304,6 +314,8 @@ export const solutionsteams = [
     role: "Transform finance operations with AI-Powered solutions",
     bgcolor: "#7CB8A4",
     textcolor: "#034737",
+    href: "/solutions/finance",
+
   },
   {
     id: 6,
@@ -312,6 +324,8 @@ export const solutionsteams = [
     role: "Streamline your business operations with Growstack",
     bgcolor: "#A4E2CC",
     textcolor: "#034737",
+        href: "/solutions/operations",
+
   },
   {
     id: 7,
@@ -320,6 +334,8 @@ export const solutionsteams = [
     role: "Elevate customer service with advanced AI solutions",
     bgcolor: "#D2F1E6",
     textcolor: "#034737",
+    href: "/solutions/It",
+
   },
   {
     id: 8,
@@ -328,5 +344,7 @@ export const solutionsteams = [
     role: "Revolutionize Your Supply Chain Operations with Growstack",
     bgcolor: "#FFFFFF",
     textcolor: "#034737",
+    href: "/solutions/supplychain",
+
   },
 ];
