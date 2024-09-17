@@ -448,7 +448,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({
             href="mailto:legal@growstack.ai"
             className="text-blue-500 underline"
           >
-            legal@growstack.ai
+          support@growstack.ai
           </a>
           . We may retain certain details for legal purposes or proceedings, but
           will not hold onto Personal Data longer than necessary.
@@ -881,11 +881,13 @@ const ContentBox: React.FC<ContentBoxProps> = ({
   </p>
 
   <p className="text-gray-600 mt-2">
-    <strong>Email:</strong> <a href="mailto:legal@growstack.ai" className="text-blue-500 hover:underline">legal@growstack.ai</a>
+    <strong>Email:</strong> <a href="mailto:support@growstack.ai" className="text-blue-500 hover:underline">support@growstack.ai
+    </a>
   </p>
 
   <p className="text-gray-600 mt-2">
-    <strong>Mailing Address:</strong> [Your Mailing Address Here]
+    <strong>Mailing Address:</strong>1638 Macalpine Circle, Morrisville, North Carolina 27560, USA
+
   </p>
 
   <p className="text-gray-600 mt-2">

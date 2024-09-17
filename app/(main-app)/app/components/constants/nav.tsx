@@ -133,7 +133,7 @@ const navLinks: NavLink[] = [
           </svg>
         ),
         name: "Text to video (coming soon)",
-        href: "/account/profile",
+        href: "/text-to-video",
       },
 
       // {
@@ -191,7 +191,7 @@ const navLinks: NavLink[] = [
         </svg>
         ,
         name: "Content calender (coming soon)",
-        href: "/app/analyse/social-media",
+        href: "/content-calender",
       },
       {
         icon: <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -249,12 +249,12 @@ const navLinks: NavLink[] = [
       {
         icon: <WhatsappIcon />,
         name: "WhatsApp automation (coming soon)",
-        href: "/app/engage/automation/whatsapp-automation",
+        href: "/whtasapp-automate",
       },
       {
         icon: <TelegramIcon />,
         name: "Telegram automation (coming soon)",
-        href: "/app/engage/automation/telegram-automation",
+        href: "/telegram-automate",
       },
       // {
       //   icon: <DocumentIcon />,
@@ -270,18 +270,18 @@ const navLinks: NavLink[] = [
       {
         icon: <PresentationAnalyticsIcon />,
         name: "Social media analytics",
-        href: "/app/analyse/social-media",
+        href: "/social-media",
       },
 
       {
         icon:<AdsAnalyticsIcon />,
         name: "Social media AI insights (coming soon)",
-        href: "/app/analyse/reputation-manager",
+        href: "/ai-insights",
       },
       {
         icon:  <ReputationIcon />,
         name: "Recommendation engine (coming soon)",
-        href: "/app/analyse/ads-analytics",
+        href: "/recommendation",
       },
       // {
       //   icon: <ReportAnalyticsIcon />,
@@ -326,7 +326,7 @@ const navLinks: NavLink[] = [
           </svg>
         ),
         name: "MDR agent (coming soon)",
-        href: "/account/profile",
+        href: "/mdr-agent",
       },
       {
         icon: (
@@ -356,7 +356,7 @@ const navLinks: NavLink[] = [
           </svg>
         ),
         name: "Linkedin agent (coming soon)",
-        href: "/account/profile",
+        href: "/linkedin-agent",
       },
       {
         icon: (
@@ -399,7 +399,7 @@ const navLinks: NavLink[] = [
           </svg>
         ),
         name: "Contact intelligence (coming soon)",
-        href: "/account/profile",
+        href: "/contact-intelligence",
       },
     ],
     title: "Automate",
