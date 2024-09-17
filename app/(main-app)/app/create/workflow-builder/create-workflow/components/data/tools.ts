@@ -10,6 +10,7 @@ export type Tool = {
   provider: string;
   subtype: string;
   event_execute: string;
+  thirdparty?: string
 };
 
 export const tools: Tool[] = [
@@ -6302,10 +6303,11 @@ export const tools: Tool[] = [
     event_execute: "postOnSocialMedia",
     role: ""
   },
-    {
+  {
     id: 130,
     description: "Send a message on slack",
-    name: "slack",
+    name: "Slack Message",
+    thirdparty: 'slack',
     category: "Integrations",
     icon: "/slack-new-logo.svg",
     provider: "Slack",
@@ -6314,7 +6316,7 @@ export const tools: Tool[] = [
     preset_json: {
       body: [
         {
-          variable_type: "SHORT_TEXT_AREA",
+          variable_type: "SHORT_TEXT",
           variable_label: "channel_id",
           variable_value: "C0709BM497Z",
           variable_values: "",
@@ -6331,100 +6333,207 @@ export const tools: Tool[] = [
     event_execute: "processSlackMessage",
     role: "",
   },
+  // {
+  //   id: 131,
+  //   description: "Create Google document",
+  //   name: "googlesheets",
+  //   category: "Integrations",
+  //   icon: "/google-sheets-icon.svg",
+  //   provider: "Google",
+  //   subtype: "api",
+  //   preset_json: {
+  //     body: {
+  //       inputs: [
+  //         {
+  //           variable_type: "SHORT_TEXT",
+  //           variable_label: "title",
+  //           variable_value: "Your doc title here",
+  //           variable_values: "",
+  //         },
+  //         {
+  //           variable_type: "TEXT_AREA",
+  //           variable_label: "message",
+  //           variable_value: "Here your content...",
+  //           variable_values: "",
+  //         },
+
+  //       ],
+  //     },
+  //   },
+  //   event_execute: "processCreateGoogleDoc",
+  //   role: "",
+  //   socialMediaRequirement: false,
+  // },
   {
-    id: 131,
-    description: "Google Sheet Discription",
-    name: "googlesheets",
+    id: 133,
+    description: "Send a message on Whatsapp",
+    name: "Send WhatsApp Message",
+    thirdparty: 'whatsapp',
     category: "Integrations",
-    icon: "/google-sheets-icon.svg",
-    provider: "Paragon",
+    icon: "/whatsapp.svg",
+    provider: "Whatsapp",
     subtype: "api",
-    socialMediaRequirement: true,
     preset_json: {
       body: [
         {
           variable_type: "TEXT_AREA",
-          variable_label: "post",
-          variable_value: "",
+          variable_label: "to",
+          variable_value: "+91 9904785967",
           variable_values: "",
-          "input_placeholder": "write your post content here"
         },
         {
           variable_type: "TEXT_AREA",
-          variable_label: "mediaUrl",
-          variable_value: "",
-          variable_values: "",
-          "input_placeholder": "please provide media url"
-        },
-        {
-          variable_type: "BOOLEAN",
-          variable_label: "isVideo",
-          variable_value: "",
+          variable_label: "message",
+          variable_value: "This is for testing workflow",
           variable_values: "",
         },
-        {
-          variable_type: "CHECKBOX",
-          variable_label: "platforms",
-          variable_value: "",
-          variable_values: [""],
-        },
-        {
-          variable_type: "TIME",
-          variable_label: "schedule",
-          variable_value: "",
-          variable_values: "",
-        },
+
       ],
     },
-    event_execute: "postOnSocialMedia",
-    role: ""
+    event_execute: "processSendWhatsappMessage",
+    role: "",
+    socialMediaRequirement: false,
   },
   {
-    id: 132,
-    description: "LinkedIn Discription",
-    name: "linkedin",
+    id: 134,
+    description: "Create Google document",
+    name: "Creat Google Doc",
+    thirdparty: "googledocs",
     category: "Integrations",
-    icon: "/icons8-linkedin.svg",
-    provider: "Paragon",
+    icon: "/google-docs.svg",
+    provider: "Google",
     subtype: "api",
-    socialMediaRequirement: true,
     preset_json: {
       body: [
         {
-          variable_type: "TEXT_AREA",
-          variable_label: "post",
-          variable_value: "",
+          variable_type: "SHORT_TEXT",
+          variable_label: "title",
+          variable_value: "Your doc title here",
           variable_values: "",
-          "input_placeholder": "write your post content here"
         },
         {
           variable_type: "TEXT_AREA",
+          variable_label: "message",
+          variable_value: "Here your content...",
+          variable_values: "",
+        },
+
+      ],
+    },
+    event_execute: "processCreateGoogleDoc",
+    role: "",
+    socialMediaRequirement: false,
+  },
+  {
+    id: 135,
+    description: "Send Email to anyone",
+    name: "Send Email",
+    thirdparty: 'gmail',
+    category: "Integrations",
+    icon: "/icons8-gmail.svg",
+    provider: "Google",
+    subtype: "api",
+    preset_json: {
+      body: [
+        {
+          variable_type: "SHORT_TEXT",
+          variable_label: "to",
+          variable_value: "recipient email address",
+          variable_values: "",
+        },
+        {
+          variable_type: "SHORT_TEXT",
+          variable_label: "subject",
+          variable_value: "Email subject",
+          variable_values: "",
+        },
+        {
+          variable_type: "TEXT_AREA",
+          variable_label: "message",
+          variable_value: "Here your message...",
+          variable_values: "",
+        },
+
+      ],
+    },
+    event_execute: "processSendGmail",
+    role: "",
+    socialMediaRequirement: false,
+  },
+  // as of now marking comment later need to add based on requriment
+  // {
+  //   id: 136,
+  //   description: "Send a message on salesforce",
+  //   name: "salesforce",
+  //   thirdparty: 'salesforce',
+  //   category: "Integrations",
+  //   icon: "/salesforce-2.svg",
+  //   provider: "Slack",
+  //   subtype: "api",
+  //   socialMediaRequirement: false,
+  //   preset_json: {
+  //     body: [
+  //       {
+  //         variable_type: "SHORT_TEXT",
+  //         variable_label: "channel_id",
+  //         variable_value: "C0709BM497Z",
+  //         variable_values: "",
+  //       },
+  //       {
+  //         variable_type: "TEXT_AREA",
+  //         variable_label: "message",
+  //         variable_value: "Hello World",
+  //         variable_values: "",
+  //       },
+
+  //     ],
+  //   },
+  //   event_execute: "processSlackMessage",
+  //   role: "",
+  // },
+   {
+    id: 137,
+    thirdparty: 'facebookpages',
+    description: "Post Content on Facebok Page",
+    name: "Post On Facebook",
+    category: "Integrations",
+    icon: "/icons8-facebook.svg",
+    provider: "Fcebook",
+    subtype: "api",
+    preset_json: {
+      body: {
+        inputs: [
+         {
+          variable_type:"TEXT_AREA",
+          variable_label: "message",
+          variable_value: "",
+          variable_values: "",
+         },
+    {
+          variable_type:"BOOLEAN",
+          variable_label: "publish",
+          variable_value: "",
+          variable_values: "",
+         },
+  {
+          variable_type:"SHORT_TEXT",
           variable_label: "mediaUrl",
           variable_value: "",
           variable_values: "",
-          "input_placeholder": "please provide media url"
-        },
-        {
-          variable_type: "BOOLEAN",
-          variable_label: "isVideo",
-          variable_value: "",
-          variable_values: "",
-        },
-        {
-          variable_type: "CHECKBOX",
-          variable_label: "platforms",
-          variable_value: "",
-          variable_values: [""],
-        },
-        {
-          variable_type: "TIME",
+         },
+  
+     {
+          variable_type:"DATE",
           variable_label: "schedule",
           variable_value: "",
           variable_values: "",
-        },
-      ],
-    },
-    event_execute: "postOnSocialMedia",
-    role: ""
+         },
+  
+        ],
+      },
+    }, 
+    event_execute: "processPostOnFacebook",
+    role: "",
+    socialMediaRequirement: false,
   },
 ];
