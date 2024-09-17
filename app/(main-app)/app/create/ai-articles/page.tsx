@@ -96,7 +96,7 @@ export default function AiArticles() {
       <main className="">
         <div className="flex justify-between items-center mt-10">
           <div className="space-y-2 w-full">
-            <h1 className="text-2xl font-semibold">AI article wizard</h1>
+            <h1 className="text-2xl font-semibold">AI content wizard</h1>
             <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="21" viewBox="0 0 14 21" fill="none">
                 <path
