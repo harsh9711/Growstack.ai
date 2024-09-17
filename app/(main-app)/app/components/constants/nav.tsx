@@ -77,11 +77,6 @@ const navLinks: NavLink[] = [
         href: "/app/plan/ai-templates",
       },
       {
-        icon: <TextToVideoIcon />,
-        name: "Text to avatar",
-        href: "/app/plan/text-to-video",
-      },
-      {
         icon: <AiAssistantIcon />,
         name: "AI assistant",
         href: "/app/plan/ai-assistant",
@@ -109,6 +104,11 @@ const navLinks: NavLink[] = [
         ,
         name: "AI content wizard",
         href: "/app/create/ai-articles",
+      },
+      {
+        icon: <TextToVideoIcon />,
+        name: "Text to avatar",
+        href: "/app/plan/text-to-video",
       },
       {
         icon: <ProductAiIcon />,
