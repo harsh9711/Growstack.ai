@@ -17,6 +17,8 @@ import { getCurrentUser } from "@/lib/features/auth/auth.selector";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { planIdsMap } from "@/lib/utils";
+import Link from "next/link";
+import { ChatResponse } from "@/types/common";
 
 type Message = {
   content: string;
@@ -30,6 +32,7 @@ export default function ChatComponent() {
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
   const [selectedModel, setSelectedModel] = useState<string>("gpt-3.5-turbo");
   const [secureChatEnabled, setSecureChatEnabled] = useState<boolean>(false)
+  const [isDailyLimitExceeded, setIsDailyLimitExceeded] = useState(false)
   const selectedModelLabel = aiModelOptions.find((option) => option.value === selectedModel)?.label;
 
   const fetchMessages = useCallback(async (_id: string) => {
@@ -90,11 +93,26 @@ export default function ChatComponent() {
         }
       );
 
-      const { conversation_id, response } = data.data;
+      const { conversation_id, response, noOfMessagesLeft, totalNoOfMessages } = data.data as ChatResponse;
+
+      const isBasicPlan = planIdsMap.BASIC.some((val) => val === currentPlan?.plan_id);
+
+      if (isBasicPlan) {
+        if (noOfMessagesLeft && totalNoOfMessages) {
+          if (noOfMessagesLeft <= 0) {
+            setIsDailyLimitExceeded(true);
+          } else {
+            setIsDailyLimitExceeded(false);
+          }
+        }
+      }
       setSelectedConversation(conversation_id);
       updateMessage(response, "assistant");
     } catch (error: any) {
       const errorMsg = error.response?.data.error ?? error.message;
+      if (errorMsg === "Please upgrade your plan") {
+        setIsDailyLimitExceeded(true);
+      }
       toast.error(errorMsg);
       removeMessage();
     }
