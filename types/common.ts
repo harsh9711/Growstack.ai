@@ -77,6 +77,15 @@ export interface Usage {
   mdr_agent: boolean;
 }
 
+interface Route {
+  path: string;
+  partialMatch: boolean;
+}
+
+export interface FeatureRouteMap {
+  [key: string]: Route[];
+}
+
 export interface UserPlan {
   _id: string;
   plan_id: string;

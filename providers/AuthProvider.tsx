@@ -13,13 +13,14 @@ import { setPlanLoading, setUserPlan } from "@/lib/features/auth/auth.slice";
 import GlobalModal from "@/components/modal/global.modal";
 import Link from "next/link";
 import Lock from "@/components/svgs/lock";
+import { hasAccessToRoute } from "@/lib/utils";
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const isLoggedIn = !!getCookie("token");
-  const { user, isCurrentPlanFetching} = useSelector((rootState: RootState) => rootState.auth);
+  const { user, currentPlan, isCurrentPlanFetching } = useSelector((rootState: RootState) => rootState.auth);
 
   const isSubscribed = user?.isSubscribed || false;
-  const [isAddOnModalOpen, setIsAddOnModalOpen] = useState<boolean>(true);
+  const [isAddOnModalOpen, setIsAddOnModalOpen] = useState<boolean>(false);
 
   const dispatch = useDispatch();
   const router = useRouter();
@@ -61,9 +62,20 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [isLoggedIn, isSubscribed, pathname, router]);
 
   useEffect(() => {
+    if (isLoggedIn && currentPlan) {
+      const hasAccess = hasAccessToRoute(currentPlan.usage, pathname);
+      if (!hasAccess) {
+        setIsAddOnModalOpen(true);
+      } else {
+        setIsAddOnModalOpen(false);
+      }
+    }
+  }, [isLoggedIn, user, pathname]);
+
+  useEffect(() => {
     if (isLoggedIn) {
       fetchPlanUsage();
-    } 
+    }
   }, [isLoggedIn]);
 
   if (isCurrentPlanFetching || !isLoggedIn || !isSubscribed) {
