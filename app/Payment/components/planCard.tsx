@@ -99,7 +99,7 @@ const PlanCard = ({
                 </p>
                 <div className="border-[#B8B8B8] px-10 border w-full mt-4 mb-6"></div>
             </div>
-            <div className={`flex flex-col gap-y-2 px-4 ${marginBottom} w-full mb-6 overflow-y-auto  sm:h-[400px] sm:overflow-y-scroll`}>
+            <div className={`flex flex-col gap-y-2 px-4 ${marginBottom} w-full mb-6 overflow-y-auto  sm:h-[280px] sm:overflow-y-scroll`}>
                 {plan.featureList.map((feature, index) => (
                     <React.Fragment key={index}>
                         <p className="flex text-[12px] xl:text-[18px] font-medium items-center gap-x-2" data-aos="fade-left">
