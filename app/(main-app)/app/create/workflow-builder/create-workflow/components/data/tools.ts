@@ -6195,7 +6195,7 @@ export const tools: Tool[] = [
     preset_json: {
       body: [
         {
-          variable_type: "SHORT_TEXT_AREA",
+          variable_type: "SHORT_TEXT",
           variable_label: "title",
           variable_value: "",
           variable_values: "",
@@ -6209,21 +6209,21 @@ export const tools: Tool[] = [
           input_placeholder: "Generate a video about monkey doing a coding",
         },
         {
-          variable_type: "SHORT_TEXT_AREA",
+          variable_type: "SHORT_TEXT",
           variable_label: "audience",
           variable_value: "",
           variable_values: "",
           input_placeholder: "kids",
         },
         {
-          variable_type: "SHORT_TEXT_AREA",
+          variable_type: "SHORT_TEXT",
           variable_label: "tone",
           variable_value: "friendly",
           variable_values: "",
           input_placeholder: "kids",
         },
         {
-          variable_type: "SHORT_TEXT_AREA",
+          variable_type: "SHORT_TEXT",
           variable_label: "speaker",
           variable_value: "teacher",
           variable_values: "",
@@ -6231,20 +6231,20 @@ export const tools: Tool[] = [
         },
 
         {
-          variable_type: "SHORT_TEXT_AREA",
+          variable_type: "SHORT_TEXT",
           variable_label: "language",
           variable_value: "english",
           variable_values: "",
           input_placeholder: "",
         },
         {
-          variable_type: "SHORT_TEXT_AREA",
+          variable_type: "SHORT_TEXT",
           variable_label: "avatar_id",
           variable_value: "",
           variable_values: "",
         },
         {
-          variable_type: "SHORT_TEXT_AREA",
+          variable_type: "SHORT_TEXT",
           variable_label: "voice_id",
           variable_value: "",
           variable_values: "",
@@ -6504,7 +6504,7 @@ export const tools: Tool[] = [
       body: {
         inputs: [
          {
-          variable_type:"TEXT_AREA",
+          variable_type:"SHORT_TEXT",
           variable_label: "message",
           variable_value: "",
           variable_values: "",

@@ -50,7 +50,7 @@ const ShortTextArea: React.FC<TextAreaProps> = ({
         ...prevState.preset_json,
         body: prevState.preset_json.body.map(
           (input: InputType, i: number) => {
-            if (i === index && (input.variable_type === "TEXT_AREA" || input.variable_type === "SHORT_TEXT_AREA")) {
+            if (i === index && (input.variable_type === "TEXT_AREA" || input.variable_type === "SHORT_TEXT")) {
               return {
                 ...input,
                 variable_value: description,
@@ -93,7 +93,8 @@ const ShortTextArea: React.FC<TextAreaProps> = ({
       const endPos = textarea.selectionEnd ?? 0;
       const newDescription =
         description.substring(0, startPos) +
-        `{$${subOption.name}}` +
+        `{$` +
+        `{${subOption.name}}}` +
         description.substring(endPos);
       setDescription(newDescription);
   
