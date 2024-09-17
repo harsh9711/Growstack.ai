@@ -53,7 +53,7 @@ export const planIdsMap: Record<PlanName, string[]> = {
 };
 
 export const hasAccessToRoute = (currentPlanUsage: any, pathname: string): boolean => {
-  console.log(currentPlanUsage, pathname, featureRouteMap);
+  console.log(pathname, featureRouteMap);
 
   let routeExistsInMap = false;
 
@@ -61,20 +61,40 @@ export const hasAccessToRoute = (currentPlanUsage: any, pathname: string): boole
     const routes = featureRouteMap[feature];
 
     for (const route of routes) {
+      let matches = false;
+
       if (route.partialMatch) {
-        const pathRegex = new RegExp(route.path.replace(/:[^\s/]+/g, '[^/]+')); // Converts ":id" into a regex to match any value
-        if (pathRegex.test(pathname)) {
-          routeExistsInMap = true;
-          if (currentPlanUsage[feature]) {
-            return true;
+        const pathRegex = new RegExp(route.path.replace(/:[^\s/]+/g, '[^/]+'));
+        matches = pathRegex.test(pathname);
+      } else {
+        matches = route.path === pathname;
+      }
+
+      if (matches) {
+        routeExistsInMap = true;
+
+
+        if (route?.excepts) {
+          for (const except of route.excepts) {
+            console.log(except, pathname);
+
+            const ancestorPathRegex = new RegExp(`${except.ancestorRoute}(\\/[^/]+)?$`);
+
+            if (ancestorPathRegex.test(pathname)) {
+              for (const exceptPath of except.exceptPath) {
+                const exceptRegex = new RegExp(exceptPath.replace(/:[^\s/]+/g, '[^/]+'));
+
+                if (exceptRegex.test(pathname)) {
+                  return true;
+                }
+              }
+            }
           }
         }
-      } else {
-        if (route.path === pathname) {
-          routeExistsInMap = true;
-          if (currentPlanUsage[feature]) {
-            return true;
-          }
+
+
+        if (currentPlanUsage[feature]) {
+          return true;
         }
       }
     }
@@ -86,4 +106,5 @@ export const hasAccessToRoute = (currentPlanUsage: any, pathname: string): boole
 
   return false;
 };
+
 
