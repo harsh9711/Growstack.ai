@@ -45,9 +45,7 @@ export interface FavoriteAssistant {
 export default function Dashboard() {
   const dispatch = useDispatch();
   const [assistants, setAssistants] = useState<Assistant[]>([]);
-  const [favoriteAssistants, setFavoriteAssistants] = useState<
-    FavoriteAssistant[]
-  >([]);
+
   const [aiAppsloading, setAiAppsLoading] = useState(true);
   const [aiAssistantsloading, setAiAssistantsLoading] = useState(true);
   const currentUser = getCurrentUser();
@@ -89,43 +87,9 @@ export default function Dashboard() {
     }
   };
 
-  const fetchFavoriteAssistants = async () => {
-    try {
-      const response = await instance.get(
-        `${API_URL}/ai/api/v1/chat-template/fav-apps`
-      );
-      setFavoriteAssistants(response.data.data);
-    } catch (error: any) {
-      if (error.response) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error(error.message);
-      }
-      console.log(error);
-    } finally {
-      setAiAssistantsLoading(false);
-    }
-  };
 
-  const handleFavorite = async (method: string, templateId: string) => {
-    try {
-      const response = await instance.put(
-        API_URL + `/ai/api/v1/chat-template/fav-apps/${templateId}`,
-        { type: method }
-      );
-      toast.success(response.data.message);
-      setFavoriteAssistants((prevFavoriteApps) =>
-        prevFavoriteApps.filter((favApp) => favApp._id !== templateId)
-      );
-    } catch (error: any) {
-      if (error.response) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error(error.message);
-      }
-      console.error("Error:", error);
-    }
-  };
+
+
 
   const fetchSocialMediaProfile = async () => {
     try {
@@ -159,13 +123,12 @@ export default function Dashboard() {
     setAiAssistantsLoading(true);
     handleGetProfileData();
     fetchAssistants();
-    fetchFavoriteAssistants();
     fetchSocialMediaProfile();
   }, []);
 
 
   if (!hasRefreshed) {
-    return null; 
+    return null;
   }
 
 
@@ -191,7 +154,7 @@ export default function Dashboard() {
             <ChatComponent />
           </div>
           <div
-            className="w-full lg:max-w-[40%] bg-white p-8 rounded-3xl border border-[#E8E8E8] h-[930px]"
+            className="w-full lg:max-w-[40%] bg-white p-8 rounded-3xl border border-[#E8E8E8] h-[780px]"
             data-aos="fade-right"
           >
             <div className="space-y-3">
@@ -202,12 +165,12 @@ export default function Dashboard() {
                 Chat with the smartest AI - Experience the power of AI with us
               </p>
             </div>
-            <Link href="/app/plan/ai-chat">
+            {/* <Link href="/app/plan/ai-chat">
               <div
                 className="!mt-7 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
                 data-aos="fade-up"
               >
-                <div className="flex gap-4 items-center">
+                {/* <div className="flex gap-4 items-center">
                   <Image
                     src="/icons/ai-chat.svg"
                     alt=""
@@ -215,12 +178,12 @@ export default function Dashboard() {
                     height={60}
                   />
                   <h2 className="font-medium">AI chat</h2>
-                </div>
-                <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
+                </div> */}
+            {/* <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
                   <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
                 </button>
               </div>
-            </Link>
+            </Link> */}
             <Link href="/app/plan/ai-templates">
               <div
                 className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
@@ -285,7 +248,7 @@ export default function Dashboard() {
               >
                 <div className="flex gap-4 items-center">
                   <Image src="/icons/media.svg" alt="" width={60} height={60} />
-                  <h2 className="font-medium">Text to video </h2>
+                  <h2 className="font-medium">Text to avatar </h2>
                 </div>
                 <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
                   <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />

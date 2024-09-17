@@ -218,7 +218,6 @@ const TemplatesTable: React.FC<TemplatesTableProps> = ({ refreshTemplatesTable, 
     getFilteredRowModel: getFilteredRowModel(),
   });
 
-  console.log(assistants);
   const paginationButtons = [];
   for (let i = 0; i < table.getPageCount(); i++) {
     paginationButtons.push(

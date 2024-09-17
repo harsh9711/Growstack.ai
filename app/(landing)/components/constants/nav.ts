@@ -1,3 +1,5 @@
+import { ALL_ROUTES } from "@/utils/constant";
+
 export const navLinks = [
   {
     href: "/",
@@ -16,7 +18,7 @@ export const navLinks = [
     label: "Resources",
   },
   {
-    href: "/pricing",
+    href: ALL_ROUTES.PRICING,
     label: "Pricing",
   },
   {

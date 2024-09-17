@@ -2,7 +2,6 @@ import React from "react";
 import Image from "next/image";
 import Navbar from "@/components/navbar/Navbar";
 import HeroSection from "./components/HeroSection";
-import Pricing from "./components/Pricing";
 import MainBox from "./components/MainBox";
 import PricingNew from "./components/PricingNew";
 import Footer from "@/components/footer/Footer";
@@ -22,7 +21,7 @@ const PricingPage: React.FC = () => {
         title="Get the AI copilot for better marketing results"
         description="Flexible pricing for all business sizes—pay for only what you need with Growstack."
       />
-            <svg
+      <svg
         className="absolute -translate-y-96 translate-x-64"
         width="31"
         height="56"
@@ -36,7 +35,9 @@ const PricingPage: React.FC = () => {
           fill="#034737"
         />
       </svg>
-     <section className="mt-40 p-4 2xl:p-0  items-center justify-center mx-auto "><PricingNew/></section> 
+      <div className="w-full max-w-[1600px] px-4 mx-auto !mt-40">
+        <PricingNew />
+      </div>
       <section className="bg-white mt-20">
         {/* <Image
           src="/1.svg"
@@ -46,7 +47,7 @@ const PricingPage: React.FC = () => {
           className="absolute -translate-y-40 z-0 w-full h-full"
         /> */}
         <div className="max-w-[1600px] mb-20 relative z-20 w-full justify-center items-center mx-auto">
-         <MainBox/>
+          <MainBox />
         </div>
         {/* <Image
           src="/2.svg"

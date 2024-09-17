@@ -18,6 +18,7 @@ interface ChatInputProps {
   selectedConversation: string | null;
   addMessage: (role: string, content: string, loading: boolean) => void;
   setSelectedConversation: React.Dispatch<React.SetStateAction<string | null>>;
+  enableSecure?: boolean
 }
 
 const ChatInput: React.FC<ChatInputProps> = ({
@@ -28,6 +29,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
   addMessage,
   setSelectedConversation,
   removeMessage,
+  enableSecure = false
 }) => {
   const selectedLanguage = languageOptions[0].value;
   const [open, setOpen] = useState(false);
@@ -37,6 +39,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { startRecognition, stopRecognition, textToSpeech } = useSpeechRecognition(
     selectedLanguage,
+    open,
     (transcript: string) => {
       setInput(transcript);
       handleSend(transcript, true);
@@ -76,7 +79,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
       setIsAnimating(false);
       setOpen(false);
       const conversation = await instance.post(
-        `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${selectedConversation ? selectedConversation : ""}&model=${selectedModel}`,
+        `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${selectedConversation ? selectedConversation : ""}&model=${selectedModel}&enableSecure=${enableSecure}`,
         { user_prompt: prompt }
       );
       const response = conversation.data.data.response;

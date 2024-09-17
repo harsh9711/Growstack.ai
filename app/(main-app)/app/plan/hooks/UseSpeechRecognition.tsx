@@ -10,6 +10,7 @@ declare global {
 
 const useSpeechRecognition = (
   language: string,
+  isMicOpen : any,
   onResult: (transcript: string) => void,
   onEndCallback: () => void
 ) => {
@@ -17,6 +18,7 @@ const useSpeechRecognition = (
   const recognitionRef = useRef<any>(null);
 
   useEffect(() => {
+    toast.dismiss();
     if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
       const SpeechRecognition =
         window.webkitSpeechRecognition || window.SpeechRecognition;
@@ -44,9 +46,11 @@ const useSpeechRecognition = (
         onResult(transcript);
       };
     } else {
-      toast.error("Speech recognition not supported in this browser.");
+      if(isMicOpen){
+        toast.error("Speech recognition not supported in this browser.", { duration: Infinity });
+      }
     }
-  }, [language, onResult, onEndCallback]);
+  }, [language, onResult, onEndCallback, isMicOpen]);
 
   const startRecognition = () => {
     if (recognitionRef.current && !isRecording) {

@@ -1,16 +1,8 @@
 "use client";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import Image from "next/image";
 import { Fragment, useEffect, useState } from "react";
 import BarGraph from "./components/BarGraph";
-import DetailsTable from "./components/DetailsTable";
 import { API_URL } from "@/lib/api";
 import instance from "@/config/axios.config";
 import toast from "react-hot-toast";

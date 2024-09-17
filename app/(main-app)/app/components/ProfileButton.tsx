@@ -14,7 +14,6 @@ import { getCurrentUser } from "@/lib/features/auth/auth.selector";
 import { logout } from "@/lib/features/auth/auth.slice";
 import { Info, LogOut, Settings, User } from "lucide-react";
 import Link from "next/link";
-import { TbReportMoney } from "react-icons/tb";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { deleteCookie } from "cookies-next";
