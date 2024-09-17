@@ -18,7 +18,7 @@ interface ChatInputProps {
   selectedConversation: string | null;
   addMessage: (role: string, content: string, loading: boolean) => void;
   setSelectedConversation: React.Dispatch<React.SetStateAction<string | null>>;
-  enableSecure:boolean
+  enableSecure?: boolean
 }
 
 const ChatInput: React.FC<ChatInputProps> = ({
@@ -29,7 +29,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
   addMessage,
   setSelectedConversation,
   removeMessage,
-  enableSecure
+  enableSecure = false
 }) => {
   const selectedLanguage = languageOptions[0].value;
   const [open, setOpen] = useState(false);
