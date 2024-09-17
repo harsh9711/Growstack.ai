@@ -8,7 +8,7 @@ import { Feature } from "@/types/Box";
 import toast from "react-hot-toast";
 import { API_URL } from "@/lib/api";
 import Link from "next/link";
-import { Plan } from "@/types/common";
+import { Plan, UserPlan } from "@/types/common";
 import { PlanName } from "@/types/enums";
 import PlanSkeleton from "@/components/skeletons/PlanSkeleton";
 import { deleteCookie, getCookie } from "cookies-next";
@@ -16,7 +16,7 @@ import PlanCard from "./components/planCard";
 import { LogOut } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { getCurrentUser } from "@/lib/features/auth/auth.selector";
-import { logout } from "@/lib/features/auth/auth.slice";
+import { logout, setPlanLoading, setUserPlan } from "@/lib/features/auth/auth.slice";
 interface PlanUsage {
   usage_amount: number;
 }
@@ -61,6 +61,31 @@ const PricingPage: React.FC = () => {
     const percentage = (tab / totalTabs) * 100;
     setDistanceFromLeft(percentage);
   }, [tabQueryParam]);
+
+  const fetchPlanUsage = async () => {
+    try {
+      dispatch(setPlanLoading(true));
+      const response = (await instance.get(`${API_URL}/users/api/v1/plan-usage`)).data;
+      const userCurrentPlan: UserPlan = response.data;
+      dispatch(setUserPlan(userCurrentPlan));
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error('Error fetching plan usage:', error);
+    } finally {
+      dispatch(setPlanLoading(false));
+    }
+  };
+
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      fetchPlanUsage();
+    }
+  }, [isLoggedIn])
 
   useEffect(() => {
     const fetchPlans = async () => {
