@@ -16,6 +16,7 @@ import GlobalModal from "./modal/global.modal";
 import { UserPlan } from "@/types/common";
 import { setUserPlan } from "@/lib/features/auth/auth.slice";
 import { useDispatch } from "react-redux";
+import CouponModal from "./modal/coupon.modal";
 
 const PlanCard = ({
     plan,
@@ -26,6 +27,8 @@ const PlanCard = ({
     selectedTabIndex: number;
     isUpgradePlan?: boolean
 }) => {
+    const [isOpen, setIsOpen] = useState(false);
+
     const { currentPlan } = useSelector((rootState: RootState) => rootState.auth);
     const dispatch = useDispatch();
 
@@ -69,6 +72,8 @@ const PlanCard = ({
             toast.error("Please log in to select a plan");
             return;
         }
+        setIsOpen(true);
+        return;
         setLoading(true);
         try {
             const product = {
@@ -105,6 +110,7 @@ const PlanCard = ({
     const marginBottom = plan.title === "INFLUENCER" ? "mb-20" : "mb-4";
 
     const isCurrentPlan = currentPlan?.plan_id === plan.id;
+
 
     return (
         <>
@@ -207,6 +213,7 @@ const PlanCard = ({
                     </div>
                 </div>
             </GlobalModal>
+            <CouponModal isOpen={isOpen} setIsOpen={setIsOpen} />
         </>
 
     );
