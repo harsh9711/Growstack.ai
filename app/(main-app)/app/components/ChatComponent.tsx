@@ -145,70 +145,70 @@ export default function ChatComponent() {
     <div className=" flex flex-col bg-white p-10 pt-8 rounded-3xl border border-[#E8E8E8] h-[780px]" data-aos="fade-up">
       {isDashboardChatModalOpen && <DashboardChatModal onClose={() => setIsDashboardChatModalOpen(false)} onSelectConversation={handleSelectConversation} />}
       <div className="flex justify-between items-center border-b pb-4" data-aos="fade-left">
-          <div className="flex flex-row gap-2 items-center justify-center">
-            <div className="flex items-center justify-center cursor-pointer" onClick={() => setIsDashboardChatModalOpen(true)}>
-              <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="4.5" y="4" width="16" height="16" rx="2" stroke="#034737" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M9.5 4V20" stroke="#034737" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </div>
-            <div className="flex items-center justify-center">
-              <h1 className="text-xl font-semibold">AI Chat</h1>
-            </div>
+        <div className="flex flex-row gap-2 items-center justify-center">
+          <div className="flex items-center justify-center cursor-pointer" onClick={() => setIsDashboardChatModalOpen(true)}>
+            <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4.5" y="4" width="16" height="16" rx="2" stroke="#034737" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M9.5 4V20" stroke="#034737" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
           </div>
-          <div className="flex felx-row items-center justify-center gap-5">
-            <div className='flex items-center gap-2'>
-              <div className='text-l font-semibold'>Secure Chat</div>
-              <label className='relative inline-flex items-center cursor-pointer'>
-                <input
-                  type='checkbox'
-                  className='sr-only peer'
-                  checked={secureChatEnabled}
-                  onChange={() => setSecureChatEnabled(!secureChatEnabled)}
-                />
+          <div className="flex items-center justify-center">
+            <h1 className="text-xl font-semibold">AI Chat</h1>
+          </div>
+        </div>
+        <div className="flex flex-row items-center justify-center gap-5">
+          <div className='flex items-center gap-2'>
+            <div className='text-l font-semibold'>Secure Chat</div>
+            <label className='relative inline-flex items-center cursor-pointer'>
+              <input
+                type='checkbox'
+                className='sr-only peer'
+                checked={secureChatEnabled}
+                onChange={() => setSecureChatEnabled(!secureChatEnabled)}
+              />
 
-                <div className='w-11 h-6 bg-gray-200 peer-focus:outline-none  rounded-full peer dark:bg-gray-700 peer-checked:bg-[rgb(3,71,55)]'></div>
+              <div className='w-11 h-6 bg-gray-200 peer-focus:outline-none  rounded-full peer dark:bg-gray-700 peer-checked:bg-[rgb(3,71,55)]'></div>
 
-                <div className='w-5 h-5 bg-white rounded-full absolute left-0.5 top-0.5 peer-checked:translate-x-full peer-checked:bg-white transition-all'></div>
-              </label>
-            </div>
-            <Select value={selectedModel} onValueChange={setSelectedModel}>
-              <SelectTrigger className='h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4'>
-                <SelectValue placeholder='Select an option'>
-                  {selectedModelLabel && (
-                    <div className='flex items-center gap-2'>
-                      <span className='min-w-fit'>
-                        {
-                          filteredAiModelOptions.find(
-                            (option) => option.value === selectedModel
-                          )?.icon
-                        }
-                      </span>
-                      {selectedModelLabel}
+              <div className='w-5 h-5 bg-white rounded-full absolute left-0.5 top-0.5 peer-checked:translate-x-full peer-checked:bg-white transition-all'></div>
+            </label>
+          </div>
+          <Select value={selectedModel} onValueChange={setSelectedModel}>
+            <SelectTrigger className='h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4'>
+              <SelectValue placeholder='Select an option'>
+                {selectedModelLabel && (
+                  <div className='flex items-center gap-2'>
+                    <span className='min-w-fit'>
+                      {
+                        filteredAiModelOptions.find(
+                          (option) => option.value === selectedModel
+                        )?.icon
+                      }
+                    </span>
+                    {selectedModelLabel}
+                  </div>
+                )}
+              </SelectValue>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {filteredAiModelOptions.map(({ icon, label, value }) => (
+                  <SelectItem key={value} value={value}>
+                    <div
+                      className={clsx(
+                        "flex items-center gap-2",
+                        selectedModel === value &&
+                        "text-primary-green font-medium"
+                      )}
+                    >
+                      <span className='min-w-fit'>{icon}</span>
+                      {label}
                     </div>
-                  )}
-                </SelectValue>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {filteredAiModelOptions.map(({ icon, label, value }) => (
-                    <SelectItem key={value} value={value}>
-                      <div
-                        className={clsx(
-                          "flex items-center gap-2",
-                          selectedModel === value &&
-                          "text-primary-green font-medium"
-                        )}
-                      >
-                        <span className='min-w-fit'>{icon}</span>
-                        {label}
-                      </div>
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
       <div className="h-[500px] w-full flex-1 flex flex-col" data-aos="fade-up">
         <div className="flex-1 w-full overflow-y-auto flex flex-col">
