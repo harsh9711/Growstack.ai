@@ -2,18 +2,14 @@
     --size: 60px;
     --gap: calc(60px / 5);
 
-    --base-color: #ff204e;
-    --alt-color: #08d9d6;
     display: flex;
     gap: var(--gap);
 
     & .circle {
         --anim-delay: 0s;
-
         width: 60px;
         height: 60px;
         border-radius: 50%;
-        background: #ff204e;
         animation: undulating-circle 1s infinite;
         animation-delay: var(--anim-delay);
 
@@ -44,22 +40,42 @@
     }
 }
 
+.color-1 {
+    background-color: #034737;
+}
+.color-2 {
+    background-color: #0e5e4b;
+}
+.color-3 {
+    background-color: #13745d;
+}
+.color-4 {
+    background-color: #55917e;
+}
+.color-5 {
+    background-color: #7cb8a4;
+}
+.color-6 {
+    background-color: #a4e2cc;
+}
+.color-7 {
+    background-color: #034737;
+}
+.color-8 {
+    background-color: #0e5e4b;
+}
+
 @keyframes undulating-circle {
     0% {
         opacity: 1;
         transform: translate(0, 0) scale(1);
-        background: var(--base-color);
     }
-
     50% {
         opacity: 0.5;
         transform: translate(0, calc(60px * 2 + 10px)) scale(0.4);
-        background: var(--alt-color);
     }
-
     100% {
         opacity: 1;
         transform: translate(0, 0) scale(1);
-        background: var(--base-color);
     }
 }
