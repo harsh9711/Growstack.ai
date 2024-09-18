@@ -2,9 +2,6 @@ import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { solutions, solutionsteams } from "@/types/data";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
-import "swiper/css";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -50,11 +47,9 @@ const Carousel = () => {
             onMouseEnter={() => setHoveredIndex(index)}
             onMouseLeave={() => setHoveredIndex(null)}
             style={{ backgroundColor: item.bgcolor }}
-            className={`p-4 flex ${
-              hoveredIndex === index ? "flex-row" : "flex-col"
-            } max-w-${
-              hoveredIndex === index ? "[403px]" : "[150px]"
-            } h-[220px] transition-all duration-300 ease-in-out gap-6 justify-between text-white w-full rounded-[20px]`}
+            className={`p-4 flex ${hoveredIndex === index ? "flex-row" : "flex-col"
+              } max-w-${hoveredIndex === index ? "[300px]" : "[150px]"
+              } h-[220px] transition-all duration-300 ease-in-out gap-6 justify-between text-white w-full rounded-[20px]`}
           >
             <div className="flex flex-col gap-y-6 items-center justify-center">
               <div className="max-w-[92px] w-full cursor-pointer">
@@ -86,9 +81,8 @@ const Carousel = () => {
             </div>
             <div
               style={{ color: item.textcolor }}
-              className={`flex flex-col gap-y-4 ${
-                hoveredIndex === index ? "items-start mt-4" : "items-center"
-              }  w-full`}
+              className={`flex flex-col gap-y-4 ${hoveredIndex === index ? "items-start mt-4" : "items-center"
+                }  w-full`}
             >
               <h2
                 style={{ color: item.textcolor }}
@@ -126,13 +120,11 @@ const Carousel = () => {
             onMouseEnter={() => setHovered2Index(index)}
             onMouseLeave={() => setHovered2Index(null)}
             style={{ backgroundColor: item.bgcolor }}
-            className={`p-4 flex ${
-              hovered2Index === index ? "flex-row" : "flex-col"
-            } max-w-${
-              hovered2Index === index ? "[403px]" : "[150px]"
-            } h-[220px] transition-all duration-300 ease-in-out gap-6 justify-between text-white w-full rounded-[20px]`}
+            className={`p-4 flex ${hovered2Index === index ? "flex-row" : "flex-col"
+              } max-w-${hovered2Index === index ? "[300px]" : "[150px]"
+              } h-[220px] transition-all duration-300 ease-in-out gap-6 justify-between text-white w-full rounded-[20px]`}
           >
-            <div className="flex flex-col gap-y-6 items-center cursor-pointer justify-center">
+            <div className="flecarosuellandingx flex-col gap-y-6 items-center cursor-pointer justify-center">
               <div className="max-w-[92px] w-full">
                 <Image
                   src={item.imageUrl}
@@ -163,9 +155,8 @@ const Carousel = () => {
             </div>
             <div
               style={{ color: item.textcolor }}
-              className={`flex flex-col gap-y-4 ${
-                hovered2Index === index ? "items-start mt-4" : "items-center"
-              }  w-full`}
+              className={`flex flex-col gap-y-4 ${hovered2Index === index ? "items-start mt-4" : "items-center"
+                }  w-full`}
             >
               <h2
                 style={{ color: item.textcolor }}
