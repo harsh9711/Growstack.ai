@@ -49,7 +49,10 @@ const DashboardChatModal: React.FC<ModalProps> = ({
     fetchConversations();
   }, []);
 
-  // Group items by date
+  useEffect(() => {
+    setGroupedSidebarItems(groupByDate(sidebarItems));
+  }, [sidebarItems]);
+
   const groupByDate = (items: ISidebarItem[]) => {
     const grouped: { [date: string]: ISidebarItem[] } = {};
     items.forEach((item) => {
@@ -62,11 +65,6 @@ const DashboardChatModal: React.FC<ModalProps> = ({
     return grouped;
   };
 
-  useEffect(() => {
-    setGroupedSidebarItems(groupByDate(sidebarItems));
-  }, [sidebarItems]);
-
-  // Handle search input
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
@@ -77,7 +75,6 @@ const DashboardChatModal: React.FC<ModalProps> = ({
 
   const groupedFilteredSidebarItems = groupByDate(filteredSidebarItems);
 
-  // Handle renaming chat
   const handleRename = async (_id: string, newTitle: string) => {
     try {
       await instance.put(`${API_URL}/ai/api/v1/conversation/${_id}`, { title: newTitle });
@@ -86,27 +83,47 @@ const DashboardChatModal: React.FC<ModalProps> = ({
       console.error("Error renaming chat:", error);
     }
   };
+  
+  const clearAllConversations = async () => {
+    if (sidebarItems.length === 0) {
+      toast.error("No Conversations are found");
+      return;
+    }
+    setLoading(true);
+    try {
+      await instance.delete(`${API_URL}/ai/api/v1/conversation/`);
+      setSidebarItems([]);
+      toast.success("All conversations cleared successfully");
+      onSelectConversation("");
+      onClose()
+      onSelectConversation("");
+    } catch (error: any) {
+      console.error("Error clearing all chats:", error);
+      toast.error(error.response?.data?.error || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // Handle deleting chat
   const handleDelete = async (_id: string) => {
     setDeleteRequestPending(true);
     try {
       await instance.delete(`${API_URL}/ai/api/v1/conversation/${_id}`);
       fetchConversations();
+      setSelectedConversation(null);
+      onClose()
+      onSelectConversation("");
     } catch (error: any) {
       console.error("Error deleting chat:", error);
       toast.error(error.response?.data?.error || error.message);
     } finally {
-      if (selectedConversation === _id) {
-        setSelectedConversation(null);
-      }
       setDeleteRequestPending(false);
     }
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-start">
-      <div className="bg-white pt-4 pb-4 m-4 rounded-3xl border border-[#E8E8E8] w-[380px]" style={{ height: "95%" }}>
+      <div className="bg-white pt-4 pb-4 m-4 rounded-3xl border border-[#E8E8E8] w-[320px]" style={{ height: "95%" }}>
         <div className="flex justify-between items-center pl-7 pr-7 border-b">
           <h1 className="text-xl font-semibold">AI Chat</h1>
           <button
@@ -145,22 +162,21 @@ const DashboardChatModal: React.FC<ModalProps> = ({
           </button>
         </div>
 
-        {/* Search functionality */}
-        <div className="flex flex-row pt-4 pb-4 pl-7 pr-7 justify-between">
+        <div className="flex flex-row pt-4 pb-4 pl-6 pr-6 justify-between">
           <div>
             <button
               onClick={() => {
-                onSelectConversation(""); // Start new chat
+                onSelectConversation("");
                 onClose();
               }}
-              className="text-white bg-primary-green hover:bg-primary-green/90 flex gap-2 justify-center items-center h-14 w-52 px-8 font-medium rounded-xl transition-all duration-300 text-base"
+              className="text-white bg-primary-green hover:bg-primary-green/90 flex gap-2 justify-center items-center h-12 w-52 px-8 font-medium rounded-xl transition-all duration-300 text-base"
             >
               Start New Chat
             </button>
           </div>
           <div>
             <button
-              className="text-white bg-primary-black rounded-full h-14 w-14 grid place-content-center"
+              className="text-white bg-primary-black rounded-full h-12 w-12 grid place-content-center"
               onClick={() => setToggleSearch(!toggleSearch)}
             >
               <Search size={24} />
@@ -182,9 +198,11 @@ const DashboardChatModal: React.FC<ModalProps> = ({
           </div>
         )}
 
-        {/* Display user's conversations grouped by date */}
         <div className="border-y border-[#EFEFEF] flex items-center justify-between py-3 px-6">
           <h2 className="font-semibold">Your conversations</h2>
+          <div className="cursor-pointer" onClick={clearAllConversations}>
+            <h2 className="font-semibold" style={{ color: "#0c4f0c" }}>Clear All</h2>
+          </div>
         </div>
 
         <div className="flex-1 overflow-y-auto p-5 space-y-4">
