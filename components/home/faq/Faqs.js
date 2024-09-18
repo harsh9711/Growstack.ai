@@ -1,26 +1,23 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import './Faqs.scss'
-import Accordion from 'react-bootstrap/Accordion';
+import "./Faqs.scss";
 
 function Faqs() {
-  useEffect(() => {
-    AOS.init();
-  }, []);
-  return (
-    <React.Fragment>
-      <div className="faqs">
-        <div className="container">
-          <div className="title" data-aos="fade-up"
-            data-aos-easing="ease-in-sine"
-            data-aos-duration="1000">
-            <span className="user">FAQ</span>
-            <h3 className="heading">
-              <span>Quick answers</span> on GrowStack
-            </h3>
-          </div>
-          <Accordion data-aos="fade-up"
+    useEffect(() => {
+        AOS.init();
+    }, []);
+    return (
+        <React.Fragment>
+            <div className='faqs'>
+                <div className='container'>
+                    <div className='title' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                        <span className='user'>FAQ</span>
+                        <h3 className='heading'>
+                            <span>Quick answers</span> on GrowStack
+                        </h3>
+                    </div>
+                    {/* <Accordion data-aos="fade-up"
             data-aos-easing="ease-in-sine"
             data-aos-duration="1000">
             <Accordion.Item eventKey="0">
@@ -63,11 +60,11 @@ function Faqs() {
               "Our intuitive mobile app allows you to stay productive and in control from anywhere, offering real-time access to tasks and insights."
               </Accordion.Body>
             </Accordion.Item>
-          </Accordion>
-        </div>
-      </div>
-    </React.Fragment>
-  )
+          </Accordion> */}
+                </div>
+            </div>
+        </React.Fragment>
+    );
 }
 
-export default Faqs
+export default Faqs;

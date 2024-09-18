@@ -92,7 +92,7 @@ const PlanCard = ({
                 </h2>
 
                 <p
-                    className="px-8 opacity-60 w-full max-w-[450px] mx-auto"
+                    className="opacity-60 w-full"
                     data-aos="fade-up"
                 >
                     {plan.description}

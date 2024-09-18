@@ -15,7 +15,6 @@ import WhyChoose from "@/components/home/whyChoose/WhyChoose";
 import FuturePlans from "@/components/home/futurePlans/FuturePlans";
 import Cta from "@/components/home/cta/Cta";
 import Faqs from "@/components/home/faq/Faqs";
-import "bootstrap/dist/css/bootstrap.min.css";
 import Facts from "/components/home/facts/facts";
 import Carousel from "../carousel/page";
 
@@ -29,7 +28,7 @@ function Page() {
             <PoweredBy />
             <Features />
             <Facts />
-            <Carousel/>
+            <Carousel />
             {/* <Marketing/> */}
             <Premium />
             <Capability />

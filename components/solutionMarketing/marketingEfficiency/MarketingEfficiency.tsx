@@ -5,7 +5,6 @@ import { Autoplay, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './MarketingEfficiency.scss';
 
 const MarketingEfficiency: React.FC = () => {
@@ -42,8 +41,8 @@ const MarketingEfficiency: React.FC = () => {
             <div className="marketingEfficiency">
                 <div className="container">
                     <div className="title" data-aos="fade-up"
-                            data-aos-easing="ease-in-sine"
-                            data-aos-duration="1000">
+                        data-aos-easing="ease-in-sine"
+                        data-aos-duration="1000">
                         <span className="user">Efficiency</span>
                         <h2 className="heading mt-3"><span>Produce high quality </span>content efficiently</h2>
                     </div>
@@ -51,8 +50,8 @@ const MarketingEfficiency: React.FC = () => {
                         <div className="row justify-content-center">
                             {images.map((image, index) => (
                                 <div className="col-md-4" data-aos="fade-up"
-                                data-aos-easing="ease-in-sine"
-                                data-aos-duration="1000" key={index}>
+                                    data-aos-easing="ease-in-sine"
+                                    data-aos-duration="1000" key={index}>
                                     <div className="imgBlock" onClick={() => handleClick(index)}>
                                         <img src={image.src} alt={image.description} />
                                         <p>{image.description}</p>
@@ -64,15 +63,14 @@ const MarketingEfficiency: React.FC = () => {
                 </div>
             </div>
 
-            {/* Bootstrap Modal */}
             {showModal && (
-                <div className="modal show fade"  style={{ display: 'block', background:"#000000b0" }}>
+                <div className="modal show fade" style={{ display: 'block', background: "#000000b0" }}>
                     <div className="modal-dialog modal-xl modal-dialog-centered">
                         <div className="modal-content" data-aos="fade-up"
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
-                                <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
-                           
+                            <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
+
                             <div className="modal-body">
                                 <Swiper
                                     slidesPerView={1}
@@ -81,7 +79,7 @@ const MarketingEfficiency: React.FC = () => {
                                     speed={5000}
                                     pagination={{
                                         clickable: true,
-                                      }}
+                                    }}
                                     centeredSlides={true}
                                     modules={[Autoplay, Pagination]}
                                     className="mySwiper"

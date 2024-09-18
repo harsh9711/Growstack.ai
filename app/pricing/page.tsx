@@ -5,7 +5,6 @@ import HeroSection from "./components/HeroSection";
 import MainBox from "./components/MainBox";
 import PricingNew from "./components/PricingNew";
 import Footer from "@/components/footer/Footer";
-import "bootstrap/dist/css/bootstrap.min.css";
 
 const PricingPage: React.FC = () => {
   return (

@@ -10,7 +10,6 @@ import TestimonialsSlider from "./components/SwiperSlide";
 import LoadingBar from "./components/Loading";
 import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
 import ImageGalleryLineResponsive from "./components/ImageGallerylineresponsive";
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Footer from "@/components/footer/Footer";
 
 const page = () => {
@@ -422,7 +421,7 @@ const page = () => {
         </div>
         <MarketingStreamline />
       </section>
-      <Footer/>
+      <Footer />
     </main>
   );
 };

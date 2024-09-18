@@ -13,8 +13,6 @@ import LoadingBar from "./components/Loading";
 import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
 import Footer from "@/components/footer/Footer";
 import LoadingBarSecond from "./components/LoadingBar";
-import Banner from "./banner/Banner";
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 const page = () => {
   useEffect(() => {

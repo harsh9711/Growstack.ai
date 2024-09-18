@@ -3,8 +3,7 @@ import Image from "next/image";
 import Navbar from "@/components/navbar/Navbar";
 import HeroSection from "./components/HeroSection";
 import ContentBox from "./components/Box";
-import { tos } from "../../privacyPolicy"; 
-import "bootstrap/dist/css/bootstrap.min.css";
+import { tos } from "../../privacyPolicy";
 import Footer from "@/components/footer/Footer";
 
 const TosPage: React.FC = () => {

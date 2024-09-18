@@ -13,27 +13,25 @@ import VideoCreated from "@/components/textToVideoAndProductAi/videoCreated/Vide
 import VideoSolution from "@/components/textToVideoAndProductAi/VideoSolution/VideoSolution";
 import VideoTemplate from "@/components/textToVideoAndProductAi/videoTemplate/VideoTemplate";
 import React from "react";
-// I commented this bootstrapp CDN because of conflicting styles with tailwindcss, NB: I'll uncomment it as soon as reliable solution is found
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Page() {
-  return (
-    <React.Fragment>
-      <Navbar />
-      <Banner />
-      <VideoSolution />
-      <ElevateBrand />
-      <VideoCreated />
-      <VideoTemplate />
-      <AiProduct />
-      <AiSlider />
-      <CoreProduct />
-      <Editing />
-      {/* <CustomerStories />  */}
-      <Faqs />
-      <Footer />
-    </React.Fragment>
-  );
+    return (
+        <React.Fragment>
+            <Navbar />
+            <Banner />
+            <VideoSolution />
+            <ElevateBrand />
+            <VideoCreated />
+            <VideoTemplate />
+            <AiProduct />
+            <AiSlider />
+            <CoreProduct />
+            <Editing />
+            {/* <CustomerStories />  */}
+            <Faqs />
+            <Footer />
+        </React.Fragment>
+    );
 }
 
 export default Page;
