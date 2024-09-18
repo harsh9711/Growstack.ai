@@ -189,9 +189,9 @@ const PricingPage: React.FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 px-12">
+      <div>
         <div
-          className="relative overflow-y-auto bg-white w-full md:w-3xl md:max-h-[80%]  xl:max-h-[80%] h-full max-w-[1600px] mx-4 sm:mx-6 md:mx-8 lg:mx-auto rounded-2xl shadow-lg"
+          className="relative mx-auto mt-16 overflow-y-auto bg-white w-full md:w-3xl md:max-h-[80%]  xl:max-h-[80%] h-full max-w-[1600px] sm:mx-6 md:mx-8 lg:mx-auto rounded-2xl shadow-lg"
           data-aos="zoom-in"
           data-aos-duration="500"
           onClick={(e) => e.stopPropagation()}
@@ -220,12 +220,6 @@ const PricingPage: React.FC = () => {
                   className="border-[#034737]  gap-4 text-[#034737] flex-wrap w-full flex justify-center sm:justify-end"
                   data-aos="fade-left"
                 >
-                  <Link
-                    className="border-[#034737] flex items-center justify-between gap-2  border rounded-xl font-semibold text-[#034737] px-8 py-4 "
-
-                    href="/app" >
-                    Go to Dashboard
-                  </Link>
                   <button
                     onClick={handleLogout}
                     className="border-[#034737] flex items-center justify-between gap-2  border rounded-xl font-semibold text-[#034737] px-10 py-4 ">
@@ -284,12 +278,13 @@ const PricingPage: React.FC = () => {
                 <div
                   className="w-full"
                 >
-                  <div className="w-fit sm:w-full mx-auto flex-1 sm:flex justify-center item-center flex-col sm:flex-row  overflow-y-auto sm:overflow-y-hidden p-2 space-x-0 sm:space-x-3  space-y-3 sm:space-y-0 custom-scrollbar mt-2 sm:mt-1 ">
+                  <div className="w-fit sm:w-full gap-3 mx-auto flex-1 sm:flex justify-center item-center flex-col sm:flex-row  overflow-y-auto sm:overflow-y-hidden p-2 space-x-0 sm:space-x-3  space-y-3 sm:space-y-0 custom-scrollbar mt-2 sm:mt-1 ">
                     {filteredPlans.map((plan, idx) => (
                       <PlanCard
                         key={idx}
                         plan={plan}
                         selectedTabIndex={selectedTabIndex}
+                        isUpgradePlan={true}
                       />
                     ))}
                   </div>
