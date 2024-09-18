@@ -214,10 +214,14 @@ const PricingPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div
+      style={{
+        zoom: "0.75"
+      }}
+      className="flex flex-col min-h-screen">
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 px-12">
         <div
-          className="relative overflow-y-auto bg-white w-full md:w-3xl md:max-h-[80%]  xl:max-h-[80%] h-full max-w-[1600px] mx-4 sm:mx-6 md:mx-8 lg:mx-auto rounded-2xl shadow-lg"
+          className="relative overflow-y-auto bg-white w-full md:w-3xl md:max-h-[70%]  xl:max-h-[70%] h-full max-w-[1600px] mx-4 sm:mx-6 md:mx-8 lg:mx-auto rounded-2xl shadow-lg"
           data-aos="zoom-in"
           data-aos-duration="500"
           onClick={(e) => e.stopPropagation()}
