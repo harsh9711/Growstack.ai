@@ -89,7 +89,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [isLoggedIn]);
 
   if (isCurrentPlanFetching || !isLoggedIn) {
-    return <Spinner />;
+    return null;
   }
 
 
