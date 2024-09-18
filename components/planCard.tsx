@@ -41,30 +41,7 @@ const PlanCard = ({
             toast.error("Please log in to select a plan");
             return;
         }
-        setLoading(true);
-        try {
-            const product = {
-                plan_id: plan.id,
-                plan_type: plan.title,
-                price_id: plan.stripe_price_id,
-            };
-
-            const response = await instance.post(
-                `${API_URL}/users/api/v1/payments/create-checkout-session`,
-                { product }
-            );
-            const { url } = response.data;
-            window.location.href = url;
-        } catch (error: any) {
-            if (error.response) {
-                toast.error(error.response.data.message || "An error occurred");
-            } else {
-                toast.error(error.message || "An error occurred");
-            }
-            console.error("Error creating checkout session:", error);
-        } finally {
-            setLoading(false);
-        }
+        setIsOpen(true);
     };
 
     const handleUpgradePlan = async () => {
@@ -72,8 +49,6 @@ const PlanCard = ({
             toast.error("Please log in to select a plan");
             return;
         }
-        setIsOpen(true);
-        return;
         setLoading(true);
         try {
             const product = {
@@ -213,7 +188,7 @@ const PlanCard = ({
                     </div>
                 </div>
             </GlobalModal>
-            <CouponModal isOpen={isOpen} setIsOpen={setIsOpen} />
+            <CouponModal isOpen={isOpen} loading={loading} plan={plan} setIsOpen={setIsOpen} setLoading={setLoading} />
         </>
 
     );
