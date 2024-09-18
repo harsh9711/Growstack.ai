@@ -17,7 +17,7 @@ import Cta from "@/components/home/cta/Cta";
 import Faqs from "@/components/home/faq/Faqs";
 import Facts from "/components/home/facts/facts";
 import Carousel from "../carousel/page";
-
+import Animation from "@/components/animation/page";
 function Page() {
     return (
         <React.Fragment>
@@ -29,7 +29,8 @@ function Page() {
             <Features />
             <Facts />
             <Carousel />
-            {/* <Marketing/> */}
+            <Animation/>   
+                  <Marketing/>
             <Premium />
             <Capability />
             <WhyChoose />
