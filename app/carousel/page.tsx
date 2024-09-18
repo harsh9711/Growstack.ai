@@ -48,7 +48,7 @@ const Carousel = () => {
             onMouseLeave={() => setHoveredIndex(null)}
             style={{ backgroundColor: item.bgcolor }}
             className={`p-4 flex ${hoveredIndex === index ? "flex-row" : "flex-col"
-              } max-w-${hoveredIndex === index ? "[300px]" : "[150px]"
+              } max-w-${hoveredIndex === index ? "[400px]" : "[150px]"
               } h-[220px] transition-all duration-300 ease-in-out gap-6 justify-between text-white w-full rounded-[20px]`}
           >
             <div className="flex flex-col gap-y-6 items-center justify-center">
@@ -121,11 +121,11 @@ const Carousel = () => {
             onMouseLeave={() => setHovered2Index(null)}
             style={{ backgroundColor: item.bgcolor }}
             className={`p-4 flex ${hovered2Index === index ? "flex-row" : "flex-col"
-              } max-w-${hovered2Index === index ? "[300px]" : "[150px]"
+              } max-w-${hovered2Index === index ? "[400px]" : "[150px]"
               } h-[220px] transition-all duration-300 ease-in-out gap-6 justify-between text-white w-full rounded-[20px]`}
           >
-            <div className="flecarosuellandingx flex-col gap-y-6 items-center cursor-pointer justify-center">
-              <div className="max-w-[92px] w-full">
+            <div className="flex flex-col gap-y-6 items-center justify-center">
+              <div className="max-w-[92px] w-full cursor-pointer">
                 <Image
                   src={item.imageUrl}
                   width={100}
@@ -136,7 +136,6 @@ const Carousel = () => {
               </div>
               {hovered2Index === index && (
                 <Link href={item.href}>
-                  {" "}
                   <svg
                     width="21"
                     height="16"
@@ -160,7 +159,7 @@ const Carousel = () => {
             >
               <h2
                 style={{ color: item.textcolor }}
-                className="text-[20px]  text-center font-semibold"
+                className="text-[20px] text-center  font-semibold"
               >
                 {item.name}
               </h2>
