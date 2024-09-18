@@ -8,14 +8,13 @@ import { Feature } from "@/types/Box";
 import toast from "react-hot-toast";
 import { API_URL } from "@/lib/api";
 import Link from "next/link";
-import { Plan, UserPlan } from "@/types/common";
+import { Plan } from "@/types/common";
 import { PlanName } from "@/types/enums";
 import PlanSkeleton from "@/components/skeletons/PlanSkeleton";
 import { deleteCookie, getCookie } from "cookies-next";
 import { LogOut } from "lucide-react";
 import { useDispatch } from "react-redux";
-import { getCurrentUser } from "@/lib/features/auth/auth.selector";
-import { logout, setPlanLoading, setUserPlan } from "@/lib/features/auth/auth.slice";
+import { logout } from "@/lib/features/auth/auth.slice";
 import PlanCard from "@/components/planCard";
 
 const PricingPage: React.FC = () => {
@@ -35,7 +34,6 @@ const PricingPage: React.FC = () => {
   const [plans, setPlans] = useState<Feature[]>([]);
 
   const dispatch = useDispatch();
-  const currentUser = getCurrentUser();
   const [hasRefreshed, setHasRefreshed] = useState(false);
 
   useLayoutEffect(() => {
@@ -59,30 +57,6 @@ const PricingPage: React.FC = () => {
     setDistanceFromLeft(percentage);
   }, [tabQueryParam]);
 
-  const fetchPlanUsage = async () => {
-    try {
-      dispatch(setPlanLoading(true));
-      const response = (await instance.get(`${API_URL}/users/api/v1/plan-usage`)).data;
-      const userCurrentPlan: UserPlan = response.data;
-      dispatch(setUserPlan(userCurrentPlan));
-    } catch (error: any) {
-      if (error.response) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error(error.message);
-      }
-      console.error('Error fetching plan usage:', error);
-    } finally {
-      dispatch(setPlanLoading(false));
-    }
-  };
-
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      fetchPlanUsage();
-    }
-  }, [isLoggedIn])
 
   useEffect(() => {
     const fetchPlans = async () => {
@@ -309,9 +283,6 @@ const PricingPage: React.FC = () => {
               ) : (
                 <div
                   className="w-full"
-                  style={{
-                    containerType: "inline-size",
-                  }}
                 >
                   <div className="w-fit sm:w-full mx-auto flex-1 sm:flex justify-center item-center flex-col sm:flex-row  overflow-y-auto sm:overflow-y-hidden p-2 space-x-0 sm:space-x-3  space-y-3 sm:space-y-0 custom-scrollbar mt-2 sm:mt-1 ">
                     {filteredPlans.map((plan, idx) => (

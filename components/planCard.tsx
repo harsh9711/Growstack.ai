@@ -88,7 +88,7 @@ const PlanCard = ({
                 </h2>
 
                 <p
-                    className="px-8 opacity-60 w-full max-w-[450px] mx-auto"
+                    className="px-8 opacity-60 w-full mx-auto"
                 >
                     {plan.description}
                 </p>
@@ -113,20 +113,20 @@ const PlanCard = ({
                 {isCurrentPlan ? (
                     <div className="flex gap-2 flex-col w-full">
                         <button
-                            className="bg-gray-300 text-gray-500 cursor-not-allowed rounded-xl py-4 max-w-[405px] w-full"
+                            className="bg-gray-300 text-gray-500 cursor-not-allowed rounded-xl py-4 w-full"
                             disabled
                         >
                             Current Plan
                         </button>
                         <Link
-                            className={` ${plan.buttonStyle}  text-center  group-hover:bg-[#034737] items-center justify-center mx-auto border-[#034737] rounded-xl py-4 max-w-[405px] w-full transition-all duration-300 hover:bg-[#034737] hover:text-white`}
+                            className={` ${plan.buttonStyle}  text-center  group-hover:bg-[#034737] items-center justify-center mx-auto border-[#034737] rounded-xl py-4 w-full transition-all duration-300 hover:bg-[#034737] hover:text-white`}
                             href="/app" >
                             Go to Dashboard
                         </Link>
                     </div>
                 ) : (
                     <button
-                        className={` ${plan.buttonStyle} group-hover:bg-[#034737] items-center justify-center mx-auto border-[#034737] rounded-xl py-4 max-w-[405px] w-full transition-all duration-300 hover:bg-[#034737] hover:text-white`}
+                        className={` ${plan.buttonStyle} group-hover:bg-[#034737] items-center justify-center mx-auto border-[#034737] rounded-xl py-4  w-full transition-all duration-300 hover:bg-[#034737] hover:text-white`}
                         onClick={handleButtonClick}
                         disabled={loading}
                     >
