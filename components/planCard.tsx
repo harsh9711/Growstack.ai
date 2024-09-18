@@ -63,13 +63,8 @@ const PlanCard = ({
                 { product }
             );
 
-            const data = response.data;
-            if (data?.success) {
-                const response = (await instance.get(`${API_URL}/users/api/v1/plan-usage`)).data;
-                const userCurrentPlan: UserPlan = response.data;
-                dispatch(setUserPlan(userCurrentPlan));
-                setIsModalOpen(true);
-            }
+            const { redirectLink } = response.data;
+            window.location.href = redirectLink;
         } catch (error: any) {
             if (error.response) {
                 toast.error(error.response.data.message || "An error occurred");
