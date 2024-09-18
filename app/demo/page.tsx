@@ -425,7 +425,7 @@ const Demo = () => {
     <div>
       {" "}
       <Navbar />
-      <div className="p-4 2xl:p-0 max-w-[1280px] mt-6 flex flex-wrap w-full items-start mx-auto justify-between">
+      <div className="p-4 2xl:p-0 max-w-[1280px] mt-6 flex flex-wrap gap-6 w-full items-start mx-auto justify-between">
         <div className="relative z-20 flex flex-col gap-y-6 max-w-[543px] w-full">
           <h2 className="text-[48px]  font-bold text-black">
             Experience GrowStack in action
@@ -543,7 +543,7 @@ const Demo = () => {
                 <div className="border w-full border-[#E1E1E1]"></div>
               </div>
             </div>
-            <div className="flex flex-row w-full justify-between gap-12 group">
+            <div className="flex flex-row w-full justify-between lg:gap-12 md:gap-12 sm:gap-12 xl:gap-12 group">
               <svg
                 width="48"
                 height="48"
