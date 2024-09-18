@@ -10,6 +10,7 @@ export type Tool = {
   provider: string;
   subtype: string;
   event_execute: string;
+  thirdparty?: string
 };
 
 export const tools: Tool[] = [
@@ -6194,7 +6195,7 @@ export const tools: Tool[] = [
     preset_json: {
       body: [
         {
-          variable_type: "SHORT_TEXT_AREA",
+          variable_type: "SHORT_TEXT",
           variable_label: "title",
           variable_value: "",
           variable_values: "",
@@ -6208,21 +6209,21 @@ export const tools: Tool[] = [
           input_placeholder: "Generate a video about monkey doing a coding",
         },
         {
-          variable_type: "SHORT_TEXT_AREA",
+          variable_type: "SHORT_TEXT",
           variable_label: "audience",
           variable_value: "",
           variable_values: "",
           input_placeholder: "kids",
         },
         {
-          variable_type: "SHORT_TEXT_AREA",
+          variable_type: "SHORT_TEXT",
           variable_label: "tone",
           variable_value: "friendly",
           variable_values: "",
           input_placeholder: "kids",
         },
         {
-          variable_type: "SHORT_TEXT_AREA",
+          variable_type: "SHORT_TEXT",
           variable_label: "speaker",
           variable_value: "teacher",
           variable_values: "",
@@ -6230,20 +6231,20 @@ export const tools: Tool[] = [
         },
 
         {
-          variable_type: "SHORT_TEXT_AREA",
+          variable_type: "SHORT_TEXT",
           variable_label: "language",
           variable_value: "english",
           variable_values: "",
           input_placeholder: "",
         },
         {
-          variable_type: "SHORT_TEXT_AREA",
+          variable_type: "SHORT_TEXT",
           variable_label: "avatar_id",
           variable_value: "",
           variable_values: "",
         },
         {
-          variable_type: "SHORT_TEXT_AREA",
+          variable_type: "SHORT_TEXT",
           variable_label: "voice_id",
           variable_value: "",
           variable_values: "",
@@ -6301,5 +6302,238 @@ export const tools: Tool[] = [
     },
     event_execute: "postOnSocialMedia",
     role: ""
+  },
+  {
+    id: 130,
+    description: "Send a message on slack",
+    name: "Slack Message",
+    thirdparty: 'slack',
+    category: "Integrations",
+    icon: "/slack-new-logo.svg",
+    provider: "Slack",
+    subtype: "api",
+    socialMediaRequirement: false,
+    preset_json: {
+      body: [
+        {
+          variable_type: "SHORT_TEXT",
+          variable_label: "channel_id",
+          variable_value: "C0709BM497Z",
+          variable_values: "",
+        },
+        {
+          variable_type: "TEXT_AREA",
+          variable_label: "message",
+          variable_value: "Hello World",
+          variable_values: "",
+        },
+
+      ],
+    },
+    event_execute: "processSlackMessage",
+    role: "",
+  },
+  // {
+  //   id: 131,
+  //   description: "Create Google document",
+  //   name: "googlesheets",
+  //   category: "Integrations",
+  //   icon: "/google-sheets-icon.svg",
+  //   provider: "Google",
+  //   subtype: "api",
+  //   preset_json: {
+  //     body: {
+  //       inputs: [
+  //         {
+  //           variable_type: "SHORT_TEXT",
+  //           variable_label: "title",
+  //           variable_value: "Your doc title here",
+  //           variable_values: "",
+  //         },
+  //         {
+  //           variable_type: "TEXT_AREA",
+  //           variable_label: "message",
+  //           variable_value: "Here your content...",
+  //           variable_values: "",
+  //         },
+
+  //       ],
+  //     },
+  //   },
+  //   event_execute: "processCreateGoogleDoc",
+  //   role: "",
+  //   socialMediaRequirement: false,
+  // },
+  {
+    id: 133,
+    description: "Send a message on Whatsapp",
+    name: "Send WhatsApp Message",
+    thirdparty: 'whatsapp',
+    category: "Integrations",
+    icon: "/whatsapp.svg",
+    provider: "Whatsapp",
+    subtype: "api",
+    preset_json: {
+      body: [
+        {
+          variable_type: "TEXT_AREA",
+          variable_label: "to",
+          variable_value: "+91 9904785967",
+          variable_values: "",
+        },
+        {
+          variable_type: "TEXT_AREA",
+          variable_label: "message",
+          variable_value: "This is for testing workflow",
+          variable_values: "",
+        },
+
+      ],
+    },
+    event_execute: "processSendWhatsappMessage",
+    role: "",
+    socialMediaRequirement: false,
+  },
+  {
+    id: 134,
+    description: "Create Google document",
+    name: "Create Google Doc",
+    thirdparty: "googledocs",
+    category: "Integrations",
+    icon: "/google-docs.svg",
+    provider: "Google",
+    subtype: "api",
+    preset_json: {
+      body: [
+        {
+          variable_type: "SHORT_TEXT",
+          variable_label: "title",
+          variable_value: "Your doc title here",
+          variable_values: "",
+        },
+        {
+          variable_type: "TEXT_AREA",
+          variable_label: "message",
+          variable_value: "Here your content...",
+          variable_values: "",
+        },
+
+      ],
+    },
+    event_execute: "processCreateGoogleDoc",
+    role: "",
+    socialMediaRequirement: false,
+  },
+  {
+    id: 135,
+    description: "Send Email to anyone",
+    name: "Send Email",
+    thirdparty: 'gmail',
+    category: "Integrations",
+    icon: "/icons8-gmail.svg",
+    provider: "Google",
+    subtype: "api",
+    preset_json: {
+      body: [
+        {
+          variable_type: "SHORT_TEXT",
+          variable_label: "to",
+          variable_value: "recipient email address",
+          variable_values: "",
+        },
+        {
+          variable_type: "SHORT_TEXT",
+          variable_label: "subject",
+          variable_value: "Email subject",
+          variable_values: "",
+        },
+        {
+          variable_type: "TEXT_AREA",
+          variable_label: "message",
+          variable_value: "Here your message...",
+          variable_values: "",
+        },
+
+      ],
+    },
+    event_execute: "processSendGmail",
+    role: "",
+    socialMediaRequirement: false,
+  },
+  // as of now marking comment later need to add based on requriment
+  // {
+  //   id: 136,
+  //   description: "Send a message on salesforce",
+  //   name: "salesforce",
+  //   thirdparty: 'salesforce',
+  //   category: "Integrations",
+  //   icon: "/salesforce-2.svg",
+  //   provider: "Slack",
+  //   subtype: "api",
+  //   socialMediaRequirement: false,
+  //   preset_json: {
+  //     body: [
+  //       {
+  //         variable_type: "SHORT_TEXT",
+  //         variable_label: "channel_id",
+  //         variable_value: "C0709BM497Z",
+  //         variable_values: "",
+  //       },
+  //       {
+  //         variable_type: "TEXT_AREA",
+  //         variable_label: "message",
+  //         variable_value: "Hello World",
+  //         variable_values: "",
+  //       },
+
+  //     ],
+  //   },
+  //   event_execute: "processSlackMessage",
+  //   role: "",
+  // },
+   {
+    id: 137,
+    thirdparty: 'facebookpages',
+    description: "Post Content on Facebok Page",
+    name: "Post On Facebook",
+    category: "Integrations",
+    icon: "/icons8-facebook.svg",
+    provider: "Fcebook",
+    subtype: "api",
+    preset_json: {
+      body: {
+        inputs: [
+         {
+          variable_type:"SHORT_TEXT",
+          variable_label: "message",
+          variable_value: "",
+          variable_values: "",
+         },
+    {
+          variable_type:"BOOLEAN",
+          variable_label: "publish",
+          variable_value: "",
+          variable_values: "",
+         },
+  {
+          variable_type:"SHORT_TEXT",
+          variable_label: "mediaUrl",
+          variable_value: "",
+          variable_values: "",
+         },
+  
+     {
+          variable_type:"DATE",
+          variable_label: "schedule",
+          variable_value: "",
+          variable_values: "",
+         },
+  
+        ],
+      },
+    }, 
+    event_execute: "processPostOnFacebook",
+    role: "",
+    socialMediaRequirement: false,
   },
 ];

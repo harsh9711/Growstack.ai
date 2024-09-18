@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { format, parseISO } from "date-fns";
 import { PlanName } from "@/types/enums";
+import { featureRouteMap } from "@/utils/constant";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -50,3 +51,60 @@ export const planIdsMap: Record<PlanName, string[]> = {
   [PlanName.BASIC]: ["grs/basic_plan", "grs/basic/yearly_planyrwjxt3Jh4i3iU"],
   [PlanName.ENTERPRISE]: ["enterprise_monthly_plan_id", "enterprise_yearly_plan_id"]
 };
+
+export const hasAccessToRoute = (currentPlanUsage: any, pathname: string): boolean => {
+  console.log(pathname, featureRouteMap);
+
+  let routeExistsInMap = false;
+
+  for (const feature in featureRouteMap) {
+    const routes = featureRouteMap[feature];
+
+    for (const route of routes) {
+      let matches = false;
+
+      if (route.partialMatch) {
+        const pathRegex = new RegExp(route.path.replace(/:[^\s/]+/g, '[^/]+'));
+        matches = pathRegex.test(pathname);
+      } else {
+        matches = route.path === pathname;
+      }
+
+      if (matches) {
+        routeExistsInMap = true;
+
+
+        if (route?.excepts) {
+          for (const except of route.excepts) {
+            console.log(except, pathname);
+
+            const ancestorPathRegex = new RegExp(`${except.ancestorRoute}(\\/[^/]+)?$`);
+
+            if (ancestorPathRegex.test(pathname)) {
+              for (const exceptPath of except.exceptPath) {
+                const exceptRegex = new RegExp(exceptPath.replace(/:[^\s/]+/g, '[^/]+'));
+
+                if (exceptRegex.test(pathname)) {
+                  return true;
+                }
+              }
+            }
+          }
+        }
+
+
+        if (currentPlanUsage[feature]) {
+          return true;
+        }
+      }
+    }
+  }
+
+  if (!routeExistsInMap) {
+    return true;
+  }
+
+  return false;
+};
+
+

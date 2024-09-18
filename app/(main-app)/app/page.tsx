@@ -45,9 +45,7 @@ export interface FavoriteAssistant {
 export default function Dashboard() {
   const dispatch = useDispatch();
   const [assistants, setAssistants] = useState<Assistant[]>([]);
-  const [favoriteAssistants, setFavoriteAssistants] = useState<
-    FavoriteAssistant[]
-  >([]);
+
   const [aiAppsloading, setAiAppsLoading] = useState(true);
   const [aiAssistantsloading, setAiAssistantsLoading] = useState(true);
   const currentUser = getCurrentUser();
@@ -89,43 +87,9 @@ export default function Dashboard() {
     }
   };
 
-  const fetchFavoriteAssistants = async () => {
-    try {
-      const response = await instance.get(
-        `${API_URL}/ai/api/v1/chat-template/fav-apps`
-      );
-      setFavoriteAssistants(response.data.data);
-    } catch (error: any) {
-      if (error.response) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error(error.message);
-      }
-      console.log(error);
-    } finally {
-      setAiAssistantsLoading(false);
-    }
-  };
 
-  const handleFavorite = async (method: string, templateId: string) => {
-    try {
-      const response = await instance.put(
-        API_URL + `/ai/api/v1/chat-template/fav-apps/${templateId}`,
-        { type: method }
-      );
-      toast.success(response.data.message);
-      setFavoriteAssistants((prevFavoriteApps) =>
-        prevFavoriteApps.filter((favApp) => favApp._id !== templateId)
-      );
-    } catch (error: any) {
-      if (error.response) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error(error.message);
-      }
-      console.error("Error:", error);
-    }
-  };
+
+
 
   const fetchSocialMediaProfile = async () => {
     try {
@@ -159,13 +123,12 @@ export default function Dashboard() {
     setAiAssistantsLoading(true);
     handleGetProfileData();
     fetchAssistants();
-    fetchFavoriteAssistants();
     fetchSocialMediaProfile();
   }, []);
 
 
   if (!hasRefreshed) {
-    return null; 
+    return null;
   }
 
 
@@ -216,11 +179,11 @@ export default function Dashboard() {
                   />
                   <h2 className="font-medium">AI chat</h2>
                 </div> */}
-                {/* <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
+            {/* <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
                   <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
                 </button>
               </div>
-            </Link> */} 
+            </Link> */}
             <Link href="/app/plan/ai-templates">
               <div
                 className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
