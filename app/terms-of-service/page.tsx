@@ -1,10 +1,10 @@
   import React from "react";
   import Image from "next/image";
   import Navbar from "@/components/navbar/Navbar";
-  import HeroSection from "./components/HeroSection";
-  import ContentBox from "./components/Box";
   import { tnc } from "../../privacyPolicy";import "bootstrap/dist/css/bootstrap.min.css";
 import Footer from "@/components/footer/Footer";
+import HeroSection from "./components/HeroSection";
+import ContentBox from "./components/Box";
 
   const Tnc: React.FC = () => {
     return (
@@ -18,9 +18,9 @@ import Footer from "@/components/footer/Footer";
           />
         </div>
         <HeroSection
-          title="Terms of services"
-          description="Lorem ipsum dolor sit amet consectetur. Morbi est at odio elementum ornare."
-          lastUpdatedDate="28-08-2024"
+          title="Terms of Service"
+          description=" Discover the terms that govern your use of Growstack's services and protect both parties' interests."
+          lastUpdatedDate="16-09-2024"
         />
         <section className="bg-white mt-20">
           <Image
