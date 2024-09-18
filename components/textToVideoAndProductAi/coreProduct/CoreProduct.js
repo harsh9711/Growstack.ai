@@ -51,7 +51,7 @@ function CoreProduct() {
                  data-aos-duration="1000"
                  ref={titleRef}>
               <span className="user">Core Features</span>
-              <h3 className="heading"><span>How to create </span>AI product photos</h3>
+              <h3 className="heading"><span>How to create </span>AI product backgrounds</h3>
             </div>
             <div className="contentBlock">
               <div className="row align-items-center">
