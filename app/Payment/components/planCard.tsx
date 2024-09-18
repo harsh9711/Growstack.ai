@@ -64,19 +64,15 @@ const PlanCard = ({
     return (
         <div
             className="items-center justify-center mx-auto w-full bg-[#F5F5F5] rounded-xl flex flex-col py-6  hover:scale-[102%]   border-transparent hover:shadow-lg hover:bg-white  transition-all duration-500 shadow-sm hover:border-[4px]"
-            data-aos="fade-up"
-            data-aos-delay="100"
         >
             <div className="text-center w-full flex flex-col">
                 <h2
                     className="px-8 text-[#000000] text-[20px] xl:text-[24px] font-extrabold"
-                    data-aos="fade-down"
                 >
                     {getUserFriendlyPlanName(plan.title as PlanName)}
                 </h2>
                 <h2
                     className="px-8 text-[24px] xl:text-[48px] text-center justify-center font-bold flex gap-2 items-center text-[#034737]"
-                    data-aos="fade-up"
                 >
                     $
                     {selectedTabIndex === 0
@@ -93,7 +89,6 @@ const PlanCard = ({
 
                 <p
                     className="px-8 opacity-60 w-full max-w-[450px] mx-auto"
-                    data-aos="fade-up"
                 >
                     {plan.description}
                 </p>
@@ -102,7 +97,8 @@ const PlanCard = ({
             <div className={`flex flex-col gap-y-2 px-4 ${marginBottom} w-full mb-6 overflow-y-auto  sm:h-[280px] sm:overflow-y-scroll`}>
                 {plan.featureList.map((feature, index) => (
                     <React.Fragment key={index}>
-                        <p className="flex text-[12px] xl:text-[18px] font-medium items-center gap-x-2" data-aos="fade-left">
+                        <p className="flex text-[12px] xl:text-[18px] font-medium items-center gap-x-2"
+                        >
                             <div>
                                 <span className="w-5 h-5 flex items-center justify-center">
                                     <Ticket />
