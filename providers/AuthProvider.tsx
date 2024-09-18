@@ -14,6 +14,7 @@ import GlobalModal from "@/components/modal/global.modal";
 import Link from "next/link";
 import Lock from "@/components/svgs/lock";
 import { hasAccessToRoute, planIdsMap } from "@/lib/utils";
+import { ALL_ROUTES } from "@/utils/constant";
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const isLoggedIn = !!getCookie("token");
@@ -110,7 +111,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           </button>
           <Link
             className="bg-primary-green text-white text-nowrap py-2 px-6 rounded-md transition duration-300 hover:bg-green-600"
-            href="/Payment">
+            href={isSubscribed ? ALL_ROUTES.UPGRADE : ALL_ROUTES.PAYMENT}>
             Upgrade Plan
           </Link>
         </div>
