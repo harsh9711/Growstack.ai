@@ -14,11 +14,11 @@ function Banner() {
                 <span className="user">Feature</span>
                 <h2 className="vtitle">
                   {" "}
-                  <span>Text to video &</span> <br />
-                  AI product
+                  <span>Text to avatar &</span> <br />
+                  AI background
                 </h2>
                 <p>
-                  Our innovative AI product seamlessly converts your written text into dynamic, engaging videos. Whether you're a marketer, educator, blogger,
+                  Our innovative AI features seamlessly converts your written text into dynamic, engaging videos. Whether you're a marketer, educator, blogger,
                   or business owner, our tool helps you bring your words to life, enhancing your communication and engagement with your audience.
                 </p>
                 <div className="btns reverse">

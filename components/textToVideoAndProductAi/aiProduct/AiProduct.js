@@ -49,7 +49,7 @@ function AiProduct() {
               <div className="col-md-7" data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-duration="1000">
                 <span className="user">From idea to video in minutes 🔥</span>
                 <h3 className="heading mt-2 mb-2 mb-md-0">
-                  <span>Product AI </span> photots
+                  <span>AI background generator </span>
                 </h3>
               </div>
               {/* <div className="col-md-5" data-aos="fade-left"
@@ -71,14 +71,14 @@ function AiProduct() {
                   <div className="content">
                     <h3>Explore diverse styles for your product</h3>
                     <p>
-                      Product AI's Photo Maker presents a spectrum of styles to craft compelling product photos. Our AI-generated backgrounds are incredibly
+                      AI background generator presents a spectrum of styles to craft compelling product photos. Our AI-generated backgrounds are incredibly
                       lifelike, offering hundreds of choices instantly. With dozens of styles at your fingertips, effortlessly find one that enhances your
                       brand's aesthetic. Craft stunning Product AI Photos that resonate with your brand using our intuitive AI image generator, available for
                       free!
                     </p>
                     <div className="btns">
                       <Link href="/auth/register" className="sheen">
-                        Create AI product photos{" "}
+                        Create AI product backgrounds{" "}
                         <svg width="21" height="16" viewBox="0 0 21 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M20.5061 8.70711C20.8966 8.31658 20.8966 7.68342 20.5061 7.29289L14.1421 0.928932C13.7516 0.538408 13.1184 0.538408 12.7279 0.928932C12.3374 1.31946 12.3374 1.95262 12.7279 2.34315L18.3848 8L12.7279 13.6569C12.3374 14.0474 12.3374 14.6805 12.7279 15.0711C13.1184 15.4616 13.7516 15.4616 14.1421 15.0711L20.5061 8.70711ZM0 9L19.799 9V7L0 7L0 9Z"
@@ -103,7 +103,7 @@ function AiProduct() {
                     </p>
                     <div className="btns">
                       <Link href="/auth/register" className="sheen">
-                        Create AI product photos{" "}
+                        Create AI backgrounds{" "}
                         <svg width="21" height="16" viewBox="0 0 21 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
                             d="M20.5061 8.70711C20.8966 8.31658 20.8966 7.68342 20.5061 7.29289L14.1421 0.928932C13.7516 0.538408 13.1184 0.538408 12.7279 0.928932C12.3374 1.31946 12.3374 1.95262 12.7279 2.34315L18.3848 8L12.7279 13.6569C12.3374 14.0474 12.3374 14.6805 12.7279 15.0711C13.1184 15.4616 13.7516 15.4616 14.1421 15.0711L20.5061 8.70711ZM0 9L19.799 9V7L0 7L0 9Z"
