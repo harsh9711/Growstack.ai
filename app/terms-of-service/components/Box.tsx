@@ -89,7 +89,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({
         data-aos="fade-up"
       >
         <h1 className="text-[16px] xl:text-[28px] font-bold mb-4">
-          1. Definations
+          1. Definitions
         </h1>
         <ul className="list-disc ml-6 text-[8px] xl:text-[14px] mb-4">
           <li className="mb-2">
