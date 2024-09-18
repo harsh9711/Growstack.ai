@@ -6317,7 +6317,7 @@ export const tools: Tool[] = [
       body: [
         {
           variable_type: "SHORT_TEXT",
-          variable_label: "channel_id",
+          variable_label: "channelName",
           variable_value: "C0709BM497Z",
           variable_values: "",
         },
@@ -6413,7 +6413,7 @@ export const tools: Tool[] = [
         },
         {
           variable_type: "TEXT_AREA",
-          variable_label: "message",
+          variable_label: "content",
           variable_value: "Here your content...",
           variable_values: "",
         },

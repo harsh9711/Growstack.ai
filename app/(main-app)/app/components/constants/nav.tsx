@@ -68,7 +68,7 @@ const navLinks: NavLink[] = [
       },
       {
         icon: <BotIcon />,
-        name: "AI secured chat",
+        name: "AI chat",
         href: "/app/plan/ai-chat",
       },
       {
