@@ -17,6 +17,7 @@ import { UserPlan } from "@/types/common";
 import { setUserPlan } from "@/lib/features/auth/auth.slice";
 import { useDispatch } from "react-redux";
 import CouponModal from "./modal/coupon.modal";
+import { ALL_ROUTES } from "@/utils/constant";
 
 const PlanCard = ({
     plan,
@@ -171,20 +172,19 @@ const PlanCard = ({
                 <div className="flex flex-col items-center justify-center px-6 pt-4 pb-8 gap-6 space-x-6">
                     <div className="text-center">
                         <h3 className="text-[28px] font-semibold text-green-600">Yay!</h3>
-                        <h4 className="text-[20px] font-medium text-gray-900 mt-2">Your plan is upgraded successfully</h4>
+                        <h4 className="text-[20px] font-medium text-gray-900 mt-2">Your plan is changed successfully</h4>
                     </div>
 
-                    <p className="text-center text-gray-600 text-sm md:text-base px-4">
+                    <p className="text-center text-gray-600 textnpm r-sm md:text-base px-4">
                         Enjoy our services with enhanced features and benefits. We're excited to have you onboard with the upgraded plan!
                     </p>
 
                     <div className="flex items-center justify-center">
-                        <button
-                            onClick={() => setIsModalOpen(false)}
-                            className="bg-[#034737] text-white px-6 py-3 rounded-lg shadow-md hover:bg-[#026b3a] transition-all duration-300"
-                        >
+                        <Link
+                            className="bg-primary-green no-underline text-white sheen transition duration-500 px-5 py-3 rounded-xl flex items-center gap-2"
+                            href={ALL_ROUTES.APP}>
                             Go to Dashboard
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </GlobalModal>

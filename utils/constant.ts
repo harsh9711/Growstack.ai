@@ -3,6 +3,7 @@ import { FeatureRouteMap } from "@/types/common";
 /* eslint-disable no-unused-vars */
 export enum ALL_ROUTES {
     ROOT = '/',
+    APP = '/app',
     PRICING = '/pricing',
     UPGRADE = '/Upgrade',
     PAYMENT = '/Payment',
