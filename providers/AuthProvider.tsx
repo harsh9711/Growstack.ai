@@ -15,6 +15,7 @@ import Link from "next/link";
 import Lock from "@/components/svgs/lock";
 import { hasAccessToRoute, planIdsMap } from "@/lib/utils";
 import { ALL_ROUTES } from "@/utils/constant";
+import Spinner2 from "@/components/Spinner2/Spinner2";
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const isLoggedIn = !!getCookie("token");
@@ -89,7 +90,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [isLoggedIn]);
 
   if (isCurrentPlanFetching || !isLoggedIn) {
-    return null;
+    return <Spinner2 />
   }
 
 
