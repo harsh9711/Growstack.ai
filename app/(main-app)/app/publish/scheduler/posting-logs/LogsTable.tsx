@@ -12,6 +12,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -45,6 +47,7 @@ export default function MultiPostsTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [postingLogs, setPostingLogs] = useState([]);
+  const router = useRouter();
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -180,6 +183,21 @@ export default function MultiPostsTable() {
           pagination.pageIndex + 1
         }`
       );
+      if(response?.data?.data?.length<1){
+        Swal.fire({
+          title: "Social Media Account Required",
+          text: `Please connect your social media account to proceed.`,
+          icon: "warning",
+          showCancelButton: false,
+          confirmButtonText: "Yes, connect now!",
+          cancelButtonText: "Cancel",
+          allowOutsideClick: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            router.push("/app/publish/scheduler/quick-posting/profiles");
+          }
+        });
+      }
       const logs = response?.data?.data?.history.map((log: any) => ({
         id: log.id,
         content: log.post,
@@ -189,7 +207,6 @@ export default function MultiPostsTable() {
       setPostingLogs(logs);
     } catch (error) {
       console.log("Error fetching posting logs:", error);
-      toast.error("Error fetching posting log");
     }
   };
 
