@@ -22,7 +22,7 @@ function Footer() {
                                 View Demo
                             </Link>
                             <Link href='/auth/register' className='sheen'>
-                                Get 14-day free trial
+                                Get 7-day free trial
                             </Link>
                         </div>
                     </div>
@@ -39,13 +39,16 @@ function Footer() {
                                 <h4>Company</h4>
                                 <ul>
                                     <li>
-                                        <Link href='/company'>About Us</Link>
+                                        <Link href='/company'>About us</Link>
                                     </li>
                                     <li>
                                         <Link href='/pricing'>Pricing</Link>
                                     </li>
                                     <li>
-                                        <Link href='/faq'>Faqs</Link>
+                                        <Link href='/faq'>FAQs</Link>
+                                    </li>
+                                    <li>
+                                        <Link href='/contact'>Contact us</Link>
                                     </li>
                                     <li>{/* <Link href="/auth/register">Get the App</Link> */}</li>
                                     <li>{/* <Link href="/auth/register">Blog</Link> */}</li>
@@ -80,10 +83,10 @@ function Footer() {
                                 <ul>
                                     <li>{/* <Link href="/auth/register">Support</Link> */}</li>
                                     <li>
-                                        <Link href='/terms-of-service'>Terms of Service</Link>
+                                        <Link href='/terms-of-service'>Terms of service</Link>
                                     </li>
                                     <li>
-                                        <Link href='/privacy-policy'>Privacy Policy</Link>
+                                        <Link href='/privacy-policy'>Privacy policy</Link>
                                     </li>
                                     <li>
                                         <Link href='/return-policy'>Refund & return policy</Link>
