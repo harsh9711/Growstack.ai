@@ -7,14 +7,12 @@ import toast from "react-hot-toast";
 import { API_URL } from "@/lib/api";
 import Ticket from "@/components/svgs/ticket";
 import { PlanName } from "@/types/enums";
-import { getUserFriendlyPlanName } from "@/lib/utils";
+import { getUserFriendlyPlanName, planIdsMap } from "@/lib/utils";
 import { getCookie } from "cookies-next";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import Link from "next/link";
 import GlobalModal from "./modal/global.modal";
-import { UserPlan } from "@/types/common";
-import { setUserPlan } from "@/lib/features/auth/auth.slice";
 import { useDispatch } from "react-redux";
 import CouponModal from "./modal/coupon.modal";
 import { ALL_ROUTES } from "@/utils/constant";
@@ -87,6 +85,8 @@ const PlanCard = ({
 
     const isCurrentPlan = currentPlan?.plan_id === plan.id;
 
+    const isBusinessPlan = planIdsMap.BUSINESS.some((val) => val === plan?.id);
+
     return (
         <>
             <div className="items-center justify-center mx-auto w-full bg-[#F5F5F5] rounded-xl flex flex-col py-6  hover:scale-[102%] border-transparent hover:shadow-lg hover:bg-white transition-all duration-500 shadow-sm hover:border-[4px]">
@@ -123,34 +123,45 @@ const PlanCard = ({
                     ))}
                 </div>
                 <div className="flex items-center justify-center w-full mt-auto px-3">
-                    {isCurrentPlan ? (
-                        <div className="flex gap-2 flex-col w-full">
+                    {
+                        isBusinessPlan ? (
                             <button
                                 className="bg-gray-300 text-gray-500 cursor-not-allowed rounded-xl py-4 w-full"
                                 disabled
                             >
-                                Current Plan
+                                Coming Soon
                             </button>
-                            <Link
-                                className={` ${plan.buttonStyle} text-center group-hover:bg-[#034737] items-center justify-center mx-auto border-[#034737] rounded-xl py-4 w-full transition-all duration-300 hover:bg-[#034737] hover:text-white`}
-                                href="/app"
-                            >
-                                Go to Dashboard
-                            </Link>
-                        </div>
-                    ) : (
-                        <button
-                            className={`  ${(loading || isDowngrade) && "cursor-not-allowed"} ${plan.buttonStyle} group-hover:bg-[#034737] items-center justify-center mx-auto border-[#034737] rounded-xl py-4 w-full transition-all duration-300 hover:bg-[#034737] hover:text-white`}
-                            onClick={isUpgradePlan ? handleUpgradePlan : handleSubscribePlan}
-                            disabled={loading || isDowngrade}
-                        >
-                            {loading ? (
-                                <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-white mx-auto"></div>
+                        ) :
+                            isCurrentPlan ? (
+                                <div className="flex gap-2 flex-col w-full">
+                                    <button
+                                        className="bg-gray-300 text-gray-500 cursor-not-allowed rounded-xl py-4 w-full"
+                                        disabled
+                                    >
+                                        Current Plan
+                                    </button>
+                                    <Link
+                                        className={` ${plan.buttonStyle} text-center group-hover:bg-[#034737] items-center justify-center mx-auto border-[#034737] rounded-xl py-4 w-full transition-all duration-300 hover:bg-[#034737] hover:text-white`}
+                                        href="/app"
+                                    >
+                                        Go to Dashboard
+                                    </Link>
+                                </div>
                             ) : (
-                                <h2>Select plan</h2>
-                            )}
-                        </button>
-                    )}
+                                <button
+                                    className={`  ${(loading || isDowngrade) && "cursor-not-allowed"} ${plan.buttonStyle} group-hover:bg-[#034737] items-center justify-center mx-auto border-[#034737] rounded-xl py-4 w-full transition-all duration-300 hover:bg-[#034737] hover:text-white`}
+                                    onClick={isUpgradePlan ? handleUpgradePlan : handleSubscribePlan}
+                                    disabled={loading || isDowngrade}
+                                >
+                                    {loading ? (
+                                        <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-white mx-auto"></div>
+                                    ) : (
+                                        <h2>Select plan</h2>
+                                    )}
+                                </button>
+                            )
+                    }
+
                 </div>
             </div>
             <GlobalModal open={isModalOpen} setOpen={() => { setIsModalOpen(false) }}>
