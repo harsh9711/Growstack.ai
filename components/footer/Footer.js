@@ -47,6 +47,9 @@ function Footer() {
                                     <li>
                                         <Link href='/faq'>Faqs</Link>
                                     </li>
+                                    <li>
+                                        <Link href='/demo'>Request Demo</Link>
+                                    </li>
                                     <li>{/* <Link href="/auth/register">Get the App</Link> */}</li>
                                     <li>{/* <Link href="/auth/register">Blog</Link> */}</li>
                                     <li>{/* <Link href="/auth/register">FAQ</Link> */}</li>
