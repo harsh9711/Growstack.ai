@@ -14,6 +14,7 @@ import { ChatResponse } from "@/types/common";
 import { planIdsMap } from "@/lib/utils";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
+import { ALL_ROUTES } from "@/utils/constant";
 
 interface ChatInputProps {
   onSend: (content: string, role: string) => void;
@@ -166,7 +167,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
 
         <Link
           className="bg-primary-green mt-3 text-nowrap text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2"
-          href='/Payment' >
+          href={ALL_ROUTES.UPGRADE} >
           Upgrade Your Plan
         </Link>
       </div>

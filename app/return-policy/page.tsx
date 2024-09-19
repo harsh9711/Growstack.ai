@@ -3,14 +3,14 @@ import Image from "next/image";
 import Navbar from "@/components/navbar/Navbar";
 import HeroSection from "./components/HeroSection";
 import ContentBox from "./components/Box";
-import { tnc } from "../../privacyPolicy";
+import { rrp } from "../../privacyPolicy"; // Importing the rrp data
 import Footer from "@/components/footer/Footer";
 
-const Tnc: React.FC = () => {
+const rrpPage: React.FC = () => {
+  // Renamed component to avoid naming conflict
   return (
-    <div className=" flex flex-col ">
+    <div className="flex flex-col">
       <div className="relative z-40">
-        {" "}
         <Navbar
           logoUrl="/white.png"
           logoAlt="Custom Logo"
@@ -18,9 +18,10 @@ const Tnc: React.FC = () => {
         />
       </div>
       <HeroSection
-        title="Terms of services"
-        description="Lorem ipsum dolor sit amet consectetur. Morbi est at odio elementum ornare."
-        lastUpdatedDate="28-08-2024"
+        title="Refund &
+return policy"
+        description="At GrowStack.ai, we prioritize customer satisfaction with a clear, fair, and flexible return & refund policy for all our digital products and services."
+        lastUpdatedDate="17-09-2024"
       />
       <section className="bg-white mt-20">
         <Image
@@ -29,17 +30,15 @@ const Tnc: React.FC = () => {
           height={100}
           alt="image"
           className="absolute -translate-y-40 z-0 w-full h-full"
-        />{" "}
-        <div className="max-w-[1000px] relative z-20 w-full justify-center items-center mx-auto ">
+        />
+        <div className="max-w-[1000px] relative z-20 w-full justify-center items-center mx-auto">
           <ContentBox
-            title={tnc.heading}
-            introduction={tnc.introduction}
-            content={tnc.content}
-            linksSection={tnc.links_section}
-            collectionOfInformation={tnc.collection_of_information}
-            howYourInformationMayBeUsed={
-              tnc.how_your_information_may_be_used
-            }
+            title={rrp.heading}
+            introduction={rrp.introduction}
+            content={rrp.content}
+            linksSections={rrp.links_sections}
+            linksSections2={rrp.links_sections2}
+            howYourInformationMayBeUsed={rrp.how_your_information_may_be_used}
           />
         </div>
         <Image
@@ -48,11 +47,11 @@ const Tnc: React.FC = () => {
           height={100}
           alt="image"
           className="absolute -translate-y-[1000px] z-0 w-full h-full"
-        />{" "}
+        />
       </section>
       <Footer />
     </div>
   );
 };
 
-export default Tnc;
+export default rrpPage;

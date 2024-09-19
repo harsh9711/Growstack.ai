@@ -135,11 +135,11 @@ export default function PlainTextOutputSection({ actions, inputConfigs, outputPa
       const textarea = textareaRef.current;
       const startPos = textarea.selectionStart;
       const endPos = textarea.selectionEnd;
-      const newDescription = params.value.substring(0, startPos) + `{$${subOption.name}}` + params.value.substring(endPos);
+      const newDescription = params.value.substring(0, startPos) + `{$` + `{${subOption.name}}}` + params.value.substring(endPos);
       updateParams({ value: newDescription });
   
       
-      const placeholderIndex = newDescription.indexOf(`{${subOption.name}}`);
+      const placeholderIndex = newDescription.indexOf(`{$` + `{${subOption.name}}}`);
   
       const totalPlaceholders = newDescription.split('{').length - 1;
   
