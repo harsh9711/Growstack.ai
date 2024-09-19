@@ -76,8 +76,6 @@ export const hasAccessToRoute = (currentPlanUsage: any, pathname: string): boole
 
         if (route?.excepts) {
           for (const except of route.excepts) {
-            console.log(except, pathname);
-
             const ancestorPathRegex = new RegExp(`${except.ancestorRoute}(\\/[^/]+)?$`);
 
             if (ancestorPathRegex.test(pathname)) {

@@ -39,7 +39,8 @@ const ChatInput: React.FC<ChatInputProps> = ({
   enableSecure = false,
   isLimitExceeded = false
 }) => {
-  const { currentPlan } = useSelector((rootState: RootState) => rootState.auth);
+  const { currentPlan, user } = useSelector((rootState: RootState) => rootState.auth);
+  const isSubscribed = user?.isSubscribed || false;
   const selectedLanguage = languageOptions[0].value;
   const [open, setOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -167,7 +168,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
 
         <Link
           className="bg-primary-green mt-3 text-nowrap text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2"
-          href={ALL_ROUTES.UPGRADE} >
+          href={isSubscribed ? ALL_ROUTES.UPGRADE : ALL_ROUTES.PAYMENT} >
           Upgrade Your Plan
         </Link>
       </div>
