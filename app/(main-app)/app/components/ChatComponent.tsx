@@ -29,9 +29,14 @@ type Message = {
 
 export default function ChatComponent() {
   const { currentPlan } = useSelector((rootState: RootState) => rootState.auth);
+
+  const filteredAiModelOptions = currentPlan && planIdsMap.BASIC.some((val) => val === currentPlan.plan_id)
+    ? aiModelOptions.filter(option => option.value.startsWith("claude"))
+    : aiModelOptions;
+  
   const [messages, setMessages] = useState<Message[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
-  const [selectedModel, setSelectedModel] = useState<string>("gpt-3.5-turbo");
+  const [selectedModel, setSelectedModel] = useState<string>(filteredAiModelOptions[0]?.value || "");
   const [secureChatEnabled, setSecureChatEnabled] = useState<boolean>(false)
   const [isDailyLimitExceeded, setIsDailyLimitExceeded] = useState(false)
   const [isDashboardChatModalOpen, setIsDashboardChatModalOpen] = useState(false);
@@ -137,9 +142,7 @@ export default function ChatComponent() {
 
   const currentUser = getCurrentUser();
 
-  const filteredAiModelOptions = currentPlan && planIdsMap.BASIC.some((val) => val === currentPlan.plan_id)
-    ? aiModelOptions.filter(option => option.value.startsWith("claude"))
-    : aiModelOptions;
+  
 
   return (
     <div className=" flex flex-col bg-white p-10 pt-8 rounded-3xl border border-[#E8E8E8] h-[780px]" data-aos="fade-up">

@@ -26,7 +26,7 @@ export default function Login() {
 
       dispatch(login(userData));
 
-      if (userData.isSubscribed === "false") {
+      if (!userData.isSubscribed) {
         router.push("/Payment");
       } else if (userData.isSubscribed === "true" && userData.isExpired === "true") {
         router.push("/account/billings/settings/due");
@@ -41,7 +41,7 @@ export default function Login() {
         toast.error(error.message);
       }
       console.error("Login failed:", error);
-    } 
+    }
   };
 
   useEffect(() => {
