@@ -4,6 +4,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface AuthState {
   isAuthenticated: boolean;
   user: any;
+  isUserFetching: boolean;
   isCurrentPlanFetching: boolean;
   currentPlan: UserPlan | null;
 }
@@ -11,7 +12,8 @@ interface AuthState {
 const initialState: AuthState = {
   isAuthenticated: false,
   user: null,
-  isCurrentPlanFetching : false,
+  isUserFetching: false,
+  isCurrentPlanFetching: false,
   currentPlan: {} as UserPlan
 };
 
@@ -30,11 +32,14 @@ const authSlice = createSlice({
     setUserPlan: (state, action: PayloadAction<UserPlan | null>) => {
       state.currentPlan = action.payload;
     },
-    setPlanLoading:(state, action: PayloadAction<boolean>) => {
+    setPlanLoading: (state, action: PayloadAction<boolean>) => {
       state.isCurrentPlanFetching = action.payload;
+    },
+    setUserLoading: (state, action: PayloadAction<boolean>) => {
+      state.isUserFetching = action.payload;
     }
   },
 });
 
-export const { login, logout, setUserPlan, setPlanLoading } = authSlice.actions;
+export const { login, logout, setUserPlan, setPlanLoading, setUserLoading } = authSlice.actions;
 export default authSlice.reducer;
