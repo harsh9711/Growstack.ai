@@ -21,6 +21,8 @@ import {
 } from "@/components/ui/table";
 import { API_URL } from "@/lib/api";
 import { ALL_ROUTES } from "@/utils/constant";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
 
 const VideoTable: React.FC<{
   videos: Array<{
@@ -34,6 +36,8 @@ const VideoTable: React.FC<{
   onRemove: (id: string) => void;
   onPreview: (url: string) => void;
 }> = ({ videos, onRemove, onPreview }) => {
+  const { user } = useSelector((rootState: RootState) => rootState.auth);
+  const isSubscribed = user?.isSubscribed || false;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentVideoId, setCurrentVideoId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -98,7 +102,7 @@ const VideoTable: React.FC<{
 
       if (data.usage_amount === 0) {
         toast.error('Trial expired');
-        window.location.href = ALL_ROUTES.UPGRADE;
+        window.location.href = isSubscribed ? ALL_ROUTES.UPGRADE : ALL_ROUTES.PAYMENT
       }
     } catch (error: any) {
       if (error.response) {

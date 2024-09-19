@@ -16,6 +16,9 @@ import { LogOut } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { logout } from "@/lib/features/auth/auth.slice";
 import PlanCard from "@/components/planCard";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
+import { ALL_ROUTES } from "@/utils/constant";
 
 const PricingPage: React.FC = () => {
   const isLoggedIn = !!getCookie("token");
@@ -25,6 +28,7 @@ const PricingPage: React.FC = () => {
   }, []);
 
   const [isLoading, setIsLoading] = useState(true);
+  const { user } = useSelector((rootState: RootState) => rootState.auth);
   const router = useRouter();
   const tabs = ["Monthly billing", "Yearly billing"];
   const searchParams = useSearchParams();
@@ -57,6 +61,13 @@ const PricingPage: React.FC = () => {
     setDistanceFromLeft(percentage);
   }, [tabQueryParam]);
 
+  useEffect(() => {
+    if (user) {
+      if (!user?.isSubscribed) {
+        router.replace(ALL_ROUTES.PAYMENT)
+      }
+    }
+  }, [user])
 
   useEffect(() => {
     const fetchPlans = async () => {
