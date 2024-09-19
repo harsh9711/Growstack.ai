@@ -227,7 +227,7 @@ const OverViewSection = () => {
 };
 
 export default function SettingsPage() {
-  const { currentPlan, isCurrentPlanFetching } = useSelector((rootState: RootState) => rootState.auth);
+  const { user, currentPlan, isCurrentPlanFetching } = useSelector((rootState: RootState) => rootState.auth);
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
   const tabs = ["Overview", "Billing history"];
@@ -308,14 +308,18 @@ export default function SettingsPage() {
         </div>{" "}
         <div className="flex flex-row gap-x-6 items-end">
           <AddCreditDialog />
-          <button
-            className={`w-full max-w-fit text-[12px] xl:text-[18px] h-12 px-4 py-2 xl:py-3 rounded-xl flex gap-3 bg-white border-red-500 border hover:font-semibold hover:border-2 text-red-500 sheen transition-all duration-300 ${cancelLoading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
-            onClick={handleCancelSubscription}
-            disabled={cancelLoading} // Disable button while canceling
-          >
-            {cancelLoading ? "Canceling..." : "Cancel Subscription"}
-          </button>
+          {
+            user?.isSubscribed && (
+              <button
+                className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-white border-red-500 border hover:font-semibold hover:border-2 text-red-500 sheen transition-all duration-300 ${cancelLoading ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                onClick={handleCancelSubscription}
+                disabled={cancelLoading}
+              >
+                {cancelLoading ? 'Canceling...' : 'Cancel Subscription'}
+              </button>
+            )
+          }
         </div>
         {/* <div className="w-full max-w-[320px] bg-white shadow-2xl shadow-gray-200 px-3 py-2 rounded-xl">
           <div className="w-full flex relative">
