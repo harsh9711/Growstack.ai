@@ -7,6 +7,9 @@ import { API_URL } from '@/lib/api';
 import toast from 'react-hot-toast';
 import instance from '@/config/axios.config';
 import Link from 'next/link';
+import { ALL_ROUTES } from '@/utils/constant';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/lib/store';
 
 // Define the PlanUsage type
 interface PlanUsage {
@@ -18,6 +21,8 @@ interface PlanUsage {
 export default function AddCreditDialog() {
   const [amount, setAmount] = useState<number | ''>(0); // Allow '' to handle empty state
   const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
+  const { user } = useSelector((rootState: RootState) => rootState.auth);
+  const isSubscribed = user?.isSubscribed || false;
   const [loading, setLoading] = useState<boolean>(true);
   const [cancelLoading, setCancelLoading] = useState<boolean>(false); // Add state for cancel button loading
   const fetchPlanUsage = async () => {
@@ -91,7 +96,9 @@ export default function AddCreditDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Link href="/Payment">
+        <Link
+          href={isSubscribed ? ALL_ROUTES.UPGRADE : ALL_ROUTES.PAYMENT}
+        >
           <button
             className={`w-full max-w-fit text-[12px] xl:text-[18px] h-12 px-4 py-2 xl:py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300 ${cancelLoading ? 'opacity-50 cursor-not-allowed' : ''
               }`}

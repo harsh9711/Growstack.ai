@@ -39,8 +39,14 @@ import { useRouter } from "next-nprogress-bar";
 import clsx from "clsx";
 import "@/styles/profile.css";
 import { FaMoneyBill1 } from "react-icons/fa6";
+import { PlanIcon } from "@/components/svgs";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
+import { getUserFriendlyPlanName } from "@/lib/utils";
+import { PlanName } from "@/types/enums";
 
 export default function ProfilePage() {
+  const { currentPlan, isCurrentPlanFetching } = useSelector((rootState: RootState) => rootState.auth);
   const router = useRouter();
   const dispatch = useDispatch();
   const currentUser = getCurrentUser();
@@ -221,8 +227,8 @@ export default function ProfilePage() {
     if (title === "Delete Account") handleDeleteProfile();
     if (title === "Change password") setChangePasswordEnable(true);
     if (title === "View profile") setChangePasswordEnable(false);
-    if (title === "Billing"){
-      window.location.href='/account/billings/settings'
+    if (title === "Billing") {
+      window.location.href = '/account/billings/settings'
     }
 
   };
@@ -324,10 +330,22 @@ export default function ProfilePage() {
           className="w-full !bg-white shadow-box p-10 rounded-xl flex flex-col"
         >
           <div className="flex-1">
-            <h1 className="border-b pb-4 flex items-center gap-3 font-semibold text-xl">
-              <Edit size={20} />
-              Edit your profile
-            </h1>
+            <div className="flex w-full border-b justify-between">
+              <h1 className=" pb-4 flex items-center gap-3 font-semibold text-xl">
+                <Edit size={20} />
+                Edit your profile
+              </h1>
+              {
+                !isCurrentPlanFetching || !currentPlan ? <>
+                  <div className="flex gap-x-2 items-center" >
+                    <PlanIcon />
+                    {getUserFriendlyPlanName(currentPlan?.plan_name! as PlanName)} Plan
+                  </div>
+                </> : (
+                  <Spinner color="#000" />
+                )
+              }
+            </div>
             <div>
               <div className="grid grid-cols-2 gap-x-5 gap-y-6 mt-6">
                 <div className="space-y-3 w-full">

@@ -96,6 +96,8 @@ export interface UserPlan {
   _id: string;
   plan_id: string;
   user_id: string;
+  plan_name: string;
+  plan_amount: number;
   ai_background_generator_cost: number;
   usage_expiry_date: string;
   no_of_messages: number;

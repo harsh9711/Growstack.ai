@@ -16,6 +16,8 @@ import GlobalModal from "./modal/global.modal";
 import { UserPlan } from "@/types/common";
 import { setUserPlan } from "@/lib/features/auth/auth.slice";
 import { useDispatch } from "react-redux";
+import CouponModal from "./modal/coupon.modal";
+import { ALL_ROUTES } from "@/utils/constant";
 
 const PlanCard = ({
     plan,
@@ -26,6 +28,7 @@ const PlanCard = ({
     selectedTabIndex: number;
     isUpgradePlan?: boolean
 }) => {
+    const [isOpen, setIsOpen] = useState(false);
     const { currentPlan } = useSelector((rootState: RootState) => rootState.auth);
     const dispatch = useDispatch();
 
@@ -38,30 +41,7 @@ const PlanCard = ({
             toast.error("Please log in to select a plan");
             return;
         }
-        setLoading(true);
-        try {
-            const product = {
-                plan_id: plan.id,
-                plan_type: plan.title,
-                price_id: plan.stripe_price_id,
-            };
-
-            const response = await instance.post(
-                `${API_URL}/users/api/v1/payments/create-checkout-session`,
-                { product }
-            );
-            const { url } = response.data;
-            window.location.href = url;
-        } catch (error: any) {
-            if (error.response) {
-                toast.error(error.response.data.message || "An error occurred");
-            } else {
-                toast.error(error.message || "An error occurred");
-            }
-            console.error("Error creating checkout session:", error);
-        } finally {
-            setLoading(false);
-        }
+        setIsOpen(true);
     };
 
     const handleUpgradePlan = async () => {
@@ -82,13 +62,8 @@ const PlanCard = ({
                 { product }
             );
 
-            const data = response.data;
-            if (data?.success) {
-                const response = (await instance.get(`${API_URL}/users/api/v1/plan-usage`)).data;
-                const userCurrentPlan: UserPlan = response.data;
-                dispatch(setUserPlan(userCurrentPlan));
-                setIsModalOpen(true);
-            }
+            const { redirectLink } = response.data;
+            window.location.href = redirectLink;
         } catch (error: any) {
             if (error.response) {
                 toast.error(error.response.data.message || "An error occurred");
@@ -104,22 +79,22 @@ const PlanCard = ({
     const suffix = selectedTabIndex === 0 ? "/mo" : "/yr";
     const marginBottom = plan.title === "INFLUENCER" ? "mb-20" : "mb-4";
 
+    const isDowngrade = isUpgradePlan && currentPlan && (
+        (selectedTabIndex === 0 && parseFloat(plan.monthlyPrice!) < currentPlan.plan_amount) ||
+        (selectedTabIndex === 1 && parseFloat(plan.yearlyPrice!) < currentPlan.plan_amount)
+    ) || false;
+
+
     const isCurrentPlan = currentPlan?.plan_id === plan.id;
 
     return (
         <>
-            <div
-                className="items-center justify-center mx-auto w-full bg-[#F5F5F5] rounded-xl flex flex-col py-6  hover:scale-[102%]   border-transparent hover:shadow-lg hover:bg-white  transition-all duration-500 shadow-sm hover:border-[4px]"
-            >
+            <div className="items-center justify-center mx-auto w-full bg-[#F5F5F5] rounded-xl flex flex-col py-6  hover:scale-[102%] border-transparent hover:shadow-lg hover:bg-white transition-all duration-500 shadow-sm hover:border-[4px]">
                 <div className="text-center w-full flex flex-col">
-                    <h2
-                        className="px-8 text-[#000000] text-[20px] xl:text-[24px] font-extrabold"
-                    >
+                    <h2 className="px-8 text-[#000000] text-[20px] xl:text-[24px] font-extrabold">
                         {getUserFriendlyPlanName(plan.title as PlanName)}
                     </h2>
-                    <h2
-                        className="px-8 text-[24px] xl:text-[48px] text-center justify-center font-bold flex gap-2 items-center text-[#034737]"
-                    >
+                    <h2 className="px-8 text-[24px] xl:text-[48px] text-center justify-center font-bold flex gap-2 items-center text-[#034737]">
                         $
                         {selectedTabIndex === 0
                             ? plan.monthlyPrice !== null && plan.monthlyPrice !== undefined
@@ -132,27 +107,19 @@ const PlanCard = ({
                             {suffix}
                         </span>
                     </h2>
-
-                    <p
-                        className="px-8 opacity-60 w-full mx-auto"
-                    >
+                    <p className="px-8 opacity-60 w-full mx-auto">
                         {plan.description}
                     </p>
                     <div className="border-[#B8B8B8] px-10 border w-full mt-4 mb-6"></div>
                 </div>
-                <div className={`flex flex-col gap-y-2 px-4 ${marginBottom} w-full mb-6 overflow-y-auto  sm:h-[280px] sm:overflow-y-scroll`}>
+                <div className={`flex flex-col gap-y-2 px-4 ${marginBottom} w-full mb-6 overflow-y-auto sm:h-[280px] sm:overflow-y-scroll`}>
                     {plan.featureList.map((feature, index) => (
-                        <React.Fragment key={index}>
-                            <p className="flex text-[12px] xl:text-[18px] font-medium items-center gap-x-2"
-                            >
-                                <div>
-                                    <span className="w-5 h-5 flex items-center justify-center">
-                                        <Ticket />
-                                    </span>
-                                </div>
-                                {feature}
-                            </p>
-                        </React.Fragment>
+                        <p className="flex text-[12px] xl:text-[18px] font-medium items-center gap-x-2" key={index}>
+                            <span className="w-5 h-5 flex items-center justify-center">
+                                <Ticket />
+                            </span>
+                            {feature}
+                        </p>
                     ))}
                 </div>
                 <div className="flex items-center justify-center w-full mt-auto px-3">
@@ -165,16 +132,17 @@ const PlanCard = ({
                                 Current Plan
                             </button>
                             <Link
-                                className={` ${plan.buttonStyle}  text-center  group-hover:bg-[#034737] items-center justify-center mx-auto border-[#034737] rounded-xl py-4 w-full transition-all duration-300 hover:bg-[#034737] hover:text-white`}
-                                href="/app" >
+                                className={` ${plan.buttonStyle} text-center group-hover:bg-[#034737] items-center justify-center mx-auto border-[#034737] rounded-xl py-4 w-full transition-all duration-300 hover:bg-[#034737] hover:text-white`}
+                                href="/app"
+                            >
                                 Go to Dashboard
                             </Link>
                         </div>
                     ) : (
                         <button
-                            className={` ${plan.buttonStyle} group-hover:bg-[#034737] items-center justify-center mx-auto border-[#034737] rounded-xl py-4  w-full transition-all duration-300 hover:bg-[#034737] hover:text-white`}
+                            className={`  ${(loading || isDowngrade) && "cursor-not-allowed"} ${plan.buttonStyle} group-hover:bg-[#034737] items-center justify-center mx-auto border-[#034737] rounded-xl py-4 w-full transition-all duration-300 hover:bg-[#034737] hover:text-white`}
                             onClick={isUpgradePlan ? handleUpgradePlan : handleSubscribePlan}
-                            disabled={loading}
+                            disabled={loading || isDowngrade}
                         >
                             {loading ? (
                                 <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-white mx-auto"></div>
@@ -185,31 +153,31 @@ const PlanCard = ({
                     )}
                 </div>
             </div>
-
             <GlobalModal open={isModalOpen} setOpen={() => { setIsModalOpen(false) }}>
                 <div className="flex flex-col items-center justify-center px-6 pt-4 pb-8 gap-6 space-x-6">
                     <div className="text-center">
                         <h3 className="text-[28px] font-semibold text-green-600">Yay!</h3>
-                        <h4 className="text-[20px] font-medium text-gray-900 mt-2">Your plan is upgraded successfully</h4>
+                        <h4 className="text-[20px] font-medium text-gray-900 mt-2">
+                            Your plan is changed successfully
+                        </h4>
                     </div>
-
-                    <p className="text-center text-gray-600 text-sm md:text-base px-4">
+                    <p className="text-center text-gray-600 md:text-base px-4">
                         Enjoy our services with enhanced features and benefits. We're excited to have you onboard with the upgraded plan!
                     </p>
-
                     <div className="flex items-center justify-center">
-                        <button
-                            onClick={() => setIsModalOpen(false)}
-                            className="bg-[#034737] text-white px-6 py-3 rounded-lg shadow-md hover:bg-[#026b3a] transition-all duration-300"
+                        <Link
+                            className="bg-primary-green no-underline text-white sheen transition duration-500 px-5 py-3 rounded-xl flex items-center gap-2"
+                            href={ALL_ROUTES.APP}
                         >
                             Go to Dashboard
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </GlobalModal>
+            <CouponModal isOpen={isOpen} loading={loading} plan={plan} setIsOpen={setIsOpen} setLoading={setLoading} />
         </>
-
     );
 };
 
 export default PlanCard;
+

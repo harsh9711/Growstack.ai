@@ -1,0 +1,25 @@
+.accordion-button::after {
+    display: block;
+    display: none !important; 
+    background-color: white;
+  }
+  
+  .rotate-180 {
+    transform: rotate(180deg); 
+  }
+  .accordion-button::before{
+    display: none !important; 
+    background-color: white;
+  }
+  .accordion-header:focus {
+    outline: none;
+  }
+  
+
+  .accordion-button:not(.collapsed){
+    background-color: transparent;
+    box-shadow: none;
+}
+.accordion-button:focus{
+    box-shadow: none;
+}

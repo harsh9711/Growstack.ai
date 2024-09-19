@@ -16,6 +16,9 @@ import { LogOut } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { logout } from "@/lib/features/auth/auth.slice";
 import PlanCard from "@/components/planCard";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
+import { ALL_ROUTES } from "@/utils/constant";
 
 const PricingPage: React.FC = () => {
   const isLoggedIn = !!getCookie("token");
@@ -25,6 +28,7 @@ const PricingPage: React.FC = () => {
   }, []);
 
   const [isLoading, setIsLoading] = useState(true);
+  const { user } = useSelector((rootState: RootState) => rootState.auth);
   const router = useRouter();
   const tabs = ["Monthly billing", "Yearly billing"];
   const searchParams = useSearchParams();
@@ -57,6 +61,13 @@ const PricingPage: React.FC = () => {
     setDistanceFromLeft(percentage);
   }, [tabQueryParam]);
 
+  useEffect(() => {
+    if (user) {
+      if (!user?.isSubscribed) {
+        router.replace(ALL_ROUTES.PAYMENT)
+      }
+    }
+  }, [user])
 
   useEffect(() => {
     const fetchPlans = async () => {
@@ -188,10 +199,14 @@ const PricingPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div
+      style={{
+        zoom: "0.75"
+      }}
+      className="flex flex-col min-h-screen">
       <div>
         <div
-          className="relative mx-auto mt-16 overflow-y-auto bg-white w-full md:w-3xl md:max-h-[80%]  xl:max-h-[80%] h-full max-w-[1600px] sm:mx-6 md:mx-8 lg:mx-auto rounded-2xl shadow-lg"
+          className="relative mx-auto mt-16 overflow-y-auto bg-white w-full md:w-3xl md:max-h-[70%]  xl:max-h-[70%] h-full max-w-[1600px] sm:mx-6 md:mx-8 lg:mx-auto rounded-2xl shadow-lg"
           data-aos="zoom-in"
           data-aos-duration="500"
           onClick={(e) => e.stopPropagation()}
