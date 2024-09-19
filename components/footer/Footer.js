@@ -41,7 +41,10 @@ function Footer() {
                                         <Link href='/company'>About Us</Link>
                                     </li>
                                     <li>
-                                        <Link href={ALL_ROUTES.PRICING}>Pricing</Link>
+                                        <Link href='/pricing'>Pricing</Link>
+                                    </li>
+                                    <li>
+                                        <Link href='/faq'>Faqs</Link>
                                     </li>
                                     <li>{/* <Link href="/auth/register">Get the App</Link> */}</li>
                                     <li>{/* <Link href="/auth/register">Blog</Link> */}</li>
