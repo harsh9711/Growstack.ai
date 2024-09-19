@@ -27,7 +27,7 @@ function Page() {
             <BusinessSolution />
             {/* <CustomerStories /> */}
             <Cta />
-            <Faqs />
+            {/* <Faqs /> */}
             <Footer />
         </React.Fragment>
     );

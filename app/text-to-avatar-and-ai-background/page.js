@@ -28,7 +28,7 @@ function Page() {
             <CoreProduct />
             <Editing />
             {/* <CustomerStories />  */}
-            <Faqs />
+            {/* <Faqs /> */}
             <Footer />
         </React.Fragment>
     );

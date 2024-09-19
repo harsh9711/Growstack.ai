@@ -19,7 +19,7 @@ function Page() {
                 <Partnership />
                 <SocialInteraction />
                 <Schedule />
-                <Faqs />
+                {/* <Faqs /> */}
                 <Footer />
             </div>
         </React.Fragment>

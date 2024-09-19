@@ -29,14 +29,14 @@ function Page() {
             <Features />
             <Facts />
             <Carousel />
-            <Animation/>   
-                  <Marketing/>
+            <Animation />
+            <Marketing />
             <Premium />
             <Capability />
             <WhyChoose />
             <FuturePlans />
             <Cta />
-            <Faqs />
+            {/* <Faqs /> */}
             <Footer />
         </React.Fragment>
     );

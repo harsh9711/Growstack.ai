@@ -19,7 +19,7 @@ function Page() {
                 <CraftBrand />
                 <UseCases />
                 <CoreFeatures />
-                <Faqs />
+                {/* <Faqs /> */}
                 <Footer />
             </div>
         </React.Fragment>
