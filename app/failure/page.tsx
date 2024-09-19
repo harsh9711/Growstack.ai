@@ -13,7 +13,7 @@ const PricingPage: React.FC = () => {
   useEffect(() => {
     AOS.init();
 
-    const isCredit = searchParams.get("isCredit") === "true";
+    const isCredit = searchParams.get("credit") === "true";
     const targetPage = isCredit ? "/app" : "/Payment";
 
     const timer = setInterval(() => {
