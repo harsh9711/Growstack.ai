@@ -15,6 +15,7 @@ interface ChatAreaType {
   conversation: Message[];
   awaitingUpdate: boolean;
   messages: Message[];
+  renderConversation: any;
 }
 
 const initialChat: ChatAreaType[] = [
@@ -25,6 +26,7 @@ const initialChat: ChatAreaType[] = [
     conversation: [],
     awaitingUpdate: false,
     messages: [],
+    renderConversation: {}
   },
   {
     id: 1,
@@ -33,6 +35,7 @@ const initialChat: ChatAreaType[] = [
     conversation: [],
     awaitingUpdate: false,
     messages: [],
+    renderConversation: {}
   },
 ];
 
@@ -56,6 +59,7 @@ export default function AiPlayground() {
         conversation: [],
         awaitingUpdate: false,
         messages: [],
+        renderConversation: {}
       },
     ]);
   };
@@ -92,6 +96,10 @@ export default function AiPlayground() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    // renderConversation()  
+  };
+
+  const renderConversation = async () => {
     if (userPrompt.trim() === "") return;
 
     const newMessage: Message = {
@@ -178,7 +186,7 @@ export default function AiPlayground() {
     }
 
     setUserPrompt("");
-  };
+  }
 
   return (
     <div className="flex-1 h-full flex flex-col mt-10 overflow-x-auto">
@@ -198,6 +206,7 @@ export default function AiPlayground() {
             conversation={chatArea.conversation}
             userPrompt={userPrompt}
             handleDelete={() => handleDelete(chatArea.id)}
+            renderConversation={renderConversation}
           />
         ))}
       </form>
