@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import SidebarItem from "./SidebarItem"; // Adjust the import path if necessary
 import instance from "@/config/axios.config";
 import {formatRelativeDate, timeDiffFromNow} from "@/utils/dateformate"
-
+import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 interface MessageData {
   senderId: string;
   message: string;
@@ -35,18 +36,35 @@ const MessageList = ({ onSelectMessage }: { onSelectMessage: (message: SidebarIt
   const [dataArray, setDataArray] = useState<DataArray[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  const router = useRouter();
   useEffect(() => {
     const fetchMessages = async () => {
       try {
         const response = await instance.get("/users/api/v1/social-media/profile/messages");
+        
         if (response.data.success) {
           setDataArray(response.data.data);
         } else {
           setError("Failed to fetch messages.");
         }
-      } catch (err) {
-        setError("An error occurred while fetching messages.");
+      } catch (err:any) {
+        if (err.response) {
+          if (err.response.data.message === "Please connect your social media account") {
+            Swal.fire({
+              title: "Social Media Account Required",
+              text: "Please connect your social media account to proceed.",
+              icon: "warning",
+              showCancelButton: false,
+              confirmButtonText: "Yes, connect now!",
+              cancelButtonText: "Cancel",
+              allowOutsideClick: false
+            }).then((result) => {
+              if (result.isConfirmed) {
+                router.push("/app/publish/scheduler/quick-posting/profiles");
+              }
+            });
+          }
+        } 
       } finally {
         setLoading(false);
       }
