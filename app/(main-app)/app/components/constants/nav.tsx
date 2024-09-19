@@ -184,7 +184,7 @@ const navLinks: NavLink[] = [
       {
         icon: <SettingsIcon />,
         name: "Settings",
-        href: "/app/engage/automation/settings",
+        href: "/app/publish/scheduler/settings",
       },
     ],
     title: "Publish",
