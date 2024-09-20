@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Accordion from "react-bootstrap/Accordion";
 import Navbar from "@/components/navbar/Navbar";
 import Image from "next/image";
 import "../../styles/customarrow.css";
@@ -269,37 +268,31 @@ const CustomAccordion = () => {
   ];
 
   return (
-    <Accordion
-      activeKey={activeKey}
-      className=" h-full w-full xl:w-[1330px] "
-      data-aos="fade-up"
-      data-aos-easing="ease-in-sine"
-      data-aos-duration="1000"
-    >
-      {items.map((item, index) => (
-        <Accordion.Item
-          key={index}
-          eventKey={index.toString()}
-          className=" mb-4 rounded-[20px] w-full xl:w-[1330px] overflow-hidden  bg-white "
-        >
-          <Accordion.Header
-            className={`flex text-[20px] max-w-[1330px]  rounded-[20px] flex-row font-bold items-center justify-between transition-all duration-200 w-full `}
-            onClick={() => handleToggle(index.toString())}
+    <div className="w-full h-full transition transform duration-1000 ease-linear">
+      {items.map((item, index) => {
+        const isActive = activeKey === index;
+
+        return (
+          <div
+            key={index}
+            className="mb-4 w-full   bg-white border text-[20px] rounded-[20px] font-bold items-start ease-in-out transition-transform duration-1000 cursor-pointer"
           >
-            <div className="rounded-[20px] flex flex-row leading-8 items-center w-full gap-20 justify-between">
+            <div
+              className={`flex flex-row w-full items-center p-4 justify-between cursor-pointer`}
+              onClick={() => handleToggle(index)}
+            >
               <div
-                className={`${
-                  activeKey === index.toString() ? "text-primary-green" : ""
+                className={`rounded-[20px] text-start flex flex-row leading-8 items-center w-full justify-between ${
+                  isActive ? "text-primary-green" : ""
                 }`}
               >
                 {item.header}
               </div>
+
               <div
-                className={`flex items-center justify-center border w-10 h-10 bg-${
-                  activeKey === index.toString() ? "primary-green" : "white"
-                } rounded-full transition-transform transform ${
-                  activeKey === index.toString() ? "rotate-180 " : "-rotate-90"
-                }`}
+                className={`flex ease-in-out transition-transform duration-300 items-center justify-center border w-12 h-12 bg-${
+                  isActive ? "primary-green" : "white"
+                } rounded-full ${isActive ? "-rotate-180" : "rotate-75"}`}
               >
                 <svg
                   width="20"
@@ -310,9 +303,7 @@ const CustomAccordion = () => {
                 >
                   <path
                     d="M1.85156 1.93066L10.0003 10.0426L18.1491 1.93066"
-                    stroke={`${
-                      activeKey === index.toString() ? "white" : "#034737"
-                    } `}
+                    stroke={isActive ? "white" : "#034737"}
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -320,13 +311,20 @@ const CustomAccordion = () => {
                 </svg>
               </div>
             </div>
-          </Accordion.Header>
-          <Accordion.Body className="rounded-[20px] border-b-8 max-w-[1330px] border-[#D9D9D9] p-4   w-full font-normal text-[18px] text-gray-700 bg-white">
-            {item.body}
-          </Accordion.Body>
-        </Accordion.Item>
-      ))}
-    </Accordion>
+
+            <div
+              className={`overflow-hidden transition-all duration-700 ease-linear ${
+                isActive ? "max-h-40" : "max-h-0"
+              }`}
+            >
+              <div className="rounded-[20px] border-b-8 border-[#D9D9D9] p-4  w-full font-normal text-[18px] text-gray-700 bg-white">
+                {item.body}
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
   );
 };
 
@@ -545,7 +543,7 @@ const Contact = () => {
                     className="transition-colors duration-300 group-hover:fill-[#034737]"
                   />
                   <path
-                   className=" transition-colors duration-300  group-hover:stroke-[#ffffff]"
+                    className=" transition-colors duration-300  group-hover:stroke-[#ffffff]"
                     d="M21.5417 18.833H28.375L31.7917 27.3747L27.5208 29.9372C29.3504 33.6469 32.3528 36.6493 36.0625 38.4788L38.625 34.208L47.1667 37.6247V44.458C47.1667 46.345 45.637 47.8747 43.75 47.8747C29.9597 47.0366 18.963 36.0399 18.125 22.2497C18.125 20.3627 19.6547 18.833 21.5417 18.833"
                     stroke="black"
                     stroke-width="1.5"
@@ -597,19 +595,25 @@ const Contact = () => {
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <rect width="66" height="66" rx="10" fill="#F3F3F3" className="transition-colors duration-300 group-hover:fill-[#034737]" />
+                  <rect
+                    width="66"
+                    height="66"
+                    rx="10"
+                    fill="#F3F3F3"
+                    className="transition-colors duration-300 group-hover:fill-[#034737]"
+                  />
                   <circle
                     cx="32.75"
                     cy="31.1875"
                     r="4.6875"
-                         className=" transition-colors duration-300  group-hover:stroke-[#ffffff]"
+                    className=" transition-colors duration-300  group-hover:stroke-[#ffffff]"
                     stroke="#14171B"
                     stroke-width="1.5"
                     stroke-linecap="round"
                     stroke-linejoin="round"
                   />
                   <path
-                     className=" transition-colors duration-300  group-hover:stroke-[#ffffff]"
+                    className=" transition-colors duration-300  group-hover:stroke-[#ffffff]"
                     fill-rule="evenodd"
                     clip-rule="evenodd"
                     d="M41.5891 40.0261L34.9594 46.6558C33.7392 47.8747 31.7623 47.8747 30.5422 46.6558L23.9109 40.0261C19.0296 35.1445 19.0297 27.23 23.9112 22.3486C28.7928 17.4671 36.7072 17.4671 41.5888 22.3486C46.4703 27.23 46.4704 35.1445 41.5891 40.0261V40.0261Z"
