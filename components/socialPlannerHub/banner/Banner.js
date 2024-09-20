@@ -11,7 +11,7 @@ function Banner() {
         <React.Fragment>
             <div className='plannerBanner'>
                 <div className='container'>
-                    <div className='flex flex-col sm:flex-row'>
+                    <div className='flex flex-col sm:flex-row items-center'>
                         <div className='w-full sm:w-1/2 '>
                             <div className='bannerContent'>
                                 <span className='user'>FEATURE</span>
