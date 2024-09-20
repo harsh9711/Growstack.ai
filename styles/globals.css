@@ -2,7 +2,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-.TableHead {
+.svg-container {
+  position: fixed; /* Keep the SVGs fixed in place */
+  top: 100px; /* Adjust based on your layout */
+  left: 50px; /* Adjust based on your layout */
+}
+#line1 {
+  position: fixed;
+  top: 0px; /* Adjust positioning */
+  left: 50px;
+}
+
+#line2 {
+  position: fixed;
+  /* top: 75px;  */
+  left: 50px;
+}
+
+Head {
   color: inherit; /* Ensure the text is visible */
   visibility: visible;
   opacity: 1;

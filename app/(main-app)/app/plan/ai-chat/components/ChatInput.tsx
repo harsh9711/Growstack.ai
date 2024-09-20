@@ -9,6 +9,12 @@ import toast from "react-hot-toast";
 import useSpeechRecognition from "../../hooks/UseSpeechRecognition";
 import { languageOptions } from "../../../create/ai-articles/constants/options";
 import Microphone from "./Microphone";
+import Link from "next/link";
+import { ChatResponse } from "@/types/common";
+import { planIdsMap } from "@/lib/utils";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
+import { ALL_ROUTES } from "@/utils/constant";
 
 interface ChatInputProps {
   onSend: (content: string, role: string) => void;
@@ -18,6 +24,8 @@ interface ChatInputProps {
   selectedConversation: string | null;
   addMessage: (role: string, content: string, loading: boolean) => void;
   setSelectedConversation: React.Dispatch<React.SetStateAction<string | null>>;
+  enableSecure?: boolean;
+  isLimitExceeded?: boolean;
 }
 
 const ChatInput: React.FC<ChatInputProps> = ({
@@ -28,15 +36,21 @@ const ChatInput: React.FC<ChatInputProps> = ({
   addMessage,
   setSelectedConversation,
   removeMessage,
+  enableSecure = false,
+  isLimitExceeded = false
 }) => {
+  const { currentPlan, user } = useSelector((rootState: RootState) => rootState.auth);
+  const isSubscribed = user?.isSubscribed || false;
   const selectedLanguage = languageOptions[0].value;
   const [open, setOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [input, setInput] = useState("");
+  const [isDailyLimitExceeded, setIsDailyLimitExceeded] = useState(isLimitExceeded)
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { startRecognition, stopRecognition, textToSpeech } = useSpeechRecognition(
     selectedLanguage,
+    open,
     (transcript: string) => {
       setInput(transcript);
       handleSend(transcript, true);
@@ -76,11 +90,24 @@ const ChatInput: React.FC<ChatInputProps> = ({
       setIsAnimating(false);
       setOpen(false);
       const conversation = await instance.post(
-        `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${selectedConversation ? selectedConversation : ""}&model=${selectedModel}`,
+        `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${selectedConversation ? selectedConversation : ""}&model=${selectedModel}&enableSecure=${enableSecure}`,
         { user_prompt: prompt }
       );
-      const response = conversation.data.data.response;
-      setSelectedConversation(conversation.data.data.conversation_id);
+      const { response, conversation_id, noOfMessagesLeft, totalNoOfMessages } = conversation.data.data as ChatResponse;
+
+      setSelectedConversation(conversation_id);
+
+      const isBasicPlan = planIdsMap.BASIC.some((val) => val === currentPlan?.plan_id);
+
+      if (isBasicPlan) {
+        if (noOfMessagesLeft && totalNoOfMessages) {
+          if (noOfMessagesLeft <= 0) {
+            setIsDailyLimitExceeded(true);
+          } else {
+            setIsDailyLimitExceeded(false);
+          }
+        }
+      }
       if (!selectedConversation) fetchConversations();
       onSend(response, "assistant");
       if (fromMic) {
@@ -89,11 +116,12 @@ const ChatInput: React.FC<ChatInputProps> = ({
         await textToSpeech(response);
       }
     } catch (error: any) {
-      if (error.response) {
-        toast.error(error.response.data.error);
-      } else {
-        toast.error(error.message);
+      const errorMsg = error.response?.data.error ?? error.message;
+
+      if (errorMsg === "Please upgrade your plan") {
+        setIsDailyLimitExceeded(true);
       }
+      toast.error(errorMsg);
       removeMessage();
     }
   };
@@ -128,6 +156,24 @@ const ChatInput: React.FC<ChatInputProps> = ({
       }
     }, 500);
   };
+
+  if (isDailyLimitExceeded) {
+    return (
+      <div className="bg-white shadow-lg rounded-lg p-6 flex flex-col justify-center items-center text-center mt-6">
+        <h2 className="text-xl font-semibold text-red-500">You've Exceeded Your Daily Free Chat Limit</h2>
+
+        <p className="mt-4 w-2/3 text-base ">
+          Come back tomorrow to start chatting again or upgrade your plan to access all the amazing AI features.
+        </p>
+
+        <Link
+          className="bg-primary-green mt-3 text-nowrap text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2"
+          href={isSubscribed ? ALL_ROUTES.UPGRADE : ALL_ROUTES.PAYMENT} >
+          Upgrade Your Plan
+        </Link>
+      </div>
+    )
+  }
 
   return (
     <div className="flex p-2 border gap-2 rounded-xl items-end">

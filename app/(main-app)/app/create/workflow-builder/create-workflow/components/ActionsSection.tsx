@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Motion from "@/components/Motion";
 import DotsLoader from "@/components/DotLoader";
-import { MenuIcon } from "lucide-react";
+import { BlocksIcon, MenuIcon } from "lucide-react";
 import SuggestionDropdown from "./SuggestionDropdown";
 import Dropdown from "./Dropdown";
 import TextArea from "./TextArea";
@@ -76,7 +76,7 @@ const ActionsSection = ({
   setIsAPICalling,
   inputConfigs,
   workflowId,
-}: ActionsSectionProps ) => {
+}: ActionsSectionProps) => {
   const [suggestionOptions, setSuggestionOptions] = useState<
     SuggestionOption[]
   >([]);
@@ -221,55 +221,24 @@ const ActionsSection = ({
       transition={{ duration: 0.5 }}
       variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
     >
-      <div className="flex flex-col items-start gap-4 pb-8">
+      <div className="flex flex-col items-start gap-4 ">
         <div className="w-full flex flex-col items-center gap-2">
           <div className="w-full flex flex-row items-center gap-2">
 
-            {activeAction.icon && <img
+            {activeAction.icon ? <img
               src={activeAction.icon}
               height='56'
               width='56'
               className='w-10 h-10 rounded-2xl'
-            />}
+            /> :
+              <div className="bg-primary-green p-4 rounded-lg">
+                <BlocksIcon className="text-white" />
+              </div>}
             <div className="flex flex-col gap-2 w-full text-xl p-2.5 rounded-md">
               {activeAction.name}
             </div>
           </div>
-          <div className="flex flex-col gap-2 w-full text-xl border-2 p-2.5 rounded-xl">
-            {editableFields && (
-              <div className="bg-gray-100 p-4 rounded-md">
-                {editableFields?.map((item, index) => (
-                  <div key={index} className="mb-2">
-                    <div className="text-gray-700">
-                      {item.variable_type === "model" ? (
-                        <Dropdown2
-                          options={modalOptions}
-                          selectedOption={item.variable_value}
-                          onOptionChange={(newValue) => handleFieldChange(index, newValue)}
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          value={formatString(String(item.variable_value) || "", {
-                            sender_profile_url: "http://example.com",
-                          })}
-                          onChange={(e) => handleFieldChange(index, e.target.value)}
-                          style={{ fontSize: '12px', width: "100%" }}
-                          className="border p-1 rounded"
-                        />
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
 
-            {activeAction.label && (
-              <div className="text-sm text-gray-600 mt-2">
-                {activeAction.label}
-              </div>
-            )}
-          </div>
         </div>
       </div>
 
@@ -303,10 +272,10 @@ const ActionsSection = ({
                 );
               }
               if (
-                option.variable_type === "SHORT_TEXT_AREA"
+                option.variable_type === "SHORT_TEXT"
               ) {
                 return (
-                  <div key={index} className="mt-12 ">
+                  <div key={index} className="mt-4">
                     <ShortTextArea
                       option={option}
                       index={index}
@@ -319,7 +288,7 @@ const ActionsSection = ({
               }
               if (option.variable_type === "BOOLEAN") {
                 return (
-                  <div key={index} className="mt-8">
+                  <div key={index} className="mt-4">
                     <Boolean
                       option={option}
                       index={index}
@@ -331,7 +300,7 @@ const ActionsSection = ({
 
               if (option.variable_type === "CHECKBOX") {
                 return (
-                  <div key={index} className="mt-8">
+                  <div key={index} className="mt-4">
                     <CheckboxComponent
                       option={option}
                       index={index}
@@ -344,7 +313,7 @@ const ActionsSection = ({
               }
               if (option.variable_type === "DATE" || option.variable_type === "TIME") {
                 return (
-                  <div key={index} className="mt-8">
+                  <div key={index} className="mt-4">
                     <ScheduleComponent
                       option={option}
                       index={index}

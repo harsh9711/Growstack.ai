@@ -54,6 +54,7 @@ export default function Page() {
   const [history, setHistory] = useState<historyProps[]>([]);
   const [historyLoading, setHistoryLoading] = useState<boolean>(false);
   const [isAddOnModalOpen, setIsAddOnModalOpen] = useState<boolean>(false);
+  const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
 
   const fetchHistory = async () => {
     try {
@@ -246,7 +247,6 @@ export default function Page() {
         .catch((error) => console.error("Download error:", error));
     }
   };
-  const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
 
   const fetchPlanUsage = async () => {
     try {
@@ -254,7 +254,7 @@ export default function Page() {
       const data = response.data.data;
       setPlanUsage(data);
 
-      if (!planUsage?.usage_amount || planUsage?.usage_amount <= 0) {
+      if (!data?.usage_amount || data?.usage_amount <= 0) {
         setIsAddOnModalOpen(true)
       }
     } catch (error: any) {

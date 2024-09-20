@@ -1,20 +1,14 @@
 "use client";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import Image from "next/image";
 import { Fragment, useEffect, useState } from "react";
 import BarGraph from "./components/BarGraph";
-import DetailsTable from "./components/DetailsTable";
 import { API_URL } from "@/lib/api";
 import instance from "@/config/axios.config";
 import toast from "react-hot-toast";
 import Spinner from "@/components/Spinner";
+import Swal from "sweetalert2";
+import { useRouter } from "next/navigation";
 
 export default function SocialMediaAnalyticsPage() {
   const [selectedPlatform, setSelectedPlatform] = useState("Instagram");
@@ -22,6 +16,7 @@ export default function SocialMediaAnalyticsPage() {
   const [loading, setLoading] = useState(false);
   const [metaData, setMetaData] = useState<any>({});
   const [graphData, setGraphData] = useState<any>({});
+  const router = useRouter();
   const [analyticsData, setAnalyticsData] = useState<{
     followers: number;
     accountReached: number;
@@ -42,8 +37,22 @@ export default function SocialMediaAnalyticsPage() {
       setGraphData(response.data.data.graphs);
       toast.success(response.data.message);
     } catch (error: any) {
-      // toast.error(error.response.data.message);
       setErrorMessage(error.response.data.message);
+      if(error.response.data.message === 'Please connect your social media account'){
+        Swal.fire({
+          title: "Social Media Account Required",
+          text: `Please connect your social media account ${platform} to proceed.`,
+          icon: "warning",
+          showCancelButton: false,
+          confirmButtonText: "Yes, connect now!",
+          cancelButtonText: "Cancel",
+          allowOutsideClick: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            router.push("/app/publish/scheduler/quick-posting/profiles");
+          }
+        });
+      }
       setAnalyticsData(null);
     } finally {
       setLoading(false);

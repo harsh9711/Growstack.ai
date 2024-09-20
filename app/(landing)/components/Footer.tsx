@@ -8,6 +8,8 @@ import {
   RiTwitterXLine,
 } from "react-icons/ri";
 import "@/styles/button.css";
+import { ALL_ROUTES } from "@/utils/constant";
+
 export default function Footer() {
   return (
     <footer className="rounded-t-[50px] px-10 md:px-12 bg-primary-light-gray ">
@@ -35,7 +37,7 @@ export default function Footer() {
                 <h1 className="font-semibold text-lg">Company</h1>
                 <ul className="space-y-5">
                   <li className="hover:underline">
-                  <Link href="/Pricing">Pricing</Link>
+                  <Link href={ALL_ROUTES.PRICING}>Pricing</Link>
                   </li>
                   <li className="hover:underline">
                     <Link href="#">Get the App</Link>
@@ -77,15 +79,15 @@ export default function Footer() {
                     <Link href="#">Support</Link>
                   </li>
                   <li className="hover:underline">
-                    <Link href="/Tos">Terms & Condition</Link>
+                    <Link href="/terms-of-service">Terms of Service</Link>
                   </li>
                   <li className="hover:underline">
-                    <Link href="/Tnc">Privacy Policy</Link>
+                    <Link href="/Privacy Policy">Privacy Policy</Link>
                   </li>
                   <li className="hover:underline">
                     {" "}
-                    <Link href="/Rrp">Refund & return policy</Link>
-                  </li>
+                    <Link href='/return-policy'>Refund & return policy</Link>
+                    </li>
                   <li className="hover:underline">
                     <Link href="#">Community</Link>
                   </li>

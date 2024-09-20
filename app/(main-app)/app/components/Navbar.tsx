@@ -15,7 +15,7 @@ import { useRouter } from "next-nprogress-bar";
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // Toggle menu for smaller screens
+  const [isMenuOpen, setIsMenuOpen] = useState(false); 
 
   const isLinkActive = (link: NavLink): boolean => {
     if (link.href && pathname === link.href) {
@@ -144,7 +144,7 @@ const NavLinkBtn = ({ link, isActive }: { link: NavLink; isActive?: boolean }) =
   return (
     <div
       className={clsx(
-        "flex justify-center items-center p-[9px] pr-6 rounded-2xl gap-4 text-[15px] transition-all duration-200",
+        "flex justify-center items-center p-[9px] pr-6 rounded-2xl gap-4 text-[18px] transition-all duration-200",
         isActive ? "bg-primary-green text-white !hover:bg-primary-green hover:bg-opacity-90" : "hover:bg-[#F1F1F1]"
       )}>
       <div className="bg-[#FAFAFB] p-2.5 rounded-lg">

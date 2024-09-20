@@ -22,6 +22,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateM
   const [isAnimating, setIsAnimating] = useState(false);
   const { startRecognition, stopRecognition, textToSpeech } = useSpeechRecognition(
     selectedLanguage,
+    open,
     (transcript: string) => {
       setInput(transcript);
       handleSend(transcript, true);

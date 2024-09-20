@@ -27,6 +27,7 @@ const Page = () => {
     workflow_id: "",
   });
   const [tabs, setTabs] = useState(["Run", "History", "Schedules"]);
+  const [runnerId,setRunnerId] = useState("")
 
   useEffect(() => {
     const tab = tabQueryParam ? Number(tabQueryParam) : 0;
@@ -43,15 +44,18 @@ const Page = () => {
       fetchWorkflowData(id);
     }
   }, [searchParams]);
-
+  const handleTabChange = (RunnerId:any) => {
+    setRunnerId(RunnerId)
+    handleTabClick(1)
+  };
   useEffect(() => {
     if (!workFlowData.social_media_requirement) {
-      setTabs(["Run", "History"]); // Remove "Schedules" tab if condition is false
+      setTabs(["Run", "History"]); 
       if (selectedTabIndex === 2) {
-        setSelectedTabIndex(0); // Switch to the first tab if "Schedules" was selected
+        setSelectedTabIndex(0);
       }
     } else {
-      setTabs(["Run", "History", "Schedules"]); // Restore "Schedules" tab if condition is true
+      setTabs(["Run", "History", "Schedules"]);
     }
   }, [workFlowData]);
 
@@ -60,7 +64,6 @@ const Page = () => {
       const response = await instance.get(`${API_URL}/workflow/api/v1/${id}`);
       setWorkFlowData(response.data.data);
     } catch (error) {
-      console.log("Error fetching workflow data:", error);
     }
   };
 
@@ -73,13 +76,13 @@ const Page = () => {
   const renderContent = (selectedTabIndex: number) => {
     switch (selectedTabIndex) {
       case 0:
-        return <Run workflowId={workflowId} />;
+        return <Run onTabChange={(runnerId:any) => handleTabChange(runnerId)} workflowId={workflowId} />;
       case 1:
-        return <History workflowId={workflowId} />;
+        return <History runnerId={runnerId} workflowId={workflowId} />;
       case 2:
         return <Schedules workflowId={workflowId} />;
       default:
-        return <Run workflowId={workflowId} />;
+        return <Run onTabChange={(runnerId:any) => handleTabChange(runnerId)} workflowId={workflowId} />;
     }
   };
 

@@ -1,14 +1,14 @@
 "use client";
 
-// components/WorkFlowBuilderComponent.tsx
 import { InputIcon2, OutputIcon2 } from "@/components/svgs";
 import clsx from "clsx";
-import { MoreVertical, Plus } from "lucide-react";
+import { BlocksIcon, MoreVertical, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import InputSection from "./InputSection";
 import OutputSection from "./OutputSection";
 import ActionsSection from "./ActionsSection";
 import ProvidersDrawer from "./ProvidersDrawer";
+import Swal from 'sweetalert2';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,6 +20,7 @@ import { API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
 import { tools } from "./data/tools";
 import { InputType } from "@/types/common";
+import { paragon } from '@useparagon/connect';
 
 export default function WorkFlowBuilderComponent() {
   const [activeTag, setActiveTag] = useState<"Input" | "Output" | "Actions">(
@@ -32,7 +33,7 @@ export default function WorkFlowBuilderComponent() {
   const [isAPICalling, setIsAPICalling] = useState(false);
   const [inputConfigs, setInputConfigs] = useState<any[]>([]);
   const [outputConfigs, setOutputConfigs] = useState<any[]>([]);
-
+  const [paragonList,setParagonList] = useState<any[]>(['whatsapp','facebookpages','linkedin','googlesheets','gmail','slack','salesforce','googledocs']);
   interface Input {
     input_label: string;
     input_default_value: any; 
@@ -210,6 +211,11 @@ const getWorkFlowDetails = async (id: string | number) => {
 
   const onSelectAction = async (action: any, index: number) => {
     let updatedActions: any[] = [];
+    if (paragonList.includes(action.thirdparty)) {
+      const isAuthenticated = await authenticateUser(action.thirdparty);
+      if (!isAuthenticated) return; 
+    }
+  
     const payload = {
       name: action.name,
       description: action.description,
@@ -222,16 +228,18 @@ const getWorkFlowDetails = async (id: string | number) => {
       category: action.category,
       event_execute: action.event_execute,
     };
+  
     try {
       const response = await postAction(payload, index);
       toast.success("Action added successfully");
+  
       const newAction = {
         ...response.data.data.newAction,
         index: index - 1,
         preset_json: action.preset_json,
         icon: action.icon,
       };
-
+  
       if (index === 1) {
         updatedActions = [newAction, ...actions];
       } else {
@@ -241,7 +249,7 @@ const getWorkFlowDetails = async (id: string | number) => {
           ...actions.slice(index - 1),
         ];
       }
-
+  
       setActions(updatedActions);
       setActiveAction({
         ...action,
@@ -249,10 +257,12 @@ const getWorkFlowDetails = async (id: string | number) => {
         index: index - 1,
       });
     } catch (error) {
-      console.log(error);
       toast.error("Failed to add action");
     }
   };
+  
+  
+  
   const handleSaveAction = (changedFields: any) => {
     setIsAPICalling(true);
    const updatedAction = { ...activeAction, preset_json: { ...activeAction.preset_json, body: { ...activeAction.preset_json.body, ...changedFields } } };
@@ -299,6 +309,34 @@ const getWorkFlowDetails = async (id: string | number) => {
             workflowId={workflowId}
             />
         );
+    }
+  };
+
+  const authenticateUser = async (integrationType: string) => {
+    try {
+      const response = await instance.post(`${API_URL}/users/api/v1/connectors/connect`, {});
+      const token = response.data.data.token;
+  
+      await paragon.authenticate(process.env.NEXT_PUBLIC_PARAGON_PROJECT_ID || "", token);
+      const user = { ...paragon.getUser() };
+      if (user.authenticated && !user.integrations[integrationType]?.enabled) {
+        const result = await Swal.fire({
+          title: 'Integration not enabled',
+          text: `Would you like to enable this ${integrationType} integration? `,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Yes',
+          cancelButtonText: 'No'
+        });
+  
+        if (result.isConfirmed) {
+          await paragon.connect(integrationType, {});
+        }
+      } else {
+        return true
+      }
+    } catch (error) {
+      console.error('Error during authentication:', error);
     }
   };
 
@@ -365,7 +403,7 @@ const getWorkFlowDetails = async (id: string | number) => {
                   </div>
                 ) : (
                   <div className="bg-primary-green p-4 rounded-lg">
-                    <InputIcon2 className="text-white" />
+                    <BlocksIcon className="text-white" />
                   </div>
                 )}
                 <div className="space-y-1 flex flex-col items-start">

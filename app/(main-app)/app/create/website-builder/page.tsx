@@ -3,27 +3,27 @@
 import { useState, useEffect, Fragment } from "react";
 import { Plus, Search } from "lucide-react";
 import Link from "next/link";
-import ProjectCard from "../email-builder/components/ProjectCard";
-import { projects } from "../email-builder/components/data";
+// import ProjectCard from "../email-builder/components/ProjectCard";
+// import { projects } from "../email-builder/components/data";
 
 export default function WebsiteBuilder() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredProjects, setFilteredProjects] = useState(projects);
+  const [filteredProjects, setFilteredProjects] = useState();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value.toLowerCase());
   };
 
   useEffect(() => {
-    if (searchQuery.trim() === "") {
-      setFilteredProjects(projects);
-    } else {
-      setFilteredProjects(
-        projects.filter((project) =>
-          project.title.toLowerCase().includes(searchQuery)
-        )
-      );
-    }
+    // if (searchQuery.trim() === "") {
+    //   setFilteredProjects(projects);
+    // } else {
+    //   setFilteredProjects(
+    //     projects.filter((project) =>
+    //       project.title.toLowerCase().includes(searchQuery)
+    //     )
+    //   );
+    // }
   }, [searchQuery]);
 
   return (
@@ -56,9 +56,9 @@ export default function WebsiteBuilder() {
           </div>
         </div>
         <div className="grid grid-cols-4 gap-4 mt-6">
-          {filteredProjects.map((data, index) => (
+          {/* {filteredProjects.map((data, index) => (
             <ProjectCard {...data} key={index} />
-          ))}
+          ))} */}
         </div>
       </main>
     </Fragment>
