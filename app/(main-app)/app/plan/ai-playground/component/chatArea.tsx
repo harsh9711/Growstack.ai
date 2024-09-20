@@ -57,7 +57,7 @@ const ChatArea = ({
   const handleSend = () => {
     if (inputValue.trim() !== "" || inputValue.length > 0) {
       setInputValue("");
-      renderConversation(); 
+      renderConversation();
     }
   };
 
@@ -66,9 +66,9 @@ const ChatArea = ({
     if (event.key === "Enter" && !event.shiftKey) {
       console.log("==============");
       const textarea = event.target;
-      textarea.style.height = "2rem";
+      // textarea.style.height = "2rem";
       handleSend();
-      event.preventDefault();      
+      event.preventDefault();
     }
   };
 
@@ -101,11 +101,11 @@ const ChatArea = ({
   return (
     <div
       className="flex-1 flex flex-col !bg-white border border-[#E8E8E8] shadow-box p-7 w-full justify-between min-w-[400px]"
-      
+
     >
       <div
         className="flex items-start justify-between mb-[10px]"
-   
+
       >
         <AIModel
           selectedOption={selectedModel}
@@ -134,7 +134,7 @@ const ChatArea = ({
                       value={value}
                       key={value}
                       className="pl-2 cursor-pointer"
-                      
+
                     >
                       <div className="flex gap-x-2">
                         {icon}

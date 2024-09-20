@@ -73,16 +73,16 @@ export default function AiPlayground() {
       chatAreas.map((chatArea) =>
         chatArea.id === id
           ? {
-              ...chatArea,
-              selectedModel: newModel,
-              provider: newProvider || "",
-            }
+            ...chatArea,
+            selectedModel: newModel,
+            provider: newProvider || "",
+          }
           : chatArea
       )
     );
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUserPrompt(event.target.value);
   };
 
@@ -161,15 +161,15 @@ export default function AiPlayground() {
               ...chatArea,
               conversation: chatArea.awaitingUpdate
                 ? [
-                    ...chatArea.conversation.slice(0, -1),
-                    {
-                      ...chatArea.conversation[
-                        chatArea.conversation.length - 1
-                      ],
-                      content: initialText,
-                      loading: false,
-                    },
-                  ]
+                  ...chatArea.conversation.slice(0, -1),
+                  {
+                    ...chatArea.conversation[
+                    chatArea.conversation.length - 1
+                    ],
+                    content: initialText,
+                    loading: false,
+                  },
+                ]
                 : chatArea.conversation,
               awaitingUpdate: updatedMessages.length > 0,
               message: initialText,
@@ -179,7 +179,7 @@ export default function AiPlayground() {
           return chatArea;
         })
       );
-    } catch (error : any) {
+    } catch (error: any) {
       setChatAreas(chatAreas);
       toast.error(error?.response?.data?.message || "Something went wrong");
       console.error("Error sending prompt:", error);
