@@ -4,7 +4,6 @@ import Navbar from "@/components/navbar/Navbar";
 import HeroSection from "./components/HeroSection";
 import ContentBox from "./components/Box";
 import { rrp } from "../../privacyPolicy"; // Importing the rrp data
-import "bootstrap/dist/css/bootstrap.min.css";
 import Footer from "@/components/footer/Footer";
 
 const rrpPage: React.FC = () => {

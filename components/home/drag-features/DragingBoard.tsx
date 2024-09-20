@@ -1,10 +1,6 @@
-// "use client";
-
-import { useEffect, useState } from "react";
-import BrandRow from "./brand/BrandRow";
-import { selectableItems } from "./data";
+import { useEffect } from "react";
+import { childItems, featureItems } from "./data";
 import DragingContainer from "./DragingContainer";
-import DropZone from "./DropZone";
 import FeatureItem from "./FeatureItem";
 
 export async function getServerSideProps (context: any) {
@@ -20,113 +16,120 @@ import {
    Droppable,
    resetServerContext,
 } from "react-beautiful-dnd";
+import BrandRow from "./brand/BrandRow";
 import DragableItemsNav from "./dragable-nav/DragableItemsNav";
+import DropZone from "./DropZone";
+import { useDragableFeatures } from "./store";
 
-interface Props {
-   activeNavItem: any;
-   setActiveFeaturedItem: (items: any) => void;
-   activeFeaturedItem: any;
-}
-
-export default function DragingBoard (props: Props) {
-   const { activeNavItem, setActiveFeaturedItem, activeFeaturedItem } = props;
-   const [animate, setAnimate] = useState<boolean>(false);
+export default function DragingBoard () {
+   const { setSelectedItems, selectedItems, setDraggedItem, setStep, step, navItems, draggedItem, animate, setAnimate } = useDragableFeatures();
 
    useEffect(() => {
-      console.log("I'm loaded from child board..");
       const animateTimerId = setTimeout(() => {
          setAnimate(true);
-      }, 150);
+      }, !step ? 200 : 900);
 
       return () => {
          setAnimate(false);
-         clearTimeout(animateTimerId)
+         clearTimeout(animateTimerId);
       };
-   }, []);
+   }, [selectedItems]);
 
-
-   const handleDragDrop = (results: any) => {
-      // we get the results from drag and drop
-      const { source, destination, type } = results;
+   const handleDragEnd = (results: any) => {
+      const { destination, source, draggableId } = results;
+      // console.log(results);
 
       if (!destination) return;
 
-      if (
-         source.droppableId === destination.droppableId &&
-         source.index === destination.index
-      )
-         return;
+      // console.log(destination.droppableId, source.droppableId);
+      if (destination.droppableId === source.droppableId) return;
 
-      const sourceIndex = source.index;
-      const destinationIndex = destination.index;
+      const draggedItem = featureItems.find(item => item.id === Number(draggableId));
+      const currentItems = childItems.get(Number(draggableId));
+      // const removedDragedItem = selectedItems.filter(item => item.id !== draggedItem?.id);
+      // setSelectedItems(removedDragedItem);
+      console.log(draggedItem);
 
-      if (type === "view_feature_area") {
-
-         const selectedItemId = results.draggableId;
-
-         const activeItems = selectableItems.find((item) => item.title.toLowerCase() === selectedItemId.toLowerCase())
-         console.log(activeItems, selectedItemId);
-         if (activeItems) {
-            setActiveFeaturedItem(activeItems);
-         } else {
-            setActiveFeaturedItem({});
-         }
-
-         // return;
+      if (draggedItem) {
+         setDraggedItem(draggedItem);
       }
 
+      if (!currentItems || !currentItems?.length) return
+      setStep(1);
+      setSelectedItems(currentItems);
    };
-   //End  Tet functions
-
-
-
 
    return (
       <>
-         <DragDropContext onDragEnd={handleDragDrop}>
-            <Droppable droppableId="view_feature_area" type="view_feature_area">
-               {(provided) => (
-                  <DragingContainer>
-                     <div className="absolute opacity-0 visually-hidden pointer-events-none">{provided.placeholder}</div>
-                     {Object.entries(activeFeaturedItem).length !== 0 && (<DragableItemsNav dragableItems={activeNavItem.dragableNavItems} />)}
+         <DragDropContext onDragEnd={handleDragEnd}>
 
-                     {
-                        !Object.entries(activeFeaturedItem).length ?
+            <DragingContainer>
+               {/* Feature sub nav */}
+               {!!step &&
+                  <Droppable droppableId="feature_nav" key="feature_nav" type="features_items" direction="horizontal">
+                     {(provided, snapshot) => (
+                        <DragableItemsNav provided={provided} snapshot={snapshot} items={navItems.filter((item: { id: any; }) => item.id !== draggedItem?.id)} />
+                     )}
+                  </Droppable>
+               }
 
-                           activeNavItem.dragableNavItems.map((item: any, index: number) => {
+               {/* Brand logos */}
+               <BrandRow className={!step && 'pt-16 xl:pt-20'} />
+
+               {/* Drop zone */}
+               <Droppable droppableId="drop_zone" type="features_items" key="drop_zone">
+                  {(provided, snapshot) => (
+                     <DropZone
+                        provided={provided}
+                        snapshot={snapshot}
+                     />
+                  )}
+               </Droppable>
+
+               {/* Dragabble feature items */}
+               <Droppable droppableId="view_feature_area" type="features_items" key="root">
+                  {(provided) => (
+                     <div
+                        {...provided.droppableProps}
+                        ref={provided.innerRef}
+                        className="text-center mt-6 lg:mt-0 flex gap-4 justify-center flex-wrap">
+
+                        {
+                           selectedItems?.map((item: any, index: number) => {
                               return (
-                                 <Draggable
-                                    draggableId={item.title}
-                                    key={item.title}
-                                    index={index}
-                                 >
-                                    {(provided) => (
+                                 <>
+                                    {!step ?
+                                       <Draggable
+                                          draggableId={item.id.toString()}
+                                          key={item.id}
+                                          index={index}
+                                       >
+                                          {(provided, snapshot) => (
+                                             <FeatureItem
+                                                {...item}
+                                                provided={provided}
+                                                className={`md:absolute before:content-['Drag_me'] before:whitespace-nowrap before:absolute before:left-1/2 before:-translate-x-1/2 before:-top-5 before:border before:border-red-400 before:bg-red-100 before:rounded-full before:text-xs before:px-1.5 before:py-0.5 ${snapshot.draggingOver ||
+                                                   snapshot.isDragging ||
+                                                   snapshot.isDropAnimating
+                                                   ? "before:visible"
+                                                   : "before:invisible"
+                                                   } hover:before:visible duration-1000 text-sm xl:text-xl ${animate ? item.cordinate + ' opacity-100' : 'md:left-[50%] md:top-[73.87%] md:-translate-x-1/2 opacity-0'}`} />
+                                          )}
+                                       </Draggable> :
                                        <FeatureItem
                                           {...item}
-                                          provided={provided}
-                                          className={` absolute z-10 duration-1000 ${animate ? item.cordinate + ' opacity-100' : 'left-[50%] top-[73.87%] -translate-x-1/2 opacity-0'}`} />
-                                    )}
-                                 </Draggable>
+                                          className={`lg:absolute z-10 duration-1000 text-sm ${animate ? item.cordinate + ' opacity-100' : 'lg:left-[50%] lg:top-[73.87%] lg:-translate-x-1/2 opacity-0'}`} />
+                                    }
+                                 </>
                               );
-                           }) :
-
-                           (
-                              activeFeaturedItem?.children?.map((item: any) => (
-                                 <FeatureItem
-                                    {...item}
-                                    className={` absolute z-10 duration-1000 ${animate ? item.cordinate + ' opacity-100' : 'left-[50%] top-[73.87%] -translate-x-1/2 opacity-0'}`}
-                                 />
-                              ))
-                           )
-                     }
-                     <BrandRow />
-                     {/* Drop zone */}
-                     <DropZone item={activeFeaturedItem} provided={provided} />
-                  </DragingContainer>
-               )}
-            </Droppable>
+                           })
+                        }
+                        <div className="absolute">{provided.placeholder}</div>
+                     </div>
+                  )}
+               </Droppable>
+            </DragingContainer>
          </DragDropContext>
-
       </>
    )
 }

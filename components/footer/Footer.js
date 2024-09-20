@@ -4,7 +4,6 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import "./Footer.scss";
 import Link from "next/link";
-import "bootstrap/dist/css/bootstrap.min.css";
 import { ALL_ROUTES } from "@/utils/constant";
 
 function Footer() {
@@ -29,21 +28,21 @@ function Footer() {
                 </div>
                 <div className='innerBlock'>
                     <div className='container'>
-                        <div className='row'>
-                            <div className='col-lg-2 col-md-12'>
+                        <div className='grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5'>
+                            <div className=''>
                                 <div className='footerLogo'>
                                     <img src='/images_growstack/footer/logo.svg' alt='logo' />
                                 </div>
                             </div>
-                            <div className='col-lg-2 col-md-6'>
+                            <div className=''>
                                 <h4>Company</h4>
                                 <ul>
-                                    <li>
+                                    {/* <li>
                                         <Link href='/company'>About us</Link>
-                                    </li>
-                                    <li>
+                                    </li> */}
+                                    {/* <li>
                                         <Link href='/pricing'>Pricing</Link>
-                                    </li>
+                                    </li> */}
                                     <li>
                                         <Link href='/faq'>FAQs</Link>
                                     </li>
@@ -58,7 +57,7 @@ function Footer() {
                                     <li>{/* <Link href="/auth/register">FAQ</Link> */}</li>
                                 </ul>
                             </div>
-                            <div className='col-lg-3 col-md-6'>
+                            <div className=''>
                                 <h4>Features</h4>
                                 <ul>
                                     <li>
@@ -70,9 +69,7 @@ function Footer() {
                                     <li>
                                         <Link href='/marketing-and-sales-assistant'>Marketing and sales assistants</Link>
                                     </li>
-                                    <li>
-                                        {/* <Link href='/ai-website-and-email-builder'>AI Website landing page and email Builder</Link> */}
-                                    </li>
+                                    <li>{/* <Link href='/ai-website-and-email-builder'>AI Website landing page and email Builder</Link> */}</li>
                                     <li>
                                         <Link href='/custom-marketing-gpt-apps'>Custom GPT</Link>
                                     </li>
@@ -81,7 +78,7 @@ function Footer() {
                                     </li>
                                 </ul>
                             </div>
-                            <div className='col-lg-2 col-md-6'>
+                            <div className=''>
                                 <h4>Support</h4>
                                 <ul>
                                     <li>{/* <Link href="/auth/register">Support</Link> */}</li>
@@ -97,13 +94,15 @@ function Footer() {
                                     <li>{/* <Link href="/auth/register">Community</Link> */}</li>
                                 </ul>
                             </div>
-                            <div className='col-lg-3 col-md-6'>
+                            <div className=''>
                                 <h4>Newsletter</h4>
                                 <p>Subscribe to our newsletter</p>
                                 <form action='/' method='post'>
                                     <div className='input-group'>
-                                        <img src='/images_growstack/footer/letter.svg' alt='letter' />
-                                        <input type='email' name='email' className='' placeholder='Enter your email' required />
+                                        <div className='flex gap-1'>
+                                            <img src='/images_growstack/footer/letter.svg' alt='letter' />
+                                            <input type='email' name='email' className='' placeholder='Enter your email' required />
+                                        </div>
                                         <div className='input-group-append'>
                                             <button className='sheen' type='submit'>
                                                 <img src='/images_growstack/footer/newsletter.svg' alt='newsletter' />

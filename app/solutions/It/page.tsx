@@ -14,8 +14,6 @@ import LoadingBar from "./components/Loading";
 import GridComponent from "./components/GridBoxes";
 import ImageGallery from "./components/ZoomEffect";
 import ImageGalleryResponsive from "./components/ZoomEffectrespopnsive";
-// import "../../../styles/myanimation.css";
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 const page = () => {
   useEffect(() => {

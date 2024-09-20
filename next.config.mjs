@@ -63,6 +63,11 @@ const nextConfig = {
                 hostname: "img.ayrshare.com",
                 port: "",
             },
+            {
+                protocol: "https",
+                hostname: "www.linkedin.com",
+                port: "",
+            },
         ],
     },
     async headers() {

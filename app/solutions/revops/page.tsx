@@ -13,8 +13,7 @@ import LoadingBar from "./components/Loading";
 import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
 import Footer from "@/components/footer/Footer";
 import LoadingBarSecond from "./components/LoadingBar";
-import Banner from "./banner/Banner";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import Link from "next/link";
 
 const page = () => {
   useEffect(() => {
@@ -73,10 +72,10 @@ const page = () => {
                     <button className="bg-white font-medium flex items-center gap-2 text-[#034737] 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
                       Get free trial <ArrowRight />
                     </button>
-                    <button className="border border-black flex items-center gap-2 text-black hover:font-bold font-medium 2xl:py-4 py-2 px-2  2xl:px-7 rounded-xl shadow-md shadow-[#00000025]">
+                    <Link href="/demo" className="no-underline">  <button className="border border-black flex items-center gap-2 text-black hover:font-bold font-medium 2xl:py-4 py-2 px-2  2xl:px-7 rounded-xl shadow-md shadow-[#00000025]">
                       See demo
                       <ArrowRight className="text-black" />
-                    </button>
+                    </button></Link>
                   </div>
 
                   <div

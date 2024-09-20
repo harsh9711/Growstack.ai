@@ -11,7 +11,6 @@ import MarketingStreamline from "./components/marketingStreamline/MarketingStrea
 import Footer from "@/components/footer/Footer";
 import GridComponent from "./components/GridBoxes";
 import ImageGalleryLine from "./components/ImageGalleryline";
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 const page = () => {
@@ -20,34 +19,34 @@ const page = () => {
   }, []);
   return (
     <main className="">
-           <Navbar
-          logoUrl="/images/logo.png"
-          logoAlt="Custom Logo"
-          backgroundColor="transparent"
-        />   
-    <HeroSection/>
-        <section className=" p-20">
+      <Navbar
+        logoUrl="/images/logo.png"
+        logoAlt="Custom Logo"
+        backgroundColor="transparent"
+      />
+      <HeroSection />
+      <section className=" p-20">
         <div className="relative mx-auto rounded-t-[40px] items-center justify-center py-10 ">
           <div className="flex flex-col 2xl:justify-start items-center justify-center mx-auto gap-2">
-          <div className="2xl:-translate-x-10 text-black 2xl:items-start items-center justify-center flex flex-col gap-y-4 ">
-                <div
-                    data-aos="fade-up"
-                    data-aos-duration="1000"
-                     className="bg-[#03473714]/10 text-[#034737] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit">
-                    {" "}
-                  manage
-                </div>  
-               <h1
-                    data-aos="fade-up"
-                    data-aos-duration="1100"
-                    className="text-center tect-black items-center justify-center flex flex-wrap gap-4 text-[26px] 2xl:text-[42px] leading-normal"
-                >
-                    <span className="relative text-black text-[white] font-semibold">
-                    Maintain consistent 
-                    </span>
-                    <span className="text-[#61C453] text-black font-normal">
-                    service standards                 </span>
-                </h1>
+            <div className="2xl:-translate-x-10 text-black 2xl:items-start items-center justify-center flex flex-col gap-y-4 ">
+              <div
+                data-aos="fade-up"
+                data-aos-duration="1000"
+                className="bg-[#03473714]/10 text-[#034737] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit">
+                {" "}
+                manage
+              </div>
+              <h1
+                data-aos="fade-up"
+                data-aos-duration="1100"
+                className="text-center tect-black items-center justify-center flex flex-wrap gap-4 text-[26px] 2xl:text-[42px] leading-normal"
+              >
+                <span className="relative text-black text-[white] font-semibold">
+                  Maintain consistent
+                </span>
+                <span className="text-[#61C453] text-black font-normal">
+                  service standards                 </span>
+              </h1>
             </div>
             <div
               data-aos="fade-up"
@@ -60,7 +59,7 @@ const page = () => {
           </div>
         </div>
       </section>
-       <section className="bg-[url('/linetop.png')] bg-cover relative w-full 2xl:mt-20">
+      <section className="bg-[url('/linetop.png')] bg-cover relative w-full 2xl:mt-20">
         <div className="2xl:flex xl:flex hidden flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
           <ImageGalleryLine />
         </div>
@@ -68,8 +67,8 @@ const page = () => {
           <ImageGalleryLineResponsive />
         </div>
       </section>
-  
-    
+
+
 
 
       <section className="mx-auto w-full flex items-center justify-center py-10 2xl:py-40 ">
@@ -85,7 +84,7 @@ const page = () => {
         </div>
       </section>
 
-     <section className=" overflow-hidden  ">
+      <section className=" overflow-hidden  ">
         <div className="items-center justify-center flex flex-col gap-y-4  overflow-hidden ">
           <Image
             src="/desing.png"
@@ -98,7 +97,7 @@ const page = () => {
 
         <MarketingStreamline />
       </section>
-      <Footer/>
+      <Footer />
     </main>
   );
 };

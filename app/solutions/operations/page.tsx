@@ -11,7 +11,6 @@ import HeroSection from "./components/HeroSection";
 import ImageGallerySecond from "./components/ZoomEffect2";
 import ImageGalleryResponsiveSecond from "./components/ZoomEffectrespopnsive2";
 import MarketingTechnology from "./components/marketingTechnology/MarketingTechnology";
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 const page = () => {
   useEffect(() => {
@@ -58,7 +57,7 @@ const page = () => {
               <span className="text-black font-bold">
                 Optimize resource allocation and
               </span>
-              <br  className="2xl:flex xl:flex hidden"/>
+              <br className="2xl:flex xl:flex hidden" />
               <span className="text-black font-extralight">
                 {" "}
                 maintain tight cost control
@@ -91,14 +90,14 @@ const page = () => {
       <section className="flex flex-col py-10 xl:py-32 bg-black">
         <div className="w-full gap-y-4 flex flex-col items-center justify-center  mx-auto">
           <div className="bg-[#FFFFFF]/20 hover:shadow-md whitespace-nowrap text-white py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[156px]">
-          Communication
+            Communication
           </div>
 
           <div className="flex flex-col items-start gap-y-4">
             <h1 className="text-[22px] xl:text-[42px] leading-12 text-center   items-center justify-start text-white">
               <span className="font-semibold text-left">
-              Enhance communication and ensure 
-              </span><br/>
+                Enhance communication and ensure
+              </span><br />
               <span className="font-light text-center flex">compliance with regulations</span>
             </h1>
           </div>

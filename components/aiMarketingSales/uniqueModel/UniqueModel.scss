@@ -1,66 +1,79 @@
 @import "../../../app/variables.scss";
 
-.uniqueModel{
+.uniqueModel {
     padding: 90px 0;
     background-color: #034737;
-    @media screen and (max-width: $breakpoint_mobile_portrait){
+
+    @media screen and (max-width: $breakpoint_mobile_portrait) {
         padding: 40px 0;
-        
+
     }
-    .title{
+
+    .title {
         max-width: 100%;
         margin-bottom: 50px;
-        .user{
+
+        .user {
             color: #fff;
             background-color: #ffffff3b;
             margin-bottom: 15px;
         }
-        h3{
+
+        h3 {
             font-size: 40px;
             color: #fff;
             font-weight: bold;
             margin: 0;
-            @media screen and (max-width: $breakpoint_mobile_portrait){
+
+            @media screen and (max-width: $breakpoint_mobile_portrait) {
                 font-size: 26px;
             }
-            span{
+
+            span {
                 font-weight: 400;
             }
         }
     }
-    .card{
+
+    .card {
         border: 1px solid #E3E3E3;
         border-radius: 20px;
-        padding: 60px 40px 10px;
+        padding: 60px 40px 40px;
         height: 100%;
         transition: all 0.3s ease;
         position: relative;
-        &:hover{
+
+        &:hover {
             box-shadow: 0px 10px 20px 5px #0000000D;
         }
+
         @media screen and (max-width: $breakpoint_mobile_portrait) {
-           height: auto;
+            height: auto;
         }
+
         @media screen and (max-width: $breakpoint_tablet) {
             padding: 60px 20px 10px;
         }
-        img{
+
+        img {
             position: absolute;
             top: -1px;
             right: 20px;
             width: 62px;
             height: 62px;
         }
-        h5{
+
+        h5 {
             font-size: 20px;
             color: #000;
             font-weight: bold;
             margin: 18px 0 15px;
             line-height: 28px;
+
             @media (max-width: $breakpoint_tablet) {
                 font-size: 18px;
-              }
-              
+            }
+
         }
 
     }

@@ -196,6 +196,37 @@ export const companyemployees = [
     imageUrlbox: "/company/1.1.svg",
   },
 ];
+export const landingpage= [
+  {
+    id: 1,
+    imageUrl: "/company/a.svg",
+    name: "Narasimha Rao",
+    role: "CEO,    Managing Director Balvantis Studio",
+    imageUrlbox: "https://www.linkedin.com/in/narasimha-vadde/",
+  },
+  {
+    id: 2,
+    imageUrl: "/company/b.svg",
+    name: "Nagaraj Manne",
+    role: "Web Developer",
+    Url: "https://www.linkedin.com/in/nagaraj-manne-17168965/",
+  },
+
+  {
+    id: 3,
+    imageUrl: "/company/c.svg",
+    name: "Ranjit Reddy",
+    role: "SAP SD/(OTC)/ Logistics S4",
+    Url: "https://linkedin.com/in/ranjith-annapu-828a241a2/",
+  },
+  {
+    id: 4,
+    imageUrl: "/company/d.svg",
+    name: "Anudeep Devata",
+    role: "MBA, GDC, Ireland",
+    Url: "https://www.linkedin.com/in/krishna-anudeep-41128b10b/",
+  },
+];
 export const team = [
   {
     id: 1,
