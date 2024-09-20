@@ -2,9 +2,8 @@ import type { Config } from "tailwindcss";
 
 const config = {
   darkMode: ["class"],
-  content: ["./pages/**/*.{js,jsx,ts,tsx}", "./components/**/*.{js,jsx,ts,tsx}", "./app/**/*.{js,jsx,ts,tsx}", "./src/**/*.{js,jsx,ts,tsx}"],
+  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{js,ts,tsx}", "./app/**/*.{js,ts,tsx}", "./src/**/*.{js,ts,tsx}"],
   prefix: "",
-  important: true,
   theme: {
     container: {
       center: true,
@@ -20,9 +19,16 @@ const config = {
       },
       spacing: {
         '1.75': '7px',
+        '7.5': '1.875rem',
+        '8.5': '2.125rem',
+        '12.5': '3.125rem',
       },
       minWidth: {
         '20rem': '20rem',
+      },
+      maxWidth: {
+        '7.5xl': '82.5rem',
+        '8xl': '96rem',
       },
       colors: {
         "primary-green": "#034737",
@@ -31,6 +37,21 @@ const config = {
         "primary-black": "#14171B",
         "primary-neutral": "#343434",
         "primary-grey": "#918EA4",
+        "bookmark-orange-0": "#FAAC70",
+        "bookmark-orange-1": "#FAAC70",
+        "bookmark-purple-0": "#BC94FF",
+        "bookmark-purple-1": "#9F66FF",
+        "bookmark-pink-0": "#FF759F",
+        "bookmark-pink-1": "#FF196E",
+        "bookmark-blue-0": "#39AFFD",
+        "bookmark-blue-1": "#477FFF",
+        "bookmark-red-0": "#FFA78F",
+        "bookmark-red-1": "#F23E2C",
+        "bookmark-green-0": "#9BF763",
+        "bookmark-green-1": "#26AB5B",
+        // background: linear-gradient(180deg, #BC94FF 0%, #9F66FF 100%);
+
+
         header: "hsl(var(--header))",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -68,12 +89,13 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        grayLighter: "#e3e3e3",
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        '2.5xl': '1.25rem',
+        '4xl': '1.875rem',
       },
       keyframes: {
         "accordion-down": {
