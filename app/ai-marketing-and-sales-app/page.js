@@ -15,22 +15,22 @@ import Cta from "@/components/home/cta/Cta";
 import Faqs from "@/components/home/faq/Faqs";
 
 function Page() {
-    return (
-        <React.Fragment>
-            <Navbar />
-            <Banner />
-            <EasySteps />
-            <CreateUltimate />
-            <DetailFeatures />
-            {/* <AiPartner/> */}
-            <UniqueModel />
-            <BusinessSolution />
-            {/* <CustomerStories /> */}
-            <Cta />
-            {/* <Faqs /> */}
-            <Footer />
-        </React.Fragment>
-    );
+  return (
+    <React.Fragment>
+      <Navbar />
+      <Banner />
+      <EasySteps />
+      <CreateUltimate />
+      <DetailFeatures />
+      {/* <AiPartner/> */} 
+      <UniqueModel />
+      <BusinessSolution />
+      {/* <CustomerStories /> */}
+      <Cta />
+      <Faqs />
+      <Footer />
+    </React.Fragment>
+  );
 }
 
 export default Page;

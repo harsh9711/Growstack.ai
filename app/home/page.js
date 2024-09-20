@@ -36,7 +36,7 @@ function Page() {
             <WhyChoose />
             <FuturePlans />
             <Cta />
-            {/* <Faqs /> */}
+            <Faqs />
             <Footer />
         </React.Fragment>
     );
