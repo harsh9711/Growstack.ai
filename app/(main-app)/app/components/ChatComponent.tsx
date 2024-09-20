@@ -192,7 +192,7 @@ export default function ChatComponent() {
                 )}
               </SelectValue>
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="max-h-60 overflow-y-auto" style={{ scrollBehavior: 'smooth' }}>
               <SelectGroup>
                 {filteredAiModelOptions.map(({ icon, label, value }) => (
                   <SelectItem key={value} value={value}>
