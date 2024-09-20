@@ -28,6 +28,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { DollarSign } from "lucide-react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
+import Spinner from "@/components/Spinner";
+import { PlanIcon } from "@/components/svgs";
+import { getUserFriendlyPlanName, planIdsMap } from "@/lib/utils";
+import { PlanName } from "@/types/enums";
+import GlobalModal from "@/components/modal/global.modal";
+import UpgradePlan from "@/components/upgradePlan/upgradePlan";
 
 interface BillingHistoryItem {
   amount: ReactNode;
@@ -40,10 +48,12 @@ interface BillingHistoryItem {
 }
 
 const OverViewSection = () => {
+  const { currentPlan } = useSelector((rootState: RootState) => rootState.auth);
   const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [cancelLoading, setCancelLoading] = useState<boolean>(false); // Add state for cancel button loading
   const [isCreditLoading, setIsCreditLoading] = useState<boolean>(false);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState<boolean>(false);
   const [isCreditInputDialogBoxOpen, setIsCreditInputDialogBoxOpen] =
     useState<boolean>(false);
   const [amount, setAmount] = useState<number | "">(0);
@@ -168,11 +178,16 @@ const OverViewSection = () => {
               ${planUsage?.usage_amount}
             </h1>
             <button
-              className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300 ${
-                isCreditLoading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+              className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300 ${isCreditLoading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
               onClick={() => {
-                setIsCreditInputDialogBoxOpen(true);
+                const isBasicPlan = planIdsMap.BASIC.some((val) => val === currentPlan?.plan_id);
+
+                if (isBasicPlan) {
+                  setIsUpgradeModalOpen(true)
+                } else {
+                  setIsCreditInputDialogBoxOpen(true);
+                }
               }}
               disabled={isCreditLoading}
             >
@@ -201,9 +216,8 @@ const OverViewSection = () => {
                   />
                 </div>
                 <p
-                  className={` text-opacity-50 ${
-                    isAmountError ? "text-destructive" : "text-primary-black"
-                  }`}
+                  className={` text-opacity-50 ${isAmountError ? "text-destructive" : "text-primary-black"
+                    }`}
                 >
                   Enter an amount between <span>$</span>5 and <span>$</span>100
                 </p>
@@ -217,12 +231,23 @@ const OverViewSection = () => {
             </div>
           </DialogContent>
         </Dialog>
+
+        <GlobalModal
+          showCloseButton={true}
+          open={isUpgradeModalOpen}
+          setOpen={() => {
+            setIsUpgradeModalOpen(false);
+          }}
+        >
+          <UpgradePlan />
+        </GlobalModal>
       </div>
     </Motion>
   );
 };
 
 export default function SettingsPage() {
+  const { user, currentPlan, isCurrentPlanFetching } = useSelector((rootState: RootState) => rootState.auth);
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
   const tabs = ["Overview", "Billing history"];
@@ -282,9 +307,20 @@ export default function SettingsPage() {
   }, []);
   return (
     <main>
-      <div className="flex flex-wrap gap-10 justify-between">
+      <div className="flex w-full justify-between ">
+        <h1 className="text-2xl font-semibold">Billing</h1>
+        {
+          !isCurrentPlanFetching || !currentPlan ? <>
+            <div className="flex gap-x-2 items-center" >
+              <PlanIcon />
+              {getUserFriendlyPlanName(currentPlan?.plan_name! as PlanName)} Plan
+            </div></> : (
+            <Spinner color="#000" />
+          )
+        }
+      </div>
+      <div className="flex flex-wrap gap-10 justify-between pb-6">
         <div className="space-y-3">
-          <h1 className="text-2xl font-semibold">Billing</h1>
           <p className="text-primary-black text-opacity-50">
             We believe Growstack should be accessible to all companies, no
             matter the Size
@@ -292,15 +328,18 @@ export default function SettingsPage() {
         </div>{" "}
         <div className="flex flex-row gap-x-6 items-end">
           <AddCreditDialog />
-          <button
-            className={`w-full max-w-fit text-[12px] xl:text-[18px] h-12 px-4 py-2 xl:py-3 rounded-xl flex gap-3 bg-white border-red-500 border hover:font-semibold hover:border-2 text-red-500 sheen transition-all duration-300 ${
-              cancelLoading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-            onClick={handleCancelSubscription}
-            disabled={cancelLoading} // Disable button while canceling
-          >
-            {cancelLoading ? "Canceling..." : "Cancel Subscription"}
-          </button>
+          {
+            user?.isSubscribed && (
+              <button
+                className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-white border-red-500 border hover:font-semibold hover:border-2 text-red-500 sheen transition-all duration-300 ${cancelLoading ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                onClick={handleCancelSubscription}
+                disabled={cancelLoading}
+              >
+                {cancelLoading ? 'Canceling...' : 'Cancel Subscription'}
+              </button>
+            )
+          }
         </div>
         {/* <div className="w-full max-w-[320px] bg-white shadow-2xl shadow-gray-200 px-3 py-2 rounded-xl">
           <div className="w-full flex relative">

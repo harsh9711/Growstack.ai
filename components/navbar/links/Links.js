@@ -17,19 +17,19 @@ const links = [
         path: "/ai-marketing-and-sales-app",
       },
       {
-        title: "Text to videos and Product AI",
-        path: "/text-to-video-and-product-ai",
+        title: "Text to avatar and AI background",
+        path: "/text-to-avatar-and-ai-background",
       },
       {
         title: "Marketing and sales assistants",
         path: "/marketing-and-sales-assistant",
       },
+      // {
+      //   title: "AI Website landing page and email Builder",
+      //   path: "/ai-website-and-email-builder",
+      // },
       {
-        title: "AI Website landing page and email Builder",
-        path: "/ai-website-and-email-builder",
-      },
-      {
-        title: "Custom marketing GPT apps",
+        title: "Custom GPT ",
         path: "/custom-marketing-gpt-apps",
       },
       { title: "Social planner hub", path: "/social-planner-hub" },
@@ -39,20 +39,48 @@ const links = [
     title: "Solutions",
     path: "",
     submenu: [
-      { title: "Large Enterprise", path: "/solutions/largeenterprise",img:"/large.svg" },
-      { title: "MidMarket Enterprise", path: "/solutions/midmarketenterprise",img:"/mid.svg" },
-      { title: "Small businesses", path: "/solutions/smallbusinesses" ,img:"/small.svg"},
-      { title: "Startup", path: "/solutions/startup" ,img:"/startup.svg"},
+      {
+        title: "Large Enterprise",
+        path: "/solutions/largeenterprise",
+        img: "/large.svg",
+      },
+      {
+        title: "MidMarket Enterprise",
+        path: "/solutions/midmarketenterprise",
+        img: "/mid.svg",
+      },
+      {
+        title: "Small businesses",
+        path: "/solutions/smallbusinesses",
+        img: "/small.svg",
+      },
+      { title: "Startup", path: "/solutions/startup", img: "/startup.svg" },
 
-      { title: "Marketing", path: "/solutions/marketing" ,img:"/marketing.svg"},
-      { title: "Sales", path: "/solutions/sales" ,img:"/sales.svg"},
-      { title: "Revops", path: "/solutions/revops",img:"/revops.svg" },
-      { title: "Customer Service", path: "/solutions/customer_service",img:"/cust.svg" },
+      {
+        title: "Marketing",
+        path: "/solutions/marketing",
+        img: "/marketing.svg",
+      },
+      { title: "Sales", path: "/solutions/sales", img: "/sales.svg" },
+      { title: "Revops", path: "/solutions/revops", img: "/revops.svg" },
+      {
+        title: "Customer Service",
+        path: "/solutions/customer_service",
+        img: "/cust.svg",
+      },
 
-      { title: "Business Operations", path: "/solutions/operations",img:"/buss.svg" },
-      { title: "Finance", path: "/solutions/finance" ,img:"/finance.svg"},
-      { title: "Supply Chain", path: "/solutions/supplychain",img:"/supply.svg" },
-      { title: "IT", path: "/solutions/It",img:"/it.svg" },
+      {
+        title: "Business Operations",
+        path: "/solutions/operations",
+        img: "/buss.svg",
+      },
+      { title: "Finance", path: "/solutions/finance", img: "/finance.svg" },
+      {
+        title: "Supply Chain",
+        path: "/solutions/supplychain",
+        img: "/supply.svg",
+      },
+      { title: "IT", path: "/solutions/It", img: "/it.svg" },
     ],
   },
 ];

@@ -42,7 +42,13 @@ function Footer() {
                                         <Link href='/company'>About Us</Link>
                                     </li>
                                     <li>
-                                        <Link href={ALL_ROUTES.PRICING}>Pricing</Link>
+                                        <Link href='/pricing'>Pricing</Link>
+                                    </li>
+                                    <li>
+                                        <Link href='/faq'>Faqs</Link>
+                                    </li>
+                                    <li>
+                                        <Link href='/demo'>Request Demo</Link>
                                     </li>
                                     <li>{/* <Link href="/auth/register">Get the App</Link> */}</li>
                                     <li>{/* <Link href="/auth/register">Blog</Link> */}</li>
@@ -56,16 +62,16 @@ function Footer() {
                                         <Link href='/ai-marketing-and-sales-app'>AI marketing and sales apps</Link>
                                     </li>
                                     <li>
-                                        <Link href='/text-to-video-and-product-ai'>Text to videos and Product AI</Link>
+                                        <Link href='/text-to-avatar-and-ai-background'>Text to avatar and AI background</Link>
                                     </li>
                                     <li>
                                         <Link href='/marketing-and-sales-assistant'>Marketing and sales assistants</Link>
                                     </li>
                                     <li>
-                                        <Link href='/ai-website-and-email-builder'>AI Website landing page and email Builder</Link>
+                                        {/* <Link href='/ai-website-and-email-builder'>AI Website landing page and email Builder</Link> */}
                                     </li>
                                     <li>
-                                        <Link href='/custom-marketing-gpt-apps'>Custom marketing GPT apps</Link>
+                                        <Link href='/custom-marketing-gpt-apps'>Custom GPT</Link>
                                     </li>
                                     <li>
                                         <Link href='/social-planner-hub'>Social planner hub</Link>
@@ -77,13 +83,13 @@ function Footer() {
                                 <ul>
                                     <li>{/* <Link href="/auth/register">Support</Link> */}</li>
                                     <li>
-                                        <Link href='/Tnc'>Terms & Condition</Link>
+                                        <Link href='/terms-of-service'>Terms of Service</Link>
                                     </li>
                                     <li>
-                                        <Link href='/Tos'>Privacy Policy</Link>
+                                        <Link href='/privacy-policy'>Privacy Policy</Link>
                                     </li>
                                     <li>
-                                        <Link href='/Rrp'>Refund & return policy</Link>
+                                        <Link href='/return-policy'>Refund & return policy</Link>
                                     </li>
                                     <li>{/* <Link href="/auth/register">Community</Link> */}</li>
                                 </ul>

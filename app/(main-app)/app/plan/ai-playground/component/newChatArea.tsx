@@ -6,7 +6,7 @@ interface NewChatAlertProps {
   handleNewChat: () => void;
 }
 
-const NewChatAlert = ({ handleNewChat }: NewChatAlertProps) => {
+const  NewChatAlert = ({ handleNewChat }: NewChatAlertProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (

@@ -20,6 +20,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { API_URL } from "@/lib/api";
+import { ALL_ROUTES } from "@/utils/constant";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
 
 const VideoTable: React.FC<{
   videos: Array<{
@@ -33,6 +36,8 @@ const VideoTable: React.FC<{
   onRemove: (id: string) => void;
   onPreview: (url: string) => void;
 }> = ({ videos, onRemove, onPreview }) => {
+  const { user } = useSelector((rootState: RootState) => rootState.auth);
+  const isSubscribed = user?.isSubscribed || false;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentVideoId, setCurrentVideoId] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -97,9 +102,7 @@ const VideoTable: React.FC<{
 
       if (data.usage_amount === 0) {
         toast.error('Trial expired');
-        window.location.href = '/Payment';
-
-        
+        window.location.href = isSubscribed ? ALL_ROUTES.UPGRADE : ALL_ROUTES.PAYMENT
       }
     } catch (error: any) {
       if (error.response) {
@@ -113,7 +116,7 @@ const VideoTable: React.FC<{
 
   useEffect(() => {
     fetchPlanUsage();
-  }, []); 
+  }, []);
 
   const outputType: OutputType[] = [
     { label: "Delete", value: "delete", icon: <span>🗑️</span> },
@@ -145,7 +148,7 @@ const VideoTable: React.FC<{
       return () => {
         document.removeEventListener("mousedown", handleClickOutside);
       };
-      
+
     }, []);
 
     const handleSelectChange = async (
@@ -224,9 +227,8 @@ const VideoTable: React.FC<{
                     }
                     setIsOpen(false);
                   }}
-                  className={`flex items-center gap-2 px-4 py-2 w-full text-left ${
-                    value === selectedValue ? "bg-gray-100" : "hover:bg-blue-50"
-                  }`}
+                  className={`flex items-center gap-2 px-4 py-2 w-full text-left ${value === selectedValue ? "bg-gray-100" : "hover:bg-blue-50"
+                    }`}
                 >
                   {icon}
                   {label}
@@ -235,7 +237,7 @@ const VideoTable: React.FC<{
             </div>
           </div>
         )}
-        
+
         {downloadProgress !== null && (
           <div className="absolute bottom-0 left-0 w-full bg-gray-200 rounded-b-lg">
             <div
@@ -280,15 +282,14 @@ const VideoTable: React.FC<{
                 {videoDuration[video._id] || "Loading..."}
               </TableCell>
               <TableCell
-                className={`text-[14px] ${
-                  video.status === "Success"
-                    ? "text-green-500"
-                    : video.status === "Pending"
+                className={`text-[14px] ${video.status === "Success"
+                  ? "text-green-500"
+                  : video.status === "Pending"
                     ? "text-yellow-500"
                     : video.status === "Failed"
-                    ? "text-red-500"
-                    : ""
-                }`}
+                      ? "text-red-500"
+                      : ""
+                  }`}
               >
                 {video.status}
               </TableCell>
@@ -303,15 +304,12 @@ const VideoTable: React.FC<{
 
                   if (totalMinutes >= 60) {
                     const hours = Math.floor(totalMinutes / 60);
-                    return `Created about ${hours} ${
-                      hours === 1 ? "hr" : "hrs"
-                    } ago`;
+                    return `Created about ${hours} ${hours === 1 ? "hr" : "hrs"
+                      } ago`;
                   } else {
-                    return `Created about ${totalMinutes} ${
-                      totalMinutes === 1 ? "min" : "mins"
-                    } and ${totalSeconds} ${
-                      totalSeconds === 1 ? "sec" : "secs"
-                    } ago`;
+                    return `Created about ${totalMinutes} ${totalMinutes === 1 ? "min" : "mins"
+                      } and ${totalSeconds} ${totalSeconds === 1 ? "sec" : "secs"
+                      } ago`;
                   }
                 })()}
               </TableCell>

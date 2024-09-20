@@ -2,20 +2,25 @@
 import React, { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 
 const PricingPage: React.FC = () => {
   const [seconds, setSeconds] = useState(5);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     AOS.init();
+
+    const isCredit = searchParams.get("credit") === "true";
+    const targetPage = isCredit ? "/app" : "/Payment";
+
     const timer = setInterval(() => {
       setSeconds((prev) => {
         if (prev <= 1) {
           clearInterval(timer);
-          router.push("/Payment");
+          router.push(targetPage);
           return 0;
         }
         return prev - 1;
@@ -23,7 +28,7 @@ const PricingPage: React.FC = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [router]);
+  }, [router, searchParams]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
@@ -43,16 +48,16 @@ const PricingPage: React.FC = () => {
               src="/failure.gif"
               width={100}
               height={100}
-              alt="Payment Success"
+              alt="Payment Failure"
               className="mx-auto mb-4"
             />
             <h2 className="text-2xl font-bold text-green-600">Oh no!</h2>
             <p className="text-lg text-gray-700 mt-2">
-              We were unable to process
+              We were unable to process your payment.
             </p>
             <div className="mt-6">
               <p className="text-lg text-gray-600">
-                Redirecting to dashboard in
+                Redirecting to {searchParams.get("isCredit") === "true" ? "app" : "payment"} page in
               </p>
               <h3 className="text-4xl font-bold text-red-600">
                 {seconds} seconds

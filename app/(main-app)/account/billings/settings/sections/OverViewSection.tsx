@@ -5,6 +5,8 @@ import instance from '@/config/axios.config';
 import { API_URL } from '@/lib/api';
 import toast from 'react-hot-toast';
 import "../../../../../../styles/loading.css"
+import { RootState } from '@/lib/store';
+import { useSelector } from 'react-redux';
 interface PlanUsage {
   usage_amount: number;
 }
@@ -12,7 +14,10 @@ interface PlanUsage {
 export default function OverViewSection() {
   const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [cancelLoading, setCancelLoading] = useState<boolean>(false); // Add state for cancel button loading
+  const [cancelLoading, setCancelLoading] = useState<boolean>(false);
+  const { user } = useSelector(
+    (rootState: RootState) => rootState.auth
+  );
 
   const fetchPlanUsage = async () => {
     try {
@@ -33,11 +38,11 @@ export default function OverViewSection() {
   };
 
   const handleCancelSubscription = async () => {
-    setCancelLoading(true); 
+    setCancelLoading(true);
     try {
       const response = await instance.put(`${API_URL}/users/api/v1/payments/cancel-subscription`);
       toast.success('Subscription canceled successfully');
-      window.location.href='/Payment';
+      window.location.href = '/Payment';
       console.log('Cancel Subscription Response:', response.data);
     } catch (error: any) {
       if (error.response) {
@@ -47,7 +52,7 @@ export default function OverViewSection() {
       }
       console.error('Error cancelling subscription:', error);
     } finally {
-      setCancelLoading(false); 
+      setCancelLoading(false);
     }
   };
 
@@ -56,18 +61,18 @@ export default function OverViewSection() {
   }, []);
 
   if (loading) {
-    return  <div className="loading-container">
-    <div className="loading-card">
-      <div className="card-chip"></div>
-      <div className="card-lines">
-        <div className="line"></div>
-        <div className="line"></div>
-        <div className="line"></div>
+    return <div className="loading-container">
+      <div className="loading-card">
+        <div className="card-chip"></div>
+        <div className="card-lines">
+          <div className="line"></div>
+          <div className="line"></div>
+          <div className="line"></div>
+        </div>
+        <div className="card-wave"></div>
       </div>
-      <div className="card-wave"></div>
-    </div>
-    <p>Showing your credits...</p>
-  </div>; 
+      <p>Showing your credits...</p>
+    </div>;
   }
 
   return (
@@ -79,15 +84,18 @@ export default function OverViewSection() {
         </div>
         <div className="flex flex-row gap-x-6 items-end">
           <AddCreditDialog />
-          <button
-            className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-white border-red-500 border hover:font-semibold hover:border-2 text-red-500 sheen transition-all duration-300 ${
-              cancelLoading ? 'opacity-50 cursor-not-allowed' : ''
-            }`}
-            onClick={handleCancelSubscription}
-            disabled={cancelLoading} // Disable button while canceling
-          >
-            {cancelLoading ? 'Canceling...' : 'Cancel Subscription'}
-          </button>
+          {
+            user?.isSubscribed && (
+              <button
+                className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-white border-red-500 border hover:font-semibold hover:border-2 text-red-500 sheen transition-all duration-300 ${cancelLoading ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
+                onClick={handleCancelSubscription}
+                disabled={cancelLoading}
+              >
+                {cancelLoading ? 'Canceling...' : 'Cancel Subscription'}
+              </button>
+            )
+          }
         </div>
       </div>
     </Motion>

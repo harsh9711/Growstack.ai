@@ -12,14 +12,11 @@ import { Plan, UserPlan } from "@/types/common";
 import { PlanName } from "@/types/enums";
 import PlanSkeleton from "@/components/skeletons/PlanSkeleton";
 import { deleteCookie, getCookie } from "cookies-next";
-import PlanCard from "./components/planCard";
 import { LogOut } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { getCurrentUser } from "@/lib/features/auth/auth.selector";
 import { logout, setPlanLoading, setUserPlan } from "@/lib/features/auth/auth.slice";
-interface PlanUsage {
-  usage_amount: number;
-}
+import PlanCard from "@/components/planCard";
 
 const PricingPage: React.FC = () => {
   const isLoggedIn = !!getCookie("token");
@@ -217,10 +214,14 @@ const PricingPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div
+      style={{
+        zoom: "0.75"
+      }}
+      className="flex flex-col min-h-screen">
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 px-12">
         <div
-          className="relative overflow-y-auto bg-white w-full md:w-3xl h-fit xl:max-h-[1024] max-w-[1600px] mx-4 sm:mx-6 md:mx-8 lg:mx-auto rounded-2xl shadow-lg"
+          className="relative overflow-y-auto bg-white w-full md:w-3xl md:max-h-[70%]  xl:max-h-[70%] h-full max-w-[1600px] mx-4 sm:mx-6 md:mx-8 lg:mx-auto rounded-2xl shadow-lg"
           data-aos="zoom-in"
           data-aos-duration="500"
           onClick={(e) => e.stopPropagation()}
@@ -246,7 +247,7 @@ const PricingPage: React.FC = () => {
             {
               isLoggedIn ? (
                 <div
-                  className="border-[#034737]  gap-4 text-[#034737] w-full flex justify-end"
+                  className="border-[#034737]  gap-4 text-[#034737] flex-wrap w-full flex justify-center sm:justify-end"
                   data-aos="fade-left"
                 >
                   <Link
