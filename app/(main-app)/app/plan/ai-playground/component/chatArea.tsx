@@ -181,7 +181,7 @@ const ChatArea = ({
         <button
           type="submit"
           onClick={handleSend}
-          className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
+          className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl self-end"
         >
           <SendIcon2 />
         </button>
