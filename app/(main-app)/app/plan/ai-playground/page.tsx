@@ -15,6 +15,7 @@ interface ChatAreaType {
   conversation: Message[];
   awaitingUpdate: boolean;
   messages: Message[];
+  renderConversation: any;
 }
 
 const initialChat: ChatAreaType[] = [
@@ -25,6 +26,7 @@ const initialChat: ChatAreaType[] = [
     conversation: [],
     awaitingUpdate: false,
     messages: [],
+    renderConversation: {}
   },
   {
     id: 1,
@@ -33,6 +35,7 @@ const initialChat: ChatAreaType[] = [
     conversation: [],
     awaitingUpdate: false,
     messages: [],
+    renderConversation: {}
   },
 ];
 
@@ -56,6 +59,7 @@ export default function AiPlayground() {
         conversation: [],
         awaitingUpdate: false,
         messages: [],
+        renderConversation: {}
       },
     ]);
   };
@@ -69,16 +73,16 @@ export default function AiPlayground() {
       chatAreas.map((chatArea) =>
         chatArea.id === id
           ? {
-              ...chatArea,
-              selectedModel: newModel,
-              provider: newProvider || "",
-            }
+            ...chatArea,
+            selectedModel: newModel,
+            provider: newProvider || "",
+          }
           : chatArea
       )
     );
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUserPrompt(event.target.value);
   };
 
@@ -92,6 +96,10 @@ export default function AiPlayground() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    // renderConversation()  
+  };
+
+  const renderConversation = async () => {
     if (userPrompt.trim() === "") return;
 
     const newMessage: Message = {
@@ -153,15 +161,15 @@ export default function AiPlayground() {
               ...chatArea,
               conversation: chatArea.awaitingUpdate
                 ? [
-                    ...chatArea.conversation.slice(0, -1),
-                    {
-                      ...chatArea.conversation[
-                        chatArea.conversation.length - 1
-                      ],
-                      content: initialText,
-                      loading: false,
-                    },
-                  ]
+                  ...chatArea.conversation.slice(0, -1),
+                  {
+                    ...chatArea.conversation[
+                    chatArea.conversation.length - 1
+                    ],
+                    content: initialText,
+                    loading: false,
+                  },
+                ]
                 : chatArea.conversation,
               awaitingUpdate: updatedMessages.length > 0,
               message: initialText,
@@ -171,14 +179,14 @@ export default function AiPlayground() {
           return chatArea;
         })
       );
-    } catch (error : any) {
+    } catch (error: any) {
       setChatAreas(chatAreas);
       toast.error(error?.response?.data?.message || "Something went wrong");
       console.error("Error sending prompt:", error);
     }
 
     setUserPrompt("");
-  };
+  }
 
   return (
     <div className="flex-1 h-full flex flex-col mt-10 overflow-x-auto">
@@ -198,6 +206,7 @@ export default function AiPlayground() {
             conversation={chatArea.conversation}
             userPrompt={userPrompt}
             handleDelete={() => handleDelete(chatArea.id)}
+            renderConversation={renderConversation}
           />
         ))}
       </form>

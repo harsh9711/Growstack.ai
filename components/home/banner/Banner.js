@@ -43,14 +43,14 @@ function Banner() {
                   <Link href="/marketing-and-sales-assistant">Marketing & sales assistant</Link>
                   <img src="/images_growstack/banner/tri.svg" alt="banner" />
                 </div>
-                <div className="store">
+                {/* <div className="store">
                   <Link href="/auth/register">
                     <img src="/images_growstack/banner/playStore.svg" alt="banner" />
                   </Link>
                   <Link href="/auth/register">
                     <img src="/images_growstack/banner/apple.svg" alt="banner" />
                   </Link>
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="col-lg-6 bannerImg">

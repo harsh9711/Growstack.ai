@@ -35,9 +35,9 @@ export default function ProvidersDrawer({
     // "Music",
     "Video",
     "Integrations",
-    "Utilities",
+    // "Utilities",
     // "Email",
-    "Workflows",
+    // "Workflows",
   ];
 
   const filteredTools =
@@ -71,11 +71,10 @@ export default function ProvidersDrawer({
                 {categories.map((category) => (
                   <li key={category}>
                     <button
-                      className={`w-full flex justify-between text-left px-4 py-3 mt-2 rounded-xl ${
-                        selectedCategory === category
+                      className={`w-full flex justify-between text-left px-4 py-3 mt-2 rounded-xl ${selectedCategory === category
                           ? "bg-primary-green text-white"
                           : ""
-                      }`}
+                        }`}
                       onClick={() => setSelectedCategory(category)}
                     >
                       {category}
@@ -88,19 +87,19 @@ export default function ProvidersDrawer({
 
             <div className="w-full p-4 h-full overflow-y-auto">
               <h2 className="text-xl font-semibold mb-4">{selectedCategory}</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                  {filteredTools.map((data) => (
-                    <DrawerClose
-                      asChild
-                      className="absolute right-3 top-0 rounded-lg transition-opacity p-2 hover:bg-[#ff00001f] hover:opacity-100 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
-                    >
-                      <ToolCard
-                        {...data}
-                        onClick={() => onSelectAction?.(data)}
-                      />
-                    </DrawerClose>
-                  ))}
-                </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {filteredTools.map((data) => (
+                  <DrawerClose
+                    asChild
+                    className="absolute right-3 top-0 rounded-lg transition-opacity p-2 hover:bg-[#ff00001f] hover:opacity-100 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+                  >
+                    <ToolCard
+                      {...data}
+                      onClick={() => onSelectAction?.(data)}
+                    />
+                  </DrawerClose>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -128,18 +127,18 @@ const ToolCard: React.FC<ToolCardProps> = ({
 }) => {
   return (
     <div
-    className="border border-[#E4E4E4] p-7 rounded-3xl flex flex-col items-start relative space-y-3 hover:shadow-2xl hover:shadow-gray-200 cursor-pointer transition-all duration-300 group"
-    onClick={onClick}
-  >
-    <Image src={icon} alt="" width={50} height={50} className="rounded-2xl" />
-    <h3 className="text-lg font-semibold">{name}</h3>
-    <p className="text-gray-600 text-[15px] leading-relaxed max-h-[4.5em] overflow-hidden text-ellipsis line-clamp-2 group-hover:max-h-none group-hover:line-clamp-none group-hover:overflow-visible group-hover:whitespace-normal transition-all duration-300">
-      {description}
-    </p>
-    <span className="mt-auto text-xs px-2 py-1 bg-gray-100 rounded-full absolute top-4 right-6 text-primary-black text-opacity-70">
-      {category}
-    </span>
-  </div>
+      className="border border-[#E4E4E4] p-7 rounded-3xl flex flex-col items-start relative space-y-3 hover:shadow-2xl hover:shadow-gray-200 cursor-pointer transition-all duration-300 group"
+      onClick={onClick}
+    >
+      <Image src={icon} alt="" width={50} height={50} className="rounded-2xl" />
+      <h3 className="text-lg font-semibold">{name}</h3>
+      <p className="text-gray-600 text-[15px] leading-relaxed max-h-[4.5em] overflow-hidden text-ellipsis line-clamp-2 group-hover:max-h-none group-hover:line-clamp-none group-hover:overflow-visible group-hover:whitespace-normal transition-all duration-300">
+        {description}
+      </p>
+      <span className="mt-auto text-xs px-2 py-1 bg-gray-100 rounded-full absolute top-4 right-6 text-primary-black text-opacity-70">
+        {category}
+      </span>
+    </div>
   );
 };
 // const AiCard: React.FC<ToolCardProps> = ({

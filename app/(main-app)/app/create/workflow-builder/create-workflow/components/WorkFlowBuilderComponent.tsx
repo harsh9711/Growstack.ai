@@ -33,15 +33,14 @@ export default function WorkFlowBuilderComponent() {
   const [isAPICalling, setIsAPICalling] = useState(false);
   const [inputConfigs, setInputConfigs] = useState<any[]>([]);
   const [outputConfigs, setOutputConfigs] = useState<any[]>([]);
-  const [paragonList,setParagonList] = useState<any[]>(['whatsapp','facebookpages','linkedin','googlesheets','gmail','slack','salesforce','googledocs']);
+  const [paragonList, setParagonList] = useState<any[]>(['whatsapp', 'facebookpages', 'linkedin', 'googlesheets', 'gmail', 'slack', 'salesforce', 'googledocs']);
   interface Input {
     input_label: string;
-    input_default_value: any; 
+    input_default_value: any;
     is_prompt: boolean;
     prompt?: string;
   }
-  
-  const handleAddStep = () => {};
+  const handleAddStep = () => { };
 
   const postAction = async (action: any, index: any) => {
     try {
@@ -56,7 +55,6 @@ export default function WorkFlowBuilderComponent() {
 
   const onSaveAction = async (action: any) => {
     setIsAPICalling(true);
-    
     try {
       const payload = {
         preset_json: {
@@ -78,10 +76,10 @@ export default function WorkFlowBuilderComponent() {
         prevActions.map((act) =>
           act.action_id === action.action_id
             ? {
-                ...updateAction,
-                icon: action.icon,
-                preset_json: action.preset_json,
-              }
+              ...updateAction,
+              icon: action.icon,
+              preset_json: action.preset_json,
+            }
             : act
         )
       );
@@ -93,78 +91,75 @@ export default function WorkFlowBuilderComponent() {
       setIsAPICalling(false);
     }
   };
-  
-  
   interface PresetJsonBodyType {
     inputs: InputType[];
   }
-  
   interface PresetJsonType {
     body: {
       inputs: InputType[];
     };
   }
   interface Tool {
-  name: string;
-  icon: string;
-  preset_json: PresetJsonType;
-}
-type ActionType = {
-  name: string;
-  icon?: string;
-  preset_json: {
-    body: InputType[];
-  };
-};
-
-type ToolType = {
-  name: string;
-  icon?: string;
-  preset_json?: {
-    body: {
-      inputs: InputType[];
-    };
-  };
-};
-
-
-  
-const mapActionInputs = (actions: ActionType[], tools: ToolType[]) => {
-  return actions.map((action: ActionType) => {
-    const tool = tools.find((tool) => tool.name === action.name);
-
-    if (!tool || !tool.preset_json) {
-      return action;
-    }
-
-    return {
-      ...action, 
-      icon: tool.icon,
-      preset_json: {
-        ...tool.preset_json,
-        body: tool.preset_json.body,
-      },
-    };
-  });
-};
-
-
-const getWorkFlowDetails = async (id: string | number) => {
-  try {
-    const {
-      data: {
-        data: { input_configs, actions, output_configs },
-      },
-    } = await instance.get(`${API_URL}/workflow/api/v1/${id}`);
-    setActions(mapActionInputs(actions, tools as unknown as ToolType[]));
-    setInputConfigs(input_configs);
-    setOutputConfigs(output_configs);
-  } catch (error) {
-    toast.error("Failed to fetch workflow details");
+    name: string;
+    icon: string;
+    preset_json: PresetJsonType;
   }
-};
+  type ActionType = {
+    name: string;
+    icon?: string;
+    preset_json: {
+      body: InputType[];
+    };
+  };
 
-  
+  type ToolType = {
+    name: string;
+    icon?: string;
+    preset_json?: {
+      body: {
+        inputs: InputType[];
+      };
+    };
+  };
+
+
+
+  const mapActionInputs = (actions: ActionType[], tools: ToolType[]) => {
+    return actions.map((action: ActionType) => {
+      const tool = tools.find((tool) => tool.name === action.name);
+
+      if (!tool || !tool.preset_json) {
+        return action;
+      }
+
+      return {
+        ...action,
+        icon: tool.icon,
+        preset_json: action.preset_json || {
+          body: tool.preset_json.body.inputs,
+        },
+      };
+    });
+  };
+
+
+
+  const getWorkFlowDetails = async (id: string | number) => {
+    try {
+      const {
+        data: {
+          data: { input_configs, actions, output_configs },
+        },
+      } = await instance.get(`${API_URL}/workflow/api/v1/${id}`);
+      setActions(mapActionInputs(actions, tools as unknown as ToolType[]));
+      setInputConfigs(input_configs);
+      setOutputConfigs(output_configs);
+    } catch (error) {
+      toast.error("Failed to fetch workflow details");
+    }
+  };
+
+
   const deleteAction = async (actionId: string, index: number) => {
     try {
       await instance.delete(
@@ -213,9 +208,8 @@ const getWorkFlowDetails = async (id: string | number) => {
     let updatedActions: any[] = [];
     if (paragonList.includes(action.thirdparty)) {
       const isAuthenticated = await authenticateUser(action.thirdparty);
-      if (!isAuthenticated) return; 
+      if (!isAuthenticated) return;
     }
-  
     const payload = {
       name: action.name,
       description: action.description,
@@ -228,18 +222,17 @@ const getWorkFlowDetails = async (id: string | number) => {
       category: action.category,
       event_execute: action.event_execute,
     };
-  
+
     try {
       const response = await postAction(payload, index);
       toast.success("Action added successfully");
-  
+
       const newAction = {
         ...response.data.data.newAction,
         index: index - 1,
         preset_json: action.preset_json,
         icon: action.icon,
       };
-  
       if (index === 1) {
         updatedActions = [newAction, ...actions];
       } else {
@@ -249,7 +242,6 @@ const getWorkFlowDetails = async (id: string | number) => {
           ...actions.slice(index - 1),
         ];
       }
-  
       setActions(updatedActions);
       setActiveAction({
         ...action,
@@ -260,13 +252,9 @@ const getWorkFlowDetails = async (id: string | number) => {
       toast.error("Failed to add action");
     }
   };
-  
-  
-  
   const handleSaveAction = (changedFields: any) => {
     setIsAPICalling(true);
-   const updatedAction = { ...activeAction, preset_json: { ...activeAction.preset_json, body: { ...activeAction.preset_json.body, ...changedFields } } };
-    
+    const updatedAction = { ...activeAction, preset_json: { ...activeAction.preset_json, body: { ...activeAction.preset_json.body, ...changedFields } } };
     setTimeout(() => {
       setActions((prevActions) =>
         prevActions.map((action) => (action.id === activeAction.id ? updatedAction : action))
@@ -307,7 +295,7 @@ const getWorkFlowDetails = async (id: string | number) => {
             actions={actions}
             inputConfigs={inputConfigs}
             workflowId={workflowId}
-            />
+          />
         );
     }
   };
@@ -316,7 +304,6 @@ const getWorkFlowDetails = async (id: string | number) => {
     try {
       const response = await instance.post(`${API_URL}/users/api/v1/connectors/connect`, {});
       const token = response.data.data.token;
-  
       await paragon.authenticate(process.env.NEXT_PUBLIC_PARAGON_PROJECT_ID || "", token);
       const user = { ...paragon.getUser() };
       if (user.authenticated && !user.integrations[integrationType]?.enabled) {
@@ -328,7 +315,7 @@ const getWorkFlowDetails = async (id: string | number) => {
           confirmButtonText: 'Yes',
           cancelButtonText: 'No'
         });
-  
+
         if (result.isConfirmed) {
           await paragon.connect(integrationType, {});
         }
@@ -384,13 +371,13 @@ const getWorkFlowDetails = async (id: string | number) => {
                 key={index}
                 onClick={() => {
                   setActiveTag("Actions");
-                  setActiveAction({ ...action, index });
+                  setActiveAction(action);
                 }}
                 className={clsx(
                   "w-full max-w-[340px] transition-all duration-300 p-3 border border-[#E5E7EB] rounded-xl flex items-center gap-4 cursor-pointer",
                   index === activeAction.index &&
-                    activeTag === "Actions" &&
-                    "!border-primary-green"
+                  activeTag === "Actions" &&
+                  "!border-primary-green"
                 )}
               >
                 {action?.icon ? (
@@ -505,7 +492,7 @@ const getWorkFlowDetails = async (id: string | number) => {
         <div className="border-l flex-1 border-[#F0F0F0] w-full max-w-[482px] md:w-1/3 p-10 flex flex-col">
           <div className="sticky top-36">
 
-          {renderSection()}
+            {renderSection()}
           </div>
         </div>
       </div>

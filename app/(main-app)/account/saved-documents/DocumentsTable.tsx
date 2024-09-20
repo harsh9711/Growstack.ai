@@ -41,6 +41,9 @@ import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import swal from "sweetalert";
 import { downloadTxt } from "../../app/plan/custom-gpts/new/components/utils/downloadHelpers";
+import { renderToString } from 'react-dom/server';
+import ReactMarkdown from 'react-markdown';
+import rehypeRaw from 'rehype-raw';
 
 interface Document {
   name: string;
@@ -76,29 +79,26 @@ export default function DocumentsTable() {
   const [loading, setLoading] = useState(false);
 
   const downloadTxtFile = (rowData: any) => {
-    const textData = `
-      ID: ${rowData._id}
-      User ID: ${rowData.user_id}
-      Document Type: ${rowData.doc_type}
-      Document Name: ${rowData.doc_name}
-      Language: ${rowData.doc_language}
-      Word Count: ${rowData.doc_words}
-      Category: ${rowData.category}
-      Content: ${rowData.doc_content}
-      Created At: ${rowData.createdAt}
-      Updated At: ${rowData.updatedAt}
-    `;
+    const markdownContent = (
+      <ReactMarkdown rehypePlugins={[rehypeRaw]}>{rowData.doc_content}</ReactMarkdown>
+    );
 
-    const blob = new Blob([textData], { type: "text/plain" });
+    const parsedContent = renderToString(markdownContent).replace(/(<([^>]+)>)/gi, "");
+
+    const blob = new Blob([parsedContent], { type: "text/plain" });
     const url = window.URL.createObjectURL(blob);
+
     const a = document.createElement("a");
     a.href = url;
     a.download = `${rowData.doc_name}.txt`;
+
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
+
     window.URL.revokeObjectURL(url);
   };
+
 
   const columns: ColumnDef<Document>[] = [
     {
@@ -149,7 +149,7 @@ export default function DocumentsTable() {
               <Image
                 src={
                   languageFlags[
-                    row.getValue("doc_language") as keyof typeof languageFlags
+                  row.getValue("doc_language") as keyof typeof languageFlags
                   ]
                 }
                 alt=""
@@ -177,6 +177,7 @@ export default function DocumentsTable() {
       id: "actions",
       header: () => <div className="uppercase">Action</div>,
       cell: ({ row }) => {
+        console.log(row.original);
         return (
           <div className="flex items-center gap-2">
             {/* <button className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300" onClick={() => handleEdit(row?.original)}>
@@ -337,9 +338,9 @@ export default function DocumentsTable() {
                             {header.isPlaceholder
                               ? null
                               : flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext()
-                                )}
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
                           </TableHead>
                         );
                       })}
