@@ -6,9 +6,9 @@
     height: 100vh;
     background-color: #f4f4f4;
     font-family: Arial, sans-serif;
-  }
-  
-  .loading-card {
+}
+
+.loading-card {
     width: 300px;
     height: 180px;
     border-radius: 12px;
@@ -16,9 +16,9 @@
     box-shadow: 5px 5px 10px #c9c9c9, -5px -5px 10px #ffffff;
     position: relative;
     overflow: hidden;
-  }
-  
-  .card-chip {
+}
+
+.card-chip {
     width: 40px;
     height: 30px;
     background-color: gold;
@@ -26,23 +26,23 @@
     position: absolute;
     top: 20px;
     left: 20px;
-  }
-  
-  .card-lines {
+}
+
+.card-lines {
     position: absolute;
     bottom: 20px;
     left: 20px;
     width: calc(100% - 40px);
-  }
-  
-  .card-lines .line {
+}
+
+.card-lines .line {
     height: 8px;
     background-color: #ddd;
     margin-bottom: 8px;
     border-radius: 4px;
-  }
-  
-  .card-wave {
+}
+
+.card-wave {
     position: absolute;
     top: 0;
     left: -150%;
@@ -51,21 +51,13 @@
     background: rgba(255, 255, 255, 0.2);
     transform: rotate(25deg);
     animation: wave 1.5s infinite linear;
-  }
-  
-  @keyframes wave {
+}
+
+@keyframes wave {
     from {
-      left: -150%;
+        left: -150%;
     }
     to {
-      left: 150%;
+        left: 150%;
     }
-  }
-  
-  p {
-    margin-top: 20px;
-    font-size: 18px;
-    color: #666;
-    font-weight: 600;
-  }
-  
+}
