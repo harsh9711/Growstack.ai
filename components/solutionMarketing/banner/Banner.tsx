@@ -1,59 +1,87 @@
-import React, { useEffect } from 'react';
-import Link from 'next/link';
+import React, { useEffect } from "react";
+import Link from "next/link";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import './Banner.scss';
+import "./Banner.scss";
+import { GoArrowRight } from "react-icons/go";
+import { ArrowRight } from "lucide-react";
 
 const Banner: React.FC = () => {
-    useEffect(() => {
-        AOS.init();
-    }, []);
+  useEffect(() => {
+    AOS.init();
+  }, []);
 
-    return (
-        <React.Fragment>
-            <div className="solMarketingBanner">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-6">
-                            <div className="bannerContent">
-                                <span className='user'>Growstack for MARKETING Team</span>
-                                <h2 className='solsheading'><span>Transform your marketing strategy</span> <br /> with GrowStack <img src="/images_growstack/solutions/curveArrow.svg" alt="arrow" /></h2>
-                                <p>Streamline your process, enahnce your campaigns, and maximize your results with All-in-One AI powered Marketing solutions.</p>
-                                <div className="btns reverse">
-                                    <Link href="/register" className='sheen'>
-                                        Get free trial 
-                                        <svg width="21" height="16" viewBox="0 0 21 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M20.5061 8.70711C20.8966 8.31658 20.8966 7.68342 20.5061 7.29289L14.1421 0.928932C13.7516 0.538408 13.1184 0.538408 12.7279 0.928932C12.3374 1.31946 12.3374 1.95262 12.7279 2.34315L18.3848 8L12.7279 13.6569C12.3374 14.0474 12.3374 14.6805 12.7279 15.0711C13.1184 15.4616 13.7516 15.4616 14.1421 15.0711L20.5061 8.70711ZM0 9L19.799 9V7L0 7L0 9Z" fill="#fff" />
-                                        </svg>
-                                    </Link>
-                                    <Link href="/register" className='sheen'>
-                                        See demo 
-                                        <svg width="21" height="16" viewBox="0 0 21 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M20.5061 8.70711C20.8966 8.31658 20.8966 7.68342 20.5061 7.29289L14.1421 0.928932C13.7516 0.538408 13.1184 0.538408 12.7279 0.928932C12.3374 1.31946 12.3374 1.95262 12.7279 2.34315L18.3848 8L12.7279 13.6569C12.3374 14.0474 12.3374 14.6805 12.7279 15.0711C13.1184 15.4616 13.7516 15.4616 14.1421 15.0711L20.5061 8.70711ZM0 9L19.799 9V7L0 7L0 9Z" fill="#fff" />
-                                        </svg>
-                                    </Link>
-                                </div>
-                                <div className="sale"></div>
-                                <div className="store">
-                                    <Link href="/register">
-                                        <img src="/images_growstack/banner/playStore.svg" alt="banner" />
-                                    </Link>
-                                    <Link href="/register">
-                                        <img src="/images_growstack/banner/apple.svg" alt="banner" />
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-lg-6">
-                            <div className="solMarketingSideImg">
-                            <img src="/images_growstack/solutions/marketingBanner.svg" alt="banner" />
-                            </div>
-                        </div>
-                    </div>
+  return (
+    <React.Fragment>
+      <div className="solMarketingBanner">
+        <div className="container">
+          <div className="flex flex-row gap-10">
+            <div className="">
+              <div className="bannerContent">
+                <span className="user">Growstack for MARKETING Team</span>
+                <h2 className="solsheading">
+                  <span>Transform your marketing strategy</span> <br /> with
+                  GrowStack{" "}
+                  <img
+                    src="/images_growstack/solutions/curveArrow.svg"
+                    alt="arrow"
+                  />
+                </h2>
+                <p className="font-medium">
+                  Streamline your process, enahnce your campaigns, and maximize
+                  your results with All-in-One AI powered Marketing solutions.
+                </p>
+
+                <div
+                  data-aos="fade-right"
+                  data-aos-duration="1500"
+                  className="flex flex-row  mt-8 gap-8 group text-[12px] 2xl:text-[18px]"
+                >
+                  <Link href="/auth/register" className="sheen">
+                    {" "}
+                    <button className="bg-primary-green font-medium flex items-center gap-2 text-white 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
+                      Get free trial <ArrowRight className="text-white " />
+                    </button>
+                  </Link>
+                  <Link href="/auth/register" className="sheen">
+                    {" "}
+                    <button className="border border-black flex items-center gap-2 text-black hover:font-bold font-medium 2xl:py-4 py-2 px-2  2xl:px-7 rounded-xl shadow-md shadow-[#00000025]">
+                      See demo
+                      <ArrowRight className="text-black" />
+                    </button>{" "}
+                  </Link>
                 </div>
+
+                <div className="sale"></div>
+                <div className="store">
+                  <Link href="/register">
+                    <img
+                      src="/images_growstack/banner/playStore.svg"
+                      alt="banner"
+                    />
+                  </Link>
+                  <Link href="/register">
+                    <img
+                      src="/images_growstack/banner/apple.svg"
+                      alt="banner"
+                    />
+                  </Link>
+                </div>
+              </div>
             </div>
-        </React.Fragment>
-    );
-}
+            <div className="col-lg-6">
+              <div className="solMarketingSideImg">
+                <img
+                  src="/images_growstack/solutions/marketingBanner.svg"
+                  alt="banner"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </React.Fragment>
+  );
+};
 
 export default Banner;

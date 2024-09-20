@@ -20,7 +20,7 @@ function Page() {
             <SingleHub />
             <Template />
             <UseIt />
-            {/* <Faqs /> */}
+            <Faqs />
             <Footer />
         </React.Fragment>
     );
