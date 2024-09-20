@@ -11,6 +11,7 @@ import LoadingBar from "./components/Loading";
 import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
 import ImageGalleryLineResponsive from "./components/ImageGallerylineresponsive";
 import Footer from "@/components/footer/Footer";
+import Link from "next/link";
 
 const page = () => {
   return (
@@ -46,10 +47,10 @@ const page = () => {
                     <button className="bg-white font-medium flex items-center gap-2 text-[#034737] py-4 px-7 rounded-xl group-hover:font-bold shadow-md hover:shadow-">
                       Free trial <ArrowRight />
                     </button>
-                    <button className="border border-white flex items-center gap-2 text-white hover:font-bold font-medium py-4 px-7 rounded-xl shadow-md shadow-[#00000025]">
+                    <Link href="/demo" className="no-underline">  <button className="border border-white flex items-center gap-2 text-white hover:font-bold font-medium py-4 px-7 rounded-xl shadow-md shadow-[#00000025]">
                       See demo
                       <ArrowRight className="text-white" />
-                    </button>
+                    </button></Link>
                   </div>
                   <div className="flex flex-row gap-4  ">
                     <button className=" flex items-center gap-2 hover:shadow-white shadow-md text-primary-green rounded-xl  shadow-[#00000025]">

@@ -43,64 +43,64 @@ const Carousel = () => {
         className="flex flex-wrap xl:flex-row gap-10 mt-10 items-center justify-center mx-auto"
       >
         {solutions.map((item, index) => (
-          <div
-            key={index}
-            onMouseEnter={() => setHoveredIndex(index)}
-            onMouseLeave={() => setHoveredIndex(null)}
-            style={{ backgroundColor: item.bgcolor }}
-            className={`p-4 flex ${hoveredIndex === index ? "flex-row" : "flex-col"
-              } max-w-${hoveredIndex === index ? "[400px]" : "[150px]"
-              } h-[220px] transition-all duration-500 ease-in-out gap-6 justify-between text-white w-full rounded-[20px]`}
-          >
-            <div className="flex flex-col gap-y-6 items-center justify-center">
-              <div className="max-w-[92px] w-full cursor-pointer">
-                <Image
-                  src={item.imageUrl}
-                  width={100}
-                  height={100}
-                  alt="image"
-                  className="transition-transform duration-500 transform hover:scale-105"
-                />
-              </div>
-              {hoveredIndex === index && (
-                <Link href={item.href}>
-                  <svg
-                    width="21"
-                    height="16"
-                    viewBox="0 0 21 16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="transition-transform duration-500 transform hover:scale-125"
-                  >
-                    <path
-                      d="M20.5061 8.70711C20.8966 8.31658 20.8966 7.68342 20.5061 7.29289L14.1421 0.928932C13.7516 0.538408 13.1184 0.538408 12.7279 0.928932C12.3374 1.31946 12.3374 1.95262 12.7279 2.34315L18.3848 8L12.7279 13.6569C12.3374 14.0474 12.3374 14.6805 12.7279 15.0711C13.1184 15.4616 13.7516 15.4616 14.1421 15.0711L20.5061 8.70711ZM0 9L19.799 9V7L0 7L0 9Z"
-                      fill="#A9FF9B"
-                    />
-                  </svg>
-                </Link>
-              )}
-            </div>
-            <div
-              style={{ color: item.textcolor }}
-              className={`flex flex-col gap-y-4 ${hoveredIndex === index ? "items-start mt-4" : "items-center"
-                }  w-full`}
-            >
-              <h2
-                style={{ color: item.textcolor }}
-                className="text-[20px] text-center  font-semibold"
-              >
-                {item.name}
-              </h2>
-              {hoveredIndex === index && (
-                <p
-                  style={{ color: item.textcolor }}
-                  className={`text-[18px] font-medium max-w-[260px]`}
-                >
-                  {item.role}
-                </p>
-              )}
-            </div>
-          </div>
+           <div
+           key={index}
+           onMouseEnter={() => setHoveredIndex(index)}
+           onMouseLeave={() => setHoveredIndex(null)}
+           style={{ backgroundColor: item.bgcolor }}
+           className={`p-4 flex ${hoveredIndex === index ? "flex-row" : "flex-col"
+             } ${hoveredIndex === index ? "max-w-[300px] 2xl:max-w-[400px]" : "max-w-[100px]  2xl:max-w-[150px]"
+             } h-[160px] 2xl:h-[220px] transition-all duration-500 ease-in-out gap-4 2xl:gap-6 justify-between text-white w-full rounded-[20px]`}
+         >
+           <div className="flex flex-col 2xl:gap-y-6 items-center justify-center">
+             <div className="max-w-[70px] 2xl:max-w-[92px] w-full cursor-pointer">
+               <Image
+                 src={item.imageUrl}
+                 width={100}
+                 height={100}
+                 alt="image"
+                 className="xl:w-2 w-full 2xl:w-96 transition-transform duration-500 transform hover:scale-105"
+               />
+             </div>
+             {hoveredIndex === index && (
+               <Link href={item.href}>
+                 <svg
+                   width="21"
+                   height="16"
+                   viewBox="0 0 21 16"
+                   fill="none"
+                   xmlns="http://www.w3.org/2000/svg"
+                   className="transition-transform duration-500 transform hover:scale-125"
+                 >
+                   <path
+                     d="M20.5061 8.70711C20.8966 8.31658 20.8966 7.68342 20.5061 7.29289L14.1421 0.928932C13.7516 0.538408 13.1184 0.538408 12.7279 0.928932C12.3374 1.31946 12.3374 1.95262 12.7279 2.34315L18.3848 8L12.7279 13.6569C12.3374 14.0474 12.3374 14.6805 12.7279 15.0711C13.1184 15.4616 13.7516 15.4616 14.1421 15.0711L20.5061 8.70711ZM0 9L19.799 9V7L0 7L0 9Z"
+                     fill="#A9FF9B"
+                   />
+                 </svg>
+               </Link>
+             )}
+           </div>
+           <div
+             style={{ color: item.textcolor }}
+             className={`flex flex-col gap-y-4 ${hoveredIndex === index ? "items-start mt-4" : "items-center"
+               }  w-full`}
+           >
+             <h2
+               style={{ color: item.textcolor }}
+               className="text-[16px] 2xl:text-[20px] text-center  font-semibold"
+             >
+               {item.name}
+             </h2>
+             {hoveredIndex === index && (
+               <p
+                 style={{ color: item.textcolor }}
+                 className={`text-[14px] 2xl:text-[18px] font-medium max-w-[260px]`}
+               >
+                 {item.role}
+               </p>
+             )}
+           </div>
+         </div>
         ))}
       </div>
 
@@ -113,7 +113,7 @@ const Carousel = () => {
       {/* Swiper Slider */}
       <div
         data-aos="slide-right"
-        className="flex flex-wrap xl:flex-roww gap-10  py-10 pb-20 items-center justify-center mx-auto"
+        className="flex flex-wrap xl:flex-roww gap-6 2xl:gap-10  py-10 pb-20 items-center justify-center mx-auto"
       >
         {solutionsteams.map((item, index) => (
           <div
@@ -122,18 +122,18 @@ const Carousel = () => {
             onMouseLeave={() => setHovered2Index(null)}
             style={{ backgroundColor: item.bgcolor }}
             className={`p-4 flex ${hovered2Index === index ? "flex-row" : "flex-col"
-              } max-w-${hovered2Index === index ? "[400px]" : "[150px]"
-              } h-[220px] transition-all duration-500 ease-in-out gap-6 justify-between text-white w-full rounded-[20px]`}
+              } ${hovered2Index === index ? "max-w-[300px] 2xl:max-w-[400px]" : "max-w-[100px]  2xl:max-w-[150px]"
+              } h-[160px] 2xl:h-[220px] transition-all duration-500 ease-in-out gap-4 2xl:gap-6 justify-between text-white w-full rounded-[20px]`}
           >
-            <div className="flex flex-col gap-y-6 items-center justify-center">
-              <div className="max-w-[92px] w-full cursor-pointer">
+            <div className="flex flex-col 2xl:gap-y-6 items-center justify-center">
+              <div className="max-w-[70px] 2xl:max-w-[92px] w-full cursor-pointer">
                 <Image
                   src={item.imageUrl}
                   width={100}
                   height={100}
                   alt="image"
-                  className="transition-transform duration-500 transform hover:scale-105"
-                />
+                  className="xl:w-2 w-full 2xl:w-96 transition-transform duration-500 transform hover:scale-105"
+                  />
               </div>
               {hovered2Index === index && (
                 <Link href={item.href}>
@@ -160,14 +160,14 @@ const Carousel = () => {
             >
               <h2
                 style={{ color: item.textcolor }}
-                className="text-[20px] text-center  font-semibold"
+                className="text-[16px] 2xl:text-[20px] text-center  font-semibold"
               >
                 {item.name}
               </h2>
               {hovered2Index === index && (
                 <p
                   style={{ color: item.textcolor }}
-                  className={`text-[18px] font-medium max-w-[260px]`}
+                  className={`text-[14px] 2xl:text-[18px] font-medium max-w-[260px]`}
                 >
                   {item.role}
                 </p>

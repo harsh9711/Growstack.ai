@@ -37,12 +37,12 @@ function Footer() {
                             <div className=''>
                                 <h4>Company</h4>
                                 <ul>
-                                    <li>
+                                    {/* <li>
                                         <Link href='/company'>About us</Link>
-                                    </li>
-                                    <li>
+                                    </li> */}
+                                    {/* <li>
                                         <Link href='/pricing'>Pricing</Link>
-                                    </li>
+                                    </li> */}
                                     <li>
                                         <Link href='/faq'>FAQs</Link>
                                     </li>

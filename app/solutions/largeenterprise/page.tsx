@@ -12,6 +12,7 @@ import MarketingTechnology from "./components/marketingTechnology/MarketingTechn
 import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
 import ImageGalleryResponsive from "./components/ZoomEffectrespopnsive";
 import Footer from "@/components/footer/Footer";
+import Link from "next/link";
 
 const Home = () => {
   const totalItems = 5;
@@ -53,9 +54,10 @@ const Home = () => {
                       <button className="bg-[#034737] text-white font-medium flex items-center gap-2 py-4 px-7 rounded-xl hover:font-bold shadow-md shadow-[#00000025]">
                         Free trial <ArrowRight />
                       </button>
+                      <Link href="/demo" className="no-underline">
                       <button className="border border-[#D9D9D9] flex items-center gap-2 text-black hover:font-bold font-medium py-4 px-7 rounded-xl shadow-md shadow-[#00000025]">
                         See demo <ArrowRight className="text-black" />
-                      </button>
+                      </button></Link>
                     </div>
                   </div>
                 </div>

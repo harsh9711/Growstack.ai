@@ -71,8 +71,7 @@ const HeroSection: React.FC = () => {
                             Free trial <ArrowRight className="text-[#034737]" />
                           </button>
                         </Link>
-                        <Link href="/auth/register" className="no-underline">
-                          {" "}
+                        <Link href="/demo" className="no-underline">                          {" "}
                           <button
                             className="border border-[#14171B] flex items-center gap-2 text-[#14171B] hover:font-bold font-medium py-4 px-7 rounded-xl shadow-md shadow-[#00000025]"
                             data-aos="fade-left"
