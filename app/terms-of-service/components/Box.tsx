@@ -39,7 +39,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({
   return (
     <div className="mb-40">
       <div
-        className="bg-white p-8 m-4 border border-gray-300 rounded-lg shadow-lg transition-shadow hover:shadow-xl"
+        className="bg-white space-y-3 p-8 m-4 border border-gray-300 rounded-lg shadow-lg transition-shadow hover:shadow-xl"
         data-aos="fade-up"
       >
         <h1 className="text-[16px] xl:text-[28px] font-bold mb-4">
@@ -630,101 +630,101 @@ const ContentBox: React.FC<ContentBoxProps> = ({
       </div>
 
       <div
-  className="bg-white p-8 m-4 border border-gray-300 rounded-lg shadow-lg transition-shadow hover:shadow-xl"
-  data-aos="fade-up"
->
-  <h2 className="text-[16px] xl:text-[28px] font-bold mb-4">
-    Governing Law, Arbitration, and Class Action/Jury Trial Waiver for Growstack
-  </h2>
+        className="bg-white p-8 m-4 border border-gray-300 rounded-lg shadow-lg transition-shadow hover:shadow-xl"
+        data-aos="fade-up"
+      >
+        <h2 className="text-[16px] xl:text-[28px] font-bold mb-4">
+          Governing Law, Arbitration, and Class Action/Jury Trial Waiver for Growstack
+        </h2>
 
-  <p className="font-bold">Governing Law</p>
-  <ul className="list-disc ml-6 text-[8px] xl:text-[14px] mb-4">
-    <li className="mb-4">
-      You agree that:
-      <ul className="list-disc ml-6 mt-2">
-        <li>
-          The services provided by Growstack shall be deemed solely based in North Carolina.
-        </li>
-        <li>
-          The services are considered a passive platform, not giving rise to personal jurisdiction over Growstack in any jurisdiction outside of North Carolina.
-        </li>
-        <li>
-          This agreement will be governed by the laws of the State of North Carolina, without consideration of its conflict of laws principles.
-        </li>
-        <li>
-          This agreement evidences a transaction involving interstate commerce, and the Federal Arbitration Act (FAA) will govern the interpretation and enforcement of the Arbitration Agreement in Section 9(b), preempting state laws where applicable.
-        </li>
-        <li>
-          If the FAA does not apply, the law of your state of residence will govern.
-        </li>
-        <li>
-          The United Nations Convention on Contracts for the International Sale of Goods does not apply.
-        </li>
-        <li>
-          You agree to submit to the exclusive jurisdiction of state and federal courts in North Carolina for disputes relating to the protection of Growstack’s intellectual property and for appeals of arbitration decisions.
-        </li>
-      </ul>
-    </li>
-  </ul>
+        <p className="font-bold">Governing Law</p>
+        <ul className="list-disc ml-6 text-[8px] xl:text-[14px] mb-4">
+          <li className="mb-4">
+            You agree that:
+            <ul className="list-disc ml-6 mt-2">
+              <li>
+                The services provided by Growstack shall be deemed solely based in North Carolina.
+              </li>
+              <li>
+                The services are considered a passive platform, not giving rise to personal jurisdiction over Growstack in any jurisdiction outside of North Carolina.
+              </li>
+              <li>
+                This agreement will be governed by the laws of the State of North Carolina, without consideration of its conflict of laws principles.
+              </li>
+              <li>
+                This agreement evidences a transaction involving interstate commerce, and the Federal Arbitration Act (FAA) will govern the interpretation and enforcement of the Arbitration Agreement in Section 9(b), preempting state laws where applicable.
+              </li>
+              <li>
+                If the FAA does not apply, the law of your state of residence will govern.
+              </li>
+              <li>
+                The United Nations Convention on Contracts for the International Sale of Goods does not apply.
+              </li>
+              <li>
+                You agree to submit to the exclusive jurisdiction of state and federal courts in North Carolina for disputes relating to the protection of Growstack’s intellectual property and for appeals of arbitration decisions.
+              </li>
+            </ul>
+          </li>
+        </ul>
 
-  <p className="font-bold">Arbitration</p>
-  <ul className="list-disc ml-6 text-[8px] xl:text-[14px] mb-4">
-    <li className="mb-4">
-      <strong>Agreement to Arbitrate:</strong>
-      <p>
-        You and Growstack agree to resolve any disputes through binding arbitration rather than in court, except as provided herein.
-      </p>
-      <ul className="list-disc ml-6 mt-2">
-        <li>
-          This Arbitration Agreement governs disputes arising out of or relating to: This agreement, including its interpretation or validity; Your use of the services, including transactions or marketing communications; Any other aspect of your relationship with Growstack.
-        </li>
-        <li>
-          The Arbitration Agreement applies to all claims, including those asserted before you agreed to the terms.
-        </li>
-        <li>
-          <strong>Opt-Out Option:</strong> If you are a new user, you may opt-out of this Arbitration Agreement within 30 days by emailing Growstack at support@growstack.ai
-        </li>
-        <li>
-          <strong>Process:</strong> Before initiating arbitration, you agree to first attempt to resolve any dispute informally by contacting Growstack at support@growstack.ai. If the dispute remains unresolved after 60 days, it will be submitted to binding arbitration administered by the American Arbitration Association (AAA). The arbitration will be held in North Carolina or your county of residence, unless otherwise agreed. For commercial users, each party will bear the AAA fees. For non-commercial users, you may seek a fee waiver, and attorney fees may be awarded in certain cases.
-        </li>
-        <li>
-          <strong>Arbitrator’s Authority:</strong> The arbitrator has the exclusive authority to decide any dispute about the enforceability or interpretation of this Arbitration Agreement, including claims that it is unconscionable or void.
-        </li>
-        <li>
-          <strong>Exceptions to Arbitration:</strong>
-          <ul className="list-disc ml-6 mt-2">
-            <li>You may seek claims in small claims court for qualifying disputes.</li>
-            <li>Growstack may seek injunctive relief from the courts to protect its intellectual property and data security.</li>
-          </ul>
-        </li>
-        <li>
-          <strong>Severability:</strong> If any part of the Arbitration Agreement is found to be unenforceable, it will be severed, and the remainder of the agreement will still apply. However, if the Class Action/Jury Trial Waiver is found unenforceable in cases involving public injunctive relief, those claims may be litigated in court, while all other claims remain subject to arbitration.
-        </li>
-      </ul>
-    </li>
-  </ul>
+        <p className="font-bold">Arbitration</p>
+        <ul className="list-disc ml-6 text-[8px] xl:text-[14px] mb-4">
+          <li className="mb-4">
+            <strong>Agreement to Arbitrate:</strong>
+            <p>
+              You and Growstack agree to resolve any disputes through binding arbitration rather than in court, except as provided herein.
+            </p>
+            <ul className="list-disc ml-6 mt-2">
+              <li>
+                This Arbitration Agreement governs disputes arising out of or relating to: This agreement, including its interpretation or validity; Your use of the services, including transactions or marketing communications; Any other aspect of your relationship with Growstack.
+              </li>
+              <li>
+                The Arbitration Agreement applies to all claims, including those asserted before you agreed to the terms.
+              </li>
+              <li>
+                <strong>Opt-Out Option:</strong> If you are a new user, you may opt-out of this Arbitration Agreement within 30 days by emailing Growstack at support@growstack.ai
+              </li>
+              <li>
+                <strong>Process:</strong> Before initiating arbitration, you agree to first attempt to resolve any dispute informally by contacting Growstack at support@growstack.ai. If the dispute remains unresolved after 60 days, it will be submitted to binding arbitration administered by the American Arbitration Association (AAA). The arbitration will be held in North Carolina or your county of residence, unless otherwise agreed. For commercial users, each party will bear the AAA fees. For non-commercial users, you may seek a fee waiver, and attorney fees may be awarded in certain cases.
+              </li>
+              <li>
+                <strong>Arbitrator’s Authority:</strong> The arbitrator has the exclusive authority to decide any dispute about the enforceability or interpretation of this Arbitration Agreement, including claims that it is unconscionable or void.
+              </li>
+              <li>
+                <strong>Exceptions to Arbitration:</strong>
+                <ul className="list-disc ml-6 mt-2">
+                  <li>You may seek claims in small claims court for qualifying disputes.</li>
+                  <li>Growstack may seek injunctive relief from the courts to protect its intellectual property and data security.</li>
+                </ul>
+              </li>
+              <li>
+                <strong>Severability:</strong> If any part of the Arbitration Agreement is found to be unenforceable, it will be severed, and the remainder of the agreement will still apply. However, if the Class Action/Jury Trial Waiver is found unenforceable in cases involving public injunctive relief, those claims may be litigated in court, while all other claims remain subject to arbitration.
+              </li>
+            </ul>
+          </li>
+        </ul>
 
-  <p className="font-bold">Class Action and Jury Trial Waiver</p>
-  <ul className="list-disc ml-6 text-[8px] xl:text-[14px] mb-4">
-    <li className="mb-4">
-      <strong>Waiver of Class Action Rights:</strong> All disputes must be brought in an individual capacity. You and Growstack agree to waive the right to:
-      <ul className="list-disc ml-6 mt-2">
-        <li>Bring or participate in any class action, collective action, or private attorney general action.</li>
-        <li>Seek relief on a representative basis.</li>
-      </ul>
-      The arbitrator may only provide relief on an individual basis, and any relief granted will not affect other Growstack users.
-    </li>
-    <li>
-      <strong>Waiver of Jury Trial:</strong> By agreeing to these terms, you and Growstack waive the right to a trial by jury for any claims.
-    </li>
-  </ul>
+        <p className="font-bold">Class Action and Jury Trial Waiver</p>
+        <ul className="list-disc ml-6 text-[8px] xl:text-[14px] mb-4">
+          <li className="mb-4">
+            <strong>Waiver of Class Action Rights:</strong> All disputes must be brought in an individual capacity. You and Growstack agree to waive the right to:
+            <ul className="list-disc ml-6 mt-2">
+              <li>Bring or participate in any class action, collective action, or private attorney general action.</li>
+              <li>Seek relief on a representative basis.</li>
+            </ul>
+            The arbitrator may only provide relief on an individual basis, and any relief granted will not affect other Growstack users.
+          </li>
+          <li>
+            <strong>Waiver of Jury Trial:</strong> By agreeing to these terms, you and Growstack waive the right to a trial by jury for any claims.
+          </li>
+        </ul>
 
-  <p className="font-bold">Governing Law and Forum Choice</p>
-  <p className="text-[8px] xl:text-[14px]">
-    Any legal action related to these terms that is not subject to arbitration will be governed by the Federal Arbitration Act, federal arbitration law, and the laws of North Carolina, without respect to conflict of laws provisions.
-    For disputes that are not arbitrated, the state and federal courts in North Carolina will have exclusive jurisdiction, and both parties waive objections to venue and jurisdiction in these courts.
-  </p>
-</div>
+        <p className="font-bold">Governing Law and Forum Choice</p>
+        <p className="text-[8px] xl:text-[14px]">
+          Any legal action related to these terms that is not subject to arbitration will be governed by the Federal Arbitration Act, federal arbitration law, and the laws of North Carolina, without respect to conflict of laws provisions.
+          For disputes that are not arbitrated, the state and federal courts in North Carolina will have exclusive jurisdiction, and both parties waive objections to venue and jurisdiction in these courts.
+        </p>
+      </div>
 
 
       <div

@@ -1,11 +1,10 @@
 import React from "react";
 import Image from "next/image";
 import Navbar from "@/components/navbar/Navbar";
-import HeroSection from "./components/HeroSection";
-import ContentBox from "./components/Box";
 import { tnc } from "../../privacyPolicy";
 import Footer from "@/components/footer/Footer";
-
+import HeroSection from "./components/HeroSection";
+import ContentBox from "./components/Box";
 
 const Tnc: React.FC = () => {
   return (
@@ -19,36 +18,10 @@ const Tnc: React.FC = () => {
         />
       </div>
       <HeroSection
-        title="Terms of services"
-        description="Lorem ipsum dolor sit amet consectetur. Morbi est at odio elementum ornare."
-        lastUpdatedDate="28-08-2024"
+        title="Terms of Service"
+        description=" Discover the terms that govern your use of Growstack's services and protect both parties' interests."
+        lastUpdatedDate="16-09-2024"
       />
-      <section className="bg-white mt-20">
-        <Image
-          src="/1.svg"
-          width={100}
-          height={100}
-          alt="image"
-          className="absolute -translate-y-40 z-0 w-full h-full"
-        />{" "}
-        <div className="max-w-[1000px] relative z-20 w-full justify-center items-center mx-auto ">
-          <ContentBox
-            title={tnc.heading}
-            introduction={tnc.introduction}
-            content={tnc.content}
-            linksSection={tnc.links_section}
-            collectionOfInformation={tnc.collection_of_information}
-            howYourInformationMayBeUsed={
-              tnc.how_your_information_may_be_used
-            }
-          />
-        </div>
-        <HeroSection
-          title="Terms of Service"
-          description=" Discover the terms that govern your use of Growstack's services and protect both parties' interests."
-          lastUpdatedDate="16-09-2024"
-        />
-      </section>
       <section className="bg-white mt-20">
         <Image
           src="/1.svg"
