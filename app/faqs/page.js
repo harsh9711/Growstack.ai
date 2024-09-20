@@ -8,7 +8,7 @@ function Page() {
     return (
         <React.Fragment>
             <Navbar />
-            {/* <Faqs /> */}
+            <Faqs />
             <Footer />
         </React.Fragment>
     );
