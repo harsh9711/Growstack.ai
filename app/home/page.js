@@ -29,7 +29,7 @@ function Page() {
             <Features />
             <Facts />
             <Carousel />
-            <Animation />
+            {/* <Animation /> */}
             <Marketing />
             <Premium />
             <Capability />
