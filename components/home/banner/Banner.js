@@ -29,7 +29,7 @@ function Banner() {
                       />
                     </svg>
                   </Link>
-                  <Link href="/auth/register" className="sheen">
+                  <Link href="/demo" className="sheen">
                     Get a demo{" "}
                     <svg width="21" height="16" viewBox="0 0 21 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <path

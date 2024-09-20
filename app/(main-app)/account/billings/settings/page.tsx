@@ -32,8 +32,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import Spinner from "@/components/Spinner";
 import { PlanIcon } from "@/components/svgs";
-import { getUserFriendlyPlanName } from "@/lib/utils";
+import { getUserFriendlyPlanName, planIdsMap } from "@/lib/utils";
 import { PlanName } from "@/types/enums";
+import GlobalModal from "@/components/modal/global.modal";
+import UpgradePlan from "@/components/upgradePlan/upgradePlan";
 
 interface BillingHistoryItem {
   amount: ReactNode;
@@ -46,10 +48,12 @@ interface BillingHistoryItem {
 }
 
 const OverViewSection = () => {
+  const { currentPlan } = useSelector((rootState: RootState) => rootState.auth);
   const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [cancelLoading, setCancelLoading] = useState<boolean>(false); // Add state for cancel button loading
   const [isCreditLoading, setIsCreditLoading] = useState<boolean>(false);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState<boolean>(false);
   const [isCreditInputDialogBoxOpen, setIsCreditInputDialogBoxOpen] =
     useState<boolean>(false);
   const [amount, setAmount] = useState<number | "">(0);
@@ -177,7 +181,13 @@ const OverViewSection = () => {
               className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300 ${isCreditLoading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               onClick={() => {
-                setIsCreditInputDialogBoxOpen(true);
+                const isBasicPlan = planIdsMap.BASIC.some((val) => val === currentPlan?.plan_id);
+
+                if (isBasicPlan) {
+                  setIsUpgradeModalOpen(true)
+                } else {
+                  setIsCreditInputDialogBoxOpen(true);
+                }
               }}
               disabled={isCreditLoading}
             >
@@ -221,6 +231,16 @@ const OverViewSection = () => {
             </div>
           </DialogContent>
         </Dialog>
+
+        <GlobalModal
+          showCloseButton={true}
+          open={isUpgradeModalOpen}
+          setOpen={() => {
+            setIsUpgradeModalOpen(false);
+          }}
+        >
+          <UpgradePlan />
+        </GlobalModal>
       </div>
     </Motion>
   );

@@ -1,11 +1,21 @@
 "use client";
 
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import clsx from "clsx";
 import { Search } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
+import { planIdsMap } from "@/lib/utils";
 import { aiModelOptions } from "../../../create/ai-articles/constants/options";
 import { ISidebarItem } from "../interface/chat.interface";
 import ChatInput from "./ChatInput";
@@ -31,7 +41,9 @@ const groupByDate = (items: ISidebarItem[]) => {
   const grouped: { [date: string]: ISidebarItem[] } = {};
 
   items.forEach((item) => {
-    const date = item.updatedDate ? item.updatedDate?.split("T")[0] : item.createdDate?.split("T")[0];
+    const date = item.updatedDate
+      ? item.updatedDate?.split("T")[0]
+      : item.createdDate?.split("T")[0];
     if (!grouped[date]) {
       grouped[date] = [];
     }
@@ -40,32 +52,47 @@ const groupByDate = (items: ISidebarItem[]) => {
 
   return grouped;
 };
-const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutProps) => {
+
+const Layout = ({sidebarItems, setSidebarItems, fetchConversations,}: LayoutProps) => {
+  const { currentPlan } = useSelector((rootState: RootState) => rootState.auth);
+
+  const filteredAiModelOptions =
+    currentPlan && planIdsMap.BASIC.some((val) => val === currentPlan.plan_id)
+      ? aiModelOptions.filter((option) => option.value.startsWith("claude"))
+      : aiModelOptions;
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [_, setShowNewChatInput] = useState(false);
-  const [selectedModel, setSelectedModel] = useState<string>("gpt-3.5-turbo");
+  const [selectedModel, setSelectedModel] = useState<string>(filteredAiModelOptions[0]?.value || "");
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
-  const [groupedSidebarItems, setGroupedSidebarItems] = useState<{
-    [date: string]: ISidebarItem[];
-  }>({});
+  const [groupedSidebarItems, setGroupedSidebarItems] = useState<{[date: string]: ISidebarItem[];}>({});
   const [searchTerm, setSearchTerm] = useState("");
   const [toggleSearch, setToggleSearch] = useState<boolean>(false);
 
   const fetchMessages = async (_id: string) => {
     try {
-      const response = await instance.get(`${API_URL}/ai/api/v1/conversation/${_id}`);
+      const response = await instance.get(
+        `${API_URL}/ai/api/v1/conversation/${_id}`
+      );
       const chatData = response.data.data.chats;
-      const messages = chatData.reduce((acc: Message[], chats: any) => {
-        const flattenedThreads = chats.thread.flatMap((thread: any) => [
-          { role: "user", content: thread.user_prompt, loading: false },
-          { role: "assistant", content: thread.response, loading: false },
-        ]);
-        return acc.concat(flattenedThreads);
-      }, []);
+      const messages = chatData.reduce(
+        (acc: Message[], chats: any) => {
+          const flattenedThreads = chats.thread.flatMap((thread: any) => [
+            { role: "user", content: thread.user_prompt, loading: false },
+            { role: "assistant", content: thread.response, loading: false },
+          ]);
+          return acc.concat(flattenedThreads);
+        },
+        [] // Initial empty array
+      );
       setMessages(messages);
       setSelectedConversation(_id);
       const firstFewWords = response.data.data.title;
-      setSidebarItems((prevItems) => prevItems.map((item) => (item._id === _id ? { ...item, title: firstFewWords } : item)));
+      setSidebarItems((prevItems) =>
+        prevItems.map((item) =>
+          item._id === _id ? { ...item, title: firstFewWords } : item
+        )
+      );
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
@@ -107,7 +134,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
         toast.error(error.message);
       }
     } finally {
-      if (selectedConversation === _id){
+      if (selectedConversation === _id) {
         setSelectedConversation(null);
         setMessages([]);
         setShowNewChatInput(true);
@@ -117,12 +144,19 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
   };
 
   const addMessage = (role: string, content: string, loading: boolean) => {
-    setMessages((prevMessages) => [...prevMessages, { role, content, loading }]);
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { role, content, loading },
+    ]);
   };
 
   const updateMessage = (content: string, role: string) => {
     setMessages((prevMessages) =>
-      prevMessages.map((msg, index) => (index === prevMessages.length - 1 && msg.role === role ? { ...msg, content, loading: false } : msg))
+      prevMessages.map((msg, index) =>
+        index === prevMessages.length - 1 && msg.role === role
+          ? { ...msg, content, loading: false }
+          : msg
+      )
     );
   };
 
@@ -136,18 +170,24 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
       if (lastUserMessageIndex === -1) return prevMessages;
 
       const indexToRemove = prevMessages.length - 1 - lastUserMessageIndex;
-      const newMessages = prevMessages.filter((_, index) => index !== indexToRemove && index !== indexToRemove + 1);
+      const newMessages = prevMessages.filter(
+        (_, index) => index !== indexToRemove && index !== indexToRemove + 1
+      );
       return newMessages;
     });
   };
 
-  const selectedModelLabel = aiModelOptions.find((option) => option.value === selectedModel)?.label;
+  const selectedModelLabel = aiModelOptions.find(
+    (option) => option.value === selectedModel
+  )?.label;
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
 
-  const filteredSidebarItems = sidebarItems.filter((item) => item.title.toLowerCase().includes(searchTerm.toLowerCase()));
+  const filteredSidebarItems = sidebarItems.filter((item) =>
+    item.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const groupedFilteredSidebarItems = groupByDate(filteredSidebarItems);
 
@@ -156,11 +196,17 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
       <aside className="flex flex-col w-[380px] border bg-white rounded-3xl h-[calc(100vh-212px)]">
         <div className="flex gap-2 p-5">
           <Select value={selectedModel} onValueChange={setSelectedModel}>
-            <SelectTrigger className="w-[200px] h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4">
+            <SelectTrigger className="h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4">
               <SelectValue placeholder="Select an option">
                 {selectedModelLabel && (
                   <div className="flex items-center gap-2">
-                    <span className="min-w-fit">{aiModelOptions.find((option) => option.value === selectedModel)?.icon}</span>
+                    <span className="min-w-fit">
+                      {
+                        filteredAiModelOptions.find(
+                          (option) => option.value === selectedModel
+                        )?.icon
+                      }
+                    </span>
                     {selectedModelLabel}
                   </div>
                 )}
@@ -168,9 +214,15 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                {aiModelOptions.map(({ icon, label, value }) => (
+                {filteredAiModelOptions.map(({ icon, label, value }) => (
                   <SelectItem key={value} value={value}>
-                    <div className={clsx("flex items-center gap-2", selectedModel === value && "text-primary-green font-medium")}>
+                    <div
+                      className={clsx(
+                        "flex items-center gap-2",
+                        selectedModel === value &&
+                          "text-primary-green font-medium"
+                      )}
+                    >
                       <span className="min-w-fit">{icon}</span>
                       {label}
                     </div>
@@ -185,10 +237,14 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
               setMessages([]);
               setShowNewChatInput(true);
             }}
-            className="text-white bg-primary-green hover:bg-primary-green/90 flex gap-2 justify-center items-center h-12 px-6 font-medium rounded-xl transition-all duration-300 text-sm">
+            className="text-white bg-primary-green hover:bg-primary-green/90 flex gap-2 justify-center items-center h-12 px-6 font-medium rounded-xl transition-all duration-300 text-sm"
+          >
             New
           </button>
-          <button className="text-white bg-primary-black rounded-full h-12 w-12 grid place-content-center" onClick={() => setToggleSearch(!toggleSearch)}>
+          <button
+            className="text-white bg-primary-black rounded-full h-12 w-12 grid place-content-center"
+            onClick={() => setToggleSearch(!toggleSearch)}
+          >
             <Search size={20} />
           </button>
         </div>
@@ -196,7 +252,12 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
           <div className="border-t border-[#EFEFEF] flex items-center justify-between py-3 px-6">
             <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
               <Search className="text-gray-500" size={20} />
-              <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" onChange={handleSearch} />
+              <input
+                type="search"
+                className="outline-none h-[40px] w-full"
+                placeholder="Search"
+                onChange={handleSearch}
+              />
             </div>
           </div>
         )}
@@ -206,7 +267,9 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
         <div className="flex-1 overflow-y-auto p-5 space-y-4">
           {Object.entries(groupedFilteredSidebarItems).map(([date, items]) => (
             <div key={date}>
-              <h3 className="text-gray-400 px-3 mb-2 capitalize">{formatRelativeDate(date)}</h3>
+              <h3 className="text-gray-400 px-3 mb-2 capitalize">
+                {formatRelativeDate(date)}
+              </h3>
               {items.map((item) => (
                 <SidebarItem
                   key={item._id}
@@ -224,18 +287,25 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
         </div>
       </aside>
       <main className="w-full flex-1 flex flex-col bg-white p-4 rounded-3xl border h-[calc(100vh-212px)]">
-        <div className="flex-1 p-5 overflow-y-auto flex flex-col ">
+        <div className="flex-1 p-5 overflow-y-auto flex flex-col">
           {!messages.length ? (
             <div className="flex-1 flex flex-col justify-center items-center pb-40 space-y-4">
               <div className="h-14 w-14 relative">
-                <Image src="/logo/growstack-mini.png" alt="growstack_ai_chat" fill />
+                <Image
+                  src="/logo/growstack-mini.png"
+                  alt="growstack_ai_chat"
+                  fill
+                />
               </div>
               <h1 className="text-primary-green text-xl">
                 Growstack <span className="font-semibold">AI</span>
               </h1>
             </div>
           ) : (
-            <ChatMessage conversation={messages} selectedConversation={selectedConversation} />
+            <ChatMessage
+              conversation={messages}
+              selectedConversation={selectedConversation}
+            />
           )}
         </div>
         <ChatInput

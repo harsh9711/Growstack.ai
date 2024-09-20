@@ -19,10 +19,10 @@ function Page() {
         <React.Fragment>
             <Navbar />
             <Banner />
-            <VideoSolution />
+            {/* <VideoSolution /> */}
             <ElevateBrand />
             <VideoCreated />
-            <VideoTemplate />
+            {/* <VideoTemplate /> */}
             <AiProduct />
             <AiSlider />
             <CoreProduct />

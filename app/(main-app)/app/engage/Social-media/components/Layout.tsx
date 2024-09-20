@@ -273,8 +273,7 @@ const Layout = () => {
         setFilteredData(result);
       }
     } catch (error) {
-      console.log("Error fetching table data:", error);
-      toast.error("Error fetching table data");
+
     }
   };
   const sendMessage = async (payload: {}) => {
@@ -343,8 +342,7 @@ const Layout = () => {
         `${API_URL}/users/api/v1/social-media/profile/messages`
       );
     } catch (error) {
-      console.log("Error fetching table data:", error);
-      toast.error("Error fetching table data");
+
     }
   };
 

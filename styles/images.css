@@ -1,0 +1,23 @@
+.input-with-icon.fullName {
+    background-image: url('/imagescss/1.svg'); /* Replace with the actual image path */
+  }
+
+  .input-with-icon.email {
+    background-image: url('/path/to/email-icon.png'); /* Replace with the actual image path */
+  }
+
+  .input-with-icon.companyName {
+    background-image: url('/path/to/companyName-icon.png'); /* Replace with the actual image path */
+  }
+
+  .input-with-icon.phoneNumber {
+    background-image: url('/path/to/phoneNumber-icon.png'); /* Replace with the actual image path */
+  }
+
+  .input-with-icon.preferredDateTime {
+    background-image: url('/path/to/preferredDateTime-icon.png'); /* Replace with the actual image path */
+  }
+
+  .input-with-icon.message {
+    background-image: url('/path/to/message-icon.png'); /* Replace with the actual image path */
+  }
