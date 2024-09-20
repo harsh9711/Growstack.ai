@@ -15,6 +15,7 @@ import { planIdsMap } from "@/lib/utils";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { ALL_ROUTES } from "@/utils/constant";
+import Swal from 'sweetalert2';
 
 interface ChatInputProps {
   onSend: (content: string, role: string) => void;
@@ -121,7 +122,16 @@ const ChatInput: React.FC<ChatInputProps> = ({
       if (errorMsg === "Please upgrade your plan") {
         setIsDailyLimitExceeded(true);
       }
-      toast.error(errorMsg);
+      if(errorMsg.includes("Your request has been blocked")){
+        const result = await Swal.fire({
+          title: 'Secure chat is enabled',
+          icon: 'success',
+          confirmButtonText: 'Okay',
+          confirmButtonColor:"#0f4d0f",
+        });
+      }else {
+        toast.error(errorMsg);
+      }
       removeMessage();
     }
   };
