@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Accordion from "react-bootstrap/Accordion";
 import Navbar from "@/components/navbar/Navbar";
 import Image from "next/image";
 import "../../styles/customarrow.css";
