@@ -22,7 +22,7 @@ export default function Footer() {
             View Demo
           </button>
           <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-5 py-5 rounded-xl font-semibold">
-            Get 14-day free trial
+            Get 7-day free trial
           </button>
         </div>
       </div>
@@ -37,7 +37,7 @@ export default function Footer() {
                 <h1 className="font-semibold text-lg">Company</h1>
                 <ul className="space-y-5">
                   <li className="hover:underline">
-                  <Link href={ALL_ROUTES.PRICING}>Pricing</Link>
+                    <Link href={ALL_ROUTES.PRICING}>Pricing</Link>
                   </li>
                   <li className="hover:underline">
                     <Link href="#">Get the App</Link>
@@ -87,7 +87,7 @@ export default function Footer() {
                   <li className="hover:underline">
                     {" "}
                     <Link href='/return-policy'>Refund & return policy</Link>
-                    </li>
+                  </li>
                   <li className="hover:underline">
                     <Link href="#">Community</Link>
                   </li>

@@ -15,7 +15,6 @@ import MarketingTechnology from "./components/marketingTechnology/MarketingTechn
 import HeroSection from "./components/HeroSection";
 import ImageGallerySecond from "./components/ZoomEffect2";
 import ImageGalleryResponsiveSecond from "./components/ZoomEffectrespopnsive2";
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 const page = () => {
   useEffect(() => {

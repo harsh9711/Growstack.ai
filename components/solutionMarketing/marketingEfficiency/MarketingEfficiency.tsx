@@ -1,108 +1,163 @@
-import React, { useState, useRef, useEffect } from 'react';
-import AOS from "aos";
-import "aos/dist/aos.css";
-import { Autoplay, Pagination } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/pagination';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './MarketingEfficiency.scss';
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
-const MarketingEfficiency: React.FC = () => {
-    const [activeIndex, setActiveIndex] = useState(0);
-    const [showModal, setShowModal] = useState(false);
-    const swiperRef = useRef<any>(null);
+const ImageGallery = () => {
+  const [clickedImage, setClickedImage] = useState<string | null>(null);
 
-    const images = [
-        { src: "/images_growstack/solutions/aiArticle.svg", description: "Fast content" },
-        { src: "/images_growstack/solutions/textVideo.svg", description: "Visual appeal" },
-        { src: "/images_growstack/solutions/aiEmail.svg", description: "Effective messaging" },
-        { src: "/images_growstack/solutions/aiWebsite.svg", description: "Design optimization" },
-        { src: "/images_growstack/solutions/aiProduct.svg", description: "Product visuals" },
-    ];
-    const swiperImages = [
-        { src: "/images_growstack/solutions/eswiper1.svg", description: "Fast content" },
-        { src: "/images_growstack/solutions/eswiper2.svg", description: "Visual appeal" },
-        { src: "/images_growstack/solutions/eswiper3.svg", description: "Effective messaging" },
-        { src: "/images_growstack/solutions/eswiper4.svg", description: "Design optimization" },
-        { src: "/images_growstack/solutions/eswiper5.svg", description: "Product visuals" },
-    ];
+  useEffect(() => {
+    document.body.style.overflow = clickedImage ? "hidden" : "auto";
 
-    const handleClick = (index: number) => {
-        setActiveIndex(index);
-        setShowModal(true);
+    if (clickedImage) {
+      const imageElement =
+        document.querySelector<HTMLImageElement>(".zoomed-image");
+      if (imageElement) {
+        const rect = imageElement.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+        const scrollUpOffset = 290;
+
+        const offsetTop =
+          rect.top + window.pageYOffset - viewportHeight / 2 + rect.height / 2;
+
+        window.scrollTo({
+          top: offsetTop,
+          behavior: "smooth",
+        });
+      }
+    }
+    return () => {
+      document.body.style.overflow = "auto";
     };
+  }, [clickedImage]);
 
-    useEffect(() => {
-        AOS.init();
-    }, []);
+  const handleClick = (largeSrc: string) => {
+    setClickedImage((prev) => (prev === largeSrc ? null : largeSrc));
+  };
 
-    return (
-        <React.Fragment>
-            <div className="marketingEfficiency">
-                <div className="container">
-                    <div className="title" data-aos="fade-up"
-                            data-aos-easing="ease-in-sine"
-                            data-aos-duration="1000">
-                        <span className="user">Efficiency</span>
-                        <h2 className="heading mt-3"><span>Produce high quality </span>content efficiently</h2>
-                    </div>
-                    <div className="efficiencyImages">
-                        <div className="row justify-content-center">
-                            {images.map((image, index) => (
-                                <div className="col-md-4" data-aos="fade-up"
-                                data-aos-easing="ease-in-sine"
-                                data-aos-duration="1000" key={index}>
-                                    <div className="imgBlock" onClick={() => handleClick(index)}>
-                                        <img src={image.src} alt={image.description} />
-                                        <p>{image.description}</p>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
+  const handleClose = () => {
+    setClickedImage(null);
+  };
+
+  type ImageType = {
+    src: string;
+    largeSrc: string;
+    className?: string;
+    buttonText: string;
+  };
+
+  const images: ImageType[] = [
+    {
+      src: "/images_growstack/solutions/aiArticle.svg",
+      className: "w-[301px] h-[200px] -translate-x-[100px] z-60",
+
+      largeSrc: "/images_growstack/solutions/eswiper1.svg",
+      buttonText: "Fast content",
+    },
+    {
+      src: "/images_growstack/solutions/textVideo.svg",
+      className: "w-[290.5px] h-[200px] translate-x-[0px] z-60 -translate-y-40",
+      largeSrc: "/images_growstack/solutions/eswiper2.svg",
+      buttonText: "Visual appeal",
+    },
+    {
+      src: "/images_growstack/solutions/aiEmail.svg",
+      className: "w-[301px] h-[200px] translate-x-[50px] z-60 translate-y-24",
+
+      largeSrc:
+        "/solutions/sales2/boxes/solution3rdpage/imagshown/imageshown2.svg",
+      buttonText: "Design optimization",
+    },
+    {
+      src: "/images_growstack/solutions/aiWebsite.svg",
+      className: "w-[301px] h-[200px] -translate-x-[700px] z-60 translate-y-32",
+      largeSrc: "/zoomedimages/scheduler.svg",
+      buttonText: "Align communications",
+    },
+    {
+      src: "/images_growstack/solutions/aiProduct.svg",
+      className:
+        "w-[301px] h-[200px] -translate-x-[500px] z-60 -translate-y-40",
+      largeSrc: "/images_growstack/solutions/eswiper5.svg",
+      buttonText: "Product visuals",
+    },
+  ];
+
+  return (
+    <>
+      <div className="w-full">
+        <motion.div
+          className="flex gap-4 mt-52 ml-32 absolute"
+          initial={{ opacity: 1, scale: 1 }}
+          animate={{
+            opacity: clickedImage ? 1 : 1,
+            scale: clickedImage ? 0.98 : 1,
+          }}
+          transition={{ duration: 0.5 }}
+        >
+          {images.map((image, index) => (
+            <motion.div
+              key={index}
+              className={`relative opacity-100 flex flex-col transition-transform duration-300 ease-in-out hover:scale-105 items-center justify-center z-40 ${image.className}`}
+              onClick={() => handleClick(image.largeSrc)}
+              layout
+            >
+              <Image
+                src={image.src}
+                alt={`Image ${index}`}
+                width={100}
+                height={100}
+                className={`relative w-[1260px] h-[360px] ${
+                  clickedImage === image.largeSrc ? "opacity-50" : ""
+                }`}
+              />
+              <button className="absolute -bottom-8 text-center text-[18px]  text-black  w-full py-2 rounded-2xl ">
+                {image.buttonText}
+              </button>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        <div
+          className={`mx-auto z-30 items-center justify-center inset-0 transition-opacity duration-500 ${
+            clickedImage ? "opacity-0" : "opacity-20"
+          }`}
+        >
+          <Image
+            src="/images_growstack/solutions/efficiencyBack.svg"
+            width={1000}
+            height={227}
+            alt="Dashboard Image"
+            className="rounded-3xl w-[1240px] h-[627px]"
+          />
+        </div>
+
+        {clickedImage && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50"
+            onClick={handleClose}
+          >
+            <div
+              className="relative max-w-full max-h-full p-4 rounded-lg"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="absolute top-0 left-0 right-0  text-white p-8 flex items-center justify-between rounded-t-lg">
+                <span className="text-lg font-semibold opacity-0">
+                  Image Preview
+                </span>
+              </div>
+              <Image
+                src={clickedImage}
+                alt="Zoomed Image"
+                width={700}
+                height={700}
+                className="zoomed-image rounded-lg items-center relative  justify-center mx-auto mt-8"
+              />
             </div>
+          </div>
+        )}
+      </div>
+    </>
+  );
+};
 
-            {/* Bootstrap Modal */}
-            {showModal && (
-                <div className="modal show fade"  style={{ display: 'block', background:"#000000b0" }}>
-                    <div className="modal-dialog modal-xl modal-dialog-centered">
-                        <div className="modal-content" data-aos="fade-up"
-                            data-aos-easing="ease-in-sine"
-                            data-aos-duration="1000">
-                                <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
-                           
-                            <div className="modal-body">
-                                <Swiper
-                                    slidesPerView={1}
-                                    spaceBetween={10}
-                                    loop={true}
-                                    speed={5000}
-                                    pagination={{
-                                        clickable: true,
-                                      }}
-                                    centeredSlides={true}
-                                    modules={[Autoplay, Pagination]}
-                                    className="mySwiper"
-                                    initialSlide={activeIndex}
-                                    onSwiper={(swiper) => {
-                                        swiperRef.current = swiper;
-                                    }}
-                                >
-                                    {swiperImages.map((image, index) => (
-                                        <SwiperSlide key={index}>
-                                            <img src={image.src} alt={image.description} className="img-fluid" />
-                                        </SwiperSlide>
-                                    ))}
-                                </Swiper>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-        </React.Fragment>
-    );
-}
-
-export default MarketingEfficiency;
+export default ImageGallery;

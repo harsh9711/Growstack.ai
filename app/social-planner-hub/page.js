@@ -8,24 +8,22 @@ import PlannerSolution from "@/components/socialPlannerHub/plannerSolution/Plann
 import Schedule from "@/components/socialPlannerHub/schedule/Schedule";
 import SocialInteraction from "@/components/socialPlannerHub/socialInteraction/SocialInteraction";
 import React from "react";
-// I commented this bootstrapp CDN because of conflicting styles with tailwindcss, NB: I'll uncomment it as soon as reliable solution is found
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Page() {
-  return (
-    <React.Fragment>
-      <div className="clrNav">
-        <Navbar logoUrl="/images/growhite.svg" logoAlt="Custom Logo" />
-        <Banner />
-        <PlannerSolution />
-        <Partnership />
-        <SocialInteraction />
-        <Schedule />
-        <Faqs />
-        <Footer />
-      </div>
-    </React.Fragment>
-  );
+    return (
+        <React.Fragment>
+            <div className='clrNav'>
+                <Navbar logoUrl='/images/growhite.svg' logoAlt='Custom Logo' />
+                <Banner />
+                <PlannerSolution />
+                <Partnership />
+                <SocialInteraction />
+                <Schedule />
+                <Faqs />
+                <Footer />
+            </div>
+        </React.Fragment>
+    );
 }
 
 export default Page;

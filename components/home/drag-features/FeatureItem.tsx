@@ -11,17 +11,23 @@ interface Props {
 }
 
 export default function FeatureItem (props: Props) {
-   const { icon: { path, alt }, title, className, provided } = props;
+   const { title, className, provided } = props;
    return (
       <div
          ref={provided?.innerRef}
          {...provided?.draggableProps}
          {...provided?.dragHandleProps}
-         className={cn("text-center space-y-2.5 inline-flex flex-col items-center", className)}>
-         <div className=" md:w-16 md:h-[68px] p-1.5 md:p-3 mx-auto bg-white rounded-xl lg:rounded-3xl border-2 border-white drop-shadow-lg">
-            <Image src={path} width={40} height={40} alt={alt ? alt : title} />
-         </div>
-         <span className="inline-block text-sm lg:text-xl">{title}</span>
+         className={cn("text-center inline-flex flex-col items-center justify-center max-w-28 xl:max-w-48 px-3", className)}>
+         {props?.icon ? (
+            <div className="min-w-16 min-h-[67px] lg:w-16 lg:h-[67px] xl:w-[85px] xl:h-[89px] mx-auto">
+               <Image src={props?.icon.path} width={85} height={86} alt={props?.icon.alt ? props?.icon.alt : title} />
+            </div>
+         ) : (
+            <div className="flex items-center justify-center md:w-16 md:h-[68px] p-1.5 md:p-3 mx-auto bg-white rounded-xl lg:rounded-3xl border-2 border-white drop-shadow-lg mb-3.5">
+               <span className="">No image</span>
+            </div>
+         )}
+         <span className="inline-block -mt-2">{title}</span>
       </div>
    )
 }

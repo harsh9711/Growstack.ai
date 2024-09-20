@@ -12,7 +12,6 @@ import MarketingStreamline from "./components/marketingStreamline/MarketingStrea
 import ImageGalleryLineResponsive from "./components/ImageGalleryline";
 import ImageGalleryLineB from "./components/ImageGallerylineresponsive";
 import Footer from "@/components/footer/Footer";
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Home = () => {
   const totalItems = 5;

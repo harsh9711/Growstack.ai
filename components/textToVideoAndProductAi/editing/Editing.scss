@@ -1,16 +1,19 @@
 @import "../../../app/variables.scss";
 
-.editing{
+.editing {
     overflow: hidden;
-    .block{
+
+    .text-block {
         margin: 20px 0;
-        h4{
+
+        h4 {
             font-size: 16px;
             font-weight: bold;
             color: #14171B;
             margin-bottom: 5px;
         }
-        p{
+
+        p {
             color: #707070;
             font-size: 14px;
             margin: 0;

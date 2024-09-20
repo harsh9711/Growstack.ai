@@ -368,11 +368,8 @@ const ContentBox: React.FC<ContentBoxProps> = ({
         <p className="text-gray-600 mt-4">
           To exercise your rights or for further assistance, please contact us
           at{" "}
-          <a
-            href="mailto:xxxxxxxxxxxxxxx@growstack.ai"
-            className="text-blue-500"
-          >
-            xxxxxxxxxxxxxx@growstack.ai
+          <a href="mailto:xsupport@growstack.aii" className="text-blue-500">
+            support@growstack.aii
           </a>
           .
         </p>
@@ -445,10 +442,10 @@ const ContentBox: React.FC<ContentBoxProps> = ({
           maintain communication. You can request the deletion of your contact
           details at any time by contacting our privacy team at{" "}
           <a
-            href="mailto:legal@growstack.ai"
+            href="mailto:support@growstack.ai"
             className="text-blue-500 underline"
           >
-          support@growstack.ai
+            support@growstack.ai
           </a>
           . We may retain certain details for legal purposes or proceedings, but
           will not hold onto Personal Data longer than necessary.
@@ -471,10 +468,10 @@ const ContentBox: React.FC<ContentBoxProps> = ({
           For any concerns regarding the retention or deletion of your data,
           please reach out to us at{" "}
           <a
-            href="mailto:legal@growstack.ai"
+            href="mailto:support@growstack.ai"
             className="text-blue-500 underline"
           >
-            legal@growstack.ai
+            support@growstack.ai
           </a>
           .
         </p>
@@ -498,9 +495,9 @@ const ContentBox: React.FC<ContentBoxProps> = ({
           personal data, as well as the right to restrict processing and data
           portability. For more information about your rights under GDPR, or to
           exercise them, please contact us using the details provided in the{" "}
-          <a href="#contact" className="text-blue-500 underline">
+        
             Contact Us
-          </a>{" "}
+          
           section.
         </p>
 
@@ -512,9 +509,9 @@ const ContentBox: React.FC<ContentBoxProps> = ({
           Consumer Privacy Act (CCPA). Under CCPA, you have the right to access,
           delete, and opt out of the sale of your personal information. For more
           information or to exercise your CCPA rights, please refer to the{" "}
-          <a href="#rights-choices" className="text-blue-500 underline">
+          
             Your Rights and Choices
-          </a>{" "}
+         
           section of this Privacy Policy or contact us.
         </p>
 
@@ -534,13 +531,9 @@ const ContentBox: React.FC<ContentBoxProps> = ({
           In the event of a conflict between this Policy and the DPF Principles,
           the DPF Principles will govern. For more information and to view our
           certification, please visit{" "}
-          <a
-            href="https://www.dataprivacyframework.gov/"
-            target="_blank"
-            className="text-blue-500 underline"
-          >
+         
             Data Privacy Framework
-          </a>
+         
           .
         </p>
 
@@ -554,9 +547,9 @@ const ContentBox: React.FC<ContentBoxProps> = ({
         <p className="text-gray-600 mt-2">
           If you have questions, concerns, or complaints about our compliance
           with the DPF Principles, please contact us using the details in the{" "}
-          <a href="#contact" className="text-blue-500 underline">
+        
             Contact Us
-          </a>{" "}
+          
           section. There, you can also find information regarding our EU
           representative.
         </p>
@@ -565,22 +558,14 @@ const ContentBox: React.FC<ContentBoxProps> = ({
           For unresolved complaints related to personal data handled under the
           Data Privacy Framework, you may contact our U.S.-based third-party
           dispute resolution provider, JAMS, at{" "}
-          <a
-            href="https://www.jamsadr.com/eu-us-data-privacy"
-            target="_blank"
-            className="text-blue-500 underline"
-          >
+         
             JAMS DPF Dispute Resolution
-          </a>
+         
           , free of charge. You may also invoke binding arbitration as outlined
           on the{" "}
-          <a
-            href="https://www.dataprivacyframework.gov/"
-            target="_blank"
-            className="text-blue-500 underline"
-          >
+         
             Data Privacy Framework
-          </a>{" "}
+        
           website. GrowStack.ai is subject to the investigatory and enforcement
           powers of the U.S. Federal Trade Commission (FTC).
         </p>
@@ -603,9 +588,9 @@ const ContentBox: React.FC<ContentBoxProps> = ({
           personal information from such children. If you are a parent or
           guardian and believe that your child has provided us with personal
           information, please{" "}
-          <a href="#contact" className="text-blue-500 underline">
+         
             contact us
-          </a>{" "}
+          
           immediately so that we can take appropriate action. If we discover
           that we have collected personal information from a child in violation
           of applicable law, we will promptly delete such information.
@@ -622,18 +607,17 @@ const ContentBox: React.FC<ContentBoxProps> = ({
           under 13 years of age. Consumers who have opted in to the sale of
           their personal information can opt out at any time. To exercise this
           right, you (or your authorized representative) may submit a request by{" "}
-          <a href="#contact" className="text-blue-500 underline">
+        
             contacting us
-          </a>
+         
           .
         </p>
 
         <p className="text-gray-600 mt-2">
           If you believe that a child under the age of 13 (or 16) has provided
           us with personal information, please{" "}
-          <a href="#contact" className="text-blue-500 underline">
             contact us
-          </a>{" "}
+          
           with sufficient details so that we can delete that information.
         </p>
       </div>
@@ -758,9 +742,8 @@ const ContentBox: React.FC<ContentBoxProps> = ({
         <p className="text-gray-600 mt-2">
           For any concerns about our processing of Personal Data or to exercise
           your rights, please{" "}
-          <a href="#contact" className="text-blue-500 underline">
             contact us
-          </a>
+          
           .
         </p>
       </div>
@@ -838,63 +821,91 @@ const ContentBox: React.FC<ContentBoxProps> = ({
         <p className="text-gray-600 mt-2">
           <strong>Email:</strong>{" "}
           <a
-            href="mailto:legal@growstack.ai"
+            href="mailto:support@growstack.ai"
             className="text-blue-500 underline"
           >
-            legal@growstack.ai
+            support@growstack.ai
           </a>
         </p>
-      </div><div
-  className="bg-white p-8 m-4 border border-gray-300 rounded-lg shadow-lg transition-shadow hover:shadow-xl"
-  data-aos="fade-up"
-  data-aos-delay=""
->
-  <h3 className="text-[12px] xl:text-[32px] font-bold text-[#1A202C] mb-4">13. Changes to This Privacy Policy</h3>
+      </div>
+      <div
+        className="bg-white p-8 m-4 border border-gray-300 rounded-lg shadow-lg transition-shadow hover:shadow-xl"
+        data-aos="fade-up"
+        data-aos-delay=""
+      >
+        <h3 className="text-[12px] xl:text-[32px] font-bold text-[#1A202C] mb-4">
+          13. Changes to This Privacy Policy
+        </h3>
 
-  <p className="text-gray-600 mt-2">
-    We may update this Privacy Policy from time to time to reflect changes in our practices, legal requirements, or other factors.
-  </p>
+        <p className="text-gray-600 mt-2">
+          We may update this Privacy Policy from time to time to reflect changes
+          in our practices, legal requirements, or other factors.
+        </p>
 
-  <ul className="list-disc pl-5 text-gray-600 mt-2">
-    <li><strong>Minor Updates:</strong> For updates that have minor or minimal impact, the changes will take effect 7 days after we post a notice on our Services platform and/or website, or send you a notice via email or through the Services.</li>
-    <li><strong>Substantial Changes:</strong> For significant changes that affect your rights or our practices, the new Privacy Policy will become effective 30 days after we initially post our notice.</li>
-    <li><strong>Immediate Effect:</strong> If changes are required to comply with legal requirements, the updated Privacy Policy will become effective immediately or as required by law.</li>
-  </ul>
+        <ul className="list-disc pl-5 text-gray-600 mt-2">
+          <li>
+            <strong>Minor Updates:</strong> For updates that have minor or
+            minimal impact, the changes will take effect 7 days after we post a
+            notice on our Services platform and/or website, or send you a notice
+            via email or through the Services.
+          </li>
+          <li>
+            <strong>Substantial Changes:</strong> For significant changes that
+            affect your rights or our practices, the new Privacy Policy will
+            become effective 30 days after we initially post our notice.
+          </li>
+          <li>
+            <strong>Immediate Effect:</strong> If changes are required to comply
+            with legal requirements, the updated Privacy Policy will become
+            effective immediately or as required by law.
+          </li>
+        </ul>
 
-  <p className="text-gray-600 mt-2">
-    The effective date of the latest update will be indicated at the top of this Privacy Policy. Your continued use of the Services or our website after any update signifies your acceptance of the revised Privacy Policy.
-  </p>
+        <p className="text-gray-600 mt-2">
+          The effective date of the latest update will be indicated at the top
+          of this Privacy Policy. Your continued use of the Services or our
+          website after any update signifies your acceptance of the revised
+          Privacy Policy.
+        </p>
 
-  <p className="text-gray-600 mt-2">
-    If you do not agree to the updated Privacy Policy, you may choose to stop using our Services or website.
-  </p>
-</div>
-<div
-  className="bg-white p-8 m-4 border border-gray-300 rounded-lg shadow-lg transition-shadow hover:shadow-xl"
-  data-aos="fade-up"
-  data-aos-delay=""
->
-  <h3 className="text-[12px] xl:text-[32px] font-bold text-[#1A202C] mb-4">14. Contact Us</h3>
+        <p className="text-gray-600 mt-2">
+          If you do not agree to the updated Privacy Policy, you may choose to
+          stop using our Services or website.
+        </p>
+      </div>
+      <div
+        className="bg-white p-8 m-4 border border-gray-300 rounded-lg shadow-lg transition-shadow hover:shadow-xl"
+        data-aos="fade-up"
+        data-aos-delay=""
+      >
+        <h3 className="text-[12px] xl:text-[32px] font-bold text-[#1A202C] mb-4">
+          14. Contact Us
+        </h3>
 
-  <p className="text-gray-600 mt-2">
-    If you have any questions or concerns about this privacy policy or your personal information, please contact us:
-  </p>
+        <p className="text-gray-600 mt-2">
+          If you have any questions or concerns about this privacy policy or
+          your personal information, please contact us:
+        </p>
 
-  <p className="text-gray-600 mt-2">
-    <strong>Email:</strong> <a href="mailto:support@growstack.ai" className="text-blue-500 hover:underline">support@growstack.ai
-    </a>
-  </p>
+        <p className="text-gray-600 mt-2">
+          <strong>Email:</strong>{" "}
+          <a
+            href="mailto:support@growstack.ai"
+            className="text-blue-500 hover:underline"
+          >
+            support@growstack.ai
+          </a>
+        </p>
 
-  <p className="text-gray-600 mt-2">
-    <strong>Mailing Address:</strong>1638 Macalpine Circle, Morrisville, North Carolina 27560, USA
+        <p className="text-gray-600 mt-2">
+          <strong>Mailing Address:</strong>1638 Macalpine Circle, Morrisville,
+          North Carolina 27560, USA
+        </p>
 
-  </p>
-
-  <p className="text-gray-600 mt-2">
-    We will respond to your inquiry as promptly as possible.
-  </p>
-</div>
-
+        <p className="text-gray-600 mt-2">
+          We will respond to your inquiry as promptly as possible.
+        </p>
+      </div>
     </div>
   );
 };

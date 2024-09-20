@@ -16,20 +16,24 @@
     justify-content: space-between;
     flex-wrap: wrap;
     margin-bottom: 50px;
+
     @media (max-width: $breakpoint_mobile_portrait) {
       margin-bottom: 35px;
-      
+
     }
+
     h3 {
       font-size: 42px;
       color: #034737;
       margin: 0;
       max-width: 450px;
       font-family: 'PoppinsMedium';
+
       @media (max-width: $breakpoint_tablet) {
         font-size: 32px;
-        
+
       }
+
       @media (max-width: $breakpoint_mobile_portrait) {
         font-size: 24px;
       }
@@ -92,8 +96,9 @@
     .footerLogo {
       @media (max-width: $breakpoint_mobile_portrait) {
         margin-bottom: 15px;
-        
+
       }
+
       img {
         width: 152px;
         height: 20px;
@@ -106,17 +111,20 @@
       color: #fff;
       margin: 0 0 30px;
       font-family: 'PoppinsMedium';
+
       @media (max-width: $breakpoint_tablet) {
         margin: 40px 0 10px;
-        
+
       }
+
       @media (max-width: $breakpoint_mobile_portrait) {
         font-size: 18px;
         margin: 5px 0 10px;
         padding-top: 20px;
       }
     }
-    p{
+
+    p {
       font-size: 16px;
       color: #EBEBEB;
       font-family: 'PoppinsRegular';
@@ -126,6 +134,7 @@
         font-size: 14px;
       }
     }
+
     ul {
       list-style: none;
       padding: 0;
@@ -133,6 +142,7 @@
 
       li {
         margin-bottom: 10px;
+
         a {
           font-size: 16px;
           color: #EBEBEB;
@@ -149,53 +159,59 @@
         }
       }
     }
-    .input-group{
+
+    .input-group {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
+      // flex-wrap: wrap;
       border: 1px solid #EBEBEB;
       padding: 5px 5px 5px 10px;
       border-radius: 10px;
-      input{
+
+      input {
         border: 0;
         box-shadow: none;
         background: transparent;
         color: #EBEBEB;
-        &:focus{
+
+        &:focus {
           border: 0;
           box-shadow: none;
         }
-        &::placeholder{
+
+        &::placeholder {
           color: #EBEBEB;
         }
       }
-    .input-group-append{
-      button{
-        background: #A9FF9B;
-        padding: 10px 17px;
-        border-radius: 10px;
-        border: 0;
-        font-size: 18px;
-        font-family: 'PoppinsMedium';
-        text-decoration: none;
-        margin-left: 10px;
-        transition: all 0.3s ease;
 
-        &:hover {
-          background: #87e279;
-        }
+      .input-group-append {
+        button {
+          background: #A9FF9B;
+          padding: 10px 17px;
+          border-radius: 10px;
+          border: 0;
+          font-size: 18px;
+          font-family: 'PoppinsMedium';
+          text-decoration: none;
+          margin-left: 10px;
+          transition: all 0.3s ease;
 
-        @media (max-width: $breakpoint_mobile_portrait) {
-          padding: 10px 15px;
-          font-size: 16px;
-          margin-right: 10px;
+          &:hover {
+            background: #87e279;
+          }
+
+          @media (max-width: $breakpoint_mobile_portrait) {
+            padding: 10px 15px;
+            font-size: 16px;
+            margin-right: 10px;
+          }
         }
       }
-    }
 
     }
-    .copyRight{
+
+    .copyRight {
       margin-top: 50px;
       display: flex;
       justify-content: space-between;
@@ -203,13 +219,15 @@
       flex-wrap: wrap;
       border-top: 1px solid #EBEBEB;
       padding: 20px 0;
+
       @media (max-width: $breakpoint_mobile_portrait) {
         justify-content: center;
         gap: 15px;
         margin-top: 30px;
-        
+
       }
-      p{
+
+      p {
         font-size: 14px;
         color: #EBEBEB;
         font-family: 'PoppinsRegular';
@@ -219,12 +237,14 @@
           font-size: 14px;
         }
       }
-      .social{
+
+      .social {
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 15px;
-        a{
+
+        a {
           border: 1px solid #EBEBEB;
           padding: 10px;
           border-radius: 50%;
@@ -234,20 +254,23 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          &:hover{
+
+          &:hover {
             background: #EBEBEB;
-            img{
+
+            img {
               filter: invert(1);
-            
+
             }
           }
-          img{
+
+          img {
             width: 15px;
             height: 15px;
 
           }
         }
-        }
+      }
     }
   }
 }

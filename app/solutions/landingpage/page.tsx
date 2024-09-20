@@ -1,7 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Header } from "./components/Header";
 import { InteractiveElement } from "./components/Element";
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Footer from "@/app/(landing)/components/Footer";
 
 export default function Page() {
@@ -34,7 +33,7 @@ export default function Page() {
         <Header />
         <InteractiveElement />
       </div>
-        <Footer/>
+      <Footer />
     </div>
   );
 }

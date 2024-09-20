@@ -10,7 +10,6 @@ import MarketingTechnology from "./components/marketingTechnology/MarketingTechn
 import ImageGallerySecond from "./components/ZoomEffect2";
 import ImageGalleryResponsiveSecond from "./components/ZoomEffectrespopnsive2";
 import HeroSection from "./components/HeroSection";
-import 'bootstrap/dist/css/bootstrap.min.css';
 import Footer from "@/components/footer/Footer";
 
 const page = () => {
@@ -18,9 +17,9 @@ const page = () => {
     AOS.init({ duration: 500 });
   }, []);
   return (
-    <main  data-aos="fade-in"
-    data-aos-duration="2000"
-    data-aos-delay="500" className="2xl:bg-[url('/chain.png')] bg-no-repeat">
+    <main data-aos="fade-in"
+      data-aos-duration="2000"
+      data-aos-delay="500" className="2xl:bg-[url('/chain.png')] bg-no-repeat">
       <HeroSection />
       <section className=" mx-auto w-full flex items-center justify-center py-10 2xl:py-20 2xl:mt-60">
         <div
