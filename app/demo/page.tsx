@@ -1,8 +1,9 @@
 "use client";
-import Navbar from "@/components/navbar/Navbar";
-import Footer from "@/components/footer/Footer";
 import React, { useState } from "react";
 import Image from "next/image";
+import Navbar from "@/components/navbar/Navbar";
+import Footer from "@/components/footer/Footer";
+
 
 const RequestForm = () => {
   const [formData, setFormData] = useState({
@@ -35,7 +36,7 @@ const RequestForm = () => {
           >
             Full Name
           </label>
-          <div className=" bg-white border shadow appearance-none w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded flex items-center">
+          <div className=" bg-white border appearance-none w-full py-3.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-[10px] flex items-center">
             <svg
               width="16"
               height="16"
@@ -78,7 +79,7 @@ const RequestForm = () => {
           >
             Email Address
           </label>
-          <div className=" bg-white border shadow appearance-none w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded flex items-center">
+          <div className=" bg-white border appearance-none w-full py-3.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-[10px] flex items-center">
             <svg
               width="16"
               height="16"
@@ -119,7 +120,7 @@ const RequestForm = () => {
           >
             Company Name
           </label>
-          <div className=" bg-white border shadow appearance-none w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded flex items-center">
+          <div className=" bg-white border appearance-none w-full py-3.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-[10px] flex items-center">
             <svg
               width="16"
               height="16"
@@ -240,7 +241,7 @@ const RequestForm = () => {
           >
             Phone Number (optional)
           </label>
-          <div className=" bg-white border shadow appearance-none w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded flex items-center">
+          <div className=" bg-white border appearance-none w-full py-3.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-[10px] flex items-center">
             <svg
               className="mr-2 mt-0.5"
               width="16"
@@ -283,7 +284,8 @@ const RequestForm = () => {
           >
             Preferred Date and Time
           </label>
-          <div className=" bg-white border shadow appearance-none w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded flex items-center">
+          <div className=" bg-white border appearance-none w-full py-3.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-[10px] flex items-center">
+
             <svg
               className="mr-2 mt-0.5"
               width="16"
@@ -394,7 +396,7 @@ const RequestForm = () => {
           >
             Message/Questions (optional)
           </label>
-          <div className=" bg-white border shadow appearance-none w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded flex items-center">
+          <div className=" bg-white border appearance-none w-full py-3.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-[10px] flex items-center">
       
             <textarea
               id="message"
@@ -579,7 +581,7 @@ const Demo = () => {
             </div>
           </div>
         </div>
-        <div className="relative z-20 bg-[#F7FAFC] mb-52 rounded-[30px] p-10 gap-y-6 max-w-[610px] max-h-[871px] w-full flex flex-col">
+        <div className="relative z-20 bg-[#F7FAFC] mb-52 rounded-[30px] p-10 gap-y-6 max-w-[610px] max-h-[971px] w-full flex flex-col">
           
           <div className="flex flex-col gap-y-2">
             <h2 className="text-[28px]  font-bold text-black">
