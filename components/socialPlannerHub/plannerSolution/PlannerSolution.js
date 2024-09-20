@@ -59,63 +59,44 @@ function PlannerSolution() {
     return (
         <div className='plannerSolution'>
             <div className='container'>
-                <div className='head' data-aos='fade-right' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                <div className='head' data-aos='fade-right' data-aos-easing='ease-in-sine' data-aos-duration='300'>
                     <span className='user'>Schedule in under 1 minute</span>
                     <h3 className='heading mt-2'>
                         <span>Your all in one </span>social planner solution
                     </h3>
                 </div>
+
                 <div className='tabsBlock'>
                     <ul
-                        className='nav nav-pills mb-3'
+                        className='flex w-full justify-between space-x-4 nav nav-pills mb-3'
                         id='pills-tab'
                         role='tablist'
                         data-aos='fade-up'
                         data-aos-easing='ease-in-sine'
-                        data-aos-duration='1000'
+                        data-aos-duration='100'
                     >
-                        {tabData.map((tab, index) => (
-                            <li className='nav-item' role='presentation' key={index}>
+                        {tabData.map((tab) => (
+                            <li key={tab.id}>
                                 <button
-                                    className={`nav-link ${activeTab === tab.id ? "active" : ""}`}
-                                    id={`pills-${tab.id}-tab`}
-                                    type='button'
-                                    role='tab'
-                                    aria-controls={`pills-${tab.id}`}
-                                    aria-selected={activeTab === tab.id}
+                                    className={`nav-link px-4 py-2  ${activeTab === tab.id ? "active" : ""}`}
                                     onClick={() => handleTabClick(tab.id)}
                                 >
-                                    <img src={tab.img} alt='img' /> {tab.title}
+                                    <img src={tab.img} alt={tab.title} className='inline-block mr-2' />
+                                    {tab.title}
                                 </button>
                             </li>
                         ))}
                     </ul>
-                    <div className='tab-content' id='pills-tabContent'>
-                        {tabData.map((tab, index) => (
-                            <div
-                                className={`tab-pane fade ${activeTab === tab.id ? "show active" : ""}`}
-                                id={`pills-${tab.id}`}
-                                role='tabpanel'
-                                aria-labelledby={`pills-${tab.id}-tab`}
-                                tabIndex='0'
-                                key={index}
-                            >
+
+                    <div className='tab-content mt-6'>
+                        {tabData.map((tab) => (
+                            <div key={tab.id} className={`${activeTab === tab.id ? "block" : "hidden"}`}>
                                 <div className='accordionBlock'>
-                                    <div className='row align-items-center'>
-                                        <div className='col-md-6' data-aos='fade-right' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
-                                            <div className='block'>
-                                                <p>{tab.description}</p>
-                                                {/* <Accordion defaultActiveKey="0">
-                          {accordionItems.map((item) => (
-                            <Accordion.Item eventKey={item.eventKey} key={item.eventKey}>
-                              <Accordion.Header>{item.header}</Accordion.Header>
-                              <Accordion.Body>{item.body}</Accordion.Body>
-                            </Accordion.Item>
-                          ))}
-                        </Accordion> */}
-                                            </div>
+                                    <div className='grid grid-cols-1 md:grid-cols-2 gap-4 items-center'>
+                                        <div>
+                                            <p>{tab.description}</p>
                                         </div>
-                                        <div className='col-md-6' data-aos='fade-left' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                        <div>
                                             <img src='/images_growstack/social/accord.svg' alt='accord' />
                                         </div>
                                     </div>
