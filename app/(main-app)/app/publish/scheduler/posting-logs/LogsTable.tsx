@@ -188,10 +188,10 @@ export default function MultiPostsTable() {
           title: "Social Media Account Required",
           text: `Please connect your social media account to proceed.`,
           icon: "warning",
-          showCancelButton: false,
+          showCancelButton: true,
           confirmButtonText: "Yes, connect now!",
           cancelButtonText: "Cancel",
-          allowOutsideClick: false
+          allowOutsideClick: true
         }).then((result) => {
           if (result.isConfirmed) {
             router.push("/app/publish/scheduler/quick-posting/profiles");

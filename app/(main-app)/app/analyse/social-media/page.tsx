@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import Spinner from "@/components/Spinner";
 import Swal from "sweetalert2";
 import { useRouter } from "next/navigation";
+import { button } from "@material-tailwind/react";
 
 export default function SocialMediaAnalyticsPage() {
   const [selectedPlatform, setSelectedPlatform] = useState("Instagram");
@@ -38,27 +39,15 @@ export default function SocialMediaAnalyticsPage() {
       toast.success(response.data.message);
     } catch (error: any) {
       setErrorMessage(error.response.data.message);
-      if(error.response.data.message === 'Please connect your social media account'){
-        Swal.fire({
-          title: "Social Media Account Required",
-          text: `Please connect your social media account ${platform} to proceed.`,
-          icon: "warning",
-          showCancelButton: false,
-          confirmButtonText: "Yes, connect now!",
-          cancelButtonText: "Cancel",
-          allowOutsideClick: false
-        }).then((result) => {
-          if (result.isConfirmed) {
-            router.push("/app/publish/scheduler/quick-posting/profiles");
-          }
-        });
-      }
+      
       setAnalyticsData(null);
     } finally {
       setLoading(false);
     }
   };
-
+  const connectToSocialMedia = () =>{
+    router.push("/app/publish/scheduler/quick-posting/profiles");
+  }
   useEffect(() => {
     fetchAnalytics(selectedPlatform);
   }, [selectedPlatform]);
@@ -229,7 +218,11 @@ export default function SocialMediaAnalyticsPage() {
               </>
             ) : (
               <div className="flex justify-center items-center h-full">
-                <p>{errorMessage ? errorMessage : "Loading..."}</p>
+                <p style={{fontWeight:800}}>{errorMessage ? errorMessage : "Loading..."} <br></br>
+               <div style={{textAlign : "center"}}>
+               <button onClick={connectToSocialMedia} style={{height:"40px",border : "1px solid #034737",backgroundColor:"#034737",color:"white",padding : "0 12px",borderRadius:"4px"}} >connect now!</button>
+               </div>
+                </p>
               </div>
             )}
           </div>
