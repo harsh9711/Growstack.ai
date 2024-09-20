@@ -28,7 +28,7 @@ function Page() {
             <Facts />
             <Carousel />
             {/* <Animation /> */}
-            <Marketing />
+            {/* <Marketing /> */}
             <Premium />
             <Capability />
             <WhyChoose />
