@@ -21,7 +21,7 @@ function Page() {
             <Banner />
             {/* <VideoSolution /> */}
             <ElevateBrand />
-            <VideoCreated />
+            {/* <VideoCreated /> */}
             {/* <VideoTemplate /> */}
             <AiProduct />
             <AiSlider />

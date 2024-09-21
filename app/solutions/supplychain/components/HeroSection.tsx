@@ -19,7 +19,7 @@ const HeroSection = () => {
         backgroundColor="white"
       />
       <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1350px] p-4 w-full h-full justify-center mx-auto">
-        <div className="w-full flex flex-row justify-between brightness-110 relative gap-x-20 items-center mt-10 mb-10 2xl:mt-20 2xl:mb-40">
+        <div className="w-full flex flex-row justify-between brightness-110 relative gap-x-20 items-center mt-10 mb-10 2xl:mt-40 2xl:mb-40">
           <div className="w-full max-w-[900px] gap-y-4 flex flex-col">
             <div
               data-aos="fade-right"
@@ -68,13 +68,13 @@ const HeroSection = () => {
                   <Link href="/auth/register" className="no-underline">
                     {" "}
                     <button className="border border-white flex items-center gap-2 text-white hover:font-bold font-medium 2xl:py-4 py-2 px-2 2xl:px-7 rounded-xl shadow-md shadow-[#00000025]">
-                      See demo
+                      Get demo
                       <ArrowRight className="text-white" />
                     </button>
                   </Link>
                 </div>
 
-                <div
+                {/* <div
                   data-aos="fade-right"
                   data-aos-duration="1500"
                   className="flex flex-row gap-4"
@@ -97,7 +97,7 @@ const HeroSection = () => {
                       height={400}
                     />
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

@@ -179,7 +179,7 @@ const GridComponent = () => {
       className="w-[480px] h-[357px] hover-boxstartup2"
     />
   </div>
-  <div className="rounded-[30px] relative right-[750px] 2xl:top-44  flex justify-center items-center hover:scale-150 transition-transform duration-300">
+  <div className="rounded-[30px] relative right-[810px] 2xl:top-40  flex justify-center items-center hover:scale-150 transition-transform duration-300">
     <Image
       src="/solutions/salesrevops/boxes/main.svg"
       alt="Main"

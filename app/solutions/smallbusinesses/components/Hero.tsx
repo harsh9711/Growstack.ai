@@ -71,12 +71,13 @@ const HeroSection: React.FC = () => {
                             Free trial <ArrowRight className="text-[#034737]" />
                           </button>
                         </Link>
-                        <Link href="/demo" className="no-underline">                          {" "}
+                        <Link href="/demo" className="no-underline">
+                          {" "}
                           <button
                             className="border border-[#14171B] flex items-center gap-2 text-[#14171B] hover:font-bold font-medium py-4 px-7 rounded-xl shadow-md shadow-[#00000025]"
                             data-aos="fade-left"
                           >
-                            See demo <ArrowRight className="text-[#14171B]" />
+                            Get demo <ArrowRight className="text-[#14171B]" />
                           </button>{" "}
                         </Link>
                       </div>
@@ -109,7 +110,7 @@ const HeroSection: React.FC = () => {
         </div>
       </section>
       <div className="flex flex-row justify-between w-full xl:max-w-[1550px] 2xl:max-w-[1550px] mx-auto">
-        <button className="flex items-center 2xl:gap-2 ">
+        {/* <button className="flex items-center 2xl:gap-2 ">
           <Image
             src="/playstore.svg"
             alt="image"
@@ -118,7 +119,7 @@ const HeroSection: React.FC = () => {
             className="relative 2xl:-top-24  max-h-[100px] h-full xl:-top-24"
             data-aos="fade-up"
           />
-        </button>
+        </button> */}
 
         <div
           className="bg-black z-[40] relative flex-col 2xl:flex xl:flex hidden -top-24 max-w-[700px] 2xl:max-w-[1030px] max-h-[244px]  py-4 h-full w-full rounded-[20px] items-center justify-center mx-auto text-white"
@@ -136,7 +137,7 @@ const HeroSection: React.FC = () => {
             drive success for small businesses
           </p>
         </div>
-        <button className="flex items-center -mt-6  2xl:gap-2 ">
+        {/* <button className="flex items-center -mt-6  2xl:gap-2 ">
           <Image
             src="/apple.png"
             alt="image"
@@ -145,7 +146,7 @@ const HeroSection: React.FC = () => {
             className="relative 2xl:-top-24 max-h-[60px] h-full  xl:-top-24"
             data-aos="fade-up"
           />
-        </button>
+        </button> */}
       </div>
       <div className="absolute 2xl:flex xl:flex hidden max-w-[1920px] w-full overflow-hidden top-[1220px]">
         <RepeatText />

@@ -13,7 +13,7 @@ const HeroSection = () => {
       data-aos-delay="500"
       className="2xl:bg-[url('/animation3.png')] lg:bg-[url('/animation3.png')] md:bg-[url('/animation3.png')]xl:bg-[url('/animation3.png')]  h-full bg-gradient-to-b from-[#EFEBFA] to-[#FFFFFF] bg-cover  w-full mb-10 2xl:mb-20 items-center  bg-[100%] justify-center mx-auto"
     >
-        <Navbar
+      <Navbar
         logoUrl="/white.png"
         logoAlt="Custom Logo"
         backgroundColor="transparent"
@@ -57,19 +57,23 @@ const HeroSection = () => {
                 <div
                   data-aos="fade-right"
                   data-aos-duration="1500"
-                  className="flex flex-row gap-8 group text-[12px] 2xl:text-[18px]"
+                  className="flex flex-row gap-8  text-[12px] 2xl:text-[18px]"
                 >
-                  <Link href="/auth/register" className="no-underline"><button className="bg-white hover:bg-[#034737] font-medium flex items-center gap-2 text-[#034737] 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
-                    free trial <ArrowRight />
-                  </button></Link>
+                  <Link href="/auth/register" className="no-underline">
+                    {" "}
+                    <button className="bg-white font-medium flex items-center gap-2 text-[#034737] 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 hover:font-bold shadow-md hover:shadow-">
+                      Get free trial <ArrowRight />
+                    </button>
+                  </Link>
                   <Link href="/demo" className="no-underline">
-                  <button className="border border-white flex items-center bg-white gap-2 text-black hover:font-bold font-medium 2xl:py-4 py-2 px-2 2xl:px-7 rounded-xl shadow-md shadow-[#00000025]">
-                    See demo
-                    <ArrowRight className="text-black" />
-                  </button></Link>
+                    <button className="border border-white flex items-center bg-white gap-2 text-black hover:font-bold font-medium 2xl:py-4 py-2 px-2 2xl:px-7 rounded-xl shadow-md shadow-[#00000025]">
+                      Get demo
+                      <ArrowRight className="text-black" />
+                    </button>
+                  </Link>
                 </div>
 
-                <div
+                {/* <div
                   data-aos="fade-right"
                   data-aos-duration="1500"
                   className="flex flex-row gap-4"
@@ -92,7 +96,7 @@ const HeroSection = () => {
                       height={400}
                     />
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>

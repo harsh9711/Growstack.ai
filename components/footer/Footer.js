@@ -17,8 +17,8 @@ function Footer() {
                     <div className='demo' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                         <h3>Ready to see a personalized demo?</h3>
                         <div className='btns fbtn'>
-                            <Link href='/auth/register' className='sheen'>
-                                View Demo
+                            <Link href='/demo' className='sheen'>
+                                Get demo
                             </Link>
                             <Link href='/auth/register' className='sheen'>
                                 Get 7-day free trial

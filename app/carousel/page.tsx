@@ -17,7 +17,7 @@ const Carousel = () => {
   return (
     <div className="bg-[#F4F6F6] rounded-[60px]">
       {/* Header and Solution Title */}
-      <div className="w-full bg-[#F4F6F6] rounded-[60px] py-20 gap-y-4 flex flex-col items-center justify-center mx-auto">
+      <div className="w-full bg-[#F4F6F6] rounded-[60px] py-10 gap-y-4 flex flex-col items-center justify-center mx-auto">
         <div className="flex flex-col gap-y-6 items-center justify-center mx-auto">
           <div className="bg-[#0347371A] text-[#034737] py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest font-semibold uppercase max-w-[123px]">
             SOLUTIONS
@@ -40,7 +40,7 @@ const Carousel = () => {
       {/* Solutions List */}
       <div
         data-aos="slide-right"
-        className="flex flex-wrap xl:flex-row gap-10 mt-10 items-center justify-center mx-auto"
+        className="flex flex-wrap xl:flex-roww gap-4 2xl:gap-6  py-10 items-center justify-center mx-auto"
       >
         {solutions.map((item, index) => (
            <div
@@ -59,8 +59,8 @@ const Carousel = () => {
                  width={100}
                  height={100}
                  alt="image"
-                 className="xl:w-2 w-full 2xl:w-96 transition-transform duration-500 transform hover:scale-105"
-               />
+                 className="w-96 transition-transform duration-500 transform hover:scale-105"
+                 />
              </div>
              {hoveredIndex === index && (
                <Link href={item.href}>
@@ -94,7 +94,7 @@ const Carousel = () => {
              {hoveredIndex === index && (
                <p
                  style={{ color: item.textcolor }}
-                 className={`text-[14px] 2xl:text-[18px] font-medium max-w-[260px]`}
+                 className={`text-[14px] 2xl:text-[18px] overflow-hidden font-medium max-w-[260px]`}
                >
                  {item.role}
                </p>
@@ -104,7 +104,7 @@ const Carousel = () => {
         ))}
       </div>
 
-      <div className="flex items-center mt-10 space-x-10 text-[28px] px-20 font-bold">
+      <div className="flex items-center space-x-10 text-[28px] px-20 font-bold">
         <div className="flex-1 border-t-2 border-dashed border-gray-400"></div>
         <span className="text-[#034737]">Teams</span>
         <div className="flex-1 border-t-2 border-dashed border-gray-400"></div>
@@ -113,7 +113,7 @@ const Carousel = () => {
       {/* Swiper Slider */}
       <div
         data-aos="slide-right"
-        className="flex flex-wrap xl:flex-roww gap-6 2xl:gap-10  py-10 pb-20 items-center justify-center mx-auto"
+        className="flex flex-wrap xl:flex-roww gap-4 2xl:gap-6  py-10 pb-20 items-center justify-center mx-auto"
       >
         {solutionsteams.map((item, index) => (
           <div
@@ -126,13 +126,13 @@ const Carousel = () => {
               } h-[160px] 2xl:h-[220px] transition-all duration-500 ease-in-out gap-4 2xl:gap-6 justify-between text-white w-full rounded-[20px]`}
           >
             <div className="flex flex-col 2xl:gap-y-6 items-center justify-center">
-              <div className="max-w-[70px] 2xl:max-w-[92px] w-full cursor-pointer">
+              <div className="max-w-[70px] xl:max-w-[80px] 2xl:max-w-[92px] w-full cursor-pointer">
                 <Image
                   src={item.imageUrl}
                   width={100}
                   height={100}
                   alt="image"
-                  className="xl:w-2 w-full 2xl:w-96 transition-transform duration-500 transform hover:scale-105"
+                  className="w-96 transition-transform duration-500 transform hover:scale-105"
                   />
               </div>
               {hovered2Index === index && (
@@ -167,8 +167,8 @@ const Carousel = () => {
               {hovered2Index === index && (
                 <p
                   style={{ color: item.textcolor }}
-                  className={`text-[14px] 2xl:text-[18px] font-medium max-w-[260px]`}
-                >
+                  className={`text-[14px] 2xl:text-[18px] overflow-hidden font-medium max-w-[260px]`}
+                  >
                   {item.role}
                 </p>
               )}
