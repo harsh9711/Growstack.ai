@@ -35,14 +35,14 @@ function Banner() {
                                     </Link>
                                 </div>
                                 <div className='sale'></div>
-                                <div className='store'>
+                                {/* <div className='store'>
                                     <Link href='/auth/register'>
                                         <img src='/images_growstack/banner/playStore.svg' alt='banner' />
                                     </Link>
                                     <Link href='/auth/register'>
                                         <img src='/images_growstack/banner/apple.svg' alt='banner' />
                                     </Link>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                         <div className='w-full  sm:w-1/2'>

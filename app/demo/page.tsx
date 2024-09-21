@@ -480,10 +480,11 @@ const Demo = () => {
                 <p className="text-black text-[16px]">
                   Get tailored demonstration that fits your business needs.
                 </p>
-                <div className="border w-full border-[#E1E1E1]"></div>
+            
               </div>
             </div>
-            <div className="flex flex-row w-full justify-between group">
+            <div className="border w-full border-[#E1E1E1]"></div>
+            <div className="flex flex-row w-full gap-10 group">
               <svg
                 width="48"
                 height="48"
@@ -540,11 +541,11 @@ const Demo = () => {
                   Discover key features:
                 </h2>
                 <p className="text-black text-[16px]">
-                  Get tailored demonstration that fits your business needs.
-                </p>
-                <div className="border w-full border-[#E1E1E1]"></div>
+                See GrowStack's powerful features in action.                </p>
+              
               </div>
             </div>
+            <div className="border w-full border-[#E1E1E1]"></div>
             <div className="flex flex-row w-full justify-between lg:gap-12 md:gap-12 sm:gap-12 xl:gap-12 group">
               <svg
                 width="48"
@@ -576,9 +577,9 @@ const Demo = () => {
                 <p className="text-black text-[16px]">
                   Ask questions and get answers from our knowledgeable team.{" "}
                 </p>
-                <div className="border w-full border-[#E1E1E1]"></div>
               </div>
-            </div>
+            </div>                <div className="border w-full border-[#E1E1E1]"></div>
+
           </div>
         </div>
         <div className="relative z-20 bg-[#F7FAFC] mb-52 rounded-[30px] p-10 gap-y-6 max-w-[610px] max-h-[971px] w-full flex flex-col">

@@ -368,8 +368,8 @@ const ContentBox: React.FC<ContentBoxProps> = ({
         <p className="text-gray-600 mt-4">
           To exercise your rights or for further assistance, please contact us
           at{" "}
-          <a href="mailto:xsupport@growstack.aii" className="text-blue-500">
-            support@growstack.aii
+          <a href="mailto:xsupport@growstack.ai" className="text-blue-500">
+            support@growstack.ai
           </a>
           .
         </p>
@@ -495,10 +495,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({
           personal data, as well as the right to restrict processing and data
           portability. For more information about your rights under GDPR, or to
           exercise them, please contact us using the details provided in the{" "}
-        
-            Contact Us
-          
-          section.
+          Contact Us section.
         </p>
 
         <h4 className="text-lg font-semibold text-gray-800 mt-4">
@@ -508,11 +505,8 @@ const ContentBox: React.FC<ContentBoxProps> = ({
           For users in California, GrowStack.ai adheres to the California
           Consumer Privacy Act (CCPA). Under CCPA, you have the right to access,
           delete, and opt out of the sale of your personal information. For more
-          information or to exercise your CCPA rights, please refer to the{" "}
-          
-            Your Rights and Choices
-         
-          section of this Privacy Policy or contact us.
+          information or to exercise your CCPA rights, please refer to the Your
+          Rights and Choices section of this Privacy Policy or contact us.
         </p>
 
         <h4 className="text-lg font-semibold text-gray-800 mt-4">Compliance</h4>
@@ -530,11 +524,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({
         <p className="text-gray-600 mt-2">
           In the event of a conflict between this Policy and the DPF Principles,
           the DPF Principles will govern. For more information and to view our
-          certification, please visit{" "}
-         
-            Data Privacy Framework
-         
-          .
+          certification, please visit Data Privacy Framework .
         </p>
 
         <p className="text-gray-600 mt-2">
@@ -547,27 +537,18 @@ const ContentBox: React.FC<ContentBoxProps> = ({
         <p className="text-gray-600 mt-2">
           If you have questions, concerns, or complaints about our compliance
           with the DPF Principles, please contact us using the details in the{" "}
-        
-            Contact Us
-          
-          section. There, you can also find information regarding our EU
-          representative.
+          Contact Us section. There, you can also find information regarding our
+          EU representative.
         </p>
 
         <p className="text-gray-600 mt-2">
           For unresolved complaints related to personal data handled under the
           Data Privacy Framework, you may contact our U.S.-based third-party
-          dispute resolution provider, JAMS, at{" "}
-         
-            JAMS DPF Dispute Resolution
-         
-          , free of charge. You may also invoke binding arbitration as outlined
-          on the{" "}
-         
-            Data Privacy Framework
-        
-          website. GrowStack.ai is subject to the investigatory and enforcement
-          powers of the U.S. Federal Trade Commission (FTC).
+          dispute resolution provider, JAMS, at JAMS DPF Dispute Resolution ,
+          free of charge. You may also invoke binding arbitration as outlined on
+          the Data Privacy Framework website. GrowStack.ai is subject to the
+          investigatory and enforcement powers of the U.S. Federal Trade
+          Commission (FTC).
         </p>
       </div>
       <div
@@ -587,13 +568,10 @@ const ContentBox: React.FC<ContentBoxProps> = ({
           other age as required by local law), and we do not knowingly collect
           personal information from such children. If you are a parent or
           guardian and believe that your child has provided us with personal
-          information, please{" "}
-         
-            contact us
-          
-          immediately so that we can take appropriate action. If we discover
-          that we have collected personal information from a child in violation
-          of applicable law, we will promptly delete such information.
+          information, please contact us immediately so that we can take
+          appropriate action. If we discover that we have collected personal
+          information from a child in violation of applicable law, we will
+          promptly delete such information.
         </p>
 
         <h4 className="text-lg font-semibold text-gray-800 mt-4">
@@ -607,18 +585,13 @@ const ContentBox: React.FC<ContentBoxProps> = ({
           under 13 years of age. Consumers who have opted in to the sale of
           their personal information can opt out at any time. To exercise this
           right, you (or your authorized representative) may submit a request by{" "}
-        
-            contacting us
-         
-          .
+          contacting us .
         </p>
 
         <p className="text-gray-600 mt-2">
           If you believe that a child under the age of 13 (or 16) has provided
-          us with personal information, please{" "}
-            contact us
-          
-          with sufficient details so that we can delete that information.
+          us with personal information, please contact us with sufficient
+          details so that we can delete that information.
         </p>
       </div>
       <div
@@ -741,10 +714,7 @@ const ContentBox: React.FC<ContentBoxProps> = ({
         </h4>
         <p className="text-gray-600 mt-2">
           For any concerns about our processing of Personal Data or to exercise
-          your rights, please{" "}
-            contact us
-          
-          .
+          your rights, please contact us .
         </p>
       </div>
       <div

@@ -44,15 +44,15 @@ const page = () => {
                 </p>
                 <div className="flex flex-col gap-20 mt-10">
                   <div className="flex flex-row gap-8  group text-[18px]">
-                    <button className="bg-white font-medium flex items-center gap-2 text-[#034737] py-4 px-7 rounded-xl group-hover:font-bold shadow-md hover:shadow-">
+                  <Link href="/auth/register" className="no-underline">   <button className="bg-white font-medium flex items-center gap-2 text-[#034737] py-4 px-7 rounded-xl group-hover:font-bold shadow-md hover:shadow-">
                       Free trial <ArrowRight />
-                    </button>
+                    </button></Link>
                     <Link href="/demo" className="no-underline">  <button className="border border-white flex items-center gap-2 text-white hover:font-bold font-medium py-4 px-7 rounded-xl shadow-md shadow-[#00000025]">
-                      See demo
+                      Get demo
                       <ArrowRight className="text-white" />
                     </button></Link>
                   </div>
-                  <div className="flex flex-row gap-4  ">
+                  {/* <div className="flex flex-row gap-4  ">
                     <button className=" flex items-center gap-2 hover:shadow-white shadow-md text-primary-green rounded-xl  shadow-[#00000025]">
                       <svg
                         width="197"
@@ -333,7 +333,7 @@ const page = () => {
                         height={400}
                       />
                     </button>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

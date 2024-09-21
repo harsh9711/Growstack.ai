@@ -19,9 +19,9 @@ const page = () => {
   return (
     <main data-aos="fade-in"
       data-aos-duration="2000"
-      data-aos-delay="500" className="2xl:bg-[url('/chain.png')] bg-no-repeat">
+      data-aos-delay="500" className="2xl:bg-[url('/chain4.png')] bg-no-repeat">
       <HeroSection />
-      <section className=" mx-auto w-full flex items-center justify-center py-10 2xl:py-20 2xl:mt-60">
+      <section className=" mx-auto w-full flex items-center justify-center py-10 2xl:py-20 2xl:mt-40">
         <div
           data-aos="fade-up"
           data-aos-duration="1800"
