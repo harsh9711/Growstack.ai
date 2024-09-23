@@ -13,6 +13,9 @@ import { formatUpdatedAt } from "./utils";
 import EditModal from "./components/EditModal";
 import Spinner from "@/components/Spinner";
 import { WorkflowsIcon, WorkflowsIcon2 } from "@/components/svgs";
+import { PlanUsage } from "@/types/common";
+import GlobalModal from "@/components/modal/global.modal";
+import Lock from "@/components/svgs/lock";
 
 type Workflow = {
   [key: string]: string;
@@ -25,11 +28,19 @@ export default function Workflows() {
   const router = useRouter();
   const [editWorkFlow, setEditWorkFlow] = useState<Workflow>({});
   const [loading, setLoading] = useState(false);
+  const [isPlanUsageLoading, setIsPlanUsageLoading] = useState(false);
+  const [isAddOnModalOpen, setIsAddOnModalOpen] = useState<boolean>(false);
+  const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
 
   const [isCreateWorkflowReqPending, setIsCreateWorkflowReqPending] = useState(false);
   const [clickedBtnIdx, setClickedBtnIdx] = useState<number | null>(null);
   const createWorkflow = async () => {
     setIsCreateWorkflowReqPending(true);
+    const canCreateWorkflow = await fetchPlanUsage();
+    if (!canCreateWorkflow) {
+      setIsCreateWorkflowReqPending(false);
+      return;
+    }
     try {
       const response = await instance.post(`${API_URL}/workflow/api/v1`);
       const newWorkflowId = response.data.data.workflow_id;
@@ -42,6 +53,43 @@ export default function Workflows() {
       setIsCreateWorkflowReqPending(false);
     }
   };
+
+  const runWorkflow = async (workflowId:string) => {
+    const canCreateWorkflow = await fetchPlanUsage();
+    if (!canCreateWorkflow) {
+      return;
+    }
+    router.push(`/app/create/workflow-builder/workflows/user-work-flow?workflow_id=${workflowId}`);
+
+  }
+  
+  const fetchPlanUsage = async () => {
+    setIsPlanUsageLoading(true);
+    try {
+      const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
+      const data: PlanUsage = response.data.data;
+      setPlanUsage(data);
+      if (data.usage_amount === 0 && data.usage.ai_worfklow_credits <= 0) {
+        setIsAddOnModalOpen(true);
+        return false; 
+      }else{
+        return true;
+      }
+  
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error("Error fetching plan usage:", error);
+      return false;
+    } finally {
+      setIsPlanUsageLoading(false);
+    }
+  };
+  
+
 
   const getAllWorkFlows = async () => {
     try {
@@ -159,12 +207,10 @@ export default function Workflows() {
                   </p>
                 </div>
                 <div className="flex items-center gap-4">
-                  <Link key={workflow._id} href={`/app/create/workflow-builder/workflows/user-work-flow?workflow_id=${workflow.workflow_id}`}>
-                    <button className="flex items-center gap-3 rounded-xl h-12 bg-primary-green sheen px-6 text-white text-[14px]">
+                    <button key={workflow._id} onClick={() => runWorkflow(workflow.workflow_id)} className="flex items-center gap-3 rounded-xl h-12 bg-primary-green sheen px-6 text-white text-[14px]">
                       <FaPlay size={12} />
                       Run workflow
                     </button>
-                  </Link>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <button className="px-2 hover:bg-gray-100 h-10 w-10 rounded-full">
@@ -210,6 +256,29 @@ export default function Workflows() {
           )}
         </div>
       </main>
+      <GlobalModal showCloseButton={false} open={isAddOnModalOpen} setOpen={() => { setIsAddOnModalOpen(false) }}>
+        <div className="flex flex-col items-center justify-center px-6 pt-4 pb-8 gap-6 space-x-6">
+          <Lock />
+          <h3 className="text-center text-[28px] font-semibold">You don’t have enough credit.</h3>
+          <p className="text-center text-gray-700 text-sm md:text-base px-4">
+            You don’t have enough credits in your wallet to use this feature. It is an add-on, and requires additional credit to access. Please add credits to continue.
+          </p>
+          <div className="flex items-center justify-between gap-3">
+            <button
+              className="text-red-500 border border-red-500 bg-transparent text-nowrap py-2 px-6 rounded-md transition duration-300"
+              onClick={() => setIsAddOnModalOpen(false)}
+            >
+              Cancel
+            </button>
+            <Link
+              className="bg-primary-green text-white text-nowrap py-2 px-6 rounded-md transition duration-300 hover:bg-green-600"
+              href="/account/billings/settings">
+              Add Credit
+            </Link>
+          </div>
+        </div>
+      </GlobalModal>
+
       <EditModal
         show={showEditModal}
         onHide={setShowEditModal}

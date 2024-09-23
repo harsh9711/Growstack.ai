@@ -5,13 +5,17 @@ import { API_URL } from "@/lib/api";
 import Image from "next/image";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Link from "next/link";
 import { Fragment, useEffect, useState } from "react";
 import WorkflowLoader from "./components/WorkflowLoader";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react"; // Headless UI for dropdown
 import { useRouter } from "next/navigation";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import toast from "react-hot-toast";
+import { PlanUsage } from "@/types/common";
+import GlobalModal from "@/components/modal/global.modal";
+import Link from "next/link";
+import Lock from "@/components/svgs/lock";
+
 
 type PreBuiltTemplate = {
   _id: number;
@@ -26,6 +30,9 @@ export default function WorkflowBuilder() {
   const [preBuiltTemplates, setPreBuiltTemplates] = useState<
     PreBuiltTemplate[]
   >([]);
+  const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
+  const [isAddOnModalOpen, setIsAddOnModalOpen] = useState<boolean>(false);
+
   const [loading, setLoading] = useState<boolean>(false);
   const getPreBuiltTemplates = async () => {
     try {
@@ -42,6 +49,29 @@ export default function WorkflowBuilder() {
     getPreBuiltTemplates();
   }, []);
 
+
+  const fetchPlanUsage = async () => {
+    try {
+      const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
+      const data = response.data.data;
+      setPlanUsage(data);
+      console.log("data.usage.ai_worfklow_credits",data.usage.ai_worfklow_credits);
+      
+      if (data?.usage_amount === 0 && data.usage.ai_worfklow_credits <= 0) {
+        setIsAddOnModalOpen(true)
+      }
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error('Error fetching plan usage:', error);
+    }
+  };
+  useEffect(() => {
+    fetchPlanUsage();
+  }, []);
   return (
     <Fragment>
       <main className="">
@@ -184,24 +214,49 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
     setIsModalOpen(false);
   };
 
+  const [isAddOnModalOpen, setIsAddOnModalOpen] = useState<boolean>(false);
+  const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
+  const [isPlanUsageLoading, setIsPlanUsageLoading] = useState(false);
+
+  const fetchPlanUsage = async () => {
+    try {
+      setIsPlanUsageLoading(true)
+      const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
+      const data: PlanUsage = response.data.data;
+      setPlanUsage(data);
+      if ((data?.usage_amount === 0) && (data.usage.ai_worfklow_credits <= 0)) {
+        setIsAddOnModalOpen(true)
+      }else{
+        router.push(`/app/create/workflow-builder/workflows/${slug}?workflow_id=${workflow_id}`);
+      }
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error("Error fetching plan usage:", error);
+    } finally {
+      setIsPlanUsageLoading(false);
+    }
+  };
+
+
   return (
+    <>
     <div
     className="relative p-5 bg-white rounded-3xl border border-[#E8E8E8] hover:shadow-xl hover:shadow-gray-200/60 transition-all duration-300 cursor-pointer space-y-4 min-h-[315px]"
     data-aos="fade-up"
   >
     <div className="relative" data-aos="zoom-in">
-      <Link
-        href={`/app/create/workflow-builder/workflows/${slug}?workflow_id=${workflow_id}`}
-        passHref
-      >
-        <Image
+
+        <Image   onClick={fetchPlanUsage}
           src={imageSrc}
           alt={title}
           width={400}
           height={400}
           className="w-full h-40 object-cover rounded-xl cursor-pointer"
         />
-      </Link>
 
       <Menu as="div" className="absolute top-2 right-2">
         <MenuButton className="p-2 text-gray-500 hover:text-gray-700">
@@ -263,5 +318,28 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
       </div>
     )}
   </div>
+       <GlobalModal showCloseButton={false} open={isAddOnModalOpen} setOpen={() => { setIsAddOnModalOpen(false) }}>
+       <div className="flex flex-col items-center justify-center px-6 pt-4 pb-8 gap-6 space-x-6">
+         <Lock/>
+         <h3 className="text-center text-[28px] font-semibold">You don’t have enough credit.</h3>
+         <p className="text-center text-gray-700 text-sm md:text-base px-4">
+           You don’t have enough credits in your wallet to use this feature. It is an add-on, and requires additional credit to access. Please add credits to continue.
+         </p>
+         <div className="flex items-center justify-between gap-3">  
+           <button
+             className="text-red-500 border border-red-500 bg-transparent text-nowrap py-2 px-8 rounded-md transition duration-300"
+             onClick={()=> setIsAddOnModalOpen(false)}
+           >
+             Cancel
+           </button>
+           <Link
+             className="bg-primary-green text-white text-nowrap py-2 px-6 rounded-md transition duration-300 hover:bg-green-600"
+             href="/account/billings/settings">
+             Add Credit
+           </Link>
+         </div>
+       </div>
+     </GlobalModal>
+     </>
   );
 };
