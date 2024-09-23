@@ -16,6 +16,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { ALL_ROUTES } from "@/utils/constant";
 import Swal from 'sweetalert2';
+import { getCookie } from "cookies-next";
+import EventSource from 'eventsource';
 
 interface ChatInputProps {
   onSend: (content: string, role: string) => void;
@@ -75,6 +77,42 @@ const ChatInput: React.FC<ChatInputProps> = ({
     }
   }, [input]);
 
+
+
+  const streamResponse = async (chatId: string) => {
+    try {
+      const token = getCookie("token");
+      const eventSource = new EventSource(`${API_URL}/ai/api/v1/conversation/chat/stream/${chatId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+
+      let accumulatedResponse = '';
+
+      eventSource.onmessage = (event: MessageEvent) => {
+        const chunk = event.data;
+        accumulatedResponse += chunk;
+
+        onSend(accumulatedResponse, "assistant");
+      };
+
+      eventSource.onerror = (error: MessageEvent) => {
+        console.error('EventSource failed:', error);
+        eventSource.close();
+      };
+
+      eventSource.addEventListener('end', (event: MessageEvent) => {
+        eventSource.close();
+      });
+
+    } catch (error) {
+      console.error('Error setting up EventSource:', error);
+      toast.error('Error setting up stream');
+    }
+  };
+
   const handleSend = async (user_prompt?: string, fromMic: boolean = false) => {
     if (user_prompt) {
       user_prompt = user_prompt.trim();
@@ -94,7 +132,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
         `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${selectedConversation ? selectedConversation : ""}&model=${selectedModel}&enableSecure=${enableSecure}`,
         { user_prompt: prompt }
       );
-      const { response, conversation_id, noOfMessagesLeft, totalNoOfMessages } = conversation.data.data as ChatResponse;
+      const { response, conversation_id, chatId, noOfMessagesLeft, totalNoOfMessages } = conversation.data.data as ChatResponse;
 
       setSelectedConversation(conversation_id);
 
@@ -110,7 +148,8 @@ const ChatInput: React.FC<ChatInputProps> = ({
         }
       }
       if (!selectedConversation) fetchConversations();
-      onSend(response, "assistant");
+
+      streamResponse(chatId);
       if (fromMic) {
         setIsAnimating(true);
         setOpen(true);
@@ -122,14 +161,14 @@ const ChatInput: React.FC<ChatInputProps> = ({
       if (errorMsg === "Please upgrade your plan") {
         setIsDailyLimitExceeded(true);
       }
-      if(errorMsg.includes("Your request has been blocked")){
+      if (errorMsg.includes("Your request has been blocked")) {
         const result = await Swal.fire({
           title: 'Secure chat is enabled',
           icon: 'success',
           confirmButtonText: 'Okay',
-          confirmButtonColor:"#0f4d0f",
+          confirmButtonColor: "#0f4d0f",
         });
-      }else {
+      } else {
         toast.error(errorMsg);
       }
       removeMessage();

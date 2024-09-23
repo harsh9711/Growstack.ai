@@ -115,4 +115,6 @@ export interface ChatResponse {
   response_type: 'TEXT' | 'IMAGE' | 'VIDEO';
   noOfMessagesLeft?: number;
   totalNoOfMessages?: number;
+  chatId: string;
+  isImage?: boolean
 }
