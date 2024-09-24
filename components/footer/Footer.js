@@ -17,8 +17,8 @@ function Footer() {
                     <div className='demo' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                         <h3>Ready to see a personalized demo?</h3>
                         <div className='btns fbtn'>
-                            <Link href='/demo' className='sheen'>
-                                Get demo
+                            <Link href='/auth/register' className='sheen'>
+                                View Demo
                             </Link>
                             <Link href='/auth/register' className='sheen'>
                                 Get 7-day free trial
@@ -99,11 +99,17 @@ function Footer() {
                                 <p>Subscribe to our newsletter</p>
                                 <form action='/' method='post'>
                                     <div className='input-group'>
-                                        <div className='flex gap-1'>
+                                        <div className='flex gap-1 w-10 sm:w-40 md:w-20 '>
                                             <img src='/images_growstack/footer/letter.svg' alt='letter' />
-                                            <input type='email' name='email' className='' placeholder='Enter your email' required />
+                                            <input
+                                                type='email'
+                                                name='email'
+                                                className='text-[14px] md:text-[10px] xl:text-[14px]'
+                                                placeholder='Enter your email'
+                                                required
+                                            />
                                         </div>
-                                        <div className='input-group-append'>
+                                        <div className='input-group-append '>
                                             <button className='sheen' type='submit'>
                                                 <img src='/images_growstack/footer/newsletter.svg' alt='newsletter' />
                                             </button>
