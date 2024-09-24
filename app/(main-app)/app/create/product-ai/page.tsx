@@ -254,7 +254,7 @@ export default function Page() {
       const data = response.data.data;
       setPlanUsage(data);
 
-      if (!data?.usage_amount || data?.usage_amount <= 0) {
+      if (data.usage.ai_background_generator_credits <= 0) {
         setIsAddOnModalOpen(true)
       }
     } catch (error: any) {
