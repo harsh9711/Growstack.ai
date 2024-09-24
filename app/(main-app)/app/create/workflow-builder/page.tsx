@@ -55,9 +55,7 @@ export default function WorkflowBuilder() {
       const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
       const data = response.data.data;
       setPlanUsage(data);
-      console.log("data.usage.ai_worfklow_credits",data.usage.ai_worfklow_credits);
-      
-      if (data?.usage_amount === 0 && data.usage.ai_worfklow_credits <= 0) {
+      if (data.usage.ai_worfklow_credits <= 0) {
         setIsAddOnModalOpen(true)
       }
     } catch (error: any) {
@@ -228,7 +226,7 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
       const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
       const data: PlanUsage = response.data.data;
       setPlanUsage(data);
-      if (data.usage_amount === 0 && data.usage.ai_worfklow_credits <= 0) {
+      if (data.usage.ai_worfklow_credits <= 0) {
         setIsAddOnModalOpen(true);
         return false; 
       }else{
@@ -253,7 +251,7 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
       const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
       const data: PlanUsage = response.data.data;
       setPlanUsage(data);
-      if ((data?.usage_amount === 0) && (data.usage.ai_worfklow_credits <= 0)) {
+      if (data.usage.ai_worfklow_credits <= 0) {
         setIsAddOnModalOpen(true)
       }else{
         router.push(`/app/create/workflow-builder/workflows/${slug}?workflow_id=${workflow_id}`);

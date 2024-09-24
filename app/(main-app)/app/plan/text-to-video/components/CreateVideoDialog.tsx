@@ -131,7 +131,7 @@ const CreateVideoDialog = ({
       const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
       const data: PlanUsage = response.data.data;
       setPlanUsage(data);
-      if ((data?.usage_amount === 0) && (data.usage.no_of_text_to_video <= 0)) {
+      if (data.usage.no_of_text_to_video <= 0) {
         setIsAddOnModalOpen(true)
       }
     } catch (error: any) {
