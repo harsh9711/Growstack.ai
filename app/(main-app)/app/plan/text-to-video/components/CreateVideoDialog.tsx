@@ -418,10 +418,12 @@ const CreateVideoDialog = ({
         disabled={isPlanUsageLoading}
         onClick={(e) => {
           e.stopPropagation();
-          if (planUsage.usage.no_of_text_to_avatar <= 0) {
-            setIsAddOnModalOpen(true)
-          } else {
-            setDialogOpen(true)
+          if(planUsage){
+            if (planUsage.usage.no_of_text_to_avatar <= 0) {
+              setIsAddOnModalOpen(true)
+            } else {
+              setDialogOpen(true)
+            }
           }
         }}
         className="bg-primary-green text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2">
