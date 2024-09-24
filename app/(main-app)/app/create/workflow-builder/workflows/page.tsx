@@ -16,12 +16,15 @@ import { WorkflowsIcon, WorkflowsIcon2 } from "@/components/svgs";
 import { PlanUsage } from "@/types/common";
 import GlobalModal from "@/components/modal/global.modal";
 import Lock from "@/components/svgs/lock";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
 
 type Workflow = {
   [key: string]: string;
 };
 
 export default function Workflows() {
+  const { user } = useSelector((rootState: RootState) => rootState.auth);
   const [workFlows, setWorkFlows] = useState<Workflow[]>([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [workflowId, setWorkflowId] = useState<string | null>(null);
@@ -69,7 +72,7 @@ export default function Workflows() {
       const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
       const data: PlanUsage = response.data.data;
       setPlanUsage(data);
-      if (data.usage.ai_worfklow_credits <= 0) {
+      if (data.usage.ai_worfklow_credits <= 0 && user?.user_type !== "ADMIN") {
         setIsAddOnModalOpen(true);
         return false; 
       }else{
