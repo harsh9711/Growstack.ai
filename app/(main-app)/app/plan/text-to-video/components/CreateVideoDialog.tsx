@@ -418,9 +418,7 @@ const CreateVideoDialog = ({
         disabled={isPlanUsageLoading}
         onClick={(e) => {
           e.stopPropagation();
-          if ((planUsage?.usage_amount === 0) &&
-          (planUsage.usage.no_of_text_to_avatar <= 0 ||
-            planUsage.usage.no_of_text_to_video <= 0)) {
+          if (planUsage.usage.no_of_text_to_avatar <= 0) {
             setIsAddOnModalOpen(true)
           } else {
             setDialogOpen(true)
