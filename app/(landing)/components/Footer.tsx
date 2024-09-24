@@ -1,158 +1,178 @@
-import { ArrowRight } from "lucide-react";
-import Image from "next/image";
+"use client";
+import React, { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import "../../../components/footer/Footer.scss";
 import Link from "next/link";
-import {
-  RiFacebookLine,
-  RiLinkedinLine,
-  RiPinterestLine,
-  RiTwitterXLine,
-} from "react-icons/ri";
-import "@/styles/button.css";
 import { ALL_ROUTES } from "@/utils/constant";
 
-export default function Footer() {
+function Footer() {
+  useEffect(() => {
+    AOS.init();
+  }, []);
   return (
-    <footer className="rounded-t-[50px] px-10 md:px-12 bg-primary-light-gray ">
-      <div className="flex rounded-full justify-between max-w-[1480px] gap-6 flex-wrap  mx-auto py-20 items-center">
-        <h1 className="text-[42px] font-semibold max-w-lg leading-relaxed text-primary-green">
-          Ready to see a personalized demo?
-        </h1>
-        <div className="flex items-center gap-4">
-          <button className="bg-white hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-10 py-5 rounded-xl font-semibold">
-            View Demo
-          </button>
-          <button className="bg-transparent border border-primary-green  hover:bg-primary-green hover:text-white sheen transition duration-500 text-primary-green px-5 py-5 rounded-xl font-semibold">
-            Get 7-day free trial
-          </button>
+    <React.Fragment>
+      <div className="footer">
+        <div className="container">
+          <div
+            className="demo"
+            data-aos="fade-up"
+            data-aos-easing="ease-in-sine"
+            data-aos-duration="1000"
+          >
+            <h3>Ready to see a personalized demo?</h3>
+            <div className="btns fbtn">
+              <Link href="/auth/register" className="sheen">
+                View Demo
+              </Link>
+              <Link href="/auth/register" className="sheen">
+                Get 7-day free trial
+              </Link>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="max-w-[1860px] mx-auto bg-primary-green rounded-t-[50px] text-white">
-        <div className="max-w-[1480px] mx-auto pt-20">
-          <div className="w-full flex flex-col lg:flex-row gap-10 justify-between mt-6">
-            <div className="w-full flex flex-wrap justify-between">
-              <h1 className="text-2xl w-full max-w-[200px]">
-                Grow<span className="font-semibold">Stack</span>
-              </h1>
-              <div className="space-y-6">
-                <h1 className="font-semibold text-lg">Company</h1>
-                <ul className="space-y-5">
-                  <li className="hover:underline">
-                    <Link href={ALL_ROUTES.PRICING}>Pricing</Link>
-                  </li>
-                  <li className="hover:underline">
-                    <Link href="#">Get the App</Link>
-                  </li>
-                  <li className="hover:underline">
-                    <Link href="#">Blog</Link>
-                  </li>
-                  <li className="hover:underline">
-                    <Link href="#">FAQ</Link>
-                  </li>
-                </ul>
-              </div>
-              <div className="space-y-6">
-                <h1 className="font-semibold text-lg">Features</h1>
-                <ul className="!space-y-5">
-                  <li className="hover:underline">
-                    <Link href="#">Research assistant</Link>
-                  </li>
-                  <li className="hover:underline">
-                    <Link href="#">
-                      AI Marketing & Sales <br /> Apps
-                    </Link>
-                  </li>
-                  <li className="hover:underline">
-                    <Link href="#">Imaginate app</Link>
-                  </li>
-                  <li className="hover:underline">
-                    <Link href="#">
-                      Marketing and sales <br />
-                      assistants
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-              <div className="space-y-6">
-                <h1 className="font-semibold text-lg">Support</h1>
-                <ul className="!space-y-5">
-                  <li className="hover:underline">
-                    <Link href="#">Support</Link>
-                  </li>
-                  <li className="hover:underline">
-                    <Link href="/terms-of-service">Terms of Service</Link>
-                  </li>
-                  <li className="hover:underline">
-                    <Link href="/Privacy Policy">Privacy Policy</Link>
-                  </li>
-                  <li className="hover:underline">
-                    {" "}
-                    <Link href='/return-policy'>Refund & return policy</Link>
-                  </li>
-                  <li className="hover:underline">
-                    <Link href="#">Community</Link>
-                  </li>
-                </ul>
-              </div>
-              <div className="w-full lg:max-w-[380px] text-white">
-                <h1 className="font-semibold text-lg">Newsletter</h1>
-                <p className="mt-12 text-white">Subscribe to our newsletter</p>
-                <div className="bg-transparent border border-[white]/80 p-2 flex rounded-2xl gap-2 mt-6">
-                  <Image
-                    src="/icons/sms.svg"
-                    alt="sms"
-                    width={22}
-                    height={22}
-                    className="ml-4"
-                  />
-                  <input
-                    type="text"
-                    className="bg-transparent w-full flex-1 outline-none px-2 rounded-xl placeholder:text-white text-white"
-                    placeholder="Enter your email"
-                  />
-                  <button className="bg-primary-blue text-white p-[20px] rounded-xl bg-primary-light-green hover:bg-[#8eff7d] transition">
-                    <ArrowRight className="text-primary-green" />
-                  </button>
+        <div className="innerBlock">
+          <div className="container">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+              <div className="">
+                <div className="footerLogo">
+                  <img src="/images_growstack/footer/logo.svg" alt="logo" />
                 </div>
               </div>
+              <div className="">
+                <h4>Company</h4>
+                <ul>
+                  {/* <li>
+                                        <Link href='/company'>About us</Link>
+                                    </li> */}
+                  {/* <li>
+                                        <Link href='/pricing'>Pricing</Link>
+                                    </li> */}
+                  <li>
+                    <Link href="/faq">FAQs</Link>
+                  </li>
+                  <li>
+                    <Link href="/contact">Contact us</Link>
+                  </li>
+                  <li>
+                    <Link href="/demo">Request Demo</Link>
+                  </li>
+                  <li>
+                    {/* <Link href="/auth/register">Get the App</Link> */}
+                  </li>
+                  <li>{/* <Link href="/auth/register">Blog</Link> */}</li>
+                  <li>{/* <Link href="/auth/register">FAQ</Link> */}</li>
+                </ul>
+              </div>
+              <div className="">
+                <h4>Features</h4>
+                <ul>
+                  <li>
+                    <Link href="/ai-marketing-and-sales-app">
+                      AI marketing and sales apps
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/text-to-avatar-and-ai-background">
+                      Text to avatar and AI background
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/marketing-and-sales-assistant">
+                      Marketing and sales assistants
+                    </Link>
+                  </li>
+                  <li>
+                    {/* <Link href='/ai-website-and-email-builder'>AI Website landing page and email Builder</Link> */}
+                  </li>
+                  <li>
+                    <Link href="/custom-marketing-gpt-apps">Custom GPT</Link>
+                  </li>
+                  <li>
+                    <Link href="/social-planner-hub">Social planner hub</Link>
+                  </li>
+                </ul>
+              </div>
+              <div className="">
+                <h4>Support</h4>
+                <ul>
+                  <li>{/* <Link href="/auth/register">Support</Link> */}</li>
+                  <li>
+                    <Link href="/terms-of-service">Terms of service</Link>
+                  </li>
+                  <li>
+                    <Link href="/privacy-policy">Privacy policy</Link>
+                  </li>
+                  <li>
+                    <Link href="/return-policy">Refund & return policy</Link>
+                  </li>
+                  <li>{/* <Link href="/auth/register">Community</Link> */}</li>
+                </ul>
+              </div>
+              <div className="">
+                <h4>Newsletter</h4>
+                <p>Subscribe to our newsletter</p>
+                <form action="/" method="post">
+                  <div className="input-group">
+                    <div className="flex gap-1 w-10 sm:w-40 md:w-20 ">
+                      <img
+                        src="/images_growstack/footer/letter.svg"
+                        alt="letter"
+                      />
+                      <input
+                        type="email"
+                        name="email"
+                        className="text-[14px] md:text-[10px] xl:text-[14px]"
+                        placeholder="Enter your email"
+                        required
+                      />
+                    </div>
+                    <div className="input-group-append ">
+                      <button className="sheen" type="submit">
+                        <img
+                          src="/images_growstack/footer/newsletter.svg"
+                          alt="newsletter"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
             </div>
-          </div>
-          <div className="border-t border-[#E0E4EB] text-white flex flex-col-reverse md:flex-row gap-8 justify-between items-center py-10 mt-20">
-            <p className="text-white">
-              ©2024 Company Name. All right reserved.
-            </p>
-            <div className="flex gap-4">
-              <Link
-                href="https://instagram.com"
-                target="_blank"
-                className="bg-transparent hover:bg-white text-white hover:text-primary-green border border-[white]/80 p-4 flex justify-center items-center rounded-full hover:bg-primary-blue transition duration-300"
-              >
-                <RiTwitterXLine size={20} />
-              </Link>
-              <Link
-                href="https://facebook.com"
-                target="_blank"
-                className="bg-transparent hover:bg-white text-white hover:text-primary-green border border-[white]/80 p-4 flex justify-center items-center rounded-full hover:bg-primary-blue transition duration-300"
-              >
-                <RiFacebookLine size={20} />
-              </Link>
-              <Link
-                href="https://x.com"
-                target="_blank"
-                className="bg-transparent hover:bg-white text-white hover:text-primary-green border border-[white]/80 p-4 flex justify-center items-center rounded-full hover:bg-primary-blue transition duration-300"
-              >
-                <RiLinkedinLine size={20} />
-              </Link>
-              <Link
-                href="https://linkedin.com"
-                target="_blank"
-                className="bg-transparent hover:bg-white text-white hover:text-primary-green border border-[white]/80 p-4 flex justify-center items-center rounded-full hover:bg-primary-blue transition duration-300"
-              >
-                <RiPinterestLine size={20} />
-              </Link>
+            <div className="copyRight">
+              <p>Copyright © 2024 Growstack</p>
+              <div className="social">
+                <Link href="/auth/register">
+                  <img
+                    src="/images_growstack/footer/youtube.svg"
+                    alt="youtube"
+                  />
+                </Link>
+                <Link href="/auth/register">
+                  <img
+                    src="/images_growstack/footer/facebook.svg"
+                    alt="facebook"
+                  />
+                </Link>
+                <Link href="/auth/register">
+                  <img
+                    src="/images_growstack/footer/twitter.svg"
+                    alt="twitter"
+                  />
+                </Link>
+                <Link href="/auth/register">
+                  <img
+                    src="/images_growstack/footer/linkedin.svg"
+                    alt="linkedin"
+                  />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </footer>
+    </React.Fragment>
   );
 }
+
+export default Footer;
