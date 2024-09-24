@@ -188,33 +188,7 @@ const ActionsSection = ({
     return str.replace(/\${(.*?)}/g, (_, key) => values[key] || `{${key}}`);
   };
 
-  const handleSaveAction = async () => {
-    try {
-      if (!workflowId) return;
-      setIsAPICalling(true);
-      const response = await instance.put(
-        `workflow/api/v1/${workflowId}/actions/${activeAction.action_id}`,
-        activeAction
-      );
-      console.log("API response:", response.data);
-      toast.success("Action updated successfully");
-    } catch (error) {
-      console.error("Error saving action:", error);
-    } finally {
-      setIsAPICalling(false);
-    }
-  };
-  const modalOptions = [
-    "gpt-4",
-    "gpt-3.5-turbo",
-    "gpt-4o",
-    "gemini-1.5-pro",
-    "gemini-1.5-flash",
-    "claude-3-opus-20240229",
-    "claude-3-sonnet-20240229",
-    "claude-3-haiku-20240307",
-    "claude-3-5-sonnet-20240620",
-  ];
+
 
   return (
     <Motion
@@ -331,9 +305,7 @@ const ActionsSection = ({
         className='flex items-center justify-center h-15 py-3.5 px-16 bg-primary-green sheen rounded-xl text-white mt-6 w-full text-center'
         disabled={isAPICalling}
         type="button"
-        onClick={() => {
-          handleSaveAction();
-        }}
+        onClick={() => onSaveAction(activeAction)}
       >
         {isAPICalling ? (
           <div className='flex items-center justify-center h-full'>

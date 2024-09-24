@@ -72,17 +72,17 @@ export default function WorkFlowBuilderComponent() {
         payload
       );
 
-      setActions((prevActions) =>
-        prevActions.map((act) =>
-          act.action_id === action.action_id
-            ? {
-              ...updateAction,
-              icon: action.icon,
-              preset_json: action.preset_json,
-            }
-            : act
-        )
-      );
+      const updatedActions = actions.map((act) => {
+        if (act.action_id === action.action_id) {
+          return {
+            ...act,
+            preset_json: action.preset_json,
+          };
+        }
+        return act;
+      })
+
+      setActions(updatedActions);
       setIsAPICalling(false);
       toast.success("Action saved successfully");
     } catch (error) {
@@ -252,17 +252,7 @@ export default function WorkFlowBuilderComponent() {
       toast.error("Failed to add action");
     }
   };
-  const handleSaveAction = (changedFields: any) => {
-    setIsAPICalling(true);
-    const updatedAction = { ...activeAction, preset_json: { ...activeAction.preset_json, body: { ...activeAction.preset_json.body, ...changedFields } } };
-    setTimeout(() => {
-      setActions((prevActions) =>
-        prevActions.map((action) => (action.id === activeAction.id ? updatedAction : action))
-      );
-      setActiveAction(updatedAction);
-      setIsAPICalling(false);
-    }, 1000);
-  };
+
   const renderSection = () => {
     switch (activeTag) {
       case "Input":
