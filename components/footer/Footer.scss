@@ -184,31 +184,32 @@
           color: #EBEBEB;
         }
       }
-
       .input-group-append {
         button {
           background: #A9FF9B;
-          padding: 10px 17px;
+          padding: 10px 10px;
           border-radius: 10px;
           border: 0;
           font-size: 18px;
           font-family: 'PoppinsMedium';
           text-decoration: none;
-          margin-left: 10px;
           transition: all 0.3s ease;
-
+      
           &:hover {
             background: #87e279;
           }
-
+      
+          // Mobile portrait (up to 480px)
           @media (max-width: $breakpoint_mobile_portrait) {
-            padding: 10px 15px;
+            padding: 10px 10px;
             font-size: 16px;
-            margin-right: 10px;
           }
+      
+          // Laptop screen (1024px and up)
+        
         }
       }
-
+      
     }
 
     .copyRight {
