@@ -21,7 +21,7 @@ function DetailFeatures() {
                                         creation platform
                                     </h3>
                                     <Link href='/auth/register' className='sheen'>
-                                        Start started free <img src='/images_growstack/home/arrow.svg' alt='arrow' />
+                                       Get started for free <img src='/images_growstack/home/arrow.svg' alt='arrow' />
                                     </Link>
                                 </div>
                                 <div className='col-md-4 my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>

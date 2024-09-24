@@ -15,7 +15,7 @@ function Page() {
             <div className='clrNav'>
                 <Navbar logoUrl='/images/growhite.svg' logoAlt='Custom Logo' />
                 <Banner />
-                <PlannerSolution />
+                {/* <PlannerSolution /> */}
                 <Partnership />
                 <SocialInteraction />
                 <Schedule />

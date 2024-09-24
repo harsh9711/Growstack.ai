@@ -51,13 +51,17 @@ const Home = () => {
                   </p>
                   <div className="flex flex-col gap-24 mt-4 items-center justify-center ">
                     <div className="flex flex-row gap-8 ">
-                      <button className="bg-[#034737] text-white font-medium flex items-center gap-2 py-4 px-7 rounded-xl hover:font-bold shadow-md shadow-[#00000025]">
+                    <Link href="/auth/register" className="no-underline">     <button className="bg-[#034737] text-white font-medium flex items-center gap-2 py-4 px-7 rounded-xl hover:font-bold shadow-md shadow-[#00000025]">
                         Free trial <ArrowRight />
-                      </button>
-                      <Link href="/demo" className="no-underline">
-                      <button className="border border-[#D9D9D9] flex items-center gap-2 text-black hover:font-bold font-medium py-4 px-7 rounded-xl shadow-md shadow-[#00000025]">
-                        See demo <ArrowRight className="text-black" />
                       </button></Link>
+
+
+
+                      <Link href="/demo" className="no-underline">
+                        <button className="border border-[#D9D9D9] flex items-center gap-2 text-black hover:font-bold font-medium py-4 px-7 rounded-xl shadow-md shadow-[#00000025]">
+                          Get demo <ArrowRight className="text-black" />
+                        </button>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -125,9 +129,9 @@ const Home = () => {
                     effectively preventing data silos and fostering
                     collaboration across your organization.
                   </p>
-                  <button className="bg-[#034737] mt-4 text-white font-medium flex items-center gap-2 py-4 px-7 rounded-xl hover:font-bold shadow-md shadow-[#00000025]">
-                    Free trial <ArrowRight />
-                  </button>
+                  <Link href="/auth/register" className="no-underline">     <button className="bg-[#034737] text-white font-medium flex items-center gap-2 py-4 px-7 rounded-xl hover:font-bold shadow-md shadow-[#00000025]">
+                        Free trial <ArrowRight />
+                      </button></Link>
                 </div>
               </div>
               <div
