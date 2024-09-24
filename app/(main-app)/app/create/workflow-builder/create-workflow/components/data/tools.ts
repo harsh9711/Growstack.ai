@@ -6303,36 +6303,36 @@ export const tools: Tool[] = [
     event_execute: "postOnSocialMedia",
     role: ""
   },
-  // {
-  //   id: 130,
-  //   description: "Send a message on slack",
-  //   name: "Slack Message",
-  //   thirdparty: 'slack',
-  //   category: "Integrations",
-  //   icon: "/slack-new-logo.svg",
-  //   provider: "Slack",
-  //   subtype: "api",
-  //   socialMediaRequirement: false,
-  //   preset_json: {
-  //     body: [
-  //       {
-  //         variable_type: "SHORT_TEXT",
-  //         variable_label: "channelName",
-  //         variable_value: "C0709BM497Z",
-  //         variable_values: "",
-  //       },
-  //       {
-  //         variable_type: "TEXT_AREA",
-  //         variable_label: "message",
-  //         variable_value: "Hello World",
-  //         variable_values: "",
-  //       },
+  {
+    id: 130,
+    description: "Send a message on slack",
+    name: "Slack Message",
+    thirdparty: 'slack',
+    category: "Integrations",
+    icon: "/slack-new-logo.svg",
+    provider: "Slack",
+    subtype: "api",
+    socialMediaRequirement: false,
+    preset_json: {
+      body: [
+        {
+          variable_type: "SHORT_TEXT",
+          variable_label: "channelName",
+          variable_value: "C0709BM497Z",
+          variable_values: "",
+        },
+        {
+          variable_type: "TEXT_AREA",
+          variable_label: "message",
+          variable_value: "Hello World",
+          variable_values: "",
+        },
 
-  //     ],
-  //   },
-  //   event_execute: "processSlackMessage",
-  //   role: "",
-  // },
+      ],
+    },
+    event_execute: "processSlackMessage",
+    role: "",
+  },
   // {
   //   id: 131,
   //   description: "Create Google document",
