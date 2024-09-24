@@ -53,8 +53,6 @@ export const planIdsMap: Record<PlanName, string[]> = {
 };
 
 export const hasAccessToRoute = (currentPlanUsage: any, pathname: string): boolean => {
-  console.log(pathname, featureRouteMap);
-
   let routeExistsInMap = false;
 
   for (const feature in featureRouteMap) {

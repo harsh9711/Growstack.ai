@@ -1,0 +1,50 @@
+name: Auto Create PR
+
+on:
+  push:
+    branches:
+      - develop
+      - staging
+
+permissions:
+  pull-requests: write 
+  contents: write 
+
+jobs:
+  create_pr_to_staging:
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up GitHub CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gh
+
+      - name: Authenticate with GitHub Token
+        run: gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Create PR from develop to staging
+        run: |
+          gh pr create --base staging --head develop --title "Auto PR: Develop to Staging" --body "This PR was automatically created after merging to develop."
+
+  create_pr_to_main:
+    if: github.ref == 'refs/heads/staging'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up GitHub CLI
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gh
+
+      - name: Authenticate with GitHub Token
+        run: gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Create PR from staging to main
+        run: |
+          gh pr create --base main --head staging --title "Auto PR: Staging to Main" --body "This PR was automatically created after merging to staging."
