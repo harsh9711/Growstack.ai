@@ -184,7 +184,12 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
   };
 
   const handleConfirmDuplicate = async () => {
+
     setIsModalOpen(false);
+    const canCreateWorkflow = await fetchPlanUsageDuplicate();
+    if (!canCreateWorkflow) {
+      return;
+    }
     setLoading(true);
     try {
       const response = await instance.post(
@@ -217,7 +222,31 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
   const [isAddOnModalOpen, setIsAddOnModalOpen] = useState<boolean>(false);
   const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
   const [isPlanUsageLoading, setIsPlanUsageLoading] = useState(false);
-
+  const fetchPlanUsageDuplicate = async () => {
+    setIsPlanUsageLoading(true);
+    try {
+      const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
+      const data: PlanUsage = response.data.data;
+      setPlanUsage(data);
+      if (data.usage_amount === 0 && data.usage.ai_worfklow_credits <= 0) {
+        setIsAddOnModalOpen(true);
+        return false; 
+      }else{
+        return true;
+      }
+  
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error("Error fetching plan usage:", error);
+      return false;
+    } finally {
+      setIsPlanUsageLoading(false);
+    }
+  };
   const fetchPlanUsage = async () => {
     try {
       setIsPlanUsageLoading(true)
