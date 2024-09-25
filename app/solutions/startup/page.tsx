@@ -11,6 +11,7 @@ import MarketingStreamline from "./components/marketingStreamline/MarketingStrea
 import Footer from "@/components/footer/Footer";
 import GridComponent from "./components/GridBoxes";
 import ImageGalleryLine from "./components/ImageGalleryline";
+import GridComponentResponsive from "./components/GridBoxesresponsive";
 
 
 const page = () => {
@@ -41,10 +42,10 @@ const page = () => {
                 data-aos-duration="1100"
                 className="text-center tect-black items-center justify-center flex flex-wrap gap-4 text-[26px] 2xl:text-[42px] leading-normal"
               >
-                <span className="relative text-black text-[white] font-semibold">
+                <span className="relative text-black  font-semibold">
                   Maintain consistent
                 </span>
-                <span className="text-[#61C453] text-black font-normal">
+                <span className=" text-black font-normal">
                   service standards                 </span>
               </h1>
             </div>
@@ -52,9 +53,17 @@ const page = () => {
               data-aos="fade-up"
               data-aos-duration="1800"
               data-aos-delay="600"
-              className="items-center justify-center mx-auto relative 2xl:right-12 "
+              className="items-center 2xl:flex xl:hidden justify-center mx-auto relative 2xl:right-12 "
             >
               <GridComponent />
+            </div>
+            <div
+              data-aos="fade-up"
+              data-aos-duration="1800"
+              data-aos-delay="600"
+              className="items-center xl:flex hidden 2xl:hidden  justify-center mx-auto relative 2xl:right-12 "
+            >
+              <GridComponentResponsive />
             </div>
           </div>
         </div>
