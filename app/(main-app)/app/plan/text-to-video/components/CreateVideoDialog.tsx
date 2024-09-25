@@ -21,6 +21,8 @@ import GlobalModal from "@/components/modal/global.modal";
 import { PlanUsage } from "@/types/common";
 import Link from "next/link";
 import Lock from "@/components/svgs/lock";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
 export interface VideoStatus {
   createdAt: number;
   download: string;
@@ -73,7 +75,7 @@ const CreateVideoDialog = ({
     id: string;
     name: string;
   }
-
+  const { user } = useSelector((rootState: RootState) => rootState.auth);
   const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -131,7 +133,7 @@ const CreateVideoDialog = ({
       const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
       const data: PlanUsage = response.data.data;
       setPlanUsage(data);
-      if (data.usage.no_of_text_to_video <= 0) {
+      if (data.usage.no_of_text_to_video <= 0 && user?.user_type !== "ADMIN") {
         setIsAddOnModalOpen(true)
       }
     } catch (error: any) {
@@ -419,7 +421,7 @@ const CreateVideoDialog = ({
         onClick={(e) => {
           e.stopPropagation();
           if(planUsage){
-            if (planUsage.usage.no_of_text_to_avatar <= 0) {
+            if (planUsage.usage.no_of_text_to_avatar <= 0 && user?.user_type !== "ADMIN") {
               setIsAddOnModalOpen(true)
             } else {
               setDialogOpen(true)
