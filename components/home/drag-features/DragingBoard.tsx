@@ -74,7 +74,7 @@ export default function DragingBoard () {
                }
 
                {/* Brand logos */}
-               <BrandRow className={!step && 'pt-16 xl:pt-20'} />
+               <BrandRow className={!step && 'pt-4 pb-20'} />
 
                {/* Drop zone */}
                <Droppable droppableId="drop_zone" type="features_items" key="drop_zone">

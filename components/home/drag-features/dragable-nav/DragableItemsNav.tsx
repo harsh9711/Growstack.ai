@@ -27,7 +27,7 @@ export default function DragableItemsNav<T> (props: Props<T>) {
                   draggableId={item.id.toString()}
                   key={item.id}
                   index={index}
-               >
+               >  
                   {(provided, snapshot) => (
                      <DragableItem {...item} provided={provided} snapshot={snapshot} className={`relative before:content-['Drag_me'] before:whitespace-nowrap before:absolute before:left-1/2 before:-translate-x-1/2 before:-top-3.5 before:ms-4 before:border before:border-red-400 before:bg-red-100 before:rounded-full before:text-xs before:px-1.5 before:py-0.5 hover:before:visible ${snapshot.draggingOver ||
                         snapshot.isDragging ||
