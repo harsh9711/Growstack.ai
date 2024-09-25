@@ -66,7 +66,7 @@ const ChatArea = ({
     if (event.key === "Enter" && !event.shiftKey) {
       console.log("==============");
       const textarea = event.target;
-      // textarea.style.height = "2rem";
+      textarea.style.height = "2rem";
       handleSend();
       event.preventDefault();
     }

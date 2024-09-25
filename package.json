@@ -9,6 +9,7 @@
         "lint": "next lint"
     },
     "dependencies": {
+        "@fontsource/noto-sans": "^5.1.0",
         "@headlessui/react": "^2.1.2",
         "@hookform/resolvers": "^3.6.0",
         "@intercom/messenger-js-sdk": "^0.0.13",
@@ -59,7 +60,7 @@
         "ionicons": "^7.4.0",
         "js-base64": "^3.7.7",
         "jspdf": "^2.5.1",
-        "jspdf-autotable": "^3.8.2",
+        "jspdf-autotable": "^3.8.3",
         "jszip": "^3.10.1",
         "leaflet": "^1.9.4",
         "libphonenumber-js": "^1.11.4",
