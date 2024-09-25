@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import useInView from "../useInView";
 import "./grid.css"
-const GridComponent = () => {
+const GridComponentResponsive = () => {
   const [selected, setSelected] = useState<number | null>(null);
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
@@ -165,7 +165,7 @@ const GridComponent = () => {
       alt="Box 1"
       width={400}
       height={420}
-      className="w-[480px] h-[357px] hover-boxsalesrevops1"
+      className="w-[350px] h-[257px] hover-boxsalesrevops1"
     />
   </div>
   <div
@@ -177,7 +177,7 @@ const GridComponent = () => {
       alt="Box 2"
       width={400}
       height={400}
-      className="w-[480px] h-[357px] hover-boxsalesrevops2"
+      className="w-[350px] h-[257px] hover-boxsalesrevops2"
     />
   </div>
   <div className="rounded-[30px]  opacity-0 relative right-[810px] 2xl:top-44  flex justify-center items-center hover:scale-150 transition-transform duration-300">
@@ -198,7 +198,7 @@ const GridComponent = () => {
       alt="Box 3"
       width={380}
       height={400}
-      className="w-[480px] h-[357px] hover-boxsalesrevops3"
+      className="w-[350px] h-[257px] hover-boxsalesrevops3"
     />
   </div><div
     onClick={() => handleClick(4)}
@@ -209,7 +209,7 @@ const GridComponent = () => {
       alt="Box 4"
       width={380}
       height={420}
-      className="w-[480px] h-[357px] hover-boxsalesrevops4"
+      className="w-[350px] h-[257px] hover-boxsalesrevops4"
     />
   </div>
 </div>
@@ -220,5 +220,5 @@ const GridComponent = () => {
     return <div className="flex flex-col justify-center 2xl:text-[14px] text-[8px] 2xl:p-0 p-4 relative 2xl:left-8 mx-auto items-center overflow-x-hidden" onClick={handleComponentClick}>  
 {renderContent()}</div>;
   };
-  export default GridComponent
+  export default GridComponentResponsive
 

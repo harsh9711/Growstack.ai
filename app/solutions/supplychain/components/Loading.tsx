@@ -159,7 +159,7 @@ const LoadingBar: React.FC = () => {
           <h1
             data-aos="fade-up"
             data-aos-duration="1100"
-            className="text-left items-start justify-start gap-2 text-[20px] 2xl:text-[42px] leading-normal"
+            className="text-left items-start justify-start gap-2 text-[26px] 2xl:text-[42px] leading-normal"
           >
             <span className="relative text-black font-semibold">
               Predict demand and

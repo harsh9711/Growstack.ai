@@ -172,7 +172,7 @@ const GridComponentSecond = () => {
       alt="Box 1"
       width={400}
       height={420}
-      className="w-[480px] h-[357px] hover-boxsalesrevops11"
+      className="w-[380px] h-[257px] 2xl:w-[480px] 2xl:h-[357px] hover-boxsalesrevops11"
     />
   </div>
   <div
@@ -184,10 +184,10 @@ const GridComponentSecond = () => {
       alt="Box 2"
       width={400}
       height={400}
-      className="w-[480px] h-[357px] hover-boxsalesrevops21"
+      className="w-[380px] h-[257px] 2xl:w-[480px] 2xl:h-[357px] hover-boxsalesrevops21"
     />
   </div>
-  <div className="rounded-[30px] relative right-[810px] 2xl:top-44 flex justify-center items-center hover:scale-150 transition-transform duration-300">
+  <div className="rounded-[30px] opacity-0 relative right-[810px] 2xl:top-44 flex justify-center items-center hover:scale-150 transition-transform duration-300">
     <Image
       src="/solutions/salesrevops2/boxes/main.svg"
       alt="Main"
@@ -205,7 +205,7 @@ const GridComponentSecond = () => {
       alt="Box 4"
       width={380}
       height={420}
-      className="w-[480px] h-[357px] hover-boxsalesrevops41"
+      className="w-[380px] h-[257px] 2xl:w-[480px] 2xl:h-[357px] hover-boxsalesrevops41"
     />
   </div> 
   <div
@@ -217,7 +217,7 @@ const GridComponentSecond = () => {
       alt="Box 3"
       width={380}
       height={400}
-      className="w-[480px] h-[357px] hover-boxsalesrevops31"
+      className="w-[380px] h-[257px] 2xl:w-[480px] 2xl:h-[357px] hover-boxsalesrevops31"
     />
   </div>
 </div>
