@@ -25,6 +25,7 @@ jobs:
         run: |
           ssh $SERVER_USER@$SERVER_IP << EOF
             cd GrowStack-Ai
+            git stash
             git pull origin main
             npm install
             npm run build
