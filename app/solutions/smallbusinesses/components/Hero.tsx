@@ -14,9 +14,9 @@ const HeroSection: React.FC = () => {
 
   return (
     <>
-      <section className="2xl:px-36 xl:px-36 ">
+      <section className="2xl:px-36  ">
         <div
-          className="relative flex items-center w-full h-full   pt-32 xl:pb-52 2xl:pb-52  bg-gradient-to-b from-[#ffffff]/30 to-[#61C453]/20 "
+          className="relative flex items-center w-full h-full   pt-10 2xl:pt-32 xl:pb-52 2xl:pb-52  bg-gradient-to-b from-[#ffffff]/30 to-[#61C453]/20 "
           data-aos="fade-up"
         >
           <div className="w-full h-full mx-auto flex flex-col  justify-center items-center max-h-[1110px] max-w-[1774px] ">
@@ -30,7 +30,7 @@ const HeroSection: React.FC = () => {
                 </div>
 
                 <div className="  items-center flex flex-col gap-y-4 justify-center  mx-auto ">
-                  <h1 className="xl:text-[48px] text-[24px]   leading-12 flex flex-col  items-center justify-center text-[#14171B] bg-clip-text ">
+                  <h1 className="xl:text-[40px] 2xl:text-[48px] text-[24px]   leading-12 flex flex-col  items-center justify-center text-[#14171B] bg-clip-text ">
                     <span className="font-semibold text-center">
                       Maximize efficiency
                     </span>
@@ -39,7 +39,7 @@ const HeroSection: React.FC = () => {
                     </span>
                   </h1>
 
-                  <p className="text-[18px]  items-center justify-center text-center max-w-[819px] leading-loose">
+                  <p className="xl:text-[16px] text-[10px] 2xl:text-[18px]  items-center justify-center text-center max-w-[819px] leading-loose">
                     Growstack's all-in-one AI marketing platform is designed for
                     small businesses facing tight budgets and limited manpower.
                     Our suite of AI-powered tools automates content creation,
@@ -132,7 +132,7 @@ const HeroSection: React.FC = () => {
             Small Business Success
           </h2>
 
-          <p className="mt-4 text-white text-[18px] max-w-[612px] w-full items-center font-light justify-center mx-auto text-center">
+          <p className="mt-4 text-white xl:text-[16px] text-[10px] 2xl:text-[18px] max-w-[612px] w-full items-center font-light justify-center mx-auto text-center">
             Discover how Growstack's AI-driven tools streamline your tasks and
             drive success for small businesses
           </p>
@@ -148,7 +148,7 @@ const HeroSection: React.FC = () => {
           />
         </button> */}
       </div>
-      <div className="absolute 2xl:flex xl:flex hidden max-w-[1920px] w-full overflow-hidden top-[1220px]">
+      <div className="absolute 2xl:flex xl:flex hidden max-w-[1920px] w-full overflow-hidden xl:top-[1050px] 2xl:top-[1220px]">
         <RepeatText />
       </div>
     </>
