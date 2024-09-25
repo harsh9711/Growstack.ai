@@ -156,7 +156,7 @@ const GridComponentSecond = () => {
           return (
     <>      
 
-          <div className="2xl:grid xl:grid grid-cols-3 relative 2xl:gap-x-16 2xl:left-72 xl:left-60 justify-center items-center">
+          <div className="2xl:grid xl:grid grid-cols-3 relative 2xl:gap-x-16 2xl:left-72 xl:left-28 justify-center items-center">
   <div
     onClick={() => handleClick(1)}
     className="rounded-[30px] flex justify-center items-center z-[60] cursor-pointer hover:scale-105 transition-transform duration-300"
@@ -166,7 +166,7 @@ const GridComponentSecond = () => {
       alt="Box 1"
       width={400}
       height={420}
-      className="w-[480px] h-[357px] hover-boxoperations1001"
+      className="w-[380px] h-[257px] 2xl:w-[480px] 2xl:h-[357px] hover-boxoperations1001"
     />
   </div>
   <div
@@ -178,10 +178,10 @@ const GridComponentSecond = () => {
       alt="Box 2"
       width={400}
       height={400}
-      className="w-[480px] h-[357px] hover-boxoperations2001"
+      className="w-[380px] h-[257px] 2xl:w-[480px] 2xl:h-[357px] hover-boxoperations2001"
     />
   </div>
-  <div className="rounded-[30px] relative 2xl:right-[810px] xl:right-[720px] top-44 flex justify-center items-center hover:scale-150 transition-transform duration-300">
+  <div className="rounded-[30px] opacity-0 relative 2xl:right-[810px] xl:right-[720px] top-44 flex justify-center items-center hover:scale-150 transition-transform duration-300">
     <Image
       src="/solutions/operations/boxes/main.svg"
       alt="Main"
@@ -198,7 +198,7 @@ const GridComponentSecond = () => {
       alt="Box 3"
       width={380}
       height={400}
-      className="w-[480px] h-[357px] hover-boxoperations3001"
+      className="w-[380px] h-[257px] 2xl:w-[480px] 2xl:h-[357px] hover-boxoperations3001"
     />
   </div>
   <div
@@ -210,7 +210,7 @@ const GridComponentSecond = () => {
       alt="Box 4"
       width={380}
       height={420}
-      className="w-[480px] h-[357px] hover-boxoperations4001"
+      className="w-[380px] h-[257px] 2xl:w-[480px] 2xl:h-[357px] hover-boxoperations4001"
     />
   </div>
 </div>

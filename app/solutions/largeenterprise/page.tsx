@@ -25,7 +25,7 @@ const Home = () => {
     <main className=" overflow-hidden">
       <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
       <section className="">
-        <div className="relative flex items-center w-full h-full  rounded-b-[40px] pt-20  xl:pt-40 bg-[#F3F7F6] ">
+        <div className="relative flex items-center w-full h-full  rounded-b-[40px] pt-20  2xl:pt-40 bg-[#F3F7F6] ">
           <div className="w-full h-full mx-auto flex flex-col  justify-between max-h-[870px] max-w-[1920px] items-center">
             <div className="flex flex-col items-center justify-center mx-auto w-full">
               <div className=" w-full gap-y-4 flex flex-col items-center justify-center mx-auto">
@@ -34,7 +34,7 @@ const Home = () => {
                 </div>
 
                 <div className="  items-center flex flex-col gap-y-4 justify-center  mx-auto ">
-                  <h1 className="text-[24px] xl:text-[56px]  leading-12 flex flex-col  items-center justify-center bg-gradient-to-b from-black to-black/30 bg-clip-text text-transparent">
+                  <h1 className="text-[24px] xl:text-[40px] 2xl:xl:text-[48px]  leading-12 flex flex-col  items-center justify-center bg-gradient-to-b from-black to-black/30 bg-clip-text text-transparent">
                     <span className="font-semibold text-center">
                       Streamline complex
                     </span>
@@ -43,7 +43,7 @@ const Home = () => {
                     </span>
                   </h1>
 
-                  <p className="text-[18px]  items-center justify-center text-center max-w-[819px] leading-loose">
+                  <p className="text-[16px] 2xl:text-[18px]  items-center justify-center text-center max-w-[819px] leading-loose">
                     Growstack's advanced Al tools and scalable solutions address
                     the unique challenges of large enterprises by ensuring
                     global alignment, consistent marketing and sales, effective
@@ -88,7 +88,7 @@ const Home = () => {
           }}
         >
           <div className="relative flex flex-col gap-y-4 justify-center items-center mx-auto bg-cover py-20 bg-center bg-no-repeat">
-            <h1 className="text-[24px] xl:text-[56px] leading-12 flex flex-col items-center justify-center bg-gradient-to-b from-black to-black/30 bg-clip-text text-transparent relative z-10">
+            <h1 className="text-[24px] xl:text-[40px] 2xl:text-[48px] leading-12 flex flex-col items-center justify-center bg-gradient-to-b from-black to-black/30 bg-clip-text text-transparent relative z-10">
               <span className="font-semibold text-center">
                 Comprehensive solution for
               </span>
@@ -175,7 +175,7 @@ const Home = () => {
           </div>
 
           <div className="items-center flex flex-col gap-y-4 justify-center mx-auto">
-            <h1 className="text-[22px] 2xl:text-[42px] leading-12 2xl:flex-row xl:flex-row flex-col flex gap-2  items-center justify-center text-white">
+            <h1 className="text-[22px] xl:text-[26px] 2xl:text-[42px] leading-12 2xl:flex-row xl:flex-row flex-col flex gap-2  items-center justify-center text-white">
               <span className="font-semibold text-center">
                 Managing complex,
               </span>

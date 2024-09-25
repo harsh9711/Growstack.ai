@@ -14,6 +14,7 @@ import MarketingStreamline from "./components/marketingStreamline/MarketingStrea
 import Footer from "@/components/footer/Footer";
 import LoadingBarSecond from "./components/LoadingBar";
 import Link from "next/link";
+import GridComponentResponsive from "./components/GridBoxesresponsive";
 
 const page = () => {
   useEffect(() => {
@@ -43,7 +44,7 @@ const page = () => {
                 <h1
                   data-aos="fade-right"
                   data-aos-duration="1500"
-                  className="text-[26px] xl:text-[48px]   w-full leading-normal text-black"
+                  className="text-[26px] xl:text-[40px] 2xl:text-[48px]   w-full leading-normal text-black"
                 >
                   <span className="font-semibold">Optimize your revenue </span>
                   <br />{" "}
@@ -155,7 +156,7 @@ const page = () => {
               data-aos="fade-up"
               data-aos-duration="1500"
               data-aos-delay="300"
-              className="text-center text-[22px] 2xl:text-[42px] leading-normal"
+              className="text-center text-[26px] 2xl:text-[42px] leading-normal"
             >
               <span className="text-black font-extrabold">
                 Maintain data quality{" "}
@@ -170,9 +171,17 @@ const page = () => {
               data-aos="fade-up"
               data-aos-duration="1800"
               data-aos-delay="600"
-              className="items-center justify-center mx-auto relative 2xl:right-12 "
+              className="items-center 2xl:flex xl:hidden flex justify-center mx-auto relative 2xl:right-12 "
             >
               <GridComponent />
+            </div>
+            <div
+              data-aos="fade-up"
+              data-aos-duration="1800"
+              data-aos-delay="600"
+              className="items-center xl:flex hidden 2xl:hidden justify-center mx-auto relative 2xl:right-12 "
+            >
+              <GridComponentResponsive />
             </div>
           </div>
         </div>
@@ -181,9 +190,9 @@ const page = () => {
         <div className="2xl:flex xl:flex hidden flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
           <ImageGalleryLine />
         </div>
-        <div className="2xl:hidden xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
+        {/* <div className="2xl:hidden xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
           <ImageGalleryLineResponsive />
-        </div>
+        </div> */}
       </section>
 
       <section className="relative mx-auto w-full items-center justify-center xl:mt-0 mt-10 2xl:mt-0 py-10 bg-[#FAFBFC]">
