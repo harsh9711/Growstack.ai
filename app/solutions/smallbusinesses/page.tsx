@@ -12,6 +12,7 @@ import MarketingStreamline from "./components/marketingStreamline/MarketingStrea
 import ImageGalleryLineResponsive from "./components/ImageGalleryline";
 import ImageGalleryLineB from "./components/ImageGallerylineresponsive";
 import Footer from "@/components/footer/Footer";
+import GridComponentResponsive from "./components/GridBoxesResponsive";
 
 const Home = () => {
   const totalItems = 5;
@@ -41,7 +42,7 @@ const Home = () => {
           <ImageGalleryLineResponsive />
         </div>
       </section>
-      <section className="relative  mx-auto items-center justify-center pt-20 2xl:pt-0 pb-10  2xl:px-auto">
+      <section className="relative  mx-auto items-center justify-center 2xl:pt-0 pb-10  2xl:px-auto">
         <div className="flex flex-col items-center  xl:items-start 2xl:items-start justify-center mx-auto gap-2 ">
           <div className=" mx-auto justify-center 2xl:items-start xl:items-start items-center  flex flex-col gap-y-2">
             {" "}
@@ -57,8 +58,13 @@ const Home = () => {
             </h1>{" "}
           </div>
 
-          <div className="items-center justify-center mx-auto relative   ">
+          <div className="flex xl:hidden items-center justify-center mx-auto relative   ">
             <GridComponent />
+          </div>
+          <div className="items-center xl:flex hidden justify-center mx-auto relative   ">
+            <GridComponentResponsive
+            
+            />
           </div>
         </div>
       </section>
