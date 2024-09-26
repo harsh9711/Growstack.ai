@@ -43,13 +43,14 @@ const Home = () => {
                     </span>
                   </h1>
 
-                  <p className="text-[16px] 2xl:text-[18px] leading-tight items-center justify-center text-center max-w-[819px] ">
+                  <p className="text-[16px] 2xl:text-[18px] leading-tight px-10 sm:px-0  items-center justify-center text-center max-w-[819px] ">
+
                     Growstack's advanced Al tools and scalable solutions address
                     the unique challenges of large enterprises by ensuring
                     global alignment, consistent marketing and sales, effective
                     personalization, and seamless data integration.{" "}
                   </p>
-                  <div className="flex flex-col gap-24 mt-4 items-center justify-center ">
+                  <div className="flex flex-col gap-24 mt-4 pb-10 sm:pb-0 items-center justify-center ">
                     <div className="flex flex-row gap-8 ">
                       <Link href="/auth/register" className="no-underline">
                         {" "}
@@ -112,7 +113,7 @@ const Home = () => {
           <div className="w-full h-full mx-auto flex flex-col justify-between max-h-[950px] max-w-[1920px] items-center">
             <div className="flex flex-col items-center justify-center mx-auto w-full">
               <div className="w-full gap-y-4  flex flex-col items-center justify-center mx-auto">
-                <div className="bg-[#0347371A] hover:shadow-md  whitespace-nowrap  text-[#034737] py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[166px]">
+                <div className="bg-[#0347371A] hover:shadow-md  whitespace-nowrap  text-[#034737] py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[150px]">
                   stay connected
                 </div>
 
@@ -124,10 +125,11 @@ const Home = () => {
                   </h1>
                 </div>
               </div>
-              <div className="flex flex-row mt-10 w-full items-center justify-center  mx-auto gap-20 max-w-[1600px]">
-                <div className=" flex flex-col gap-y-20 items-start  justify-center w-1/4">
+              <div className="flex flex-col sm:p-0 p-6 sm:flex-row sm:mt-10 w-full items-center justify-center  mx-auto sm:gap-20 max-w-[1600px]">
+                <div className=" flex flex-col gap-y-6 sm:gap-y-20 items-start  justify-center sm:w-1/4">
                   {" "}
-                  <p className="text-left leading-normal items-center justify-center w-full max-w-[1026px]">
+                  <p className="text-left leading-normal items-center justify-center w-full sm:max-w-[1026px]">
+            
                     In large enterprises, various teams collaborate to manage
                     operations, develop strategies, and handle day-to-day
                     functions. By using Growstack, you can ensure that your
@@ -137,14 +139,16 @@ const Home = () => {
                   </p>
                   <Link href="/auth/register" className="no-underline">
                     {" "}
-                    <button className="bg-[#034737] text-white font-medium flex items-center gap-2 py-4 px-7 rounded-xl hover:font-bold shadow-md shadow-[#00000025]">
+                    <button className="bg-[#034737] text-white font-medium flex items-center gap-2 sm:py-4 sm:px-7 p-2 rounded-xl hover:font-bold shadow-md shadow-[#00000025]">
+
                       Free trial <ArrowRight />
                     </button>
                   </Link>
                 </div>
                 <div
                 ref={ref}
-                className="mt-6 relative w-full h-[394.8px] max-w-[700px] flex items-center justify-center overflow-hidden bg-white brightness-105"
+                className="mt-6 relative w-full sm:h-[394.8px] sm:max-w-[700px] h-[197.4px] max-w-[350px] flex items-center justify-center overflow-hidden bg-white brightness-105"
+
               >
                 <motion.div
                   className="absolute top-0 left-0 w-full h-full"
@@ -180,7 +184,7 @@ const Home = () => {
 
       <section className="bg-primary-green flex flex-col items-center justify-center py-20 overflow-hidden">
         <div className="w-full gap-y-4 flex flex-col items-center justify-center mx-auto ">
-          <div className="bg-white/10 hover:shadow-md  whitespace-nowrap  text-white py-2 px-4 flex items-center text-center text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[151px]">
+          <div className="bg-white/10 hover:shadow-md  whitespace-nowrap  text-white py-2 px-4 flex items-center text-center text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[135px]">
             Globalization
           </div>
 
