@@ -16,7 +16,6 @@ export default function IntercomProvider({ children }: { children: React.ReactNo
 
     const checkUnreadMessages = setInterval(() => {
       onUnreadCountChange(function (unreadCount: number) {
-        console.log(unreadCount)
         if (unreadCount > 0) {
           setUnreadCount(unreadCount);
         } else {
@@ -34,14 +33,14 @@ export default function IntercomProvider({ children }: { children: React.ReactNo
   return (
     <Fragment>
       {children}
-      <div
-        typeof="button"
-        id="intercom-launcher"
-        className=" rounded-full  absolute cursor-pointer bottom-10 right-10"
-      >
-        {
-          isAppRoute && (
-            <div className="relative z-50">
+      {
+        isAppRoute && (
+          <div
+            typeof="button"
+            id="intercom-launcher"
+            className=" rounded-full  fixed cursor-pointer bottom-10 right-10 z-50"
+          >
+            <div className="relative ">
               <Image src="/assets/chat.png" alt="Chat icon" width={40} height={40} />
               {unreadCount > 0 && (
                 <span
@@ -55,9 +54,9 @@ export default function IntercomProvider({ children }: { children: React.ReactNo
                 </span>
               )}
             </div>
-          )
-        }
-      </div>
+          </div>
+        )
+      }
     </Fragment>
   );
 }
