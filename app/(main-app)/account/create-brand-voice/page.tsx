@@ -127,8 +127,6 @@ export default function CreateBrandVoice() {
       });
       setToneOfVoice(""); // Clear category after submission
       setUserInputs([{ name: "", brief: "", isProduct: "" }]); // Reset userInputs
-      // Log userInputs to the console
-      console.log("User Inputs:", userInputFields);
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
