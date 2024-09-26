@@ -44,6 +44,7 @@ const Home = () => {
                   </h1>
 
                   <p className="text-[16px] 2xl:text-[18px] leading-tight px-10 sm:px-0  items-center justify-center text-center max-w-[819px] ">
+
                     Growstack's advanced Al tools and scalable solutions address
                     the unique challenges of large enterprises by ensuring
                     global alignment, consistent marketing and sales, effective
@@ -128,6 +129,7 @@ const Home = () => {
                 <div className=" flex flex-col gap-y-6 sm:gap-y-20 items-start  justify-center sm:w-1/4">
                   {" "}
                   <p className="text-left leading-normal items-center justify-center w-full sm:max-w-[1026px]">
+            
                     In large enterprises, various teams collaborate to manage
                     operations, develop strategies, and handle day-to-day
                     functions. By using Growstack, you can ensure that your
@@ -138,6 +140,7 @@ const Home = () => {
                   <Link href="/auth/register" className="no-underline">
                     {" "}
                     <button className="bg-[#034737] text-white font-medium flex items-center gap-2 sm:py-4 sm:px-7 p-2 rounded-xl hover:font-bold shadow-md shadow-[#00000025]">
+
                       Free trial <ArrowRight />
                     </button>
                   </Link>
@@ -145,6 +148,7 @@ const Home = () => {
                 <div
                 ref={ref}
                 className="mt-6 relative w-full sm:h-[394.8px] sm:max-w-[700px] h-[197.4px] max-w-[350px] flex items-center justify-center overflow-hidden bg-white brightness-105"
+
               >
                 <motion.div
                   className="absolute top-0 left-0 w-full h-full"

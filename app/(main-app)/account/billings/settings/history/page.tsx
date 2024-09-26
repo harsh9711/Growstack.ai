@@ -32,7 +32,7 @@ interface BillingHistoryItem {
   created_at: string;
   invoice: string;
 }
-const BillingHistorySection=() =>{
+const BillingHistorySection = () => {
   const [data, setData] = useState<BillingHistoryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -58,7 +58,7 @@ const BillingHistorySection=() =>{
   }, []);
 
   function handleAction(invoice: string): void {
-  window.location.href= `${invoice}`; 
+    window.location.href = `${invoice}`;
   }
 
   return (
@@ -70,17 +70,17 @@ const BillingHistorySection=() =>{
         <div className="rounded-lg border overflow-hidden mt-10 bg-white min-h-[50vh]">
           {loading ? (
             <div className="loading-container">
-            <div className="loading-card">
-              <div className="card-chip"></div>
-              <div className="card-lines">
-                <div className="line"></div>
-                <div className="line"></div>
-                <div className="line"></div>
+              <div className="loading-card">
+                <div className="card-chip"></div>
+                <div className="card-lines">
+                  <div className="line"></div>
+                  <div className="line"></div>
+                  <div className="line"></div>
+                </div>
+                <div className="card-wave"></div>
               </div>
-              <div className="card-wave"></div>
+              <p>Billing History...</p>
             </div>
-            <p>Billing History...</p>
-          </div>
           ) : error ? (
             <div>Error: {error}</div>
           ) : (
@@ -106,8 +106,8 @@ const BillingHistorySection=() =>{
                         item.status === "SUCCESS"
                           ? " text-primary-green bg-[#0347371A]"
                           : item.status === " Pending"
-                          ? "text-yellow-8 bg-yellow-100"
-                          : "text-[#CF0000] bg-[#FF00001A]"
+                            ? "text-yellow-8 bg-yellow-100"
+                            : "text-[#CF0000] bg-[#FF00001A]"
                       )}
                     >
                       {item.status}
@@ -150,7 +150,6 @@ const OverViewSection = () => {
     try {
       const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
       const data: PlanUsage = response.data.data;
-      console.log(data);
       setPlanUsage(data);
     } catch (error: any) {
       if (error.response) {
@@ -219,9 +218,8 @@ const OverViewSection = () => {
         <div className="flex flex-row gap-x-6 items-end">
           <AddCreditDialog />
           <button
-            className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-white border-red-500 border hover:font-semibold hover:border-2 text-red-500 sheen transition-all duration-300 ${
-              cancelLoading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+            className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-white border-red-500 border hover:font-semibold hover:border-2 text-red-500 sheen transition-all duration-300 ${cancelLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             onClick={handleCancelSubscription}
             disabled={cancelLoading} // Disable button while canceling
           >
@@ -237,7 +235,7 @@ export default function SettingsPage() {
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
   const tabs = ["Overview", "Billing history"];
- 
+
   return (
     <main>
       <div className="flex justify-between">
@@ -272,7 +270,7 @@ export default function SettingsPage() {
         </div> */}
       </div>
       {/* {renderContent()} */}
-      <BillingHistorySection/>
+      <BillingHistorySection />
     </main>
   );
 }
