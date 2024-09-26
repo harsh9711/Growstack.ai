@@ -24,6 +24,7 @@ interface ActionsSectionProps {
   actions: any;
   inputConfigs: any;
   workflowId: string | null;
+  indexId:number;
 }
 
 type SubOption = {
@@ -73,6 +74,7 @@ const ActionsSection = ({
   setActiveAction,
   onSaveAction,
   isAPICalling,
+  indexId,
   setIsAPICalling,
   inputConfigs,
   workflowId,
@@ -84,8 +86,6 @@ const ActionsSection = ({
   const [isVideo, setIsVideo] = useState(false);
   const [mediaUrls, setMediaUrls] = useState<any[]>([]);
   const [selectedNetworks, setSelectedNetworks] = React.useState<string[]>([]);
-
-  // State to manage editable fields
   const [editableFields, setEditableFields] = useState<InputType[]>(
     activeAction.preset_json.body
   );
@@ -108,7 +108,7 @@ const ActionsSection = ({
         })),
       },
       ...actions
-        .slice(0, activeAction.index)
+        .slice(0,indexId)
         .map((action: any, index: number) => ({
           type: "output",
           name: action.name,

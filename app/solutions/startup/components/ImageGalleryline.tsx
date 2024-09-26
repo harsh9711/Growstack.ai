@@ -119,7 +119,7 @@ const ImageGalleryLine = () => {
               <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit mx-auto">
            market fit
               </div>
-              <h1 className="text-center text-white  text-[42px] leading-normal">
+              <h1 className="text-center text-white  text-[26px] 2xl:text-[42px] leading-normal">
                 <span className="font-extrabold">Find your market </span>
                 <span className="font-extralight text-[#A9FF9B]">  fit faster</span>
               </h1>
@@ -154,7 +154,7 @@ const ImageGalleryLine = () => {
                  <div className="bg-[#FFFFFF]/10 text-white  py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit mx-auto">
                market fit
                  </div>
-                 <h1 className="text-center text-[42px] leading-normal">
+                 <h1 className="text-center  text-[26px] 2xl:text-[42px] leading-normal">
                    <span className="text-white font-extrabold headings">Find your market </span>
                 <span className=" font-extralight text-[#A9FF9B]">  fit faster</span>
                  </h1>

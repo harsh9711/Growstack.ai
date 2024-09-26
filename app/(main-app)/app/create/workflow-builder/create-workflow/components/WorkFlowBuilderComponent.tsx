@@ -274,6 +274,9 @@ export default function WorkFlowBuilderComponent() {
           />
         );
       case "Actions":
+        const activeActionIndex = actions.findIndex(
+          (action) => action.action_id === activeAction.action_id
+        );
         return (
           <ActionsSection
             key={activeAction.action_id}
@@ -285,6 +288,7 @@ export default function WorkFlowBuilderComponent() {
             actions={actions}
             inputConfigs={inputConfigs}
             workflowId={workflowId}
+            indexId={activeActionIndex}
           />
         );
     }
