@@ -193,9 +193,7 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
       const response = await instance.post(
         `${API_URL}/workflow/api/v1/duplicate/${workflow_id}`
       );
-      console.log(response.data.data);
       const newWorkflowId = response.data.data.workflow_id;
-
       if (newWorkflowId) {
         router.push(
           `/app/create/workflow-builder/create-workflow?workflow_id=${newWorkflowId}`
