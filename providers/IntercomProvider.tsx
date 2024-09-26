@@ -1,9 +1,11 @@
 import React, { Fragment, useEffect, useState } from "react";
 import Intercom, { onUnreadCountChange } from "@intercom/messenger-js-sdk";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export default function IntercomProvider({ children }: { children: React.ReactNode }) {
   const [unreadCount, setUnreadCount] = useState(0);
+  const pathname = usePathname();
 
   useEffect(() => {
     Intercom({
@@ -27,6 +29,8 @@ export default function IntercomProvider({ children }: { children: React.ReactNo
     };
   }, []);
 
+  const isAppRoute = pathname === "/app";
+
   return (
     <Fragment>
       {children}
@@ -35,21 +39,24 @@ export default function IntercomProvider({ children }: { children: React.ReactNo
         id="intercom-launcher"
         className=" rounded-full  absolute cursor-pointer bottom-10 right-10"
       >
-        <div className="relative">
-
-          <Image src="/assets/chat.png" alt="Chat icon" width={40} height={40} />
-          {unreadCount > 0 && (
-            <span
-              style={{
-                right: "-0.6rem",
-                top: "-0.4rem",
-              }}
-              className="absolute top-0  bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
-            >
-              {unreadCount}
-            </span>
-          )}
-        </div>
+        {
+          isAppRoute && (
+            <div className="relative z-50">
+              <Image src="/assets/chat.png" alt="Chat icon" width={40} height={40} />
+              {unreadCount > 0 && (
+                <span
+                  style={{
+                    right: "-0.6rem",
+                    top: "-0.4rem",
+                  }}
+                  className="absolute top-0  bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center"
+                >
+                  {unreadCount}
+                </span>
+              )}
+            </div>
+          )
+        }
       </div>
     </Fragment>
   );
