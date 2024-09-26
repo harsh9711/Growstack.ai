@@ -108,7 +108,7 @@ const Home = () => {
         <MarketingTechnology />
       </section>
       <section className="">
-        <div className="relative flex items-center w-full h-full py-40 bg-white overflow-hidden">
+        <div className="relative flex items-center w-full h-full py-10 2xl:py-40 bg-white overflow-hidden">
           <div className="w-full h-full mx-auto flex flex-col justify-between max-h-[950px] max-w-[1920px] items-center">
             <div className="flex flex-col items-center justify-center mx-auto w-full">
               <div className="w-full gap-y-4  flex flex-col items-center justify-center mx-auto">
@@ -117,12 +117,17 @@ const Home = () => {
                 </div>
 
                 <div className="items-center flex flex-col gap-y-4 justify-center mx-auto">
-                  <h1 className="xl:text-[26px] 2xl:text-[40px] leading-loose flex gap-4 items-center justify-center text-black">
+                  <h1 className="xl:text-[26px] 2xl:text-[40px] leading-normal flex gap-4 items-center justify-center text-black">
                     <span className="font-semibold text-center">
                       Breaking down data silos
                     </span>
                   </h1>
-                  <p className="text-center items-center justify-center w-full max-w-[1026px]">
+                </div>
+              </div>
+              <div className="flex flex-row mt-10 w-full items-center justify-center  mx-auto gap-20 max-w-[1600px]">
+                <div className=" flex flex-col gap-y-20 items-start  justify-center w-1/4">
+                  {" "}
+                  <p className="text-left leading-normal items-center justify-center w-full max-w-[1026px]">
                     In large enterprises, various teams collaborate to manage
                     operations, develop strategies, and handle day-to-day
                     functions. By using Growstack, you can ensure that your
@@ -137,10 +142,9 @@ const Home = () => {
                     </button>
                   </Link>
                 </div>
-              </div>
-              <div
+                <div
                 ref={ref}
-                className="mt-6 relative w-full h-[580px] max-w-[1028px] flex items-center justify-center overflow-hidden bg-white brightness-105"
+                className="mt-6 relative w-full h-[394.8px] max-w-[700px] flex items-center justify-center overflow-hidden bg-white brightness-105"
               >
                 <motion.div
                   className="absolute top-0 left-0 w-full h-full"
@@ -167,6 +171,8 @@ const Home = () => {
                   </video>
                 </motion.div>
               </div>
+              </div>{" "}
+      
             </div>
           </div>
         </div>
