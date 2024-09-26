@@ -15,6 +15,8 @@ import { PlanUsage } from "@/types/common";
 import GlobalModal from "@/components/modal/global.modal";
 import Link from "next/link";
 import Lock from "@/components/svgs/lock";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
 
 
 type PreBuiltTemplate = {
@@ -30,8 +32,7 @@ export default function WorkflowBuilder() {
   const [preBuiltTemplates, setPreBuiltTemplates] = useState<
     PreBuiltTemplate[]
   >([]);
-  const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
-  const [isAddOnModalOpen, setIsAddOnModalOpen] = useState<boolean>(false);
+  const { isCurrentPlanFetching } = useSelector((rootState: RootState) => rootState.auth);
 
   const [loading, setLoading] = useState<boolean>(false);
   const getPreBuiltTemplates = async () => {
@@ -49,27 +50,6 @@ export default function WorkflowBuilder() {
     getPreBuiltTemplates();
   }, []);
 
-
-  const fetchPlanUsage = async () => {
-    try {
-      const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
-      const data = response.data.data;
-      setPlanUsage(data);
-      if (data.usage.ai_worfklow_credits <= 0) {
-        setIsAddOnModalOpen(true)
-      }
-    } catch (error: any) {
-      if (error.response) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error(error.message);
-      }
-      console.error('Error fetching plan usage:', error);
-    }
-  };
-  useEffect(() => {
-    fetchPlanUsage();
-  }, []);
   return (
     <Fragment>
       <main className="">
@@ -89,7 +69,7 @@ export default function WorkflowBuilder() {
         </div>
         <div className="mt-10">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {preBuiltTemplates.length > 0
+            {isCurrentPlanFetching || preBuiltTemplates.length > 0
               ? preBuiltTemplates.map((template) => (
                 <Card
                   key={template._id}
@@ -174,17 +154,18 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
   }, []);
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { currentPlan, user } = useSelector((rootState: RootState) => rootState.auth);
 
 
-
-  const handleDuplicateClick = async () => {
+  const handleDuplicateClick = async (e: { stopPropagation: () => void; }) => {
+    e.stopPropagation()
     setIsModalOpen(true);
   };
 
   const handleConfirmDuplicate = async () => {
 
     setIsModalOpen(false);
-    const canCreateWorkflow = await fetchPlanUsage(false);
+    const canCreateWorkflow = await checkWorkAccessPermission(false);
     if (!canCreateWorkflow) {
       return;
     }
@@ -216,20 +197,15 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
   };
 
   const [isAddOnModalOpen, setIsAddOnModalOpen] = useState<boolean>(false);
-  const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
-  const [isPlanUsageLoading, setIsPlanUsageLoading] = useState(false);
 
-  const fetchPlanUsage = async (redirect: boolean = false) => {
+  const checkWorkAccessPermission = async (redirect: boolean = false) => {
     try {
-      setIsPlanUsageLoading(true)
-      const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
-      const data: PlanUsage = response.data.data;
-      setPlanUsage(data);
-      if (data.usage.ai_worfklow_credits <= 0) {
+      if (!currentPlan) return;
+      if (currentPlan.usage.ai_worfklow_credits <= 0 && user?.user_type !== "ADMIN") {
         setIsAddOnModalOpen(true)
         return false;
       } else {
-        if (redirect) {
+        if (!redirect) {
           return true;
         } else {
           router.push(`/app/create/workflow-builder/workflows/${slug}?workflow_id=${workflow_id}`);
@@ -243,8 +219,6 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
       }
       console.error("Error fetching plan usage:", error);
       return false;
-    } finally {
-      setIsPlanUsageLoading(false);
     }
   };
 
@@ -252,12 +226,13 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
   return (
     <>
       <div
+        onClick={() => checkWorkAccessPermission(true)}
         className="relative p-5 bg-white rounded-3xl border border-[#E8E8E8] hover:shadow-xl hover:shadow-gray-200/60 transition-all duration-300 cursor-pointer space-y-4 min-h-[315px]"
         data-aos="fade-up"
       >
         <div className="relative" data-aos="zoom-in">
 
-          <Image onClick={() => fetchPlanUsage(true)}
+          <Image
             src={imageSrc}
             alt={title}
             width={400}
@@ -266,7 +241,7 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
           />
 
           <Menu as="div" className="absolute top-2 right-2">
-            <MenuButton className="p-2 text-gray-500 hover:text-gray-700">
+            <MenuButton onClick={(e) => e.stopPropagation()} className="p-2 text-gray-500 hover:text-gray-700">
               <BsThreeDotsVertical className="w-6 h-6" />
             </MenuButton>
             <MenuItems className="absolute right-0 mt-2 w-[105px] bg-white border border-gray-200 rounded-md shadow-lg">
@@ -298,6 +273,7 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
         {/* Modal Component */}
         {isModalOpen && (
           <div
+            onClick={(e) => e.stopPropagation()}
             className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50"
             data-aos="fade-in"
           >
