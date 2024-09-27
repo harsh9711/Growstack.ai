@@ -61,9 +61,6 @@ export default function ({ search }: DocumentsTableProps) {
         { params: { page, limit, search } }
       );
       const { docs, totalDocs, totalPages } = response.data.data;
-      console.log("API Docs:", docs); 
-      console.log("Total Pages:", totalPages); 
-  
       setDocuments(docs);
       setTotalDocs(totalDocs);
       setTotalPages(totalPages);
