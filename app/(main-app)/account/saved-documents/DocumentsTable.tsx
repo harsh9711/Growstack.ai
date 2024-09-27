@@ -82,8 +82,8 @@ export default function DocumentsTable() {
     const markdownContent = (
       <ReactMarkdown rehypePlugins={[rehypeRaw]}>{rowData.doc_content}</ReactMarkdown>
     );
-
-    const parsedContent = renderToString(markdownContent).replace(/(<([^>]+)>)/gi, "");
+    //added new empty line after line ends, as similar is showing when downloaded
+    const parsedContent = renderToString(markdownContent).replace(/(<([^>]+)>)/gi, "").replace(/(.)(?=\n|$)/g, "$1\n");
 
     const blob = new Blob([parsedContent], { type: "text/plain" });
     const url = window.URL.createObjectURL(blob);

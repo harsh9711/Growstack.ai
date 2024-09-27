@@ -15,6 +15,7 @@ import Editor from "./components/Editor";
 import Spinner from "@/components/Spinner";
 import { Switch } from "@/components/ui/switch";
 import { Info } from "lucide-react";
+import axios from 'axios';
 import {
   Tooltip,
   TooltipContent,
@@ -72,15 +73,11 @@ export default function AiAppPage({
   const [userInput1, setUserInput1] = useState("");
   const brandNames = allBrandVoices?.map((item: any) => item.brand_name);
 
-  // const stripHtmlTags = (html: string) => {
-  //   const temp = document.createElement("div");
-  //   temp.innerHTML = html;
-  //   return temp.textContent || temp.innerText || "";
-  // };
-
   const stripHtmlTags = (html: string) => {
     const temp = document.createElement("div");
-    temp.innerHTML = html.replace(/<br\s*\/?>/gi, "\n").replace(/<\/p>/gi, "\n\n");
+    temp.innerHTML = html
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/p>/gi, "\n\n");
     return temp.textContent || temp.innerText || "";
   };
 
@@ -157,6 +154,33 @@ export default function AiAppPage({
     }
   }, [editDocumentData]);
 
+  const downloadPdf = async (plainTextContent:any,userInput:any,fileName:string) => {
+    try {
+      const response = await axios({
+        url:  `${API_URL}/users/api/v1/generate-pdf/pdf`,
+        method: "POST",
+        responseType: "blob",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+          text: plainTextContent,
+          language: userInput?.language,
+          fileName: fileName,
+        },
+      });
+
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = `${fileName}.pdf`;
+      link.click();
+      window.URL.revokeObjectURL(link.href);
+    } catch (error) {
+      console.error("Error downloading the PDF:", error);
+    }
+  };
+
   const handleDownload = (selectedOption: string) => {
     const contentState = editorState.getCurrentContent();
     const rawContentState = convertToRaw(contentState);
@@ -170,24 +194,6 @@ export default function AiAppPage({
       "Download as DOC": plainTextContent,
       "Download as TXT": plainTextContent,
       "Download as PDF": plainTextContent,
-    };
-
-    const addTextToPdf = (content: string) => {
-      const pdfDoc = new jsPDF();
-      let yPos = 10;
-      const pageHeight = pdfDoc.internal.pageSize.height;
-
-      const lines = pdfDoc.splitTextToSize(content, 180);
-      lines.forEach((line: string | string[]) => {
-        if (yPos + 10 > pageHeight) {
-          pdfDoc.addPage();
-          yPos = 10;
-        }
-        pdfDoc.text(line, 10, yPos);
-        yPos += 10;
-      });
-
-      return pdfDoc;
     };
 
     switch (selectedOption) {
@@ -213,8 +219,7 @@ export default function AiAppPage({
         saveAs(txtBlob, `${fileName}.txt`);
         break;
       case "Download as PDF":
-        const pdfDoc = addTextToPdf(formats["Download as PDF"]);
-        pdfDoc.save(`${fileName}.pdf`);
+        downloadPdf(plainTextContent,userInput,fileName);
         break;
       default:
         console.error("Unsupported download option");
@@ -330,12 +335,14 @@ export default function AiAppPage({
     }
     setIsDocumentSavePending(true);
     try {
+      const formattedContent = generatedContent;
+      let plainTextContent = stripHtmlTags(formattedContent);
       const payload = {
         doc_name: fileName,
         doc_language: userInput1,
         doc_type: "TEXT",
         category: "text",
-        doc_content: generatedContent,
+        doc_content: plainTextContent,
       };
       const response = await instance.post(
         API_URL + `/users/api/v1/docs/save`,
