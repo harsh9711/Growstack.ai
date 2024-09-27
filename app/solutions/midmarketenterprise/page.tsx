@@ -1,7 +1,7 @@
 "use client";
 import { ArrowRight, Circle } from "lucide-react";
 import Image from "next/image";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import RepeatText from "./components/RepeatText";
 import GridComponent from "./components/GridBoxes";
 import ImageGalleryLine from "./components/ImageGalleryline";
@@ -12,29 +12,34 @@ import MarketingStreamline from "./components/marketingStreamline/MarketingStrea
 import ImageGalleryLineResponsive from "./components/ImageGallerylineresponsive";
 import Footer from "@/components/footer/Footer";
 import Link from "next/link";
-
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 const page = () => {
+  useEffect(() => {
+    AOS.init({ duration: 1000, easing: 'ease-in-out', once: true });
+  }, []);
+
   return (
     <main className="flex flex-col relative overflow-hidden">
       <span className="relatvie z-20">
         <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
       </span>
-      <section className="bg-[#034737] w-full  mb-20">
-        <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1350px] 2xl:p-0 p-4 w-full 2xl:max-h-[1112px] h-full justify-center mx-auto">
-          <div className="w-full flex flex-row justify-between brightness-110 relative   items-center mt-10 mb-10 2xl:mt-32 2xl:mb-60">
+      <section className="bg-[#034737] rounded-b-[60px] sm:rounded-b-[0px] w-full  mb-20">
+        <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1350px] 2xl:p-0 p-4 w-full 2xl:max-h-[1112px] sm:max-h-[800px]  h-full justify-center mx-auto">
+          <div className="w-full flex flex-row justify-between brightness-110 relative   items-center mt-10 mb-4 sm:mb-10  2xl:mt-32 2xl:mb-60">
             <div className="w-full max-w-[700px] gap-y-4 flex flex-col">
               <div className="bg-[#FFFFFF]/10 text-white py-2 px-4 text-center items-center justify-center flex   text-[12px] rounded-full font-semibold uppercase max-w-[377px] w-full tracking-widest">
                 Growstack for Mid - Market Organization
               </div>
 
               <div className="max-w-3xl  brightness-95   ">
-                <h1 className="text-[24px] xl:text-[48px] max-w-2xl leading-12  text-white ">
+                <h1 className="text-[26px] xl:text-[40px] max-w-2xl leading-tight sm:text-left text-center text-white ">
                   <span className="font-semibold">Conquer resources </span>
                   <br /> <span className="font-light">constraints with </span>
                   <br />
                   <span className="font-light">AI tools </span>
                 </h1>
-                <p className="text-[18px] text-white mt-4 w-full max-w-[600px] leading-loose font-light ">
+                <p className="text-[18px] text-white mt-4 w-full lg:max-w-[600px] sm:text-left text-center leading-tight font-light ">
                   Growstack's versatile Al tools and integrated solutions
                   empower mid-market organizations to overcome resource
                   limitations. By streamlining marketing operations, enhancing
@@ -43,11 +48,11 @@ const page = () => {
                   effectively and scale efficiently.
                 </p>
                 <div className="flex flex-col gap-20 mt-10">
-                  <div className="flex flex-row gap-8  group text-[18px]">
-                  <Link href="/auth/register" className="no-underline">   <button className="bg-white font-medium flex items-center gap-2 text-[#034737] py-4 px-7 rounded-xl group-hover:font-bold shadow-md hover:shadow-">
+                  <div className="flex flex-row gap-8  group text-[16px] sm:text-[18px]">
+                  <Link href="/auth/register" className="no-underline">   <button className="bg-white font-medium flex items-center gap-2 text-[#034737] sm:py-4 sm:px-7 rounded-xl p-2 group-hover:font-bold shadow-md hover:shadow-">
                       Free trial <ArrowRight />
                     </button></Link>
-                    <Link href="/demo" className="no-underline">  <button className="border border-white flex items-center gap-2 text-white hover:font-bold font-medium py-4 px-7 rounded-xl shadow-md shadow-[#00000025]">
+                    <Link href="/demo" className="no-underline">  <button className="border border-white flex items-center gap-2 text-white hover:font-bold font-medium sm:py-4 sm:px-7 p-2 rounded-xl shadow-md shadow-[#00000025]">
                       Get demo
                       <ArrowRight className="text-white" />
                     </button></Link>
@@ -338,24 +343,29 @@ const page = () => {
               </div>
             </div>
 
-            <div className="  2xl:flex xl:flex hidden items-center justify-center">
-              <Image
-                className="w-full relative 2xl:flex xl:flex hidden  z-0 top-10 xl:left-[360px] 2xl:left-[570px] "
-                src="/solutions/circle.svg"
-                alt="Center Image"
-                width={1048}
-                height={1000}
-              />
-              <div className=" absolute z-0 2xl:-right-60 2xl:top-96 xl:-right">
-                <Image
-                  className="w-full"
-                  src="/solutions/hero.svg"
-                  alt="Center Image"
-                  width={842}
-                  height={463}
-                />
-              </div>
-            </div>
+            <div className="2xl:flex xl:flex flex items-center justify-center">
+      <div data-aos="fade-out">
+        <Image
+          className="w-full relative 2xl:flex xl:flex hidden z-0 top-10 xl:left-[360px] 2xl:left-[570px]"
+          src="/solutions/circle.svg"
+          alt="Center Image"
+          width={1048}
+          height={1000}
+        />
+      </div>
+      <div
+        className="absolute z-0 2xl:-right-60 2xl:top-96"
+        data-aos="fade-out"
+      >
+        <Image
+          className="w-full"
+          src="/solutions/hero.svg"
+          alt="Center Image"
+          width={842}
+          height={463}
+        />
+      </div>
+    </div>
           </div>
         </div>
       </section>
@@ -372,16 +382,16 @@ const page = () => {
           organizations to overcome challenges
         </p>
       </div>
-      <div className="absolute max-w-[1920px] w-full 2xl:flex xl:flex hidden overflow-hidden top-[1250px]">
+      <div className="absolute max-w-[1920px] w-full 2xl:flex xl:flex hidden overflow-hidden top-[950px] 2xl:top-[1250px]">
         <RepeatText />
       </div>
-      <section className="relative  mx-auto items-center justify-center pb-48 ">
+      <section className="relative sm:p-0 px-6 mx-auto items-center justify-center pb-6 sm:pb-48 ">
         <div className="flex flex-col items-center justify-center mx-auto gap-2 ">
           <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit">
             {" "}
             Resources
           </div>
-          <h1 className="text-center text-[42px] leading-normal">
+          <h1 className="text-center text-[26px] sm:text-[42px] leading-tight">
             <span className="text-black  font-bold"> Overcome</span>
             <span className="text-black font-extralight ">
               {" "}
@@ -396,14 +406,14 @@ const page = () => {
       </section>
 
       <section className="relative bg-[#FAFBFC] w-full">
-        <div className="2xl:flex xl:flex hidden flex flex-col  max-w-[1921px] w-full py-10 h-full justify-center mx-auto   items-center gap-4  ">
+        <div className="2xl:flex xl:flex hidden flex-col  max-w-[1921px] w-full py-10 h-full justify-center mx-auto   items-center gap-4  ">
           <ImageGalleryLine />
         </div>
         <div className="2xl:hidden xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
           <ImageGalleryLineResponsive />
         </div>
       </section>
-      <section className="items-center justify-center mx-auto py-40 ">
+      <section className="items-center justify-center mx-auto py-10 sm:py-40 ">
         <div className="flex flex-col items-start gap-y-10  ">
           <div>
             <LoadingBar />
