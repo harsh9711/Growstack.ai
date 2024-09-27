@@ -23,14 +23,11 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import clsx from "clsx";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import swal from "sweetalert";
-import { useRouter } from "next/navigation";
 import { EllipsisVertical } from 'lucide-react';
 import { Checkbox } from "@/components/ui/checkbox";
 import instance from "@/config/axios.config";
+import { Input } from "@/components/ui/input";
 
 interface BrandVoice {
   _id: string;
@@ -38,127 +35,92 @@ interface BrandVoice {
   brand_voice: string;
   document_url: string | null;
 }
-
-export default function DocumentsTable() {
-  const router = useRouter();
+interface DocumentsTableProps {
+  search: string;
+} 
+export default function ({ search }: DocumentsTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [pagination, setPagination] = useState<PaginationState>({
+  const [pagination, setPagination] = useState<any>({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: 10, 
   });
   const [documents, setDocuments] = useState<BrandVoice[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-
+  const [totalDocs, setTotalDocs] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
   useEffect(() => {
-    fetchBrandVoice();
-  }, []);
+    fetchBrandVoice(search, pagination.pageIndex + 1, pagination.pageSize);
+  }, [search]);
 
-  const fetchBrandVoice = async () => {
-    setLoading(true);
-    setError(null);
+  const fetchBrandVoice = async (search: string, page: number, limit: number) => {
     try {
       const response = await instance.get(
-        `https://testing.growstack.ai/users/api/v1/brand-voice?page=${pagination.pageIndex + 1}&limit=${pagination.pageSize}&search=Growstack`
+        `https://testing.growstack.ai/users/api/v1/brand-voice`,
+        { params: { page, limit, search } }
       );
-      const fetchedDocuments = response.data.data.docs.map((doc: any) => ({
-        _id: doc._id,
-        brand_name: doc.brand_name,
-        brand_voice: doc.brand_voice,
-        document_url: doc.document_url,
-      }));
-      setDocuments(fetchedDocuments);
+      const { docs, totalDocs, totalPages } = response.data.data;
+      console.log("API Docs:", docs); 
+      console.log("Total Pages:", totalPages); 
+  
+      setDocuments(docs);
+      setTotalDocs(totalDocs);
+      setTotalPages(totalPages);
     } catch (error) {
-      setError("Failed to fetch brand voices.");
-      toast.error("Failed to fetch brand voices.");
-    } finally {
-      setLoading(false);
+      console.error("Error fetching brand voices", error);
     }
   };
-
   const columns: ColumnDef<BrandVoice>[] = [
     {
       accessorKey: "brand_name",
-      header: () => (
-        <div className="uppercase">
-          <Checkbox
-            checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-            onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
-            aria-label="Select all"
-            className="w-[14px] h-[14px]"
-          />{" "}
-          Brand Name
-        </div>
-      ),
-      cell: ({ row }) => (
-        <div className="capitalize">
-          <Checkbox
-            checked={row.getIsSelected()}
-            onCheckedChange={(value: any) => row.toggleSelected(!!value)}
-            className="w-[14px] h-[14px]"
-          />{" "}
-          {row.getValue("brand_name")}
-        </div>
-      ),
+      header: () => <div className="uppercase flex "><Checkbox
+        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+        onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+        className="w-[14px] h-[14px] mr-1"
+      />&nbsp; Brand&nbsp;Name</div>,
+      cell: ({ row }) => <div className="capitalize flex"> <Checkbox
+        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+        onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
+        className="w-[14px] h-[14px] mr-1"
+      />&nbsp; {row.getValue("brand_name")}</div>,
     },
     {
       accessorKey: "brand_voice",
       header: () => <div className="uppercase">Brand Voice</div>,
-      cell: ({ row }) => (
-        <div className="capitalize relative group">
-          <div className="truncate max-w-xs">
-            {row.getValue("brand_voice")}
-          </div>
-          {/* Tooltip */}
-          <div style={{zIndex:"100"}} className=" w-[50%] left-0 bottom-full mb-2 hidden group-hover:block p-2 bg-gray-800 text-white rounded-lg shadow-lg z-10 text-sm">
-            {row.getValue("brand_voice")}
-          </div>
-        </div>
-      ),
-    },
+      cell: ({ row }) => {
+        const brandVoice = row.getValue("brand_voice") as string;
     
+        return (
+          <div
+            className="capitalize text-ellipsis overflow-hidden whitespace-nowrap max-w-[200px]"
+            data-tooltip-id={`tooltip-${row.id}`}
+            data-tooltip-content={brandVoice} 
+          >
+            {brandVoice}
+         
+          </div>
+        );
+      },
+    },
     {
       accessorKey: "document_url",
-      header: () => <div className="uppercase">Document (if any)</div>,
-      cell: ({ row }) => {
-        const document = row.getValue("document_url");
-        return document ? <a href={document} target="_blank">View Document</a> : "No document";
-      },
+      header: () => <div className="uppercase">Document</div>,
+      cell: ({ row }) => (
+        <a href={row.getValue("document_url")} target="_blank" rel="noopener noreferrer">
+          {row.getValue("document_url") ? "View Document" : "No document"}
+        </a>
+      ),
     },
     {
       id: "actions",
       header: () => <div className="uppercase">Actions</div>,
       cell: ({ row }) => (
         <div className="relative flex items-center">
-          <button
-            className="p-1 hover:bg-gray-200 rounded-lg transition duration-300"
-            onClick={(e) => {
-              e.stopPropagation();
-              setOpenDropdown(openDropdown === row.original._id ? null : row.original._id); // Toggle dropdown
-            }}
-          >
+          <button className="p-1 hover:bg-gray-200 rounded-lg transition duration-300">
             <EllipsisVertical size={20} className="text-gray-800" />
           </button>
-          {openDropdown === row.original._id && (
-            <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow-lg z-10">
-              <button
-                className="block w-full text-left p-2 hover:bg-gray-100"
-                onClick={() => handleEdit(row.original._id)}
-              >
-                Edit
-              </button>
-              <button
-                className="block w-full text-left p-2 hover:bg-gray-100"
-                onClick={() => handleDeleteBrandVoice(row.original._id)}
-              >
-                Delete
-              </button>
-            </div>
-          )}
         </div>
       ),
       enableSorting: false,
@@ -177,8 +139,6 @@ export default function DocumentsTable() {
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
-    onPaginationChange: setPagination,
-
     state: {
       pagination,
       sorting,
@@ -188,93 +148,90 @@ export default function DocumentsTable() {
     },
   });
 
-  const handleDeleteBrandVoice = (id: string) => {
-    swal({
-      title: "Delete Document",
-      text: "Are you sure you want to delete it?",
-      icon: "warning",
-      buttons: ["Cancel", "Delete"],
-      dangerMode: true,
-    }).then(async (willDelete) => {
-      if (willDelete) {
-        setDocuments((prev) => prev.filter((doc) => doc._id !== id));
-        toast.success("Document deleted successfully");
-        setOpenDropdown(null);
-      }
-    });
-  };
-
-  const handleEdit = (id: string) => {
-    router.push(`/account/create-brand-voice/${id}`);
-    setOpenDropdown(null);
-  };
-
-  const closeModel = () => {
-    setOpenDropdown(null);
-  };
-
   return (
     <>
-      <Motion
-        transition={{ duration: 0.2 }}
-        variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
-      >
-        <div onClick={() => closeModel()} className="w-full bg-white border rounded-3xl">
+      <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+        <div className="w-full bg-white border rounded-3xl">
           <div className="bg-white rounded-lg border overflow-hidden min-h-[50vh]">
-            {loading ? (
-              <div className="flex justify-center items-center h-[50vh]">
-                Loading...
-              </div>
-            ) : error ? (
-              <div className="flex justify-center items-center h-[50vh] text-red-500">
-                {error}
-              </div>
-            ) : (
-              <Table>
-                <TableHeader>
-                  {table.getHeaderGroups().map((headerGroup) => (
-                    <TableRow key={headerGroup.id} className="bg-[#0347370D]">
-                      {headerGroup.headers.map((header) => (
-                        <TableHead key={header.id}>
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(header.column.columnDef.header, header.getContext())}
-                        </TableHead>
+            <Table>
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id} className="bg-[#0347370D]">
+                    {headerGroup.headers.map((header) => (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                      </TableHead>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow key={row.id} className="bg-white">
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                       ))}
                     </TableRow>
-                  ))}
-                </TableHeader>
-                <TableBody>
-                  {table.getRowModel().rows?.length ? (
-                    table.getRowModel().rows.map((row) => (
-                      <TableRow
-                        key={row.id}
-                        data-state={row.getIsSelected() && "selected"}
-                        className="bg-white"
-                      >
-                        {row.getVisibleCells().map((cell) => (
-                          <TableCell key={cell.id}>
-                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow className="hover:bg-white">
-                      <TableCell
-                        colSpan={columns.length}
-                        className="h-[50vh] text-center font-semibold text-lg hover:bg-white"
-                      >
-                        No results.
-                      </TableCell>
-                    </TableRow>
-                  )}
-                </TableBody>
-              </Table>
-            )}
+                  ))
+                ) : (
+                  <TableRow className="hover:bg-white">
+                    <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg">
+                      No results.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
           </div>
         </div>
       </Motion>
+      <div className="flex items-center justify-between space-x-2 py-4">
+        <div className="flex">
+          Showing
+          <Button variant="outline" size="sm" className="bg-[#0347371A] border-none ml-2 mr-2">
+            {pagination.pageSize}
+          </Button>
+          of {totalDocs} results
+        </div>
+        <div className="flex items-center space-x-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              if (pagination.pageIndex > 0) {
+                setPagination((prev: { pageIndex: number; }) => ({ ...prev, pageIndex: prev.pageIndex - 1 }));
+              }
+            }}
+            disabled={pagination.pageIndex === 0}
+          >
+            Previous
+          </Button>
+          {Array.from({ length: totalPages }).map((_, index) => (
+            <Button
+              key={index}
+              variant="outline"
+              size="sm"
+              onClick={() => setPagination((prev: any) => ({ ...prev, pageIndex: index }))}
+              className={pagination.pageIndex === index ? "bg-[#034737] text-white" : ""}
+            >
+              {index + 1}
+            </Button>
+          ))}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              if (pagination.pageIndex < totalPages - 1) {
+                setPagination((prev: { pageIndex: number; }) => ({ ...prev, pageIndex: prev.pageIndex + 1 }));
+              }
+            }}
+            disabled={pagination.pageIndex >= totalPages - 1}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
     </>
   );
 }

@@ -1,9 +1,15 @@
-import React from "react";
+"use client"
+import React, { useState } from "react";
 import DocumentsTable from "./DocumentsTable";
 import { Plus, Search } from "lucide-react";
 import Link from "next/link";
 
 export default function BrandVoice() {
+    const [search, setSearch] = useState<string>("");
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
   return (
     <div>
       <div className="mt-10">
@@ -20,7 +26,8 @@ export default function BrandVoice() {
                 type="search"
                 className="outline-none h-[30px] w-full"
                 placeholder="Search"
-               
+                value={search}
+                onChange={handleSearchChange}
               />
             </div>
           </div>
@@ -33,7 +40,7 @@ export default function BrandVoice() {
         </div>
 
         <div className="mt-5" >
-          <DocumentsTable />
+        <DocumentsTable search={search} />
         </div>
       </div>
 
