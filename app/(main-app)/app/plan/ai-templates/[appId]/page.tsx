@@ -774,7 +774,7 @@ export default function AiAppPage({
                     "Copy as HTML",
                     "Download as DOC",
                     "Download as TXT",
-                    // "Download as PDF",
+                    "Download as PDF",
                   ]}
                   hideLabel
                   value="Copy as Text"
