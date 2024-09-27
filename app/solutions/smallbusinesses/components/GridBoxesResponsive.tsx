@@ -6,7 +6,7 @@ import useInView from "../../midmarketenterprise/useInView";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "../../midmarketenterprise/components/grid.css";
-const GridComponent = () => {
+const GridComponentResponsive = () => {
   const [selected, setSelected] = useState<number | null>(null);
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
   const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
@@ -222,7 +222,7 @@ const GridComponent = () => {
           <>
             <div
               data-aos="fade-up"
-              className="xl:grid 2xl:grid grid-cols-3 relative 2xl:gap-x-16 xl:left-60 2xl:left-72 justify-center items-center"
+              className="xl:grid 2xl:grid grid-cols-3 relative 2xl:gap-x-16 xl:left-40 2xl:left-72 justify-center items-center"
             >
               <div
                 onClick={() => handleClick(1)}
@@ -233,7 +233,7 @@ const GridComponent = () => {
                   alt="Box 1"
                   width={400}
                   height={420}
-                  className="w-[480px] h-[357px]  hover-box111"
+                  className="w-[350px] h-[257px]  hover-box111"
                 />
               </div>
               <div
@@ -245,7 +245,7 @@ const GridComponent = () => {
                   alt="Box 2"
                   width={400}
                   height={400}
-                  className="w-[480px] h-[357px] hover-box211 "
+                  className="w-[350px] h-[257px]hover-box211 "
                 />
               </div>
               <div className="rounded-[30px] opacity-0 relative xl:right-[650px] xl:top-48 2xl:right-[810px] top-52 flex justify-center items-center cursor-pointer hover:scale-150  transition-transform duration-300">
@@ -266,7 +266,7 @@ const GridComponent = () => {
                   alt="Box 3"
                   width={380}
                   height={400}
-                  className="w-[480px] h-[357px] hover-box311 "
+                  className="w-[350px] h-[257px]hover-box311 "
                 />
               </div>
               <div
@@ -278,7 +278,7 @@ const GridComponent = () => {
                   alt="Box 4"
                   width={380}
                   height={420}
-                  className="w-[480px] h-[357px] hover-box411"
+                  className="w-[350px] h-[257px]hover-box411"
                 />
               </div>
             </div>
@@ -295,4 +295,4 @@ const GridComponent = () => {
     </div>
   );
 };
-export default GridComponent;
+export default GridComponentResponsive;

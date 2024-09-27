@@ -37,7 +37,7 @@ const HeroSection = ({
               <h1
                 data-aos="fade-right"
                 data-aos-duration="1500"
-                className="text-[26px] xl:text-[48px] w-full leading-normal text-white"
+                className="text-[26px] xl:text-[40px] 2xl:text-[48px] w-full leading-normal text-white"
               >
                 <span className="font-semibold text-white">{title}</span>
                 <br />

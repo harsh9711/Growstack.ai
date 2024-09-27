@@ -21,10 +21,10 @@ const page = () => {
       <HeroSection />
       <section className=" flex flex-col xl:mt-10 w-full mb-20 2xl:mb-10  items-center justify-center mx-auto">
         <div className="py-16">
-          <div className="2xl:flex hidden  w-full h-full items-center justify-center mx-auto">
+          <div className="2xl:flex xl:flex hidden  w-full h-full items-center justify-center mx-auto">
             <ImageGallerySecond />
           </div>
-          <div className="2xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
+          <div className="2xl:hidden xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
             <ImageGalleryResponsiveSecond />
           </div>
         </div>
@@ -38,7 +38,7 @@ const page = () => {
           className="w-full absolute"
         />
         <div className="flex flex-col items-center justify-center mx-auto gap-2">
-          <div className="2xl:items-start 2xl:-translate-x-36 xl:p-0 px-6">
+          <div className="2xl:items-start 2xl:translate-x-[450px] xl:p-0 px-6 w-full items-center xl:translate-x-48">
             {" "}
             <div
               data-aos="fade-up"
@@ -52,12 +52,12 @@ const page = () => {
               data-aos="fade-up"
               data-aos-duration="1500"
               data-aos-delay="300"
-              className="text-start text-[20px] mt-6 2xl:text-[42px] leading-normal"
+              className="text-start text-[26px] mt-6 2xl:text-[42px] leading-normal"
             >
               <span className="text-black font-bold">
                 Optimize resource allocation and
               </span>
-              <br className="2xl:flex xl:flex hidden" />
+              <br className="2xl:flex  hidden" />
               <span className="text-black font-extralight">
                 {" "}
                 maintain tight cost control
@@ -93,12 +93,15 @@ const page = () => {
             Communication
           </div>
 
-          <div className="flex flex-col items-start gap-y-4">
-            <h1 className="text-[22px] xl:text-[42px] leading-12 text-center   items-center justify-start text-white">
+          <div className="flex 2xl:flex-col items-start gap-y-4">
+            <h1 className="text-[26px] 2xl:text-[42px] leading-12 text-center  items-center justify-start text-white">
               <span className="font-semibold text-left">
                 Enhance communication and ensure
-              </span><br />
-              <span className="font-light text-center flex">compliance with regulations</span>
+              </span>
+              <br className="2xl:flex hidden" />
+              <span className="font-light text-center flex">
+                compliance with regulations
+              </span>
             </h1>
           </div>
         </div>

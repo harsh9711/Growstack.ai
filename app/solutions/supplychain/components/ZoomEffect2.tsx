@@ -104,7 +104,7 @@ const ImageGallerySecond = () => {
             <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit mx-auto">
             Reliability
             </div>
-            <h1 className="text-center text-[42px] leading-normal ">
+            <h1 className="text-center text-[26px] 2xl:text-[42px] leading-normal ">
               <span className="text-black font-bold">Ensure supplier reliability and</span><br/>
               <span className="text-black font-extralight">manage logistics</span>
             </h1>

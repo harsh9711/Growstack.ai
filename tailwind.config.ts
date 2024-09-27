@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-
+import defaultTheme from 'tailwindcss/defaultTheme';
 const config = {
   darkMode: ["class"],
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{js,ts,tsx}", "./app/**/*.{js,ts,tsx}", "./src/**/*.{js,ts,tsx}"],
@@ -13,6 +13,12 @@ const config = {
       },
     },
     extend: {
+      screens: {
+        '1.5xl':'1400px',
+        '3xl': '1600px',
+        '4xl': '120rem',
+        ...defaultTheme.screens,
+      },
       inset: {
         '-1.75rem': '-1.30rem',
         '-1.00rem': '-0.55rem',

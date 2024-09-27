@@ -11,7 +11,7 @@ const HeroSection = () => {
       data-aos="fade-in"
       data-aos-duration="2000"
       data-aos-delay="500"
-      className="max-h-screen  xl:bg-transparent bg-[#034737] 2xl:bg-transparent  w-full mb-10 2xl:mb-20  items-center justify-center mx-auto"
+      className="max-h-screen  xl:bg-transparent bg-[#034737] 2xl:bg-transparent mx:  w-full mb-10 2xl:mb-20  items-center justify-center mx-auto"
     >
       <Navbar
         logoUrl="/white.png"
@@ -33,7 +33,7 @@ const HeroSection = () => {
               <h1
                 data-aos="fade-right"
                 data-aos-duration="1500"
-                className="text-[26px] xl:text-[48px] w-full leading-normal text-white"
+                className="text-[26px] xl:text-[40px] 2xl:text-[48px] w-full leading-normal text-white"
               >
                 <span className="font-semibold w-full 2xl:whitespace-nowrap">
                   Transform finance operations{" "}
