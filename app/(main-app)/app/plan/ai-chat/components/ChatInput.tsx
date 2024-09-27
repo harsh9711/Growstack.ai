@@ -134,8 +134,6 @@ const ChatInput: React.FC<ChatInputProps> = ({
       );
       const { response, conversation_id, chatId, noOfMessagesLeft, totalNoOfMessages } = conversation.data.data as ChatResponse;
 
-      setSelectedConversation(conversation_id);
-
       const isBasicPlan = planIdsMap.BASIC.some((val) => val === currentPlan?.plan_id);
 
       if (isBasicPlan) {
@@ -147,9 +145,10 @@ const ChatInput: React.FC<ChatInputProps> = ({
           }
         }
       }
-      if (!selectedConversation) fetchConversations();
 
-      streamResponse(chatId);
+      await streamResponse(chatId);
+      if ((selectedConversation || conversation_id)) fetchConversations();
+
       if (fromMic) {
         setIsAnimating(true);
         setOpen(true);
