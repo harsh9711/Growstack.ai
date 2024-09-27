@@ -20,7 +20,7 @@ const page = () => {
   }, []);
 
   return (
-    <main className="flex flex-col relative overflow-hidden">
+    <main className="flex flex-col relative overflow-hidden mx-auto">
       <span className="relatvie z-20">
         <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
       </span>

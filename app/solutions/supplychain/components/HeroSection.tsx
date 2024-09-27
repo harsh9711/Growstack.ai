@@ -11,7 +11,7 @@ const HeroSection = () => {
       data-aos="fade-in"
       data-aos-duration="2000"
       data-aos-delay="500"
-      className="max-h-screen  xl:bg-transparent bg-[#034737] 2xl:bg-transparent mx:  w-full mb-10 2xl:mb-20  items-center justify-center mx-auto"
+      className="max-h-screen  bg-[#034737] 2xl:bg-transparent mx:  w-full mb-10 2xl:mb-20  items-center justify-center mx-auto"
     >
       <Navbar
         logoUrl="/white.png"
@@ -19,7 +19,7 @@ const HeroSection = () => {
         backgroundColor="white"
       />
       <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1350px] p-4 w-full h-full justify-center mx-auto">
-        <div className="w-full flex flex-row justify-between brightness-110 relative gap-x-20 items-center mt-10 mb-10 2xl:mt-40 2xl:mb-40">
+        <div className="w-full flex flex-row sm:text-start text-center justify-between brightness-110 relative gap-x-20 items-center mt-10 mb-10 2xl:mt-40 2xl:mb-40">
           <div className="w-full max-w-[900px] gap-y-4 flex flex-col">
             <div
               data-aos="fade-right"
@@ -102,7 +102,7 @@ const HeroSection = () => {
             </div>
           </div>
 
-          <div className="2xl:flex xl:flex lg:flex md:flex hidden translate-x-80 items-end relative w-full justify-end rounded-2xl shadow-3xl ">
+          <div className="2xl:flex xl:flex lg:flex md:flex hidden 2xl:translate-x-80 items-end relative w-full justify-end rounded-2xl shadow-3xl ">
             <div
               data-aos="fade-left"
               data-aos-duration="1500"

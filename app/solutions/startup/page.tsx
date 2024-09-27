@@ -19,7 +19,7 @@ const page = () => {
     AOS.init({ duration: 500 });
   }, []);
   return (
-    <main className="overflow-hidden max-w-[1920px] w-full">
+    <main className="bg-white overflow-hidden max-w-[1920px] w-full mx-auto" >
       <Navbar
         logoUrl="/images/logo.png"
         logoAlt="Custom Logo"
