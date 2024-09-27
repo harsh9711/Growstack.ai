@@ -377,6 +377,7 @@ const GridComponent = () => {
   return (
     <div
       className="flex flex-col sm:mt-10 mt-8 justify-center relative left-10 sm:left-8 mx-auto items-center"
+
       
       onClick={handleComponentClick}
     >
