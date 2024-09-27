@@ -20,7 +20,7 @@ const Page: React.FC = () => {
         <Banner />
         <MarketingExpertise />
         <section className="items-center justify-center mx-auto flex flex-col w-full bg-[url('/images_growstack/solutions/efficiencyBack.png')] bg-cover bg-[100%] bg-no-repeat">
-          <div className="flex flex-col items-center justify-center py-20 mx-auto overflow-hidden">
+          <div className="flex flex-col items-center justify-center sm:py-20 mx-auto overflow-hidden">
             <div className="w-full gap-y-4 flex flex-col items-center justify-center mx-auto ">
               <div className="bg-[rgba(3,71,55,.102)] hover:shadow-md  whitespace-nowrap  text-[#034737] py-2 px-4 flex items-center text-center text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[110px]">
                 Efficiency

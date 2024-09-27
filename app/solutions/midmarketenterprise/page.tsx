@@ -20,7 +20,7 @@ const page = () => {
   }, []);
 
   return (
-    <main className="flex flex-col relative overflow-hidden">
+    <main className="flex flex-col relative overflow-hidden mx-auto">
       <span className="relatvie z-20">
         <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
       </span>
@@ -47,7 +47,8 @@ const page = () => {
                   Growstack ensures mid-market businesses can compete
                   effectively and scale efficiently.
                 </p>
-                <div className="flex flex-col gap-20 mt-10">
+                <div className="flex flex-col gap-20  items-center justify-center sm:justify-start sm:items-start  mt-10">
+             
                   <div className="flex flex-row gap-8  group text-[16px] sm:text-[18px]">
                   <Link href="/auth/register" className="no-underline">   <button className="bg-white font-medium flex items-center gap-2 text-[#034737] sm:py-4 sm:px-7 rounded-xl p-2 group-hover:font-bold shadow-md hover:shadow-">
                       Free trial <ArrowRight />

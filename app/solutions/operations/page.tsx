@@ -17,7 +17,7 @@ const page = () => {
     AOS.init({ duration: 500 });
   }, []);
   return (
-    <main className="bg-white">
+    <main className="bg-white overflow-hidden max-w-[1920px] w-full mx-auto" >
       <HeroSection />
       <section className=" flex flex-col xl:mt-10 w-full mb-20 2xl:mb-10  items-center justify-center mx-auto">
         <div className="py-16">
@@ -38,13 +38,13 @@ const page = () => {
           className="w-full absolute"
         />
         <div className="flex flex-col items-center justify-center mx-auto gap-2">
-          <div className="2xl:items-start 2xl:translate-x-[450px] xl:p-0 px-6 w-full items-center xl:translate-x-48">
+          <div className="sm:items-start 2xl:translate-x-[450px] xl:p-0 px-6 w-full items-center xl:translate-x-48">
             {" "}
             <div
               data-aos="fade-up"
               data-aos-duration="1200"
               data-aos-offset="200"
-              className="bg-[#03473714] py-2 px-3.5  flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit"
+              className="bg-[#03473714] py-2 px-3.5  flex items-center text-center  sm:justify-start justify-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit"
             >
               Optimization
             </div>
@@ -52,7 +52,7 @@ const page = () => {
               data-aos="fade-up"
               data-aos-duration="1500"
               data-aos-delay="300"
-              className="text-start text-[26px] mt-6 2xl:text-[42px] leading-normal"
+              className="sm:text-start text-center text-[26px] mt-6 2xl:text-[42px] leading-normal"
             >
               <span className="text-black font-bold">
                 Optimize resource allocation and

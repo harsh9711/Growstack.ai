@@ -11,8 +11,8 @@ const HeroSection = () => {
         data-aos-duration="1500"
         className="relative flex flex-col items-center max-w-[1220px] 2xl:max-w-[1350px] 2xl:p-0 p-4 w-full  h-full justify-center mx-auto"
       >
-        <div className="w-full flex flex-row justify-between brightness-110 relative gap-x-20 items-center mt-20 2xl:mt-24 2xl:mb-20   ">
-          <div className="w-full max-w-[700px] gap-y-4 flex flex-col">
+        <div className="w-full flex flex-row justify-between brightness-110 relative gap-x-20 items-center mt-10 2xl:mt-24 2xl:mb-20   ">
+          <div className="w-full max-w-[700px] items-center justify-center sm:justify-start sm:items-start gap-y-4 flex flex-col">
             <div
               data-aos="fade-right"
               data-aos-duration="1200"
@@ -25,7 +25,7 @@ const HeroSection = () => {
               <h1
                 data-aos="fade-right"
                 data-aos-duration="1500"
-                className="text-[40px] 2xl:text-[48px] w-full leading-normal text-white"
+                className="text-[40px] 2xl:text-[48px] sm:items-start sm:text-start text-center items-center w-full leading-tight text-white"
               >
                 <span className="font-semibold">Supercharge growth</span>
                 <br />
@@ -43,7 +43,7 @@ const HeroSection = () => {
               <p
                 data-aos="fade-right"
                 data-aos-duration="1500"
-                className="text-[16px] 2xl:text-[18px] text-white mt-4 w-full max-w-[600px] leading-normal font-light"
+                className="text-[16px] 2xl:text-[18px] sm:text-start text-center text-white mt-4 w-full max-w-[600px] leading-tight font-light"
               >
                 Growstack's integrated AI tools and dynamic solutions address
                 the rapid growth needs of startups. By providing robust market
@@ -52,11 +52,11 @@ const HeroSection = () => {
                 market presence and accelerate their growth trajectory.
               </p>
 
-              <div className="flex flex-col gap-16 mt-10">
+              <div className="flex flex-col mx-auto sm:items-start items-center justify-center gap-16 mt-10">
                 <div
                   data-aos="fade-right"
                   data-aos-duration="1500"
-                  className="flex flex-row gap-8 group text-[12px] 2xl:text-[18px]"
+                  className="flex flex-row gap-8  group text-[12px] 2xl:text-[18px]"
                 >
                   <Link href="/auth/register" className="no-underline">
                     {" "}
@@ -114,8 +114,8 @@ const HeroSection = () => {
             </div>
           </div>
         </div>
-        <div className=" w-full brightness-95 mt-20 mb-64">
-          <h1 className="text-[26px] xl:text-[48px] w-full gap-2 leading-normal text-[#61C453]">
+        <div className=" w-full flex text-center sm:text-start flex-col items-center justify-center mx-auto brightness-95 mt-10 2xl:mt-20 mb-64">
+          <h1 className="text-[26px] xl:text-[48px] w-full gap-2 leading-tight text-[#61C453]">
             <span className="font-semibold xl:whitespace-nowrap">
               Revolutionizing startup success
             </span>
@@ -126,7 +126,7 @@ const HeroSection = () => {
               <span> Innovative AI Solutions</span>
             </span>
           </h1>
-          <p className="text-[16px] 2xl:text-[18px] text-white mt-4 w-full  leading-normal font-light">
+          <p className="text-[16px] 2xl:text-[18px] text-white mt-4 w-full  leading-tight font-light">
             Explore how Growstack's innovative AI solutions empower startups to
             overcome challenges, streamline operations, and achieve rapid
             growth.
