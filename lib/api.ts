@@ -1,2 +1,1 @@
-export const API_URL = "https://api.growstack.ai";
-// export const API_URL = "http://3.94.115.194:8081";
+export const API_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
