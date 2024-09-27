@@ -25,7 +25,7 @@ const HeroSection: React.FC = () => {
                 className=" w-full gap-y-4 flex flex-col items-center justify-center mx-auto"
                 data-aos="zoom-in"
               >
-                <div className=" text-[#034737] shadow-lg shadow-gradient-to-b from-[#000000]/70 to-[#000000]/30  border whitespace-nowrap py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest  font-semibold uppercase w-full max-w-[303px] ">
+                <div className=" text-[#034737] shadow-lg shadow-gradient-to-b from-[#000000]/70 to-[#000000]/30  border whitespace-nowrap py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest  font-semibold uppercase w-full max-w-[289px] ">
                   Growstack for large enterprises
                 </div>
 
@@ -39,7 +39,7 @@ const HeroSection: React.FC = () => {
                     </span>
                   </h1>
 
-                  <p className="xl:text-[16px] text-[10px] 2xl:text-[18px]  items-center justify-center text-center max-w-[819px] leading-loose">
+                  <p className="text-[16px] 2xl:text-[18px]  px-6 items-center justify-center text-center max-w-[819px] leading-loose">
                     Growstack's all-in-one AI marketing platform is designed for
                     small businesses facing tight budgets and limited manpower.
                     Our suite of AI-powered tools automates content creation,
@@ -60,12 +60,12 @@ const HeroSection: React.FC = () => {
                       className="2xl:flex xl:flex hidden  w-[350px] h-[350px]"
                     />
 
-                    <div className="flex flex-col flex-wrap gap-y-24 mt-4 items-center justify-center ">
-                      <div className="flex flex-row flex-wrap items-center justify-center gap-8 ">
+                    <div className="flex flex-col flex-wrap gap-y-10 xl:gap-y-24 mt-4 items-center justify-center ">
+                      <div className="flex flex-row  items-center justify-center gap-8 ">
                         <Link href="/auth/register" className="no-underline">
                           {" "}
                           <button
-                            className="bg-white text-[#034737] font-medium flex items-center gap-2 py-4 px-7 rounded-xl hover:font-bold shadow-md shadow-[#00000025]"
+                            className="bg-white text-[#034737] font-medium flex items-center gap-2 sm:py-4 sm:px-7 p-3.5 rounded-xl hover:font-bold shadow-md shadow-[#00000025]"
                             data-aos="fade-right"
                           >
                             Free trial <ArrowRight className="text-[#034737]" />
@@ -74,7 +74,7 @@ const HeroSection: React.FC = () => {
                         <Link href="/demo" className="no-underline">
                           {" "}
                           <button
-                            className="border border-[#14171B] flex items-center gap-2 text-[#14171B] hover:font-bold font-medium py-4 px-7 rounded-xl shadow-md shadow-[#00000025]"
+                            className="bg-white text-[#034737] font-medium flex items-center gap-2 sm:py-4 sm:px-7 p-3.5 rounded-xl hover:font-bold shadow-md shadow-[#00000025]"
                             data-aos="fade-left"
                           >
                             Get demo <ArrowRight className="text-[#14171B]" />
@@ -132,7 +132,7 @@ const HeroSection: React.FC = () => {
             Small Business Success
           </h2>
 
-          <p className="mt-4 text-white xl:text-[16px] text-[10px] 2xl:text-[18px] max-w-[612px] w-full items-center font-light justify-center mx-auto text-center">
+          <p className="mt-4 text-white text-[16px]  2xl:text-[18px] max-w-[612px] w-full items-center font-light justify-center mx-auto text-center">
             Discover how Growstack's AI-driven tools streamline your tasks and
             drive success for small businesses
           </p>

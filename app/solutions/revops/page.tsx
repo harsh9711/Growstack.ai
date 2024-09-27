@@ -21,8 +21,8 @@ const page = () => {
     AOS.init({ duration: 500 });
   }, []);
   return (
-    <main className="">
-      <section className="bg-[#E2F0CB] w-full mb-10 2xl:mb-20 items-center justify-center mx-auto">
+    <main className="bg-white overflow-hidden max-w-[1920px] w-full mx-auto" >
+      <section className="bg-[#E2F0CB] w-full mb-10 2xl:mb-20 rounded-b-[60px] sm:rounded-b-[0px] items-center justify-center mx-auto">
         <Navbar
           logoUrl="/images/logo.png"
           logoAlt="Custom Logo"
@@ -30,7 +30,7 @@ const page = () => {
         />
 
         <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1350px] 2xl:p-0 p-4 w-full 2xl:max-h-[1112px] h-full justify-center mx-auto">
-          <div className="w-full flex flex-row justify-between brightness-110 relative gap-x-20  items-center mt-10 mb-10 2xl:mt-32 2xl:mb-40">
+          <div className="w-full flex flex-row justify-between brightness-110 relative gap-x-20  items-center mt-2 mb-6 2xl:mt-32 2xl:mb-40">
             <div className="w-full max-w-[700px] gap-y-4 flex flex-col">
               <div
                 data-aos="fade-right"
@@ -68,14 +68,17 @@ const page = () => {
                   <div
                     data-aos="fade-right"
                     data-aos-duration="1500"
-                    className="flex flex-row gap-8 group text-[12px] 2xl:text-[18px]"
+                    className="flex flex-row items-center justify-center sm:items-start sm:justify-start gap-8 group text-[12px] 2xl:text-[18px]"
                   >
-                    <Link href="/auth/register" className="no-underline">    <button className="bg-white font-medium flex items-center gap-2 text-[#034737] 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
-                      Get free trial <ArrowRight />
-                    </button></Link>
+                    <Link href="/auth/register" className="no-underline">
+                      {" "}
+                      <button className="bg-white font-medium flex items-center gap-2 text-[#034737] 2xl:py-4 2xl:px-7  rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
+                        Get free trial <ArrowRight />
+                      </button>
+                    </Link>
                     <Link href="/demo" className="no-underline">
                       {" "}
-                      <button className="border border-black flex items-center gap-2 text-black hover:font-bold font-medium 2xl:py-4 py-2 px-2  2xl:px-7 rounded-xl shadow-md shadow-[#00000025]">
+                      <button className=" font-medium flex items-center gap-2 text-black 2xl:py-4 2xl:px-7 border border-black  rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
                         Get demo
                         <ArrowRight className="text-black" />
                       </button>
@@ -140,7 +143,7 @@ const page = () => {
           </div>
         </div>
       </section>
-      <section className=" p-20">
+      <section className=" sm:p-20">
         <div className="relative mx-auto rounded-t-[40px] items-center justify-center py-10 2xl:py-20 bg-[#E2F0CB4D]/30">
           <div className="flex flex-col items-center justify-center mx-auto gap-2">
             <div

@@ -75,8 +75,8 @@ const page = () => {
           alt="design"
           className="w-full absolute"
         />
-        <div className="flex flex-col items-center justify-center mx-auto gap-2">
-          <div className="2xl:items-start  xl:p-0 px-6">
+        <div className="flex flex-col sm:text-start text-center items-center justify-center mx-auto gap-2">
+          <div className="2xl:items-start items-center justify-center flex flex-col  xl:p-0 px-6">
             {" "}
             <div
               data-aos="fade-up"
@@ -90,7 +90,7 @@ const page = () => {
               data-aos="fade-up"
               data-aos-duration="1500"
               data-aos-delay="300"
-              className="text-start text-[26px] mt-6 2xl:text-[42px] leading-normal"
+              className="text-start text-[26px] mt-6 sm:text-[42px] leading-normal"
             >
               <span className="text-black font-bold">
                 Navigate compliance and{" "}
