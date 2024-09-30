@@ -63,11 +63,11 @@ const groupByDate = (items: ISidebarItem[]) => {
 
 
 const outputType = [
-  {
-    icon: <Share2 size={20} />,
-    label: "Share",
-    value: "download_chat",
-  },
+  // {
+  //   icon: <Share2 size={20} />,
+  //   label: "Share",
+  //   value: "share_chat",
+  // },
   {
     icon: <Download size={20} />,
     label: "Download",
@@ -97,7 +97,6 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
     }
   };
 
-  console.log(brandVoices)
 
   const filteredAiModelOptions =
     currentPlan && planIdsMap.BASIC.some((val) => val === currentPlan.plan_id)
@@ -184,6 +183,51 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
         setShowNewChatInput(true);
       }
       setDeleteRequestPending(false);
+    }
+  };
+
+
+  const handleDownload = async (id: string) => {
+    try {
+      const response = await instance.get(`${API_URL}/ai/api/v1/conversation/${id}`)
+      const { title, chats } = response.data.data;
+      const conversationData = chats
+        .map((chat: any) => {
+          return chat.thread.map((thread: any) => ({
+            user_prompt: thread.user_prompt,
+            response: thread.response,
+          }));
+        })
+        .flat();
+
+      let content = `# ${title}\n`;
+      conversationData.forEach(
+        ({
+          user_prompt,
+          response,
+        }: {
+          user_prompt: string;
+          response: string;
+        }) => {
+          content += `\n## Message From You:\n${user_prompt}\n`;
+          content += `## Message From GrowStackAI:\n${response}\n`;
+        }
+      );
+
+      const blob = new Blob([content], { type: "text/plain" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.style.display = "none";
+      a.href = url;
+      a.download = `${title
+        .replace(/[^a-z0-9]/gi, "_")
+        .toLowerCase()}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      toast.success("Chat downloaded successfully");
+    } catch (error) {
+      console.error("Error fetching conversations:", error);
     }
   };
 
@@ -340,7 +384,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
             </SelectContent>
           </Select>
           <div className="remove-caret">
-            <Select onValueChange={handleDelete}>
+            <Select>
               <SelectTrigger
                 showChevronDownIcon={false}
                 className="px-1 py-[5px] bg-white border-0 h-fit hover:bg-gray-100 rounded-lg"
@@ -350,17 +394,23 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
               <SelectContent>
                 <SelectGroup>
                   {outputType.map(({ label, value, icon }) => (
-                    <SelectItem
-                      value={value}
+                    <div
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        selectedConversation && handleDownload(selectedConversation)
+                      }}
+                      // showIndicator={false}
+                      // value={value}
                       key={value}
-                      className="pl-2 cursor-pointer"
-
+                      className=" cursor-pointer hover:bg-gray-100 items-center rounded-sm py-2.5 pr-2 pl-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
                     >
-                      <div className="flex gap-x-2">
+                      <div
+
+                        className="flex gap-x-2">
                         {icon}
                         {label}
                       </div>
-                    </SelectItem>
+                    </div>
                   ))}
                 </SelectGroup>
               </SelectContent>
