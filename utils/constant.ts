@@ -80,30 +80,19 @@ export const featureRouteMap: FeatureRouteMap = {
 };
 
 
-const ACCEPTED_FILE_TYPES = [
-    'application/pdf',
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document' // MIME type for .docx
-];
-
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
 export const brandVoiceAnalyzeFormSchema = z.object({
-    urls: z.array(z.string().url().max(255)),
+    urls: z.array(z.string().min(1, { message: 'Required' }).url({ message: 'Invalid URL' }).max(255))
+        .refine(urls => urls.every(url => url), { message: 'Invalid URL provided.' }),
     description: z.string().max(2000).optional(),
-    // file: z
-    //     .any()
-    //     .optional()
-    //     .refine(file => ACCEPTED_FILE_TYPES.includes(file?.type), {
-    //         message: '.pdf, and .docx files are accepted.',
-    //     })
-    //     .refine(file => file == null || file?.size <= MAX_FILE_SIZE, {
-    //         message: 'Max file size is 5MB.',
-    //     }),
+    file: z
+        .any()
+        .optional()
 });
 
 
 export const brandVoiceFormSchema = z.object({
-    brandName: z.string().max(255),
+    brandName: z.string().min(1, { message: 'Required' }).max(255),
     brandVoice: z.string().max(5000).optional(),
     isDefault: z.boolean().optional(),
 });

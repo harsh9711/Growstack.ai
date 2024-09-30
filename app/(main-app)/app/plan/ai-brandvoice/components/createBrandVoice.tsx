@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { MouseEventHandler, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import { DialogTitle } from '@radix-ui/react-dialog';
 import { brandVoiceAnalyzeFormSchema, brandVoiceFormSchema } from '@/utils/constant';
@@ -9,12 +9,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import toast from 'react-hot-toast';
 import instance from '@/config/axios.config';
 import { API_URL } from '@/lib/api';
-import { Minus, Plus, } from 'lucide-react'; // Assuming you're using lucide-react for the Plus icon
+import { ArrowLeft, Minus, Plus, } from 'lucide-react';
 import UnLink from '@/components/svgs/unLink';
 
 interface Props {
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+interface BrandVoiceAnalysisResult {
+    brandVoice: string;
+    doc_url: string;
 }
 
 type BrandVoiceAnalyzeSchemaType = z.infer<typeof brandVoiceAnalyzeFormSchema>;
@@ -25,9 +30,11 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
     const [step, setStep] = useState(1);
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
+    const [brandVoiceAnalysisResult, setBrandVoiceAnalysisResult] = useState<null | BrandVoiceAnalysisResult>(null);
     const [urlFields, setUrlFields] = useState<string[]>(['']);
 
     const {
+        watch,
         register,
         handleSubmit,
         getValues,
@@ -40,12 +47,14 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
     const {
         register: registerBrandVoice,
         handleSubmit: handleSubmitBrandVoice,
-        getValues: getValuesBrandVoice,
         setValue: setValuesBrandVoice,
+        watch: watchBrandVoice,
         formState: { errors: errorsBrandVoice },
     } = useForm<BrandVoiceSchemaType>({
         defaultValues: {
-            isDefault: false
+            isDefault: false,
+            brandVoice: brandVoiceAnalysisResult?.brandVoice || '',
+            brandName: '',
         },
         resolver: zodResolver(brandVoiceFormSchema),
         reValidateMode: 'onBlur'
@@ -66,35 +75,42 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
         setUrlFields(updatedFields);
     };
 
+    const handleRedoAnalysis = async () => {
+        setStep(1);
+        const data = getValues();
+        await onSubmit(data);
+    };
+
 
     const onSubmit: SubmitHandler<BrandVoiceAnalyzeSchemaType> = async (data) => {
-        const value = getValues();
-        console.log(data, value)
-
         setIsAnalyzing(true);
         try {
-            // const { urls, description, file  } = data;
-            const { urls, description } = data;
+            const { urls, description, file } = data;
 
             console.log(data)
-
             const formData = new FormData();
-            // if (file) {
-            //     formData.append('file', file);
-            // }
+            if (file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    toast.error("File size should be less than 5 MB");
+                    setIsAnalyzing(false);
+                    return;
+                }
+                formData.append('file', file);
+            }
 
             formData.append('urls', JSON.stringify(urls));
             if (description) {
                 formData.append('description', description);
             }
 
-            const response = await instance.post(
+            const response = (await instance.post(
                 `${API_URL}/users/api/v1/brand-voice/analyze`,
                 formData,
-            );
+            )).data
+            setBrandVoiceAnalysisResult(response.data);
             setValuesBrandVoice('brandVoice', response.data.brandVoice);
             setStep(2);
-            toast.success("Brand voice analysis successful!");
+            toast.success("Successfully analyzed the brand voice");
         } catch (error: any) {
             toast.error(error?.response?.data?.message || error.message);
         } finally {
@@ -111,7 +127,7 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
                 websites: urls,
                 brand_voice: data.brandVoice,
                 description: description,
-                document_url: "",
+                document_url: brandVoiceAnalysisResult?.doc_url,
                 is_default: data.isDefault,
             };
 
@@ -119,6 +135,7 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
 
             toast.success("Brand voice saved successfully!");
             setIsOpen(false);
+            setStep(1);
         } catch (error: any) {
             toast.error(error?.response?.data?.message || error.message);
         } finally {
@@ -126,11 +143,18 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
         }
     };
 
+    const selectedFile = watch('file');
+
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogContent showCloseButton={true} className="w-[80%] md:w-[85%] max-w-3xl p-0 pb-4 border-0">
                 <DialogHeader>
                     <DialogTitle className="px-5">
+                        {
+                            step === 2 && (
+                                <p onClick={() => setStep(1)} className="text-sm pt-3 font-semibold cursor-pointer flex items-center gap-2"><ArrowLeft size={14} /> Go Back</p>
+                            )
+                        }
                         <div className="bg-white py-3 border-b border-[#EBEBEB] text-black font-inter">
                             <p className="text-lg font-semibold">Add brand voice</p>
                             {
@@ -191,9 +215,6 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
 
                                     ))}
                                 </div>
-
-
-
                             </div>
 
                             <div className="space-y-2">
@@ -210,7 +231,7 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
                                 )}
                             </div>
 
-                            {/* <div className="mb-4 space-y-2">
+                            <div className="mb-4 space-y-2">
                                 <label className="font-medium">Please attach a document (if any)</label>
                                 <label className='flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50'>
                                     <Input
@@ -221,11 +242,13 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
                                         className="sr-only"
                                     />
                                     <div className='flex justify-between items-center w-full'>
-                                        <span className="text-gray-400">Upload document</span>
+                                        <span className="text-gray-400">
+                                            {selectedFile && selectedFile?.length > 0 ? selectedFile[0].name : 'Upload document'}
+                                        </span>
                                         <UnLink width='20' height='20' />
                                     </div>
                                 </label>
-                            </div> */}
+                            </div>
 
                             <div className="flex items-center justify-end gap-3">
                                 <button
@@ -269,7 +292,7 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
                                 </label>
                                 <textarea
                                     placeholder="Our journey began..."
-                                    className="h-[200px] w-full bg-[#F2F2F2] rounded-2xl p-3 resize-none"
+                                    className="h-[300px] w-full bg-[#F2F2F2] rounded-2xl p-3 resize-none"
                                     {...registerBrandVoice("brandVoice")}
                                 />
                                 {errorsBrandVoice.brandVoice && (
@@ -281,23 +304,24 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
                                 <input
                                     className="mr-2 mt-[0.3rem] h-3.5 w-8 
                     appearance-none rounded-[0.4375rem]
-                     bg-primary-green before:pointer-events-none 
+                     bg-primary-black before:pointer-events-none 
                      before:absolute before:h-3.5 before:w-3.5 before:rounded-full 
                      before:bg-transparent before:content-[''] after:absolute after:z-[2] 
                      after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none 
-                     after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
+                     after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary-green checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary-white checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
                                     type="checkbox"
                                     role="switch"
                                     id="flexSwitchCheckDefault"
                                     {...registerBrandVoice("isDefault")}
                                 />
+
                                 Save as the default voice across your teamspace
                             </div>
 
                             <div className="flex items-center justify-end gap-3">
                                 <button
                                     className="text-primary-green border border-primary-green bg-transparent text-nowrap py-3 px-10 rounded-xl transition duration-300"
-                                    onClick={() => setIsOpen(false)}
+                                    onClick={handleRedoAnalysis}
                                 >
                                     Redo analysis
                                 </button>
