@@ -120,3 +120,16 @@ export interface ChatResponse {
   chatId: string;
   isImage?: boolean
 }
+
+export interface BrandVoice {
+  _id: string;
+  user_id: string;
+  brand_name: string;
+  websites: string[];
+  brand_voice: string;
+  description?: string; // Optional field
+  document_url: string;
+  is_default: boolean;
+  createdAt: string;
+  updatedAt: string;
+}

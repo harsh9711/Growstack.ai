@@ -25,9 +25,8 @@ export enum ALL_ROUTES {
     SOCIAL_MEDIA_POSTING_CONNECT = "/app/publish/scheduler/quick-posting/profiles/connect-account",
     SOCIAL_MEDIA_POSTING_CONNECT_FINISH = "/app/publish/scheduler/quick-posting/profiles/connect-account/finish",
     SOCIAL_MEDIA_CONVERSATION_HUB = "/app/engage/Social-media",
-    SOCIAL_MEDIA_ANALYSIS = "/app/analyse/social-media"
-
-
+    SOCIAL_MEDIA_ANALYSIS = "/app/analyse/social-media",
+    BRAND_VOICE = "/app/plan/ai-brandvoice",
 }
 
 export const featureRouteMap: FeatureRouteMap = {
