@@ -53,8 +53,6 @@ export const planIdsMap: Record<PlanName, string[]> = {
 };
 
 export const hasAccessToRoute = (currentPlanUsage: any, pathname: string): boolean => {
-  console.log(pathname, featureRouteMap);
-
   let routeExistsInMap = false;
 
   for (const feature in featureRouteMap) {
@@ -104,5 +102,13 @@ export const hasAccessToRoute = (currentPlanUsage: any, pathname: string): boole
 
   return false;
 };
+
+export function debounce<T extends (...args: any[]) => any>(fn: T, delay: number = 300) {
+  let timeoutId: ReturnType<typeof setTimeout>;
+  return function(...args: Parameters<T>) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => fn(...args), delay);
+  };
+}
 
 

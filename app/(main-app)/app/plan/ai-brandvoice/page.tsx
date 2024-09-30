@@ -3,20 +3,22 @@ import React, { useState } from "react";
 import DocumentsTable from "./DocumentsTable";
 import { Plus, Search } from "lucide-react";
 import Link from "next/link";
+import CreateBrandVoice from "./components/createBrandVoice";
 
 export default function BrandVoice() {
-    const [search, setSearch] = useState<string>("");
+  const [search, setSearch] = useState<string>("");
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
+  const [openCreateBrandVoice, setOpenCreateBrandVoice] = React.useState(false);
   return (
     <div>
       <div className="mt-10">
         <div className="flex items-center justify-between">
           <div className="align-top">
             <h1 className="text-2xl font-semibold">Brand voice</h1>
-            <p style={{opacity:"50%"}}>
+            <p style={{ opacity: "50%" }}>
               Choose different brand voices to use in various instances - ensuring consistency of your AI-generated content.
             </p>
 
@@ -28,22 +30,22 @@ export default function BrandVoice() {
                 placeholder="Search"
                 value={search}
                 onChange={handleSearchChange}
+
               />
             </div>
           </div>
-          <Link href="/account/create-brand-voice/">
-            <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
-              <Plus size={20} />
-              Create brand voice
-            </button>
-          </Link>
+          <button onClick={() => { setOpenCreateBrandVoice(true) }} className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
+            <Plus size={20} />
+            Create brand voice
+          </button>
         </div>
 
         <div className="mt-5" >
-        <DocumentsTable search={search} />
+          <DocumentsTable search={search} />
         </div>
       </div>
 
+      <CreateBrandVoice isOpen={openCreateBrandVoice} setIsOpen={setOpenCreateBrandVoice} />
     </div>
   );
 }

@@ -4,13 +4,13 @@ import clsx from "clsx";
 import { BsStarFill } from "react-icons/bs";
 import { Plus, Search, StarIcon } from "lucide-react";
 import Image from "next/image";
-import { Fragment, useState, useEffect } from "react";
+import { Fragment, useState, useEffect, useCallback } from "react";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import ContentLoader from "react-content-loader";
-// import debounce from "lodash/debounce";
+import { debounce } from "@/lib/utils";
 interface Assistant {
   _id: string;
   "ASSISTANT NAME": string;
@@ -66,10 +66,10 @@ export default function AiAppTemplatesPage() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const fetchAppTemplates = async () => {
+  const fetchAppTemplates = async (tag : string) => {
     try {
-      let apiUrl = `${API_URL}/ai/api/v1/chat-template?category=${selectedTag}`;
-      if (selectedTag === "My Assistants") {
+      let apiUrl = `${API_URL}/ai/api/v1/chat-template?category=${tag}`;
+      if (tag === "My Assistants") {
         apiUrl = `${API_URL}/ai/api/v1/chat-template?category=MyAssistants`;
       }
 
@@ -161,21 +161,28 @@ export default function AiAppTemplatesPage() {
     }
   };
 
-  const handleSearchData = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-    if (searchQuery) {
+  const handleSearchData = (query: string,tag : string) => {
+    if (query) {
       fetchSearchResults(query);
     } else {
-      fetchAppTemplates();
+      fetchAppTemplates(tag);
     }
   };
+
+  const debouncedHandleSearchData = useCallback(debounce(handleSearchData, 500), []);
+
+  const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    debouncedHandleSearchData(query, selectedTag);
+  };
+  
   const clearSearchHandle = () => {
     setSearchQuery("");
   };
 
   useEffect(() => {
-    fetchAppTemplates();
+    fetchAppTemplates(selectedTag);
   }, [selectedTag]);
 
   useEffect(() => {
@@ -208,7 +215,7 @@ export default function AiAppTemplatesPage() {
                 className='outline-none h-[40px] w-full'
                 placeholder='Search'
                 value={searchQuery}
-                onChange={handleSearchData}
+                onChange={handleChangeSearch}
               />
             </div>
 

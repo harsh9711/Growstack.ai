@@ -1,4 +1,5 @@
 import { FeatureRouteMap } from "@/types/common";
+import * as z from 'zod';
 
 /* eslint-disable no-unused-vars */
 export enum ALL_ROUTES {
@@ -77,3 +78,21 @@ export const featureRouteMap: FeatureRouteMap = {
         { path: ALL_ROUTES.SOCIAL_MEDIA_ANALYSIS, partialMatch: false },
     ]
 };
+
+
+
+export const brandVoiceAnalyzeFormSchema = z.object({
+    urls: z.array(z.string().min(1, { message: 'Required' }).url({ message: 'Invalid URL' }).max(255))
+        .refine(urls => urls.every(url => url), { message: 'Invalid URL provided.' }),
+    description: z.string().max(2000).optional(),
+    file: z
+        .any()
+        .optional()
+});
+
+
+export const brandVoiceFormSchema = z.object({
+    brandName: z.string().min(1, { message: 'Required' }).max(255),
+    brandVoice: z.string().max(5000).optional(),
+    isDefault: z.boolean().optional(),
+});

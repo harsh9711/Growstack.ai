@@ -12,6 +12,7 @@ import MarketingStreamline from "./components/marketingStreamline/MarketingStrea
 import ImageGalleryLineResponsive from "./components/ImageGalleryline";
 import ImageGalleryLineB from "./components/ImageGallerylineresponsive";
 import Footer from "@/components/footer/Footer";
+import GridComponentResponsive from "./components/GridBoxesResponsive";
 
 const Home = () => {
   const totalItems = 5;
@@ -21,7 +22,7 @@ const Home = () => {
   });
 
   return (
-    <main className="bg-white items-center justify-center">
+    <main className="bg-white items-center justify-center mx-auto">
       <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
       <section className=" ">
         <HeroSection />
@@ -41,14 +42,14 @@ const Home = () => {
           <ImageGalleryLineResponsive />
         </div>
       </section>
-      <section className="relative  mx-auto items-center justify-center pt-20 2xl:pt-0 pb-10  2xl:px-auto">
+      <section className="relative  mx-auto items-center justify-center pt-6 2xl:pt-0 pb-10  2xl:px-auto">
         <div className="flex flex-col items-center  xl:items-start 2xl:items-start justify-center mx-auto gap-2 ">
           <div className=" mx-auto justify-center 2xl:items-start xl:items-start items-center  flex flex-col gap-y-2">
             {" "}
             <h2 className="bg-[#03473714] py-2 px-3.5 flex xl:justify-start 2xl:justify-start xl:items-start justify-center items-center 2xl:items-start gap-3 rounded-full text-[12px] text-center 2xl:text-start font-semibold uppercase max-w-fit">
               efficiency{" "}
             </h2>
-            <h1 className="text-center text-[42px] leading-normal">
+            <h1 className="text-center text-[26px] xl:text-[42px] leading-normal">
               <span className="text-black  font-bold"> Do more with less:</span>
               <span className="text-black font-extralight ">
                 {" "}
@@ -57,8 +58,13 @@ const Home = () => {
             </h1>{" "}
           </div>
 
-          <div className="items-center justify-center mx-auto relative   ">
+          <div className="flex xl:hidden items-center justify-center mx-auto relative   ">
             <GridComponent />
+          </div>
+          <div className="items-center xl:flex hidden justify-center mx-auto relative   ">
+            <GridComponentResponsive
+            
+            />
           </div>
         </div>
       </section>

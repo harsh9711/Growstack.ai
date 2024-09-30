@@ -22,19 +22,19 @@ const Home = () => {
   });
 
   return (
-    <main className=" overflow-hidden">
+    <main className="bg-white overflow-hidden max-w-[1920px] w-full mx-auto" >
       <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
       <section className="">
-        <div className="relative flex items-center w-full h-full  rounded-b-[40px] pt-20  xl:pt-40 bg-[#F3F7F6] ">
-          <div className="w-full h-full mx-auto flex flex-col  justify-between max-h-[870px] max-w-[1920px] items-center">
+        <div className="relative flex items-center w-full h-full  rounded-b-[60px] pt-10  2xl:pt-20 bg-[#F3F7F6] ">
+          <div className="w-full h-full mx-auto flex flex-col  justify-between max-h-[600px] 2xl:max-h-[770px] max-w-[1920px] items-center">
             <div className="flex flex-col items-center justify-center mx-auto w-full">
               <div className=" w-full gap-y-4 flex flex-col items-center justify-center mx-auto">
-                <div className="bg-[#0347371A] text-[#034737] whitespace-nowrap py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest  font-semibold uppercase w-full max-w-[303px] ">
+                <div className="bg-[#0347371A] text-[#034737] whitespace-nowrap py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest  font-semibold uppercase w-full max-w-[283px] ">
                   Growstack for large enterprises
                 </div>
 
                 <div className="  items-center flex flex-col gap-y-4 justify-center  mx-auto ">
-                  <h1 className="text-[24px] xl:text-[56px]  leading-12 flex flex-col  items-center justify-center bg-gradient-to-b from-black to-black/30 bg-clip-text text-transparent">
+                  <h1 className="text-[24px] xl:text-[40px] 2xl:xl:text-[48px]  leading-tight flex flex-col  items-center justify-center bg-gradient-to-b from-black to-black/30 bg-clip-text text-transparent">
                     <span className="font-semibold text-center">
                       Streamline complex
                     </span>
@@ -43,22 +43,24 @@ const Home = () => {
                     </span>
                   </h1>
 
-                  <p className="text-[18px]  items-center justify-center text-center max-w-[819px] leading-loose">
+                  <p className="text-[16px] 2xl:text-[18px] leading-tight px-10 sm:px-0  items-center justify-center text-center max-w-[819px] ">
+
                     Growstack's advanced Al tools and scalable solutions address
                     the unique challenges of large enterprises by ensuring
                     global alignment, consistent marketing and sales, effective
                     personalization, and seamless data integration.{" "}
                   </p>
-                  <div className="flex flex-col gap-24 mt-4 items-center justify-center ">
+                  <div className="flex flex-col gap-24 mt-4 pb-10 sm:pb-0 items-center justify-center ">
                     <div className="flex flex-row gap-8 ">
-                    <Link href="/auth/register" className="no-underline">     <button className="bg-[#034737] text-white font-medium flex items-center gap-2 py-4 px-7 rounded-xl hover:font-bold shadow-md shadow-[#00000025]">
-                        Free trial <ArrowRight />
-                      </button></Link>
-
-
+                      <Link href="/auth/register" className="no-underline">
+                        {" "}
+                        <button className="bg-[#034737] text-white font-medium flex items-center gap-2 py-4 px-7 rounded-xl hover:font-bold shadow-md shadow-[#00000025]">
+                          Free trial <ArrowRight />
+                        </button>
+                      </Link>
 
                       <Link href="/demo" className="no-underline">
-                        <button className="border border-[#D9D9D9] flex items-center gap-2 text-black hover:font-bold font-medium py-4 px-7 rounded-xl shadow-md shadow-[#00000025]">
+                        <button className="border border-[#D9D9D9] flex items-center gap-2 text-black hover:font-bold font-medium py-4 px-7 rounded-xl shadow-lg shadow-[#00000025]">
                           Get demo <ArrowRight className="text-black" />
                         </button>
                       </Link>
@@ -67,7 +69,7 @@ const Home = () => {
                 </div>
               </div>
             </div>
-            <div className="2xl:flex xl:flex hidden relative translate-y-16  -translate-x-60 ">
+            <div className="2xl:flex xl:flex w-full h-full hidden relative translate-y-16  -translate-x-52 ">
               <Image
                 src="/solutions/dlk.svg"
                 width={1951}
@@ -81,14 +83,14 @@ const Home = () => {
 
       <section className=" mt-10">
         <div
-          className=" w-full max-w-[1920px] h-full xl:h-[602px] gap-y-4 flex flex-col items-center justify-center mx-auto"
+          className=" w-full max-w-[1920px] h-full xl:h-[402px] 2xl:h-[502px] gap-y-4 flex flex-col items-center justify-center mx-auto"
           style={{
             backgroundImage: "url(/solutions/background.svg)",
             maxWidth: "2000px",
           }}
         >
-          <div className="relative flex flex-col gap-y-4 justify-center items-center mx-auto bg-cover py-20 bg-center bg-no-repeat">
-            <h1 className="text-[24px] xl:text-[56px] leading-12 flex flex-col items-center justify-center bg-gradient-to-b from-black to-black/30 bg-clip-text text-transparent relative z-10">
+          <div className="relative flex flex-col gap-y-4 justify-center items-center mx-auto bg-cover py-10 2xl:py-20 bg-center bg-no-repeat">
+            <h1 className="text-[24px] xl:text-[40px] 2xl:text-[48px] leading-tight flex flex-col items-center justify-center bg-gradient-to-b from-black to-black/30 bg-clip-text text-transparent relative z-10">
               <span className="font-semibold text-center">
                 Comprehensive solution for
               </span>
@@ -107,21 +109,27 @@ const Home = () => {
         <MarketingTechnology />
       </section>
       <section className="">
-        <div className="relative flex items-center w-full h-full py-40 bg-white overflow-hidden">
+        <div className="relative flex items-center w-full h-full py-10 2xl:py-40 bg-white overflow-hidden">
           <div className="w-full h-full mx-auto flex flex-col justify-between max-h-[950px] max-w-[1920px] items-center">
             <div className="flex flex-col items-center justify-center mx-auto w-full">
               <div className="w-full gap-y-4  flex flex-col items-center justify-center mx-auto">
-                <div className="bg-[#0347371A] hover:shadow-md  whitespace-nowrap  text-[#034737] py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[166px]">
+                <div className="bg-[#0347371A] hover:shadow-md  whitespace-nowrap  text-[#034737] py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[150px]">
                   stay connected
                 </div>
 
                 <div className="items-center flex flex-col gap-y-4 justify-center mx-auto">
-                  <h1 className="text-[42px] leading-12 flex gap-4 items-center justify-center text-black">
+                  <h1 className="xl:text-[26px] 2xl:text-[40px] leading-normal flex gap-4 items-center justify-center text-black">
                     <span className="font-semibold text-center">
                       Breaking down data silos
                     </span>
                   </h1>
-                  <p className="text-center items-center justify-center w-full max-w-[1026px]">
+                </div>
+              </div>
+              <div className="flex flex-col sm:p-0 p-6 sm:flex-row sm:mt-10 w-full items-center justify-center  mx-auto sm:gap-20 max-w-[1600px]">
+                <div className=" flex flex-col gap-y-6 sm:gap-y-20 items-start  justify-center sm:w-1/4">
+                  {" "}
+                  <p className="text-left leading-normal items-center justify-center w-full sm:max-w-[1026px]">
+            
                     In large enterprises, various teams collaborate to manage
                     operations, develop strategies, and handle day-to-day
                     functions. By using Growstack, you can ensure that your
@@ -129,14 +137,18 @@ const Home = () => {
                     effectively preventing data silos and fostering
                     collaboration across your organization.
                   </p>
-                  <Link href="/auth/register" className="no-underline">     <button className="bg-[#034737] text-white font-medium flex items-center gap-2 py-4 px-7 rounded-xl hover:font-bold shadow-md shadow-[#00000025]">
-                        Free trial <ArrowRight />
-                      </button></Link>
+                  <Link href="/auth/register" className="no-underline">
+                    {" "}
+                    <button className="bg-[#034737] text-white font-medium flex items-center gap-2 sm:py-4 sm:px-7 p-2 rounded-xl hover:font-bold shadow-md shadow-[#00000025]">
+
+                      Free trial <ArrowRight />
+                    </button>
+                  </Link>
                 </div>
-              </div>
-              <div
+                <div
                 ref={ref}
-                className="mt-6 relative w-full h-[580px] max-w-[1028px] flex items-center justify-center overflow-hidden bg-white brightness-105"
+                className="mt-6 relative w-full sm:h-[394.8px] sm:max-w-[700px] h-[197.4px] max-w-[350px] flex items-center justify-center overflow-hidden bg-white brightness-105"
+
               >
                 <motion.div
                   className="absolute top-0 left-0 w-full h-full"
@@ -163,6 +175,8 @@ const Home = () => {
                   </video>
                 </motion.div>
               </div>
+              </div>{" "}
+      
             </div>
           </div>
         </div>
@@ -170,12 +184,12 @@ const Home = () => {
 
       <section className="bg-primary-green flex flex-col items-center justify-center py-20 overflow-hidden">
         <div className="w-full gap-y-4 flex flex-col items-center justify-center mx-auto ">
-          <div className="bg-white/10 hover:shadow-md  whitespace-nowrap  text-white py-2 px-4 flex items-center text-center text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[151px]">
+          <div className="bg-white/10 hover:shadow-md  whitespace-nowrap  text-white py-2 px-4 flex items-center text-center text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[135px]">
             Globalization
           </div>
 
           <div className="items-center flex flex-col gap-y-4 justify-center mx-auto">
-            <h1 className="text-[22px] 2xl:text-[42px] leading-12 2xl:flex-row xl:flex-row flex-col flex gap-2  items-center justify-center text-white">
+            <h1 className="text-[22px] xl:text-[26px] 2xl:text-[40px] leading-tight 2xl:flex-row xl:flex-row flex-col flex gap-2  items-center justify-center text-white">
               <span className="font-semibold text-center">
                 Managing complex,
               </span>
@@ -206,7 +220,7 @@ const Home = () => {
             src="/desing.png"
             width={1200}
             height={1000}
-            className="w-full absolute h-[1000px] 2xl:flex xl:flex hidden  transform scale-y-[-1]  translate-x-10  z-0 translate-y-[500px] "
+            className="w-full absolute h-[1000px] 2xl:flex hidden  transform scale-y-[-1]  translate-x-10  z-0 translate-y-[500px] "
             alt="image"
           />
         </div>

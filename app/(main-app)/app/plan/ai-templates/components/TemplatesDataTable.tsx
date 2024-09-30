@@ -8,7 +8,7 @@ import { API_URL } from "@/lib/api";
 import { formatDateTime } from "@/utils/dates";
 import { ColumnDef, flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, useReactTable } from "@tanstack/react-table";
 import clsx from "clsx";
-import { Check, Heart, Search, XCircleIcon } from "lucide-react";
+import { Check, Edit, Heart, Search, XCircleIcon } from "lucide-react";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { BsHeartFill } from "react-icons/bs";
@@ -34,99 +34,105 @@ interface Assistant {
   premium: boolean;
 }
 
-const columns = (
-  handleDelete: (id: string) => void,
-  handleFavorite: (method: "remove" | "add", id: string) => void,
-  fetchAssistants: () => Promise<void>
-): ColumnDef<Assistant>[] => [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-        onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-        className="w-[18px] h-[18px]"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value: any) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-        className="w-[18px] h-[18px]"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "ASSISTANT NAME",
-    header: () => <div className="uppercase">Assistant Name</div>,
-    cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("ASSISTANT NAME")}</div>,
-  },
-  {
-    accessorKey: "ASSISTANT DESCRIPTION",
-    header: () => <div className="uppercase">Assistant Description</div>,
-    cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("ASSISTANT DESCRIPTION")}</div>,
-  },
-  {
-    accessorKey: "status",
-    header: () => <div className="uppercase">Status</div>,
-    cell: ({ row }) => {
-      const status = row.getValue("status") as "Active" | "Inactive" | "Disabled";
-      const statusClasses = {
-        Active: "text-green-500",
-        Inactive: "text-yellow-500",
-        Disabled: "text-red-500",
-      };
 
-      return <div className={`text-left font-medium capitalize ${statusClasses[status] || ""}`}>{status}</div>;
-    },
-  },
-  {
-    accessorKey: "created",
-    header: () => <div className="uppercase">Created</div>,
-    cell: ({ row }) => {
-      return <div className="flex gap-3">{formatDateTime(row.getValue("created"))}</div>;
-    },
-  },
-  {
-    id: "actions",
-    header: () => <div className="uppercase">Action</div>,
-    cell: ({ row }) => (
-      <div className="flex items-center gap-2">
-        <EditAssistantDialog id={row.original._id} />
-        <DeleteAssistantDialog id={row.original._id} handleDelete={handleDelete} fetchAssistants={fetchAssistants} />
-        <button
-          className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300"
-          onClick={() => {
-            row.original.handleStatusChange(row.original._id, "inactive");
-          }}>
-          <XCircleIcon size={20} />
-        </button>
-        <button
-          className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300"
-          onClick={() => {
-            row.original.handleStatusChange(row.original._id, "active");
-          }}>
-          <Check size={20} />
-        </button>
-        <button className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300">
-          {row.original.favorite ? (
-            <BsHeartFill size={20} className="text-rose-300" onClick={() => handleFavorite("remove", row.original._id)} />
-          ) : (
-            <Heart size={20} onClick={() => handleFavorite("add", row.original._id)} />
-          )}
-        </button>
-      </div>
-    ),
-  },
-];
 
 const TemplatesTable: React.FC<TemplatesTableProps> = ({ refreshTemplatesTable, setRefreshTemplatesTable }) => {
   const [assistants, setAssistants] = useState<Assistant[]>([]);
   const [isPending, setIsPending] = useState(false);
+  const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
+
+
+  const columns = (
+    handleDelete: (id: string) => void,
+    handleFavorite: (method: "remove" | "add", id: string) => void,
+    fetchAssistants: () => Promise<void>
+  ): ColumnDef<Assistant>[] => [
+      {
+        id: "select",
+        header: ({ table }) => (
+          <Checkbox
+            checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
+            onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
+            aria-label="Select all"
+            className="w-[18px] h-[18px]"
+          />
+        ),
+        cell: ({ row }) => (
+          <Checkbox
+            checked={row.getIsSelected()}
+            onCheckedChange={(value: any) => row.toggleSelected(!!value)}
+            aria-label="Select row"
+            className="w-[18px] h-[18px]"
+          />
+        ),
+        enableSorting: false,
+        enableHiding: false,
+      },
+      {
+        accessorKey: "ASSISTANT NAME",
+        header: () => <div className="uppercase">Assistant Name</div>,
+        cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("ASSISTANT NAME")}</div>,
+      },
+      {
+        accessorKey: "ASSISTANT DESCRIPTION",
+        header: () => <div className="uppercase">Assistant Description</div>,
+        cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("ASSISTANT DESCRIPTION")}</div>,
+      },
+      {
+        accessorKey: "status",
+        header: () => <div className="uppercase">Status</div>,
+        cell: ({ row }) => {
+          const status = row.getValue("status") as "Active" | "Inactive" | "Disabled";
+          const statusClasses = {
+            Active: "text-green-500",
+            Inactive: "text-yellow-500",
+            Disabled: "text-red-500",
+          };
+
+          return <div className={`text-left font-medium capitalize ${statusClasses[status] || ""}`}>{status}</div>;
+        },
+      },
+      {
+        accessorKey: "created",
+        header: () => <div className="uppercase">Created</div>,
+        cell: ({ row }) => {
+          return <div className="flex gap-3">{formatDateTime(row.getValue("created"))}</div>;
+        },
+      },
+      {
+        id: "actions",
+        header: () => <div className="uppercase">Action</div>,
+        cell: ({ row }) => (
+          <div className="flex items-center gap-2">
+            <button onClick={() => { setSelectedRowId(row.original._id) }} className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300">
+              <Edit size={20} />
+            </button>
+            <DeleteAssistantDialog id={row.original._id} handleDelete={handleDelete} fetchAssistants={fetchAssistants} />
+            <button
+              className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300"
+              onClick={() => {
+                row.original.handleStatusChange(row.original._id, "inactive");
+              }}>
+              <XCircleIcon size={20} />
+            </button>
+            <button
+              className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300"
+              onClick={() => {
+                row.original.handleStatusChange(row.original._id, "active");
+              }}>
+              <Check size={20} />
+            </button>
+            <button className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300">
+              {row.original.favorite ? (
+                <BsHeartFill size={20} className="text-rose-300" onClick={() => handleFavorite("remove", row.original._id)} />
+              ) : (
+                <Heart size={20} onClick={() => handleFavorite("add", row.original._id)} />
+              )}
+            </button>
+          </div>
+        ),
+      },
+    ];
 
   const fetchAssistants = async () => {
     try {
@@ -234,78 +240,86 @@ const TemplatesTable: React.FC<TemplatesTableProps> = ({ refreshTemplatesTable, 
   }
 
   return (
-    <div className="w-full">
-      <div className="flex justify-between gap-10 items-center mt-5">
-        <h1 className="text-xl font-semibold">My own AI Templates list</h1>
-        <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
-          <Search className="text-gray-500" size={20} />
-          <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" />
-        </div>
-      </div>
-      <div className="rounded-lg border overflow-hidden mt-5 bg-white min-h-[50vh]">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="bg-[#0347370D]">
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {isPending ? (
-              <TableRow className="hover:bg-white">
-                <TableCell colSpan={columns.length + 20} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
-                  <div className="flex-1 flex flex-col gap-5 justify-center items-center">
-                    <Spinner color="black" size={80} />
-                  </div>
-                </TableCell>
-              </TableRow>
-            ) : table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="bg-white">
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow className="hover:bg-white">
-                <TableCell colSpan={columns.length + 20} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      {table.getRowModel().rows?.length ? (
-        <div className="flex items-center justify-end space-x-2 py-4">
-          <div className="space-x-2 flex">
-            <Button
-              variant="outline"
-              size="sm"
-              className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px]"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}>
-              Previous
-            </Button>
-            <div>
-              <div>{paginationButtons.map((u) => u)}</div>
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px] px-4"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}>
-              Next
-            </Button>
+    <>
+      <div className="w-full">
+        <div className="flex justify-between gap-10 items-center mt-5">
+          <h1 className="text-xl font-semibold">My own AI Templates list</h1>
+          <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
+            <Search className="text-gray-500" size={20} />
+            <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" />
           </div>
         </div>
-      ) : null}
-    </div>
+        <div className="rounded-lg border overflow-hidden mt-5 bg-white min-h-[50vh]">
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id} className="bg-[#0347370D]">
+                  {headerGroup.headers.map((header) => (
+                    <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>
+                  ))}
+                </TableRow>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {isPending ? (
+                <TableRow className="hover:bg-white">
+                  <TableCell colSpan={columns.length + 20} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
+                    <div className="flex-1 flex flex-col gap-5 justify-center items-center">
+                      <Spinner color="black" size={80} />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ) : table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="bg-white">
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow className="hover:bg-white">
+                  <TableCell colSpan={columns.length + 20} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+        {table.getRowModel().rows?.length ? (
+          <div className="flex items-center justify-end space-x-2 py-4">
+            <div className="space-x-2 flex">
+              <Button
+                variant="outline"
+                size="sm"
+                className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px]"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}>
+                Previous
+              </Button>
+              <div>
+                <div>{paginationButtons.map((u) => u)}</div>
+              </div>
+              <Button
+                variant="outline"
+                size="sm"
+                className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px] px-4"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}>
+                Next
+              </Button>
+            </div>
+          </div>
+        ) : null}
+      </div>
+      {
+        selectedRowId && (
+          <EditAssistantDialog selectedRowId={selectedRowId} setSelectedRowId={setSelectedRowId} />
+        )
+      }
+    </>
+
   );
 };
 

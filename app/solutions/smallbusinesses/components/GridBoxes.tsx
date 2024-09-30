@@ -248,7 +248,7 @@ const GridComponent = () => {
                   className="w-[480px] h-[357px] hover-box211 "
                 />
               </div>
-              <div className="rounded-[30px] relative xl:right-[650px] xl:top-48 2xl:right-[810px] top-52 flex justify-center items-center cursor-pointer hover:scale-150  transition-transform duration-300">
+              <div className="rounded-[30px] opacity-0 relative xl:right-[650px] xl:top-48 2xl:right-[810px] top-52 flex justify-center items-center cursor-pointer hover:scale-150  transition-transform duration-300">
                 <Image
                   src="/solutions/boxes/main.svg"
                   alt="Main"

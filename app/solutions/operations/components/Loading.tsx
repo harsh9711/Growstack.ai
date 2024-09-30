@@ -131,7 +131,7 @@ const LoadingBar: React.FC = () => {
                 >
                     <span className="relative text-black font-semibold">
                     Manage data efficiently and 
-                    </span><br className='2xl:flex xl:flex hidden'/>
+                    </span><br className='2xl:flex  hidden'/>
                     <span className="xl:ml-0 ml-2 text-black font-extralight">
                     monitor performance effectively                   </span>
                 </h1></div>
