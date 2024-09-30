@@ -95,13 +95,13 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
   const columns: ColumnDef<BrandVoice>[] = [
     {
       accessorKey: "brand_name",
-      header: () => <div className="uppercase flex " style={{whiteSpace:"nowrap"}}><Checkbox
+      header: () => <div className="uppercase flex " style={{ whiteSpace: "nowrap" }}><Checkbox
         checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
         onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
         className="w-[14px] h-[14px] mr-1"
       />&nbsp; Brand&nbsp;Name</div>,
-      cell: ({ row }) => <div className="capitalize flex" style={{whiteSpace:"nowrap"}}> <Checkbox
+      cell: ({ row }) => <div className="capitalize flex" style={{ whiteSpace: "nowrap" }}> <Checkbox
         checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
         onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
         className="w-[14px] h-[14px] mr-1"
@@ -114,9 +114,9 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
         const brandVoice = row.getValue("brand_voice") as string;
         const truncatedBrandVoice =
           brandVoice.length > 200
-            ? brandVoice.slice(0, 200) + "..." 
+            ? brandVoice.slice(0, 200) + "..."
             : brandVoice;
-    
+
         return (
           <div
             className="capitalize text-ellipsis overflow-hidden"
@@ -128,16 +128,16 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
         );
       },
     },
-    
+
     {
       accessorKey: "document_url",
       header: () => <div className="uppercase">Document</div>,
       cell: ({ row }) => (<>
-        {row.getValue("document_url") ?(<>
+        {row.getValue("document_url") ? (<>
           <a href={row.getValue("document_url")} target="_blank" rel="noopener noreferrer">
             {row.getValue("document_url") ? "View Document" : "-"}
           </a>
-        </>):(<>{"-"}</>)}
+        </>) : (<>{"-"}</>)}
       </>
       ),
     },
@@ -196,7 +196,7 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
       }
     });
   };
-  
+
 
   const handleEdit = (id: string) => {
     router.push(`/account/create-brand-voice/${id}`);
@@ -262,13 +262,18 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
         </div>
       </Motion>
       <div className="flex items-center justify-between space-x-2 py-4">
-        <div className="flex">
+        <div className="flex items-center">
           Showing
-          <Button variant="outline" size="sm" className="bg-[#0347371A] border-none ml-2 mr-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="bg-[#0347371A] border-none ml-2 mr-2"
+          >
             {pagination.pageSize}
           </Button>
           of {totalDocs} results
         </div>
+
         <div className="flex items-center space-x-2">
           <Button
             variant="outline"
