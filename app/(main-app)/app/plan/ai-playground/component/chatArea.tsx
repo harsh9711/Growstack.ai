@@ -61,11 +61,9 @@ const ChatArea = ({
     }
   };
 
-  // Function to handle Enter key press
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
-      console.log("==============");
-      const textarea = event.target;
+      const textarea = event.target as HTMLTextAreaElement;
       textarea.style.height = "2rem";
       handleSend();
       event.preventDefault();
