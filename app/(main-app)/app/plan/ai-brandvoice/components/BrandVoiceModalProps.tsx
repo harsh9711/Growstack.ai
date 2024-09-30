@@ -63,10 +63,10 @@ const BrandVoiceModal: React.FC<BrandVoiceModalProps> = ({ brandId, onClose }) =
         }
     };
 
-    if (loading) return <div className="text-center">Loading...</div>;
+    if (loading) return null;
 
     return (
-        <Dialog open={true} >
+        <Dialog open={true} onOpenChange={onClose} >
             <DialogContent className="w-[80%] md:w-[85%] max-w-3xl p-0 pb-4 border-0">
                 <DialogHeader>
                     <DialogTitle className="px-5">
@@ -183,7 +183,7 @@ const BrandVoiceForm: React.FC<BrandVoiceFormProps> = ({ brandData, onClose, onU
 
                 <div className="mb-4">
                     <div className="flex items-center gap-2">
-                    <input
+                        <input
                             className="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] 
         bg-primary-black before:pointer-events-none before:absolute 
         before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent 

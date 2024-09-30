@@ -36,6 +36,7 @@ import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
 import rehypeRaw from 'rehype-raw';
+import { API_URL } from "@/lib/api";
 interface BrandVoice {
   _id: string;
   brand_name: string;
@@ -69,7 +70,7 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
   const fetchBrandVoice = async (search: string, page: number, limit: number) => {
     try {
       const response = await instance.get(
-        `https://testing.growstack.ai/users/api/v1/brand-voice`,
+        `${API_URL}/users/api/v1/brand-voice`,
         { params: { page, limit, search } }
       );
       const { docs, totalDocs, totalPages } = response.data.data;
@@ -187,7 +188,7 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
     }).then(async (willDelete) => {
       if (willDelete) {
         await instance.delete(
-          `https://testing.growstack.ai/users/api/v1/brand-voice/${id}`
+          `${API_URL}/users/api/v1/brand-voice/${id}`
         );
         setDocuments((prev) => prev.filter((doc) => doc._id !== id));
         setTotalBrandVoiceCount((prev) => prev - 1);
