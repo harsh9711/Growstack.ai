@@ -177,6 +177,7 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
           `https://testing.growstack.ai/users/api/v1/brand-voice/${id}`
         );
         setDocuments((prev) => prev.filter((doc) => doc._id !== id));
+        setTotalBrandVoiceCount((prev) => prev - 1);
         toast.success("Document deleted successfully");
         setOpenDropdown(null);
       }

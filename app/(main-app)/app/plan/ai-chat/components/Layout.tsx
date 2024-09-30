@@ -11,7 +11,7 @@ import {
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import clsx from "clsx";
-import { Plus, Search } from "lucide-react";
+import { Download, MoreVertical, Plus, Search, Share2, ShareIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
@@ -59,6 +59,21 @@ const groupByDate = (items: ISidebarItem[]) => {
 
   return grouped;
 };
+
+
+
+const outputType = [
+  {
+    icon: <Share2 size={20} />,
+    label: "Share",
+    value: "download_chat",
+  },
+  {
+    icon: <Download size={20} />,
+    label: "Download",
+    value: "download_chat",
+  },
+];
 
 const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutProps) => {
   const { currentPlan } = useSelector((rootState: RootState) => rootState.auth);
@@ -324,6 +339,33 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
               </SelectGroup>
             </SelectContent>
           </Select>
+          <div className="remove-caret">
+            <Select onValueChange={handleDelete}>
+              <SelectTrigger
+                showChevronDownIcon={false}
+                className="px-1 py-[5px] bg-white border-0 h-fit hover:bg-gray-100 rounded-lg"
+              >
+                <MoreVertical size={20} />
+              </SelectTrigger >
+              <SelectContent>
+                <SelectGroup>
+                  {outputType.map(({ label, value, icon }) => (
+                    <SelectItem
+                      value={value}
+                      key={value}
+                      className="pl-2 cursor-pointer"
+
+                    >
+                      <div className="flex gap-x-2">
+                        {icon}
+                        {label}
+                      </div>
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </div>
       <div className="flex-1 flex gap-4">
