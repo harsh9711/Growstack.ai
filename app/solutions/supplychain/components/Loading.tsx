@@ -146,7 +146,7 @@ const LoadingBar: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-y-4 2xl:gap-y-10">
-      <div className=" 2xl:items-start xl:p-0 px-6 items-center justify-center flex flex-col gap-y-4 ">
+      <div className=" 2xl:items-start  xl:p-0 px-6 items-center justify-center flex flex-col gap-y-4 ">
         <div
           data-aos="fade-up"
           data-aos-duration="1000"
@@ -159,7 +159,7 @@ const LoadingBar: React.FC = () => {
           <h1
             data-aos="fade-up"
             data-aos-duration="1100"
-            className="text-left items-start justify-start gap-2 text-[20px] 2xl:text-[42px] leading-normal"
+            className=" items-start sm:text-start text-center justify-start gap-2 text-[26px] 2xl:text-[42px] leading-normal"
           >
             <span className="relative text-black font-semibold">
               Predict demand and

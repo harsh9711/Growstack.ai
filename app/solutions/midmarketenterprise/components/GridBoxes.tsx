@@ -312,7 +312,7 @@ const GridComponent = () => {
               alt="arrow"
               className="absolute right-[230px] xl:flex hidden  z-[10] -top-12 -rotate-270 rotate-2"
             />
-            <div className="xl:grid 2xl:grid grid-cols-3 relative 2xl:gap-x-16 xl:left-60 2xl:left-72 justify-center items-center">
+            <div className="xl:grid 2xl:grid flex flex-col gap-y-4 grid-cols-3 relative 2xl:gap-x-16 xl:left-60 2xl:left-72 justify-center items-center">
               <div
                 onClick={() => handleClick(1)}
                 className="rounded-[30px] flex justify-center items-center z-[60] cursor-pointer hover:scale-105 transition-transform duration-300"
@@ -322,7 +322,7 @@ const GridComponent = () => {
                   alt="Box 1"
                   width={400}
                   height={420}
-                  className="w-[480px] h-[357px] hover-box1"
+                  className="sm:w-[480px] w-[380px] h-[257px] sm:h-[357px] hover-box1"
                 />
               </div>
               <div
@@ -334,10 +334,10 @@ const GridComponent = () => {
                   alt="Box 2"
                   width={400}
                   height={400}
-                  className="w-[480px] h-[357px] hover-box2"
+                  className="sm:w-[480px] w-[380px] h-[257px] sm:h-[357px] hover-box2"
                 />
               </div>
-              <div className="rounded-[30px] relative right-[810px] top-44 flex justify-center items-center hover:scale-150 transition-transform duration-300">
+              <div className="rounded-[30px] hidden  opacity-0 relative right-[810px] top-44 sm:flex justify-center items-center hover:scale-150 transition-transform duration-300">
                 <Image
                   src="/solutions/boxes/main.svg"
                   alt="Main"
@@ -354,7 +354,7 @@ const GridComponent = () => {
                   alt="Box 3"
                   width={380}
                   height={400}
-                  className="w-[480px] h-[357px] hover-box3"
+                  className="sm:w-[480px] w-[380px] h-[257px] sm:h-[357px] hover-box3"
                 />
               </div>
               <div
@@ -366,7 +366,7 @@ const GridComponent = () => {
                   alt="Box 4"
                   width={380}
                   height={420}
-                  className="w-[480px] h-[357px] hover-box4"
+                  className="sm:w-[480px] w-[380px] h-[257px] sm:h-[357px] hover-box4"
                 />
               </div>
             </div>
@@ -376,7 +376,8 @@ const GridComponent = () => {
   };
   return (
     <div
-      className="flex flex-col justify-center relative left-8 mx-auto items-center"
+      className="flex flex-col sm:mt-10 mt-8 justify-center relative left-10 sm:left-8 mx-auto items-center"
+
       
       onClick={handleComponentClick}
     >

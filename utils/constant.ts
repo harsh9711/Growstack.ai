@@ -1,4 +1,5 @@
 import { FeatureRouteMap } from "@/types/common";
+import * as z from 'zod';
 
 /* eslint-disable no-unused-vars */
 export enum ALL_ROUTES {
@@ -77,3 +78,32 @@ export const featureRouteMap: FeatureRouteMap = {
         { path: ALL_ROUTES.SOCIAL_MEDIA_ANALYSIS, partialMatch: false },
     ]
 };
+
+
+const ACCEPTED_FILE_TYPES = [
+    'application/pdf',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document' // MIME type for .docx
+];
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+
+export const brandVoiceAnalyzeFormSchema = z.object({
+    urls: z.array(z.string().url().max(255)),
+    description: z.string().max(2000).optional(),
+    // file: z
+    //     .any()
+    //     .optional()
+    //     .refine(file => ACCEPTED_FILE_TYPES.includes(file?.type), {
+    //         message: '.pdf, and .docx files are accepted.',
+    //     })
+    //     .refine(file => file == null || file?.size <= MAX_FILE_SIZE, {
+    //         message: 'Max file size is 5MB.',
+    //     }),
+});
+
+
+export const brandVoiceFormSchema = z.object({
+    brandName: z.string().max(255),
+    brandVoice: z.string().max(5000).optional(),
+    isDefault: z.boolean().optional(),
+});

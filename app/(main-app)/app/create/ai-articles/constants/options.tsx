@@ -496,13 +496,13 @@ export const modelData = [
         icon: <Mistra />,
       },
       {
-        label: "Open Mixtral 8x22b",
+        label: "Open Mistral 8x22b",
         value: "open-mixtral-8x22b",
         icon: <Mistra />,
       },
       {
-        label: "Open Mixtral 8x7b",
-        value: "open-mixtral-8x7b",
+        label: "Open Mistral 8x7b",
+        value: "open-mistral-8x7b",
         icon: <Mistra />,
       },
       {

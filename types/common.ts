@@ -1,5 +1,7 @@
 export interface PlanUsage {
   usage: {
+    no_of_text_to_video: number;
+    no_of_text_to_avatar: number;
     ai_wizard_credits: boolean;
     text_to_video_credits: number;
     ai_worfklow_credits: number;
@@ -115,4 +117,6 @@ export interface ChatResponse {
   response_type: 'TEXT' | 'IMAGE' | 'VIDEO';
   noOfMessagesLeft?: number;
   totalNoOfMessages?: number;
+  chatId: string;
+  isImage?: boolean
 }
