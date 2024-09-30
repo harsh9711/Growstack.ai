@@ -29,6 +29,7 @@ interface ChatInputProps {
   addMessage: (role: string, content: string, loading: boolean) => void;
   setSelectedConversation: React.Dispatch<React.SetStateAction<string | null>>;
   enableSecure?: boolean;
+  enableWebBrowsing?: boolean;
   isLimitExceeded?: boolean;
 }
 
@@ -41,6 +42,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
   addMessage,
   setSelectedConversation,
   removeMessage,
+  enableWebBrowsing = false,
   enableSecure = false,
   isLimitExceeded = false
 }) => {
@@ -131,6 +133,9 @@ const ChatInput: React.FC<ChatInputProps> = ({
       setIsAnimating(false);
       setOpen(false);
       let apiUrl = `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${selectedConversation ? selectedConversation : ""}&model=${selectedModel}&enableSecure=${enableSecure}`;
+      if (enableWebBrowsing) {
+        apiUrl += `&webBrowsing=${enableWebBrowsing}`
+      }
 
       const conversation = await instance.post(apiUrl, {
         user_prompt: prompt,

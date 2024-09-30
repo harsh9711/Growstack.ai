@@ -30,6 +30,7 @@ import ExternalLink from "@/components/svgs/externalLink";
 import Link from "next/link";
 import { ALL_ROUTES } from "@/utils/constant";
 import Ellipse from "@/components/svgs/ellipse";
+import { Switch } from "@/components/ui/switch";
 
 interface LayoutProps {
   sidebarItems: ISidebarItem[];
@@ -62,6 +63,8 @@ const groupByDate = (items: ISidebarItem[]) => {
 const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutProps) => {
   const { currentPlan } = useSelector((rootState: RootState) => rootState.auth);
   const [brandVoices, setBrandVoices] = useState<BrandVoice[]>([]);
+  const [enableWebAccess, setEnableWebAccess] = useState<boolean>(false);
+  const [enableSecureChat, setEnableSecureChat] = useState<boolean>(false);
 
   useEffect(() => {
     fetchBrandVoice();
@@ -222,6 +225,18 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
       <div className="flex pt-3 pb-8 w-full items-center justify-between">
         <h1 className="text-xl font-semibold">AI Chat</h1>
         <div className="flex gap-3 items-center">
+          <div className="gap-2 flex pr-4 py-1.5 items-center border-r-2 border-[#EBEBEB]">
+            <span className="text-md flex flex-row gap-x-2 font-medium">
+              Secure chat
+            </span>
+            <Switch checked={enableSecureChat} onCheckedChange={setEnableSecureChat} />
+          </div>
+          <div className="gap-2 flex pr-4 py-1.5 items-center border-r-2 border-[#EBEBEB]">
+            <span className="text-md flex flex-row gap-x-2 font-medium">
+              Web chat
+            </span>
+            <Switch checked={enableWebAccess} onCheckedChange={setEnableWebAccess} />
+          </div>
           <Select value={selectedBrandVoice} onValueChange={setSelectedBrandVoice}>
             <SelectTrigger className="h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4">
               <div className="flex items-center gap-2">
@@ -382,6 +397,8 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
             )}
           </div>
           <ChatInput
+            enableWebBrowsing={enableWebAccess}
+            enableSecure={enableSecureChat}
             selectedBrandVoice={brandVoices.find((voice) => voice._id === selectedBrandVoice)}
             onSend={updateMessage}
             fetchConversations={fetchConversations}
