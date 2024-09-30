@@ -11,7 +11,10 @@ import instance from '@/config/axios.config';
 import { API_URL } from '@/lib/api';
 import { ArrowLeft, Minus, Plus, } from 'lucide-react';
 import UnLink from '@/components/svgs/unLink';
-
+import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown
+import remarkGfm from 'remark-gfm';
+import remarkBreaks from 'remark-breaks';
+import rehypeRaw from 'rehype-raw';
 interface Props {
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,7 +35,7 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
     const [isSaving, setIsSaving] = useState(false);
     const [brandVoiceAnalysisResult, setBrandVoiceAnalysisResult] = useState<null | BrandVoiceAnalysisResult>(null);
     const [urlFields, setUrlFields] = useState<string[]>(['']);
-
+    const [chatContent, setChatContent] = useState<string>('');
     const {
         watch,
         register,
@@ -109,6 +112,7 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
             )).data
             setBrandVoiceAnalysisResult(response.data);
             setValuesBrandVoice('brandVoice', response.data.brandVoice);
+            setChatContent(response.data.brandVoice)
             setStep(2);
             toast.success("Successfully analyzed the brand voice");
         } catch (error: any) {
@@ -132,7 +136,6 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
             };
 
             await instance.post(`${API_URL}/users/api/v1/brand-voice/save`, requestBody);
-
             toast.success("Brand voice saved successfully!");
             setIsOpen(false);
             setStep(1);
@@ -269,72 +272,74 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
                     </form>
                 )}
                 {step === 2 && (
-                    <form onSubmit={handleSubmitBrandVoice(onSaveBrandSubmit)}>
-                        <div className="px-6 flex flex-col gap-4">
+                    <>
+                        <form onSubmit={handleSubmitBrandVoice(onSaveBrandSubmit)}>
+                            <div className="px-6 flex flex-col gap-4">
 
-                            <div className="space-y-2">
-                                <label className="font-medium">
-                                    Name of the brand voice
-                                </label>
-                                <Input
-                                    type="text"
-                                    placeholder='Name your Brand Voice'
-                                    {...registerBrandVoice(`brandName`)}
-                                />
-                                {errorsBrandVoice.brandName && (
-                                    <p className="text-rose-600 text-sm">{errorsBrandVoice.brandName.message}</p>
-                                )}
-                            </div>
+                                <div className="space-y-2">
+                                    <label className="font-medium">
+                                        Name of the brand voice
+                                    </label>
+                                    <Input
+                                        type="text"
+                                        placeholder='Name your Brand Voice'
+                                        {...registerBrandVoice(`brandName`)}
+                                    />
+                                    {errorsBrandVoice.brandName && (
+                                        <p className="text-rose-600 text-sm">{errorsBrandVoice.brandName.message}</p>
+                                    )}
+                                </div>
 
-                            <div className="space-y-2">
-                                <label className="font-medium">
-                                    Brand voice
-                                </label>
-                                <textarea
-                                    placeholder="Our journey began..."
-                                    className="h-[300px] w-full bg-[#F2F2F2] rounded-2xl p-3 resize-none"
-                                    {...registerBrandVoice("brandVoice")}
-                                />
-                                {errorsBrandVoice.brandVoice && (
-                                    <p className="text-rose-600 text-sm">{errorsBrandVoice.brandVoice.message}</p>
-                                )}
-                            </div>
+                                <div className="space-y-2">
+                                    <label className="font-medium">
+                                        Brand voice
+                                    </label>
+                                    <textarea
+                                        placeholder="Our journey began..."
+                                        className="h-[300px] w-full bg-[#F2F2F2] rounded-2xl p-3 resize-none"
+                                        {...registerBrandVoice("brandVoice")}
+                                    />
+                                    {errorsBrandVoice.brandVoice && (
+                                        <p className="text-rose-600 text-sm">{errorsBrandVoice.brandVoice.message}</p>
+                                    )}
+                                </div>
 
-                            <div className="flex items-center gap-2">
-                                <input
-                                    className="mr-2 mt-[0.3rem] h-3.5 w-8 
+                                <div className="flex items-center gap-2">
+                                    <input
+                                        className="mr-2 mt-[0.3rem] h-3.5 w-8 
                     appearance-none rounded-[0.4375rem]
                      bg-primary-black before:pointer-events-none 
                      before:absolute before:h-3.5 before:w-3.5 before:rounded-full 
                      before:bg-transparent before:content-[''] after:absolute after:z-[2] 
                      after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none 
                      after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-primary-green checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-primary-white checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-primary checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
-                                    type="checkbox"
-                                    role="switch"
-                                    id="flexSwitchCheckDefault"
-                                    {...registerBrandVoice("isDefault")}
-                                />
+                                        type="checkbox"
+                                        role="switch"
+                                        id="flexSwitchCheckDefault"
+                                        {...registerBrandVoice("isDefault")}
+                                    />
 
-                                Save as the default voice across your teamspace
-                            </div>
+                                    Save as the default voice across your teamspace
+                                </div>
 
-                            <div className="flex items-center justify-end gap-3">
-                                <button
-                                    className="text-primary-green border border-primary-green bg-transparent text-nowrap py-3 px-10 rounded-xl transition duration-300"
-                                    onClick={handleRedoAnalysis}
-                                >
-                                    Redo analysis
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="bg-primary-green text-white sheen transition duration-500 px-5 py-3 rounded-xl flex items-center gap-2"
-                                    disabled={isSaving}
-                                >
-                                    {isSaving ? "Saving..." : "Save brand voice"}
-                                </button>
+                                <div className="flex items-center justify-end gap-3">
+                                    <button
+                                        className="text-primary-green border border-primary-green bg-transparent text-nowrap py-3 px-10 rounded-xl transition duration-300"
+                                        onClick={handleRedoAnalysis}
+                                    >
+                                        Redo analysis
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="bg-primary-green text-white sheen transition duration-500 px-5 py-3 rounded-xl flex items-center gap-2"
+                                        disabled={isSaving}
+                                    >
+                                        {isSaving ? "Saving..." : "Save brand voice"}
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </>
                 )}
             </DialogContent>
         </Dialog>

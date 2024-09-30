@@ -31,6 +31,12 @@ import { Input } from "@/components/ui/input";
 import swal from "sweetalert";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import BrandVoiceModal from "./components/BrandVoiceModalProps";
+import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown
+import remarkGfm from 'remark-gfm';
+import remarkBreaks from 'remark-breaks';
+import rehypeRaw from 'rehype-raw';
+import { API_URL } from "@/lib/api";
 interface BrandVoice {
   _id: string;
   brand_name: string;
@@ -59,10 +65,12 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
     fetchBrandVoice(search, pagination.pageIndex + 1, pagination.pageSize);
   }, [search]);
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedBrandId, setSelectedBrandId] = useState<string | null>(null);
   const fetchBrandVoice = async (search: string, page: number, limit: number) => {
     try {
       const response = await instance.get(
-        `https://testing.growstack.ai/users/api/v1/brand-voice`,
+        `${API_URL}/users/api/v1/brand-voice`,
         { params: { page, limit, search } }
       );
       const { docs, totalDocs, totalPages } = response.data.data;
@@ -74,16 +82,27 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
       console.error("Error fetching brand voices", error);
     }
   };
+  const handleOpenModal = (brandId: string) => {
+    setSelectedBrandId(brandId);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    fetchBrandVoice(search, pagination.pageIndex + 1, pagination.pageSize);
+    setSelectedBrandId(null);
+  };
+
   const columns: ColumnDef<BrandVoice>[] = [
     {
       accessorKey: "brand_name",
-      header: () => <div className="uppercase flex "><Checkbox
+      header: () => <div className="uppercase flex " style={{ whiteSpace: "nowrap" }}><Checkbox
         checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
         onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
         className="w-[14px] h-[14px] mr-1"
       />&nbsp; Brand&nbsp;Name</div>,
-      cell: ({ row }) => <div className="capitalize flex"> <Checkbox
+      cell: ({ row }) => <div className="capitalize flex" style={{ whiteSpace: "nowrap" }}> <Checkbox
         checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
         onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
         className="w-[14px] h-[14px] mr-1"
@@ -94,24 +113,33 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
       header: () => <div className="uppercase">Brand Voice</div>,
       cell: ({ row }) => {
         const brandVoice = row.getValue("brand_voice") as string;
+        const truncatedBrandVoice =
+          brandVoice.length > 200
+            ? brandVoice.slice(0, 200) + "..."
+            : brandVoice;
+
         return (
           <div
-            className="capitalize text-ellipsis overflow-hidden whitespace-nowrap max-w-[200px]"
+            className="capitalize text-ellipsis overflow-hidden"
             data-tooltip-id={`tooltip-${row.id}`}
             data-tooltip-content={brandVoice}
           >
-            {brandVoice}
+            {truncatedBrandVoice}
           </div>
         );
       },
     },
+
     {
       accessorKey: "document_url",
       header: () => <div className="uppercase">Document</div>,
-      cell: ({ row }) => (
-        <a href={row.getValue("document_url")} target="_blank" rel="noopener noreferrer">
-          {row.getValue("document_url") ? "View Document" : "No document"}
-        </a>
+      cell: ({ row }) => (<>
+        {row.getValue("document_url") ? (<>
+          <a href={row.getValue("document_url")} target="_blank" rel="noopener noreferrer">
+            {row.getValue("document_url") ? "View Document" : "-"}
+          </a>
+        </>) : (<>{"-"}</>)}
+      </>
       ),
     },
     {
@@ -132,7 +160,7 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
             <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow-lg z-10">
               <button
                 className="block w-full text-left p-2 hover:bg-gray-100"
-                onClick={() => handleEdit(row.original._id)}
+                onClick={() => handleOpenModal(row.original._id)}
               >
                 Edit
               </button>
@@ -160,14 +188,16 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
     }).then(async (willDelete) => {
       if (willDelete) {
         await instance.delete(
-          `https://testing.growstack.ai/users/api/v1/brand-voice/${id}`
+          `${API_URL}/users/api/v1/brand-voice/${id}`
         );
         setDocuments((prev) => prev.filter((doc) => doc._id !== id));
+        setTotalBrandVoiceCount((prev) => prev - 1);
         toast.success("Document deleted successfully");
         setOpenDropdown(null);
       }
     });
   };
+
 
   const handleEdit = (id: string) => {
     router.push(`/account/create-brand-voice/${id}`);
@@ -233,13 +263,18 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
         </div>
       </Motion>
       <div className="flex items-center justify-between space-x-2 py-4">
-        <div className="flex">
+        <div className="flex items-center">
           Showing
-          <Button variant="outline" size="sm" className="bg-[#0347371A] border-none ml-2 mr-2">
+          <Button
+            variant="outline"
+            size="sm"
+            className="bg-[#0347371A] border-none ml-2 mr-2"
+          >
             {pagination.pageSize}
           </Button>
           of {totalDocs} results
         </div>
+
         <div className="flex items-center space-x-2">
           <Button
             variant="outline"
@@ -278,6 +313,10 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
           </Button>
         </div>
       </div>
+
+      {isModalOpen && selectedBrandId && (
+        <BrandVoiceModal brandId={selectedBrandId} onClose={handleCloseModal} />
+      )}
     </>
   );
 }

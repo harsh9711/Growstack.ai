@@ -1,5 +1,5 @@
-"use client"
-import React, { useState } from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import DocumentsTable from "./DocumentsTable";
 import { Plus, Search } from "lucide-react";
 import CreateBrandVoice from "./components/createBrandVoice";
@@ -7,11 +7,21 @@ import toast from "react-hot-toast";
 
 export default function BrandVoice() {
   const [search, setSearch] = useState<string>("");
+  const [debouncedSearch, setDebouncedSearch] = useState<string>(search);
+  const [openCreateBrandVoice, setOpenCreateBrandVoice] = useState(false);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500);
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [search]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
-  const [openCreateBrandVoice, setOpenCreateBrandVoice] = React.useState(false);
   const [totalBrandVoiceCount, setTotalBrandVoiceCount] = React.useState(0);
   return (
     <div>
@@ -22,8 +32,7 @@ export default function BrandVoice() {
             <p style={{ opacity: "50%" }}>
               Choose different brand voices to use in various instances - ensuring consistency of your AI-generated content.
             </p>
-
-            <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-md flex gap-3 items-center w-[30%] mt-2">
+            <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-md flex gap-3 items-center w-[30%] mt-2 cursor-text">
               <Search className="text-gray-500" size={20} />
               <input
                 type="search"
@@ -31,9 +40,9 @@ export default function BrandVoice() {
                 placeholder="Search"
                 value={search}
                 onChange={handleSearchChange}
-
               />
             </div>
+
           </div>
           <button onClick={() => {
             if (totalBrandVoiceCount >= 2) {
@@ -48,12 +57,15 @@ export default function BrandVoice() {
           </button>
         </div>
 
-        <div className="mt-5" >
-          <DocumentsTable search={search} setTotalBrandVoiceCount={setTotalBrandVoiceCount} />
+        <div className="mt-5">
+          <DocumentsTable search={debouncedSearch}  setTotalBrandVoiceCount={setTotalBrandVoiceCount}  />
         </div>
       </div>
 
-      <CreateBrandVoice isOpen={openCreateBrandVoice} setIsOpen={setOpenCreateBrandVoice} />
+      <CreateBrandVoice
+        isOpen={openCreateBrandVoice}
+        setIsOpen={setOpenCreateBrandVoice}
+      />
     </div>
   );
 }
