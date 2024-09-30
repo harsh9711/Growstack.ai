@@ -32,6 +32,10 @@ import swal from "sweetalert";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import BrandVoiceModal from "./components/BrandVoiceModalProps";
+import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown
+import remarkGfm from 'remark-gfm';
+import remarkBreaks from 'remark-breaks';
+import rehypeRaw from 'rehype-raw';
 interface BrandVoice {
   _id: string;
   brand_name: string;
@@ -40,7 +44,7 @@ interface BrandVoice {
 }
 interface DocumentsTableProps {
   search: string;
-} 
+}
 export default function ({ search }: DocumentsTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -48,9 +52,9 @@ export default function ({ search }: DocumentsTableProps) {
   const [rowSelection, setRowSelection] = useState({});
   const [pagination, setPagination] = useState<any>({
     pageIndex: 0,
-    pageSize: 10, 
+    pageSize: 10,
   });
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null); 
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [documents, setDocuments] = useState<BrandVoice[]>([]);
   const [totalDocs, setTotalDocs] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
@@ -88,13 +92,13 @@ export default function ({ search }: DocumentsTableProps) {
   const columns: ColumnDef<BrandVoice>[] = [
     {
       accessorKey: "brand_name",
-      header: () => <div className="uppercase flex "><Checkbox
+      header: () => <div className="uppercase flex " style={{whiteSpace:"nowrap"}}><Checkbox
         checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
         onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
         className="w-[14px] h-[14px] mr-1"
       />&nbsp; Brand&nbsp;Name</div>,
-      cell: ({ row }) => <div className="capitalize flex"> <Checkbox
+      cell: ({ row }) => <div className="capitalize flex" style={{whiteSpace:"nowrap"}}> <Checkbox
         checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
         onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
         className="w-[14px] h-[14px] mr-1"
@@ -105,26 +109,33 @@ export default function ({ search }: DocumentsTableProps) {
       header: () => <div className="uppercase">Brand Voice</div>,
       cell: ({ row }) => {
         const brandVoice = row.getValue("brand_voice") as string;
+        const truncatedBrandVoice =
+          brandVoice.length > 200
+            ? brandVoice.slice(0, 200) + "..." 
+            : brandVoice;
     
         return (
           <div
-            className="capitalize text-ellipsis overflow-hidden whitespace-nowrap max-w-[200px]"
+            className="capitalize text-ellipsis overflow-hidden"
             data-tooltip-id={`tooltip-${row.id}`}
-            data-tooltip-content={brandVoice} 
+            data-tooltip-content={brandVoice}
           >
-            {brandVoice}
-         
+            {truncatedBrandVoice}
           </div>
         );
       },
     },
+    
     {
       accessorKey: "document_url",
       header: () => <div className="uppercase">Document</div>,
-      cell: ({ row }) => (
-        <a href={row.getValue("document_url")} target="_blank" rel="noopener noreferrer">
-          {row.getValue("document_url") ? "View Document" : "No document"}
-        </a>
+      cell: ({ row }) => (<>
+        {row.getValue("document_url") ?(<>
+          <a href={row.getValue("document_url")} target="_blank" rel="noopener noreferrer">
+            {row.getValue("document_url") ? "View Document" : "-"}
+          </a>
+        </>):(<>{"-"}</>)}
+      </>
       ),
     },
     {
@@ -181,7 +192,7 @@ export default function ({ search }: DocumentsTableProps) {
       }
     });
   };
-  
+
 
   const handleEdit = (id: string) => {
     router.push(`/account/create-brand-voice/${id}`);
@@ -211,7 +222,7 @@ export default function ({ search }: DocumentsTableProps) {
   return (
     <>
       <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
-        <div className="w-full bg-white border rounded-3xl"  onClick={() => {setOpenDropdown(null)}}>
+        <div className="w-full bg-white border rounded-3xl" onClick={() => { setOpenDropdown(null) }}>
           <div className="bg-white rounded-lg border overflow-hidden min-h-[50vh]">
             <Table>
               <TableHeader>

@@ -11,7 +11,10 @@ import instance from '@/config/axios.config';
 import { API_URL } from '@/lib/api';
 import { ArrowLeft, Minus, Plus, } from 'lucide-react';
 import UnLink from '@/components/svgs/unLink';
-
+import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown
+import remarkGfm from 'remark-gfm';
+import remarkBreaks from 'remark-breaks';
+import rehypeRaw from 'rehype-raw';
 interface Props {
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,7 +35,7 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
     const [isSaving, setIsSaving] = useState(false);
     const [brandVoiceAnalysisResult, setBrandVoiceAnalysisResult] = useState<null | BrandVoiceAnalysisResult>(null);
     const [urlFields, setUrlFields] = useState<string[]>(['']);
-
+    const [chatContent, setChatContent] = useState<string>(''); 
     const {
         watch,
         register,
@@ -109,6 +112,7 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
             )).data
             setBrandVoiceAnalysisResult(response.data);
             setValuesBrandVoice('brandVoice', response.data.brandVoice);
+            setChatContent(response.data.brandVoice)
             setStep(2);
             toast.success("Successfully analyzed the brand voice");
         } catch (error: any) {
@@ -132,7 +136,6 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
             };
 
             await instance.post(`${API_URL}/users/api/v1/brand-voice/save`, requestBody);
-
             toast.success("Brand voice saved successfully!");
             setIsOpen(false);
             setStep(1);
@@ -269,6 +272,16 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
                     </form>
                 )}
                 {step === 2 && (
+                    <>
+                       <div className="bg-white border rounded-md p-4">
+                       <h3 className="text-lg font-medium mb-2">Brand Voice Analysis Result</h3>
+                       <ReactMarkdown
+                           children={chatContent}
+                           remarkPlugins={[remarkGfm, remarkBreaks]}
+                           rehypePlugins={[rehypeRaw]}
+                           className="markdown-content"
+                       />
+                   </div>
                     <form onSubmit={handleSubmitBrandVoice(onSaveBrandSubmit)}>
                         <div className="px-6 flex flex-col gap-4">
 
@@ -335,6 +348,7 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
                             </div>
                         </div>
                     </form>
+                    </>
                 )}
             </DialogContent>
         </Dialog>
