@@ -31,6 +31,7 @@ import { Input } from "@/components/ui/input";
 import swal from "sweetalert";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import BrandVoiceModal from "./components/BrandVoiceModalProps";
 interface BrandVoice {
   _id: string;
   brand_name: string;
@@ -57,6 +58,8 @@ export default function ({ search }: DocumentsTableProps) {
     fetchBrandVoice(search, pagination.pageIndex + 1, pagination.pageSize);
   }, [search]);
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedBrandId, setSelectedBrandId] = useState<string | null>(null);
   const fetchBrandVoice = async (search: string, page: number, limit: number) => {
     try {
       const response = await instance.get(
@@ -71,6 +74,17 @@ export default function ({ search }: DocumentsTableProps) {
       console.error("Error fetching brand voices", error);
     }
   };
+  const handleOpenModal = (brandId: string) => {
+    setSelectedBrandId(brandId);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    fetchBrandVoice(search, pagination.pageIndex + 1, pagination.pageSize);
+    setSelectedBrandId(null);
+  };
+
   const columns: ColumnDef<BrandVoice>[] = [
     {
       accessorKey: "brand_name",
@@ -131,7 +145,7 @@ export default function ({ search }: DocumentsTableProps) {
             <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow-lg z-10">
               <button
                 className="block w-full text-left p-2 hover:bg-gray-100"
-                onClick={() => handleEdit(row.original._id)}
+                onClick={() => handleOpenModal(row.original._id)}
               >
                 Edit
               </button>
@@ -278,6 +292,10 @@ export default function ({ search }: DocumentsTableProps) {
           </Button>
         </div>
       </div>
+
+      {isModalOpen && selectedBrandId && (
+        <BrandVoiceModal brandId={selectedBrandId} onClose={handleCloseModal} />
+      )}
     </>
   );
 }
