@@ -21,6 +21,8 @@ import GlobalModal from "@/components/modal/global.modal";
 import { PlanUsage } from "@/types/common";
 import Link from "next/link";
 import Lock from "@/components/svgs/lock";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
 export interface VideoStatus {
   createdAt: number;
   download: string;
@@ -73,7 +75,7 @@ const CreateVideoDialog = ({
     id: string;
     name: string;
   }
-
+  const { user } = useSelector((rootState: RootState) => rootState.auth);
   const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -131,8 +133,7 @@ const CreateVideoDialog = ({
       const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
       const data: PlanUsage = response.data.data;
       setPlanUsage(data);
-
-      if (!data?.usage_amount || data?.usage_amount <= 0) {
+      if (data.usage.no_of_text_to_video <= 0 && user?.user_type !== "ADMIN") {
         setIsAddOnModalOpen(true)
       }
     } catch (error: any) {
@@ -183,27 +184,23 @@ const CreateVideoDialog = ({
   ) => {
     const { name, value } = e.target;
 
-    // Update the form data with the new value
     setFormData((prevData) => ({ ...prevData, [name]: value }));
 
-    // Validate the updated form data
     const validation = formSchema.safeParse({
       ...formData,
       [name]: value,
     });
 
     if (validation.success) {
-      // Clear any previous errors for this field
       setFormErrors((prevErrors) => ({
         ...prevErrors,
         [name]: undefined,
       }));
     } else {
-      // Extract and set the validation errors
       const errors = validation.error.format();
       setFormErrors((prevErrors) => ({
         ...prevErrors,
-        [name]: errors[name as keyof typeof formData], // Cast to the correct key type
+        [name]: errors[name as keyof typeof formData],
       }));
     }
   };
@@ -226,7 +223,6 @@ const CreateVideoDialog = ({
         return;
       }
 
-      // Form is valid and avatar is selected
       setClicked(true);
       setStep(1);
 
@@ -348,7 +344,6 @@ const CreateVideoDialog = ({
       );
 
       if (videoResponse.data.success) {
-        // toast.success("Video generation request successful");
         setOutputVideo(videoResponse.data.data);
         setStep(3);
         window.dispatchEvent(
@@ -400,12 +395,6 @@ const CreateVideoDialog = ({
   };
 
   const handleClose = () => {
-    // if (clicked) {
-    //   setLoading(true);
-    //   setTimeout(() => {
-    //     setLoading(false);
-    //   }, 16000);
-    // }
     setClicked(false);
     setDialogOpen(false);
     resetForm();
@@ -431,11 +420,12 @@ const CreateVideoDialog = ({
         disabled={isPlanUsageLoading}
         onClick={(e) => {
           e.stopPropagation();
-          if (!planUsage?.usage_amount || planUsage?.usage_amount <= 0) {
-            setIsAddOnModalOpen(true)
-
-          } else {
-            setDialogOpen(true)
+          if(planUsage){
+            if (planUsage.usage.no_of_text_to_avatar <= 0 && user?.user_type !== "ADMIN") {
+              setIsAddOnModalOpen(true)
+            } else {
+              setDialogOpen(true)
+            }
           }
         }}
         className="bg-primary-green text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2">
@@ -443,7 +433,7 @@ const CreateVideoDialog = ({
         Create new video with AI
       </button>
 
-      <GlobalModal  showCloseButton={false}  open={isAddOnModalOpen} setOpen={() => { setIsAddOnModalOpen(false) }}>
+      <GlobalModal showCloseButton={false} open={isAddOnModalOpen} setOpen={() => { setIsAddOnModalOpen(false) }}>
         <div className="flex flex-col items-center justify-center px-6 pt-4 pb-8 gap-6 space-x-6">
           <Lock />
           <h3 className="text-center text-[28px] font-semibold">You don’t have enough credit.</h3>

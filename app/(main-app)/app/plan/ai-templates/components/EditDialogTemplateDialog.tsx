@@ -52,7 +52,12 @@ const ValidationSchema = z.object({
 
 type ValidationSchemaType = z.infer<typeof ValidationSchema>;
 
-const EditAssistantDialog = ({ id }: { id: string }) => {
+interface EditAssistantDialogProps {
+  setSelectedRowId: React.Dispatch<React.SetStateAction<string | null>>;
+  selectedRowId: string | null
+}
+
+const EditAssistantDialog = ({ selectedRowId, setSelectedRowId }: EditAssistantDialogProps) => {
   const router = useRouter();
   const [assistant, setAssistant] = useState<Assistant | null>(null);
   const [inputs, setinputs] = useState<UserInput[]>([]);
@@ -93,17 +98,17 @@ const EditAssistantDialog = ({ id }: { id: string }) => {
   });
 
   useEffect(() => {
-    if (id) {
+    if (selectedRowId) {
       const fetchAssistant = async () => {
         try {
+          setIsLoading(true);
           const response = await instance.get(
-            `${API_URL}/ai/api/v1/chat-template/${id}`
+            `${API_URL}/ai/api/v1/chat-template/${selectedRowId}`
           );
           const assistantData = response.data.data;
 
           // Set assistant and inputs states
           setAssistant(assistantData);
-          setIsLoading(true);
           setinputs(assistantData.inputs || []);
 
           // Reset form with fetched data
@@ -126,7 +131,7 @@ const EditAssistantDialog = ({ id }: { id: string }) => {
       };
       fetchAssistant();
     }
-  }, [id, reset]);
+  }, [selectedRowId, reset]);
 
   const addUserInput = () => {
     setinputs((prevInputs) => [
@@ -168,7 +173,7 @@ const EditAssistantDialog = ({ id }: { id: string }) => {
         inputs, // Ensure inputs are included
       };
       await instance.put(
-        `${API_URL}/ai/api/v1/chat-template/${id}`,
+        `${API_URL}/ai/api/v1/chat-template/${selectedRowId}`,
         changedFields
       );
       toast.success("Assistant updated successfully");
@@ -189,13 +194,10 @@ const EditAssistantDialog = ({ id }: { id: string }) => {
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <button className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300">
-          <Edit size={20} />
-        </button>
-      </DialogTrigger>
-      <DialogContent className="max-w-[1800px]">
+    <Dialog open={!!selectedRowId} onOpenChange={() => setSelectedRowId(null)}>
+      <DialogContent
+        className="max-w-[1400px]"
+      >
         <h1 className="text-2xl font-semibold">Edit Assistant</h1>
         {isLoading ? (
           <section className="grid place-content-center h-[40vh]">

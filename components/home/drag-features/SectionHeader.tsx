@@ -3,24 +3,24 @@ import ArrowRight from "./icons/ArrowRight";
 
 export default function SectionHeader () {
    return (
-      <div className="max-w-7.5xl pt-10 mx-auto px-5 lg:px-10">
+      <div className="max-w-4xl lg:max-w-7.5xl  mx-auto px-5 lg:px-10 2xl:mb-14 mb-4">
          <div className="lg:flex items-center space-y-4 md:space-y-8 lg:space-y-0 lg:space-x-5">
             <div className="grow">
                <div className="max-w-xl xl:max-w-full">
-                  <h1 className="text-[48px] font-extrabold mb-1">Your AI catalyst for success!</h1>
-                  <p className="text-[18px] font-medium  max-w-[700px] ">Explore Tailored AI Solutions for Your Goals. Drag and drop to start exploring now!</p>
+                  <h1 className="text-[20px]  xl:text-[32px] 2xl:text-[48px] font-extrabold mb-1">Your AI catalyst for success!</h1>
+                  <p className=" font-medium  max-w-[700px]  text-[12px] xl:text-[12px] 2xl:text-[16px] ">Explore Tailored AI Solutions for Your Goals. Drag and drop to start exploring now!</p>
                </div>
             </div>
-            <div className="inline-flex items-center space-x-5">
-               <Link href="/auth/register" legacyBehavior>
-                  <h2 className=" inline-flex items-center space-x-3.5 min-w-['107px'] h-14 border-2 border-primary-green text-primary-green rounded-2xl px-4 py-3.5 text-lg hover:bg-primary-green hover:text-white">
-                     <span className="whitespace-nowrap">Free trial</span>
+            <div className=" items-center space-x-5">
+               <Link href="/auth/register">
+                  <h2 className=" inline-flex items-center space-x-3.5 2xl:text-[20px] text-[14px] min-w-['107px'] 2xl:h-14 h-10 border-2 border-primary-green text-primary-green rounded-2xl p-2 2xl:px-4 2xl:py-3.5 hover:bg-primary-green hover:text-white">
+                     <span className="">Free trial</span>
                      <ArrowRight />
                   </h2>
                </Link>
                <Link href="/demo" legacyBehavior>
-               <h2 className=" inline-flex items-center space-x-3.5 min-w-['107px'] h-14 border-2 border-primary-green text-primary-green rounded-2xl px-4 py-3.5 text-lg hover:bg-primary-green hover:text-white">
-                     <span className="whitespace-nowrap">Get a demo</span>
+               <h2 className=" inline-flex items-center space-x-3.5 2xl:text-[20px] text-[14px] min-w-['107px'] 2xl:h-14 h-10 border-2 border-primary-green text-primary-green rounded-2xl p-2 2xl:px-4 2xl:py-3.5 hover:bg-primary-green hover:text-white">
+               <span className="whitespace-nowrap">Get a demo</span>
                   </h2>
                </Link>
             </div>

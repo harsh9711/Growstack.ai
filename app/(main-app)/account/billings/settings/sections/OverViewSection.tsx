@@ -23,7 +23,6 @@ export default function OverViewSection() {
     try {
       const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
       const data: PlanUsage = response.data.data;
-      console.log(data);
       setPlanUsage(data);
     } catch (error: any) {
       if (error.response) {

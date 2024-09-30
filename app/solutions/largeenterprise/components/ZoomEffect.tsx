@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 
 const ImageGallery = () => {
   const [clickedImage, setClickedImage] = useState<string | null>(null);
@@ -9,17 +9,19 @@ const ImageGallery = () => {
     document.body.style.overflow = clickedImage ? "hidden" : "auto";
 
     if (clickedImage) {
-      const imageElement = document.querySelector<HTMLImageElement>('.zoomed-image');
+      const imageElement =
+        document.querySelector<HTMLImageElement>(".zoomed-image");
       if (imageElement) {
         const rect = imageElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
         const scrollUpOffset = 290;
 
-        const offsetTop = rect.top + window.pageYOffset - (viewportHeight / 2) + (rect.height / 2);
-        
+        const offsetTop =
+          rect.top + window.pageYOffset - viewportHeight / 2 + rect.height / 2;
+
         window.scrollTo({
           top: offsetTop,
-          behavior: 'smooth'
+          behavior: "smooth",
         });
       }
     }
@@ -39,53 +41,52 @@ const ImageGallery = () => {
   type ImageType = {
     src: string;
     largeSrc: string;
-    className?: string; 
+    className?: string;
     buttonText: string;
   };
 
   const images: ImageType[] = [
-            {
-                src: "/imagezoom/zoom1.svg",
-                className: "w-[301px] h-[200px] -translate-x-[100px] z-60",
-               
-                largeSrc: '/zoomedimages/workflow.svg', buttonText: "Automate tasks", 
+    {
+      src: "/imagezoom/zoom1.svg",
+      className: "w-[301px] h-[200px] -translate-x-[100px] z-60",
 
-            },
-            {
-                src: "/imagezoom/zoom21.svg",
-                className: "w-[290.5px] h-[200px] translate-x-[0px] z-60 -translate-y-40",
-                largeSrc: '/zoomedimages/social.svg',      
-                      buttonText: "Analyze impact", 
-            },
-            {
-                src: "/imagezoom/zoom3.svg",
-                className: "w-[301px] h-[200px] translate-x-[50px] z-60 translate-y-24",
-                
-                largeSrc: '/zoomedimages/conversation.svg',   buttonText: "Coordinate interactions", 
+      largeSrc: "/zoomedimages/workflow.svg",
+      buttonText: "Automate tasks",
+    },
+    {
+      src: "/imagezoom/zoom21.svg",
+      className: "w-[290.5px] h-[200px] translate-x-[0px] z-60 -translate-y-40",
+      largeSrc: "/zoomedimages/social.svg",
+      buttonText: "Analyze impact",
+    },
+    {
+      src: "/imagezoom/zoom3.svg",
+      className: "w-[301px] h-[200px] translate-x-[50px] z-60 translate-y-24",
 
-            },
-            {
-                src: "/imagezoom/zoom4.svg",
-                className: "w-[301px] h-[200px] -translate-x-[700px] z-60 translate-y-32",
-                largeSrc: '/zoomedimages/scheduler.svg',
-                      buttonText: "Align communications", 
+      largeSrc: "/zoomedimages/conversation.svg",
+      buttonText: "Coordinate interactions",
+    },
+    {
+      src: "/imagezoom/zoom4.svg",
+      className: "w-[301px] h-[200px] -translate-x-[700px] z-60 translate-y-32",
+      largeSrc: "/zoomedimages/scheduler.svg",
+      buttonText: "Align communications",
+    },
+    {
+      src: "/imagezoom/zoom5.svg",
+      className:
+        "w-[301px] h-[200px] -translate-x-[500px] z-60 -translate-y-40",
+      largeSrc: "/zoomedimages/reputation.svg",
 
-            },
-            {
-                src: "/imagezoom/zoom5.svg",
-                className: "w-[301px] h-[200px] -translate-x-[500px] z-60 -translate-y-40",
-                largeSrc: '/zoomedimages/reputation.svg',
-
-                buttonText: "Tack sentiments", 
-
-            },
-        ];
+      buttonText: "Tack sentiments",
+    },
+  ];
 
   return (
     <>
-      <div className="w-full">
+      <div className="w-full relative">
         <motion.div
-          className="flex gap-4 mt-52 ml-32 absolute"
+          className="flex gap-4 mt-52 ml-32 absolute "
           initial={{ opacity: 1, scale: 1 }}
           animate={{
             opacity: clickedImage ? 1 : 1,
@@ -109,12 +110,11 @@ const ImageGallery = () => {
                   clickedImage === image.largeSrc ? "opacity-50" : ""
                 }`}
               />
-                <button className="absolute -bottom-8 text-center text-[25px]  text-white  w-full py-2 rounded-2xl ">
+              <button className="absolute -bottom-8 text-center text-[25px]  text-white  w-full py-2 rounded-2xl ">
                 {image.buttonText}
               </button>
             </motion.div>
           ))}
-       
         </motion.div>
 
         <div
@@ -123,8 +123,7 @@ const ImageGallery = () => {
           }`}
         >
           <Image
-                      src="/images_growstack/solutions/efficiency.svg"
-
+            src="/images_growstack/solutions/efficiency.svg"
             width={1000}
             height={227}
             alt="Dashboard Image"
@@ -134,9 +133,8 @@ const ImageGallery = () => {
 
         {clickedImage && (
           <div
-          className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50"
-           
-          onClick={handleClose}
+            className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50"
+            onClick={handleClose}
           >
             <div
               className="relative max-w-full max-h-full p-4 rounded-lg"
@@ -146,7 +144,6 @@ const ImageGallery = () => {
                 <span className="text-lg font-semibold opacity-0">
                   Image Preview
                 </span>
-              
               </div>
               <Image
                 src={clickedImage}
@@ -162,6 +159,5 @@ const ImageGallery = () => {
     </>
   );
 };
-
 
 export default ImageGallery;

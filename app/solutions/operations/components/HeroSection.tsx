@@ -19,12 +19,12 @@ const HeroSection = ({
   heroImageAlt = "Center Image",
 }) => {
   return (
-    <section className={`${bgGradient} w-full mb-10 2xl:mb-20 overflow-hidden`}>
+    <section className={`${bgGradient}  rounded-b-[60px] sm:rounded-b-[0px]  w-full mb-10 2xl:mb-20 overflow-hidden`}>
       <Navbar logoUrl={logoUrl} logoAlt={logoAlt} backgroundColor="white" />
 
       <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1350px] 2xl:p-0 p-4 w-full  h-full justify-center mx-auto">
-        <div className="w-full flex flex-row justify-between brightness-110 relative items-center mt-10 mb-10 2xl:mt-32 2xl:mb-20">
-          <div className="w-full max-w-[700px] gap-y-4 flex flex-col">
+        <div className="w-full flex flex-row justify-between brightness-110 sm:text-start text-center relative items-center sm:mt-10 sm:mb-10 mt-2 mb-2 2xl:mt-32 2xl:mb-20">
+          <div className="w-full max-w-[700px] gap-y-4 flex flex-col sm:items-start items-center">
             <div
               data-aos="fade-right"
               data-aos-duration="1200"
@@ -37,7 +37,7 @@ const HeroSection = ({
               <h1
                 data-aos="fade-right"
                 data-aos-duration="1500"
-                className="text-[26px] xl:text-[48px] w-full leading-normal text-white"
+                className="text-[26px] xl:text-[40px] 2xl:text-[48px] w-full leading-normal text-white"
               >
                 <span className="font-semibold text-white">{title}</span>
                 <br />
@@ -57,7 +57,7 @@ const HeroSection = ({
                 <div
                   data-aos="fade-right"
                   data-aos-duration="1500"
-                  className="flex flex-row gap-8 group text-[12px] 2xl:text-[18px]"
+                  className="flex flex-row gap-8 items-center justify-center sm:items-start sm:justify-start group text-[12px] 2xl:text-[18px]"
                 >
                   <Link href="/auth/register" className="no-underline">
                     <button className=" bg-[#034737] font-medium flex items-center gap-2 text-white 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md ">

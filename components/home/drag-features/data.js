@@ -1460,6 +1460,10 @@ export const featureCategoryData = [
    {
       id: 5,
       title: "Analyze",
+   },
+   {
+      id: 6,
+      title: "Automate",
    }
 ]
 

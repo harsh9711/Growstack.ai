@@ -71,7 +71,7 @@ export default function CreateTemplatePage() {
 
   const [isPending, setIsPending] = useState(false);
   const [refreshTemplatesTable, setRefreshTemplatesTable] = useState(true);
-
+  const [fileUploadLoading, setFileUploadLoading] = useState<boolean>(false);
   type ValidationSchemaType = z.infer<typeof ValidationSchema>;
 
   const {
@@ -173,34 +173,42 @@ export default function CreateTemplatePage() {
   };
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: { "image/*": [] },
-    onDrop: (acceptedFiles) => {
-      // Handle the dropped file
+    onDrop: async (acceptedFiles) => {
       const file = acceptedFiles[0];
       if (file) {
-        if (file.size > 3.5 * 1024 * 1024) {
-          toast.error("File size should be less than 3.5 MB");
+        if (file.size > 1 * 1024 * 1024) {
+          toast.error("File size should be less than 1 MB");
         } else {
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            const img = new Image();
-            img.onload = () => {
-              if (img.width <= 200 && img.height <= 200) {
-                setFormData((prevFormData) => ({
-                  ...prevFormData,
-                  icon: `<img src="${reader.result}" alt="Uploaded icon" />`,
-                }));
-              } else {
-                toast.error("Image should be 200x200 pixels or less.");
-              }
-            };
-            img.src = reader.result as string; // Set the image source to the base64 data URL
-          };
-          reader.readAsDataURL(file);
+
+          const formData = new FormData();
+          formData.append("document", file);
+
+          setFileUploadLoading(true);
+          try {
+            const response = await instance.post(`${API_URL}/users/api/v1/file/upload`, formData);
+            const fileUrl = response.data.data.fileUrl;
+            setFormData((prevState) => ({
+              ...prevState,
+              icon: fileUrl,
+            }));
+          } catch (error) {
+            toast.error("File upload failed");
+            console.error("Error uploading file:", error);
+          } finally {
+            setFileUploadLoading(false);
+          }
         }
       }
-      
+
     },
   });
+
+  const clearImg = () => {
+    setFormData((prevState) => ({
+      ...prevState,
+      icon: "",
+    }));
+  };
 
   const router = useRouter();
   return (
@@ -288,30 +296,39 @@ export default function CreateTemplatePage() {
                   Upload Icon
                   <span className="text-[#F00]">*</span>
                 </label>
-                <div
-                  {...getRootProps({ className: "dropzone" })}
-                  className="border-2 border-dashed border-gray-300 p-4 rounded-md"
-                  style={{cursor: "pointer"}}
-                >
-                  <input {...getInputProps()} />
-                  {isDragActive ? (
-                    <p className="text-gray-500">Drop the file here ...</p>
-                  ) : (
-                    <p className="text-gray-500">
-                      Drag 'n' drop an icon file here, or click to select one
-                    </p>
-                  )}
-                  {formData.icon && (
-                    <div className="mt-2 w-6 h-6" style={{display: "flex", flexDirection: "row", gap: "10px", width: "120px", height: "30px", alignItems: "center", justifyContent: "center"}}>
-                      <div style={{width: "50%"}}>
-                        <label className="block font-medium">Preview:</label>
-                      </div>
-                      <div style={{width: "50%"}}
-                        dangerouslySetInnerHTML={{ __html: formData.icon }}
-                      />
+
+                {fileUploadLoading ? (
+                  <div className="h-56 w-full flex justify-center items-center border border-[#F2F2F2] rounded-xl">
+                    <Spinner color="black" size={35} />
+                  </div>
+                ) : formData.icon ? (
+                  <>
+                    <div className="h-56 w-full mx-auto flex items-center justify-center border border-[#F2F2F2] rounded-xl">
+                      <img src={formData.icon} alt="Logo" className="w-fit h-full object-contain" />
                     </div>
-                  )}
-                </div>
+                    <div className="flex justify-end m-2">
+                      <button onClick={clearImg} type="button" className="hover-underline">
+                        <span style={{ textDecoration: "undeline" }}>Undo image</span>
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <div
+                    {...getRootProps({ className: "dropzone" })}
+                    className="border-2 border-dashed border-gray-300 p-4 rounded-md"
+                    style={{ cursor: "pointer" }}
+                  >
+                    <input {...getInputProps()} />
+                    {isDragActive ? (
+                      <p className="text-gray-500">Drop the file here ...</p>
+                    ) : (
+                      <p className="text-gray-500">
+                        Drag 'n' drop an icon file here, or click to select one
+                      </p>
+                    )}
+                  </div>
+                )}
+
                 {errors.icon && (
                   <p className="text-rose-600 text-sm">{errors.icon.message}</p>
                 )}
@@ -364,36 +381,36 @@ export default function CreateTemplatePage() {
 
                   {(input.type === "Input field" ||
                     input.type === "Textarea field") && (
-                    <div className="w-full space-y-2">
-                      <Input
-                        type="text"
-                        placeholder="Type input field description (required)"
-                        value={input.description}
-                        onChange={(e) =>
-                          handleInputChange(
-                            index,
-                            "description",
-                            e.target.value
-                          )
-                        }
-                      />
-                    </div>
-                  )}
+                      <div className="w-full space-y-2">
+                        <Input
+                          type="text"
+                          placeholder="Type input field description (required)"
+                          value={input.description}
+                          onChange={(e) =>
+                            handleInputChange(
+                              index,
+                              "description",
+                              e.target.value
+                            )
+                          }
+                        />
+                      </div>
+                    )}
 
                   {(input.type === "Select list field" ||
                     input.type === "Checkbox list field" ||
                     input.type === "Radio buttons field") && (
-                    <div className="w-full space-y-2">
-                      <Input
-                        type="text"
-                        placeholder="Comma separated options"
-                        value={input.options || ""}
-                        onChange={(e) =>
-                          handleInputChange(index, "options", e.target.value)
-                        }
-                      />
-                    </div>
-                  )}
+                      <div className="w-full space-y-2">
+                        <Input
+                          type="text"
+                          placeholder="Comma separated options"
+                          value={input.options || ""}
+                          onChange={(e) =>
+                            handleInputChange(index, "options", e.target.value)
+                          }
+                        />
+                      </div>
+                    )}
 
                   <div className="w-full space-y-2">
                     <Select

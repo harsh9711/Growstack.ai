@@ -179,7 +179,7 @@ const GridComponent = () => {
       className="w-[480px] h-[357px] hover-boxstartup2"
     />
   </div>
-  <div className="rounded-[30px] relative right-[810px] 2xl:top-40  flex justify-center items-center hover:scale-150 transition-transform duration-300">
+  <div className="rounded-[30px] opacity-0 relative right-[560px] top-44  flex justify-center items-center hover:scale-150 transition-transform duration-300">
     <Image
       src="/solutions/salesrevops/boxes/main.svg"
       alt="Main"
@@ -187,7 +187,18 @@ const GridComponent = () => {
       height={50}
     />
   </div>
- 
+  <div
+    onClick={() => handleClick(4)}
+    className="rounded-[30px] flex relative top-2 justify-center items-center z-[60] cursor-pointer hover:scale-105 transition-transform duration-300"
+  >
+    <Image
+      src="/solutions/startup/boxes/box4.svg"
+      alt="Box 4"
+      width={380}
+      height={420}
+      className="w-[480px] h-[357px] hover-boxstartup4"
+    />
+  </div>
    <div
     onClick={() => handleClick(3)}
     className="rounded-[30px] relative top-2 flex justify-center items-center z-[60] cursor-pointer hover:scale-105  transition-transform duration-300"
@@ -198,17 +209,6 @@ const GridComponent = () => {
       width={380}
       height={400}
       className="w-[480px] h-[357px] hover-boxstartup3"
-    />
-  </div><div
-    onClick={() => handleClick(4)}
-    className="rounded-[30px] flex relative top-2 justify-center items-center z-[60] cursor-pointer hover:scale-105 transition-transform duration-300"
-  >
-    <Image
-      src="/solutions/startup/boxes/box4.svg"
-      alt="Box 4"
-      width={380}
-      height={420}
-      className="w-[480px] h-[357px] hover-boxstartup4"
     />
   </div>
 </div>
