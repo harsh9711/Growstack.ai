@@ -10,7 +10,7 @@ import useSpeechRecognition from "../../hooks/UseSpeechRecognition";
 import { languageOptions } from "../../../create/ai-articles/constants/options";
 import Microphone from "./Microphone";
 import Link from "next/link";
-import { ChatResponse } from "@/types/common";
+import { BrandVoice, ChatResponse } from "@/types/common";
 import { planIdsMap } from "@/lib/utils";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
@@ -20,6 +20,7 @@ import { getCookie } from "cookies-next";
 import EventSource from 'eventsource';
 
 interface ChatInputProps {
+  selectedBrandVoice?: BrandVoice
   onSend: (content: string, role: string) => void;
   selectedModel: string;
   fetchConversations: () => void;
@@ -32,6 +33,7 @@ interface ChatInputProps {
 }
 
 const ChatInput: React.FC<ChatInputProps> = ({
+  selectedBrandVoice,
   onSend,
   fetchConversations,
   selectedConversation,
@@ -128,10 +130,15 @@ const ChatInput: React.FC<ChatInputProps> = ({
     try {
       setIsAnimating(false);
       setOpen(false);
-      const conversation = await instance.post(
-        `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${selectedConversation ? selectedConversation : ""}&model=${selectedModel}&enableSecure=${enableSecure}`,
-        { user_prompt: prompt }
-      );
+      let apiUrl = `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${selectedConversation ? selectedConversation : ""}&model=${selectedModel}&enableSecure=${enableSecure}`;
+
+      const conversation = await instance.post(apiUrl, {
+        user_prompt: prompt,
+        ...(selectedBrandVoice && {
+          brand_voice: selectedBrandVoice.brand_voice
+        })
+      });
+
       const { response, conversation_id, chatId, noOfMessagesLeft, totalNoOfMessages } = conversation.data.data as ChatResponse;
 
       const isBasicPlan = planIdsMap.BASIC.some((val) => val === currentPlan?.plan_id);

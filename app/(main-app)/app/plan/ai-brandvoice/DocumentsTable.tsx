@@ -39,17 +39,19 @@ interface BrandVoice {
 }
 interface DocumentsTableProps {
   search: string;
-} 
-export default function ({ search }: DocumentsTableProps) {
+  setTotalBrandVoiceCount: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [pagination, setPagination] = useState<any>({
     pageIndex: 0,
-    pageSize: 10, 
+    pageSize: 10,
   });
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null); 
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [documents, setDocuments] = useState<BrandVoice[]>([]);
   const [totalDocs, setTotalDocs] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
@@ -67,6 +69,7 @@ export default function ({ search }: DocumentsTableProps) {
       setDocuments(docs);
       setTotalDocs(totalDocs);
       setTotalPages(totalPages);
+      setTotalBrandVoiceCount(totalDocs);
     } catch (error) {
       console.error("Error fetching brand voices", error);
     }
@@ -91,15 +94,13 @@ export default function ({ search }: DocumentsTableProps) {
       header: () => <div className="uppercase">Brand Voice</div>,
       cell: ({ row }) => {
         const brandVoice = row.getValue("brand_voice") as string;
-    
         return (
           <div
             className="capitalize text-ellipsis overflow-hidden whitespace-nowrap max-w-[200px]"
             data-tooltip-id={`tooltip-${row.id}`}
-            data-tooltip-content={brandVoice} 
+            data-tooltip-content={brandVoice}
           >
             {brandVoice}
-         
           </div>
         );
       },
@@ -167,7 +168,6 @@ export default function ({ search }: DocumentsTableProps) {
       }
     });
   };
-  
 
   const handleEdit = (id: string) => {
     router.push(`/account/create-brand-voice/${id}`);
@@ -197,7 +197,7 @@ export default function ({ search }: DocumentsTableProps) {
   return (
     <>
       <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
-        <div className="w-full bg-white border rounded-3xl"  onClick={() => {setOpenDropdown(null)}}>
+        <div className="w-full bg-white border rounded-3xl" onClick={() => { setOpenDropdown(null) }}>
           <div className="bg-white rounded-lg border overflow-hidden min-h-[50vh]">
             <Table>
               <TableHeader>
