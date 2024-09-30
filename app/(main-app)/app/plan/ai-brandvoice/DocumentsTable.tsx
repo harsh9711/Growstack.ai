@@ -44,8 +44,10 @@ interface BrandVoice {
 }
 interface DocumentsTableProps {
   search: string;
+  setTotalBrandVoiceCount: React.Dispatch<React.SetStateAction<number>>;
 }
-export default function ({ search }: DocumentsTableProps) {
+
+export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -74,6 +76,7 @@ export default function ({ search }: DocumentsTableProps) {
       setDocuments(docs);
       setTotalDocs(totalDocs);
       setTotalPages(totalPages);
+      setTotalBrandVoiceCount(totalDocs);
     } catch (error) {
       console.error("Error fetching brand voices", error);
     }
@@ -187,12 +190,13 @@ export default function ({ search }: DocumentsTableProps) {
           `https://testing.growstack.ai/users/api/v1/brand-voice/${id}`
         );
         setDocuments((prev) => prev.filter((doc) => doc._id !== id));
+        setTotalBrandVoiceCount((prev) => prev - 1);
         toast.success("Document deleted successfully");
         setOpenDropdown(null);
       }
     });
   };
-
+  
 
   const handleEdit = (id: string) => {
     router.push(`/account/create-brand-voice/${id}`);

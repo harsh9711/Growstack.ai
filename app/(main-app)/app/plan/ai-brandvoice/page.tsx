@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import DocumentsTable from "./DocumentsTable";
 import { Plus, Search } from "lucide-react";
 import CreateBrandVoice from "./components/createBrandVoice";
+import toast from "react-hot-toast";
 
 export default function BrandVoice() {
   const [search, setSearch] = useState<string>("");
@@ -21,7 +22,7 @@ export default function BrandVoice() {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
-
+  const [totalBrandVoiceCount, setTotalBrandVoiceCount] = React.useState(0);
   return (
     <div>
       <div className="mt-10">
@@ -43,17 +44,21 @@ export default function BrandVoice() {
             </div>
 
           </div>
-          <button
-            onClick={() => setOpenCreateBrandVoice(true)}
-            className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2"
-          >
+          <button onClick={() => {
+            if (totalBrandVoiceCount >= 2) {
+              toast.error("Maximum 2 brand voice allowed.")
+            } else {
+
+              setOpenCreateBrandVoice(true)
+            }
+          }} className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
             <Plus size={20} />
             Create brand voice
           </button>
         </div>
 
         <div className="mt-5">
-          <DocumentsTable search={debouncedSearch} />
+          <DocumentsTable search={debouncedSearch}  setTotalBrandVoiceCount={setTotalBrandVoiceCount}  />
         </div>
       </div>
 

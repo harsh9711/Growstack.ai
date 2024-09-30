@@ -1,5 +1,4 @@
 "use client";
-
 import { Input } from "@/components/ui/input";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
@@ -153,7 +152,7 @@ export default function AiAppPage({
     }
   }, [editDocumentData]);
 
-  const handleDownload = (selectedOption: string) => {
+  const handleDownload = async (selectedOption: string) => {
     const contentState = editorState.getCurrentContent();
     const rawContentState = convertToRaw(contentState);
     const formattedContent = generatedContent;
@@ -170,22 +169,25 @@ export default function AiAppPage({
 
     const addTextToPdf = async (content: string) => {
       console.log("content", content);
-  
+
       // Initialize jsPDF
       const pdfDoc = new jsPDF();
-  
+
       // Add the custom font that supports UTF-8 (NotoSans-Regular.ttf)
       const fontUrl = "/fonts/NotoSans-Regular.ttf"; // Path to the font file
       const fontData = await fetch(fontUrl).then(res => res.arrayBuffer());
-  
+
+      // Convert ArrayBuffer to base64 string
+      const base64FontData = arrayBufferToBase64(fontData);
+
       // Add font to jsPDF
-      pdfDoc.addFileToVFS("NotoSans-Regular.ttf", fontData);
+      pdfDoc.addFileToVFS("NotoSans-Regular.ttf", base64FontData);
       pdfDoc.addFont("NotoSans-Regular.ttf", "NotoSans", "normal");
       pdfDoc.setFont("NotoSans");
-  
+
       let yPos = 10;
       const pageHeight = pdfDoc.internal.pageSize.height;
-  
+
       // Split text into lines that fit within the PDF
       const lines = pdfDoc.splitTextToSize(content, 180);
       lines.forEach((line: string | string[]) => {
@@ -196,9 +198,20 @@ export default function AiAppPage({
         pdfDoc.text(line, 10, yPos);
         yPos += 10;
       });
-  
+
       return pdfDoc;
     }
+
+    const arrayBufferToBase64 = (buffer: ArrayBuffer) => {
+      let binary = '';
+      const bytes = new Uint8Array(buffer);
+      const len = bytes.byteLength;
+      for (let i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return window.btoa(binary);
+    }
+
 
     switch (selectedOption) {
       case "Copy as Text":
@@ -223,7 +236,7 @@ export default function AiAppPage({
         saveAs(txtBlob, `${fileName}.txt`);
         break;
       case "Download as PDF":
-        const pdfDoc = addTextToPdf(formats["Download as PDF"]);
+        const pdfDoc = await addTextToPdf(formats["Download as PDF"]);
         pdfDoc.save(`${fileName}.pdf`);
         break;
       default:
