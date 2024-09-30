@@ -24,11 +24,13 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
-import { EllipsisVertical } from 'lucide-react';
+import { EllipsisVertical, MoreHorizontal } from 'lucide-react';
 import { Checkbox } from "@/components/ui/checkbox";
 import instance from "@/config/axios.config";
 import { Input } from "@/components/ui/input";
-
+import swal from "sweetalert";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 interface BrandVoice {
   _id: string;
   brand_name: string;
@@ -47,13 +49,14 @@ export default function ({ search }: DocumentsTableProps) {
     pageIndex: 0,
     pageSize: 10, 
   });
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null); 
   const [documents, setDocuments] = useState<BrandVoice[]>([]);
   const [totalDocs, setTotalDocs] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   useEffect(() => {
     fetchBrandVoice(search, pagination.pageIndex + 1, pagination.pageSize);
   }, [search]);
-
+  const router = useRouter();
   const fetchBrandVoice = async (search: string, page: number, limit: number) => {
     try {
       const response = await instance.get(
@@ -115,15 +118,61 @@ export default function ({ search }: DocumentsTableProps) {
       header: () => <div className="uppercase">Actions</div>,
       cell: ({ row }) => (
         <div className="relative flex items-center">
-          <button className="p-1 hover:bg-gray-200 rounded-lg transition duration-300">
+          <button
+            className="p-1 hover:bg-gray-200 rounded-lg transition duration-300"
+            onClick={(e) => {
+              e.stopPropagation();
+              setOpenDropdown(openDropdown === row.original._id ? null : row.original._id);
+            }}
+          >
             <EllipsisVertical size={20} className="text-gray-800" />
           </button>
+          {openDropdown === row.original._id && (
+            <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow-lg z-10">
+              <button
+                className="block w-full text-left p-2 hover:bg-gray-100"
+                onClick={() => handleEdit(row.original._id)}
+              >
+                Edit
+              </button>
+              <button
+                className="block w-full text-left p-2 hover:bg-gray-100"
+                onClick={() => handleDeleteBranVoice(row.original._id)}
+              >
+                Delete
+              </button>
+            </div>
+          )}
         </div>
       ),
       enableSorting: false,
       enableHiding: false,
-    },
+    }
   ];
+  const handleDeleteBranVoice = (id: string) => {
+    swal({
+      title: "Delete Document",
+      text: "Are you sure you want to delete it?",
+      icon: "warning",
+      buttons: ["Cancel", "Delete"],
+      dangerMode: true,
+    }).then(async (willDelete) => {
+      if (willDelete) {
+        await instance.delete(
+          `https://testing.growstack.ai/users/api/v1/brand-voice/${id}`
+        );
+        setDocuments((prev) => prev.filter((doc) => doc._id !== id));
+        toast.success("Document deleted successfully");
+        setOpenDropdown(null);
+      }
+    });
+  };
+  
+
+  const handleEdit = (id: string) => {
+    router.push(`/account/create-brand-voice/${id}`);
+    setOpenDropdown(null); // Close dropdown after navigating
+  };
 
   const table = useReactTable({
     data: documents,
@@ -148,7 +197,7 @@ export default function ({ search }: DocumentsTableProps) {
   return (
     <>
       <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
-        <div className="w-full bg-white border rounded-3xl">
+        <div className="w-full bg-white border rounded-3xl"  onClick={() => {setOpenDropdown(null)}}>
           <div className="bg-white rounded-lg border overflow-hidden min-h-[50vh]">
             <Table>
               <TableHeader>
