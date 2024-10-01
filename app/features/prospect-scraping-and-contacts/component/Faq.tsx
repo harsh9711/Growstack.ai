@@ -15,24 +15,45 @@ const CustomAccordion = () => {
 
   const items = [
     {
-      header:
-        "What is prospect scraping?",
-      body: "Prospect Scraping is a tool designed to automatically gather and organize detailed business information from Google Maps, helping you efficiently identify and target potential customers.",
-    },
-    {
-      header: "How does the data collection process work?",
-      body: "Yes, you have the flexibility to upgrade or downgrade your plan anytime, ensuring you always have the right tools for your business needs.",
-    },
-    {
-      header:
-        "What kind of data can I expect to receive?",
-      body: "Our AI-powered tools adapt to your specific needs, offering personalized solutions that tackle your unique business challenges effectively.",
-    },
-    {
-      header:
-        "How is the data presented?",
-      body: "GrowStack provides AI-powered efficiency, seamless integration, and data-driven insights, helping your business achieve exceptional growth and productivity.",
-    },
+        header: "What is Prospect Scraping?",
+        body: "Prospect Scraping is a tool designed to automatically gather and organize detailed business information from Google Maps, helping you efficiently identify and target potential customers.",
+      },
+      {
+        header: "How does the data collection process work?",
+        body: "The tool retrieves business data based on your specified search terms and location, then compiles this information into an organized table for easy review and management.",
+      },
+      {
+        header: "What kind of data can I expect to receive?",
+        body: "You will receive detailed business information including Business Name, Address, Rating (out of 5), Number of Reviews, Contact Number, and Website URL.",
+      },
+      {
+        header: "How is the data presented?",
+        body: "The collected data is displayed in a clear, tabular format, allowing for easy scanning, comparison, and analysis.",
+      },
+      {
+        header: "Can I export the data?",
+        body: "Yes, you can save and manage the collected data in the 'Prospects' tab under 'Contacts' for convenient access and organization.",
+      },
+      {
+        header: "Is the data updated in real-time?",
+        body: "The data is pulled directly from Google Maps, which is regularly updated. However, the tool captures the data at the time of the search, so it’s best to use it frequently for the most current information.",
+      },
+      {
+        header: "How can I use the data for lead generation?",
+        body: "Utilize the detailed business information to identify high-potential leads and build targeted lists for outreach or marketing campaigns.",
+      },
+      {
+        header: "Can the tool be used for market research?",
+        body: "Yes, the tool helps in analyzing market trends and competition by providing comprehensive business data and insights.",
+      },
+      {
+        header: "Is the tool suitable for small businesses?",
+        body: "Absolutely. The tool is designed to be beneficial for businesses of all sizes, helping small businesses efficiently gather and manage prospect data.",
+      },
+      {
+        header: "How do I get started with Prospect Scraping?",
+        body: "Simply enter your search terms and location, and the tool will start gathering and organizing the data for you. Check the 'Prospects' tab for your saved lists.",
+      },
   
   ];
 
