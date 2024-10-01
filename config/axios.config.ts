@@ -4,7 +4,7 @@ import { getCookie } from "cookies-next";
 
 const instance = axios.create({
   baseURL: API_URL,
-  withCredentials: true, // TODO: uncomment this line when cors origins are configured
+  withCredentials: true,
   timeout: 600000,
 });
 // just to deploy
