@@ -105,10 +105,17 @@ export const hasAccessToRoute = (currentPlanUsage: any, pathname: string): boole
 
 export function debounce<T extends (...args: any[]) => any>(fn: T, delay: number = 300) {
   let timeoutId: ReturnType<typeof setTimeout>;
-  return function(...args: Parameters<T>) {
+  return function (...args: Parameters<T>) {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => fn(...args), delay);
   };
 }
 
 
+export function parseJsonString(str: string): any {
+  try {
+    return JSON.parse(str);
+  } catch (e) {
+    return '';
+  }
+}
