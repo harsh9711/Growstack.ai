@@ -203,7 +203,12 @@ const CreateBrandVoice = ({ isOpen, setIsOpen, onSuccess }: Props) => {
                                                 <Input
                                                     type="text"
                                                     placeholder={`https://www.growstack.ai`}
-                                                    {...register(`urls.${index}`)}
+                                                    onChange={(e) => {
+                                                        const updatedUrls = [...urlFields];
+                                                        updatedUrls[index] = e.target.value;
+                                                        setUrlFields(updatedUrls);
+                                                        setValue('urls', updatedUrls);
+                                                    }}
                                                 />
                                                 {urlFields.length > 1 && (
                                                     <button
