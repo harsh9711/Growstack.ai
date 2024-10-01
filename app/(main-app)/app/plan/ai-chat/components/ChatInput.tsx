@@ -11,7 +11,7 @@ import { languageOptions } from "../../../create/ai-articles/constants/options";
 import Microphone from "./Microphone";
 import Link from "next/link";
 import { BrandVoice, ChatResponse } from "@/types/common";
-import { planIdsMap } from "@/lib/utils";
+import { parseJsonString, planIdsMap } from "@/lib/utils";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { ALL_ROUTES } from "@/utils/constant";
@@ -53,6 +53,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
   const [isAnimating, setIsAnimating] = useState(false);
   const [input, setInput] = useState("");
   const [isDailyLimitExceeded, setIsDailyLimitExceeded] = useState(isLimitExceeded)
+  const [newConversationId, setNewConversationId] = useState("");
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { startRecognition, stopRecognition, textToSpeech } = useSpeechRecognition(
@@ -97,7 +98,8 @@ const ChatInput: React.FC<ChatInputProps> = ({
 
       eventSource.onmessage = (event: MessageEvent) => {
         const chunk = event.data;
-        accumulatedResponse += chunk;
+        const msg = parseJsonString(chunk)?.text || "";
+        accumulatedResponse += msg;
 
         onSend(accumulatedResponse, "assistant");
       };
@@ -132,7 +134,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
     try {
       setIsAnimating(false);
       setOpen(false);
-      let apiUrl = `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${selectedConversation ? selectedConversation : ""}&model=${selectedModel}&enableSecure=${enableSecure}`;
+      let apiUrl = `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${selectedConversation ? selectedConversation : newConversationId ? newConversationId : ""}&model=${selectedModel}&enableSecure=${enableSecure}`;
       if (enableWebBrowsing) {
         apiUrl += `&webBrowsing=${enableWebBrowsing}`
       }
@@ -157,7 +159,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
           }
         }
       }
-
+      setNewConversationId(conversation_id);
       await streamResponse(chatId);
       if ((selectedConversation || conversation_id)) fetchConversations();
 

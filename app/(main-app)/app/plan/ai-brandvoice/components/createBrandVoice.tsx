@@ -18,6 +18,7 @@ import rehypeRaw from 'rehype-raw';
 interface Props {
     isOpen: boolean;
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    onSuccess: () => void;
 }
 
 interface BrandVoiceAnalysisResult {
@@ -29,7 +30,7 @@ type BrandVoiceAnalyzeSchemaType = z.infer<typeof brandVoiceAnalyzeFormSchema>;
 type BrandVoiceSchemaType = z.infer<typeof brandVoiceFormSchema>;
 
 
-const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
+const CreateBrandVoice = ({ isOpen, setIsOpen, onSuccess }: Props) => {
     const [step, setStep] = useState(1);
     const [isAnalyzing, setIsAnalyzing] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
@@ -41,6 +42,7 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
         register,
         handleSubmit,
         getValues,
+        setValue,
         formState: { errors },
     } = useForm<BrandVoiceAnalyzeSchemaType>({
         resolver: zodResolver(brandVoiceAnalyzeFormSchema),
@@ -75,6 +77,7 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
 
     const handleRemoveUrlField = (index: number) => {
         const updatedFields = urlFields.filter((_, idx) => idx !== index);
+        setValue('urls', updatedFields);
         setUrlFields(updatedFields);
     };
 
@@ -89,30 +92,40 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
         setIsAnalyzing(true);
         try {
             const { urls, description, file } = data;
+            const currentFile = file?.length > 0 ? file[0] : null;
 
-            console.log(data)
-            const formData = new FormData();
-            if (file) {
-                if (file.size > 5 * 1024 * 1024) {
-                    toast.error("File size should be less than 5 MB");
-                    setIsAnalyzing(false);
-                    return;
-                }
-                formData.append('file', file);
+            const hasFile = currentFile && currentFile.size <= 3.5 * 1024 * 1024;
+            const hasUrls = urls && urls.length > 0 && urls.some(url => url.trim() !== '');
+            const hasDescription = description && description.trim() !== '';
+
+            if (!hasFile && !hasUrls && !hasDescription) {
+                toast.error("Please provide at least one field: URL, description, or file.");
+                setIsAnalyzing(false);
+                return;
             }
 
-            formData.append('urls', JSON.stringify(urls));
-            if (description) {
+            const formData = new FormData();
+
+            if (hasFile) {
+                formData.append('file', currentFile);
+            }
+
+            if (hasUrls) {
+                formData.append('urls', JSON.stringify(urls));
+            }
+
+            if (hasDescription) {
                 formData.append('description', description);
             }
 
             const response = (await instance.post(
                 `${API_URL}/users/api/v1/brand-voice/analyze`,
                 formData,
-            )).data
+            )).data;
+
             setBrandVoiceAnalysisResult(response.data);
             setValuesBrandVoice('brandVoice', response.data.brandVoice);
-            setChatContent(response.data.brandVoice)
+            setChatContent(response.data.brandVoice);
             setStep(2);
             toast.success("Successfully analyzed the brand voice");
         } catch (error: any) {
@@ -139,6 +152,7 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
             toast.success("Brand voice saved successfully!");
             setIsOpen(false);
             setStep(1);
+            onSuccess();
         } catch (error: any) {
             toast.error(error?.response?.data?.message || error.message);
         } finally {
@@ -147,6 +161,8 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
     };
 
     const selectedFile = watch('file');
+
+    console.log(watch('urls'), errors)
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -178,7 +194,7 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
 
                             <div className="space-y-2">
                                 <label className="font-medium">
-                                    Url <span className="text-[#F00]">*</span>
+                                    Url
                                 </label>
                                 <div className='flex w-full flex-col items-center gap-2'>
                                     {urlFields.map((_, index) => (
@@ -187,7 +203,12 @@ const CreateBrandVoice = ({ isOpen, setIsOpen }: Props) => {
                                                 <Input
                                                     type="text"
                                                     placeholder={`https://www.growstack.ai`}
-                                                    {...register(`urls.${index}`)}
+                                                    onChange={(e) => {
+                                                        const updatedUrls = [...urlFields];
+                                                        updatedUrls[index] = e.target.value;
+                                                        setUrlFields(updatedUrls);
+                                                        setValue('urls', updatedUrls);
+                                                    }}
                                                 />
                                                 {urlFields.length > 1 && (
                                                     <button

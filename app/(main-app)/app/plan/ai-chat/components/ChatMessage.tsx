@@ -25,7 +25,6 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
 }) => {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -43,9 +42,8 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
         {conversation.map((chat, index) => (
           <div key={index} className="p-4">
             <div
-              className={`mt-4 flex ${
-                chat.role === "user" ? "flex-row-reverse" : ""
-              } justify-start items-start gap-4`}
+              className={`mt-4 flex ${chat.role === "user" ? "flex-row-reverse" : ""
+                } justify-start items-start gap-4`}
             >
               {chat.role === "user" ? (
                 <Avatar className="w-11 h-11 rounded-xl">
@@ -62,11 +60,10 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
                 </div>
               )}
               <div
-                className={`max-w-5xl ${
-                  chat.role === "user"
-                    ? "bg-primary-green text-white whitespace-pre-wrap"
-                    : "bg-[#F1F1F1] text-primary-black"
-                } py-3 px-5 rounded-xl text-[14.5px] leading-relaxed min-h-11 flex justify-center text-justify`}
+                className={`max-w-5xl ${chat.role === "user"
+                  ? "bg-primary-green text-white whitespace-pre-wrap"
+                  : "bg-[#F1F1F1] text-primary-black"
+                  } py-3 px-5 rounded-xl text-[14.5px] leading-relaxed min-h-11 flex justify-center text-justify`}
               >
                 {chat.loading ? (
                   <DotsLoader />

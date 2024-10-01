@@ -10,11 +10,11 @@ export const aiModelOptions = [
   { label: "GPT 4", value: "gpt-4", icon: <ChatGptIcon2 /> },
   // { label: "GPT 4 Turbo", value: "gpt-4-turbo", icon: <ChatGptIcon2 /> },
   { label: "GPT 4o", value: "gpt-4o", icon: <ChatGptIcon2 /> },
-  {
-    label: "Claude 3.5 Sonnet",
-    value: "claude-3-5-sonnet-20240620",
-    icon: <AnthropicClaude />,
-  },
+  // {
+  //   label: "Claude 3.5 Sonnet",
+  //   value: "claude-3-5-sonnet-20240620",
+  //   icon: <AnthropicClaude />,
+  // },
   {
     label: "Claude 3 Opus",
     value: "claude-3-opus-20240229",
