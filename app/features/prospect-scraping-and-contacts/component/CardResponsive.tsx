@@ -14,56 +14,27 @@ const RectangleCard: React.FC<RectangleCardProps> = ({
   imgsrc1,
   imgsrc2,
 }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef(null);
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-          } else {
-            setIsVisible(false);
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-    return () => {
-      if (sectionRef.current) {
-        observer.unobserve(sectionRef.current);
-      }
-    };
-  }, []);
+
+
+ 
   return (
     <div
-      className={`bg-[#F9F9F9] mb-60 max-w-[1240px] 2xl:translate-x-0 xl:translate-x-60 w-full mx-auto relative py-20 h-full rounded-[20px] container-bg ${
-        isVisible ? "container-bg-animate" : ""
-      }`}
-      ref={sectionRef}
+      className={`bg-[#F9F9F9] p-6 mb-10 sm:mb-60 max-w-[1240px] mx-auto items-center justify-center  flex relative sm:py-20 h-full rounded-[20px] `}
+     
     >
-      <div className="2xl:max-w-[988px] xl:max-w-[605px] relative w-full flex flex-row justify-end items-center">
-        <div
-          className={`absolute ${isVisible ? "slide-left image-shadow" : ""}`}
-        >
-          <Image src={imgsrc1} width={500} height={400} alt="map" />
+      <div className="max-w-[988px] relative w-full flex  gap-10 flex-row justify-center items-center">
+      <div>
+          <Image src={imgsrc1} width={500} height={400} alt="map" className="sm:w-full w-40" />
         </div>
-        <div className="max-w-[505px] w-full flex flex-col gap-y-6 pr-20">
+        <div className="max-w-[505px] w-full flex flex-col gap-y-2 sm:gap-y-6">
           <Image src={imgsrc2} width={50} height={50} alt="map" />
           <h2
-            className={`sm:text-[28px] text-[16px] font-semibold text-shadow ${
-              isVisible ? "text-fade appear-with-delay" : "text-fade"
-            }`}
+            className={`sm:text-[28px] text-[16px] font-semibold text-shadow `}
           >
             {firsttext}
           </h2>
           <p
-            className={`sm:text-[16px] text-[12px] font-medium text-[#5B5D60] text-shadow ${
-              isVisible ? "text-fade appear-with-delay" : "text-fade"
-            }`}
+            className={`sm:text-[16px] text-[12px] font-medium text-[#5B5D60] text-shadow`}
           >
             {secondtext}
           </p>
@@ -104,30 +75,21 @@ const RectangleCardRight: React.FC<RectangleCardProps> = ({
   }, []);
   return (
     <div
-      className={`bg-[#F9F9F9] mb-60 max-w-[1240px] 2xl:-translate-x-20 xl:-translate-x-60 mx-auto relative py-20 h-full rounded-[20px] container-bg ${
-        isVisible ? "container-bg-animate" : ""
-      }`}
-      ref={sectionRef}
+    className={`bg-[#F9F9F9] p-6 mb-10 sm:mb-60 max-w-[1240px] mx-auto items-center justify-center  flex relative sm:py-20 h-full rounded-[20px] `}
     >
-      <div className="2xl:max-w-[1088px] xl:max-w-[1005px] relative w-full px-20 flex flex-row justify-start items-center">
-        <div
-          className={`absolute ${isVisible ? "slide-right image-shadow" : ""}`}
-        >
-          <Image src={imgsrc1} width={500} height={400} alt="map" />
-        </div>
-        <div className="max-w-[505px]  w-full flex flex-col gap-y-6">
+      <div className="max-w-[988px] relative w-full flex  gap-10 flex-row justify-center items-center">
+      <div>
+      <Image src={imgsrc1} width={500} height={400} alt="map" className="sm:w-full w-40" />
+      </div>
+        <div className="max-w-[505px] w-full flex flex-col gap-y-6">
           <Image src={imgsrc2} width={50} height={50} alt="map" />
           <h2
-            className={`sm:text-[28px] text-[16px] font-semibold text-shadow ${
-              isVisible ? "text-fade appear-with-delay" : "text-fade"
-            }`}
+            className={`sm:text-[28px] text-[16px] font-semibold text-shadow `}
           >
             {firsttext}
           </h2>
           <p
-            className={`sm:text-[16px] text-[12px] font-medium text-[#5B5D60] text-shadow ${
-              isVisible ? "text-fade appear-with-delay" : "text-fade"
-            }`}
+            className={`sm:text-[16px] text-[12px] font-medium text-[#5B5D60] text-shadow `}
           >
             {secondtext}
           </p>
@@ -136,10 +98,10 @@ const RectangleCardRight: React.FC<RectangleCardProps> = ({
     </div>
   );
 };
-const Card = () => {
+const CardResponsive = () => {
   return (
     <div>
-      <div className="flex flex-col gap-y-48">
+      <div className="flex flex-col gap-y-10 sm:gap-y-48">
         <div className="text-black sm:items-start items-start justify-start flex flex-col gap-y-4">
           <div className="bg-[#03473714] text-[#034737] hover:shadow-md whitespace-nowrap justify-center py-2 2xl:px-4 flex items-center text-center text-[12px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[130px] 2xl:max-w-[151px]">
             Benefits
@@ -183,4 +145,4 @@ const Card = () => {
     </div>
   );
 };
-export default Card;
+export default CardResponsive;
