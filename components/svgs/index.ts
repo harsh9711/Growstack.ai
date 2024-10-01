@@ -91,3 +91,7 @@ export { default as StopIcon } from "@/public/svgs/stop.svg";
 export { default as Llama } from "@/public/svgs/llama.svg";
 export { default as Mistra } from "@/public/svgs/mistral.svg";
 export { default as ArrowBack } from "@/public/svgs/arrow-back.svg";
+export { default as Target } from "@/public/target.svg";
+export { default as TrashIcon } from "@/public/trash.svg"
+export {default as Edit} from "@/public/edit.svg"
+

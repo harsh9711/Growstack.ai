@@ -32,7 +32,7 @@ export default function BrandVoice() {
             <p style={{ opacity: "50%" }}>
               Choose different brand voices to use in various instances - ensuring consistency of your AI-generated content.
             </p>
-            <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-md flex gap-3 items-center w-[30%] mt-2 cursor-text">
+            <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-md flex gap-3 items-center w-[30%] mt-2 ">
               <Search className="text-gray-500" size={20} />
               <input
                 type="search"
@@ -58,7 +58,7 @@ export default function BrandVoice() {
         </div>
 
         <div className="mt-5">
-          <DocumentsTable search={debouncedSearch}  setTotalBrandVoiceCount={setTotalBrandVoiceCount}  />
+          <DocumentsTable search={debouncedSearch} setTotalBrandVoiceCount={setTotalBrandVoiceCount} />
         </div>
       </div>
 

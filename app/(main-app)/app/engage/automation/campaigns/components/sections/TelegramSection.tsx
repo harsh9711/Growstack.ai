@@ -220,7 +220,7 @@ export default function TelegramSection() {
             <Button
               variant="outline"
               size="sm"
-              className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px]"
+              className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[50px]"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}>
               Previous
@@ -231,7 +231,7 @@ export default function TelegramSection() {
             <Button
               variant="outline"
               size="sm"
-              className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px] px-4"
+              className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[50px] px-4"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}>
               Next

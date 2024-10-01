@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import { DialogTitle } from '@radix-ui/react-dialog';
 import { z } from 'zod';
+import DotsLoader from "@/components/DotLoader";
 
 interface BrandVoice {
     _id: string;
@@ -23,7 +24,6 @@ interface BrandVoiceModalProps {
     onClose: () => void;
 }
 
-// Zod schema for validation
 const brandVoiceSchema = z.object({
     brand_name: z.string().nonempty("Brand name is required"),
     brand_voice: z.string().nonempty("Brand voice is required"),
@@ -63,7 +63,8 @@ const BrandVoiceModal: React.FC<BrandVoiceModalProps> = ({ brandId, onClose }) =
         }
     };
 
-    if (loading) return null;
+    if (loading) return <div className="flex items-center justify-center absolute top-0 left-0 w-full h-full"><DotsLoader />
+    </div>;
 
     return (
         <Dialog open={true} onOpenChange={onClose} >

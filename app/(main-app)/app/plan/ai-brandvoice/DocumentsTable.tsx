@@ -32,17 +32,41 @@ import swal from "sweetalert";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import BrandVoiceModal from "./components/BrandVoiceModalProps";
-import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown
+import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
 import rehypeRaw from 'rehype-raw';
+import { EditIcon, Edit, Target, TrashIcon } from '@/components/svgs';
 import { API_URL } from "@/lib/api";
+import DotsLoader from "@/components/DotLoader";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { DeleteIcon } from "@/components/svgs/icons";
 interface BrandVoice {
   _id: string;
   brand_name: string;
   brand_voice: string;
   document_url: string | null;
 }
+
+interface BrandVoiceSetDefault {
+  _id: string;
+  brand_name: string;
+  websites: string[];
+  brand_voice: string;
+  description?: string;
+  document_url: string | null;
+  is_default?: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
 interface DocumentsTableProps {
   search: string;
   setTotalBrandVoiceCount: React.Dispatch<React.SetStateAction<number>>;
@@ -57,6 +81,8 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
     pageIndex: 0,
     pageSize: 10,
   });
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [documents, setDocuments] = useState<BrandVoice[]>([]);
   const [totalDocs, setTotalDocs] = useState(0);
@@ -93,6 +119,15 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
     setSelectedBrandId(null);
   };
 
+  const setAsDefault = async (brandData: Partial<BrandVoiceSetDefault>) => {
+    setLoading(true);
+    brandData.is_default = true
+    await instance.put(`${API_URL}/users/api/v1/brand-voice/${brandData._id}`, brandData);
+    setOpenDropdown(null)
+    setLoading(false)
+    toast.success("Brand voice updated successfully!");
+  }
+
   const columns: ColumnDef<BrandVoice>[] = [
     {
       accessorKey: "brand_name",
@@ -114,9 +149,7 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
       cell: ({ row }) => {
         const brandVoice = row.getValue("brand_voice") as string;
         const truncatedBrandVoice =
-          brandVoice.length > 200
-            ? brandVoice.slice(0, 200) + "..."
-            : brandVoice;
+          brandVoice.length > 200 ? brandVoice.slice(0, 200) + "..." : brandVoice;
 
         return (
           <div
@@ -124,11 +157,17 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
             data-tooltip-id={`tooltip-${row.id}`}
             data-tooltip-content={brandVoice}
           >
-            {truncatedBrandVoice}
+            <ReactMarkdown
+              children={truncatedBrandVoice}
+              remarkPlugins={[remarkGfm, remarkBreaks]}
+              rehypePlugins={[rehypeRaw]}
+              className="markdown-content"
+            />
           </div>
         );
       },
-    },
+    }
+    ,
 
     {
       accessorKey: "document_url",
@@ -154,24 +193,41 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
               setOpenDropdown(openDropdown === row.original._id ? null : row.original._id);
             }}
           >
-            <EllipsisVertical size={20} className="text-gray-800" />
           </button>
-          {openDropdown === row.original._id && (
-            <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow-lg z-10">
-              <button
-                className="block w-full text-left p-2 hover:bg-gray-100"
-                onClick={() => handleOpenModal(row.original._id)}
-              >
-                Edit
-              </button>
-              <button
-                className="block w-full text-left p-2 hover:bg-gray-100"
-                onClick={() => handleDeleteBranVoice(row.original._id)}
-              >
-                Delete
-              </button>
-            </div>
-          )}
+          <Select >
+            <SelectTrigger
+              className="px-1 py-[5px] bg-white border-0 h-fit hover:bg-gray-100 rounded-lg"
+            >
+              <EllipsisVertical size={20} className="text-gray-800" />
+
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <button
+                  style={{ whiteSpace: "nowrap" }}
+                  className="block w-full text-left p-2 hover:bg-gray-100 flex items-center gap-2"
+                  onClick={() => {
+                    setAsDefault(row.original);
+                  }}
+                >
+                  <Target /> Set as default
+                </button>
+                <button
+                  className="block w-full text-left p-2 hover:bg-gray-100 flex items-center gap-2"
+                  onClick={() => handleOpenModal(row.original._id)}
+                >
+                  <Edit /> &nbsp;Edit
+                </button>
+                <button
+                  className="block w-full text-left p-2 hover:bg-gray-100 flex items-center gap-2"
+                  onClick={() => handleDeleteBranVoice(row.original._id)}
+                >
+                  <TrashIcon /> Delete
+                </button>
+              </SelectGroup>
+            </SelectContent>
+
+          </Select>
         </div>
       ),
       enableSorting: false,
@@ -194,14 +250,9 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
         setTotalBrandVoiceCount((prev) => prev - 1);
         toast.success("Document deleted successfully");
         setOpenDropdown(null);
+
       }
     });
-  };
-
-
-  const handleEdit = (id: string) => {
-    router.push(`/account/create-brand-voice/${id}`);
-    setOpenDropdown(null); // Close dropdown after navigating
   };
 
   const table = useReactTable({
@@ -241,7 +292,7 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
                   </TableRow>
                 ))}
               </TableHeader>
-              <TableBody>
+              <TableBody className="mb-4">
                 {table.getRowModel().rows?.length ? (
                   table.getRowModel().rows.map((row) => (
                     <TableRow key={row.id} className="bg-white">
@@ -277,7 +328,7 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
 
         <div className="flex items-center space-x-2">
           <Button
-            variant="outline"
+            variant="outline" className="bg-[#4B465C14]"
             size="sm"
             onClick={() => {
               if (pagination.pageIndex > 0) {
@@ -292,16 +343,16 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
             <Button
               key={index}
               variant="outline"
-              size="sm"
+              size="sm" style={{ width: "35px", height: "35px", borderRadius: '8px' }}
               onClick={() => setPagination((prev: any) => ({ ...prev, pageIndex: index }))}
-              className={pagination.pageIndex === index ? "bg-[#034737] text-white" : ""}
+              className={pagination.pageIndex === index ? "bg-[#034737] text-white" : "bg-[#4B465C14] text-black"}
             >
               {index + 1}
             </Button>
           ))}
           <Button
             variant="outline"
-            size="sm"
+            size="sm" className="bg-[#4B465C14]"
             onClick={() => {
               if (pagination.pageIndex < totalPages - 1) {
                 setPagination((prev: { pageIndex: number; }) => ({ ...prev, pageIndex: prev.pageIndex + 1 }));
