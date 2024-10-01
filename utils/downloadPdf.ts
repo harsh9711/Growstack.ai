@@ -1,4 +1,5 @@
 import axios from "axios";
+import { API_URL } from "@/lib/api";
 
 const downloadPdf = async (
   plainTextContent: any,
@@ -7,7 +8,7 @@ const downloadPdf = async (
 ) => {
   try {
     const response = await axios({
-      url: `http://localhost:8081/users/api/v1/generate-pdf/pdf`,
+      url: `${API_URL}/users/api/v1/generate-pdf/pdf`,
       method: "POST",
       responseType: "blob",
       headers: {

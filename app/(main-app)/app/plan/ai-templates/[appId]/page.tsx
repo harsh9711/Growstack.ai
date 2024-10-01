@@ -162,7 +162,7 @@ export default function AiAppPage({
 
     // Prepare different formats
     const formats = {
-      "Copy as Text": generatedContent,
+      "Copy as Text": plainTextContent,
       "Copy as HTML": formattedContent,
       "Download as DOC": plainTextContent,
       "Download as TXT": plainTextContent,
@@ -418,7 +418,7 @@ export default function AiAppPage({
         doc_content: plainTextContent,
       };
       const response = await instance.post(
-        "http://localhost:8081" + `/users/api/v1/docs/save`,
+        API_URL + `/users/api/v1/docs/save`,
         payload
       );
       router.push(`/account/saved-documents`);
@@ -843,7 +843,7 @@ export default function AiAppPage({
                 <Dropdown
                   label="Download"
                   items={[
-                    // "Copy as Text",
+                    "Copy as Text",
                     "Copy as HTML",
                     "Download as DOC",
                     "Download as TXT",
@@ -855,7 +855,8 @@ export default function AiAppPage({
                     "Save as HTML",
                   ]}
                   hideLabel
-                  value="Copy as Text"
+                  placeholder="Download/Save"
+                  value=""
                   onChange={(value: any) => handleDownload(value)}
                 />
 
