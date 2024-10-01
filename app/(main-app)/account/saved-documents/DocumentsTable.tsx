@@ -44,7 +44,9 @@ import { downloadTxt } from "../../app/plan/custom-gpts/new/components/utils/dow
 import { renderToString } from 'react-dom/server';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
-
+import { saveAs } from "file-saver";
+import axios from 'axios';
+import downloadPdf from "@/utils/downloadPdf";
 interface Document {
   name: string;
   workbook: string;
@@ -77,6 +79,34 @@ export default function DocumentsTable() {
   });
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const stripHtmlTags = (html: string) => {
+    const temp = document.createElement("div");
+    temp.innerHTML = html
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/p>/gi, "\n\n");
+    return temp.textContent || temp.innerText || "";
+  };
+
+  const handleDownload = (rowData: any) => {
+    let plainTextContent = stripHtmlTags(rowData?.doc_content);
+    if(rowData?.doc_type === "PDF"){
+      downloadPdf(plainTextContent,rowData?.doc_language,rowData?.doc_name);
+    }else if(rowData?.doc_type === "DOC"){
+      const docContent = stripHtmlTags(rowData?.doc_content);
+      const docBlob = new Blob([docContent], {
+        type: "application/msword;charset=utf-8",
+      });
+      saveAs(docBlob, `${rowData?.doc_name}.doc`);
+    }else if(rowData?.doc_type === "HTML"){
+      const htmlBlob = new Blob([rowData?.doc_content], {
+        type: "text/html;charset=utf-8",
+      });
+      saveAs(htmlBlob, `${rowData?.doc_name}.html`);
+    }else{
+      downloadTxtFile(rowData)
+    }
+  }
 
   const downloadTxtFile = (rowData: any) => {
     const markdownContent = (
@@ -116,7 +146,7 @@ export default function DocumentsTable() {
     //   ),
     // },
     {
-      accessorKey: "category",
+      accessorKey: "doc_type",
       header: () => <div className="uppercase">Category</div>,
       cell: ({ row }) => (
         <div
@@ -124,7 +154,7 @@ export default function DocumentsTable() {
             "uppercase bg-gray-100 px-2 py-1.5 max-w-fit rounded-md text-[13px]"
           )}
         >
-          {row.getValue("category")}
+          {row.getValue("doc_type")}
         </div>
       ),
     },
@@ -160,7 +190,7 @@ export default function DocumentsTable() {
             {row.getValue("doc_language")}
           </div>
         ) : (
-          <div>—</div>
+          <div>{row.getValue("doc_language")}</div>
         ),
     },
     {
@@ -193,7 +223,7 @@ export default function DocumentsTable() {
               <FileDown
                 size={20}
                 className="text-gray-800 cursor-pointer"
-                onClick={() => downloadTxtFile(row?.original)}
+                onClick={() => handleDownload(row?.original)}
               />
             </button>
           </div>

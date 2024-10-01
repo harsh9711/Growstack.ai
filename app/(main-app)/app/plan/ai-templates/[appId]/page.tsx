@@ -36,6 +36,7 @@ import { useDispatch } from "react-redux";
 import { languageOptions } from "../../../create/ai-articles/constants/options";
 import Dropdown from "./components/Dropdown";
 import { Plus } from "lucide-react";
+import downloadPdf from "@/utils/downloadPdf";
 
 export default function AiAppPage({
   params: { appTemplateId },
@@ -154,33 +155,6 @@ export default function AiAppPage({
     }
   }, [editDocumentData]);
 
-  const downloadPdf = async (plainTextContent:any,userInput:any,fileName:string) => {
-    try {
-      const response = await axios({
-        url:  `${API_URL}/users/api/v1/generate-pdf/pdf`,
-        method: "POST",
-        responseType: "blob",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: {
-          text: plainTextContent,
-          language: userInput?.language,
-          fileName: fileName,
-        },
-      });
-
-      const blob = new Blob([response.data], { type: "application/pdf" });
-      const link = document.createElement("a");
-      link.href = window.URL.createObjectURL(blob);
-      link.download = `${fileName}.pdf`;
-      link.click();
-      window.URL.revokeObjectURL(link.href);
-    } catch (error) {
-      console.error("Error downloading the PDF:", error);
-    }
-  };
-
   const handleDownload = (selectedOption: string) => {
     const contentState = editorState.getCurrentContent();
     const rawContentState = convertToRaw(contentState);
@@ -194,6 +168,7 @@ export default function AiAppPage({
       "Download as DOC": plainTextContent,
       "Download as TXT": plainTextContent,
       "Download as PDF": plainTextContent,
+      "Download as HTML": formattedContent,
     };
 
     switch (selectedOption) {
@@ -212,6 +187,13 @@ export default function AiAppPage({
         });
         saveAs(docBlob, `${fileName}.doc`);
         break;
+      case "Download as HTML":
+          const htmlContent = formats["Download as HTML"];
+          const htmlBlob = new Blob([htmlContent], {
+            type: "text/html;charset=utf-8",
+          });
+          saveAs(htmlBlob, `${fileName}.html`);
+        break;
       case "Download as TXT":
         const txtBlob = new Blob([formats["Download as TXT"]], {
           type: "text/plain;charset=utf-8",
@@ -220,6 +202,18 @@ export default function AiAppPage({
         break;
       case "Download as PDF":
         downloadPdf(plainTextContent,userInput,fileName);
+        break;
+      case "Save as PDF":
+        handleSaveDocument("pdf");
+        break;
+      case "Save as DOC":
+          handleSaveDocument("doc");
+        break;
+      case "Save as TXT":
+        handleSaveDocument("text");
+       break;
+      case "Save as HTML":
+        handleSaveDocument("html");
         break;
       default:
         console.error("Unsupported download option");
@@ -329,7 +323,7 @@ export default function AiAppPage({
     });
   };
 
-  const handleSaveDocument = async () => {
+  const handleSaveDocument = async (fileType : string) => {
     if (!fileName) {
       return toast.error("Please enter document name");
     }
@@ -337,15 +331,26 @@ export default function AiAppPage({
     try {
       const formattedContent = generatedContent;
       let plainTextContent = stripHtmlTags(formattedContent);
+      let tempCategory = ""
+      if (fileType === 'text') {
+        plainTextContent = stripHtmlTags(formattedContent);
+        tempCategory = "text"
+      } else if (fileType === 'pdf' || fileType === 'doc') {
+        plainTextContent = formattedContent;
+        tempCategory = "document"
+      }else if(fileType === "html"){
+        plainTextContent = formattedContent;
+        tempCategory = "website"
+      }
       const payload = {
         doc_name: fileName,
         doc_language: userInput1,
-        doc_type: "TEXT",
-        category: "text",
+        doc_type: fileType.toUpperCase(),
+        category: tempCategory,
         doc_content: plainTextContent,
       };
       const response = await instance.post(
-        API_URL + `/users/api/v1/docs/save`,
+        "http://localhost:8081" + `/users/api/v1/docs/save`,
         payload
       );
       router.push(`/account/saved-documents`);
@@ -775,6 +780,11 @@ export default function AiAppPage({
                     "Download as DOC",
                     "Download as TXT",
                     "Download as PDF",
+                    "Download as HTML",
+                    "Save as DOC",
+                    "Save as TXT",
+                    "Save as PDF",
+                    "Save as HTML",
                   ]}
                   hideLabel
                   value="Copy as Text"
@@ -782,7 +792,7 @@ export default function AiAppPage({
                   onChange={(value: any) => handleDownload(value)}
                 />
 
-                <button
+                {/* <button
                   className='h-11 w-11 grid place-content-center p-2 bg-gray-100 rounded-lg'
                   onClick={isEdit ? handleEditDocument : handleSaveDocument}
                 >
@@ -791,7 +801,7 @@ export default function AiAppPage({
                   ) : (
                     <Save size={24} className='text-gray-600' />
                   )}
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
