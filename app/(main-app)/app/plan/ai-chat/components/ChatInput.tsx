@@ -53,6 +53,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
   const [isAnimating, setIsAnimating] = useState(false);
   const [input, setInput] = useState("");
   const [isDailyLimitExceeded, setIsDailyLimitExceeded] = useState(isLimitExceeded)
+  const [newConversationId, setNewConversationId] = useState("");
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { startRecognition, stopRecognition, textToSpeech } = useSpeechRecognition(
@@ -133,7 +134,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
     try {
       setIsAnimating(false);
       setOpen(false);
-      let apiUrl = `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${selectedConversation ? selectedConversation : ""}&model=${selectedModel}&enableSecure=${enableSecure}`;
+      let apiUrl = `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${selectedConversation ? selectedConversation : newConversationId ? newConversationId : ""}&model=${selectedModel}&enableSecure=${enableSecure}`;
       if (enableWebBrowsing) {
         apiUrl += `&webBrowsing=${enableWebBrowsing}`
       }
@@ -158,7 +159,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
           }
         }
       }
-
+      setNewConversationId(conversation_id);
       await streamResponse(chatId);
       if ((selectedConversation || conversation_id)) fetchConversations();
 

@@ -9,6 +9,8 @@ export default function BrandVoice() {
   const [search, setSearch] = useState<string>("");
   const [debouncedSearch, setDebouncedSearch] = useState<string>(search);
   const [openCreateBrandVoice, setOpenCreateBrandVoice] = useState(false);
+  const [triggerFetchingBrandVoice, setTriggerFetchingBrandVoice] = useState<number>(0);
+  const [totalBrandVoiceCount, setTotalBrandVoiceCount] = React.useState(0);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -22,7 +24,12 @@ export default function BrandVoice() {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
-  const [totalBrandVoiceCount, setTotalBrandVoiceCount] = React.useState(0);
+
+  const handleBrandVoiceCreation = () => {
+    setTriggerFetchingBrandVoice((prev) => prev + 1);
+    setOpenCreateBrandVoice(false);
+  };
+
   return (
     <div>
       <div className="mt-10">
@@ -58,13 +65,14 @@ export default function BrandVoice() {
         </div>
 
         <div className="mt-5">
-          <DocumentsTable search={debouncedSearch} setTotalBrandVoiceCount={setTotalBrandVoiceCount} />
+          <DocumentsTable triggerFetchingBrandVoice={triggerFetchingBrandVoice} search={debouncedSearch} setTotalBrandVoiceCount={setTotalBrandVoiceCount} />
         </div>
       </div>
 
       <CreateBrandVoice
         isOpen={openCreateBrandVoice}
         setIsOpen={setOpenCreateBrandVoice}
+        onSuccess={handleBrandVoiceCreation}
       />
     </div>
   );

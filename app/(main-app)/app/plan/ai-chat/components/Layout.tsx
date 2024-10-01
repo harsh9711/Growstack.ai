@@ -142,6 +142,15 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
   };
 
   useEffect(() => {
+    if (brandVoices?.length > 0) {
+      const defaultBrandVoice = brandVoices.find((voice) => voice.is_default);
+      if (defaultBrandVoice) {
+        setSelectedBrandVoice(defaultBrandVoice._id);
+      }
+    }
+  }, [brandVoices])
+
+  useEffect(() => {
     if (selectedConversation) {
       fetchMessages(selectedConversation);
     }
