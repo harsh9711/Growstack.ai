@@ -91,7 +91,7 @@ export default function DocumentsTable() {
   const handleDownload = (rowData: any) => {
     let plainTextContent = stripHtmlTags(rowData?.doc_content);
     if(rowData?.doc_type === "PDF"){
-      downloadPdf(plainTextContent,rowData?.doc_language,rowData?.doc_name);
+      downloadPdf(plainTextContent,{language : rowData?.doc_language},rowData?.doc_name);
     }else if(rowData?.doc_type === "DOC"){
       const docContent = stripHtmlTags(rowData?.doc_content);
       const docBlob = new Blob([docContent], {
