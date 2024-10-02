@@ -27,12 +27,12 @@ const RectangleCard: React.FC<RectangleCardProps> = ({
         <div className="max-w-[505px] w-full flex flex-col gap-y-2 sm:gap-y-6">
 
           <h2
-            className={`sm:text-[28px] text-[16px] font-semibold text-shadow `}
+            className={`sm:text-[28px] text-[16px] font-semibold  `}
           >
             {firsttext}
           </h2>
           <p
-            className={`sm:text-[16px] text-[12px] font-medium text-[#5B5D60] text-shadow`}
+            className={`sm:text-[16px] text-[12px] font-medium text-[#5B5D60] `}
           >
             {secondtext}
           </p>

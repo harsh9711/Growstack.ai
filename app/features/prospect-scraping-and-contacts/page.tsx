@@ -5,10 +5,7 @@ import Navbar from "@/components/navbar/Navbar";
 
 import Footer from "@/components/footer/Footer";
 import Link from "next/link";
-import {
-  ReactCompareSlider,
-  ReactCompareSliderImage,
-} from "react-compare-slider";
+import {ReactCompareSlider,ReactCompareSliderImage,} from "react-compare-slider";
 import ExpandableCard from "./component/ExpandableCard";
 import Card from "./component/Card";
 import CardResponsive from "./component/CardResponsive";

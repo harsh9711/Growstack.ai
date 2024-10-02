@@ -426,8 +426,8 @@ const Demo = () => {
   return (
     <div>
       {" "}
-      <Navbar />
-      <div className="p-4 2xl:p-0 max-w-[1280px] mt-6 flex flex-wrap gap-6 w-full items-start mx-auto justify-between">
+     <div className="relative z-40"><Navbar /></div> 
+      <div className="z-0 relative p-4 2xl:p-0 max-w-[1280px] mt-6 flex flex-wrap gap-6 w-full items-start mx-auto justify-between">
         <div className="relative z-20 flex flex-col gap-y-6 max-w-[543px] w-full">
           <h2 className="text-[48px]  font-bold text-black">
             Experience GrowStack in action
