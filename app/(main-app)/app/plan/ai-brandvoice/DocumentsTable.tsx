@@ -49,6 +49,7 @@ import {
 import React from "react";
 import GlobalModal from "@/components/modal/global.modal";
 import { BrandVoice } from "@/types/common";
+import Spinner from "@/components/Spinner";
 
 
 interface BrandVoiceSetDefault {
@@ -80,6 +81,7 @@ export default function ({ search, setTotalBrandVoiceCount, triggerFetchingBrand
   });
   const [loading, setLoading] = useState<boolean>(false);
 
+  const [isFetching, setIsFetching] = useState<boolean>(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [documents, setDocuments] = useState<BrandVoice[]>([]);
   const [totalDocs, setTotalDocs] = useState(0);
@@ -94,6 +96,7 @@ export default function ({ search, setTotalBrandVoiceCount, triggerFetchingBrand
 
   const fetchBrandVoice = async (search: string, page: number, limit: number) => {
     try {
+      setIsFetching(true);
       const response = await instance.get(
         `${API_URL}/users/api/v1/brand-voice`,
         { params: { page, limit, search } }
@@ -105,6 +108,8 @@ export default function ({ search, setTotalBrandVoiceCount, triggerFetchingBrand
       setTotalBrandVoiceCount(totalDocs);
     } catch (error) {
       console.error("Error fetching brand voices", error);
+    } finally {
+      setIsFetching(false);
     }
   };
   const handleOpenModal = (brandId: string) => {
@@ -299,21 +304,31 @@ export default function ({ search, setTotalBrandVoiceCount, triggerFetchingBrand
                 ))}
               </TableHeader>
               <TableBody className="mb-4">
-                {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
-                    <TableRow key={row.id} className="bg-white">
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                ) : (
+
+                {isFetching ? (
                   <TableRow className="hover:bg-white">
-                    <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg">
-                      No Brand Voice Found.
+                    <TableCell colSpan={columns.length + 20} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
+                      <div className="flex-1 flex flex-col gap-5 justify-center items-center">
+                        <Spinner color="black" size={56} />
+                      </div>
                     </TableCell>
                   </TableRow>
-                )}
+                ) :
+                  table.getRowModel().rows?.length ? (
+                    table.getRowModel().rows.map((row) => (
+                      <TableRow key={row.id} className="bg-white">
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                        ))}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow className="hover:bg-white">
+                      <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg">
+                        No Brand Voice Found.
+                      </TableCell>
+                    </TableRow>
+                  )}
               </TableBody>
             </Table>
           </div>
