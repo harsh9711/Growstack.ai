@@ -14,6 +14,7 @@ import Editor from "./components/Editor";
 import Spinner from "@/components/Spinner";
 import { Switch } from "@/components/ui/switch";
 import { Info } from "lucide-react";
+import axios from 'axios';
 import {
   Tooltip,
   TooltipContent,
@@ -34,6 +35,7 @@ import { useDispatch } from "react-redux";
 import { languageOptions } from "../../../create/ai-articles/constants/options";
 import Dropdown from "./components/Dropdown";
 import { Plus } from "lucide-react";
+import downloadPdf from "@/utils/downloadPdf";
 
 export default function AiAppPage({
   params: { appTemplateId },
@@ -160,58 +162,13 @@ export default function AiAppPage({
 
     // Prepare different formats
     const formats = {
-      "Copy as Text": generatedContent,
+      "Copy as Text": plainTextContent,
       "Copy as HTML": formattedContent,
       "Download as DOC": plainTextContent,
       "Download as TXT": plainTextContent,
       "Download as PDF": plainTextContent,
+      "Download as HTML": formattedContent,
     };
-
-    const addTextToPdf = async (content: string) => {
-      console.log("content", content);
-
-      // Initialize jsPDF
-      const pdfDoc = new jsPDF();
-
-      // Add the custom font that supports UTF-8 (NotoSans-Regular.ttf)
-      const fontUrl = "/fonts/NotoSans-Regular.ttf"; // Path to the font file
-      const fontData = await fetch(fontUrl).then(res => res.arrayBuffer());
-
-      // Convert ArrayBuffer to base64 string
-      const base64FontData = arrayBufferToBase64(fontData);
-
-      // Add font to jsPDF
-      pdfDoc.addFileToVFS("NotoSans-Regular.ttf", base64FontData);
-      pdfDoc.addFont("NotoSans-Regular.ttf", "NotoSans", "normal");
-      pdfDoc.setFont("NotoSans");
-
-      let yPos = 10;
-      const pageHeight = pdfDoc.internal.pageSize.height;
-
-      // Split text into lines that fit within the PDF
-      const lines = pdfDoc.splitTextToSize(content, 180);
-      lines.forEach((line: string | string[]) => {
-        if (yPos + 10 > pageHeight) {
-          pdfDoc.addPage();
-          yPos = 10;
-        }
-        pdfDoc.text(line, 10, yPos);
-        yPos += 10;
-      });
-
-      return pdfDoc;
-    }
-
-    const arrayBufferToBase64 = (buffer: ArrayBuffer) => {
-      let binary = '';
-      const bytes = new Uint8Array(buffer);
-      const len = bytes.byteLength;
-      for (let i = 0; i < len; i++) {
-        binary += String.fromCharCode(bytes[i]);
-      }
-      return window.btoa(binary);
-    }
-
 
     switch (selectedOption) {
       case "Copy as Text":
@@ -229,6 +186,13 @@ export default function AiAppPage({
         });
         saveAs(docBlob, `${fileName}.doc`);
         break;
+      case "Download as HTML":
+          const htmlContent = formats["Download as HTML"];
+          const htmlBlob = new Blob([htmlContent], {
+            type: "text/html;charset=utf-8",
+          });
+          saveAs(htmlBlob, `${fileName}.html`);
+        break;
       case "Download as TXT":
         const txtBlob = new Blob([formats["Download as TXT"]], {
           type: "text/plain;charset=utf-8",
@@ -236,8 +200,19 @@ export default function AiAppPage({
         saveAs(txtBlob, `${fileName}.txt`);
         break;
       case "Download as PDF":
-        const pdfDoc = await addTextToPdf(formats["Download as PDF"]);
-        pdfDoc.save(`${fileName}.pdf`);
+        downloadPdf(plainTextContent,userInput,fileName);
+        break;
+      case "Save as PDF":
+        handleSaveDocument("pdf");
+        break;
+      case "Save as DOC":
+          handleSaveDocument("doc");
+        break;
+      case "Save as TXT":
+        handleSaveDocument("text");
+       break;
+      case "Save as HTML":
+        handleSaveDocument("html");
         break;
       default:
         console.error("Unsupported download option");
@@ -416,18 +391,31 @@ export default function AiAppPage({
     });
   };
 
-  const handleSaveDocument = async () => {
+  const handleSaveDocument = async (fileType : string) => {
     if (!fileName) {
       return toast.error("Please enter document name");
     }
     setIsDocumentSavePending(true);
     try {
+      const formattedContent = generatedContent;
+      let plainTextContent = stripHtmlTags(formattedContent);
+      let tempCategory = ""
+      if (fileType === 'text') {
+        plainTextContent = stripHtmlTags(formattedContent);
+        tempCategory = "text"
+      } else if (fileType === 'pdf' || fileType === 'doc') {
+        plainTextContent = formattedContent;
+        tempCategory = "document"
+      }else if(fileType === "html"){
+        plainTextContent = formattedContent;
+        tempCategory = "website"
+      }
       const payload = {
         doc_name: fileName,
         doc_language: userInput1,
-        doc_type: "TEXT",
-        category: "text",
-        doc_content: generatedContent,
+        doc_type: fileType.toUpperCase(),
+        category: tempCategory,
+        doc_content: plainTextContent,
       };
       const response = await instance.post(
         API_URL + `/users/api/v1/docs/save`,
@@ -855,19 +843,25 @@ export default function AiAppPage({
                 <Dropdown
                   label="Download"
                   items={[
-                    // "Copy as Text",
+                    "Copy as Text",
                     "Copy as HTML",
                     "Download as DOC",
                     "Download as TXT",
                     "Download as PDF",
+                    "Download as HTML",
+                    "Save as DOC",
+                    "Save as TXT",
+                    "Save as PDF",
+                    "Save as HTML",
                   ]}
                   hideLabel
-                  value="Copy as Text"
+                  placeholder="Download/Save"
+                  value=""
                   onChange={(value: any) => handleDownload(value)}
                 />
 
-                <button
-                  className="h-11 w-11 grid place-content-center p-2 bg-gray-100 rounded-lg"
+                {/* <button
+                  className='h-11 w-11 grid place-content-center p-2 bg-gray-100 rounded-lg'
                   onClick={isEdit ? handleEditDocument : handleSaveDocument}
                 >
                   {isDocumentSavePending ? (
@@ -875,7 +869,7 @@ export default function AiAppPage({
                   ) : (
                     <Save size={24} className="text-gray-600" />
                   )}
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
