@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/select";
 import clsx from "clsx";
 import { Download, Settings, Share2, UserCircle } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Assistant, Chat, Conversation } from "../../../components/types";
 import {
   downloadDocx,
@@ -26,6 +26,9 @@ import {
   downloadTxt,
 } from "./utils/downloadHelpers";
 import Image from "next/image";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
 
 interface IProps {
   assistant: Assistant;
@@ -44,9 +47,42 @@ export default function Topbar({
   selectedLanguage,
   switchLanguage,
 }: IProps) {
+  const { currentPlan } = useSelector((rootState: RootState) => rootState.auth);
   const [selectedAiModel, setSelectedAiModel] = useState(
-    aiModelOptions[0].value
+    aiModelOptions[1].models[0].value
   );
+
+
+  const handleModalSelection = (value: string) => {
+    if (!currentPlan) return;
+    const currentCategory = aiModelOptions.find((category) =>
+      category.models.some((model) => model.value === value)
+    );
+
+    const currentModal = currentCategory?.models.find(
+      (model) => model.value === value
+    );
+
+    if (!currentCategory || !currentModal) {
+      console.error("Model not found");
+      return;
+    }
+
+    let usageLimit = 0;
+
+    if (currentCategory.modelCategory === "smartAiMessagesModel") {
+      usageLimit = currentPlan.smart_ai_messages;
+    } else if (currentCategory.modelCategory === "fastAiMessagesModel") {
+      usageLimit = currentPlan.fast_ai_messages;
+    }
+
+    if (usageLimit <= 0) {
+      toast.error(`You have no remaining usage for ${currentCategory.label}. Please switch to another model.`);
+      return;
+    }
+
+    setSelectedAiModel(value);
+  };
 
   return (
     <div className="border-b px-10 py-5">
@@ -67,9 +103,6 @@ export default function Topbar({
           </div>
         </div>
         <div className="flex items-center gap-3">
-          {/* <div className="bg-primary-green/10 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
-            <Share2 />
-          </div> */}
           <div
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             className="bg-primary-green/10 hover:text-white hover:bg-primary-green transition-all duration-300 h-11 w-11 grid place-content-center rounded-lg cursor-pointer"
@@ -107,28 +140,45 @@ export default function Topbar({
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <Select value={selectedAiModel} onValueChange={setSelectedAiModel}>
+          <Select value={selectedAiModel} onValueChange={handleModalSelection}>
             <SelectTrigger className="min-w-[200px] h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4">
-              <SelectValue placeholder="Select an option" />
+              <SelectValue placeholder="Select an option">
+                {selectedAiModel && (
+                  <div className="flex items-center gap-2">
+                    <span className="min-w-fit">
+                      {aiModelOptions
+                        .flatMap((option) => option.models) // Flattening the models array to find the icon
+                        .find((model) => model.value === selectedAiModel)?.icon}
+                    </span>
+                    {selectedAiModel}
+                  </div>
+                )}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
-              <SelectGroup>
-                {aiModelOptions.map(({ icon, label, value }) => (
-                  <SelectItem key={value} value={value}>
-                    <div
-                      className={clsx(
-                        "flex items-center gap-2",
-                        selectedAiModel === value && "font-medium"
-                      )}
-                    >
-                      <span className="min-w-fit">{icon}</span>
-                      {label}
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectGroup>
+              {aiModelOptions.map(({ label: categoryLabel, models }) => (
+                <SelectGroup key={categoryLabel}>
+                  <React.Fragment key={categoryLabel}>
+                    <div className="font-bold text-gray-500 px-4 py-2">{categoryLabel}</div>
+                    {models.map(({ icon, label, value }) => (
+                      <SelectItem key={value} value={value}>
+                        <div
+                          className={clsx(
+                            "flex items-center gap-2",
+                            selectedAiModel === value && "text-primary-green font-medium"
+                          )}
+                        >
+                          <span className="min-w-fit">{icon}</span>
+                          {label}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </React.Fragment>
+                </SelectGroup>
+              ))}
             </SelectContent>
           </Select>
+
           <Select value={selectedLanguage} onValueChange={switchLanguage}>
             <SelectTrigger className="bg-[#429A85] min-w-[200px] h-12 text-white border-0 rounded-xl flex items-center justify-between px-4">
               <SelectValue placeholder="Select an option" />

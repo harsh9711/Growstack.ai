@@ -30,17 +30,20 @@ type Message = {
 export default function ChatComponent() {
   const { currentPlan } = useSelector((rootState: RootState) => rootState.auth);
 
-  const filteredAiModelOptions = currentPlan && planIdsMap.BASIC.some((val) => val === currentPlan.plan_id)
-    ? aiModelOptions.filter(option => option.value.startsWith("claude"))
+  const filteredAiModelOptions = currentPlan &&
+    planIdsMap.BASIC.some((val) => val === currentPlan.plan_id)
+    ? aiModelOptions.map((category) => ({
+      ...category,
+      models: category.models.filter((model) => model.value.startsWith("claude")),
+    })).filter((category) => category.models.length > 0)
     : aiModelOptions;
-  
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
-  const [selectedModel, setSelectedModel] = useState<string>(filteredAiModelOptions[0]?.value || "");
+  const [selectedModel, setSelectedModel] = useState<string>(filteredAiModelOptions[1].models[0].value || "");
   const [secureChatEnabled, setSecureChatEnabled] = useState<boolean>(false)
   const [isDailyLimitExceeded, setIsDailyLimitExceeded] = useState(false)
   const [isDashboardChatModalOpen, setIsDashboardChatModalOpen] = useState(false);
-  const selectedModelLabel = aiModelOptions.find((option) => option.value === selectedModel)?.label;
 
   const fetchMessages = useCallback(async (_id: string) => {
     try {
@@ -142,7 +145,38 @@ export default function ChatComponent() {
 
   const currentUser = getCurrentUser();
 
-  
+
+
+  const handleModalSelection = (value: string) => {
+    if (!currentPlan) return;
+    const currentCategory = filteredAiModelOptions.find((category) =>
+      category.models.some((model) => model.value === value)
+    );
+
+    const currentModal = currentCategory?.models.find(
+      (model) => model.value === value
+    );
+
+    if (!currentCategory || !currentModal) {
+      console.error("Model not found");
+      return;
+    }
+
+    let usageLimit = 0;
+
+    if (currentCategory.modelCategory === "smartAiMessagesModel") {
+      usageLimit = currentPlan.smart_ai_messages;
+    } else if (currentCategory.modelCategory === "fastAiMessagesModel") {
+      usageLimit = currentPlan.fast_ai_messages;
+    }
+
+    if (usageLimit <= 0) {
+      toast.error(`You have no remaining usage for ${currentCategory.label}. Please switch to another model.`);
+      return;
+    }
+
+    setSelectedModel(value);
+  };
 
   return (
     <div className=" flex flex-col bg-white p-10 pt-8 rounded-3xl border border-[#E8E8E8] h-[780px]" data-aos="fade-up">
@@ -175,40 +209,42 @@ export default function ChatComponent() {
               <div className='w-5 h-5 bg-white rounded-full absolute left-0.5 top-0.5 peer-checked:translate-x-full peer-checked:bg-white transition-all'></div>
             </label>
           </div>
-          <Select value={selectedModel} onValueChange={setSelectedModel}>
+          <Select value={selectedModel} onValueChange={handleModalSelection}>
             <SelectTrigger className='h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4'>
-              <SelectValue placeholder='Select an option'>
-                {selectedModelLabel && (
-                  <div className='flex items-center gap-2'>
-                    <span className='min-w-fit'>
-                      {
-                        filteredAiModelOptions.find(
-                          (option) => option.value === selectedModel
-                        )?.icon
-                      }
+              <SelectValue placeholder="Select an option">
+                {selectedModel && (
+                  <div className="flex items-center gap-2">
+                    <span className="min-w-fit">
+                      {filteredAiModelOptions
+                        .flatMap((option) => option.models) // Flattening the models array to find the icon
+                        .find((model) => model.value === selectedModel)?.icon}
                     </span>
-                    {selectedModelLabel}
+                    {selectedModel}
                   </div>
                 )}
               </SelectValue>
             </SelectTrigger>
             <SelectContent className="max-h-60 overflow-y-auto" style={{ scrollBehavior: 'smooth' }}>
-              <SelectGroup>
-                {filteredAiModelOptions.map(({ icon, label, value }) => (
-                  <SelectItem key={value} value={value}>
-                    <div
-                      className={clsx(
-                        "flex items-center gap-2",
-                        selectedModel === value &&
-                        "text-primary-green font-medium"
-                      )}
-                    >
-                      <span className='min-w-fit'>{icon}</span>
-                      {label}
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectGroup>
+              {filteredAiModelOptions.map(({ label: categoryLabel, models }) => (
+                <SelectGroup key={categoryLabel}>
+                  <React.Fragment key={categoryLabel}>
+                    <div className="font-bold text-gray-500 px-4 py-2">{categoryLabel}</div>
+                    {models.map(({ icon, label, value }) => (
+                      <SelectItem key={value} value={value}>
+                        <div
+                          className={clsx(
+                            "flex items-center gap-2",
+                            selectedModel === value && "text-primary-green font-medium"
+                          )}
+                        >
+                          <span className="min-w-fit">{icon}</span>
+                          {label}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </React.Fragment>
+                </SelectGroup>
+              ))}
             </SelectContent>
           </Select>
         </div>
