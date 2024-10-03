@@ -86,7 +86,7 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
           data: { data },
         } = response;
         setCurrentStep(4);
-        setArticleData(data);
+        setArticleData(data.response);
       })
       .catch((err) => {
         toast.error(err.response.data.message || err.message);

@@ -1,3 +1,5 @@
+import { UIcon } from "@/components/svgs/icons";
+
 export const testimonials = [
   {
     id: 1,

@@ -81,14 +81,15 @@ export const featureRouteMap: FeatureRouteMap = {
 
 
 export const brandVoiceAnalyzeFormSchema = z.object({
-    urls: z.array(z.string().min(1, { message: 'Required' }).url({ message: 'Invalid URL' }).max(255))
-        .refine(urls => urls.every(url => url), { message: 'Invalid URL provided.' }),
-    description: z.string().max(2000).optional(),
-    file: z
-        .any()
+    urls: z.array(z.string().max(255))
         .optional()
+        .refine(
+            urls => urls?.every(url => url.trim() === '' || z.string().url().safeParse(url).success),
+            { message: 'Invalid URL' }
+        ),
+    description: z.string().max(2000).optional(),
+    file: z.any().optional(),
 });
-
 
 export const brandVoiceFormSchema = z.object({
     brandName: z.string().min(1, { message: 'Required' }).max(255),

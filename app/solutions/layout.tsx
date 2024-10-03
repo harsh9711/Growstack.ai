@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import React from "react";
 import Footer from "../(landing)/components/Footer";
+import { Poppins } from "next/font/google";
 export const metadata: Metadata = {
   title: "GrowStack | The All-in-One Platform for AI Marketing Tools",
   description:

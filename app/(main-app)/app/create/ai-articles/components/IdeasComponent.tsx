@@ -63,7 +63,7 @@ export default function IdeasComponent({
         language: language,
       })
       .then(({ data: { data } }) => {
-        setIdeas(data.topics);
+        setIdeas(data.response.topics);
         setViewKeywords(false);
       })
       .catch((err) => {
@@ -90,7 +90,8 @@ export default function IdeasComponent({
         language: language,
       })
       .then(({ data: { data, message } }) => {
-        setGeneratedKeywords(data.keywords);
+        console.log(data)
+        setGeneratedKeywords(data.response.keywords);
         toast.success(message);
         setViewKeywords(true);
       })

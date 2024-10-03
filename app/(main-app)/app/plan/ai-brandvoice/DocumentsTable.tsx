@@ -1,5 +1,4 @@
 "use client";
-
 import Motion from "@/components/Motion";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,7 +23,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
-import { EllipsisVertical, MoreHorizontal } from 'lucide-react';
+import { EllipsisVertical, MoreHorizontal, Trash2 } from 'lucide-react';
 import { Checkbox } from "@/components/ui/checkbox";
 import instance from "@/config/axios.config";
 import { Input } from "@/components/ui/input";
@@ -32,23 +31,46 @@ import swal from "sweetalert";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import BrandVoiceModal from "./components/BrandVoiceModalProps";
-import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown
+import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
 import rehypeRaw from 'rehype-raw';
+import { EditIcon, Edit, Target } from '@/components/svgs';
 import { API_URL } from "@/lib/api";
-interface BrandVoice {
+import DotsLoader from "@/components/DotLoader";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import React from "react";
+import GlobalModal from "@/components/modal/global.modal";
+import { BrandVoice } from "@/types/common";
+import Spinner from "@/components/Spinner";
+
+
+interface BrandVoiceSetDefault {
   _id: string;
   brand_name: string;
+  websites: string[];
   brand_voice: string;
+  description?: string;
   document_url: string | null;
+  is_default?: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
+
 interface DocumentsTableProps {
+  triggerFetchingBrandVoice?: number;
   search: string;
   setTotalBrandVoiceCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProps) {
+export default function ({ search, setTotalBrandVoiceCount, triggerFetchingBrandVoice }: DocumentsTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -57,18 +79,24 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
     pageIndex: 0,
     pageSize: 10,
   });
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const [isFetching, setIsFetching] = useState<boolean>(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [documents, setDocuments] = useState<BrandVoice[]>([]);
   const [totalDocs, setTotalDocs] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   useEffect(() => {
     fetchBrandVoice(search, pagination.pageIndex + 1, pagination.pageSize);
-  }, [search]);
-  const router = useRouter();
+  }, [search, triggerFetchingBrandVoice]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBrandId, setSelectedBrandId] = useState<string | null>(null);
+  const [selectedDeletedBrandVoice, setSelectedDeletedBrandVoice] = useState<BrandVoice | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const fetchBrandVoice = async (search: string, page: number, limit: number) => {
     try {
+      setIsFetching(true);
       const response = await instance.get(
         `${API_URL}/users/api/v1/brand-voice`,
         { params: { page, limit, search } }
@@ -80,6 +108,8 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
       setTotalBrandVoiceCount(totalDocs);
     } catch (error) {
       console.error("Error fetching brand voices", error);
+    } finally {
+      setIsFetching(false);
     }
   };
   const handleOpenModal = (brandId: string) => {
@@ -92,6 +122,16 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
     fetchBrandVoice(search, pagination.pageIndex + 1, pagination.pageSize);
     setSelectedBrandId(null);
   };
+
+  const setAsDefault = async (brandData: Partial<BrandVoiceSetDefault>) => {
+    setLoading(true);
+    brandData.is_default = true
+    await instance.put(`${API_URL}/users/api/v1/brand-voice/${brandData._id}`, brandData);
+    setOpenDropdown(null)
+    fetchBrandVoice(search, pagination.pageIndex + 1, pagination.pageSize);
+    setLoading(false)
+    toast.success("Brand voice updated successfully!");
+  }
 
   const columns: ColumnDef<BrandVoice>[] = [
     {
@@ -114,9 +154,7 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
       cell: ({ row }) => {
         const brandVoice = row.getValue("brand_voice") as string;
         const truncatedBrandVoice =
-          brandVoice.length > 200
-            ? brandVoice.slice(0, 200) + "..."
-            : brandVoice;
+          brandVoice.length > 200 ? brandVoice.slice(0, 200) + "..." : brandVoice;
 
         return (
           <div
@@ -124,22 +162,29 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
             data-tooltip-id={`tooltip-${row.id}`}
             data-tooltip-content={brandVoice}
           >
-            {truncatedBrandVoice}
+            <ReactMarkdown
+              children={truncatedBrandVoice}
+              remarkPlugins={[remarkGfm, remarkBreaks]}
+              rehypePlugins={[rehypeRaw]}
+              className="markdown-content"
+            />
           </div>
         );
       },
-    },
+    }
+    ,
 
     {
       accessorKey: "document_url",
       header: () => <div className="uppercase">Document</div>,
-      cell: ({ row }) => (<>
-        {row.getValue("document_url") ? (<>
-          <a href={row.getValue("document_url")} target="_blank" rel="noopener noreferrer">
-            {row.getValue("document_url") ? "View Document" : "-"}
-          </a>
-        </>) : (<>{"-"}</>)}
-      </>
+      cell: ({ row }) => (
+        <div>
+          {row.getValue("document_url") ? (<>
+            <a href={row.getValue("document_url")} target="_blank" rel="noopener noreferrer">
+              {row.getValue("document_url") ? "View Document" : "-"}
+            </a>
+          </>) : (<>{"-"}</>)}
+        </div>
       ),
     },
     {
@@ -154,55 +199,72 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
               setOpenDropdown(openDropdown === row.original._id ? null : row.original._id);
             }}
           >
-            <EllipsisVertical size={20} className="text-gray-800" />
           </button>
-          {openDropdown === row.original._id && (
-            <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow-lg z-10">
-              <button
-                className="block w-full text-left p-2 hover:bg-gray-100"
-                onClick={() => handleOpenModal(row.original._id)}
-              >
-                Edit
-              </button>
-              <button
-                className="block w-full text-left p-2 hover:bg-gray-100"
-                onClick={() => handleDeleteBranVoice(row.original._id)}
-              >
-                Delete
-              </button>
-            </div>
-          )}
+          <Select >
+            <SelectTrigger
+              showChevronDownIcon={false}
+              className="px-1 py-[5px] bg-white border-0 h-fit hover:bg-gray-100 rounded-lg"
+            >
+              <EllipsisVertical size={20} className="text-gray-800" />
+
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {
+                  !row.original.is_default && (
+                    <button
+                      style={{ whiteSpace: "nowrap" }}
+                      className="w-full text-left p-2 hover:bg-gray-100 flex items-center gap-2"
+                      onClick={() => {
+                        setAsDefault(row.original);
+                      }}
+                    >
+                      <Target /> Set as default
+                    </button>
+                  )
+                }
+                <button
+                  className="w-full text-left p-2 hover:bg-gray-100 flex items-center gap-2"
+                  onClick={() => handleOpenModal(row.original._id)}
+                >
+                  <Edit /> &nbsp;Edit
+                </button>
+                <button
+                  className="w-full text-left p-2 hover:bg-gray-100 hover:text-bookmark-red-1   flex items-center gap-2"
+                  onClick={() => setSelectedDeletedBrandVoice(row.original)}
+                >
+                  <span className="text-bookmark-red-1 ">
+                    <Trash2 />
+                  </span>
+                  Delete
+                </button>
+              </SelectGroup>
+            </SelectContent>
+
+          </Select>
         </div>
       ),
       enableSorting: false,
       enableHiding: false,
     }
   ];
-  const handleDeleteBranVoice = (id: string) => {
-    swal({
-      title: "Delete Document",
-      text: "Are you sure you want to delete it?",
-      icon: "warning",
-      buttons: ["Cancel", "Delete"],
-      dangerMode: true,
-    }).then(async (willDelete) => {
-      if (willDelete) {
-        await instance.delete(
-          `${API_URL}/users/api/v1/brand-voice/${id}`
-        );
-        setDocuments((prev) => prev.filter((doc) => doc._id !== id));
-        setTotalBrandVoiceCount((prev) => prev - 1);
-        toast.success("Document deleted successfully");
-        setOpenDropdown(null);
-      }
-    });
-  };
 
-
-  const handleEdit = (id: string) => {
-    router.push(`/account/create-brand-voice/${id}`);
-    setOpenDropdown(null); // Close dropdown after navigating
-  };
+  const handleDeleteBrandVoice = async (id: string) => {
+    setIsDeleting(true);
+    try {
+      await instance.delete(
+        `${API_URL}/users/api/v1/brand-voice/${id}`
+      );
+      setDocuments((prev) => prev.filter((doc) => doc._id !== id));
+      setTotalBrandVoiceCount((prev) => prev - 1);
+      toast.success("Document deleted successfully");
+    } catch (error) {
+      console.error("Error deleting brand voice")
+    } finally {
+      setIsDeleting(false);
+      setSelectedDeletedBrandVoice(null);
+    }
+  }
 
   const table = useReactTable({
     data: documents,
@@ -241,22 +303,32 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
                   </TableRow>
                 ))}
               </TableHeader>
-              <TableBody>
-                {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
-                    <TableRow key={row.id} className="bg-white">
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                ) : (
+              <TableBody className="mb-4">
+
+                {isFetching ? (
                   <TableRow className="hover:bg-white">
-                    <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg">
-                      No results.
+                    <TableCell colSpan={columns.length + 20} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
+                      <div className="flex-1 flex flex-col gap-5 justify-center items-center">
+                        <Spinner color="black" size={56} />
+                      </div>
                     </TableCell>
                   </TableRow>
-                )}
+                ) :
+                  table.getRowModel().rows?.length ? (
+                    table.getRowModel().rows.map((row) => (
+                      <TableRow key={row.id} className="bg-white">
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                        ))}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow className="hover:bg-white">
+                      <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg">
+                        No Brand Voice Found.
+                      </TableCell>
+                    </TableRow>
+                  )}
               </TableBody>
             </Table>
           </div>
@@ -270,14 +342,14 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
             size="sm"
             className="bg-[#0347371A] border-none ml-2 mr-2"
           >
-            {pagination.pageSize}
+            {documents?.length}
           </Button>
           of {totalDocs} results
         </div>
 
         <div className="flex items-center space-x-2">
           <Button
-            variant="outline"
+            variant="outline" className="bg-[#4B465C14]"
             size="sm"
             onClick={() => {
               if (pagination.pageIndex > 0) {
@@ -292,16 +364,16 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
             <Button
               key={index}
               variant="outline"
-              size="sm"
+              size="sm" style={{ width: "35px", height: "35px", borderRadius: '8px' }}
               onClick={() => setPagination((prev: any) => ({ ...prev, pageIndex: index }))}
-              className={pagination.pageIndex === index ? "bg-[#034737] text-white" : ""}
+              className={pagination.pageIndex === index ? "bg-[#034737] text-white" : "bg-[#4B465C14] text-black"}
             >
               {index + 1}
             </Button>
           ))}
           <Button
             variant="outline"
-            size="sm"
+            size="sm" className="bg-[#4B465C14]"
             onClick={() => {
               if (pagination.pageIndex < totalPages - 1) {
                 setPagination((prev: { pageIndex: number; }) => ({ ...prev, pageIndex: prev.pageIndex + 1 }));
@@ -317,6 +389,35 @@ export default function ({ search, setTotalBrandVoiceCount }: DocumentsTableProp
       {isModalOpen && selectedBrandId && (
         <BrandVoiceModal brandId={selectedBrandId} onClose={handleCloseModal} />
       )}
+
+      <GlobalModal className="" showCloseButton={false} open={!!selectedDeletedBrandVoice} setOpen={() => { setSelectedDeletedBrandVoice(null) }}>
+        <div className="flex flex-col items-start justify-center px-6 pt-4 pb-8 gap-6 ">
+          <h3 className="text-center text-xl font-semibold">Are you sure you want to delete <strong>{selectedDeletedBrandVoice?.brand_name}</strong> Brand Voice?</h3>
+          <p className="text-left text-gray-700 text-sm md:text-base">
+            This action is irreversible. Once deleted, you will not be able to recover this Brand Voice.
+          </p>
+          <div className="flex items-center justify-start gap-3">
+            <button
+              className="text-gray-500 border border-gray-500 bg-transparent text-nowrap py-2 px-8 rounded-md transition duration-300"
+              onClick={() => setSelectedDeletedBrandVoice(null)}
+            >
+              Cancel
+            </button>
+            <button
+              disabled={isDeleting}
+              className="text-white bg-red-500 text-nowrap flex items-center gap-1 py-2 px-6 rounded-md transition duration-300 hover:bg-red-600"
+              onClick={() => selectedDeletedBrandVoice && handleDeleteBrandVoice(selectedDeletedBrandVoice._id)}
+            >
+
+              {
+                isDeleting ? <DotsLoader /> : <Trash2 size={18} />
+              }
+              Delete
+            </button>
+          </div>
+        </div>
+      </GlobalModal>
+
     </>
   );
 }

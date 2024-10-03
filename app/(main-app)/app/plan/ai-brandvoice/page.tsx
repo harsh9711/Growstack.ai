@@ -9,6 +9,8 @@ export default function BrandVoice() {
   const [search, setSearch] = useState<string>("");
   const [debouncedSearch, setDebouncedSearch] = useState<string>(search);
   const [openCreateBrandVoice, setOpenCreateBrandVoice] = useState(false);
+  const [triggerFetchingBrandVoice, setTriggerFetchingBrandVoice] = useState<number>(0);
+  const [totalBrandVoiceCount, setTotalBrandVoiceCount] = React.useState(0);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -22,7 +24,12 @@ export default function BrandVoice() {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
-  const [totalBrandVoiceCount, setTotalBrandVoiceCount] = React.useState(0);
+
+  const handleBrandVoiceCreation = () => {
+    setTriggerFetchingBrandVoice((prev) => prev + 1);
+    setOpenCreateBrandVoice(false);
+  };
+
   return (
     <div>
       <div className="mt-10">
@@ -32,7 +39,7 @@ export default function BrandVoice() {
             <p style={{ opacity: "50%" }}>
               Choose different brand voices to use in various instances - ensuring consistency of your AI-generated content.
             </p>
-            <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-md flex gap-3 items-center w-[30%] mt-2 cursor-text">
+            <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-md flex gap-3 items-center w-[30%] mt-2 ">
               <Search className="text-gray-500" size={20} />
               <input
                 type="search"
@@ -58,13 +65,14 @@ export default function BrandVoice() {
         </div>
 
         <div className="mt-5">
-          <DocumentsTable search={debouncedSearch}  setTotalBrandVoiceCount={setTotalBrandVoiceCount}  />
+          <DocumentsTable triggerFetchingBrandVoice={triggerFetchingBrandVoice} search={debouncedSearch} setTotalBrandVoiceCount={setTotalBrandVoiceCount} />
         </div>
       </div>
 
       <CreateBrandVoice
         isOpen={openCreateBrandVoice}
         setIsOpen={setOpenCreateBrandVoice}
+        onSuccess={handleBrandVoiceCreation}
       />
     </div>
   );

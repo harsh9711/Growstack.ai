@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import { DialogTitle } from '@radix-ui/react-dialog';
 import { z } from 'zod';
+import DotsLoader from "@/components/DotLoader";
 
 interface BrandVoice {
     _id: string;
@@ -23,7 +24,6 @@ interface BrandVoiceModalProps {
     onClose: () => void;
 }
 
-// Zod schema for validation
 const brandVoiceSchema = z.object({
     brand_name: z.string().nonempty("Brand name is required"),
     brand_voice: z.string().nonempty("Brand voice is required"),
@@ -63,7 +63,8 @@ const BrandVoiceModal: React.FC<BrandVoiceModalProps> = ({ brandId, onClose }) =
         }
     };
 
-    if (loading) return null;
+    if (loading) return <div className="flex items-center justify-center absolute top-0 left-0 w-full h-full"><DotsLoader />
+    </div>;
 
     return (
         <Dialog open={true} onOpenChange={onClose} >
@@ -137,7 +138,7 @@ const BrandVoiceForm: React.FC<BrandVoiceFormProps> = ({ brandData, onClose, onU
         <div>
             <form onSubmit={handleSubmit} className="bg-white ">
                 <div className="mb-4">
-                    <label className="block text-gray-700 font-bold mb-2">Brand Name (required):</label>
+                    <label className="block text-gray-700 font-bold mb-2">Brand Name  <span className="text-[#F00]">*</span></label>
                     <input
                         type="text"
                         value={brandName}
@@ -148,7 +149,7 @@ const BrandVoiceForm: React.FC<BrandVoiceFormProps> = ({ brandData, onClose, onU
                 </div>
 
                 <div className="mb-4">
-                    <label className="block text-gray-700 font-bold mb-2">Websites (read-only):</label>
+                    <label className="block text-gray-700 font-bold mb-2">Websites  <span className="text-[#F00]">*</span></label>
                     {websites.map((website, index) => (
                         <input
                             key={index}
@@ -161,7 +162,7 @@ const BrandVoiceForm: React.FC<BrandVoiceFormProps> = ({ brandData, onClose, onU
                 </div>
 
                 <div className="mb-4">
-                    <label className="block text-gray-700 font-bold mb-2">Brand Voice (required):</label>
+                    <label className="block text-gray-700 font-bold mb-2">Brand Voice  <span className="text-[#F00]">*</span></label>
                     <textarea
                         value={brandVoice}
                         onChange={(e) => setBrandVoice(e.target.value)}
@@ -172,11 +173,11 @@ const BrandVoiceForm: React.FC<BrandVoiceFormProps> = ({ brandData, onClose, onU
                 </div>
 
                 <div className="mb-4">
-                    <label className="block text-gray-700 font-bold mb-2">Description (required):</label>
+                    <label className="block text-gray-700 font-bold mb-2">Description</label>
                     <textarea
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
-                        className={`border rounded w-full p-2 ${errors.description ? 'border-red-500' : ''}`}
+                        className={`border  h-[200px] bg-[#F2F2F2] rounded-2xl p-3 resize-none w-full  ${errors.description ? 'border-red-500' : ''}`}
                     />
                     {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
                 </div>
@@ -231,7 +232,7 @@ const BrandVoiceForm: React.FC<BrandVoiceFormProps> = ({ brandData, onClose, onU
                     </button>
                     <button
                         type="submit"
-                        className="pr-2 pl-2 bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2"
+                        className=" bg-primary-green text-white sheen transition duration-500 px-10 py-3.5 rounded-xl flex items-center gap-2"
                     >
                         Update
                     </button>

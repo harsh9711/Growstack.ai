@@ -33,6 +33,9 @@ const links = [
         path: "/custom-marketing-gpt-apps",
       },
       { title: "Social planner hub", path: "/social-planner-hub" },
+      { title: "Prospect scraping ", path: "/features/prospect-scraping-and-contacts" },
+      { title: "AI secured chat", path: "/features/ai-secured-chat" },
+      { title: "AI LLM comparison", path: "/features/ai-llm-comparison" },
     ],
   },
   {

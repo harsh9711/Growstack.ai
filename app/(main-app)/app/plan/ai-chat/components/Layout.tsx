@@ -98,15 +98,19 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
   };
 
 
-  const filteredAiModelOptions =
-    currentPlan && planIdsMap.BASIC.some((val) => val === currentPlan.plan_id)
-      ? aiModelOptions.filter((option) => option.value.startsWith("claude"))
-      : aiModelOptions;
+  const filteredAiModelOptions = currentPlan &&
+    planIdsMap.BASIC.some((val) => val === currentPlan.plan_id)
+    ? aiModelOptions.map((category) => ({
+      ...category,
+      models: category.models.filter((model) => model.value.startsWith("claude")),
+    })).filter((category) => category.models.length > 0)
+    : aiModelOptions;
+
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [_, setShowNewChatInput] = useState(false);
   const [selectedBrandVoice, setSelectedBrandVoice] = useState<string>("");
-  const [selectedModel, setSelectedModel] = useState<string>(filteredAiModelOptions[0]?.value || "");
+  const [selectedModel, setSelectedModel] = useState<string>(filteredAiModelOptions[0].models[0].value || "");
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
   const [groupedSidebarItems, setGroupedSidebarItems] = useState<{ [date: string]: ISidebarItem[]; }>({});
   const [searchTerm, setSearchTerm] = useState("");
@@ -140,6 +144,15 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
       console.error("Error fetching messages:", error);
     }
   };
+
+  useEffect(() => {
+    if (brandVoices?.length > 0) {
+      const defaultBrandVoice = brandVoices.find((voice) => voice.is_default);
+      if (defaultBrandVoice) {
+        setSelectedBrandVoice(defaultBrandVoice._id);
+      }
+    }
+  }, [brandVoices])
 
   useEffect(() => {
     if (selectedConversation) {
@@ -265,9 +278,10 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
     });
   };
 
-  const selectedModelLabel = aiModelOptions.find(
-    (option) => option.value === selectedModel
-  )?.label;
+  const selectedModelLabel = aiModelOptions
+    .flatMap((option) => option.models)
+    .find((model) => model.value === selectedModel)?.label;
+
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -278,6 +292,46 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
   );
 
   const groupedFilteredSidebarItems = groupByDate(filteredSidebarItems);
+
+
+  const handleModalSelection = (value: string) => {
+    if (!currentPlan) return;
+    const currentCategory = filteredAiModelOptions.find((category) =>
+      category.models.some((model) => model.value === value)
+    );
+
+    const currentModal = currentCategory?.models.find(
+      (model) => model.value === value
+    );
+
+    if (!currentCategory || !currentModal) {
+      console.error("Model not found");
+      return;
+    }
+
+    const freeCategories = ["growStackAiMessagesModel"];
+
+    if (freeCategories.includes(currentCategory.modelCategory)) {
+      setSelectedModel(value);
+      return;
+    }
+
+    let usageLimit = 0;
+
+    if (currentCategory.modelCategory === "smartAiMessagesModel") {
+      usageLimit = currentPlan.smart_ai_messages;
+    } else if (currentCategory.modelCategory === "fastAiMessagesModel") {
+      usageLimit = currentPlan.fast_ai_messages;
+    }
+
+    if (usageLimit <= 0) {
+      toast.error(`You have no remaining usage for ${currentCategory.label}. Please switch to another model.`);
+      return;
+    }
+
+    setSelectedModel(value);
+  };
+
 
   return (
     <>
@@ -347,17 +401,15 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
               </SelectGroup>
             </SelectContent>
           </Select>
-          <Select value={selectedModel} onValueChange={setSelectedModel}>
+          <Select value={selectedModel} onValueChange={handleModalSelection}>
             <SelectTrigger className="h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4">
               <SelectValue placeholder="Select an option">
                 {selectedModelLabel && (
                   <div className="flex items-center gap-2">
                     <span className="min-w-fit">
-                      {
-                        filteredAiModelOptions.find(
-                          (option) => option.value === selectedModel
-                        )?.icon
-                      }
+                      {filteredAiModelOptions
+                        .flatMap((option) => option.models) // Flattening the models array to find the icon
+                        .find((model) => model.value === selectedModel)?.icon}
                     </span>
                     {selectedModelLabel}
                   </div>
@@ -366,23 +418,28 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                {filteredAiModelOptions.map(({ icon, label, value }) => (
-                  <SelectItem key={value} value={value}>
-                    <div
-                      className={clsx(
-                        "flex items-center gap-2",
-                        selectedModel === value &&
-                        "text-primary-green font-medium"
-                      )}
-                    >
-                      <span className="min-w-fit">{icon}</span>
-                      {label}
-                    </div>
-                  </SelectItem>
+                {filteredAiModelOptions.map(({ label: groupLabel, models }) => (
+                  <React.Fragment key={groupLabel}>
+                    <div className="font-bold text-gray-500 px-4 py-2">{groupLabel}</div> {/* Group label */}
+                    {models.map(({ icon, label, value }) => (
+                      <SelectItem key={value} value={value}>
+                        <div
+                          className={clsx(
+                            "flex items-center gap-2",
+                            selectedModel === value && "text-primary-green font-medium"
+                          )}
+                        >
+                          <span className="min-w-fit">{icon}</span>
+                          {label}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </React.Fragment>
                 ))}
               </SelectGroup>
             </SelectContent>
           </Select>
+
           <div className="remove-caret">
             <Select>
               <SelectTrigger
@@ -503,7 +560,6 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
         </main>
       </div>
     </>
-
   );
 };
 
