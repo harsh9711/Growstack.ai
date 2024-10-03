@@ -54,7 +54,11 @@ export default function RootLayout({
       <body className={poppins.className}>
         <StateProvider>
           <Suspense fallback={<SuspenseLoader />}>
-            <Progressbar>{children}</Progressbar>
+            <Progressbar>
+              <main className="w-full">
+                {children}
+              </main>
+            </Progressbar>
             <Toaster />
           </Suspense>
         </StateProvider>
