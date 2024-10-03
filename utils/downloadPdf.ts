@@ -1,4 +1,4 @@
-import axios from "axios";
+import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 
 const downloadPdf = async (
@@ -7,17 +7,14 @@ const downloadPdf = async (
   fileName: string
 ) => {
   try {
-    const response = await axios({
-      url: `${API_URL}/users/api/v1/generate-pdf/pdf`,
-      method: "POST",
+    const response = await instance.post(`${API_URL}/users/api/v1/generate-pdf/pdf`, {
+      text: plainTextContent,
+      language: userInput?.language,
+      fileName: fileName,
+    }, {
       responseType: "blob",
       headers: {
         "Content-Type": "application/json",
-      },
-      data: {
-        text: plainTextContent,
-        language: userInput?.language,
-        fileName: fileName,
       },
     });
 
