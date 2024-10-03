@@ -16,14 +16,14 @@ const RectangleCard: React.FC<RectangleCardProps> = ({
 }) => {
 
 
- 
+
   return (
     <div
       className={`bg-[#F9F9F9] p-6 mb-10 sm:mb-60 max-w-[1240px] mx-auto items-center justify-center  flex relative sm:py-20 h-full rounded-[20px] `}
-     
+
     >
       <div className="max-w-[988px] relative w-full flex  gap-10 flex-row justify-center items-center">
-      <div>
+        <div>
           <Image src={imgsrc1} width={500} height={400} alt="map" className="sm:w-full w-40" />
         </div>
         <div className="max-w-[505px] w-full flex flex-col gap-y-2 sm:gap-y-6">
@@ -75,12 +75,12 @@ const RectangleCardRight: React.FC<RectangleCardProps> = ({
   }, []);
   return (
     <div
-    className={`bg-[#F9F9F9] p-6 mb-10 sm:mb-60 max-w-[1240px] mx-auto items-center justify-center  flex relative sm:py-20 h-full rounded-[20px] `}
+      className={`bg-[#F9F9F9] p-6 mb-10 sm:mb-60 max-w-[1240px] mx-auto items-center justify-center  flex relative sm:py-20 h-full rounded-[20px] `}
     >
       <div className="max-w-[988px] relative w-full flex  gap-10 flex-row justify-center items-center">
-      <div>
-      <Image src={imgsrc1} width={500} height={400} alt="map" className="sm:w-full w-40" />
-      </div>
+        <div>
+          <Image src={imgsrc1} width={500} height={400} alt="map" className="sm:w-full w-40" />
+        </div>
         <div className="max-w-[505px] w-full flex flex-col gap-y-6">
           <Image src={imgsrc2} width={50} height={50} alt="map" />
           <h2
