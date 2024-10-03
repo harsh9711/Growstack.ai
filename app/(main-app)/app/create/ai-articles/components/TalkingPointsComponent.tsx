@@ -86,7 +86,7 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
     instance
       .post("/ai/api/v1/wizard/talking-points", data)
       .then(({ data: { data } }) => {
-        setTalkingPoints(data.subtitles_talking_points);
+        setTalkingPoints(data.response.subtitles_talking_points);
       })
       .catch((err) => {
         if (err.response) {

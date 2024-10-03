@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useLayoutEffect, useRef } from "react";
 import DotsLoader from "@/components/DotLoader";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { getCurrentUser } from "@/lib/features/auth/auth.selector";
@@ -31,8 +31,12 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
     }
   };
 
-  useEffect(() => {
-    scrollToBottom();
+  useLayoutEffect(() => {
+    const timer = setTimeout(() => {
+      scrollToBottom();
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, [conversation]);
 
   const currentUser = getCurrentUser();

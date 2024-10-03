@@ -71,7 +71,7 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
     instance
       .post("/ai/api/v1/wizard/outlines", data)
       .then(({ data: { data } }) => {
-        setOutlines(data.outlines);
+        setOutlines(data.response.outlines);
       })
       .catch((err) => {
         if (err.response) {

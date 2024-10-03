@@ -101,6 +101,8 @@ export interface UserPlan {
   plan_name: string;
   plan_amount: number;
   ai_background_generator_cost: number;
+  smart_ai_messages: number;
+  fast_ai_messages: number;
   usage_expiry_date: string;
   no_of_messages: number;
   usage_amount: number;

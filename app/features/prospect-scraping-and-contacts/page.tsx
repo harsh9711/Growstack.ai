@@ -5,10 +5,7 @@ import Navbar from "@/components/navbar/Navbar";
 
 import Footer from "@/components/footer/Footer";
 import Link from "next/link";
-import {
-  ReactCompareSlider,
-  ReactCompareSliderImage,
-} from "react-compare-slider";
+import { ReactCompareSlider, ReactCompareSliderImage, } from "react-compare-slider";
 import ExpandableCard from "./component/ExpandableCard";
 import Card from "./component/Card";
 import CardResponsive from "./component/CardResponsive";
@@ -72,7 +69,7 @@ const page = () => {
                 <ReactCompareSlider
                   transition="0.25s cubic-bezier(.17,.67,.83,.67)"
                   boundsPadding={0}
-    changePositionOnHover
+                  changePositionOnHover
 
                   itemOne={
                     <ReactCompareSliderImage
@@ -179,7 +176,7 @@ const page = () => {
         <Cases />
       </section>
       <section className="items-center justify-center flex flex-col py-20  overflow-hidden ">
-      <div className="items-center justify-center flex flex-col gap-y-4  overflow-hidden ">
+        <div className="items-center justify-center flex flex-col gap-y-4  overflow-hidden ">
           <Image
             src="/solutions/design.svg"
             width={1000}
@@ -188,7 +185,7 @@ const page = () => {
             className="w-full overflow-hidden  absolute translate-y-[500px] -rotate-6 z-0"
           />
         </div>
-        <Faq/>
+        <Faq />
       </section>
       <Footer />
     </main>
