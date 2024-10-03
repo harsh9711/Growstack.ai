@@ -53,6 +53,13 @@ const AdvancedOptions: React.FC<AdvancedOptionsProps> = ({
       return;
     }
 
+    const freeCategories = ["growStackAiMessagesModel"];
+
+    if (freeCategories.includes(currentCategory.modelCategory)) {
+      setAiModel(value);
+      return;
+    }
+
     let usageLimit = 0;
 
     if (currentCategory.modelCategory === "smartAiMessagesModel") {

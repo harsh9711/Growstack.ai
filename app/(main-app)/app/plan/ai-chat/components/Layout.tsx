@@ -110,7 +110,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
   const [messages, setMessages] = useState<Message[]>([]);
   const [_, setShowNewChatInput] = useState(false);
   const [selectedBrandVoice, setSelectedBrandVoice] = useState<string>("");
-  const [selectedModel, setSelectedModel] = useState<string>(filteredAiModelOptions[1].models[0].value || "");
+  const [selectedModel, setSelectedModel] = useState<string>(filteredAiModelOptions[0].models[0].value || "");
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
   const [groupedSidebarItems, setGroupedSidebarItems] = useState<{ [date: string]: ISidebarItem[]; }>({});
   const [searchTerm, setSearchTerm] = useState("");
@@ -293,7 +293,6 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
 
   const groupedFilteredSidebarItems = groupByDate(filteredSidebarItems);
 
-  console.log(filteredAiModelOptions)
 
   const handleModalSelection = (value: string) => {
     if (!currentPlan) return;
@@ -307,6 +306,13 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
 
     if (!currentCategory || !currentModal) {
       console.error("Model not found");
+      return;
+    }
+
+    const freeCategories = ["growStackAiMessagesModel"];
+
+    if (freeCategories.includes(currentCategory.modelCategory)) {
+      setSelectedModel(value);
       return;
     }
 

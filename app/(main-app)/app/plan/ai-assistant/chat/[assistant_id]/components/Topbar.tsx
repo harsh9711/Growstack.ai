@@ -49,7 +49,7 @@ export default function Topbar({
 }: IProps) {
   const { currentPlan } = useSelector((rootState: RootState) => rootState.auth);
   const [selectedAiModel, setSelectedAiModel] = useState(
-    aiModelOptions[1].models[0].value
+    aiModelOptions[0].models[0].value
   );
 
 
@@ -65,6 +65,13 @@ export default function Topbar({
 
     if (!currentCategory || !currentModal) {
       console.error("Model not found");
+      return;
+    }
+
+    const freeCategories = ["growStackAiMessagesModel"];
+
+    if (freeCategories.includes(currentCategory.modelCategory)) {
+      setSelectedAiModel(value);
       return;
     }
 

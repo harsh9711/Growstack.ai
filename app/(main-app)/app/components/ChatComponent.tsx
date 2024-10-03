@@ -40,7 +40,7 @@ export default function ChatComponent() {
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
-  const [selectedModel, setSelectedModel] = useState<string>(filteredAiModelOptions[1].models[0].value || "");
+  const [selectedModel, setSelectedModel] = useState<string>(filteredAiModelOptions[0].models[0].value || "");
   const [secureChatEnabled, setSecureChatEnabled] = useState<boolean>(false)
   const [isDailyLimitExceeded, setIsDailyLimitExceeded] = useState(false)
   const [isDashboardChatModalOpen, setIsDashboardChatModalOpen] = useState(false);
@@ -159,6 +159,13 @@ export default function ChatComponent() {
 
     if (!currentCategory || !currentModal) {
       console.error("Model not found");
+      return;
+    }
+
+    const freeCategories = ["growStackAiMessagesModel"];
+
+    if (freeCategories.includes(currentCategory.modelCategory)) {
+      setSelectedModel(value);
       return;
     }
 
