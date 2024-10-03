@@ -14,7 +14,7 @@ import { API_URL } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Minus, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
@@ -64,7 +64,7 @@ export default function CreateTemplatePage() {
   const [refreshTemplatesTable, setRefreshTemplatesTable] = useState(true);
   const [fileUploadLoading, setFileUploadLoading] = useState<boolean>(false);
   const [formErrors, setFormErrors] = useState<any>({});
-
+  const [isSubmitClicked, setIsSubmitClicked] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
@@ -75,12 +75,10 @@ export default function CreateTemplatePage() {
     // resolver: zodResolver(ValidationSchema), // Removed
   });
 
-  const onSubmit: SubmitHandler<any> = async (data) => {
-    setIsPending(true);
-    try {
-      const { name, description, icon, custom_prompt } = formData;
-
+  const validataFormData = async (name : string, description: string, icon: string, custom_prompt: string,category: string,userInputs : any) => {
     let tempErrors: any = {};
+    let isErrors = false;
+    let userInputFields: any = [];
     if (!name) tempErrors.name = 'Name is required';
     if (!description) tempErrors.description = 'Description is required';
     if (!icon) tempErrors.icon = 'Icon is required';
@@ -90,8 +88,7 @@ export default function CreateTemplatePage() {
     if (!userInputs) tempErrors.user_inputs = 'User Inputs are required';
 
       // Prepare userInputs to be sent with the POST request
-      const userInputFields = userInputs.map((input, index) => {
-        console.log(input)
+       userInputFields = userInputs.map((input : any, index : number) => {
         if (!input.title) {
           tempErrors[`userInput[${index}].title`] = "Input Field Title is required";
         }
@@ -109,12 +106,42 @@ export default function CreateTemplatePage() {
       });
 
       if (Object.keys(tempErrors).length > 0) {
-        setFormErrors(tempErrors);
-        return; // exit the function if there are any errors
+        if(isSubmitClicked){
+          await setFormErrors(tempErrors);
+        }
+        isErrors =  true
       }else{
-        setFormErrors({});
+        await setFormErrors({});
+        isErrors = false
       }
-      
+      return [isErrors, userInputFields];
+  };
+
+  useEffect(() => {
+    if (!isSubmitClicked) return;
+  
+    const debounceTimeout = setTimeout(() => {
+      const validateFormDataAsync = async () => {
+        const { name, description, icon, custom_prompt } = formData;
+        await validataFormData(name, description, icon, custom_prompt, category, userInputs);
+      };
+      validateFormDataAsync();
+    }, 300);
+  
+    return () => clearTimeout(debounceTimeout);
+  }, [JSON.stringify(formData), JSON.stringify(userInputs), category, isSubmitClicked]);
+  
+
+  const onSubmit: SubmitHandler<any> = async (data) => {
+   await setIsSubmitClicked(true);
+    setIsPending(true);
+    try {
+      const { name, description, icon, custom_prompt } = formData;
+      const [isErrors,userInputFields] = await validataFormData(name, description, icon, custom_prompt,category,userInputs);
+
+      if(isErrors){
+        return;
+      }
 
       const response = await instance.post(
         `${API_URL}/ai/api/v1/chat-template/create`,
@@ -129,7 +156,7 @@ export default function CreateTemplatePage() {
       );
 
       toast.success(response.data.message);
-
+      setIsSubmitClicked(false)
       // Clear form data after successful submission
       setFormData({
         name: "",
@@ -153,7 +180,6 @@ export default function CreateTemplatePage() {
       setIsPending(false);
     }
   };
-  console.log(formErrors)
 
   const handleChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
