@@ -274,7 +274,7 @@ export default function Page() {
     <>
       <main className="flex-1 h-full mt-10 flex flex-col">
         <div className="flex-1 flex gap-8">
-          <section className="relative w-full min-h-[200px] max-w-[450px] bg-white rounded-[20px] overflow-y-auto h-[calc(100vh-175px)]">
+          <section className="relative mt-1 w-full min-h-[250px] max-w-[450px] bg-white rounded-[20px] overflow-y-auto h-[calc(100vh-175px)]">
             <div className="sticky top-0 px-7 py-4 bg-white">
               <div className=" border border-[#DBDBDB] bg-white p-1 rounded-xl">
                 <div

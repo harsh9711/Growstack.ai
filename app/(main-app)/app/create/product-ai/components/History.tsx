@@ -10,7 +10,7 @@ interface IHistory {
 
 export default function History({ history }: IHistory) {
   return (
-    <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion transition={{ duration: 0.5 }} variants={{ }}>
       {history.map((data, index) => (
         <CompositionCard {...data} key={index} />
       ))}

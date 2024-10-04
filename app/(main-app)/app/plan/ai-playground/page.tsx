@@ -101,19 +101,16 @@ export default function AiPlayground() {
 
   const renderConversation = async () => {
     if (userPrompt.trim() === "") return;
-
     const newMessage: Message = {
       content: userPrompt,
       role: "user",
       loading: false,
     };
-
     const loadingAssistantMessage: Message = {
       content: "",
       role: "assistant",
       loading: true,
     };
-
     setChatAreas((prevChatAreas) =>
       prevChatAreas.map((chatArea) => ({
         ...chatArea,
@@ -126,7 +123,6 @@ export default function AiPlayground() {
         messages: chatArea.messages,
       }))
     );
-
     try {
       const responses = await Promise.all(
         chatAreas.map(async (chatArea) => {
@@ -136,19 +132,16 @@ export default function AiPlayground() {
             provider: chatArea.provider,
             messages: chatArea.messages,
           };
-
           const response = await instance.post(
             `${API_URL}/ai/api/v1/playground`,
             payload
           );
-
-          const initialText = response.data.data.text;
-          const updatedMessages = response.data.data.updatedMessages;
-
+  
+          const initialText = response.data.data.response.text;
+          const updatedMessages = response.data.data.response.updatedMessages;
           return { chatArea, initialText, updatedMessages };
         })
       );
-
       setChatAreas((prevChatAreas) =>
         prevChatAreas.map((chatArea) => {
           const response = responses.find(
@@ -156,38 +149,34 @@ export default function AiPlayground() {
           );
           if (response) {
             const { initialText, updatedMessages } = response;
-
             return {
               ...chatArea,
               conversation: chatArea.awaitingUpdate
                 ? [
-                  ...chatArea.conversation.slice(0, -1),
-                  {
-                    ...chatArea.conversation[
-                    chatArea.conversation.length - 1
-                    ],
-                    content: initialText,
-                    loading: false,
-                  },
-                ]
+                    ...chatArea.conversation.slice(0, -1),
+                    {
+                      ...chatArea.conversation[chatArea.conversation.length - 1],
+                      content: initialText,
+                      loading: false,
+                    },
+                  ]
                 : chatArea.conversation,
-              awaitingUpdate: updatedMessages.length > 0,
-              message: initialText,
+              awaitingUpdate: updatedMessages?.length > 0, 
               messages: updatedMessages,
             };
           }
+  
           return chatArea;
         })
       );
     } catch (error: any) {
-      setChatAreas(chatAreas);
+      setChatAreas((prevChatAreas) => prevChatAreas);
       toast.error(error?.response?.data?.message || "Something went wrong");
       console.error("Error sending prompt:", error);
     }
-
     setUserPrompt("");
-  }
-
+  };
+  
   return (
     <div className="flex-1 h-full flex flex-col mt-10 overflow-x-auto">
       <form onSubmit={handleSubmit} className="flex-1 h-full flex gap-6">
@@ -195,6 +184,8 @@ export default function AiPlayground() {
           <NewChatAlert handleNewChat={() => setChatAreas(initialChat)} />
         </div>
         {chatAreas.map((chatArea) => (
+
+          
           <ChatArea
             key={chatArea.id}
             selectedModel={chatArea.selectedModel}
