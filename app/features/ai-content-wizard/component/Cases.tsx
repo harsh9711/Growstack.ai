@@ -72,13 +72,7 @@ export const cases = [
   },
 ];
 const Box = () => {
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      easing: "ease-in-out",
-      once: true,
-    });
-  }, []);
+ 
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-10">
@@ -93,14 +87,14 @@ const Box = () => {
           <div className="" data-aos="zoom-in">
             {item.imageUrl}
           </div>
-          <div className="relative sm:text-start flex flex-col gap-y-4 text-center z-10 text-[#14171B] group-hover:fill-primary-green">
+          <div className="relative sm:text-start flex flex-col text-center z-10 text-[#14171B] group-hover:fill-primary-green">
             <span className="sm:text-[48px] text-[#14171B]/30 text-[16px] font-bold group-hover:text-[#13745D] transition-colors duration-300">
               {item.subname}
             </span>
-            <h2 className="sm:text-[24px] text-[16px] font-bold group-hover:text-[#13745D] transition-colors duration-300">
+            <h2 className="xl:text-[24px] text-[16px] font-bold group-hover:text-[#13745D] transition-colors duration-300">
               {item.name}{" "}
             </h2>
-            <p className="text-[16px] max-w-[420px] mb-6  font-light text-black transition-colors duration-300">
+            <p className="text-[14px] xl:text-[16px] max-w-[420px] mb-10 xl:mb-6  font-light text-black transition-colors duration-300">
               {item.description}
             </p>
           </div>
@@ -112,12 +106,17 @@ const Box = () => {
 
 const Cases = () => {
   useEffect(() => {
-    AOS.init({ duration: 1000 });
+    AOS.init({
+      duration: 100, 
+      easing: "ease-out", 
+      offset: 1,
+    });
+    AOS.refresh(); 
   }, []);
 
   return (
     <div>
-      <div className="max-w-[1340px] flex flex-col  sm:items-start items-center  gap-y-6 w-full mx-auto">
+      <div className="max-w-[1340px] flex flex-col sm:items-start items-center gap-y-6 w-full mx-auto">
         <div
           className="max-w-[124px] rounded-2xl item-center justify-center w-full py-2 text-[#034737] bg-[#03473714]"
           data-aos="fade-in"
@@ -130,9 +129,8 @@ const Cases = () => {
           className="flex flex-row w-full justify-between items-center"
           data-aos="fade-right"
         >
-          <h1 className="text-[26px] xl:text-[40px] max-w-[500px] gap-2 leading-tight font-semibold sm:text-left text-center text-black">
-            Features that elevate your
-            <span className="font-light"> content game </span>
+          <h1 className="text-[26px] xl:text-[40px] xl:max-w-[500px] gap-2 leading-tight font-semibold sm:text-left text-center text-black">
+            Features that elevate your<span className="font-light"> content game </span>
           </h1>
         </div>
         <div>

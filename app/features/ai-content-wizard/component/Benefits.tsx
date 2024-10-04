@@ -75,18 +75,18 @@ const boxessecond = [
 const Benefits = () => {
   useEffect(() => {
     AOS.init({
-      duration: 1000,
+      duration: 500, 
       easing: "ease-in-out",
-      once: true,
-      delay: 100,
+      offset: 1,
     });
+    AOS.refresh(); 
   }, []);
 
   return (
     <div
       className="sm:px-0 px-6 max-w-[1760px] py-20 flex flex-col items-center gap-y-6 justify-center rounded-[60px] mx-auto w-full sm:max-h-[1994px] h-full bg-[#E2F0CB4D]"
       data-aos="flip-left"
-      data-aos-duration="1500"
+      data-aos-duration="500"
     >
       
       <div
@@ -114,7 +114,7 @@ const Benefits = () => {
         <div
           className="flex flex-col sm:flex-row items-center justify-between gap-10 w-full"
           data-aos="fade-right"
-          data-aos-delay="1000"
+          data-aos-delay="100"
         >
           <Image
             width={450}
@@ -147,7 +147,7 @@ const Benefits = () => {
         </div>
         <div
           className="flex flex-col-reverse sm:flex-row-reverse items-end justify-between gap-10 w-full"
-          data-aos="fade-left" data-aos-delay="1000"
+          data-aos="fade-left" data-aos-delay="100"
         >
           <div className="flex flex-col gap-y-6">
             <Image
@@ -186,7 +186,7 @@ const Benefits = () => {
         </div>
         <div
           className="flex flex-col sm:flex-row items-center justify-between gap-10 w-full"
-          data-aos="fade-right" data-aos-delay="1000"
+          data-aos="fade-right" data-aos-delay="100"
         >
           <div className="">
             <Image
@@ -201,14 +201,14 @@ const Benefits = () => {
             <h2 className="sm:text-[24px] text-[18px] font-bold">
               Multilingual support
             </h2>
-            <div className="flex flex-col sm:flex-row max-h-[200px] gap-6 items-start w-full h-full">
+            <div className="flex flex-row max-h-[200px] gap-6 items-start w-full h-full">
               {boxessecond.map((item, index) => (
                 <div
-                  className="flex flex-col w-full items-start bg-white rounded-[20px] h-[200px] p-4 gap-y-2 font-bold flex-grow hover:bg-gray-100 transition-colors duration-300"
+                  className="flex flex-col w-full items-start bg-white rounded-[20px] h-[230px] sm:h-[200px] p-4 gap-y-2 font-bold flex-grow hover:bg-gray-100 transition-colors duration-300"
                   key={index}
                 >
                   <h2>{item.heading}</h2>
-                  <p className="sm:text-[16px] text-[14px] font-medium text-[#5B5D60]">
+                  <p className="sm:text-[16px] text-[12px] font-medium text-[#5B5D60]">
                     {item.para}
                   </p>
                 </div>

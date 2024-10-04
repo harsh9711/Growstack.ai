@@ -26,7 +26,7 @@ const CustomAccordion = () => {
       },
       {
         header: "Is there a word limit for articles?",
-        body: "There is no strict word limit; you can define the length of your article based on your needs, whether it’s short-form or long-form content.",
+        body: "There is no strict word limit; you can define the length of your article based on your needs, whether it's short-form or long-form content.",
       },
       {
         header: "How does image generation work?",
@@ -103,7 +103,7 @@ const Faqs = () => {
       <h3 className="text-[26px] sm:text-[40px] text-black max-w-4xl mx-auto leading-normal text-center font-extrabold ">
             Quick answers on 
               <span className="font-light ml-2">
-         Prospect scraping
+     AI Content Wizard
               </span>
             </h3>
           </div>

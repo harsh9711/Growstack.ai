@@ -27,7 +27,7 @@ export default function FeatureItem (props: Props) {
                <span className="">No image</span>
             </div>
          )}
-         <span className="inline-block -mt-2 text-[14px] 2xl:text-[20px] ">{title}</span>
+         <span className="inline-block -mt-2 text-[14px] 2xl:text-[16px] ">{title}</span>
       </div>
    )
 }

@@ -46,7 +46,8 @@ export const cases = [
     imageUrl: <CircleIcon5 />,
     name: "Visuals ",
     subname: "included",
-    description: "Automatically generate images, making your content ready to publish.",
+    description:
+      "Automatically generate images, making your content ready to publish.",
   },
   {
     id: 6,
@@ -60,14 +61,16 @@ export const cases = [
 const Box = () => {
   useEffect(() => {
     AOS.init({
-      duration: 1000,
+      duration: 500,
       easing: "ease-in-out",
-      once: true,
+
+      offset: 1,
     });
+    AOS.refresh();
   }, []);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
+    <div className="grid grid-cols-2 xl:grid-cols-3">
       {cases.map((item, index) => (
         <div
           key={index}
@@ -83,7 +86,7 @@ const Box = () => {
               {item.subname}
             </span>
           </h2>
-          <p className="text-[16px] max-w-[320px] font-light text-black transition-colors duration-300">
+          <p className="text-[12px] sm:text-[16px] max-w-[320px] font-light text-black transition-colors duration-300">
             {item.description}
           </p>
         </div>
@@ -93,10 +96,6 @@ const Box = () => {
 };
 
 const SixCard = () => {
-  useEffect(() => {
-    AOS.init({ duration: 1000 });
-  }, []);
-
   return (
     <div>
       <div className="max-w-[1340px] flex flex-col sm:items-start items-center gap-y-6 sm:gap-y-16  w-full mx-auto">

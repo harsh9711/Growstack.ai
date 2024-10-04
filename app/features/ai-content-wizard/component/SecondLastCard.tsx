@@ -5,15 +5,16 @@ import "aos/dist/aos.css";
 const SecondLastCard = () => {
   useEffect(() => {
     AOS.init({
-      duration: 1000,
-      easing: "ease-in-out",
-      once: true,
+      duration: 500,
+      easing: "ease-out",
+      offset: 1,
     });
+    AOS.refresh();
   }, []);
 
   return (
     <div
-      className="max-w-[1760px] py-20 flex flex-col items-center gap-y-8 justify-center rounded-[60px] mx-auto w-full xl:max-h-[1264px] h-full bg-[#F4F4F4]"
+      className="max-w-[1760px] pb-40 pt-10 sm:pb-0 sm:py-20 flex flex-col items-center gap-y-8 justify-center rounded-[60px] mx-auto w-full xl:max-h-[1264px] h-full bg-[#F4F4F4]"
       data-aos="flip-left" // Rotate the whole green container first
       data-aos-duration="1500" // Rotation duration
     >
@@ -30,14 +31,14 @@ const SecondLastCard = () => {
         </h1>
       </div>
 
-      <div className=" max-w-[1000px]  sm:mt-10  w-full">
+      <div className="max-w-[300px] sm:max-w-[1000px]  sm:mt-10  w-full">
         {/* First Column */}
        
-          <div className="flex flex-col xl:flex-row  justify-center sm:justify-between ">
+          <div className="flex flex-row  justify-center sm:justify-between ">
             <div className=" flex flex-col gap-y-10">
               <div>
                 <svg
-                  className="opacity-0"
+                  className="opacity-0 w-full"
                   width="271"
                   height="120"
                   viewBox="0 0 271 120"
@@ -66,7 +67,7 @@ const SecondLastCard = () => {
                     key={idx}
                     className={`${
                       idx % 2 === 0 ? "bg-[#03473714]" : "bg-[#FFFFFF14]"
-                    } text-[16px] p-4    rounded-l-2xl font-medium text-center sm:text-start max-w-[400px] w-full `}
+                    } text-[12px] sm:text-[16px] p-4  max-h-24 h-full  rounded-l-2xl font-medium text-center  sm:text-start max-w-[400px] w-full `}
                   >
                     <h2 className="">{item}</h2>
                   </div>
@@ -77,6 +78,7 @@ const SecondLastCard = () => {
             <div className="items-center bg-[#D2F1E6] rounded-l-2xl flex flex-col gap-y-10">
               <div>
                 <svg
+                className="w-full"
                   width="271"
                   height="120"
                   viewBox="0 0 271 120"
@@ -95,32 +97,33 @@ const SecondLastCard = () => {
               </div>
               <div className="space-y-4">
                 {[
-                  "Unlinked features",
-                  "Limited model selection",
-                  "Requires multiple tools for each step",
-                  "Limited outline customization",
-                  "Separate tools for images and content",
-                  "Requires copying outputs between different",
-                  "Slower, due to disconnected tools",
-                  "Limited or no multilingual features",
-                  "Lacks comprehensive customization options",
+                 "Streamlined process",
+                 "Choose various advanced models",
+                 "Idea generation, content development and publication all in one",
+                 "Flexible structures to match style and tone",
+                 "Create visuals directly in the platform",
+                 "Eliminates manual tasks",
+                 "Accelerated from start to finish",
+                 "Generate and translate content in multiple languages",
+                 "High level of customization and adaptability",
                 ].map((item, idx) => (
                   <div
                     key={idx}
                     className={`${
                       idx % 2 === 0 ? "bg-[#03473714]" : "bg-[#FFFFFF14]"
-                    } text-[16px] p-4 ${
-                      idx ===8 ? "pb-10" : ""
-                    } font-medium text-center max-w-[400px] w-full `}
+                    } text-[12px] sm:text-[16px] p-4 ${
+                      idx ===8 ? "pb-36 sm:pb-10" : ""
+                    } font-medium text-center max-h-24 h-full max-w-[400px] w-full `}
                   >
                     <h2>{item}</h2>
                   </div>
-                ))}
+                ))} 
               </div>
             </div>
             <div className="items-center flex flex-col bg-[#E7E7E7]  rounded-r-2xl gap-y-10">
               <div>
                 <svg
+                className="w-full"
                   width="271"
                   height="120"
                   viewBox="0 0 271 120"
@@ -139,23 +142,23 @@ const SecondLastCard = () => {
               </div>
               <div className="space-y-4">
                 {[
-                  "Unlinked features",
-                  "Limited model selection",
-                  "Requires multiple tools for each step",
-                  "Limited outline customization",
-                  "Separate tools for images and content",
-                  "Requires copying outputs between different",
-                  "Slower, due to disconnected tools",
-                  "Limited or no multilingual features",
-                  "Lacks comprehensive customization options",
+                "Unlinked features",
+                "Limited model selection",
+                "Requires multiple tools for each step",
+                "Limited outline customization",
+                "Separate tools for images and content",
+                "Requires copying outputs between different tools",
+                "Slower, due to disconnected tools",
+                "Limited or no multilingual features",
+                "Lacks comprehensive customization options",
                 ].map((item, idx) => (
                   <div
                     key={idx}
                     className={`${
                       idx % 2 === 0 ? "bg-[#03473714]" : "bg-[#FFFFFF14]"
-                    } text-[16px] p-4 ${
-                      idx ===8 ? "pb-10  bg-[#03473714]" : ""
-                    } font-medium text-center rounded-r-2xl max-w-[400px] w-full `}
+                    } text-[12px] sm:text-[16px] p-4 ${
+                      idx ===8 ? "pb-36 sm:pb-10  bg-[#03473714]" : ""
+                    } font-medium text-center max-h-24 h-full rounded-r-2xl max-w-[400px] w-full `}
                   >
                     <h2>{item}</h2>
                   </div>

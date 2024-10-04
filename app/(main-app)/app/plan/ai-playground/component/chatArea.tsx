@@ -17,6 +17,7 @@ import { Message } from "../interface/playground";
 import ChatMessages from "./chatMessage";
 import AOS from "aos";
 import "aos/dist/aos.css";
+import autosize from "autosize";
 interface ChatAreaProps {
   selectedModel: string;
   addChatArea: () => void;
@@ -48,19 +49,26 @@ const ChatArea = ({
 }: ChatAreaProps) => {
   const [inputValue, setInputValue] = useState(userPrompt);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null); // Updated here
+  const initialHeight = 32;
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(event.target.value);
     handleChange(event);
   };
 
   const handleSend = () => {
-    if (inputValue.trim() !== "" || inputValue.length > 0) {
+    if (textareaRef.current && inputValue.trim() !== "") {
+      textareaRef.current.value = "";
+      if (textareaRef.current.style) {
+        textareaRef.current.style.height = "2rem"; 
+      }
+      if (textareaRef.current) {
+        autosize.update(textareaRef.current);
+      }
       setInputValue("");
       renderConversation();
     }
   };
-
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (event.key === "Enter" && !event.shiftKey) {
       const textarea = event.target as HTMLTextAreaElement;
@@ -76,7 +84,18 @@ const ChatArea = ({
   //     handleSend();
   //   }
   // };
+  useEffect(() => {
+    if (textareaRef.current) {
+      autosize(textareaRef.current);
+      textareaRef.current.style.overflow = "auto";
+    }
+  }, []);
 
+  useEffect(() => {
+    if (textareaRef.current) {
+      autosize.update(textareaRef.current);
+    }
+  }, [inputValue]);
   useEffect(() => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({
@@ -167,6 +186,7 @@ const ChatArea = ({
           value={inputValue}
         /> */}
         <textarea
+          ref={textareaRef}
           placeholder="Type your message..."
           // className="w-full h-11 rounded-xl bg-transparent"
           className="w-full flex-1 bg-transparent resize-none overflow-auto h-8 min-h-8 max-h-[200px]"
