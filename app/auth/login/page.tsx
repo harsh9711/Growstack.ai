@@ -18,7 +18,7 @@ import { useDispatch } from "react-redux";
 import { login } from "@/lib/features/auth/auth.slice";
 import { setCookie } from "cookies-next";
 import { useSearchParams } from "next/navigation";
-import { FaEye, FaEyeSlash, FaEdit } from 'react-icons/fa';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { LoginBackgroundImg, LoginRightImg } from "@/components/svgs";
 
 export default function Login() {
