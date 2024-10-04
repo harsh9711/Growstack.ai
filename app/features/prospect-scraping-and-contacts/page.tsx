@@ -38,6 +38,14 @@ const page = () => {
                   Unlock Detailed Business Insights from Google Maps for Smarter
                   Targeting and Growth
                 </p>
+                <ul className=" pt-8 text-[12px] sm:hidden  text-center items-center  flex flex-col sm:text-[18px] text-black">
+                      {" "}
+                      <li>Get key business details for informed decisions.</li>
+                      <li>Automate data gathering to save time</li>
+                      <li>Streamline prospecting with organized data.</li>
+                      <li>Enhance market analysis and targeting.</li>
+                    </ul>
+        
                 <div className="flex flex-col gap-20  items-center justify-center sm:justify-start sm:items-start  mt-10">
                   <div className="flex flex-row gap-8  group text-[16px] sm:text-[18px]">
                     <Link href="/auth/register" className="no-underline">
@@ -150,17 +158,17 @@ const page = () => {
           <div className="border-white border-2 rounded-lg h-20"></div>
           <ExpandableCard
             heading={"Effortless collection"}
-            para={"Get key business details for informed decisions."}
+            para={" Automate data gathering to save time."}
           />
           <div className="border-white border-2 rounded-lg h-20"></div>
           <ExpandableCard
             heading={"Boost efficiency"}
-            para={"Get key business details for informed decisions."}
+            para={"Streamline prospecting with organized data"}
           />
           <div className="border-white border-2 rounded-lg h-20"></div>
           <ExpandableCard
             heading={"Strategic insights"}
-            para={"Get key business details for informed decisions."}
+            para={"Enhance market analysis and targeting."}
           />
         </div>
       </div>

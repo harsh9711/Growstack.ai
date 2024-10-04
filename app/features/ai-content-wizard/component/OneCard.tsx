@@ -39,10 +39,12 @@ export const cases = [
 const Box = () => {
   useEffect(() => {
     AOS.init({
-      duration: 1000,
-      easing: "ease-in-out",
-      once: true,
+      duration: 500,
+      easing: "ease-out",
+     
+      offset:1, 
     });
+    AOS.refresh(); 
   }, []);
 
   return (
@@ -70,9 +72,7 @@ const Box = () => {
   );
 };
 const OneCard = () => {
-  useEffect(() => {
-    AOS.init({ duration: 1000 });
-  }, []);
+  
 
   return (
     <div>

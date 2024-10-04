@@ -38,7 +38,7 @@ const page = () => {
         <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
       </span>
       <section>
-        <div className="bg-[#E2F0CB4D] rounded-b-[60px] sm:rounded-none w-full mb-10 sm:pt-20">
+        <div className="bg-[#E2F0CB4D] rounded-b-[60px] sm:rounded-none w-full  ">
           <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1350px] 2xl:p-0 p-4 w-full 2xl:max-h-[895px] sm:max-h-[700px] h-full justify-center mx-auto">
             <div className="w-full flex flex-col lg:flex-row gap-10 justify-between brightness-110 relative items-start mt-10 mb-4 sm:mb-10 2xl:mt-32 2xl:mb-60">
               <div className="w-full max-w-[700px] items-center sm:items-start gap-y-4 flex flex-col">
@@ -46,7 +46,7 @@ const page = () => {
                   AI CONTENT WIZARD
                 </div>
                 <div className="w-full brightness-95" data-aos="fade-right">
-                  <h1 className="text-[26px] max-w-[460px] xl:text-[40px] sm:leading-normal leading-tight sm:text-left text-center text-black">
+                  <h1 className="text-[26px] max-w-[500px] xl:text-[40px]  leading-tight sm:text-left text-center text-black">
                     <span className="font-semibold">
                       From idea to
                       <br />
@@ -54,8 +54,7 @@ const page = () => {
                     </span>
                     <br />
                     <span className="font-extralight">
-                      minutes - powered
-                      <br /> by AI
+                      minutes - powered by AI
                     </span>
                   </h1>
                   <p className="text-[12px] sm:text-[18px] text-black mt-4 w-full lg:max-w-[600px] sm:text-left text-center gap-4 flex flex-col leading-tight font-light">
@@ -64,6 +63,15 @@ const page = () => {
                       engaging content faster than ever.
                     </span>
                   </p>
+                 
+                    <ul className="pt-8 text-[12px] sm:hidden  text-center items-center  flex flex-col sm:text-[18px] text-black">
+                      {" "}
+                      <li>Instant ideas to jumpstart your writing.</li>
+                      <li>Custom outlines to fit your style and tone.</li>
+                      <li>AI images to enhance your content seamlessly.</li>
+                      <li>Multilingual support to reach global audiences.</li>
+                    </ul>
+                
                   <div className="flex flex-col gap-20 items-center justify-center sm:justify-start sm:items-start mt-10">
                     <div className="flex flex-row gap-8 group text-[12px] sm:text-[18px]">
                       <Link href="/auth/register" className="no-underline">
@@ -94,7 +102,7 @@ const page = () => {
             </div>
           </div>
         </div>
-        <div className="2xl:flex xl:flex hidden z-[40] relative -top-24  xl:max-w-[1240px] max-w-[700px] max-h-[131px] h-full w-full rounded-[20px] items-center justify-center mx-auto text-white">
+        <div className="2xl:flex xl:flex hidden z-[40] relative -top-16  xl:max-w-[1240px] max-w-[700px] max-h-[131px] h-full w-full rounded-[20px] items-center justify-center mx-auto text-white">
           <div className="overflow-visible flex flex-row items-center gap-8 justify-center h-[131px] w-full">
             <ExpandableCard
               heading={"Instant ideas to "}
@@ -120,7 +128,7 @@ const page = () => {
         </div>
       </section>
 
-      <section className=" sm:px-6 p-0 items-center justify-center mx-auto">
+      <section className=" pt-6 sm:pt-10 sm:px-6 p-0 items-center justify-center mx-auto">
         <Cases />
       </section>
 
@@ -130,13 +138,13 @@ const page = () => {
       <section className=" pt-40 sm:pt-20 sm:px-0 px-6 items-center justify-center mx-auto">
         <SixCard />
       </section>
-      <section className="sm:pt-20 sm:px-0 px-6  items-center justify-center mx-auto">
+      <section className="sm:pt-20 pt-10 sm:px-0 px-6  items-center justify-center mx-auto">
         <OneCard />
       </section>
-      <section className="sm:pt-20 sm:px-10 px-6 ">
+      <section className="sm:pt-20 pt-10 sm:px-10  ">
         <SecondLastCard />
       </section>
-      
+
       <section className="items-center sm:px-0 px-6   justify-center flex flex-col  sm:py-20  overflow-hidden ">
         <div className="items-center justify-center flex flex-col gap-y-4  overflow-hidden ">
           <Image
