@@ -37,7 +37,6 @@ export default function Home() {
   return (
     <div className="flex-1 flex flex-col h-full w-full mt-6">
       <Layout sidebarItems={sidebarItems} setSidebarItems={setSidebarItems} fetchConversations={fetchConversations} />
-      <ShareChatDialog sidebarItems={sidebarItems} />
     </div>
   );
 }

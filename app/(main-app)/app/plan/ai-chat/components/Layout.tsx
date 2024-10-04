@@ -31,6 +31,7 @@ import Link from "next/link";
 import { ALL_ROUTES } from "@/utils/constant";
 import Ellipse from "@/components/svgs/ellipse";
 import { Switch } from "@/components/ui/switch";
+import ShareChatDialog from "./ShareChatDialog";
 
 interface LayoutProps {
   sidebarItems: ISidebarItem[];
@@ -199,50 +200,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
     }
   };
 
-
-  const handleDownload = async (id: string) => {
-    try {
-      const response = await instance.get(`${API_URL}/ai/api/v1/conversation/${id}`)
-      const { title, chats } = response.data.data;
-      const conversationData = chats
-        .map((chat: any) => {
-          return chat.thread.map((thread: any) => ({
-            user_prompt: thread.user_prompt,
-            response: thread.response,
-          }));
-        })
-        .flat();
-
-      let content = `# ${title}\n`;
-      conversationData.forEach(
-        ({
-          user_prompt,
-          response,
-        }: {
-          user_prompt: string;
-          response: string;
-        }) => {
-          content += `\n## Message From You:\n${user_prompt}\n`;
-          content += `## Message From GrowStackAI:\n${response}\n`;
-        }
-      );
-
-      const blob = new Blob([content], { type: "text/plain" });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.style.display = "none";
-      a.href = url;
-      a.download = `${title
-        .replace(/[^a-z0-9]/gi, "_")
-        .toLowerCase()}.txt`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      toast.success("Chat downloaded successfully");
-    } catch (error) {
-      console.error("Error fetching conversations:", error);
-    }
-  };
+  const [openModel, setOpenModel] = useState(false)
 
   const addMessage = (role: string, content: string, loading: boolean) => {
     setMessages((prevMessages) => [
@@ -291,9 +249,9 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
     item.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
   const groupedFilteredSidebarItems = groupByDate(filteredSidebarItems);
-  const handleChatMessageButtonClick = (chartMessage:any) => {
+  const handleChatMessageButtonClick = (chartMessage: any) => {
     if (chatInputRef.current) {
-      chatInputRef.current.handleRegenerate(chartMessage); 
+      chatInputRef.current.handleRegenerate(chartMessage);
     }
   };
 
@@ -335,9 +293,10 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
 
     setSelectedModel(value);
   };
+  const [isDialogOpen, setDialogOpen] = useState(false);
 
 
-  const chatInputRef = useRef<{ handleRegenerate: (chartMessage:string) => void }>(null);
+  const chatInputRef = useRef<{ handleRegenerate: (chartMessage: string) => void }>(null);
   return (
     <>
       <div className="flex pt-3 pb-8 w-full items-center justify-between">
@@ -464,15 +423,12 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
                     <div
                       onClick={(e) => {
                         e.stopPropagation();
-                        selectedConversation && handleDownload(selectedConversation)
+                        setDialogOpen(true)
                       }}
-                      // showIndicator={false}
-                      // value={value}
                       key={value}
                       className=" cursor-pointer hover:bg-gray-100 items-center rounded-sm py-2.5 pr-2 pl-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
                     >
                       <div
-
                         className="flex gap-x-2">
                         {icon}
                         {label}
@@ -485,10 +441,6 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
           </div>
         </div>
       </div>
-
-
-
-      
       <div className="flex-1 flex gap-4">
         <aside className="flex flex-col w-[380px] border bg-white rounded-3xl h-[calc(100vh-212px)]">
           <div className="border-t border-[#EFEFEF] flex items-center justify-between gap-2 py-3 px-6">
@@ -574,6 +526,12 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
             removeMessage={removeMessage} />
         </main>
       </div>
+      <ShareChatDialog
+        sidebarItems={sidebarItems}
+        isOpen={isDialogOpen}
+        onClose={() => setDialogOpen(false)}
+      />
+
     </>
   );
 };
