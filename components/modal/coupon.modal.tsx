@@ -54,9 +54,10 @@ const CouponModal = ({ plan, isOpen, loading, setIsOpen, setLoading }: Props) =>
                 })
             };
             setIsOpen(false);
+            const currentPath = localStorage.getItem("currentPathname");
 
             const response = await instance.post(
-                `${API_URL}/users/api/v1/payments/create-checkout-session`,
+                `${API_URL}/users/api/v1/payments/create-checkout-session?currentPath=${currentPath}`,
                 { product }
             );
             const { url } = response.data;

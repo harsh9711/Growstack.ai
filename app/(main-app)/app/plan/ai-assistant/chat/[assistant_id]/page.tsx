@@ -7,7 +7,7 @@ import { Assistant, Conversation } from "../../components/types";
 import Topbar from "./components/Topbar";
 import ChatSection from "./components/ChatSection";
 import Sidebar from "./components/Sidebar";
-import { languageOptions } from "@/app/(main-app)/app/create/ai-articles/constants/options";
+import { aiModelOptions, languageOptions } from "@/app/(main-app)/app/create/ai-articles/constants/options";
 import Spinner from "@/components/Spinner";
 
 interface PageProps {
@@ -27,6 +27,10 @@ const AssistantsChats: React.FC<PageProps> = ({
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [selectedLanguage, setSelectedLanguage] = useState<string>(
     languageOptions[0].value
+  );
+
+  const [selectedAiModel, setSelectedAiModel] = useState(
+    aiModelOptions[0].models[0].value
   );
 
   useEffect(() => {
@@ -107,11 +111,14 @@ const AssistantsChats: React.FC<PageProps> = ({
           setIsSidebarOpen={setIsSidebarOpen}
           selectedLanguage={selectedLanguage}
           switchLanguage={switchLanguage}
+          setSelectedAiModel={setSelectedAiModel}
+          selectedAiModel={selectedAiModel}
         />
         <ChatSection
           conversation={assistantConversation}
           assistant={assistantData}
           selectedLanguage={selectedLanguage}
+          selectedAiModel={selectedAiModel}
         />
       </div>
     </div>

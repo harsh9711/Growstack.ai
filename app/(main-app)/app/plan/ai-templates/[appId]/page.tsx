@@ -14,6 +14,7 @@ import Editor from "./components/Editor";
 import Spinner from "@/components/Spinner";
 import { Switch } from "@/components/ui/switch";
 import { Info } from "lucide-react";
+import axios from 'axios';
 import {
   Tooltip,
   TooltipContent,
@@ -34,6 +35,11 @@ import { useDispatch } from "react-redux";
 import { languageOptions } from "../../../create/ai-articles/constants/options";
 import Dropdown from "./components/Dropdown";
 import { Plus } from "lucide-react";
+import { getCookie } from "cookies-next";
+import EventSource from 'eventsource';
+import { parseJsonString } from "@/lib/utils";
+import downloadPdf from "@/utils/downloadPdf";
+import { InputFieldType } from "@/types/enums";
 
 export default function AiAppPage({
   params: { appTemplateId },
@@ -160,58 +166,13 @@ export default function AiAppPage({
 
     // Prepare different formats
     const formats = {
-      "Copy as Text": generatedContent,
+      "Copy as Text": plainTextContent,
       "Copy as HTML": formattedContent,
       "Download as DOC": plainTextContent,
       "Download as TXT": plainTextContent,
       "Download as PDF": plainTextContent,
+      "Download as HTML": formattedContent,
     };
-
-    const addTextToPdf = async (content: string) => {
-      console.log("content", content);
-
-      // Initialize jsPDF
-      const pdfDoc = new jsPDF();
-
-      // Add the custom font that supports UTF-8 (NotoSans-Regular.ttf)
-      const fontUrl = "/fonts/NotoSans-Regular.ttf"; // Path to the font file
-      const fontData = await fetch(fontUrl).then(res => res.arrayBuffer());
-
-      // Convert ArrayBuffer to base64 string
-      const base64FontData = arrayBufferToBase64(fontData);
-
-      // Add font to jsPDF
-      pdfDoc.addFileToVFS("NotoSans-Regular.ttf", base64FontData);
-      pdfDoc.addFont("NotoSans-Regular.ttf", "NotoSans", "normal");
-      pdfDoc.setFont("NotoSans");
-
-      let yPos = 10;
-      const pageHeight = pdfDoc.internal.pageSize.height;
-
-      // Split text into lines that fit within the PDF
-      const lines = pdfDoc.splitTextToSize(content, 180);
-      lines.forEach((line: string | string[]) => {
-        if (yPos + 10 > pageHeight) {
-          pdfDoc.addPage();
-          yPos = 10;
-        }
-        pdfDoc.text(line, 10, yPos);
-        yPos += 10;
-      });
-
-      return pdfDoc;
-    }
-
-    const arrayBufferToBase64 = (buffer: ArrayBuffer) => {
-      let binary = '';
-      const bytes = new Uint8Array(buffer);
-      const len = bytes.byteLength;
-      for (let i = 0; i < len; i++) {
-        binary += String.fromCharCode(bytes[i]);
-      }
-      return window.btoa(binary);
-    }
-
 
     switch (selectedOption) {
       case "Copy as Text":
@@ -229,6 +190,13 @@ export default function AiAppPage({
         });
         saveAs(docBlob, `${fileName}.doc`);
         break;
+      case "Download as HTML":
+        const htmlContent = formats["Download as HTML"];
+        const htmlBlob = new Blob([htmlContent], {
+          type: "text/html;charset=utf-8",
+        });
+        saveAs(htmlBlob, `${fileName}.html`);
+        break;
       case "Download as TXT":
         const txtBlob = new Blob([formats["Download as TXT"]], {
           type: "text/plain;charset=utf-8",
@@ -236,8 +204,19 @@ export default function AiAppPage({
         saveAs(txtBlob, `${fileName}.txt`);
         break;
       case "Download as PDF":
-        const pdfDoc = await addTextToPdf(formats["Download as PDF"]);
-        pdfDoc.save(`${fileName}.pdf`);
+        downloadPdf(plainTextContent, userInput, fileName);
+        break;
+      case "Save as PDF":
+        handleSaveDocument("pdf");
+        break;
+      case "Save as DOC":
+        handleSaveDocument("doc");
+        break;
+      case "Save as TXT":
+        handleSaveDocument("text");
+        break;
+      case "Save as HTML":
+        handleSaveDocument("html");
         break;
       default:
         console.error("Unsupported download option");
@@ -313,6 +292,43 @@ export default function AiAppPage({
   //   }
   // };
 
+
+  const streamResponse = async (chatId: string) => {
+    try {
+      const token = getCookie("token");
+      const eventSource = new EventSource(`${API_URL}/ai/api/v1/assistant/chat/stream/${chatId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+
+      let accumulatedResponse = '';
+
+      eventSource.onmessage = (event: MessageEvent) => {
+        const chunk = event.data;
+        const msg = parseJsonString(chunk)?.text || "";
+        accumulatedResponse += msg;
+        setGeneratedContent(accumulatedResponse);
+      };
+
+      eventSource.onerror = (error: MessageEvent) => {
+        console.error('EventSource failed:', error);
+        eventSource.close();
+      };
+
+      eventSource.addEventListener('end', (event: MessageEvent) => {
+        console.log('EventSource end:', event);
+        eventSource.close();
+      });
+
+
+    } catch (error) {
+      console.error('Error setting up EventSource:', error);
+      toast.error('Error setting up stream');
+    }
+  };
+
   const generateResult = async () => {
     if (userInput1.trim() === "") {
       setUserInput1Error("Please Select Language");
@@ -343,8 +359,7 @@ export default function AiAppPage({
           brand_voice: selectedBrandVoice,
         }
       );
-      const content = response.data.data;
-      setGeneratedContent(content);
+      await streamResponse(response.data.data.chat_id)
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
@@ -416,18 +431,31 @@ export default function AiAppPage({
     });
   };
 
-  const handleSaveDocument = async () => {
+  const handleSaveDocument = async (fileType: string) => {
     if (!fileName) {
       return toast.error("Please enter document name");
     }
     setIsDocumentSavePending(true);
     try {
+      const formattedContent = generatedContent;
+      let plainTextContent = stripHtmlTags(formattedContent);
+      let tempCategory = ""
+      if (fileType === 'text') {
+        plainTextContent = stripHtmlTags(formattedContent);
+        tempCategory = "text"
+      } else if (fileType === 'pdf' || fileType === 'doc') {
+        plainTextContent = formattedContent;
+        tempCategory = "document"
+      } else if (fileType === "html") {
+        plainTextContent = formattedContent;
+        tempCategory = "website"
+      }
       const payload = {
         doc_name: fileName,
         doc_language: userInput1,
-        doc_type: "TEXT",
-        category: "text",
-        doc_content: generatedContent,
+        doc_type: fileType.toUpperCase(),
+        category: tempCategory,
+        doc_content: plainTextContent,
       };
       const response = await instance.post(
         API_URL + `/users/api/v1/docs/save`,
@@ -479,6 +507,11 @@ export default function AiAppPage({
     } finally {
     }
   };
+
+  const validateImageUrl = (url: string) => {
+    const imageRegex = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif))$/i;
+    return imageRegex.test(url);
+  }
 
   const handleFavorite = async (method: string, templateId: string) => {
     try {
@@ -539,17 +572,21 @@ export default function AiAppPage({
           <div className="mb-5 border-b border-[#EDEFF0]">
             <div className="flex items-center justify-between pb-5">
               <div className="flex flex-row items-center gap-3">
-                <div
-                  style={{
-                    height: "8vh",
-                    width: "8vh",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                  className="rounded"
-                  dangerouslySetInnerHTML={{ __html: appTemplate.icon }}
-                />
+              {validateImageUrl(appTemplate.icon) ? (
+                      <div className="flex items-center justify-center w-16 h-16">
+                        <img src={appTemplate.icon} alt="icon" className="rounded-lg object-contain w-full h-full"></img>
+                      </div>
+                    ) : (
+                        <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                        dangerouslySetInnerHTML={{ __html: appTemplate.icon }}
+                        className='w-[64px] h-[64px] flex-shrink-0'
+                      />
+                    )}
 
                 <h2 className="text-2xl font-semibold capitalize">
                   {appTemplate.name}
@@ -643,16 +680,16 @@ export default function AiAppPage({
                   htmlFor={`user-prompt-${index}`}
                 >
                   {input.title}
-                  {input.field_type !== "Checkbox list field" &&
-                    input.field_type !== "Radio buttons field" &&
-                    input.field_type !== "Select list field" && (
-                      <span className="text-primary-black text-opacity-50 text-sm">
+                  {input.field_type !== InputFieldType.CHECKBOX &&
+                    input.field_type !== InputFieldType.RADIO &&
+                    input.field_type !== InputFieldType.SELECT_LIST && (
+                      <span className='text-primary-black text-opacity-50 text-sm'>
                         {userPrompts[index].length}/2000
                       </span>
                     )}
                 </label>
-                {input.field_type === "Checkbox list field" ? (
-                  <div className="flex flex-col space-y-2">
+                {input.field_type === InputFieldType.CHECKBOX ? (
+                  <div className='flex flex-col space-y-2'>
                     {input.description
                       .split(",")
                       .map((option: string, optionIndex: number) => (
@@ -674,8 +711,8 @@ export default function AiAppPage({
                       ))}
                   </div>
                 ) : null}
-                {input.field_type === "Radio buttons field" && (
-                  <div className="flex flex-col space-y-2">
+                {input.field_type === InputFieldType.RADIO && (
+                  <div className='flex flex-col space-y-2'>
                     {input.description
                       .split(",")
                       .map((option: string, optionIndex: number) => (
@@ -695,7 +732,7 @@ export default function AiAppPage({
                       ))}
                   </div>
                 )}
-                {input.field_type === "Select list field" && (
+                {input.field_type === InputFieldType.SELECT_LIST && (
                   <Dropdown
                     label={input.title}
                     hideLabel
@@ -707,9 +744,9 @@ export default function AiAppPage({
                     required
                   />
                 )}
-                {input.field_type !== "Checkbox list field" &&
-                  input.field_type !== "Radio buttons field" &&
-                  input.field_type !== "Select list field" && (
+                {input.field_type !== InputFieldType.CHECKBOX &&
+                  input.field_type !== InputFieldType.RADIO &&
+                  input.field_type !== InputFieldType.SELECT_LIST && (
                     <textarea
                       id={`user-prompt-${index}`}
                       rows={4}
@@ -855,19 +892,24 @@ export default function AiAppPage({
                 <Dropdown
                   label="Download"
                   items={[
-                    // "Copy as Text",
+                    "Copy as Text",
                     "Copy as HTML",
                     "Download as DOC",
                     "Download as TXT",
                     "Download as PDF",
+                    "Download as HTML",
+                    "Save as DOC",
+                    "Save as TXT",
+                    "Save as PDF",
+                    "Save as HTML",
                   ]}
                   hideLabel
                   value="Copy as Text"
                   onChange={(value: any) => handleDownload(value)}
                 />
 
-                <button
-                  className="h-11 w-11 grid place-content-center p-2 bg-gray-100 rounded-lg"
+                {/* <button
+                  className='h-11 w-11 grid place-content-center p-2 bg-gray-100 rounded-lg'
                   onClick={isEdit ? handleEditDocument : handleSaveDocument}
                 >
                   {isDocumentSavePending ? (
@@ -875,7 +917,7 @@ export default function AiAppPage({
                   ) : (
                     <Save size={24} className="text-gray-600" />
                   )}
-                </button>
+                </button> */}
               </div>
             </div>
           </div>

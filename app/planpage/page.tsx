@@ -57,13 +57,14 @@ const page = () => {
   }, [querySearch]);
 
   const handlePlanSubscription = async (plan: IPlan) => {
+    const currentPath = localStorage.getItem("currentPathname");
     const payload = { product: plan, currency: "usd" };
     const res = await instance.post(
-      `${API_URL}/users/api/v1/payments/create-checkout-session`,
+      `${API_URL}/users/api/v1/payments/create-checkout-session?currentPath=${currentPath}`,
       payload
     );
     if (res) {
-      const redirectUrl = res.data.url;
+      const redirectUrl = res.data.url; 
       window.location.href = redirectUrl;
     }
   };

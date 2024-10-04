@@ -37,6 +37,8 @@ interface IProps {
   conversation: Conversation;
   selectedLanguage: string;
   switchLanguage: (language: string) => void;
+  selectedAiModel: string;
+  setSelectedAiModel: React.Dispatch<React.SetStateAction<string>>
 }
 
 export default function Topbar({
@@ -46,11 +48,11 @@ export default function Topbar({
   setIsSidebarOpen,
   selectedLanguage,
   switchLanguage,
+  selectedAiModel,
+  setSelectedAiModel
 }: IProps) {
   const { currentPlan } = useSelector((rootState: RootState) => rootState.auth);
-  const [selectedAiModel, setSelectedAiModel] = useState(
-    aiModelOptions[0].models[0].value
-  );
+
 
 
   const handleModalSelection = (value: string) => {

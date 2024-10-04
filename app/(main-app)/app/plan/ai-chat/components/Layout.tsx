@@ -12,7 +12,7 @@ import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import clsx from "clsx";
 import { Download, MoreVertical, Plus, Search, Share2, ShareIcon } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { planIdsMap } from "@/lib/utils";
@@ -31,6 +31,7 @@ import Link from "next/link";
 import { ALL_ROUTES } from "@/utils/constant";
 import Ellipse from "@/components/svgs/ellipse";
 import { Switch } from "@/components/ui/switch";
+import ShareChatDialog from "./ShareChatDialog";
 
 interface LayoutProps {
   sidebarItems: ISidebarItem[];
@@ -42,6 +43,8 @@ type Message = {
   content: string;
   role: string;
   loading: boolean;
+  imageUrl : string | null;
+  filename: string | null;
 };
 
 const groupByDate = (items: ISidebarItem[]) => {
@@ -97,7 +100,8 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
     }
   };
 
-
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [filename, setFilename] = useState<string | null>(null);
   const filteredAiModelOptions = currentPlan &&
     planIdsMap.BASIC.some((val) => val === currentPlan.plan_id)
     ? aiModelOptions.map((category) => ({
@@ -115,7 +119,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
   const [groupedSidebarItems, setGroupedSidebarItems] = useState<{ [date: string]: ISidebarItem[]; }>({});
   const [searchTerm, setSearchTerm] = useState("");
   const [toggleSearch, setToggleSearch] = useState<boolean>(false);
-
+  const [inputRef, setInputRef] = useState<() => void | null>();
   const fetchMessages = async (_id: string) => {
     try {
       const response = await instance.get(
@@ -199,55 +203,12 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
     }
   };
 
-
-  const handleDownload = async (id: string) => {
-    try {
-      const response = await instance.get(`${API_URL}/ai/api/v1/conversation/${id}`)
-      const { title, chats } = response.data.data;
-      const conversationData = chats
-        .map((chat: any) => {
-          return chat.thread.map((thread: any) => ({
-            user_prompt: thread.user_prompt,
-            response: thread.response,
-          }));
-        })
-        .flat();
-
-      let content = `# ${title}\n`;
-      conversationData.forEach(
-        ({
-          user_prompt,
-          response,
-        }: {
-          user_prompt: string;
-          response: string;
-        }) => {
-          content += `\n## Message From You:\n${user_prompt}\n`;
-          content += `## Message From GrowStackAI:\n${response}\n`;
-        }
-      );
-
-      const blob = new Blob([content], { type: "text/plain" });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.style.display = "none";
-      a.href = url;
-      a.download = `${title
-        .replace(/[^a-z0-9]/gi, "_")
-        .toLowerCase()}.txt`;
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      toast.success("Chat downloaded successfully");
-    } catch (error) {
-      console.error("Error fetching conversations:", error);
-    }
-  };
+  const [openModel, setOpenModel] = useState(false)
 
   const addMessage = (role: string, content: string, loading: boolean) => {
     setMessages((prevMessages) => [
       ...prevMessages,
-      { role, content, loading },
+      { role, content, loading, imageUrl, filename },
     ]);
   };
 
@@ -290,8 +251,12 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
   const filteredSidebarItems = sidebarItems.filter((item) =>
     item.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
   const groupedFilteredSidebarItems = groupByDate(filteredSidebarItems);
+  const handleChatMessageButtonClick = (chartMessage: any) => {
+    if (chatInputRef.current) {
+      chatInputRef.current.handleRegenerate(chartMessage);
+    }
+  };
 
 
   const handleModalSelection = (value: string) => {
@@ -331,8 +296,10 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
 
     setSelectedModel(value);
   };
+  const [isDialogOpen, setDialogOpen] = useState(false);
 
 
+  const chatInputRef = useRef<{ handleRegenerate: (chartMessage: string) => void }>(null);
   return (
     <>
       <div className="flex pt-3 pb-8 w-full items-center justify-between">
@@ -439,7 +406,6 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
               </SelectGroup>
             </SelectContent>
           </Select>
-
           <div className="remove-caret">
             <Select>
               <SelectTrigger
@@ -454,15 +420,12 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
                     <div
                       onClick={(e) => {
                         e.stopPropagation();
-                        selectedConversation && handleDownload(selectedConversation)
+                        setDialogOpen(true)
                       }}
-                      // showIndicator={false}
-                      // value={value}
                       key={value}
                       className=" cursor-pointer hover:bg-gray-100 items-center rounded-sm py-2.5 pr-2 pl-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
                     >
                       <div
-
                         className="flex gap-x-2">
                         {icon}
                         {label}
@@ -540,12 +503,15 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
               </div>
             ) : (
               <ChatMessage
+                onButtonClick={handleChatMessageButtonClick}
                 conversation={messages}
                 selectedConversation={selectedConversation}
-              />
+                imageUrl={imageUrl}
+            />
             )}
           </div>
           <ChatInput
+            ref={chatInputRef}
             enableWebBrowsing={enableWebAccess}
             enableSecure={enableSecureChat}
             selectedBrandVoice={brandVoices.find((voice) => voice._id === selectedBrandVoice)}
@@ -556,9 +522,19 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
             selectedModel={selectedModel}
             addMessage={addMessage}
             removeMessage={removeMessage}
-          />
+            imageUrl={imageUrl}
+            setImageUrl={setImageUrl}
+            filename={filename}
+            setFilename={setFilename}
+        />
         </main>
       </div>
+      <ShareChatDialog
+        sidebarItems={sidebarItems}
+        isOpen={isDialogOpen}
+        onClose={() => setDialogOpen(false)}
+      />
+
     </>
   );
 };

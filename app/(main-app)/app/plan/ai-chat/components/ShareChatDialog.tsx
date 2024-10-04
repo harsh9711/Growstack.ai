@@ -31,10 +31,14 @@ import {
 } from "../utils/downloadHelpers";
 interface ShareChatDialogProps {
   sidebarItems: ISidebarItem[];
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 export default function ShareChatDialog({
   sidebarItems,
+  isOpen,
+  onClose,
 }: ShareChatDialogProps) {
   const [activeIds, setActiveIds] = useState<string[]>([]);
   const [nextStep, setNextStep] = useState(false);
@@ -127,12 +131,7 @@ export default function ShareChatDialog({
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <button className="bg-primary-green p-3.5 rounded-xl hover:bg-primary-green/90 text-white fixed bottom-6 right-8 shadow-xl shadow-[#2fff0038]">
-          <IoIosShareAlt size={30} />
-        </button>
-      </DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-[630px] p-0">
         <DialogHeader className="border-b py-5 px-6">
           <DialogTitle>Export messages</DialogTitle>
@@ -225,33 +224,11 @@ export default function ShareChatDialog({
             {loading ? <Spinner /> : "Download"}
           </button>
         </div>
-        {/* <div className="px-6 py-3 space-y-4 pb-6">
-            <button
-              onClick={() => setNextStep(false)}
-              className="flex items-center text-primary-green hover:text-primary-green/80"
-            >
-              <IoIosArrowBack size={20} className="mr-2" />
-              Back
-            </button>
-            <button className="bg-primary-green w-full h-14 rounded-xl hover:bg-primary-green/90 flex justify-center items-center text-white">
-              Share to ShareGPT
-            </button>
-            <div className="flex gap-4">
-              <button
-                className="bg-primary-green w-full h-14 rounded-xl hover:bg-primary-green/90 flex justify-center items-center text-white"
-                onClick={handleDownload}
-              >
-                {loading ? <Spinner /> : "Download"}
-              </button>
-              <button className="bg-primary-green w-full h-14 rounded-xl hover:bg-primary-green/90 flex justify-center items-center text-white">
-                Export
-              </button>
-            </div>
-          </div> */}
       </DialogContent>
     </Dialog>
   );
 }
+
 
 const outputType = [
   {

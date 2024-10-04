@@ -56,13 +56,49 @@
     border: 2px solid black;
     background-color: white; /* Light blue background after animation */
     border: black;
+    border-color: black;
+    /* border: 2px solid black; */
+    background-color: #f9f9f9;
+    transition: background-color 2s ease; /* Background transition */
 }
+
 /* Add shadow to the image for more depth */
 .image-shadow {
     filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
 }
 .text-shadow {
     text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.15); /* Add subtle shadow to the text */
+}
+.container-bg4 {
+    border-color: black;
+    /* border: 2px solid black; */
+    background-color: white;
+    transition: background-color 2s ease; /* Background transition */
+}
+.container-bg-animate4 {
+    background-color: white;
+    animation: scale-up 0.5s forwards;
+}
+
+@keyframes scale-up {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Add hover effects to cards */
+.card-hover {
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 .container-bg4 {
     border-color: black;

@@ -179,9 +179,10 @@ const Faqs = () => {
               <h2 className="text-center capitalize text-[12px] font-extrabold">FAQ</h2>
             </div>
             <h3 className="text-[26px] sm:text-[40px] text-black max-w-4xl mx-auto leading-normal text-center font-extrabold ">
-              Quick answers on
+            Quick answers on 
               <span className="font-light ml-2">
-                Ai secured chat
+        Ai secured chat
+
               </span>
             </h3>
           </div>

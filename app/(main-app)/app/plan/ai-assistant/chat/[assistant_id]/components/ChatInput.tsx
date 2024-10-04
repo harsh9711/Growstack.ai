@@ -7,15 +7,19 @@ import { toast } from "react-hot-toast";
 import { API_URL } from "@/lib/api";
 import useSpeechRecognition from "../../../../hooks/UseSpeechRecognition";
 import Microphone from "../../../../ai-chat/components/Microphone";
+import { getCookie } from "cookies-next";
+import EventSource from 'eventsource';
+import { parseJsonString } from "@/lib/utils";
 
 interface ChatInputProps {
   assistant_id: string;
   addMessage: (prompt: string, response: string) => void;
   updateMessage: (prompt: string, response: string) => void;
   selectedLanguage: string;
+  selectedModel: string;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateMessage, selectedLanguage }) => {
+const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateMessage, selectedLanguage, selectedModel }) => {
   const [input, setInput] = useState("");
   const [open, setOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -45,6 +49,48 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateM
     }
   }, [input]);
 
+
+  const streamResponse = async (chatId: string, prompt: string, fromMic: boolean) => {
+    try {
+      const token = getCookie("token");
+      const eventSource = new EventSource(`${API_URL}/ai/api/v1/assistant/chat/stream/${chatId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+
+      let accumulatedResponse = '';
+
+      eventSource.onmessage = (event: MessageEvent) => {
+        const chunk = event.data;
+        const msg = parseJsonString(chunk)?.text || "";
+        accumulatedResponse += msg;
+
+        updateMessage(prompt, accumulatedResponse);
+      };
+
+      eventSource.onerror = (error: MessageEvent) => {
+        console.error('EventSource failed:', error);
+        if (fromMic) {
+          textToSpeech(accumulatedResponse);
+        }
+        eventSource.close();
+      };
+
+      eventSource.addEventListener('end', (event: MessageEvent) => {
+        if (fromMic) {
+          textToSpeech(accumulatedResponse);
+        }
+        eventSource.close();
+      });
+
+    } catch (error) {
+      console.error('Error setting up EventSource:', error);
+      toast.error('Error setting up stream');
+    }
+  };
+
   const handleSend = async (user_prompt?: string, fromMic: boolean = false) => {
     if (user_prompt) {
       user_prompt = user_prompt.trim();
@@ -61,13 +107,11 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateM
         language: selectedLanguage,
         tone: "friendly",
         writing_style: "poetic",
+        model: selectedModel
       });
 
-      const responseText = response.data.data.response;
-      updateMessage(prompt, responseText);
-      if (fromMic) {
-        await textToSpeech(responseText);
-      }
+      const chatId = response.data.data.chat_id;
+      await streamResponse(chatId, prompt, fromMic);
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);

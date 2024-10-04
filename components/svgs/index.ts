@@ -94,5 +94,11 @@ export { default as ArrowBack } from "@/public/svgs/arrow-back.svg";
 export { default as Target } from "@/public/target.svg";
 export { default as TrashIcon } from "@/public/trash.svg"
 export { default as Edit } from "@/public/edit.svg"
+export { default as Star } from "@/public/svgs/star.svg"
+export { default as StarIcon } from "@/public/svgs/Path.svg"
+export { default as CopyIcon } from "@/public/copy.svg"
+export { default as Regenerate } from "@/public/Regenerate.svg"
+export { default as VerticalLineIcon } from "@/public/vertical-lineIcon.svg"
+export { default as LoginBackgroundImg } from "@/public/Login-Background.svg"
+export { default as LoginRightImg } from "@/public/LoginPagerightImg.svg"
 export { default as LogoIcon } from "@/public/svgs/logo.svg"
-
