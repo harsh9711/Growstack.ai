@@ -35,6 +35,9 @@ import { useDispatch } from "react-redux";
 import { languageOptions } from "../../../create/ai-articles/constants/options";
 import Dropdown from "./components/Dropdown";
 import { Plus } from "lucide-react";
+import { getCookie } from "cookies-next";
+import EventSource from 'eventsource';
+import { parseJsonString } from "@/lib/utils";
 import downloadPdf from "@/utils/downloadPdf";
 
 export default function AiAppPage({
@@ -187,11 +190,11 @@ export default function AiAppPage({
         saveAs(docBlob, `${fileName}.doc`);
         break;
       case "Download as HTML":
-          const htmlContent = formats["Download as HTML"];
-          const htmlBlob = new Blob([htmlContent], {
-            type: "text/html;charset=utf-8",
-          });
-          saveAs(htmlBlob, `${fileName}.html`);
+        const htmlContent = formats["Download as HTML"];
+        const htmlBlob = new Blob([htmlContent], {
+          type: "text/html;charset=utf-8",
+        });
+        saveAs(htmlBlob, `${fileName}.html`);
         break;
       case "Download as TXT":
         const txtBlob = new Blob([formats["Download as TXT"]], {
@@ -200,17 +203,17 @@ export default function AiAppPage({
         saveAs(txtBlob, `${fileName}.txt`);
         break;
       case "Download as PDF":
-        downloadPdf(plainTextContent,userInput,fileName);
+        downloadPdf(plainTextContent, userInput, fileName);
         break;
       case "Save as PDF":
         handleSaveDocument("pdf");
         break;
       case "Save as DOC":
-          handleSaveDocument("doc");
+        handleSaveDocument("doc");
         break;
       case "Save as TXT":
         handleSaveDocument("text");
-       break;
+        break;
       case "Save as HTML":
         handleSaveDocument("html");
         break;
@@ -288,6 +291,43 @@ export default function AiAppPage({
   //   }
   // };
 
+
+  const streamResponse = async (chatId: string) => {
+    try {
+      const token = getCookie("token");
+      const eventSource = new EventSource(`${API_URL}/ai/api/v1/assistant/chat/stream/${chatId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+
+      let accumulatedResponse = '';
+
+      eventSource.onmessage = (event: MessageEvent) => {
+        const chunk = event.data;
+        const msg = parseJsonString(chunk)?.text || "";
+        accumulatedResponse += msg;
+        setGeneratedContent(accumulatedResponse);
+      };
+
+      eventSource.onerror = (error: MessageEvent) => {
+        console.error('EventSource failed:', error);
+        eventSource.close();
+      };
+
+      eventSource.addEventListener('end', (event: MessageEvent) => {
+        console.log('EventSource end:', event);
+        eventSource.close();
+      });
+
+
+    } catch (error) {
+      console.error('Error setting up EventSource:', error);
+      toast.error('Error setting up stream');
+    }
+  };
+
   const generateResult = async () => {
     if (userInput1.trim() === "") {
       setUserInput1Error("Please Select Language");
@@ -318,8 +358,7 @@ export default function AiAppPage({
           brand_voice: selectedBrandVoice,
         }
       );
-      const content = response.data.data;
-      setGeneratedContent(content);
+      await streamResponse(response.data.data.chat_id)
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
@@ -391,7 +430,7 @@ export default function AiAppPage({
     });
   };
 
-  const handleSaveDocument = async (fileType : string) => {
+  const handleSaveDocument = async (fileType: string) => {
     if (!fileName) {
       return toast.error("Please enter document name");
     }
@@ -406,7 +445,7 @@ export default function AiAppPage({
       } else if (fileType === 'pdf' || fileType === 'doc') {
         plainTextContent = formattedContent;
         tempCategory = "document"
-      }else if(fileType === "html"){
+      } else if (fileType === "html") {
         plainTextContent = formattedContent;
         tempCategory = "website"
       }

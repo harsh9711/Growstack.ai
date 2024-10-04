@@ -9,12 +9,14 @@ interface ChatSectionProps {
   conversation: Conversation;
   assistant: Assistant;
   selectedLanguage: string;
+  selectedAiModel: string;
 }
 
 const ChatSection: React.FC<ChatSectionProps> = ({
   conversation,
   assistant,
-  selectedLanguage
+  selectedLanguage,
+  selectedAiModel,
 }) => {
   const [messages, setMessages] = useState<Chat[]>([]);
 
@@ -57,6 +59,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({
           selectedLanguage={selectedLanguage}
         /> */}
         <ChatInput
+          selectedModel={selectedAiModel}
           assistant_id={assistant.id}
           addMessage={addMessage}
           updateMessage={updateMessage}
