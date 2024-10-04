@@ -5,7 +5,6 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { aiModelOptions } from "../create/ai-articles/constants/options";
 import clsx from "clsx";
 import ChatInput from "../plan/ai-chat/components/ChatInput";
-import ChatMessages from "../plan/ai-chat/components/ChatMessage";
 import DashboardChatModal from "./DashboardchatModal";
 import Image from "next/image";
 import { API_URL } from "@/lib/api";
@@ -20,6 +19,8 @@ import { RootState } from "@/lib/store";
 import { planIdsMap } from "@/lib/utils";
 import Link from "next/link";
 import { ChatResponse } from "@/types/common";
+import ChatMessages from "../plan/ai-chat/components/ChatMessage";
+import ChatMessage from "../plan/ai-chat/components/ChatMessage";
 
 type Message = {
   content: string;
@@ -184,6 +185,12 @@ export default function ChatComponent() {
 
     setSelectedModel(value);
   };
+  const chatInputRef = useRef<{ handleRegenerate: (chartMessage:string) => void }>(null);
+  const handleChatMessageButtonClick = (chartMessage:any) => {
+    if (chatInputRef.current) {
+      chatInputRef.current.handleRegenerate(chartMessage); 
+    }
+  };
 
   return (
     <div className=" flex flex-col bg-white p-10 pt-8 rounded-3xl border border-[#E8E8E8] h-[780px]" data-aos="fade-up">
@@ -286,12 +293,17 @@ export default function ChatComponent() {
             </div>
           ) : (
             <div className="flex-1">
-              <ChatMessages conversation={messages} selectedConversation={selectedConversation} />
+            <ChatMessage
+                onButtonClick={handleChatMessageButtonClick}
+                conversation={messages}
+                selectedConversation={selectedConversation}
+              />
               <div ref={messagesEndRef} />
             </div>
           )}
         </div>
         <ChatInput
+          ref={chatInputRef}
           onSend={updateMessage}
           fetchConversations={() => { }}
           selectedConversation={selectedConversation}

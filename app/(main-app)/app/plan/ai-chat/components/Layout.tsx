@@ -12,7 +12,7 @@ import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import clsx from "clsx";
 import { Download, MoreVertical, Plus, Search, Share2, ShareIcon } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { planIdsMap } from "@/lib/utils";
@@ -115,7 +115,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
   const [groupedSidebarItems, setGroupedSidebarItems] = useState<{ [date: string]: ISidebarItem[]; }>({});
   const [searchTerm, setSearchTerm] = useState("");
   const [toggleSearch, setToggleSearch] = useState<boolean>(false);
-
+  const [inputRef, setInputRef] = useState<() => void | null>();
   const fetchMessages = async (_id: string) => {
     try {
       const response = await instance.get(
@@ -290,8 +290,12 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
   const filteredSidebarItems = sidebarItems.filter((item) =>
     item.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
   const groupedFilteredSidebarItems = groupByDate(filteredSidebarItems);
+  const handleChatMessageButtonClick = (chartMessage:any) => {
+    if (chatInputRef.current) {
+      chatInputRef.current.handleRegenerate(chartMessage); 
+    }
+  };
 
 
   const handleModalSelection = (value: string) => {
@@ -333,6 +337,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
   };
 
 
+  const chatInputRef = useRef<{ handleRegenerate: (chartMessage:string) => void }>(null);
   return (
     <>
       <div className="flex pt-3 pb-8 w-full items-center justify-between">
@@ -549,12 +554,14 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
               </div>
             ) : (
               <ChatMessage
+                onButtonClick={handleChatMessageButtonClick}
                 conversation={messages}
                 selectedConversation={selectedConversation}
               />
             )}
           </div>
           <ChatInput
+            ref={chatInputRef}
             enableWebBrowsing={enableWebAccess}
             enableSecure={enableSecureChat}
             selectedBrandVoice={brandVoices.find((voice) => voice._id === selectedBrandVoice)}
@@ -564,8 +571,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
             setSelectedConversation={setSelectedConversation}
             selectedModel={selectedModel}
             addMessage={addMessage}
-            removeMessage={removeMessage}
-          />
+            removeMessage={removeMessage} />
         </main>
       </div>
     </>
