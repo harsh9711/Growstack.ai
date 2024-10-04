@@ -40,8 +40,10 @@ const RectangleCard: React.FC<RectangleCardProps> = ({
   }, []);
   return (
     <div
-      className={`bg-[#F9F9F9] shadow-xl mb-60 max-w-[1240px] 2xl:translate-x-0 xl:translate-x-60 w-full mx-auto relative py-20 h-full rounded-[20px] container-bg ${isVisible ? "container-bg-animate" : ""
-        }`}
+      className={`bg-[#F9F9F9] shadow-xl mb-60 max-w-[1240px] 2xl:translate-x-0 xl:translate-x-60 w-full mx-auto relative py-20 h-full rounded-[20px] container-bg ${
+        isVisible ? "container-bg-animate" : ""
+      }`}
+
       ref={sectionRef}
     >
       <div className="2xl:max-w-[988px] xl:max-w-[605px] relative w-full flex flex-row justify-end items-center">
@@ -53,14 +55,18 @@ const RectangleCard: React.FC<RectangleCardProps> = ({
         <div className="max-w-[505px] w-full flex flex-col gap-y-6 pr-20">
           <Image src={imgsrc2} width={50} height={50} alt="map" />
           <h2
-            className={`sm:text-[28px] text-[16px] font-semibold  ${isVisible ? "text-fade appear-with-delay" : "text-fade"
-              }`}
+            className={`sm:text-[28px] text-[16px] font-semibold  ${
+              isVisible ? "text-fade appear-with-delay" : "text-fade"
+            }`}
+
           >
             {firsttext}
           </h2>
           <p
-            className={`sm:text-[16px] text-[12px] font-medium text-[#5B5D60]  ${isVisible ? "text-fade appear-with-delay" : "text-fade"
-              }`}
+            className={`sm:text-[16px] text-[12px] font-medium text-[#5B5D60]  ${
+              isVisible ? "text-fade appear-with-delay" : "text-fade"
+            }`}
+
           >
             {secondtext}
           </p>
@@ -114,14 +120,18 @@ const RectangleCardRight: React.FC<RectangleCardProps> = ({
         <div className="max-w-[505px]  w-full flex flex-col gap-y-6">
           <Image src={imgsrc2} width={50} height={50} alt="map" />
           <h2
-            className={`sm:text-[28px] text-[16px] font-semibold  ${isVisible ? "text-fade appear-with-delay" : "text-fade"
-              }`}
+            className={`sm:text-[28px] text-[16px] font-semibold  ${
+              isVisible ? "text-fade appear-with-delay" : "text-fade"
+            }`}
+
           >
             {firsttext}
           </h2>
           <p
-            className={`sm:text-[16px] text-[12px] font-medium text-[#5B5D60]  ${isVisible ? "text-fade appear-with-delay" : "text-fade"
-              }`}
+            className={`sm:text-[16px] text-[12px] font-medium text-[#5B5D60]  ${
+              isVisible ? "text-fade appear-with-delay" : "text-fade"
+            }`}
+
           >
             {secondtext}
           </p>

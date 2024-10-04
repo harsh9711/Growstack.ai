@@ -49,14 +49,18 @@ const RectangleCard: React.FC<RectangleCardProps> = ({
         </div>
         <div className="max-w-[505px] w-full flex flex-col gap-y-6 py-1 pr-20">
           <h2
-            className={`sm:text-[28px] text-[16px] font-semibold  ${isVisible ? "text-fade appear-with-delay" : "text-fade"
-              }`}
+            className={`sm:text-[28px] text-[16px] font-semibold  ${
+              isVisible ? "text-fade appear-with-delay" : "text-fade"
+            }`}
+
           >
             {firsttext}
           </h2>
           <p
-            className={`sm:text-[16px] max-h-[48px] h-full text-[12px] font-medium text-[#5B5D60]  ${isVisible ? "text-fade appear-with-delay" : "text-fade"
-              }`}
+            className={`sm:text-[16px] max-h-[48px] h-full text-[12px] font-medium text-[#5B5D60]  ${
+              isVisible ? "text-fade appear-with-delay" : "text-fade"
+            }`}
+
           >
             {secondtext}
           </p>

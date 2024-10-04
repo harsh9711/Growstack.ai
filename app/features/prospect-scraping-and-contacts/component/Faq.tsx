@@ -114,13 +114,14 @@ const Faqs = () => {
             data-aos-easing="ease-in-sine"
             data-aos-duration="1000"
           >
-            <div className="max-w-[74px] rounded-2xl item-center justify-center w-full py-2 text-[#034737] bg-[#03473714]">
-              <h2 className="text-center capitalize text-[12px] font-extrabold">FAQ</h2>
-            </div>
-            <h3 className="text-[26px] sm:text-[40px] text-black max-w-4xl mx-auto leading-normal text-center font-extrabold ">
-              Quick answers on
+             <div className="max-w-[74px] rounded-2xl item-center justify-center w-full py-2 text-[#034737] bg-[#03473714]">
+        <h2 className="text-center capitalize text-[12px] font-extrabold">FAQ</h2>
+      </div>
+      <h3 className="text-[26px] sm:text-[40px] text-black max-w-4xl mx-auto leading-normal text-center font-extrabold ">
+            Quick answers on 
               <span className="font-light ml-2">
-                Prospect scraping
+         Prospect scraping
+           
               </span>
             </h3>
           </div>
