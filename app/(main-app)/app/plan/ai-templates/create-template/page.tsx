@@ -21,6 +21,7 @@ import { z } from "zod";
 import TemplatesTable from "../components/TemplatesDataTable";
 import { useDropzone } from "react-dropzone";
 import React from "react";
+import { InputFieldType } from "@/types/enums";
 
 export default function CreateTemplatePage() {
   type UserInput = {
@@ -207,9 +208,9 @@ export default function CreateTemplatePage() {
       // Concatenate options into description if it's a Select, Checkbox list, or Radio buttons field
       if (
         key === "options" &&
-        (updatedInputs[index].type === "Select list field" ||
-          updatedInputs[index].type === "Checkbox list field" ||
-          updatedInputs[index].type === "Radio buttons field")
+        (updatedInputs[index].type === InputFieldType.SELECT_LIST ||
+          updatedInputs[index].type === InputFieldType.CHECKBOX ||
+          updatedInputs[index].type === InputFieldType.RADIO)
       ) {
         updatedInputs[index].description = `${value}`;
       }
@@ -409,20 +410,20 @@ export default function CreateTemplatePage() {
                       }
                     >
                       <SelectTrigger className="w-full border-none h-14">
-                        <SelectValue placeholder="Input field" />
+                        <SelectValue placeholder={InputFieldType.SHORT_TEXT} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Input field">Input field</SelectItem>
-                        <SelectItem value="Textarea field">
+                        <SelectItem value={InputFieldType.SHORT_TEXT}>Input field</SelectItem>
+                        <SelectItem value={InputFieldType.LONG_TEXT}>
                           Textarea field
                         </SelectItem>
-                        <SelectItem value="Select list field">
+                        <SelectItem value={InputFieldType.SELECT_LIST}>
                           Select list field
                         </SelectItem>
-                        <SelectItem value="Checkbox list field">
+                        <SelectItem value={InputFieldType.CHECKBOX}>
                           Checkbox list field
                         </SelectItem>
-                        <SelectItem value="Radio buttons field">
+                        <SelectItem value={InputFieldType.RADIO}>
                           Radio buttons field
                         </SelectItem>
                       </SelectContent>
@@ -432,8 +433,8 @@ export default function CreateTemplatePage() {
                     )}
                   </div>
 
-                  {(input.type === "Input field" ||
-                    input.type === "Textarea field") && (
+                  {(input.type === InputFieldType.SHORT_TEXT ||
+                    input.type === InputFieldType.LONG_TEXT) && (
                       <div className="w-full space-y-2">
                         <Input
                           type="text"
@@ -450,9 +451,9 @@ export default function CreateTemplatePage() {
                       </div>
                     )}
 
-                  {(input.type === "Select list field" ||
-                    input.type === "Checkbox list field" ||
-                    input.type === "Radio buttons field") && (
+                  {(input.type === InputFieldType.SELECT_LIST ||
+                    input.type === InputFieldType.CHECKBOX ||
+                    input.type === InputFieldType.RADIO) && (
                       <div className="w-full space-y-2">
                         <Input
                           type="text"

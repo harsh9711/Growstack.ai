@@ -25,6 +25,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { useDropzone } from "react-dropzone";
+import { InputFieldType } from "@/types/enums";
 
 type UserInput = {
   title: string;
@@ -454,9 +455,36 @@ const EditAssistantDialog = ({
                             }
                           />
                         </div>
-
-
-                        <div className='w-full space-y-2'>
+                        <div className="w-full space-y-2">
+                          <Select
+                            value={input.type}
+                            onValueChange={(value) =>
+                              handleInputChange(index, "type", value)
+                            }
+                          >
+                            <SelectTrigger className="w-full border-none h-14">
+                              <SelectValue placeholder={InputFieldType.SHORT_TEXT} />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value={InputFieldType.SHORT_TEXT}>
+                                Input field
+                              </SelectItem>
+                              <SelectItem value={InputFieldType.LONG_TEXT}>
+                                Textarea field
+                              </SelectItem>
+                              <SelectItem value={InputFieldType.SELECT_LIST}>
+                                Select list field
+                              </SelectItem>
+                              <SelectItem value={InputFieldType.CHECKBOX}>
+                                Checkbox list field
+                              </SelectItem>
+                              <SelectItem value={InputFieldType.RADIO}>
+                                Radio buttons field
+                              </SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        <div className="w-full space-y-2">
                           <Select
                             value={input.required}
                             onValueChange={(value: any) =>

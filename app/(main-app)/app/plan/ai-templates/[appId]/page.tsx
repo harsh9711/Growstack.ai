@@ -39,6 +39,7 @@ import { getCookie } from "cookies-next";
 import EventSource from 'eventsource';
 import { parseJsonString } from "@/lib/utils";
 import downloadPdf from "@/utils/downloadPdf";
+import { InputFieldType } from "@/types/enums";
 
 export default function AiAppPage({
   params: { appTemplateId },
@@ -670,16 +671,16 @@ export default function AiAppPage({
                   htmlFor={`user-prompt-${index}`}
                 >
                   {input.title}
-                  {input.field_type !== "Checkbox list field" &&
-                    input.field_type !== "Radio buttons field" &&
-                    input.field_type !== "Select list field" && (
-                      <span className="text-primary-black text-opacity-50 text-sm">
+                  {input.field_type !== InputFieldType.CHECKBOX &&
+                    input.field_type !== InputFieldType.RADIO &&
+                    input.field_type !== InputFieldType.SELECT_LIST && (
+                      <span className='text-primary-black text-opacity-50 text-sm'>
                         {userPrompts[index].length}/2000
                       </span>
                     )}
                 </label>
-                {input.field_type === "Checkbox list field" ? (
-                  <div className="flex flex-col space-y-2">
+                {input.field_type === InputFieldType.CHECKBOX ? (
+                  <div className='flex flex-col space-y-2'>
                     {input.description
                       .split(",")
                       .map((option: string, optionIndex: number) => (
@@ -701,8 +702,8 @@ export default function AiAppPage({
                       ))}
                   </div>
                 ) : null}
-                {input.field_type === "Radio buttons field" && (
-                  <div className="flex flex-col space-y-2">
+                {input.field_type === InputFieldType.RADIO && (
+                  <div className='flex flex-col space-y-2'>
                     {input.description
                       .split(",")
                       .map((option: string, optionIndex: number) => (
@@ -722,7 +723,7 @@ export default function AiAppPage({
                       ))}
                   </div>
                 )}
-                {input.field_type === "Select list field" && (
+                {input.field_type === InputFieldType.SELECT_LIST && (
                   <Dropdown
                     label={input.title}
                     hideLabel
@@ -734,9 +735,9 @@ export default function AiAppPage({
                     required
                   />
                 )}
-                {input.field_type !== "Checkbox list field" &&
-                  input.field_type !== "Radio buttons field" &&
-                  input.field_type !== "Select list field" && (
+                {input.field_type !== InputFieldType.CHECKBOX &&
+                  input.field_type !== InputFieldType.RADIO &&
+                  input.field_type !== InputFieldType.SELECT_LIST && (
                     <textarea
                       id={`user-prompt-${index}`}
                       rows={4}
@@ -894,8 +895,7 @@ export default function AiAppPage({
                     "Save as HTML",
                   ]}
                   hideLabel
-                  placeholder="Download/Save"
-                  value=""
+                  value="Copy as Text"
                   onChange={(value: any) => handleDownload(value)}
                 />
 
