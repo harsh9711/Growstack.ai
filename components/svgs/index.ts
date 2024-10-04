@@ -102,13 +102,3 @@ export { default as VerticalLineIcon } from "@/public/vertical-lineIcon.svg"
 export { default as LoginBackgroundImg } from "@/public/Login-Background.svg"
 export { default as LoginRightImg } from "@/public/LoginPagerightImg.svg"
 export { default as LogoIcon } from "@/public/svgs/logo.svg"
-
-
-
-
-
-
-
-
-
-

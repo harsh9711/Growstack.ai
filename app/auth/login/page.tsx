@@ -19,6 +19,7 @@ import { login } from "@/lib/features/auth/auth.slice";
 import { setCookie } from "cookies-next";
 import { useSearchParams } from "next/navigation";
 import { FaEye, FaEyeSlash, FaEdit } from 'react-icons/fa';
+import { LoginBackgroundImg, LoginRightImg } from "@/components/svgs";
 
 export default function Login() {
   const router = useRouter();
@@ -98,6 +99,10 @@ export default function Login() {
       transition={{ duration: 0.3 }}
     >
       <div className=" flex flex-col xl:flex-row h-screen overflow-y-auto gap-10">
+        <LoginBackgroundImg
+          className="absolute bottom-0 left-0 h-auto"
+          style={{ zoom: "0.65", marginTop: "0px" }}
+        />
         <section className="w-full h-full flex justify-center items-center bg-white">
           <div className="w-full max-w-2xl max-h-[840px] h-full p-14 bg-[#F7FAFC] rounded-[30px]">
             <div className="slide-reveal w-full h-full max-w-[460px] mx-auto flex flex-col justify-between items-center md:items-start space-y-10">
@@ -127,7 +132,7 @@ export default function Login() {
                       className={clsx(
                         "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
                         errors["email"] &&
-                          "border-rose-600 focus-within:border-rose-600"
+                        "border-rose-600 focus-within:border-rose-600"
                       )}
                     >
                       <svg
@@ -167,7 +172,7 @@ export default function Login() {
                       className={clsx(
                         "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
                         errors["password"] &&
-                          "border-rose-600 focus-within:border-rose-600"
+                        "border-rose-600 focus-within:border-rose-600"
                       )}
                     >
                       <svg
@@ -195,13 +200,13 @@ export default function Login() {
                           )}
                           {...register("password")}
                         />
-                        <span style={{marginLeft:"20px",opacity:"0.6"}}
+                        <span style={{ marginLeft: "20px", opacity: "0.6" }}
                           onClick={togglePasswordVisibility}
                           className="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer"
                         >
                           {passwordVisible ? (
                             <FaEye />) : (
-                              <FaEyeSlash />)}
+                            <FaEyeSlash />)}
                         </span>
                       </div>
                     </div>
@@ -283,8 +288,13 @@ export default function Login() {
           </div>
         </section>
         <section className="w-full flex flex-col justify-center items-center p-5 py-12 md:py-20 gap-20 bg-[#F7FAFC] rounded-l-[60px]">
-          <h1 className="text-2xl font-semibold">Unlock the Power of AI</h1>
-          <Image src="/assets/auth-stats.png" alt="" width={550} height={550} />
+          <div className="relative">
+            <h1 className="absolute text-2xl font-semibold top-10 " style={{ marginLeft: "18.5rem" }}>Unlock the Power of AI</h1>
+            <div className="scale-[0.6] md:scale-100">
+              <LoginRightImg />
+            </div>
+
+          </div>
         </section>
       </div>
     </motion.main>
