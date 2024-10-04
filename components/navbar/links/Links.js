@@ -36,6 +36,7 @@ const links = [
       { title: "Prospect scraping ", path: "/features/prospect-scraping-and-contacts" },
       { title: "AI secured chat", path: "/features/ai-secured-chat" },
       { title: "AI LLM comparison", path: "/features/ai-llm-comparison" },
+      { title: "AI content wizard", path: "/features/ai-content-wizard" },
     ],
   },
   {
