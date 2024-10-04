@@ -26,6 +26,8 @@ type Message = {
   content: string;
   role: string;
   loading: boolean;
+  imageUrl : string | null;
+  filename: string | null;
 };
 
 export default function ChatComponent() {
@@ -45,6 +47,8 @@ export default function ChatComponent() {
   const [secureChatEnabled, setSecureChatEnabled] = useState<boolean>(false)
   const [isDailyLimitExceeded, setIsDailyLimitExceeded] = useState(false)
   const [isDashboardChatModalOpen, setIsDashboardChatModalOpen] = useState(false);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [filename, setFilename] = useState<string | null>(null);
 
   const fetchMessages = useCallback(async (_id: string) => {
     try {
@@ -70,7 +74,7 @@ export default function ChatComponent() {
   }, [selectedConversation, fetchMessages]);
 
   const addMessage = (role: string, content: string, loading: boolean) => {
-    setMessages((prevMessages) => [...prevMessages, { role, content, loading }]);
+    setMessages((prevMessages) => [...prevMessages, { role, content, loading, imageUrl, filename }]);
   };
 
   const updateMessage = useCallback(
@@ -295,9 +299,12 @@ export default function ChatComponent() {
             <div className="flex-1">
             <ChatMessage
                 onButtonClick={handleChatMessageButtonClick}
+                
                 conversation={messages}
+                
                 selectedConversation={selectedConversation}
-              />
+              
+                imageUrl={imageUrl}/>
               <div ref={messagesEndRef} />
             </div>
           )}
@@ -312,6 +319,10 @@ export default function ChatComponent() {
           addMessage={addMessage}
           removeMessage={removeMessage}
           enableSecure={secureChatEnabled}
+          imageUrl={imageUrl}
+          setImageUrl={setImageUrl}
+          filename={filename}
+          setFilename={setFilename}
         />
       </div>
     </div>

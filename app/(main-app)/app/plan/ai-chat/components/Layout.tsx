@@ -43,6 +43,8 @@ type Message = {
   content: string;
   role: string;
   loading: boolean;
+  imageUrl : string | null;
+  filename: string | null;
 };
 
 const groupByDate = (items: ISidebarItem[]) => {
@@ -98,7 +100,8 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
     }
   };
 
-
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [filename, setFilename] = useState<string | null>(null);
   const filteredAiModelOptions = currentPlan &&
     planIdsMap.BASIC.some((val) => val === currentPlan.plan_id)
     ? aiModelOptions.map((category) => ({
@@ -205,7 +208,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
   const addMessage = (role: string, content: string, loading: boolean) => {
     setMessages((prevMessages) => [
       ...prevMessages,
-      { role, content, loading },
+      { role, content, loading, imageUrl, filename },
     ]);
   };
 
@@ -403,12 +406,6 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
               </SelectGroup>
             </SelectContent>
           </Select>
-
-
-
-
-
-
           <div className="remove-caret">
             <Select>
               <SelectTrigger
@@ -509,7 +506,8 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
                 onButtonClick={handleChatMessageButtonClick}
                 conversation={messages}
                 selectedConversation={selectedConversation}
-              />
+                imageUrl={imageUrl}
+            />
             )}
           </div>
           <ChatInput
@@ -523,7 +521,12 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
             setSelectedConversation={setSelectedConversation}
             selectedModel={selectedModel}
             addMessage={addMessage}
-            removeMessage={removeMessage} />
+            removeMessage={removeMessage}
+            imageUrl={imageUrl}
+            setImageUrl={setImageUrl}
+            filename={filename}
+            setFilename={setFilename}
+        />
         </main>
       </div>
       <ShareChatDialog
