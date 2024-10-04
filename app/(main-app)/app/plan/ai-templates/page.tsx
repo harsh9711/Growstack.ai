@@ -65,6 +65,11 @@ export default function AiAppTemplatesPage() {
   const [allAssistantsData, setAllAppTemplates] = useState<Assistant[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+  
+  const validateImageUrl = (url: string) => {
+    const imageRegex = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif))$/i;
+    return imageRegex.test(url);
+  }
 
   const fetchAppTemplates = async (tag : string) => {
     try {
@@ -263,15 +268,22 @@ export default function AiAppTemplatesPage() {
                     href={`/app/plan/ai-templates/${appTemplate._id}`}
                     className='flex gap-4 items-start flex-grow overflow-hidden'
                   >
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                      dangerouslySetInnerHTML={{ __html: appTemplate.icon }}
-                      className='w-[64px] h-[64px] flex-shrink-0'
-                    />
+                    {validateImageUrl(appTemplate.icon) ? (
+                      
+                      <div className="flex items-center justify-center w-16 h-16">
+                        <img src={appTemplate.icon} alt="icon" style={{width:"64px",height:"64px",minWidth:"64px",minHeight:"64px"}} className="rounded-lg object-contain w-full h-full"></img>
+                      </div>
+                    ) : (
+                        <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                        dangerouslySetInnerHTML={{ __html: appTemplate.icon }}
+                        className='w-[64px] h-[64px] flex-shrink-0'
+                      />
+                    )}
                     <div className='space-y-2 overflow-hidden flex-grow'>
                       <h1 className='text-lg font-semibold overflow-hidden text-ellipsis whitespace-nowrap'>
                         {appTemplate["ASSISTANT NAME"]}

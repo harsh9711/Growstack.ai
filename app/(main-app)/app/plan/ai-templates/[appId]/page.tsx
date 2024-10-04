@@ -508,6 +508,11 @@ export default function AiAppPage({
     }
   };
 
+  const validateImageUrl = (url: string) => {
+    const imageRegex = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif))$/i;
+    return imageRegex.test(url);
+  }
+
   const handleFavorite = async (method: string, templateId: string) => {
     try {
       const response = await instance.put(
@@ -567,17 +572,21 @@ export default function AiAppPage({
           <div className="mb-5 border-b border-[#EDEFF0]">
             <div className="flex items-center justify-between pb-5">
               <div className="flex flex-row items-center gap-3">
-                <div
-                  style={{
-                    height: "8vh",
-                    width: "8vh",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                  className="rounded"
-                  dangerouslySetInnerHTML={{ __html: appTemplate.icon }}
-                />
+              {validateImageUrl(appTemplate.icon) ? (
+                      <div className="flex items-center justify-center w-16 h-16">
+                        <img src={appTemplate.icon} alt="icon" className="rounded-lg object-contain w-full h-full"></img>
+                      </div>
+                    ) : (
+                        <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                        dangerouslySetInnerHTML={{ __html: appTemplate.icon }}
+                        className='w-[64px] h-[64px] flex-shrink-0'
+                      />
+                    )}
 
                 <h2 className="text-2xl font-semibold capitalize">
                   {appTemplate.name}
