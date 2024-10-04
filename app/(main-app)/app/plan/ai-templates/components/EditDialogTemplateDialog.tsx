@@ -1,5 +1,5 @@
 "use client";
- 
+
 import React, { useEffect, useState } from "react";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
@@ -25,7 +25,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { useDropzone } from "react-dropzone";
- 
+
 type UserInput = {
   title: string;
   description: string;
@@ -35,7 +35,7 @@ type UserInput = {
   requirement?: boolean;
   field_type?: string;
 };
- 
+
 const ValidationSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters long"),
   description: z
@@ -51,19 +51,19 @@ const ValidationSchema = z.object({
   idescription: z.string(),
   type: z.string(),
 });
- 
+
 type ValidationSchemaType = z.infer<typeof ValidationSchema>;
- 
+
 interface EditAssistantDialogProps {
   setSelectedRowId: React.Dispatch<React.SetStateAction<string | null>>;
   selectedRowId: string | null;
 }
- 
+
 const EditAssistantDialog = ({
- 
+
   selectedRowId,
   setSelectedRowId,
- 
+
 }: EditAssistantDialogProps) => {
   const router = useRouter();
   const [assistant, setAssistant] = useState<Assistant | null>(null);
@@ -73,8 +73,8 @@ const EditAssistantDialog = ({
   const [title, setTitle] = useState("");
   const [idescription, setIdescription] = useState("");
   const [iconPreview, setIconPreview] = useState<string | null>(null);
- 
- 
+
+
   const {
     register,
     handleSubmit,
@@ -83,9 +83,9 @@ const EditAssistantDialog = ({
   } = useForm<ValidationSchemaType>({
     resolver: zodResolver(ValidationSchema),
   });
- 
- 
- 
+
+
+
   // const { getRootProps, getInputProps } = useDropzone({
   //   accept: {
   //     "image/*": [],
@@ -106,23 +106,23 @@ const EditAssistantDialog = ({
   //     }
   //   },
   // });
- 
+
   const extractImageSrc = (imgTag: any) => {
     // Regular expression to extract the src value
     const srcMatch = imgTag.match(/src="([^"]*)"/);
- 
+
     // If a match is found, return the src value
     if (srcMatch && srcMatch[1]) {
       return srcMatch[1];
     }
- 
+
     // Return null or an empty string if no match is found
     return null;
   };
- 
+
   useEffect(() => {
     console.log("selectedRowId:", selectedRowId);
- 
+
     if (selectedRowId) {
       const fetchAssistant = async () => {
         try {
@@ -131,14 +131,14 @@ const EditAssistantDialog = ({
             `${API_URL}/ai/api/v1/chat-template/${selectedRowId}`
           );
           const assistantData = response.data.data;
- 
- 
-          console.log("ressssssssssssssssss",assistantData);
- 
+
+
+          console.log("ressssssssssssssssss", assistantData);
+
           // Set assistant and inputs states
           setAssistant(assistantData);
           setinputs(assistantData.inputs || []);
- 
+
           // Reset form with fetched data
           reset({
             name: assistantData.name,
@@ -160,14 +160,14 @@ const EditAssistantDialog = ({
       fetchAssistant();
     }
   }, [selectedRowId, reset]);
- 
+
   const addUserInput = () => {
     setinputs((prevInputs) => [
       ...prevInputs,
       { title: "", description: "", type: "", required: "Optional", icon: "" },
     ]);
   };
- 
+
   const removeUserInput = (index: number) => {
     setinputs((prevInputs) => {
       const updatedInputs = [...prevInputs];
@@ -175,7 +175,7 @@ const EditAssistantDialog = ({
       return updatedInputs;
     });
   };
- 
+
   const handleInputChange = (
     index: number,
     key: keyof UserInput,
@@ -183,14 +183,14 @@ const EditAssistantDialog = ({
   ) => {
     setinputs((prevInputs) => {
       const updatedInputs: any = [...prevInputs];
-     
- 
+
+
       updatedInputs[index][key] = value;
       return updatedInputs;
     });
   };
- 
- 
+
+
   const initialData: Partial<Assistant> = {
     name: "",
     description: "",
@@ -200,17 +200,17 @@ const EditAssistantDialog = ({
     title: "",
     inputs: [],
   };
- 
+
   const [formData, setFormData] = useState<Partial<Assistant>>(initialData);
- 
- 
+
+
   const [fileUploadLoading, setFileUploadLoading] = useState(false);
- 
- 
- 
+
+
+
   const handleUpdate: SubmitHandler<ValidationSchemaType> = async (data) => {
     setIsPending(true);
-   
+
     try {
       const changedFields: Partial<Assistant> = {
         name: data.name,
@@ -221,12 +221,12 @@ const EditAssistantDialog = ({
         title: data.title, // Include title in changedFields
         inputs,
       };
-     
+
       await instance.put(
         `${API_URL}/ai/api/v1/chat-template/${selectedRowId}`,
         changedFields
       );
-     
+
       toast.success("Assistant updated successfully");
     } catch (error) {
       console.error("Error updating assistant:", error);
@@ -234,9 +234,9 @@ const EditAssistantDialog = ({
     } finally {
       setIsPending(false);
     }
-};
- 
-const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  };
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: { "image/*": [] },
     onDrop: async (acceptedFiles) => {
       const file = acceptedFiles[0];
@@ -245,21 +245,21 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({
           toast.error("File size should be less than 1 MB");
           return; // Exit early if the file is too large
         }
- 
+
         const formData = new FormData();
         formData.append("document", file);
- 
+
         setFileUploadLoading(true);
         try {
           const response = await instance.post(`${API_URL}/users/api/v1/file/upload`, formData);
           const fileUrl = response.data.data.fileUrl;
- 
+
           // Set the uploaded file URL as the icon in the form data
           setFormData((prevState) => ({
             ...prevState,
             icon: fileUrl,
           }));
- 
+
           // Optionally, update the iconPreview to display the new icon immediately
           setIconPreview(fileUrl);
         } catch (error) {
@@ -270,21 +270,21 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({
         }
       }
     },
-});
- 
- 
- 
-// Rest of your component
- 
- 
+  });
+
+
+
+  // Rest of your component
+
+
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
- 
+
   const handleIdescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIdescription(e.target.value);
   };
- 
+
   return (
     <Dialog open={!!selectedRowId} onOpenChange={() => setSelectedRowId(null)}>
       <DialogContent className='max-w-[1400px]'>
@@ -376,19 +376,17 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({
                         <input {...getInputProps()} />
                         <p>Drag & drop an image here, or click to select one</p>
                       </div>
- 
+
                       {iconPreview && (
-                        <>
+                        <div className="text-center flex items-center justify-center">
                           <img
                             src={iconPreview}
                             alt='Uploaded icon'
+                            className="w-16 h-16 text-center object-contain"
                           />
- 
-                         
-                         
-                        </>
+                        </div>
                       )}
- 
+
                       {errors.icon && (
                         <p className='text-rose-600'>{errors.icon.message}</p>
                       )}
@@ -398,9 +396,9 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({
                     <label className='font-medium'>
                       User input fields <span className='text-[#F00]'>*</span>
                     </label>
- 
-                   
- 
+
+
+
                     {inputs.map((input, index) => (
                       <div key={index} className='flex gap-4 items-center'>
                         <div className='w-full space-y-2'>
@@ -410,20 +408,6 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({
                             value={input.title}
                             onChange={(e) =>
                               handleInputChange(index, "title", e.target.value)
-                            }
-                          />
-                        </div>
-                        <div className='w-full space-y-2'>
-                          <Input
-                            type='text'
-                            placeholder='Type input field description (required)'
-                            value={input.description}
-                            onChange={(e) =>
-                              handleInputChange(
-                                index,
-                                "description",
-                                e.target.value
-                              )
                             }
                           />
                         </div>
@@ -456,7 +440,22 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({
                             </SelectContent>
                           </Select>
                         </div>
- 
+                        <div className='w-full space-y-2'>
+                          <Input
+                            type='text'
+                            placeholder='Type input field description (required)'
+                            value={input.description}
+                            onChange={(e) =>
+                              handleInputChange(
+                                index,
+                                "description",
+                                e.target.value
+                              )
+                            }
+                          />
+                        </div>
+
+
                         <div className='w-full space-y-2'>
                           <Select
                             value={input.required}
@@ -538,7 +537,6 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({
     </Dialog>
   );
 };
- 
+
 export default EditAssistantDialog;
- 
- 
+

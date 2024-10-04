@@ -465,35 +465,6 @@ export default function CreateTemplatePage() {
                       </div>
                     )}
 
-
-                  <div className="w-full space-y-2">
-                    <Select
-                      value={input.type}
-                      onValueChange={(value) =>
-                        handleInputChange(index, "type", value)
-                      }
-                    >
-                      <SelectTrigger className="w-full border-none h-14">
-                        <SelectValue placeholder="Input field" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Input field">Input field</SelectItem>
-                        <SelectItem value="Textarea field">
-                          Textarea field
-                        </SelectItem>
-                        <SelectItem value="Select list field">
-                          Select list field
-                        </SelectItem>
-                        <SelectItem value="Checkbox list field">
-                          Checkbox list field
-                        </SelectItem>
-                        <SelectItem value="Radio buttons field">
-                          Radio buttons field
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
                   <div className="w-full space-y-2">
                     <Select
                       value={input.required || "Required"}
