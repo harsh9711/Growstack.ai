@@ -20,6 +20,7 @@ import toast from "react-hot-toast";
 import { z } from "zod";
 import TemplatesTable from "../components/TemplatesDataTable";
 import { useDropzone } from "react-dropzone";
+import React from "react";
 
 export default function CreateTemplatePage() {
   type UserInput = {
@@ -71,11 +72,11 @@ export default function CreateTemplatePage() {
     formState: { errors },
     setError,
     clearErrors,
-  } =  useForm({
+  } = useForm({
     // resolver: zodResolver(ValidationSchema), // Removed
   });
 
-  const validataFormData = async (name : string, description: string, icon: string, custom_prompt: string,category: string,userInputs : any) => {
+  const validataFormData = async (name: string, description: string, icon: string, custom_prompt: string, category: string, userInputs: any) => {
     let tempErrors: any = {};
     let isErrors = false;
     let userInputFields: any = [];
@@ -87,39 +88,39 @@ export default function CreateTemplatePage() {
     if (!category) tempErrors.category = 'Category is required';
     if (!userInputs) tempErrors.user_inputs = 'User Inputs are required';
 
-      // Prepare userInputs to be sent with the POST request
-       userInputFields = userInputs.map((input : any, index : number) => {
-        if (!input.title) {
-          tempErrors[`userInput[${index}].title`] = "Input Field Title is required";
-        }
-        if (!input.type) {
-          tempErrors[`userInput[${index}].type`] = "Input Field Type is required";
-        }
-      
-        return {
-          title: input.title,
-          description: input.description,
-          field_type: input.type,
-          requirement: input.required === "Required",
-          options: input.options ? input.options.split(",") : undefined,
-        };
-      });
-
-      if (Object.keys(tempErrors).length > 0) {
-        if(isSubmitClicked){
-          await setFormErrors(tempErrors);
-        }
-        isErrors =  true
-      }else{
-        await setFormErrors({});
-        isErrors = false
+    // Prepare userInputs to be sent with the POST request
+    userInputFields = userInputs.map((input: any, index: number) => {
+      if (!input.title) {
+        tempErrors[`userInput[${index}].title`] = "Input Field Title is required";
       }
-      return [isErrors, userInputFields];
+      if (!input.type) {
+        tempErrors[`userInput[${index}].type`] = "Input Field Type is required";
+      }
+
+      return {
+        title: input.title,
+        description: input.description,
+        field_type: input.type,
+        requirement: input.required === "Required",
+        options: input.options ? input.options.split(",") : undefined,
+      };
+    });
+
+    if (Object.keys(tempErrors).length > 0) {
+      if (isSubmitClicked) {
+        await setFormErrors(tempErrors);
+      }
+      isErrors = true
+    } else {
+      await setFormErrors({});
+      isErrors = false
+    }
+    return [isErrors, userInputFields];
   };
 
   useEffect(() => {
     if (!isSubmitClicked) return;
-  
+
     const debounceTimeout = setTimeout(() => {
       const validateFormDataAsync = async () => {
         const { name, description, icon, custom_prompt } = formData;
@@ -127,19 +128,19 @@ export default function CreateTemplatePage() {
       };
       validateFormDataAsync();
     }, 300);
-  
+
     return () => clearTimeout(debounceTimeout);
   }, [JSON.stringify(formData), JSON.stringify(userInputs), category, isSubmitClicked]);
-  
+
 
   const onSubmit: SubmitHandler<any> = async (data) => {
-   await setIsSubmitClicked(true);
+    await setIsSubmitClicked(true);
     setIsPending(true);
     try {
       const { name, description, icon, custom_prompt } = formData;
-      const [isErrors,userInputFields] = await validataFormData(name, description, icon, custom_prompt,category,userInputs);
+      const [isErrors, userInputFields] = await validataFormData(name, description, icon, custom_prompt, category, userInputs);
 
-      if(isErrors){
+      if (isErrors) {
         return;
       }
 
@@ -344,13 +345,13 @@ export default function CreateTemplatePage() {
                 </label>
 
                 {fileUploadLoading ? (
-                  <div className="h-56 w-full flex justify-center items-center border border-[#F2F2F2] rounded-xl">
+                  <div className="h-36 p-2 w-full flex justify-center items-center border border-[#F2F2F2] rounded-xl">
                     <Spinner color="black" size={35} />
                   </div>
                 ) : formData.icon ? (
                   <>
-                    <div className="h-56 w-full mx-auto flex items-center justify-center border border-[#F2F2F2] rounded-xl">
-                      <img src={formData.icon} alt="Logo" className="w-fit h-full object-contain" />
+                    <div className="h-36 w-full mx-auto flex items-center justify-center border border-[#F2F2F2] rounded-xl">
+                      <img src={formData.icon} alt="Logo" className="w-16 h-16 object-contain" />
                     </div>
                     <div className="flex justify-end m-2">
                       <button onClick={clearImg} type="button" className="hover-underline">
@@ -375,7 +376,7 @@ export default function CreateTemplatePage() {
                   </div>
                 )}
 
-              {formErrors?.icon && (
+                {formErrors?.icon && (
                   <p className="text-rose-600 text-sm">{formErrors?.icon}</p>
                 )}
               </div>
@@ -396,7 +397,7 @@ export default function CreateTemplatePage() {
                       }
                     />
                     {formErrors?.[`userInput[${index}].title`] && (
-                     <p className="text-rose-600 text-sm">{formErrors[`userInput[${index}].title`]}</p>
+                      <p className="text-rose-600 text-sm">{formErrors[`userInput[${index}].title`]}</p>
                     )}
                   </div>
 
@@ -427,7 +428,7 @@ export default function CreateTemplatePage() {
                       </SelectContent>
                     </Select>
                     {formErrors?.[`userInput[${index}].type`] && (
-                     <p className="text-rose-600 text-sm">{formErrors[`userInput[${index}].type`]}</p>
+                      <p className="text-rose-600 text-sm">{formErrors[`userInput[${index}].type`]}</p>
                     )}
                   </div>
 
@@ -463,6 +464,35 @@ export default function CreateTemplatePage() {
                         />
                       </div>
                     )}
+
+
+                  <div className="w-full space-y-2">
+                    <Select
+                      value={input.type}
+                      onValueChange={(value) =>
+                        handleInputChange(index, "type", value)
+                      }
+                    >
+                      <SelectTrigger className="w-full border-none h-14">
+                        <SelectValue placeholder="Input field" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Input field">Input field</SelectItem>
+                        <SelectItem value="Textarea field">
+                          Textarea field
+                        </SelectItem>
+                        <SelectItem value="Select list field">
+                          Select list field
+                        </SelectItem>
+                        <SelectItem value="Checkbox list field">
+                          Checkbox list field
+                        </SelectItem>
+                        <SelectItem value="Radio buttons field">
+                          Radio buttons field
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
 
                   <div className="w-full space-y-2">
                     <Select
@@ -501,8 +531,8 @@ export default function CreateTemplatePage() {
                 </div>
               ))}
               {formErrors?.user_inputs && (
-                  <p className="text-rose-600 text-sm">{formErrors?.user_inputs}</p>
-                )}
+                <p className="text-rose-600 text-sm">{formErrors?.user_inputs}</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -516,9 +546,9 @@ export default function CreateTemplatePage() {
                 value={formData.custom_prompt}
                 onChange={handleChange}
               />
-              {formErrors?.custom_prompt  && (
-                  <p className="text-rose-600 text-sm">{formErrors?.custom_prompt }</p>
-                )}
+              {formErrors?.custom_prompt && (
+                <p className="text-rose-600 text-sm">{formErrors?.custom_prompt}</p>
+              )}
             </div>
           </div>
           <div className="flex justify-end gap-4">

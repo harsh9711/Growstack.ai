@@ -68,6 +68,7 @@ export default function AiAppTemplatesPage() {
 
   const fetchAppTemplates = async (tag : string) => {
     try {
+      setLoading(true);
       let apiUrl = `${API_URL}/ai/api/v1/chat-template?category=${tag}`;
       if (tag === "My Assistants") {
         apiUrl = `${API_URL}/ai/api/v1/chat-template?category=MyAssistants`;

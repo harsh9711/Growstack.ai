@@ -440,6 +440,11 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
             </SelectContent>
           </Select>
 
+
+
+
+
+
           <div className="remove-caret">
             <Select>
               <SelectTrigger
@@ -475,6 +480,10 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
           </div>
         </div>
       </div>
+
+
+
+      
       <div className="flex-1 flex gap-4">
         <aside className="flex flex-col w-[380px] border bg-white rounded-3xl h-[calc(100vh-212px)]">
           <div className="border-t border-[#EFEFEF] flex items-center justify-between gap-2 py-3 px-6">
