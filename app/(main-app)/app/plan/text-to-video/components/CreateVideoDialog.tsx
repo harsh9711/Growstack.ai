@@ -420,7 +420,7 @@ const CreateVideoDialog = ({
         disabled={isPlanUsageLoading}
         onClick={(e) => {
           e.stopPropagation();
-          if(planUsage){
+          if (planUsage) {
             if (planUsage.usage.no_of_text_to_avatar <= 0 && user?.user_type !== "ADMIN") {
               setIsAddOnModalOpen(true)
             } else {
@@ -430,7 +430,7 @@ const CreateVideoDialog = ({
         }}
         className="bg-primary-green text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2">
         <Plus size={20} />
-        Create new video with AI
+        Create new avatar with AI
       </button>
 
       <GlobalModal showCloseButton={false} open={isAddOnModalOpen} setOpen={() => { setIsAddOnModalOpen(false) }}>
@@ -661,9 +661,9 @@ const CreateVideoDialog = ({
                             {loading ? (
                               <Spinner />
                             ) : clicked ? (
-                              "Video Generating..."
+                              "Avatar Generating..."
                             ) : (
-                              "Generate Video"
+                              "Generate Avatar"
                             )}
                           </button>
                         </div>

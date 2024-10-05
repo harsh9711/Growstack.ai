@@ -15,6 +15,8 @@ import GlobalModal from "@/components/modal/global.modal";
 import Link from "next/link";
 import { PlanUsage } from "@/types/common";
 import Lock from "@/components/svgs/lock";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
 
 interface Product {
   img_url: string;
@@ -55,6 +57,7 @@ export default function Page() {
   const [historyLoading, setHistoryLoading] = useState<boolean>(false);
   const [isAddOnModalOpen, setIsAddOnModalOpen] = useState<boolean>(false);
   const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
+  const { user } = useSelector((rootState: RootState) => rootState.auth);
 
   const fetchHistory = async () => {
     try {
@@ -125,7 +128,7 @@ export default function Page() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!planUsage?.usage_amount || planUsage?.usage_amount <= 0) {
+    if ((planUsage?.usage?.ai_background_generator_credits || 0) <= 0 && user?.user_type !== "ADMIN") {
       setIsAddOnModalOpen(true);
       return;
     }
@@ -254,7 +257,7 @@ export default function Page() {
       const data = response.data.data;
       setPlanUsage(data);
 
-      if (data.usage.ai_background_generator_credits <= 0) {
+      if (data.usage.ai_background_generator_credits <= 0 && user?.user_type !== "ADMIN") {
         setIsAddOnModalOpen(true)
       }
     } catch (error: any) {
@@ -370,15 +373,15 @@ export default function Page() {
       </main>
       <GlobalModal showCloseButton={false} open={isAddOnModalOpen} setOpen={() => { setIsAddOnModalOpen(false) }}>
         <div className="flex flex-col items-center justify-center px-6 pt-4 pb-8 gap-6 space-x-6">
-          <Lock/>
+          <Lock />
           <h3 className="text-center text-[28px] font-semibold">You don’t have enough credit.</h3>
           <p className="text-center text-gray-700 text-sm md:text-base px-4">
             You don’t have enough credits in your wallet to use this feature. It is an add-on, and requires additional credit to access. Please add credits to continue.
           </p>
-          <div className="flex items-center justify-between gap-3">  
+          <div className="flex items-center justify-between gap-3">
             <button
               className="text-red-500 border border-red-500 bg-transparent text-nowrap py-2 px-8 rounded-md transition duration-300"
-              onClick={()=> setIsAddOnModalOpen(false)}
+              onClick={() => setIsAddOnModalOpen(false)}
             >
               Cancel
             </button>

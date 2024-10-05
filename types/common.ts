@@ -11,6 +11,7 @@ export interface PlanUsage {
     social_media_analytics: boolean;
     webscraping_available: boolean;
     webscraping_and_contact: number;
+    ai_background_generator_credits: number;
   };
   _id: string;
   plan_id: string;
