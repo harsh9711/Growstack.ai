@@ -125,8 +125,10 @@ const CreateBrandVoice = ({ isOpen, setIsOpen, onSuccess }: Props) => {
                 formData,
             )).data;
 
+            console.log(response);
+
             setBrandVoiceAnalysisResult(response.data);
-            setValuesBrandVoice('brandVoice', response.data.brandVoice);
+            setValuesBrandVoice('brandVoice', response.data.brand_voice);
             setChatContent(response.data.brandVoice);
             setStep(2);
             toast.success("Successfully analyzed the brand voice");
