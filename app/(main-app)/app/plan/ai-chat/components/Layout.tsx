@@ -43,7 +43,7 @@ type Message = {
   content: string;
   role: string;
   loading: boolean;
-  imageUrl : string | null;
+  imageUrl: string | null;
   filename: string | null;
 };
 
@@ -79,7 +79,7 @@ const outputType = [
 ];
 
 const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutProps) => {
-  const { currentPlan } = useSelector((rootState: RootState) => rootState.auth);
+  const { user, currentPlan } = useSelector((rootState: RootState) => rootState.auth);
   const [brandVoices, setBrandVoices] = useState<BrandVoice[]>([]);
   const [enableWebAccess, setEnableWebAccess] = useState<boolean>(false);
   const [enableSecureChat, setEnableSecureChat] = useState<boolean>(false);
@@ -103,7 +103,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [filename, setFilename] = useState<string | null>(null);
   const filteredAiModelOptions = currentPlan &&
-    planIdsMap.BASIC.some((val) => val === currentPlan.plan_id)
+    planIdsMap.BASIC.some((val) => val === currentPlan.plan_id) && user?.user_type !== "ADMIN"
     ? aiModelOptions.map((category) => ({
       ...category,
       models: category.models.filter((model) => model.value.startsWith("claude")),
@@ -276,7 +276,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
 
     const freeCategories = ["growStackAiMessagesModel"];
 
-    if (freeCategories.includes(currentCategory.modelCategory)) {
+    if (user?.user_type === "ADMIN" || freeCategories.includes(currentCategory.modelCategory)) {
       setSelectedModel(value);
       return;
     }
@@ -507,7 +507,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
                 conversation={messages}
                 selectedConversation={selectedConversation}
                 imageUrl={imageUrl}
-            />
+              />
             )}
           </div>
           <ChatInput
@@ -526,7 +526,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
             setImageUrl={setImageUrl}
             filename={filename}
             setFilename={setFilename}
-        />
+          />
         </main>
       </div>
       <ShareChatDialog

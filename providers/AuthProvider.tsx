@@ -92,7 +92,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       pathname !== "/auth/redirect" &&
       pathname !== "/Payment" &&
       !isSubscribed &&
-      !planIdsMap.BASIC.some((val) => val === currentPlan.plan_id)
+      !planIdsMap.BASIC.some((val) => val === currentPlan.plan_id) &&
+      user?.user_type !== "ADMIN"
     ) {
       console.log("You need a subscription to view this page!");
       router.push("/Payment");
@@ -126,20 +127,20 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   if (isMobile()) {
     return (
       <>
-<div className="flex flex-col items-center justify-center h-screen w-screen bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-6">
-  <Lock />
-  <h3 className="text-center mt-4 text-black  text-2xl font-bold mb-4">
-    Mobile Access Restricted
-  </h3>
-  <p className="text-center text-sm md:text-base mb-6">
-    This application is not accessible on mobile devices. Please switch to a laptop or desktop for the best experience.
-  </p>
-   <h3 className="text-center  text-black text-md font-bold mb-4">
- Mobile app coming soon
-  </h3> 
-  <Link href="/" className="no-underline"><p className="text-center no-underline text-sm md:text-base mb-6">
-Go back </p></Link>
-{/* <div className="flex  gap-4">
+        <div className="flex flex-col items-center justify-center h-screen w-screen bg-gradient-to-r from-blue-500 to-indigo-600 text-white p-6">
+          <Lock />
+          <h3 className="text-center mt-4 text-black  text-2xl font-bold mb-4">
+            Mobile Access Restricted
+          </h3>
+          <p className="text-center text-sm md:text-base mb-6">
+            This application is not accessible on mobile devices. Please switch to a laptop or desktop for the best experience.
+          </p>
+          <h3 className="text-center  text-black text-md font-bold mb-4">
+            Mobile app coming soon
+          </h3>
+          <Link href="/" className="no-underline"><p className="text-center no-underline text-sm md:text-base mb-6">
+            Go back </p></Link>
+          {/* <div className="flex  gap-4">
                   <Link href="/auth/register">
                     <img src="/images_growstack/banner/playStore.svg" alt="banner" />
                   </Link>
@@ -147,10 +148,10 @@ Go back </p></Link>
                     <img src="/images_growstack/banner/apple.svg" alt="banner" />
                   </Link> 
               </div>  */}
-  {/* <button className="bg-white text-blue-600 px-6 py-6 rounded-full text-sm font-medium hover:bg-gray-100 transition-all">
+          {/* <button className="bg-white text-blue-600 px-6 py-6 rounded-full text-sm font-medium hover:bg-gray-100 transition-all">
     Learn More
   </button> */}
-</div>
+        </div>
 
       </>
     );

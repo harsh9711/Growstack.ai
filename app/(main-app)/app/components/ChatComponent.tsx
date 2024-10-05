@@ -26,15 +26,15 @@ type Message = {
   content: string;
   role: string;
   loading: boolean;
-  imageUrl : string | null;
+  imageUrl: string | null;
   filename: string | null;
 };
 
 export default function ChatComponent() {
-  const { currentPlan } = useSelector((rootState: RootState) => rootState.auth);
+  const { user, currentPlan } = useSelector((rootState: RootState) => rootState.auth);
 
   const filteredAiModelOptions = currentPlan &&
-    planIdsMap.BASIC.some((val) => val === currentPlan.plan_id)
+    planIdsMap.BASIC.some((val) => val === currentPlan.plan_id) && user?.user_type !== "ADMIN"
     ? aiModelOptions.map((category) => ({
       ...category,
       models: category.models.filter((model) => model.value.startsWith("claude")),
@@ -169,7 +169,7 @@ export default function ChatComponent() {
 
     const freeCategories = ["growStackAiMessagesModel"];
 
-    if (freeCategories.includes(currentCategory.modelCategory)) {
+    if (user?.user_type === "ADMIN" || freeCategories.includes(currentCategory.modelCategory)) {
       setSelectedModel(value);
       return;
     }
@@ -189,10 +189,10 @@ export default function ChatComponent() {
 
     setSelectedModel(value);
   };
-  const chatInputRef = useRef<{ handleRegenerate: (chartMessage:string) => void }>(null);
-  const handleChatMessageButtonClick = (chartMessage:any) => {
+  const chatInputRef = useRef<{ handleRegenerate: (chartMessage: string) => void }>(null);
+  const handleChatMessageButtonClick = (chartMessage: any) => {
     if (chatInputRef.current) {
-      chatInputRef.current.handleRegenerate(chartMessage); 
+      chatInputRef.current.handleRegenerate(chartMessage);
     }
   };
 
@@ -297,14 +297,14 @@ export default function ChatComponent() {
             </div>
           ) : (
             <div className="flex-1">
-            <ChatMessage
+              <ChatMessage
                 onButtonClick={handleChatMessageButtonClick}
-                
+
                 conversation={messages}
-                
+
                 selectedConversation={selectedConversation}
-              
-                imageUrl={imageUrl}/>
+
+                imageUrl={imageUrl} />
               <div ref={messagesEndRef} />
             </div>
           )}

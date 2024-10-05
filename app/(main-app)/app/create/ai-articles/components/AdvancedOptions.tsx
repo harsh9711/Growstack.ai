@@ -32,11 +32,7 @@ const AdvancedOptions: React.FC<AdvancedOptionsProps> = ({
   language,
   setLanguage,
 }) => {
-  const { currentPlan } = useSelector((rootState: RootState) => rootState.auth);
-
-  const selectedAiModelLabel = aiModelOptions
-    .flatMap((option) => option.models)
-    .find((model) => model.value === aiModel)?.label;
+  const { user, currentPlan } = useSelector((rootState: RootState) => rootState.auth);
 
   const handleModalSelection = (value: string) => {
     if (!currentPlan) return;
@@ -55,7 +51,7 @@ const AdvancedOptions: React.FC<AdvancedOptionsProps> = ({
 
     const freeCategories = ["growStackAiMessagesModel"];
 
-    if (freeCategories.includes(currentCategory.modelCategory)) {
+    if (user?.user_type === "ADMIN" || freeCategories.includes(currentCategory.modelCategory)) {
       setAiModel(value);
       return;
     }

@@ -51,7 +51,7 @@ export default function Topbar({
   selectedAiModel,
   setSelectedAiModel
 }: IProps) {
-  const { currentPlan } = useSelector((rootState: RootState) => rootState.auth);
+  const { user, currentPlan } = useSelector((rootState: RootState) => rootState.auth);
 
 
 
@@ -72,7 +72,7 @@ export default function Topbar({
 
     const freeCategories = ["growStackAiMessagesModel"];
 
-    if (freeCategories.includes(currentCategory.modelCategory)) {
+    if (user?.user_type === "ADMIN" || freeCategories.includes(currentCategory.modelCategory)) {
       setSelectedAiModel(value);
       return;
     }
