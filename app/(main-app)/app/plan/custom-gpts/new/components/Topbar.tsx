@@ -28,7 +28,7 @@ export default function Topbar({
             </p>
           </div>
         </div>
-        {from === "CREATE" && (
+        {/* {from === "CREATE" && (
           <div className="flex items-center gap-3">
             <button
               className={`inline-flex h-12 sheen items-center justify-center gap-2.5 rounded-xl border border-stroke bg-primary-green text-white px-8 py-3 text-base font-medium dark:border-dark-3 dark:text-white ${
@@ -44,7 +44,7 @@ export default function Topbar({
               Create
             </button>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );
