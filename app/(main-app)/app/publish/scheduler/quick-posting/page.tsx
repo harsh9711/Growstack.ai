@@ -35,7 +35,7 @@ export default function QuickPosting() {
         return <ScheduledPostsTable />;
     }
   };
- useEffect(() => {
+  useEffect(() => {
     const now = new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
@@ -55,12 +55,19 @@ export default function QuickPosting() {
 
   useEffect(() => {
     const storedArticle = localStorage.getItem("savedArticle");
+    const savedArticalImg = localStorage.getItem("savArticalImg")
+
     if (storedArticle) {
-      setContent(storedArticle);
+      setLink(storedArticle);
     }
+    setMediaUrls((prevData: any) => [
+      ...prevData,
+      savedArticalImg,
+    ])
 
     return () => {
       localStorage.removeItem("savedArticle");
+      localStorage.removeItem("savArticalImg")
     };
   }, []);
 
@@ -99,7 +106,7 @@ export default function QuickPosting() {
         mediaUrls,
         isVideo,
       };
-        requestData.scheduleDate = scheduleDate;
+      requestData.scheduleDate = scheduleDate;
 
       const response = await instance.post(
         API_URL + "/users/api/v1/social-media/quickpost",
@@ -214,10 +221,14 @@ export default function QuickPosting() {
                         <div className="w-16 h-16 rounded-md ">
                           <div
                             className=" absolute ml-12"
-                            style={{ marginTop: 0 }}
+                            style={{ marginTop: 0, cursor: "pointer" }}
                             onClick={() => handleRemoveMediaUrls(index)}
                           >
-                            <XCircle size={18} color="grey" />
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <circle cx="10" cy="10" r="10" fill="#FF0000" />
+                              <path d="M6.3 13.9001L13.6142 6.58586" stroke="white" stroke-width="2.28571" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M6.30426 6.30414L13.6546 13.6545" stroke="white" stroke-width="2.28571" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
                           </div>
                           <img
                             src={img}
@@ -351,11 +362,10 @@ export default function QuickPosting() {
                   {tabs.map((tab, index) => (
                     <div
                       key={index}
-                      className={`w-full h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
-                        selectedTabIndex === index
+                      className={`w-full h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${selectedTabIndex === index
                           ? "!text-white"
                           : "!text-primary-grey"
-                      }`}
+                        }`}
                       onClick={() => {
                         const totalTabs = tabs.length;
                         const percentage = (index / totalTabs) * 100;

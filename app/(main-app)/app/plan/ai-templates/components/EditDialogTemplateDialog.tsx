@@ -132,15 +132,8 @@ const EditAssistantDialog = ({
             `${API_URL}/ai/api/v1/chat-template/${selectedRowId}`
           );
           const assistantData = response.data.data;
-
-
-          console.log("ressssssssssssssssss", assistantData);
-
-          // Set assistant and inputs states
           setAssistant(assistantData);
           setinputs(assistantData.inputs || []);
-
-          // Reset form with fetched data
           reset({
             name: assistantData.name,
             description: assistantData.description,
@@ -397,9 +390,6 @@ const EditAssistantDialog = ({
                     <label className='font-medium'>
                       User input fields <span className='text-[#F00]'>*</span>
                     </label>
-
-
-
                     {inputs.map((input, index) => (
                       <div key={index} className='flex gap-4 items-center'>
                         <div className='w-full space-y-2'>
