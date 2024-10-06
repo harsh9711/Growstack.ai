@@ -22,8 +22,10 @@ export function isMobile() {
     return false;
   }
 
-  const match = window.matchMedia('(pointer: coarse)');
-  return match && match.matches;
+  const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
+  const isSmallScreen = window.matchMedia('(max-width: 768px)').matches;
+
+  return isTouchDevice && isSmallScreen;
 }
 
 
