@@ -99,10 +99,13 @@ export default function AiPlayground() {
     // renderConversation()  
   };
 
-  const renderConversation = async () => {
-    if (userPrompt.trim() === "") return;
+  const renderConversation = async (chatMessage?: string) => {
+    const prompt = userPrompt?.trim() ?? "";
+    const message = chatMessage?.trim() ?? "";
+
+    if (prompt === "" && message === "") return;
     const newMessage: Message = {
-      content: userPrompt?.trim(),
+      content: prompt || message,
       role: "user",
       loading: false,
     };
@@ -127,7 +130,7 @@ export default function AiPlayground() {
       const responses = await Promise.all(
         chatAreas.map(async (chatArea) => {
           const payload = {
-            user_prompt: userPrompt?.trim(),
+            user_prompt: userPrompt?.trim() || chatMessage?.trim(),
             model: chatArea.selectedModel,
             provider: chatArea.provider,
             messages: chatArea.messages,
