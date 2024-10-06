@@ -188,7 +188,9 @@ export default function QuickPostsTable() {
           pagination.pageIndex + 1
         }&type=published&status=error`
       );
-      setTableData(response.data.data.history);
+      if(response.data.data.history){
+        setTableData(response.data.data.history);
+      }
     } catch (error) {
       console.log("Error fetching table data:", error);
       toast.error("Error fetching table data");
