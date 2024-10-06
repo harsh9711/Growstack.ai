@@ -397,7 +397,7 @@ export default function TextToVideoPage() {
       } else {
         toast.error(error.message);
       }
-      console.error("Error removing video:", error);
+      console.error("Error removing avatar:", error);
     }
   };
 
@@ -458,7 +458,7 @@ export default function TextToVideoPage() {
             </Suspense>
           ) : (
             <div className="text-center text-gray-500 text-2xl font-semibold col-span-4">
-              No Videos Available
+              No Avatar Available
             </div>
           )}
         </div>
