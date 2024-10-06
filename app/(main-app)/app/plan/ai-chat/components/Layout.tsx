@@ -32,6 +32,13 @@ import { ALL_ROUTES } from "@/utils/constant";
 import Ellipse from "@/components/svgs/ellipse";
 import { Switch } from "@/components/ui/switch";
 import ShareChatDialog from "./ShareChatDialog";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Info } from "lucide-react";
 
 interface LayoutProps {
   sidebarItems: ISidebarItem[];
@@ -306,6 +313,19 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
         <h1 className="text-xl font-semibold">AI Chat</h1>
         <div className="flex gap-3 items-center">
           <div className="gap-2 flex pr-4 py-1.5 items-center border-r-2 border-[#EBEBEB]">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Info
+                    size={18}
+                    className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
+                  />
+                </TooltipTrigger>
+                <TooltipContent side="bottom" className="bg-white" style={{ width: "450px" }}>
+                  <p>Secure-AI chat ensures safe, natural conversations with strong protection and smart filters.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             <span className="text-md flex flex-row gap-x-2 font-medium">
               Secure chat
             </span>

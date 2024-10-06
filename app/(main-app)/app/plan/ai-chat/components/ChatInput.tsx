@@ -611,7 +611,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
       <ToolsDialog
         setInput={(description: string) => promptInput(description)}
       />
-      <div className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
+      <div className="h-12 w-9 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
         <Microphone
           open={open}
           isAnimating={isAnimating}
