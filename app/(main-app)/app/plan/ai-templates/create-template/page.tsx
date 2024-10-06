@@ -483,15 +483,7 @@ export default function CreateTemplatePage() {
                     </Select>
                   </div>
 
-                  {index === userInputs.length - 1 ? (
-                    <button
-                      type="button"
-                      className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
-                      onClick={addUserInput}
-                    >
-                      <Plus />
-                    </button>
-                  ) : (
+                  {userInputs.length > 1 && (
                     <button
                       type="button"
                       className="bg-red-500 text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
@@ -500,13 +492,36 @@ export default function CreateTemplatePage() {
                       <Minus />
                     </button>
                   )}
+
+
+                  {index === userInputs.length - 1 && index>0 && (
+                    <button
+                      type="button"
+                      className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                      onClick={addUserInput}
+                    >
+                      <Plus />
+                    </button>
+                  )}
+                  {userInputs.length === 1 && (
+                    <button
+                      type="button"
+                      className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                      onClick={addUserInput}
+                    >
+                      <Plus />
+                    </button>
+                  )}
                 </div>
               ))}
+
+
               {formErrors?.user_inputs && (
                 <p className="text-rose-600 text-sm">{formErrors?.user_inputs}</p>
               )}
             </div>
-
+            <div className="flex justify-end">
+            </div>
             <div className="space-y-2">
               <label className="font-medium">
                 Custom prompt <span className="text-[#F00]">*</span>

@@ -352,11 +352,11 @@ const CreateVideoDialog = ({
           })
         );
       } else {
-        toast.error("Failed to generate video");
+        toast.error("Failed to generate avatar");
         setStep(0);
       }
     } catch (error) {
-      toast.error("Error generating video");
+      toast.error("Error generating avatar");
       setStep(0);
     } finally {
       setLoading(false);
@@ -478,7 +478,7 @@ const CreateVideoDialog = ({
                       <input
                         type="text"
                         name="title"
-                        placeholder="Type video title"
+                        placeholder="Type avatar title"
                         value={formData.title}
                         onChange={handleInputChange}
                         className="border border-[#DEDEDE] bg-[#F5F5F5] h-[54px] w-full rounded-xl outline-none focus:border-primary-green transition-all p-4"
@@ -553,7 +553,7 @@ const CreateVideoDialog = ({
                           transition={{ duration: 0.25 }}
                           type="text"
                           name="audience"
-                          placeholder="Who will be watching this video?"
+                          placeholder="Who will be watching this avatar?"
                           value={formData.audience}
                           onChange={handleInputChange}
                           className="border border-[#DEDEDE] bg-[#F5F5F5] h-[54px] w-full rounded-xl outline-none focus:border-primary-green transition-all p-4"

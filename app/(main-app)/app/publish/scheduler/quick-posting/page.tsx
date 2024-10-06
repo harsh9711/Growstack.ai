@@ -79,14 +79,32 @@ export default function QuickPosting() {
 
   useEffect(() => {
     const storedArticle = localStorage.getItem("savedArticle");
+    const savedArticleImg = localStorage.getItem("savedArticleImg");
+
     if (storedArticle) {
-      setContent(storedArticle);
+      try {
+        const parsedArticle = JSON.parse(storedArticle);
+        setLink(parsedArticle);
+      } catch (error) {
+        console.error("Error parsing savedArticle:", error);
+      }
+    }
+
+    if (savedArticleImg) {
+      try {
+        const parsedArticleImg = JSON.parse(savedArticleImg);
+        setMediaUrls((prevData: any) => [...prevData, parsedArticleImg]);
+      } catch (error) {
+        console.error("Error parsing savedArticleImg:", error);
+      }
     }
 
     return () => {
       localStorage.removeItem("savedArticle");
+      localStorage.removeItem("savedArticleImg");
     };
   }, []);
+
 
   const handleBrowsImgAndVideo = async (
     event: ChangeEvent<HTMLInputElement>
@@ -161,6 +179,8 @@ export default function QuickPosting() {
   const handleRemoveMediaUrls = (index: number) => {
     setMediaUrls((prevUrls) => prevUrls.filter((_, i) => i !== index));
   };
+
+  console.log(mediaUrls)
 
   return (
     <Fragment>
@@ -238,10 +258,14 @@ export default function QuickPosting() {
                         <div className="w-16 h-16 rounded-md ">
                           <div
                             className=" absolute ml-12"
-                            style={{ marginTop: 0 }}
+                            style={{ marginTop: 0, cursor: "pointer" }}
                             onClick={() => handleRemoveMediaUrls(index)}
                           >
-                            <XCircle size={18} color="grey" />
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <circle cx="10" cy="10" r="10" fill="#FF0000" />
+                              <path d="M6.3 13.9001L13.6142 6.58586" stroke="white" stroke-width="2.28571" stroke-linecap="round" stroke-linejoin="round" />
+                              <path d="M6.30426 6.30414L13.6546 13.6545" stroke="white" stroke-width="2.28571" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
                           </div>
                           <img
                             src={img}

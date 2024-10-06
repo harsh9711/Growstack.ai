@@ -158,14 +158,14 @@ export default function IdeasComponent({
               <label className="font-medium" htmlFor="topic">
                 Topic <span className="text-rose-600">*</span>
               </label>
-              <span className="text-primary-black text-opacity-50 text-sm">{topic.length}/2000</span>
+              <span className="text-primary-black text-opacity-50 text-sm">{topic.length}/500</span>
             </div>
             <input
               type="text"
               id="title"
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
-              maxLength={2000}
+              maxLength={500}
               placeholder="Enter the topic"
               className="flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2"
             />
