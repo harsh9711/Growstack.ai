@@ -16,11 +16,14 @@ import Icon3 from "@/public/svgs/conversation-starter3.svg";
 import { getCurrentUser } from "@/lib/features/auth/auth.selector";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
-import { planIdsMap } from "@/lib/utils";
+import { parseJsonString, planIdsMap } from "@/lib/utils";
 import Link from "next/link";
 import { ChatResponse } from "@/types/common";
 import ChatMessages from "../plan/ai-chat/components/ChatMessage";
 import ChatMessage from "../plan/ai-chat/components/ChatMessage";
+import { getCookie } from "cookies-next";
+import EventSource from 'eventsource';
+
 
 type Message = {
   content: string;
@@ -67,11 +70,6 @@ export default function ChatComponent() {
     }
   }, []);
 
-  useEffect(() => {
-    if (selectedConversation) {
-      fetchMessages(selectedConversation);
-    }
-  }, [selectedConversation, fetchMessages]);
 
   const addMessage = (role: string, content: string, loading: boolean) => {
     setMessages((prevMessages) => [...prevMessages, { role, content, loading, imageUrl, filename }]);
@@ -96,6 +94,43 @@ export default function ChatComponent() {
       return prevMessages.filter((_, index) => index !== indexToRemove && index !== indexToRemove + 1);
     });
   }, []);
+
+
+  const streamResponse = async (chatId: string) => {
+    try {
+      const token = getCookie("token");
+      const eventSource = new EventSource(`${API_URL}/ai/api/v1/conversation/chat/stream/${chatId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+
+      let accumulatedResponse = '';
+
+      eventSource.onmessage = (event: MessageEvent) => {
+        const chunk = event.data;
+        const msg = parseJsonString(chunk)?.text || "";
+        accumulatedResponse += msg;
+
+        updateMessage(accumulatedResponse, "assistant");
+      };
+
+      eventSource.onerror = (error: MessageEvent) => {
+        console.error('EventSource failed:', error);
+        eventSource.close();
+      };
+
+      eventSource.addEventListener('end', (event: MessageEvent) => {
+        eventSource.close();
+      });
+
+    } catch (error) {
+      console.error('Error setting up EventSource:', error);
+      toast.error('Error setting up stream');
+    }
+  };
+
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
   const handleConversationStarterClick = async (user_prompt: string) => {
     addMessage("user", user_prompt, false);
@@ -108,7 +143,7 @@ export default function ChatComponent() {
         }
       );
 
-      const { conversation_id, response, noOfMessagesLeft, totalNoOfMessages } = data.data as ChatResponse;
+      const { conversation_id, response, chatId, noOfMessagesLeft, totalNoOfMessages } = data.data as ChatResponse;
 
       const isBasicPlan = planIdsMap.BASIC.some((val) => val === currentPlan?.plan_id);
 
@@ -122,7 +157,7 @@ export default function ChatComponent() {
         }
       }
       setSelectedConversation(conversation_id);
-      updateMessage(response, "assistant");
+      await streamResponse(chatId);
     } catch (error: any) {
       const errorMsg = error.response?.data.error ?? error.message;
       if (errorMsg === "Please upgrade your plan") {
