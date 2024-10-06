@@ -11,13 +11,14 @@ import {
 import "@/styles/editor.css";
 import clsx from "clsx";
 import { MoreHorizontal, Plus, Trash2Icon } from "lucide-react";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useImperativeHandle } from "react";
 import { modelData } from "../../../create/ai-articles/constants/options";
 import { Message } from "../interface/playground";
 import ChatMessages from "./chatMessage";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import autosize from "autosize";
+import toast from "react-hot-toast";
 interface ChatAreaProps {
   selectedModel: string;
   addChatArea: () => void;
@@ -26,7 +27,7 @@ interface ChatAreaProps {
   handleChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   userPrompt: string;
   handleDelete: () => void;
-  renderConversation: () => void
+  renderConversation: (msg?: string) => void
 }
 
 const outputType = [
@@ -49,12 +50,13 @@ const ChatArea = ({
 }: ChatAreaProps) => {
   const [inputValue, setInputValue] = useState(userPrompt);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null); // Updated here
+  const textareaRef = useRef<HTMLTextAreaElement & { handleRegenerate: (chartMessage: string) => void } | null>(null); // Updated here
   const initialHeight = 32;
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(event.target.value);
     handleChange(event);
   };
+
 
   const handleSend = () => {
     if (textareaRef.current && inputValue.trim() !== "") {
@@ -115,6 +117,16 @@ const ChatArea = ({
     .flatMap((provider) => provider.models)
     .find((model) => model.value === selectedModel);
 
+  const handleChatRegenerateClick = (chatMessage: any) => {
+    console.log("chartMessage", chatMessage);
+    if (chatMessage) {
+      renderConversation(chatMessage);
+    } else {
+      toast.error("No previous prompt to regenerate.");
+    }
+  };
+
+
   return (
     <div
       className="flex-1 flex flex-col !bg-white border border-[#E8E8E8] shadow-box p-7 w-full justify-between min-w-[400px]"
@@ -169,7 +181,7 @@ const ChatArea = ({
         className="flex-1 flex flex-col max-h-[68vh] overflow-y-auto mb-3"
       >
         {conversation.length > 0 ? (
-          <ChatMessages conversation={conversation} />
+          <ChatMessages onRegenerateClick={handleChatRegenerateClick} conversation={conversation} />
         ) : (
           <></>
         )}
