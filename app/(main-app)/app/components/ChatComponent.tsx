@@ -21,6 +21,13 @@ import Link from "next/link";
 import { ChatResponse } from "@/types/common";
 import ChatMessages from "../plan/ai-chat/components/ChatMessage";
 import ChatMessage from "../plan/ai-chat/components/ChatMessage";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Info } from "lucide-react";
 import { getCookie } from "cookies-next";
 import EventSource from 'eventsource';
 
@@ -236,11 +243,22 @@ export default function ChatComponent() {
       {isDashboardChatModalOpen && <DashboardChatModal onClose={() => setIsDashboardChatModalOpen(false)} onSelectConversation={handleSelectConversation} />}
       <div className="flex justify-between items-center border-b pb-4" data-aos="fade-left">
         <div className="flex flex-row gap-2 items-center justify-center">
+
           <div className="flex items-center justify-center cursor-pointer" onClick={() => setIsDashboardChatModalOpen(true)}>
-            <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="4.5" y="4" width="16" height="16" rx="2" stroke="#034737" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M9.5 4V20" stroke="#034737" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="4.5" y="4" width="16" height="16" rx="2" stroke="#034737" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M9.5 4V20" stroke="#034737" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </TooltipTrigger>
+                <TooltipContent className="bg-white">
+                  <p>History</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
           </div>
           <div className="flex items-center justify-center">
             <h1 className="text-xl font-semibold">AI Chat</h1>
@@ -248,6 +266,19 @@ export default function ChatComponent() {
         </div>
         <div className="flex flex-row items-center justify-center gap-5">
           <div className='flex items-center gap-2'>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Info
+                    size={18}
+                    className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
+                  />
+                </TooltipTrigger>
+                <TooltipContent className="bg-white" style={{ width: "450px", zIndex: "1000" }}>
+                  <p>Secure-AI chat ensures safe, natural conversations with strong protection and smart filters.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             <div className='text-l font-semibold'>Secure Chat</div>
             <label className='relative inline-flex items-center cursor-pointer'>
               <input
