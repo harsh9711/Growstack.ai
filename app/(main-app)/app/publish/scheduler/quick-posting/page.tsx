@@ -79,21 +79,32 @@ export default function QuickPosting() {
 
   useEffect(() => {
     const storedArticle = localStorage.getItem("savedArticle");
-    const savedArticalImg = localStorage.getItem("savArticalImg")
+    const savedArticleImg = localStorage.getItem("savedArticleImg");
 
     if (storedArticle) {
-      setLink(storedArticle);
+      try {
+        const parsedArticle = JSON.parse(storedArticle);
+        setLink(parsedArticle);
+      } catch (error) {
+        console.error("Error parsing savedArticle:", error);
+      }
     }
-    setMediaUrls((prevData: any) => [
-      ...prevData,
-      savedArticalImg,
-    ])
+
+    if (savedArticleImg) {
+      try {
+        const parsedArticleImg = JSON.parse(savedArticleImg);
+        setMediaUrls((prevData: any) => [...prevData, parsedArticleImg]);
+      } catch (error) {
+        console.error("Error parsing savedArticleImg:", error);
+      }
+    }
 
     return () => {
       localStorage.removeItem("savedArticle");
-      localStorage.removeItem("savArticalImg")
+      localStorage.removeItem("savedArticleImg");
     };
   }, []);
+
 
   const handleBrowsImgAndVideo = async (
     event: ChangeEvent<HTMLInputElement>
@@ -168,6 +179,8 @@ export default function QuickPosting() {
   const handleRemoveMediaUrls = (index: number) => {
     setMediaUrls((prevUrls) => prevUrls.filter((_, i) => i !== index));
   };
+
+  console.log(mediaUrls)
 
   return (
     <Fragment>
@@ -386,11 +399,10 @@ export default function QuickPosting() {
                   {tabs.map((tab, index) => (
                     <div
                       key={index}
-                      className={`w-full h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
-                        selectedTabIndex === index
-                          ? "!text-white"
-                          : "!text-primary-grey"
-                      }`}
+                      className={`w-full h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${selectedTabIndex === index
+                        ? "!text-white"
+                        : "!text-primary-grey"
+                        }`}
                       onClick={() => {
                         const totalTabs = tabs.length;
                         const percentage = (index / totalTabs) * 100;
