@@ -188,7 +188,7 @@ const ChatArea = ({
         <textarea
           ref={textareaRef}
           placeholder="Type your message..."
-          className="w-full flex-1 bg-transparent text-center mt-2 resize-none overflow-auto h-8 min-h-8 max-h-[200px]"
+          className="w-full flex-1 bg-transparent mt-2 resize-none overflow-auto h-8 min-h-8 max-h-[200px]"
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           onInput={handleResize}
