@@ -469,23 +469,13 @@ export const modelData = [
     provider: "perplexity",
     models: [
       {
-        label: "Llama 3 Sonar Small 32k Online",
-        value: "llama-3-sonar-small-32k-online",
+        label: "Llama 3.1 Sonar Large 128k Online",
+        value: "llama-3.1-sonar-large-128k-chat",
         icon: <Llama />,
       },
       {
-        label: "Llama 3 Sonar Small 32k Chat",
-        value: "llama-3-sonar-small-32k-chat",
-        icon: <Llama />,
-      },
-      {
-        label: "Llama 3 Sonar Large 32k Online",
-        value: "llama-3-sonar-large-32k-online",
-        icon: <Llama />,
-      },
-      {
-        label: "Llama 3 Sonar Large 32k Chat",
-        value: "llama-3-sonar-large-32k-chat",
+        label: "Llama 3.1 Sonar Small 128k Chat",
+        value: "llama-3.1-sonar-small-128k-chat",
         icon: <Llama />,
       },
     ],
