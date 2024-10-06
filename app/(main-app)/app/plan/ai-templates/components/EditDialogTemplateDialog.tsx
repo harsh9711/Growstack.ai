@@ -498,61 +498,72 @@ const EditAssistantDialog = ({
                             </SelectContent>
                           </Select>
                         </div>
-                        {index === inputs.length - 1 ? (
+                        {inputs.length > 1 && (
                           <button
-                            type='button'
-                            className='bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg'
-                            onClick={addUserInput}
-                          >
-                            <Plus />
-                          </button>
-                        ) : (
-                          <button
-                            type='button'
-                            className='bg-red-500 text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg'
+                            type="button"
+                            className="bg-red-500 text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
                             onClick={() => removeUserInput(index)}
                           >
                             <Minus />
                           </button>
                         )}
+                        {index === inputs.length - 1 && index > 0 && (
+                          <button
+                            type="button"
+                            className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                            onClick={addUserInput}
+                          >
+                            <Plus />
+                          </button>
+                        )}
+                        {inputs.length === 1 && (
+                          <button
+                            type="button"
+                            className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                            onClick={addUserInput}
+                          >
+                            <Plus />
+                          </button>
+                        )}
                       </div>
                     ))}
-                  </div>
-                  <div className='space-y-2'>
-                    <label className='font-medium'>
-                      Custom Prompt <span className='text-[#F00]'>*</span>
-                    </label>
-                    <textarea
-                      placeholder='Type custom prompt'
-                      className='h-60 block w-full rounded-2xl bg-[#F5F5F5] p-4 resize-none'
-                      {...register("custom_prompt")}
-                    />
-                    {errors.custom_prompt && (
-                      <p className='text-rose-600'>
-                        {errors.custom_prompt.message}
-                      </p>
-                    )}
-                  </div>
-                  <div className='flex justify-end gap-x-3 !mt-8'>
-                    <DialogClose>
-                      <button className='border text-primary-black px-8 py-4 rounded-xl flex items-center gap-2'>
-                        Cancel
-                      </button>
-                    </DialogClose>
-                    <button
-                      className='bg-primary-green text-white sheen transition duration-500 px-8 py-4 rounded-xl flex items-center gap-2'
-                      disabled={isPending}
-                    >
-                      {isPending ? "Updating..." : "Update Assistant"}
-                    </button>
-                  </div>
+
                 </div>
-              </form>
+                <div className='space-y-2'>
+                  <label className='font-medium'>
+                    Custom Prompt <span className='text-[#F00]'>*</span>
+                  </label>
+                  <textarea
+                    placeholder='Type custom prompt'
+                    className='h-60 block w-full rounded-2xl bg-[#F5F5F5] p-4 resize-none'
+                    {...register("custom_prompt")}
+                  />
+                  {errors.custom_prompt && (
+                    <p className='text-rose-600'>
+                      {errors.custom_prompt.message}
+                    </p>
+                  )}
+                </div>
+                <div className='flex justify-end gap-x-3 !mt-8'>
+                  <DialogClose>
+                    <button className='border text-primary-black px-8 py-4 rounded-xl flex items-center gap-2'>
+                      Cancel
+                    </button>
+                  </DialogClose>
+                  <button
+                    className='bg-primary-green text-white sheen transition duration-500 px-8 py-4 rounded-xl flex items-center gap-2'
+                    disabled={isPending}
+                  >
+                    {isPending ? "Updating..." : "Update Assistant"}
+                  </button>
+                </div>
+              </div>
+            </form>
             </section>
-          )
+      )
         )}
-      </DialogContent>
-    </Dialog>
+    </DialogContent>
+    </Dialog >
   );
 };
 
