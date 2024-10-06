@@ -482,7 +482,7 @@ export default function CreateTemplatePage() {
                       </SelectContent>
                     </Select>
                   </div>
-                  {userInputs.length > 1 && index !== 0 ?
+                  {userInputs.length > 0 ?
                     <button
                       type="button"
                       className="bg-red-500 text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
