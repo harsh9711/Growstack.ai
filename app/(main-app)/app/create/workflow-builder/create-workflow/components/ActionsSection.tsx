@@ -24,7 +24,7 @@ interface ActionsSectionProps {
   actions: any;
   inputConfigs: any;
   workflowId: string | null;
-  indexId:number;
+  indexId: number;
 }
 
 type SubOption = {
@@ -108,7 +108,7 @@ const ActionsSection = ({
         })),
       },
       ...actions
-        .slice(0,indexId)
+        .slice(0, indexId)
         .map((action: any, index: number) => ({
           type: "output",
           name: action.name,
@@ -220,7 +220,7 @@ const ActionsSection = ({
         {activeAction?.preset_json?.body?.length > 0 &&
           activeAction.preset_json.body.map(
             (option: any, index: number) => {
-              if (option.variable_type === "DROPDOWN") {
+              if (option.variable_type === "DROPDOWN" && !option.is_prompt) {
                 return (
                   <div key={index} className="mt-4 ">
                     <Dropdown
@@ -232,7 +232,7 @@ const ActionsSection = ({
                 );
               }
 
-              if (option.variable_type === "TEXT_AREA") {
+              if (option.variable_type === "TEXT_AREA" && !option.is_prompt) {
                 return (
                   <div key={index} className="mt-4 ">
                     <TextArea
@@ -246,7 +246,7 @@ const ActionsSection = ({
                 );
               }
               if (
-                option.variable_type === "SHORT_TEXT"
+                option.variable_type === "SHORT_TEXT" && !option.is_prompt
               ) {
                 return (
                   <div key={index} className="mt-4">
@@ -260,7 +260,7 @@ const ActionsSection = ({
                   </div>
                 );
               }
-              if (option.variable_type === "BOOLEAN") {
+              if (option.variable_type === "BOOLEAN" && !option.is_prompt) {
                 return (
                   <div key={index} className="mt-4">
                     <Boolean
@@ -272,7 +272,7 @@ const ActionsSection = ({
                 );
               }
 
-              if (option.variable_type === "CHECKBOX") {
+              if (option.variable_type === "CHECKBOX" && !option.is_prompt) {
                 return (
                   <div key={index} className="mt-4">
                     <CheckboxComponent
@@ -285,7 +285,7 @@ const ActionsSection = ({
                   </div>
                 );
               }
-              if (option.variable_type === "DATE" || option.variable_type === "TIME") {
+              if ((option.variable_type === "DATE" || option.variable_type === "TIME") && !option.is_prompt) {
                 return (
                   <div key={index} className="mt-4">
                     <ScheduleComponent
