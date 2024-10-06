@@ -60,7 +60,7 @@ const ChatArea = ({
     if (textareaRef.current && inputValue.trim() !== "") {
       textareaRef.current.value = "";
       if (textareaRef.current.style) {
-        textareaRef.current.style.height = "2rem"; 
+        textareaRef.current.style.height = "2rem";
       }
       if (textareaRef.current) {
         autosize.update(textareaRef.current);
@@ -188,8 +188,7 @@ const ChatArea = ({
         <textarea
           ref={textareaRef}
           placeholder="Type your message..."
-          // className="w-full h-11 rounded-xl bg-transparent"
-          className="w-full flex-1 bg-transparent resize-none overflow-auto h-8 min-h-8 max-h-[200px]"
+          className="w-full flex-1 bg-transparent text-center mt-2 resize-none overflow-auto h-8 min-h-8 max-h-[200px]"
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           onInput={handleResize}

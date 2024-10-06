@@ -102,7 +102,7 @@ export default function AiPlayground() {
   const renderConversation = async () => {
     if (userPrompt.trim() === "") return;
     const newMessage: Message = {
-      content: userPrompt,
+      content: userPrompt?.trim(),
       role: "user",
       loading: false,
     };
@@ -127,7 +127,7 @@ export default function AiPlayground() {
       const responses = await Promise.all(
         chatAreas.map(async (chatArea) => {
           const payload = {
-            user_prompt: userPrompt,
+            user_prompt: userPrompt?.trim(),
             model: chatArea.selectedModel,
             provider: chatArea.provider,
             messages: chatArea.messages,
@@ -136,7 +136,7 @@ export default function AiPlayground() {
             `${API_URL}/ai/api/v1/playground`,
             payload
           );
-  
+
           const initialText = response.data.data.response.text;
           const updatedMessages = response.data.data.response.updatedMessages;
           return { chatArea, initialText, updatedMessages };
@@ -153,19 +153,18 @@ export default function AiPlayground() {
               ...chatArea,
               conversation: chatArea.awaitingUpdate
                 ? [
-                    ...chatArea.conversation.slice(0, -1),
-                    {
-                      ...chatArea.conversation[chatArea.conversation.length - 1],
-                      content: initialText,
-                      loading: false,
-                    },
-                  ]
+                  ...chatArea.conversation.slice(0, -1),
+                  {
+                    ...chatArea.conversation[chatArea.conversation.length - 1],
+                    content: initialText,
+                    loading: false,
+                  },
+                ]
                 : chatArea.conversation,
-              awaitingUpdate: updatedMessages?.length > 0, 
+              awaitingUpdate: updatedMessages?.length > 0,
               messages: updatedMessages,
             };
           }
-  
           return chatArea;
         })
       );
@@ -176,7 +175,7 @@ export default function AiPlayground() {
     }
     setUserPrompt("");
   };
-  
+
   return (
     <div className="flex-1 h-full flex flex-col mt-10 overflow-x-auto">
       <form onSubmit={handleSubmit} className="flex-1 h-full flex gap-6">
@@ -184,8 +183,6 @@ export default function AiPlayground() {
           <NewChatAlert handleNewChat={() => setChatAreas(initialChat)} />
         </div>
         {chatAreas.map((chatArea) => (
-
-          
           <ChatArea
             key={chatArea.id}
             selectedModel={chatArea.selectedModel}
