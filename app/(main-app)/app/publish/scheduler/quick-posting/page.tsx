@@ -13,8 +13,10 @@ import { ChangeEvent } from "react";
 import instance from "@/config/axios.config";
 import toast from "react-hot-toast";
 import Spinner from "@/components/Spinner";
+import { useRouter } from "next/navigation";
 
 export default function QuickPosting() {
+  const router = useRouter();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
   const [content, setContent] = useState("");
@@ -35,6 +37,28 @@ export default function QuickPosting() {
         return <ScheduledPostsTable />;
     }
   };
+
+  const handleGetProfileData = async () => {
+    try {
+      setLoading(true)
+      const response = (await instance.get(
+        `${API_URL}/users/api/v1/social-media/profile`
+      )).data;
+      if (!response.success || response.data?.activeSocialAccounts.length === 0) {
+        router.push("/app/publish/scheduler/quick-posting/profiles");
+      }
+    } catch (error) {
+      console.log("Error fetching social profile:", error);
+    } finally {
+      setLoading(false)
+    }
+  };
+
+  useEffect(() => {
+    handleGetProfileData();
+  }, []);
+
+
   useEffect(() => {
     const now = new Date();
     const year = now.getFullYear();
@@ -362,10 +386,11 @@ export default function QuickPosting() {
                   {tabs.map((tab, index) => (
                     <div
                       key={index}
-                      className={`w-full h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${selectedTabIndex === index
+                      className={`w-full h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
+                        selectedTabIndex === index
                           ? "!text-white"
                           : "!text-primary-grey"
-                        }`}
+                      }`}
                       onClick={() => {
                         const totalTabs = tabs.length;
                         const percentage = (index / totalTabs) * 100;

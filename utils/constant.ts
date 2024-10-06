@@ -81,12 +81,7 @@ export const featureRouteMap: FeatureRouteMap = {
 
 
 export const brandVoiceAnalyzeFormSchema = z.object({
-    urls: z.array(z.string().max(255))
-        .optional()
-        .refine(
-            urls => urls?.every(url => url.trim() === '' || z.string().url().safeParse(url).success),
-            { message: 'Invalid URL' }
-        ),
+    urls: z.array(z.string().max(255)).optional(),
     description: z.string().max(2000).optional(),
     file: z.any().optional(),
 });
@@ -96,3 +91,7 @@ export const brandVoiceFormSchema = z.object({
     brandVoice: z.string().max(5000).optional(),
     isDefault: z.boolean().optional(),
 });
+
+export const urlRegex = new RegExp(
+    /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/
+);
