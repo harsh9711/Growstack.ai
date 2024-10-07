@@ -22,7 +22,7 @@ function Page() {
   return (
     <React.Fragment>
       <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
-     <div className="px-20"> <DragFeatures /></div>
+     <div className="sm:px-20"> <DragFeatures /></div>
       {/* <Banner /> */}
       <OurProcess />
       <PoweredBy />

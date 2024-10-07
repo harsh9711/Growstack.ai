@@ -2,9 +2,10 @@
 import React, { useEffect, useState } from "react";
 import "../../styles/animate.css";
 import Image from "next/image";
+import { Link, ArrowRight } from "lucide-react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { landingpage } from "@/types/data";
+import { landingpage, testimonials } from "@/types/data";
 import HoverVideoPlayer from "react-hover-video-player";
 
 const Animation = () => {
@@ -90,7 +91,7 @@ const Animation = () => {
       className="items-center justify-center mx-auto flex flex-col mb-60 "
     >
       <div className="  w-full gap-y-4 flex flex-col items-center justify-center mx-auto">
-        <div className="bg-[#0347371A] text-[#034737] whitespace-nowrap py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest  font-semibold uppercase w-full max-w-[153px] ">
+        <div className=" mt-10 bg-[#0347371A] text-[#034737] whitespace-nowrap py-2 px-4 flex items-center text-center gap-3 text-[12px] rounded-full tracking-widest  font-semibold uppercase w-full max-w-[143px] ">
           Core Features
         </div>
 
@@ -113,19 +114,19 @@ const Animation = () => {
       </div>
       {landingpage.map((item, index) => (
         <div
-          className="z-20 scale-90 hover:scale-110 transform duration-1000 transition-transform w-full relative items-center ease-in-out  justify-center mx-auto  flex flex-col"
+          className="z-20 sm:mb-20 hover:scale-150 transform duration-1000 transition-transform w-full relative items-center ease-in-out  justify-center mx-auto  flex flex-col"
           key={index}
         >
           <div
             data-aos="fade-left "
-            className={`relative mt-32 w-full flex justify-between gap-28 flex-row max-w-[725px] max-h-[180px] p-4 rounded-[20px] border`}
+            className={`relative mt-32 w-full flex justify-between gap-28 flex-row max-w-[300px] sm:max-w-[800px] h-[74.48px] sm:h-[198.62px] p-4 rounded-[5px] sm:rounded-[20px] border`}
             style={{
               backgroundColor: item.background,
               border: `1px solid ${item.border}`,
             }}
           >
-            <div className="relative max-w-[250px] w-full max-h-[132px] h-full border-none">
-              <video
+            <div className="relative max-w-[95.78px] max-h-[53.45px]  sm:max-w-[250px] w-full sm:max-h-[150px] h-full border-none">
+              {/* <video
                 className="absolute top-0 left-0 w-full h-full object-cover border-none outline-none"
                 width="320"
                 height="240"
@@ -136,35 +137,35 @@ const Animation = () => {
                 loop
               >
                 <source src="/video.mp4" type="video/mp4" />
-              </video>
+              </video> */}
               <Image
-                src={item.imageUrl}
-                width={450}
-                height={300}
+                src={`/landingpage/l${item.id}.svg`}
+                width={650}
+                height={600}
                 alt="image"
-                className="relative z-10 object-cover w-full h-full"
+                className="relative z-10  w-full h-full"
               />
             </div>
 
             <div
-              className="absolute h-[240px]  hover:translate-x-[300px] transition-transform duration-1000 ease-in-out translate-x-[260px] shadow-lg hover:border-t-8 -translate-y-[60px] p-3.5 w-full max-w-[410px] flex flex-col gap-y-2 bg-white rounded-[20px] border-animate"
+              className="absolute h-[110.45px] sm:h-[275.86px] sm:hover:translate-x-[300px] transition-transform duration-1000 ease-in-out  translate-x-[100px] sm:translate-x-[260px] shadow-lg hover:border-t-8 -translate-y-[60px] p-3.5 w-full max-w-[169.66px] sm:max-w-[452.41px] flex flex-col gap-y-2 bg-white rounded-[5px] sm:rounded-[20px] border-animate"
               style={{
                 borderColor: item.border,
               }}
             >
-              <h2 className="text-[14px] font-semibold">{item.name}</h2>
+              <h2 className="text-[8px] sm:text-[14px] font-semibold">{item.name}</h2>
               <HoverVideoPlayer
-                className="absolute top-4 px-6 left-0 w-full h-full rounded-2xl  border-none outline-none"
-                videoSrc="/video2.mp4"
+                className="absolute  left-0 w-full h-full rounded-md sm:rounded-2xl border-none outline-none"
+                videoSrc={`/landingpage/Box ${item.id}.mp4`}
                 pausedOverlay={
                   <img
-                    src="/videov1.svg"
+                    src={`/landingpage/img${item.id}.svg`}
                     alt=""
                     className="rounded-2xl flex"
                     style={{
                       width: "100%",
                       height: "100%",
-                      objectFit: "cover",
+                      objectFit: "fill", // Ensures the image fits well
                     }}
                   />
                 }
@@ -173,19 +174,11 @@ const Animation = () => {
                     <div className="loading-spinner" />
                   </div>
                 }
+                videoClassName="rounded-2xl" // Add this to make the video corners rounded
+                style={{
+                  objectFit: "cover", // Ensures the video fits without distortion
+                }}
               />
-              {/* <video
-                className="absolute top-4 px-6 left-0 w-full h-full  border-none outline-none"
-                width="633"
-                height="633"
-                controls={false}
-                playsInline
-                muted
-                autoPlay
-                loop
-              >
-                <source src="/video2.mp4" type="video/mp4" />
-              </video> */}
             </div>
           </div>
         </div>
