@@ -187,10 +187,10 @@ export default function Dashboard() {
             <Link href="/app/plan/ai-templates">
               <div
                 className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                data-aos="fade-up"
               >
                 <div className="flex gap-4 items-center">
                   <Image
+                    className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
                     src="/icons/ai-templates.svg"
                     alt=""
                     width={60}
@@ -206,10 +206,10 @@ export default function Dashboard() {
             <Link href="/app/plan/ai-assistant">
               <div
                 className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                data-aos="fade-up"
               >
                 <div className="flex gap-4 items-center">
                   <Image
+                    className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
                     src="/icons/chatbot.svg"
                     alt=""
                     width={60}
@@ -225,10 +225,10 @@ export default function Dashboard() {
             <Link href="/app/plan/custom-gpts">
               <div
                 className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                data-aos="fade-up"
               >
                 <div className="flex gap-4 items-center">
                   <Image
+                    className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
                     src="/icons/custom-gpts.svg"
                     alt=""
                     width={60}
@@ -244,10 +244,11 @@ export default function Dashboard() {
             <Link href="/app/plan/text-to-video">
               <div
                 className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                data-aos="fade-up"
               >
                 <div className="flex gap-4 items-center">
-                  <Image src="/icons/media.svg" alt="" width={60} height={60} />
+                  <Image
+                    className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
+                    src="/icons/media.svg" alt="" width={60} height={60} />
                   <h2 className="font-medium">Text to avatar </h2>
                 </div>
                 <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
@@ -258,10 +259,10 @@ export default function Dashboard() {
             <Link href="/app/create/workflow-builder">
               <div
                 className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                data-aos="fade-up"
               >
                 <div className="flex gap-4 items-center">
                   <Image
+                    className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
                     src="/icons/workflow-builder.svg"
                     alt=""
                     width={60}
@@ -277,10 +278,10 @@ export default function Dashboard() {
             <Link href="/app/create/ai-articles">
               <div
                 className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                data-aos="fade-up"
               >
                 <div className="flex gap-4 items-center">
                   <Image
+                    className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
                     src="/icons/text-generator.svg"
                     alt=""
                     width={60}

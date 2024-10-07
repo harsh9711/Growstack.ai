@@ -40,11 +40,12 @@ export default function SchedulerPage() {
   };
 
   const handleOnConnect = async () => {
+    const currentPath = localStorage.getItem("currentPathname");
     try {
+
       const response = await instance.get(
-        API_URL + "/users/api/v1/social-media/connect"
+        `${API_URL}/users/api/v1/social-media/connect?currentPath=${currentPath}`
       );
-      console.log("response", response);
       const url = response?.data.data;
       if (url) {
         window.location.href = url;

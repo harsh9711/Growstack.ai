@@ -55,11 +55,11 @@ const ImageGalleryLineResponsive = () => {
       className="w-full h-full "
     >
 
-               <div className="items-center justify-center flex flex-col gap-y-2 xl:translate-y-[120px] xl:translate-x-60 2xl:translate-x-0 2xl:translate-y-[180px] absolute top-0 left-0 right-0">
+               <div className="items-center py-10 sm:py-0  justify-center flex flex-col gap-y-2 xl:translate-y-[120px] xl:translate-x-60 2xl:translate-x-0 2xl:translate-y-[180px] absolute top-0 left-0 right-0">
                  <div className="bg-[#FFFFFF]/10 text-white  py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit mx-auto">
                market fit
                  </div>
-                 <h1 className="text-center text-[42px] leading-normal">
+                 <h1 className="text-center text-[26px] sm:text-[42px] leading-normal">
                    <span className="text-white font-extrabold headings">Find your market </span>
                 <span className=" font-extralight text-[#A9FF9B]">  fit faster</span>
                  </h1>
@@ -95,7 +95,7 @@ const ImageGalleryLineResponsive = () => {
       ) : (
      
           
-              <div className="relative flex flex-col gap-y-6  items-center justify-center">
+              <div className="relative flex flex-col gap-y-6 mt-40 sm:mt-0 items-center justify-center">
               
                 <div className="flex flex-col items-center justify-center gap-y-6 p-4">
                   {images.map((img) => (

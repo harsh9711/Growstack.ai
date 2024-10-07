@@ -1,4 +1,5 @@
 import { FeatureRouteMap } from "@/types/common";
+import * as z from 'zod';
 
 /* eslint-disable no-unused-vars */
 export enum ALL_ROUTES {
@@ -24,9 +25,8 @@ export enum ALL_ROUTES {
     SOCIAL_MEDIA_POSTING_CONNECT = "/app/publish/scheduler/quick-posting/profiles/connect-account",
     SOCIAL_MEDIA_POSTING_CONNECT_FINISH = "/app/publish/scheduler/quick-posting/profiles/connect-account/finish",
     SOCIAL_MEDIA_CONVERSATION_HUB = "/app/engage/Social-media",
-    SOCIAL_MEDIA_ANALYSIS = "/app/analyse/social-media"
-
-
+    SOCIAL_MEDIA_ANALYSIS = "/app/analyse/social-media",
+    BRAND_VOICE = "/app/plan/ai-brandvoice",
 }
 
 export const featureRouteMap: FeatureRouteMap = {
@@ -77,3 +77,21 @@ export const featureRouteMap: FeatureRouteMap = {
         { path: ALL_ROUTES.SOCIAL_MEDIA_ANALYSIS, partialMatch: false },
     ]
 };
+
+
+
+export const brandVoiceAnalyzeFormSchema = z.object({
+    urls: z.array(z.string().max(255)).optional(),
+    description: z.string().max(2000).optional(),
+    file: z.any().optional(),
+});
+
+export const brandVoiceFormSchema = z.object({
+    brandName: z.string().min(1, { message: 'Required' }).max(255),
+    brandVoice: z.string().max(5000).optional(),
+    isDefault: z.boolean().optional(),
+});
+
+export const urlRegex = new RegExp(
+    /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w .-]*)*\/?$/
+);

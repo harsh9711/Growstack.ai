@@ -1,5 +1,4 @@
 "use client";
-
 import { Input } from "@/components/ui/input";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
@@ -15,6 +14,7 @@ import Editor from "./components/Editor";
 import Spinner from "@/components/Spinner";
 import { Switch } from "@/components/ui/switch";
 import { Info } from "lucide-react";
+import axios from 'axios';
 import {
   Tooltip,
   TooltipContent,
@@ -35,6 +35,12 @@ import { useDispatch } from "react-redux";
 import { languageOptions } from "../../../create/ai-articles/constants/options";
 import Dropdown from "./components/Dropdown";
 import { Plus } from "lucide-react";
+import { getCookie } from "cookies-next";
+import EventSource from 'eventsource';
+import { parseJsonString } from "@/lib/utils";
+import downloadPdf from "@/utils/downloadPdf";
+import { InputFieldType } from "@/types/enums";
+import { ALL_ROUTES } from "@/utils/constant";
 
 export default function AiAppPage({
   params: { appTemplateId },
@@ -72,15 +78,11 @@ export default function AiAppPage({
   const [userInput1, setUserInput1] = useState("");
   const brandNames = allBrandVoices?.map((item: any) => item.brand_name);
 
-  // const stripHtmlTags = (html: string) => {
-  //   const temp = document.createElement("div");
-  //   temp.innerHTML = html;
-  //   return temp.textContent || temp.innerText || "";
-  // };
-
   const stripHtmlTags = (html: string) => {
     const temp = document.createElement("div");
-    temp.innerHTML = html.replace(/<br\s*\/?>/gi, "\n").replace(/<\/p>/gi, "\n\n");
+    temp.innerHTML = html
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/p>/gi, "\n\n");
     return temp.textContent || temp.innerText || "";
   };
 
@@ -157,7 +159,7 @@ export default function AiAppPage({
     }
   }, [editDocumentData]);
 
-  const handleDownload = (selectedOption: string) => {
+  const handleDownload = async (selectedOption: string) => {
     const contentState = editorState.getCurrentContent();
     const rawContentState = convertToRaw(contentState);
     const formattedContent = generatedContent;
@@ -165,29 +167,12 @@ export default function AiAppPage({
 
     // Prepare different formats
     const formats = {
-      "Copy as Text": generatedContent,
+      "Copy as Text": plainTextContent,
       "Copy as HTML": formattedContent,
       "Download as DOC": plainTextContent,
       "Download as TXT": plainTextContent,
       "Download as PDF": plainTextContent,
-    };
-
-    const addTextToPdf = (content: string) => {
-      const pdfDoc = new jsPDF();
-      let yPos = 10;
-      const pageHeight = pdfDoc.internal.pageSize.height;
-
-      const lines = pdfDoc.splitTextToSize(content, 180);
-      lines.forEach((line: string | string[]) => {
-        if (yPos + 10 > pageHeight) {
-          pdfDoc.addPage();
-          yPos = 10;
-        }
-        pdfDoc.text(line, 10, yPos);
-        yPos += 10;
-      });
-
-      return pdfDoc;
+      "Download as HTML": formattedContent,
     };
 
     switch (selectedOption) {
@@ -206,6 +191,13 @@ export default function AiAppPage({
         });
         saveAs(docBlob, `${fileName}.doc`);
         break;
+      case "Download as HTML":
+        const htmlContent = formats["Download as HTML"];
+        const htmlBlob = new Blob([htmlContent], {
+          type: "text/html;charset=utf-8",
+        });
+        saveAs(htmlBlob, `${fileName}.html`);
+        break;
       case "Download as TXT":
         const txtBlob = new Blob([formats["Download as TXT"]], {
           type: "text/plain;charset=utf-8",
@@ -213,11 +205,128 @@ export default function AiAppPage({
         saveAs(txtBlob, `${fileName}.txt`);
         break;
       case "Download as PDF":
-        const pdfDoc = addTextToPdf(formats["Download as PDF"]);
-        pdfDoc.save(`${fileName}.pdf`);
+        downloadPdf(plainTextContent, userInput, fileName);
+        break;
+      case "Save as PDF":
+        handleSaveDocument("pdf");
+        break;
+      case "Save as DOC":
+        handleSaveDocument("doc");
+        break;
+      case "Save as TXT":
+        handleSaveDocument("text");
+        break;
+      case "Save as HTML":
+        handleSaveDocument("html");
         break;
       default:
         console.error("Unsupported download option");
+    }
+  };
+
+  // const handleDownload = (selectedOption: string) => {
+  //   const contentState = editorState.getCurrentContent();
+  //   const rawContentState = convertToRaw(contentState);
+  //   const formattedContent = generatedContent;
+  //   let plainTextContent = stripHtmlTags(formattedContent);
+
+  //   // Prepare different formats
+  //   const formats = {
+  //     "Copy as Text": generatedContent,
+  //     "Copy as HTML": formattedContent,
+  //     "Download as DOC": plainTextContent,
+  //     "Download as TXT": plainTextContent,
+  //     "Download as PDF": plainTextContent,
+  //   };
+
+  //   const addTextToPdf = (content: string) => {
+  //     const pdfDoc = new jsPDF();
+
+  //     // Add the font to the PDF document
+  //     pdfDoc.addFont('fonts/NotoSans-Regular.ttf', 'NotoSans', 'normal');
+  //     pdfDoc.setFont('NotoSans');
+
+  //     let yPos = 10;
+  //     const pageHeight = pdfDoc.internal.pageSize.height;
+  //     const lines = pdfDoc.splitTextToSize(content, 180);
+
+  //     lines.forEach((line: string | string[]) => {
+  //       if (yPos + 10 > pageHeight) {
+  //         pdfDoc.addPage();
+  //         yPos = 10;
+  //       }
+  //       pdfDoc.text(line, 10, yPos);
+  //       yPos += 10;
+  //     });
+
+  //     return pdfDoc;
+  //   };
+
+  //   switch (selectedOption) {
+  //     case "Copy as Text":
+  //       navigator.clipboard.writeText(formats["Copy as Text"]);
+  //       alert("Text copied to clipboard!");
+  //       break;
+  //     case "Copy as HTML":
+  //       navigator.clipboard.writeText(formats["Copy as HTML"]);
+  //       alert("HTML copied to clipboard!");
+  //       break;
+  //     case "Download as DOC":
+  //       const docContent = formats["Download as DOC"];
+  //       const docBlob = new Blob([docContent], {
+  //         type: "application/msword;charset=utf-8",
+  //       });
+  //       saveAs(docBlob, `${fileName}.doc`);
+  //       break;
+  //     case "Download as TXT":
+  //       const txtBlob = new Blob([formats["Download as TXT"]], {
+  //         type: "text/plain;charset=utf-8",
+  //       });
+  //       saveAs(txtBlob, `${fileName}.txt`);
+  //       break;
+  //     case "Download as PDF":
+  //       const pdfDoc = addTextToPdf(formats["Download as PDF"]);
+  //       pdfDoc.save(`${fileName}.pdf`);
+  //       break;
+  //     default:
+  //       console.error("Unsupported download option");
+  //   }
+  // };
+
+
+  const streamResponse = async (chatId: string) => {
+    try {
+      const token = getCookie("token");
+      const eventSource = new EventSource(`${API_URL}/ai/api/v1/chat-template/generate/stream/${chatId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+
+      let accumulatedResponse = '';
+
+      eventSource.onmessage = (event: MessageEvent) => {
+        const chunk = event.data;
+        const msg = parseJsonString(chunk)?.text || "";
+        accumulatedResponse += msg;
+        setGeneratedContent(accumulatedResponse);
+      };
+
+      eventSource.onerror = (error: MessageEvent) => {
+        console.error('EventSource failed:', error);
+        eventSource.close();
+      };
+
+      eventSource.addEventListener('end', (event: MessageEvent) => {
+        console.log('EventSource end:', event);
+        eventSource.close();
+      });
+
+
+    } catch (error) {
+      console.error('Error setting up EventSource:', error);
+      toast.error('Error setting up stream');
     }
   };
 
@@ -251,8 +360,7 @@ export default function AiAppPage({
           brand_voice: selectedBrandVoice,
         }
       );
-      const content = response.data.data;
-      setGeneratedContent(content);
+      await streamResponse(response.data.data.chat_id)
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
@@ -324,18 +432,31 @@ export default function AiAppPage({
     });
   };
 
-  const handleSaveDocument = async () => {
+  const handleSaveDocument = async (fileType: string) => {
     if (!fileName) {
       return toast.error("Please enter document name");
     }
     setIsDocumentSavePending(true);
     try {
+      const formattedContent = generatedContent;
+      let plainTextContent = stripHtmlTags(formattedContent);
+      let tempCategory = ""
+      if (fileType === 'text') {
+        plainTextContent = stripHtmlTags(formattedContent);
+        tempCategory = "text"
+      } else if (fileType === 'pdf' || fileType === 'doc') {
+        plainTextContent = formattedContent;
+        tempCategory = "document"
+      } else if (fileType === "html") {
+        plainTextContent = formattedContent;
+        tempCategory = "website"
+      }
       const payload = {
         doc_name: fileName,
         doc_language: userInput1,
-        doc_type: "TEXT",
-        category: "text",
-        doc_content: generatedContent,
+        doc_type: fileType.toUpperCase(),
+        category: tempCategory,
+        doc_content: plainTextContent,
       };
       const response = await instance.post(
         API_URL + `/users/api/v1/docs/save`,
@@ -388,6 +509,11 @@ export default function AiAppPage({
     }
   };
 
+  const validateImageUrl = (url: string) => {
+    const imageRegex = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif))$/i;
+    return imageRegex.test(url);
+  }
+
   const handleFavorite = async (method: string, templateId: string) => {
     try {
       const response = await instance.put(
@@ -416,8 +542,8 @@ export default function AiAppPage({
 
   if (loading) {
     return (
-      <div className='flex-1 flex flex-col gap-5 justify-center items-center'>
-        <Spinner color='black' size={100} />
+      <div className="flex-1 flex flex-col gap-5 justify-center items-center">
+        <Spinner color="black" size={100} />
         Loading...
       </div>
     );
@@ -425,67 +551,71 @@ export default function AiAppPage({
 
   return (
     <Fragment>
-      <div className='flex items-center justify-between mt-10'>
-        <p className='flex items-center gap-2 text-[#4B465C] text-opacity-50 text-[15px]'>
+      <div className="flex items-center justify-between mt-10">
+        <p className="flex items-center gap-2 text-[#4B465C] text-opacity-50 text-[15px]">
           <Link
-            href='/app/plan/ai-templates'
-            className='hover:text-gray-600 transition-all'
+            href="/app/plan/ai-templates"
+            className="hover:text-gray-600 transition-all"
           >
             All AI templates
           </Link>
           <ChevronRight size={20} />{" "}
-          <span className='text-[#3D817B] font-medium'>{appTemplate.name}</span>
+          <span className="text-[#3D817B] font-medium">{appTemplate.name}</span>
         </p>
-        <Link href='/app/plan/ai-templates'>
-          <button className='text-primary-green hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-2.5 rounded-full font-semibold items-center'>
+        <Link href="/app/plan/ai-templates">
+          <button className="text-primary-green hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-2.5 rounded-full font-semibold items-center">
             <ArrowLeft size={20} /> Back
           </button>
         </Link>
       </div>
-      <div className='flex gap-5 mt-6'>
-        <div className='w-full h-full max-w-[600px] px-8 pb-8 pt-6 bg-white rounded-2xl border border-[#EDEFF0] space-y-4'>
-          <div className='mb-5 border-b border-[#EDEFF0]'>
-            <div className='flex items-center justify-between pb-5'>
-              <div className='flex flex-row items-center gap-3'>
-                <div
-                  style={{
-                    height: "8vh",
-                    width: "8vh",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center"
-                  }}
-                  className='rounded'
-                  dangerouslySetInnerHTML={{ __html: appTemplate.icon }}
-                />
+      <div className="flex gap-5 mt-6">
+        <div className="w-full h-full max-w-[600px] px-8 pb-8 pt-6 bg-white rounded-2xl border border-[#EDEFF0] space-y-4">
+          <div className="mb-5 border-b border-[#EDEFF0]">
+            <div className="flex items-center justify-between pb-5">
+              <div className="flex flex-row items-center gap-3">
+                {validateImageUrl(appTemplate.icon) ? (
+                  <div className="flex items-center justify-center w-16 h-16">
+                    <img src={appTemplate.icon} alt="icon" className="rounded-lg object-contain w-full h-full"></img>
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    dangerouslySetInnerHTML={{ __html: appTemplate.icon }}
+                    className='w-[64px] h-[64px] flex-shrink-0'
+                  />
+                )}
 
-                <h2 className='text-2xl font-semibold capitalize'>
+                <h2 className="text-2xl font-semibold capitalize">
                   {appTemplate.name}
                 </h2>
               </div>
-              <div className='cursor-pointer w-full max-w-fit transition duration-300 hover:scale-125 flex justify-center items-center'>
+              <div className="cursor-pointer w-full max-w-fit transition duration-300 hover:scale-125 flex justify-center items-center">
                 {appTemplate.favorite ? (
                   <BsStarFill
                     size={24}
-                    className='text-yellow-300'
+                    className="text-yellow-300"
                     onClick={() => handleFavorite("remove", appTemplate._id)}
                   />
                 ) : (
                   <StarIcon
-                    className='text-[#ADADAD]'
+                    className="text-[#ADADAD]"
                     onClick={() => handleFavorite("add", appTemplate._id)}
                   />
                 )}
               </div>
             </div>
-            <p className='mb-5 text-md'>{appTemplate.description}</p>
+            <p className="mb-5 text-md">{appTemplate.description}</p>
           </div>
-          <div className='flex items-center gap-2'>
+          <div className="flex items-center gap-2">
             <Switch
               checked={isChecked}
               onCheckedChange={() => setIsChecked((prev) => !prev)}
             />
-            <label htmlFor='include-brand' className='text-sm'>
+            <label htmlFor="include-brand" className="text-sm">
               Include your brand
             </label>
           </div>
@@ -507,8 +637,8 @@ export default function AiAppPage({
             <div>
               {Array.isArray(brandNames) && brandNames.length > 0 ? (
                 <Dropdown
-                  label='Select Company / Brand'
-                  placeholder='Select your Company / Brand'
+                  label="Select Company / Brand"
+                  placeholder="Select your Company / Brand"
                   items={brandNames}
                   value={brandName}
                   onChange={(value: any) => {
@@ -517,12 +647,12 @@ export default function AiAppPage({
                 />
               ) : (
                 <Link
-                  href='/account/create-brand-voice/'
-                  className='flex'
+                  href={ALL_ROUTES.BRAND_VOICE}
+                  className="flex"
                   style={{ color: "green" }}
                 >
                   <Plus size={20} />
-                  <strong className='ml-2'>Create brand voice</strong>
+                  <strong className="ml-2">Create brand voice</strong>
                 </Link>
               )}
             </div>
@@ -530,7 +660,7 @@ export default function AiAppPage({
 
           <div>
             <Dropdown
-              label='Language'
+              label="Language"
               items={languageOptions.map((language) => language.label)}
               value={userInput1}
               onChange={(value: any) => {
@@ -543,33 +673,33 @@ export default function AiAppPage({
             )}
           </div>
 
-          <div className='space-y-3'>
+          <div className="space-y-3">
             {appTemplate?.inputs?.map((input: any, index: number) => (
               <div key={index}>
                 <label
-                  className='font-medium flex justify-between'
+                  className="font-medium flex justify-between"
                   htmlFor={`user-prompt-${index}`}
                 >
                   {input.title}
-                  {input.field_type !== "Checkbox list field" &&
-                    input.field_type !== "Radio buttons field" &&
-                    input.field_type !== "Select list field" && (
+                  {input.field_type !== InputFieldType.CHECKBOX &&
+                    input.field_type !== InputFieldType.RADIO &&
+                    input.field_type !== InputFieldType.SELECT_LIST && (
                       <span className='text-primary-black text-opacity-50 text-sm'>
                         {userPrompts[index].length}/2000
                       </span>
                     )}
                 </label>
-                {input.field_type === "Checkbox list field" ? (
+                {input.field_type === InputFieldType.CHECKBOX ? (
                   <div className='flex flex-col space-y-2'>
                     {input.description
                       .split(",")
                       .map((option: string, optionIndex: number) => (
                         <label
                           key={optionIndex}
-                          className='flex items-center mt-4'
+                          className="flex items-center mt-4"
                         >
                           <input
-                            type='checkbox'
+                            type="checkbox"
                             value={option.trim()}
                             checked={userPrompts[index]?.includes(
                               option.trim()
@@ -577,33 +707,33 @@ export default function AiAppPage({
                             onChange={(e) => handleCheckboxChange(e, index)}
                             required
                           />
-                          <span className='ml-2'>{option.trim()}</span>
+                          <span className="ml-2">{option.trim()}</span>
                         </label>
                       ))}
                   </div>
                 ) : null}
-                {input.field_type === "Radio buttons field" && (
+                {input.field_type === InputFieldType.RADIO && (
                   <div className='flex flex-col space-y-2'>
                     {input.description
                       .split(",")
                       .map((option: string, optionIndex: number) => (
                         <label
                           key={optionIndex}
-                          className='flex items-center mt-4'
+                          className="flex items-center mt-4"
                         >
                           <input
-                            type='radio'
+                            type="radio"
                             value={option.trim()}
                             checked={userPrompts[index] === option.trim()}
                             onChange={(e) => handleRadioChange(e, index)}
                             required
                           />
-                          <span className='ml-2'>{option.trim()}</span>
+                          <span className="ml-2">{option.trim()}</span>
                         </label>
                       ))}
                   </div>
                 )}
-                {input.field_type === "Select list field" && (
+                {input.field_type === InputFieldType.SELECT_LIST && (
                   <Dropdown
                     label={input.title}
                     hideLabel
@@ -615,13 +745,13 @@ export default function AiAppPage({
                     required
                   />
                 )}
-                {input.field_type !== "Checkbox list field" &&
-                  input.field_type !== "Radio buttons field" &&
-                  input.field_type !== "Select list field" && (
+                {input.field_type !== InputFieldType.CHECKBOX &&
+                  input.field_type !== InputFieldType.RADIO &&
+                  input.field_type !== InputFieldType.SELECT_LIST && (
                     <textarea
                       id={`user-prompt-${index}`}
                       rows={4}
-                      className='w-full p-4 rounded-xl resize-none bg-[#F2F2F2]'
+                      className="w-full p-4 rounded-xl resize-none bg-[#F2F2F2]"
                       placeholder={input.description}
                       value={userPrompts[index]}
                       onChange={(e) => handleUserPromptChange(e, index)}
@@ -637,13 +767,11 @@ export default function AiAppPage({
 
           <div>
             <Dropdown
-              label='AI Model'
+              label="AI Model"
               items={[
                 "gpt-3.5-turbo",
                 "gpt-4",
                 "gpt-4o",
-                "claude-3-5-sonnet-20240620",
-                "claude-3-opus-20240229",
                 "claude-3-sonnet-20240229",
                 "claude-3-haiku-20240307",
                 "gemini-1.5-flash",
@@ -653,9 +781,9 @@ export default function AiAppPage({
               onChange={(value: any) => handleDropdownChange("model", value)}
             />
           </div>
-          <div className='grid grid-cols-2 gap-2'>
+          <div className="grid grid-cols-2 gap-2">
             <Dropdown
-              label='Creativity'
+              label="Creativity"
               infoIcon
               items={["Original", "Creative"]}
               value={userInput.creativity}
@@ -667,7 +795,7 @@ export default function AiAppPage({
               }
             />
             <Dropdown
-              label='Tone of Voice'
+              label="Tone of Voice"
               infoIcon
               items={["Professional", "Friendly", "Casual"]}
               value={userInput.tone_of_voice}
@@ -677,11 +805,11 @@ export default function AiAppPage({
               info={"Set result tone of the text as needed"}
             />
           </div>
-          <div className='grid grid-cols-2 gap-2'>
+          <div className="grid grid-cols-2 gap-2">
             <div>
               <label
-                className='block mb-2 text-sm font-medium flex items-center'
-                htmlFor='number-of-results'
+                className="block mb-2 text-sm font-medium flex items-center"
+                htmlFor="number-of-results"
               >
                 Number of Results
                 <TooltipProvider>
@@ -689,10 +817,10 @@ export default function AiAppPage({
                     <TooltipTrigger asChild>
                       <Info
                         size={18}
-                        className='ml-2 text-primary-black text-opacity-50 cursor-pointer'
+                        className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
                       />
                     </TooltipTrigger>
-                    <TooltipContent className='bg-white'>
+                    <TooltipContent className="bg-white">
                       <p>Maximum supported results is 50</p>
                     </TooltipContent>
                   </Tooltip>
@@ -700,17 +828,17 @@ export default function AiAppPage({
               </label>
 
               <Input
-                type='number'
-                id='number-of-results'
-                name='number_of_results'
+                type="number"
+                id="number-of-results"
+                name="number_of_results"
                 value={userInput.number_of_results}
                 onChange={handleChange}
               />
             </div>
             <div>
               <label
-                className='block mb-2 text-sm font-medium flex'
-                htmlFor='estimated-result-length'
+                className="block mb-2 text-sm font-medium flex"
+                htmlFor="estimated-result-length"
               >
                 Estimated Result Length
                 <TooltipProvider>
@@ -718,10 +846,10 @@ export default function AiAppPage({
                     <TooltipTrigger asChild>
                       <Info
                         size={18}
-                        className='ml-2 text-primary-black text-opacity-50 cursor-pointer'
+                        className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
                       />
                     </TooltipTrigger>
-                    <TooltipContent className='bg-white'>
+                    <TooltipContent className="bg-white">
                       <p>
                         Estimated words length for each generated text result
                       </p>
@@ -730,65 +858,69 @@ export default function AiAppPage({
                 </TooltipProvider>
               </label>
               <Input
-                type='number'
-                id='estimated-result-length'
-                name='estimated_result_length'
+                type="number"
+                id="estimated-result-length"
+                name="estimated_result_length"
                 value={userInput.estimated_result_length}
                 onChange={handleChange}
               />
             </div>
           </div>
           <button
-            className='w-full h-14 py-2 text-white bg-primary-green rounded-xl !mt-7 flex items-center justify-center'
+            className="w-full h-14 py-2 text-white bg-primary-green rounded-xl !mt-7 flex items-center justify-center"
             onClick={generateResult}
           >
-            <div className='flex items-center gap-2'>
+            <div className="flex items-center gap-2">
               {!isGeneratedResultPending ? "Generate" : <Spinner />}
             </div>
           </button>
         </div>
-        <div className='w-full p-8 bg-white rounded-2xl border border-[#EDEFF0] flex flex-col'>
-          <div className='flex items-center justify-between mb-5 border-b pb-5'>
-            <div className='flex items-center gap-2 w-full max-w-lg border rounded-xl'>
+        <div className="w-full p-8 bg-white rounded-2xl border border-[#EDEFF0] flex flex-col">
+          <div className="flex items-center justify-between mb-5 border-b pb-5">
+            <div className="flex items-center gap-2 w-full max-w-lg border rounded-xl">
               <input
-                type='text'
-                placeholder='Enter file name'
+                type="text"
+                placeholder="Enter file name"
                 value={fileName}
                 onChange={(e) => setFileName(e.target.value)}
-                className='w-full h-12 px-4 rounded-xl'
+                className="w-full h-12 px-4 rounded-xl"
               />
             </div>
-            <div className='flex items-center gap-3'>
-              <div className='flex items-center gap-2'>
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
                 <Dropdown
-                  label='Download'
+                  label="Download"
                   items={[
                     "Copy as Text",
                     "Copy as HTML",
                     "Download as DOC",
                     "Download as TXT",
-                    // "Download as PDF",
+                    "Download as PDF",
+                    "Download as HTML",
+                    "Save as DOC",
+                    "Save as TXT",
+                    "Save as PDF",
+                    "Save as HTML",
                   ]}
                   hideLabel
                   value="Copy as Text"
-                
                   onChange={(value: any) => handleDownload(value)}
                 />
 
-                <button
+                {/* <button
                   className='h-11 w-11 grid place-content-center p-2 bg-gray-100 rounded-lg'
                   onClick={isEdit ? handleEditDocument : handleSaveDocument}
                 >
                   {isDocumentSavePending ? (
-                    <Spinner color='black' />
+                    <Spinner color="black" />
                   ) : (
-                    <Save size={24} className='text-gray-600' />
+                    <Save size={24} className="text-gray-600" />
                   )}
-                </button>
+                </button> */}
               </div>
             </div>
           </div>
-          <div className='flex-1'>
+          <div className="flex-1">
             <Editor content={generatedContent} onChange={handleEditorChange} />
           </div>
         </div>

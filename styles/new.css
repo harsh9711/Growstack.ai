@@ -194,4 +194,20 @@
         transform: rotate(60deg) translate(1em,-9em)
     }
   }
+  .straight-line-list li {
+    list-style-type: none;
+    position: relative;
+    padding-left: 20px;
+  }
+  
+  .straight-line-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 2px;
+    background-color: black;
+  }
   

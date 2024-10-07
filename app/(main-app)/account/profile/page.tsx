@@ -44,9 +44,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { getUserFriendlyPlanName } from "@/lib/utils";
 import { PlanName } from "@/types/enums";
+import React from "react";
 
 export default function ProfilePage() {
-  const { currentPlan, isCurrentPlanFetching } = useSelector((rootState: RootState) => rootState.auth);
+  const { user, currentPlan, isCurrentPlanFetching } = useSelector((rootState: RootState) => rootState.auth);
   const router = useRouter();
   const dispatch = useDispatch();
   const currentUser = getCurrentUser();
@@ -104,11 +105,11 @@ export default function ProfilePage() {
     //   icon: <Settings2Icon />,
     //   title: "set defaults",
     // },
-    {
+    ...(user?.provider !== "socialSignUp" ? [{
       link: "#",
       icon: <KeyIcon />,
       title: "Change password",
-    },
+    }] : []),
     // {
     //   link: "#",
     //   icon: <ShieldCheckIcon />,

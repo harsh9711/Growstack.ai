@@ -176,7 +176,8 @@ const ContentBox: React.FC<ContentBoxProps> = ({
   <p className="text-[14px] xl:text-[16px]">
     We aim to respond to all refund requests within 3-5 business days. After reviewing your case, we will notify you of the approval or rejection of your refund request.
   </p>
-</div>
+ <p className='mt-6'> Please note: In the event of a refund, the processing fee charged by Stripe will be deducted from the total refund amount. This is because Stripe does not refund their processing fees when a transaction is reversed
+ </p></div>
 <div
   className="bg-white p-8 m-4 border border-gray-300 rounded-lg shadow-lg transition-shadow hover:shadow-xl"
   data-aos="fade-up"

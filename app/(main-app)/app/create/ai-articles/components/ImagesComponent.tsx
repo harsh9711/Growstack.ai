@@ -52,7 +52,6 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
       title: articleTitle,
       image_description: description,
     };
-
     setImages([]);
     setImageGenerationPending(true);
     instance
@@ -60,6 +59,7 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
       .then((response) => {
         const { data } = response;
         setImages(data.data);
+        localStorage.setItem("savArticalImg",data.data[0].url)
       })
       .catch((err) => {
         toast.error(err.response.data.message || err.message);
@@ -86,7 +86,7 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
           data: { data },
         } = response;
         setCurrentStep(4);
-        setArticleData(data);
+        setArticleData(data.response);
       })
       .catch((err) => {
         toast.error(err.response.data.message || err.message);
@@ -106,7 +106,7 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
               <label className="font-medium" htmlFor="title">
                 Title <span className="text-rose-600">*</span>
               </label>
-              <span className="text-primary-black text-opacity-50 text-sm">{articleTitle.length}/2000</span>
+              <span className="text-primary-black text-opacity-50 text-sm">{articleTitle.length}/500</span>
             </div>
             <input
               type="text"
@@ -126,7 +126,7 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
               name="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              maxLength={2000}
+              maxLength={500}
               placeholder="Describe what your image is about"
               className="h-[128px] w-full bg-[#F5F5F5] rounded-xl block resize-none p-4 text-[15px]"></textarea>
           </div>

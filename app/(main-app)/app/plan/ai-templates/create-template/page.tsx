@@ -14,12 +14,14 @@ import { API_URL } from "@/lib/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Minus, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 import TemplatesTable from "../components/TemplatesDataTable";
 import { useDropzone } from "react-dropzone";
+import React from "react";
+import { InputFieldType } from "@/types/enums";
 
 export default function CreateTemplatePage() {
   type UserInput = {
@@ -60,43 +62,88 @@ export default function CreateTemplatePage() {
   const svgPattern = /^<svg.*<\/svg>$/;
   const fontAwesomePattern = /^<i class=['"]fa[a-zA-Z0-9\- ]+['"]><\/i>$/;
 
-  const ValidationSchema = z.object({
-    name: z.string().min(3, "Name must be at least 3 characters long"),
-    description: z
-      .string()
-      .min(10, "Description must be at least 10 characters")
-      .max(200, "Description can't exceed 200 characters"),
-    icon: z.string().optional(),
-  });
-
   const [isPending, setIsPending] = useState(false);
   const [refreshTemplatesTable, setRefreshTemplatesTable] = useState(true);
-
-  type ValidationSchemaType = z.infer<typeof ValidationSchema>;
-
+  const [fileUploadLoading, setFileUploadLoading] = useState<boolean>(false);
+  const [formErrors, setFormErrors] = useState<any>({});
+  const [isSubmitClicked, setIsSubmitClicked] = useState<boolean>(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
     setError,
     clearErrors,
-  } = useForm<ValidationSchemaType>({
-    resolver: zodResolver(ValidationSchema),
+  } = useForm({
+    // resolver: zodResolver(ValidationSchema), // Removed
   });
 
-  const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
-    setIsPending(true);
-    try {
-      const { name, description, icon, custom_prompt } = formData;
+  const validataFormData = async (name: string, description: string, icon: string, custom_prompt: string, category: string, userInputs: any) => {
+    let tempErrors: any = {};
+    let isErrors = false;
+    let userInputFields: any = [];
+    if (!name) tempErrors.name = 'Name is required';
+    if (!description) tempErrors.description = 'Description is required';
+    if (!icon) tempErrors.icon = 'Icon is required';
+    if (!custom_prompt) tempErrors.custom_prompt = 'Custom prompt is required';
+    if (custom_prompt && custom_prompt?.length < 100) tempErrors.custom_prompt = 'Custom prompt must be at least 100 words';
+    if (!category) tempErrors.category = 'Category is required';
+    if (!userInputs) tempErrors.user_inputs = 'User Inputs are required';
 
-      // Prepare userInputs to be sent with the POST request
-      const userInputFields = userInputs.map((input) => ({
+    // Prepare userInputs to be sent with the POST request
+    userInputFields = userInputs.map((input: any, index: number) => {
+      if (!input.title) {
+        tempErrors[`userInput[${index}].title`] = "Input Field Title is required";
+      }
+      if (!input.type) {
+        tempErrors[`userInput[${index}].type`] = "Input Field Type is required";
+      }
+
+      return {
         title: input.title,
         description: input.description,
         field_type: input.type,
         requirement: input.required === "Required",
         options: input.options ? input.options.split(",") : undefined,
-      }));
+      };
+    });
+
+    if (Object.keys(tempErrors).length > 0) {
+      if (isSubmitClicked) {
+        await setFormErrors(tempErrors);
+      }
+      isErrors = true
+    } else {
+      await setFormErrors({});
+      isErrors = false
+    }
+    return [isErrors, userInputFields];
+  };
+
+  useEffect(() => {
+    if (!isSubmitClicked) return;
+
+    const debounceTimeout = setTimeout(() => {
+      const validateFormDataAsync = async () => {
+        const { name, description, icon, custom_prompt } = formData;
+        await validataFormData(name, description, icon, custom_prompt, category, userInputs);
+      };
+      validateFormDataAsync();
+    }, 300);
+
+    return () => clearTimeout(debounceTimeout);
+  }, [JSON.stringify(formData), JSON.stringify(userInputs), category, isSubmitClicked]);
+
+
+  const onSubmit: SubmitHandler<any> = async (data) => {
+    await setIsSubmitClicked(true);
+    setIsPending(true);
+    try {
+      const { name, description, icon, custom_prompt } = formData;
+      const [isErrors, userInputFields] = await validataFormData(name, description, icon, custom_prompt, category, userInputs);
+
+      if (isErrors) {
+        return;
+      }
 
       const response = await instance.post(
         `${API_URL}/ai/api/v1/chat-template/create`,
@@ -111,7 +158,7 @@ export default function CreateTemplatePage() {
       );
 
       toast.success(response.data.message);
-
+      setIsSubmitClicked(false)
       // Clear form data after successful submission
       setFormData({
         name: "",
@@ -161,9 +208,9 @@ export default function CreateTemplatePage() {
       // Concatenate options into description if it's a Select, Checkbox list, or Radio buttons field
       if (
         key === "options" &&
-        (updatedInputs[index].type === "Select list field" ||
-          updatedInputs[index].type === "Checkbox list field" ||
-          updatedInputs[index].type === "Radio buttons field")
+        (updatedInputs[index].type === InputFieldType.SELECT_LIST ||
+          updatedInputs[index].type === InputFieldType.CHECKBOX ||
+          updatedInputs[index].type === InputFieldType.RADIO)
       ) {
         updatedInputs[index].description = `${value}`;
       }
@@ -173,34 +220,42 @@ export default function CreateTemplatePage() {
   };
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: { "image/*": [] },
-    onDrop: (acceptedFiles) => {
-      // Handle the dropped file
+    onDrop: async (acceptedFiles) => {
       const file = acceptedFiles[0];
       if (file) {
-        if (file.size > 3.5 * 1024 * 1024) {
-          toast.error("File size should be less than 3.5 MB");
+        if (file.size > 1 * 1024 * 1024) {
+          toast.error("File size should be less than 1 MB");
         } else {
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            const img = new Image();
-            img.onload = () => {
-              if (img.width <= 200 && img.height <= 200) {
-                setFormData((prevFormData) => ({
-                  ...prevFormData,
-                  icon: `<img src="${reader.result}" alt="Uploaded icon" />`,
-                }));
-              } else {
-                toast.error("Image should be 200x200 pixels or less.");
-              }
-            };
-            img.src = reader.result as string; // Set the image source to the base64 data URL
-          };
-          reader.readAsDataURL(file);
+
+          const formData = new FormData();
+          formData.append("document", file);
+
+          setFileUploadLoading(true);
+          try {
+            const response = await instance.post(`${API_URL}/users/api/v1/file/upload`, formData);
+            const fileUrl = response.data.data.fileUrl;
+            setFormData((prevState) => ({
+              ...prevState,
+              icon: fileUrl,
+            }));
+          } catch (error) {
+            toast.error("File upload failed");
+            console.error("Error uploading file:", error);
+          } finally {
+            setFileUploadLoading(false);
+          }
         }
       }
-      
+
     },
   });
+
+  const clearImg = () => {
+    setFormData((prevState) => ({
+      ...prevState,
+      icon: "",
+    }));
+  };
 
   const router = useRouter();
   return (
@@ -234,8 +289,8 @@ export default function CreateTemplatePage() {
                   value={formData.name}
                   onChange={handleChange}
                 />
-                {errors.name && (
-                  <p className="text-rose-600 text-sm">{errors.name.message}</p>
+                {formErrors?.name && (
+                  <p className="text-rose-600 text-sm">{formErrors?.name}</p>
                 )}
               </div>
               <div className="space-y-2">
@@ -249,10 +304,8 @@ export default function CreateTemplatePage() {
                   value={formData.description}
                   onChange={handleChange}
                 />
-                {errors.description && (
-                  <p className="text-rose-600 text-sm">
-                    {errors.description.message}
-                  </p>
+                {formErrors?.description && (
+                  <p className="text-rose-600 text-sm">{formErrors?.description}</p>
                 )}
               </div>
 
@@ -282,38 +335,50 @@ export default function CreateTemplatePage() {
                     <SelectItem value="Websites">Websites</SelectItem> */}
                   </SelectContent>
                 </Select>
+                {formErrors?.category && (
+                  <p className="text-rose-600 text-sm">{formErrors?.category}</p>
+                )}
               </div>
               <div className="space-y-2">
                 <label className="font-medium">
                   Upload Icon
                   <span className="text-[#F00]">*</span>
                 </label>
-                <div
-                  {...getRootProps({ className: "dropzone" })}
-                  className="border-2 border-dashed border-gray-300 p-4 rounded-md"
-                  style={{cursor: "pointer"}}
-                >
-                  <input {...getInputProps()} />
-                  {isDragActive ? (
-                    <p className="text-gray-500">Drop the file here ...</p>
-                  ) : (
-                    <p className="text-gray-500">
-                      Drag 'n' drop an icon file here, or click to select one
-                    </p>
-                  )}
-                  {formData.icon && (
-                    <div className="mt-2 w-6 h-6" style={{display: "flex", flexDirection: "row", gap: "10px", width: "120px", height: "30px", alignItems: "center", justifyContent: "center"}}>
-                      <div style={{width: "50%"}}>
-                        <label className="block font-medium">Preview:</label>
-                      </div>
-                      <div style={{width: "50%"}}
-                        dangerouslySetInnerHTML={{ __html: formData.icon }}
-                      />
+
+                {fileUploadLoading ? (
+                  <div className="h-36 p-2 w-full flex justify-center items-center border border-[#F2F2F2] rounded-xl">
+                    <Spinner color="black" size={35} />
+                  </div>
+                ) : formData.icon ? (
+                  <>
+                    <div className="h-36 w-full mx-auto flex items-center justify-center border border-[#F2F2F2] rounded-xl">
+                      <img src={formData.icon} alt="Logo" className="w-16 h-16 object-contain" />
                     </div>
-                  )}
-                </div>
-                {errors.icon && (
-                  <p className="text-rose-600 text-sm">{errors.icon.message}</p>
+                    <div className="flex justify-end m-2">
+                      <button onClick={clearImg} type="button" className="hover-underline">
+                        <span style={{ textDecoration: "undeline" }}>Undo image</span>
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <div
+                    {...getRootProps({ className: "dropzone" })}
+                    className="border-2 border-dashed border-gray-300 p-4 rounded-md"
+                    style={{ cursor: "pointer" }}
+                  >
+                    <input {...getInputProps()} />
+                    {isDragActive ? (
+                      <p className="text-gray-500">Drop the file here ...</p>
+                    ) : (
+                      <p className="text-gray-500">
+                        Drag 'n' drop an icon file here, or click to select one
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                {formErrors?.icon && (
+                  <p className="text-rose-600 text-sm">{formErrors?.icon}</p>
                 )}
               </div>
             </div>
@@ -332,6 +397,9 @@ export default function CreateTemplatePage() {
                         handleInputChange(index, "title", e.target.value)
                       }
                     />
+                    {formErrors?.[`userInput[${index}].title`] && (
+                      <p className="text-rose-600 text-sm">{formErrors[`userInput[${index}].title`]}</p>
+                    )}
                   </div>
 
                   <div className="w-full space-y-2">
@@ -342,58 +410,61 @@ export default function CreateTemplatePage() {
                       }
                     >
                       <SelectTrigger className="w-full border-none h-14">
-                        <SelectValue placeholder="Input field" />
+                        <SelectValue placeholder={InputFieldType.SHORT_TEXT} />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Input field">Input field</SelectItem>
-                        <SelectItem value="Textarea field">
+                        <SelectItem value={InputFieldType.SHORT_TEXT}>Input field</SelectItem>
+                        <SelectItem value={InputFieldType.LONG_TEXT}>
                           Textarea field
                         </SelectItem>
-                        <SelectItem value="Select list field">
+                        <SelectItem value={InputFieldType.SELECT_LIST}>
                           Select list field
                         </SelectItem>
-                        <SelectItem value="Checkbox list field">
+                        <SelectItem value={InputFieldType.CHECKBOX}>
                           Checkbox list field
                         </SelectItem>
-                        <SelectItem value="Radio buttons field">
+                        <SelectItem value={InputFieldType.RADIO}>
                           Radio buttons field
                         </SelectItem>
                       </SelectContent>
                     </Select>
+                    {formErrors?.[`userInput[${index}].type`] && (
+                      <p className="text-rose-600 text-sm">{formErrors[`userInput[${index}].type`]}</p>
+                    )}
                   </div>
 
-                  {(input.type === "Input field" ||
-                    input.type === "Textarea field") && (
-                    <div className="w-full space-y-2">
-                      <Input
-                        type="text"
-                        placeholder="Type input field description (required)"
-                        value={input.description}
-                        onChange={(e) =>
-                          handleInputChange(
-                            index,
-                            "description",
-                            e.target.value
-                          )
-                        }
-                      />
-                    </div>
-                  )}
+                  {(input.type === InputFieldType.SHORT_TEXT ||
+                    input.type === InputFieldType.LONG_TEXT) && (
+                      <div className="w-full space-y-2">
+                        <Input
+                          type="text"
+                          placeholder="Type input field description (required)"
+                          value={input.description}
+                          onChange={(e) =>
+                            handleInputChange(
+                              index,
+                              "description",
+                              e.target.value
+                            )
+                          }
+                        />
+                      </div>
+                    )}
 
-                  {(input.type === "Select list field" ||
-                    input.type === "Checkbox list field" ||
-                    input.type === "Radio buttons field") && (
-                    <div className="w-full space-y-2">
-                      <Input
-                        type="text"
-                        placeholder="Comma separated options"
-                        value={input.options || ""}
-                        onChange={(e) =>
-                          handleInputChange(index, "options", e.target.value)
-                        }
-                      />
-                    </div>
-                  )}
+                  {(input.type === InputFieldType.SELECT_LIST ||
+                    input.type === InputFieldType.CHECKBOX ||
+                    input.type === InputFieldType.RADIO) && (
+                      <div className="w-full space-y-2">
+                        <Input
+                          type="text"
+                          placeholder="Comma separated options"
+                          value={input.options || ""}
+                          onChange={(e) =>
+                            handleInputChange(index, "options", e.target.value)
+                          }
+                        />
+                      </div>
+                    )}
 
                   <div className="w-full space-y-2">
                     <Select
@@ -412,15 +483,7 @@ export default function CreateTemplatePage() {
                     </Select>
                   </div>
 
-                  {index === userInputs.length - 1 ? (
-                    <button
-                      type="button"
-                      className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
-                      onClick={addUserInput}
-                    >
-                      <Plus />
-                    </button>
-                  ) : (
+                  {userInputs.length > 1 && (
                     <button
                       type="button"
                       className="bg-red-500 text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
@@ -429,10 +492,36 @@ export default function CreateTemplatePage() {
                       <Minus />
                     </button>
                   )}
+
+
+                  {index === userInputs.length - 1 && index>0 && (
+                    <button
+                      type="button"
+                      className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                      onClick={addUserInput}
+                    >
+                      <Plus />
+                    </button>
+                  )}
+                  {userInputs.length === 1 && (
+                    <button
+                      type="button"
+                      className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                      onClick={addUserInput}
+                    >
+                      <Plus />
+                    </button>
+                  )}
                 </div>
               ))}
-            </div>
 
+
+              {formErrors?.user_inputs && (
+                <p className="text-rose-600 text-sm">{formErrors?.user_inputs}</p>
+              )}
+            </div>
+            <div className="flex justify-end">
+            </div>
             <div className="space-y-2">
               <label className="font-medium">
                 Custom prompt <span className="text-[#F00]">*</span>
@@ -444,6 +533,9 @@ export default function CreateTemplatePage() {
                 value={formData.custom_prompt}
                 onChange={handleChange}
               />
+              {formErrors?.custom_prompt && (
+                <p className="text-rose-600 text-sm">{formErrors?.custom_prompt}</p>
+              )}
             </div>
           </div>
           <div className="flex justify-end gap-4">

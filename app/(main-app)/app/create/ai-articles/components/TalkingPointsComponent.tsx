@@ -86,7 +86,7 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
     instance
       .post("/ai/api/v1/wizard/talking-points", data)
       .then(({ data: { data } }) => {
-        setTalkingPoints(data.subtitles_talking_points);
+        setTalkingPoints(data.response.subtitles_talking_points);
       })
       .catch((err) => {
         if (err.response) {
@@ -160,14 +160,14 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
               <label className="font-medium" htmlFor="title">
                 Title <span className="text-rose-600">*</span>
               </label>
-              <span className="text-primary-black text-opacity-50 text-sm">{articleTitle.length}/2000</span>
+              <span className="text-primary-black text-opacity-50 text-sm">{articleTitle.length}/500</span>
             </div>
             <input
               type="text"
               id="title"
               value={articleTitle}
               onChange={(e) => setArticleTitle(e.target.value)}
-              maxLength={2000}
+              maxLength={500}
               placeholder="Enter the title"
               className="flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2"
             />

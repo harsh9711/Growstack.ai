@@ -5,7 +5,6 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectVa
 import { aiModelOptions } from "../create/ai-articles/constants/options";
 import clsx from "clsx";
 import ChatInput from "../plan/ai-chat/components/ChatInput";
-import ChatMessages from "../plan/ai-chat/components/ChatMessage";
 import DashboardChatModal from "./DashboardchatModal";
 import Image from "next/image";
 import { API_URL } from "@/lib/api";
@@ -17,30 +16,52 @@ import Icon3 from "@/public/svgs/conversation-starter3.svg";
 import { getCurrentUser } from "@/lib/features/auth/auth.selector";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
-import { planIdsMap } from "@/lib/utils";
+import { parseJsonString, planIdsMap } from "@/lib/utils";
 import Link from "next/link";
 import { ChatResponse } from "@/types/common";
+import ChatMessages from "../plan/ai-chat/components/ChatMessage";
+import ChatMessage from "../plan/ai-chat/components/ChatMessage";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Info } from "lucide-react";
+import { getCookie } from "cookies-next";
+import EventSource from 'eventsource';
+import { usePathname } from "next/navigation";
+import { ALL_ROUTES } from "@/utils/constant";
+
 
 type Message = {
   content: string;
   role: string;
   loading: boolean;
+  imageUrl: string | null;
+  filename: string | null;
 };
 
 export default function ChatComponent() {
-  const { currentPlan } = useSelector((rootState: RootState) => rootState.auth);
+  const { user, currentPlan } = useSelector((rootState: RootState) => rootState.auth);
 
-  const filteredAiModelOptions = currentPlan && planIdsMap.BASIC.some((val) => val === currentPlan.plan_id)
-    ? aiModelOptions.filter(option => option.value.startsWith("claude"))
+  const filteredAiModelOptions = currentPlan &&
+    planIdsMap.BASIC.some((val) => val === currentPlan.plan_id) && user?.user_type !== "ADMIN"
+    ? aiModelOptions.map((category) => ({
+      ...category,
+      models: category.models.filter((model) => model.value.startsWith("claude")),
+    })).filter((category) => category.models.length > 0)
     : aiModelOptions;
-  
+
   const [messages, setMessages] = useState<Message[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
-  const [selectedModel, setSelectedModel] = useState<string>(filteredAiModelOptions[0]?.value || "");
+  const [selectedModel, setSelectedModel] = useState<string>(filteredAiModelOptions[0].models[0].value || "");
   const [secureChatEnabled, setSecureChatEnabled] = useState<boolean>(false)
   const [isDailyLimitExceeded, setIsDailyLimitExceeded] = useState(false)
   const [isDashboardChatModalOpen, setIsDashboardChatModalOpen] = useState(false);
-  const selectedModelLabel = aiModelOptions.find((option) => option.value === selectedModel)?.label;
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [filename, setFilename] = useState<string | null>(null);
+  const pathname = usePathname();
 
   const fetchMessages = useCallback(async (_id: string) => {
     try {
@@ -59,14 +80,9 @@ export default function ChatComponent() {
     }
   }, []);
 
-  useEffect(() => {
-    if (selectedConversation) {
-      fetchMessages(selectedConversation);
-    }
-  }, [selectedConversation, fetchMessages]);
 
   const addMessage = (role: string, content: string, loading: boolean) => {
-    setMessages((prevMessages) => [...prevMessages, { role, content, loading }]);
+    setMessages((prevMessages) => [...prevMessages, { role, content, loading, imageUrl, filename }]);
   };
 
   const updateMessage = useCallback(
@@ -88,6 +104,43 @@ export default function ChatComponent() {
       return prevMessages.filter((_, index) => index !== indexToRemove && index !== indexToRemove + 1);
     });
   }, []);
+
+
+  const streamResponse = async (chatId: string) => {
+    try {
+      const token = getCookie("token");
+      const eventSource = new EventSource(`${API_URL}/ai/api/v1/conversation/chat/stream/${chatId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+
+      let accumulatedResponse = '';
+
+      eventSource.onmessage = (event: MessageEvent) => {
+        const chunk = event.data;
+        const msg = parseJsonString(chunk)?.text || "";
+        accumulatedResponse += msg;
+
+        updateMessage(accumulatedResponse, "assistant");
+      };
+
+      eventSource.onerror = (error: MessageEvent) => {
+        console.error('EventSource failed:', error);
+        eventSource.close();
+      };
+
+      eventSource.addEventListener('end', (event: MessageEvent) => {
+        eventSource.close();
+      });
+
+    } catch (error) {
+      console.error('Error setting up EventSource:', error);
+      toast.error('Error setting up stream');
+    }
+  };
+
   const messagesEndRef = useRef<null | HTMLDivElement>(null);
   const handleConversationStarterClick = async (user_prompt: string) => {
     addMessage("user", user_prompt, false);
@@ -100,7 +153,7 @@ export default function ChatComponent() {
         }
       );
 
-      const { conversation_id, response, noOfMessagesLeft, totalNoOfMessages } = data.data as ChatResponse;
+      const { conversation_id, response, chatId, noOfMessagesLeft, totalNoOfMessages } = data.data as ChatResponse;
 
       const isBasicPlan = planIdsMap.BASIC.some((val) => val === currentPlan?.plan_id);
 
@@ -114,7 +167,7 @@ export default function ChatComponent() {
         }
       }
       setSelectedConversation(conversation_id);
-      updateMessage(response, "assistant");
+      await streamResponse(chatId);
     } catch (error: any) {
       const errorMsg = error.response?.data.error ?? error.message;
       if (errorMsg === "Please upgrade your plan") {
@@ -125,7 +178,7 @@ export default function ChatComponent() {
     }
   };
   useEffect(() => {
-    if (messagesEndRef.current) {
+    if (messagesEndRef.current && pathname !== ALL_ROUTES.APP) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages]);
@@ -142,18 +195,73 @@ export default function ChatComponent() {
 
   const currentUser = getCurrentUser();
 
-  
+
+
+  const handleModalSelection = (value: string) => {
+    if (!currentPlan) return;
+    const currentCategory = filteredAiModelOptions.find((category) =>
+      category.models.some((model) => model.value === value)
+    );
+
+    const currentModal = currentCategory?.models.find(
+      (model) => model.value === value
+    );
+
+    if (!currentCategory || !currentModal) {
+      console.error("Model not found");
+      return;
+    }
+
+    const freeCategories = ["growStackAiMessagesModel"];
+
+    if (user?.user_type === "ADMIN" || freeCategories.includes(currentCategory.modelCategory)) {
+      setSelectedModel(value);
+      return;
+    }
+
+    let usageLimit = 0;
+
+    if (currentCategory.modelCategory === "smartAiMessagesModel") {
+      usageLimit = currentPlan.smart_ai_messages;
+    } else if (currentCategory.modelCategory === "fastAiMessagesModel") {
+      usageLimit = currentPlan.fast_ai_messages;
+    }
+
+    if (usageLimit <= 0) {
+      toast.error(`You have no remaining usage for ${currentCategory.label}. Please switch to another model.`);
+      return;
+    }
+
+    setSelectedModel(value);
+  };
+  const chatInputRef = useRef<{ handleRegenerate: (chartMessage: string) => void }>(null);
+  const handleChatMessageButtonClick = (chartMessage: any) => {
+    if (chatInputRef.current) {
+      chatInputRef.current.handleRegenerate(chartMessage);
+    }
+  };
 
   return (
     <div className=" flex flex-col bg-white p-10 pt-8 rounded-3xl border border-[#E8E8E8] h-[780px]" data-aos="fade-up">
       {isDashboardChatModalOpen && <DashboardChatModal onClose={() => setIsDashboardChatModalOpen(false)} onSelectConversation={handleSelectConversation} />}
       <div className="flex justify-between items-center border-b pb-4" data-aos="fade-left">
         <div className="flex flex-row gap-2 items-center justify-center">
+
           <div className="flex items-center justify-center cursor-pointer" onClick={() => setIsDashboardChatModalOpen(true)}>
-            <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="4.5" y="4" width="16" height="16" rx="2" stroke="#034737" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M9.5 4V20" stroke="#034737" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="4.5" y="4" width="16" height="16" rx="2" stroke="#034737" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                    <path d="M9.5 4V20" stroke="#034737" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </TooltipTrigger>
+                <TooltipContent className="bg-white">
+                  <p>History</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+
           </div>
           <div className="flex items-center justify-center">
             <h1 className="text-xl font-semibold">AI Chat</h1>
@@ -161,6 +269,19 @@ export default function ChatComponent() {
         </div>
         <div className="flex flex-row items-center justify-center gap-5">
           <div className='flex items-center gap-2'>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Info
+                    size={18}
+                    className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
+                  />
+                </TooltipTrigger>
+                <TooltipContent className="bg-white" style={{ width: "450px", zIndex: "1000" }}>
+                  <p>Secure-AI chat ensures safe, natural conversations with strong protection and smart filters.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
             <div className='text-l font-semibold'>Secure Chat</div>
             <label className='relative inline-flex items-center cursor-pointer'>
               <input
@@ -175,40 +296,42 @@ export default function ChatComponent() {
               <div className='w-5 h-5 bg-white rounded-full absolute left-0.5 top-0.5 peer-checked:translate-x-full peer-checked:bg-white transition-all'></div>
             </label>
           </div>
-          <Select value={selectedModel} onValueChange={setSelectedModel}>
+          <Select value={selectedModel} onValueChange={handleModalSelection}>
             <SelectTrigger className='h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4'>
-              <SelectValue placeholder='Select an option'>
-                {selectedModelLabel && (
-                  <div className='flex items-center gap-2'>
-                    <span className='min-w-fit'>
-                      {
-                        filteredAiModelOptions.find(
-                          (option) => option.value === selectedModel
-                        )?.icon
-                      }
+              <SelectValue placeholder="Select an option">
+                {selectedModel && (
+                  <div className="flex items-center gap-2">
+                    <span className="min-w-fit">
+                      {filteredAiModelOptions
+                        .flatMap((option) => option.models) // Flattening the models array to find the icon
+                        .find((model) => model.value === selectedModel)?.icon}
                     </span>
-                    {selectedModelLabel}
+                    {selectedModel}
                   </div>
                 )}
               </SelectValue>
             </SelectTrigger>
             <SelectContent className="max-h-60 overflow-y-auto" style={{ scrollBehavior: 'smooth' }}>
-              <SelectGroup>
-                {filteredAiModelOptions.map(({ icon, label, value }) => (
-                  <SelectItem key={value} value={value}>
-                    <div
-                      className={clsx(
-                        "flex items-center gap-2",
-                        selectedModel === value &&
-                        "text-primary-green font-medium"
-                      )}
-                    >
-                      <span className='min-w-fit'>{icon}</span>
-                      {label}
-                    </div>
-                  </SelectItem>
-                ))}
-              </SelectGroup>
+              {filteredAiModelOptions.map(({ label: categoryLabel, models }) => (
+                <SelectGroup key={categoryLabel}>
+                  <React.Fragment key={categoryLabel}>
+                    <div className="font-bold text-gray-500 px-4 py-2">{categoryLabel}</div>
+                    {models.map(({ icon, label, value }) => (
+                      <SelectItem key={value} value={value}>
+                        <div
+                          className={clsx(
+                            "flex items-center gap-2",
+                            selectedModel === value && "text-primary-green font-medium"
+                          )}
+                        >
+                          <span className="min-w-fit">{icon}</span>
+                          {label}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </React.Fragment>
+                </SelectGroup>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -243,12 +366,20 @@ export default function ChatComponent() {
             </div>
           ) : (
             <div className="flex-1">
-              <ChatMessages conversation={messages} selectedConversation={selectedConversation} />
+              <ChatMessage
+                onButtonClick={handleChatMessageButtonClick}
+
+                conversation={messages}
+
+                selectedConversation={selectedConversation}
+
+                imageUrl={imageUrl} />
               <div ref={messagesEndRef} />
             </div>
           )}
         </div>
         <ChatInput
+          ref={chatInputRef}
           onSend={updateMessage}
           fetchConversations={() => { }}
           selectedConversation={selectedConversation}
@@ -257,6 +388,10 @@ export default function ChatComponent() {
           addMessage={addMessage}
           removeMessage={removeMessage}
           enableSecure={secureChatEnabled}
+          imageUrl={imageUrl}
+          setImageUrl={setImageUrl}
+          filename={filename}
+          setFilename={setFilename}
         />
       </div>
     </div>

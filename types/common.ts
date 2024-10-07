@@ -11,6 +11,7 @@ export interface PlanUsage {
     social_media_analytics: boolean;
     webscraping_available: boolean;
     webscraping_and_contact: number;
+    ai_background_generator_credits: number;
   };
   _id: string;
   plan_id: string;
@@ -101,6 +102,8 @@ export interface UserPlan {
   plan_name: string;
   plan_amount: number;
   ai_background_generator_cost: number;
+  smart_ai_messages: number;
+  fast_ai_messages: number;
   usage_expiry_date: string;
   no_of_messages: number;
   usage_amount: number;
@@ -117,4 +120,19 @@ export interface ChatResponse {
   response_type: 'TEXT' | 'IMAGE' | 'VIDEO';
   noOfMessagesLeft?: number;
   totalNoOfMessages?: number;
+  chatId: string;
+  isImage?: boolean
+}
+
+export interface BrandVoice {
+  _id: string;
+  user_id: string;
+  brand_name: string;
+  websites: string[];
+  brand_voice: string;
+  description?: string; // Optional field
+  document_url: string;
+  is_default: boolean;
+  createdAt: string;
+  updatedAt: string;
 }

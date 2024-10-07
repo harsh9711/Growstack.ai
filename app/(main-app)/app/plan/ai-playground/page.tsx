@@ -99,21 +99,21 @@ export default function AiPlayground() {
     // renderConversation()  
   };
 
-  const renderConversation = async () => {
-    if (userPrompt.trim() === "") return;
+  const renderConversation = async (chatMessage?: string) => {
+    const prompt = userPrompt?.trim() ?? "";
+    const message = chatMessage?.trim() ?? "";
 
+    if (prompt === "" && message === "") return;
     const newMessage: Message = {
-      content: userPrompt,
+      content: prompt || message,
       role: "user",
       loading: false,
     };
-
     const loadingAssistantMessage: Message = {
       content: "",
       role: "assistant",
       loading: true,
     };
-
     setChatAreas((prevChatAreas) =>
       prevChatAreas.map((chatArea) => ({
         ...chatArea,
@@ -126,29 +126,25 @@ export default function AiPlayground() {
         messages: chatArea.messages,
       }))
     );
-
     try {
       const responses = await Promise.all(
         chatAreas.map(async (chatArea) => {
           const payload = {
-            user_prompt: userPrompt,
+            user_prompt: userPrompt?.trim() || chatMessage?.trim(),
             model: chatArea.selectedModel,
             provider: chatArea.provider,
             messages: chatArea.messages,
           };
-
           const response = await instance.post(
             `${API_URL}/ai/api/v1/playground`,
             payload
           );
 
-          const initialText = response.data.data.text;
-          const updatedMessages = response.data.data.updatedMessages;
-
+          const initialText = response.data.data.response.text;
+          const updatedMessages = response.data.data.response.updatedMessages;
           return { chatArea, initialText, updatedMessages };
         })
       );
-
       setChatAreas((prevChatAreas) =>
         prevChatAreas.map((chatArea) => {
           const response = responses.find(
@@ -156,23 +152,19 @@ export default function AiPlayground() {
           );
           if (response) {
             const { initialText, updatedMessages } = response;
-
             return {
               ...chatArea,
               conversation: chatArea.awaitingUpdate
                 ? [
                   ...chatArea.conversation.slice(0, -1),
                   {
-                    ...chatArea.conversation[
-                    chatArea.conversation.length - 1
-                    ],
+                    ...chatArea.conversation[chatArea.conversation.length - 1],
                     content: initialText,
                     loading: false,
                   },
                 ]
                 : chatArea.conversation,
-              awaitingUpdate: updatedMessages.length > 0,
-              message: initialText,
+              awaitingUpdate: updatedMessages?.length > 0,
               messages: updatedMessages,
             };
           }
@@ -180,13 +172,12 @@ export default function AiPlayground() {
         })
       );
     } catch (error: any) {
-      setChatAreas(chatAreas);
+      setChatAreas((prevChatAreas) => prevChatAreas);
       toast.error(error?.response?.data?.message || "Something went wrong");
       console.error("Error sending prompt:", error);
     }
-
     setUserPrompt("");
-  }
+  };
 
   return (
     <div className="flex-1 h-full flex flex-col mt-10 overflow-x-auto">

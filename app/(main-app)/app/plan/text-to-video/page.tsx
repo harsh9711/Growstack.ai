@@ -23,6 +23,7 @@ import { API_URL } from "@/lib/api";
 import { ALL_ROUTES } from "@/utils/constant";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
+import React from "react";
 
 const VideoTable: React.FC<{
   videos: Array<{
@@ -76,9 +77,9 @@ const VideoTable: React.FC<{
     try {
       await instance.delete(`/users/api/v1/docs/${currentVideoId}`);
       onRemove(currentVideoId);
-      toast.success("Video removed");
+      toast.success("Avatar removed");
     } catch (error) {
-      toast.error("Failed to remove video");
+      toast.error("Failed to remove avatar");
       console.error("Remove error:", error);
     } finally {
       setIsDeleting(false);
@@ -100,7 +101,7 @@ const VideoTable: React.FC<{
       console.log(data.usage_amount)
       setPlanUsage(data);
 
-      if (data.usage_amount === 0) {
+      if ((data?.usage?.no_of_text_to_avatar || 0) <= 0 && user?.user_type !== "ADMIN") {
         toast.error('Trial expired');
         window.location.href = isSubscribed ? ALL_ROUTES.UPGRADE : ALL_ROUTES.PAYMENT
       }
@@ -195,7 +196,7 @@ const VideoTable: React.FC<{
           setDownloadProgress(null);
           toast.success("Download completed");
         } catch (error) {
-          toast.error("Failed to download video");
+          toast.error("Failed to download avatar");
           console.error("Download error:", error);
           setDownloadProgress(null);
         }
@@ -272,7 +273,7 @@ const VideoTable: React.FC<{
                 <img
                   className="object-cover w-[64px] h-[64px] rounded-2xl"
                   src={video.thumbnailUrl}
-                  alt="video thumbnail"
+                  alt="avatar thumbnail"
                 />
               </TableCell>
               <TableCell className="text-[16px] font-medium truncate max-w-[200px]">
@@ -326,7 +327,7 @@ const VideoTable: React.FC<{
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
         onConfirm={handleConfirmDelete}
-        message="Are you sure you want to delete this video?"
+        message="Are you sure you want to delete this avatar?"
         isLoading={isDeleting}
       />
     </div>
@@ -388,7 +389,7 @@ export default function TextToVideoPage() {
   const handleRemove = async (id: string) => {
     try {
       await instance.delete(`/users/api/v1/docs/${id}`);
-      toast.success("Video removed successfully");
+      toast.success("Avatar removed successfully");
       fetchData();
     } catch (error: any) {
       if (error.response) {
@@ -396,7 +397,7 @@ export default function TextToVideoPage() {
       } else {
         toast.error(error.message);
       }
-      console.error("Error removing video:", error);
+      console.error("Error removing avatar:", error);
     }
   };
 
@@ -425,7 +426,7 @@ export default function TextToVideoPage() {
           <div className="space-y-2 w-full">
             <h1 className="text-2xl font-semibold">Text to avatar</h1>
             <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
-              My videos
+              My Avatars
             </p>
           </div>
           <div className="w-full flex justify-end gap-2">
@@ -457,7 +458,7 @@ export default function TextToVideoPage() {
             </Suspense>
           ) : (
             <div className="text-center text-gray-500 text-2xl font-semibold col-span-4">
-              No Videos Available
+              No Avatar Available
             </div>
           )}
         </div>
