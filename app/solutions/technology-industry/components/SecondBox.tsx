@@ -183,13 +183,13 @@ const SecondBox = () => {
       data-aos="fade-up"
     >
       <h2
-        className="w-full font-light text-[16px] xl:text-[36px] sm:text-[24px] text-center sm:text-left"
+        className="w-full font-light text-[20px] xl:text-[36px] sm:text-[24px] text-center sm:text-left"
         data-aos="fade-right"
       >
         <span className="font-bold">{inf.title} </span> {inf.subtitle}
       </h2>
       <div
-        className={`flex flex-col sm:flex-row mt-16 ${inf.classNaming} gap-10 w-full justify-between`}
+        className={`flex flex-col sm:flex-row mt-6 sm:mt-16 ${inf.classNaming} gap-6 sm:gap-10 w-full justify-between`}
         data-aos="fade-left"
       >
         <div data-aos="zoom-in" className="w-full sm:w-auto">
