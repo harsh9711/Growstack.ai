@@ -13,7 +13,7 @@ function OurProcess() {
       <div className="ourProcess">
         <div className="container">
           <div className="content">
-            <div className="flex flex-row  w-full items-center justify-center">
+            <div className="flex flex-row py-10 lg:py-0 xl:py-0   w-full items-center justify-center">
             <div className="max-w-[480px] lg:ml-4 w-full" data-aos="fade-right"
             data-aos-easing="ease-in-sine"
             data-aos-duration="1000">
