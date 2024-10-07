@@ -313,7 +313,6 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
         <h1 className="text-xl font-semibold">AI Chat</h1>
         <div className="flex gap-3 items-center">
           <div className="gap-2 flex pr-4 py-1.5 items-center border-r-2 border-[#EBEBEB]">
-          
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
@@ -322,7 +321,6 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
                     className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
                   />
                 </TooltipTrigger>
-                
                 <TooltipContent side="bottom" className="bg-white" style={{ width: "450px" }}>
                   <p>Secure-AI chat ensures safe, natural conversations with strong protection and smart filters.</p>
                 </TooltipContent>
