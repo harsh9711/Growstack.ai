@@ -35,7 +35,6 @@ const ResultComponent: React.FC<ResultComponentProps> = ({ articleTitle, article
     try {
       const response = await instance.post(API_URL + "/ai/api/v1/wizard/generate/cms", payload);
       toast.success(response.data.message);
-      console.log("response.data", response.data.data);
       localStorage.setItem("savedArticle", response?.data?.data);
       router.push(`/app/publish/scheduler/quick-posting`);
     } catch (error: any) {

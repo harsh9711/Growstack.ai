@@ -2,13 +2,34 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
-import { ImageIcon, Plus, XIcon } from "lucide-react";
-import { ChangeEventHandler } from "react";
+import { ImageIcon, Minus, Plus, XIcon } from "lucide-react";
+import { ChangeEventHandler, useState } from "react";
 import toast from "react-hot-toast";
 import CodeIntepreterFiles from "./CodeInterpretorFiles";
 import SearchFiles from "./SearchFiles";
 import Image from "next/image";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
+import CreateForm from "./CreateForm";
+type ToolResources = {
+  code_interpreter?: {
+    file_ids?: string[];
+  };
+  file_search?: {
+    vector_store_ids?: string[];
+  };
+};
+
+type ConversationPayLoad = {
+  name: string;
+  description: string;
+  instruction: string;
+  tools?: { type?: string }[];
+  tool_resources?: ToolResources;
+  conversation_starter?: string[];
+  capabilities?: string[];
+  icon?: string;
+};
 
 interface ConfigureGPTSectionProps {
   conversationStarters: string[];
@@ -64,6 +85,7 @@ export default function ConfigureGPTSection({
     newStarters[index] = e.target.value;
     setConversationStarters(newStarters);
   };
+  const router = useRouter();
 
   const handleAddStarterField = () => {
     if (conversationStarters.length < 4) {
@@ -72,6 +94,7 @@ export default function ConfigureGPTSection({
       toast.error("Maximum 4 conversation starters allowed");
     }
   };
+  const [isAPICalled, setIsAPICalled] = useState<boolean>(false);
 
   const handleRemoveStarterField = (index: number) => {
     if (conversationStarters.length > 1) {
@@ -102,9 +125,8 @@ export default function ConfigureGPTSection({
           setVectorStoreId={setVectorStoreId}
           uploadedSerachFiles={uploadedSerachFiles}
           setUploadedSerachFiles={setUploadedSerachFiles}
-          isSearchModalOpen={isSearchModalOpen}
-          setIsSearchModalOpen={setIsSearchModalOpen}
         />
+
         <div className="border-b border-gray-200 pr-4 mt-4 mb-4"></div>
         <CodeIntepreterFiles
           isToggleCheckedForInterpreter={isToggleCheckedForInterpreter}
@@ -145,6 +167,7 @@ export default function ConfigureGPTSection({
       event.target.value = "";
     };
 
+
     return (
       <div className="text-center">
         <label className="flex items-center justify-center mx-auto" htmlFor="fileInput">
@@ -163,6 +186,81 @@ export default function ConfigureGPTSection({
         <input id="fileInput" type="file" accept="image/*" className="hidden" onChange={handleFileInputChange} />
       </div>
     );
+  };
+  const handleCreateConversation = async () => {
+    try {
+      if (!iconImage) {
+        toast.error("Please upload an icon image");
+        return;
+      } else if (!formData.name) {
+        toast.error("Please enter the name");
+        return;
+      } else if (!formData.description) {
+        toast.error("Please enter the description");
+        return;
+      } else if (!formData.instructions) {
+        toast.error("Please enter the instructions");
+        return;
+      }
+      setIsAPICalled(true);
+      let payload: ConversationPayLoad = {
+        name: formData.name,
+        description: formData.description,
+        instruction: formData.instructions,
+        icon: iconImage,
+      };
+      let tools = [],
+        tool_resources: ToolResources = {},
+        cap = [];
+      if (isToggleCheckedForSearch) {
+        tools.push({ type: "file_search" });
+        if (vectorStoreId) {
+          tool_resources.file_search = { vector_store_ids: [vectorStoreId] };
+        }
+      }
+      if (isToggleCheckedForInterpreter) {
+        tools.push({ type: "code_interpreter" });
+        if (uploadedIntepreterFiles.length > 0) {
+          tool_resources.code_interpreter = {
+            file_ids: uploadedIntepreterFiles.map((file) => file.id ?? ""),
+          };
+        }
+      }
+      if (tools.length) {
+        payload.tools = tools;
+      }
+      if (Object.keys(tool_resources).length) {
+        payload.tool_resources = tool_resources;
+      }
+      if (conversationStarters.length > 1 || (conversationStarters.length === 1 && conversationStarters[0] !== "")) {
+        payload.conversation_starter = conversationStarters.filter((starter) => starter !== "");
+      }
+      if (capabilities.IMAGE || capabilities.WEB_BROWSING) {
+        if (capabilities.IMAGE) {
+          cap.push("IMAGE");
+        }
+        if (capabilities.WEB_BROWSING) {
+          cap.push("WEB_BROWSING");
+        }
+        payload.capabilities = cap;
+      }
+      const {
+        data: {
+          data: {
+            customGptConvo: { custom_gpt_id },
+          },
+        },
+      } = await instance.post(`${API_URL}/ai/api/v1/customgpt/create`, {
+        ...payload,
+      });
+      setIsAPICalled(false);
+      toast.success("Conversation created successfully");
+      router.push(`/app/plan/custom-gpts/gpt/?custom_gpt_id=${custom_gpt_id}`);
+    } catch (error: any) {
+      toast.error("Failed to create conversation");
+      console.error(error);
+      setIsAPICalled(false);
+    }
   };
 
   return (
@@ -266,7 +364,7 @@ export default function ConfigureGPTSection({
                         <p className="block text-[14px] text-gray-700">Conversation Starters</p>
                       </div>
                       {conversationStarters.map((starter, index) => (
-                        <div key={index} className="relative gap-2 mt-2">
+                        <div key={index} className="relative gap-2 mt-2 flex">
                           <div className="mb-2 w-full rounded-xl bg-[#F2F2F2] items-center flex">
                             <Input
                               type="text"
@@ -277,23 +375,54 @@ export default function ConfigureGPTSection({
                               onChange={(e) => handleStartersChange(index, e)}
                               className="w-full p-3 bg-transparent h-[50px]"
                             />
-                            {conversationStarters.length > 1 && (
+                            {/* {conversationStarters.length > 1 && (
                               <div className="flex justify-end">
                                 <button type="button" onClick={() => handleRemoveStarterField(index)} className="bg-white p-1 rounded-xl mr-2">
                                   <XIcon size={20} className="text-rose-500" />
                                 </button>
                               </div>
-                            )}
+                            )} */}
+
+
                           </div>
+                          {conversationStarters.length > 1 && (
+                            <button
+                              type="button"
+                              className="bg-red-500 text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                              onClick={() => handleRemoveStarterField(index)}
+                            >
+                              <Minus />
+                            </button>
+                          )}
+                          {index === conversationStarters.length - 1 && index > 0 && (
+                            <button
+                              type="button"
+                              className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                              onClick={handleAddStarterField}
+                            >
+                              <Plus />
+                            </button>
+                          )}
+                          {conversationStarters.length === 1 && (
+                            <button
+                              type="button"
+                              className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                              onClick={handleAddStarterField}
+                            >
+                              <Plus />
+                            </button>
+                          )}
                         </div>
                       ))}
                       <div className="flex gap-2 justify-end items-cente mt-5">
-                        <div
+                        {/* <div
                           onClick={handleAddStarterField}
                           className="sheen h-12 px-6 rounded-xl bg-primary-green text-white flex gap-x-2 items-center justify-center hover:bg-primary-green transition-colors cursor-pointer">
                           <Plus />
                           Add Conversation Starter
-                        </div>
+                        </div> */}
+
+                        <CreateForm handleCreateConversation={handleCreateConversation} isAPICalled={isAPICalled} from="CREATE" />
                       </div>
                     </div>
                   </form>
@@ -331,10 +460,10 @@ export default function ConfigureGPTSection({
                     conversationStarters.length === 1
                       ? "grid-cols-1"
                       : conversationStarters.length === 2
-                      ? "grid-cols-2"
-                      : conversationStarters.length === 3
-                      ? "grid-cols-3"
-                      : "grid-cols-4"
+                        ? "grid-cols-2"
+                        : conversationStarters.length === 3
+                          ? "grid-cols-3"
+                          : "grid-cols-4"
                   )}>
                   {conversationStarters.map((starter, index) => (
                     <div key={index} className="text-sm whitespace-pre-line bg-white p-4 border rounded-2xl shadow-md break-words">
