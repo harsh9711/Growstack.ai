@@ -410,7 +410,7 @@ const EditAssistantDialog = ({
                             }
                           >
                             <SelectTrigger className='w-full border-none h-14'>
-                              <SelectValue placeholder='Input field' />
+                              <SelectValue value={input.field_type} />
                             </SelectTrigger>
                             <SelectContent>
                               <SelectItem value='Input field'>
@@ -475,7 +475,7 @@ const EditAssistantDialog = ({
                           </Select>
                         </div>
                         <div className="w-full space-y-2">
-                          <Select
+                        <Select
                             value={input.required}
                             onValueChange={(value: any) =>
                               handleInputChange(
