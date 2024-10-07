@@ -97,11 +97,6 @@ export default function QuickPosting() {
         console.error("Error parsing savedArticleImg:", error);
       }
     }
-    setMediaUrls((prevData: any) => [
-      ...prevData,
-      savedArticleImg,
-    ])
-
     return () => {
       localStorage.removeItem("savedArticle");
       localStorage.removeItem("savedArticleImg");
@@ -402,11 +397,10 @@ export default function QuickPosting() {
                   {tabs.map((tab, index) => (
                     <div
                       key={index}
-                      className={`w-full h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
-                        selectedTabIndex === index
+                      className={`w-full h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${selectedTabIndex === index
                           ? "!text-white"
                           : "!text-primary-grey"
-                      }`}
+                        }`}
                       onClick={() => {
                         const totalTabs = tabs.length;
                         const percentage = (index / totalTabs) * 100;
