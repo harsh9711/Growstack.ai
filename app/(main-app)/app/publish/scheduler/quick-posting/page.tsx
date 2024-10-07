@@ -79,10 +79,10 @@ export default function QuickPosting() {
 
   useEffect(() => {
     const storedArticle = localStorage.getItem("savedArticle");
-    const savedArticleImg = localStorage.getItem("savedArticleImg");
+    const savedArticleImg = localStorage.getItem("savArticalImg");
     if (storedArticle) {
       try {
-        const parsedArticle = JSON.parse(storedArticle);
+        const parsedArticle:any = storedArticle;
         setLink(parsedArticle);
       } catch (error) {
         console.error("Error parsing savedArticle:", error);
@@ -91,7 +91,7 @@ export default function QuickPosting() {
 
     if (savedArticleImg) {
       try {
-        const parsedArticleImg = JSON.parse(savedArticleImg);
+        const parsedArticleImg:any = savedArticleImg;
         setMediaUrls((prevData: any) => [...prevData, parsedArticleImg]);
       } catch (error) {
         console.error("Error parsing savedArticleImg:", error);
@@ -99,7 +99,7 @@ export default function QuickPosting() {
     }
     return () => {
       localStorage.removeItem("savedArticle");
-      localStorage.removeItem("savedArticleImg");
+      localStorage.removeItem("savArticalImg");
     };
   }, []);
 
