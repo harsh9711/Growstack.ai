@@ -102,7 +102,10 @@ export default function Customgpts() {
                       <Image src={icon} alt="" width={100} height={100} className="rounded-2xl w-[90px] h-[90px] object-cover" />
                       <div className="space-y-2">
                         <h1 className="text-lg font-semibold">{name}</h1>
-                        <p className="text-primary-black text-opacity-50 leading-relaxed" style={{width:"220px",overflow:"hidden",textOverflow:"ellipsis"}}>{description}</p>
+                        <p className="text-primary-black text-opacity-50 leading-relaxed"
+                          style={{ width: "200px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                          {description}
+                        </p>
                       </div>
                     </div>
                   </Link>
