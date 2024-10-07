@@ -297,7 +297,7 @@ export default function AiAppPage({
   const streamResponse = async (chatId: string) => {
     try {
       const token = getCookie("token");
-      const eventSource = new EventSource(`${API_URL}/ai/api/v1/assistant/chat/stream/${chatId}`, {
+      const eventSource = new EventSource(`${API_URL}/ai/api/v1/chat-template/generate/stream/${chatId}`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
