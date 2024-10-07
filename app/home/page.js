@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
-
+import Facts from "/components/home/facts/facts";
+import Carousel from "../carousel/page";
 import Footer from "@/components/footer/Footer";
 import Banner from "@/components/home/banner/Banner";
 import Capability from "@/components/home/capability/Capability";
@@ -26,6 +27,8 @@ function Page() {
       {/* <Banner /> */}
       <OurProcess />
       <PoweredBy />
+      <Facts />
+      <Carousel />
       {/* <Features /> */}
       <Animation/>
       {/* <Marketing/> */}
