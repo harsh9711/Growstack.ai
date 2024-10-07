@@ -186,8 +186,7 @@ export default function Dashboard() {
             </Link> */}
             <Link href="/app/plan/ai-templates">
               <div
-                className="!mt-4 group  bg-white border border-[#E8ECEF] rounded-2xl p-3 xl:p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                data-aos="fade-up"
+                className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
               >
                 <div className="flex gap-4 items-center">
                   <Image
@@ -206,8 +205,7 @@ export default function Dashboard() {
             </Link>
             <Link href="/app/plan/ai-assistant">
               <div
-                className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-3 xl:p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                data-aos="fade-up"
+                className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
               >
                 <div className="flex gap-4 items-center">
                   <Image
@@ -226,8 +224,7 @@ export default function Dashboard() {
             </Link>
             <Link href="/app/plan/custom-gpts">
               <div
-                className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-3 xl:p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                data-aos="fade-up"
+                className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
               >
                 <div className="flex gap-4 items-center">
                   <Image
@@ -246,8 +243,7 @@ export default function Dashboard() {
             </Link>
             <Link href="/app/plan/text-to-video">
               <div
-                className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-3 xl:p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                data-aos="fade-up"
+                className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
               >
                 <div className="flex gap-4 items-center">
                   <Image
@@ -262,8 +258,7 @@ export default function Dashboard() {
             </Link>
             <Link href="/app/create/workflow-builder">
               <div
-                className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-3 xl:p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                data-aos="fade-up"
+                className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
               >
                 <div className="flex gap-4 items-center">
                   <Image
@@ -282,8 +277,7 @@ export default function Dashboard() {
             </Link>
             <Link href="/app/create/ai-articles">
               <div
-                className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-3 xl:p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                data-aos="fade-up"
+                className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
               >
                 <div className="flex gap-4 items-center">
                   <Image

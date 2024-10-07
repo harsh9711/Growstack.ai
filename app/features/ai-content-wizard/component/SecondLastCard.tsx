@@ -31,7 +31,7 @@ const SecondLastCard = () => {
         </h1>
       </div>
 
-      <div className="max-w-[300px] sm:max-w-[1000px]  sm:mt-10  w-full">
+      <div className="max-w-[300px] pb-32   sm:max-w-[1000px]  sm:mt-10  w-full">
         {/* First Column */}
        
           <div className="flex flex-row  justify-center sm:justify-between ">
@@ -67,7 +67,7 @@ const SecondLastCard = () => {
                     key={idx}
                     className={`${
                       idx % 2 === 0 ? "bg-[#03473714]" : "bg-[#FFFFFF14]"
-                    } text-[12px] sm:text-[16px] p-4  max-h-24 h-full  rounded-l-2xl font-medium text-center  sm:text-start max-w-[400px] w-full `}
+                    } text-[12px] sm:text-[16px] p-4  max-h-16 h-full  rounded-l-2xl font-medium text-center  sm:text-start max-w-[400px] w-full `}
                   >
                     <h2 className="">{item}</h2>
                   </div>
@@ -113,7 +113,7 @@ const SecondLastCard = () => {
                       idx % 2 === 0 ? "bg-[#03473714]" : "bg-[#FFFFFF14]"
                     } text-[12px] sm:text-[16px] p-4 ${
                       idx ===8 ? "pb-36 sm:pb-10" : ""
-                    } font-medium text-center max-h-24 h-full max-w-[400px] w-full `}
+                    } font-medium text-center max-h-16 h-full max-w-[400px] w-full `}
                   >
                     <h2>{item}</h2>
                   </div>
@@ -158,7 +158,7 @@ const SecondLastCard = () => {
                       idx % 2 === 0 ? "bg-[#03473714]" : "bg-[#FFFFFF14]"
                     } text-[12px] sm:text-[16px] p-4 ${
                       idx ===8 ? "pb-36 sm:pb-10  bg-[#03473714]" : ""
-                    } font-medium text-center max-h-24 h-full rounded-r-2xl max-w-[400px] w-full `}
+                    } font-medium text-center max-h-16 h-full rounded-r-2xl max-w-[400px] w-full `}
                   >
                     <h2>{item}</h2>
                   </div>
