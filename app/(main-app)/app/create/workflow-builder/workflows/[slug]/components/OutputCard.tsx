@@ -2,6 +2,8 @@ import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import Image from "next/image";
 import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import remarkBreaks from "remark-breaks";
 
 type OutputCardProps = {
   index: number;
@@ -33,8 +35,13 @@ const OutputCard = ({ index, output }: OutputCardProps) => {
           {!copied ? "Copy" : "Copied!"}
         </button>
       </div>
-      <div className="bg-gray-100 p-4 rounded-lg break-words whitespace-pre-line max-h-[500px] overflow-y-auto hidden-scrollbar">
-        <ReactMarkdown className="prose" remarkPlugins={[remarkGfm]}>
+      <div className="bg-gray-100 p-4 rounded-lg max-h-[500px] overflow-y-auto hidden-scrollbar">
+        <ReactMarkdown
+          className="prose"
+          key={output.variable_value}
+          remarkPlugins={[remarkGfm, remarkBreaks]}
+          rehypePlugins={[rehypeRaw]}
+        >
           {output.variable_value}
         </ReactMarkdown>
       </div>

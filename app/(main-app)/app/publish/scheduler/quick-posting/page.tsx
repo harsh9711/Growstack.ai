@@ -79,21 +79,35 @@ export default function QuickPosting() {
 
   useEffect(() => {
     const storedArticle = localStorage.getItem("savedArticle");
-    const savedArticalImg = localStorage.getItem("savArticalImg")
-
+    const savedArticleImg = localStorage.getItem("savedArticleImg");
     if (storedArticle) {
-      setLink(storedArticle);
+      try {
+        const parsedArticle = JSON.parse(storedArticle);
+        setLink(parsedArticle);
+      } catch (error) {
+        console.error("Error parsing savedArticle:", error);
+      }
+    }
+
+    if (savedArticleImg) {
+      try {
+        const parsedArticleImg = JSON.parse(savedArticleImg);
+        setMediaUrls((prevData: any) => [...prevData, parsedArticleImg]);
+      } catch (error) {
+        console.error("Error parsing savedArticleImg:", error);
+      }
     }
     setMediaUrls((prevData: any) => [
       ...prevData,
-      savedArticalImg,
+      savedArticleImg,
     ])
 
     return () => {
       localStorage.removeItem("savedArticle");
-      localStorage.removeItem("savArticalImg")
+      localStorage.removeItem("savedArticleImg");
     };
   }, []);
+
 
   const handleBrowsImgAndVideo = async (
     event: ChangeEvent<HTMLInputElement>
@@ -168,6 +182,8 @@ export default function QuickPosting() {
   const handleRemoveMediaUrls = (index: number) => {
     setMediaUrls((prevUrls) => prevUrls.filter((_, i) => i !== index));
   };
+
+  console.log(mediaUrls)
 
   return (
     <Fragment>

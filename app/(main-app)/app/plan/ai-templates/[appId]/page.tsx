@@ -40,6 +40,7 @@ import EventSource from 'eventsource';
 import { parseJsonString } from "@/lib/utils";
 import downloadPdf from "@/utils/downloadPdf";
 import { InputFieldType } from "@/types/enums";
+import { ALL_ROUTES } from "@/utils/constant";
 
 export default function AiAppPage({
   params: { appTemplateId },
@@ -572,21 +573,21 @@ export default function AiAppPage({
           <div className="mb-5 border-b border-[#EDEFF0]">
             <div className="flex items-center justify-between pb-5">
               <div className="flex flex-row items-center gap-3">
-              {validateImageUrl(appTemplate.icon) ? (
-                      <div className="flex items-center justify-center w-16 h-16">
-                        <img src={appTemplate.icon} alt="icon" className="rounded-lg object-contain w-full h-full"></img>
-                      </div>
-                    ) : (
-                        <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
-                        }}
-                        dangerouslySetInnerHTML={{ __html: appTemplate.icon }}
-                        className='w-[64px] h-[64px] flex-shrink-0'
-                      />
-                    )}
+                {validateImageUrl(appTemplate.icon) ? (
+                  <div className="flex items-center justify-center w-16 h-16">
+                    <img src={appTemplate.icon} alt="icon" className="rounded-lg object-contain w-full h-full"></img>
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    dangerouslySetInnerHTML={{ __html: appTemplate.icon }}
+                    className='w-[64px] h-[64px] flex-shrink-0'
+                  />
+                )}
 
                 <h2 className="text-2xl font-semibold capitalize">
                   {appTemplate.name}
@@ -646,7 +647,7 @@ export default function AiAppPage({
                 />
               ) : (
                 <Link
-                  href="/account/create-brand-voice/"
+                  href={ALL_ROUTES.BRAND_VOICE}
                   className="flex"
                   style={{ color: "green" }}
                 >
