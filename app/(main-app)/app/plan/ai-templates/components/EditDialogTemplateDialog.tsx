@@ -409,23 +409,21 @@ const EditAssistantDialog = ({
                               handleInputChange(index, "field_type", value)
                             }
                           >
-                            <SelectTrigger className='w-full border-none h-14'>
-                              <SelectValue value={input.field_type} />
+                            <SelectTrigger className="w-full border-none h-14">
+                              <SelectValue placeholder={InputFieldType.SHORT_TEXT} />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value='Input field'>
-                                Input field
-                              </SelectItem>
-                              <SelectItem value='Textarea field'>
+                              <SelectItem value={InputFieldType.SHORT_TEXT}>Input field</SelectItem>
+                              <SelectItem value={InputFieldType.LONG_TEXT}>
                                 Textarea field
                               </SelectItem>
-                              <SelectItem value='Select list field'>
+                              <SelectItem value={InputFieldType.SELECT_LIST}>
                                 Select list field
                               </SelectItem>
-                              <SelectItem value='Checkbox list field'>
+                              <SelectItem value={InputFieldType.CHECKBOX}>
                                 Checkbox list field
                               </SelectItem>
-                              <SelectItem value='Radio buttons field'>
+                              <SelectItem value={InputFieldType.RADIO}>
                                 Radio buttons field
                               </SelectItem>
                             </SelectContent>
@@ -445,7 +443,7 @@ const EditAssistantDialog = ({
                             }
                           />
                         </div>
-                        <div className="w-full space-y-2">
+                        {/* <div className="w-full space-y-2">
                           <Select
                             value={input.type}
                             onValueChange={(value) =>
@@ -456,27 +454,27 @@ const EditAssistantDialog = ({
                               <SelectValue placeholder={InputFieldType.SHORT_TEXT} />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value='Input field'>
+                              <SelectItem value={InputFieldType.SHORT_TEXT}>
                                 Input field
                               </SelectItem>
-                              <SelectItem value='Textarea field'>
+                              <SelectItem value={InputFieldType.LONG_TEXT}>
                                 Textarea field
                               </SelectItem>
-                              <SelectItem value='Select list field'>
+                              <SelectItem value={InputFieldType.SELECT_LIST}>
                                 Select list field
                               </SelectItem>
-                              <SelectItem value='Checkbox list field'>
+                              <SelectItem value={InputFieldType.CHECKBOX}>
                                 Checkbox list field
                               </SelectItem>
-                              <SelectItem value='Radio buttons field'>
+                              <SelectItem value={InputFieldType.RADIO}>
                                 Radio buttons field
                               </SelectItem>
                             </SelectContent>
                           </Select>
-                        </div>
+                        </div> */}
                         <div className="w-full space-y-2">
-                        <Select
-                            value={input.required}
+                          <Select
+                            value={input.value}
                             onValueChange={(value: any) =>
                               handleInputChange(
                                 index,
@@ -498,6 +496,7 @@ const EditAssistantDialog = ({
                             </SelectContent>
                           </Select>
                         </div>
+
                         {inputs.length > 1 && (
                           <button
                             type="button"
@@ -507,6 +506,8 @@ const EditAssistantDialog = ({
                             <Minus />
                           </button>
                         )}
+
+
                         {index === inputs.length - 1 && index > 0 && (
                           <button
                             type="button"
@@ -528,41 +529,41 @@ const EditAssistantDialog = ({
                       </div>
                     ))}
 
-                </div>
-                <div className='space-y-2'>
-                  <label className='font-medium'>
-                    Custom Prompt <span className='text-[#F00]'>*</span>
-                  </label>
-                  <textarea
-                    placeholder='Type custom prompt'
-                    className='h-60 block w-full rounded-2xl bg-[#F5F5F5] p-4 resize-none'
-                    {...register("custom_prompt")}
-                  />
-                  {errors.custom_prompt && (
-                    <p className='text-rose-600'>
-                      {errors.custom_prompt.message}
-                    </p>
-                  )}
-                </div>
-                <div className='flex justify-end gap-x-3 !mt-8'>
-                  <DialogClose>
-                    <button className='border text-primary-black px-8 py-4 rounded-xl flex items-center gap-2'>
-                      Cancel
+                  </div>
+                  <div className='space-y-2'>
+                    <label className='font-medium'>
+                      Custom Prompt <span className='text-[#F00]'>*</span>
+                    </label>
+                    <textarea
+                      placeholder='Type custom prompt'
+                      className='h-60 block w-full rounded-2xl bg-[#F5F5F5] p-4 resize-none'
+                      {...register("custom_prompt")}
+                    />
+                    {errors.custom_prompt && (
+                      <p className='text-rose-600'>
+                        {errors.custom_prompt.message}
+                      </p>
+                    )}
+                  </div>
+                  <div className='flex justify-end gap-x-3 !mt-8'>
+                    <DialogClose>
+                      <button className='border text-primary-black px-8 py-4 rounded-xl flex items-center gap-2'>
+                        Cancel
+                      </button>
+                    </DialogClose>
+                    <button
+                      className='bg-primary-green text-white sheen transition duration-500 px-8 py-4 rounded-xl flex items-center gap-2'
+                      disabled={isPending}
+                    >
+                      {isPending ? "Updating..." : "Update Assistant"}
                     </button>
-                  </DialogClose>
-                  <button
-                    className='bg-primary-green text-white sheen transition duration-500 px-8 py-4 rounded-xl flex items-center gap-2'
-                    disabled={isPending}
-                  >
-                    {isPending ? "Updating..." : "Update Assistant"}
-                  </button>
+                  </div>
                 </div>
-              </div>
-            </form>
+              </form>
             </section>
-      )
+          )
         )}
-    </DialogContent>
+      </DialogContent>
     </Dialog >
   );
 };
