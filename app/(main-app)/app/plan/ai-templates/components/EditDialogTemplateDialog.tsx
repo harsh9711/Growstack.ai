@@ -474,7 +474,7 @@ const EditAssistantDialog = ({
                         </div> */}
                         <div className="w-full space-y-2">
                           <Select
-                            value={input.value}
+                            value={input.required}
                             onValueChange={(value: any) =>
                               handleInputChange(
                                 index,
