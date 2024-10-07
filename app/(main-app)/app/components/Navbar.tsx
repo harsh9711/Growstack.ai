@@ -80,7 +80,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="bg-white shadow-2xl shadow-primary-green/10 py-4 px-10 rounded-[24px] w-full max-w-[90%] mx-auto fixed top-0 left-1/2 transform -translate-x-1/2 z-[5]" style={{ marginTop: "15px", zoom: "0.8" }}>
+    <header className="bg-white shadow-2xl shadow-primary-green/10 py-4 px-10 rounded-[24px] w-full max-w-[90%] mx-auto fixed top-0 left-1/2 transform -translate-x-1/2 z-[5]" style={{ zoom: "0.8" }}>
       <nav className="flex justify-between items-center gap-5">
         {/* Logo */}
         <div className="border-r border-[#DEDEDE] pr-10 cursor-pointer" onClick={() => router.push("/app")}>
