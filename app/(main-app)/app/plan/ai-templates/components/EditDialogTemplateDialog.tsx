@@ -456,19 +456,19 @@ const EditAssistantDialog = ({
                               <SelectValue placeholder={InputFieldType.SHORT_TEXT} />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value={InputFieldType.SHORT_TEXT}>
+                              <SelectItem value='Input field'>
                                 Input field
                               </SelectItem>
-                              <SelectItem value={InputFieldType.LONG_TEXT}>
+                              <SelectItem value='Textarea field'>
                                 Textarea field
                               </SelectItem>
-                              <SelectItem value={InputFieldType.SELECT_LIST}>
+                              <SelectItem value='Select list field'>
                                 Select list field
                               </SelectItem>
-                              <SelectItem value={InputFieldType.CHECKBOX}>
+                              <SelectItem value='Checkbox list field'>
                                 Checkbox list field
                               </SelectItem>
-                              <SelectItem value={InputFieldType.RADIO}>
+                              <SelectItem value='Radio buttons field'>
                                 Radio buttons field
                               </SelectItem>
                             </SelectContent>
