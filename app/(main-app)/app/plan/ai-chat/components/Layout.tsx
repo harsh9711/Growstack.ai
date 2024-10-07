@@ -307,6 +307,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
 
 
   const chatInputRef = useRef<{ handleRegenerate: (chartMessage: string) => void }>(null);
+  
   return (
     <>
       <div className="flex pt-3 pb-8 w-full items-center justify-between">
@@ -407,7 +408,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
               <SelectGroup>
                 {filteredAiModelOptions.map(({ label: groupLabel, models }) => (
                   <React.Fragment key={groupLabel}>
-                    <div className="font-bold text-gray-500 px-4 py-2">{groupLabel}</div> {/* Group label */}
+                    <div className="font-bold text-gray-500 px-4 py-2">{groupLabel}</div>
                     {models.map(({ icon, label, value }) => (
                       <SelectItem key={value} value={value}>
                         <div

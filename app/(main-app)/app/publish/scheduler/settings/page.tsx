@@ -24,10 +24,12 @@ export default function page() {
   const [socialProfileData, setSocialProfileData] = useState<any[]>([]);
 
   const handleOnConnect = async () => {
-    try {
-      const response = await instance.get(
-        API_URL + "/users/api/v1/social-media/connect",{ headers: { 'Cache-Control': 'no-cache' } }
-      );
+    const currentPath = localStorage.getItem("currentPathname");
+      try {
+  
+        const response = await instance.get(
+          `${API_URL}/users/api/v1/social-media/connect?currentPath=${currentPath}`
+        );
       const url = response?.data.data;
       if (url) {
         window.location.href = url;
