@@ -5,6 +5,13 @@ import { CircleAlert, File, Trash } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import FileUploadModal from "./FileUploadModal";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Info } from "lucide-react";
 
 interface SearchFilesProps {
   isToggleCheckedForSearch: boolean;
@@ -79,7 +86,20 @@ const SearchFiles = ({
           <Switch checked={isToggleCheckedForSearch} onCheckedChange={setIsToggleCheckedForSearch} />
           <span className="text-md font-medium flex flex-row gap-x-2">
             File Search
-            <CircleAlert size={21} />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Info
+                    size={21}
+                    className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
+                  />
+                </TooltipTrigger>
+                <TooltipContent className="bg-white" >
+                  <p>upload pdf file.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+            {/* <CircleAlert size={21} /> */}
           </span>
         </div>
         <FileUploadModal

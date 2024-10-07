@@ -274,6 +274,7 @@ export default function ChatComponent() {
                     className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
                   />
                 </TooltipTrigger>
+                
                 <TooltipContent className="bg-white" style={{ width: "450px", zIndex: "1000" }}>
                   <p>Secure-AI chat ensures safe, natural conversations with strong protection and smart filters.</p>
                 </TooltipContent>
