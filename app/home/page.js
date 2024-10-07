@@ -18,26 +18,29 @@ import Facts from "/components/home/facts/facts";
 import Carousel from "../carousel/page";
 import DragFeatures from "@/components/home/drag-features/DragFeatures";
 function Page() {
-    return (
-        <React.Fragment>
-            <Navbar logoUrl='/images/logo.png' logoAlt='Custom Logo' />
-           <div className="relative z-0"> <DragFeatures /></div>
-            <OurProcess />
-            <PoweredBy />
-            <Features />
-            <Facts />
-            <Carousel />
-            {/* <Animation /> */}
-            {/* <Marketing /> */}
-            <Premium />
-            <Capability />
-            <WhyChoose />
-            <FuturePlans />
-            {/* <Cta /> */}
-            <Faqs />
-            <Footer />
-        </React.Fragment>
-    );
+  return (
+    <React.Fragment>
+      <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
+      <div className="relative z-0">
+        {" "}
+        <DragFeatures />
+      </div>
+      <OurProcess />
+      <PoweredBy />
+      <Features />
+      <Facts />
+      <Carousel />
+      <Animation />
+      {/* <Marketing /> */}
+      <Premium />
+      <Capability />
+      <WhyChoose />
+      <FuturePlans />
+      {/* <Cta /> */}
+      <Faqs />
+      <Footer />
+    </React.Fragment>
+  );
 }
 
 export default Page;

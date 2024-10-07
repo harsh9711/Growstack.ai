@@ -95,7 +95,7 @@ const Box = () => {
   );
 };
 
-const SixCard = () => {
+const  SixCard = () => {
   return (
     <div>
       <div className="max-w-[1340px] flex flex-col sm:items-start items-center gap-y-6 sm:gap-y-16  w-full mx-auto">

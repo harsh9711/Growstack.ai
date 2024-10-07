@@ -91,10 +91,7 @@ const Box = () => {
           <p className="text-[12px] sm:text-[16px] max-w-[320px] font-light text-black transition-colors duration-300">
             {item.description}
           </p>
-          <button className=" font-medium group-hover:flex hidden  transition-transform duration-500 ease-in-out items-center gap-2 text-white 2xl:py-4 2xl:px-7 border bg-primary-green border-white  rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
-            Signup now
-            <ArrowRight className="text-white" />
-          </button>
+         
         </div>
       ))}
     </div>
@@ -131,9 +128,9 @@ const Box2 = () => {
           <p className="text-[12px] sm:text-[16px] max-w-[320px] font-light text-black transition-colors duration-300">
             {item.description}
           </p>
-          <button className=" font-medium group-hover:flex hidden  transition-transform duration-500 ease-in-out items-center gap-2 text-white 2xl:py-4 2xl:px-7 border bg-primary-green border-white  rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
-            Signup now
-            <ArrowRight className="text-white" />
+          <button className=" font-medium   transition-transform duration-500  border-primary-green ease-in-out items-center gap-2 text-black  group-hover:text-white 2xl:py-4 2xl:px-7 border bg-white group-hover:bg-primary-green rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
+            Signup now <ArrowRight className="text-white" />
+           
           </button>
         </div>
       ))}
