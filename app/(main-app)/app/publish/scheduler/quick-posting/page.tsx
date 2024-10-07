@@ -80,7 +80,6 @@ export default function QuickPosting() {
   useEffect(() => {
     const storedArticle = localStorage.getItem("savedArticle");
     const savedArticleImg = localStorage.getItem("savedArticleImg");
-
     if (storedArticle) {
       try {
         const parsedArticle = JSON.parse(storedArticle);
@@ -399,8 +398,8 @@ export default function QuickPosting() {
                     <div
                       key={index}
                       className={`w-full h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${selectedTabIndex === index
-                        ? "!text-white"
-                        : "!text-primary-grey"
+                          ? "!text-white"
+                          : "!text-primary-grey"
                         }`}
                       onClick={() => {
                         const totalTabs = tabs.length;
