@@ -42,7 +42,6 @@ const SearchFiles = ({
       } = await instance.post(`${API_URL}/ai/api/v1/customgpt/upload`, formData);
       setUploadedSerachFiles([...uploadedSerachFiles, { ...file, name: data.filename, id: data.id }]);
       setIsAPILoading(false);
-      handleAttachSearchFiles()
       toast.success("File uploaded successfully");
     } catch (error) {
       console.error("Error uploading file:", error);
