@@ -2,11 +2,10 @@
 import React, { useEffect, useState } from "react";
 import "../../styles/animate.css";
 import Image from "next/image";
-import { Link, ArrowRight } from "lucide-react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { landingpage, testimonials } from "@/types/data";
-import HoverVideoPlayer from 'react-hover-video-player';
+import { landingpage } from "@/types/data";
+import HoverVideoPlayer from "react-hover-video-player";
 
 const Animation = () => {
   const [Hide, setHide] = useState(false);
@@ -83,7 +82,8 @@ const Animation = () => {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);  return (
+  }, []);
+  return (
     <div
       // id="scroll-container"
       // style={{ overflow: "scroll", height: "1000px" }}
@@ -154,26 +154,26 @@ const Animation = () => {
             >
               <h2 className="text-[14px] font-semibold">{item.name}</h2>
               <HoverVideoPlayer
-              className="absolute top-4 px-6 left-0 w-full h-full rounded-2xl  border-none outline-none"
-      videoSrc="/video2.mp4"
-      pausedOverlay={
-        <img
-          src="/videov1.svg"
-          alt=""
-          className="rounded-2xl flex"
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-          }}
-        />
-      }
-      loadingOverlay={
-        <div className="loading-overlay">
-          <div className="loading-spinner" />
-        </div>
-      }
-    />
+                className="absolute top-4 px-6 left-0 w-full h-full rounded-2xl  border-none outline-none"
+                videoSrc="/video2.mp4"
+                pausedOverlay={
+                  <img
+                    src="/videov1.svg"
+                    alt=""
+                    className="rounded-2xl flex"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
+                  />
+                }
+                loadingOverlay={
+                  <div className="loading-overlay">
+                    <div className="loading-spinner" />
+                  </div>
+                }
+              />
               {/* <video
                 className="absolute top-4 px-6 left-0 w-full h-full  border-none outline-none"
                 width="633"
@@ -382,9 +382,9 @@ const Animation = () => {
             </clipPath>
           </defs>
         </svg> */}
-<div className="line-container">
-      <div className={`scroll-line ${isSolid ? "solid" : "dashed"}`}></div>
-    </div>
+        <div className="line-container">
+          <div className={`scroll-line ${isSolid ? "solid" : "dashed"}`}></div>
+        </div>
         {/* <svg width="70" height="3771" viewBox="0 0 70 3771" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M27 0L26.9998 3771" stroke="#034737" stroke-width="2"/>
 <circle cx="35" cy="98" r="30.5" fill="#F1F8FF" stroke="#4FA7FF"/>
