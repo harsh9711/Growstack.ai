@@ -5,6 +5,13 @@ import { CircleAlert, File, PlusIcon, Trash } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import FileUploadModal from "./FileUploadModal";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Info } from "lucide-react";
 
 interface CodeIntepreterFilesProps {
   isToggleCheckedForInterpreter: boolean;
@@ -57,9 +64,21 @@ const CodeIntepreterFiles = ({
       <div className="flex flex-row justify-between gap-x-20">
         <div className="mb-4 gap-2 flex items-center">
           <Switch checked={isToggleCheckedForInterpreter} onCheckedChange={setIsToggleCheckedForInterpreter} />
-          <span className="text-md font-medium flex flex-row gap-x-2">
+          <span className="text-md font-medium flex flex-row gap-x-2 ">
             Code Interpreter
-            <CircleAlert size={21} />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Info
+                    size={21}
+                    className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
+                  />
+                </TooltipTrigger>
+                <TooltipContent className="bg-white" style={{ width: "250px", zIndex: "1000" }}>
+                  <p style={{ fontSize: "10px !important" }}>The Code Interpreter allows you to run code snippets and analyze data seamlessly within this platform.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </span>
         </div>
         <FileUploadModal

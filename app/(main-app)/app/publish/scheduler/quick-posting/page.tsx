@@ -98,7 +98,6 @@ export default function QuickPosting() {
         console.error("Error parsing savedArticleImg:", error);
       }
     }
-
     return () => {
       localStorage.removeItem("savedArticle");
       localStorage.removeItem("savedArticleImg");

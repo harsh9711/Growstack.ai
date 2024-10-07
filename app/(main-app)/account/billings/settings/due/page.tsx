@@ -63,7 +63,6 @@ export default function BillingHistorySection() {
       const response = await instance.get(
         `${API_URL}/users/api/v1/payments/payment-methods`
       );
-      console.log("Payment methods:", response.data);
     } catch (error) {
       console.error("Failed to fetch payment methods", error);
     }
