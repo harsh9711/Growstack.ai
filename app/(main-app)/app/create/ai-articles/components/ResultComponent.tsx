@@ -35,6 +35,7 @@ const ResultComponent: React.FC<ResultComponentProps> = ({ articleTitle, article
     try {
       const response = await instance.post(API_URL + "/ai/api/v1/wizard/generate/cms", payload);
       toast.success(response.data.message);
+      console.log("response.data", response.data.data);
       localStorage.setItem("savedArticle", response?.data?.data);
       router.push(`/app/publish/scheduler/quick-posting`);
     } catch (error: any) {
@@ -88,7 +89,7 @@ const ResultComponent: React.FC<ResultComponentProps> = ({ articleTitle, article
       <div className="!bg-white shadow-box max-w-2xl mx-auto flex flex-col justify-center items-center p-12 space-y-6">
         <Image src="/logo/growstack-mini.png" alt="Growstack logo" width={40} height={40} />
         <h1 className="text-xl font-semibold">Successfully generated</h1>
-        <p className="text-primary-black text-opacity-50 text-base !mt-4 text-center">Your article has been successfully generated! Feel free to share it on your social media accounts.</p>
+        <p className="text-primary-black text-opacity-50 text-base !mt-4">Your article has been successfully generated! Feel free to share it on your social media accounts.</p>
         <div className="w-full max-w-[150px] mx-auto">
           <button onClick={() => window.location.reload()} className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl">
             Create New
