@@ -508,11 +508,11 @@ export const modelData = [
         value: "open-mixtral-8x22b",
         icon: <Mistra />,
       },
-      {
-        label: "Open Mistral 8x7b",
-        value: "open-mistral-8x7b",
-        icon: <Mistra />,
-      },
+      // {
+      //   label: "Open Mistral 8x7b",
+      //   value: "open-mistral-8x7b",
+      //   icon: <Mistra />,
+      // },
       {
         label: "Open Mistral 7b",
         value: "open-mistral-7b",

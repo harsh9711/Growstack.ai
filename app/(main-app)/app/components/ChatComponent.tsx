@@ -30,6 +30,8 @@ import {
 import { Info } from "lucide-react";
 import { getCookie } from "cookies-next";
 import EventSource from 'eventsource';
+import { usePathname } from "next/navigation";
+import { ALL_ROUTES } from "@/utils/constant";
 
 
 type Message = {
@@ -59,6 +61,7 @@ export default function ChatComponent() {
   const [isDashboardChatModalOpen, setIsDashboardChatModalOpen] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [filename, setFilename] = useState<string | null>(null);
+  const pathname = usePathname();
 
   const fetchMessages = useCallback(async (_id: string) => {
     try {
@@ -175,7 +178,7 @@ export default function ChatComponent() {
     }
   };
   useEffect(() => {
-    if (messagesEndRef.current) {
+    if (messagesEndRef.current && pathname !== ALL_ROUTES.APP) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [messages]);
