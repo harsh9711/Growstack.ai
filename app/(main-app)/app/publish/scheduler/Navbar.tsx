@@ -18,9 +18,16 @@ const socialMediaIcons = [
   { icon: FaLinkedinIn, name: "LinkedIn", bgColor: "bg-blue-700" },
 ];
 
-const SocialNavBar: FC = () => {
-  const [selectedIcon, setSelectedIcon] = useState("Facebook");
+interface SocialNavBarProps {
+  setOpen: (open: boolean) => void; // setOpen is a function that takes a boolean
+}
 
+const SocialNavBar: FC<SocialNavBarProps> = ({ setOpen }) => {
+  const [selectedIcon, setSelectedIcon] = useState("Facebook");
+  const handleDialogToggle = () => {
+    // Toggle dialog open/close state
+    setOpen(true);
+};
   return (
     <div
       className="fixed top-20 left-0 right-0 w-[90%] mx-auto flex items-center justify-between p-4 shadow-lg z-50 rounded-l-full rounded-r-full"
@@ -95,7 +102,7 @@ const SocialNavBar: FC = () => {
             height={32}
             color="white"
           />
-          <span className="text-primary-green">Compose</span>
+          <span className="text-primary-green" onClick={handleDialogToggle}>Compose</span>
         </button>
       </div>
     </div>
