@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import React, { useEffect, useState, useRef } from "react";
+import SocialNavBar from './Navbar';
 
 interface TimeLeft {
     days: number;
@@ -49,6 +50,7 @@ export default function ComingSoon() {
 
     return (
         <div className="flex-1 h-full w-full flex flex-col items-center justify-center text-center">
+            <SocialNavBar />
             <Image src="/logo/growstack-mini.png" alt="" width={60} height={60} className="mb-10" />
             {/* <div className="text-6xl font-medium mb-12">
         {timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0 ? (
