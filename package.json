@@ -34,6 +34,7 @@
         "@types/qs": "^6.9.15",
         "@types/react-collapse": "^5.0.4",
         "@useparagon/connect": "^1.0.17",
+        "antd": "^5.21.2",
         "aos": "^2.3.4",
         "archiver": "^7.0.1",
         "autosize": "^6.0.1",
