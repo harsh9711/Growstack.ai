@@ -26,7 +26,7 @@ const SocialNavBar: FC = () => {
       className="fixed top-20 left-0 right-0 w-[90%] mx-auto flex items-center justify-between p-4 shadow-lg z-50 rounded-l-full rounded-r-full"
       style={{ backgroundColor: "#EBF0F6" }}
     >
-      {/* Left Side: Feed View Button */}
+      
       <div className="flex items-center">
         <button className="flex items-center text-sm bg-white border font-semibold px-3 py-3 py-1 rounded-l-full rounded-r-full ml-4">
           <Image
@@ -47,7 +47,6 @@ const SocialNavBar: FC = () => {
         </button>
       </div>
 
-      {/* Center: Social Media Icons and Add Account Button */}
       <div className="flex items-center space-x-8">
         <div className="flex space-x-4 items-center">
           {socialMediaIcons.map(({ icon: Icon, name, bgColor }) => (
@@ -87,7 +86,6 @@ const SocialNavBar: FC = () => {
         </div>
       </div>
 
-      {/* Right Side: Compose Button */}
       <div className="flex items-center">
         <button className="flex items-center text-sm bg-white border font-semibold px-4 py-3 py-1 rounded-lg mr-4">
           <Image
