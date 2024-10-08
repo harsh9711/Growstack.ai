@@ -181,7 +181,7 @@ const OverViewSection = () => {
               className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300 ${isCreditLoading ? "opacity-50 cursor-not-allowed" : ""
                 }`}
               onClick={() => {
-                const isBasicPlan = planIdsMap.BASIC.some((val) => val === currentPlan?.plan_id);
+                const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan?.plan_id);
 
                 if (isBasicPlan) {
                   setIsUpgradeModalOpen(true)

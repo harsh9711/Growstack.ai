@@ -141,7 +141,7 @@ const page = () => {
       <section className="sm:pt-20 pt-10 sm:px-0 px-6  items-center justify-center mx-auto">
         <OneCard />
       </section>
-      <section className="sm:pt-20 pt-10 sm:px-10  ">
+      <section className="sm:pt-20 pt-10 sm:px-10 px-0  ">
         <SecondLastCard />
       </section>
 

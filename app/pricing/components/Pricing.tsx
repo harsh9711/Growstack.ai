@@ -60,16 +60,15 @@ const Pricing = () => {
             grow
           </p>
         </div>
-        <div className="w-full max-w-md flex gap-4 justify-center mx-auto item-center bg-[#034737] shadow-2xl shadow-gray-200 px-3 py-2 rounded-xl">
+        <div className="w-full max-w-md flex gap-2 justify-center mx-auto item-center bg-[#034737] shadow-2xl shadow-gray-200 px-3 py-2 rounded-xl">
           <div className="w-full flex relative">
             {tabs.map((tab, index) => (
               <div
                 key={index}
-                className={`w-full h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
-                  selectedTabIndex === index
-                    ? "!text-[#034737] font-semibold"
-                    : "!text-white"
-                }`}
+                className={`w-full h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${selectedTabIndex === index
+                  ? "!text-[#034737] font-semibold"
+                  : "!text-white"
+                  }`}
                 onClick={() => handleTabClick(index)}
               >
                 {tab}
@@ -89,7 +88,7 @@ const Pricing = () => {
               opacity: selectedTabIndex === 1 ? 1 : 0.3,
             }}
           >
-            (Save ~20%)
+            (2 Months Free)
           </h2>
         </div>
         <div className="mt-5">{renderContent(selectedTabIndex)}</div>

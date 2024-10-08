@@ -150,7 +150,7 @@ export default function Dashboard() {
           </div>
         </div>
         <div className="w-full  flex flex-col lg:flex-row gap-7 mt-4" >
-          <div className="w-full space-y-6 " data-aos="fade-left">
+          <div className="w-2/3 space-y-6 " data-aos="fade-left">
             <ChatComponent />
           </div>
           <div

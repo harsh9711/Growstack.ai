@@ -23,15 +23,18 @@ function Page() {
   return (
     <React.Fragment>
       <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
-     <div className="sm:px-20"> <DragFeatures /></div>
+      <div className="sm:px-20 relative z-0">
+        {" "}
+        <DragFeatures />
+      </div>
       {/* <Banner /> */}
       <OurProcess />
-      <PoweredBy />
       <Facts />
       <Carousel />
       {/* <Features /> */}
-      <Animation/>
-      {/* <Marketing/> */}
+      <Animation />
+      {/* <Marketing/> */} 
+      <PoweredBy />
       <Premium />
       <Capability />
       <WhyChoose />
