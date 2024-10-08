@@ -102,6 +102,16 @@ export { default as LoginBackgroundImg } from "@/public/Login-Background.svg"
 export { default as LoginRightImg } from "@/public/register page image.svg"
 export { default as Edit } from "@/public/edit.svg"
 export { default as LogoIcon } from "@/public/svgs/logo.svg"
+export { default as Cross } from "@/public/cross-mark.svg"
+export { default as GenAi } from "@/public/GenAI.svg"
+export { default as InsertImage } from "@/public/img-attach.svg"
+export { default as Gif } from "@/public/gif.svg"
+export { default as ImgVector } from "@/public/img-dir.svg"
+export { default as LinkIcon } from "@/public/link-icon.svg"
+export { default as SmileEmoji } from "@/public/smile-emoji.svg"
+export { default as Clock } from "@/public/clock.svg"
+export { default as CaretDown } from "@/public/caret-down.svg"
+export { default as Calender } from "@/public/calendar-event.svg"
 
 
 
