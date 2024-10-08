@@ -39,6 +39,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Info } from "lucide-react";
+import { PlanName } from "@/types/enums";
 
 interface LayoutProps {
   sidebarItems: ISidebarItem[];
@@ -109,13 +110,8 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
 
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [filename, setFilename] = useState<string | null>(null);
-  const filteredAiModelOptions = currentPlan &&
-    planIdsMap.BASIC.some((val) => val === currentPlan.plan_id) && user?.user_type !== "ADMIN"
-    ? aiModelOptions.map((category) => ({
-      ...category,
-      models: category.models.filter((model) => model.value.startsWith("claude")),
-    })).filter((category) => category.models.length > 0)
-    : aiModelOptions;
+  const filteredAiModelOptions = aiModelOptions;
+
 
 
   const [messages, setMessages] = useState<Message[]>([]);
@@ -307,37 +303,46 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
 
 
   const chatInputRef = useRef<{ handleRegenerate: (chartMessage: string) => void }>(null);
-  
+  const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan?.plan_id);
+
+
   return (
     <>
       <div className="flex pt-3 pb-8 w-full items-center justify-between">
         <h1 className="text-xl font-semibold">AI Chat</h1>
         <div className="flex gap-3 items-center">
-          <div className="gap-2 flex pr-4 py-1.5 items-center border-r-2 border-[#EBEBEB]">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Info
-                    size={18}
-                    className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
-                  />
-                </TooltipTrigger>
-                <TooltipContent side="bottom" className="bg-white" style={{ width: "450px" }}>
-                  <p>Secure-AI chat ensures safe, natural conversations with strong protection and smart filters.</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <span className="text-md flex flex-row gap-x-2 font-medium">
-              Secure chat
-            </span>
-            <Switch checked={enableSecureChat} onCheckedChange={setEnableSecureChat} />
-          </div>
-          <div className="gap-2 flex pr-4 py-1.5 items-center border-r-2 border-[#EBEBEB]">
-            <span className="text-md flex flex-row gap-x-2 font-medium">
-              Web chat
-            </span>
-            <Switch checked={enableWebAccess} onCheckedChange={setEnableWebAccess} />
-          </div>
+          {
+            !isBasicPlan && (
+              <>
+                <div className="gap-2 flex pr-4 py-1.5 items-center border-r-2 border-[#EBEBEB]">
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Info
+                          size={18}
+                          className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent side="bottom" className="bg-white" style={{ width: "450px" }}>
+                        <p>Secure-AI chat ensures safe, natural conversations with strong protection and smart filters.</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                  <span className="text-md flex flex-row gap-x-2 font-medium">
+                    Secure chat
+                  </span>
+                  <Switch checked={enableSecureChat} onCheckedChange={setEnableSecureChat} />
+                </div>
+                <div className="gap-2 flex pr-4 py-1.5 items-center border-r-2 border-[#EBEBEB]">
+                  <span className="text-md flex flex-row gap-x-2 font-medium">
+                    Web chat
+                  </span>
+                  <Switch checked={enableWebAccess} onCheckedChange={setEnableWebAccess} />
+                </div>
+              </>
+            )
+          }
+
           <Select value={selectedBrandVoice} onValueChange={setSelectedBrandVoice}>
             <SelectTrigger className="h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4">
               <div className="flex items-center gap-2">
