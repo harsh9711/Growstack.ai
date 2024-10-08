@@ -39,6 +39,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Info } from "lucide-react";
+import { PlanName } from "@/types/enums";
 
 interface LayoutProps {
   sidebarItems: ISidebarItem[];
@@ -110,12 +111,13 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [filename, setFilename] = useState<string | null>(null);
   const filteredAiModelOptions = currentPlan &&
-    planIdsMap.BASIC.some((val) => val === currentPlan.plan_id) && user?.user_type !== "ADMIN"
+    planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan.plan_id) && user?.user_type !== "ADMIN"
     ? aiModelOptions.map((category) => ({
       ...category,
       models: category.models.filter((model) => model.value.startsWith("claude")),
     })).filter((category) => category.models.length > 0)
     : aiModelOptions;
+
 
 
   const [messages, setMessages] = useState<Message[]>([]);
@@ -307,7 +309,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations, }: LayoutPr
 
 
   const chatInputRef = useRef<{ handleRegenerate: (chartMessage: string) => void }>(null);
-  
+
   return (
     <>
       <div className="flex pt-3 pb-8 w-full items-center justify-between">

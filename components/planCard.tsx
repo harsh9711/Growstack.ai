@@ -94,25 +94,29 @@ const PlanCard = ({
                     <h2 className="px-8 text-[#000000] text-[20px] xl:text-[24px] font-extrabold">
                         {getUserFriendlyPlanName(plan.title as PlanName)}
                     </h2>
-                    <h2 className="px-8 text-[24px] xl:text-[48px] text-center justify-center font-bold flex gap-2 items-center text-[#034737]">
-                        $
-                        {selectedTabIndex === 0
-                            ? plan.monthlyPrice !== null && plan.monthlyPrice !== undefined
-                                ? parseFloat(plan.monthlyPrice.toString()).toFixed(2)
-                                : ""
-                            : plan.yearlyPrice !== null && plan.yearlyPrice !== undefined
-                                ? parseFloat(plan.yearlyPrice.toString()).toFixed(2)
-                                : ""}
-                        <span className="text-[20px] xl:text-[28px] opacity-20 text-black">
-                            {suffix}
-                        </span>
-                    </h2>
+                    {
+                        !isBusinessPlan && (
+                            <h2 className="px-8 text-[24px] xl:text-[48px] text-center justify-center font-bold flex gap-2 items-center text-[#034737]">
+                                $
+                                {selectedTabIndex === 0
+                                    ? plan.monthlyPrice !== null && plan.monthlyPrice !== undefined
+                                        ? parseFloat(plan.monthlyPrice.toString()).toFixed(2)
+                                        : ""
+                                    : plan.yearlyPrice !== null && plan.yearlyPrice !== undefined
+                                        ? parseFloat(plan.yearlyPrice.toString()).toFixed(2)
+                                        : ""}
+                                <span className="text-[20px] xl:text-[28px] opacity-20 text-black">
+                                    {suffix}
+                                </span>
+                            </h2>
+                        )
+                    }
                     <p className="px-8 opacity-60 w-full mx-auto">
                         {plan.description}
                     </p>
                     <div className="border-[#B8B8B8] px-10 border w-full mt-4 mb-6"></div>
                 </div>
-                <div className={`flex flex-col gap-y-2 px-4 ${marginBottom} w-full mb-6 overflow-y-auto sm:h-[280px] sm:overflow-y-scroll`}>
+                <div className={`flex flex-col gap-y-2 px-4 ${marginBottom} w-full overflow-y-auto sm:h-[320px] sm:overflow-y-scroll`}>
                     {plan.featureList.map((feature, index) => (
                         <p className="flex text-[12px] xl:text-[18px] font-medium items-center gap-x-2" key={index}>
                             <span className="w-5 h-5 flex items-center justify-center">
@@ -125,12 +129,12 @@ const PlanCard = ({
                 <div className="flex items-center justify-center w-full mt-auto px-3">
                     {
                         isBusinessPlan ? (
-                            <button
-                                className="bg-gray-300 text-gray-500 cursor-not-allowed rounded-xl py-4 w-full"
-                                disabled
+                            <Link
+                                className={` ${plan.buttonStyle} text-center group-hover:bg-[#034737] items-center justify-center mx-auto border-[#034737] rounded-xl py-4 w-full transition-all duration-300 hover:bg-[#034737] hover:text-white`}
+                                href="mailto:sales@growstack.ai"
                             >
-                                Coming Soon
-                            </button>
+                                Contact Us
+                            </Link>
                         ) :
                             isCurrentPlan ? (
                                 <div className="flex gap-2 flex-col w-full">

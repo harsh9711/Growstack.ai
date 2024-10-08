@@ -111,13 +111,13 @@ const CouponModal = ({ plan, isOpen, loading, setIsOpen, setLoading }: Props) =>
             onOpenChange={setIsOpen}
         >
             <DialogContent
-                className={cn('w-[40%] max-w-2xl p-0 border-0')}
+                className={cn(' max-w-xl p-0 border-0')}
             >
                 <DialogHeader>
                     <DialogTitle>
                         <div className='bg-white px-6 py-2 text-white font-inter'>
                             <p className='text-lg font-semibold'>Apply Coupon Code -
-                                {getUserFriendlyPlanName(plan.title as PlanName)}
+                                {" "}{getUserFriendlyPlanName(plan.title as PlanName)}
                             </p>
                         </div>
                     </DialogTitle>

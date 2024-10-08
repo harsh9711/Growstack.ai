@@ -1,10 +1,9 @@
 export enum PlanName {
-    CREATOR = "CREATOR",
-    PRO = "PRO",
-    ADVANCED_PRO = "ADVANCED_PRO",
+    SOCIAL_PORTAL = "Social Portal",
+    AI_STUDIO = "AI Studio",
+    AUTOMATION_HUB = "Automation Hub",
     BUSINESS = "BUSINESS",
-    BASIC = "BASIC",
-    ENTERPRISE = "ENTERPRISE"
+    AI_ESSENTIALS = "AI Essentials",
 }
 
 export enum InputFieldType {

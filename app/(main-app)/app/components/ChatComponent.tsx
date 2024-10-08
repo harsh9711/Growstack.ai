@@ -32,6 +32,7 @@ import { getCookie } from "cookies-next";
 import EventSource from 'eventsource';
 import { usePathname } from "next/navigation";
 import { ALL_ROUTES } from "@/utils/constant";
+import { PlanName } from "@/types/enums";
 
 
 type Message = {
@@ -46,7 +47,7 @@ export default function ChatComponent() {
   const { user, currentPlan } = useSelector((rootState: RootState) => rootState.auth);
 
   const filteredAiModelOptions = currentPlan &&
-    planIdsMap.BASIC.some((val) => val === currentPlan.plan_id) && user?.user_type !== "ADMIN"
+    planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan.plan_id) && user?.user_type !== "ADMIN"
     ? aiModelOptions.map((category) => ({
       ...category,
       models: category.models.filter((model) => model.value.startsWith("claude")),
@@ -155,7 +156,7 @@ export default function ChatComponent() {
 
       const { conversation_id, response, chatId, noOfMessagesLeft, totalNoOfMessages } = data.data as ChatResponse;
 
-      const isBasicPlan = planIdsMap.BASIC.some((val) => val === currentPlan?.plan_id);
+      const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan?.plan_id);
 
       if (isBasicPlan) {
         if (noOfMessagesLeft && totalNoOfMessages) {
