@@ -164,7 +164,7 @@ const PlanCard = ({
                                     {loading ? (
                                         <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-white mx-auto"></div>
                                     ) : (
-                                        <h2>Select plan</h2>
+                                        <h2>Start 7 days free trial</h2>
                                     )}
                                 </button>
                             )
