@@ -103,11 +103,22 @@ export { default as LoginRightImg } from "@/public/register page image.svg"
 export { default as Edit } from "@/public/edit.svg"
 export { default as LogoIcon } from "@/public/svgs/logo.svg"
 export {default as SheduleBackground} from "@/public/shedulerbackground.svg"
-
-
-
-
-
+export { default as FbIcon} from "@/public/PublishFacebook.svg"
+export { default as InstaIcon} from "@/public/PublishInsta.svg"
+export { default as XIcon} from "@/public/PublishX.svg"
+export { default as TiktokIcon} from "@/public/PublishTiktok.svg"
+export { default as PinterestIcon} from "@/public/PublishPinterest.svg"
+export { default as LinkedinIcon} from "@/public/PublishLinkedin.svg"
+export { default as FlagIcon} from "@/public/PublishFlag.svg"
+export { default as GrowstackIcon} from "@/public/PublishGrowstack.svg"
+export { default as BuildingStore} from "@/public/building-store.svg"
+export { default as UserCircle} from "@/public/user-circle.svg"
+export { default as BriefCase} from "@/public/briefcase.svg"
+export { default as BuildingIcon} from "@/public/building.svg"
+export { default as NotesIcon} from "@/public/notes.svg"
+export { default as PlusIcon} from "@/public/plus.svg"
+export { default as RightIcon} from "@/public/right.svg"
+export { default as InfoIcon} from "@/public/info-circle.svg"
 
 
 
