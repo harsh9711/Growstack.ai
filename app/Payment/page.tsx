@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { getCurrentUser } from "@/lib/features/auth/auth.selector";
 import { logout, setPlanLoading, setUserPlan } from "@/lib/features/auth/auth.slice";
 import PlanCard from "@/components/planCard";
+import { planIdsMap } from "@/lib/utils";
 
 const PricingPage: React.FC = () => {
   const isLoggedIn = !!getCookie("token");
@@ -161,28 +162,33 @@ const PricingPage: React.FC = () => {
     .sort((a, b) => {
       const priceA =
         view === "monthly"
-          ? (a.monthlyPrice !== null && a.monthlyPrice !== undefined
+          ? a.monthlyPrice !== null && a.monthlyPrice !== undefined
             ? parseFloat(a.monthlyPrice)
-            : Infinity)
-          : (a.yearlyPrice !== null && a.yearlyPrice !== undefined
+            : Infinity
+          : a.yearlyPrice !== null && a.yearlyPrice !== undefined
             ? parseFloat(a.yearlyPrice)
-            : Infinity);
+            : Infinity;
 
       const priceB =
         view === "monthly"
-          ? (b.monthlyPrice !== null && b.monthlyPrice !== undefined
+          ? b.monthlyPrice !== null && b.monthlyPrice !== undefined
             ? parseFloat(b.monthlyPrice)
-            : Infinity)
-          : (b.yearlyPrice !== null && b.yearlyPrice !== undefined
+            : Infinity
+          : b.yearlyPrice !== null && b.yearlyPrice !== undefined
             ? parseFloat(b.yearlyPrice)
-            : Infinity);
+            : Infinity;
+
+      const isBusinessPlanA = planIdsMap.BUSINESS.some((val) => val === a?.id);
+      const isBusinessPlanB = planIdsMap.BUSINESS.some((val) => val === b?.id);
+
+      if (isBusinessPlanA && !isBusinessPlanB) return 1;
+      if (!isBusinessPlanA && isBusinessPlanB) return -1;
 
       if (priceA === 0 && priceB !== 0) return -1;
       if (priceB === 0 && priceA !== 0) return 1;
 
       return priceA - priceB;
     });
-
 
   const handleTabClick = (index: number) => {
     const params = new URLSearchParams(window.location.search);

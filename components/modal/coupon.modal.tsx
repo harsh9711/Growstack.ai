@@ -13,6 +13,9 @@ import { cn, getUserFriendlyPlanName } from '@/lib/utils';
 import { Feature } from '@/types/Box';
 import { Tag, X } from 'lucide-react';
 import { PlanName } from '@/types/enums';
+import { setUserPlan } from '@/lib/features/auth/auth.slice';
+import { useDispatch } from 'react-redux';
+import { useRouter } from 'next/navigation';
 
 const CouponCodeSchema = z.object({
     coupon_code: z.string(),
@@ -29,6 +32,8 @@ interface Props {
 }
 
 const CouponModal = ({ plan, isOpen, loading, setIsOpen, setLoading }: Props) => {
+    const dispatch = useDispatch();
+    const router = useRouter();
     const [isPending, setIsPending] = useState(false);
     const [appliedPromoCode, setAppliedPromoCode] = useState("")
     const {
@@ -47,7 +52,7 @@ const CouponModal = ({ plan, isOpen, loading, setIsOpen, setLoading }: Props) =>
         try {
             const product = {
                 plan_id: plan.id,
-                plan_type: plan.title,
+                plan_type: plan.planType,
                 price_id: plan.stripe_price_id,
                 ...(coupon_code && {
                     coupon: coupon_code
@@ -60,8 +65,16 @@ const CouponModal = ({ plan, isOpen, loading, setIsOpen, setLoading }: Props) =>
                 `${API_URL}/users/api/v1/payments/create-checkout-session?currentPath=${currentPath}`,
                 { product }
             );
-            const { url } = response.data;
-            window.location.href = url;
+            const { url, data } = response.data;
+            if (url) {
+                window.location.href = url;
+            } else if (data) {
+                dispatch(setUserPlan(data));
+                toast.success("Subscription successful");
+                router.push("/app");
+            } else {
+                toast.error("An error occurred");
+            }
         } catch (error: any) {
             if (error.response) {
                 toast.error(error.response.data.message || "An error occurred");
