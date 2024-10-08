@@ -60,8 +60,12 @@ const PlanCard = ({
                 { product }
             );
 
-            const { redirectLink } = response.data;
-            window.location.href = redirectLink;
+            const { redirectLink, url } = response.data;
+            if (url) {
+                window.location.href = url;
+            } else if (redirectLink) {
+                window.location.href = redirectLink;
+            }
         } catch (error: any) {
             if (error.response) {
                 toast.error(error.response.data.message || "An error occurred");

@@ -19,6 +19,7 @@ import PlanCard from "@/components/planCard";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { ALL_ROUTES } from "@/utils/constant";
+import { planIdsMap } from "@/lib/utils";
 
 const PricingPage: React.FC = () => {
   const isLoggedIn = !!getCookie("token");
@@ -161,6 +162,12 @@ const PricingPage: React.FC = () => {
           : (b.yearlyPrice !== null && b.yearlyPrice !== undefined
             ? parseFloat(b.yearlyPrice)
             : Infinity);
+
+      const isBusinessPlanA = planIdsMap.BUSINESS.some((val) => val === a?.id);
+      const isBusinessPlanB = planIdsMap.BUSINESS.some((val) => val === b?.id);
+
+      if (isBusinessPlanA && !isBusinessPlanB) return 1;
+      if (!isBusinessPlanA && isBusinessPlanB) return -1;
 
       if (priceA === 0 && priceB !== 0) return -1;
       if (priceB === 0 && priceA !== 0) return 1;
