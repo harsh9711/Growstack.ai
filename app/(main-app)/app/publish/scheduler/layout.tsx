@@ -2,97 +2,265 @@
 
 import Image from "next/image";
 import React, { useEffect, useState, useRef } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
+import { DialogTitle } from '@radix-ui/react-dialog';
+import { FbIcon } from "@/components/svgs";
+import { InstaIcon } from "@/components/svgs";
+import { TiktokIcon } from "@/components/svgs";
+import { PinterestIcon } from "@/components/svgs";
+import { LinkedinIcon } from "@/components/svgs";
+import { XIcon } from "@/components/svgs";
+import { FlagIcon } from "@/components/svgs";
+import { GrowstackIcon } from "@/components/svgs";
+import { UserCircle } from "@/components/svgs";
+import { BuildingStore } from "@/components/svgs";
+import { UserCircleIcon } from "lucide-react";
+import { BriefCase } from "@/components/svgs";
+import { BuildingIcon } from "@/components/svgs";
+import { PlusIcon } from "@/components/svgs";
+import { NotesIcon } from "@/components/svgs";
+import { RightIcon } from "@/components/svgs";
+import { InfoIcon } from "@/components/svgs";
 
-interface TimeLeft {
-    days: number;
-    hours: number;
-    minutes: number;
-    seconds: number;
-}
 
-const calculateTimeLeft = (endTime: number): TimeLeft => {
-    const difference = endTime - new Date().getTime();
-    let timeLeft: TimeLeft = {
-        days: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
-    };
+interface BoxContent {
+    name: string;
+    flagIcon?: any; 
+    content1?: string;
+    growStackData?: string;
+    growstackIcon?: any;
+    growstackSubData?: string;
+    connected?: string;
+    userCircleIcon?: any;
+    buildingStoreIcon? :any;
+    content2?: string;
+    content3?: string;
+    briefCase?: any;
+    buildingIcon?:any;
+    plusIcon?:any;
+    notesIcon?:any;
+    addAccountIcon?:any;
+    infoIcon?:any;
+    rightIcon?:any;
 
-    if (difference > 0) {
-        timeLeft = {
-            days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-            hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-            minutes: Math.floor((difference / 1000 / 60) % 60),
-            seconds: Math.floor((difference / 1000) % 60),
-        };
-    }
-
-    return timeLeft;
 };
 
+const contentMap: { [key: string]: BoxContent } = {
+    facebook: {
+        name: "Facebook",
+        growstackIcon: <GrowstackIcon/>,
+        growStackData : "GrowStact AI",
+        growstackSubData :"@GrowStackai",
+        connected: "CONNECTED",
+        flagIcon: <FlagIcon />, 
+        content1: "Add Facebook Pages",
+      
+       
+
+    },
+
+    instagram: {
+        name: "Instagram",
+        growstackIcon: <GrowstackIcon/>,
+        growStackData : "GrowStactAi",
+        growstackSubData :"@GrowStackai",
+        connected: "CONNECTED",
+        buildingStoreIcon:<BuildingStore/>, 
+        userCircleIcon: <UserCircleIcon/>,
+        content1: "Add Instagram Professional Accounts",
+        content2:"Add Instagram Personal Profiles Or Pages"
+    },
+
+    tiktok: {
+        name: "Tiktok",
+        growstackIcon: <GrowstackIcon/>,
+        growStackData : "GrowStactAi",
+        growstackSubData :"@GrowStackai",
+        connected: "CONNECTED",
+        briefCase: <BriefCase/>, 
+        addAccountIcon: <UserCircleIcon/>,
+        content1: "Add Tiktok Accounts",
+        content2:"business accounts"
+        
+    },
+
+    x: {
+        name: "X",
+        growstackIcon: <GrowstackIcon/>,
+        growStackData : "GrowStactAi",
+        growstackSubData :"@GrowStackai",
+        connected: "CONNECTED",
+        plusIcon: <PlusIcon/>,
+        userCircleIcon: <UserCircleIcon/>,
+        content1: "Add X (Twitter) Profiles",
+        content2: "Create a mockup page",
+        
+    },
+
+    pinterest: {
+        name: "Pinterest",
+        growstackIcon: <GrowstackIcon/>,
+        growStackData : "GrowStactAi",
+        growstackSubData :"@GrowStackai",
+        connected: "CONNECTED",
+        notesIcon: <NotesIcon/>,
+        plusIcon: <PlusIcon/>,
+        content1: "Add Pinterest Business Pages",
+        content2: "Create a mockup page",
+        
+    },
+
+    linkedin: {
+        name: "Linkedin",
+        growstackIcon: <GrowstackIcon/>,
+        growStackData : "GrowStactAi",
+        growstackSubData :"@GrowStackai",
+        connected: "CONNECTED",
+        userCircleIcon: <UserCircleIcon/>,
+        buildingIcon: <BuildingIcon/>,
+        content1: "Add Linkedin company Pages",
+        content2: "Add Linkedin Personal Pages"
+    },
+};
+
+
 export default function ComingSoon() {
-    const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+   
+    const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false); 
+    const [boxContent, setBoxContent] = useState<BoxContent>(contentMap["facebook"]); 
+    
 
-    const endTimeRef = useRef<number>(new Date().getTime() + 4 * 24 * 60 * 60 * 1000);
+    const handleOpenDialog = () => {
+        setIsDialogOpen(true);
+    };
 
-    useEffect(() => {
-        const updateTimer = () => {
-            setTimeLeft(calculateTimeLeft(endTimeRef.current));
-        };
+    const handleCloseDialog = () => {
+        setIsDialogOpen(false); 
+    };
 
-        updateTimer();
-        const timer = setInterval(updateTimer, 1000);
+    // Function to handle social media icon clicks and update the content
+    const handleIconClick = (platform: any) => {
+        
 
-        return () => clearInterval(timer);
-    }, []);
+        setBoxContent(contentMap[platform]);
+
+        
+    };
+    console.log(boxContent)
 
     return (
         <div className="flex-1 h-full w-full flex flex-col items-center justify-center text-center">
-            <Image src="/logo/growstack-mini.png" alt="" width={60} height={60} className="mb-10" />
-            {/* <div className="text-6xl font-medium mb-12">
-        {timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0 ? (
-          <div>Time's up!</div>
-        ) : (
-          <div className="flex space-x-10 bg-white py-6 px-10 shadow-xl shadow-gray-100 rounded-3xl">
-            <div>
-              <span>{timeLeft.days}</span>
-              <span className="block text-sm">days</span>
-            </div>
-            <div>
-              <span>{timeLeft.hours}</span>
-              <span className="block text-sm">hours</span>
-            </div>
-            <div>
-              <span>{timeLeft.minutes}</span>
-              <span className="block text-sm">minutes</span>
-            </div>
-            <div>
-              <span>{timeLeft.seconds}</span>
-              <span className="block text-sm">seconds</span>
-            </div>
-          </div>
-        )}
-      </div> */}
-            <h1 className="text-3xl uppercase font-semibold mb-4">Coming Soon</h1>
-            <p className="mb-10 max-w-2xl leading-loose">
-                We’re currently working on creating something fantastic. We’ll be here soon. Subscribe to the newsletter to be notified.
-            </p>
-            <form className="w-full max-w-md">
-                <div className="flex items-center border-b-2 border-primary-green py-2">
-                    <input
-                        className="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none"
-                        type="email"
-                        placeholder="Your Email"
-                        aria-label="Email"
-                    />
-                    <button
-                        className="flex-shrink-0 bg-primary-green hover:bg-primary-green border-primary-green hover:border-primary-green text-sm border-4 text-white py-1.5 px-2.5 rounded-lg"
-                        type="button">
-                        Subscribe
-                    </button>
-                </div>
-            </form>
+            
+
+            
+            <Dialog open={isDialogOpen} onOpenChange={handleCloseDialog}>
+                <DialogContent className="w-[1010px] md:w-[725px] max-w-3xl p-0 pb-4 border-0 overflow-hidden">
+                    <DialogHeader>
+                        <DialogTitle className="px-0">
+                            <div className="bg-white py-3 border-b border-[#EBEBEB] text-black font-inter bg-[#EDEDED]  ">
+                                <div className=" flex items-center justify-center pb-5 pt-2 ">
+                                <p className="text-lg font-semibold ">Add pages to GrowStack AI</p>
+                                </div>
+  
+                                <div className="flex items-center justify-center space-x-4">
+                                    
+                                    <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("facebook")}>
+                                        <FbIcon />
+                                    </div>
+                                    <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("instagram")}>
+                                        <InstaIcon />
+                                    </div>
+                                    <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("tiktok")}>
+                                        <TiktokIcon />
+                                    </div>
+                                    <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("pinterest")}>
+                                        <PinterestIcon />
+                                    </div>
+                                    <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("linkedin")}>
+                                        <LinkedinIcon />
+                                    </div>
+                                </div>
+
+                                </div>
+                                <div className="flex items-center justify-center ">
+                                <div className="grid grid-cols-2 grid-rows-2 gap-6 p-4  mt-0  ">
+                                    <div className="border border-[#034737] border-dotted rounded p-2  w-[290px] h-[210px] flex items-center justify-center">
+                                    <div className="flex flex-col items-center"> 
+                                        <div className="pb-3 w-[60px] h-[60px">
+                                            {boxContent.flagIcon}
+                                            {boxContent.buildingStoreIcon}
+                                            {boxContent.buildingIcon}
+                                            {boxContent.notesIcon}
+                                            {boxContent.addAccountIcon}
+                                            
+                                        </div>
+                                        <div className="flex justify-center"> 
+                                            <div>
+                                                <p className="text-center">{boxContent?.content1}</p> 
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                        
+                                    </div>
+                                    <div className="border border-[#034737] border-dotted rounded p-2 w-[290px] h-[210px] flex items-center justify-center">
+                                   
+                                    <div className="flex flex-col items-center"> 
+                                    
+                                        <div className="pb-3 w-[60px] h-[60px">
+                                            
+                                            {boxContent.userCircleIcon}
+                                            {boxContent.plusIcon}
+                                            {boxContent.briefCase}
+                                        </div>
+                                        <div className="flex justify-center"> 
+                                            <div>
+                                                <p className="text-center">{boxContent?.content2}</p> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div className="border border-[#034737] border-dotted rounded p-2 w-[290px] h-[210px] flex items-center justify-center">
+                                    <div className="flex flex-col items-center"> 
+                                        <div className="pb-3 w-[60px] h-[60px">
+                                            {boxContent.growstackIcon}
+                                            
+                                        </div>
+
+                                        <div className="flex flex-col justify-center"> 
+                                            <div>
+                                                <p className="text-center font-bold text-xl pt-2">{boxContent?.growStackData}</p> 
+                                            </div>
+                                            <div>
+                                                <p className="text-center text-sm">{boxContent?.growstackSubData}</p> 
+                                            </div>
+                                            <div className="pt-3 ">
+                                                <p className="text-center text-md " style={{ color: '#2FDF84' }}>{boxContent?.connected}</p> 
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    </div>
+                                    </div>
+                                
+                                </div>
+                            
+                        
+                        </DialogTitle>
+                    </DialogHeader>
+                    
+                </DialogContent>
+            </Dialog>
+
+            {/* Button to open the dialog */}
+            <button
+                className="flex-shrink-0 bg-primary-green text-sm border-4 text-white py-1.5 px-2.5 rounded-lg pt-2"
+                type="button"
+                onClick={handleOpenDialog} 
+            >
+                Popup Button
+            </button>
         </div>
     );
 }
+
