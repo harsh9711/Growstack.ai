@@ -93,6 +93,9 @@ const PlanCard = ({
   const isCurrentPlan = currentPlan?.plan_id === plan.id;
 
   const isBusinessPlan = planIdsMap.BUSINESS.some((val) => val === plan?.id);
+  const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some(
+    (val) => val === plan?.id
+  );
 
   return (
     <>
@@ -130,7 +133,9 @@ const PlanCard = ({
         >
           {plan.featureList.map((feature, index) => (
             <p
-              className="flex text-[12px] xl:text-[18px] font-medium items-center gap-x-2"
+              className={`flex text-[12px] xl:text-[18px] ${
+                index === 0 && !isBasicPlan ? "font-bold" : "font-medium"
+              } items-center gap-x-2`}
               key={index}
             >
               <span className="w-5 h-5 flex items-center justify-center">
