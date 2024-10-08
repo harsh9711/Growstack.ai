@@ -352,11 +352,11 @@ const CreateVideoDialog = ({
           })
         );
       } else {
-        toast.error("Failed to generate video");
+        toast.error("Failed to generate avatar");
         setStep(0);
       }
     } catch (error) {
-      toast.error("Error generating video");
+      toast.error("Error generating avatar");
       setStep(0);
     } finally {
       setLoading(false);
@@ -463,13 +463,13 @@ const CreateVideoDialog = ({
         >
           <div className="relative w-full max-w-full space-y-6 text-[12px] h-full flex flex-col overflow-x-hidden">
             <main className="flex flex-col gap-x-10">
-              <div className="w-full flex xl:flex-row sm:flex-col lg:flex-row md:flex-row flex-col 2xl:flex-row gap-y-4 2xl:gap-x-10 mb-6">
+              <div className="w-full gap-x-6 flex xl:flex-row  sm:flex-col lg:flex-row md:flex-row flex-col 2xl:flex-row gap-y-4 2xl:gap-x-10 mb-6">
                 <div className="flex w-full 2xl:w-2/3 flex-col gap-y-6 gap-x-4">
-                  <div className="flex flex-col w-full">
-                    <div className="w-full space-y-2">
+                  <div className="flex flex-col w-[100%]">
+                    <div className=" w-[98%] space-y-2 space-x-2">
                       <label
                         htmlFor="title"
-                        className="flex items-center w-full font-semibold gap-x-3"
+                        className="flex items-center w-[98%] font-semibold gap-x-3"
                       >
                         <span className="space-x-2 text-[15px] ">
                           Title <span className="text-[#F93939]">*</span>
@@ -478,10 +478,10 @@ const CreateVideoDialog = ({
                       <input
                         type="text"
                         name="title"
-                        placeholder="Type video title"
+                        placeholder="Type avatar title"
                         value={formData.title}
                         onChange={handleInputChange}
-                        className="border border-[#DEDEDE] bg-[#F5F5F5] h-[54px] w-full rounded-xl outline-none focus:border-primary-green transition-all p-4"
+                        className="border border-[#DEDEDE] bg-[#F5F5F5] h-[54px]  w-[98%] rounded-xl outline-none focus:border-primary-green transition-all p-4"
                       />
                       {formErrors.title && (
                         <span className="text-red-500 text-sm">
@@ -490,8 +490,8 @@ const CreateVideoDialog = ({
                       )}
                     </div>
                   </div>
-                  <div className="flex xl:flex-row md:flex-row lg:flex-row flex-col 2xl:flex-row gap-x-6 w-full">
-                    <div className="flex flex-col w-full space-y-2">
+                  <div className="flex xl:flex-row md:flex-row flex-row flex-col 2xl:flex-row gap-x-6 w-full space-x-2">
+                    <div className="flex flex-col w-[98%] space-y-2">
                       <label
                         htmlFor="objective"
                         className="flex items-center w-full font-semibold gap-x-3"
@@ -505,7 +505,7 @@ const CreateVideoDialog = ({
                         placeholder="Introduction to financial well-being"
                         value={formData.objective}
                         onChange={handleInputChange}
-                        className="border border-[#DEDEDE] bg-[#F5F5F5] resize-none h-[160px] w-full rounded-xl outline-none focus:border-primary-green transition-all p-4"
+                        className="border border-[#DEDEDE] bg-[#F5F5F5] resize-none h-[160px]  w-[98%] rounded-xl outline-none focus:border-primary-green transition-all p-4"
                       ></textarea>
                       {formErrors.objective && (
                         <span className="text-red-500 text-sm">
@@ -533,11 +533,11 @@ const CreateVideoDialog = ({
                           placeholder="Give a name or title to the speaker"
                           value={formData.speaker}
                           onChange={handleInputChange}
-                          className="border border-[#DEDEDE] bg-[#F5F5F5] h-[54px] w-full rounded-xl outline-none focus:border-primary-green transition-all p-4"
+                          className="border border-[#DEDEDE] bg-[#F5F5F5] h-[54px] w-[98%] rounded-xl outline-none focus:border-primary-green transition-all p-4"
                         />
                       </div>
 
-                      <div className="flex flex-col w-full space-y-2">
+                      <div className="flex flex-col w-[98%] space-y-2">
                         <label
                           htmlFor="audience"
                           className="flex items-center font-semibold gap-x-3"
@@ -553,17 +553,17 @@ const CreateVideoDialog = ({
                           transition={{ duration: 0.25 }}
                           type="text"
                           name="audience"
-                          placeholder="Who will be watching this video?"
+                          placeholder="Who will be watching this avatar?"
                           value={formData.audience}
                           onChange={handleInputChange}
-                          className="border border-[#DEDEDE] bg-[#F5F5F5] h-[54px] w-full rounded-xl outline-none focus:border-primary-green transition-all p-4"
+                          className="border border-[#DEDEDE] bg-[#F5F5F5] h-[54px] w-[98%] rounded-xl outline-none focus:border-primary-green transition-all p-4"
                         />
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-y-4 w-full 2xl:w-1/3">
+                <div className="flex flex-col gap-y-4 w-[98%] 2xl:w-1/3">
                   <div className="flex relative z-30 flex-col gap-y-2 mb-2">
                     <label
                       htmlFor="language"
@@ -628,7 +628,7 @@ const CreateVideoDialog = ({
                     }}
                     classNames="flex w-full h-full grid relative z-10 place-content-center overflow-x-hidden"
                   >
-                    <div className="w-full flex xl:flex-col sm:flex-col lg:flex-row md:flex-col flex-col 2xl:flex-col gap-y-4 2xl:gap-x-10 mb-6 overflow-x-hidden">
+                    <div className="w-full flex xl:flex-col sm:flex-col lg:flex-col md:flex-col flex-col 2xl:flex-col gap-y-4 2xl:gap-x-10 mb-6 overflow-x-hidden">
                       <div className="flex xl:flex-row md:flex-row sm:flex-col lg:flex-row 2xl:flex-row">
                         <div className="flex-1 flex items-center">
                           <h2 className="text-lg font-semibold mb-4 xl:mb-0">
@@ -637,7 +637,7 @@ const CreateVideoDialog = ({
                         </div>
 
                         <div className="flex flex-col xl:flex-row md:flex-row lg:flex-row 2xl:flex-row flex-1 justify-end items-center gap-x-6">
-                          <div className="bg-white border text-[13px] border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-[300px]">
+                          <div className="bg-white border text-[13px] border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-[300px] md:width-[100%] mt-1">
                             <Search className="text-gray-500" size={20} />
                             <input
                               type="text"
@@ -649,9 +649,9 @@ const CreateVideoDialog = ({
                           </div>
 
                           <button
-                            disabled={loading}
+                            disabled={loading} style={{whiteSpace:"nowrap"}}
                             className={clsx(
-                              "bg-primary-green text-[15px] text-white py-3.5 px-20 w-full max-w-[300px] rounded-xl flex items-center justify-center",
+                              "bg-primary-green text-[12px] text-white py-3.5 px-10 w-full width-[30%] rounded-xl flex items-center justify-center mt-1",
                               {
                                 "opacity-80 cursor-not-allowed": loading,
                               }

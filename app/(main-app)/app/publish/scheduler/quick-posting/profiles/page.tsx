@@ -44,8 +44,7 @@ export default function SchedulerPage() {
     try {
 
       const response = await instance.get(
-       
-       `${API_URL}/users/api/v1/social-media/connect?currentPath=${currentPath}`
+        `${API_URL}/users/api/v1/social-media/connect?currentPath=${currentPath}`
       );
       const url = response?.data.data;
       if (url) {

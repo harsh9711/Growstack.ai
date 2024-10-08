@@ -47,7 +47,7 @@ const navLinks: NavLink[] = [
     icon: <PlanIcon />,
     sublinks: [
       {
-        icon:<LayoutIcon />,
+        icon: <LayoutIcon />,
         //  (
         //   <svg
         //     width="24"
@@ -118,7 +118,7 @@ const navLinks: NavLink[] = [
         href: "/app/create/product-ai",
       },
       {
-        icon:<DocumentIcon />,
+        icon: <DocumentIcon />,
         //  (
         //   <svg
         //     width="20"
@@ -154,7 +154,7 @@ const navLinks: NavLink[] = [
       {
         icon: <SchedulerIcon />,
         name: "Scheduler",
-        href: "/app/publish/scheduler/quick-posting/profiles",
+        href: "/app/publish/scheduler/quick-posting",
       },
       {
         icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -170,7 +170,7 @@ const navLinks: NavLink[] = [
         href: "/content-calender",
       },
       {
-        icon:<PostingLogsIcon />
+        icon: <PostingLogsIcon />
         //  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
         //   <path d="M10.625 7.5C10.625 7.15482 10.3452 6.875 10 6.875C9.65482 6.875 9.375 7.15482 9.375 7.5V15C9.375 15.3452 9.65482 15.625 10 15.625C10.3452 15.625 10.625 15.3452 10.625 15V7.5Z" fill="#14171B" />
         //   <path d="M14.1312 19.375H5.86928C4.33553 19.375 3.03928 18.2769 2.78678 16.7638L1.11866 6.76438C0.967407 5.85625 1.22178 4.9325 1.81678 4.23C2.41178 3.5275 3.28053 3.125 4.20053 3.125H15.7987C16.7193 3.125 17.588 3.52813 18.183 4.23063C18.778 4.93313 19.0318 5.85688 18.8805 6.76438L17.213 16.7644C16.9605 18.2775 15.6637 19.3756 14.1305 19.3756L14.1312 19.375ZM4.20116 4.375C3.64866 4.375 3.12741 4.61688 2.77116 5.03813C2.41428 5.45938 2.26116 6.01438 2.35178 6.55875L4.01991 16.5588C4.17116 17.4663 4.94866 18.125 5.86928 18.125H14.1312C15.0512 18.125 15.8287 17.4663 15.9805 16.5581L17.648 6.55813C17.7393 6.01313 17.5862 5.45938 17.2293 5.03813C16.873 4.61625 16.3512 4.37438 15.7987 4.37438L4.20116 4.375Z" fill="#14171B" />

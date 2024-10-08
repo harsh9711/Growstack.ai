@@ -11,13 +11,19 @@ import {
 import "@/styles/editor.css";
 import clsx from "clsx";
 import { MoreHorizontal, Plus, Trash2Icon } from "lucide-react";
-import React, { useState, useRef, useEffect } from "react";
-import { modelData } from "../../../create/ai-articles/constants/options";
+import React, { useState, useRef, useEffect, useImperativeHandle } from "react";
+import {
+  modelData,
+  llmComparisionModels,
+} from "../../../create/ai-articles/constants/options";
 import { Message } from "../interface/playground";
 import ChatMessages from "./chatMessage";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import autosize from "autosize";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
 interface ChatAreaProps {
   selectedModel: string;
   addChatArea: () => void;
@@ -26,7 +32,7 @@ interface ChatAreaProps {
   handleChange: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   userPrompt: string;
   handleDelete: () => void;
-  renderConversation: () => void
+  renderConversation: (msg?: string) => void;
 }
 
 const outputType = [
@@ -45,11 +51,16 @@ const ChatArea = ({
   handleChange,
   userPrompt,
   handleDelete,
-  renderConversation
+  renderConversation,
 }: ChatAreaProps) => {
   const [inputValue, setInputValue] = useState(userPrompt);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null); // Updated here
+  const textareaRef = useRef<
+    | (HTMLTextAreaElement & {
+        handleRegenerate: (chartMessage: string) => void;
+      })
+    | null
+  >(null); // Updated here
   const initialHeight = 32;
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(event.target.value);
@@ -60,7 +71,7 @@ const ChatArea = ({
     if (textareaRef.current && inputValue.trim() !== "") {
       textareaRef.current.value = "";
       if (textareaRef.current.style) {
-        textareaRef.current.style.height = "2rem"; 
+        textareaRef.current.style.height = "2rem";
       }
       if (textareaRef.current) {
         autosize.update(textareaRef.current);
@@ -111,23 +122,29 @@ const ChatArea = ({
     textarea.style.height = `${textarea.scrollHeight}px`; // Set the height based on scrollHeight
   };
 
-  const selectedOption = modelData
-    .flatMap((provider) => provider.models)
-    .find((model) => model.value === selectedModel);
+  // const selectedOption = modelData
+  //   .flatMap((provider) => provider.models)
+  //   .find((model) => model.value === selectedModel);
+
+  const selectedOption = llmComparisionModels[0].models[0].value
+
+  const handleChatRegenerateClick = (chatMessage: any) => {
+    console.log("chartMessage", chatMessage);
+    if (chatMessage) {
+      renderConversation(chatMessage);
+    } else {
+      toast.error("No previous prompt to regenerate.");
+    }
+  };
 
   return (
-    <div
-      className="flex-1 flex flex-col !bg-white border border-[#E8E8E8] shadow-box p-7 w-full justify-between min-w-[400px]"
-
-    >
-      <div
-        className="flex items-start justify-between mb-[10px]"
-
-      >
+    <div className="flex-1 flex flex-col !bg-white border border-[#E8E8E8] shadow-box p-7 w-full justify-between min-w-[400px]">
+      <div className="flex items-start justify-between mb-[10px]">
         <AIModel
           selectedOption={selectedModel}
           setSelectedOption={onModelChange}
-          selectedOptionLabel={selectedOption?.label}
+          selectedOptionLabel={selectedOption}
+          // selectedOptionLabel={selectedOption?.label}
         />
         <div className="flex items-center gap-2">
           <button
@@ -139,9 +156,7 @@ const ChatArea = ({
           </button>
           <div className="remove-caret">
             <Select onValueChange={handleDelete}>
-              <SelectTrigger
-                className="px-1 py-[5px] bg-white border-0 h-fit hover:bg-gray-100 rounded-lg"
-              >
+              <SelectTrigger className="px-1 py-[5px] bg-white border-0 h-fit hover:bg-gray-100 rounded-lg">
                 <MoreHorizontal size={20} />
               </SelectTrigger>
               <SelectContent>
@@ -151,7 +166,6 @@ const ChatArea = ({
                       value={value}
                       key={value}
                       className="pl-2 cursor-pointer"
-
                     >
                       <div className="flex gap-x-2">
                         {icon}
@@ -165,17 +179,17 @@ const ChatArea = ({
           </div>
         </div>
       </div>
-      <div
-        className="flex-1 flex flex-col max-h-[68vh] overflow-y-auto mb-3"
-      >
+      <div className="flex-1 flex flex-col max-h-[68vh] overflow-y-auto mb-3">
         {conversation.length > 0 ? (
-          <ChatMessages conversation={conversation} />
+          <ChatMessages
+            onRegenerateClick={handleChatRegenerateClick}
+            conversation={conversation}
+          />
         ) : (
           <></>
         )}
       </div>
-      <div className="border border-gray-200 bg-[#F5F5F5] flex items-center gap-3 p-1 pl-4 rounded-xl mt-4"
-      >
+      <div className="border border-gray-200 bg-[#F5F5F5] flex items-center gap-3 p-1 pl-4 rounded-xl mt-4">
         {/* <input
           type='text'
           placeholder='Type your message...'
@@ -188,8 +202,7 @@ const ChatArea = ({
         <textarea
           ref={textareaRef}
           placeholder="Type your message..."
-          // className="w-full h-11 rounded-xl bg-transparent"
-          className="w-full flex-1 bg-transparent resize-none overflow-auto h-8 min-h-8 max-h-[200px]"
+          className="w-full flex-1 bg-transparent mt-2 resize-none overflow-auto h-8 min-h-8 max-h-[200px]"
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           onInput={handleResize}
@@ -221,42 +234,97 @@ const AIModel = ({
   setSelectedOption,
   selectedOptionLabel,
 }: AIModelProps) => {
-  const allModels = modelData.flatMap((provider) => provider.models);
+  // const allModels = modelData.flatMap((provider) => provider.models);
+  const { user, currentPlan } = useSelector((rootState: RootState) => rootState.auth);
+
+  const selectedModelLabel = llmComparisionModels
+    .flatMap((option) => option.models)
+    .find((model) => model.value === selectedOption)?.label;
+
+    console.log(selectedModelLabel)
+    console.log(llmComparisionModels[0].models[0].value)
+
+
+  const handleModalSelection = (value: string) => {
+    if (!currentPlan) return;
+    const currentCategory = llmComparisionModels.find((category) =>
+      category.models.some((model) => model.value === value)
+    );
+
+    const currentModal = currentCategory?.models.find(
+      (model) => model.value === value
+    );
+
+    if (!currentCategory || !currentModal) {
+      console.error("Model not found");
+      return;
+    }
+
+    const freeCategories = ["growStackAiMessagesModel"];
+
+    if (user?.user_type === "ADMIN" || freeCategories.includes(currentCategory.modelCategory)) {
+      setSelectedOption(value);
+      return;
+    }
+
+    let usageLimit = 0;
+
+    if (currentCategory.modelCategory === "smartAiMessagesModel") {
+      usageLimit = currentPlan.smart_ai_messages;
+    } else if (currentCategory.modelCategory === "fastAiMessagesModel") {
+      usageLimit = currentPlan.fast_ai_messages;
+    }
+
+    if (usageLimit <= 0) {
+      toast.error(`You have no remaining usage for ${currentCategory.label}. Please switch to another model.`);
+      return;
+    }
+
+    setSelectedOption(value);
+  };
+
   return (
-    <Select value={selectedOption} onValueChange={setSelectedOption}>
-      <SelectTrigger className="w-[70%] h-[34px] bg-white text-header border border-gray-300 rounded-xl flex items-center justify-between px-4">
+    <Select value={selectedOption} onValueChange={handleModalSelection}>
+      <SelectTrigger className="h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4">
         <SelectValue placeholder="Select an option">
-          {selectedOptionLabel && (
+          {selectedModelLabel && (
             <div className="flex items-center gap-2">
               <span className="min-w-fit">
                 {
-                  allModels.find((model) => model.value === selectedOption)
-                    ?.icon
+                  llmComparisionModels
+                    .flatMap((option) => option.models) // Flattening the models array to find the icon
+                    .find((model) => model.value === selectedOption)?.icon
                 }
               </span>
-              {selectedOptionLabel}
+              {selectedModelLabel}
             </div>
           )}
         </SelectValue>
       </SelectTrigger>
       <SelectContent>
-        {modelData.map((provider) => (
-          <SelectGroup key={provider.provider}>
-            {provider.models.map(({ icon, label, value }) => (
-              <SelectItem key={value} value={value}>
-                <div
-                  className={clsx(
-                    "flex items-center gap-2",
-                    selectedOption === value && "text-primary-green font-medium"
-                  )}
-                >
-                  <span className="min-w-fit">{icon}</span>
-                  {label}
-                </div>
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        ))}
+        <SelectGroup>
+          {llmComparisionModels.map(({ label: groupLabel, models }) => (
+            <React.Fragment key={groupLabel}>
+              <div className="font-bold text-gray-500 px-4 py-2">
+                {groupLabel}
+              </div>
+              {models.map(({ icon, label, value }) => (
+                <SelectItem key={value} value={value}>
+                  <div
+                    className={clsx(
+                      "flex items-center gap-2",
+                      selectedOption === value &&
+                        "text-primary-green font-medium"
+                    )}
+                  >
+                    <span className="min-w-fit">{icon}</span>
+                    {label}
+                  </div>
+                </SelectItem>
+              ))}
+            </React.Fragment>
+          ))}
+        </SelectGroup>
       </SelectContent>
     </Select>
   );
@@ -271,8 +339,11 @@ const InitialMsg = ({
   selectedOption,
   selectedOptionLabel,
 }: InitialMsgProps) => {
-  const selectedOptionModel = modelData
-    .flatMap((provider) => provider.models)
+  // const selectedOptionModel = modelData
+  //   .flatMap((provider) => provider.models)
+  //   .find((model) => model.value === selectedOption);
+  const selectedOptionModel = llmComparisionModels
+    .flatMap((option) => option.models)
     .find((model) => model.value === selectedOption);
   return (
     <div className="bg-[#F5F5F5] border border-[#E8E8E8] rounded-3xl space-y-5">
@@ -280,7 +351,7 @@ const InitialMsg = ({
         <h1 className="flex items-center gap-2">
           {selectedOptionModel && (
             <div className="flex items-center gap-2">
-              <span className="min-w-fit">{selectedOptionModel.icon}</span>
+              <span className="min-w-fit">{selectedOptionModel?.icon}</span>
               {selectedOptionLabel}
             </div>
           )}

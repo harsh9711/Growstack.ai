@@ -409,23 +409,21 @@ const EditAssistantDialog = ({
                               handleInputChange(index, "field_type", value)
                             }
                           >
-                            <SelectTrigger className='w-full border-none h-14'>
-                              <SelectValue placeholder='Input field' />
+                            <SelectTrigger className="w-full border-none h-14">
+                              <SelectValue placeholder={InputFieldType.SHORT_TEXT} />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value='Input field'>
-                                Input field
-                              </SelectItem>
-                              <SelectItem value='Textarea field'>
+                              <SelectItem value={InputFieldType.SHORT_TEXT}>Input field</SelectItem>
+                              <SelectItem value={InputFieldType.LONG_TEXT}>
                                 Textarea field
                               </SelectItem>
-                              <SelectItem value='Select list field'>
+                              <SelectItem value={InputFieldType.SELECT_LIST}>
                                 Select list field
                               </SelectItem>
-                              <SelectItem value='Checkbox list field'>
+                              <SelectItem value={InputFieldType.CHECKBOX}>
                                 Checkbox list field
                               </SelectItem>
-                              <SelectItem value='Radio buttons field'>
+                              <SelectItem value={InputFieldType.RADIO}>
                                 Radio buttons field
                               </SelectItem>
                             </SelectContent>
@@ -445,7 +443,7 @@ const EditAssistantDialog = ({
                             }
                           />
                         </div>
-                        <div className="w-full space-y-2">
+                        {/* <div className="w-full space-y-2">
                           <Select
                             value={input.type}
                             onValueChange={(value) =>
@@ -473,7 +471,7 @@ const EditAssistantDialog = ({
                               </SelectItem>
                             </SelectContent>
                           </Select>
-                        </div>
+                        </div> */}
                         <div className="w-full space-y-2">
                           <Select
                             value={input.required}
@@ -498,25 +496,39 @@ const EditAssistantDialog = ({
                             </SelectContent>
                           </Select>
                         </div>
-                        {index === inputs.length - 1 ? (
+
+                        {inputs.length > 1 && (
                           <button
-                            type='button'
-                            className='bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg'
-                            onClick={addUserInput}
-                          >
-                            <Plus />
-                          </button>
-                        ) : (
-                          <button
-                            type='button'
-                            className='bg-red-500 text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg'
+                            type="button"
+                            className="bg-red-500 text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
                             onClick={() => removeUserInput(index)}
                           >
                             <Minus />
                           </button>
                         )}
+
+
+                        {index === inputs.length - 1 && index > 0 && (
+                          <button
+                            type="button"
+                            className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                            onClick={addUserInput}
+                          >
+                            <Plus />
+                          </button>
+                        )}
+                        {inputs.length === 1 && (
+                          <button
+                            type="button"
+                            className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                            onClick={addUserInput}
+                          >
+                            <Plus />
+                          </button>
+                        )}
                       </div>
                     ))}
+
                   </div>
                   <div className='space-y-2'>
                     <label className='font-medium'>
@@ -552,7 +564,7 @@ const EditAssistantDialog = ({
           )
         )}
       </DialogContent>
-    </Dialog>
+    </Dialog >
   );
 };
 

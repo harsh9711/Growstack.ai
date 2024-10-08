@@ -13,8 +13,10 @@ import { ChangeEvent } from "react";
 import instance from "@/config/axios.config";
 import toast from "react-hot-toast";
 import Spinner from "@/components/Spinner";
+import { useRouter } from "next/navigation";
 
 export default function QuickPosting() {
+  const router = useRouter();
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
   const [content, setContent] = useState("");
@@ -35,6 +37,28 @@ export default function QuickPosting() {
         return <ScheduledPostsTable />;
     }
   };
+
+  const handleGetProfileData = async () => {
+    try {
+      setLoading(true)
+      const response = (await instance.get(
+        `${API_URL}/users/api/v1/social-media/profile`
+      )).data;
+      if (!response.success || response.data?.activeSocialAccounts.length === 0) {
+        router.push("/app/publish/scheduler/quick-posting/profiles");
+      }
+    } catch (error) {
+      console.log("Error fetching social profile:", error);
+    } finally {
+      setLoading(false)
+    }
+  };
+
+  useEffect(() => {
+    handleGetProfileData();
+  }, []);
+
+
   useEffect(() => {
     const now = new Date();
     const year = now.getFullYear();
@@ -55,21 +79,30 @@ export default function QuickPosting() {
 
   useEffect(() => {
     const storedArticle = localStorage.getItem("savedArticle");
-    const savedArticalImg = localStorage.getItem("savArticalImg")
-
+    const savedArticleImg = localStorage.getItem("savArticalImg");
     if (storedArticle) {
-      setLink(storedArticle);
+      try {
+        const parsedArticle:any = storedArticle;
+        setLink(parsedArticle);
+      } catch (error) {
+        console.error("Error parsing savedArticle:", error);
+      }
     }
-    setMediaUrls((prevData: any) => [
-      ...prevData,
-      savedArticalImg,
-    ])
 
+    if (savedArticleImg) {
+      try {
+        const parsedArticleImg:any = savedArticleImg;
+        setMediaUrls((prevData: any) => [...prevData, parsedArticleImg]);
+      } catch (error) {
+        console.error("Error parsing savedArticleImg:", error);
+      }
+    }
     return () => {
       localStorage.removeItem("savedArticle");
-      localStorage.removeItem("savArticalImg")
+      localStorage.removeItem("savArticalImg");
     };
   }, []);
+
 
   const handleBrowsImgAndVideo = async (
     event: ChangeEvent<HTMLInputElement>
@@ -144,6 +177,8 @@ export default function QuickPosting() {
   const handleRemoveMediaUrls = (index: number) => {
     setMediaUrls((prevUrls) => prevUrls.filter((_, i) => i !== index));
   };
+
+  console.log(mediaUrls)
 
   return (
     <Fragment>

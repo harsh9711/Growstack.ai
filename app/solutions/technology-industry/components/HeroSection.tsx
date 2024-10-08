@@ -7,7 +7,7 @@ const HeroSection = () => {
   return (
     <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1350px] 2xl:p-0 p-4 w-full 2xl:max-h-[1112px] h-full justify-center mx-auto">
       <div className="w-full flex flex-row justify-between brightness-110 relative gap-x-20  items-center mt-2 mb-6 2xl:mt-32 2xl:mb-40">
-        <div className="w-full max-w-[700px] gap-y-4 flex flex-col">
+        <div className="w-full max-w-[700px] gap-y-4 sm:items-start items-center  flex flex-col">
           <div
             data-aos="fade-right"
             data-aos-duration="1200"
@@ -20,7 +20,7 @@ const HeroSection = () => {
             <h1
               data-aos="fade-right"
               data-aos-duration="1500"
-              className="text-[26px] xl:text-[40px] 2xl:text-[48px]   w-full leading-normal text-white"
+              className="text-[26px] xl:text-[40px] 2xl:text-[48px] text-center sm:text-start   w-full leading-normal text-white"
             >
               <span className="font-semibold">
                 Empower your tech business with{" "}
@@ -30,7 +30,7 @@ const HeroSection = () => {
             <p
               data-aos="fade-right"
               data-aos-duration="1500"
-              className="text-[16px] 2xl:text-[18px] text-white mt-4 w-full max-w-[600px] leading-normal font-light"
+              className="text-[16px] 2xl:text-[18px] sm:text-start text-center text-white mt-4 w-full max-w-[600px] leading-normal font-light"
             >
              Transform your operations, enhance security, and unlock innovation with Growstack's advanced AI tools tailored for the technology industry.
             </p>
@@ -52,7 +52,7 @@ const HeroSection = () => {
                   {" "}
                   <button className=" font-medium flex items-center gap-2 text-white 2xl:py-4 2xl:px-7 border border-white  rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
                     Get demo
-                    <ArrowRight className="text-black" />
+                    <ArrowRight className="text-white" />
                   </button>
                 </Link>
               </div>
@@ -92,11 +92,11 @@ const HeroSection = () => {
             className="w-full relative z-0 "
           >
             <Image
-              className="xl:w-[1500px] w-full 2xl:w-[2000px]  h-full"
+              className="xl:w-[1500px] w-full 2xl:w-[2200px]  h-full"
               src="/solutions/tech.svg"
               alt="Center Image"
-              width={912}
-              height={712}
+              width={1012}
+              height={812}
             />
           </div>
         </div>

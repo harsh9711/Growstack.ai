@@ -1,7 +1,7 @@
 import React, { MouseEventHandler, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import { DialogTitle } from '@radix-ui/react-dialog';
-import { brandVoiceAnalyzeFormSchema, brandVoiceFormSchema } from '@/utils/constant';
+import { brandVoiceAnalyzeFormSchema, brandVoiceFormSchema, urlRegex } from '@/utils/constant';
 import { z } from "zod";
 import { Input } from "@/components/ui/input";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -11,10 +11,6 @@ import instance from '@/config/axios.config';
 import { API_URL } from '@/lib/api';
 import { ArrowLeft, Minus, Plus, } from 'lucide-react';
 import UnLink from '@/components/svgs/unLink';
-import ReactMarkdown from 'react-markdown'; // Import ReactMarkdown
-import remarkGfm from 'remark-gfm';
-import remarkBreaks from 'remark-breaks';
-import rehypeRaw from 'rehype-raw';
 import { Switch } from '@/components/ui/switch';
 interface Props {
     isOpen: boolean;
@@ -44,6 +40,8 @@ const CreateBrandVoice = ({ isOpen, setIsOpen, onSuccess }: Props) => {
         handleSubmit,
         getValues,
         setValue,
+        setError,
+        clearErrors,
         formState: { errors },
     } = useForm<BrandVoiceAnalyzeSchemaType>({
         resolver: zodResolver(brandVoiceAnalyzeFormSchema),
@@ -112,6 +110,19 @@ const CreateBrandVoice = ({ isOpen, setIsOpen, onSuccess }: Props) => {
             }
 
             if (hasUrls) {
+                const invalidUrls = urls.filter((url) => !urlRegex.test(url.trim()));
+                if (invalidUrls.length > 0) {
+                    invalidUrls.forEach((invalidUrl, index) => {
+                        setError(`urls.${index}`, {
+                            type: 'manual',
+                            message: 'Invalid URL format',
+                        });
+                    });
+                    toast.error('Please fix the invalid URLs');
+                    setIsAnalyzing(false);
+                    return;
+                }
+
                 const filteredUrls = urls.filter(url => url.trim() !== '');
                 formData.append('urls', JSON.stringify(filteredUrls));
             }
@@ -125,7 +136,6 @@ const CreateBrandVoice = ({ isOpen, setIsOpen, onSuccess }: Props) => {
                 formData,
             )).data;
 
-            console.log(response);
 
             setBrandVoiceAnalysisResult(response.data);
             setValuesBrandVoice('brandVoice', response.data.brand_voice);
@@ -165,8 +175,6 @@ const CreateBrandVoice = ({ isOpen, setIsOpen, onSuccess }: Props) => {
     };
 
     const selectedFile = watch('file');
-
-    console.log(watch('urls'), errors)
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -212,6 +220,14 @@ const CreateBrandVoice = ({ isOpen, setIsOpen, onSuccess }: Props) => {
                                                         updatedUrls[index] = e.target.value;
                                                         setUrlFields(updatedUrls);
                                                         setValue('urls', updatedUrls);
+                                                        if (!urlRegex.test(e.target.value)) {
+                                                            setError(`urls.${index}`, {
+                                                                type: 'manual',
+                                                                message: 'Invalid URL format',
+                                                            });
+                                                        } else {
+                                                            clearErrors(`urls.${index}`);
+                                                        }
                                                     }}
                                                     disabled={isAnalyzing}
                                                 />

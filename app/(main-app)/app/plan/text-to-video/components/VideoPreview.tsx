@@ -86,7 +86,7 @@ const VideoPreviewModal = ({
           className="w-full h-[60vh] object-cover rounded-lg border border-gray-300"
         >
           <source src={videoUrl} type="video/mp4" />
-          Your browser does not support the video tag.
+          Your browser does not support the avatar tag.
         </video>
       </div>
     </div>

@@ -9,7 +9,7 @@ export const testimonials = [
     description:
       "I've tried several website builders, but Webbuddy takes the cake. The templates are modern and customizable, and the drag-and-drop interface makes it a breeze to create a stunning website. Love it!",
   },
-  {
+  { 
     id: 2,
     imageUrl: "/carousel/c2.svg",
     name: "Strategy and content creation",
@@ -198,35 +198,78 @@ export const companyemployees = [
     imageUrlbox: "/company/1.1.svg",
   },
 ];
-export const landingpage= [
+export const landingpage = [
   {
     id: 1,
-    imageUrl: "/company/a.svg",
-    name: "Narasimha Rao",
-    role: "CEO,    Managing Director Balvantis Studio",
-    imageUrlbox: "https://www.linkedin.com/in/narasimha-vadde/",
+    imageUrl: "/landingpage/l1.svg",
+    name: "Overcome creative block",
+    border: "#C1E0FF",
+    background: "#F1F8FF",
+    imageUrlbox: "/landingpage/l1.svg",
+    videos:"/landingpage/box1.mp4"
   },
   {
     id: 2,
-    imageUrl: "/company/b.svg",
-    name: "Nagaraj Manne",
-    role: "Web Developer",
-    Url: "https://www.linkedin.com/in/nagaraj-manne-17168965/",
+    imageUrl: "/images_growstack/home/fBlock2.svg",
+    name: "Transform ideas into content",
+    border: "#FFF4BD",
+    background: "#FEFAE5",
+    imageUrlbox: "/landingpage/l2.svg",
+    videos:"/landingpage/box2.svg"
   },
 
   {
     id: 3,
-    imageUrl: "/company/c.svg",
-    name: "Ranjit Reddy",
-    role: "SAP SD/(OTC)/ Logistics S4",
-    Url: "https://linkedin.com/in/ranjith-annapu-828a241a2/",
+    imageUrl: "/images_growstack/home/fBlock3.svg",
+    name: "Transform ideas into content",
+    border: "#FFC3E4",
+    background: "#FCF1F7",
+    imageUrlbox: "/landingpage/l3.svg",
+    videos:"/landingpage/box3.svg"
   },
   {
     id: 4,
-    imageUrl: "/company/d.svg",
-    name: "Anudeep Devata",
-    role: "MBA, GDC, Ireland",
-    Url: "https://www.linkedin.com/in/krishna-anudeep-41128b10b/",
+    imageUrl: "/images_growstack/home/fBlock4.svg",
+    name: "Elevate your ideas into presentable content",
+    border: "#DBF8A8",
+    background: "#EEF6E0",
+    imageUrlbox: "/landingpage/l4.svg",
+    videos:"/landingpage/box4.svg"
+  },
+  {
+    id: 5,
+    imageUrl: "/images_growstack/home/fBlock5.svg",
+    name: "Gather insights from your audience",
+    border: "#FFE0C3",
+    background: "#FFF8F6",
+    imageUrlbox: "/landingpage/l5.svg",
+    videos:"/landingpage/box5.svg"
+  },
+  {
+    id: 6,
+    imageUrl: "/images_growstack/home/fBlock6.svg",
+    border: "#C1FFC1",    name: "Streamline your processes with AI workflow builder",
+
+    background: "#F6FFF6",
+    imageUrlbox: "/landingpage/l6.svg",
+    videos:"/landingpage/box6.svg"
+
+  },
+  {
+    id: 7,
+    imageUrl: "/images_growstack/home/fBlock7.svg",
+    border: "#DBBFFF", name: "Efortless publishing with scheduler",
+    background: "#FAF6FF",
+    imageUrlbox: "/landingpage/l7.svg",
+    videos:"/landingpage/box7.svg"
+  },
+  {
+    id: 8,
+    imageUrl: "/images_growstack/home/fBlock8.svg",
+    border: "#FFBFBF", name: "Analyze your impact",
+    background: "#FFF6F6",
+    imageUrlbox: "/landingpage/l8.svg",
+    videos:"/landingpage/box8.svg"
   },
 ];
 export const team = [
