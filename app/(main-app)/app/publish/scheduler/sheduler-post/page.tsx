@@ -10,7 +10,7 @@ import { button } from "@material-tailwind/react";
 import Spinner from "@/public/svgs/spinner";
 import ContentLoader from "react-content-loader";
 
-export default function shedulerpost() {
+const AddChannel: React.FC = () => {
     const tick = <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M5 12L10 17L20 7" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
@@ -106,14 +106,13 @@ export default function shedulerpost() {
                         </p>
                         <div className="w-full grid row-span-1 gap-2 mt-3 ">
                             <div
-                                className="h-17  min-w-[600px]  flex justify-between items-center gap-3 bg-white  cursor-pointer rounded-xl py-2.5 px-8"
+                                className="h-17  min-w-[500px]  flex justify-between items-center gap-3 bg-white  cursor-pointer rounded-xl py-2.5 px-8"
                             >
                                 <div className="flex text-center items-center">
                                     <svg width="65" height="65" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <rect x="0.5" y="0.5" width="64" height="64" rx="14.4425" fill="#217BEE" stroke="#EBEBEB" />
                                         <path d="M34.9989 18.125C26.795 18.125 20.1211 24.7991 20.1211 33.0027C20.1211 41.2065 26.795 47.8808 34.9989 47.8808C43.2022 47.8808 49.8766 41.2065 49.8766 33.0027C49.8766 24.7991 43.2022 18.125 34.9989 18.125ZM39.2037 27.517C39.2037 27.5874 39.1758 27.655 39.1259 27.7048C39.0761 27.7546 39.0086 27.7826 38.9381 27.7826L37.2469 27.7837C36.131 27.7837 35.927 28.2182 35.927 29.0741V30.8495H38.8276C38.9039 30.8495 38.9766 30.8824 39.0268 30.9398C39.077 30.9972 39.1004 31.0734 39.0911 31.1491L38.6781 34.3454C38.6698 34.4094 38.6385 34.4683 38.59 34.5109C38.5415 34.5535 38.4791 34.577 38.4146 34.577H35.927V42.5136C35.927 42.5841 35.899 42.6516 35.8492 42.7015C35.7994 42.7513 35.7318 42.7793 35.6613 42.7793H32.3612C32.2907 42.7793 32.2232 42.7513 32.1734 42.7015C32.1235 42.6516 32.0956 42.5841 32.0956 42.5136V34.577H29.6C29.5295 34.577 29.462 34.549 29.4122 34.4992C29.3624 34.4494 29.3344 34.3818 29.3344 34.3114V31.1151C29.3344 31.0447 29.3624 30.9771 29.4122 30.9273C29.462 30.8775 29.5295 30.8495 29.6 30.8495H32.0956V28.7577C32.0956 25.9872 33.7722 24.2665 36.4718 24.2665C37.6323 24.2665 38.6579 24.3528 38.9729 24.3945C39.0368 24.403 39.0954 24.4343 39.1378 24.4828C39.1803 24.5312 39.2037 24.5934 39.2037 24.6578V27.517Z" fill="white" />
                                     </svg>
-
                                     <div className="ml-2 text-base">Facebook</div>
                                 </div>
                                 {platforms.includes('facebook') ?
@@ -133,7 +132,7 @@ export default function shedulerpost() {
                         </div>
                         <div className="w-full grid row-span-1 gap-2 mt-3 ">
                             <div
-                                className="h-17 w-[70%] min-w-[500px] flex  flex justify-between items-center gap-3 bg-[#FFFFFF] transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8"
+                                className="h-17 w-[100%] min-w-[500px] flex  flex justify-between items-center gap-3 bg-[#FFFFFF] transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8"
                             >
                                 <div className="flex text-center items-center">
                                     <svg width="65" height="65" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -324,3 +323,5 @@ const AiAppSkeletonLoader: React.FC = () => {
         </ContentLoader>
     );
 };
+
+export default AddChannel;

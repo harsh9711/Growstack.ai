@@ -32,8 +32,8 @@ const SocialNavBar: FC = () => {
           <Image
             src="/assets/layout-distribute-horizontal.svg"
             alt=""
-            width={24}
-            height={24}
+            width={20}
+            height={20}
             color="black"
           />
           <span className="px-1">Feed view</span>
