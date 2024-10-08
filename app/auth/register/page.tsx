@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { login, setUserPlan } from "@/lib/features/auth/auth.slice";
 import { isEmptyObject, planIdsMap } from "@/lib/utils";
 import { setCookie } from "cookies-next";
+import { PlanName } from "@/types/enums";
 
 export default function Register() {
   const router = useRouter();
@@ -89,7 +90,7 @@ export default function Register() {
       const currentPlanId = response.data.data.plan_id;
       const expiryDate = new Date(planUsageData?.usage_expiry_date);
 
-      const isBasicPlan = planIdsMap.BASIC.some((val) => val === currentPlanId);
+      const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlanId);
 
       if (isEmptyObject(planUsageData) || expiryDate <= currentDate || isBasicPlan) {
         router.push("/Payment");

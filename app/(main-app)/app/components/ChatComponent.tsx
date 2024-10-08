@@ -32,6 +32,7 @@ import { getCookie } from "cookies-next";
 import EventSource from 'eventsource';
 import { usePathname } from "next/navigation";
 import { ALL_ROUTES } from "@/utils/constant";
+import { PlanName } from "@/types/enums";
 
 
 type Message = {
@@ -45,13 +46,7 @@ type Message = {
 export default function ChatComponent() {
   const { user, currentPlan } = useSelector((rootState: RootState) => rootState.auth);
 
-  const filteredAiModelOptions = currentPlan &&
-    planIdsMap.BASIC.some((val) => val === currentPlan.plan_id) && user?.user_type !== "ADMIN"
-    ? aiModelOptions.map((category) => ({
-      ...category,
-      models: category.models.filter((model) => model.value.startsWith("claude")),
-    })).filter((category) => category.models.length > 0)
-    : aiModelOptions;
+  const filteredAiModelOptions = aiModelOptions;
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
@@ -155,7 +150,7 @@ export default function ChatComponent() {
 
       const { conversation_id, response, chatId, noOfMessagesLeft, totalNoOfMessages } = data.data as ChatResponse;
 
-      const isBasicPlan = planIdsMap.BASIC.some((val) => val === currentPlan?.plan_id);
+      const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan?.plan_id);
 
       if (isBasicPlan) {
         if (noOfMessagesLeft && totalNoOfMessages) {
@@ -240,6 +235,8 @@ export default function ChatComponent() {
       chatInputRef.current.handleRegenerate(chartMessage);
     }
   };
+  const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan?.plan_id);
+
 
   return (
     <div className=" flex flex-col bg-white p-10 pt-8 rounded-3xl border border-[#E8E8E8] h-[780px]" data-aos="fade-up">
@@ -268,34 +265,36 @@ export default function ChatComponent() {
           </div>
         </div>
         <div className="flex flex-row items-center justify-center gap-5">
-          <div className='flex items-center gap-2'>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Info
-                    size={18}
-                    className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
+          {
+            !isBasicPlan && (
+              <div className='flex items-center gap-2'>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Info
+                        size={18}
+                        className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
+                      />
+                    </TooltipTrigger>
+                    <TooltipContent className="bg-white" style={{ width: "450px", zIndex: "1000" }}>
+                      <p>Secure-AI chat ensures safe, natural conversations with strong protection and smart filters.</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                <div className='text-l font-semibold'>Secure Chat</div>
+                <label className='relative inline-flex items-center cursor-pointer'>
+                  <input
+                    type='checkbox'
+                    className='sr-only peer'
+                    checked={secureChatEnabled}
+                    onChange={() => setSecureChatEnabled(!secureChatEnabled)}
                   />
-                </TooltipTrigger>
-                <TooltipContent className="bg-white" style={{ width: "450px", zIndex: "1000" }}>
-                  <p>Secure-AI chat ensures safe, natural conversations with strong protection and smart filters.</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-            <div className='text-l font-semibold'>Secure Chat</div>
-            <label className='relative inline-flex items-center cursor-pointer'>
-              <input
-                type='checkbox'
-                className='sr-only peer'
-                checked={secureChatEnabled}
-                onChange={() => setSecureChatEnabled(!secureChatEnabled)}
-              />
+                  <div className='w-11 h-6 bg-gray-200 peer-focus:outline-none  rounded-full peer dark:bg-gray-700 peer-checked:bg-[rgb(3,71,55)]'></div>
+                  <div className='w-5 h-5 bg-white rounded-full absolute left-0.5 top-0.5 peer-checked:translate-x-full peer-checked:bg-white transition-all'></div>
+                </label>
+              </div>
+            )}
 
-              <div className='w-11 h-6 bg-gray-200 peer-focus:outline-none  rounded-full peer dark:bg-gray-700 peer-checked:bg-[rgb(3,71,55)]'></div>
-
-              <div className='w-5 h-5 bg-white rounded-full absolute left-0.5 top-0.5 peer-checked:translate-x-full peer-checked:bg-white transition-all'></div>
-            </label>
-          </div>
           <Select value={selectedModel} onValueChange={handleModalSelection}>
             <SelectTrigger className='h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4'>
               <SelectValue placeholder="Select an option">

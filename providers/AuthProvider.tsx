@@ -21,6 +21,7 @@ import Lock from "@/components/svgs/lock";
 import { hasAccessToRoute, isMobile, planIdsMap } from "@/lib/utils";
 import { ALL_ROUTES } from "@/utils/constant";
 import Spinner2 from "@/components/Spinner2/Spinner2";
+import { PlanName } from "@/types/enums";
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const isLoggedIn = !!getCookie("token");
@@ -92,7 +93,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       pathname !== "/auth/redirect" &&
       pathname !== "/Payment" &&
       !isSubscribed &&
-      !planIdsMap.BASIC.some((val) => val === currentPlan.plan_id) &&
+      !planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan.plan_id) &&
       user?.user_type !== "ADMIN"
     ) {
       console.log("You need a subscription to view this page!");
