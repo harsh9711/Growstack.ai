@@ -192,6 +192,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
                     toast.error(errorMsg);
                 }
                 removeMessage();
+                setIsLoading(false);
             }
         };
 
