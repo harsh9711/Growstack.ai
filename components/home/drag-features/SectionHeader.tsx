@@ -1,18 +1,70 @@
 import Link from "next/link";
 import ArrowRight from "./icons/ArrowRight";
 import Image from "next/image";
-
-export default function  SectionHeader() {
+import "../../../styles/animate.css";
+export default function SectionHeader() {
   return (
-    <div className="max-w-4xl w-full  mx-auto px-5 lg:px-10 2xl:mb-14 mb-4">
+    <div className="max-w-4xl w-full  mx-auto px-5 lg:px-10 2xl:mb-10 mb-4">
       <div className="lg:flex items-center justify-center space-y-4 md:space-y-8 lg:space-y-0 lg:space-x-5">
         <div className="items-center justify-center">
           <div className="w-full items-center justify-center">
-            <h1 className="text-[26px] sm:flex sm:text-start text-center  xl:text-[32px] 2xl:text-[48px] font-medium mb-1">
+            <h1 className="text-[26px] sm:flex sm:text-start text-center xl:text-[32px] 2xl:text-[48px] font-medium mb-1">
               Your{" "}
-              <span className="font-extrabold sm:flex text-primary-green/80  px-2">
+              <span className="font-extrabold sm:flex  text-primary-green/80 px-2">
                 AI catalyst{" "}
-                <Image src="/ai2.svg" width={30} height={30} alt="aihero" className="ml-2 sm:flex hidden " />
+                {/* <svg
+                  width="30"
+                  height="30"
+                  viewBox="0 0 75 75"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="ml-2 sm:flex hidden blinking-svg"
+                >
+                  <path
+                    d="M61.8573 45.0181C44.477 50.7602 38.6894 56.549 32.9471 73.9284C32.4746 75.3572 30.4543 75.3572 29.9819 73.9284C24.2398 56.548 18.451 50.7604 1.0716 45.0181C-0.3572 44.5457 -0.3572 42.5253 1.0716 42.0529C18.452 36.3108 24.2396 30.522 29.9819 13.1426C30.4543 11.7138 32.4747 11.7138 32.9471 13.1426C38.6892 30.523 44.4779 36.3106 61.8573 42.0529C63.2861 42.5254 63.2861 44.5457 61.8573 45.0181Z"
+                    stroke="#034737"
+                    className="blinking-colors"
+                  />
+                  <path
+                    d="M74.464 16.4755C65.7759 19.3447 62.88 22.2407 60.0069 30.9326C59.7726 31.647 58.7624 31.647 58.5243 30.9326C55.6551 22.2445 52.759 19.3486 44.0672 16.4755C43.3528 16.2412 43.3528 15.2311 44.0672 14.9929C52.7553 12.1237 55.6512 9.22767 58.5243 0.535807C58.7586 -0.178602 59.7687 -0.178602 60.0069 0.535807C62.8761 9.22394 65.7721 12.1198 74.464 14.9929C75.1784 15.2272 75.1784 16.2374 74.464 16.4755Z"
+                    stroke="#034737"
+                    className="blinking-colors"
+                  />
+                </svg> */}
+                <svg
+                className="svgclasses sm:flex hidden"
+      width="150"
+      height="150"
+      viewBox="0 0 63 63"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{overflow:"visible"}}
+    >
+      <g className="path-group path-group-1">
+        <path
+          d="M61.6524 11.0078C60.2227 10.8476 56.1524 10.0859 54.5235 8.4687C52.8946 6.8476 52.1446 2.7695 51.9844 1.3398C51.9063 0.57808 51.2539 0 50.4961 0C49.7344 0 49.0859 0.57812 49.0078 1.3398C48.8476 2.7695 48.0859 6.8398 46.4687 8.4687C44.8476 10.0976 40.7695 10.8476 39.3398 11.0078C38.5781 11.0859 38 11.7383 38 12.4961C38 13.2656 38.5781 13.9063 39.3398 13.9844C40.7695 14.1328 44.8398 14.8946 46.4687 16.5235C48.0898 18.1446 48.8476 22.2227 49.0078 23.6524C49.0859 24.4141 49.7383 24.9922 50.4961 24.9922C51.2656 24.9922 51.9063 24.4141 51.9844 23.6524C52.1328 22.2227 52.8946 18.1524 54.5235 16.5235C56.1446 14.9024 60.2227 14.1446 61.6524 13.9844C62.4141 13.9063 62.9922 13.2539 62.9922 12.4961C62.9922 11.7344 62.4141 11.0859 61.6524 11.0078Z"
+          fill="#034737"
+        />
+      </g>
+      <g className="path-group path-group-2">
+        <path
+          d="M46.6532 37.5077C46.5438 37.496 35.5322 36.2577 31.1332 31.8593C26.7348 27.4609 25.5043 16.4493 25.4848 16.3393C25.4067 15.5776 24.7543 14.9995 23.9965 14.9995C23.2348 14.9995 22.5863 15.5776 22.5082 16.3393C22.4965 16.4487 21.2582 27.4603 16.8598 31.8593C12.4614 36.2577 1.4498 37.4882 1.3398 37.5077C0.57808 37.5858 0 38.2382 0 38.996C0 39.7577 0.57813 40.4062 1.3398 40.4843C1.44918 40.496 12.4608 41.7343 16.8598 46.1327C21.2582 50.5311 22.4887 61.5427 22.5082 61.6527C22.5863 62.4144 23.2387 62.9925 23.9965 62.9925C24.7582 62.9925 25.4067 62.4144 25.4848 61.6527C25.4965 61.5433 26.7348 50.5317 31.1332 46.1327C35.5316 41.7343 46.5432 40.5038 46.6532 40.4843C47.4149 40.4062 47.993 39.7538 47.993 38.996C47.993 38.2343 47.4149 37.5858 46.6532 37.5077Z"
+          fill="#034737"
+        />
+      </g>
+      <g className="path-group path-group-3">
+        <path
+          d="M57.9922 54.9956C57.9922 60.3276 49.9922 60.3276 49.9922 54.9956C49.9922 49.6636 57.9922 49.6636 57.9922 54.9956Z"
+          fill="#034737"
+        />
+      </g>
+      <g className="path-group path-group-4">
+        <path
+          d="M11.9922 6.99558C11.9922 12.3276 3.99219 12.3276 3.99219 6.99558C3.99219 1.66358 11.9922 1.66358 11.9922 6.99558Z"
+          fill="#034737"
+        />
+      </g>
+    </svg>
               </span>{" "}
               for success!
             </h1>
@@ -23,18 +75,18 @@ export default function  SectionHeader() {
           </div>
         </div>
         <div className="sm:hidden flex items-center justify-center space-x-5 pb-10">
-               <Link href="/auth/register">
-                  <h2 className=" inline-flex items-center space-x-3.5 2xl:text-[20px] text-[14px] min-w-['107px'] 2xl:h-14 h-10 border-2 border-primary-green text-primary-green rounded-lg sm:rounded-2xl p-2 2xl:px-4 2xl:py-3.5 hover:bg-primary-green hover:text-white">
-                     <span className="">Free trial</span>
-                     <ArrowRight />
-                  </h2>
-               </Link>
-               <Link href="/demo" legacyBehavior>
-               <h2 className=" inline-flex items-center space-x-3.5 2xl:text-[20px] text-[14px] min-w-['107px'] 2xl:h-14 h-10 border-2 border-primary-green text-primary-green rounded-lg sm:rounded-2xl p-2 2xl:px-4 2xl:py-3.5 hover:bg-primary-green hover:text-white">
-               <span className="whitespace-nowrap">Get a demo</span>
-                  </h2>
-               </Link>
-            </div>
+          <Link href="/auth/register">
+            <h2 className=" inline-flex items-center space-x-3.5 2xl:text-[20px] text-[14px] min-w-['107px'] 2xl:h-14 h-10 border-2 border-primary-green text-primary-green rounded-lg sm:rounded-2xl p-2 2xl:px-4 2xl:py-3.5 hover:bg-primary-green hover:text-white">
+              <span className="">Free trial</span>
+              <ArrowRight />
+            </h2>
+          </Link>
+          <Link href="/demo" legacyBehavior>
+            <h2 className=" inline-flex items-center space-x-3.5 2xl:text-[20px] text-[14px] min-w-['107px'] 2xl:h-14 h-10 border-2 border-primary-green text-primary-green rounded-lg sm:rounded-2xl p-2 2xl:px-4 2xl:py-3.5 hover:bg-primary-green hover:text-white">
+              <span className="whitespace-nowrap">Get a demo</span>
+            </h2>
+          </Link>
+        </div>
       </div>
     </div>
   );
