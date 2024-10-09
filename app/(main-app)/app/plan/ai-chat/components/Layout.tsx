@@ -235,6 +235,9 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
         const freeCategories = ["growStackAiMessagesModel"];
 
         if (user?.user_type === "ADMIN" || freeCategories.includes(currentCategory.modelCategory)) {
+            if (currentModal.value === "Perplexity") {
+                setEnableWebAccess(true);
+            }
             setSelectedModel(value);
             return;
         }
@@ -252,6 +255,9 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
             return;
         }
 
+        if (currentModal.value === "Perplexity") {
+            setEnableWebAccess(true);
+        }
         setSelectedModel(value);
     };
     const [isDialogOpen, setDialogOpen] = useState(false);
