@@ -301,7 +301,6 @@ export default function ComingSoon() {
     const handleImgChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
         if (files) {
-            // Handle the selected file(s) here
             console.log("Selected files:", files);
         }
     };
@@ -309,7 +308,6 @@ export default function ComingSoon() {
     const handleGifChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const files = event.target.files;
         if (files) {
-            // Handle the selected file(s) here
             console.log("Selected files:", files);
         }
     };
@@ -321,7 +319,7 @@ export default function ComingSoon() {
             console.log("Selected files:", files);
         }
     };
-    
+
     return (
         <div className="flex-1 h-full w-full flex flex-col items-center justify-center text-center">
             <AddPages setOpenModel={setOpenModel} openModel={openModel} />
@@ -617,10 +615,7 @@ export default function ComingSoon() {
                                             Connect
                                         </button>
                                     }
-
-
                                 </div>
-
                             </div>
                             <div className="w-full grid row-span-1 gap-2 mt-3 ">
                                 <div
@@ -632,7 +627,6 @@ export default function ComingSoon() {
                                             <path d="M32.5893 50C41.7514 50 49.1787 42.3888 49.1787 33C49.1787 23.6112 41.7514 16 32.5893 16C23.4273 16 16 23.6112 16 33C16 42.3888 23.4273 50 32.5893 50Z" fill="black" stroke="white" stroke-miterlimit="10" />
                                             <path d="M22.3703 23.1504L30.2998 34.0152L22.3203 42.8487H24.1163L31.1025 35.1146L36.7469 42.8487H42.8584L34.4825 31.373L41.9099 23.1504H40.1139L33.6802 30.2731L28.4817 23.1504H22.3703ZM25.0114 24.5059H27.819L40.2169 41.4932H37.4094L25.0114 24.5059Z" fill="white" />
                                         </svg>
-
                                         <div className="ml-2 text-base">X profile</div>
                                     </div>
                                     {platforms.includes('twitter') ?
@@ -657,13 +651,12 @@ export default function ComingSoon() {
                                     >Skip for now</button>
                                 </div>
                             }
-
                         </div>
                     </div>
                 </> : <>
                     <div className="flex-1 h-full w-full flex flex-col items-center justify-center text-center">
                         <SocialNavBar setOpen={setOpenModel} setOpenAddAcc={isGenPost} selectedIcon={selectedIcon} setSelectedIcon={setSelectedIcon} />
-                        <PostCard selectedIcon={selectedIcon} />
+                        <PostCard selectedIcon={selectedIcon} profile={profile} />
                     </div>
                 </>
                 }
