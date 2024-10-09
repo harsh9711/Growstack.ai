@@ -67,7 +67,7 @@ function OurProcess() {
           <div className="content">
             <div className="flex flex-row py-10 lg:py-0 xl:py-0   w-full items-center justify-center">
               <div
-                className=" max-w-[480px] xl:max-w-[480px] 2xl:max-w-[420px] lg:ml-4 w-full"
+                className=" max-w-[480px] xl:max-w-[440px] 2xl:max-w-[420px] lg:ml-4 w-full"
                 data-aos="fade-right"
                 data-aos-easing="ease-in-sine"
                 data-aos-duration="1000"

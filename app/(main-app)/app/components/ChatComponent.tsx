@@ -46,7 +46,9 @@ export default function ChatComponent() {
     const { user, currentPlan } = useSelector((rootState: RootState) => rootState.auth);
 
     const filteredAiModelOptions = aiModelOptions;
-
+    const [enableWebAccess, setEnableWebAccess] = useState<boolean>(false);
+    const [brandVoices, setBrandVoices] = useState<BrandVoice[]>([]);
+    const [selectedBrandVoice, setSelectedBrandVoice] = useState<string>("");
     const [messages, setMessages] = useState<Message[]>([]);
     const [selectedConversation, setSelectedConversation] = useState<string | null>(null);
     const [selectedModel, setSelectedModel] = useState<string>(filteredAiModelOptions[0].models[0].value || "");
@@ -56,6 +58,20 @@ export default function ChatComponent() {
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [filename, setFilename] = useState<string | null>(null);
     const pathname = usePathname();
+
+    useEffect(() => {
+        fetchBrandVoice();
+    }, []);
+
+    const fetchBrandVoice = async () => {
+        try {
+            const response = await instance.get(`${API_URL}/users/api/v1/brand-voice/all`);
+            const data = response.data.data;
+            setBrandVoices(data);
+        } catch (error) {
+            console.error("Error fetching brand voices", error);
+        }
+    };
 
     const fetchMessages = useCallback(async (_id: string) => {
         try {
@@ -200,6 +216,11 @@ export default function ChatComponent() {
         const freeCategories = ["growStackAiMessagesModel"];
 
         if (user?.user_type === "ADMIN" || freeCategories.includes(currentCategory.modelCategory)) {
+            if (currentModal.value === "Perplexity") {
+                setEnableWebAccess(true);
+            } else {
+                setEnableWebAccess(false);
+            }
             setSelectedModel(value);
             return;
         }
@@ -217,6 +238,14 @@ export default function ChatComponent() {
             return;
         }
 
+        console.log("Usage limit:", currentModal);
+
+        if (currentModal.value === "Perplexity") {
+            setEnableWebAccess(true);
+        } else {
+            setEnableWebAccess(false);
+        }
+
         setSelectedModel(value);
     };
     const chatInputRef = useRef<{ handleRegenerate: (chartMessage: string) => void }>(null);
@@ -227,9 +256,7 @@ export default function ChatComponent() {
     };
     const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan?.plan_id);
 
-    const [enableWebAccess, setEnableWebAccess] = useState<boolean>(false);
-    const [brandVoices, setBrandVoices] = useState<BrandVoice[]>([]);
-    const [selectedBrandVoice, setSelectedBrandVoice] = useState<string>("");
+
     useEffect(() => {
         if (brandVoices?.length > 0) {
             const defaultBrandVoice = brandVoices.find((voice) => voice.is_default);
@@ -460,7 +487,7 @@ export default function ChatComponent() {
                 <ChatInput
                     ref={chatInputRef}
                     onSend={updateMessage}
-                    fetchConversations={() => {}}
+                    fetchConversations={() => { }}
                     selectedConversation={selectedConversation}
                     setSelectedConversation={setSelectedConversation}
                     selectedModel={selectedModel}
