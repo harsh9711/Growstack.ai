@@ -119,6 +119,16 @@ export { default as NotesIcon} from "@/public/notes.svg"
 export { default as PlusIcon} from "@/public/plus.svg"
 export { default as RightIcon} from "@/public/right.svg"
 export { default as InfoIcon} from "@/public/info-circle.svg"
+export { default as Cross } from "@/public/cross-mark.svg"
+export { default as GenAi } from "@/public/GenAI.svg"
+export { default as InsertImage } from "@/public/img-attach.svg"
+export { default as Gif } from "@/public/gif.svg"
+export { default as ImgVector } from "@/public/img-dir.svg"
+export { default as LinkIcon } from "@/public/link-icon.svg"
+export { default as SmileEmoji } from "@/public/smile-emoji.svg"
+export { default as Clock } from "@/public/clock.svg"
+export { default as CaretDown } from "@/public/caret-down.svg"
+export { default as Calender } from "@/public/calendar-event.svg"
 
 
 

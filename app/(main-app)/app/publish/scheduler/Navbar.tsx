@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import {
   FaFacebookF,
   FaInstagram,
@@ -19,21 +19,31 @@ const socialMediaIcons = [
 ];
 
 interface SocialNavBarProps {
-  setOpen: (open: boolean) => void; // setOpen is a function that takes a boolean
+  setOpen: (open: boolean) => void;
+  setOpenAddAcc: (open: boolean) => void;
+  selectedIcon: string; // Receiving selectedIcon from the parent
+  setSelectedIcon: (name: string) => void; // Function to set selectedIcon in the parent
 }
 
-const SocialNavBar: FC<SocialNavBarProps> = ({ setOpen }) => {
-  const [selectedIcon, setSelectedIcon] = useState("Facebook");
+const SocialNavBar: FC<SocialNavBarProps> = ({
+  setOpen,
+  setOpenAddAcc,
+  selectedIcon,
+  setSelectedIcon,
+}) => {
   const handleDialogToggle = () => {
-    // Toggle dialog open/close state
+    setOpenAddAcc(true);
+  };
+
+  const handleOpenAddAccDialog = () => {
     setOpen(true);
-};
+  };
+
   return (
     <div
       className="fixed top-20 left-0 right-0 w-[90%] mx-auto flex items-center justify-between p-4 shadow-lg z-50 rounded-l-full rounded-r-full"
       style={{ backgroundColor: "#EBF0F6" }}
     >
-      
       <div className="flex items-center">
         <button className="flex items-center text-sm bg-white border font-semibold px-3 py-3 py-1 rounded-l-full rounded-r-full ml-4">
           <Image
@@ -68,8 +78,7 @@ const SocialNavBar: FC<SocialNavBarProps> = ({ setOpen }) => {
               onClick={() => setSelectedIcon(name)}
             >
               <div className={`${bgColor} p-1 rounded-full`}>
-                <Icon className="text-white hover:opacity-80" size={20} />{" "}
-                {/* Smaller icon size */}
+                <Icon className="text-white hover:opacity-80" size={20} />
               </div>
             </div>
           ))}
@@ -80,20 +89,18 @@ const SocialNavBar: FC<SocialNavBarProps> = ({ setOpen }) => {
           style={{ borderLeftWidth: "3px" }}
         ></div>
 
-        <div className="flex items-center">
+        <div className="flex items-center" onClick={handleOpenAddAccDialog}>
           <button
-            className="flex items-center justify-center w-12 h-12 text-white rounded-full"
+            className="flex items-center justify-center w-9 h-9 text-white rounded-full"
             style={{ backgroundColor: "#034737" }}
           >
             <span className="text-4xl font-normal">+</span>
           </button>
-          <span className="ml-2 flex items-center font-semibold">
-            Add Account
-          </span>{" "}
+          <span className="ml-2 flex items-center font-semibold">Add Account</span>
         </div>
       </div>
 
-      <div className="flex items-center">
+      <div className="flex items-center" onClick={handleDialogToggle}>
         <button className="flex items-center text-sm bg-white border font-semibold px-4 py-3 py-1 rounded-lg mr-4">
           <Image
             src="/assets/edit-circle.svg"
@@ -102,7 +109,7 @@ const SocialNavBar: FC<SocialNavBarProps> = ({ setOpen }) => {
             height={32}
             color="white"
           />
-          <span className="text-primary-green" onClick={handleDialogToggle}>Compose</span>
+          <span className="text-primary-green">Compose</span>
         </button>
       </div>
     </div>

@@ -8,7 +8,7 @@ import AddChannel from "./sheduler-post/page";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
-import { SheduleBackground } from "@/components/svgs";
+import { Calender, CaretDown, GenAi, Gif, ImgVector, InsertImage, LogoIcon, SendIcon2, SheduleBackground, SmileEmoji } from "@/components/svgs";
 
 interface TimeLeft {
     days: number;
@@ -37,7 +37,7 @@ const calculateTimeLeft = (endTime: number): TimeLeft => {
 
     return timeLeft;
 };
-import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import { DialogTitle } from '@radix-ui/react-dialog';
 import { FbIcon } from "@/components/svgs";
 import { InstaIcon } from "@/components/svgs";
@@ -49,13 +49,15 @@ import { FlagIcon } from "@/components/svgs";
 import { GrowstackIcon } from "@/components/svgs";
 import { UserCircle } from "@/components/svgs";
 import { BuildingStore } from "@/components/svgs";
-import { UserCircleIcon } from "lucide-react";
+import { Clock, Cross, LinkIcon, UserCircleIcon } from "lucide-react";
 import { BriefCase } from "@/components/svgs";
 import { BuildingIcon } from "@/components/svgs";
 import { PlusIcon } from "@/components/svgs";
 import { NotesIcon } from "@/components/svgs";
 import { RightIcon } from "@/components/svgs";
 import { InfoIcon } from "@/components/svgs";
+import { Picker } from "emoji-mart";
+import AddPages from "./AddPages";
 
 
 interface BoxContent {
@@ -163,23 +165,20 @@ export default function ComingSoon() {
 
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
     const [boxContent, setBoxContent] = useState<BoxContent>(contentMap["facebook"]);
-    const [open, setOpen] = useState(false);
+    const [openModel, setOpenModel] = useState(false);
 
+    const [openAddAcc, setOpenAddAcc] = useState(false)
+    const [selectedIcon, setSelectedIcon] = useState("Facebook");
     const handleOpenDialog = () => {
         setIsDialogOpen(true);
     };
 
-    const handleCloseDialog = () => {
-        setOpen(false);
-    };
 
     // Function to handle social media icon clicks and update the content
     const handleIconClick = (platform: any) => {
         setBoxContent(contentMap[platform]);
     };
-    console.log(boxContent)
-    const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-    const endTimeRef = useRef<number>(new Date().getTime() + 4 * 24 * 60 * 60 * 1000);
+
     const tick = <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M5 12L10 17L20 7" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
@@ -196,7 +195,12 @@ export default function ComingSoon() {
     const [profile, setProfile] = useState<any>([]);
     const [platforms, setPlatforms] = useState<string[]>([]);
     const [skipNow, setSkipNow] = useState<boolean>(false);
-
+    const [timeLeft, setTimeLeft] = useState<TimeLeft>({
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0,
+    });
 
     useEffect(() => {
         handleGetProfileData();
@@ -259,103 +263,205 @@ export default function ComingSoon() {
         return () => clearInterval(timer);
     }, []);
 
+    const [genPost, isGenPost] = useState<boolean>(false);
+    const [emojiPickerOpen, setEmojiPickerOpen] = useState(false); // Emoji picker state
+    const [text, setText] = useState("");
+    const imgInputRef = useRef<HTMLInputElement | null>(null);
+    const gifInputRef = useRef<HTMLInputElement | null>(null);
+    const fileInputRef = useRef<HTMLInputElement | null>(null);
+    const [isDropdownOpen, setDropdownOpen] = useState(false);
+
+    const handleCaretClick = () => {
+        setDropdownOpen((prev) => !prev); // Toggle dropdown
+    };
+
+    const handleGenPost = () => {
+        isGenPost(true);
+    };
+
+    const endTimeRef = useRef<number>(
+        new Date().getTime() + 4 * 24 * 60 * 60 * 1000
+    );
+    useEffect(() => {
+        const updateTimer = () => {
+            setTimeLeft(calculateTimeLeft(endTimeRef.current));
+        };
+
+        updateTimer();
+        const timer = setInterval(updateTimer, 1000);
+
+        return () => clearInterval(timer);
+    }, []);
+
+    const onEmojiClick = (event: any, emojiObject: any) => {
+        setText((prevText) => prevText + emojiObject.emoji); // Correct access to the emoji property
+        setEmojiPickerOpen(false); // Close picker after emoji is selected
+    };
+
+    const handleImgChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (files) {
+            // Handle the selected file(s) here
+            console.log("Selected files:", files);
+        }
+    };
+
+    const handleGifChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (files) {
+            // Handle the selected file(s) here
+            console.log("Selected files:", files);
+        }
+    };
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (files) {
+            // Handle the selected file(s) here
+            console.log("Selected files:", files);
+        }
+    };
     return (
         <div className="flex-1 h-full w-full flex flex-col items-center justify-center text-center">
-            <Dialog open={open} onOpenChange={handleCloseDialog}>
-                <DialogContent className="w-[1010px] md:w-[725px] max-w-3xl p-0 pb-4 border-0 overflow-hidden">
-                    <DialogHeader>
-                        <DialogTitle className="px-0">
-                            <div className="bg-white py-3 border-b border-[#EBEBEB] text-black font-inter bg-[#EDEDED]  ">
-                                <div className=" flex items-center justify-center pb-5 pt-2 ">
-                                    <p className="text-lg font-semibold ">Add pages to GrowStack AI</p>
+            <AddPages setOpenModel={setOpenModel} openModel={openModel} />
+            <div className="flex-1 h-full w-full flex flex-col items-center justify-center text-center">
+                <Image
+                    src="/logo/growstack-mini.png"
+                    alt=""
+                    width={60}
+                    height={60}
+                    className="mb-10"
+                />
+                <Dialog open={genPost} onOpenChange={isGenPost}>
+                    <DialogContent
+                        showCloseButton={true}
+                        className="w-[498px] h-auto p-0 pb-4 border-0 max-w-none"
+                    >
+                        <DialogHeader>
+                            <DialogTitle className="px-5">
+                                <div className="bg-white py-3 border-b border-[#EBEBEB] text-black font-inter flex justify-between items-center">
+                                    <div className="flex items-center relative">
+                                        <div className="w-[50px] h-[50px] rounded-full border border-black bg-[#F5F5F5] flex items-center justify-center relative">
+                                            <LogoIcon />
+                                            <Cross
+                                                className="absolute w-4 h-4"
+                                                style={{
+                                                    bottom: "0",
+                                                    right: "0",
+                                                    transform: "translate(25%, 25%)",
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <div className="flex items-center justify-center space-x-4">
-
-                                    <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("facebook")}>
-                                        <FbIcon />
-                                    </div>
-                                    <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("instagram")}>
-                                        <InstaIcon />
-                                    </div>
-                                    <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("tiktok")}>
-                                        <TiktokIcon />
-                                    </div>
-                                    <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("pinterest")}>
-                                        <PinterestIcon />
-                                    </div>
-                                    <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("linkedin")}>
-                                        <LinkedinIcon />
-                                    </div>
+                            </DialogTitle>
+                        </DialogHeader>
+                        <textarea
+                            value={text}
+                            onChange={(e) => setText(e.target.value)}
+                            rows={4}
+                            placeholder="Write something... or type :balloon: to insert a 🎈"
+                            className="w-full h-auto border-none focus:outline-none pl-[20px] text-[15px] font-poppins font-normal leading-normal overflow-y-auto max-h-[7.5em] resize-none"
+                            style={{
+                                resize: "none",
+                                lineHeight: "1.5",
+                            }} // Set max height and hide overflow
+                        />
+                        <button className="flex items-center w-[150px] h-[35px] mt-2 ml-5 border border-dashed border-[#034737] rounded-[16px] text-[#034737] text-[14px] bg-transparent">
+                            <GenAi className="ml-2 mr-2" size={24} />
+                            {/* Added icon with right margin */}
+                            Generative AI
+                        </button>
+                        <div className="mt-[60px] ml-[15px]">
+                            <div className="flex justify-between items-center">
+                                <div className="flex items-center">
+                                    <button
+                                        onClick={() => imgInputRef.current?.click()} // Trigger file input
+                                    >
+                                        <InsertImage />
+                                    </button>
+                                    <button
+                                        onClick={() => gifInputRef.current?.click()} // Trigger file input
+                                    >
+                                        <Gif />
+                                    </button>
+                                    <button
+                                        onClick={() => fileInputRef.current?.click()} // Trigger file input
+                                    >
+                                        <ImgVector />
+                                    </button>
+                                    <div className="border-l border-gray h-[28px] mx-2" />
+                                    <button
+                                        onClick={() => fileInputRef.current?.click()} // Trigger file input
+                                    >
+                                        <LinkIcon />
+                                    </button>
                                 </div>
-
+                                <div className="relative">
+                                    <SmileEmoji
+                                        onClick={() => setEmojiPickerOpen(!emojiPickerOpen)}
+                                    />
+                                    {emojiPickerOpen && (
+                                        <div className="absolute bottom-[200px] right-[50px]">
+                                            {/* <Picker onEmojiClick={onEmojiClick} />{" "} */}
+                                            {/* Emoji Picker */}
+                                        </div>
+                                    )}
+                                </div>
                             </div>
-                            <div className="flex items-center justify-center ">
-                                <div className="grid grid-cols-2 grid-rows-2 gap-6 p-4  mt-0  ">
-                                    <div className="border border-[#034737] border-dotted rounded p-2  w-[290px] h-[210px] flex items-center justify-center">
-                                        <div className="flex flex-col items-center">
-                                            <div className="pb-3 w-[60px] h-[60px">
-                                                {boxContent.flagIcon}
-                                                {boxContent.buildingStoreIcon}
-                                                {boxContent.buildingIcon}
-                                                {boxContent.notesIcon}
-                                                {boxContent.addAccountIcon}
-
-                                            </div>
-                                            <div className="flex justify-center">
-                                                <div>
-                                                    <p className="text-center">{boxContent?.content1}</p>
-                                                </div>
-                                            </div>
-
-                                        </div>
-
+                        </div>
+                        <input
+                            type="file"
+                            accept="image/*"
+                            ref={imgInputRef}
+                            onChange={handleImgChange}
+                            style={{ display: "none" }} // Hide the file input
+                        />
+                        <input
+                            type="file"
+                            accept="image/gif"
+                            ref={gifInputRef}
+                            onChange={handleGifChange}
+                            style={{ display: "none" }} // Hide the file input
+                        />
+                        <input
+                            type="file"
+                            accept="*/*" // Accept all file types
+                            ref={fileInputRef}
+                            onChange={handleFileChange}
+                            style={{ display: "none" }} // Hide the file input
+                        />
+                        <DialogFooter className="bg-[#F8F9FB] flex justify-between">
+                            <button className="mr-auto flex items-center ml-5">
+                                <Clock />
+                                <span className="ml-2">Select date & Time</span>
+                                <CaretDown className="ml-2" />
+                            </button>
+                            <div className="relative">
+                                <button className="border bg-primary-green rounded-[5px] text-white flex items-center p-2 mr-4">
+                                    <span className="mr-2">Save as Draft</span>
+                                    <div className="border-l border-white h-[28px] mx-2" />
+                                    <CaretDown
+                                        className="ml-2 w-5 h-5" // Increase size of CaretDown
+                                        onClick={handleCaretClick}
+                                    />
+                                </button>
+                                {isDropdownOpen && (
+                                    <div className=" z-1000 w-[250px] h-auto bg-white rounded-[15px] shadow-lg flex flex-col justify-around p-2">
+                                        <button className="border-none p-1 rounded flex items-center">
+                                            <Calender className="mr-2" /> Schedule
+                                        </button>
+                                        <button className="border-none p-1 rounded flex items-center">
+                                            <SendIcon2 className="mr-2" /> Publish
+                                        </button>
                                     </div>
-                                    <div className="border border-[#034737] border-dotted rounded p-2 w-[290px] h-[210px] flex items-center justify-center">
-
-                                        <div className="flex flex-col items-center">
-
-                                            <div className="pb-3 w-[60px] h-[60px">
-
-                                                {boxContent.userCircleIcon}
-                                                {boxContent.plusIcon}
-                                                {boxContent.briefCase}
-                                            </div>
-                                            <div className="flex justify-center">
-                                                <div>
-                                                    <p className="text-center">{boxContent?.content2}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="border border-[#034737] border-dotted rounded p-2 w-[290px] h-[210px] flex items-center justify-center">
-                                        <div className="flex flex-col items-center">
-                                            <div className="pb-3 w-[60px] h-[60px">
-                                                {boxContent.growstackIcon}
-
-                                            </div>
-
-                                            <div className="flex flex-col justify-center">
-                                                <div>
-                                                    <p className="text-center font-bold text-xl pt-2">{boxContent?.growStackData}</p>
-                                                </div>
-                                                <div>
-                                                    <p className="text-center text-sm">{boxContent?.growstackSubData}</p>
-                                                </div>
-                                                <div className="pt-3 ">
-                                                    <p className="text-center text-md " style={{ color: '#2FDF84' }}>{boxContent?.connected}</p>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
+                                )}
                             </div>
-                        </DialogTitle>
-                    </DialogHeader>
-                </DialogContent>
-            </Dialog>
+                        </DialogFooter>
+                    </DialogContent>
+                </Dialog>
+
+            </div>
             <div>
                 {!skipNow ? <>
                     <div className="absolute">
@@ -553,15 +659,10 @@ export default function ComingSoon() {
 
                         </div>
                     </div>
-
                 </> : <>
-
                     <div className="flex-1 h-full w-full flex flex-col items-center justify-center text-center">
-                        <SocialNavBar setOpen={setOpen} />
-                        <Image src="/logo/growstack-mini.png" alt="" width={60} height={60} className="mb-10" />
-                        <div className="mt-5">
-                            <PostCard />
-                        </div>
+                        <SocialNavBar setOpen={setOpenModel} setOpenAddAcc={isGenPost} selectedIcon={selectedIcon} setSelectedIcon={setSelectedIcon} />
+                        <PostCard selectedIcon={selectedIcon} />
                     </div>
                 </>
                 }

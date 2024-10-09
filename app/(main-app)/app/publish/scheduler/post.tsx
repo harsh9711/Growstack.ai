@@ -9,27 +9,19 @@ import type { DatePickerProps, GetProps } from 'antd';
 import dayjs from 'dayjs';
 import { DatePicker, Space } from 'antd';
 import Image from "next/image";
-
-
-
-const PostCard: React.FC = () => {
-
+interface PostCardProps {
+    selectedIcon: string;
+}
+const PostCard: React.FC<PostCardProps> = ({ selectedIcon }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
-
     const [open, setOpen] = useState<boolean>(false);
     const toggleDropdown = () => {
         setIsOpen((prev) => !prev);
     };
-
     return (
         <div className='flex flex-row gap-3'>
             <div className='flex flex-col gap-3'>
-                <div className="w-[50px] h-[50px] rounded-full shadow-lg bg-white flex items-center justify-center cursor-pointer">
-                    <svg width="22" height="21" viewBox="0 0 22 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd" d="M18.5266 4.6697C18.6 4.74308 18.6582 4.8302 18.6979 4.92609C18.7377 5.02197 18.7581 5.12474 18.7581 5.22853C18.7581 5.33232 18.7377 5.43509 18.6979 5.53097C18.6582 5.62685 18.6 5.71397 18.5266 5.78735L9.04428 15.2697C8.90356 15.4106 8.71479 15.4932 8.51577 15.501C8.31674 15.5087 8.12213 15.441 7.97089 15.3114L3.54581 11.5185C3.38653 11.382 3.288 11.1878 3.27187 10.9787C3.25575 10.7696 3.32336 10.5626 3.45984 10.4033C3.59631 10.2441 3.79046 10.1455 3.99959 10.1294C4.20872 10.1133 4.41568 10.1809 4.57496 10.3174L8.44374 13.6349L17.4089 4.67097C17.4823 4.59757 17.5694 4.53935 17.6653 4.49962C17.7612 4.4599 17.864 4.43945 17.9678 4.43945C18.0716 4.43945 18.1743 4.4599 18.2702 4.49962C18.3661 4.53935 18.4532 4.59631 18.5266 4.6697Z" fill="#5E6166" />
-                    </svg>
-                </div>
                 <div className="w-[50px] h-[50px] rounded-full shadow-lg bg-white flex items-center justify-center cursor-pointer">
                     <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M16.108 3.12891H18.8222L12.8925 9.82325L19.8683 18.9328H14.4063L10.1283 13.4079L5.2333 18.9328H2.5175L8.85984 11.7724L2.16797 3.12891H7.7686L11.6355 8.17884L16.108 3.12891ZM15.1554 17.3281H16.6593L6.95139 4.64931H5.3375L15.1554 17.3281Z" fill="#5E6166" />
@@ -37,6 +29,7 @@ const PostCard: React.FC = () => {
                 </div>
             </div>
             <div className="p-4 rounded-2xl shadow-lg bg-white w-[600px] h-[600px]">
+                {selectedIcon}
                 <div className="flex flex-row mb-4 gap-4">
                     <div className='w-15'>
                         <div className="w-[50px] h-[50px] rounded-full overflow-hidden flex items-center justify-center">
@@ -176,13 +169,7 @@ const PostCard: React.FC = () => {
                                 or binge-watching your favorite series, sometimes you just lose track of time! What’s your go-to
                                 for a short but sweet night? Share below!
                             </p>
-
-                            {/* <Image
-                                src="https://leadsync.me/blog/wp-content/uploads/2023/10/Social-Media.jpg.webp"
-                                alt="" width={20} height={20}
-                                className="h-18 w-full"/> */}
-            
-                    </div>
+                        </div>
                     </div>
                 </div>
             </div>
