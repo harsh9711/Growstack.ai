@@ -33,7 +33,7 @@ const Benefits = () => {
 
   return (
     <div
-      className="max-w-[1760px] py-20 flex flex-col items-center gap-y-8 justify-center rounded-[60px] mx-auto w-full max-h-[594px] h-full bg-[#13745D]"
+      className="max-w-[1760px] py-20 flex flex-col items-center gap-y-8 justify-center rounded-[60px] mx-auto w-full sm:max-h-[594px] h-full bg-[#13745D]"
       data-aos="flip-left" // Rotate the whole green container first
       data-aos-duration="1500" // Rotation duration
     >
@@ -41,12 +41,12 @@ const Benefits = () => {
         <h2 className="text-center capitalize text-[12px]">BENEFITS</h2>
       </div>
       <div>
-        <h1 className="text-[26px] xl:text-[40px] flex gap-2 leading-tight sm:text-left text-center text-white">
+        <h1 className="text-[26px] xl:text-[40px] flex  flex-col sm:flex-row gap-2 leading-tight sm:text-left text-center text-white">
           <span className="font-semibold">Transformative benefits for </span>
           <span className="font-light">smarter prospecting </span>
         </h1>
       </div>
-      <div className="flex flex-row gap-10 mt-6">
+      <div className="flex flex-col sm:flex-row gap-10 mt-6">
         <Box
           firsttext={"Time efficiency"}
           secondtext={
