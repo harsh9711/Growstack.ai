@@ -95,9 +95,9 @@ const Animation = () => {
           Core Features
         </div>
 
-        <div className="  items-center flex flex-col gap-y-4 justify-center  mx-auto ">
+        <div className=" sm:px-0 px-6 items-center flex flex-col gap-y-4 justify-center  mx-auto ">
           <h1
-            className="text-[24px] xl:text-[56px]  leading-12 flex  gap-3.5
+            className="text-[16px] sm:text-[24px] xl:text-[56px]  leading-12 flex  gap-3.5
            items-center justify-center "
           >
             <span className="font-semibold text-center">
@@ -106,7 +106,7 @@ const Animation = () => {
             <span className="font-light text-center">AI features</span>
           </h1>
 
-          <p className="text-[18px]  items-center justify-center font-medium text-center max-w-[819px] leading-loose">
+          <p className="text-[12px] sm:text-[18px]  items-center justify-center font-medium text-center max-w-[819px] leading-loose">
             From AI Templates, Assistants to Social Media Analytics, explore how
             GrowStack's suite of tools can elevate your business to new heights
           </p>
@@ -114,18 +114,18 @@ const Animation = () => {
       </div>
       {landingpage.map((item, index) => (
         <div
-          className="z-20 sm:mb-20 hover:scale-150 transform duration-1000 transition-transform w-full relative items-center ease-in-out  justify-center mx-auto  flex flex-col"
+          className="z-20 sm:mb-20 sm:flex hidden  hover:scale-150 transform duration-1000 transition-transform w-full relative items-center ease-in-out  justify-center mx-auto  flex-col"
           key={index}
         >
           <div
             data-aos="fade-left "
-            className={`relative mt-32 w-full flex justify-between gap-28 flex-row max-w-[300px] sm:max-w-[800px] h-[74.48px] sm:h-[198.62px] p-4 rounded-[5px] sm:rounded-[20px] border`}
+            className={`relative mt-32 flex w-full  justify-between gap-28 flex-row max-w-[300px] sm:max-w-[800px] h-[74.48px] sm:h-[198.62px] p-4 rounded-[5px] sm:rounded-[20px] border`}
             style={{
               backgroundColor: item.background,
               border: `1px solid ${item.border}`,
             }}
           >
-            <div className="relative max-w-[95.78px] max-h-[53.45px]  sm:max-w-[250px] w-full sm:max-h-[150px] h-full border-none">
+            <div className="relative max-w-[95.78px] sm:flex hidden max-h-[53.45px]  sm:max-w-[250px] w-full sm:max-h-[150px] h-full border-none">
               {/* <video
                 className="absolute top-0 left-0 w-full h-full object-cover border-none outline-none"
                 width="320"
@@ -148,12 +148,14 @@ const Animation = () => {
             </div>
 
             <div
-              className="absolute h-[110.45px] sm:h-[275.86px] sm:hover:translate-x-[300px] transition-transform duration-1000 ease-in-out  translate-x-[100px] sm:translate-x-[260px] shadow-lg hover:border-t-8 -translate-y-[60px] p-3.5 w-full max-w-[169.66px] sm:max-w-[452.41px] flex flex-col gap-y-2 bg-white rounded-[5px] sm:rounded-[20px] border-animate"
+              className="absolute h-[110.45px] sm:flex hidden sm:h-[275.86px] sm:hover:translate-x-[300px] transition-transform duration-1000 ease-in-out  translate-x-[100px] sm:translate-x-[260px] shadow-lg hover:border-t-8 -translate-y-[60px] p-3.5 w-full max-w-[169.66px] sm:max-w-[452.41px]  flex-col gap-y-2 bg-white rounded-[5px] sm:rounded-[20px] border-animate"
               style={{
                 borderColor: item.border,
               }}
             >
-              <h2 className="text-[8px] sm:text-[14px] font-semibold">{item.name}</h2>
+              <h2 className="text-[8px] sm:text-[14px] font-semibold">
+                {item.name}
+              </h2>
               <HoverVideoPlayer
                 className="absolute  left-0 w-full h-full rounded-md sm:rounded-2xl border-none outline-none"
                 videoSrc={`/landingpage/Box ${item.id}.mp4`}
@@ -183,7 +185,55 @@ const Animation = () => {
           </div>
         </div>
       ))}
-
+      {/* mobile */}
+      {landingpage.map((item, index) => (
+        <div
+          className="z-20 mb-20 sm:mb-20  sm:hidden flex transform duration-1000 transition-transform w-full relative items-center ease-in-out  justify-center mx-auto   flex-col"
+          key={index}
+        >
+          <div
+            data-aos="fade-left "
+            className={`relative mt-20 flex w-full -translate-x-[300px]   justify-center gap-28 flex-row max-w-[300px] sm:max-w-[800px] h-[74.48px] sm:h-[198.62px] p-4 rounded-[5px] sm:rounded-[20px] `}
+          >
+          
+            <div
+              className="absolute h-[195.28px] flex sm:h-[275.86px] sm:hover:translate-x-[300px] transition-transform duration-1000 ease-in-out   shadow-lg hover:border-t-8 -translate-y-[60px] p-3.5 w-full max-w-[300px] sm:max-w-[452.41px]  flex-col gap-y-2 bg-white rounded-[5px] sm:rounded-[20px] border-animate"
+              style={{
+                borderColor: item.border,
+              }}
+            >
+              <h2 className="text-[10px] sm:text-[14px] font-semibold">
+                {item.name}
+              </h2>
+              <HoverVideoPlayer
+                className="absolute  left-0 w-full h-full rounded-sm sm:rounded-2xl border-none outline-none"
+                videoSrc={`/landingpage/Box ${item.id}.mp4`}
+                pausedOverlay={
+                  <img
+                    src={`/landingpage/img${item.id}.svg`}
+                    alt=""
+                    className="rounded-2xl flex"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "fill", // Ensures the image fits well
+                    }}
+                  />
+                }
+                loadingOverlay={
+                  <div className="loading-overlay">
+                    <div className="loading-spinner" />
+                  </div>
+                }
+                videoClassName="sm:rounded-2xl" // Add this to make the video corners rounded
+                style={{
+                  objectFit: "cover", // Ensures the video fits without distortion
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      ))}
       <div className="absolute  -translate-x-20 translate-y-[265px]  z-0 ">
         {/* <svg
           width="273"

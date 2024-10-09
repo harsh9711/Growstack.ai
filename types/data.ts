@@ -221,7 +221,7 @@ export const landingpage = [
   {
     id: 3,
     imageUrl: "/images_growstack/home/fBlock3.svg",
-    name: "Transform ideas into content",
+    name: "Strategize with AI assistant",
     border: "#FFC3E4",
     background: "#FCF1F7",
     imageUrlbox: "/landingpage/l3.svg",
@@ -258,7 +258,7 @@ export const landingpage = [
   {
     id: 7,
     imageUrl: "/images_growstack/home/fBlock7.svg",
-    border: "#DBBFFF", name: "Efortless publishing with scheduler",
+    border: "#DBBFFF", name: "Effortless publishing with scheduler",
     background: "#FAF6FF",
     imageUrlbox: "/landingpage/l7.svg",
     videos:"/landingpage/box7.svg"

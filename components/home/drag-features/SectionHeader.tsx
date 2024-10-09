@@ -24,13 +24,13 @@ export default function  SectionHeader() {
         </div>
         <div className="sm:hidden flex items-center justify-center space-x-5 pb-10">
                <Link href="/auth/register">
-                  <h2 className=" inline-flex items-center space-x-3.5 2xl:text-[20px] text-[14px] min-w-['107px'] 2xl:h-14 h-10 border-2 border-primary-green text-primary-green rounded-2xl p-2 2xl:px-4 2xl:py-3.5 hover:bg-primary-green hover:text-white">
+                  <h2 className=" inline-flex items-center space-x-3.5 2xl:text-[20px] text-[14px] min-w-['107px'] 2xl:h-14 h-10 border-2 border-primary-green text-primary-green rounded-lg sm:rounded-2xl p-2 2xl:px-4 2xl:py-3.5 hover:bg-primary-green hover:text-white">
                      <span className="">Free trial</span>
                      <ArrowRight />
                   </h2>
                </Link>
                <Link href="/demo" legacyBehavior>
-               <h2 className=" inline-flex items-center space-x-3.5 2xl:text-[20px] text-[14px] min-w-['107px'] 2xl:h-14 h-10 border-2 border-primary-green text-primary-green rounded-2xl p-2 2xl:px-4 2xl:py-3.5 hover:bg-primary-green hover:text-white">
+               <h2 className=" inline-flex items-center space-x-3.5 2xl:text-[20px] text-[14px] min-w-['107px'] 2xl:h-14 h-10 border-2 border-primary-green text-primary-green rounded-lg sm:rounded-2xl p-2 2xl:px-4 2xl:py-3.5 hover:bg-primary-green hover:text-white">
                <span className="whitespace-nowrap">Get a demo</span>
                   </h2>
                </Link>
