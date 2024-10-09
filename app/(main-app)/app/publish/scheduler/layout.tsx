@@ -7,6 +7,7 @@ import PostCard from "./post";
 import AddChannel from "./sheduler-post/page";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
+import { parseJsonString } from "@/lib/utils";
 import toast from "react-hot-toast";
 import {
   CrossMark,
@@ -21,7 +22,10 @@ import {
   SheduleBackground,
   SmileEmoji,
 } from "@/components/svgs";
-
+import { getCookie } from "cookies-next";
+import EventSource from 'eventsource';
+import { ChatResponse } from "@/types/common";
+import { debounce } from "@/lib/utils";
 interface TimeLeft {
   days: number;
   hours: number;
@@ -181,6 +185,7 @@ export default function ComingSoon() {
   const [openModel, setOpenModel] = useState(false);
 
   const [openAddAcc, setOpenAddAcc] = useState(false);
+  const [accumulatedResponse,setAccumulatedResponse] = useState("");
   const [selectedIcon, setSelectedIcon] = useState("Facebook");
   const handleOpenDialog = () => {
     setIsDialogOpen(true);
@@ -369,8 +374,53 @@ export default function ComingSoon() {
     return () => clearInterval(timer);
   }, []);
 
-  const onEmojiClick = (event: any, emojiObject: any) => {
-    setText((prevText) => prevText + emojiObject.emoji);
+  const streamResponse = async (chatId: string) => {
+    try {
+      setAccumulatedResponse("")
+      const token = getCookie("token");
+      const eventSource = new EventSource(`${API_URL}/ai/api/v1/conversation/chat/stream/${chatId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+        withCredentials: true,
+      });
+
+
+      eventSource.onmessage = (event: MessageEvent) => {
+        const chunk = event.data;
+        const msg = parseJsonString(chunk)?.text || "";
+        setAccumulatedResponse((prevResponse) => prevResponse + msg);
+      };
+
+      eventSource.onerror = (error: MessageEvent) => {
+        console.error('EventSource failed:', error);
+        eventSource.close();
+      };
+
+      eventSource.addEventListener('end', (event: MessageEvent) => {
+        eventSource.close();
+      });
+
+    } catch (error) {
+      console.error('Error setting up EventSource:', error);
+      toast.error('Error setting up stream');
+    }
+  };
+
+  const handleInputChage = debounce(async (e: any) => {
+    const user_text = e.target.value;
+    let apiUrl = `${API_URL}/ai/api/v1/conversation/chat?conversation_id=&model=gemini-1.5-flash&enableSecure=false`;
+  
+    const conversation = await instance.post(apiUrl, {
+      user_prompt: user_text,
+    });
+  
+    const { response, conversation_id, chatId, noOfMessagesLeft, totalNoOfMessages } = conversation.data.data as ChatResponse;
+    await streamResponse(chatId);
+  }, 600);
+
+  const onEmojiClick = (emoji: { emoji: string }) => {
+    setText((prevText) => prevText + emoji.emoji);
     setEmojiPickerOpen(false);
   };
  
@@ -460,6 +510,7 @@ export default function ComingSoon() {
                     placeholder="Ask Gen AI here..."
                     className="w-full pl-10 border border-dashed border-[#034737] rounded-[16px] text-[#034737] text-[14px] bg-transparent p-2"
                     style={{ paddingLeft: "28px" }} // Ensures space for the icon
+                    onChange={(e) => handleInputChage(e)}
                   />
                 </div>
                 <div className="relative w-[96%] ml-2 mt-2">
@@ -470,6 +521,7 @@ export default function ComingSoon() {
                     style={{
                       resize: "none",
                     }}
+                    value={accumulatedResponse}
                   />
                   {showActions && (
                     <>
