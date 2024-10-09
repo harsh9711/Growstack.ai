@@ -1,6 +1,6 @@
 import { BriefCase, BuildingIcon, BuildingStore, FbIcon, FlagIcon, GrowstackIcon, InstaIcon, LinkedinIcon, NotesIcon, PinterestIcon, PlusIcon, TiktokIcon } from "@/components/svgs";
 import { DialogTitle } from "@radix-ui/react-dialog";
-import { UserCircleIcon } from "lucide-react";
+import { TwitterIcon, UserCircleIcon } from "lucide-react";
 import { FC, useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import instance from "@/config/axios.config";
@@ -45,9 +45,8 @@ const contentMap: { [key: string]: BoxContent } = {
         flagIcon: <FlagIcon />,
         content1: "Add Facebook Pages",
     },
-
     instagram: {
-        name: "Instagram",
+        name: "twitter",
         growstackIcon: <GrowstackIcon />,
         growStackData: "GrowStactAi",
         growstackSubData: "@GrowStackai",
@@ -71,8 +70,8 @@ const contentMap: { [key: string]: BoxContent } = {
 
     },
 
-    x: {
-        name: "X",
+    twitter: {
+        name: "twitter",
         growstackIcon: <GrowstackIcon />,
         growStackData: "GrowStactAi",
         growstackSubData: "@GrowStackai",
@@ -221,8 +220,11 @@ const AddPages: FC<AddPagesProps> = ({
                                     <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("facebook")}>
                                         <FbIcon />
                                     </div>
-                                    <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("twitter")}>
+                                    <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("instagram")}>
                                         <InstaIcon />
+                                    </div>
+                                    <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("twitter")}>
+                                        <TwitterIcon />
                                     </div>
                                     <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("tiktok")}>
                                         <TiktokIcon />
@@ -238,35 +240,22 @@ const AddPages: FC<AddPagesProps> = ({
                             </div>
                             <div className="flex items-center justify-center ">
                                 <div className="grid grid-cols-2 grid-rows-2 gap-6 p-4  mt-0  ">
-                                    <div className="border border-[#034737] bg-[#034737] border-dotted rounded p-2  w-[290px] h-[210px] flex items-center justify-center" onClick={handleOnConnect}>
+                                    <div className="border border-[#034737] bg-[#034737] border-dotted rounded text-white p-2  w-[290px] h-[210px] flex items-center justify-center" onClick={handleOnConnect}>
                                         <div className="flex flex-col items-center">
-                                            <div className="pb-3 w-[60px] h-[60px">
-                                            <NotesIcon />
-                                      Add Account
-
-                                            </div>
-                                            <div className="flex justify-center">
-                                                <div>
-                                                    {/* <p className="text-center">{boxContent?.content1}</p> */}
+                                            <div className="pb-3 w-[60px] h-[60px text-white">
+                                                <div className="text-white">
+                                                <FlagIcon />
+                                                {boxContent.flagIcon}
+                                                {boxContent.buildingStoreIcon}
+                                                {boxContent.buildingIcon}
+                                                {boxContent.notesIcon}
+                                                {boxContent.addAccountIcon}
                                                 </div>
-                                            </div>
-
-                                        </div>
-
-                                    </div>
-                                    <div className="border border-[#034737] border-dotted rounded p-2 w-[290px] h-[210px] flex items-center justify-center">
-
-                                        <div className="flex flex-col items-center">
-
-                                            <div className="pb-3 w-[60px] h-[60px">
-
-                                                {/* {boxContent.userCircleIcon}
-                                                {boxContent.plusIcon}
-                                                {boxContent.briefCase} */}
+                                      
                                             </div>
                                             <div className="flex justify-center">
                                                 <div>
-                                                    {/* <p className="text-center">{boxContent?.content2}</p> */}
+                                                    <p className="text-center text-white">{boxContent?.content1}</p>
                                                 </div>
                                             </div>
                                         </div>

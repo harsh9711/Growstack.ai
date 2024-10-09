@@ -321,6 +321,7 @@ export default function ComingSoon() {
             console.log("Selected files:", files);
         }
     };
+    
     return (
         <div className="flex-1 h-full w-full flex flex-col items-center justify-center text-center">
             <AddPages setOpenModel={setOpenModel} openModel={openModel} />

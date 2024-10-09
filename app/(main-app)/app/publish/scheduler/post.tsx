@@ -16,6 +16,8 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon }) => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const [open, setOpen] = useState<boolean>(false);
+    const [openModel, setOpenModel] = useState(false);
+
     const toggleDropdown = () => {
         setIsOpen((prev) => !prev);
     };
