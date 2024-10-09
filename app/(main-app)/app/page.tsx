@@ -150,16 +150,16 @@ export default function Dashboard() {
           </div>
         </div>
         <div className="w-full  flex flex-col lg:flex-row gap-7 mt-4" >
-          <div className="w-2/3 space-y-6 " data-aos="fade-left">
+          <div className="w-full lg:w-2/3 space-y-6 " data-aos="fade-left">
             <ChatComponent />
           </div>
           <div
-            className="w-full lg:max-w-[40%] bg-white p-8 rounded-3xl border border-[#E8E8E8] h-[780px]"
+            className="w-full lg:w-1/3 bg-white p-8 rounded-3xl border border-[#E8E8E8] h-[780px]"
             data-aos="fade-right"
           >
             <div className="space-y-3">
               <h1 className="text-xl font-semibold text-center">
-                Unlock the power of AI
+                Most Used Features
               </h1>
               <p className="text-[#6C7275] text-center">
                 Chat with the smartest AI - Experience the power of AI with us
@@ -198,7 +198,7 @@ export default function Dashboard() {
                   />
                   <h2 className="font-medium">AI templates </h2>
                 </div>
-                <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
+                <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
                   <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
                 </button>
               </div>
@@ -217,7 +217,7 @@ export default function Dashboard() {
                   />
                   <h2 className="font-medium">AI assistants</h2>
                 </div>
-                <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
+                <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
                   <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
                 </button>
               </div>
@@ -236,7 +236,7 @@ export default function Dashboard() {
                   />
                   <h2 className="font-medium">AI custom GPT </h2>
                 </div>
-                <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
+                <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
                   <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
                 </button>
               </div>
@@ -251,7 +251,7 @@ export default function Dashboard() {
                     src="/icons/media.svg" alt="" width={60} height={60} />
                   <h2 className="font-medium">Text to avatar </h2>
                 </div>
-                <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
+                <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
                   <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
                 </button>
               </div>
@@ -270,7 +270,7 @@ export default function Dashboard() {
                   />
                   <h2 className="font-medium">Workflow builder</h2>
                 </div>
-                <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
+                <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
                   <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
                 </button>
               </div>
@@ -289,7 +289,7 @@ export default function Dashboard() {
                   />
                   <h2 className="font-medium">AI article wizard</h2>
                 </div>
-                <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
+                <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
                   <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
                 </button>
               </div>

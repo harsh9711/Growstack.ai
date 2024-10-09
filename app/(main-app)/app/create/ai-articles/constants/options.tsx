@@ -1,4 +1,4 @@
-import { AnthropicClaude, ChatGptIcon2, GoogleGemini, Llama, LogoIcon, Mistra } from "@/components/svgs";
+import { AnthropicClaude, ChatGptIcon2, GoogleGemini, Llama, LogoIcon, Mistra,Perplexity } from "@/components/svgs";
 
 export const aiModelOptions = [
   {
@@ -45,6 +45,67 @@ export const aiModelOptions = [
         value: "claude-3-opus-20240229",
         icon: <AnthropicClaude />,
       },
+      {
+        label: "Claude 3 Sonnet",
+        value: "claude-3-sonnet-20240229",
+        icon: <AnthropicClaude />,
+      },
+      
+      {
+        label: "Perplexity",
+        value: "Perplexity",
+        icon: <Perplexity />,
+      },
+    ],
+  },
+
+];
+
+export const aiModelOptionsTemplete = [
+  {
+    modelCategory: "growStackAiMessagesModel",
+    label: "GrowStack AI Messages Models",
+    models: [
+      {
+        label: "GrowStack LLM",
+        value: "growstack-llm",
+        icon: <LogoIcon />,
+      },
+    ],
+  },
+  {
+    modelCategory: "fastAiMessagesModel",
+    label: "Fast AI Messages Models",
+    models: [
+      {
+        label: "GPT 3.5 Turbo",
+        value: "gpt-3.5-turbo",
+        icon: <ChatGptIcon2 />,
+      },
+      {
+        label: "Claude 3 Haiku",
+        value: "claude-3-haiku-20240307",
+        icon: <AnthropicClaude />,
+      },
+      {
+        label: "Gemini 1.5 Flash",
+        value: "gemini-1.5-flash",
+        icon: <GoogleGemini />,
+      },
+    ],
+  },
+  {
+    modelCategory: "smartAiMessagesModel",
+    label: "Smart AI Messages Models",
+    models: [
+      // { label: "GPT 4o", value: "gpt-4o", icon: <ChatGptIcon2 /> },
+      { label: "GPT 4", value: "gpt-4", icon: <ChatGptIcon2 /> },
+      { label: "GPT 4 Turbo", value: "gpt-4-turbo", icon: <ChatGptIcon2 /> },
+      // {
+      //   label: "Claude 3 Opus",
+      //   value: "claude-3-opus-20240229",
+      //   icon: <AnthropicClaude />,
+      // },
       {
         label: "Claude 3 Sonnet",
         value: "claude-3-sonnet-20240229",
