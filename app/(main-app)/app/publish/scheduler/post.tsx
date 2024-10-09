@@ -11,10 +11,12 @@ import { DatePicker, Space } from 'antd';
 import Image from "next/image";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
+import Spinner from "@/components/Spinner";
 
 interface PostCardProps {
     selectedIcon: string;
     profile: ResponseData
+    platforms: string[]
 }
 
 interface SocialAccount {
@@ -35,19 +37,11 @@ interface ResponseData {
     schedules: object;
 }
 
-const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile }) => {
-    const [isOpen, setIsOpen] = useState<boolean>(false);
-    const dropdownRef = useRef<HTMLDivElement>(null);
-    const [open, setOpen] = useState<boolean>(false);
-    const [openModel, setOpenModel] = useState(false);
+const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile, platforms }) => {
     const [postDetails, setPostDetails] = useState<any[]>([]);
     const [profileDetails, setProfileDetails] = useState<any | null>([]);
-
-
-    const toggleDropdown = () => {
-        setIsOpen((prev) => !prev);
-    };
-
+    const [loading, setLoading] = useState(false)
+    const [userPostDetails,setUserPostDetails] = useState<any[]>([])
     useEffect(() => {
         setPostDetails([]);
         fetchPostDetails();
@@ -55,21 +49,30 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile }) => {
     }, [selectedIcon]);
 
     const fetchPostDetails = async () => {
+        setLoading(true)
         try {
-            const response = await instance.get(
-                `${API_URL}/users/api/v1/social-media/posts/${selectedIcon.toLowerCase()}?limit=10`
-            );
-            const post = response.data.data.posts
-            setPostDetails(post);
-            console.log("response", response.data.data.posts);
+            console.log("selectedIcon",selectedIcon);
+            
+            if (selectedIcon !== null) {
+                const response = await instance.get(
+                    `${API_URL}/users/api/v1/social-media/posts/${selectedIcon}?limit=10`
+                );
+                const post = response.data.data.posts
+                setPostDetails(post);
+                console.log("response", response.data.data.posts);
+            }
+            setLoading(false)
+
         } catch (error) {
+            setLoading(false)
+
             console.error("Error fetching posts", error);
         }
     };
 
     const platformDetails = () => {
         let platformDetails: any
-        if (profile !== undefined && profile) {
+        if (profile !== undefined && profile && selectedIcon) {
             platformDetails = profile.activeSocialAccounts
                 .filter((account: any) => account.platform === selectedIcon.toLowerCase())
                 .map((account: any) => {
@@ -81,14 +84,19 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile }) => {
                         userImage: account.userImage
                     };
                 });
-            setProfileDetails(platformDetails)
+                setUserPostDetails(platformDetails)
         }
         return platformDetails;
     }
     return (
         <>
+            {loading && <div className="absolute lex-1 h-full flex flex-col gap-5 justify-center items-center">
+                <Spinner color="black" size={100} />
+                Loading...
+            </div>
 
-            {profileDetails ? (
+            }
+            {userPostDetails.length > 0 ? (
                 <>
                     {postDetails.map((post: { post: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; media: { type: string; url: string | undefined; mediaUrls: { mediaUrl: string | undefined; }[]; }[]; }, index: Key | null | undefined) => (
                         <div className='flex flex-row gap-3 mt-2 px-4'>
@@ -103,16 +111,16 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile }) => {
                                 <div key={index} className="flex flex-row mb-4 gap-4">
                                     <div className='w-15'>
                                         <div className="w-[50px] h-[50px] rounded-full overflow-hidden flex items-center justify-center">
-                                            {profileDetails.length > 0 && profileDetails[0].userImage?.startsWith('http') && (
-                                                <Image src={profileDetails[0].userImage} alt="User Avatar" width={50} height={50} />
+                                            {userPostDetails.length > 0 && userPostDetails[0].userImage?.startsWith('http') && (
+                                                <Image src={userPostDetails[0].userImage} alt="User Avatar" width={50} height={50} />
                                             )}
                                         </div>
                                     </div>
                                     <div className='flex flex-col gap-3 mt-2'>
                                         <div className='flex flex-row justify-between w-full h-[20px]'>
                                             <div className="flex flex-row items-center justify-start gap-1">
-                                                <p className="font-bold font-sans text-[16.7px] tracking-[-0.3px]">{profileDetails.length > 0 && profileDetails[0].username !== undefined && (
-                                                   profileDetails[0].username
+                                                <p className="font-bold font-sans text-[16.7px] tracking-[-0.3px]">{userPostDetails.length > 0 && userPostDetails[0].username !== undefined && (
+                                                    userPostDetails[0].username
                                                 )}</p>
                                                 <p className="font-sans font-normal text-[16.7px] tracking-[-0.3px] text-[rgba(83,100,113,1)]"></p>
                                             </div>
@@ -168,7 +176,7 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile }) => {
                         </div>
                     ))} </>) :
 
-                <h1>No Active account</h1>
+                <h1>No Active Post</h1>
             }
         </>
     );

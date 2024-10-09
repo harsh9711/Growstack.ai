@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import {
   FaFacebookF,
   FaInstagram,
@@ -8,13 +8,13 @@ import {
 } from "react-icons/fa";
 import { RiTwitterXLine } from "react-icons/ri";
 import Image from "next/image";
-
+import Swal from 'sweetalert2';
 const socialMediaIcons = [
   { icon: FaFacebookF, name: "Facebook", bgColor: "bg-blue-600" },
   { icon: FaInstagram, name: "Instagram", bgColor: "bg-pink-500" },
-  { icon: FaTiktok, name: "TikTok", bgColor: "bg-black" },
+  // { icon: FaTiktok, name: "TikTok", bgColor: "bg-black" },
   { icon: RiTwitterXLine, name: "Twitter", bgColor: "bg-black" },
-  { icon: FaPinterestP, name: "Pinterest", bgColor: "bg-red-600" },
+  // { icon: FaPinterestP, name: "Pinterest", bgColor: "bg-red-600" },
   { icon: FaLinkedinIn, name: "LinkedIn", bgColor: "bg-blue-700" },
 ];
 
@@ -23,6 +23,7 @@ interface SocialNavBarProps {
   setOpenAddAcc: (open: boolean) => void;
   selectedIcon: string; // Receiving selectedIcon from the parent
   setSelectedIcon: (name: string) => void; // Function to set selectedIcon in the parent
+  platforms:string[]
 }
 
 const SocialNavBar: FC<SocialNavBarProps> = ({
@@ -30,13 +31,32 @@ const SocialNavBar: FC<SocialNavBarProps> = ({
   setOpenAddAcc,
   selectedIcon,
   setSelectedIcon,
+  platforms
 }) => {
   const handleDialogToggle = () => {
     setOpenAddAcc(true);
   };
 
+  useEffect(() => {
+    setSelectedIcon(platforms[0])
+}, []);
+
   const handleOpenAddAccDialog = () => {
     setOpen(true);
+  };
+
+  const handleIconClick = (name:string) => {
+    if (platforms.includes(name.toLowerCase())) {
+      setSelectedIcon(name);
+    } else {
+      // Show alert if the account is not added
+      Swal.fire({
+        title: 'Account Not Added',
+        text: 'This account is not linked. Please add it first.',
+        icon: 'warning',
+        confirmButtonText: 'OK',
+      });
+    }
   };
 
   return (
@@ -75,7 +95,7 @@ const SocialNavBar: FC<SocialNavBarProps> = ({
               style={{
                 boxShadow: selectedIcon === name ? "0 0 0 1px #034737" : "none",
               }}
-              onClick={() => setSelectedIcon(name)}
+              onClick={() => handleIconClick(name)}
             >
               <div className={`${bgColor} p-1 rounded-full`}>
                 <Icon className="text-white hover:opacity-80" size={20} />

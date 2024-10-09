@@ -4,28 +4,13 @@ import Image from "next/image";
 import React, { useEffect, useState, useRef } from "react";
 import SocialNavBar from "./Navbar";
 import PostCard from "./post";
-import AddChannel from "./sheduler-post/page";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
-import { parseJsonString } from "@/lib/utils";
 import toast from "react-hot-toast";
 import {
-    CrossMark,
-    Calender,
-    CaretDown,
-    GenAi,
-    Gif,
-    ImgVector,
-    InsertImage,
-    LogoIcon,
-    SendIcon2,
     SheduleBackground,
-    SmileEmoji,
 } from "@/components/svgs";
-import { getCookie } from "cookies-next";
-import EventSource from 'eventsource';
-import { ChatResponse } from "@/types/common";
-import { debounce } from "@/lib/utils";
+
 interface TimeLeft {
     days: number;
     hours: number;
@@ -53,39 +38,18 @@ const calculateTimeLeft = (endTime: number): TimeLeft => {
 
     return timeLeft;
 };
-import {
-    Dialog,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTrigger,
-} from "@/components/ui/dialog";
-import { DialogTitle } from "@radix-ui/react-dialog";
-import { FbIcon } from "@/components/svgs";
-import { InstaIcon } from "@/components/svgs";
-import { TiktokIcon } from "@/components/svgs";
-import { PinterestIcon } from "@/components/svgs";
-import { LinkedinIcon } from "@/components/svgs";
-import { XIcon } from "@/components/svgs";
+
 import { FlagIcon } from "@/components/svgs";
 import { GrowstackIcon } from "@/components/svgs";
-import { UserCircle } from "@/components/svgs";
 import { BuildingStore } from "@/components/svgs";
-import { Clock, Cross, LinkIcon, UserCircleIcon } from "lucide-react";
+import { UserCircleIcon } from "lucide-react";
 import { BriefCase } from "@/components/svgs";
 import { BuildingIcon } from "@/components/svgs";
 import { PlusIcon } from "@/components/svgs";
 import { NotesIcon } from "@/components/svgs";
-import { RightIcon } from "@/components/svgs";
-import { InfoIcon } from "@/components/svgs";
-import Picker from "emoji-picker-react";
 import AddPages from "./AddPages";
-
-import { ThumbDown, ThumbUp, Tick, Columns, Rewrite } from "@/components/svgs";
-import { FaFilePdf, FaFileWord, FaFileExcel } from "react-icons/fa";
-import { IoMdClose } from "react-icons/io";
-import { IoDocumentTextOutline } from "react-icons/io5";
-import { LiaFolderSolid } from "react-icons/lia";
+import PostComment from "./PostComment";
+import Spinner from "@/components/Spinner";
 
 
 interface BoxContent {
@@ -182,42 +146,11 @@ const contentMap: { [key: string]: BoxContent } = {
 };
 
 
-export default function ComingSoon() {
-    const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
-    const [boxContent, setBoxContent] = useState<BoxContent>(
-        contentMap["facebook"]
-    );
+export default function Publish() {
     const [openModel, setOpenModel] = useState(false);
-    const [fileInfo, setFileInfo] = useState<{ name: string; file: File } | null>(null);
+    const [selectedIcon, setSelectedIcon] = useState<any>(null);
 
-    const [openAddAcc, setOpenAddAcc] = useState(false);
-    const [accumulatedResponse, setAccumulatedResponse] = useState("");
-    const [selectedIcon, setSelectedIcon] = useState("Facebook");
-    const handleOpenDialog = () => {
-        setIsDialogOpen(true);
-    };
-    const getFileIcon = (fileName: string) => {
-        const ext = fileName.split('.').pop()?.toLowerCase();
-        switch (ext) {
-            case 'pdf':
-                return <FaFilePdf className="text-red-600" size={30} />;
-            case 'txt':
-                return <IoDocumentTextOutline size={30} />;
-            case 'doc':
-            case 'docx':
-                return <FaFileWord className="text-blue-600" size={30} />;
-            case 'xls':
-            case 'xlsx':
-                return <FaFileExcel className="text-green-600" size={30} />;
-            default:
-                return <LiaFolderSolid className="text-gray-600" size={30} />;
-        }
-    };
-    // Function to handle social media icon clicks and update the content
-    const handleIconClick = (platform: any) => {
-        setBoxContent(contentMap[platform]);
-    };
-
+    const [genPost, isGenPost] = useState(false)
     const tick = (
         <svg
             width="24"
@@ -292,22 +225,9 @@ export default function ComingSoon() {
     const [profile, setProfile] = useState<any>([]);
     const [platforms, setPlatforms] = useState<string[]>([]);
     const [skipNow, setSkipNow] = useState<boolean>(false);
-    const [timeLeft, setTimeLeft] = useState<TimeLeft>({
-        days: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
-    });
-
-    useEffect(() => {
+     useEffect(() => {
         handleGetProfileData();
     }, []);
-
-    useEffect(() => {
-        if (platforms.length > 0) {
-            console.log("Updated platforms:", platforms);
-        }
-    }, [platforms]);
 
     const handleGetProfileData = async () => {
         try {
@@ -321,8 +241,10 @@ export default function ComingSoon() {
             setPlatforms(extractedPlatforms);
             if (response.data.data.activeSocialAccounts.length > 0) {
                 setProfile(response.data.data);
+                setSelectedIcon(platforms[0].toLowerCase())
             }
         } catch (error) {
+            setLoading(false);
             console.error("Error fetching social profile:", error);
         } finally {
             setLoading(false);
@@ -344,445 +266,43 @@ export default function ComingSoon() {
                 window.location.href = url;
             }
         } catch (error: any) {
+            setLoading(false);
+
             toast.error(error.response.data.message);
         }
     };
-    useEffect(() => {
-        const updateTimer = () => {
-            setTimeLeft(calculateTimeLeft(endTimeRef.current));
-        };
 
-        updateTimer();
-        const timer = setInterval(updateTimer, 1000);
-        return () => clearInterval(timer);
-    }, []);
-
-    const [genPost, isGenPost] = useState<boolean>(false);
-    const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
-    const [text, setText] = useState("");
-    const imgInputRef = useRef<HTMLInputElement | null>(null);
-    const gifInputRef = useRef<HTMLInputElement | null>(null);
-    const fileInputRef = useRef<HTMLInputElement | null>(null);
-    const [isDropdownOpen, setDropdownOpen] = useState(false);
-    const [isAiMode, setAiMode] = useState(false);
-    const [actionCompleted, setActionCompleted] = useState(false);
-    const [showActions, setShowActions] = useState(true);
-    const [uploadProgress, setUploadProgress] = useState<number | null>(null);
-    const [upload, setUpload] = useState<any>(null)
-
-    const handleActionComplete = () => {
-        setShowActions(false);
-        setActionCompleted(true);
-        setText(accumulatedResponse)
-    };
-
-    const handleCaretClick = () => {
-        setDropdownOpen((prev) => !prev);
-    };
-
-    const handleGenPost = () => {
-        isGenPost(true);
-    };
-
-
-    const endTimeRef = useRef<number>(
-        new Date().getTime() + 4 * 24 * 60 * 60 * 1000
-    );
-    useEffect(() => {
-        const updateTimer = () => {
-            setTimeLeft(calculateTimeLeft(endTimeRef.current));
-        };
-
-        updateTimer();
-        const timer = setInterval(updateTimer, 1000);
-
-        return () => clearInterval(timer);
-    }, []);
-
-    const streamResponse = async (chatId: string) => {
-        try {
-            setAccumulatedResponse("")
-            const token = getCookie("token");
-            setShowActions(false)
-            const eventSource = new EventSource(`${API_URL}/ai/api/v1/conversation/chat/stream/${chatId}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-                withCredentials: true,
-            });
-            setShowActions(true)
-
-
-            eventSource.onmessage = (event: MessageEvent) => {
-                const chunk = event.data;
-                const msg = parseJsonString(chunk)?.text || "";
-                setAccumulatedResponse((prevResponse) => prevResponse + msg);
-            };
-
-            eventSource.onerror = (error: MessageEvent) => {
-                console.error('EventSource failed:', error);
-                eventSource.close();
-            };
-
-            eventSource.addEventListener('end', (event: MessageEvent) => {
-                eventSource.close();
-            });
-
-        } catch (error) {
-            console.error('Error setting up EventSource:', error);
-            toast.error('Error setting up stream');
-        }
-    };
-
-    const handleInputChage = debounce(async (e: any) => {
-        const user_text = e.target.value;
-        let apiUrl = `${API_URL}/ai/api/v1/conversation/chat?conversation_id=&model=gemini-1.5-flash&enableSecure=false`;
-
-        const conversation = await instance.post(apiUrl, {
-            user_prompt: user_text,
-        });
-
-        const { response, conversation_id, chatId, noOfMessagesLeft, totalNoOfMessages } = conversation.data.data as ChatResponse;
-        await streamResponse(chatId);
-    }, 500);
-
-    const onEmojiClick = (emoji: { emoji: string }) => {
-        setText((prevText) => prevText + emoji.emoji);
-        setEmojiPickerOpen(false);
-    };
-
-    const handleImgChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const files = event.target.files;
-        if (files) {
-            console.log("Selected files:", files);
-        }
-    };
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files && event.target.files.length > 0) {
-            const file = event.target.files[0];
-            setFileInfo({ name: file.name, file });
-
-            if (upload) {
-                const uploadFile = async () => {
-                    for (let progress = 0; progress <= 100; progress += 10) {
-                        setUploadProgress(progress);
-                        await new Promise(resolve => setTimeout(resolve, 500));
-                    }
-                    setUploadProgress(null);
-                    setUpload(file);
-                };
-                uploadFile();
-            }
-        }
-    };
-
-    const handleGifChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const files = event.target.files;
-        if (files) {
-            console.log("Selected files:", files);
-        }
-    };
-
-    const handleRemoveFile = () => {
-        setFileInfo(null);
-        setUploadProgress(null);
-    };
-
-
-    const handleSendMessage = async (message: string) => {
-       
-        let file;
-        if (upload) {
-          const formData = new FormData();
-          formData.append("document", upload);
-          try {
-            const response: any = await instance.post(
-              API_URL + "/users/api/v1/file/upload",
-              formData
-            );
-    
-            const payload = {
-            //   recipientId: selectedMessage.recipientId
-            //     ? selectedMessage.recipientId
-            //     : "",
-              message: message,
-              mediaUrls: [response.data.data.fileUrl],
-            };
-            // sendMessage(payload);
-            console.log("response", response.data.data.fileUrl);
-            file = response.data.data.fileUrl;
-            // setUploadedFile(null);
-            // setMessages("");
-          } catch (error: any) {
-            if (error.response) {
-              toast.error(error.response.data.message);
-            } else {
-              toast.error(error.message);
-            }
-            console.error(error);
-          } finally {
-          }
-        } else {
-          const payload = {
-            // recipientId: selectedMessage.recipientId,
-            message: message,
-            mediaUrls: [],
-          };
-        //   sendMessage(payload);
-        }
-    }
-        const sendMessage = async (payload: {}) => {
-            try {
-              const response: any = await instance.post(
-                API_URL +
-                  `/users/api/v1/social-media/profile/messages?platform=${selectedIcon.toLowerCase()}`,
-                payload
-              );
-              toast.success(response.data.message);
-              return response;
-            } catch (error: any) {
-              if (error.response) {
-                toast.error(error.response.data.message);
-              } else {
-                toast.error(error.message);
-              }
-              console.error(error);
-            } finally {
-              // setIsPending(false);
-            }
-          };
     return (
         <div className="flex-1 h-full w-full flex flex-col items-center justify-center text-center">
-            <AddPages setOpenModel={setOpenModel} openModel={openModel} />
-            <div className="flex-1 h-full w-full flex flex-col items-center justify-center text-center">
-                <Image
-                    src="/logo/growstack-mini.png"
-                    alt=""
-                    width={60}
-                    height={60}
-                    className="mb-10"
-                />
-                <Dialog open={genPost} onOpenChange={isGenPost}>
-                    <DialogContent
-                        showCloseButton={true}
-                        className="w-[498px] h-auto p-0 pb-4 border-0 max-w-none"
-                    >
-                        <DialogHeader>
-                            <DialogTitle className="px-5">
-                                <div className="bg-white py-3 border-b border-[#EBEBEB] text-black font-inter flex justify-between items-center">
-                                    <div className="flex items-center relative">
-                                        <div className="w-[50px] h-[50px] rounded-full border border-black bg-[#F5F5F5] flex items-center justify-center relative">
-                                            <LogoIcon />
-                                            <CrossMark
-                                                className="absolute w-4 h-4"
-                                                style={{
-                                                    bottom: "0",
-                                                    right: "0",
-                                                    transform: "translate(25%, 25%)",
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </DialogTitle>
-                        </DialogHeader>
-                        {!isAiMode ? (
-                            <>
-                                <textarea
-                                    value={text}
-                                    onChange={(e) => setText(e.target.value)}
-                                    rows={4}
-                                    placeholder="Write something... or type :balloon: to insert a 🎈"
-                                    className="w-full h-auto border-none focus:outline-none pl-[20px] text-[15px] font-poppins font-normal leading-normal overflow-y-auto max-h-[7.5em] resize-none"
-                                    style={{
-                                        resize: "none",
-                                        lineHeight: "1.5",
-                                    }}
-                                />
-                                <button
-                                    onClick={() => setAiMode(true)} // Set AI mode when clicked
-                                    className="flex items-center w-[150px] h-[35px] mt-2 ml-5 border border-dashed border-[#034737] rounded-[16px] text-[#034737] text-[14px] bg-transparent"
-                                >
-                                    <GenAi className="ml-2 mr-2" size={24} />
-                                    Generative AI
-                                </button>
-                            </>
-                        ) : (
-                            <>
-                                <div className="relative w-[96%] ml-2 mt-1">
-                                    <GenAi className="absolute left-3 top-1/2 transform -translate-y-1/2" />
-                                    <input
-                                        type="text"
-                                        placeholder="Ask Gen AI here..."
-                                        className="w-full pl-10 border border-dashed border-[#034737] rounded-[16px] text-[#034737] text-[14px] bg-transparent p-2"
-                                        style={{ paddingLeft: "28px" }} // Ensures space for the icon
-                                        onChange={(e) => handleInputChage(e)}
-                                    />
-                                </div>
-                                <div className="relative w-[96%] ml-2 mt-2">
-                                    <textarea
-                                        rows={5}
-                                        placeholder="Generated content..."
-                                        className="w-full h-[220px] border border-dashed border-[#DADADA] rounded-[16px] p-2"
-                                        style={{
-                                            resize: "none",
-                                        }}
-                                        value={accumulatedResponse}
-                                    />
-                                    {showActions && (
-                                        <>
-                                            <div className="absolute mb-2 bottom-2 left-2 flex items-center">
-                                                <ThumbUp className="mr-2 cursor-pointer" />
-                                                <ThumbDown />
-                                            </div>
-                                            <div className="absolute mb-2 bottom-2 right-2 flex items-center space-x-2">
-                                                <button className="text-[#034737] bg-transparent border-none">
-                                                    Retry
-                                                </button>
-                                                <button
-                                                    className="flex items-center text-white bg-[#034737] px-4 py-1 rounded-[16px]"
-                                                    onClick={handleActionComplete}
-                                                >
-                                                    <Tick className="mr-2" />
-                                                    Accept
-                                                </button>
-                                            </div>
-                                        </>
-                                    )}
-                                    {/* {actionCompleted && (
-                                        <div className="absolute mb-2 bottom-2 left-2 flex items-center space-x-2">
-                                            <button className="flex items-center border border-dashed border-[#034737] text-[#034737] px-3 py-1 rounded-[10px]">
-                                                <Rewrite className="mr-2" />
-                                                Rewrite with AI
-                                            </button>
-                                            <button className="flex items-center border border-dashed border-[#034737] text-[#034737] px-3 py-1 rounded-[10px]">
-                                                <Columns className="mr-2" />
-                                                Make Shorter with AI
-                                            </button>
-                                        </div>
-                                    )} */}
-                                </div>
-                            </>
-                        )}
-                        <div className="mt-[32px] ml-[15px]">
-                            <div className="flex justify-between items-center">
-                                <div className="flex items-center">
-                                    <button onClick={() => fileInputRef.current?.click()}>
-                                        <InsertImage />
-                                    </button>
-                                    <button onClick={() => gifInputRef.current?.click()}>
-                                        <Gif />
-                                    </button>
-                                    <button onClick={() => fileInputRef.current?.click()}>
-                                        <ImgVector />
-                                    </button>
-                                    <div className="border-l border-gray h-[28px] mx-2" />
-                                    <button
-                                        onClick={() => fileInputRef.current?.click()} // Trigger file input
-                                    >
-                                        <LinkIcon />
-                                    </button>
-                                </div>
-                                <div className="relative">
-                                    <SmileEmoji
-                                        onClick={() => setEmojiPickerOpen(!emojiPickerOpen)}
-                                    />
-                                    {emojiPickerOpen && (
-                                        <div className=" z-auto fixed">
-                                            <Picker onEmojiClick={onEmojiClick} />
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                        {fileInfo && (
-                            <div className="flex items-center justify-between  mt-2 p-2 bg-gray-100 border border-gray-300 rounded-lg">
-                                <div className="flex items-center space-x-2">
-                                    {getFileIcon(fileInfo.name)}
-                                    <span className="text-sm text-gray-700 truncate">{fileInfo.name}</span>
-                                </div>
-                                <button
-                                    className="text-red-500 ml-2"
-                                    onClick={handleRemoveFile}
-                                >
-                                    <IoMdClose size={20} />
-                                </button>
-                            </div>
-                        )}
-                        {uploadProgress !== null && (
-                            <div className="w-full bg-gray-200 rounded-full mt-2">
-                                <div
-                                    className="bg-blue-500 h-2.5 rounded-full"
-                                    style={{ width: `${uploadProgress}%` }}
-                                />
-                            </div>
-                        )}
-                        
-                        <input
-                            type="file"
-                            ref={fileInputRef}
-                            className="hidden"
-                            onChange={handleFileChange}
-                        />
-                        <input
-                            type="file"
-                            accept="image/gif"
-                            ref={gifInputRef}
-                            onChange={handleGifChange}
-                            style={{ display: "none" }}
-                        />
-                        <input
-                            type="file"
-                            accept="*/*" // Accept all file types
-                            ref={fileInputRef}
-                            onChange={handleFileChange}
-                            style={{ display: "none" }}
-                        />
-                        <DialogFooter className="bg-[#F8F9FB] flex justify-between">
-                            <button className="mr-auto flex items-center ml-5">
-                                <Clock />
-                                {/* <span className="ml-2">Select date & Time</span> */}
-                                <CaretDown className="ml-2" />
-                            </button>
-                            {isDropdownOpen && (
-                                <div className="absolute z-1000 w-[250px] h-auto bg-white rounded-[15px] shadow-lg flex flex-col justify-around p-2">
-                                    <button className="border-none p-1 rounded flex items-center">
-                                        <Calender className="mr-2" /> Schedule
-                                    </button>
-                                    <button className="border-none p-1 rounded flex items-center">
-                                        <SendIcon2 className="mr-2" /> Publish
-                                    </button>
-                                </div>
-                            )}
-                            <div className="relative">
-
-                                <button className="border bg-primary-green rounded-[5px] text-white flex items-center p-2 mr-1">
-                                    <span className="mr-2">Save as Draft</span>
-                                    <div className="border-l border-white h-[28px] mx-2" />
-                                    <CaretDown
-                                        onClick={handleCaretClick}
-                                        className={`ml-2 w-5 h-5 transform transition-transform ${isDropdownOpen ? "rotate-180" : "rotate-0"
-                                            }`}
-                                    />
-                                </button>
-
-                            </div>
-                        </DialogFooter>
-                    </DialogContent>
-                </Dialog>
+            {loading && <div className="absolute lex-1 h-full flex flex-col gap-5 justify-center items-center">
+                <Spinner color="black" size={100} />
+                Loading...
             </div>
+
+            }
+            <div className="absolute">
+                <SheduleBackground />
+            </div>
+            <AddPages setOpenModel={setOpenModel} openModel={openModel} />
+            <PostComment openPostModel={genPost} isGenPost={isGenPost} selectedIcon={selectedIcon} />
             <div>
                 {!skipNow ? (
                     <>
-                        <div className="absolute">
-                            <SheduleBackground />
-                        </div>
-                        <div className="grid justify-items-center ...">
-                            <div className="mt-7">
-                                <h1 className="text-[28px] font-semibold"> Add channels</h1>
-                                <p className="text-primary-black text-opacity-70 mt-3 leading-relaxed">
-                                    Connect multiple pages or channels
-                                </p>
+
+                        <div className="grid justify-items-center">
+                            <div className="mt-7 grid ">
+                                <div className="flex justify-start">
+                                    <div className="row-span-1 ">
+                                        <div>
+                                            <h1 className="text-[28px] font-semibold"> Add channels</h1>
+                                        </div><br></br>
+                                        <div>
+                                            <p className="text-primary-black text-opacity-70 mt-3 leading-relaxed">
+                                                Connect multiple pages or channels
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div className="w-full grid row-span-1 gap-2 mt-3 ">
                                     <div className="h-17  min-w-[500px]  flex justify-between items-center gap-3 bg-white  cursor-pointer rounded-xl py-2.5 px-8">
                                         <div className="flex text-center items-center">
@@ -892,7 +412,7 @@ export default function ComingSoon() {
                                         )}
                                     </div>
                                 </div>
-                                <div className="w-full grid row-span-1 gap-2 mt-3 ">
+                                {/* <div className="w-full grid row-span-1 gap-2 mt-3 ">
                                     <div className="h-17 w-[100%] min-w-[500px] flex  flex justify-between items-center gap-3 bg-[#FFFFFF] transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8">
                                         <div className="flex text-center items-center">
                                             <svg
@@ -953,7 +473,7 @@ export default function ComingSoon() {
                                             </button>
                                         )}
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className="w-full grid row-span-1 gap-2 mt-3 ">
                                     <div className="h-17 w-[70%] min-w-[500px] flex  flex justify-between items-center gap-3 bg-[#FFFFFF] transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8">
                                         <div className="flex text-center items-center">
@@ -999,7 +519,7 @@ export default function ComingSoon() {
                                         )}
                                     </div>
                                 </div>
-                                <div className="w-full grid row-span-1 gap-2 mt-3 ">
+                                {/* <div className="w-full grid row-span-1 gap-2 mt-3 ">
                                     <div className="h-17 w-[70%] min-w-[500px] flex  flex justify-between items-center gap-3 bg-[#FFFFFF] transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8">
                                         <div className="flex text-center items-center">
                                             <svg
@@ -1042,7 +562,7 @@ export default function ComingSoon() {
 
                                     </div>
 
-                                </div>
+                                </div> */}
                                 <div className="w-full grid row-span-1 gap-2 mt-3 ">
                                     <div
                                         className="h-17 w-[70%] min-w-[500px] flex  flex justify-between items-center gap-3 bg-[#FFFFFF] transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8"
@@ -1070,7 +590,7 @@ export default function ComingSoon() {
                                         }
                                     </div>
                                 </div>
-                                {platforms &&
+                                {platforms.length > 0 &&
                                     <div className="flex justify-end ... mt-5">
                                         <button onClick={skipNowFn}
                                             className=" max-w-[140px] py-3 px-5 bg-primary-green sheen rounded-xl text-white  flex justify-center items-center"
@@ -1083,12 +603,14 @@ export default function ComingSoon() {
                         </div>
                     </>) : <>
                     <div className="flex-1 h-full w-full flex flex-col items-center justify-center text-center">
-                        <SocialNavBar setOpen={setOpenModel} setOpenAddAcc={isGenPost} selectedIcon={selectedIcon} setSelectedIcon={setSelectedIcon} />
-                        <PostCard selectedIcon={selectedIcon} profile={profile} />
+                        <SocialNavBar platforms={platforms} setOpen={setOpenModel} setOpenAddAcc={isGenPost} selectedIcon={selectedIcon} setSelectedIcon={setSelectedIcon} />
+                        <div className="mt-[10vh]"></div>
+                        <PostCard platforms={platforms} selectedIcon={selectedIcon} profile={profile} />
                     </div>
                 </>
                 }
             </div>
+
         </div>
     );
 }

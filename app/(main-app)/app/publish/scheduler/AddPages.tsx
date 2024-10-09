@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
+import Spinner from "@/components/Spinner";
 
 
 interface AddPagesProps {
@@ -57,18 +58,18 @@ const contentMap: { [key: string]: BoxContent } = {
         content2: "Add Instagram Personal Profiles Or Pages"
     },
 
-    tiktok: {
-        name: "Tiktok",
-        growstackIcon: <GrowstackIcon />,
-        growStackData: "GrowStactAi",
-        growstackSubData: "@GrowStackai",
-        connected: "CONNECTED",
-        briefCase: <BriefCase />,
-        addAccountIcon: <UserCircleIcon />,
-        content1: "Add Tiktok Accounts",
-        content2: "business accounts"
+    // tiktok: {
+    //     name: "Tiktok",
+    //     growstackIcon: <GrowstackIcon />,
+    //     growStackData: "GrowStactAi",
+    //     growstackSubData: "@GrowStackai",
+    //     connected: "CONNECTED",
+    //     briefCase: <BriefCase />,
+    //     addAccountIcon: <UserCircleIcon />,
+    //     content1: "Add Tiktok Accounts",
+    //     content2: "business accounts"
 
-    },
+    // },
 
     twitter: {
         name: "twitter",
@@ -83,18 +84,18 @@ const contentMap: { [key: string]: BoxContent } = {
 
     },
 
-    pinterest: {
-        name: "Pinterest",
-        growstackIcon: <GrowstackIcon />,
-        growStackData: "GrowStactAi",
-        growstackSubData: "@GrowStackai",
-        connected: "CONNECTED",
-        notesIcon: <NotesIcon />,
-        plusIcon: <PlusIcon />,
-        content1: "Add Pinterest Business Pages",
-        content2: "Create a mockup page",
+    // pinterest: {
+    //     name: "Pinterest",
+    //     growstackIcon: <GrowstackIcon />,
+    //     growStackData: "GrowStactAi",
+    //     growstackSubData: "@GrowStackai",
+    //     connected: "CONNECTED",
+    //     notesIcon: <NotesIcon />,
+    //     plusIcon: <PlusIcon />,
+    //     content1: "Add Pinterest Business Pages",
+    //     content2: "Create a mockup page",
 
-    },
+    // },
 
     linkedin: {
         name: "Linkedin",
@@ -134,12 +135,9 @@ const AddPages: FC<AddPagesProps> = ({
     const [boxContent, setBoxContent] = useState<BoxContent>(contentMap["facebook"]);
     const [response, setResponse] = useState<SocialMediaProfileResponse | null>(null);
     const [platformDetails, setPlatformDetails] = useState<SocialAccount | null>(null)
-
-
     const [platforms, setPlatforms] = useState<string[]>([]);
     const [profile, setProfile] = useState<any>([]);
     const [loading, setLoading] = useState(true);
-
     const handleCloseDialog = () => {
         setOpenModel(false);
     };
@@ -148,6 +146,8 @@ const AddPages: FC<AddPagesProps> = ({
         setBoxContent(contentMap[platform]);
     };
     const handleOnConnect = async () => {
+        setLoading(true);
+
         const currentPath = localStorage.getItem("currentPathname");
         try {
             const response = await instance.get(
@@ -157,7 +157,11 @@ const AddPages: FC<AddPagesProps> = ({
             if (url) {
                 window.location.href = url;
             }
+            setLoading(false);
+
         } catch (error: any) {
+            setLoading(false);
+
             toast.error(error.response.data.message);
         }
     };
@@ -167,11 +171,10 @@ const AddPages: FC<AddPagesProps> = ({
 
     useEffect(() => {
         if (platforms.length > 0) {
-            console.log("Updated platforms:", platforms);
         }
     }, [platforms]);
     const handleGetProfileData = async () => {
-        setLoading(true); // Initialize loading state
+        setLoading(true);
         try {
             const response = await instance.get(
                 `${API_URL}/users/api/v1/social-media/profile`
@@ -207,6 +210,12 @@ const AddPages: FC<AddPagesProps> = ({
     return (
 
         <>
+            {loading && <div className="absolute lex-1 h-full flex flex-col gap-5 justify-center items-center">
+                <Spinner color="black" size={100} />
+                Loading...
+            </div>
+
+            }
             <Dialog open={openModel} onOpenChange={handleCloseDialog}>
                 <DialogContent className="w-[1010px] md:w-[725px] max-w-3xl p-0 pb-4 border-0 overflow-hidden">
                     <DialogHeader>
@@ -226,12 +235,12 @@ const AddPages: FC<AddPagesProps> = ({
                                     <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("twitter")}>
                                         <TwitterIcon />
                                     </div>
-                                    <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("tiktok")}>
+                                    {/* <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("tiktok")}>
                                         <TiktokIcon />
-                                    </div>
-                                    <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("pinterest")}>
+                                    </div> */}
+                                    {/* <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("pinterest")}>
                                         <PinterestIcon />
-                                    </div>
+                                    </div> */}
                                     <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("linkedin")}>
                                         <LinkedinIcon />
                                     </div>
@@ -243,14 +252,14 @@ const AddPages: FC<AddPagesProps> = ({
                                         <div className="flex flex-col items-center">
                                             <div className="pb-3 w-[60px] h-[60px text-white">
                                                 <div className="text-white">
-                                                <FlagIcon />
-                                                {boxContent.flagIcon}
-                                                {boxContent.buildingStoreIcon}
-                                                {boxContent.buildingIcon}
-                                                {boxContent.notesIcon}
-                                                {boxContent.addAccountIcon}
+                                                    <FlagIcon />
+                                                    {boxContent.flagIcon}
+                                                    {boxContent.buildingStoreIcon}
+                                                    {boxContent.buildingIcon}
+                                                    {boxContent.notesIcon}
+                                                    {boxContent.addAccountIcon}
                                                 </div>
-                                      
+
                                             </div>
                                             <div className="flex justify-center">
                                                 <div>
