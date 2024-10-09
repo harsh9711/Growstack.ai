@@ -18,6 +18,7 @@ import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import { deleteCookie } from "cookies-next";
 import Image from "next/image";
+import Wave from "@/components/svgs/wave";
 
 export function ProfileButton() {
   const router = useRouter();
@@ -66,7 +67,7 @@ export function ProfileButton() {
           </Link>
           <Link href="/app/plan/ai-brandvoice">
             <DropdownMenuItem className="flex gap-3 px-4">
-              <BrandVoiceIcon size={22} />
+              <Wave color="black"/>
               Brand voice
             </DropdownMenuItem>
           </Link>

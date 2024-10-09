@@ -8,7 +8,7 @@ import { jsPDF } from "jspdf";
 import "jspdf-autotable";
 import { ArrowLeft, ChevronRight, Save, StarIcon } from "lucide-react";
 import Link from "next/link";
-import { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { BsStarFill } from "react-icons/bs";
 import Editor from "./components/Editor";
 import Spinner from "@/components/Spinner";
@@ -32,7 +32,7 @@ import {
 import { useRouter } from "next-nprogress-bar";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { languageOptions } from "../../../create/ai-articles/constants/options";
+import { aiModelOptions, aiModelOptionsTemplete, languageOptions } from "../../../create/ai-articles/constants/options";
 import Dropdown from "./components/Dropdown";
 import { Plus } from "lucide-react";
 import { getCookie } from "cookies-next";
@@ -42,6 +42,11 @@ import downloadPdf from "@/utils/downloadPdf";
 import { InputFieldType } from "@/types/enums";
 import { ALL_ROUTES } from "@/utils/constant";
 
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
+import { planIdsMap } from "@/lib/utils";
+import clsx from "clsx";
 export default function AiAppPage({
   params: { appTemplateId },
 }: {
@@ -77,6 +82,12 @@ export default function AiAppPage({
   const [userPromptError, setUserPromptError] = useState("");
   const [userInput1, setUserInput1] = useState("");
   const brandNames = allBrandVoices?.map((item: any) => item.brand_name);
+
+  const { user, currentPlan } = useSelector((rootState: RootState) => rootState.auth);
+
+  const filteredAiModelOptions = aiModelOptionsTemplete;
+
+  const [selectedModel, setSelectedModel] = useState<string>(filteredAiModelOptions[0].models[0].value || "");
 
   const stripHtmlTags = (html: string) => {
     const temp = document.createElement("div");
@@ -549,6 +560,44 @@ export default function AiAppPage({
     );
   }
 
+  const handleModalSelection = (value: string) => {
+    if (!currentPlan) return;
+    const currentCategory = filteredAiModelOptions.find((category) =>
+      category.models.some((model) => model.value === value)
+    );
+
+    const currentModal = currentCategory?.models.find(
+      (model) => model.value === value
+    );
+
+    if (!currentCategory || !currentModal) {
+      console.error("Model not found");
+      return;
+    }
+
+    const freeCategories = ["growStackAiMessagesModel"];
+
+    if (user?.user_type === "ADMIN" || freeCategories.includes(currentCategory.modelCategory)) {
+      setSelectedModel(value);
+      return;
+    }
+
+    let usageLimit = 0;
+
+    if (currentCategory.modelCategory === "smartAiMessagesModel") {
+      usageLimit = currentPlan.smart_ai_messages;
+    } else if (currentCategory.modelCategory === "fastAiMessagesModel") {
+      usageLimit = currentPlan.fast_ai_messages;
+    }
+
+    if (usageLimit <= 0) {
+      toast.error(`You have no remaining usage for ${currentCategory.label}. Please switch to another model.`);
+      return;
+    }
+
+    setSelectedModel(value);
+  };
+
   return (
     <Fragment>
       <div className="flex items-center justify-between mt-10">
@@ -764,10 +813,60 @@ export default function AiAppPage({
               </div>
             ))}
           </div>
-
           <div>
+            <label>AI Model</label>
+            {/* new design dropdown */}
+            <Select
+              value={selectedModel}
+              onValueChange={(value) => {
+                handleModalSelection(value); // Existing handler
+                handleDropdownChange("model", value); // Your additional handler
+              }}
+            >
+              <SelectTrigger className='h-12 w-full  text-black border-0 rounded-xl flex items-center justify-between px-4'>
+                <SelectValue placeholder="Select an option">
+                  {selectedModel && (
+                    <div className="flex items-center gap-2">
+                      <span className="min-w-fit">
+                        {filteredAiModelOptions
+                          .flatMap((option) => option.models) // Flattening the models array to find the icon
+                          .find((model) => model.value === selectedModel)?.icon}
+                      </span>
+                      {selectedModel}
+                    </div>
+                  )}
+                </SelectValue>
+              </SelectTrigger>
+              <SelectContent className="max-h-60 overflow-y-auto" style={{ scrollBehavior: 'smooth' }}>
+                {filteredAiModelOptions.map(({ label: categoryLabel, models }) => (
+                  <SelectGroup key={categoryLabel}>
+                    <React.Fragment key={categoryLabel}>
+                      <div className="font-bold text-gray-500 px-4 py-2">{categoryLabel}</div>
+                      {models.map(({ icon, label, value }) => (
+                        <SelectItem key={value} value={value}>
+                          <div
+                            className={clsx(
+                              "flex items-center gap-2",
+                              selectedModel === value && "text-primary-green font-medium"
+                            )}
+                          >
+                            <span className="min-w-fit">{icon}</span>
+                            {label}
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </React.Fragment>
+                  </SelectGroup>
+                ))}
+              </SelectContent>
+            </Select>
+
+            {/* new design drop down */}
+
+          </div>
+          {/* <div>
             <Dropdown
-              label="AI Model"
+            label="AI Model"
               items={[
                 "gpt-3.5-turbo",
                 "gpt-4",
@@ -780,7 +879,7 @@ export default function AiAppPage({
               value={userInput.model}
               onChange={(value: any) => handleDropdownChange("model", value)}
             />
-          </div>
+          </div> */}
           <div className="grid grid-cols-2 gap-2">
             <Dropdown
               label="Creativity"
