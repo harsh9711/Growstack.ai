@@ -186,7 +186,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
                 if (errorMsg === "Please upgrade your plan") {
                     setIsDailyLimitExceeded(true);
                 }
-                if (errorMsg.includes("Your request has been blocked") || errorMsg.includes("Inappropiate Language")) {
+                if ((errorMsg.includes("Your request has been blocked") || errorMsg.includes("Inappropiate Language")) && enableSecure) {
                     setShowSecureChatErrorMsg(true);
                 } else {
                     toast.error(errorMsg);
