@@ -41,7 +41,7 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile }) => {
     const [open, setOpen] = useState<boolean>(false);
     const [openModel, setOpenModel] = useState(false);
     const [postDetails, setPostDetails] = useState<any[]>([]);
-    const [profileDetails, setProfileDetails] = useState<any>([]);
+    const [profileDetails, setProfileDetails] = useState<any | null>([]);
 
 
     const toggleDropdown = () => {
@@ -49,8 +49,9 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile }) => {
     };
 
     useEffect(() => {
+        setPostDetails([]);
         fetchPostDetails();
-        platformDetails()
+        platformDetails();
     }, [selectedIcon]);
 
     const fetchPostDetails = async () => {
@@ -68,7 +69,7 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile }) => {
 
     const platformDetails = () => {
         let platformDetails: any
-        if (profile !== undefined) {
+        if (profile !== undefined && profile) {
             platformDetails = profile.activeSocialAccounts
                 .filter((account: any) => account.platform === selectedIcon.toLowerCase())
                 .map((account: any) => {
