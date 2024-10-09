@@ -530,7 +530,7 @@ export default function ComingSoon() {
           };
         //   sendMessage(payload);
         }
-
+    }
         const sendMessage = async (payload: {}) => {
             try {
               const response: any = await instance.post(
@@ -1092,4 +1092,4 @@ export default function ComingSoon() {
         </div>
     );
 }
-}
+
