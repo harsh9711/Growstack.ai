@@ -33,7 +33,7 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
         return (
             <div className='flex justify-between gap-4 w-full'>
                 <div className='flex flex-col '>
-                    <h3 className='font-extrabold text-sm text-[#A3A3A3] my-2'>Company Type</h3>
+                <h3 className='font-extrabold text-gray-800  text-sm my-2'>Company Type</h3>
                     <div className='grid grid-cols-1'>
                         {list.slice(0, 4).map((nav) => {
                             if (nav) {
