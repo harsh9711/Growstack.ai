@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+
 interface Props {
    icon: {
       path: string;
@@ -17,7 +18,7 @@ export default function FeatureItem (props: Props) {
          ref={provided?.innerRef}
          {...provided?.draggableProps}
          {...provided?.dragHandleProps}
-         className={cn("text-center inline-flex flex-col items-center justify-center max-w-28 xl:max-w-48 px-3", className)}>
+         className={cn("text-center  inline-flex flex-col items-center justify-center max-w-28 xl:max-w-48 px-3", className)}>
          {props?.icon ? (
             <div className="max-w-16 min-h-[67px] w-16 h-16 2xl:w-[85px] 2xl:h-[89px] mx-auto">
                <Image src={props?.icon.path} width={85} height={86} alt={props?.icon.alt ? props?.icon.alt : title} className="w-full h-full"/>
