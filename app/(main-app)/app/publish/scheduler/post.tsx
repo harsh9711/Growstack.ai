@@ -51,15 +51,12 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile, platforms })
     const fetchPostDetails = async () => {
         setLoading(true)
         try {
-            console.log("selectedIcon",selectedIcon);
-            
             if (selectedIcon !== null) {
                 const response = await instance.get(
                     `${API_URL}/users/api/v1/social-media/posts/${selectedIcon}?limit=10`
                 );
                 const post = response.data.data.posts
                 setPostDetails(post);
-                console.log("response", response.data.data.posts);
             }
             setLoading(false)
 
@@ -96,7 +93,7 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile, platforms })
             </div>
 
             }
-            {userPostDetails.length > 0 ? (
+            {postDetails.length > 0 && userPostDetails ? (
                 <>
                     {postDetails.map((post: { post: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; media: { type: string; url: string | undefined; mediaUrls: { mediaUrl: string | undefined; }[]; }[]; }, index: Key | null | undefined) => (
                         <div className='flex flex-row gap-3 mt-2 px-4'>

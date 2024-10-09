@@ -225,7 +225,7 @@ export default function Publish() {
     const [profile, setProfile] = useState<any>([]);
     const [platforms, setPlatforms] = useState<string[]>([]);
     const [skipNow, setSkipNow] = useState<boolean>(false);
-     useEffect(() => {
+    useEffect(() => {
         handleGetProfileData();
     }, []);
 
@@ -273,7 +273,7 @@ export default function Publish() {
     };
 
     return (
-        <div className="flex-1 h-full w-full flex flex-col items-center justify-center text-center">
+        <div className="flex-1 h-full w-full flex flex-col items-center justify-center ">
             {loading && <div className="absolute lex-1 h-full flex flex-col gap-5 justify-center items-center">
                 <Spinner color="black" size={100} />
                 Loading...
@@ -288,15 +288,12 @@ export default function Publish() {
             <div>
                 {!skipNow ? (
                     <>
-
-                        <div className="grid justify-items-center">
-                            <div className="mt-7 grid ">
+                        <div className="">
+                            <div className="mt-7 ">
                                 <div className="flex justify-start">
                                     <div className="row-span-1 ">
                                         <div>
-                                            <h1 className="text-[28px] font-semibold"> Add channels</h1>
-                                        </div><br></br>
-                                        <div>
+                                            <h2 className="text-[28px] font-semibold"> Add channels</h2>
                                             <p className="text-primary-black text-opacity-70 mt-3 leading-relaxed">
                                                 Connect multiple pages or channels
                                             </p>

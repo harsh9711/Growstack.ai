@@ -114,13 +114,12 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                 else if (platform === 'facebook') {
                     promt = 'Generate a social media post for Twitter that is exactly 9000 characters long '
                 }
-                const msg = parseJsonString(chunk)?.text || "";
-                setAccumulatedResponse((prevResponse) => prevResponse + msg + promt);
+                const msg = parseJsonString(chunk)?.text + promt || "";
+                setAccumulatedResponse((prevResponse) => prevResponse + msg);
                 setLastPrompt(msg)
             };
 
             eventSource.onerror = (error: MessageEvent) => {
-                console.error('EventSource failed:', error);
                 eventSource.close();
             };
 
@@ -188,10 +187,7 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
 
     const handleSendMessage = async () => {
         setLoading(true)
-
-        let file;
-        console.log("upload", upload);
-
+        let file
         if (upload) {
             const formData = new FormData();
             formData.append("document", upload);
@@ -211,7 +207,6 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                     "scheduleDate": selectedDate
                 }
                 postComment(payload);
-                console.log("response", response.data.data.fileUrl);
                 file = response.data.data.fileUrl;
                 setUpload(null);
                 isGenPost(false)
@@ -439,7 +434,7 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                         />
                     )}
                    {/* <Divider style={{margin:"0px !important"}}/> */}
-                    <div className="flex justify-between items-center   border-t-2 border-dashed border-[#034737]">
+                    <div className="flex justify-between items-center   border-t-2 border-solid border-[#034737]">
                      
                             <button
                                 onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}

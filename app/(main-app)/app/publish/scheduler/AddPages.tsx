@@ -179,8 +179,6 @@ const AddPages: FC<AddPagesProps> = ({
             const response = await instance.get(
                 `${API_URL}/users/api/v1/social-media/profile`
             );
-            console.log("Response data:", response.data);
-
             const activeAccounts = response.data.data?.activeSocialAccounts || [];
             setResponse({ activeSocialAccounts: activeAccounts });
 
@@ -250,9 +248,8 @@ const AddPages: FC<AddPagesProps> = ({
                                 <div className="grid grid-cols-2 grid-rows-2 gap-6 p-4  mt-0  ">
                                     <div className="border border-[#034737] bg-[#034737] border-dotted rounded text-white p-2  w-[290px] h-[210px] flex items-center justify-center" onClick={handleOnConnect}>
                                         <div className="flex flex-col items-center">
-                                            <div className="pb-3 w-[60px] h-[60px text-white">
-                                                <div className="text-white">
-                                                    <FlagIcon />
+                                            <div className="text-white bg-white items-center rounded-lg">
+                                                <div className="text-white items-center">
                                                     {boxContent.flagIcon}
                                                     {boxContent.buildingStoreIcon}
                                                     {boxContent.buildingIcon}
@@ -261,9 +258,9 @@ const AddPages: FC<AddPagesProps> = ({
                                                 </div>
 
                                             </div>
-                                            <div className="flex justify-center">
+                                            <div className="flex justify-center text-center mt-2">
                                                 <div>
-                                                    <p className="text-center text-white">{boxContent?.content1}</p>
+                                                    <strong className="text-center text-white">{boxContent?.content1}</strong>
                                                 </div>
                                             </div>
                                         </div>
