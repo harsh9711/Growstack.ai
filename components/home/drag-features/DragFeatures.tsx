@@ -9,7 +9,7 @@ export default function DragFeatures() {
         <SectionHeader />
         {/* Dragable container */}
         <div className="sm:flex flex-col hidden ">
-          {" "}
+          {" "}dddd
           <DragingBoard />
           {/* Category Nav area */}
           <FeaturesCategory />
