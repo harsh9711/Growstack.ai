@@ -129,6 +129,11 @@ export { default as SmileEmoji } from "@/public/smile-emoji.svg"
 export { default as Clock } from "@/public/clock.svg"
 export { default as CaretDown } from "@/public/caret-down.svg"
 export { default as Calender } from "@/public/calendar-event.svg"
+export { default as Tick } from "@/public/check.svg"
+export { default as ThumbUp } from "@/public/Thunmup.svg"
+export { default as ThumbDown } from "@/public/Thunmdown.svg"
+export { default as Rewrite } from "@/public/pencil.svg"
+export { default as Columns } from "@/public/columns.svg"
 
 
 
