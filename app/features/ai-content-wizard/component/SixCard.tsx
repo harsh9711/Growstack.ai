@@ -111,14 +111,14 @@ const  SixCard = () => {
           className="flex flex-col sm:flex-row sm:text-start text-center gap-6 w-full justify-between items-center"
           data-aos="fade-right"
         >
-          <h1 className="text-[26px] xl:text-[40px] max-w-[500px] gap-2 leading-tight font-semibold  text-black">
+          <h1 className="text-[26px] xl:text-[40px] max-w-[900px] gap-2 leading-tight font-semibold  text-black">
             Why AI content wizard is your
             <span className="font-light"> top Content creation tool </span>
           </h1>
-          <p className="sm:text-[18px] text-[16px] font-medium max-w-[600px]">
+          {/* <p className="sm:text-[18px] text-[16px] font-medium max-w-[600px]">
             Lorem ipsum dolor sit amet consectetur. Nunc enim luctus quis eget
             aliquam. Fusce nunc a nunc pellentesque.
-          </p>
+          </p> */}
         </div>
         <div>
           <Box />

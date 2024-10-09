@@ -2,7 +2,17 @@ import { useEffect } from "react";
 import Image from "next/image";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { HandsIcon, Magnifying, PieChart, UIcon, Worldicon, Worldicon2, Zoomicon ,BoxIcon, DiamondIcon} from "@/components/svgs/icons";
+import {
+  HandsIcon,
+  Magnifying,
+  PieChart,
+  UIcon,
+  Worldicon,
+  Worldicon2,
+  Zoomicon,
+  BoxIcon,
+  DiamondIcon,
+} from "@/components/svgs/icons";
 export const cases = [
   {
     id: 1,
@@ -14,7 +24,7 @@ export const cases = [
   },
   {
     id: 2,
-    imageUrl: <Zoomicon/>,
+    imageUrl: <Zoomicon />,
     name: "In-depth market ",
     subname: "research",
     description:
@@ -23,14 +33,15 @@ export const cases = [
 
   {
     id: 3,
-    imageUrl: <Worldicon/>,
-    name: "Workflow automation and scheduling",
-    role: "Automate tasks and streamline workflows with AI Workflows, scheduling and managing campaigns seamlessly for timely content distribution.",
-    companyImage: "No doubt, Spend.In is the best!",
+    imageUrl: <Worldicon />,
+    name: "Strategic sales ",
+    subname: " outreach",
+    description:
+      "Analyze market trends and competitive landscapes to make informed strategic decisions.",
   },
   {
     id: 4,
-    imageUrl: <Worldicon2/>,
+    imageUrl: <Worldicon2 />,
     name: "Local business ",
     subname: "expansion",
     description:
@@ -38,7 +49,7 @@ export const cases = [
   },
   {
     id: 5,
-    imageUrl: <Magnifying/>,
+    imageUrl: <Magnifying />,
     name: "Competitive ",
     subname: "analysis",
     description:
@@ -46,7 +57,7 @@ export const cases = [
   },
   {
     id: 6,
-    imageUrl:<PieChart/>,
+    imageUrl: <PieChart />,
     name: "Customer ",
     subname: "segmentation",
     description:
@@ -54,15 +65,15 @@ export const cases = [
   },
   {
     id: 7,
-    imageUrl: <HandsIcon/>,
+    imageUrl: <HandsIcon />,
     name: "Effective lead ",
     subname: "generation",
     description:
       "Identify and capture high-value prospects with precise business data to build targeted lead lists.",
   },
   {
-    id:8,
-    imageUrl:  <DiamondIcon/>,
+    id: 8,
+    imageUrl: <DiamondIcon />,
     name: "Effective lead ",
     subname: "generation",
     description:
@@ -70,7 +81,7 @@ export const cases = [
   },
   {
     id: 9,
-    imageUrl:<BoxIcon/>,
+    imageUrl: <BoxIcon />,
     name: "Effective lead ",
     subname: "generation",
     description:
@@ -78,43 +89,42 @@ export const cases = [
   },
 ];
 const Box = () => {
-    // Initialize AOS
-    useEffect(() => {
-      AOS.init({
-        duration: 1000, // Duration of animations
-        easing: 'ease-in-out', // Easing function
-        once: true, // Whether animation should happen only once
-      });
-    }, []);
-  
-    return (
-      <div className="grid grid-cols-3 gap-y-10">
-        {cases.map((item, index) => (
-          <div
-            key={index}
-            data-aos="fade-up" // AOS animation attribute
-            className="relative text-black p-8 text-start hover:bg-[#F0F4F3] shadow-lg transition-transform duration-500 ease-in-out max-w-[400px] max-h-[258px] py-20 rounded-[20px] h-full flex flex-col gap-y-4 items-start justify-center group overflow-hidden"
-          >
-            <div className="absolute inset-0 border-r-8 border-b-8 rounded-[20px] group-hover:border-[#13745D] transition-all duration-500 ease-out" />
-            
-            <div className="relative z-10 text-[#14171B] group-hover:fill-primary-green">
-              {item.imageUrl}
-            </div>
-            <h2 className="sm:text-[24px] text-[16px] font-bold group-hover:text-[#13745D] transition-colors duration-300">
-              {item.name}{" "}
-              <span className="sm:text-[24px] text-[16px] font-light group-hover:text-[#13745D] transition-colors duration-300">
-                {item.subname}
-              </span>
-            </h2>
-            <p className="text-[16px] max-w-[320px] text-start font-light text-black transition-colors duration-300">
-              {item.description}
-            </p>
+  // Initialize AOS
+  useEffect(() => {
+    AOS.init({
+      duration: 1000, // Duration of animations
+      easing: "ease-in-out", // Easing function
+      once: true, // Whether animation should happen only once
+    });
+  }, []);
+
+  return (
+    <div className="grid grids-cols-1 sm:grid-cols-3 gap-y-10">
+      {cases.map((item, index) => (
+        <div
+          key={index}
+          data-aos="fade-up" // AOS animation attribute
+          className="relative text-black p-8 text-start hover:bg-[#F0F4F3] shadow-lg transition-transform duration-500 ease-in-out max-w-[400px] max-h-[258px] py-20 rounded-[20px] h-full flex flex-col gap-y-4 items-start justify-center group overflow-hidden"
+        >
+          <div className="absolute inset-0 border-r-8 border-b-8 rounded-[20px] group-hover:border-[#13745D] transition-all duration-500 ease-out" />
+
+          <div className="relative z-10 text-[#14171B] group-hover:fill-primary-green">
+            {item.imageUrl}
           </div>
-        ))}
-      </div>
-    );
-  };
-  
+          <h2 className="sm:text-[24px] text-[16px] font-bold group-hover:text-[#13745D] transition-colors duration-300">
+            {item.name}{" "}
+            <span className="sm:text-[24px] text-[16px] font-light group-hover:text-[#13745D] transition-colors duration-300">
+              {item.subname}
+            </span>
+          </h2>
+          <p className="text-[16px] max-w-[320px] text-start font-light text-black transition-colors duration-300">
+            {item.description}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 const Cases = () => {
   useEffect(() => {
@@ -136,14 +146,14 @@ const Cases = () => {
           className="flex flex-row w-full justify-between items-center"
           data-aos="fade-right"
         >
-          <h1 className="text-[26px] xl:text-[40px] max-w-[500px] gap-2 leading-tight font-semibold sm:text-left text-center text-black">
+          <h1 className="text-[26px] xl:text-[40px] max-w-[900px] gap-2 leading-tight font-semibold sm:text-left text-center text-black">
             Unlock potential with targeted{" "}
             <span className="font-light"> use cases </span>
           </h1>
-          <p className="sm:text-[18px] text-[16px] font-medium max-w-[600px]">
+          {/* <p className="sm:text-[18px] text-[16px] font-medium max-w-[600px]">
             Lorem ipsum dolor sit amet consectetur. Nunc enim luctus quis eget
             aliquam. Fusce nunc a nunc pellentesque.
-          </p>
+          </p> */}
         </div>
         <div>
           <Box />
