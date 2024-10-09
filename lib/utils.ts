@@ -31,12 +31,11 @@ export function isMobile() {
 
 export function getUserFriendlyPlanName(planName: PlanName): string | undefined {
   const userFriendlyPlanNameMap = new Map<PlanName, string>([
-    [PlanName.CREATOR, 'Creator'],
-    [PlanName.PRO, 'Pro'],
-    [PlanName.ADVANCED_PRO, 'Advanced Pro'],
+    [PlanName.SOCIAL_PORTAL, 'Social Portal'],
+    [PlanName.AI_STUDIO, 'AI Studio'],
+    [PlanName.AUTOMATION_HUB, 'Automation Hub'],
     [PlanName.BUSINESS, 'Business'],
-    [PlanName.BASIC, 'Basic'],
-    [PlanName.ENTERPRISE, 'Enterprise'],
+    [PlanName.AI_ESSENTIALS, 'AI Essentials'],
   ]);
 
   const userFriendlyPlanName = userFriendlyPlanNameMap.get(planName);
@@ -46,12 +45,11 @@ export function getUserFriendlyPlanName(planName: PlanName): string | undefined 
 
 
 export const planIdsMap: Record<PlanName, string[]> = {
-  [PlanName.CREATOR]: ["grs/creator/monthly_planjh4qViTCP2gsvT", "grs/creator/yearly_planWfodY4MFnK074E"],
-  [PlanName.PRO]: ["grs/pro/monthly_plan002mLAqmLKnWAk", "grs/pro/yearly_plan8OT7i48BejFfMI"],
-  [PlanName.ADVANCED_PRO]: ["grs/advanced_pro/monthly_planIsLCnfld6wkjWB", "grs/advanced_pro/yearly_planlsjArmd2EoVuhr"],
+  [PlanName.SOCIAL_PORTAL]: ["grs/creator/monthly_planjh4qViTCP2gsvT", "grs/creator/yearly_planWfodY4MFnK074E"],
+  [PlanName.AI_STUDIO]: ["grs/pro/monthly_plan002mLAqmLKnWAk", "grs/pro/yearly_plan8OT7i48BejFfMI"],
+  [PlanName.AUTOMATION_HUB]: ["grs/advanced_pro/monthly_planIsLCnfld6wkjWB", "grs/advanced_pro/yearly_planlsjArmd2EoVuhr"],
   [PlanName.BUSINESS]: ["grs/business/monthly_planhsPv4QB1ZZ1vS1", "grs/business/yearly_plannB1eoCa7NOhmfh"],
-  [PlanName.BASIC]: ["grs/basic_plan", "grs/basic/yearly_planyrwjxt3Jh4i3iU"],
-  [PlanName.ENTERPRISE]: ["enterprise_monthly_plan_id", "enterprise_yearly_plan_id"]
+  [PlanName.AI_ESSENTIALS]: ["grs/basic_plan", "grs/basic/yearly_planyrwjxt3Jh4i3iU"],
 };
 
 export const hasAccessToRoute = (currentPlanUsage: any, pathname: string): boolean => {

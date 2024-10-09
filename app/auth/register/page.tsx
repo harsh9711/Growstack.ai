@@ -8,7 +8,7 @@ import instance from "@/config/axios.config";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
@@ -17,10 +17,18 @@ import { useDispatch } from "react-redux";
 import { login, setUserPlan } from "@/lib/features/auth/auth.slice";
 import { isEmptyObject, planIdsMap } from "@/lib/utils";
 import { setCookie } from "cookies-next";
+import GlobalModal from "@/components/modal/global.modal";
+import { OtpInput } from "@/components/OtpInput";
+import { PlanName } from "@/types/enums";
 
 export default function Register() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const [isEmailOtpModalOpen, setIsEmailOtpModalOpen] = useState(false);
+  const [otpValue, setOtpValue] = useState('');
+  const [count, setCount] = useState(60);
+  const [canResend, setCanResend] = useState(true);
+  const [isSendOtpLoading, setIsSendOtpLoading] = useState(false);
 
   const ValidationSchema = z
     .object({
@@ -58,20 +66,22 @@ export default function Register() {
     register,
     handleSubmit,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm<ValidationSchemaType>({
     resolver: zodResolver(ValidationSchema),
     defaultValues: { agreeToTerms: false },
   });
 
-  const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
+  const handleRegister = async (token: string) => {
     setIsPending(true);
     try {
-      const { email, password } = data;
+      const { email, password } = getValues();
 
       const response = await instance.post(API_URL + "/users/api/v1/signup", {
         email,
         password,
+        token
       });
       setCookie("token", response.data.data.token, {
         secure: true,
@@ -89,7 +99,7 @@ export default function Register() {
       const currentPlanId = response.data.data.plan_id;
       const expiryDate = new Date(planUsageData?.usage_expiry_date);
 
-      const isBasicPlan = planIdsMap.BASIC.some((val) => val === currentPlanId);
+      const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlanId);
 
       if (isEmptyObject(planUsageData) || expiryDate <= currentDate || isBasicPlan) {
         router.push("/Payment");
@@ -106,8 +116,94 @@ export default function Register() {
       }
       console.error("Signup or plan usage validation failed:", error);
     } finally {
-      // Reset the loading state
       setIsPending(false);
+    }
+  }
+
+  const handleOTPSubmit = async () => {
+    try {
+      setIsPending(true);
+      const { email } = getValues();
+
+      const response = await instance.post(`${API_URL}/users/api/v1/signup/verify`, {
+        email: email,
+        otp: otpValue
+      });
+      if (response.data.success) {
+        handleRegister(response.data.data.token);
+      }
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error("Error fetching user profile:", error);
+    } finally {
+      setIsPending(false);
+    }
+  };
+
+
+  useEffect(() => {
+    if (count > 0) {
+      const timer = setTimeout(() => {
+        setCount(count - 1);
+      }, 1000);
+      return () => clearTimeout(timer);
+    } else {
+      setCanResend(true);
+      return () => { };
+    }
+  }, [count]);
+
+  const resendOtp = async () => {
+    if (canResend) {
+      try {
+        setIsSendOtpLoading(true);
+        await sendEmailOTP(getValues().email);
+        setIsSendOtpLoading(false);
+        setCount(60);
+        setCanResend(false);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
+  const sendEmailOTP = async (email: string) => {
+    try {
+      setIsPending(true);
+      const response = await instance.post(`${API_URL}/users/api/v1/signup/otp`, {
+        email: email
+      });
+      return response.data.success;
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error("Error fetching user profile:", error);
+    }
+    finally {
+      setIsPending(false);
+    }
+  };
+
+  const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
+    try {
+      const response = await sendEmailOTP(getValues().email);
+      if (response) {
+        setIsEmailOtpModalOpen(true)
+      }
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error("Error fetching user profile:", error);
     }
   };
 
@@ -271,6 +367,59 @@ export default function Register() {
           <Image src="/assets/auth-stats.png" alt="" width={550} height={550} />
         </section>
       </div>
+      <GlobalModal
+        showCloseButton={true}
+        disableCloseOnOverlayClick={true}
+        open={isEmailOtpModalOpen}
+        setOpen={() => {
+          setIsEmailOtpModalOpen(false);
+        }}
+      >
+        <div className="flex flex-col items-center justify-center px-6 pt-4 pb-8 gap-6 space-x-6">
+          <Image src={"/logo/growstack.png"} alt="growstack" height={180} width={180} className="max-h-14" />
+
+          <div>
+            <h3 className="text-center text-[26px] font-semibold">
+              Please enter the one-time password
+            </h3>
+            <h4 className="text-center text-[22px] font-semibold">
+              to verify your account
+            </h4>
+          </div>
+          <p className="text-center text-gray-700 text-sm  px-4">
+            A One-time password has been sent to  <span className="text-primary-green cursor-pointer hover:underline">{getValues("email")}</span>
+          </p>
+          <div className="flex flex-col w-2/3 items-center justify-between gap-3">
+            <OtpInput
+              otpValue={otpValue}
+              setOtpValue={setOtpValue}
+              numberOfInputs={4}
+            />
+            <button
+              onClick={handleOTPSubmit}
+              type="submit"
+              className="bg-primary-green mt-3 text-sm hover:bg-primary-green/90 text-white h-[40px] w-full rounded-xl flex justify-center items-center">
+              {isPending ? <Spinner /> : "Verify"}
+            </button>
+
+            {canResend ? (
+              <div className="text-center text-gray-700 text-sm  px-4">
+                Didn’t get the otp{" "} <button className="text-primary-green cursor-pointer hover:underline"
+                  onClick={resendOtp}
+                  disabled={isSendOtpLoading}
+                >
+                  {isSendOtpLoading ? 'sending...' : 'resend'}
+                </button>
+              </div>
+            ) : (
+              <button className='text-center text-gray-700 text-sm  px-4'>
+                <span className='font-bold'>Send code again</span>
+                {` 00:${count < 10 ? '0' + count : count}`}
+              </button>
+            )}
+          </div>
+        </div>
+      </GlobalModal>
     </main>
   );
 }

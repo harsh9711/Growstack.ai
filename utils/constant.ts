@@ -5,6 +5,7 @@ import * as z from 'zod';
 export enum ALL_ROUTES {
     ROOT = '/',
     APP = '/app',
+    LOGIN = '/auth/login',
     PRICING = '/pricing',
     UPGRADE = '/Upgrade',
     PAYMENT = '/Payment',

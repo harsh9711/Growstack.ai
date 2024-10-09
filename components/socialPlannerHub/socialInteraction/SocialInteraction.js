@@ -137,7 +137,7 @@ function SocialInteraction() {
                             </div>
                         </div>
                     </div>
-                    <div className='block'>
+                    {/* <div className='block'>
                         <div className='flex flex-col sm:flex-row items-center gap-4'>
                             <div className='w-full sm:w-1/2' data-aos='fade-right' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                 <div className='content'>
@@ -183,7 +183,7 @@ function SocialInteraction() {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </React.Fragment>

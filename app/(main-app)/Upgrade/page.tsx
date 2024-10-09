@@ -19,6 +19,7 @@ import PlanCard from "@/components/planCard";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { ALL_ROUTES } from "@/utils/constant";
+import { planIdsMap } from "@/lib/utils";
 
 const PricingPage: React.FC = () => {
   const isLoggedIn = !!getCookie("token");
@@ -78,29 +79,25 @@ const PricingPage: React.FC = () => {
         const fetchedPlans = response.data.data.map((plan: Plan) => {
           let description = "";
           switch (plan.plan) {
-            case PlanName.BASIC:
+            case PlanName.AI_ESSENTIALS:
               description =
                 "Essential AI features for individuals who need basic content creation and improvement.";
               break;
-            case PlanName.PRO:
+            case PlanName.AI_STUDIO:
               description =
                 "Advanced AI features with added control, security, team training, and tech support for professionals.";
               break;
-            case PlanName.CREATOR:
+            case PlanName.SOCIAL_PORTAL:
               description =
                 "Powerful AI tools designed for creators to enhance content generation and editing.";
               break;
-            case PlanName.ADVANCED_PRO:
+            case PlanName.AUTOMATION_HUB:
               description =
                 "Enhanced AI capabilities with advanced tools, controls, and team collaboration for growing businesses.";
               break;
             case PlanName.BUSINESS:
               description =
                 "Comprehensive AI features, security, and collaboration tools for businesses to scale operations.";
-              break;
-            case PlanName.ENTERPRISE:
-              description =
-                "Custom AI solutions tailored for enterprises, offering top-tier security, support, and scalability.";
               break;
             default:
               description = "Standard AI features for various needs.";
@@ -165,6 +162,12 @@ const PricingPage: React.FC = () => {
           : (b.yearlyPrice !== null && b.yearlyPrice !== undefined
             ? parseFloat(b.yearlyPrice)
             : Infinity);
+
+      const isBusinessPlanA = planIdsMap.BUSINESS.some((val) => val === a?.id);
+      const isBusinessPlanB = planIdsMap.BUSINESS.some((val) => val === b?.id);
+
+      if (isBusinessPlanA && !isBusinessPlanB) return 1;
+      if (!isBusinessPlanA && isBusinessPlanB) return -1;
 
       if (priceA === 0 && priceB !== 0) return -1;
       if (priceB === 0 && priceA !== 0) return 1;
@@ -259,7 +262,7 @@ const PricingPage: React.FC = () => {
           </div>
           <div className="border "></div>
           <section className="p-4 overflow-y-auto">
-            <div className="w-full border max-w-md flex gap-4 justify-center mx-auto item-center bg-[#F5F5F5] shadow-2xl shadow-gray-200 px-3 py-2 rounded-xl">
+            <div className="w-full border max-w-md flex gap-2 justify-center mx-auto item-center bg-[#F5F5F5] shadow-2xl shadow-gray-200 px-3 py-2 rounded-xl">
               <div className="w-full flex gap-2 flex-1 relative">
                 {tabs.map((tab, index) => (
                   <div
@@ -280,7 +283,7 @@ const PricingPage: React.FC = () => {
                   opacity: selectedTabIndex === 1 ? 1 : 0.3,
                 }}
               >
-                (Save ~20%)
+                (2 Months Free)
               </h2>
             </div>
 
