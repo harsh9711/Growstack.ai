@@ -9,6 +9,7 @@ import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
 import {
+  CrossMark,
   Calender,
   CaretDown,
   GenAi,
@@ -416,7 +417,7 @@ export default function ComingSoon() {
                   <div className="flex items-center relative">
                     <div className="w-[50px] h-[50px] rounded-full border border-black bg-[#F5F5F5] flex items-center justify-center relative">
                       <LogoIcon />
-                      <Cross
+                      <CrossMark
                         className="absolute w-4 h-4"
                         style={{
                           bottom: "0",
