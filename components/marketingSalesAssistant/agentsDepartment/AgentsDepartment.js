@@ -28,7 +28,7 @@ function AgentsDepartment() {
                                     <div className='card bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
-                                                <img src='/images_growstack/salesMarketing/legal.svg' alt='icon' />
+                                            <img src='/ms1.svg' alt='icon' />
                                             </div>
                                             <h5 className='heading'>
                                                 <span>Insight </span>
@@ -46,7 +46,7 @@ function AgentsDepartment() {
                                     <div className='card bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
-                                                <img src='/images_growstack/salesMarketing/legal.svg' alt='icon' />
+                                                <img src='/ms2.svg' alt='icon' />
                                             </div>
                                             <h5 className='heading'>
                                                 <span>Marketing & branding</span>
@@ -64,7 +64,7 @@ function AgentsDepartment() {
                                     <div className='card bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
-                                                <img src='/images_growstack/salesMarketing/legal.svg' alt='icon' />
+                                            <img src='/ms3.svg' alt='icon' />
                                             </div>
                                             <h5 className='heading'>
                                                 <span>Sales</span>
@@ -81,7 +81,7 @@ function AgentsDepartment() {
                                     <div className='card bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
-                                                <img src='/images_growstack/salesMarketing/legal.svg' alt='icon' />
+                                            <img src='/ms4.svg' alt='icon' />
                                             </div>
                                             <h5 className='heading'>
                                                 <span>Customer success</span>
@@ -98,7 +98,7 @@ function AgentsDepartment() {
                                     <div className='card bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
-                                                <img src='/images_growstack/salesMarketing/legal.svg' alt='icon' />
+                                            <img src='/ms5.svg' alt='icon' />
                                             </div>
                                             <h5 className='heading'>
                                                 <span>Tech</span>
