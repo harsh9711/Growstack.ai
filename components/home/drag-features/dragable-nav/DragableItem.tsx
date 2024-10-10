@@ -50,7 +50,7 @@ export default function DragableItem({
         <>
           <div
             className={cn(
-              ` size-8 xl:size-20   rounded-lg inline-flex items-center justify-center `
+              ` size-8 xl:size-12 2xl:size-20   rounded-lg inline-flex items-center justify-center `
             )}
           >
             <Image src={path} width={150} height={150} alt={alt ? alt : title} className="" />

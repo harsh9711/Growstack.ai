@@ -11,6 +11,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     var token = getCookie("token");
+    config.headers["platform"] = "web";
     config.headers["Authorization"] = `Bearer ${token}`;
     return config;
   },

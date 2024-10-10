@@ -219,7 +219,7 @@ export default function ChatComponent() {
         const freeCategories = ["growStackAiMessagesModel"];
 
         if (user?.user_type === "ADMIN" || freeCategories.includes(currentCategory.modelCategory)) {
-            if (currentModal.value === "Perplexity") {
+            if (currentModal.value === "perplexity") {
                 setEnableWebAccess(true);
             } else {
                 setEnableWebAccess(false);
@@ -243,7 +243,7 @@ export default function ChatComponent() {
 
         console.log("Usage limit:", currentModal);
 
-        if (currentModal.value === "Perplexity") {
+        if (currentModal.value === "perplexity") {
             setEnableWebAccess(true);
         } else {
             setEnableWebAccess(false);
@@ -274,7 +274,7 @@ export default function ChatComponent() {
             setSelectedModel("growstack-llm");
         } else {
             setEnableWebAccess(true);
-            setSelectedModel("Perplexity");
+            setSelectedModel("perplexity");
         }
     };
     return (

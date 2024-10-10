@@ -9,7 +9,7 @@ export const testimonials = [
     description:
       "I've tried several website builders, but Webbuddy takes the cake. The templates are modern and customizable, and the drag-and-drop interface makes it a breeze to create a stunning website. Love it!",
   },
-  { 
+  {
     id: 2,
     imageUrl: "/carousel/c2.svg",
     name: "Strategy and content creation",
@@ -206,7 +206,7 @@ export const landingpage = [
     border: "#C1E0FF",
     background: "#F1F8FF",
     imageUrlbox: "/landingpage/l1.svg",
-    videos:"/landingpage/box1.mp4"
+    videos: "/landingpage/box1.mp4",
   },
   {
     id: 2,
@@ -215,7 +215,7 @@ export const landingpage = [
     border: "#FFF4BD",
     background: "#FEFAE5",
     imageUrlbox: "/landingpage/l2.svg",
-    videos:"/landingpage/box2.svg"
+    videos: "/landingpage/box2.svg",
   },
 
   {
@@ -225,7 +225,7 @@ export const landingpage = [
     border: "#FFC3E4",
     background: "#FCF1F7",
     imageUrlbox: "/landingpage/l3.svg",
-    videos:"/landingpage/box3.svg"
+    videos: "/landingpage/box3.svg",
   },
   {
     id: 4,
@@ -234,7 +234,7 @@ export const landingpage = [
     border: "#DBF8A8",
     background: "#EEF6E0",
     imageUrlbox: "/landingpage/l4.svg",
-    videos:"/landingpage/box4.svg"
+    videos: "/landingpage/box4.svg",
   },
   {
     id: 5,
@@ -243,33 +243,35 @@ export const landingpage = [
     border: "#FFE0C3",
     background: "#FFF8F6",
     imageUrlbox: "/landingpage/l5.svg",
-    videos:"/landingpage/box5.svg"
+    videos: "/landingpage/box5.svg",
   },
   {
     id: 6,
     imageUrl: "/images_growstack/home/fBlock6.svg",
-    border: "#C1FFC1",    name: "Streamline your processes with AI workflow builder",
+    border: "#C1FFC1",
+    name: "Streamline your processes with AI workflow builder",
 
     background: "#F6FFF6",
     imageUrlbox: "/landingpage/l6.svg",
-    videos:"/landingpage/box6.svg"
-
+    videos: "/landingpage/box6.svg",
   },
   {
     id: 7,
     imageUrl: "/images_growstack/home/fBlock7.svg",
-    border: "#DBBFFF", name: "Effortless publishing with scheduler",
+    border: "#DBBFFF",
+    name: "Effortless publishing with scheduler",
     background: "#FAF6FF",
     imageUrlbox: "/landingpage/l7.svg",
-    videos:"/landingpage/box7.svg"
+    videos: "/landingpage/box7.svg",
   },
   {
     id: 8,
     imageUrl: "/images_growstack/home/fBlock8.svg",
-    border: "#FFBFBF", name: "Analyze your impact",
+    border: "#FFBFBF",
+    name: "Analyze your impact",
     background: "#FFF6F6",
     imageUrlbox: "/landingpage/l8.svg",
-    videos:"/landingpage/box8.svg"
+    videos: "/landingpage/box8.svg",
   },
 ];
 export const team = [
@@ -303,53 +305,53 @@ export const team = [
     Url: "https://www.linkedin.com/in/krishna-anudeep-41128b10b/",
   },
 ];
-export const solutions = [
-  {
-    id: 1,
-    imageUrl: "/solutionsicon/img1.svg",
-    name: "Large enterprises",
-    role: "   Streamline operation's with advance AI solutions",
-    bgcolor: "#034737",
-    textcolor: "#FFFFFF",
-    href: "/solutions/largeenterprise",
-  },
-  {
-    id: 2,
-    imageUrl: "/solutionsicon/img2.svg",
-    name: "Mid-market",
-    role: "Conquer resources constraints with AI tools",
-    bgcolor: "#13745D",
-    textcolor: "#FFFFFF",
-    href: "/solutions/midmarketenterprise",
-  },
+// export const solutions = [
+//   {
+//     id: 1,
+//     imageUrl: "/solutionsicon/img1.svg",
+//     name: "Large enterprises",
+//     role: "   Streamline operation's with advance AI solutions",
+//     bgcolor: "#e8dff5",
+//     textcolor: "#034737",
+//     href: "/solutions/largeenterprise",
+//   },
+//   {
+//     id: 2,
+//     imageUrl: "/solutionsicon/img2.svg",
+//     name: "Mid-market",
+//     role: "Conquer resources constraints with AI tools",
+//     bgcolor: "#fce1e4",
+//     textcolor: "#034737",
+//     href: "/solutions/midmarketenterprise",
+//   },
 
-  {
-    id: 3,
-    imageUrl: "/solutionsicon/img3.svg",
-    name: "Small businesses",
-    role: "Maximize efficiency with all-in-one AI  marketing",
-    bgcolor: "#A4E2CC",
-    textcolor: "#034737",
-    href: "/solutions/smallbusinesses",
-  },
-  {
-    id: 4,
-    imageUrl: "/solutionsicon/img4.svg",
-    name: "Startups",
-    role: "Maximize efficiency with all-in-one AI  marketing",
-    bgcolor: "#FFFFFF",
-    textcolor: "#034737",
-    href: "/solutions/startup",
-  },
-];
+//   {
+//     id: 3,
+//     imageUrl: "/solutionsicon/img3.svg",
+//     name: "Small businesses",
+//     role: "Maximize efficiency with all-in-one AI  marketing",
+//     bgcolor: "#fcf4dd",
+//     textcolor: "#034737",
+//     href: "/solutions/smallbusinesses",
+//   },
+//   {
+//     id: 4,
+//     imageUrl: "/solutionsicon/img4.svg",
+//     name: "Startups",
+//     role: "Maximize efficiency with all-in-one AI  marketing",
+//     bgcolor: "#ddedea ",
+//     textcolor: "#034737",
+//     href: "/solutions/startup",
+//   },
+// ];
 export const solutionsteams = [
   {
     id: 1,
     imageUrl: "/solutionsicon/img5.svg",
     name: "Marketing",
     role: "   Transform your marketing strategy with GrowStack",
-    bgcolor: "#034737",
-    textcolor: "#FFFFFF",
+    bgcolor: "#e8dff5",
+    textcolor: "#034737",
     href: "/solutions/marketing",
   },
   {
@@ -357,10 +359,9 @@ export const solutionsteams = [
     imageUrl: "/solutionsicon/img6.svg",
     name: "Sales",
     role: "Transform your sales process with Growstack",
-    bgcolor: "#0E5E4B",
-    textcolor: "#FFFFFF",
+    bgcolor: "#fce1e4",
+    textcolor: "#034737",
     href: "/solutions/sales",
-
   },
 
   {
@@ -368,8 +369,8 @@ export const solutionsteams = [
     imageUrl: "/solutionsicon/img7.svg",
     name: "RevOps",
     role: "Optimize your revenue strategy with  Growstack",
-    bgcolor: "#13745D",
-    textcolor: "#FFFFFF",
+    bgcolor: "#fcf4dd",
+    textcolor: "#034737",
     href: "/solutions/revops",
   },
   {
@@ -377,10 +378,9 @@ export const solutionsteams = [
     imageUrl: "/solutionsicon/img8.svg",
     name: "Customer service",
     role: "Elevate customer service with advanced AI solutions",
-    bgcolor: "#55917E",
-    textcolor: "#FFFFFF",
+    bgcolor: "#ddedea ",
+    textcolor: "#034737",
     href: "/solutions/customer_service",
-
   },
 
   {
@@ -388,39 +388,88 @@ export const solutionsteams = [
     imageUrl: "/solutionsicon/img9.svg",
     name: "Finance",
     role: "Transform finance operations with AI-Powered solutions",
-    bgcolor: "#7CB8A4",
+    bgcolor: "#daeaf6",
     textcolor: "#034737",
     href: "/solutions/finance",
-
   },
   {
     id: 6,
     imageUrl: "/solutionsicon/img10.svg",
     name: "Business operations",
     role: "Streamline your business operations with Growstack",
-    bgcolor: "#A4E2CC",
+    bgcolor: "#e8dff5",
     textcolor: "#034737",
-        href: "/solutions/operations",
-
+    href: "/solutions/operations",
   },
   {
     id: 7,
     imageUrl: "/solutionsicon/img11.svg",
     name: "IT",
     role: "Elevate customer service with advanced AI solutions",
-    bgcolor: "#D2F1E6",
+    bgcolor: "#fce1e4",
     textcolor: "#034737",
     href: "/solutions/It",
-
   },
   {
     id: 8,
     imageUrl: "/solutionsicon/img13.svg",
     name: "Supply chain",
     role: "Revolutionize Your Supply Chain Operations with Growstack",
-    bgcolor: "#FFFFFF",
+    bgcolor: "#fcf4dd",
     textcolor: "#034737",
     href: "/solutions/supplychain",
+  }, {
+    id: 9,
+    imageUrl: "/solutionsicon/img13.svg",
+    name: "Solution by Company Type",
+    role: "",
+    bgcolor: "#ffffff",
+    textcolor: "#034737",
+    href: "",
+  },
+  {
+    id: 10,
+    imageUrl: "/solutionsicon/img1.svg",
+    name: "Large enterprises",
+    role: "   Streamline operation's with advance AI solutions",
+    bgcolor: "#e8dff5",
+    textcolor: "#034737",
+    href: "/solutions/largeenterprise",
+  },
+  {
+    id: 11,
+    imageUrl: "/solutionsicon/img2.svg",
+    name: "Mid-market",
+    role: "Conquer resources constraints with AI tools",
+    bgcolor: "#fce1e4",
+    textcolor: "#034737",
+    href: "/solutions/midmarketenterprise",
+  },
 
+  {
+    id: 12,
+    imageUrl: "/solutionsicon/img3.svg",
+    name: "Small businesses",
+    role: "Maximize efficiency with all-in-one AI  marketing",
+    bgcolor: "#fcf4dd",
+    textcolor: "#034737",
+    href: "/solutions/smallbusinesses",
+  },
+  {
+    id: 13,
+    imageUrl: "/solutionsicon/img4.svg",
+    name: "Startups",
+    role: "Maximize efficiency with all-in-one AI  marketing",
+    bgcolor: "#ddedea ",
+    textcolor: "#034737",
+    href: "/solutions/startup",
+  },{
+    id: 14,
+    imageUrl: "/solutionsicon/img13.svg",
+    name: "Solution by Teams",
+    role: "",
+    bgcolor: "#ffffff",
+    textcolor: "#034737",
+    href: "",
   },
 ];
