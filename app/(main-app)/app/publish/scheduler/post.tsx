@@ -222,7 +222,7 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile, platforms })
                                                                         controls
                                                                         className="w-full rounded-lg"
                                                                     >
-                                                                        <source src={item.mediaUrls[1].mediaUrl} type="video/mp4" />
+                                                                        <source src={item.mediaUrls[0].mediaUrl} type="video/mp4" />
                                                                         Your browser does not support the video tag.
                                                                     </video>
                                                                 </>
