@@ -186,9 +186,18 @@ export default function AiAppTemplatesPage() {
   const clearSearchHandle = () => {
     setSearchQuery("");
   };
+  const tagStore = (tag:any) => {
+    localStorage.setItem("tagName",tag)
+  };
 
   useEffect(() => {
-    fetchAppTemplates(selectedTag);
+    const tagname= localStorage.getItem("tagName")
+    if(tagname){
+    fetchAppTemplates(tagname);
+    setSelectedTag(tagname)
+    }else{
+      fetchAppTemplates(selectedTag);
+    }
   }, [selectedTag]);
 
   useEffect(() => {
@@ -239,6 +248,7 @@ export default function AiAppTemplatesPage() {
               key={index}
               onClick={() => {
                 setSelectedTag(tag.name);
+                tagStore(tag.name)
                 clearSearchHandle();
               }}
               className={clsx(

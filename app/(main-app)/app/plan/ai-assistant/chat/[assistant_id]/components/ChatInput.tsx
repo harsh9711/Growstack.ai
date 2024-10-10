@@ -73,14 +73,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateM
       eventSource.onerror = (error: MessageEvent) => {
         console.error('EventSource failed:', error);
         if (fromMic) {
-          textToSpeech(accumulatedResponse);
+          // textToSpeech(accumulatedResponse);
         }
         eventSource.close();
       };
 
       eventSource.addEventListener('end', (event: MessageEvent) => {
         if (fromMic) {
-          textToSpeech(accumulatedResponse);
+          // textToSpeech(accumulatedResponse);
         }
         eventSource.close();
       });
