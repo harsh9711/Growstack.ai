@@ -29,11 +29,10 @@ function Page() {
       </div>
       {/* <Banner /> */}
       <OurProcess />
-      <Facts />
-      <Carousel />
       {/* <Features /> */}
       <Animation />
-      {/* <Marketing/> */} 
+      <Facts />
+      <Carousel /> {/* <Marketing/> */}
       <PoweredBy />
       <Premium />
       <Capability />
