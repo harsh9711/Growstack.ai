@@ -163,7 +163,7 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                     "mediaUrls": [
                         response.data.data.fileUrl
                     ],
-                    "isVideo": response.data.data.isImage,
+                    "isVideo": !response.data.data.isImage,
                     "scheduleDate": selectedDate
                 }
                 postComment(payload);
