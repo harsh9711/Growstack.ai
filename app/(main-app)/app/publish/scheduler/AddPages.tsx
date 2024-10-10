@@ -234,7 +234,7 @@ const AddPages: FC<AddPagesProps> = ({
                             </div>
                             <div className="flex items-center justify-center ">
                                 <div className="grid grid-cols-2 grid-rows-2 gap-6 p-4  mt-0  ">
-                                    <div className="border border-[#034737] bg-[#034737] border-dotted rounded text-white p-2  w-[290px] h-[210px] flex items-center justify-center" onClick={handleOnConnect}>
+                                    <div style={{cursor:"pointer"}} className="border border-[#034737] bg-[#034737] border-dotted rounded text-white p-2  w-[290px] h-[210px] flex items-center justify-center" onClick={handleOnConnect}>
                                         <div className="flex flex-col items-center">
                                             <div className="text-white bg-white items-center rounded-lg p-3">
                                                 <div className="text-white items-center">
@@ -254,7 +254,7 @@ const AddPages: FC<AddPagesProps> = ({
                                         </div>
                                     </div>
                                     {platformDetails && platformDetails.platform &&
-                                        <div className="border border-[#034737] border-dotted rounded p-2 w-[290px] h-[210px] flex items-center justify-center">
+                                        <div className="border border-[#034737] border-dotted rounded p-2 w-[290px] h-[210px] flex items-center justify-center" style={{cursor:"pointer"}} onClick={handleOnConnect}>
                                             <div className="absolute" style={{ right: "81px", top: "10rem" }}>
                                                 <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <circle cx="11" cy="11" r="11" fill="#034737" />
