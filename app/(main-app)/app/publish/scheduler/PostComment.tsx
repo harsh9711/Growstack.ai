@@ -76,7 +76,6 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
             }
             let apiUrl = `${API_URL}/ai/api/v1/generate/post`;
             const conversation = await instance.post(apiUrl, payload);
-            console.log("conversation",conversation.data.data.post);
             setAccumulatedResponse(conversation.data.data.post);
         }
         setLoading(false)
