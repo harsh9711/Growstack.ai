@@ -228,40 +228,6 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile, platforms })
                                                 </div>
                                             )}
 
-                                            {post.media && post.media.length > 0 && (
-                                                <div className="mt-2">
-                                                    {post.media.map((item: { type: string; url: string | undefined; mediaUrls: { mediaUrl: string | undefined; }[]; }, index: Key | null | undefined) => {
-                                                        if (item.type === "photo") {
-                                                            return (
-                                                                <>
-                                                                    <img
-                                                                        key={index}
-                                                                        src={item.url}
-                                                                        alt="Post Media"
-                                                                        className="w-full rounded-lg"
-                                                                    />
-                                                                </>
-
-                                                            );
-                                                        } else if (item.type === "video") {
-                                                            return (
-                                                                <>
-                                                                    <video
-                                                                        key={index}
-                                                                        controls
-                                                                        className="w-full rounded-lg"
-                                                                    >
-                                                                        <source src={item.mediaUrls[1].mediaUrl} type="video/mp4" />
-                                                                        Your browser does not support the video tag.
-                                                                    </video>
-                                                                </>
-
-                                                            );
-                                                        }
-                                                        return null;
-                                                    })}
-                                                </div>
-                                            )}
                                             {post.mediaUrls && post.mediaUrls.url ? (
                                                 <div className="mt-2">
                                                     {post.mediaUrls.id.includes("video") ? (
@@ -282,8 +248,6 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile, platforms })
                                                 <div>
                                                 </div>
                                             )}
-
-
                                             {post.mediaUrls && post.mediaUrls.length > 0 ? (
                                                 <div className="mt-2">
                                                     {post.mediaUrls.map((item: { mediaType: string; media: { image?: { src: string }; source?: string }; }, index: Key | null | undefined) => {

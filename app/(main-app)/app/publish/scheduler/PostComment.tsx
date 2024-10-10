@@ -81,7 +81,7 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                 "platform": selectedIcon
 
             }
-            let apiUrl = `https://api.growstack.ai/ai/api/v1/generate/post`;
+            let apiUrl = `${API_URL}/ai/api/v1/generate/post`;
             setAccumulatedResponse("")
             const conversation = await instance.post(apiUrl, payload);
             setAccumulatedResponse(conversation.data.data.post);
@@ -229,6 +229,10 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
     };
     useEffect(() => {
         platformDetails()
+        setText("")
+        setFileInfo(null)
+        setUpload(null)
+        setAccumulatedResponse("")
     }, []);
     const platformDetails = () => {
         let platformDetails: any
