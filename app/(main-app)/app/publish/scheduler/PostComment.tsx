@@ -74,7 +74,7 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                     "platform": selectedIcon
                   
             }
-            let apiUrl = `${API_URL}/ai/api/v1/generate/post`;
+            let apiUrl = `https://api.growstack.ai/ai/api/v1/generate/post`;
             const conversation = await instance.post(apiUrl, payload);
             setAccumulatedResponse(conversation.data.data.post);
         }
@@ -348,9 +348,9 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                         <div className="flex justify-between items-center">
                             <div className="flex items-center">
                                 <button onClick={() => fileInputRef.current?.click()}>
-                                    <InsertImage />
+                                <ImgVector />
                                 </button>
-                                <button onClick={() => gifInputRef.current?.click()}>
+                                {/* <button onClick={() => gifInputRef.current?.click()}>
                                     <Gif />
                                 </button>
                                 <button onClick={() => fileInputRef.current?.click()}>
@@ -361,7 +361,7 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                                     onClick={() => fileInputRef.current?.click()} // Trigger file input
                                 >
                                     <LinkIcon />
-                                </button>
+                                </button> */}
                             </div>
                             {/* <div className="relative">
                                 <SmileEmoji
@@ -396,16 +396,16 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                         />
                     )}
                     {/* <Divider style={{margin:"0px !important"}}/> */}
-                    <div className="flex justify-between items-center   border-t-1 border-solid border-[#034737]">
+                    <div className="flex justify-between items-center  border-t-2 border-solid border-[#034737]">
 
                         <button
                             onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}
-                            className="border bg-primary-green rounded-[5px] text-white flex items-center p-3 ml-1 mt-1"
+                            className="border bg-primary-green rounded-[5px] text-white flex items-center p-3 ml-1 mt-2"
                         >
                             <Clock className="text-white bg-white border rounded-full" /> &nbsp; Schedule Post &nbsp;
                         </button>
                         <button
-                            className="border bg-primary-green rounded-[5px] text-white flex text-center p-3 mr-1 mt-1"
+                            className="border bg-primary-green rounded-[5px] text-white flex text-center p-3 mr-1 mt-2"
                             onClick={handleSendMessage}
                         >
                             <span className="mr-2 ml-2">Post Now</span>
