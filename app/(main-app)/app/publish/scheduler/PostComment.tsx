@@ -79,6 +79,7 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
             const payload = {
                 "user_prompt": user_text,
                 "platform": selectedIcon
+
             }
             let apiUrl = `${API_URL}/ai/api/v1/generate/post`;
             setAccumulatedResponse("")

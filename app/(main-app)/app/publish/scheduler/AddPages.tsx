@@ -293,7 +293,3 @@ const AddPages: FC<AddPagesProps> = ({
 }
 
 export default AddPages;
-
-function setLoading(arg0: boolean) {
-    throw new Error("Function not implemented.");
-}

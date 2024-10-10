@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React, { useEffect, useState, useRef } from "react";
 import SocialNavBar from "./Navbar";
 import PostCard from "./post";
@@ -282,6 +283,8 @@ export default function Publish() {
             <div className="absolute">
                 <SheduleBackground />
             </div>
+            <AddPages setOpenModel={setOpenModel} openModel={openModel} selectedIcon={selectedIcon}/>
+            <PostComment openPostModel={genPost} isGenPost={isGenPost} selectedIcon={selectedIcon} profile={profile}/>
             <div>
                 {!skipNow ? (
                     <>
@@ -608,4 +611,3 @@ export default function Publish() {
         </div>
     );
 }
-
