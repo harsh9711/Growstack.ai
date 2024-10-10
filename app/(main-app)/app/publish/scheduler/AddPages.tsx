@@ -1,5 +1,5 @@
 import { DialogTitle } from "@radix-ui/react-dialog";
-import { BuildingIcon, FlagIcon, LinkedinIcon, PlusIcon, TwitterIcon,UserCircleIcon } from "@/components/svgs";
+import { BuildingIcon, FlagIcon, LinkedinIcon, PlusIcon, TwitterIcon, UserCircleIcon } from "@/components/svgs";
 import { FC, useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import instance from "@/config/axios.config";
@@ -47,17 +47,17 @@ const contentMap: { [key: string]: BoxContent } = {
         flagIcon: <FlagIcon />,
         content1: "Add Facebook Pages",
     },
-    instagram: {
-        name: "twitter",
-        growstackIcon: <GrowstackIcon />,
-        growStackData: "GrowStactAi",
-        growstackSubData: "@GrowStackai",
-        connected: "CONNECTED",
-        buildingStoreIcon: <BuildingStore />,
-        userCircleIcon: <UserCircleIcon />,
-        content1: "Add Instagram Professional Accounts",
-        content2: "Add Instagram Personal Profiles Or Pages"
-    },
+    // instagram: {
+    //     name: "twitter",
+    //     growstackIcon: <GrowstackIcon />,
+    //     growStackData: "GrowStactAi",
+    //     growstackSubData: "@GrowStackai",
+    //     connected: "CONNECTED",
+    //     buildingStoreIcon: <BuildingStore />,
+    //     userCircleIcon: <UserCircleIcon />,
+    //     content1: "Add Instagram Professional Accounts",
+    //     content2: "Add Instagram Personal Profiles Or Pages"
+    // },
 
     twitter: {
         name: "twitter",
@@ -113,7 +113,7 @@ const AddPages: FC<AddPagesProps> = ({
     const [platforms, setPlatforms] = useState<string[]>([]);
     const [profile, setProfile] = useState<any>([]);
     const [loading, setLoading] = useState(true);
-    const [active,setActive] = useState<string>("")
+    const [active, setActive] = useState<string>("")
     useEffect(() => {
         handleGetProfileData();
         if (selectedIcon) {
@@ -144,8 +144,10 @@ const AddPages: FC<AddPagesProps> = ({
 
         } catch (error: any) {
             setLoading(false);
+            if (error.response.data.message) {
+                toast.error(error.response.data.message);
 
-            toast.error(error.response.data.message);
+            }
         }
     };
 

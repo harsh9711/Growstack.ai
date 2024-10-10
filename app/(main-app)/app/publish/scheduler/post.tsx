@@ -52,7 +52,7 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile, platforms })
         try {
             if (selectedIcon !== null) {
                 const response = await instance.get(
-                    `${API_URL}/users/api/v1/social-media/posts/${selectedIcon}?limit=10`
+                    `${API_URL}/users/api/v1/social-media/posts/${selectedIcon.toLowerCase()}?limit=10`
                 );
                 const post = response.data.data.posts
                 setPostDetails(post);
@@ -118,7 +118,6 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile, platforms })
                 <Spinner color="black" size={100} />
                 Loading...
             </div>
-
             }
             {postDetails.length > 0 && userPostDetails ? (
                 <>
@@ -212,7 +211,9 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile, platforms })
                             </div>
                         </div>
                     ))} </>) :
-                <h1>{!loading && <>loadingNo Active Post</>}</h1>
+                    <>
+                {!loading && (<h1>loadingNo Active Post</h1>)}
+                </>
             }
         </>
     );
