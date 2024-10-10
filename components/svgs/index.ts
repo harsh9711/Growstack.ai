@@ -136,6 +136,8 @@ export { default as ThumbDown } from "@/public/Thumbdown.svg"
 export { default as Rewrite } from "@/public/pencil.svg"
 export { default as Columns } from "@/public/columns.svg"
 export { default as TwitterIcon } from "@/public/TwitterIcon.svg"
+export { default as UserCircleIcon } from "@/public/UserCircleIcon.svg"
+
 
 
 

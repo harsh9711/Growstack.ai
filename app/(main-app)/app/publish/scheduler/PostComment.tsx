@@ -39,7 +39,6 @@ import EventSource from 'eventsource';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Spinner from "@/components/Spinner";
-import { Divider } from "antd";
 interface PostCommentProps {
     openPostModel: boolean
     selectedIcon: string
@@ -68,14 +67,17 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
     const [lastPromt, setLastPrompt] = useState("")
     const [loading, setLoading] = useState(false)
     const handleInputChage = debounce(async (user_text: any) => {
-        if(user_text){
+        if (user_text) {
             setLoading(true)
-            let apiUrl = `${API_URL}/ai/api/v1/conversation/chat?conversation_id=&model=gemini-1.5-flash&enableSecure=false`;
-            const conversation = await instance.post(apiUrl, {
-                user_prompt: user_text,
-            });
-            const { response, conversation_id, chatId, noOfMessagesLeft, totalNoOfMessages } = conversation.data.data as ChatResponse;
-            await streamResponse(chatId);
+            const payload = {
+                    "user_prompt": user_text,
+                    "platform": selectedIcon
+                  
+            }
+            let apiUrl = `${API_URL}/ai/api/v1/generate/post`;
+            const conversation = await instance.post(apiUrl, payload);
+            console.log("conversation",conversation.data.data.post);
+            setAccumulatedResponse(conversation.data.data.post);
         }
         setLoading(false)
 
@@ -88,61 +90,6 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
         setUpload(null)
         setFileInfo(null)
     }, []);
-    const streamResponse = async (chatId: string) => {
-        try {
-            setAccumulatedResponse("")
-            const token = getCookie("token");
-            setShowActions(false)
-            setLoading(true)
-
-            const eventSource = new EventSource(`${API_URL}/ai/api/v1/conversation/chat/stream/${chatId}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-                withCredentials: true,
-            });
-            setShowActions(true)
-
-
-            eventSource.onmessage = (event: MessageEvent) => {
-                const chunk = event.data;
-                let promt: any
-                const platform = selectedIcon.toLowerCase()
-                if (platform === 'twitter') {
-                    promt = 'Generate a social media post for Twitter that is max 2500 characters dont show in response about characters'
-                }
-                else if (platform === 'linkedin') {
-                    promt = 'Generate a social media post for linkedin that is max 2500 characters dont show in response about characters'
-
-                }
-                else if (platform === 'instagram') {
-                    promt = 'Generate a social media post for instagram that is max 2500 characters dont show in response about characters'
-
-                }
-                else if (platform === 'facebook') {
-                    promt = 'Generate a social media post for facebook that is max 2500 characters dont show in response about characters'
-                }
-                const msg = parseJsonString(chunk)?.text + promt || "";
-                setAccumulatedResponse((prevResponse) => prevResponse + msg);
-                setLastPrompt(msg)
-            };
-
-            eventSource.onerror = (error: MessageEvent) => {
-                eventSource.close();
-            };
-
-            eventSource.addEventListener('end', (event: MessageEvent) => {
-                eventSource.close();
-            });
-            setLoading(false)
-
-
-        } catch (error) {
-            console.error('Error setting up EventSource:', error);
-            toast.error('Error setting up stream');
-        }
-    };
-
     const reGenerate = () => {
         setAccumulatedResponse('')
         handleInputChage(lastPromt)
@@ -281,8 +228,12 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                 <DialogContent
                     showCloseButton={true}
                     className="w-[498px] h-auto p-0 pb-4 border-0 max-w-none"
-                >
+                >  {loading && <div className="absolute z-50 lex-1 h-full flex flex-col gap-5 justify-center text-center items-center">
+                    <Spinner color="black" size={50} />
+                    Loading...
+                </div>
 
+                    }
                     <DialogHeader>
                         <DialogTitle className="px-5">
                             <div className="bg-white py-3 border-b border-[#EBEBEB] text-black font-inter flex justify-between items-center">
@@ -302,8 +253,9 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                             </div>
                         </DialogTitle>
                     </DialogHeader>
+
                     {!isAiMode ? (
-                        <>  
+                        <>
                             <textarea
                                 value={text}
                                 onChange={(e) => setText(e.target.value)}
@@ -316,13 +268,13 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                                 }}
                             />
                             <button
-                            onClick={() => { setAiMode(true); setAccumulatedResponse("") }}
-                            className="flex items-center w-[150px] h-[35px] mt-2 ml-5 border border-dashed border-[#034737] rounded-[16px] text-[#034737] text-[14px] bg-transparent"
-                        >
+                                onClick={() => { setAiMode(true); setAccumulatedResponse("") }}
+                                className="flex items-center w-[150px] h-[35px] mt-2 ml-5 border border-dashed border-[#034737] rounded-[16px] text-[#034737] text-[14px] bg-transparent"
+                            >
 
-                            <GenAi className="ml-2 mr-2" size={24} />
-                            Generative AI
-                        </button>
+                                <GenAi className="ml-2 mr-2" size={24} />
+                                Generative AI
+                            </button>
                         </>
                     ) : (
                         <>
@@ -361,15 +313,14 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                                             <ThumbUp className="mr-2 cursor-pointer" />
                                             <ThumbDown />
                                         </div> */}
-                                        <div className="absolute mb-2 bottom-2 right-2 flex items-center space-x-2">
+                                        <div className="absolute mb-2 right-2 flex items-center space-x-2">
                                             <button className="text-[#034737] bg-transparent border-none" onClick={reGenerate}>
                                                 Retry
                                             </button>
                                             <button
-                                                className="flex items-center text-white bg-[#034737] px-4 py-1 rounded-[16px]"
+                                                className="flex items-center text-white bg-[#034737] pr-6 px-2 py-2 rounded-[16px]"
                                                 onClick={handleActionComplete}
-                                            >
-                                                <Tick className="mr-2" />
+                                            ><Tick />
                                                 Accept
                                             </button>
                                         </div>
@@ -378,8 +329,10 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                             </div>
                         </>
                     )}
+
+
                     {fileInfo && (
-                        <div className="flex items-center justify-between  mt-2 p-2 bg-gray-100 border border-gray-300 rounded-lg">
+                        <div className="flex items-center justify-between  mt-2 m-2 bg-gray-100 border border-gray-300 rounded-lg">
                             <div className="flex items-center space-x-2">
                                 {getFileIcon(fileInfo.name)}
                                 <span className="text-sm text-gray-700 truncate">{fileInfo.name}</span>
@@ -436,7 +389,7 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                             onChange={(date) => setSelectedDate(date)}
                             showTimeSelect
                             timeFormat="hh:mm aa"
-                            timeIntervals={15}
+                            timeIntervals={1}
                             dateFormat="MMMM d, yyyy h:mm aa"
                             className="mt-2 border p-2 rounded-md"
                             placeholderText="Select date and time"
@@ -456,7 +409,7 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                             className="border bg-primary-green rounded-[5px] text-white flex text-center p-3 mr-1 mt-1"
                             onClick={handleSendMessage}
                         >
-                            <span className="mr-2">Post Now</span>
+                            <span className="mr-2 ml-2">Post Now</span>
                         </button>
                     </div>
 

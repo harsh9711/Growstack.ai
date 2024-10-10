@@ -59,26 +59,9 @@ const SocialNavBar: FC<SocialNavBarProps> = ({
       className="fixed top-20 left-0 right-0 w-[90%] mx-auto flex items-center justify-between p-4 shadow-lg z-50 rounded-l-full rounded-r-full"
       style={{ backgroundColor: "#EBF0F6" }}
     >
+      <div></div>
       <div className="flex items-center">
-        <button className="flex items-center text-sm bg-white border font-semibold px-3 py-3 py-1 rounded-l-full rounded-r-full ml-4">
-          <Image
-            src="/assets/layout-distribute-horizontal.svg"
-            alt=""
-            width={20}
-            height={20}
-            color="black"
-          />
-          <span className="px-1">Feed view</span>
-          <Image
-            src="/assets/chevron-down.svg"
-            alt=""
-            width={24}
-            height={24}
-            color="black"
-          />
-        </button>
       </div>
-
       <div className="flex items-center space-x-8">
         <div className="flex space-x-4 items-center">
           {socialMediaIcons.map(({ icon: Icon, name, bgColor }) => (

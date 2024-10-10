@@ -1,5 +1,5 @@
 import { DialogTitle } from "@radix-ui/react-dialog";
-import { BuildingIcon, FlagIcon, LinkedinIcon, PlusIcon, TwitterIcon } from  "@/components/svgs";
+import { BuildingIcon, FlagIcon, LinkedinIcon, PlusIcon, TwitterIcon,UserCircleIcon } from "@/components/svgs";
 import { FC, useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import instance from "@/config/axios.config";
@@ -7,13 +7,12 @@ import { API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
 import Spinner from "@/components/Spinner";
 import { GrowstackIcon, BuildingStore, FbIcon, InstaIcon } from "@/components/svgs";
-import { UserCircleIcon } from "lucide-react";
 
 
 interface AddPagesProps {
     setOpenModel: (open: boolean) => void;
     openModel: boolean;
-    selectedIcon:string
+    selectedIcon: string
 }
 
 interface BoxContent {
@@ -60,44 +59,18 @@ const contentMap: { [key: string]: BoxContent } = {
         content2: "Add Instagram Personal Profiles Or Pages"
     },
 
-    // tiktok: {
-    //     name: "Tiktok",
-    //     growstackIcon: <GrowstackIcon />,
-    //     growStackData: "GrowStactAi",
-    //     growstackSubData: "@GrowStackai",
-    //     connected: "CONNECTED",
-    //     briefCase: <BriefCase />,
-    //     addAccountIcon: <UserCircleIcon />,
-    //     content1: "Add Tiktok Accounts",
-    //     content2: "business accounts"
-
-    // },
-
     twitter: {
         name: "twitter",
         growstackIcon: <GrowstackIcon />,
         growStackData: "GrowStactAi",
         growstackSubData: "@GrowStackai",
         connected: "CONNECTED",
-        plusIcon: <PlusIcon />,
+        plusIcon: <BuildingIcon />,
         userCircleIcon: <UserCircleIcon />,
         content1: "Add X (Twitter) Profiles",
         content2: "Create a mockup page",
 
     },
-
-    // pinterest: {
-    //     name: "Pinterest",
-    //     growstackIcon: <GrowstackIcon />,
-    //     growStackData: "GrowStactAi",
-    //     growstackSubData: "@GrowStackai",
-    //     connected: "CONNECTED",
-    //     notesIcon: <NotesIcon />,
-    //     plusIcon: <PlusIcon />,
-    //     content1: "Add Pinterest Business Pages",
-    //     content2: "Create a mockup page",
-
-    // },
 
     linkedin: {
         name: "Linkedin",
@@ -131,7 +104,7 @@ interface SocialMediaProfileResponse {
     schedules?: Record<string, any>;
 }
 const AddPages: FC<AddPagesProps> = ({
-    setOpenModel, openModel,selectedIcon
+    setOpenModel, openModel, selectedIcon
 }) => {
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
     const [boxContent, setBoxContent] = useState<BoxContent>(contentMap["facebook"]);
@@ -140,9 +113,10 @@ const AddPages: FC<AddPagesProps> = ({
     const [platforms, setPlatforms] = useState<string[]>([]);
     const [profile, setProfile] = useState<any>([]);
     const [loading, setLoading] = useState(true);
+    const [active,setActive] = useState<string>("")
     useEffect(() => {
         handleGetProfileData();
-        if(selectedIcon){
+        if (selectedIcon) {
             setBoxContent(contentMap[selectedIcon])
         }
     }, []);
@@ -150,6 +124,7 @@ const AddPages: FC<AddPagesProps> = ({
         setOpenModel(false);
     };
     const handleIconClick = (platform: any) => {
+        setActive(platform)
         getDetailsByPlatform(platform);
         setBoxContent(contentMap[platform]);
     };
@@ -229,13 +204,16 @@ const AddPages: FC<AddPagesProps> = ({
                                 </div>
                                 <div className="flex items-center justify-center space-x-4">
 
-                                    <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("facebook")}>
+                                    <div className={`flex items-center justify-center w-12 h-12 rounded-full border border-white bg-white cursor-pointer ${active === 'facebook' ? "ring-2" : ""
+                                        }`} onClick={() => handleIconClick("facebook")}>
                                         <FbIcon />
                                     </div>
-                                    <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("instagram")}>
+                                    <div className={`flex items-center justify-center w-12 h-12 rounded-full border border-white bg-white cursor-pointer ${active === 'instagram' ? "ring-2" : ""
+                                        }`} onClick={() => handleIconClick("instagram")}>
                                         <InstaIcon />
                                     </div>
-                                    <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("twitter")}>
+                                    <div className={`flex items-center justify-center w-12 h-12 rounded-full border border-white bg-white cursor-pointer ${active === 'twitter' ? "ring-2" : ""
+                                        }`} onClick={() => handleIconClick("twitter")}>
                                         <TwitterIcon />
                                     </div>
                                     {/* <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("tiktok")}>
@@ -244,7 +222,8 @@ const AddPages: FC<AddPagesProps> = ({
                                     {/* <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("pinterest")}>
                                         <PinterestIcon />
                                     </div> */}
-                                    <div className="flex items-center justify-center w-12 h-12 bg-white rounded-full shadow" onClick={() => handleIconClick("linkedin")}>
+                                    <div className={`flex items-center justify-center w-12 h-12 rounded-full border border-white bg-white cursor-pointer ${active === 'linkedin' ? "ring-2" : ""
+                                        }`} onClick={() => handleIconClick("linkedin")}>
                                         <LinkedinIcon />
                                     </div>
                                 </div>
@@ -253,7 +232,7 @@ const AddPages: FC<AddPagesProps> = ({
                                 <div className="grid grid-cols-2 grid-rows-2 gap-6 p-4  mt-0  ">
                                     <div className="border border-[#034737] bg-[#034737] border-dotted rounded text-white p-2  w-[290px] h-[210px] flex items-center justify-center" onClick={handleOnConnect}>
                                         <div className="flex flex-col items-center">
-                                            <div className="text-white bg-white items-center rounded-lg">
+                                            <div className="text-white bg-white items-center rounded-lg p-3">
                                                 <div className="text-white items-center">
                                                     {boxContent.flagIcon}
                                                     {boxContent.buildingStoreIcon}
@@ -272,6 +251,12 @@ const AddPages: FC<AddPagesProps> = ({
                                     </div>
                                     {platformDetails && platformDetails.platform &&
                                         <div className="border border-[#034737] border-dotted rounded p-2 w-[290px] h-[210px] flex items-center justify-center">
+                                            <div className="absolute" style={{ right: "81px", top: "10rem" }}>
+                                                <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <circle cx="11" cy="11" r="11" fill="#034737" />
+                                                    <path d="M5.75 11L9.5 14.75L17 7.25" stroke="white" stroke-width="1.3125" stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
+                                            </div>
                                             <div className="flex flex-col items-center">
                                                 <div className="pb-3 w-[60px] h-[60px">
                                                     <img src={platformDetails.userImage} alt={platformDetails.displayName} />
