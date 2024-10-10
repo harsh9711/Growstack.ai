@@ -196,7 +196,7 @@ const AddPages: FC<AddPagesProps> = ({
             </div>
 
             }
-      
+
 
             <Dialog open={openModel} onOpenChange={handleCloseDialog}>
                 <DialogContent className="w-[1010px] md:w-[725px] max-w-3xl p-0 pb-4 border-0 overflow-hidden">
