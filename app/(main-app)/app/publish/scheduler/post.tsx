@@ -213,8 +213,7 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile, platforms })
                             </div>
                         </div>
                     ))} </>) :
-
-                <h1>No Active Post</h1>
+                <h1>{!loading && <>loadingNo Active Post</>}</h1>
             }
         </>
     );
