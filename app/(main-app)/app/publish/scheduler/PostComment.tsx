@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from "react"
+import { FC, useEffect, useRef, useState } from "react"
 import {
     Dialog,
     DialogContent,
@@ -79,7 +79,11 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
 
     }, 600);
 
-
+    useEffect(() => {
+    setText("")
+    setAccumulatedResponse("")
+    setUpload(null)
+    }, []);
     const streamResponse = async (chatId: string) => {
         try {
             setAccumulatedResponse("")
@@ -199,11 +203,11 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
 
                 const payload = {
                     "post": text,
-                    "platforms": ["twitter"],
+                    "platforms": [selectedIcon],
                     "mediaUrls": [
                         response.data.data.fileUrl
                     ],
-                    "isVideo": false,
+                    "isVideo": response.data.data.isImage,
                     "scheduleDate": selectedDate
                 }
                 postComment(payload);
@@ -221,6 +225,8 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                 }
                 console.error(error);
             } finally {
+        setLoading(false)
+
             }
         } else if (text) {
             const payload = {
@@ -242,9 +248,12 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                 `/users/api/v1/social-media/quickpost`,
                 payload
             );
+            isGenPost(false)
+            setLoading(false)
+            setText("")
+            setAccumulatedResponse("")
             toast.success(response.data.message);
             return response;
-            setLoading(false)
 
         } catch (error: any) {
             if (error.response) {
@@ -263,18 +272,13 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
     return (
 
         <>
-            {loading &&
-                <div className="absolute lex-1 h-full flex flex-col gap-5 justify-center items-center">
-                    <Spinner color="black" size={100} />
-                    Loading...
-                </div>
-
-            }
+        
             <Dialog open={openPostModel} onOpenChange={isGenPost}>
                 <DialogContent
                     showCloseButton={true}
                     className="w-[498px] h-auto p-0 pb-4 border-0 max-w-none"
                 >
+                 
                     <DialogHeader>
                         <DialogTitle className="px-5">
                             <div className="bg-white py-3 border-b border-[#EBEBEB] text-black font-inter flex justify-between items-center">
@@ -294,6 +298,14 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                             </div>
                         </DialogTitle>
                     </DialogHeader>
+
+                    {loading &&
+                <div className="absolute lex-1 h-full flex flex-col gap-5 justify-center items-center">
+                    <Spinner color="black" size={100} />
+                    Loading...
+                </div>
+
+            }
                     {!isAiMode ? (
                         <>
                             <textarea

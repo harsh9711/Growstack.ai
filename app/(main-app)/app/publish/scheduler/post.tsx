@@ -2,7 +2,7 @@
 
 import CalenderEvent from "@/components/svgs/calenderevent";
 import CalenderStats from "@/components/svgs/calenderstats";
-import { CalendarPlus } from "lucide-react";
+import { CalendarPlus, TwitterIcon } from "lucide-react";
 import { AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect, useRef, useState } from "react";
 import PickDate from "./DatePicker";
 import type { DatePickerProps, GetProps } from 'antd';
@@ -12,6 +12,8 @@ import Image from "next/image";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import Spinner from "@/components/Spinner";
+import { BriefCase, BuildingIcon, BuildingStore, FbIcon, FlagIcon, GrowstackIcon, InstaIcon, LinkedinIcon, NotesIcon, PinterestIcon, PlusIcon, TiktokIcon } from "@/components/svgs";
+
 
 interface PostCardProps {
     selectedIcon: string;
@@ -41,7 +43,7 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile, platforms })
     const [postDetails, setPostDetails] = useState<any[]>([]);
     const [profileDetails, setProfileDetails] = useState<any | null>([]);
     const [loading, setLoading] = useState(false)
-    const [userPostDetails,setUserPostDetails] = useState<any[]>([])
+    const [userPostDetails, setUserPostDetails] = useState<any[]>([])
     useEffect(() => {
         setPostDetails([]);
         fetchPostDetails();
@@ -81,7 +83,7 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile, platforms })
                         userImage: account.userImage
                     };
                 });
-                setUserPostDetails(platformDetails)
+            setUserPostDetails(platformDetails)
         }
         return platformDetails;
     }
@@ -96,15 +98,19 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile, platforms })
             {postDetails.length > 0 && userPostDetails ? (
                 <>
                     {postDetails.map((post: { post: string | number | bigint | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<AwaitedReactNode> | null | undefined; media: { type: string; url: string | undefined; mediaUrls: { mediaUrl: string | undefined; }[]; }[]; }, index: Key | null | undefined) => (
-                        <div className='flex flex-row gap-3 mt-2 px-4'>
+                        <div className='flex flex-row gap-3 mt-2 px-2'>
                             <div className='flex flex-col gap-3'>
                                 <div className="w-[50px] h-[50px] rounded-full shadow-lg bg-white flex items-center justify-center cursor-pointer">
-                                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    {/* <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M16.108 3.12891H18.8222L12.8925 9.82325L19.8683 18.9328H14.4063L10.1283 13.4079L5.2333 18.9328H2.5175L8.85984 11.7724L2.16797 3.12891H7.7686L11.6355 8.17884L16.108 3.12891ZM15.1554 17.3281H16.6593L6.95139 4.64931H5.3375L15.1554 17.3281Z" fill="#5E6166" />
-                                    </svg>
+                                    </svg> */}
+                                    {selectedIcon === "facebook" && <FbIcon />}
+                                    {selectedIcon === "twitter" && <TwitterIcon />}
+                                    {selectedIcon === "linkedin" && <LinkedinIcon />}
+                                    {selectedIcon === "instagram" && <InstaIcon />}
                                 </div>
                             </div>
-                            <div className="p-4 rounded-2xl shadow-lg bg-white w-[600px] h-[100%] overflow-y-auto">
+                            <div className="p-4 rounded-2xl shadow-lg bg-white w-[480px] h-[100%] overflow-y-auto">
                                 <div key={index} className="flex flex-row mb-4 gap-4">
                                     <div className='w-15'>
                                         <div className="w-[50px] h-[50px] rounded-full overflow-hidden flex items-center justify-center">
