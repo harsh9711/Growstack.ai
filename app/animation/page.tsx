@@ -88,7 +88,7 @@ const Animation = () => {
     <div
       // id="scroll-container"
       // style={{ overflow: "scroll", height: "1000px" }}
-      className="items-center justify-center mx-auto flex flex-col mb-60 "
+      className="items-center justify-center mx-auto flex flex-col mb-20 "
     >
       <div className="  w-full gap-y-4 flex flex-col items-center justify-center mx-auto">
         <div className=" mt-10 bg-[#0347371A] text-[#034737] whitespace-nowrap py-2 px-4 flex items-center text-center gap-3 text-[12px] rounded-full tracking-widest  font-semibold uppercase w-full max-w-[143px] ">
@@ -425,9 +425,7 @@ const Animation = () => {
             </clipPath>
           </defs>
         </svg> */}
-        <div className="line-container">
-          <div className={`scroll-line ${isSolid ? "solid" : "dashed"}`}></div>
-        </div>
+     
         {/* <svg width="70" height="3771" viewBox="0 0 70 3771" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M27 0L26.9998 3771" stroke="#034737" stroke-width="2"/>
 <circle cx="35" cy="98" r="30.5" fill="#F1F8FF" stroke="#4FA7FF"/>

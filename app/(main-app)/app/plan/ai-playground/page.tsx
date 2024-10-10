@@ -4,7 +4,7 @@ import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { modelData } from "../../create/ai-articles/constants/options";
+import { llmComparisonModels } from "../../create/ai-articles/constants/options";
 import ChatArea from "./component/chatArea";
 import NewChatAlert from "./component/newChatArea";
 import { Message } from "./interface/playground";
@@ -21,8 +21,8 @@ interface ChatAreaType {
 const initialChat: ChatAreaType[] = [
   {
     id: 0,
-    selectedModel: modelData[0].models[0].value,
-    provider: modelData[0].provider,
+    selectedModel: llmComparisonModels[0].models[0].value,
+    provider: llmComparisonModels[0].models[0].provider,
     conversation: [],
     awaitingUpdate: false,
     messages: [],
@@ -30,14 +30,15 @@ const initialChat: ChatAreaType[] = [
   },
   {
     id: 1,
-    selectedModel: modelData[0].models[0].value,
-    provider: modelData[0].provider,
+    selectedModel: llmComparisonModels[0].models[0].value,
+    provider: llmComparisonModels[0].models[0].provider,
     conversation: [],
     awaitingUpdate: false,
     messages: [],
     renderConversation: {}
   },
 ];
+
 
 export default function AiPlayground() {
   const [userPrompt, setUserPrompt] = useState<string>("");
@@ -54,8 +55,8 @@ export default function AiPlayground() {
       ...chatAreas,
       {
         id: chatAreas.length,
-        selectedModel: modelData[0].models[0].value,
-        provider: modelData[0].provider,
+        selectedModel: llmComparisonModels[0].models[0].value,
+        provider: llmComparisonModels[0].models[0].provider,
         conversation: [],
         awaitingUpdate: false,
         messages: [],
@@ -65,9 +66,10 @@ export default function AiPlayground() {
   };
 
   const updateChatAreaModel = (id: number, newModel: string) => {
-    const newProvider = modelData.find((provider) =>
-      provider.models.some((model) => model.value === newModel)
-    )?.provider;
+    const newProvider = llmComparisonModels
+      .flatMap((category) => category.models)
+      .find((model) => model.value === newModel)?.provider;
+
 
     setChatAreas(
       chatAreas.map((chatArea) =>
@@ -81,6 +83,7 @@ export default function AiPlayground() {
       )
     );
   };
+
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUserPrompt(event.target.value);

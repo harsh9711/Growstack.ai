@@ -45,7 +45,10 @@ type Message = {
 export default function ChatComponent() {
     const { user, currentPlan } = useSelector((rootState: RootState) => rootState.auth);
 
-    const filteredAiModelOptions = aiModelOptions;
+    const filteredAiModelOptions = currentPlan &&
+        planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan.plan_id) && user?.user_type !== "ADMIN"
+        ? [aiModelOptions[0]]
+        : aiModelOptions;
     const [enableWebAccess, setEnableWebAccess] = useState<boolean>(false);
     const [brandVoices, setBrandVoices] = useState<BrandVoice[]>([]);
     const [selectedBrandVoice, setSelectedBrandVoice] = useState<string>("");
@@ -216,7 +219,7 @@ export default function ChatComponent() {
         const freeCategories = ["growStackAiMessagesModel"];
 
         if (user?.user_type === "ADMIN" || freeCategories.includes(currentCategory.modelCategory)) {
-            if (currentModal.value === "Perplexity") {
+            if (currentModal.value === "perplexity") {
                 setEnableWebAccess(true);
             } else {
                 setEnableWebAccess(false);
@@ -240,7 +243,7 @@ export default function ChatComponent() {
 
         console.log("Usage limit:", currentModal);
 
-        if (currentModal.value === "Perplexity") {
+        if (currentModal.value === "perplexity") {
             setEnableWebAccess(true);
         } else {
             setEnableWebAccess(false);
@@ -271,7 +274,7 @@ export default function ChatComponent() {
             setSelectedModel("growstack-llm");
         } else {
             setEnableWebAccess(true);
-            setSelectedModel("Perplexity");
+            setSelectedModel("perplexity");
         }
     };
     return (

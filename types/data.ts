@@ -315,6 +315,7 @@ export const team = [
 //     textcolor: "#034737",
 //     href: "/solutions/midmarketenterprise",
 //   },
+
 //   {
 //     id: 3,
 //     imageUrl: "/solutionsicon/img3.svg",
@@ -433,6 +434,7 @@ export const solutionsteams = [
     textcolor: "#034737",
     href: "/solutions/midmarketenterprise",
   },
+
   {
     id: 12,
     imageUrl: "/solutionsicon/img3.svg",

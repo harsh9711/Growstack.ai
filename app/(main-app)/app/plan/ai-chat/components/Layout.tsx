@@ -92,7 +92,10 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
 
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [filename, setFilename] = useState<string | null>(null);
-    const filteredAiModelOptions = aiModelOptions;
+    const filteredAiModelOptions = currentPlan &&
+        planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan.plan_id) && user?.user_type !== "ADMIN"
+        ? [aiModelOptions[0]]
+        : aiModelOptions;
 
     const [messages, setMessages] = useState<Message[]>([]);
     const [_, setShowNewChatInput] = useState(false);
@@ -235,7 +238,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
         const freeCategories = ["growStackAiMessagesModel"];
 
         if (user?.user_type === "ADMIN" || freeCategories.includes(currentCategory.modelCategory)) {
-            if (currentModal.value === "Perplexity") {
+            if (currentModal.value === "perplexity") {
                 setEnableWebAccess(true);
             }
             setSelectedModel(value);
@@ -255,7 +258,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
             return;
         }
 
-        if (currentModal.value === "Perplexity") {
+        if (currentModal.value === "perplexity") {
             setEnableWebAccess(true);
         }
         setSelectedModel(value);
@@ -270,7 +273,7 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
             setSelectedModel("growstack-llm");
         } else {
             setEnableWebAccess(true);
-            setSelectedModel("Perplexity");
+            setSelectedModel("perplexity");
         }
     };
     const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan?.plan_id);

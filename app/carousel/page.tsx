@@ -10,6 +10,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 const Carousel = () => {
   const [hoveredIndex, setHoveredIndex] = useState<null | number>(2);
+
   useEffect(() => {
     AOS.init({ duration: 1000 });
   }, []);
@@ -27,6 +28,7 @@ const Carousel = () => {
           </div>
         </div>
       </div>
+
       <Swiper
         slidesPerView={7.25}
         spaceBetween={10}
