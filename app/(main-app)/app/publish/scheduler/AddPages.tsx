@@ -38,26 +38,26 @@ interface BoxContent {
 };
 
 const contentMap: { [key: string]: BoxContent } = {
-    // facebook: {
-    //     name: "Facebook",
-    //     growstackIcon: <GrowstackIcon />,
-    //     growStackData: "GrowStact AI",
-    //     growstackSubData: "@GrowStackai",
-    //     connected: "CONNECTED",
-    //     flagIcon: <FlagIcon />,
-    //     content1: "Add Facebook Pages",
-    // },
-    // instagram: {
-    //     name: "twitter",
-    //     growstackIcon: <GrowstackIcon />,
-    //     growStackData: "GrowStactAi",
-    //     growstackSubData: "@GrowStackai",
-    //     connected: "CONNECTED",
-    //     buildingStoreIcon: <BuildingStore />,
-    //     userCircleIcon: <UserCircleIcon />,
-    //     content1: "Add Instagram Professional Accounts",
-    //     content2: "Add Instagram Personal Profiles Or Pages"
-    // },
+    facebook: {
+        name: "Facebook",
+        growstackIcon: <GrowstackIcon />,
+        growStackData: "GrowStact AI",
+        growstackSubData: "@GrowStackai",
+        connected: "CONNECTED",
+        flagIcon: <FlagIcon />,
+        content1: "Add Facebook Pages",
+    },
+    instagram: {
+        name: "twitter",
+        growstackIcon: <GrowstackIcon />,
+        growStackData: "GrowStactAi",
+        growstackSubData: "@GrowStackai",
+        connected: "CONNECTED",
+        buildingStoreIcon: <BuildingStore />,
+        userCircleIcon: <UserCircleIcon />,
+        content1: "Add Instagram Professional Accounts",
+        content2: "Add Instagram Personal Profiles Or Pages"
+    },
 
     twitter: {
         name: "twitter",
@@ -196,6 +196,8 @@ const AddPages: FC<AddPagesProps> = ({
             </div>
 
             }
+      
+
             <Dialog open={openModel} onOpenChange={handleCloseDialog}>
                 <DialogContent className="w-[1010px] md:w-[725px] max-w-3xl p-0 pb-4 border-0 overflow-hidden">
                     <DialogHeader>

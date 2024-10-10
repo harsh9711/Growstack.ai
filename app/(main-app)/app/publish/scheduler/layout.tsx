@@ -283,8 +283,8 @@ export default function Publish() {
             <div className="absolute">
                 <SheduleBackground />
             </div>
-            <AddPages setOpenModel={setOpenModel} openModel={openModel} selectedIcon={selectedIcon} />
-            <PostComment openPostModel={genPost} isGenPost={isGenPost} selectedIcon={selectedIcon} />
+            <AddPages setOpenModel={setOpenModel} openModel={openModel} selectedIcon={selectedIcon}/>
+            <PostComment openPostModel={genPost} isGenPost={isGenPost} selectedIcon={selectedIcon} profile={profile}/>
             <div>
                 {!skipNow ? (
                     <>

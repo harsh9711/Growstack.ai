@@ -45,10 +45,11 @@ interface PostCommentProps {
     openPostModel: boolean
     selectedIcon: string
     isGenPost: (open: boolean) => void;
+    profile: any
 }
 
 
-const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGenPost }) => {
+const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGenPost, profile }) => {
 
     const [startDate, setStartDate] = useState<Date | null>(new Date());
     const [isAiMode, setAiMode] = useState(false);
@@ -69,9 +70,10 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
     const [lastPromt, setLastPrompt] = useState("")
     const [loading, setLoading] = useState(false);
     const currentUser = getCurrentUser();
+    const [userPostDetails, setUserPostDetails] = useState<any[]>([])
     const handleInputChage = debounce(async (user_text: any) => {
         if (user_text) {
-           
+
             setShowActions(true)
             setLoading(true)
             const payload = {
@@ -159,7 +161,7 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
 
                 const payload = {
                     "post": text,
-                    "platforms": [selectedIcon],
+                    "platforms": [selectedIcon.toLowerCase()],
                     "mediaUrls": [
                         response.data.data.fileUrl
                     ],
@@ -225,6 +227,27 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
 
         }
     };
+    useEffect(() => {
+        platformDetails()
+    }, []);
+    const platformDetails = () => {
+        let platformDetails: any
+        if (profile !== undefined && profile && selectedIcon) {
+            platformDetails = profile.activeSocialAccounts
+                .filter((account: any) => account.platform === selectedIcon.toLowerCase())
+                .map((account: any) => {
+                    return {
+                        platform: account.platform,
+                        username: account.username,
+                        profileUrl: account.profileUrl,
+                        displayName: account.displayName,
+                        userImage: account.userImage
+                    };
+                });
+            setUserPostDetails(platformDetails)
+        }
+        return platformDetails;
+    }
     return (
 
         <>
@@ -237,16 +260,15 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                     <Spinner color="black" size={50} />
                     Loading...
                 </div>
-
                     }
                     <DialogHeader>
                         <DialogTitle className="px-5">
                             <div className="bg-white py-3 border-b border-[#EBEBEB] text-black font-inter flex justify-between items-center">
                                 <div className="flex items-center relative">
                                     <div className="w-[50px] h-[50px] rounded-full border border-black bg-[#F5F5F5] flex items-center justify-center relative">
-                                        <Avatar>
-                                            <AvatarImage src={currentUser?.profile_img} />
-                                        </Avatar>
+                                        {userPostDetails[0]?.userImage && <Avatar>
+                                            <AvatarImage src={userPostDetails[0]?.userImage} />
+                                        </Avatar>}
                                     </div>
                                 </div>
                             </div>
@@ -330,7 +352,7 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
 
 
                     {fileInfo && (
-                        <div className="flex items-center justify-between  mt-2 m-2 bg-gray-100 border border-gray-300 rounded-lg">
+                        <div className="flex items-center justify-between h-9 mt-2 m-2 bg-gray-100 border border-gray-300 rounded-lg" style={{ marginTop: "40px" }}>
                             <div className="flex items-center space-x-2">
                                 {getFileIcon(fileInfo.name)}
                                 <span className="text-sm text-gray-700 truncate">{fileInfo.name}</span>
@@ -343,7 +365,7 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                             </button>
                         </div>
                     )}
-                    <div className="mt-[32px] ml-[15px]">
+                    <div className="ml-[15px]">
                         <div className="flex justify-between items-center">
                             <div className="flex items-center">
                                 <button onClick={() => fileInputRef.current?.click()}>
