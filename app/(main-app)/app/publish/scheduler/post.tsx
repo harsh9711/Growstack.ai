@@ -190,7 +190,13 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile, platforms })
                                                 </div>
                                             )}
                                             <p className="mb-3  text-left text-[16.7px] tracking-[-0.3px] text-[rgba(20,23,26,1)]">
-                                                {post.post}
+                                                {post.post.split(" ").map((word: any, index: Key | null | undefined) => (
+                                                    word.startsWith("#") ? (
+                                                        <span key={index} className="text-blue-500">{word} </span>
+                                                    ) : (
+                                                        <span key={index}>{word} </span>
+                                                    )
+                                                ))}
                                             </p>
 
                                             {post.media && post.media.length > 0 && (
