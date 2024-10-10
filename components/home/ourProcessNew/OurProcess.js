@@ -49,7 +49,7 @@ const HoverVideo = () => {
         preload="metadata" 
         className=" rounded-2xl border-none outline-none"
       >
-        <source src="/workflowshort.mp4" type="video/mp4" />
+        <source src="/workflow fast.mp4" type="video/mp4" />
       </video>
     </div>
   );
