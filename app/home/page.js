@@ -30,9 +30,10 @@ function Page() {
       {/* <Banner /> */}
       <OurProcess />
       {/* <Features /> */}
-      <Animation /> <Facts />
-      <Carousel />
-      {/* <Marketing/> */}
+      <Animation />
+      <Facts />
+      <Carousel /> 
+
       <PoweredBy />
       <Premium />
       <Capability />

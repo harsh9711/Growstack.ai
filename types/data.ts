@@ -1,5 +1,4 @@
 import { UIcon } from "@/components/svgs/icons";
-
 export const testimonials = [
   {
     id: 1,
@@ -16,7 +15,6 @@ export const testimonials = [
     role: "Develop comprehensive strategies with AI Assistants and create high-quality content with AI Article Wizard, Website, Email Builders.",
     description: "",
   },
-
   {
     id: 3,
     imageUrl: "/carousel/c3.svg",
@@ -55,7 +53,6 @@ export const testimonialsdata = [
     role: "Create high-quality content quickly with Growstacks AI-powered tools for text and video.",
     description: "",
   },
-
   {
     id: 3,
     imageUrl: "/carousel2/c3.svg",
@@ -101,7 +98,6 @@ export const testimonialsdatathirdpage = [
     role: "Create high-quality content and develop effective marketing campaigns.",
     description: "",
   },
-
   {
     id: 3,
     imageUrl: "/carousel3/c3.svg",
@@ -139,7 +135,6 @@ export const companyemployees = [
     role: "Ux Designer",
     imageUrlbox: "/company/1.1.svg",
   },
-
   {
     id: 3,
     imageUrl: "/company/3.svg",
@@ -175,7 +170,6 @@ export const companyemployees = [
     role: "Ux Designer",
     imageUrlbox: "/company/1.1.svg",
   },
-
   {
     id: 3,
     imageUrl: "/company/3.svg",
@@ -217,7 +211,6 @@ export const landingpage = [
     imageUrlbox: "/landingpage/l2.svg",
     videos: "/landingpage/box2.svg",
   },
-
   {
     id: 3,
     imageUrl: "/images_growstack/home/fBlock3.svg",
@@ -250,7 +243,6 @@ export const landingpage = [
     imageUrl: "/images_growstack/home/fBlock6.svg",
     border: "#C1FFC1",
     name: "Streamline your processes with AI workflow builder",
-
     background: "#F6FFF6",
     imageUrlbox: "/landingpage/l6.svg",
     videos: "/landingpage/box6.svg",
@@ -289,7 +281,6 @@ export const team = [
     role: "Web Developer",
     Url: "https://www.linkedin.com/in/nagaraj-manne-17168965/",
   },
-
   {
     id: 3,
     imageUrl: "/company/c.svg",
@@ -363,7 +354,6 @@ export const solutionsteams = [
     textcolor: "#034737",
     href: "/solutions/sales",
   },
-
   {
     id: 3,
     imageUrl: "/solutionsicon/img7.svg",
@@ -382,7 +372,6 @@ export const solutionsteams = [
     textcolor: "#034737",
     href: "/solutions/customer_service",
   },
-
   {
     id: 5,
     imageUrl: "/solutionsicon/img9.svg",
