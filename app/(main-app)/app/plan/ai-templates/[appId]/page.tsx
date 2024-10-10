@@ -32,14 +32,14 @@ import {
 import { useRouter } from "next-nprogress-bar";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { aiModelOptions, aiModelOptionsTemplete, languageOptions } from "../../../create/ai-articles/constants/options";
+import { aiModelOptionsTemplate, languageOptions } from "../../../create/ai-articles/constants/options";
 import Dropdown from "./components/Dropdown";
 import { Plus } from "lucide-react";
 import { getCookie } from "cookies-next";
 import EventSource from 'eventsource';
 import { parseJsonString } from "@/lib/utils";
 import downloadPdf from "@/utils/downloadPdf";
-import { InputFieldType } from "@/types/enums";
+import { InputFieldType, PlanName } from "@/types/enums";
 import { ALL_ROUTES } from "@/utils/constant";
 
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -85,7 +85,11 @@ export default function AiAppPage({
 
   const { user, currentPlan } = useSelector((rootState: RootState) => rootState.auth);
 
-  const filteredAiModelOptions = aiModelOptionsTemplete;
+
+  const filteredAiModelOptions = currentPlan &&
+    planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan.plan_id) && user?.user_type !== "ADMIN"
+    ? [aiModelOptionsTemplate[0]]
+    : aiModelOptionsTemplate;
 
   const [selectedModel, setSelectedModel] = useState<string>(filteredAiModelOptions[0].models[0].value || "");
 

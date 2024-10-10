@@ -29,6 +29,8 @@ import Image from "next/image";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
+import { planIdsMap } from "@/lib/utils";
+import { PlanName } from "@/types/enums";
 
 interface IProps {
   assistant: Assistant;
@@ -53,7 +55,10 @@ export default function Topbar({
 }: IProps) {
   const { user, currentPlan } = useSelector((rootState: RootState) => rootState.auth);
 
-
+  const filteredAiModelOptions = currentPlan &&
+    planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan.plan_id) && user?.user_type !== "ADMIN"
+    ? [aiModelOptions[0]]
+    : aiModelOptions;
 
   const handleModalSelection = (value: string) => {
     if (!currentPlan) return;
@@ -155,7 +160,7 @@ export default function Topbar({
                 {selectedAiModel && (
                   <div className="flex items-center gap-2">
                     <span className="min-w-fit">
-                      {aiModelOptions
+                      {filteredAiModelOptions
                         .flatMap((option) => option.models) // Flattening the models array to find the icon
                         .find((model) => model.value === selectedAiModel)?.icon}
                     </span>
@@ -165,7 +170,7 @@ export default function Topbar({
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
-              {aiModelOptions.map(({ label: categoryLabel, models }) => (
+              {filteredAiModelOptions.map(({ label: categoryLabel, models }) => (
                 <SelectGroup key={categoryLabel}>
                   <React.Fragment key={categoryLabel}>
                     <div className="font-bold text-gray-500 px-4 py-2">{categoryLabel}</div>

@@ -1,4 +1,4 @@
-import { AnthropicClaude, ChatGptIcon2, GoogleGemini, Llama, LogoIcon, Mistra,Perplexity } from "@/components/svgs";
+import { AnthropicClaude, ChatGptIcon2, GoogleGemini, Llama, LogoIcon, Mistra, Perplexity } from "@/components/svgs";
 
 export const aiModelOptions = [
   {
@@ -50,10 +50,10 @@ export const aiModelOptions = [
         value: "claude-3-sonnet-20240229",
         icon: <AnthropicClaude />,
       },
-      
+
       {
         label: "Perplexity",
-        value: "Perplexity",
+        value: "perplexity",
         icon: <Perplexity />,
       },
     ],
@@ -61,7 +61,7 @@ export const aiModelOptions = [
 
 ];
 
-export const aiModelOptionsTemplete = [
+export const aiModelOptionsTemplate = [
   {
     modelCategory: "growStackAiMessagesModel",
     label: "GrowStack AI Messages Models",
