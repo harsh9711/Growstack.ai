@@ -33,31 +33,66 @@ const page = () => {
         <HeroSection />
       </section>{" "}
       <section className=" sm:p-20">
-        <div className="relative mx-auto rounded-t-[40px] items-center justify-center py-10 2xl:py-20 bg-[#E2F0CB4D]/30">
-          <div className="flex flex-col items-center justify-center mx-auto gap-2">
+        <div className="relative mx-auto rounded-t-[40px] items-center justify-center py-10 2xl:py-20 ">
+          <div className="flex flex-col  items-center justify-center mx-auto gap-2">
             <div
               data-aos="fade-up"
               data-aos-duration="1200"
               data-aos-offset="200"
               className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit"
             >
-              maintain
+              Stay Ahead in a Data-Driven World
             </div>
 
-            <h1
+            <div className="flex items-start justify-start">
+              {" "}
+              <h1
+                data-aos="fade-up"
+                data-aos-duration="1500"
+                data-aos-delay="300"
+                className="text-center  max-w-[700px] text-[26px] 2xl:text-[42px] leading-normal"
+              >
+                <span className="text-black font-extrabold">
+                  Overcome leadership challenges
+                </span>
+                <span className="text-black font-extralight">
+                  {" "}
+                  with Growstack
+                </span>
+              </h1>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section className=" sm:p-20">
+        <div className="relative mx-auto rounded-t-[40px] items-center justify-center py-10 2xl:py-20 bg-[#FAFBFC]">
+          <div className="flex flex-col  items-center justify-center mx-auto gap-2">
+            {/* <div
               data-aos="fade-up"
-              data-aos-duration="1500"
-              data-aos-delay="300"
-              className="text-center text-[26px] 2xl:text-[42px] leading-normal"
+              data-aos-duration="1200"
+              data-aos-offset="200"
+              className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit"
             >
-              <span className="text-black font-extrabold">
-                Maintain data quality{" "}
-              </span>
-              <span className="text-black font-extralight">
-                {" "}
-                and management
-              </span>
-            </h1>
+              maintain
+            </div> */}
+
+            <div className="flex items-start justify-start">
+              {" "}
+              <h1
+                data-aos="fade-up"
+                data-aos-duration="1500"
+                data-aos-delay="300"
+                className="text-start  max-w-[700px] text-[26px] 2xl:text-[42px] leading-normal"
+              >
+                <span className="text-black font-extrabold">
+                  Overcome leadership challenges
+                </span>
+                <span className="text-black font-extralight">
+                  {" "}
+                  with Growstack
+                </span>
+              </h1>
+            </div>
 
             <div
               data-aos="fade-up"
@@ -94,68 +129,65 @@ const page = () => {
         <div className="2xl:flex xl:flex hidden flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
           <ImageGalleryLine />
         </div>
-        {/* <div className="2xl:hidden xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
+        <div className="2xl:hidden xl:hidden flex flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
           <ImageGalleryLineResponsive />
-        </div> */}
+        </div>
       </section>
-      <section className="relative mx-auto w-full items-center justify-center xl:mt-0 mt-10 2xl:mt-0 py-10 bg-[#FAFBFC]">
-        <div className="flex flex-col items-center justify-center mx-auto gap-2">
-          <div
-            data-aos="fade-up"
-            data-aos-duration="1200"
-            data-aos-offset="200"
-            className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit"
-          >
-            analytics
-          </div>
+      <section className=" ">
+        <div className="relative mx-auto rounded-t-[40px] items-center justify-center  ">
+          <div className="flex flex-col  items-center justify-center mx-auto gap-2">
+            <div
+              data-aos="fade-up"
+              data-aos-duration="1200"
+              data-aos-offset="200"
+              className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit"
+            >
+              USE CASE
+            </div>
 
-          <h1
-            data-aos="fade-up"
-            data-aos-duration="1500"
-            data-aos-delay="300"
-            className="text-center text-[32px] 2xl:text-[42px] leading-normal"
-          >
-            <span className="text-black font-bold">Enhance</span>
-            <span className="text-black font-extralight">
+            <div className="flex items-start justify-start">
               {" "}
-              reporting and analytics
-            </span>
-          </h1>
-
-          <div
-            data-aos="fade-up"
-            data-aos-duration="1800"
-            data-aos-delay="600"
-            className="items-center justify-center mx-auto relative 2xl:right-12 "
-          >
-            <GridComponentSecond />
+              <h1
+                data-aos="fade-up"
+                data-aos-duration="1500"
+                data-aos-delay="300"
+                className="text-center  max-w-[700px] text-[26px] 2xl:text-[42px] leading-normal"
+              >
+                <span className="text-black font-extrabold">
+                  A day in the life of Sarah,
+                </span>
+                <span className="text-black font-extralight"> the CMO</span>
+              </h1>
+            </div>
           </div>
-        </div>
-      </section>
-      <section className="mx-auto w-full flex items-center justify-center py-10 2xl:py-40 ">
-        <div
-          data-aos="fade-up"
-          data-aos-duration="1800"
-          data-aos-delay="600"
-          className="flex flex-col items-center justify-center gap-y-10"
-        >
           <div>
-            <LoadingBarSecond />
+            <div><h2 className="sm:text-[20px] text-[12px]">Before Growstack</h2>
+            <div><span><h2 className="fonrb-dol">Action</h2>: Manually sorting through emails, reports, and notifications—data overload.</span></div></div>
+            <div className="bg-[#EDEDED] max-w-[240px] max-h-[1174px] w-fu;; h-full rounded-2xl flex flex-col gap-y-6">
+              <div className="max-w-[200px] p-4 text-[20px]">Timeline</div>
+              <div className="rounded-full w-10 sm:text-[16px] text-[12px] h-10">
+                <svg
+                  width="5"
+                  height="10"
+                  viewBox="0 0 5 10"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1 1V6L4 9"
+                    stroke="#14171B"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <h2 className="font-bold">8:00 AM </h2>
+                <p className="font-medium">Morning review</p>
+              </div>
+            </div>
+            <div></div>
           </div>
         </div>
-      </section>
-      <section className=" overflow-hidden bg-[#E2F0CB]  ">
-        <div className="items-center justify-center flex flex-col gap-y-4  overflow-hidden ">
-          <Image
-            src="/desing.png"
-            width={1200}
-            height={1000}
-            className="w-full  xl:flex  absolute h-[1000px] 2xl:flex hidden  transform scale-y-[-1]  translate-x-10  z-0 translate-y-[500px] "
-            alt="image"
-          />
-        </div>
-
-        <MarketingStreamline />
       </section>
       <Footer />
     </main>

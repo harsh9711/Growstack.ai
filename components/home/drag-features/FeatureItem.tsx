@@ -20,7 +20,7 @@ export default function FeatureItem (props: Props) {
          {...provided?.dragHandleProps}
          className={cn("text-center  inline-flex flex-col items-center justify-center max-w-28 xl:max-w-48 px-3", className)}>
          {props?.icon ? (
-            <div className="max-w-16 min-h-[67px] w-16 h-16 2xl:w-[85px] 2xl:h-[89px] mx-auto">
+            <div className=" w-8 h-8 2xl:w-[85px] 2xl:h-[89px] mx-auto">
                <Image src={props?.icon.path} width={85} height={86} alt={props?.icon.alt ? props?.icon.alt : title} className="w-full h-full"/>
             </div>
          ) : (
@@ -28,7 +28,7 @@ export default function FeatureItem (props: Props) {
                <span className="">No image</span>
             </div>
          )}
-         <span className="inline-block -mt-2 text-[14px] 2xl:text-[16px] ">{title}</span>
+         <span className="inline-block -mt-2 text-[12px] 2xl:text-[16px] ">{title}</span>
       </div>
    )
 }

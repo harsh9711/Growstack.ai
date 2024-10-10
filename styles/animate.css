@@ -1257,11 +1257,20 @@ body {
 .svgclasses {
   width: 30px;
   height: 30px;
-  margin-top: 20px;
+  margin-top: 10px;
   align-items:  center;
   justify-content: center;
   margin-left: 20px;
   margin-right: 10px;
+}
+.svgclasses2 {
+  width: 16px;
+  height: 16px;
+  margin-top: 12px;
+  align-items:  center;
+  justify-content: center;
+  margin-left: 10px;
+  margin-right: 6px;
 }
 
 .path-group {

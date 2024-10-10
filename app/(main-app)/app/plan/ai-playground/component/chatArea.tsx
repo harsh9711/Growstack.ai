@@ -13,8 +13,7 @@ import clsx from "clsx";
 import { MoreHorizontal, Plus, Trash2Icon } from "lucide-react";
 import React, { useState, useRef, useEffect, useImperativeHandle } from "react";
 import {
-  modelData,
-  llmComparisionModels,
+  llmComparisonModels,
 } from "../../../create/ai-articles/constants/options";
 import { Message } from "../interface/playground";
 import ChatMessages from "./chatMessage";
@@ -57,8 +56,8 @@ const ChatArea = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<
     | (HTMLTextAreaElement & {
-        handleRegenerate: (chartMessage: string) => void;
-      })
+      handleRegenerate: (chartMessage: string) => void;
+    })
     | null
   >(null); // Updated here
   const initialHeight = 32;
@@ -126,7 +125,7 @@ const ChatArea = ({
   //   .flatMap((provider) => provider.models)
   //   .find((model) => model.value === selectedModel);
 
-  const selectedOption = llmComparisionModels[0].models[0].value
+  const selectedOption = llmComparisonModels[0].models[0].value
 
   const handleChatRegenerateClick = (chatMessage: any) => {
     console.log("chartMessage", chatMessage);
@@ -144,7 +143,7 @@ const ChatArea = ({
           selectedOption={selectedModel}
           setSelectedOption={onModelChange}
           selectedOptionLabel={selectedOption}
-          // selectedOptionLabel={selectedOption?.label}
+        // selectedOptionLabel={selectedOption?.label}
         />
         <div className="flex items-center gap-2">
           <button
@@ -237,17 +236,14 @@ const AIModel = ({
   // const allModels = modelData.flatMap((provider) => provider.models);
   const { user, currentPlan } = useSelector((rootState: RootState) => rootState.auth);
 
-  const selectedModelLabel = llmComparisionModels
+  const selectedModelLabel = llmComparisonModels
     .flatMap((option) => option.models)
     .find((model) => model.value === selectedOption)?.label;
-
-    console.log(selectedModelLabel)
-    console.log(llmComparisionModels[0].models[0].value)
 
 
   const handleModalSelection = (value: string) => {
     if (!currentPlan) return;
-    const currentCategory = llmComparisionModels.find((category) =>
+    const currentCategory = llmComparisonModels.find((category) =>
       category.models.some((model) => model.value === value)
     );
 
@@ -291,7 +287,7 @@ const AIModel = ({
             <div className="flex items-center gap-2">
               <span className="min-w-fit">
                 {
-                  llmComparisionModels
+                  llmComparisonModels
                     .flatMap((option) => option.models) // Flattening the models array to find the icon
                     .find((model) => model.value === selectedOption)?.icon
                 }
@@ -303,7 +299,7 @@ const AIModel = ({
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          {llmComparisionModels.map(({ label: groupLabel, models }) => (
+          {llmComparisonModels.map(({ label: groupLabel, models }) => (
             <React.Fragment key={groupLabel}>
               <div className="font-bold text-gray-500 px-4 py-2">
                 {groupLabel}
@@ -314,7 +310,7 @@ const AIModel = ({
                     className={clsx(
                       "flex items-center gap-2",
                       selectedOption === value &&
-                        "text-primary-green font-medium"
+                      "text-primary-green font-medium"
                     )}
                   >
                     <span className="min-w-fit">{icon}</span>
@@ -342,7 +338,7 @@ const InitialMsg = ({
   // const selectedOptionModel = modelData
   //   .flatMap((provider) => provider.models)
   //   .find((model) => model.value === selectedOption);
-  const selectedOptionModel = llmComparisionModels
+  const selectedOptionModel = llmComparisonModels
     .flatMap((option) => option.models)
     .find((model) => model.value === selectedOption);
   return (

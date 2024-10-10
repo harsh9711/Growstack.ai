@@ -18,43 +18,43 @@ const ImageGalleryLine = () => {
 
   const images: ImageData[] = [
     {
-      src: '/solutions/salesrevops2/imageshown/imageshown1.svg',
+      src: '/leadership/imageshown/imageshown1.svg',
       alt: 'Image 1',
       id: 1,
       relatedImages: [
-        { src: '/solutions/salesrevops2/sideimages/ai.svg', alt: 'Related Image 1-1', id: 2 },
-        { src: '/solutions/salesrevops2/sideimages/lead.svg', alt: 'Related Image 1-2', id: 4 },
-        { src: '/solutions/salesrevops2/sideimages/scheduler.svg', alt: 'Related Image 1-3', id: 3 },
+        { src: '/leadership/sideimages/ai.svg', alt: 'Related Image 1-1', id: 2 },
+        { src: '/leadership/sideimages/lead.svg', alt: 'Related Image 1-2', id: 4 },
+        { src: '/leadership/sideimages/scheduler.svg', alt: 'Related Image 1-3', id: 3 },
       ],
     },
     {
-      src: '/solutions/salesrevops2/imageshown/imageshown2.svg',
+      src: '/leadership/imageshown/imageshown2.svg',
       alt: 'Image 2',
       id: 2,
       relatedImages: [
-        { src: '/solutions/salesrevops2/sideimages/ai.svg', alt: 'Related Image 1-1', id: 2 },
-        { src: '/solutions/salesrevops2/sideimages/contacts.svg', alt: 'Related Image 1-2', id: 1 },
-        { src: '/solutions/salesrevops2/sideimages/scheduler.svg', alt: 'Related Image 1-3', id: 3 },
+        { src: '/leadership/sideimages/ai.svg', alt: 'Related Image 1-1', id: 2 },
+        { src: '/leadership/sideimages/contacts.svg', alt: 'Related Image 1-2', id: 1 },
+        { src: '/leadership/sideimages/scheduler.svg', alt: 'Related Image 1-3', id: 3 },
       ],
     },
     {
-      src: '/solutions/salesrevops2/imageshown/imageshown3.svg',
+      src: '/leadership/imageshown/imageshown3.svg',
       alt: 'Image 3',
       id: 3,
       relatedImages: [
-        { src: '/solutions/salesrevops2/sideimages/lead.svg', alt: 'Related Image 1-1', id: 4 },
-        { src: '/solutions/salesrevops2/sideimages/contacts.svg', alt: 'Related Image 1-2', id: 1 },
-        { src: '/solutions/salesrevops2/sideimages/scheduler.svg', alt: 'Related Image 1-3', id: 3 },
+        { src: '/leadership/sideimages/lead.svg', alt: 'Related Image 1-1', id: 4 },
+        { src: '/leadership/sideimages/contacts.svg', alt: 'Related Image 1-2', id: 1 },
+        { src: '/leadership/sideimages/scheduler.svg', alt: 'Related Image 1-3', id: 3 },
       ],
     },
     {
-      src: '/solutions/salesrevops2/imageshown/imageshown4.svg',
+      src: '/leadership/imageshown/imageshown4.svg',
       alt: 'Image 4',
       id: 4,
       relatedImages: [
-        { src: '/solutions/salesrevops2/sideimages/ai.svg', alt: 'Related Image 1-1', id: 2 },
-        { src: '/solutions/salesrevops2/sideimages/contacts.svg', alt: 'Related Image 1-2', id: 1 },
-        { src: '/solutions/salesrevops2/sideimages/lead.svg', alt: 'Related Image 1-3', id: 4 },
+        { src: '/leadership/sideimages/ai.svg', alt: 'Related Image 1-1', id: 2 },
+        { src: '/leadership/sideimages/contacts.svg', alt: 'Related Image 1-2', id: 1 },
+        { src: '/leadership/sideimages/lead.svg', alt: 'Related Image 1-3', id: 4 },
       ],
     },
   ];
@@ -118,8 +118,9 @@ const ImageGalleryLine = () => {
               maintain
               </div>
               <h1 className="text-center text-[42px] leading-normal">
-                <span className="text-black font-extrabold">Maintain data quality</span>
-                <span className="text-black font-extralight">  and management</span>
+                <span className="text-black font-extrabold">Unify communication across
+              </span>
+                <span className="text-black font-extralight">   multiple channels</span>
               </h1>
             </div>
             <div>
@@ -153,16 +154,17 @@ const ImageGalleryLine = () => {
                  maintain
                  </div>
                  <h1 className="text-center text-[42px] leading-normal">
-                   <span className="text-black font-extrabold headings">Maintain data quality </span><br/>
-                   <span className="text-black font-extralight">and management</span>
+                   <span className="text-black font-extrabold headings">Unify communication across
+                  </span><br/>
+                   <span className="text-black font-extralight"> multiple channels </span>
                  </h1>
                </div>
                <div className="relative 2xl:-top-[660px] 2xl:left-[100px] xl:-top-[550px] xl:left-[350px] overflow-x-hidden">
                  <Image
-                   src="/salesrevops/wire/wire1.svg"
+                   src="/leadership/wire/wire1.svg"
                    width={970}
                    height={600} 
-                 className="w-[350px] h-[262.5px] hover-boxrevops1"
+                 className="w-[350px] h-[262.5px] hover-boxleadership11"
                    alt="Image 1"
                    onClick={() => handleImageClick(images[0])}
                    style={{ cursor: 'pointer' }}
@@ -171,10 +173,10 @@ const ImageGalleryLine = () => {
                </div>
                <div className="relative 2xl:-top-[920px] 2xl:left-[1000px] xl:-top-[850px] xl:left-[1150px] overflow-x-hidden">
                <Image
-                   src="/salesrevops/wire/wire2.svg"
+                   src="/leadership/wire/wire2.svg"
                    width={980}
                    height={600} 
-                   className="w-[350px] h-[262.5px] hover-boxrevops2"
+                   className="w-[350px] h-[262.5px] hover-boxleadership1"
                    alt="Image 2"
                    onClick={() => handleImageClick(images[1])}
                    style={{ cursor: 'pointer' }}
@@ -183,10 +185,10 @@ const ImageGalleryLine = () => {
                </div>
                <div className="relative 2xl:-top-[700px] z-[90] 2xl:left-[1040px] xl:-top-[650px] xl:left-[1120px] overflow-x-hidden">
                <Image
-                   src="/salesrevops/wire/wire3.svg"
+                   src="/leadership/wire/wire3.svg"
                    width={980}
                    height={600} 
-                   className="w-[350px] h-[262.5px] hover-boxrevops3"
+                   className="w-[350px] h-[262.5px] hover-boxleadership31"
                    alt="Image 3"
                    onClick={() => handleImageClick(images[2])}
                    style={{ cursor: 'pointer' }}
@@ -195,10 +197,10 @@ const ImageGalleryLine = () => {
                </div>
                <div className="relative 2xl:-top-[1030px] z-[60] 2xl:left-[40px] xl:-top-[950px]  xl:left-[270px] overflow-x-hidden " >
                <Image
-                   src="/salesrevops/wire/wire4.svg"
+                   src="/leadership/wire/wire4.svg"
                    width={970}
                    height={600} 
-                   className="w-[350px] h-[262.5px] hover-boxrevops4"
+                   className="w-[350px] h-[262.5px] hover-boxleadership41"
                    alt="Image 4"
                    onClick={() => handleImageClick(images[3])}
                    style={{ cursor: 'pointer' }}

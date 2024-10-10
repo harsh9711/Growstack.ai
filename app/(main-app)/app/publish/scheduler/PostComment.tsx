@@ -79,9 +79,8 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
             const payload = {
                 "user_prompt": user_text,
                 "platform": selectedIcon
-
             }
-            let apiUrl = `https://api.growstack.ai/ai/api/v1/generate/post`;
+            let apiUrl = `${API_URL}/ai/api/v1/generate/post`;
             setAccumulatedResponse("")
             const conversation = await instance.post(apiUrl, payload);
             setAccumulatedResponse(conversation.data.data.post);

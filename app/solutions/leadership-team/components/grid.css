@@ -139,3 +139,18 @@
   .hover-boxstartup4:hover {
     content: url('/solutions/startup/boxes/box8.svg');
   }
+  .hover-boxleadership1:hover {
+    content: url('/solutions/leadership/boxes/box5.svg');
+  }
+  
+  .hover-boxleadership2:hover {
+    content: url('/solutions/leadership/boxes/box6.svg');
+  }
+  
+  .hover-boxleadership3:hover {
+    content: url('/solutions/leadership/boxes/box7.svg');
+  }
+  
+  .hover-boxleadership4:hover {
+    content: url('/solutions/leadership/boxes/box8.svg');
+  }

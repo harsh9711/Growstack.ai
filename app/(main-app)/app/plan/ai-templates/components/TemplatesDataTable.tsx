@@ -29,7 +29,7 @@ interface Assistant {
   category: string;
   favorite: boolean;
   CREATED: string;
-  STATUS: string;
+  //STATUS: string;
   handleStatusChange: (id: string, status: string) => void;
   premium: boolean;
 }
@@ -78,20 +78,20 @@ const TemplatesTable: React.FC<TemplatesTableProps> = ({ refreshTemplatesTable, 
         header: () => <div className="uppercase">Assistant Description</div>,
         cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("ASSISTANT DESCRIPTION")}</div>,
       },
-      {
-        accessorKey: "status",
-        header: () => <div className="uppercase">Status</div>,
-        cell: ({ row }) => {
-          const status = row.getValue("status") as "Active" | "Inactive" | "Disabled";
-          const statusClasses = {
-            Active: "text-green-500",
-            Inactive: "text-yellow-500",
-            Disabled: "text-red-500",
-          };
+      // {
+      //   accessorKey: "status",
+      //   header: () => <div className="uppercase">Status</div>,
+      //   cell: ({ row }) => {
+      //     const status = row.getValue("status") as "Active" | "Inactive" | "Disabled";
+      //     const statusClasses = {
+      //       Active: "text-green-500",
+      //       Inactive: "text-yellow-500",
+      //       Disabled: "text-red-500",
+      //     };
 
-          return <div className={`text-left font-medium capitalize ${statusClasses[status] || ""}`}>{status}</div>;
-        },
-      },
+      //     return <div className={`text-left font-medium capitalize ${statusClasses[status] || ""}`}>{status}</div>;
+      //   },
+      // },
       {
         accessorKey: "created",
         header: () => <div className="uppercase">Created</div>,
@@ -108,7 +108,7 @@ const TemplatesTable: React.FC<TemplatesTableProps> = ({ refreshTemplatesTable, 
               <Edit size={20} />
             </button>
             <DeleteAssistantDialog id={row.original._id} handleDelete={handleDelete} fetchAssistants={fetchAssistants} />
-            <button
+            {/* <button
               className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300"
               onClick={() => {
                 row.original.handleStatusChange(row.original._id, "inactive");
@@ -128,7 +128,7 @@ const TemplatesTable: React.FC<TemplatesTableProps> = ({ refreshTemplatesTable, 
               ) : (
                 <Heart size={20} onClick={() => handleFavorite("add", row.original._id)} />
               )}
-            </button>
+            </button> */}
           </div>
         ),
       },
@@ -147,7 +147,7 @@ const TemplatesTable: React.FC<TemplatesTableProps> = ({ refreshTemplatesTable, 
           category: assistant["category"],
           favorite: assistant["favorite"],
           created: assistant["CREATED"],
-          status: assistant["STATUS"],
+          //status: assistant["STATUS"],
           handleStatusChange: async (id: string, status: string) => {
             const updateAssistantStatus = async () => {
               try {

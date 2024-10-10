@@ -18,9 +18,12 @@ import { getCurrentUser } from "@/lib/features/auth/auth.selector";
 import { logout, setPlanLoading, setUserPlan } from "@/lib/features/auth/auth.slice";
 import PlanCard from "@/components/planCard";
 import { planIdsMap } from "@/lib/utils";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
 
 const PricingPage: React.FC = () => {
     const isLoggedIn = !!getCookie("token");
+    const { user } = useSelector((rootState: RootState) => rootState.auth);
 
     useEffect(() => {
         AOS.init();
@@ -36,7 +39,6 @@ const PricingPage: React.FC = () => {
     const [plans, setPlans] = useState<Feature[]>([]);
 
     const dispatch = useDispatch();
-    const currentUser = getCurrentUser();
     const [hasRefreshed, setHasRefreshed] = useState(false);
 
     useLayoutEffect(() => {
@@ -148,8 +150,8 @@ const PricingPage: React.FC = () => {
                         ? parseFloat(a.monthlyPrice)
                         : Infinity
                     : a.yearlyPrice !== null && a.yearlyPrice !== undefined
-                    ? parseFloat(a.yearlyPrice)
-                    : Infinity;
+                        ? parseFloat(a.yearlyPrice)
+                        : Infinity;
 
             const priceB =
                 view === "monthly"
@@ -157,8 +159,8 @@ const PricingPage: React.FC = () => {
                         ? parseFloat(b.monthlyPrice)
                         : Infinity
                     : b.yearlyPrice !== null && b.yearlyPrice !== undefined
-                    ? parseFloat(b.yearlyPrice)
-                    : Infinity;
+                        ? parseFloat(b.yearlyPrice)
+                        : Infinity;
 
             const isBusinessPlanA = planIdsMap.BUSINESS.some((val) => val === a?.id);
             const isBusinessPlanB = planIdsMap.BUSINESS.some((val) => val === b?.id);
@@ -226,12 +228,17 @@ const PricingPage: React.FC = () => {
                                 className='border-[#034737]  gap-4 text-[#034737] flex-wrap w-full flex justify-center sm:justify-end'
                                 data-aos='fade-left'
                             >
-                                <Link
-                                    className='border-[#034737] flex items-center justify-between gap-2  border rounded-xl font-semibold text-[#034737] px-8 py-4 '
-                                    href='/app'
-                                >
-                                    Go to Dashboard
-                                </Link>
+                                {
+                                    user?.isSubscribed && (
+                                        <Link
+                                            className='border-[#034737] flex items-center justify-between gap-2  border rounded-xl font-semibold text-[#034737] px-8 py-4 '
+                                            href='/app'
+                                        >
+                                            Go to Dashboard
+                                        </Link>
+                                    )
+                                }
+
                                 <button
                                     onClick={handleLogout}
                                     className='border-[#034737] flex items-center justify-between gap-2  border rounded-xl font-semibold text-[#034737] px-10 py-4 '
@@ -255,11 +262,10 @@ const PricingPage: React.FC = () => {
                                 {tabs.map((tab, index) => (
                                     <div
                                         key={index}
-                                        className={`w-full flex p-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
-                                            selectedTabIndex === index
-                                                ? "!text-white font-semibold bg-[#034737] custom-transition rounded-xl"
-                                                : "!text-[#034737]"
-                                        }`}
+                                        className={`w-full flex p-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${selectedTabIndex === index
+                                            ? "!text-white font-semibold bg-[#034737] custom-transition rounded-xl"
+                                            : "!text-[#034737]"
+                                            }`}
                                         onClick={() => handleTabClick(index)}
                                     >
                                         {tab}
