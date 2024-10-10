@@ -403,13 +403,14 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                             onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}
                             className="border bg-primary-green rounded-[5px] text-white flex items-center p-3 ml-1 mt-2"
                         >
-                            <Clock className="text-white bg-white border rounded-full" /> &nbsp; Schedule Post &nbsp;
+                            {/* <Clock className="text-white bg-white border rounded-full" />  */}
+                            &nbsp; Schedule Post &nbsp;
                         </button>
                         <button
                             className="border bg-primary-green rounded-[5px] text-white flex text-center p-3 mr-1 mt-2"
                             onClick={handleSendMessage}
                         >
-                            <span className="mr-2 ml-2">Post Now</span>
+                            <span className="mr-2 ml-2">Publish</span>
                         </button>
                     </div>
 
