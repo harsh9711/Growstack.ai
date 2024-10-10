@@ -11,8 +11,8 @@ import {TwitterIcon } from "@/components/svgs";
 import Image from "next/image";
 import Swal from 'sweetalert2';
 const socialMediaIcons = [
-  { icon: FaFacebookF, name: "Facebook", bgColor: "bg-blue-600" },
-  // { icon: FaInstagram, name: "Instagram", bgColor: "bg-pink-500" },
+  // { icon: FaFacebookF, name: "Facebook", bgColor: "bg-blue-600" },
+  { icon: FaInstagram, name: "Instagram", bgColor: "bg-pink-500" },
   { icon: TwitterIcon, name: "Twitter", bgColor: "bg-black" },
   { icon: FaLinkedinIn, name: "LinkedIn", bgColor: "bg-blue-700" },
 ];

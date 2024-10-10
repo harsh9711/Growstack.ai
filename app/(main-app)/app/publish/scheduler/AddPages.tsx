@@ -38,15 +38,15 @@ interface BoxContent {
 };
 
 const contentMap: { [key: string]: BoxContent } = {
-    facebook: {
-        name: "Facebook",
-        growstackIcon: <GrowstackIcon />,
-        growStackData: "GrowStact AI",
-        growstackSubData: "@GrowStackai",
-        connected: "CONNECTED",
-        flagIcon: <FlagIcon />,
-        content1: "Add Facebook Pages",
-    },
+    // facebook: {
+    //     name: "Facebook",
+    //     growstackIcon: <GrowstackIcon />,
+    //     growStackData: "GrowStact AI",
+    //     growstackSubData: "@GrowStackai",
+    //     connected: "CONNECTED",
+    //     flagIcon: <FlagIcon />,
+    //     content1: "Add Facebook Pages",
+    // },
     // instagram: {
     //     name: "twitter",
     //     growstackIcon: <GrowstackIcon />,
