@@ -29,8 +29,8 @@ const RequestForm = () => {
   };
 
   return (
-    <div className="">
-      <form onSubmit={handleSubmit} className="">
+    <div className="flex rounded-5xl min-h-screen">
+      {/* <form onSubmit={handleSubmit} className="">
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
@@ -226,7 +226,8 @@ const RequestForm = () => {
             Send message
           </button>
         </div>
-      </form>
+      </form> */}
+      <div className="tidycal-embed rounded-3xl" data-path="growstack/30-minute-meeting"></div><script src="https://asset-tidycal.b-cdn.net/js/embed.js" async></script>
     </div>
   );
 };
@@ -670,16 +671,17 @@ const Contact = () => {
               </div>
             </div>
           </div>
-          <div className="relative z-20 bg-[#F7FAFC] mb-40 rounded-[30px] p-10 gap-y-6 max-w-[610px] max-h-[882px] w-full flex flex-col">
+          <div className="relative z-20 bg-[#F7FAFC] mb-40 rounded-[30px] p-10 gap-y-6 max-w-[610px] max-h-[1382px] w-full flex flex-col">
             <div className="flex flex-col gap-y-2">
               <h2 className="text-[28px]  font-bold text-black">
                 How can we <span className="font-light">assist you?</span>
               </h2>
               <p>
-                Reach out by completing the form below. Our team will respond
-                within one business day.
+                Reach out by completing the form below. 
+                {/* Our team will respond
+                within one business day. */}
               </p>
-              <div>
+              <div className="mt-8 rounded-4xl">
                 <RequestForm />
               </div>
             </div>
@@ -756,7 +758,7 @@ const Contact = () => {
         data-aos="fade-up"
         data-aos-easing="ease-in-sine"
         data-aos-duration="1000"
-        className="flex flex-col bg-[#FAFBFC] py-20 w-full items-center justify-center"
+        className="flex flex-col  py-20 w-full items-center justify-center"
       >
         <div className=" items-center flex flex-col justify-center">
           <div className=" flex w-full font-bold bg-[#03473714] text-[#034737] rounded-full items-center leading-normal justify-between px-4 py-2 text-[12px] max-w-[75px] ">
