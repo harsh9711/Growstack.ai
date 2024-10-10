@@ -172,7 +172,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
                     }
                 }
                 setNewConversationId(conversation_id);
-                await streamResponse(chatId);
+                await streamResponse(chatId,fromMic);
                 if (selectedConversation || conversation_id) fetchConversations();
 
                 if (fromMic) {
@@ -304,7 +304,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
             }
         };
 
-        const streamResponse = async (chatId: string) => {
+        const streamResponse = async (chatId: string,fromMic: boolean) => {
             try {
                 const token = getCookie("token");
                 const eventSource = new EventSource(`${API_URL}/ai/api/v1/conversation/chat/stream/${chatId}`, {
@@ -326,11 +326,17 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
 
                 eventSource.onerror = (error: MessageEvent) => {
                     console.error("EventSource failed:", error);
+                    if (fromMic) {
+                      textToSpeech(accumulatedResponse);
+                    }
                     eventSource.close();
                     setIsLoading(false);
                 };
 
                 eventSource.addEventListener("end", (event: MessageEvent) => {
+                  if (fromMic) {
+                    textToSpeech(accumulatedResponse);
+                  }
                     eventSource.close();
                     setIsLoading(false);
                 });

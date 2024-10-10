@@ -25,6 +25,7 @@ export interface PlanUsage {
   plan_type: "MONTHLY" | "YEARLY" | string;
   createdAt: string;
   updatedAt: string;
+  isFreeCouponApplied: boolean;
 }
 
 export interface Plan {

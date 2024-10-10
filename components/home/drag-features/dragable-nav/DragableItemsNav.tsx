@@ -20,7 +20,7 @@ export default function DragableItemsNav<T> (props: Props<T>) {
          {...provided.droppableProps}
          ref={provided.innerRef}
          isDraggingOver={snapshot.isDraggingOver}
-         className={cn("relative glowing z-50 glowing-box bg-white px-6 py-3 lg:py-4 xl:py-5 lg:px-8 xl:px-10 rounded-br-[30px] rounded-bl-[30px] shadow-2xl inline-flex flex-wrap lg:flex-row mx-auto items-center justify-center gap-4 lg:gap-5 xl:gap-10", !isEmpty && 'opacity-0', className)}>
+         className={cn("relative glowing z-50 glowing-box bg-white px-6 py-3 lg:px-8 xl:px-10 rounded-br-[30px] rounded-bl-[30px] shadow-2xl inline-flex flex-wrap lg:flex-row mx-auto items-center justify-center gap-2 xl:gap-2", !isEmpty && 'opacity-0', className)}>
          {Array.from(items).map((item: any, index: number) => {
             return (
                <Draggable
