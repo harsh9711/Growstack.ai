@@ -1,17 +1,19 @@
-import { BriefCase, BuildingIcon, BuildingStore, FbIcon, FlagIcon, GrowstackIcon, InstaIcon, LinkedinIcon, NotesIcon, PinterestIcon, PlusIcon, TiktokIcon } from "@/components/svgs";
 import { DialogTitle } from "@radix-ui/react-dialog";
-import { TwitterIcon, UserCircleIcon } from "lucide-react";
+import { BuildingIcon, FlagIcon, LinkedinIcon, PlusIcon, TwitterIcon } from  "@/components/svgs";
 import { FC, useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTrigger } from "@/components/ui/dialog";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
 import Spinner from "@/components/Spinner";
+import { GrowstackIcon, BuildingStore, FbIcon, InstaIcon } from "@/components/svgs";
+import { UserCircleIcon } from "lucide-react";
 
 
 interface AddPagesProps {
     setOpenModel: (open: boolean) => void;
     openModel: boolean;
+    selectedIcon:string
 }
 
 interface BoxContent {
@@ -129,7 +131,7 @@ interface SocialMediaProfileResponse {
     schedules?: Record<string, any>;
 }
 const AddPages: FC<AddPagesProps> = ({
-    setOpenModel, openModel
+    setOpenModel, openModel,selectedIcon
 }) => {
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
     const [boxContent, setBoxContent] = useState<BoxContent>(contentMap["facebook"]);
@@ -138,6 +140,12 @@ const AddPages: FC<AddPagesProps> = ({
     const [platforms, setPlatforms] = useState<string[]>([]);
     const [profile, setProfile] = useState<any>([]);
     const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        handleGetProfileData();
+        if(selectedIcon){
+            setBoxContent(contentMap[selectedIcon])
+        }
+    }, []);
     const handleCloseDialog = () => {
         setOpenModel(false);
     };
@@ -165,9 +173,7 @@ const AddPages: FC<AddPagesProps> = ({
             toast.error(error.response.data.message);
         }
     };
-    useEffect(() => {
-        handleGetProfileData();
-    }, []);
+
 
     useEffect(() => {
         if (platforms.length > 0) {
@@ -193,11 +199,10 @@ const AddPages: FC<AddPagesProps> = ({
         } catch (error) {
             console.error("Error fetching social profile:", error);
         } finally {
-            setLoading(false); // Turn off loading state after the operation
+            setLoading(false);
         }
     };
 
-    // Utility function to get details by platform
     const getDetailsByPlatform = (platform: string) => {
         const platformsdetails: any = response?.activeSocialAccounts?.filter((account: SocialAccount) =>
             account.platform.toLowerCase() === platform.toLowerCase()

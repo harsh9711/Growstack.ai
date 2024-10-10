@@ -110,7 +110,7 @@ export { default as XIcon} from "@/public/PublishX.svg"
 export { default as TiktokIcon} from "@/public/PublishTiktok.svg"
 export { default as PinterestIcon} from "@/public/PublishPinterest.svg"
 export { default as LinkedinIcon} from "@/public/PublishLinkedin.svg"
-export { default as FlagIcon} from "@/public/PublishFlag.svg"
+export { default as FlagIcon} from "@/public/Publishflag.svg"
 export { default as GrowstackIcon} from "@/public/PublishGrowstack.svg"
 export { default as BuildingStore} from "@/public/building-store.svg"
 export { default as UserCircle} from "@/public/user-circle.svg"
@@ -135,9 +135,7 @@ export { default as ThumbUp } from "@/public/Thumbup.svg"
 export { default as ThumbDown } from "@/public/Thumbdown.svg"
 export { default as Rewrite } from "@/public/pencil.svg"
 export { default as Columns } from "@/public/columns.svg"
-
-
-
+export { default as TwitterIcon } from "@/public/TwitterIcon.svg"
 
 
 

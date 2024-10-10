@@ -1,8 +1,6 @@
 "use client";
 
-import CalenderEvent from "@/components/svgs/calenderevent";
-import CalenderStats from "@/components/svgs/calenderstats";
-import { CalendarPlus, TwitterIcon } from "lucide-react";
+
 import { AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect, useRef, useState } from "react";
 import PickDate from "./DatePicker";
 import type { DatePickerProps, GetProps } from 'antd';
@@ -12,7 +10,7 @@ import Image from "next/image";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import Spinner from "@/components/Spinner";
-import { BriefCase, BuildingIcon, BuildingStore, FbIcon, FlagIcon, GrowstackIcon, InstaIcon, LinkedinIcon, NotesIcon, PinterestIcon, PlusIcon, TiktokIcon } from "@/components/svgs";
+import { BriefCase, BuildingIcon, BuildingStore, FbIcon, FlagIcon, GrowstackIcon, InstaIcon, LinkedinIcon, NotesIcon, PinterestIcon, PlusIcon, TiktokIcon, TwitterIcon } from "@/components/svgs";
 
 
 interface PostCardProps {

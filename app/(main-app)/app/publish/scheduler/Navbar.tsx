@@ -6,15 +6,14 @@ import {
   FaPinterestP,
   FaLinkedinIn,
 } from "react-icons/fa";
-import { RiTwitterXLine } from "react-icons/ri";
+import {TwitterIcon } from "@/components/svgs";
+
 import Image from "next/image";
 import Swal from 'sweetalert2';
 const socialMediaIcons = [
   { icon: FaFacebookF, name: "Facebook", bgColor: "bg-blue-600" },
   { icon: FaInstagram, name: "Instagram", bgColor: "bg-pink-500" },
-  // { icon: FaTiktok, name: "TikTok", bgColor: "bg-black" },
-  { icon: RiTwitterXLine, name: "Twitter", bgColor: "bg-black" },
-  // { icon: FaPinterestP, name: "Pinterest", bgColor: "bg-red-600" },
+  { icon: TwitterIcon, name: "Twitter", bgColor: "bg-black" },
   { icon: FaLinkedinIn, name: "LinkedIn", bgColor: "bg-blue-700" },
 ];
 
@@ -24,6 +23,7 @@ interface SocialNavBarProps {
   selectedIcon: string; // Receiving selectedIcon from the parent
   setSelectedIcon: (name: string) => void; // Function to set selectedIcon in the parent
   platforms:string[]
+  setOpenModel: (open: boolean) => void;
 }
 
 const SocialNavBar: FC<SocialNavBarProps> = ({
@@ -31,7 +31,8 @@ const SocialNavBar: FC<SocialNavBarProps> = ({
   setOpenAddAcc,
   selectedIcon,
   setSelectedIcon,
-  platforms
+  platforms,
+  setOpenModel
 }) => {
   const handleDialogToggle = () => {
     setOpenAddAcc(true);
@@ -49,13 +50,7 @@ const SocialNavBar: FC<SocialNavBarProps> = ({
     if (platforms.includes(name.toLowerCase())) {
       setSelectedIcon(name);
     } else {
-      // Show alert if the account is not added
-      Swal.fire({
-        title: 'Account Not Added',
-        text: 'This account is not linked. Please add it first.',
-        icon: 'warning',
-        confirmButtonText: 'OK',
-      });
+      setOpenModel(true)
     }
   };
 

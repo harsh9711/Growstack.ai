@@ -283,7 +283,7 @@ export default function Publish() {
             <div className="absolute">
                 <SheduleBackground />
             </div>
-            <AddPages setOpenModel={setOpenModel} openModel={openModel} />
+            <AddPages setOpenModel={setOpenModel} openModel={openModel} selectedIcon={selectedIcon} />
             <PostComment openPostModel={genPost} isGenPost={isGenPost} selectedIcon={selectedIcon} />
             <div>
                 {!skipNow ? (
@@ -600,7 +600,7 @@ export default function Publish() {
                         </div>
                     </>) : <>
                     <div className="flex-1 h-full w-full flex flex-col items-center justify-center text-center">
-                        <SocialNavBar platforms={platforms} setOpen={setOpenModel} setOpenAddAcc={isGenPost} selectedIcon={selectedIcon} setSelectedIcon={setSelectedIcon} />
+                        <SocialNavBar setOpenModel={setOpenModel} platforms={platforms} setOpen={setOpenModel} setOpenAddAcc={isGenPost} selectedIcon={selectedIcon} setSelectedIcon={setSelectedIcon} />
                         <div className="mt-[10vh]"></div>
                         <PostCard platforms={platforms} selectedIcon={selectedIcon} profile={profile} />
                     </div>

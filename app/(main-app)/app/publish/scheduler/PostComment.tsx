@@ -68,21 +68,25 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
     const [lastPromt, setLastPrompt] = useState("")
     const [loading, setLoading] = useState(false)
     const handleInputChage = debounce(async (user_text: any) => {
-        setLoading(true)
-        let apiUrl = `${API_URL}/ai/api/v1/conversation/chat?conversation_id=&model=gemini-1.5-flash&enableSecure=false`;
-        const conversation = await instance.post(apiUrl, {
-            user_prompt: user_text,
-        });
-        const { response, conversation_id, chatId, noOfMessagesLeft, totalNoOfMessages } = conversation.data.data as ChatResponse;
-        await streamResponse(chatId);
+        if(user_text){
+            setLoading(true)
+            let apiUrl = `${API_URL}/ai/api/v1/conversation/chat?conversation_id=&model=gemini-1.5-flash&enableSecure=false`;
+            const conversation = await instance.post(apiUrl, {
+                user_prompt: user_text,
+            });
+            const { response, conversation_id, chatId, noOfMessagesLeft, totalNoOfMessages } = conversation.data.data as ChatResponse;
+            await streamResponse(chatId);
+        }
         setLoading(false)
 
     }, 600);
 
     useEffect(() => {
-    setText("")
-    setAccumulatedResponse("")
-    setUpload(null)
+        setAiMode(false)
+        setText("")
+        setAccumulatedResponse("")
+        setUpload(null)
+        setFileInfo(null)
     }, []);
     const streamResponse = async (chatId: string) => {
         try {
@@ -105,18 +109,18 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                 let promt: any
                 const platform = selectedIcon.toLowerCase()
                 if (platform === 'twitter') {
-                    promt = 'Generate a social media post for Twitter that is exactly 220 characters long'
+                    promt = 'Generate a social media post for Twitter that is max 2500 characters dont show in response about characters'
                 }
                 else if (platform === 'linkedin') {
-                    promt = 'Generate a social media post for Twitter that is exactly 2500 characters long '
+                    promt = 'Generate a social media post for linkedin that is max 2500 characters dont show in response about characters'
 
                 }
                 else if (platform === 'instagram') {
-                    promt = 'Generate a social media post for Twitter that is exactly 2000 characters long '
+                    promt = 'Generate a social media post for instagram that is max 2500 characters dont show in response about characters'
 
                 }
                 else if (platform === 'facebook') {
-                    promt = 'Generate a social media post for Twitter that is exactly 9000 characters long '
+                    promt = 'Generate a social media post for facebook that is max 2500 characters dont show in response about characters'
                 }
                 const msg = parseJsonString(chunk)?.text + promt || "";
                 setAccumulatedResponse((prevResponse) => prevResponse + msg);
@@ -161,8 +165,8 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                         setUploadProgress(progress);
                         await new Promise(resolve => setTimeout(resolve, 500));
                     }
-                    setUploadProgress(null);
                 };
+                uploadFile()
             }
         }
     };
@@ -225,7 +229,7 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                 }
                 console.error(error);
             } finally {
-        setLoading(false)
+                setLoading(false)
 
             }
         } else if (text) {
@@ -272,13 +276,13 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
     return (
 
         <>
-        
+
             <Dialog open={openPostModel} onOpenChange={isGenPost}>
                 <DialogContent
                     showCloseButton={true}
                     className="w-[498px] h-auto p-0 pb-4 border-0 max-w-none"
                 >
-                 
+
                     <DialogHeader>
                         <DialogTitle className="px-5">
                             <div className="bg-white py-3 border-b border-[#EBEBEB] text-black font-inter flex justify-between items-center">
@@ -298,16 +302,8 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                             </div>
                         </DialogTitle>
                     </DialogHeader>
-
-                    {loading &&
-                <div className="absolute lex-1 h-full flex flex-col gap-5 justify-center items-center">
-                    <Spinner color="black" size={100} />
-                    Loading...
-                </div>
-
-            }
                     {!isAiMode ? (
-                        <>
+                        <>  
                             <textarea
                                 value={text}
                                 onChange={(e) => setText(e.target.value)}
@@ -320,17 +316,27 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                                 }}
                             />
                             <button
-                                onClick={() => setAiMode(true)}
-                                className="flex items-center w-[150px] h-[35px] mt-2 ml-5 border border-dashed border-[#034737] rounded-[16px] text-[#034737] text-[14px] bg-transparent"
-                            >
-                                <GenAi className="ml-2 mr-2" size={24} />
-                                Generative AI
-                            </button>
+                            onClick={() => { setAiMode(true); setAccumulatedResponse("") }}
+                            className="flex items-center w-[150px] h-[35px] mt-2 ml-5 border border-dashed border-[#034737] rounded-[16px] text-[#034737] text-[14px] bg-transparent"
+                        >
+
+                            <GenAi className="ml-2 mr-2" size={24} />
+                            Generative AI
+                        </button>
                         </>
                     ) : (
                         <>
                             <div className="relative w-[96%] ml-2 mt-1">
+                                <CrossMark onClick={() => setAiMode(false)}
+                                    className="absolute w-4 h-4"
+                                    style={{
+                                        bottom: "0",
+                                        right: "0",
+                                        transform: "translate(25%, 25%)",
+                                    }}
+                                />
                                 <GenAi className="absolute left-3 top-1/2 transform -translate-y-1/2" />
+
                                 <input
                                     type="text"
                                     placeholder="Ask Gen AI here..."
@@ -386,14 +392,6 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                             </button>
                         </div>
                     )}
-                    {uploadProgress !== null && (
-                        <div className="w-full bg-gray-200 rounded-full mt-2">
-                            <div
-                                className="bg-blue-500 h-2.5 rounded-full"
-                                style={{ width: `${uploadProgress}%` }}
-                            />
-                        </div>
-                    )}
                     <div className="mt-[32px] ml-[15px]">
                         <div className="flex justify-between items-center">
                             <div className="flex items-center">
@@ -445,21 +443,21 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                             minDate={new Date()}
                         />
                     )}
-                   {/* <Divider style={{margin:"0px !important"}}/> */}
-                    <div className="flex justify-between items-center   border-t-2 border-solid border-[#034737]">
-                     
-                            <button
-                                onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}
-                                className="border bg-primary-green rounded-[5px] text-white flex items-center p-3 ml-1 mt-1"
-                            >
-                                <Clock className="text-white bg-white border rounded-full" /> &nbsp; Schedule Post &nbsp;
-                            </button>
-                            <button
-                                className="border bg-primary-green rounded-[5px] text-white flex text-center p-3 mr-1 mt-1"
-                                onClick={handleSendMessage}
-                            >
-                                <span className="mr-2">Post Now</span>
-                            </button>
+                    {/* <Divider style={{margin:"0px !important"}}/> */}
+                    <div className="flex justify-between items-center   border-t-1 border-solid border-[#034737]">
+
+                        <button
+                            onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}
+                            className="border bg-primary-green rounded-[5px] text-white flex items-center p-3 ml-1 mt-1"
+                        >
+                            <Clock className="text-white bg-white border rounded-full" /> &nbsp; Schedule Post &nbsp;
+                        </button>
+                        <button
+                            className="border bg-primary-green rounded-[5px] text-white flex text-center p-3 mr-1 mt-1"
+                            onClick={handleSendMessage}
+                        >
+                            <span className="mr-2">Post Now</span>
+                        </button>
                     </div>
 
                 </DialogContent>
