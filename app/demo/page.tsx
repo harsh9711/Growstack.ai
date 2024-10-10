@@ -7,7 +7,8 @@ import Footer from "@/components/footer/Footer";
 
 const RequestForm = () => {
   const [formData, setFormData] = useState({
-    fullName: "",
+    firstName: "",
+    lastName: "",
     email: "",
     companyName: "",
     phoneNumber: "",
@@ -23,18 +24,17 @@ const RequestForm = () => {
   };
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
   };
 
   return (
-    <div className="">
-      <form onSubmit={handleSubmit} className="">
+    <div className="flex rounded-5xl min-h-screen">
+      {/* <form onSubmit={handleSubmit} className="">
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="fullName"
+            htmlFor="firstName"
           >
-            Full Name
+            First Name
           </label>
           <div className=" bg-white border appearance-none w-full py-3.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-[10px] flex items-center">
             <svg
@@ -62,16 +62,57 @@ const RequestForm = () => {
             </svg>
             <input
               type="text"
-              id="fullName"
-              name="fullName"
-              value={formData.fullName}
+              id="firstName"
+              name="firstName"
+              value={formData.firstName}
               onChange={handleInputChange}
               placeholder="Enter your full name"
               className="w-full border-none outline-none"
             />
           </div>
         </div>
-
+        <div className="mb-4">
+          <label
+            className="block text-gray-700 text-sm font-bold mb-2"
+            htmlFor="lastName"
+          >
+            Last Name
+          </label>
+          <div className=" bg-white border appearance-none w-full py-3.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-[10px] flex items-center">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="mr-2 mt-0.5"
+            >
+              <circle
+                cx="7.9987"
+                cy="4.66618"
+                r="2.66667"
+                stroke="#034737"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M4 13.9995V12.6662C4 11.1934 5.19391 9.99951 6.66667 9.99951H9.33333C10.8061 9.99951 12 11.1934 12 12.6662V13.9995"
+                stroke="#034737"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <input
+              type="text"
+              id="lastName"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleInputChange}
+              placeholder="Enter your last name"
+              className="w-full border-none outline-none"
+            />
+          </div>
+        </div>
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
@@ -116,127 +157,6 @@ const RequestForm = () => {
         <div className="mb-4">
           <label
             className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="companyName"
-          >
-            Company Name
-          </label>
-          <div className=" bg-white border appearance-none w-full py-3.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-[10px] flex items-center">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="mr-2 mt-0.5"
-            >
-              <path
-                d="M2 14.0003H14"
-                stroke="#667085"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M2 14.0003H14"
-                stroke="#667085"
-                stroke-opacity="0.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M3.33203 14.0005V4.66716L8.66536 2.00049V14.0005"
-                stroke="#667085"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M3.33203 14.0005V4.66716L8.66536 2.00049V14.0005"
-                stroke="#667085"
-                stroke-opacity="0.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M12.6641 14.0003V7.33366L8.66406 4.66699"
-                stroke="#667085"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M12.6641 14.0003V7.33366L8.66406 4.66699"
-                stroke="#667085"
-                stroke-opacity="0.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M5.9974 6.00041V6.00708"
-                stroke="#667085"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M5.9974 6.00041V6.00708"
-                stroke="#667085"
-                stroke-opacity="0.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M5.9974 8.00041V8.00708"
-                stroke="#667085"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M5.9974 8.00041V8.00708"
-                stroke="#667085"
-                stroke-opacity="0.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M5.9974 10.0004V10.0071"
-                stroke="#667085"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M5.9974 10.0004V10.0071"
-                stroke="#667085"
-                stroke-opacity="0.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M5.9974 12.0004V12.0071"
-                stroke="#667085"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M5.9974 12.0004V12.0071"
-                stroke="#667085"
-                stroke-opacity="0.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-
-            <input
-              type="text"
-              id="companyName"
-              name="companyName"
-              value={formData.companyName}
-              onChange={handleInputChange}
-              placeholder="Enter company name"
-              className="w-full border-none outline-none"
-            />
-          </div>
-        </div>
-
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
             htmlFor="phoneNumber"
           >
             Phone Number (optional)
@@ -271,119 +191,7 @@ const RequestForm = () => {
               name="phoneNumber"
               value={formData.phoneNumber}
               onChange={handleInputChange}
-              placeholder="Enter phone number"
-              className="w-full border-none outline-none"
-            />
-          </div>
-        </div>
-
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="preferredDateTime"
-          >
-            Preferred Date and Time
-          </label>
-          <div className=" bg-white border appearance-none w-full py-3.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-[10px] flex items-center">
-
-            <svg
-              className="mr-2 mt-0.5"
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M7.86333 14.0002H3.33333C2.59695 14.0002 2 13.4032 2 12.6668V4.66683C2 3.93045 2.59695 3.3335 3.33333 3.3335H11.3333C12.0697 3.3335 12.6667 3.93045 12.6667 4.66683V7.3335"
-                stroke="#667085"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M7.86333 14.0002H3.33333C2.59695 14.0002 2 13.4032 2 12.6668V4.66683C2 3.93045 2.59695 3.3335 3.33333 3.3335H11.3333C12.0697 3.3335 12.6667 3.93045 12.6667 4.66683V7.3335"
-                stroke="#667085"
-                stroke-opacity="0.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <circle
-                cx="11.9987"
-                cy="12.0002"
-                r="2.66667"
-                stroke="#667085"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <circle
-                cx="11.9987"
-                cy="12.0002"
-                r="2.66667"
-                stroke="#667085"
-                stroke-opacity="0.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M9.9974 2V4.66667"
-                stroke="#667085"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M9.9974 2V4.66667"
-                stroke="#667085"
-                stroke-opacity="0.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M4.66536 2V4.66667"
-                stroke="#667085"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M4.66536 2V4.66667"
-                stroke="#667085"
-                stroke-opacity="0.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M2 7.33333H12.6667"
-                stroke="#667085"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M2 7.33333H12.6667"
-                stroke="#667085"
-                stroke-opacity="0.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M12 10.9976V12.0002L12.6667 12.6669"
-                stroke="#667085"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M12 10.9976V12.0002L12.6667 12.6669"
-                stroke="#667085"
-                stroke-opacity="0.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-
-            <input
-              // type="datetime-local"
-              id="preferredDateTime"
-              name="preferredDateTime"
-              value={formData.preferredDateTime}
-              onChange={handleInputChange}
+              placeholder="Enter your phone number"
               className="w-full border-none outline-none"
             />
           </div>
@@ -397,7 +205,6 @@ const RequestForm = () => {
             Message/Questions (optional)
           </label>
           <div className=" bg-white border appearance-none w-full py-3.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-[10px] flex items-center">
-      
             <textarea
               id="message"
               name="message"
@@ -414,10 +221,11 @@ const RequestForm = () => {
             type="submit"
             className="rounded   w-full max-w-[530px] group-hover:hover:bg-[#034737] group-hover:text-white text-[#034737] font-normal text-[16px] py-4 px-4 "
           >
-            Submit Request
+            Send message
           </button>
         </div>
-      </form>
+      </form> */}
+      <div className="tidycal-embed rounded-3xl" data-path="growstack/30-minute-meeting"></div><script src="https://asset-tidycal.b-cdn.net/js/embed.js" async></script>
     </div>
   );
 };
@@ -582,13 +390,13 @@ const Demo = () => {
 
           </div>
         </div>
-        <div className="relative z-20 bg-[#F7FAFC] mb-52 rounded-[30px] p-10 gap-y-6 max-w-[610px] max-h-[971px] w-full flex flex-col">
+        <div className="relative z-20 bg-[#F7FAFC] mb-52 rounded-[30px] p-10 gap-y-6 max-w-[610px] max-h-[1471px] w-full flex flex-col">
           
-          <div className="flex flex-col gap-y-2">
+          <div className="flex flex-col gap-y-6">
             <h2 className="text-[28px]  font-bold text-black">
               Request a demo
             </h2>
-            <p>Our team will respond within one business day.</p>
+            {/* <p>Our team will respond within one business day.</p> */}
             <div>
               <RequestForm />
             </div>
