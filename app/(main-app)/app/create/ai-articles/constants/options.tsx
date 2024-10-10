@@ -218,8 +218,14 @@ export const llmComparisonModels = [
       },
       {
         provider: "perplexity",
-        label: "Llama 3.1 405B Sonar Small 128k Chat",
-        value: "llama-3.1-405b-sonar-small-128k-chat",
+        label: "Llama 3.1 Sonar Large 128k Chat",
+        value: "llama-3.1-sonar-large-128k-chat",
+        icon: <Llama />,
+      },
+      {
+        provider: "perplexity",
+        label: "Llama 3.1 Sonar Small 128k Chat",
+        value: "llama-3.1-sonar-small-128k-chat",
         icon: <Llama />,
       },
       {
