@@ -71,13 +71,16 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
     const currentUser = getCurrentUser();
     const handleInputChage = debounce(async (user_text: any) => {
         if (user_text) {
+           
+            setShowActions(true)
             setLoading(true)
             const payload = {
-                    "user_prompt": user_text,
-                    "platform": selectedIcon
-                  
+                "user_prompt": user_text,
+                "platform": selectedIcon
+
             }
             let apiUrl = `https://api.growstack.ai/ai/api/v1/generate/post`;
+            setAccumulatedResponse("")
             const conversation = await instance.post(apiUrl, payload);
             setAccumulatedResponse(conversation.data.data.post);
         }
@@ -98,9 +101,9 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
 
     }
     const handleActionComplete = () => {
+        setText(accumulatedResponse)
         setShowActions(false);
         setActionCompleted(true);
-        setText(accumulatedResponse)
     };
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -241,23 +244,14 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                             <div className="bg-white py-3 border-b border-[#EBEBEB] text-black font-inter flex justify-between items-center">
                                 <div className="flex items-center relative">
                                     <div className="w-[50px] h-[50px] rounded-full border border-black bg-[#F5F5F5] flex items-center justify-center relative">
-                                    <Avatar>
-                                       <AvatarImage src={currentUser?.profile_img} /> 
-                                    </Avatar>
-                                        {/* <CrossMark
-                                            className="absolute w-4 h-4"
-                                            style={{
-                                                bottom: "0",
-                                                right: "0",
-                                                transform: "translate(25%, 25%)",
-                                            }}
-                                        /> */}
+                                        <Avatar>
+                                            <AvatarImage src={currentUser?.profile_img} />
+                                        </Avatar>
                                     </div>
                                 </div>
                             </div>
                         </DialogTitle>
                     </DialogHeader>
-
                     {!isAiMode ? (
                         <>
                             <textarea
@@ -353,31 +347,9 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                         <div className="flex justify-between items-center">
                             <div className="flex items-center">
                                 <button onClick={() => fileInputRef.current?.click()}>
-                                <ImgVector />
-                                </button>
-                                {/* <button onClick={() => gifInputRef.current?.click()}>
-                                    <Gif />
-                                </button>
-                                <button onClick={() => fileInputRef.current?.click()}>
                                     <ImgVector />
                                 </button>
-                                <div className="border-l border-gray h-[28px] mx-2" />
-                                <button
-                                    onClick={() => fileInputRef.current?.click()} // Trigger file input
-                                >
-                                    <LinkIcon />
-                                </button> */}
                             </div>
-                            {/* <div className="relative">
-                                <SmileEmoji
-                                    onClick={() => setEmojiPickerOpen(!emojiPickerOpen)}
-                                />
-                                {emojiPickerOpen && (
-                                    <div className=" z-auto fixed">
-                                        <Picker onEmojiClick={onEmojiClick} />
-                                    </div>
-                                )}
-                            </div> */}
                         </div>
                     </div>
 
@@ -400,7 +372,6 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                             minDate={new Date()}
                         />
                     )}
-                    {/* <Divider style={{margin:"0px !important"}}/> */}
                     <div className="flex justify-between items-center  border-t-2 border-solid border-[#034737]">
 
                         <button

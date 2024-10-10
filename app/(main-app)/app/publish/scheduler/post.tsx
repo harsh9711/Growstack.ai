@@ -158,7 +158,7 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile, platforms })
                                                 </div>
                                                 {visibleMenuIndex === index && (
                                                     <div className="absolute right-0 mt-2 w-[100px] text-center items-center h-8 bg-white shadow-lg rounded-md z-10" onClick={() => handleDeleteComment(post)}>
-                                                      <div className="mt-1 text-red ">
+                                                      <div className="mt-1 text-red-500">
                                                       Delete Post
                                                         </div>  
                                                     </div>
