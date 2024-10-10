@@ -21,10 +21,6 @@ import {
     SmileEmoji,
     LinkIcon,
     Clock,
-    FbIcon,
-    InstaIcon,
-    LinkedinIcon,
-    TwitterIcon
 } from "@/components/svgs";
 import instance from "@/config/axios.config";
 import { getCookie } from "cookies-next";
@@ -43,6 +39,8 @@ import EventSource from 'eventsource';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Spinner from "@/components/Spinner";
+import { getCurrentUser } from "@/lib/features/auth/auth.selector";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 interface PostCommentProps {
     openPostModel: boolean
     selectedIcon: string
@@ -69,7 +67,8 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
     const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
     const [lastPromt, setLastPrompt] = useState("")
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const currentUser = getCurrentUser();
     const handleInputChage = debounce(async (user_text: any) => {
         if (user_text) {
             setLoading(true)
@@ -242,10 +241,9 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                             <div className="bg-white py-3 border-b border-[#EBEBEB] text-black font-inter flex justify-between items-center">
                                 <div className="flex items-center relative">
                                     <div className="w-[50px] h-[50px] rounded-full border border-black bg-[#F5F5F5] flex items-center justify-center relative">
-                                    {selectedIcon === "facebook" && <FbIcon />}
-                                    {selectedIcon === "twitter" && <TwitterIcon />}
-                                    {selectedIcon === "linkedin" && <LinkedinIcon />}
-                                    {selectedIcon === "instagram" && <InstaIcon />}
+                                    <Avatar>
+                                       <AvatarImage src={currentUser?.profile_img} /> 
+                                    </Avatar>
                                         {/* <CrossMark
                                             className="absolute w-4 h-4"
                                             style={{
