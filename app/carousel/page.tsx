@@ -8,14 +8,12 @@ import Link from "next/link";
 import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-
 const Carousel = () => {
   const [hoveredIndex, setHoveredIndex] = useState<null | number>(2);
 
   useEffect(() => {
     AOS.init({ duration: 1000 });
   }, []);
-
   return (
     <div className="bg-[#F4F6F6] rounded-[60px]">
       <div className="w-full bg-[#F4F6F6] rounded-[60px] py-10 gap-y-4 flex flex-col items-center justify-center mx-auto">
@@ -149,5 +147,4 @@ const Carousel = () => {
     </div>
   );
 };
-
 export default Carousel;

@@ -12,7 +12,7 @@ const HoverVideo = () => {
     if (videoRef.current) {
       videoRef.current.pause();
       setIsPlaying(false);
-      setHoverDisabled(true);  
+      setHoverDisabled(true);
     }
   };
 
@@ -23,10 +23,10 @@ const HoverVideo = () => {
       videoRef.current.play();
       setIsPlaying(true);
 
-      
+
       setTimeout(() => {
         stopAndFreezeVideo();
-      }, 12000); 
+      }, 12000);
     }
   };
 
@@ -45,11 +45,11 @@ const HoverVideo = () => {
         width="100%"
         height="100%"
         muted
-        loop={false} 
-        preload="metadata" 
+        loop={false}
+        preload="metadata"
         className=" rounded-2xl border-none outline-none"
       >
-        <source src="/workflow fast.mp4" type="video/mp4" />
+        <source src="/workflow_fast.mp4" type="video/mp4" />
       </video>
     </div>
   );
