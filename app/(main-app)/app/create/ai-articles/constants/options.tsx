@@ -162,12 +162,12 @@ export const llmComparisonModels = [
         value: "gemini-1.5-flash",
         icon: <GoogleGemini />,
       },
-      {
-        provider: "google",
-        label: "Gemini 1.0 Pro",
-        value: "gemini-1.0-pro",
-        icon: <GoogleGemini />,
-      },
+      // {
+      //   provider: "google",
+      //   label: "Gemini 1.0 Pro",
+      //   value: "gemini-1.0-pro",
+      //   icon: <GoogleGemini />,
+      // },
       {
         provider: "google",
         label: "Gemini 1.5 Flash Latest",
