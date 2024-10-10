@@ -233,7 +233,7 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
         setFileInfo(null)
         setUpload(null)
         setAccumulatedResponse("")
-    }, []);
+    }, [selectedIcon]);
     const platformDetails = () => {
         let platformDetails: any
         if (profile !== undefined && profile && selectedIcon) {
@@ -265,13 +265,15 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                     Loading...
                 </div>
                     }
+
                     <DialogHeader>
                         <DialogTitle className="px-5">
                             <div className="bg-white py-3 border-b border-[#EBEBEB] text-black font-inter flex justify-between items-center">
                                 <div className="flex items-center relative">
                                     <div className="w-[50px] h-[50px] rounded-full border border-black bg-[#F5F5F5] flex items-center justify-center relative">
                                         {userPostDetails[0]?.userImage && <Avatar>
-                                            <AvatarImage src={userPostDetails[0]?.userImage} />
+                                            <img src={userPostDetails[0]?.userImage} />
+                                            {/* <AvatarImage src={userPostDetails[0]?.userImage} /> */}
                                         </Avatar>}
                                     </div>
                                 </div>
@@ -329,14 +331,11 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                                     style={{
                                         resize: "none",
                                     }}
+                                    onChange={(e) => setAccumulatedResponse(e.target.value)}
                                     value={accumulatedResponse}
                                 />
                                 {showActions && (
                                     <>
-                                        {/* <div className="absolute mb-2 bottom-2 left-2 flex items-center">
-                                            <ThumbUp className="mr-2 cursor-pointer" />
-                                            <ThumbDown />
-                                        </div> */}
                                         <div className="absolute mb-2 right-2 flex items-center space-x-2">
                                             <button className="text-[#034737] bg-transparent border-none" onClick={reGenerate}>
                                                 Retry
@@ -404,13 +403,14 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                             onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}
                             className="border bg-primary-green rounded-[5px] text-white flex items-center p-3 ml-1 mt-2"
                         >
-                            <Clock className="text-white bg-white border rounded-full" /> &nbsp; Schedule Post &nbsp;
+                            {/* <Clock className="text-white bg-white border rounded-full" />  */}
+                            &nbsp; Schedule Post &nbsp;
                         </button>
                         <button
                             className="border bg-primary-green rounded-[5px] text-white flex text-center p-3 mr-1 mt-2"
                             onClick={handleSendMessage}
                         >
-                            <span className="mr-2 ml-2">Post Now</span>
+                            <span className="mr-2 ml-2">Publish</span>
                         </button>
                     </div>
 
