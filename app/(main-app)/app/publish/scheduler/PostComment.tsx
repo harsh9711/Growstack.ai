@@ -21,6 +21,10 @@ import {
     SmileEmoji,
     LinkIcon,
     Clock,
+    FbIcon,
+    InstaIcon,
+    LinkedinIcon,
+    TwitterIcon
 } from "@/components/svgs";
 import instance from "@/config/axios.config";
 import { getCookie } from "cookies-next";
@@ -227,7 +231,7 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                 <DialogContent
                     showCloseButton={true}
                     className="w-[498px] h-auto p-0 pb-4 border-0 max-w-none"
-                >  {loading && <div className="absolute z-50 lex-1 h-full flex flex-col gap-5 justify-center text-center items-center">
+                >  {loading && <div className="absolute z-50 inset-0 flex justify-center items-center">
                     <Spinner color="black" size={50} />
                     Loading...
                 </div>
@@ -238,15 +242,18 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                             <div className="bg-white py-3 border-b border-[#EBEBEB] text-black font-inter flex justify-between items-center">
                                 <div className="flex items-center relative">
                                     <div className="w-[50px] h-[50px] rounded-full border border-black bg-[#F5F5F5] flex items-center justify-center relative">
-                                        <LogoIcon />
-                                        <CrossMark
+                                    {selectedIcon === "facebook" && <FbIcon />}
+                                    {selectedIcon === "twitter" && <TwitterIcon />}
+                                    {selectedIcon === "linkedin" && <LinkedinIcon />}
+                                    {selectedIcon === "instagram" && <InstaIcon />}
+                                        {/* <CrossMark
                                             className="absolute w-4 h-4"
                                             style={{
                                                 bottom: "0",
                                                 right: "0",
                                                 transform: "translate(25%, 25%)",
                                             }}
-                                        />
+                                        /> */}
                                     </div>
                                 </div>
                             </div>
