@@ -81,18 +81,33 @@
   .hover-box303:hover {
     content: url('/solutions/sales/boxes/hover/hover4.svg');
   }
-  .hover-boxrevops1:hover {
+  .hover-boxleadership1:hover {
     content: url('/salesrevops/hover/hover1.svg');
   }
   
-  .hover-boxrevops2:hover {
+  .hover-boxleadership2:hover {
     content: url('/salesrevops/hover/hover2.svg');
   }
   
-  .hover-boxrevops3:hover {
+  .hover-boxleadership3:hover {
     content: url('/salesrevops/hover/hover3.svg');
   }
   
-  .hover-boxrevops4:hover {
+  .hover-boxleadership4:hover {
     content: url('/salesrevops/hover/hover4.svg');
+  }
+  .hover-boxleadership11:hover {
+    content: url('/leadership/hover/hover1.svg');
+  }
+  
+  .hover-boxleadership21:hover {
+    content: url('/leadership/hover/hover2.svg');
+  }
+  
+  .hover-boxleadership31:hover {
+    content: url('/leadership/hover/hover3.svg');
+  }
+  
+  .hover-boxleadership41:hover {
+    content: url('/leadership/hover/hover4.svg');
   }

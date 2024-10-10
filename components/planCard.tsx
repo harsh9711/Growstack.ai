@@ -107,8 +107,8 @@ const PlanCard = ({
                                     ? parseFloat(plan.monthlyPrice.toString()).toFixed(2)
                                     : ""
                                 : plan.yearlyPrice !== null && plan.yearlyPrice !== undefined
-                                ? parseFloat(plan.yearlyPrice.toString()).toFixed(2)
-                                : ""}
+                                    ? parseFloat(plan.yearlyPrice.toString()).toFixed(2)
+                                    : ""}
                             <span className='text-[20px] xl:text-[28px] opacity-20 text-black'>{suffix}</span>
                         </h2>
                     ) : (
@@ -122,9 +122,8 @@ const PlanCard = ({
                 <div className={`flex flex-col gap-y-2 px-4 ${marginBottom} w-full overflow-y-auto sm:h-[320px] sm:overflow-y-scroll`}>
                     {plan.featureList.map((feature, index) => (
                         <p
-                            className={`flex text-[12px] xl:text-[18px] ${
-                                index === 0 && !isBasicPlan ? "font-bold" : "font-medium"
-                            } items-center gap-x-2`}
+                            className={`flex text-[12px] xl:text-[18px] ${index === 0 && !isBasicPlan ? "font-bold" : "font-medium"
+                                } items-center gap-x-2`}
                             key={index}
                         >
                             <span className='w-5 h-5 flex items-center justify-center'>
@@ -156,11 +155,15 @@ const PlanCard = ({
                     <div className='flex items-center justify-center w-full mt-auto px-3'>
                         {isBusinessPlan ? (
                             <Link
-                                className={` ${plan.buttonStyle} text-center group-hover:bg-[#034737] items-center justify-center mx-auto border-[#034737] rounded-xl py-4 w-full transition-all duration-300 hover:bg-[#034737] hover:text-white`}
+                                className={`${plan.buttonStyle} text-center group-hover:bg-[#034737] items-center justify-center mx-auto border-[#034737] rounded-xl py-4 w-full transition-all duration-300 hover:bg-[#034737] hover:text-white`}
                                 href='mailto:sales@growstack.ai'
+                                onClick={() => {
+                                    window.location.href = 'mailto:sales@growstack.ai';
+                                }}
                             >
                                 Contact Us
                             </Link>
+
                         ) : isCurrentPlan ? (
                             <div className='flex gap-2 flex-col w-full'>
                                 <button className='bg-gray-300 text-gray-500 cursor-not-allowed rounded-xl py-4 w-full' disabled>
@@ -175,9 +178,8 @@ const PlanCard = ({
                             </div>
                         ) : (
                             <button
-                                className={`  ${(loading || isDowngrade) && "cursor-not-allowed"} ${
-                                    plan.buttonStyle
-                                } group-hover:bg-[#034737] items-center justify-center mx-auto border-[#034737] rounded-xl py-4 w-full transition-all duration-300 hover:bg-[#034737] hover:text-white`}
+                                className={`  ${(loading || isDowngrade) && "cursor-not-allowed"} ${plan.buttonStyle
+                                    } group-hover:bg-[#034737] items-center justify-center mx-auto border-[#034737] rounded-xl py-4 w-full transition-all duration-300 hover:bg-[#034737] hover:text-white`}
                                 onClick={isUpgradePlan ? handleUpgradePlan : handleSubscribePlan}
                                 disabled={loading || isDowngrade}
                             >

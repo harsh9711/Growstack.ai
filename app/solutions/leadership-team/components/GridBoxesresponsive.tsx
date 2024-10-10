@@ -78,16 +78,16 @@ const GridComponentResponsive = () => {
             <div className="flex flex-col gap-y-8  items-center justify-center w-full mb-40">
               
             <div className="rounded-2xl flex justify-center items-center relative z-[20] opacity-100">
-              <Image src="/startup/boxsvgs/boxsvg4.svg" alt="Box 1" width={940} height={555} className="w-[1100px] bg-cover z-[20]" />
+              <Image src="/leadership/boxsvgs/boxsvg1.svg" alt="Box 1" width={940} height={555} className="w-[1100px] bg-cover z-[20]" />
             </div>
             <div className="flex z-[80] flex-row gap-2 w-full max-w-[1070px] justify-center relative">
               <div onClick={() => handleClick(2)} className="bg-white border font-medium text-[24px]  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-              Strategy alignment              </div>
+              Security         </div>
               <div onClick={() => handleClick(3)} className="bg-white border font-medium text-[24px]  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-             Coordinated efforts
+              Clarity
               </div>
               <div onClick={() => handleClick(4)} className="bg-white border font-medium text-[24px]  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-            Unified messaging
+              Foresight
               </div>
             </div>
           </div>
@@ -96,17 +96,17 @@ const GridComponentResponsive = () => {
           return (
             <div className="flex flex-col gap-y-8 items-center justify-center w-full mb-40">
           <div className="rounded-2xl flex justify-center items-center relative z-[40] opacity-100">
-              <Image src="/salesrevops/boxsvgs/boxsvg1.svg" alt="Box 1" width={1240} height={755} className="w-[1100px]  bg-cover z-[20]" />
+              <Image src="/leadership/boxsvgs/boxsvg2.svg" alt="Box 1" width={1240} height={755} className="w-[1100px]  bg-cover z-[20]" />
               </div>
               <div className="flex  z-[80] flex-row items-center left-0 justify-center gap-2 w-full max-w-[1070px]   relative">
                 <div onClick={() => handleClick(1)} className="bg-white border  font-medium text-[24px] whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-                Targeted leads
+                Clarity
                 </div>
                 <div onClick={() => handleClick(3)} className="bg-white border  font-medium text-[24px] shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-             Coordinated efforts
+                Foresight
               </div>
               <div onClick={() => handleClick(4)} className="bg-white border  font-medium text-[24px] shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-            Unified messaging
+              Insights
               </div>
               </div>
             </div>
@@ -115,17 +115,17 @@ const GridComponentResponsive = () => {
           return (
             <div className="flex flex-col gap-y-8 items-center justify-center w-full mb-40">
           <div className="rounded-2xl flex justify-center relative  z-[40] items-center">
-              <Image src="/salesrevops/boxsvgs/boxsvg2.svg" alt="Box 1" width={1240} height={755} className="w-[1100px]  bg-cover z-[20]" />
+              <Image src="/leadership/boxsvgs/boxsvg3.svg" alt="Box 1" width={1240} height={755} className="w-[1100px]  bg-cover z-[20]" />
               </div>
               <div className="flex z-[80] flex-row gap-2 w-full max-w-[1070px] justify-center relative">
               <div onClick={() => handleClick(1)} className="bg-white border  font-medium text-[24px] whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-              Strategy alignment
+              Foresight
                 </div>
                 <div onClick={() => handleClick(2)} className="bg-white border  font-medium text-[24px] shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-                Goal cohesion
+                Insights
               </div>
                 <div onClick={() => handleClick(4)} className="bg-white border  font-medium text-[24px] shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-            Unified messaging
+                Security
               </div>
               </div>
             </div>
@@ -134,17 +134,17 @@ const GridComponentResponsive = () => {
           return (
             <div className="flex flex-col gap-y-8 items-center justify-center w-full mb-40">
             <div className="rounded-2xl flex justify-center items-center relative z-[40]">
-              <Image src="/salesrevops/boxsvgs/boxsvg3.svg" alt="Box 1" width={1240} height={755} className="w-[1100px]  bg-cover z-[20]" />
+              <Image src="/leadership/boxsvgs/boxsvg4.svg" alt="Box 1" width={1240} height={755} className="w-[1100px]  bg-cover z-[20]" />
             </div>
             <div className="flex z-[80] flex-row gap-2 w-full max-w-[1070px] justify-center relative">
             <div onClick={() => handleClick(1)} className="bg-white border font-medium text-[24px]  whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-            Strategy alignment
+            Insights
                 </div>
               <div onClick={() => handleClick(2)} className="bg-white border  font-medium text-[24px] shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-              Goal cohesion
+              Security
               </div>
               <div onClick={() => handleClick(3)} className="bg-white border  font-medium text-[24px] shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl">
-             Coordinated efforts
+              Clarity
               </div>
             </div>
           </div>
@@ -161,11 +161,11 @@ const GridComponentResponsive = () => {
     className="rounded-[30px] flex justify-center items-center z-[60] cursor-pointer hover:scale-105 transition-transform duration-300"
   >
     <Image
-      src="/solutions/salesrevops/boxes/box1.svg"
+      src="/solutions/leadership/boxes/box1.svg"
       alt="Box 1"
       width={400}
       height={420}
-      className="w-[350px] h-[257px] hover-boxsalesrevops1"
+      className="w-[480px] h-[357px] hover-boxleadership1"
     />
   </div>
   <div
@@ -173,16 +173,16 @@ const GridComponentResponsive = () => {
     className="rounded-[30px] flex justify-center items-center z-[60] cursor-pointer hover:scale-105  transition-transform duration-300"
   >
     <Image
-      src="/solutions/salesrevops/boxes/box2.svg"
+      src="/solutions/leadership/boxes/box2.svg"
       alt="Box 2"
       width={400}
       height={400}
-      className="w-[350px] h-[257px] hover-boxsalesrevops2"
+      className="w-[480px] h-[357px] hover-boxleadership2"
     />
   </div>
   <div className="rounded-[30px]  opacity-0 relative right-[810px] 2xl:top-44  flex justify-center items-center hover:scale-150 transition-transform duration-300">
     <Image
-      src="/solutions/salesrevops/boxes/main.svg"
+      src="/solutions/leadership/boxes/main.svg"
       alt="Main"
       width={50}
       height={50}
@@ -194,22 +194,22 @@ const GridComponentResponsive = () => {
     className="rounded-[30px] relative top-2 flex justify-center items-center z-[60] cursor-pointer hover:scale-105  transition-transform duration-300"
   >
     <Image
-      src="/solutions/salesrevops/boxes/box3.svg"
+      src="/solutions/leadership/boxes/box3.svg"
       alt="Box 3"
       width={380}
       height={400}
-      className="w-[350px] h-[257px] hover-boxsalesrevops3"
+      className="w-[480px] h-[357px] hover-boxleadership3"
     />
   </div><div
     onClick={() => handleClick(4)}
     className="rounded-[30px] flex relative top-2 justify-center items-center z-[60] cursor-pointer hover:scale-105 transition-transform duration-300"
   >
     <Image
-      src="/solutions/salesrevops/boxes/box4.svg"
+      src="/solutions/leadership/boxes/box4.svg"
       alt="Box 4"
       width={380}
       height={420}
-      className="w-[350px] h-[257px] hover-boxsalesrevops4"
+      className="w-[480px] h-[357px] hover-boxleadership4"
     />
   </div>
 </div>

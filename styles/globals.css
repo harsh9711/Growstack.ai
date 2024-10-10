@@ -39,6 +39,10 @@ Head {
     animation: spin 1s linear infinite;
 }
 
+.line-height-23 {
+    line-height: 23.08px; /* Set the line height to 23.08px */
+}
+
 @keyframes spin {
     0% {
         transform: rotate(0deg);
