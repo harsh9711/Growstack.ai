@@ -133,9 +133,8 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
             try {
                 setIsAnimating(false);
                 setOpen(false);
-                let apiUrl = `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${
-                    selectedConversation ? selectedConversation : newConversationId ? newConversationId : ""
-                }&model=${selectedModel}&enableSecure=${enableSecure}`;
+                let apiUrl = `${API_URL}/ai/api/v1/conversation/chat?conversation_id=${selectedConversation ? selectedConversation : newConversationId ? newConversationId : ""
+                    }&model=${selectedModel}&enableSecure=${enableSecure}`;
                 if (enableWebBrowsing) {
                     apiUrl += `&webBrowsing=${enableWebBrowsing}`;
                 }
@@ -172,7 +171,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
                     }
                 }
                 setNewConversationId(conversation_id);
-                await streamResponse(chatId,fromMic);
+                await streamResponse(chatId, fromMic);
                 if (selectedConversation || conversation_id) fetchConversations();
 
                 if (fromMic) {
@@ -304,7 +303,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
             }
         };
 
-        const streamResponse = async (chatId: string,fromMic: boolean) => {
+        const streamResponse = async (chatId: string, fromMic: boolean) => {
             try {
                 const token = getCookie("token");
                 const eventSource = new EventSource(`${API_URL}/ai/api/v1/conversation/chat/stream/${chatId}`, {
@@ -327,16 +326,16 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
                 eventSource.onerror = (error: MessageEvent) => {
                     console.error("EventSource failed:", error);
                     if (fromMic) {
-                      textToSpeech(accumulatedResponse);
+                        textToSpeech(accumulatedResponse);
                     }
                     eventSource.close();
                     setIsLoading(false);
                 };
 
                 eventSource.addEventListener("end", (event: MessageEvent) => {
-                  if (fromMic) {
-                    textToSpeech(accumulatedResponse);
-                  }
+                    if (fromMic) {
+                        textToSpeech(accumulatedResponse);
+                    }
                     eventSource.close();
                     setIsLoading(false);
                 });
@@ -489,7 +488,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
                                 <button
                                     className='bg-gey right-1 top-1 -translate-y-1/2 translate-x-1/2 rounded-full border'
                                     onClick={() => setFilename(null)}
-                                    // style={{color:"red",height:"10px",width:"10px",marginTop:"-8px",borderRadius:"100%",borderColor:"black"}}
+                                // style={{color:"red",height:"10px",width:"10px",marginTop:"-8px",borderRadius:"100%",borderColor:"black"}}
                                 >
                                     {/* <X size={10} /> */}
                                     <X size={18} />
@@ -606,7 +605,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
                         </div>
                     )}
 
-                    <ToolsDialog setInput={(description: string) => promptInput(description)} />
+                    {/* <ToolsDialog setInput={(description: string) => promptInput(description)} /> */}
                     <div className='h-12 w-9 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl'>
                         <Microphone open={open} isAnimating={isAnimating} handleOpenChange={handleOpenChange} />
                     </div>
