@@ -9,33 +9,19 @@ import {
 import { DialogTitle } from "@radix-ui/react-dialog";
 import {
     CrossMark,
-    Calender,
-    CaretDown,
     GenAi,
-    Gif,
     ImgVector,
-    InsertImage,
-    LogoIcon,
-    SendIcon2,
-    SheduleBackground,
-    SmileEmoji,
-    LinkIcon,
-    Clock,
+    
 } from "@/components/svgs";
 import instance from "@/config/axios.config";
-import { getCookie } from "cookies-next";
 import { debounce } from "@/lib/utils";
 import { API_URL } from "@/lib/api";
-import { ChatResponse } from "@/types/common";
-import { parseJsonString } from "@/lib/utils";
 import toast from "react-hot-toast";
-import { ThumbDown, ThumbUp, Tick, Columns, Rewrite } from "@/components/svgs";
+import { Tick } from "@/components/svgs";
 import { FaFilePdf, FaFileWord, FaFileExcel } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { IoDocumentTextOutline } from "react-icons/io5";
 import { LiaFolderSolid } from "react-icons/lia";
-import Picker from "emoji-picker-react";
-import EventSource from 'eventsource';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Spinner from "@/components/Spinner";
@@ -56,11 +42,8 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
     const [text, setText] = useState("");
     const [accumulatedResponse, setAccumulatedResponse] = useState("");
     const [showActions, setShowActions] = useState(true);
-    const imgInputRef = useRef<HTMLInputElement | null>(null);
-    const gifInputRef = useRef<HTMLInputElement | null>(null);
+
     const fileInputRef = useRef<HTMLInputElement | null>(null);
-    const [isDropdownOpen, setDropdownOpen] = useState(false);
-    const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
     const [actionCompleted, setActionCompleted] = useState(false);
     const [fileInfo, setFileInfo] = useState<{ name: string; file: File } | null>(null);
     const [uploadProgress, setUploadProgress] = useState<number | null>(null);
@@ -69,7 +52,6 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
     const [lastPromt, setLastPrompt] = useState("")
     const [loading, setLoading] = useState(false);
-    const currentUser = getCurrentUser();
     const [userPostDetails, setUserPostDetails] = useState<any[]>([])
     const handleInputChage = debounce(async (user_text: any) => {
         if (user_text) {
@@ -308,9 +290,10 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                                 <CrossMark onClick={() => setAiMode(false)}
                                     className="absolute w-4 h-4"
                                     style={{
-                                        bottom: "0",
-                                        right: "0",
-                                        transform: "translate(25%, 25%)",
+                                        bottom: '14px',
+                                        right: '18px',
+                                        transform: 'translate(25%, 25%)',
+                                        cursor: 'pointer',
                                     }}
                                 />
                                 <GenAi className="absolute left-3 top-1/2 transform -translate-y-1/2" />
@@ -323,6 +306,7 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                                     onChange={(e) => handleInputChage(e.target.value)}
                                 />
                             </div>
+
                             <div className="relative w-[96%] ml-2 mt-2">
                                 <textarea
                                     rows={5}
@@ -403,7 +387,6 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                             onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}
                             className="border bg-primary-green rounded-[5px] text-white flex items-center p-3 ml-1 mt-2"
                         >
-                            {/* <Clock className="text-white bg-white border rounded-full" />  */}
                             &nbsp; Schedule Post &nbsp;
                         </button>
                         <button
