@@ -75,7 +75,7 @@
         span {
             font-size: 18px;
             text-align: center;
-            text-wrap: nowrap
+            // text-wrap: nowrap
         }
 
         @media (max-width: $breakpoint_mobile_portrait) {
@@ -86,7 +86,7 @@
 
             span {
                 font-size: 14px;
-                text-wrap: pretty;
+                // text-wrap: pretty;
             }
         }
 

@@ -448,7 +448,7 @@ export const solutionsteams = [
     id: 13,
     imageUrl: "/solutionsicon/img4.svg",
     name: "Startups",
-    role: "Maximize efficiency with all-in-one AI  marketing",
+    role: "Supercharge growth and market penetration with integrated AI Tools",
     bgcolor: "#ddedea ",
     textcolor: "#034737",
     href: "/solutions/startup",

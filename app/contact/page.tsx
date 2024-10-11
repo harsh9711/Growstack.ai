@@ -29,205 +29,12 @@ const RequestForm = () => {
   };
 
   return (
-    <div className="flex rounded-5xl min-h-screen">
-      {/* <form onSubmit={handleSubmit} className="">
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="firstName"
-          >
-            First Name
-          </label>
-          <div className=" bg-white border appearance-none w-full py-3.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-[10px] flex items-center">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="mr-2 mt-0.5"
-            >
-              <circle
-                cx="7.9987"
-                cy="4.66618"
-                r="2.66667"
-                stroke="#034737"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M4 13.9995V12.6662C4 11.1934 5.19391 9.99951 6.66667 9.99951H9.33333C10.8061 9.99951 12 11.1934 12 12.6662V13.9995"
-                stroke="#034737"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <input
-              type="text"
-              id="firstName"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleInputChange}
-              placeholder="Enter your full name"
-              className="w-full border-none outline-none"
-            />
-          </div>
-        </div>
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="lastName"
-          >
-            Last Name
-          </label>
-          <div className=" bg-white border appearance-none w-full py-3.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-[10px] flex items-center">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="mr-2 mt-0.5"
-            >
-              <circle
-                cx="7.9987"
-                cy="4.66618"
-                r="2.66667"
-                stroke="#034737"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M4 13.9995V12.6662C4 11.1934 5.19391 9.99951 6.66667 9.99951H9.33333C10.8061 9.99951 12 11.1934 12 12.6662V13.9995"
-                stroke="#034737"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <input
-              type="text"
-              id="lastName"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleInputChange}
-              placeholder="Enter your last name"
-              className="w-full border-none outline-none"
-            />
-          </div>
-        </div>
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="email"
-          >
-            Email Address
-          </label>
-          <div className=" bg-white border appearance-none w-full py-3.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-[10px] flex items-center">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="mr-2 mt-0.5"
-            >
-              <path
-                d="M1 3.5C1 2.11929 2.11929 1 3.5 1H12.5C13.8807 1 15 2.11929 15 3.5V12.5C15 13.8807 13.8807 15 12.5 15H3.5C2.11929 15 1 13.8807 1 12.5V3.5Z"
-                stroke="#034737"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M15 3L8 8L1 3"
-                stroke="#034737"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              placeholder="Enter your email..."
-              className="w-full border-none outline-none"
-            />
-          </div>
-        </div>
-
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="phoneNumber"
-          >
-            Phone Number (optional)
-          </label>
-          <div className=" bg-white border appearance-none w-full py-3.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-[10px] flex items-center">
-            <svg
-              className="mr-2 mt-0.5"
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M3.33333 2.6665H6L7.33333 5.99984L5.66667 6.99984C6.38064 8.44752 7.55231 9.6192 9 10.3332L10 8.6665L13.3333 9.99984V12.6665C13.3333 13.4029 12.7364 13.9998 12 13.9998C6.61843 13.6728 2.32704 9.3814 2 3.99984C2 3.26346 2.59695 2.6665 3.33333 2.6665"
-                stroke="#667085"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-              <path
-                d="M3.33333 2.6665H6L7.33333 5.99984L5.66667 6.99984C6.38064 8.44752 7.55231 9.6192 9 10.3332L10 8.6665L13.3333 9.99984V12.6665C13.3333 13.4029 12.7364 13.9998 12 13.9998C6.61843 13.6728 2.32704 9.3814 2 3.99984C2 3.26346 2.59695 2.6665 3.33333 2.6665"
-                stroke="#667085"
-                stroke-opacity="0.2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-
-            <input
-              type="text"
-              id="phoneNumber"
-              name="phoneNumber"
-              value={formData.phoneNumber}
-              onChange={handleInputChange}
-              placeholder="Enter your phone number"
-              className="w-full border-none outline-none"
-            />
-          </div>
-        </div>
-
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="message"
-          >
-            Message/Questions (optional)
-          </label>
-          <div className=" bg-white border appearance-none w-full py-3.5 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline rounded-[10px] flex items-center">
-            <textarea
-              id="message"
-              name="message"
-              value={formData.message}
-              onChange={handleInputChange}
-              placeholder="Enter message/questions"
-              className="w-full border-none outline-none h-32"
-            />
-          </div>
-        </div>
-
-        <div className="rounded-xl focus:outline-none focus:shadow-outline flex border-[#034737] border-2 group items-center justify-center">
-          <button
-            type="submit"
-            className="rounded   w-full max-w-[530px] group-hover:hover:bg-[#034737] group-hover:text-white text-[#034737] font-normal text-[16px] py-4 px-4 "
-          >
-            Send message
-          </button>
-        </div>
-      </form> */}
-      <div className="tidycal-embed rounded-3xl" data-path="growstack/30-minute-meeting"></div><script src="https://asset-tidycal.b-cdn.net/js/embed.js" async></script>
+    <div className="flex rounded-5xl  max-h-screen overflow-y-scroll">
+      <div
+        className="tidycal-embed rounded-3xl"
+        data-path="growstack/30-minute-meeting"
+      ></div>
+      <script src="https://asset-tidycal.b-cdn.net/js/embed.js" async></script>
     </div>
   );
 };
@@ -352,7 +159,7 @@ const Contact = () => {
           Contact us
         </div>
         <div className="2xl:p-0  mt-6 flex flex-wrap gap-6 w-full items-start mx-auto justify-between">
-          <div className="relative z-20 flex flex-col gap-y-2 max-w-[543px] w-full">
+          <div className="relative flex flex-col gap-y-2 max-w-[543px] w-full">
             <h2 className="text-[42px]  font-bold text-black">
               Connect with us <span className="font-light">directly</span>
             </h2>
@@ -671,17 +478,17 @@ const Contact = () => {
               </div>
             </div>
           </div>
-          <div className="relative z-20 bg-[#F7FAFC] mb-40 rounded-[30px] p-10 gap-y-6 max-w-[610px] max-h-[1382px] w-full flex flex-col">
+          <div className="relative z-10 bg-[#F7FAFC] mb-40 rounded-[30px] p-10 gap-y-6 max-w-[610px] max-h-[1382px] w-full flex flex-col">
             <div className="flex flex-col gap-y-2">
               <h2 className="text-[28px]  font-bold text-black">
                 How can we <span className="font-light">assist you?</span>
               </h2>
               <p>
-                Reach out by completing the form below. 
+                Reach out by completing the form below.
                 {/* Our team will respond
                 within one business day. */}
               </p>
-              <div className="mt-8 rounded-4xl">
+              <div className="mt-8 h-full overflow-y-auto rounded-4xl">
                 <RequestForm />
               </div>
             </div>

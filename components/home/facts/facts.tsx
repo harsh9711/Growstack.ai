@@ -26,8 +26,8 @@ function Facts() {
                             </p>
 
 
-                            <Link href="/company" className='sheen getStart'>
-                                More About Us
+                            <Link href="/auth/register" className='sheen getStart'>
+                                Get Started Now
                                 <RightArrow color="#034737" />
                             </Link>
                         </div>

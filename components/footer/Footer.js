@@ -124,17 +124,17 @@ function Footer() {
                         <div className='copyRight'>
                             <p>Copyright © 2024 Growstack</p>
                             <div className='social'>
-                                <Link href='/auth/register'>
-                                    <img src='/images_growstack/footer/youtube.svg' alt='youtube' />
+                                <Link target="_blank" href='https://x.com/Growstackai'>
+                                    <img src='/images_growstack/footer/x.svg' alt='youtube' />
                                 </Link>
-                                <Link href='/auth/register'>
+                                <Link target="_blank" href='https://www.facebook.com/profile.php?id=61564942453752'>
                                     <img src='/images_growstack/footer/facebook.svg' alt='facebook' />
                                 </Link>
-                                <Link href='/auth/register'>
-                                    <img src='/images_growstack/footer/twitter.svg' alt='twitter' />
+                                <Link target="_blank" href='https://www.linkedin.com/company/growstack-inc'>
+                                    <img src='/images_growstack/footer/twitter.svg' alt='linkedin' />
                                 </Link>
-                                <Link href='/auth/register'>
-                                    <img src='/images_growstack/footer/linkedin.svg' alt='linkedin' />
+                                <Link target="_blank" href='https://www.instagram.com/growstack.ai'>
+                                    <img src='/images_growstack/footer/instagram.svg' alt='linkedin' />
                                 </Link>
                             </div>
                         </div>

@@ -27,11 +27,11 @@ body {
     font-weight: 900;
     overflow: hidden;
 }
-.card p {
+.expand-card p {
     opacity: 0;
 }
 
-.card:hover {
+.expand-card:hover {
     text-align: left;
     top: 40px;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
@@ -39,7 +39,7 @@ body {
     background-color: white;
     height: 124px;
 }
-.card:hover p {
+.expand-card:hover p {
     opacity: 100;
     margin-top: 10px;
     font-size: 16px;

@@ -107,7 +107,7 @@ const Links = () => {
 
   return (
     <React.Fragment>
-      <div className="white-background-links">
+      <div className="white-background-links z-20">
         {" "}
         {/* Add this class */}
         <div className="links">
