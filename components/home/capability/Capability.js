@@ -25,8 +25,8 @@ function Capability() {
                         </div>
                     </div>
                     <div className='flex flex-col sm:flex-row items-center mt-8 gap-8'>
-                        <div className='col-md-12 col-lg-6' data-aos='fade-right' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
-                            <div className='card reputation'>
+                        <div className='' data-aos='fade-right' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                            <div className='card-capability reputation'>
                                 <div className='card-body'>
                                     <h5 className='card-title'>Reputation management</h5>
                                     <p className='card-text'>
@@ -80,7 +80,7 @@ function Capability() {
                                     </div>
                                 </div>
                             </div>
-                            <div className='card contact'>
+                            <div className='card-capability contact'>
                                 <div className='card-body'>
                                     <img src='/images_growstack/home/cm.svg' alt='cm' />
                                     <h5 className='card-title'>Contact management</h5>
@@ -89,7 +89,7 @@ function Capability() {
                             </div>
                         </div>
                         <div className='col-md-12 col-lg-6' data-aos='fade-left' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
-                            <div className='card whatsapp'>
+                            <div className='card-capability whatsapp'>
                                 <div className='card-body'>
                                     <div>
                                         <h5 className='card-title'>
@@ -108,7 +108,7 @@ function Capability() {
                     </div>
                     <div className='row align-items-center'>
                         <div className='col-md-12' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
-                            <div className='card discover'>
+                            <div className='card-capability discover'>
                                 <div className='card-body'>
                                     <h5 className='card-title'>
                                         Discover valuable contacts <span>with Google web scraping</span>
