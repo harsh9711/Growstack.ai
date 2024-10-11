@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AOS from "aos";
 import "aos/dist/aos.css";
 import './AiBuilder.scss';
@@ -64,9 +64,9 @@ function AiBuilder() {
                                     {activeTab === 'website' && (
                                         <div className="contentBlock">
                                             <div className="row align-items-center">
-                                                <div className="col-md-6" data-aos="fade-right"
-                            data-aos-easing="ease-in-sine"
-                            data-aos-duration="1000">
+                                                <div className="" data-aos="fade-right"
+                                                    data-aos-easing="ease-in-sine"
+                                                    data-aos-duration="1000">
                                                     <div className="block">
                                                         <h3>Create a website in minutes with AI</h3>
                                                         <div className="description">
@@ -83,9 +83,9 @@ function AiBuilder() {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="col-md-6" data-aos="fade-left"
-                            data-aos-easing="ease-in-sine"
-                            data-aos-duration="1000">
+                                                <div className="" data-aos="fade-left"
+                                                    data-aos-easing="ease-in-sine"
+                                                    data-aos-duration="1000">
                                                     <img src="/images_growstack/emailBuilder/aiWeb.svg" alt="accord" />
                                                 </div>
                                             </div>
@@ -94,9 +94,9 @@ function AiBuilder() {
                                     {activeTab === 'email' && (
                                         <div className="contentBlock">
                                             <div className="row align-items-center">
-                                                <div className="col-md-6" data-aos="fade-right"
-                            data-aos-easing="ease-in-sine"
-                            data-aos-duration="1000">
+                                                <div className="" data-aos="fade-right"
+                                                    data-aos-easing="ease-in-sine"
+                                                    data-aos-duration="1000">
                                                     <div className="block">
                                                         <h3>Create professional emails in minutes with AI</h3>
                                                         <div className="description">
@@ -113,9 +113,9 @@ function AiBuilder() {
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="col-md-6" data-aos="fade-left"
-                            data-aos-easing="ease-in-sine"
-                            data-aos-duration="1000">
+                                                <div className="" data-aos="fade-left"
+                                                    data-aos-easing="ease-in-sine"
+                                                    data-aos-duration="1000">
                                                     <img src="/images_growstack/emailBuilder/aiWeb.svg" alt="accord" />
                                                 </div>
                                             </div>

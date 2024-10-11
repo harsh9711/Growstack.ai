@@ -14,7 +14,7 @@ function BusinessSolution() {
                     <div className='container'>
                         <div className='flex flex-col items-center mx-auto justify-center mb-3 mb-md-4'>
                             <div
-                                className='col-md-7 items-center justify-center '
+                                className='items-center justify-center '
                                 data-aos='fade-right'
                                 data-aos-easing='ease-in-sine'
                                 data-aos-duration='1000'
@@ -24,7 +24,7 @@ function BusinessSolution() {
                                     Best solutions <span>for your business</span>
                                 </h3>
                             </div>
-                            {/* <div className="col-md-5" data-aos="fade-left"
+                            {/* <div data-aos="fade-left"
                             data-aos-easing="ease-in-sine"
                             data-aos-duration="1000">
                                 <p>Lorem ipsum dolor sit amet consectetur. Imperdiet sodales hac at curabitur.</p>
@@ -33,7 +33,7 @@ function BusinessSolution() {
                         <div className='row'>
                             <div className='cardsBlock'>
                                 <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
-                                    <div className='col-md-4' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                    <div className='' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                         <div className='card'>
                                             <div className='card-body'>
                                                 <div className='icon'>
@@ -47,7 +47,7 @@ function BusinessSolution() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className='col-md-4' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                    <div data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                         <div className='card'>
                                             <div className='card-body'>
                                                 <div className='icon'>
@@ -61,7 +61,7 @@ function BusinessSolution() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className='col-md-4' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                    <div data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                         <div className='card'>
                                             <div className='card-body'>
                                                 <div className='icon'>

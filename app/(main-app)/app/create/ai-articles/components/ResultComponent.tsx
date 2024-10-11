@@ -108,9 +108,9 @@ const ResultComponent: React.FC<ResultComponentProps> = ({ articleTitle, article
               ]}
               onChange={(value: any) => handleDownload(value)}
             />
-            <div onClick={handleShare} className="bg-white h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
+            {/* <div onClick={handleShare} className="bg-white h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
               {isPending ? <Spinner color="black" /> : <Share2 />}
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="border !bg-white shadow-box p-10 mt-5 leading-relaxed space-y-3">

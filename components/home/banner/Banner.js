@@ -9,7 +9,7 @@ function Banner() {
       <div className="banner">
         <div className="container">
           <div className="row">
-            <div className="col-lg-6">
+            <div className="">
               <div className="bannerContent">
                 <span className="user">Users around the world</span>
                 <h2 className="textTitle">
@@ -53,7 +53,7 @@ function Banner() {
                 </div> */}
               </div>
             </div>
-            <div className="col-lg-6 bannerImg">
+            <div className=" bannerImg">
               <img src="/images_growstack/banner/banner.svg" alt="banner" />
             </div>
           </div>

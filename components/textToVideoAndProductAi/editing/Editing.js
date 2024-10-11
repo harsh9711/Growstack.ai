@@ -30,7 +30,7 @@ function Editing() {
                         </div>
                     </div>
                     <div className='grid grid-cols-2 md:grid-cols-3 gap-6'>
-                        <div className='col-md-4' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                        <div className='' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                             <div className='flex flex-col sm:flex-row items-center text-block'>
                                 <div className='flex-shrink-0'>
                                     <img src='/images_growstack/textVideo/edit1.svg' alt='edit' />
@@ -41,7 +41,7 @@ function Editing() {
                                 </div>
                             </div>
                         </div>
-                        <div className='col-md-4' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                        <div className='' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                             <div className='flex flex-col sm:flex-row items-center text-block'>
                                 <div className='flex-shrink-0'>
                                     <img src='/images_growstack/textVideo/edit2.svg' alt='edit' />
@@ -52,7 +52,7 @@ function Editing() {
                                 </div>
                             </div>
                         </div>
-                        <div className='col-md-4' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                        <div className='' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                             <div className='flex flex-col sm:flex-row items-center text-block'>
                                 <div className='flex-shrink-0'>
                                     <img src='/images_growstack/textVideo/edit3.svg' alt='edit' />
@@ -63,7 +63,7 @@ function Editing() {
                                 </div>
                             </div>
                         </div>
-                        <div className='col-md-4' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                        <div className='' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                             <div className='flex flex-col sm:flex-row items-center text-block'>
                                 <div className='flex-shrink-0'>
                                     <img src='/images_growstack/textVideo/edit4.svg' alt='edit' />
@@ -74,7 +74,7 @@ function Editing() {
                                 </div>
                             </div>
                         </div>
-                        <div className='col-md-4' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                        <div className='' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                             <div className='flex flex-col sm:flex-row items-center text-block'>
                                 <div className='flex-shrink-0'>
                                     <img src='/images_growstack/textVideo/edit5.svg' alt='edit' />
@@ -85,7 +85,7 @@ function Editing() {
                                 </div>
                             </div>
                         </div>
-                        <div className='col-md-4' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                        <div className='' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                             <div className='flex flex-col sm:flex-row items-center text-block'>
                                 <div className='flex-shrink-0'>
                                     <img src='/images_growstack/textVideo/edit6.svg' alt='edit' />

@@ -46,7 +46,7 @@ const page = () => {
                   AI CONTENT WIZARD
                 </div>
                 <div className="w-full brightness-95" data-aos="fade-right">
-                  <h1 className="text-[26px] max-w-[500px] xl:text-[40px]  leading-tight sm:text-left text-center text-black">
+                  <h1 className="text-[26px] max-w-[500px] xl:text-[40px]  leading-tight sm:!text-left !text-center text-black">
                     <span className="font-semibold">
                       From idea to
                       <br />
@@ -57,21 +57,21 @@ const page = () => {
                       minutes - powered by AI
                     </span>
                   </h1>
-                  <p className="text-[12px] sm:text-[18px] text-black mt-4 w-full lg:max-w-[600px] sm:text-left text-center gap-4 flex flex-col leading-tight font-light">
+                  <p className="text-[12px] sm:text-[18px] text-black mt-4 w-full lg:max-w-[600px] sm:!text-left !text-center gap-4 flex flex-col leading-tight font-light">
                     <span>
                       Whether it's for blogs, marketing, or reports, create
                       engaging content faster than ever.
                     </span>
                   </p>
-                 
-                    <ul className="pt-8 text-[12px] sm:hidden  text-center items-center  flex flex-col sm:text-[18px] text-black">
-                      {" "}
-                      <li>Instant ideas to jumpstart your writing.</li>
-                      <li>Custom outlines to fit your style and tone.</li>
-                      <li>AI images to enhance your content seamlessly.</li>
-                      <li>Multilingual support to reach global audiences.</li>
-                    </ul>
-                
+
+                  <ul className="pt-8 text-[12px] sm:hidden  text-center items-center  flex flex-col sm:text-[18px] text-black">
+                    {" "}
+                    <li>Instant ideas to jumpstart your writing.</li>
+                    <li>Custom outlines to fit your style and tone.</li>
+                    <li>AI images to enhance your content seamlessly.</li>
+                    <li>Multilingual support to reach global audiences.</li>
+                  </ul>
+
                   <div className="flex flex-col gap-20 items-center justify-center sm:justify-start sm:items-start mt-10">
                     <div className="flex flex-row gap-8 group text-[12px] sm:text-[18px]">
                       <Link href="/auth/register" className="no-underline">

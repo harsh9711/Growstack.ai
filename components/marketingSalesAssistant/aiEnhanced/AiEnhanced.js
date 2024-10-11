@@ -11,7 +11,7 @@ function AiEnhanced() {
             <div className='aiEnhanced'>
                 <div className='container'>
                     <div className='row'>
-                        <div className='col-lg-8' data-aos='fade-right' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                        <div className='' data-aos='fade-right' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                             <span className='user'>Efficient techniques to elevate your customer support productivity</span>
                             <h3 className='heading'>
                                 <span>Revolutionize Customer Support with </span> <br /> AI-Enhanced Productivity
@@ -19,7 +19,7 @@ function AiEnhanced() {
                         </div>
                         <div className='cardsBlock'>
                             <div className='flex flex-col sm:flex-row gap-6'>
-                                <div className='col-md-4' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className='' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <div className='card'>
                                         <div className='card-body'>
                                             <div className='icon'>
@@ -35,7 +35,7 @@ function AiEnhanced() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-md-4' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className='' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <div className='card'>
                                         <div className='card-body'>
                                             <div className='icon'>
@@ -52,7 +52,7 @@ function AiEnhanced() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-md-4' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className='' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <div className='card'>
                                         <div className='card-body'>
                                             <div className='icon'>

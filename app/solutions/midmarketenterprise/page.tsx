@@ -33,13 +33,13 @@ const page = () => {
               </div>
 
               <div className="max-w-3xl  brightness-95   ">
-                <h1 className="text-[26px] xl:text-[40px] max-w-2xl leading-tight sm:text-left text-center text-white ">
+                <h1 className="text-[26px] xl:text-[40px] max-w-2xl leading-tight sm:!text-left !text-center text-white ">
                   <span className="font-semibold">Conquer resources </span>
                   <br /> <span className="font-light">constraints with </span>
                   <br />
                   <span className="font-light">AI tools </span>
                 </h1>
-                <p className="text-[18px] text-white mt-4 w-full lg:max-w-[600px] sm:text-left text-center leading-tight font-light ">
+                <p className="text-[18px] text-white mt-4 w-full lg:max-w-[600px] sm:!text-left !text-center leading-tight font-light ">
                   Growstack's versatile Al tools and integrated solutions
                   empower mid-market organizations to overcome resource
                   limitations. By streamlining marketing operations, enhancing
@@ -48,9 +48,9 @@ const page = () => {
                   effectively and scale efficiently.
                 </p>
                 <div className="flex flex-col gap-20  items-center justify-center sm:justify-start sm:items-start  mt-10">
-             
+
                   <div className="flex flex-row gap-8  group text-[16px] sm:text-[18px]">
-                  <Link href="/auth/register" className="no-underline">   <button className="bg-white font-medium flex items-center gap-2 text-[#034737] sm:py-4 sm:px-7 rounded-xl p-2 group-hover:font-bold shadow-md hover:shadow-">
+                    <Link href="/auth/register" className="no-underline">   <button className="bg-white font-medium flex items-center gap-2 text-[#034737] sm:py-4 sm:px-7 rounded-xl p-2 group-hover:font-bold shadow-md hover:shadow-">
                       Free trial <ArrowRight />
                     </button></Link>
                     <Link href="/demo" className="no-underline">  <button className="border border-white flex items-center gap-2 text-white hover:font-bold font-medium sm:py-4 sm:px-7 p-2 rounded-xl shadow-md shadow-[#00000025]">
@@ -345,28 +345,28 @@ const page = () => {
             </div>
 
             <div className="2xl:flex xl:flex flex items-center justify-center">
-      <div data-aos="fade-out">
-        <Image
-          className="w-full relative 2xl:flex xl:flex hidden z-0 top-10 xl:left-[360px] 2xl:left-[570px]"
-          src="/solutions/circle.svg"
-          alt="Center Image"
-          width={1048}
-          height={1000}
-        />
-      </div>
-      <div
-        className="absolute z-0 2xl:-right-60 2xl:top-96"
-        data-aos="fade-out"
-      >
-        <Image
-          className="w-full"
-          src="/solutions/hero.svg"
-          alt="Center Image"
-          width={842}
-          height={463}
-        />
-      </div>
-    </div>
+              <div data-aos="fade-out">
+                <Image
+                  className="w-full relative 2xl:flex xl:flex hidden z-0 top-10 xl:left-[360px] 2xl:left-[570px]"
+                  src="/solutions/circle.svg"
+                  alt="Center Image"
+                  width={1048}
+                  height={1000}
+                />
+              </div>
+              <div
+                className="absolute z-0 2xl:-right-60 2xl:top-96"
+                data-aos="fade-out"
+              >
+                <Image
+                  className="w-full"
+                  src="/solutions/hero.svg"
+                  alt="Center Image"
+                  width={842}
+                  height={463}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </section>

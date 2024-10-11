@@ -39,7 +39,7 @@ function Cta() {
                                 </Link>
                             </div> */}
                         </div>
-                        <div className='col-md-12 col-lg-6 ctaImg'>
+                        <div className='ctaImg'>
                             <img
                                 data-aos='fade-left'
                                 data-aos-easing='ease-in-sine'

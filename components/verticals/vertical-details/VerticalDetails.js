@@ -23,7 +23,7 @@ function VerticalDetails() {
         <div className="detail">
           <div className="container">
             <div className="row">
-              <div className="col-md-3" data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-duration="1000">
+              <div className="" data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-duration="1000">
                 <div className="userData">
                   <img src="/images_growstack/verticals/userDetail.svg" alt="user" />
                   <h4>Josh Gould</h4>
@@ -53,7 +53,7 @@ function VerticalDetails() {
                   </div>
                 </div>
               </div>
-              <div className="col-md-9" data-aos="fade-left" data-aos-easing="ease-in-sine" data-aos-duration="1000">
+              <div data-aos="fade-left" data-aos-easing="ease-in-sine" data-aos-duration="1000">
                 <div className="content">
                   <h3>Omnis ipsum ratione optio sed quos aspernatur nam.</h3>
                   <p>
@@ -106,10 +106,10 @@ function VerticalDetails() {
             <Link href="/vertical-details" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
               <div className="card">
                 <div className="row g-0">
-                  <div className="col-md-6">
+                  <div className="">
                     <img src="/images_growstack/verticals/article1.svg" className="img-fluid" alt="banner" />
                   </div>
-                  <div className="col-md-6">
+                  <div className="">
                     <div className="card-body">
                       <span className="user">AI marketing and sales apps</span>
                       <div>
@@ -138,10 +138,10 @@ function VerticalDetails() {
             <Link href="/vertical-details" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
               <div className="card">
                 <div className="row g-0">
-                  <div className="col-md-6">
+                  <div className="">
                     <img src="/images_growstack/verticals/article2.svg" className="img-fluid" alt="banner" />
                   </div>
-                  <div className="col-md-6">
+                  <div className="">
                     <div className="card-body">
                       <span className="user">Text to video and product AI</span>
                       <div>
@@ -170,10 +170,10 @@ function VerticalDetails() {
             <Link href="/vertical-details" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
               <div className="card">
                 <div className="row g-0">
-                  <div className="col-md-6">
+                  <div className="">
                     <img src="/images_growstack/verticals/article3.svg" className="img-fluid" alt="banner" />
                   </div>
-                  <div className="col-md-6">
+                  <div className="">
                     <div className="card-body">
                       <span className="user">AI website landing page and email builder</span>
                       <div>

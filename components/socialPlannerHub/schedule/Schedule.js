@@ -20,7 +20,7 @@ function Schedule() {
                         </div>
                         <div className='cardsBlock'>
                             <div className='flex flex-col sm:grid grid-cols-3 gap-5'>
-                                <div className='col-md-4' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className='' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <div className='card bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
@@ -37,7 +37,7 @@ function Schedule() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-md-4' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className='' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <div className='card bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
@@ -54,7 +54,7 @@ function Schedule() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-md-4' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className='' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <div className='card bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>

@@ -146,7 +146,7 @@ const Cases = () => {
           className="flex flex-row w-full justify-between items-center"
           data-aos="fade-right"
         >
-          <h1 className="text-[26px] xl:text-[40px] max-w-[900px] gap-2 leading-tight font-semibold sm:text-left text-center text-black">
+          <h1 className="text-[26px] xl:text-[40px] max-w-[900px] gap-2 leading-tight font-semibold sm:!text-left !text-center text-black">
             Unlock potential with targeted{" "}
             <span className="font-light"> use cases </span>
           </h1>

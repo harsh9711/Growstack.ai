@@ -14,7 +14,7 @@ const Banner: React.FC = () => {
       <div className="solMarketingBanner">
         <div className="container">
           <div className="row">
-            <div className="col-lg-6">
+            <div className="">
               <div className="bannerContent">
                 <span className="user">Growstack for Sales Team</span>
                 <h2 className="solsheading">
@@ -77,7 +77,7 @@ const Banner: React.FC = () => {
                 </div>
               </div>
             </div>
-            <div className="col-lg-6">
+            <div className="">
               <div className="solMarketingSideImg">
                 <img src="/solutions/herosales.svg" alt="banner" />
               </div>

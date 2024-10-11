@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AOS from "aos";
 import "aos/dist/aos.css";
 import './Template.scss';
@@ -62,8 +62,8 @@ function Template() {
             <div className="template">
                 <div className="container">
                     <div className="title" data-aos="fade-up"
-                            data-aos-easing="ease-in-sine"
-                            data-aos-duration="1000">
+                        data-aos-easing="ease-in-sine"
+                        data-aos-duration="1000">
                         <span className="user">Template</span>
                         <h3 className="heading"><span>1500+ free </span>HTML email templates</h3>
                     </div>
@@ -101,9 +101,9 @@ function Template() {
                                         <div className="contentBlock">
                                             <div className="row">
                                                 {tabContent[tab.id].map((image, imgIndex) => (
-                                                    <div className="col-lg-3 col-md-4 my-2 my-md-2 px-2" data-aos="fade-up"
-                                                    data-aos-easing="ease-in-sine"
-                                                    data-aos-duration="1000" key={imgIndex}>
+                                                    <div className="my-2 my-md-2 px-2" data-aos="fade-up"
+                                                        data-aos-easing="ease-in-sine"
+                                                        data-aos-duration="1000" key={imgIndex}>
                                                         <img src={image} alt="template" />
                                                     </div>
                                                 ))}

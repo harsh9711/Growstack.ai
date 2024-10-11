@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import Image from "next/image";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import {} from "@/components/svgs/icons";
+import { } from "@/components/svgs/icons";
 export const cases = [
   {
     id: 1,
@@ -41,10 +41,10 @@ const Box = () => {
     AOS.init({
       duration: 500,
       easing: "ease-out",
-     
-      offset:1, 
+
+      offset: 1,
     });
-    AOS.refresh(); 
+    AOS.refresh();
   }, []);
 
   return (
@@ -72,7 +72,7 @@ const Box = () => {
   );
 };
 const OneCard = () => {
-  
+
 
   return (
     <div>
@@ -89,7 +89,7 @@ const OneCard = () => {
           className="flex flex-row w-full justify-between items-center"
           data-aos="fade-right"
         >
-          <h1 className="text-[26px] xl:text-[40px] max-w-[900px] gap-2 leading-tight font-semibold sm:text-left text-center text-black">
+          <h1 className="text-[26px] xl:text-[40px] max-w-[900px] gap-2 leading-tight font-semibold sm:!text-left !text-center text-black">
             From marketers to freelancers:
             <br />
             <span className="font-light">

@@ -27,19 +27,19 @@ function UseCases() {
                     </div>
                     <div className='cases'>
                         <div className='flex flex-col sm:flex-row gap-4'>
-                            <div className='col-md-4' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                            <div data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                 <div className='block'>
                                     <img src='/images_growstack/customMarketing/case1.svg' alt='case' />
                                     <p>Customer service</p>
                                 </div>
                             </div>
-                            <div className='col-md-4' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                            <div data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                 <div className='block'>
                                     <img src='/images_growstack/customMarketing/case2.svg' alt='case' />
                                     <p>Customer engagement</p>
                                 </div>
                             </div>
-                            <div className='col-md-4' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                            <div data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                 <div className='block'>
                                     <img src='/images_growstack/customMarketing/case3.svg' alt='case' />
                                     <p>Document research</p>
