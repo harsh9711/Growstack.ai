@@ -308,9 +308,10 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                                 <CrossMark onClick={() => setAiMode(false)}
                                     className="absolute w-4 h-4"
                                     style={{
-                                        bottom: "0",
-                                        right: "0",
-                                        transform: "translate(25%, 25%)",
+                                        bottom: '14px',
+                                        right: '18px',
+                                        transform: 'translate(25%, 25%)',
+                                        cursor: 'pointer',
                                     }}
                                 />
                                 <GenAi className="absolute left-3 top-1/2 transform -translate-y-1/2" />
@@ -323,6 +324,7 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                                     onChange={(e) => handleInputChage(e.target.value)}
                                 />
                             </div>
+
                             <div className="relative w-[96%] ml-2 mt-2">
                                 <textarea
                                     rows={5}
@@ -403,7 +405,6 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
                             onClick={() => setIsDatePickerOpen(!isDatePickerOpen)}
                             className="border bg-primary-green rounded-[5px] text-white flex items-center p-3 ml-1 mt-2"
                         >
-                            {/* <Clock className="text-white bg-white border rounded-full" />  */}
                             &nbsp; Schedule Post &nbsp;
                         </button>
                         <button

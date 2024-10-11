@@ -197,8 +197,9 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile, platforms })
                                                         <span key={index}>{word} </span>
                                                     )
                                                 ))}
-                                            </p>
 
+
+                                            </p>
                                             {post.media && post.media.length > 0 && (
                                                 <div className="mt-2">
                                                     {post.media.map((item: { type: string; url: string | undefined; mediaUrls: { mediaUrl: string | undefined; }[]; }, index: Key | null | undefined) => {
@@ -285,6 +286,21 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile, platforms })
                                                 <div>
                                                 </div>
                                             )}
+                                            <div className="text-left mt-3" >
+                                                {selectedIcon.toLowerCase() === 'twitter' ?
+                                                    <div className="mt-2 flex" style={{whiteSpace:"nowrap"}}><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M7 11V19C7 19.5523 6.55228 20 6 20H4C3.44772 20 3 19.5523 3 19V12C3 11.4477 3.44772 11 4 11H7C9.20914 11 11 9.20914 11 7V6C11 4.89543 11.8954 4 13 4C14.1046 4 15 4.89543 15 6V11H18C19.1046 11 20 11.8954 20 13L19 18C18.7046 19.2603 17.8892 20.0756 17 20H10C8.34315 20 7 18.6569 7 17" stroke="#5B5D60" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+                                                    </svg>
+                                                       <p className="text-[16.7px]">{post && post.publicMetrics && post.publicMetrics.likeCount} </p> </div>
+                                                    : <div className="mt-2 flex" style={{whiteSpace:"nowrap"}}><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M7 11V19C7 19.5523 6.55228 20 6 20H4C3.44772 20 3 19.5523 3 19V12C3 11.4477 3.44772 11 4 11H7C9.20914 11 11 9.20914 11 7V6C11 4.89543 11.8954 4 13 4C14.1046 4 15 4.89543 15 6V11H18C19.1046 11 20 11.8954 20 13L19 18C18.7046 19.2603 17.8892 20.0756 17 20H10C8.34315 20 7 18.6569 7 17" stroke="#5B5D60" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+                                                    </svg>
+                                                    <p className="text-[16.7px]"> {post && post.likeCount}
+                                                        </p>
+                                                    </div>
+                                                }
+                                            </div>
+
 
                                         </div>
                                     </div>

@@ -589,7 +589,7 @@ export default function Publish() {
                                 </div>
                                 {platforms.length > 0 &&
                                     <div className="flex justify-end ... mt-5">
-                                        <button onClick={skipNowFn}
+                                        <button onClick={skipNowFn}  style={{whiteSpace:"nowrap"}}
                                             className=" max-w-[140px] py-3 px-5 bg-primary-green sheen rounded-xl text-white  flex justify-center items-center"
                                             type="submit"
                                         >Skip for now</button>
