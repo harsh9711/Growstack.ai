@@ -27,6 +27,7 @@ export default function Login() {
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [isRememberMe, setIsRememberMe] = useState(false);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -58,10 +59,14 @@ export default function Login() {
         API_URL + "/users/api/v1/auth/login",
         validatedData
       );
+      const expiryTime = isRememberMe
+        ? 30 * 24 * 60 * 60 * 1000
+        : 7 * 24 * 60 * 60 * 1000;
+
       setCookie("token", response.data.data.token, {
         secure: true,
         sameSite: "none",
-        expires: new Date(Date.now() + 2 * 60 * 60 * 1000),
+        expires: new Date(Date.now() + expiryTime),
       });
 
       const userData = await handleGetProfileData();
@@ -219,7 +224,9 @@ export default function Login() {
 
                   <div className="flex justify-between items-center gap-4">
                     <div className="flex items-center space-x-2">
-                      <Checkbox id="remember-me" />
+                      <Checkbox id="remember-me" checked={isRememberMe} onCheckedChange={() => [
+                        setIsRememberMe(!isRememberMe)
+                      ]} />
                       <label
                         htmlFor="remember-me"
                         className="text-sm font-medium text-[#667085] leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"

@@ -51,7 +51,7 @@ export default function Login() {
       setCookie("token", token, {
         secure: true,
         sameSite: "none",
-        expires: new Date(Date.now() + 2 * 60 * 60 * 1000),
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       });
       fetchUserAfterRedirectionSuccess()
     } else {
