@@ -66,12 +66,12 @@ const Benefits = () => {
         <Box
           firsttext={"Threat detection"}
           secondtext={"Scans for phishing, malware, and unauthorized access, providing real-time alerts to ensure conversation safety."}
-          imgsrc1={"/features/map14.svg"}
+          imgsrc1={"/features/map16.svg"}
         />
         <Box
           firsttext={"Fraud prevention"}
           secondtext={"AI secured chat detects suspicious patterns and stops fraud before it happens."}
-          imgsrc1={"/features/map15.svg"}
+          imgsrc1={"/features/map17.svg"}
         />
       </div>
     </div>

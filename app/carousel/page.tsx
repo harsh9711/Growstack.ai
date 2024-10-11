@@ -82,7 +82,7 @@ const Carousel = () => {
                     ? "max-w-[120px] 2xl:max-w-[130px]"
                     : "max-w-[190px] 2xl:max-w-[250px]"
                 } 
-                h-[160px] 2xl:h-[180px] transition-all duration-500 ease-in-out gap-4 2xl:gap-6 justify-between items-center text-white w-full rounded-[20px]`}
+                h-[200px]   xl:h-[180px] transition-all duration-500 ease-in-out gap-4 2xl:gap-6 justify-between items-center text-white w-full rounded-[20px]`}
               >
                 <div className="flex flex-col 2xl:gap-y-6 items-center justify-center">
                   <div
@@ -127,14 +127,14 @@ const Carousel = () => {
                     )}
                     <h2
                       style={{ color: item.textcolor }}
-                      className="text-[16px] flex flex-row items-center 2xl:text-[16px] text-center font-semibold"
+                      className="text-[14px] flex flex-row items-center 2xl:text-[16px] text-center font-semibold"
                     >
                       {item.name}
                     </h2>
                     <p
                       style={{ color: item.textcolor }}
-                      className={`text-[10px] 2xl:text-[12px] text-center overflow-hidden font-medium max-w-[260px]`}
-                    >
+                      className={`text-[12px] 2xl:text-[12px] text-center overflow-hidden text-ellipsis  font-medium w-full  xl:max-w-[260px]`}
+                      >
                       {item.role}
                     </p>
                   </span>

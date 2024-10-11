@@ -394,7 +394,7 @@ export const solutionsteams = [
     id: 7,
     imageUrl: "/solutionsicon/img11.svg",
     name: "IT",
-    role: "Elevate customer service with advanced AI solutions",
+    role: "Transform your IT with AI - Powered solutions",
     bgcolor: "#fce1e4",
     textcolor: "#034737",
     href: "/solutions/It",
@@ -448,11 +448,11 @@ export const solutionsteams = [
     id: 13,
     imageUrl: "/solutionsicon/img4.svg",
     name: "Startups",
-    role: "Maximize efficiency with all-in-one AI  marketing",
+    role: "Supercharge growth and market penetration with integrated AI Tools",
     bgcolor: "#ddedea ",
     textcolor: "#034737",
     href: "/solutions/startup",
-  },{
+  }, {
     id: 14,
     imageUrl: "/solutionsicon/img13.svg",
     name: "Solution by Teams",

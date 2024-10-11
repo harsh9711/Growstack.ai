@@ -86,7 +86,7 @@ export default function Register() {
       setCookie("token", response.data.data.token, {
         secure: true,
         sameSite: "none",
-        expires: new Date(Date.now() + 2 * 60 * 60 * 1000),
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       });
 
       toast.success(response.data.message);
