@@ -11,8 +11,7 @@ body {
     text-align: center;
 }
 
-.card {
-    
+.expand-card {
     text-align: left;
     width: 243px;
     max-width: 100%;
@@ -21,28 +20,28 @@ body {
     text-align: center;
     border-radius: 10px;
     transition: box-shadow 0.3s ease, height 0.3s ease;
-  position: relative; 
+    position: relative;
     background-color: #034737;
     height: 60px;
     font-size: 20px;
     font-weight: 900;
     overflow: hidden;
 }
-.card p{
- opacity: 0;
+.card p {
+    opacity: 0;
 }
 
 .card:hover {
     text-align: left;
-    top:40px;
-        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+    top: 40px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
     color: black;
-background-color: white;
+    background-color: white;
     height: 124px;
-
 }
-.card:hover p{
+.card:hover p {
     opacity: 100;
     margin-top: 10px;
     font-size: 16px;
-    font-weight: 300;}
+    font-weight: 300;
+}
