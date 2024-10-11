@@ -69,7 +69,7 @@ const Banner: React.FC = () => {
                 </div> */}
               </div>
             </div>
-            <div className="col-lg-6">
+            <div>
               <div className="solMarketingSideImg">
                 <img
                   src="/images_growstack/solutions/marketingBanner.svg"

@@ -33,7 +33,7 @@ function Capability() {
                                         Monitor and improve your ratings across multiple review platforms, ensuring your brand shines.
                                     </p>
                                     <div className='cardsBlock grid grid-cols-1 sm:grid-cols-2 '>
-                                        <div className='col-md-6 p-1'>
+                                        <div className=' p-1'>
                                             <div className='block'>
                                                 <img src='/images_growstack/home/trust.svg' alt='Trustpilot Logo' />
                                                 <div className='content'>
@@ -44,7 +44,7 @@ function Capability() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className='col-md-6 p-1'>
+                                        <div className=' p-1'>
                                             <div className='block'>
                                                 <img src='/images_growstack/home/Google.svg' alt='Google Logo' />
                                                 <div className='content'>
@@ -55,7 +55,7 @@ function Capability() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className='col-md-6 p-1'>
+                                        <div className='p-1'>
                                             <div className='block'>
                                                 <img src='/images_growstack/home/Hostadvice.svg' alt='Hostadvice Logo' />
                                                 <div className='content'>
@@ -66,7 +66,7 @@ function Capability() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className='col-md-6 p-1'>
+                                        <div className=' p-1'>
                                             <div className='block'>
                                                 <img src='/images_growstack/home/Serchen.svg' alt='Serchen Logo' />
                                                 <div className='content'>
@@ -88,7 +88,7 @@ function Capability() {
                                 </div>
                             </div>
                         </div>
-                        <div className='col-md-12 col-lg-6' data-aos='fade-left' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                        <div data-aos='fade-left' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                             <div className='card-capability whatsapp'>
                                 <div className='card-body'>
                                     <div>
@@ -107,7 +107,7 @@ function Capability() {
                         </div>
                     </div>
                     <div className='row align-items-center'>
-                        <div className='col-md-12' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                        <div data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                             <div className='card-capability discover'>
                                 <div className='card-body'>
                                     <h5 className='card-title'>

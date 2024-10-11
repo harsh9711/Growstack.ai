@@ -19,7 +19,7 @@ function Benefits() {
                         </div>
                         <div className='cardsBlock'>
                             <div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
-                                <div className='col-md-4' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className='' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <div className='card'>
                                         <div className='card-body'>
                                             <div className='icon'>
@@ -36,7 +36,7 @@ function Benefits() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-md-4' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className='' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <div className='card'>
                                         <div className='card-body'>
                                             <div className='icon'>
@@ -53,7 +53,7 @@ function Benefits() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-md-4' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className='' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <div className='card'>
                                         <div className='card-body'>
                                             <div className='icon'>

@@ -19,7 +19,7 @@ function CoreFeatures() {
                     </div>
                     <div className='cardsBlock'>
                         <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3'>
-                            <div className='col-md-4 my-1 my-md-2 px-2' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                            <div className=' my-1 my-md-2 px-2' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                 <div className='card'>
                                     <div className='card-body'>
                                         <div className='icon'>
@@ -34,7 +34,7 @@ function CoreFeatures() {
                                     </div>
                                 </div>
                             </div>
-                            <div className='col-md-4 my-1 my-md-2 px-2' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                            <div className=' my-1 my-md-2 px-2' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                 <div className='card'>
                                     <div className='card-body'>
                                         <div className='icon'>
@@ -49,7 +49,7 @@ function CoreFeatures() {
                                     </div>
                                 </div>
                             </div>
-                            <div className='col-md-4 my-1 my-md-2 px-2' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                            <div className=' my-1 my-md-2 px-2' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                 <div className='card'>
                                     <div className='card-body'>
                                         <div className='icon'>
@@ -64,7 +64,7 @@ function CoreFeatures() {
                                     </div>
                                 </div>
                             </div>
-                            <div className='col-md-4 my-1 my-md-2 px-2' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                            <div className=' my-1 my-md-2 px-2' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                 <div className='card'>
                                     <div className='card-body'>
                                         <div className='icon'>
@@ -79,7 +79,7 @@ function CoreFeatures() {
                                     </div>
                                 </div>
                             </div>
-                            <div className='col-md-4 my-1 my-md-2 px-2' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                            <div className=' my-1 my-md-2 px-2' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                 <div className='card'>
                                     <div className='card-body'>
                                         <div className='icon'>
@@ -93,7 +93,7 @@ function CoreFeatures() {
                                     </div>
                                 </div>
                             </div>
-                            <div className='col-md-4 my-1 my-md-2 px-2' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                            <div className=' my-1 my-md-2 px-2' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                 <div className='card'>
                                     <div className='card-body'>
                                         <div className='icon'>

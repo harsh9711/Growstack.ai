@@ -14,17 +14,17 @@ function DetailFeatures() {
                     <div className='row'>
                         <div className='cardsBlock'>
                             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6'>
-                                <div className='col-md-4 my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className=' my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <span className='user'>Details of features</span>
                                     <h3 className='heading'>
                                         <span>The content </span> <br />
                                         creation platform
                                     </h3>
                                     <Link href='/auth/register' className='sheen'>
-                                       Get started for free <img src='/images_growstack/home/arrow.svg' alt='arrow' />
+                                        Get started for free <img src='/images_growstack/home/arrow.svg' alt='arrow' />
                                     </Link>
                                 </div>
-                                <div className='col-md-4 my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className=' my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <div className='card bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
@@ -44,7 +44,7 @@ function DetailFeatures() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-md-4 my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className=' my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <div className='card  bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
@@ -64,7 +64,7 @@ function DetailFeatures() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-md-4 my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className=' my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <div className='card  bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
@@ -84,7 +84,7 @@ function DetailFeatures() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-md-4 my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className=' my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <div className='card  bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
@@ -104,7 +104,7 @@ function DetailFeatures() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-md-4 my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className=' my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <div className='card  bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
@@ -124,7 +124,7 @@ function DetailFeatures() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-md-4 my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className=' my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <div className='card  bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
@@ -144,7 +144,7 @@ function DetailFeatures() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-md-4 my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className=' my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <div className='card  bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
@@ -164,7 +164,7 @@ function DetailFeatures() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-md-4 my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className=' my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <div className='card  bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>

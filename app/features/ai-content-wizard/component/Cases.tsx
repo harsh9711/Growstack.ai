@@ -72,7 +72,7 @@ export const cases = [
   },
 ];
 const Box = () => {
- 
+
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-10">
@@ -80,9 +80,8 @@ const Box = () => {
         <div
           key={index}
           data-aos="fade-up"
-          className={`relative text-black text-start  ${
-            (item.id === 5 || item.id === 6)  ? "" : "border-b-2"
-          } flex  p-6 transition-transform duration-500 ease-in-out max-w-[660px] sm:max-h-[358px]  h-full flex-col sm:text-start text-center sm:flex-row gap-6 items-center sm:items-start justify-between group overflow-hidden`}
+          className={`relative text-black text-start  ${(item.id === 5 || item.id === 6) ? "" : "border-b-2"
+            } flex  p-6 transition-transform duration-500 ease-in-out max-w-[660px] sm:max-h-[358px]  h-full flex-col sm:text-start text-center sm:flex-row gap-6 items-center sm:items-start justify-between group overflow-hidden`}
         >
           <div className="" data-aos="zoom-in">
             {item.imageUrl}
@@ -107,11 +106,11 @@ const Box = () => {
 const Cases = () => {
   useEffect(() => {
     AOS.init({
-      duration: 100, 
-      easing: "ease-out", 
+      duration: 100,
+      easing: "ease-out",
       offset: 1,
     });
-    AOS.refresh(); 
+    AOS.refresh();
   }, []);
 
   return (
@@ -129,7 +128,7 @@ const Cases = () => {
           className="flex flex-row w-full justify-between items-center"
           data-aos="fade-right"
         >
-          <h1 className="text-[26px] xl:text-[40px] xl:max-w-[500px] gap-2 leading-tight font-semibold sm:text-left text-center text-black">
+          <h1 className="text-[26px] xl:text-[40px] xl:max-w-[500px] gap-2 leading-tight font-semibold sm:!text-left !text-center text-black">
             Features that elevate your<span className="font-light"> content game </span>
           </h1>
         </div>

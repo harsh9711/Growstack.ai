@@ -14,7 +14,7 @@ function AgentsDepartment() {
                     <div className='row'>
                         <div className='cardsBlock'>
                             <div className='grid grid-cols-3 gap-6'>
-                                <div className='col-md-4 my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className=' my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <span className='user'>From idea to video in minutes 🔥</span>
                                     <h3 className='heading'>
                                         <span>Agent for </span> <br />
@@ -24,11 +24,11 @@ function AgentsDepartment() {
                                         Get Started <img src='/images_growstack/home/arrow.svg' alt='arrow' />
                                     </Link>
                                 </div>
-                                <div className='col-md-4 my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className=' my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <div className='card bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
-                                            <img src='/ms1.svg' alt='icon' />
+                                                <img src='/ms1.svg' alt='icon' />
                                             </div>
                                             <h5 className='heading'>
                                                 <span>Insight </span>
@@ -42,7 +42,7 @@ function AgentsDepartment() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-md-4 my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className=' my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <div className='card bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
@@ -60,11 +60,11 @@ function AgentsDepartment() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-md-4 my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className=' my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <div className='card bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
-                                            <img src='/ms3.svg' alt='icon' />
+                                                <img src='/ms3.svg' alt='icon' />
                                             </div>
                                             <h5 className='heading'>
                                                 <span>Sales</span>
@@ -77,11 +77,11 @@ function AgentsDepartment() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-md-4 my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className=' my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <div className='card bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
-                                            <img src='/ms4.svg' alt='icon' />
+                                                <img src='/ms4.svg' alt='icon' />
                                             </div>
                                             <h5 className='heading'>
                                                 <span>Customer success</span>
@@ -94,11 +94,11 @@ function AgentsDepartment() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-md-4 my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                                <div className=' my-2 my-md-3' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                     <div className='card bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
-                                            <img src='/ms5.svg' alt='icon' />
+                                                <img src='/ms5.svg' alt='icon' />
                                             </div>
                                             <h5 className='heading'>
                                                 <span>Tech</span>

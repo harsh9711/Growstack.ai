@@ -5,7 +5,7 @@ import Navbar from "@/components/navbar/Navbar";
 
 import Footer from "@/components/footer/Footer";
 import Link from "next/link";
-import {ReactCompareSlider,ReactCompareSliderImage,} from "react-compare-slider";
+import { ReactCompareSlider, ReactCompareSliderImage, } from "react-compare-slider";
 
 import ExpandableCard from "./component/ExpandableCard";
 import Card from "./component/Card";
@@ -26,7 +26,7 @@ const page = () => {
           <div className="w-full flex flex-row justify-between brightness-110 relative   items-start mt-10 mb-4 sm:mb-10  2xl:mt-32 2xl:mb-60">
             <div className="w-full max-w-[700px] items-start gap-y-4 flex flex-col">
               <div className="max-w-3xl  brightness-95   ">
-                <h1 className="text-[26px] xl:text-[40px] max-w-2xl leading-tight sm:text-left text-center text-black ">
+                <h1 className="text-[26px] xl:text-[40px] max-w-2xl leading-tight sm:!text-left !text-center text-black ">
                   <span className="font-semibold">Transform your lead </span>
                   <br /> <span className="font-semibold">generation with </span>
                   <br />
@@ -34,18 +34,18 @@ const page = () => {
                     advanced prospect scraping
                   </span>
                 </h1>
-                <p className="text-[18px] text-black mt-4 w-full lg:max-w-[600px] sm:text-left text-center leading-tight font-light ">
+                <p className="text-[18px] text-black mt-4 w-full lg:max-w-[600px] sm:!text-left !text-center leading-tight font-light ">
                   Unlock Detailed Business Insights from Google Maps for Smarter
                   Targeting and Growth
                 </p>
                 <ul className=" pt-8 text-[12px] sm:hidden  text-center items-center  flex flex-col sm:text-[18px] text-black">
-                      {" "}
-                      <li>Get key business details for informed decisions.</li>
-                      <li>Automate data gathering to save time</li>
-                      <li>Streamline prospecting with organized data.</li>
-                      <li>Enhance market analysis and targeting.</li>
-                    </ul>
-        
+                  {" "}
+                  <li>Get key business details for informed decisions.</li>
+                  <li>Automate data gathering to save time</li>
+                  <li>Streamline prospecting with organized data.</li>
+                  <li>Enhance market analysis and targeting.</li>
+                </ul>
+
                 <div className="flex flex-col gap-20  items-center justify-center sm:justify-start sm:items-start  mt-10">
                   <div className="flex flex-row gap-8  group text-[16px] sm:text-[18px]">
                     <Link href="/auth/register" className="no-underline">

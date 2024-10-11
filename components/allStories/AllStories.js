@@ -17,7 +17,7 @@ function AllStories() {
             </h3>
           </div>
           <div className="row">
-            <div className="col-md-4 my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
+            <div className=" my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
               <div className="card">
                 <img className="logo" src="/images_growstack/aiMarket/logo.svg" alt="customer1" />
                 <p className="text">
@@ -35,7 +35,7 @@ function AllStories() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
+            <div className=" my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
               <div className="card">
                 <img className="logo" src="/images_growstack/aiMarket/logo.svg" alt="customer1" />
                 <p className="text">
@@ -53,7 +53,7 @@ function AllStories() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
+            <div className=" my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
               <div className="card">
                 <img className="logo" src="/images_growstack/aiMarket/logo.svg" alt="customer1" />
                 <p className="text">
@@ -71,7 +71,7 @@ function AllStories() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
+            <div className=" my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
               <div className="card">
                 <img className="logo" src="/images_growstack/aiMarket/logo.svg" alt="customer1" />
                 <p className="text">
@@ -89,7 +89,7 @@ function AllStories() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
+            <div className=" my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
               <div className="card">
                 <img className="logo" src="/images_growstack/aiMarket/logo.svg" alt="customer1" />
                 <p className="text">
@@ -107,7 +107,7 @@ function AllStories() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
+            <div className=" my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
               <div className="card">
                 <img className="logo" src="/images_growstack/aiMarket/logo.svg" alt="customer1" />
                 <p className="text">
@@ -125,7 +125,7 @@ function AllStories() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
+            <div className=" my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
               <div className="card">
                 <img className="logo" src="/images_growstack/aiMarket/logo.svg" alt="customer1" />
                 <p className="text">
@@ -143,7 +143,7 @@ function AllStories() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
+            <div className=" my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
               <div className="card">
                 <img className="logo" src="/images_growstack/aiMarket/logo.svg" alt="customer1" />
                 <p className="text">
@@ -161,7 +161,7 @@ function AllStories() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
+            <div className=" my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
               <div className="card">
                 <img className="logo" src="/images_growstack/aiMarket/logo.svg" alt="customer1" />
                 <p className="text">
@@ -179,7 +179,7 @@ function AllStories() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
+            <div className=" my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
               <div className="card">
                 <img className="logo" src="/images_growstack/aiMarket/logo.svg" alt="customer1" />
                 <p className="text">
@@ -197,7 +197,7 @@ function AllStories() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
+            <div className=" my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
               <div className="card">
                 <img className="logo" src="/images_growstack/aiMarket/logo.svg" alt="customer1" />
                 <p className="text">
@@ -215,7 +215,7 @@ function AllStories() {
                 </div>
               </div>
             </div>
-            <div className="col-md-4 my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
+            <div className=" my-2 my-md-2 px-2" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
               <div className="card">
                 <img className="logo" src="/images_growstack/aiMarket/logo.svg" alt="customer1" />
                 <p className="text">

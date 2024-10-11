@@ -15,10 +15,10 @@ function Faqs() {
                         <span>Frequently asked</span> questions
                     </h3>
                     <div className='row mt-5'>
-                        <div className='col-md-4' data-aos='fade-right' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                        <div data-aos='fade-right' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                             <img className='image-fluid' src='/images_growstack/home/faqsBack.svg' alt='faqsBack' />
                         </div>
-                        <div className='col-md-8' data-aos='fade-left' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                        <div data-aos='fade-left' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                             {/* <Accordion>
                                 <Accordion.Item eventKey="0">
                                     <Accordion.Header>How can GrowStack transform my business strategies into success stories?</Accordion.Header>

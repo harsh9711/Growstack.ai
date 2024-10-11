@@ -19,10 +19,10 @@ function SingleHub() {
                 <div className='container'>
                     <div className='head'>
                         <div className='row'>
-                            <div className='col-md-7' data-aos='fade-right' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                            <div data-aos='fade-right' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                 <h2>A single hub for limitless website innovations</h2>
                             </div>
-                            <div className='col-md-5' data-aos='fade-left' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                            <div data-aos='fade-left' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                 <p>
                                     Discover endless possibilities with our one-stop platform, empowering you to create unlimited, tailor-made
                                     websites.
@@ -32,7 +32,7 @@ function SingleHub() {
                     </div>
                     <div className='block'>
                         <div className='row'>
-                            <div className='col-md-6' data-aos='fade-right' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                            <div className='' data-aos='fade-right' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                 <div className='imgBlock'>
                                     <div className='company'>
                                         <Swiper
@@ -90,7 +90,7 @@ function SingleHub() {
                                     </div>
                                 </div>
                             </div>
-                            <div className='col-md-6' data-aos='fade-left' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                            <div className='' data-aos='fade-left' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                 <div className='content'>
                                     <div className='accordionBlock'></div>
                                 </div>
@@ -99,7 +99,7 @@ function SingleHub() {
                     </div>
                     <div className='block'>
                         <div className='row'>
-                            <div className='col-md-6' data-aos='fade-right' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                            <div className='' data-aos='fade-right' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                 <div className='content'>
                                     <h3>Stunning email experiences, anywhere, anytime</h3>
                                     <p>
@@ -131,7 +131,7 @@ function SingleHub() {
                                     </div>
                                 </div>
                             </div>
-                            <div className='col-md-6' data-aos='fade-left' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
+                            <div className='' data-aos='fade-left' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                 <div className='imgBlock'>
                                     <img src='/images_growstack/emailBuilder/hub2.svg' alt='img' />
                                 </div>

@@ -48,7 +48,7 @@ function EasySteps() {
                     </div>
                     <div className='steps' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                         <div className='grid grid-cols-1 sm:grid-cols-3'>
-                            <div className='col-md-4'>
+                            <div className=''>
                                 <div className='step step1'>
                                     <span>1</span>
                                     <h5>Step 1</h5>
@@ -59,7 +59,7 @@ function EasySteps() {
                                     </p>
                                 </div>
                             </div>
-                            <div className='col-md-4'>
+                            <div className=''>
                                 <div className='step step2'>
                                     <span>2</span>
                                     <h5>Step 2</h5>
@@ -67,7 +67,7 @@ function EasySteps() {
                                     <p>Provide the AI with detailed information about the subject you want to write about..</p>
                                 </div>
                             </div>
-                            <div className='col-md-4'>
+                            <div className=''>
                                 <div className='step'>
                                     <span>3</span>
                                     <h5>Step 3</h5>

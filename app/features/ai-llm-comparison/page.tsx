@@ -22,17 +22,17 @@ const page = () => {
           <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1350px] 2xl:p-0 p-4 w-full 2xl:max-h-[895px] sm:max-h-[700px]  h-full justify-center mx-auto">
             <div className="w-full flex flex-col lg:flex-row gap-10 justify-between brightness-110 relative   items-center mt-10 mb-4 sm:mb-10  2xl:mt-32 2xl:mb-60">
               <div className="w-full max-w-[700px] items-center sm:items-start gap-y-4 flex flex-col">
-              <div className="bg-[#03473714]   text-[#034737] hover:shadow-md whitespace-nowrap justify-center py-2 px-4 flex items-center text-center text-[10px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[140px]">
-            AI   LLM Comparison
-          </div> <div className=" w-full brightness-95   ">
-               
-                  <h1 className="text-[26px] max-w-[357px] xl:text-[40px] leading-tight  sm:text-left text-center text-black ">
+                <div className="bg-[#03473714]   text-[#034737] hover:shadow-md whitespace-nowrap justify-center py-2 px-4 flex items-center text-center text-[10px] rounded-full tracking-widest font-semibold uppercase w-full max-w-[140px]">
+                  AI   LLM Comparison
+                </div> <div className=" w-full brightness-95   ">
+
+                  <h1 className="text-[26px] max-w-[357px] xl:text-[40px] leading-tight  sm:!text-left !text-center text-black ">
                     <span className="font-semibold">
                       Choose the best AI model
                     </span>
                     <span className="font-extralight ml-2">for your needs</span>
                   </h1>
-                  <p className="text-[12px] sm:text-[18px] text-black mt-4 w-full lg:max-w-[600px] sm:text-left text-center gap-4 flex flex-col leading-tight font-light ">
+                  <p className="text-[12px] sm:text-[18px] text-black mt-4 w-full lg:max-w-[600px] sm:!text-left !text-center gap-4 flex flex-col leading-tight font-light ">
                     <span>
                       Selecting the right AI model can make all the difference.
                     </span>

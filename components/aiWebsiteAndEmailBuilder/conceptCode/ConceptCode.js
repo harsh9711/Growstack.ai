@@ -13,12 +13,12 @@ function ConceptCode() {
         <div className="content">
           <div className="container">
             <div className="row align-items-center">
-              <div className="col-md-6" data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-duration="1000">
+              <div className="" data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-duration="1000">
                 <div className="image">
                   <img src="/images_growstack/emailBuilder/code.svg" alt="conceptCode" />
                 </div>
               </div>
-              <div className="col-md-6" data-aos="fade-left" data-aos-easing="ease-in-sine" data-aos-duration="1000">
+              <div className="" data-aos="fade-left" data-aos-easing="ease-in-sine" data-aos-duration="1000">
                 <div className="text">
                   <h3>From Concept to Code: Your Vision, Our Creation</h3>
                   <p>

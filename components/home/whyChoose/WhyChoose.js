@@ -19,7 +19,7 @@ function WhyChoose() {
                         </div>
                         <div className='cardsBlock' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6'>
-                                <div className='col-md-4'>
+                                <div className=''>
                                     <div className='choose-card bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
@@ -36,7 +36,7 @@ function WhyChoose() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-md-4'>
+                                <div className=''>
                                     <div className='choose-card bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
@@ -53,7 +53,7 @@ function WhyChoose() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='col-md-4'>
+                                <div className=''>
                                     <div className='choose-card bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>

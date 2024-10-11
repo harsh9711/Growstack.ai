@@ -118,7 +118,7 @@ function VideoSolution() {
                   </div>
                 </div>
               </div>
-              <div className="col-lg-6 col-md-6 d-flex align-items-center banner-div">
+              <div className=" d-flex align-items-center banner-div">
                 <div className="form-wrap-img">
                   <img
                     src="/images_growstack/textVideo/group-1.svg"
@@ -166,7 +166,7 @@ function VideoSolution() {
                   </div>
                 </div>
               </div>
-              <div className="col-lg-6 col-md-6 d-flex align-items-center">
+              <div className=" d-flex align-items-center">
                 <div className="form-wrap-img frame-2">
                   <img
                     src="/images_growstack/textVideo/group-2.svg"
@@ -182,7 +182,7 @@ function VideoSolution() {
               data-aos-duration="1000"
             >
               <div className="max-w-[700px] w-full ">
-              <div className="frames-wrap">
+                <div className="frames-wrap">
                   <div className="frames-wrap-inner">
                     <h3>
                       Create videos as diverse <br />
@@ -200,7 +200,7 @@ function VideoSolution() {
                       <img src="/images_growstack/textVideo/mark-svg.svg" />
                       <span>Create your own AI avatar (your digital twin)</span>
                     </p>
-                   <Link href="/auth/register" className="sheen">
+                    <Link href="/auth/register" className="sheen">
                       Generate a video
                       <svg
                         width="21"
@@ -218,7 +218,7 @@ function VideoSolution() {
                   </div>
                 </div>
               </div>
-              <div className="col-lg-6 col-md-6 d-flex align-items-center">
+              <div className=" d-flex align-items-center">
                 <div className="form-wrap-img frame-3">
                   <img
                     src="/images_growstack/textVideo/group-3.svg"

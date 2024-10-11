@@ -41,7 +41,7 @@ const Benefits = () => {
         <h2 className="text-center capitalize text-[12px]">BENEFITS</h2>
       </div>
       <div>
-        <h1 className="text-[26px] xl:text-[40px] flex  flex-col sm:flex-row gap-2 leading-tight sm:text-left text-center text-white">
+        <h1 className="text-[26px] xl:text-[40px] flex  flex-col sm:flex-row gap-2 leading-tight sm:!text-left !text-center text-white">
           <span className="font-semibold">Transformative benefits for </span>
           <span className="font-light">smarter prospecting </span>
         </h1>
@@ -53,7 +53,7 @@ const Benefits = () => {
             "Streamline your prospecting by automating data collection, significantly reducing the time spent on manual searches and allowing you to focus on more strategic tasks."
           }
           imgsrc1={"/features/b1.svg"}
-          data-aos="fade-right" 
+          data-aos="fade-right"
           data-aos-delay="1900"
         />
         <Box

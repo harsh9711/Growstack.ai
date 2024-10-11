@@ -49,7 +49,7 @@ const Benefits = () => {
         <h2 className="text-center capitalize text-[12px] font-extrabold">USE CASES</h2>
       </div>
       <div className="flex flex-col sm:flex-row w-full justify-between">
-        <h1 className="text-[26px] xl:text-[40px] flex gap-2 leading-tight sm:text-left text-center text-black">
+        <h1 className="text-[26px] xl:text-[40px] flex gap-2 leading-tight sm:!text-left !text-center text-black">
           <span className="font-semibold">Security</span>
         </h1>
         <p className="sm:text-[18px] text-start text-[16px] font-medium max-w-[820px]">
