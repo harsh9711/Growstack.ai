@@ -36,11 +36,12 @@ const HeroSection = () => {
                 className="text-[26px] xl:text-[40px] 2xl:text-[48px] w-full leading-normal text-white"
               >
                 <span className="font-semibold w-full 2xl:whitespace-nowrap">
-                  Transform finance operations{" "}
+                Revolutionize Your Supply Chain
+
                 </span>
                 <br />
                 <span className="font-light 2xl:whitespace-nowrap">
-                  with AI-Powered solutions
+                operations with Growstack
                 </span>
               </h1>
               <p

@@ -7,13 +7,13 @@ interface ExpandableCardProps {
 const ExpandableCard: React.FC<ExpandableCardProps> = ({ heading, para }) => {
   return (
     <div className="expandable-card-container">
-      <div className="card">
+      <div className="expand-card">
         <div className="panel-container">
           <div className="panel">
-          {heading}
+            {heading}
           </div>
           <p className='para'>
-         {para}
+            {para}
           </p>
         </div>
       </div>
@@ -21,4 +21,3 @@ const ExpandableCard: React.FC<ExpandableCardProps> = ({ heading, para }) => {
   );
 };
 export default ExpandableCard;
- 

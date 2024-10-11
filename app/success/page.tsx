@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
-import { setCookie } from "cookies-next";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { login } from "@/lib/features/auth/auth.slice";

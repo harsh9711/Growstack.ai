@@ -78,7 +78,7 @@ const ImageGallery = () => {
     <>
       <div className="w-full">
         <motion.div
-          className="flex gap-4 mt-52 ml-32 absolute"
+          className="flex gap-4 z-40 mt-52 ml-32 absolute"
           initial={{ opacity: 1, scale: 1 }}
           animate={{
             opacity: clickedImage ? 1 : 1,
@@ -89,7 +89,7 @@ const ImageGallery = () => {
           {images.map((image, index) => (
             <motion.div
               key={index}
-              className={`relative opacity-100 flex flex-col transition-transform duration-300 ease-in-out hover:scale-105 items-center justify-center z-40 ${image.className}`}
+              className={`relative opacity-100 flex flex-col cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 items-center justify-center z-40 ${image.className}`}
               onClick={() => handleClick(image.largeSrc)}
               layout
             >
@@ -98,9 +98,8 @@ const ImageGallery = () => {
                 alt={`Image ${index}`}
                 width={100}
                 height={100}
-                className={`relative w-[1260px] h-[360px] ${
-                  clickedImage === image.largeSrc ? "opacity-50" : ""
-                }`}
+                className={`relative w-[1260px] h-[360px] ${clickedImage === image.largeSrc ? "opacity-50" : ""
+                  }`}
               />
               <button className="absolute -bottom-6 text-left right-4 hover:text-[#14171B] text-[20px] font-semibold max-w-[250px] w-full py-2 rounded-2xl">
                 {image.buttonText}
@@ -122,9 +121,8 @@ const ImageGallery = () => {
         </motion.div>
 
         <div
-          className={`mx-auto z-30 items-center justify-center inset-0 transition-opacity duration-500 ${
-            clickedImage ? "opacity-0" : "opacity-60"
-          }`}
+          className={`mx-auto z-30 items-center justify-center inset-0 transition-opacity duration-500 ${clickedImage ? "opacity-0" : "opacity-60"
+            }`}
         >
           <Image
             src="/customer2.svg"

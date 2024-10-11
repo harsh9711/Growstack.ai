@@ -47,13 +47,13 @@ const CustomAccordion = () => {
       body: "By selecting the best AI model for specific tasks, businesses can improve workflow, reduce response times, and enhance customer experience, making operations smoother and more efficient.",
     },
   ];
-  
+
 
   return (
     <div className="w-full h-full transition transform duration-1000 ease-linear">
       {items.map((item, index) => {
         const isActive = activeKey === index;
-        
+
         return (
           <div key={index} className="mb-4 w-full   bg-white border text-[16px] sm:text-[20px] rounded-[20px] font-bold items-start ease-in-out transition-transform duration-1000 cursor-pointer">
             <div
@@ -77,7 +77,7 @@ const CustomAccordion = () => {
 
             <div
               className={`overflow-hidden transition-all duration-700 ease-linear ${isActive ? "max-h-40" : "max-h-0"}`}
-             
+
             >
               <div className="rounded-[20px] border-b-8 border-[#D9D9D9] p-4 max-w-[1000px] w-full font-normal text-[12px] sm:text-[18px] text-gray-700 bg-white">
                 {item.body}
@@ -87,7 +87,7 @@ const CustomAccordion = () => {
         );
       })}
     </div>
-  
+
   );
 };
 
@@ -98,7 +98,7 @@ const Faqs = () => {
   return (
     <React.Fragment>
       <div className="sm:px-0 px-6 max-w-[1000px] w-full items-center justify-center mx-auto">
-      
+
         <div className="flex flex-col pt-16 items-start justify-start">
           <div
             className="items-center flex flex-col gap-y-6 justify-center mx-auto"
@@ -106,28 +106,28 @@ const Faqs = () => {
             data-aos-easing="ease-in-sine"
             data-aos-duration="1000"
           >
-             <div className="max-w-[74px] rounded-2xl item-center justify-center w-full py-2 text-[#034737] bg-[#03473714]">
-        <h2 className="text-center capitalize text-[12px] font-extrabold">FAQ</h2>
-      </div>
+            <div className="max-w-[74px] rounded-2xl item-center justify-center w-full py-2 text-[#034737] bg-[#03473714]">
+              <h2 className="text-center capitalize text-[12px] font-extrabold">FAQ</h2>
+            </div>
             <h3 className="text-[26px] sm:text-[40px] text-black max-w-4xl mx-auto leading-normal text-center font-extrabold ">
-            Quick answers on 
+              Quick answers on
               <span className="font-light ml-2">
-          Ai llm comparison
+                AI llm comparison
               </span>
             </h3>
           </div>
           <div className="flex flex-col mb-40 md:flex-row w-full pt-10  gap-10 items-center justify-between">
-           
+
             <div className="w-full">
               {" "}
               <CustomAccordion />
             </div>
           </div>
         </div>
-       
+
       </div>
-    
-    
+
+
     </React.Fragment>
   );
 };
