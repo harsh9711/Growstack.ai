@@ -21,6 +21,7 @@ export enum ALL_ROUTES {
     CREATE_AI_TEMPLATE = '/app/plan/ai-templates/create-template',
     AI_WIZARD = "/app/create/ai-articles",
     CONTACT_REPOSITORY = "/app/engage/contacts",
+    CONTACT_REPOSITORY_SETTINGS = "/app/engage/contacts/settings",
     WEB_SCRAPING = "/app/engage/web-scraping",
     SOCIAL_MEDIA_POSTING = "/app/publish/scheduler/quick-posting/profiles",
     SOCIAL_MEDIA_POSTING_CONNECT = "/app/publish/scheduler/quick-posting/profiles/connect-account",
@@ -76,6 +77,10 @@ export const featureRouteMap: FeatureRouteMap = {
     ],
     social_media_analytics: [
         { path: ALL_ROUTES.SOCIAL_MEDIA_ANALYSIS, partialMatch: false },
+    ],
+    contacts_repository: [
+        { path: ALL_ROUTES.CONTACT_REPOSITORY, partialMatch: false },
+        { path: ALL_ROUTES.CONTACT_REPOSITORY_SETTINGS, partialMatch: false },
     ]
 };
 
