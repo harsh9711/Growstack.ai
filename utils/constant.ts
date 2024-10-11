@@ -23,7 +23,7 @@ export enum ALL_ROUTES {
     CONTACT_REPOSITORY = "/app/engage/contacts",
     CONTACT_REPOSITORY_SETTINGS = "/app/engage/contacts/settings",
     WEB_SCRAPING = "/app/engage/web-scraping",
-    SOCIAL_MEDIA_POSTING = "/app/publish/scheduler/quick-posting/profiles",
+    SOCIAL_MEDIA_POSTING = "/app/publish/scheduler/quick-posting",
     SOCIAL_MEDIA_POSTING_CONNECT = "/app/publish/scheduler/quick-posting/profiles/connect-account",
     SOCIAL_MEDIA_POSTING_CONNECT_FINISH = "/app/publish/scheduler/quick-posting/profiles/connect-account/finish",
     SOCIAL_MEDIA_CONVERSATION_HUB = "/app/engage/Social-media",
