@@ -22,13 +22,13 @@ jobs:
               env:
                   SERVER_IP: ${{ secrets.SERVER_IP }}
                   SERVER_USER: ${{ secrets.SERVER_USER }}
-                  #NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
-                  #NEXT_PUBLIC_PARAGON_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_PARAGON_PROJECT_ID }}
-                  #NEXT_PUBLIC_PLACES_AUTO_COMPLETE: ${{ secrets.NEXT_PUBLIC_PLACES_AUTO_COMPLETE }}
+                  NEXT_PUBLIC_API_BASE_URL: ${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
+                  NEXT_PUBLIC_PARAGON_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_PARAGON_PROJECT_ID }}
+                  NEXT_PUBLIC_PLACES_AUTO_COMPLETE: ${{ secrets.NEXT_PUBLIC_PLACES_AUTO_COMPLETE }}
               run: |
-                  ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP << EOF
-                    set -e # Exit immediately if a command fails
-                    cd GrowStack-Ai || exit 1
+                  ssh $SERVER_USER@$SERVER_IP << EOF
+                    cd GrowStack-Ai
+                    git stash
                     git fetch origin main
                     git reset --hard origin/main
                     npm install
