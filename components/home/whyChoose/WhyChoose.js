@@ -20,7 +20,7 @@ function WhyChoose() {
                         <div className='cardsBlock' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6'>
                                 <div className='col-md-4'>
-                                    <div className='card bg-white'>
+                                    <div className='choose-card bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
                                                 <img src='/images_growstack/home/choose1.svg' alt='icon' />
@@ -37,7 +37,7 @@ function WhyChoose() {
                                     </div>
                                 </div>
                                 <div className='col-md-4'>
-                                    <div className='card bg-white'>
+                                    <div className='choose-card bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
                                                 <img src='/images_growstack/home/choose2.svg' alt='icon' />
@@ -54,7 +54,7 @@ function WhyChoose() {
                                     </div>
                                 </div>
                                 <div className='col-md-4'>
-                                    <div className='card bg-white'>
+                                    <div className='choose-card bg-white'>
                                         <div className='card-body'>
                                             <div className='icon'>
                                                 <img src='/images_growstack/home/choose3.svg' alt='icon' />

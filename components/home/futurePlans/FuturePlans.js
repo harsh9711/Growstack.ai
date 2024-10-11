@@ -9,7 +9,7 @@ function FuturePlans() {
   }, []);
   return (
     <React.Fragment>
-      <div className="futurePlans">
+      <div className="futurePlans pb-3">
         <div className="container">
           <div className="row">
             <div
