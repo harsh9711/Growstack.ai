@@ -105,8 +105,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (isLoggedIn && currentPlan) {
+      if (user?.user_type === "ADMIN") {
+        return;
+      }
       const hasAccess = hasAccessToRoute(currentPlan.usage, pathname);
-      if (!hasAccess && user?.user_type !== "ADMIN") {
+      if (!hasAccess) {
         setIsAddOnModalOpen(true);
       } else {
         setIsAddOnModalOpen(false);

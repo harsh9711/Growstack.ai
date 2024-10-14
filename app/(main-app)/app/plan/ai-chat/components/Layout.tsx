@@ -92,8 +92,8 @@ const Layout = ({ sidebarItems, setSidebarItems, fetchConversations }: LayoutPro
 
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [filename, setFilename] = useState<string | null>(null);
-    const filteredAiModelOptions = currentPlan &&
-        planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan.plan_id) && user?.user_type !== "ADMIN"
+    const filteredAiModelOptions = user?.user_type !== "ADMIN" && currentPlan &&
+        planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan.plan_id)
         ? [aiModelOptions[0]]
         : aiModelOptions;
 
