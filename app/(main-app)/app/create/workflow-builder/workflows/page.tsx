@@ -76,7 +76,7 @@ export default function Workflows() {
       const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
       const data: PlanUsage = response.data.data;
       setPlanUsage(data);
-      if (data.usage.ai_worfklow_credits <= 0 && user?.user_type !== "ADMIN") {
+      if (user?.user_type !== "ADMIN" && data.usage.ai_worfklow_credits <= 0) {
         setIsAddOnModalOpen(true);
         return false;
       } else {
