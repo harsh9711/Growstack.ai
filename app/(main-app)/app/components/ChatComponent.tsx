@@ -521,6 +521,7 @@ export default function ChatComponent() {
                 </div>
                 <ChatInput
                     ref={chatInputRef}
+                    selectedBrandVoice={brandVoices.find((voice) => voice._id === selectedBrandVoice)}
                     onSend={updateMessage}
                     fetchConversations={() => { }}
                     selectedConversation={selectedConversation}
