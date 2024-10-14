@@ -201,7 +201,7 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
   const checkWorkAccessPermission = async (redirect: boolean = false) => {
     try {
       if (!currentPlan) return;
-      if (currentPlan.usage.ai_worfklow_credits <= 0 && user?.user_type !== "ADMIN") {
+      if (user?.user_type !== "ADMIN" && currentPlan.usage.ai_worfklow_credits <= 0) {
         setIsAddOnModalOpen(true)
         return false;
       } else {

@@ -1,21 +1,21 @@
 "use client";
-import { ArrowRight } from "lucide-react";
-import Image from "next/image";
 import React, { useEffect } from "react";
 import ImageGalleryLine from "./components/ImageGalleryline";
 import Navbar from "@/components/navbar/Navbar";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import GridComponent from "./components/GridBoxes";
-import GridComponentSecond from "./components/GridBoxes2";
 import ImageGalleryLineResponsive from "./components/ImageGallerylineresponsive";
 import LoadingBar from "./components/Loading";
-import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
 import Footer from "@/components/footer/Footer";
-import LoadingBarSecond from "./components/LoadingBar";
-import Link from "next/link";
 import GridComponentResponsive from "./components/GridBoxesresponsive";
 import HeroSection from "./components/HeroSection";
+import { CircleIcon } from "@/components/svgs/icons";
+import { ArrowRight, ClockIcon } from "lucide-react";
+import Box from "./components/Box";
+import Link from "next/link";
+import Demo from "./components/Demo";
+import Faqs from "./components/Faq";
 
 const page = () => {
   useEffect(() => {
@@ -32,7 +32,7 @@ const page = () => {
 
         <HeroSection />
       </section>{" "}
-      <section className=" sm:p-20">
+      <section className=" p-4 sm:p-20">
         <div className="relative mx-auto rounded-t-[40px] items-center justify-center py-10 2xl:py-20 ">
           <div className="flex flex-col  items-center justify-center mx-auto gap-2">
             <div
@@ -76,13 +76,13 @@ const page = () => {
               maintain
             </div> */}
 
-            <div className="flex items-start justify-start">
+            <div className="flex items-center sm:items-start justify-start">
               {" "}
               <h1
                 data-aos="fade-up"
                 data-aos-duration="1500"
                 data-aos-delay="300"
-                className="text-start  max-w-[700px] text-[26px] 2xl:text-[42px] leading-normal"
+                className="text-center sm:text-start  max-w-[700px] text-[26px] 2xl:text-[42px] leading-normal"
               >
                 <span className="text-black font-extrabold">
                   Overcome leadership challenges
@@ -125,7 +125,7 @@ const page = () => {
           </div>
         </div>
       </section>
-      <section className="relative w-full 2xl:mt-20">
+      <section className="relative w-full xl:mt-20">
         <div className="2xl:flex xl:flex hidden flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
           <ImageGalleryLine />
         </div>
@@ -133,8 +133,8 @@ const page = () => {
           <ImageGalleryLineResponsive />
         </div>
       </section>
-      <section className=" ">
-        <div className="relative mx-auto rounded-t-[40px] items-center justify-center  ">
+      <section className="sm:p-0 p-4 mt-20 sm:mt-0  ">
+        <div className="relative mx-auto flex flex-col gap-y-10 rounded-t-[40px] items-center justify-center  ">
           <div className="flex flex-col  items-center justify-center mx-auto gap-2">
             <div
               data-aos="fade-up"
@@ -160,34 +160,19 @@ const page = () => {
               </h1>
             </div>
           </div>
-          <div>
-            <div><h2 className="sm:text-[20px] text-[12px]">Before Growstack</h2>
-            <div><span><h2 className="fonrb-dol">Action</h2>: Manually sorting through emails, reports, and notifications—data overload.</span></div></div>
-            <div className="bg-[#EDEDED] max-w-[240px] max-h-[1174px] w-fu;; h-full rounded-2xl flex flex-col gap-y-6">
-              <div className="max-w-[200px] p-4 text-[20px]">Timeline</div>
-              <div className="rounded-full w-10 sm:text-[16px] text-[12px] h-10">
-                <svg
-                  width="5"
-                  height="10"
-                  viewBox="0 0 5 10"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M1 1V6L4 9"
-                    stroke="#14171B"
-                    stroke-width="1.75"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-                <h2 className="font-bold">8:00 AM </h2>
-                <p className="font-medium">Morning review</p>
-              </div>
-            </div>
-            <div></div>
-          </div>
+          <Box />
+          <p className="sm:text-[18px] max-w-[1240px] w-full text-center flex items-center justify-center text-[12px] font-medium">
+            With GrowStack, Sarah saves approximately 6.5 hours daily, enabling
+            her to focus on high-level strategy, leadership, and growth, instead
+            of manual tasks and fragmented data.
+          </p>
         </div>
+      </section>
+      <section className="flex flex-col gap-y-10 sm:mt-20 mt-10">
+        <Demo />
+      </section>
+      <section className="p-4 sm:p-0 sm:mt-36">
+        <Faqs />
       </section>
       <Footer />
     </main>
