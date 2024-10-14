@@ -133,9 +133,9 @@ export default function Dashboard() {
 
 
   return (
-    <main className="">
-      <div className="bg-[#EBF0F6] h-80 w-full max-w-[96%] mx-auto absolute top-0 left-0 right-0 rounded-b-[60px]" />
-      <div className="relative z-[1]">
+    <main>
+      <div className="bg-[#EBF0F6] h-[97%] w-full max-w-[96%] mx-auto absolute top-0 left-0 right-0 rounded-b-[60px]" />
+      <div className="h-screen z-[1]">
         <div
           className="flex justify-between items-center mt-8"
           data-aos="fade-down"
@@ -149,12 +149,12 @@ export default function Dashboard() {
             </h1>
           </div>
         </div>
-        <div className="w-full  flex flex-col lg:flex-row gap-7 mt-4" >
+        <div className="w-full  flex flex-col lg:flex-row gap-7 mt-4 h-[80%]" >
           <div className="w-full lg:w-2/3 space-y-6 " data-aos="fade-left">
             <ChatComponent />
           </div>
           <div
-            className="w-full lg:w-1/3 bg-white p-8 rounded-3xl border border-[#E8E8E8] h-[780px]"
+            className="w-full lg:w-1/3 overflow-y-auto bg-white p-8 rounded-3xl border border-[#E8E8E8] h-full"
             data-aos="fade-right"
           >
             <div className="space-y-3">
@@ -165,7 +165,9 @@ export default function Dashboard() {
                 Chat with the smartest AI - Experience the power of AI with us
               </p>
             </div>
-            {/* <Link href="/app/plan/ai-chat">
+            <div className="">
+
+              {/* <Link href="/app/plan/ai-chat">
               <div
                 className="!mt-7 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
                 data-aos="fade-up"
@@ -179,121 +181,123 @@ export default function Dashboard() {
                   />
                   <h2 className="font-medium">AI chat</h2>
                 </div> */}
-            {/* <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
+              {/* <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
                   <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
                 </button>
               </div>
             </Link> */}
-            <Link href="/app/plan/ai-templates">
-              <div
-                className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-              >
-                <div className="flex gap-4 items-center">
-                  <Image
-                    className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
-                    src="/icons/ai-templates.svg"
-                    alt=""
-                    width={60}
-                    height={60}
-                  />
-                  <h2 className="font-medium">AI templates </h2>
+              <Link href="/app/plan/ai-templates">
+                <div
+                  className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
+                >
+                  <div className="flex gap-4 items-center">
+                    <Image
+                      className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
+                      src="/icons/ai-templates.svg"
+                      alt=""
+                      width={60}
+                      height={60}
+                    />
+                    <h2 className="font-medium">AI templates </h2>
+                  </div>
+                  <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
+                    <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
+                  </button>
                 </div>
-                <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
-                  <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
-                </button>
-              </div>
-            </Link>
-            <Link href="/app/plan/ai-assistant">
-              <div
-                className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-              >
-                <div className="flex gap-4 items-center">
-                  <Image
-                    className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
-                    src="/icons/chatbot.svg"
-                    alt=""
-                    width={60}
-                    height={60}
-                  />
-                  <h2 className="font-medium">AI assistants</h2>
+              </Link>
+              <Link href="/app/plan/ai-assistant">
+                <div
+                  className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
+                >
+                  <div className="flex gap-4 items-center">
+                    <Image
+                      className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
+                      src="/icons/chatbot.svg"
+                      alt=""
+                      width={60}
+                      height={60}
+                    />
+                    <h2 className="font-medium">AI assistants</h2>
+                  </div>
+                  <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
+                    <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
+                  </button>
                 </div>
-                <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
-                  <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
-                </button>
-              </div>
-            </Link>
-            <Link href="/app/plan/custom-gpts">
-              <div
-                className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-              >
-                <div className="flex gap-4 items-center">
-                  <Image
-                    className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
-                    src="/icons/custom-gpts.svg"
-                    alt=""
-                    width={60}
-                    height={60}
-                  />
-                  <h2 className="font-medium">AI custom GPT </h2>
+              </Link>
+              <Link href="/app/plan/custom-gpts">
+                <div
+                  className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
+                >
+                  <div className="flex gap-4 items-center">
+                    <Image
+                      className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
+                      src="/icons/custom-gpts.svg"
+                      alt=""
+                      width={60}
+                      height={60}
+                    />
+                    <h2 className="font-medium">AI custom GPT </h2>
+                  </div>
+                  <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
+                    <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
+                  </button>
                 </div>
-                <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
-                  <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
-                </button>
-              </div>
-            </Link>
-            <Link href="/app/plan/text-to-video">
-              <div
-                className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-              >
-                <div className="flex gap-4 items-center">
-                  <Image
-                    className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
-                    src="/icons/media.svg" alt="" width={60} height={60} />
-                  <h2 className="font-medium">Text to avatar </h2>
+              </Link>
+              <Link href="/app/plan/text-to-video">
+                <div
+                  className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
+                >
+                  <div className="flex gap-4 items-center">
+                    <Image
+                      className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
+                      src="/icons/media.svg" alt="" width={60} height={60} />
+                    <h2 className="font-medium">Text to avatar </h2>
+                  </div>
+                  <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
+                    <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
+                  </button>
                 </div>
-                <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
-                  <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
-                </button>
-              </div>
-            </Link>
-            <Link href="/app/create/workflow-builder">
-              <div
-                className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-              >
-                <div className="flex gap-4 items-center">
-                  <Image
-                    className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
-                    src="/icons/workflow-builder.svg"
-                    alt=""
-                    width={60}
-                    height={60}
-                  />
-                  <h2 className="font-medium">Workflow builder</h2>
+              </Link>
+              <Link href="/app/create/workflow-builder">
+                <div
+                  className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
+                >
+                  <div className="flex gap-4 items-center">
+                    <Image
+                      className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
+                      src="/icons/workflow-builder.svg"
+                      alt=""
+                      width={60}
+                      height={60}
+                    />
+                    <h2 className="font-medium">Workflow builder</h2>
+                  </div>
+                  <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
+                    <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
+                  </button>
                 </div>
-                <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
-                  <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
-                </button>
-              </div>
-            </Link>
-            <Link href="/app/create/ai-articles">
-              <div
-                className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-              >
-                <div className="flex gap-4 items-center">
-                  <Image
-                    className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
-                    src="/icons/text-generator.svg"
-                    alt=""
-                    width={60}
-                    height={60}
-                  />
-                  <h2 className="font-medium">AI article wizard</h2>
+              </Link>
+              <Link href="/app/create/ai-articles">
+                <div
+                  className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
+                >
+                  <div className="flex gap-4 items-center">
+                    <Image
+                      className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
+                      src="/icons/text-generator.svg"
+                      alt=""
+                      width={60}
+                      height={60}
+                    />
+                    <h2 className="font-medium">AI article wizard</h2>
+                  </div>
+                  <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
+                    <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
+                  </button>
                 </div>
-                <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
-                  <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
-                </button>
-              </div>
-            </Link>
+              </Link>
+            </div>
+
           </div>
         </div>
       </div>
