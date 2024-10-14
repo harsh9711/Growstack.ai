@@ -134,7 +134,7 @@ export default function Dashboard() {
 
   return (
     <main>
-      <div className="bg-[#EBF0F6] h-[97%] w-full max-w-[96%] mx-auto absolute top-0 left-0 right-0 rounded-b-[60px]" />
+      <div className="bg-[#EBF0F6] h-[30%] w-full max-w-[96%] mx-auto absolute top-0 left-0 right-0 rounded-b-[60px]" />
       <div className="h-screen z-[1]">
         <div
           className="flex justify-between items-center mt-8"

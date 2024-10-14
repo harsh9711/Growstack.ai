@@ -278,7 +278,7 @@ export default function ChatComponent() {
         }
     };
     return (
-        <div className=' flex flex-col bg-white px-8 py-8 rounded-3xl border border-[#E8E8E8] h-full' data-aos='fade-up'>
+        <div className=' flex flex-col bg-white px-8 py-8 rounded-3xl border border-[#E8E8E8] min-h-[780px] h-full' data-aos='fade-up'>
             {isDashboardChatModalOpen && (
                 <DashboardChatModal onClose={() => setIsDashboardChatModalOpen(false)} onSelectConversation={handleSelectConversation} />
             )}
