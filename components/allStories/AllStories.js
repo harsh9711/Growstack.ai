@@ -24,7 +24,7 @@ function AllStories() {
                   <span>“</span>The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven
                   decisions.<span>”</span>
                 </p>
-                <div className="d-flex align-items-center block">
+                <div className="  block">
                   <div className="flex-shrink-0">
                     <img src="/images_growstack/verticals/user.svg" alt="user" />
                   </div>
@@ -42,7 +42,7 @@ function AllStories() {
                   <span>“</span>The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven
                   decisions.<span>”</span>
                 </p>
-                <div className="d-flex align-items-center block">
+                <div className="  block">
                   <div className="flex-shrink-0">
                     <img src="/images_growstack/verticals/user.svg" alt="user" />
                   </div>
@@ -60,7 +60,7 @@ function AllStories() {
                   <span>“</span>The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven
                   decisions.<span>”</span>
                 </p>
-                <div className="d-flex align-items-center block">
+                <div className="  block">
                   <div className="flex-shrink-0">
                     <img src="/images_growstack/verticals/user.svg" alt="user" />
                   </div>
@@ -78,7 +78,7 @@ function AllStories() {
                   <span>“</span>The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven
                   decisions.<span>”</span>
                 </p>
-                <div className="d-flex align-items-center block">
+                <div className="  block">
                   <div className="flex-shrink-0">
                     <img src="/images_growstack/verticals/user.svg" alt="user" />
                   </div>
@@ -96,7 +96,7 @@ function AllStories() {
                   <span>“</span>The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven
                   decisions.<span>”</span>
                 </p>
-                <div className="d-flex align-items-center block">
+                <div className="  block">
                   <div className="flex-shrink-0">
                     <img src="/images_growstack/verticals/user.svg" alt="user" />
                   </div>
@@ -114,7 +114,7 @@ function AllStories() {
                   <span>“</span>The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven
                   decisions.<span>”</span>
                 </p>
-                <div className="d-flex align-items-center block">
+                <div className="  block">
                   <div className="flex-shrink-0">
                     <img src="/images_growstack/verticals/user.svg" alt="user" />
                   </div>
@@ -132,7 +132,7 @@ function AllStories() {
                   <span>“</span>The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven
                   decisions.<span>”</span>
                 </p>
-                <div className="d-flex align-items-center block">
+                <div className="  block">
                   <div className="flex-shrink-0">
                     <img src="/images_growstack/verticals/user.svg" alt="user" />
                   </div>
@@ -150,7 +150,7 @@ function AllStories() {
                   <span>“</span>The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven
                   decisions.<span>”</span>
                 </p>
-                <div className="d-flex align-items-center block">
+                <div className="  block">
                   <div className="flex-shrink-0">
                     <img src="/images_growstack/verticals/user.svg" alt="user" />
                   </div>
@@ -168,7 +168,7 @@ function AllStories() {
                   <span>“</span>The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven
                   decisions.<span>”</span>
                 </p>
-                <div className="d-flex align-items-center block">
+                <div className="  block">
                   <div className="flex-shrink-0">
                     <img src="/images_growstack/verticals/user.svg" alt="user" />
                   </div>
@@ -186,7 +186,7 @@ function AllStories() {
                   <span>“</span>The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven
                   decisions.<span>”</span>
                 </p>
-                <div className="d-flex align-items-center block">
+                <div className="  block">
                   <div className="flex-shrink-0">
                     <img src="/images_growstack/verticals/user.svg" alt="user" />
                   </div>
@@ -204,7 +204,7 @@ function AllStories() {
                   <span>“</span>The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven
                   decisions.<span>”</span>
                 </p>
-                <div className="d-flex align-items-center block">
+                <div className="  block">
                   <div className="flex-shrink-0">
                     <img src="/images_growstack/verticals/user.svg" alt="user" />
                   </div>
@@ -222,7 +222,7 @@ function AllStories() {
                   <span>“</span>The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven
                   decisions.<span>”</span>
                 </p>
-                <div className="d-flex align-items-center block">
+                <div className="  block">
                   <div className="flex-shrink-0">
                     <img src="/images_growstack/verticals/user.svg" alt="user" />
                   </div>

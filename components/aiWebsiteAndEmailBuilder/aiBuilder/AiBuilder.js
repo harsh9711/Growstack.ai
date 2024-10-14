@@ -63,7 +63,7 @@ function AiBuilder() {
                                 >
                                     {activeTab === 'website' && (
                                         <div className="contentBlock">
-                                            <div className="row align-items-center">
+                                            <div className="row ">
                                                 <div className="" data-aos="fade-right"
                                                     data-aos-easing="ease-in-sine"
                                                     data-aos-duration="1000">
@@ -93,7 +93,7 @@ function AiBuilder() {
                                     )}
                                     {activeTab === 'email' && (
                                         <div className="contentBlock">
-                                            <div className="row align-items-center">
+                                            <div className="row ">
                                                 <div className="" data-aos="fade-right"
                                                     data-aos-easing="ease-in-sine"
                                                     data-aos-duration="1000">

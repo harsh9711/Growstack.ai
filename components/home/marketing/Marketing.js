@@ -80,7 +80,7 @@ function Marketing() {
               {walletStackList[tabs].slides.map((slide, index) => (
                 <SwiperSlide key={index}>
                   <div className="card" style={{ backgroundColor: slide.bgColor }}>
-                    <div className="row align-items-center">
+                    <div className="row ">
                       <div className="">
                         <div className="writterImg">
                           <img src="/images_growstack/home/marketSlider.svg" alt="marketSlider" />

@@ -118,7 +118,7 @@ function VideoSolution() {
                   </div>
                 </div>
               </div>
-              <div className=" d-flex align-items-center banner-div">
+              <div className="   banner-div">
                 <div className="form-wrap-img">
                   <img
                     src="/images_growstack/textVideo/group-1.svg"
@@ -166,7 +166,7 @@ function VideoSolution() {
                   </div>
                 </div>
               </div>
-              <div className=" d-flex align-items-center">
+              <div className="  ">
                 <div className="form-wrap-img frame-2">
                   <img
                     src="/images_growstack/textVideo/group-2.svg"
@@ -218,7 +218,7 @@ function VideoSolution() {
                   </div>
                 </div>
               </div>
-              <div className=" d-flex align-items-center">
+              <div className="  ">
                 <div className="form-wrap-img frame-3">
                   <img
                     src="/images_growstack/textVideo/group-3.svg"

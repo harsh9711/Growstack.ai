@@ -36,7 +36,7 @@ function Verticals() {
                       <h5 className="heading">
                         <span>What is Sales Planning? How to</span> Create a Sales Plan
                       </h5>
-                      <div className="d-flex align-items-center block">
+                      <div className="  block">
                         <div className="flex-shrink-0">
                           <img src="/images_growstack/verticals/user.svg" alt="user" />
                         </div>
@@ -83,7 +83,7 @@ function Verticals() {
                           <span>What is Sales Planning? How to</span> Create a Sales Plan
                         </h5>
                         <p>Sales planning is a fundamental component of sound selling. After all, you can‘t structure an effective sales effort if you don’t have, well, structure.</p>
-                        <div className="d-flex align-items-center block">
+                        <div className="  block">
                           <div className="flex-shrink-0">
                             <img src="/images_growstack/verticals/user.svg" alt="user" />
                           </div>
@@ -114,7 +114,7 @@ function Verticals() {
                           <span>What is Sales Planning? How to</span> Create a Sales Plan
                         </h5>
                         <p>Sales planning is a fundamental component of sound selling. After all, you can‘t structure an effective sales effort if you don’t have, well, structure.</p>
-                        <div className="d-flex align-items-center block">
+                        <div className="  block">
                           <div className="flex-shrink-0">
                             <img src="/images_growstack/verticals/user.svg" alt="user" />
                           </div>
@@ -145,7 +145,7 @@ function Verticals() {
                           <span>What is Sales Planning? How to</span> Create a Sales Plan
                         </h5>
                         <p>Sales planning is a fundamental component of sound selling. After all, you can‘t structure an effective sales effort if you don’t have, well, structure.</p>
-                        <div className="d-flex align-items-center block">
+                        <div className="  block">
                           <div className="flex-shrink-0">
                             <img src="/images_growstack/verticals/user.svg" alt="user" />
                           </div>
@@ -176,7 +176,7 @@ function Verticals() {
                           <span>What is Sales Planning? How to</span> Create a Sales Plan
                         </h5>
                         <p>Sales planning is a fundamental component of sound selling. After all, you can‘t structure an effective sales effort if you don’t have, well, structure.</p>
-                        <div className="d-flex align-items-center block">
+                        <div className="  block">
                           <div className="flex-shrink-0">
                             <img src="/images_growstack/verticals/user.svg" alt="user" />
                           </div>
@@ -207,7 +207,7 @@ function Verticals() {
                           <span>What is Sales Planning? How to</span> Create a Sales Plan
                         </h5>
                         <p>Sales planning is a fundamental component of sound selling. After all, you can‘t structure an effective sales effort if you don’t have, well, structure.</p>
-                        <div className="d-flex align-items-center block">
+                        <div className="  block">
                           <div className="flex-shrink-0">
                             <img src="/images_growstack/verticals/user.svg" alt="user" />
                           </div>
@@ -238,7 +238,7 @@ function Verticals() {
                           <span>What is Sales Planning? How to</span> Create a Sales Plan
                         </h5>
                         <p>Sales planning is a fundamental component of sound selling. After all, you can‘t structure an effective sales effort if you don’t have, well, structure.</p>
-                        <div className="d-flex align-items-center block">
+                        <div className="  block">
                           <div className="flex-shrink-0">
                             <img src="/images_growstack/verticals/user.svg" alt="user" />
                           </div>
