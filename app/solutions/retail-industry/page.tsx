@@ -17,7 +17,7 @@ const page = () => {
   }, []);
   return (
     <main className="bg-white overflow-hidden max-w-[1920px] w-full mx-auto">
-      <section className="bg-primary-green w-full mb-10 2xl:mb-20 rounded-b-[60px] sm:rounded-b-[0px] items-center justify-center mx-auto">
+      <section className=" w-full mb-10 2xl:mb-20  items-center justify-center mx-auto">
         <Navbar
           logoUrl="/white.png"
           logoAlt="Custom Logo"

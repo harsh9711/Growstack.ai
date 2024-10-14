@@ -5,103 +5,62 @@ import ArrowRight from "@/components/home/drag-features/icons/ArrowRight";
 import "../../../../styles/new.css";
 const HeroSection = () => {
   return (
-    <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1350px] 2xl:p-0 p-4 w-full 2xl:max-h-[1112px] h-full justify-center mx-auto">
-      <div className="w-full flex flex-row justify-between brightness-110 relative gap-x-20  items-center mt-2 mb-6 2xl:mt-32 2xl:mb-40">
-        <div className="w-full max-w-[700px] gap-y-4 sm:items-start items-center  flex flex-col">
+<div className="bg-[url('/leaderhero.png')] bg-cover bg-no-repeat relative flex items-center justify-center 2xl:p-0 p-4 w-full 2xl:max-h-[1112px] h-full mx-auto">
+  <div className="w-full flex flex-col justify-center items-center brightness-110 relative gap-y-6 mt-2 mb-6 2xl:mt-32 2xl:mb-40">
+    
+    <div className="w-full max-w-[700px] flex flex-col items-center gap-y-4">
+      <div
+        data-aos="fade-right"
+        data-aos-duration="1200"
+        className="bg-white text-black py-2 2xl:px-4 text-center flex items-center justify-center text-[10px] 2xl:text-[12px] rounded-full font-semibold uppercase max-w-[300px] 2xl:max-w-[352px] shadow-lg w-full tracking-widest"
+      >
+        Growstack for Technology Industry
+      </div>
+
+      <div className="2xl:max-w-[663px] w-full brightness-95 text-center">
+        <h1
+          data-aos="fade-right"
+          data-aos-duration="1500"
+          className="text-[26px] xl:text-[40px] 2xl:text-[48px] w-full leading-normal text-white"
+        >
+          <span className="font-semibold">
+          Transform your retail 
+experience 
+          </span>{"   "}
+           <span className="font-light">with GrowStack</span>
+        </h1>
+        <p
+          data-aos="fade-right"
+          data-aos-duration="1500"
+          className="text-[16px] 2xl:text-[18px] text-white mt-4 w-full max-w-[600px] leading-normal font-light"
+        >
+Empower your retail operations with AI-driven solutions for enhanced customer engagement, streamlined processes, and data-driven insights.        </p>
+
+        <div className="flex flex-col gap-20 mt-10">
           <div
             data-aos="fade-right"
-            data-aos-duration="1200"
-            className="bg-white text-black py-2 2xl:px-4 text-center items-center justify-center flex text-[10px] 2xl:text-[12px] rounded-full font-semibold uppercase max-w-[300px] 2xl:max-w-[352px] shadow-lg w-full tracking-widest"
-          >
-            Growstack for Technology INdustry
-          </div>
-
-          <div className="2xl:max-w-[663px] w-full brightness-95">
-            <h1
-              data-aos="fade-right"
-              data-aos-duration="1500"
-              className="text-[26px] xl:text-[40px] 2xl:text-[48px] text-center sm:text-start   w-full leading-normal text-white"
-            >
-              <span className="font-semibold">
-                Empower your tech business with{" "}
-              </span>
-             <span className="font-light">AI-driven solutions </span>
-            </h1>
-            <p
-              data-aos="fade-right"
-              data-aos-duration="1500"
-              className="text-[16px] 2xl:text-[18px] sm:text-start text-center text-white mt-4 w-full max-w-[600px] leading-normal font-light"
-            >
-             Transform your operations, enhance security, and unlock innovation with Growstack's advanced AI tools tailored for the technology industry.
-            </p>
-          
-
-            <div className="flex flex-col gap-20 mt-10">
-              <div
-                data-aos="fade-right"
-                data-aos-duration="1500"
-                className="flex flex-row items-center justify-center sm:items-start sm:justify-start gap-8 group text-[12px] 2xl:text-[18px]"
-              >
-                <Link href="/auth/register" className="no-underline">
-                  {" "}
-                  <button className="bg-white font-medium flex items-center gap-2 text-[#034737] 2xl:py-4 2xl:px-7  rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
-                    Get free trial <ArrowRight />
-                  </button>
-                </Link>
-                <Link href="/demo" className="no-underline">
-                  {" "}
-                  <button className=" font-medium flex items-center gap-2 text-white 2xl:py-4 2xl:px-7 border border-white  rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
-                    Get demo
-                    <ArrowRight className="text-white" />
-                  </button>
-                </Link>
-              </div>
-
-              {/* <div
-              data-aos="fade-right"
-              data-aos-duration="1500"
-              className="flex  flex-wrap gap-4"
-            >
-              <button className="flex items-center gap-2   text-primary-green rounded-xl">
-                <Image
-                  className="w-full  h-full"
-                  src="/play2.png"
-                  alt="Apple"
-                  width={180}
-                  height={400}
-                />
-              </button>
-              <button className="flex items-center gap-2   text-primary-green rounded-xl">
-                <Image
-                  className="w-full  h-full "
-                  src="/apple2.png"
-                  alt="Apple"
-                  width={180}
-                  height={400}
-                />
-              </button>
-            </div> */}
-            </div>
-          </div>
-        </div>
-
-        <div className="2xl:flex xl:flex lg:flex md:flex hidden items-end relative w-full  justify-end ">
-          <div
-            data-aos="fade-left"
             data-aos-duration="1500"
-            className="w-full relative z-0 "
+            className="flex flex-row items-center justify-center gap-8 group text-[12px] 2xl:text-[18px]"
           >
-            <Image
-              className="xl:w-[1500px] w-full 2xl:w-[2200px]  h-full"
-              src="/solutions/tech.svg"
-              alt="Center Image"
-              width={1012}
-              height={812}
-            />
+            <Link href="/auth/register" className="no-underline">
+              <button className="bg-white font-medium flex items-center gap-2 text-[#034737] 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
+                Get free trial <ArrowRight />
+              </button>
+            </Link>
+            <Link href="/demo" className="no-underline">
+              <button className="font-medium flex items-center gap-2 text-white 2xl:py-4 2xl:px-7 border border-white rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
+                Get demo
+                <ArrowRight className="text-white" />
+              </button>
+            </Link>
           </div>
         </div>
       </div>
     </div>
+
+  </div>
+</div>
+
   );
 };
 
