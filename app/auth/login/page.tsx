@@ -27,7 +27,6 @@ export default function Login() {
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [isRememberMe, setIsRememberMe] = useState(false);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -38,12 +37,15 @@ export default function Login() {
       .string()
       .min(8, "Password must be at least 8 characters")
       .max(20, "Password can't exceed 20 characters"),
+    remember_me: z.boolean().optional().default(false),
   });
   const [isPending, setIsPending] = useState(false);
 
   type ValidationSchemaType = z.infer<typeof ValidationSchema>;
 
   const {
+    watch,
+    setValue,
     register,
     handleSubmit,
     formState: { errors },
@@ -59,7 +61,7 @@ export default function Login() {
         API_URL + "/users/api/v1/auth/login",
         validatedData
       );
-      const expiryTime = isRememberMe
+      const expiryTime = watch("remember_me")
         ? 30 * 24 * 60 * 60 * 1000
         : 7 * 24 * 60 * 60 * 1000;
 
@@ -224,9 +226,12 @@ export default function Login() {
 
                   <div className="flex justify-between items-center gap-4">
                     <div className="flex items-center space-x-2">
-                      <Checkbox id="remember-me" checked={isRememberMe} onCheckedChange={() => [
-                        setIsRememberMe(!isRememberMe)
-                      ]} />
+                      <Checkbox
+                        id="remember_me"
+                        checked={watch("remember_me")}
+                        onCheckedChange={() => {
+                          setValue("remember_me", !watch("remember_me"));
+                        }} />
                       <label
                         htmlFor="remember-me"
                         className="text-sm font-medium text-[#667085] leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"

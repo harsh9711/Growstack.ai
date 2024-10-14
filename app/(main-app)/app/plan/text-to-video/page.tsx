@@ -101,7 +101,7 @@ const VideoTable: React.FC<{
       console.log(data.usage_amount)
       setPlanUsage(data);
 
-      if ((data?.usage?.no_of_text_to_avatar || 0) <= 0 && user?.user_type !== "ADMIN") {
+      if (user?.user_type !== "ADMIN" && (data?.usage?.no_of_text_to_avatar || 0) <= 0) {
         toast.error('Trial expired');
         window.location.href = isSubscribed ? ALL_ROUTES.UPGRADE : ALL_ROUTES.PAYMENT
       }
