@@ -32,7 +32,7 @@ const page = () => {
 
         <HeroSection />
       </section>{" "}
-      <section className=" sm:p-20">
+      <section className=" p-4 sm:p-20">
         <div className="relative mx-auto rounded-t-[40px] items-center justify-center py-10 2xl:py-20 ">
           <div className="flex flex-col  items-center justify-center mx-auto gap-2">
             <div
@@ -76,13 +76,13 @@ const page = () => {
               maintain
             </div> */}
 
-            <div className="flex items-start justify-start">
+            <div className="flex items-center sm:items-start justify-start">
               {" "}
               <h1
                 data-aos="fade-up"
                 data-aos-duration="1500"
                 data-aos-delay="300"
-                className="text-start  max-w-[700px] text-[26px] 2xl:text-[42px] leading-normal"
+                className="text-center sm:text-start  max-w-[700px] text-[26px] 2xl:text-[42px] leading-normal"
               >
                 <span className="text-black font-extrabold">
                   Overcome leadership challenges

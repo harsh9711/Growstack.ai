@@ -76,7 +76,7 @@ const data = {
     { time: "8:00 AM", activity: "Morning review" },
     { time: "10:00 AM", activity: "Team meeting preparation" },
     { time: "12:00 PM", activity: "Lead nurturing" },
-    { time: "3:00 PM", activity: "Team communication" },
+    { time: "3:00 PM", activity: "Team commu-nication" },
     { time: "5:00 PM", activity: "End-of-day summary" },
   ],
 };
