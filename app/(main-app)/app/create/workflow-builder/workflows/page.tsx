@@ -39,10 +39,12 @@ export default function Workflows() {
   const [clickedBtnIdx, setClickedBtnIdx] = useState<number | null>(null);
   const createWorkflow = async () => {
     setIsCreateWorkflowReqPending(true);
-    const canCreateWorkflow = await fetchPlanUsage();
-    if (!canCreateWorkflow) {
-      setIsCreateWorkflowReqPending(false);
-      return;
+    if (user?.user_type !== "ADMIN") {
+      const canCreateWorkflow = await fetchPlanUsage();
+      if (!canCreateWorkflow) {
+        setIsCreateWorkflowReqPending(false);
+        return;
+      }
     }
     try {
       const response = await instance.post(`${API_URL}/workflow/api/v1`);
@@ -57,15 +59,17 @@ export default function Workflows() {
     }
   };
 
-  const runWorkflow = async (workflowId:string) => {
+  const runWorkflow = async (workflowId: string) => {
+    if (user?.user_type === "ADMIN") {
+      router.push(`/app/create/workflow-builder/workflows/user-work-flow?workflow_id=${workflowId}`);
+      return;
+    }
     const canCreateWorkflow = await fetchPlanUsage();
     if (!canCreateWorkflow) {
       return;
     }
-    router.push(`/app/create/workflow-builder/workflows/user-work-flow?workflow_id=${workflowId}`);
-
   }
-  
+
   const fetchPlanUsage = async () => {
     setIsPlanUsageLoading(true);
     try {
@@ -74,11 +78,11 @@ export default function Workflows() {
       setPlanUsage(data);
       if (data.usage.ai_worfklow_credits <= 0 && user?.user_type !== "ADMIN") {
         setIsAddOnModalOpen(true);
-        return false; 
-      }else{
+        return false;
+      } else {
         return true;
       }
-  
+
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
@@ -91,7 +95,7 @@ export default function Workflows() {
       setIsPlanUsageLoading(false);
     }
   };
-  
+
 
 
   const getAllWorkFlows = async () => {
@@ -183,8 +187,8 @@ export default function Workflows() {
               <div className="flex space-x-3 items-center">
                 <Link href="/app/create/workflow-builder/">
                   <button className="w-full max-w-fit bg-primary-green text-white sheen transition duration-500 px-5 h-14 rounded-xl flex items-center gap-2 whitespace-nowrap">
-                    <WorkflowsIcon size={20}/>
-                    <WorkflowsIcon2 size={20}/>
+                    <WorkflowsIcon size={20} />
+                    <WorkflowsIcon2 size={20} />
                     Explore prebuilt workflows
                   </button>
                 </Link>
@@ -210,10 +214,10 @@ export default function Workflows() {
                   </p>
                 </div>
                 <div className="flex items-center gap-4">
-                    <button key={workflow._id} onClick={() => runWorkflow(workflow.workflow_id)} className="flex items-center gap-3 rounded-xl h-12 bg-primary-green sheen px-6 text-white text-[14px]">
-                      <FaPlay size={12} />
-                      Run workflow
-                    </button>
+                  <button key={workflow._id} onClick={() => runWorkflow(workflow.workflow_id)} className="flex items-center gap-3 rounded-xl h-12 bg-primary-green sheen px-6 text-white text-[14px]">
+                    <FaPlay size={12} />
+                    Run workflow
+                  </button>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <button className="px-2 hover:bg-gray-100 h-10 w-10 rounded-full">
