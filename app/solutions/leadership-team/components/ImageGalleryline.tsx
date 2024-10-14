@@ -137,8 +137,8 @@ const ImageGalleryLine = () => {
             </div>
           </div>
         ) : (
-          <div className="relative w-full loading-svg  translate-y-32  2xl:translate-y-24 ">
-          <svg className="2xl:flex hidden" width="1424" height="595" viewBox="0 0 1424 595" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <div className="relative w-full  translate-y-32  2xl:translate-y-24 ">
+          <svg className="2xl:flex hidden loading-svg " width="1424" height="595" viewBox="0 0 1424 595" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path fill-rule="evenodd" clip-rule="evenodd" d="M1331.5 1.5H1403.5C1414.27 1.5 1423 10.2304 1423 21V226.5C1423 237.269 1414.27 246 1403.5 246H1190C1178.68 246 1169.5 255.178 1169.5 266.5V591.5H705.252C694.483 591.5 685.752 582.77 685.752 572V530C685.752 518.678 676.574 509.5 665.252 509.5H394H392.5H226.5C215.73 509.5 207 500.77 207 490V390.5V286C207 274.678 197.822 265.5 186.5 265.5H21C10.2304 265.5 1.5 256.77 1.5 246V70C1.5 59.2304 10.2304 50.5 21 50.5H438.5H692.245C703.567 50.5 712.745 41.3218 712.745 30V21C712.745 10.2304 721.476 1.5 732.245 1.5H1324.5H1331.5ZM392.5 510.5H226.5C215.178 510.5 206 501.322 206 490V390.5V286C206 275.23 197.27 266.5 186.5 266.5H21C9.67816 266.5 0.5 257.322 0.5 246V70C0.5 58.6782 9.67816 49.5 21 49.5H438.5H692.245C703.015 49.5 711.745 40.7696 711.745 30V21C711.745 9.67816 720.923 0.5 732.245 0.5H1324.5H1331.5H1403.5C1414.82 0.5 1424 9.67816 1424 21V226.5C1424 237.822 1414.82 247 1403.5 247H1190C1179.23 247 1170.5 255.73 1170.5 266.5V591.5H1173V592.5H1170.5V594.5H1169.5V592.5H705.252C693.931 592.5 684.752 583.322 684.752 572V530C684.752 519.23 676.022 510.5 665.252 510.5H394H392.5Z" fill="#A9FF9B"/>
 </svg>
 
@@ -176,7 +176,7 @@ const ImageGalleryLine = () => {
                    src="/leadership/wire/wire2.svg"
                    width={980}
                    height={600} 
-                   className="w-[350px] h-[262.5px] hover-boxleadership1"
+                   className="w-[350px] h-[262.5px] hover-boxleadership21"
                    alt="Image 2"
                    onClick={() => handleImageClick(images[1])}
                    style={{ cursor: 'pointer' }}
