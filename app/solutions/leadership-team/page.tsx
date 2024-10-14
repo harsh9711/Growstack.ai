@@ -125,7 +125,7 @@ const page = () => {
           </div>
         </div>
       </section>
-      <section className="relative w-full 2xl:mt-20">
+      <section className="relative w-full xl:mt-20">
         <div className="2xl:flex xl:flex hidden flex-col  2xl:max-w-[1921px] w-full 2xl:max-h-[973px] h-full justify-center mx-auto   items-center gap-4  ">
           <ImageGalleryLine />
         </div>
@@ -168,10 +168,12 @@ const page = () => {
           </p>
         </div>
       </section>
-      <section className="flex flex-col gap-y-10 sm:mt-40 mt-10">
-      <Demo/>
+      <section className="flex flex-col gap-y-10 sm:mt-20 mt-10">
+        <Demo />
       </section>
-      <section className="p-4 sm:p-0"><Faqs/></section>
+      <section className="p-4 sm:p-0 sm:mt-36">
+        <Faqs />
+      </section>
       <Footer />
     </main>
   );

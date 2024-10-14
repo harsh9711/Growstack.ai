@@ -20,7 +20,7 @@ const Demo = () => {
       </Link>
     </div>
   
-    <div className="flex flex-col gap-y-10  sm:flex-row max-w-[1240px] w-full gap-x-10 sm:gap-x-20 items-center mx-auto justify-between flex-wrap">
+    <div className="flex flex-col sm:flex-row  max-w-[1240px] w-full gap-x-10 sm:gap-x-28 items-center mx-auto justify-between ">
       <div
         className="relative max-w-[621px] mx-auto py-10 w-full h-full flex flex-col gap-y-8 items-start justify-center text-white"
         data-aos="fade-right"
