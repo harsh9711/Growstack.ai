@@ -54,7 +54,7 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile, platforms })
                 const response = await instance.get(
                     `${API_URL}/users/api/v1/social-media/posts/${selectedIcon.toLowerCase()}?limit=10`
                 );
-                const post = response.data.data.posts
+                const post = response.data.data.posts.filter((postItems:any)=>postItems.post !=="")
                 setPostDetails(post);
             }
             setLoading(false)
