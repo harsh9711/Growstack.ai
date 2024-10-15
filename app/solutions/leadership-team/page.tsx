@@ -16,6 +16,7 @@ import Box from "./components/Box";
 import Link from "next/link";
 import Demo from "./components/Demo";
 import Faqs from "./components/Faq";
+import BoxResponsive from "./components/BoxResponsive";
 
 const page = () => {
   useEffect(() => {
@@ -161,6 +162,7 @@ const page = () => {
             </div>
           </div>
           <Box />
+             {/* <BoxResponsive/> */}
           <p className="sm:text-[18px] max-w-[1240px] w-full text-center flex items-center justify-center text-[12px] font-medium">
             With GrowStack, Sarah saves approximately 6.5 hours daily, enabling
             her to focus on high-level strategy, leadership, and growth, instead
