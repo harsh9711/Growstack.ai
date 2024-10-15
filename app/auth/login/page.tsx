@@ -69,6 +69,7 @@ export default function Login() {
         secure: true,
         sameSite: "none",
         expires: new Date(Date.now() + expiryTime),
+        domain: process.env.NEXT_PUBLIC_APP_BASE_URL,
       });
 
       const userData = await handleGetProfileData();

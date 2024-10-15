@@ -87,6 +87,7 @@ export default function Register() {
         secure: true,
         sameSite: "none",
         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        domain: process.env.NEXT_PUBLIC_APP_BASE_URL,
       });
 
       toast.success(response.data.message);
