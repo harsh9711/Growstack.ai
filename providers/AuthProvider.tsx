@@ -93,8 +93,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       pathname !== "/auth/redirect" &&
       pathname !== "/Payment" &&
       !isSubscribed &&
-      !planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan.plan_id) &&
-      user?.user_type !== "ADMIN"
+      user?.user_type !== "ADMIN" &&
+      !planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan.plan_id)
     ) {
       console.log("You need a subscription to view this page!");
       router.push("/Payment");
@@ -105,8 +105,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (isLoggedIn && currentPlan) {
+      if (user?.user_type === "ADMIN") {
+        return;
+      }
       const hasAccess = hasAccessToRoute(currentPlan.usage, pathname);
-      if (!hasAccess && user?.user_type !== "ADMIN") {
+      if (!hasAccess) {
         setIsAddOnModalOpen(true);
       } else {
         setIsAddOnModalOpen(false);

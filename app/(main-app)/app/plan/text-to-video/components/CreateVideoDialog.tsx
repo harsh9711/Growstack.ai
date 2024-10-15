@@ -133,7 +133,7 @@ const CreateVideoDialog = ({
       const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
       const data: PlanUsage = response.data.data;
       setPlanUsage(data);
-      if (data.usage.no_of_text_to_video <= 0 && user?.user_type !== "ADMIN") {
+      if (user?.user_type !== "ADMIN" && data.usage.no_of_text_to_video <= 0) {
         setIsAddOnModalOpen(true)
       }
     } catch (error: any) {
@@ -421,7 +421,7 @@ const CreateVideoDialog = ({
         onClick={(e) => {
           e.stopPropagation();
           if (planUsage) {
-            if (planUsage.usage.no_of_text_to_avatar <= 0 && user?.user_type !== "ADMIN") {
+            if (user?.user_type !== "ADMIN" && planUsage.usage.no_of_text_to_avatar <= 0) {
               setIsAddOnModalOpen(true)
             } else {
               setDialogOpen(true)
@@ -649,7 +649,7 @@ const CreateVideoDialog = ({
                           </div>
 
                           <button
-                            disabled={loading} style={{whiteSpace:"nowrap"}}
+                            disabled={loading} style={{ whiteSpace: "nowrap" }}
                             className={clsx(
                               "bg-primary-green text-[12px] text-white py-3.5 px-10 w-full width-[30%] rounded-xl flex items-center justify-center mt-1",
                               {

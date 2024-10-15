@@ -128,7 +128,7 @@ export default function Page() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    if ((planUsage?.usage?.ai_background_generator_credits || 0) <= 0 && user?.user_type !== "ADMIN") {
+    if (user?.user_type !== "ADMIN" && (planUsage?.usage?.ai_background_generator_credits || 0) <= 0) {
       setIsAddOnModalOpen(true);
       return;
     }
@@ -257,7 +257,7 @@ export default function Page() {
       const data = response.data.data;
       setPlanUsage(data);
 
-      if (data.usage.ai_background_generator_credits <= 0 && user?.user_type !== "ADMIN") {
+      if (user?.user_type !== "ADMIN" && data.usage.ai_background_generator_credits <= 0) {
         setIsAddOnModalOpen(true)
       }
     } catch (error: any) {

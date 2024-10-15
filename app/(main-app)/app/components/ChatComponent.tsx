@@ -45,8 +45,8 @@ type Message = {
 export default function ChatComponent() {
     const { user, currentPlan } = useSelector((rootState: RootState) => rootState.auth);
 
-    const filteredAiModelOptions = currentPlan &&
-        planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan.plan_id) && user?.user_type !== "ADMIN"
+    const filteredAiModelOptions = user?.user_type !== "ADMIN" && currentPlan &&
+        planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan.plan_id)
         ? [aiModelOptions[0]]
         : aiModelOptions;
     const [enableWebAccess, setEnableWebAccess] = useState<boolean>(false);
@@ -278,7 +278,7 @@ export default function ChatComponent() {
         }
     };
     return (
-        <div className=' flex flex-col bg-white px-8 py-8 rounded-3xl border border-[#E8E8E8] h-[780px]' data-aos='fade-up'>
+        <div className=' flex flex-col bg-white px-8 py-8 rounded-3xl border border-[#E8E8E8] min-h-[580px] h-full' data-aos='fade-up'>
             {isDashboardChatModalOpen && (
                 <DashboardChatModal onClose={() => setIsDashboardChatModalOpen(false)} onSelectConversation={handleSelectConversation} />
             )}
@@ -437,11 +437,11 @@ export default function ChatComponent() {
                     </Select>
                 </div>
             </div>
-            <div className='h-[500px] w-full flex-1 flex flex-col' data-aos='fade-up'>
+            <div className='h-full w-full flex-1 flex flex-col' data-aos='fade-up'>
 
                 <div className='flex-1 w-full overflow-y-auto flex flex-col'>
                     {!messages.length ? (
-                        <div className='flex-1 flex flex-col justify-between mt-6 pb-40'>
+                        <div className='flex-1 flex flex-col justify-between mt-6 '>
                             <div className="flex justify-between ">
                                 <div className='flex items-start space-x-3 relative' data-aos='fade-right'>
                                     <Image src='/logo/growstack-mini.png' alt='growstack_ai_chat' width={35} height={35} className='mt-1' />
@@ -490,7 +490,7 @@ export default function ChatComponent() {
 
                             </div>
 
-                            <div className='grid grid-cols-3 gap-4 mt-10'>
+                            <div className='grid grid-cols-3 gap-4 -mt-24'>
                                 {conversationStarters.map((conversationStarter, index) => (
                                     <div
                                         key={index}
@@ -521,6 +521,7 @@ export default function ChatComponent() {
                 </div>
                 <ChatInput
                     ref={chatInputRef}
+                    selectedBrandVoice={brandVoices.find((voice) => voice._id === selectedBrandVoice)}
                     onSend={updateMessage}
                     fetchConversations={() => { }}
                     selectedConversation={selectedConversation}
