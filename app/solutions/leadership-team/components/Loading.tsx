@@ -139,7 +139,7 @@ const LoadingBar: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col gap-y-6  ">
+    <div className="flex flex-col gap-y-6">
       <div className=" 2xl:items-start items-center justify-center flex flex-col gap-y-4 ">
         <div
           data-aos="fade-up"
@@ -160,6 +160,7 @@ const LoadingBar: React.FC = () => {
           </span>
         </h1>
       </div>
+    
       <div className="gallery-wrapper" ref={galleryRef}>
         <div className="content-display">
           {contents.map((content, index) => (

@@ -54,6 +54,14 @@ const tags = [
     name: "Websites",
   },
   {
+    icon: "/icons/academicsvg.svg",
+    name: "Academic",
+  },
+  {
+    icon: "/icons/businesssvg.svg",
+    name: "Business",
+  },
+  {
     icon: "/icons/my-documents-folder.svg",
     name: "My Assistants",
   },

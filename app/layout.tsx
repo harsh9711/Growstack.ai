@@ -44,6 +44,16 @@ export default function RootLayout({
             gtag('config', 'G-CLCETMEDBL');
           `}
         </Script>
+        <Script id="happierleads" strategy="lazyOnload">
+          {`
+            !function(){var e="rest.happierleads.com/v3/script?clientId=ehacgbpBj346Npwip2yrSJ&version=4.0.0",
+            t=document.createElement("script");window.location.protocol.split(":")[0];
+            t.src="https://"+e;var c=document.getElementsByTagName("script")[0];
+            t.async = true;
+            t.onload = function(){ new Happierleads.default };
+            c.parentNode.insertBefore(t,c)}();
+          `}
+        </Script>
         <Script
           src="https://app.10xlaunch.ai/widget"
           data-app-id="889a8e5c-0c2c-44cb-8494-a1978142001e"

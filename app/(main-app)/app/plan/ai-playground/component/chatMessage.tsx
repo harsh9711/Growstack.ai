@@ -10,11 +10,19 @@ import remarkGfm from "remark-gfm";
 import { getCurrentUser } from "@/lib/features/auth/auth.selector";
 import { Message } from "../interface/playground";
 import { CopyIcon, Regenerate, VerticalLineIcon } from "@/components/svgs";
+import { Clipboard, Check } from "lucide-react";
 
 interface ChatMessagesProps {
   conversation: Message[];
   onRegenerateClick: (chatMessage: string) => void
 }
+
+interface CodeProps {
+  inline?: boolean;
+  className?: string;
+  children?: React.ReactNode;
+}
+
 
 const ChatMessages: React.FC<ChatMessagesProps> = ({ conversation, onRegenerateClick }) => {
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -38,6 +46,44 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ conversation, onRegenerateC
   }, [conversation]);
 
   const currentUser = getCurrentUser();
+
+  const CodeBlock = ({ value, language }: { value: string; language: string }) => {
+    const [copied, setCopied] = useState(false);
+
+    const handleCopy = () => {
+      navigator.clipboard.writeText(value).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      });
+    };
+
+    return (
+      <div className="relative">
+        <pre className="m-0 overflow-x-auto">
+          <code className={`language-${language}`}>{value}</code>
+        </pre>
+        <button 
+          className="absolute top-2 right-2 p-1 rounded-md shadow-sm" 
+          onClick={handleCopy}
+        >
+          {copied ? <Check size={20} className="text-green-500" /> : <Clipboard size={20} />}
+        </button>
+      </div>
+    );
+  };
+
+  const components = {
+    code({ inline, className, children, ...props }: CodeProps) {
+      const match = /language-(\w+)/.exec(className || '');
+      return !inline && match ? (
+        <CodeBlock value={String(children).replace(/\n$/, '')} language={match[1]} />
+      ) : (
+        <code className={className} {...props}>
+          {children}
+        </code>
+      );
+    }
+  };
 
   return (
     <div ref={chatContainerRef} className="flex-1 h-full overflow-y-auto">
@@ -79,6 +125,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({ conversation, onRegenerateC
                       key={chat.content}
                       remarkPlugins={[remarkGfm, remarkBreaks]}
                       rehypePlugins={[rehypeRaw]}
+                      components={components}
                     >
                       {chat.content}
                     </ReactMarkdown>
