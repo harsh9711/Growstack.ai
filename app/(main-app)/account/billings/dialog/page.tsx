@@ -87,7 +87,6 @@ const AddCreditDialog2: React.FC<AddCreditDialog2Props> = () => {
 
   const handlePay = async () => {
     try {
-      //   await onAddCredit(); // Call the onAddCredit prop function
       const response = await instance.post(
         `${API_URL}/users/api/v1/payments/pay-dues`,
         {
