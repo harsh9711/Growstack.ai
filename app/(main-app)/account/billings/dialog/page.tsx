@@ -60,7 +60,6 @@ const AddCreditDialog2: React.FC<AddCreditDialog2Props> = () => {
       const response = await instance.get(
         `${API_URL}/users/api/v1/payments/payment-methods`
       );
-      console.log("payment", response.data.data);
       setPaymentMethods(response.data.data);
     } catch (error: any) {
       console.error("Error fetching payment methods:", error.message);
@@ -154,9 +153,8 @@ const AddCreditDialog2: React.FC<AddCreditDialog2Props> = () => {
                         </div>
                         <div className="space-y-1">
                           <h1 className="text-lg">
-                            {`${paymentMethod.card.brand.toUpperCase()} **** **** **** ${
-                              paymentMethod.card.last4
-                            }`}
+                            {`${paymentMethod.card.brand.toUpperCase()} **** **** **** ${paymentMethod.card.last4
+                              }`}
                           </h1>
                           <p className="text-primary-black text-opacity-50 text-left">
                             Expires{" "}
