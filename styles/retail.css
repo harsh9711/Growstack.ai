@@ -1,0 +1,13 @@
+@keyframes fadeBackground {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  .fade-in-background {
+    animation: fadeBackground 2s ease-in forwards; /* Adjust duration as needed */
+  }
+  

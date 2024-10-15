@@ -75,7 +75,7 @@ const Demo = () => {
           </div>
         </div>
       </div>
-      <div className=" flex flex-col sm:flex-row  max-w-[1240px] w-full gap-y-10 sm:gap-x-28 items-center mx-auto justify-between ">
+      <div className=" sm:hidden flex flex-col sm:flex-row  max-w-[1240px] w-full gap-y-10 sm:gap-x-28 items-center mx-auto justify-between ">
         <div className="max-w-[1240px] mx-auto bg-[#13745D] py-10 w-full h-full rounded-[40px] flex flex-col gap-y-8 items-center justify-center text-white">
           <div className="relative z-10 w-full max-w-[421px] mx-auto h-full flex flex-col gap-y-6 items-center justify-center">
             <h2 className="sm:text-[42px] text-[28px] font-extrabold text-white">

@@ -3,7 +3,7 @@ import React from "react";
 
 const Boxpage = () => {
   return (
-    <div className="flex flex-col sm:flex-row-reverse max-w-[1287px] gap-6  w-full justify-between items-center mx-auto">
+    <div className="flex flex-col-reverse sm:flex-row-reverse max-w-[1287px] gap-6  w-full justify-between items-center mx-auto">
       <div>
         <Image src="/retail/1.svg" width={600} height={500} alt="image" />
       </div>
