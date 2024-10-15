@@ -15,12 +15,12 @@ const Explore = () => {
         <h2 className="font-extrabold sm:text-[28px] text-[20px]">
           Explore your options
         </h2>
-        <div className="flex flex-col sm:flex-row max-w-[1180px] w-full gap-y-10 sm:gap-x-28 items-center mx-auto justify-between">
+        <div className="flex flex-col sm:flex-row max-w-[575px]  sm:max-w-[1180px] w-full gap-y-10 sm:gap-x-28 items-center mx-auto justify-between">
           <div
             data-aos="fade-up"
-            className="max-w-[1120px] mx-auto bg-white text-black py-10 w-full h-full rounded-[20px] flex flex-col gap-y-8 items-start justify-center shadow-md transition-shadow duration-300 hover:shadow-xl"
+            className="max-w-[575px] sm:max-w-[1120px] mx-auto bg-white text-black py-10 w-full h-full rounded-[20px] flex flex-col gap-y-8 items-start justify-center shadow-md transition-shadow duration-300 hover:shadow-xl"
           >
-            <div className="relative z-10 w-full mx-auto h-full flex flex-col sm:flex-row gap-y-6 px-16  items-center justify-between">
+            <div className="relative z-10 w-full mx-auto h-full flex flex-col sm:flex-row gap-y-6 px-8  sm:px-16  items-start  sm:items-center justify-between">
               <div className="flex flex-col gap-y-6 items-start text-left">
                 <h2 className="text-[16px] sm:text-[20px] font-extrabold text-primary-green">
                   Start your free Trial
