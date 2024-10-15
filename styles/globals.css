@@ -2,6 +2,38 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: "PoppinsRegular";
+    src: url("../app/fonts/Poppins-Regular.woff2") format("woff2"), url("../app/fonts/Poppins-Regular.woff") format("woff"),
+        url("../app/fonts/Poppins-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "PoppinsMedium";
+    src: url("../app/fonts/Poppins-Medium.woff2") format("woff2"), url("../app/fonts/Poppins-Medium.woff") format("woff"),
+        url("../app/fonts/Poppins-Medium.ttf") format("truetype");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "PoppinsBold";
+    src: url("../app/fonts/Poppins-Bold.woff2") format("woff2"), url("../app/fonts/Poppins-Bold.woff") format("woff"),
+        url("../app/fonts/Poppins-Bold.ttf") format("truetype");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+
+* {
+    font-family: "PoppinsRegular", sans-serif !important;
+}
+
 .svg-container {
     position: fixed; /* Keep the SVGs fixed in place */
     top: 100px; /* Adjust based on your layout */
@@ -297,33 +329,6 @@ body {
 
 .swiper-pagination .swiper-pagination-bullet-active {
     background: var(--primary);
-}
-
-@font-face {
-    font-family: "PoppinsRegular";
-    src: url("../app/fonts/Poppins-Regular.woff2") format("woff2"), url("../app/fonts/Poppins-Regular.woff") format("woff"),
-        url("../app/fonts/Poppins-Regular.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: "PoppinsMedium";
-    src: url("../app/fonts/Poppins-Medium.woff2") format("woff2"), url("../app/fonts/Poppins-Medium.woff") format("woff"),
-        url("../app/fonts/Poppins-Medium.ttf") format("truetype");
-    font-weight: 600;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: "PoppinsBold";
-    src: url("../app/fonts/Poppins-Bold.woff2") format("woff2"), url("../app/fonts/Poppins-Bold.woff") format("woff"),
-        url("../app/fonts/Poppins-Bold.ttf") format("truetype");
-    font-weight: 600;
-    font-style: normal;
-    font-display: swap;
 }
 
 html {

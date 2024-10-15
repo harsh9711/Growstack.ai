@@ -106,7 +106,7 @@ function Capability() {
                             </div>
                         </div>
                     </div>
-                    <div className='row align-items-center'>
+                    <div className='row '>
                         <div data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                             <div className='card-capability discover'>
                                 <div className='card-body'>

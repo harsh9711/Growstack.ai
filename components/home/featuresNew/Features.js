@@ -81,7 +81,7 @@ function Features() {
               </div>
 
               <div className="feature-block" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
-                <div className="row align-items-center">
+                <div className="row ">
                   <div className="">
                     <img src="/images_growstack/home/fBlock1.svg" alt="Overcome creative block" className="feature-image" />
                   </div>
@@ -98,7 +98,7 @@ function Features() {
               </div>
 
               <div className="feature-block" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
-                <div className="row align-items-center">
+                <div className="row ">
                   <div className="">
                     <h3>Transform ideas into content</h3>
                     <p>Turn your sparks of creativity into content effortlessly. With AI Templates, Text to Video, and Product AI, you have the power to bring your ideas to life.</p>
@@ -115,7 +115,7 @@ function Features() {
               </div>
 
               <div className="feature-block" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
-                <div className="row align-items-center">
+                <div className="row ">
                   <div className="">
                     <img src="/images_growstack/home/fBlock3.svg" alt="Strategize with AI assistants" className="feature-image" />
                   </div>
@@ -169,7 +169,7 @@ function Features() {
               {/* <img className='trophyImg' src="/images_growstack/home/trophyLine.svg" alt="trophyLine" /> */}
 
               <div className="feature-block" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
-                <div className="row align-items-center">
+                <div className="row ">
                   <div className="">
                     <h3>Streamline your processes with AI workflow builder</h3>
                     <p>Optimize your processes effortlessly with our AI Workflow Builder. Automate tasks across various verticals to boost productivity and efficiency.</p>
@@ -191,7 +191,7 @@ function Features() {
               </div>
 
               <div className="feature-block" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
-                <div className="row align-items-center">
+                <div className="row ">
                   <div className="">
                     <h3>Effortless publishing with scheduler</h3>
                     <p>Seamlessly share your articles, blogs, and content across all social media platforms. With automated scheduling and optimized posting times, you can maximize your reach and engagement without the hassle.</p>
@@ -208,7 +208,7 @@ function Features() {
               </div>
 
               <div className="feature-block" data-aos="fade-up" data-aos-easing="ease-in-sine" data-aos-duration="1000">
-                <div className="row align-items-center">
+                <div className="row ">
                   <div className="">
                     <img src="/images_growstack/home/fBlock8.svg" alt="Analyze your impact" className="feature-image" />
                   </div>

@@ -48,7 +48,7 @@ function AiProduct() {
                 </div>
                 <div className='wrapper'>
                     <div className='container'>
-                        <div className='row align-items-end mb-3 mb-md-5'>
+                        <div className='row mb-3 mb-md-5'>
                             <div data-aos='fade-right' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
                                 <span className='user'>From idea to video in minutes 🔥</span>
                                 <h3 className='heading mt-2 mb-2 mb-md-0'>

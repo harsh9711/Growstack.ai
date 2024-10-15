@@ -10,7 +10,7 @@ function Circle() {
   ]; // Update these links as per your routes
 
   return (
-    <div className="position-relative d-flex justify-content-center align-items-center vh-100">
+    <div className="position-relative vh-100">
       <div className="circle outer-circle">
         {Array.from({ length: 12 }).map((_, i) => (
           <div className="icon-container" key={i} style={{ transform: `rotate(${i * 30}deg) translate(650px) rotate(-${i * 30}deg)` }}>
