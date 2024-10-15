@@ -54,7 +54,7 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile, platforms })
                 const response = await instance.get(
                     `${API_URL}/users/api/v1/social-media/posts/${selectedIcon.toLowerCase()}?limit=10`
                 );
-                const post = response.data.data.posts
+                const post = response.data.data.posts.filter((postItems:any)=>postItems.post !=="")
                 setPostDetails(post);
             }
             setLoading(false)
@@ -120,7 +120,7 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile, platforms })
             {postDetails.length > 0 && userPostDetails ? (
                 <>
                     {postDetails.map((post: any, index) => (
-                        <div className='flex flex-row gap-3 mt-2 px-2'>
+                        <div className='flex flex-row gap-3 mt-2 px-2 w-full'>
                             <div className='flex flex-col gap-3'>
                                 <div className="w-[50px] h-[50px] rounded-full shadow-lg bg-white flex items-center justify-center cursor-pointer">
                                     {selectedIcon.toLowerCase() === "facebook" && <FbIcon />}
@@ -129,7 +129,7 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile, platforms })
                                     {selectedIcon.toLowerCase() === "instagram" && <InstaIcon />}
                                 </div>
                             </div>
-                            <div className="p-4 rounded-2xl shadow-lg bg-white w-[600px] h-[100%] overflow-y-auto">
+                            <div className="p-4 rounded-2xl shadow-lg bg-white w-[100%] h-[100%] overflow-y-auto">
                                 <div key={index} className="flex flex-row mb-4 gap-4">
                                     <div className='w-15'>
                                         <div className="w-[50px] h-[50px] rounded-full overflow-hidden flex items-center justify-center">
@@ -311,7 +311,7 @@ const PostCard: React.FC<PostCardProps> = ({ selectedIcon, profile, platforms })
 
                     ))} </>) :
                 <>
-                    {!loading && (<h1>loadingNo Active Post</h1>)}
+                    {!loading && (<h1>No Active Post</h1>)}
                 </>
             }
 
