@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 import defaultTheme from 'tailwindcss/defaultTheme';
 const config = {
+  important: true,
   darkMode: ["class"],
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{js,ts,tsx}", "./app/**/*.{js,ts,tsx}", "./src/**/*.{js,ts,tsx}"],
   prefix: "",
