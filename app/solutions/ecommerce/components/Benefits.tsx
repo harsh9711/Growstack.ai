@@ -76,7 +76,7 @@ const Benefits = () => {
     {
       firsttext: "Social media analytics:",
       secondtext:
-        "Monitor the performance of social media campaigns to adjust strategies as needed.",
+        "Monitor the performance of social media campaigns to adjust strategies as needed performance of social media .",
       imgsrc1: "/ecommerce/10.svg", 
     },
     {
