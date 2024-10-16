@@ -13,22 +13,6 @@ import "aos/dist/aos.css";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { useRouter, useSearchParams } from "next/navigation";
-import instance from "@/config/axios.config";
-import { Feature } from "@/types/Box";
-import toast from "react-hot-toast";
-import { API_URL } from "@/lib/api";
-import Link from "next/link";
-import { Plan, UserPlan } from "@/types/common";
-import { PlanName } from "@/types/enums";
-import PlanSkeleton from "@/components/skeletons/PlanSkeleton";
-import { deleteCookie, getCookie } from "cookies-next";
-import { LogOut } from "lucide-react";
-import { useDispatch } from "react-redux";
-import { getCurrentUser } from "@/lib/features/auth/auth.selector";
-import { logout, setPlanLoading, setUserPlan } from "@/lib/features/auth/auth.slice";
-import PlanCard from "@/components/planCard";
-import { planIdsMap } from "@/lib/utils";
 
 
 const PricingPage: React.FC = () => {
@@ -62,7 +46,7 @@ const PricingPage: React.FC = () => {
       <div className="w-full max-w-[1600px] px-4 mx-auto !mt-40 mb-40">
         <PricingNew />
       </div>
-    
+
       <Footer />
     </div>
   );
