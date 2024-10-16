@@ -17,8 +17,6 @@ app.post('/', (req, res) => {
     return res.status(400).send('Email is required');
   }
 
-  console.log('Received email:', email);
-
   fs.appendFile('subscribers.txt', `${email}\n`, (err) => {
     if (err) {
       console.error('Error writing to file:', err);
