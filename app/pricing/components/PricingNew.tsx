@@ -21,16 +21,18 @@ import Link from "next/link";
 import { Plan, UserPlan } from "@/types/common";
 import { PlanName } from "@/types/enums";
 import PlanSkeleton from "@/components/skeletons/PlanSkeleton";
-import { deleteCookie, getCookie } from "cookies-next";
 import { LogOut } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { getCurrentUser } from "@/lib/features/auth/auth.selector";
 import { logout, setPlanLoading, setUserPlan } from "@/lib/features/auth/auth.slice";
 import PlanCard from "@/components/planCard";
 import { planIdsMap } from "@/lib/utils";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
+import withUnAuthGuard from "@/components/guard/unAuthGuard";
 
 const PricingPage21: React.FC = () => {
-    const isLoggedIn = !!getCookie("token");
+    const { isAuthenticated } = useSelector((rootState: RootState) => rootState.auth);
 
     useEffect(() => {
         AOS.init();
@@ -88,10 +90,10 @@ const PricingPage21: React.FC = () => {
     };
 
     useEffect(() => {
-        if (isLoggedIn) {
+        if (isAuthenticated) {
             fetchPlanUsage();
         }
-    }, [isLoggedIn]);
+    }, [isAuthenticated]);
 
     useEffect(() => {
         const fetchPlans = async () => {
@@ -158,8 +160,8 @@ const PricingPage21: React.FC = () => {
                         ? parseFloat(a.monthlyPrice)
                         : Infinity
                     : a.yearlyPrice !== null && a.yearlyPrice !== undefined
-                    ? parseFloat(a.yearlyPrice)
-                    : Infinity;
+                        ? parseFloat(a.yearlyPrice)
+                        : Infinity;
 
             const priceB =
                 view === "monthly"
@@ -167,8 +169,8 @@ const PricingPage21: React.FC = () => {
                         ? parseFloat(b.monthlyPrice)
                         : Infinity
                     : b.yearlyPrice !== null && b.yearlyPrice !== undefined
-                    ? parseFloat(b.yearlyPrice)
-                    : Infinity;
+                        ? parseFloat(b.yearlyPrice)
+                        : Infinity;
 
             const isBusinessPlanA = planIdsMap.BUSINESS.some((val) => val === a?.id);
             const isBusinessPlanB = planIdsMap.BUSINESS.some((val) => val === b?.id);
@@ -200,13 +202,6 @@ const PricingPage21: React.FC = () => {
         return null;
     }
 
-    const handleLogout = () => {
-        deleteCookie("token");
-        localStorage.clear();
-        dispatch(logout());
-        router.push("/auth/login");
-    };
-
     return (
         <div data-aos='zoom-in' data-aos-duration='500' onClick={(e) => e.stopPropagation()}>
             <section className='p-4 overflow-y-auto'>
@@ -215,11 +210,10 @@ const PricingPage21: React.FC = () => {
                         {tabs.map((tab, index) => (
                             <div
                                 key={index}
-                                className={`w-full flex p-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
-                                    selectedTabIndex === index
-                                        ? "!text-white font-semibold bg-[#034737] custom-transition rounded-xl"
-                                        : "!text-[#034737]"
-                                }`}
+                                className={`w-full flex p-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${selectedTabIndex === index
+                                    ? "!text-white font-semibold bg-[#034737] custom-transition rounded-xl"
+                                    : "!text-[#034737]"
+                                    }`}
                                 onClick={() => handleTabClick(index)}
                             >
                                 {tab}
@@ -352,4 +346,5 @@ const PricingNew: React.FC = () => {
     );
 };
 
-export default PricingNew;
+export default withUnAuthGuard(PricingNew);
+

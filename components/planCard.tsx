@@ -8,7 +8,6 @@ import { API_URL } from "@/lib/api";
 import Ticket from "@/components/svgs/ticket";
 import { PlanName } from "@/types/enums";
 import { getUserFriendlyPlanName, planIdsMap } from "@/lib/utils";
-import { getCookie } from "cookies-next";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import Link from "next/link";
@@ -29,15 +28,15 @@ const PlanCard = ({
     isReadOnly?: boolean;
 }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const { currentPlan, user } = useSelector((rootState: RootState) => rootState.auth);
+    const { currentPlan, isAuthenticated } = useSelector((rootState: RootState) => rootState.auth);
     const dispatch = useDispatch();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [loading, setLoading] = useState(false);
-    const isLoggedIn = !!getCookie("token");
+
 
     const handleSubscribePlan = async () => {
-        if (!isLoggedIn) {
+        if (!isAuthenticated) {
             toast.error("Please log in to select a plan");
             return;
         }
@@ -45,7 +44,7 @@ const PlanCard = ({
     };
 
     const handleUpgradePlan = async () => {
-        if (!isLoggedIn) {
+        if (!isAuthenticated) {
             toast.error("Please log in to select a plan");
             return;
         }

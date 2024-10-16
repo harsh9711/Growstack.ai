@@ -15,16 +15,18 @@ import Link from "next/link";
 import { Plan, UserPlan } from "@/types/common";
 import { PlanName } from "@/types/enums";
 import PlanSkeleton from "@/components/skeletons/PlanSkeleton";
-import { deleteCookie, getCookie } from "cookies-next";
+import { deleteCookie } from "cookies-next";
 import { LogOut } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { getCurrentUser } from "@/lib/features/auth/auth.selector";
 import { logout, setPlanLoading, setUserPlan } from "@/lib/features/auth/auth.slice";
 import PlanCard from "@/components/planCard";
 import { planIdsMap } from "@/lib/utils";
+import { persistor, RootState } from "@/lib/store";
+import { useSelector } from "react-redux";
 
 const PricingPage: React.FC = () => {
-  const isLoggedIn = !!getCookie("token");
+  const { isAuthenticated } = useSelector((rootState: RootState) => rootState.auth);
 
   useEffect(() => {
     AOS.init();
@@ -84,10 +86,10 @@ const PricingPage: React.FC = () => {
 
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isAuthenticated) {
       fetchPlanUsage();
     }
-  }, [isLoggedIn])
+  }, [isAuthenticated])
 
   useEffect(() => {
     const fetchPlans = async () => {
@@ -213,9 +215,10 @@ const PricingPage: React.FC = () => {
   }
 
   const handleLogout = () => {
-    deleteCookie("token");
     localStorage.clear();
     dispatch(logout());
+    persistor.purge();
+    deleteCookie("token");
     router.push("/auth/login");
   };
 
@@ -251,7 +254,7 @@ const PricingPage: React.FC = () => {
               </p>
             </div>
             {
-              isLoggedIn ? (
+              isAuthenticated ? (
                 <div
                   className="border-[#034737]  gap-4 text-[#034737] flex-wrap w-full flex justify-center sm:justify-end"
                   data-aos="fade-left"
@@ -349,8 +352,8 @@ const ContentBox: React.FC<ContentBoxProps> = ({ sections }) => {
   return (
     <div className="max-w-[1400px] w-full px-4 mx-auto">
       {" "}
-    
-      <PricingPage/>
+
+      <PricingPage />
     </div>
   );
 };
