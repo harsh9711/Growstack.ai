@@ -243,10 +243,10 @@ const TemplatesTable: React.FC<TemplatesTableProps> = ({ refreshTemplatesTable, 
     <>
       <div className="w-full">
         <div className="flex justify-between gap-10 items-center mt-5">
-          <h1 className="text-xl font-semibold">My own AI Templates list</h1>
-          <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
-            <Search className="text-gray-500" size={20} />
-            <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" />
+          <h1 className="text-xl lg:text-xl md:text-lg font-semibold">My own AI Templates list</h1>
+          <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-[40%] max-w-md">
+            <Search className="text-gray-500 " size={20} />
+            <input type="search" className="outline-none h-[40px] w-[50%]" placeholder="Search" />
           </div>
         </div>
         <div className="rounded-lg border overflow-hidden mt-5 bg-white min-h-[50vh]">
