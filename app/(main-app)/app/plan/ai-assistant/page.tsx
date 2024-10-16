@@ -59,6 +59,7 @@ export default function AiAssistants() {
   const [selectedGroup, setSelectedGroup] = useState(groups[0].name);
   const [searchQuery, setSearchQuery] = useState("");
   const [allAssistants, setAllAssistants] = useState<Assistant[]>([]);
+  const [categoryAssistants, setCategoryAssistants] = useState<Assistant[]>([]);
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -67,13 +68,11 @@ export default function AiAssistants() {
           `/ai/api/v1/assistant?category=${selectedGroup}`
         );
 
-        const full_response = await instance.get(
-          `/ai/api/v1/assistant`
-        );
+        const full_response = await instance.get(`/ai/api/v1/assistant`);
 
         setAssistants(response.data.data);
+        setCategoryAssistants(response.data.data);
         setAllAssistants(full_response.data.data);
-        
       } catch (error: any) {
         if (error.response) {
           toast.error(error.response.data.message);
@@ -91,11 +90,12 @@ export default function AiAssistants() {
     setSearchQuery(query);
 
     if (query) {
-      const filteredAssistants = allAssistants.filter(assistant =>
-        assistant.name.toLowerCase().includes(query.toLowerCase()) ||
-        assistant.role.toLowerCase().includes(query.toLowerCase())
+      const filteredAssistants = allAssistants.filter(
+        (assistant) =>
+          assistant.name.toLowerCase().includes(query.toLowerCase()) ||
+          assistant.role.toLowerCase().includes(query.toLowerCase())
       );
-      
+
       setAssistants(filteredAssistants);
     } else {
       setAssistants(allAssistants);
@@ -111,6 +111,12 @@ export default function AiAssistants() {
   const groupStore = (group: any) => {
     localStorage.setItem("groupName", group);
   };
+
+  useEffect(() =>{
+    if(searchQuery?.length === 0){
+      setAssistants(categoryAssistants || [])
+    }
+  },[searchQuery]);
 
   return (
     <Fragment>

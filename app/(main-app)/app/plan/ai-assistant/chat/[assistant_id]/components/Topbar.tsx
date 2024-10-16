@@ -40,7 +40,8 @@ interface IProps {
   selectedLanguage: string;
   switchLanguage: (language: string) => void;
   selectedAiModel: string;
-  setSelectedAiModel: React.Dispatch<React.SetStateAction<string>>
+  setSelectedAiModel: React.Dispatch<React.SetStateAction<string>>,
+  messagesData : any
 }
 
 export default function Topbar({
@@ -51,7 +52,8 @@ export default function Topbar({
   selectedLanguage,
   switchLanguage,
   selectedAiModel,
-  setSelectedAiModel
+  setSelectedAiModel,
+  messagesData
 }: IProps) {
   const { user, currentPlan } = useSelector((rootState: RootState) => rootState.auth);
 
@@ -126,27 +128,27 @@ export default function Topbar({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <div className="bg-primary-green/10 hover:text-white hover:bg-primary-green transition-all duration-300 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
-                <Settings />
+                <Download />
               </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem
                 className="flex items-center gap-2"
-                onClick={() => downloadTxt(conversation.chats)}
+                onClick={() => downloadTxt(messagesData)}
               >
                 <Download size={18} />
                 Download chat (.txt)
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="flex items-center gap-2"
-                onClick={() => downloadPdf(conversation.chats)}
+                onClick={() => downloadPdf(messagesData)}
               >
                 <Download size={18} />
                 Download chat (.pdf)
               </DropdownMenuItem>
               <DropdownMenuItem
                 className="flex items-center gap-2"
-                onClick={() => downloadDocx(conversation.chats)}
+                onClick={() => downloadDocx(messagesData)}
               >
                 <Download size={18} />
                 Download chat (.docx)

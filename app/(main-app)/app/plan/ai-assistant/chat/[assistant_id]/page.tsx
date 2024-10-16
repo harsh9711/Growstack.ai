@@ -3,7 +3,7 @@
 import instance from "@/config/axios.config";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { Assistant, Conversation } from "../../components/types";
+import { Assistant, Conversation,Chat } from "../../components/types";
 import Topbar from "./components/Topbar";
 import ChatSection from "./components/ChatSection";
 import Sidebar from "./components/Sidebar";
@@ -28,6 +28,7 @@ const AssistantsChats: React.FC<PageProps> = ({
   const [selectedLanguage, setSelectedLanguage] = useState<string>(
     languageOptions[0].value
   );
+  const [messagesData, setMessagesData] = useState<Chat[]>([]);
 
   const [selectedAiModel, setSelectedAiModel] = useState(
     aiModelOptions[0].models[0].value
@@ -113,12 +114,14 @@ const AssistantsChats: React.FC<PageProps> = ({
           switchLanguage={switchLanguage}
           setSelectedAiModel={setSelectedAiModel}
           selectedAiModel={selectedAiModel}
+          messagesData={messagesData}
         />
         <ChatSection
           conversation={assistantConversation}
           assistant={assistantData}
           selectedLanguage={selectedLanguage}
           selectedAiModel={selectedAiModel}
+          setMessagesData={setMessagesData}
         />
       </div>
     </div>
