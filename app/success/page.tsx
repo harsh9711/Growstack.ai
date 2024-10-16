@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
@@ -10,12 +10,30 @@ import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import { login } from "@/lib/features/auth/auth.slice";
 import Spinner from "@/components/Spinner";
+import { setCookie } from "cookies-next";
+import { ALL_ROUTES } from "@/utils/constant";
+
 
 const PricingPage: React.FC = () => {
+  const searchParams = useSearchParams();
   const [seconds, setSeconds] = useState(5);
   const router = useRouter();
   const dispatch = useDispatch();
   const [isPending, setIsPending] = useState(false);
+
+  useEffect(() => {
+    const token = searchParams.get("token");
+    if (token) {
+      setCookie("token", token, {
+        secure: true,
+        sameSite: "none",
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+      });
+      fetchUserAfterPaymentSuccess()
+    } else {
+      router.push(ALL_ROUTES.LOGIN);
+    }
+  }, [searchParams, router, dispatch]);
 
   const fetchUserAfterPaymentSuccess = async () => {
     setIsPending(true);
@@ -36,7 +54,6 @@ const PricingPage: React.FC = () => {
   };
 
 
-  useEffect(() => { fetchUserAfterPaymentSuccess() }, [])
 
   useEffect(() => {
     AOS.init();
