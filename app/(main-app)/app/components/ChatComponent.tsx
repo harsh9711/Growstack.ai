@@ -437,7 +437,7 @@ export default function ChatComponent() {
                     </Select>
                 </div>
             </div>
-            <div className='h-full w-full flex-1 flex flex-col' data-aos='fade-up'>
+            <div className='min-h-[380px] h-full w-full flex-1 flex flex-col ' data-aos='fade-up'>
 
                 <div className='flex-1 w-full overflow-y-auto flex flex-col'>
                     {!messages.length ? (
@@ -519,6 +519,8 @@ export default function ChatComponent() {
                         </div>
                     )}
                 </div>
+
+
                 <ChatInput
                     ref={chatInputRef}
                     selectedBrandVoice={brandVoices.find((voice) => voice._id === selectedBrandVoice)}

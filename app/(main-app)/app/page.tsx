@@ -135,7 +135,7 @@ export default function Dashboard() {
   return (
     <main>
       <div className="bg-[#EBF0F6] h-[30%] w-full max-w-[96%] mx-auto absolute top-0 left-0 right-0 rounded-b-[60px]" />
-      <div className="h-screen z-[1]">
+      <div className="h-[calc(100vh-150px)] z-[1]">
         <div
           className="flex justify-between items-center mt-8"
           data-aos="fade-down"
@@ -149,7 +149,7 @@ export default function Dashboard() {
             </h1>
           </div>
         </div>
-        <div className="w-full  flex flex-col lg:flex-row gap-7 mt-4 h-[80%]" >
+        <div className="w-full flex flex-col lg:flex-row gap-7 mt-4 h-[95%]" >
           <div className="w-full lg:w-2/3 space-y-6 " data-aos="fade-left">
             <ChatComponent />
           </div>
