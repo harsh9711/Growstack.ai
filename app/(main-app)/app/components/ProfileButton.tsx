@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import { deleteCookie } from "cookies-next";
 import Image from "next/image";
 import Wave from "@/components/svgs/wave";
+import { persistor } from "@/lib/store";
 
 export function ProfileButton() {
   const router = useRouter();
@@ -26,9 +27,10 @@ export function ProfileButton() {
   const currentUser = getCurrentUser();
 
   const handleLogout = () => {
-    deleteCookie("token");
     localStorage.clear();
     dispatch(logout());
+    persistor.purge();
+    deleteCookie("token");
     router.push("/auth/login");
   };
 
@@ -67,14 +69,14 @@ export function ProfileButton() {
           </Link>
           <Link href="/app/plan/ai-brandvoice">
             <DropdownMenuItem className="flex gap-3 px-4">
-              <Wave color="black"/>
+              <Wave color="black" />
               Brand voice
             </DropdownMenuItem>
           </Link>
           <Link href="/account/billings/settings">
             <DropdownMenuItem className="flex gap-3 px-4">
-           
-           <Image src="/billing.svg" width={25} height={25} alt="width"/>
+
+              <Image src="/billing.svg" width={25} height={25} alt="width" />
               Billing
             </DropdownMenuItem>
           </Link>
@@ -101,4 +103,3 @@ export function ProfileButton() {
     </DropdownMenu>
   );
 }
- 
