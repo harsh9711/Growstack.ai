@@ -272,7 +272,7 @@ const EditAssistantDialog = ({
   return (
     <Dialog open={!!selectedRowId} onOpenChange={() => setSelectedRowId(null)}>
       <DialogContent className="max-w-[1400px]">
-        <h1 className="text-2xl font-semibold">Edit Assistant</h1>
+        <h1 className="text-2xl lg:text-2xl md:text-xl font-semibold">Edit Assistant</h1>
         {isLoading ? (
           <section className="grid place-content-center h-[40vh]">
             Loading...
@@ -282,7 +282,7 @@ const EditAssistantDialog = ({
             <section className="bg-white rounded-3xl mt-5">
               <form onSubmit={handleSubmit(handleUpdate)}>
                 <div className="space-y-5">
-                  <h1 className="text-xl font-semibold flex items-center gap-2">
+                  <h1 className="text-xl lg:text-xl md:text-lg font-semibold flex items-center gap-2">
                     Assistant Editor
                   </h1>
                   <div className="grid grid-cols-2 gap-8 border-t border-[#EBEBEB] pb-4 pt-8">
@@ -392,6 +392,7 @@ const EditAssistantDialog = ({
                             onChange={(e) =>
                               handleInputChange(index, "title", e.target.value)
                             }
+                            className="md:placeholder:text-sm"
                           />
                         </div>
                         <div className="w-full space-y-2">
@@ -404,6 +405,7 @@ const EditAssistantDialog = ({
                             <SelectTrigger className="w-full border-none h-14">
                               <SelectValue
                                 placeholder={InputFieldType.SHORT_TEXT}
+                                className="md:text-sm"
                               />
                             </SelectTrigger>
                             <SelectContent>
@@ -437,6 +439,7 @@ const EditAssistantDialog = ({
                                 e.target.value
                               )
                             }
+                            className="md:placeholder:text-sm"
                           />
                         </div>
                         {/* <div className="w-full space-y-2">
@@ -484,6 +487,7 @@ const EditAssistantDialog = ({
                                 placeholder={
                                   input.requirement ? "required" : "optional"
                                 }
+                                
                               />
                             </SelectTrigger>
                             <SelectContent>
@@ -541,12 +545,12 @@ const EditAssistantDialog = ({
                   </div>
                   <div className="flex justify-end gap-x-3 !mt-8">
                     <DialogClose>
-                      <button className="border text-primary-black px-8 py-4 rounded-xl flex items-center gap-2">
+                      <button className="border text-primary-black px-8 py-4 rounded-xl flex items-center gap-2 md:px-6 md:py-3 md:text-sm">
                         Cancel
                       </button>
                     </DialogClose>
                     <button
-                      className="bg-primary-green text-white sheen transition duration-500 px-8 py-4 rounded-xl flex items-center gap-2"
+                      className="bg-primary-green text-white sheen transition duration-500 px-8 py-4 rounded-xl flex items-center gap-2 md:px-6 md:py-3 md:text-sm"
                       disabled={isPending}
                     >
                       {isPending ? "Updating..." : "Update Assistant"}

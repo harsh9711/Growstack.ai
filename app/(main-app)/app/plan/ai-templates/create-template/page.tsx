@@ -261,10 +261,10 @@ export default function CreateTemplatePage() {
   return (
     <div className="mt-10">
       <div className="flex justify-between">
-        <h1 className="text-2xl font-semibold">Create your own AI template</h1>
+        <h1 className="text-2xl:text-2xl md:text-xl font-semibold">Create your own AI template</h1>
         <button
           onClick={() => router.back()}
-          className="text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-1.5 rounded-full font-medium items-center  transition-all duration-300"
+          className="text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-1.5 rounded-full font-medium lg:font-medium md:font-small items-center  transition-all duration-300"
         >
           <ArrowBack />
           Back
@@ -273,12 +273,12 @@ export default function CreateTemplatePage() {
       <section className="bg-white border border-[#E4E4E4] rounded-3xl p-10 mt-5">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-5">
-            <h1 className="text-xl font-semibold flex items-center gap-2">
+            <h1 className="text-xl lg:text-xl md:text-lg font-semibold flex items-center gap-2">
               AI template generator
             </h1>
             <div className="grid grid-cols-2 gap-8 border-t border-[#EBEBEB] pb-4 pt-8">
               <div className="space-y-2">
-                <label className="font-medium">
+                <label className="font-medium ">
                   Template name
                   <span className="text-[#F00]">*</span>
                 </label>
@@ -396,6 +396,7 @@ export default function CreateTemplatePage() {
                       onChange={(e) =>
                         handleInputChange(index, "title", e.target.value)
                       }
+                       className="md:placeholder:text-sm"
                     />
                     {formErrors?.[`userInput[${index}].title`] && (
                       <p className="text-rose-600 text-sm">{formErrors[`userInput[${index}].title`]}</p>
@@ -407,10 +408,13 @@ export default function CreateTemplatePage() {
                       value={input.type}
                       onValueChange={(value) =>
                         handleInputChange(index, "type", value)
+                        
                       }
+                     
                     >
                       <SelectTrigger className="w-full border-none h-14">
-                        <SelectValue placeholder={InputFieldType.SHORT_TEXT} />
+                        <SelectValue placeholder={InputFieldType.SHORT_TEXT} 
+                        className="md:text-sm"/>
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value={InputFieldType.SHORT_TEXT}>Input field</SelectItem>
@@ -447,6 +451,7 @@ export default function CreateTemplatePage() {
                               e.target.value
                             )
                           }
+                          className="md:placeholder:text-sm"
                         />
                       </div>
                     )}
@@ -462,6 +467,7 @@ export default function CreateTemplatePage() {
                           onChange={(e) =>
                             handleInputChange(index, "options", e.target.value)
                           }
+                          className="md:placeholder:text-sm"
                         />
                       </div>
                     )}
@@ -474,7 +480,8 @@ export default function CreateTemplatePage() {
                       }
                     >
                       <SelectTrigger className="w-full border-none h-14">
-                        <SelectValue placeholder="Required" />
+                        <SelectValue placeholder="Required" 
+                        />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="Required">Required</SelectItem>
