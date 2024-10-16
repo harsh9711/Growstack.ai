@@ -20,8 +20,13 @@ import { setCookie } from "cookies-next";
 import { useSearchParams } from "next/navigation";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { LoginBackgroundImg, LoginRightImg } from "@/components/svgs";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
+import withUnAuthGuard from "@/components/guard/unAuthGuard";
 
-export default function Login() {
+const Login = () => {
+  const { isAuthenticated } = useSelector((rootState: RootState) => rootState.auth);
+
   const router = useRouter();
   const dispatch = useDispatch();
   const searchParams = useSearchParams();
@@ -42,6 +47,12 @@ export default function Login() {
   const [isPending, setIsPending] = useState(false);
 
   type ValidationSchemaType = z.infer<typeof ValidationSchema>;
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/app");
+    }
+  }, [isAuthenticated])
 
   const {
     watch,
@@ -69,6 +80,7 @@ export default function Login() {
         secure: true,
         sameSite: "none",
         expires: new Date(Date.now() + expiryTime),
+        // domain: process.env.NEXT_PUBLIC_APP_BASE_URL,
       });
 
       const userData = await handleGetProfileData();
@@ -312,3 +324,5 @@ export default function Login() {
     </motion.main>
   );
 }
+
+export default withUnAuthGuard(Login);
