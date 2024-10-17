@@ -4,10 +4,11 @@ import {
   FaInstagram,
   FaLinkedinIn,
 } from "react-icons/fa";
-
 import Image from "next/image";
 import Swal from 'sweetalert2';
 import { FaXTwitter } from "react-icons/fa6";
+import { toast } from "react-toastify";
+
 const socialMediaIcons = [
   { icon: FaFacebookF, name: "facebook", bgColor: "bg-blue-600" },
   { icon: FaInstagram, name: "instagram", bgColor: "bg-pink-500" },
@@ -51,7 +52,16 @@ const SocialNavBar: FC<SocialNavBarProps> = ({
       setOpenModel(true)
     }
   };
-
+  useEffect(() => {
+    if(localStorage.getItem("savedArticle")){
+      setOpenAddAcc(true);
+      if (platforms.includes('linkedin')) {
+        setSelectedIcon("linkedIn")
+      }else{
+        toast.error("linkedIn Account is not Connected");
+      }
+    }
+}, []);
   return (
     <div
       className="fixed top-20 left-0 right-0 w-[90%] mx-auto flex items-center justify-between p-4 shadow-lg z-50 rounded-l-full rounded-r-full"
