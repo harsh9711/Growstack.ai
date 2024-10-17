@@ -231,7 +231,7 @@ export default function AiAppTemplatesPage() {
             </p>
           </div>
           <div className='w-full flex lg:justify-end gap-2'>
-            <div className='bg-white border border-[#EBEBEB] px-4 py-1  rounded-xl flex gap-3 items-center w-full max-w-md'>
+            <div className='bg-white border border-[#EBEBEB] px-4 py-1  rounded-xl flex gap-3 items-center w-[50%] max-w-md'>
               <Search className='text-gray-500' size={20} />
               <input
                 type='search'
@@ -243,7 +243,7 @@ export default function AiAppTemplatesPage() {
             </div>
 
             <Link href='/app/plan/ai-templates/create-template'>
-              <button className='bg-primary-green text-white sheen transition duration-500 px-5 py-1  rounded-xl flex items-center gap-2 lg:h-[52px] md:h-[42px]'>
+              <button className='bg-primary-green text-white sheen transition duration-500 px-5 py-1 rounded-xl flex items-center gap-2 lg:h-[52px] md:h-[42px]'>
                 <Plus size={20} />
                 Create AI template
               </button>
