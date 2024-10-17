@@ -12,8 +12,9 @@ interface DropdownProps {
   required?: boolean;
   disabled?: boolean;
   hideSearch?: boolean;
-}
 
+
+}
 const Dropdown = ({ label, items, value, onChange, title, showTitle, required = true, disabled = false, hideSearch = false }: DropdownProps) => {
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -35,13 +36,14 @@ const Dropdown = ({ label, items, value, onChange, title, showTitle, required = 
                     type="text"
                     placeholder="Search..."
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    ß onChange={(e) => setSearchTerm(e.target.value)}
                     className="w-full p-2 bg-transparent text-gray-700 rounded-md focus:outline-none"
                   />
                 </div>
               </div>
             )
           }
+          {/* const / = useContext(second) */}
           <SelectGroup>
             {filteredItems.map((item: any, index: number) => (
               <SelectItem value={item} key={index}>
