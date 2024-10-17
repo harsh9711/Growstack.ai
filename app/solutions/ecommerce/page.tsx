@@ -5,13 +5,14 @@ import Navbar from "@/components/navbar/Navbar";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import HeroSection from "./components/HeroSection";
+import SecondBox2 from "./components/SecondBox2";
+import Benefits from "./components/Benefits";
+import AboveFaq from "./components/AboveFaq";
+import Faq from "./components/Faq";
 import SecondBox from "./components/SecondBox";
 import SixCard from "./components/SixCard";
 import Footer from "@/components/footer/Footer";
-import Faq from "./components/Faq";
-import AboveFaq from "./components/AboveFaq";
-import SecondBox2 from "./components/SecondBox2";
-import Benefits from "./components/Benefits";
+
 
 const page = () => {
   useEffect(() => {

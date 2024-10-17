@@ -8,6 +8,9 @@
   }
   
   .fade-in-background {
-    animation: fadeBackground 2s ease-in forwards; /* Adjust duration as needed */
+    animation: fadeBackground 2s ease-in forwards; 
   }
-  
+  .zoom-background {
+    background-size: 150%; 
+    background-position: center;
+  }
