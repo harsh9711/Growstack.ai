@@ -228,6 +228,7 @@ export default function Publish() {
     useEffect(() => {
         handleGetProfileData();
     }, []);
+   
 
     const handleGetProfileData = async () => {
         try {

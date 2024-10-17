@@ -73,8 +73,13 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
     }, 600);
 
     useEffect(() => {
+        if(localStorage.getItem("savedArticle")){
+            const url:any=localStorage.getItem("savedArticle")
+            setText(url)
+        }else{
+            setText("")
+        }
         setAiMode(false)
-        setText("")
         setAccumulatedResponse("")
         setUpload(null)
         setFileInfo(null)
@@ -181,7 +186,6 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
     }
     const postComment = async (payload: {}) => {
         setLoading(true)
-
         try {
             const response: any = await instance.post(
                 API_URL +
@@ -191,6 +195,7 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
             isGenPost(false)
             setLoading(false)
             setText("")
+            localStorage.removeItem("savedArticle")
             setAccumulatedResponse("")
             toast.success(response.data.message);
             return response;
@@ -211,7 +216,6 @@ const PostComment: FC<PostCommentProps> = (({ openPostModel, selectedIcon, isGen
     };
     useEffect(() => {
         platformDetails()
-        setText("")
         setFileInfo(null)
         setUpload(null)
         setAccumulatedResponse("")
