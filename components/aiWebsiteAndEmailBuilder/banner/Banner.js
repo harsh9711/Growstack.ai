@@ -7,7 +7,7 @@ function Banner() {
     <React.Fragment>
       <div className="emailBanner">
         <div className="container">
-          <div className="row align-items-center">
+          <div className="row ">
             <div className="text-center">
               <div className="bannerContent">
                 <div className="content">

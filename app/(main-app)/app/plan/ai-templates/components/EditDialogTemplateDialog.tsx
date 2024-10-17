@@ -61,10 +61,8 @@ interface EditAssistantDialogProps {
 }
 
 const EditAssistantDialog = ({
-
   selectedRowId,
   setSelectedRowId,
-
 }: EditAssistantDialogProps) => {
   const router = useRouter();
   const [assistant, setAssistant] = useState<Assistant | null>(null);
@@ -75,7 +73,6 @@ const EditAssistantDialog = ({
   const [idescription, setIdescription] = useState("");
   const [iconPreview, setIconPreview] = useState<string | null>(null);
 
-
   const {
     register,
     handleSubmit,
@@ -84,8 +81,6 @@ const EditAssistantDialog = ({
   } = useForm<ValidationSchemaType>({
     resolver: zodResolver(ValidationSchema),
   });
-
-
 
   // const { getRootProps, getInputProps } = useDropzone({
   //   accept: {
@@ -178,12 +173,10 @@ const EditAssistantDialog = ({
     setinputs((prevInputs) => {
       const updatedInputs: any = [...prevInputs];
 
-
       updatedInputs[index][key] = value;
       return updatedInputs;
     });
   };
-
 
   const initialData: Partial<Assistant> = {
     name: "",
@@ -197,10 +190,7 @@ const EditAssistantDialog = ({
 
   const [formData, setFormData] = useState<Partial<Assistant>>(initialData);
 
-
   const [fileUploadLoading, setFileUploadLoading] = useState(false);
-
-
 
   const handleUpdate: SubmitHandler<ValidationSchemaType> = async (data) => {
     setIsPending(true);
@@ -245,7 +235,10 @@ const EditAssistantDialog = ({
 
         setFileUploadLoading(true);
         try {
-          const response = await instance.post(`${API_URL}/users/api/v1/file/upload`, formData);
+          const response = await instance.post(
+            `${API_URL}/users/api/v1/file/upload`,
+            formData
+          );
           const fileUrl = response.data.data.fileUrl;
 
           // Set the uploaded file URL as the icon in the form data
@@ -266,10 +259,7 @@ const EditAssistantDialog = ({
     },
   });
 
-
-
   // Rest of your component
-
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -281,91 +271,93 @@ const EditAssistantDialog = ({
 
   return (
     <Dialog open={!!selectedRowId} onOpenChange={() => setSelectedRowId(null)}>
-      <DialogContent className='max-w-[1400px]'>
-        <h1 className='text-2xl font-semibold'>Edit Assistant</h1>
+      <DialogContent className="max-w-[1400px]">
+        <h1 className="text-2xl lg:text-2xl md:text-xl font-semibold">Edit Assistant</h1>
         {isLoading ? (
-          <section className='grid place-content-center h-[40vh]'>
+          <section className="grid place-content-center h-[40vh]">
             Loading...
           </section>
         ) : (
           assistant && (
-            <section className='bg-white rounded-3xl mt-5'>
+            <section className="bg-white rounded-3xl mt-5">
               <form onSubmit={handleSubmit(handleUpdate)}>
-                <div className='space-y-5'>
-                  <h1 className='text-xl font-semibold flex items-center gap-2'>
+                <div className="space-y-5">
+                  <h1 className="text-xl lg:text-xl md:text-lg font-semibold flex items-center gap-2">
                     Assistant Editor
                   </h1>
-                  <div className='grid grid-cols-2 gap-8 border-t border-[#EBEBEB] pb-4 pt-8'>
-                    <div className='space-y-2'>
-                      <label className='font-medium'>
-                        Template Name <span className='text-[#F00]'>*</span>
+                  <div className="grid grid-cols-2 gap-8 border-t border-[#EBEBEB] pb-4 pt-8">
+                    <div className="space-y-2">
+                      <label className="font-medium">
+                        Template Name <span className="text-[#F00]">*</span>
                       </label>
                       <Input
-                        type='text'
-                        placeholder='Type assistant name'
+                        type="text"
+                        placeholder="Type assistant name"
                         {...register("name")}
                       />
                       {errors.name && (
-                        <p className='text-rose-600'>{errors.name.message}</p>
+                        <p className="text-rose-600">{errors.name.message}</p>
                       )}
                     </div>
-                    <div className='space-y-2'>
-                      <label className='font-medium'>
+                    <div className="space-y-2">
+                      <label className="font-medium">
                         Template Description{" "}
-                        <span className='text-[#F00]'>*</span>
+                        <span className="text-[#F00]">*</span>
                       </label>
                       <Input
-                        type='text'
-                        placeholder='Type assistant description'
+                        type="text"
+                        placeholder="Type assistant description"
                         {...register("description")}
                       />
                       {errors.description && (
-                        <p className='text-rose-600'>
+                        <p className="text-rose-600">
                           {errors.description.message}
                         </p>
                       )}
                     </div>
-                    <div className='space-y-2'>
-                      <label className='font-medium'>
-                        Template Category <span className='text-[#F00]'>*</span>
+                    <div className="space-y-2">
+                      <label className="font-medium">
+                        Template Category <span className="text-[#F00]">*</span>
                       </label>
                       <Select
                         {...register("category")}
                         defaultValue={assistant.category}
                       >
-                        <SelectTrigger className='w-full border-none h-14'>
+                        <SelectTrigger className="w-full border-none h-14">
                           <SelectValue>{assistant.category}</SelectValue>
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value='Articles And Contents'>
+                          <SelectItem value="Articles And Contents">
                             Articles And Contents
                           </SelectItem>
-                          <SelectItem value='Blogs Posts'>
+                          <SelectItem value="Blogs Posts">
                             Blogs Posts
                           </SelectItem>
-                          <SelectItem value='Commerce'>Commerce</SelectItem>
-                          <SelectItem value='Emails'>Emails</SelectItem>
-                          <SelectItem value='Frameworks'>Frameworks</SelectItem>
-                          <SelectItem value='Marketing'>Marketing</SelectItem>
-                          <SelectItem value='Social Media'>
+                          <SelectItem value="Commerce">Commerce</SelectItem>
+                          <SelectItem value="Emails">Emails</SelectItem>
+                          <SelectItem value="Frameworks">Frameworks</SelectItem>
+                          <SelectItem value="Marketing">Marketing</SelectItem>
+                          <SelectItem value="Social Media">
                             Social Media
                           </SelectItem>
-                          <SelectItem value='Websites'>Websites</SelectItem>
+                          <SelectItem value="Academic">Academics</SelectItem>
+                          <SelectItem value="Business">Business</SelectItem>
+                          <SelectItem value="Websites">Websites</SelectItem>
                         </SelectContent>
                       </Select>
                       {errors.category && (
-                        <p className='text-rose-600'>
+                        <p className="text-rose-600">
                           {errors.category.message}
                         </p>
                       )}
                     </div>
-                    <div className='space-y-2'>
-                      <label className='font-medium'>
-                        Upload Icon <span className='text-[#F00]'>*</span>
+                    <div className="space-y-2">
+                      <label className="font-medium">
+                        Upload Icon <span className="text-[#F00]">*</span>
                       </label>
                       <div
                         {...getRootProps()}
-                        className='border-dashed border-2 border-gray-300 p-4'
+                        className="border-dashed border-2 border-gray-300 p-4"
                       >
                         <input {...getInputProps()} />
                         <p>Drag & drop an image here, or click to select one</p>
@@ -375,34 +367,35 @@ const EditAssistantDialog = ({
                         <div className="text-center flex items-center justify-center">
                           <img
                             src={iconPreview}
-                            alt='Uploaded icon'
+                            alt="Uploaded icon"
                             className="w-16 h-16 text-center object-contain"
                           />
                         </div>
                       )}
 
                       {errors.icon && (
-                        <p className='text-rose-600'>{errors.icon.message}</p>
+                        <p className="text-rose-600">{errors.icon.message}</p>
                       )}
                     </div>
                   </div>
-                  <div className='space-y-2 !mt-8'>
-                    <label className='font-medium'>
-                      User input fields <span className='text-[#F00]'>*</span>
+                  <div className="space-y-2 !mt-8">
+                    <label className="font-medium">
+                      User input fields <span className="text-[#F00]">*</span>
                     </label>
                     {inputs.map((input, index) => (
-                      <div key={index} className='flex gap-4 items-center'>
-                        <div className='w-full space-y-2'>
+                      <div key={index} className="flex gap-4 items-center">
+                        <div className="w-full space-y-2">
                           <Input
-                            type='text'
-                            placeholder='Type input field title (required)'
+                            type="text"
+                            placeholder="Type input field title (required)"
                             value={input.title}
                             onChange={(e) =>
                               handleInputChange(index, "title", e.target.value)
                             }
+                            className="md:placeholder:text-sm"
                           />
                         </div>
-                        <div className='w-full space-y-2'>
+                        <div className="w-full space-y-2">
                           <Select
                             value={input.field_type}
                             onValueChange={(value) =>
@@ -410,10 +403,15 @@ const EditAssistantDialog = ({
                             }
                           >
                             <SelectTrigger className="w-full border-none h-14">
-                              <SelectValue placeholder={InputFieldType.SHORT_TEXT} />
+                              <SelectValue
+                                placeholder={InputFieldType.SHORT_TEXT}
+                                className="md:text-sm"
+                              />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value={InputFieldType.SHORT_TEXT}>Input field</SelectItem>
+                              <SelectItem value={InputFieldType.SHORT_TEXT}>
+                                Input field
+                              </SelectItem>
                               <SelectItem value={InputFieldType.LONG_TEXT}>
                                 Textarea field
                               </SelectItem>
@@ -429,10 +427,10 @@ const EditAssistantDialog = ({
                             </SelectContent>
                           </Select>
                         </div>
-                        <div className='w-full space-y-2'>
+                        <div className="w-full space-y-2">
                           <Input
-                            type='text'
-                            placeholder='Type input field description (required)'
+                            type="text"
+                            placeholder="Type input field description (required)"
                             value={input.description}
                             onChange={(e) =>
                               handleInputChange(
@@ -441,6 +439,7 @@ const EditAssistantDialog = ({
                                 e.target.value
                               )
                             }
+                            className="md:placeholder:text-sm"
                           />
                         </div>
                         {/* <div className="w-full space-y-2">
@@ -483,16 +482,17 @@ const EditAssistantDialog = ({
                               )
                             }
                           >
-                            <SelectTrigger className='w-full border-none h-14'>
+                            <SelectTrigger className="w-full border-none h-14">
                               <SelectValue
                                 placeholder={
                                   input.requirement ? "required" : "optional"
                                 }
+                                
                               />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value='Optional'>Optional</SelectItem>
-                              <SelectItem value='Required'>Required</SelectItem>
+                              <SelectItem value="Optional">Optional</SelectItem>
+                              <SelectItem value="Required">Required</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
@@ -506,7 +506,6 @@ const EditAssistantDialog = ({
                             <Minus />
                           </button>
                         )}
-
 
                         {index === inputs.length - 1 && index > 0 && (
                           <button
@@ -528,31 +527,30 @@ const EditAssistantDialog = ({
                         )}
                       </div>
                     ))}
-
                   </div>
-                  <div className='space-y-2'>
-                    <label className='font-medium'>
-                      Custom Prompt <span className='text-[#F00]'>*</span>
+                  <div className="space-y-2">
+                    <label className="font-medium">
+                      Custom Prompt <span className="text-[#F00]">*</span>
                     </label>
                     <textarea
-                      placeholder='Type custom prompt'
-                      className='h-60 block w-full rounded-2xl bg-[#F5F5F5] p-4 resize-none'
+                      placeholder="Type custom prompt"
+                      className="h-60 block w-full rounded-2xl bg-[#F5F5F5] p-4 resize-none"
                       {...register("custom_prompt")}
                     />
                     {errors.custom_prompt && (
-                      <p className='text-rose-600'>
+                      <p className="text-rose-600">
                         {errors.custom_prompt.message}
                       </p>
                     )}
                   </div>
-                  <div className='flex justify-end gap-x-3 !mt-8'>
+                  <div className="flex justify-end gap-x-3 !mt-8">
                     <DialogClose>
-                      <button className='border text-primary-black px-8 py-4 rounded-xl flex items-center gap-2'>
+                      <button className="border text-primary-black px-8 py-4 rounded-xl flex items-center gap-2 md:px-6 md:py-3 md:text-sm">
                         Cancel
                       </button>
                     </DialogClose>
                     <button
-                      className='bg-primary-green text-white sheen transition duration-500 px-8 py-4 rounded-xl flex items-center gap-2'
+                      className="bg-primary-green text-white sheen transition duration-500 px-8 py-4 rounded-xl flex items-center gap-2 md:px-6 md:py-3 md:text-sm"
                       disabled={isPending}
                     >
                       {isPending ? "Updating..." : "Update Assistant"}
@@ -564,9 +562,8 @@ const EditAssistantDialog = ({
           )
         )}
       </DialogContent>
-    </Dialog >
+    </Dialog>
   );
 };
 
 export default EditAssistantDialog;
-

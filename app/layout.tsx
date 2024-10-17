@@ -17,6 +17,8 @@ const poppins = Poppins({
   adjustFontFallback: true,
   preload: true,
   subsets: ["latin"],
+  style: ['normal', 'italic'],
+  variable: '--font-poppins',
 });
 
 export const metadata: Metadata = {
@@ -61,7 +63,7 @@ export default function RootLayout({
           defer
         ></Script>
       </head>
-      <body className={poppins.className}>
+      <body className={poppins.variable}>
         <StateProvider>
           <Suspense fallback={<SuspenseLoader />}>
             <Progressbar>

@@ -10,6 +10,7 @@ interface ChatSectionProps {
   assistant: Assistant;
   selectedLanguage: string;
   selectedAiModel: string;
+  setMessagesData : any
 }
 
 const ChatSection: React.FC<ChatSectionProps> = ({
@@ -17,12 +18,17 @@ const ChatSection: React.FC<ChatSectionProps> = ({
   assistant,
   selectedLanguage,
   selectedAiModel,
+  setMessagesData
 }) => {
   const [messages, setMessages] = useState<Chat[]>([]);
 
   useEffect(() => {
     setMessages(conversation.chats);
   }, [conversation.chats]);
+
+  useEffect(() => {
+    setMessagesData(messages);
+  }, [messages]);
 
   const addMessage = (prompt: string, response: string) => {
     const newMessage: Chat = {

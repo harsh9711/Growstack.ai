@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 import defaultTheme from 'tailwindcss/defaultTheme';
 const config = {
+  important: true,
   darkMode: ["class"],
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{js,ts,tsx}", "./app/**/*.{js,ts,tsx}", "./src/**/*.{js,ts,tsx}"],
   prefix: "",
@@ -14,7 +15,7 @@ const config = {
     },
     extend: {
       screens: {
-        '1.5xl':'1400px',
+        '1.5xl': '1400px',
         '3xl': '1600px',
         '4xl': '120rem',
         ...defaultTheme.screens,
@@ -124,6 +125,9 @@ const config = {
       },
       borderColor: {
         'custom-gray': '#EAEAEA',
+      },
+      fontFamily: {
+        poppins: ['var(--font-poppins)'],
       },
     },
   },

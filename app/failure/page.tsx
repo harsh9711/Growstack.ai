@@ -4,6 +4,9 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
+import { ALL_ROUTES } from "@/utils/constant";
+import { setCookie } from "cookies-next";
+
 
 const PricingPage: React.FC = () => {
   const [seconds, setSeconds] = useState(5);
@@ -15,6 +18,19 @@ const PricingPage: React.FC = () => {
 
     const isCredit = searchParams.get("credit") === "true";
     const targetPage = isCredit ? "/app" : "/Payment";
+
+    useEffect(() => {
+      const token = searchParams.get("token");
+      if (token) {
+        setCookie("token", token, {
+          secure: true,
+          sameSite: "none",
+          expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        });
+      } else {
+        router.push(ALL_ROUTES.LOGIN);
+      }
+    }, [searchParams, router]);
 
     const timer = setInterval(() => {
       setSeconds((prev) => {

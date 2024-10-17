@@ -11,18 +11,18 @@ import Link from "next/link";
 import { Plan } from "@/types/common";
 import { PlanName } from "@/types/enums";
 import PlanSkeleton from "@/components/skeletons/PlanSkeleton";
-import { deleteCookie, getCookie } from "cookies-next";
+import { deleteCookie } from "cookies-next";
 import { LogOut } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { logout } from "@/lib/features/auth/auth.slice";
 import PlanCard from "@/components/planCard";
 import { useSelector } from "react-redux";
-import { RootState } from "@/lib/store";
+import { persistor, RootState } from "@/lib/store";
 import { ALL_ROUTES } from "@/utils/constant";
 import { planIdsMap } from "@/lib/utils";
 
 const PricingPage: React.FC = () => {
-  const isLoggedIn = !!getCookie("token");
+  const { isAuthenticated } = useSelector((rootState: RootState) => rootState.auth);
 
   useEffect(() => {
     AOS.init();
@@ -195,9 +195,10 @@ const PricingPage: React.FC = () => {
   }
 
   const handleLogout = () => {
-    deleteCookie("token");
     localStorage.clear();
     dispatch(logout());
+    persistor.purge();
+    deleteCookie("token");
     router.push("/auth/login");
   };
 
@@ -233,7 +234,7 @@ const PricingPage: React.FC = () => {
               </p>
             </div>
             {
-              isLoggedIn ? (
+              isAuthenticated ? (
                 <div
                   className="border-[#034737]  gap-4 text-[#034737] flex-wrap w-full flex justify-center sm:justify-end"
                   data-aos="fade-left"

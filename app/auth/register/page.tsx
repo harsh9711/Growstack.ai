@@ -20,8 +20,13 @@ import { setCookie } from "cookies-next";
 import GlobalModal from "@/components/modal/global.modal";
 import { OtpInput } from "@/components/OtpInput";
 import { PlanName } from "@/types/enums";
+import withUnAuthGuard from "@/components/guard/unAuthGuard";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/store";
 
-export default function Register() {
+const Register = () => {
+  const { isAuthenticated } = useSelector((rootState: RootState) => rootState.auth);
+
   const router = useRouter();
   const dispatch = useDispatch();
   const [isEmailOtpModalOpen, setIsEmailOtpModalOpen] = useState(false);
@@ -73,6 +78,12 @@ export default function Register() {
     defaultValues: { agreeToTerms: false },
   });
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push("/app");
+    }
+  }, [isAuthenticated])
+
   const handleRegister = async (token: string) => {
     setIsPending(true);
     try {
@@ -87,6 +98,7 @@ export default function Register() {
         secure: true,
         sameSite: "none",
         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        // domain: process.env.NEXT_PUBLIC_APP_BASE_URL,
       });
 
       toast.success(response.data.message);
@@ -424,3 +436,4 @@ export default function Register() {
   );
 }
 
+export default withUnAuthGuard(Register);

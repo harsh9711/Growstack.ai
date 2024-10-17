@@ -12,7 +12,7 @@ function ConceptCode() {
       <div className="conceptCode">
         <div className="content">
           <div className="container">
-            <div className="row align-items-center">
+            <div className="row ">
               <div className="" data-aos="fade-right" data-aos-easing="ease-in-sine" data-aos-duration="1000">
                 <div className="image">
                   <img src="/images_growstack/emailBuilder/code.svg" alt="conceptCode" />

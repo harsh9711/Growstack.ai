@@ -23,7 +23,7 @@ export function isMobile() {
   }
 
   const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
-  const isSmallScreen = window.matchMedia('(max-width: 768px)').matches;
+  const isSmallScreen = window.matchMedia('(max-width: 600px)').matches;
 
   return isTouchDevice && isSmallScreen;
 }

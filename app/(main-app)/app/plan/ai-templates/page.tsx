@@ -54,8 +54,16 @@ const tags = [
     name: "Websites",
   },
   {
+    icon: "/icons/academicsvg.svg",
+    name: "Academic",
+  },
+  {
+    icon: "/icons/businesssvg.svg",
+    name: "Business",
+  },
+  {
     icon: "/icons/my-documents-folder.svg",
-    name: "My Assistants",
+    name: "My Templates",
   },
 ];
 
@@ -215,19 +223,19 @@ export default function AiAppTemplatesPage() {
   return (
     <Fragment>
       <main className=''>
-        <div className='flex justify-between items-center mt-8'>
+        <div className='flex flex-col lg:flex-row justify-between items-center mt-8'>
           <div className='space-y-2 w-full'>
-            <h1 className='text-2xl font-semibold'>AI templates</h1>
-            <p className='flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]'>
+            <h1 className=' text-2xl lg:text-2xl md:text-xl font-semibold '>AI templates</h1>
+            <p className='flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px] lg:text-[15px] md:text-[13px] '>
               What do you need to write ?
             </p>
           </div>
-          <div className='w-full flex justify-end gap-2'>
-            <div className='bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md'>
+          <div className='w-full flex lg:justify-end gap-2'>
+            <div className='bg-white border border-[#EBEBEB] px-4 py-1  rounded-xl flex gap-3 items-center w-[50%] max-w-md'>
               <Search className='text-gray-500' size={20} />
               <input
                 type='search'
-                className='outline-none h-[40px] w-full'
+                className='outline-none h-[42px] lg:h-[42px] md:h-[35px] w-full'
                 placeholder='Search'
                 value={searchQuery}
                 onChange={handleChangeSearch}
@@ -235,24 +243,25 @@ export default function AiAppTemplatesPage() {
             </div>
 
             <Link href='/app/plan/ai-templates/create-template'>
-              <button className='bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2'>
+              <button className='bg-primary-green text-white sheen transition duration-500 px-5 py-1 rounded-xl flex items-center gap-2 lg:h-[52px] md:h-[42px]'>
                 <Plus size={20} />
                 Create AI template
               </button>
             </Link>
           </div>
         </div>
-        <div className='flex flex-wrap gap-2 mt-10'>
+        <div className='flex flex-row overflow-x-auto lg:flex-wrap gap-2 mt-10'>
           {tags.map((tag, index) => (
-            <div
+            <div 
               key={index}
               onClick={() => {
                 setSelectedTag(tag.name);
                 tagStore(tag.name)
                 clearSearchHandle();
+                
               }}
               className={clsx(
-                "py-3.5 px-6 rounded-lg cursor-pointer flex items-center gap-2 transition duration-300",
+                "py-3.5 px-6 rounded-lg cursor-pointer flex items-center justify-center gap-2 transition duration-300",
                 selectedTag === tag.name && searchQuery.length < 1
                   ? "bg-primary-green text-white"
                   : "bg-[#E9E9E9] text-primary-green"
@@ -263,7 +272,7 @@ export default function AiAppTemplatesPage() {
             </div>
           ))}
         </div>
-        <div className='grid grid-cols-3 gap-5 mt-9'>
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-9'>
           {loading ? (
             Array(15)
               .fill(null)
@@ -273,7 +282,7 @@ export default function AiAppTemplatesPage() {
           ) : (
             appTemplates.map((appTemplate) => (
               <div key={appTemplate._id}>
-                <div className='flex items-center min-h-[130px] justify-between gap-5 bg-white border border-[#EEF0F4] rounded-2xl p-6 shadow-xl shadow-gray-100 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer'>
+                <div className='flex items-center min-h-[130px] lg:min-h-[130px] min-h-[100px] justify-between gap-5 bg-white border border-[#EEF0F4] rounded-2xl p-6 shadow-xl shadow-gray-100 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer'>
                   <Link
                     href={`/app/plan/ai-templates/${appTemplate._id}`}
                     className='flex gap-4 items-start flex-grow overflow-hidden'

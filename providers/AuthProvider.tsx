@@ -1,10 +1,10 @@
 "use client";
 import { useSelector, useDispatch } from "react-redux";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { getCookie } from "cookies-next";
-import { RootState } from "@/lib/store";
+import { deleteCookie, getCookie } from "cookies-next";
+import { persistor, RootState } from "@/lib/store";
 import Spinner from "@/components/Spinner";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
@@ -14,6 +14,8 @@ import {
   setUserPlan,
   login,
   setUserLoading,
+  setInitialized,
+  logout,
 } from "@/lib/features/auth/auth.slice"; // Import login action
 import GlobalModal from "@/components/modal/global.modal";
 import Link from "next/link";
@@ -24,16 +26,52 @@ import Spinner2 from "@/components/Spinner2/Spinner2";
 import { PlanName } from "@/types/enums";
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const isLoggedIn = !!getCookie("token");
-  const { user, currentPlan, isUserFetching, isCurrentPlanFetching } =
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const { user, currentPlan, isUserFetching, isCurrentPlanFetching, isAuthenticated: isLoggedIn, initialized } =
     useSelector((rootState: RootState) => rootState.auth);
+
+  const init = async () => {
+    const token = getCookie("token");
+    if (token) {
+      try {
+        dispatch(setUserLoading(true));
+        const response = await instance.get(`${API_URL}/users/api/v1`);
+        const userData = response.data.data;
+        dispatch(login(userData));
+      } catch (error: any) {
+        if (error.response) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error(error.message);
+        }
+        localStorage.clear();
+        dispatch(logout());
+        deleteCookie("token");
+        persistor.purge();
+        console.error("Error fetching user profile:", error);
+      } finally {
+        dispatch(setUserLoading(false));
+      }
+    } else {
+      localStorage.clear();
+      dispatch(logout());
+      persistor.purge();
+    }
+    dispatch(setInitialized(true));
+  };
+
+  useLayoutEffect(() => {
+    init();
+  }, []);
+
 
   const isSubscribed = user?.isSubscribed || false;
   const [isAddOnModalOpen, setIsAddOnModalOpen] = useState<boolean>(false);
 
-  const dispatch = useDispatch();
-  const router = useRouter();
-  const pathname = usePathname();
+
 
   const fetchPlanUsage = async () => {
     try {
@@ -55,31 +93,11 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const fetchUserProfile = async () => {
-    try {
-      dispatch(setUserLoading(true));
-      const response = await instance.get(`${API_URL}/users/api/v1`);
-      const userData = response.data.data;
-      dispatch(login(userData));
-    } catch (error: any) {
-      if (error.response) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error(error.message);
-      }
-      console.error("Error fetching user profile:", error);
-    } finally {
-      dispatch(setUserLoading(false));
-    }
-  };
-
   useEffect(() => {
     if (!isLoggedIn) {
       router.push("/auth/login");
       return;
     }
-
-    fetchUserProfile();
 
     if (!currentPlan) {
       return;
@@ -123,7 +141,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [isLoggedIn]);
 
-  if (isCurrentPlanFetching || !isLoggedIn) {
+  if (isCurrentPlanFetching || !initialized || !isLoggedIn) {
     return <Spinner2 />;
   }
 

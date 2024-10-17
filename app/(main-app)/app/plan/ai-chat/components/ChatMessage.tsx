@@ -8,6 +8,7 @@ import rehypeRaw from "rehype-raw";
 import remarkBreaks from "remark-breaks";
 import remarkGfm from "remark-gfm";
 import { CopyIcon, Regenerate, VerticalLineIcon } from "@/components/svgs";
+import { Clipboard, Check } from "lucide-react";
 
 interface ChatMessagesProps {
   conversation: Message[];
@@ -23,6 +24,12 @@ type Message = {
   imageUrl: string | null;
   filename: string | null;
 };
+
+interface CodeProps {
+  inline?: boolean;
+  className?: string;
+  children?: React.ReactNode;
+}
 
 const ChatMessages: React.FC<ChatMessagesProps> = ({
   conversation,
@@ -96,6 +103,44 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
       return content.replace(markdownImageRegex, "").trim();
     }
     return content;
+  };
+
+  const CodeBlock = ({ value, language }: { value: string; language: string }) => {
+    const [copied, setCopied] = useState(false);
+
+    const handleCopy = () => {
+      navigator.clipboard.writeText(value).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      });
+    };
+
+    return (
+      <div className="relative">
+        <pre className="m-0 overflow-x-auto">
+          <code className={`language-${language}`}>{value}</code>
+        </pre>
+        <button 
+          className="absolute top-2 right-2 p-1 rounded-md shadow-sm" 
+          onClick={handleCopy}
+        >
+          {copied ? <Check size={20} className="text-green-500" /> : <Clipboard size={20} />}
+        </button>
+      </div>
+    );
+  };
+
+  const components = {
+    code({ inline, className, children, ...props }: CodeProps) {
+      const match = /language-(\w+)/.exec(className || '');
+      return !inline && match ? (
+        <CodeBlock value={String(children).replace(/\n$/, '')} language={match[1]} />
+      ) : (
+        <code className={className} {...props}>
+          {children}
+        </code>
+      );
+    }
   };
 
   return (
@@ -185,6 +230,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
                           key={chat.content}
                           remarkPlugins={[remarkGfm, remarkBreaks]}
                           rehypePlugins={[rehypeRaw]}
+                          components={components}
                         >
                           {textContent}
                         </ReactMarkdown>
