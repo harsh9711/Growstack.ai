@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { getCookie } from "cookies-next";
+import { deleteCookie, getCookie } from "cookies-next";
 import { persistor, RootState } from "@/lib/store";
 import Spinner from "@/components/Spinner";
 import instance from "@/config/axios.config";
@@ -47,6 +47,10 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         } else {
           toast.error(error.message);
         }
+        localStorage.clear();
+        dispatch(logout());
+        deleteCookie("token");
+        persistor.purge();
         console.error("Error fetching user profile:", error);
       } finally {
         dispatch(setUserLoading(false));

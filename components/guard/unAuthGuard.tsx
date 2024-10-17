@@ -1,11 +1,10 @@
 'use client';
 import { useLayoutEffect } from 'react';
 import Spinner2 from '../Spinner2/Spinner2';
-import { ALL_ROUTES } from '@/utils/constant';
 import { useSelector } from 'react-redux';
 import { persistor, RootState } from '@/lib/store';
 import { useDispatch } from 'react-redux';
-import { getCookie } from 'cookies-next';
+import { deleteCookie, getCookie } from 'cookies-next';
 import instance from '@/config/axios.config';
 import { login, logout, setInitialized, setUserLoading } from '@/lib/features/auth/auth.slice';
 
@@ -24,6 +23,10 @@ const withUnAuthGuard = (WrappedComponent: React.ComponentType) => {
                     const userData = response.data.data;
                     dispatch(login(userData));
                 } catch (error: any) {
+                    localStorage.clear();
+                    dispatch(logout());
+                    deleteCookie("token");
+                    persistor.purge();
                 } finally {
                     dispatch(setUserLoading(false));
                 }
