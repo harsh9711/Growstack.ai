@@ -86,7 +86,7 @@ export default function AiAppTemplatesPage() {
       setLoading(true);
       let apiUrl = `${API_URL}/ai/api/v1/chat-template?category=${tag}`;
       if (tag === "My Assistants") {
-        apiUrl = `${API_URL}/ai/api/v1/chat-template?category=MyAssistants`;
+        apiUrl = `${API_URL}/ai/api/v1/chat-template?category=My Templates`;
       }
 
       const response = await instance.get(apiUrl);
