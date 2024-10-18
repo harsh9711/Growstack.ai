@@ -1127,7 +1127,7 @@ export default function AiAppPage({
             </div>
           </div>
           <div className="flex-1">
-            <Editor content={generatedContent} onChange={handleEditorChange} />
+            <Editor content={generatedContent} onChange={handleEditorChange} isLoading={isGeneratedResultPending} />
           </div>
         </div>
       </div>
