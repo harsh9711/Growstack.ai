@@ -15,6 +15,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import "@/styles/globals.css";
 import { useRouter } from "next/navigation";
+import { ALL_ROUTES } from "@/utils/constant";
 interface AiApp {
   _id: string;
   "ASSISTANT NAME": string;
@@ -65,8 +66,6 @@ export default function Dashboard() {
     }
   }, [router]);
 
-
-
   useEffect(() => {
     AOS.init({ duration: 1000 });
     AOS.refresh();
@@ -86,10 +85,6 @@ export default function Dashboard() {
       setAiAppsLoading(false);
     }
   };
-
-
-
-
 
   const fetchSocialMediaProfile = async () => {
     try {
@@ -126,11 +121,9 @@ export default function Dashboard() {
     fetchSocialMediaProfile();
   }, []);
 
-
   if (!hasRefreshed) {
     return null;
   }
-
 
   return (
     <main>
@@ -149,7 +142,7 @@ export default function Dashboard() {
             </h1>
           </div>
         </div>
-        <div className="w-full flex flex-col lg:flex-row gap-7 mt-4 h-[95%]" >
+        <div className="w-full flex flex-col lg:flex-row gap-7 mt-4 h-[95%]">
           <div className="w-full lg:w-2/3 space-y-6 " data-aos="fade-left">
             <ChatComponent />
           </div>
@@ -166,30 +159,8 @@ export default function Dashboard() {
               </p>
             </div>
             <div className="">
-
-              {/* <Link href="/app/plan/ai-chat">
-              <div
-                className="!mt-7 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                data-aos="fade-up"
-              >
-                {/* <div className="flex gap-4 items-center">
-                  <Image
-                    src="/icons/ai-chat.svg"
-                    alt=""
-                    width={60}
-                    height={60}
-                  />
-                  <h2 className="font-medium">AI chat</h2>
-                </div> */}
-              {/* <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
-                  <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
-                </button>
-              </div>
-            </Link> */}
-              <Link href="/app/plan/ai-templates">
-                <div
-                  className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                >
+              <Link href={ALL_ROUTES.AI_TEMPLATE}>
+                <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
                   <div className="flex gap-4 items-center">
                     <Image
                       className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
@@ -205,10 +176,8 @@ export default function Dashboard() {
                   </button>
                 </div>
               </Link>
-              <Link href="/app/plan/ai-assistant">
-                <div
-                  className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                >
+              <Link href={ALL_ROUTES.AI_ASSISTANT}>
+                <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
                   <div className="flex gap-4 items-center">
                     <Image
                       className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
@@ -224,10 +193,8 @@ export default function Dashboard() {
                   </button>
                 </div>
               </Link>
-              <Link href="/app/plan/custom-gpts">
-                <div
-                  className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                >
+              <Link href={ALL_ROUTES.AI_CUSTOM_GPT}>
+                <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
                   <div className="flex gap-4 items-center">
                     <Image
                       className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
@@ -243,14 +210,16 @@ export default function Dashboard() {
                   </button>
                 </div>
               </Link>
-              <Link href="/app/plan/text-to-video">
-                <div
-                  className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                >
+              <Link href={ALL_ROUTES.TEXT_TO_AVATAR}>
+                <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
                   <div className="flex gap-4 items-center">
                     <Image
                       className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
-                      src="/icons/media.svg" alt="" width={60} height={60} />
+                      src="/icons/media.svg"
+                      alt=""
+                      width={60}
+                      height={60}
+                    />
                     <h2 className="font-medium">Text to avatar </h2>
                   </div>
                   <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
@@ -258,10 +227,8 @@ export default function Dashboard() {
                   </button>
                 </div>
               </Link>
-              <Link href="/app/create/workflow-builder">
-                <div
-                  className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                >
+              <Link href={ALL_ROUTES.WORKFLOW_BUILDER}>
+                <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
                   <div className="flex gap-4 items-center">
                     <Image
                       className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
@@ -277,10 +244,8 @@ export default function Dashboard() {
                   </button>
                 </div>
               </Link>
-              <Link href="/app/create/ai-articles">
-                <div
-                  className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                >
+              <Link href={ALL_ROUTES.AI_WIZARD}>
+                <div className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10">
                   <div className="flex gap-4 items-center">
                     <Image
                       className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
@@ -297,7 +262,6 @@ export default function Dashboard() {
                 </div>
               </Link>
             </div>
-
           </div>
         </div>
       </div>

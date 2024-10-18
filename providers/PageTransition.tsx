@@ -1,7 +1,13 @@
 "use client";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
-export default function PageTransition({ children, classNames }: { children: React.ReactNode; classNames?: string }) {
+export default function PageTransition({
+  children,
+  classNames,
+}: {
+  children: React.ReactNode;
+  classNames?: string;
+}) {
   const pathname = usePathname();
 
   return (
@@ -24,7 +30,8 @@ export default function PageTransition({ children, classNames }: { children: Rea
           opacity: 0,
         },
       }}
-      className={classNames}>
+      className={classNames}
+    >
       {children}
     </motion.main>
   );

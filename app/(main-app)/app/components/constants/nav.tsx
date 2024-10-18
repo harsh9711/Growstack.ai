@@ -36,6 +36,7 @@ import {
   UserIcon,
   WhatsappIcon,
 } from "@/components/svgs";
+import { ALL_ROUTES } from "@/utils/constant";
 
 const navLinks: NavLink[] = [
   {
@@ -65,58 +66,65 @@ const navLinks: NavLink[] = [
         //   </svg>
         // ),
         name: "AI  LLM comparison",
-        href: "/app/plan/ai-playground",
+        href: ALL_ROUTES.AI_PLAYGROUND,
       },
       {
         icon: <BotIcon />,
         name: "AI chat",
-        href: "/app/plan/ai-chat",
+        href: ALL_ROUTES.AI_CHAT,
       },
       {
         icon: <AiAppsIcon />,
         name: "AI templates",
-        href: "/app/plan/ai-templates",
+        href: ALL_ROUTES.AI_TEMPLATE,
       },
       {
         icon: <AiAssistantIcon />,
         name: "AI assistant",
-        href: "/app/plan/ai-assistant",
+        href: ALL_ROUTES.AI_ASSISTANT,
       },
       {
         icon: <ChatgptIcon />,
         name: "AI custom GPT",
-        href: "/app/plan/custom-gpts",
+        href: ALL_ROUTES.AI_CUSTOM_GPT,
+      },
+      {
+        icon: <CampaignIcon />,
+        name: "AI content wizard",
+        href: ALL_ROUTES.AI_WIZARD,
       },
     ],
-    title: "Plan",
+    title: "AI Studio",
   },
   {
     icon: <CreateIcon />,
     sublinks: [
-      // {
-      //   icon: <LayoutIcon />,
-      //   name: "AI website builder",
-      //   href: "/app/create/website-builder",
-      // },
-      {
-        icon: <CampaignIcon />
-        // <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        //   <path fill-rule="evenodd" clip-rule="evenodd" d="M12.375 3.25H4.25C3.91875 3.25 3.6 3.38167 3.36667 3.61604C3.13125 3.85063 3 4.16854 3 4.5C3 7.5025 3 17.7475 3 20.75C3 21.4404 3.56042 22 4.25 22H16.75C17.4396 22 18 21.4404 18 20.75C18 18.6394 18 13.25 18 13.25C18 13.02 17.8125 12.8333 17.5833 12.8333C17.3542 12.8333 17.1667 13.02 17.1667 13.25C17.1667 13.25 17.1667 18.6394 17.1667 20.75C17.1667 20.9802 16.9813 21.1667 16.75 21.1667H4.25C4.01875 21.1667 3.83333 20.9802 3.83333 20.75C3.83333 17.7475 3.83333 7.5025 3.83333 4.5C3.83333 4.38958 3.8771 4.28354 3.95627 4.20542C4.03335 4.12729 4.13958 4.08333 4.25 4.08333H12.375C12.6042 4.08333 12.7917 3.89667 12.7917 3.66667C12.7917 3.43667 12.6042 3.25 12.375 3.25ZM6.22917 17.4167H14.7708C15 17.4167 15.1875 17.23 15.1875 17C15.1875 16.77 15 16.5833 14.7708 16.5833H6.22917C6 16.5833 5.8125 16.77 5.8125 17C5.8125 17.23 6 17.4167 6.22917 17.4167ZM6.22917 15.125H14.7708C15 15.125 15.1875 14.9383 15.1875 14.7083C15.1875 14.4783 15 14.2917 14.7708 14.2917H6.22917C6 14.2917 5.8125 14.4783 5.8125 14.7083C5.8125 14.9383 6 15.125 6.22917 15.125ZM10.0833 8.04167H6.33333C6.10417 8.04167 5.91667 8.22833 5.91667 8.45833C5.91667 8.68833 6.10417 8.875 6.33333 8.875H7.79167V13.0417C7.79167 13.2717 7.97917 13.4583 8.20833 13.4583C8.4375 13.4583 8.625 13.2717 8.625 13.0417V8.875H10.0833C10.3125 8.875 10.5 8.68833 10.5 8.45833C10.5 8.22833 10.3125 8.04167 10.0833 8.04167ZM10.6042 13.0417H14.7708C15 13.0417 15.1875 12.855 15.1875 12.625C15.1875 12.395 15 12.2083 14.7708 12.2083H10.6042C10.375 12.2083 10.1875 12.395 10.1875 12.625C10.1875 12.855 10.375 13.0417 10.6042 13.0417ZM19.2167 7.68875C19.1563 7.52521 19 7.41667 18.8271 7.41667C18.6521 7.41667 18.4959 7.52521 18.4354 7.68875L17.9396 9.02979L16.5979 9.52583C16.4354 9.58646 16.3271 9.74229 16.3271 9.91667C16.3271 10.091 16.4354 10.2469 16.5979 10.3075L17.9396 10.8035L18.4354 12.1446C18.4959 12.3081 18.6521 12.4167 18.8271 12.4167C19 12.4167 19.1563 12.3081 19.2167 12.1446L19.7125 10.8035L21.0541 10.3075C21.2187 10.2469 21.3271 10.091 21.3271 9.91667C21.3271 9.74229 21.2187 9.58646 21.0541 9.52583L19.7125 9.02979L19.2167 7.68875ZM11.75 10.9583H13.4167C13.6458 10.9583 13.8333 10.7717 13.8333 10.5417C13.8333 10.3117 13.6458 10.125 13.4167 10.125H11.75C11.5208 10.125 11.3333 10.3117 11.3333 10.5417C11.3333 10.7717 11.5208 10.9583 11.75 10.9583ZM18.8271 9.03396L18.9979 9.49854C19.0396 9.61271 19.1312 9.7025 19.2437 9.74479L19.7083 9.91667L19.2437 10.0885C19.1312 10.1308 19.0396 10.2206 18.9979 10.3348L18.8271 10.7994L18.6541 10.3348C18.6125 10.2206 18.5229 10.1308 18.4083 10.0885L17.9437 9.91667L18.4083 9.74479C18.5229 9.7025 18.6125 9.61271 18.6541 9.49854L18.8271 9.03396ZM15.475 2.27208C15.4146 2.10854 15.2583 2 15.0833 2C14.9083 2 14.7521 2.10854 14.6917 2.27208L13.6896 4.98167L10.9813 5.98417C10.8167 6.04479 10.7083 6.20062 10.7083 6.375C10.7083 6.54938 10.8167 6.70521 10.9813 6.76583L13.6896 7.76833L14.6917 10.4779C14.7521 10.6415 14.9083 10.75 15.0833 10.75C15.2583 10.75 15.4146 10.6415 15.475 10.4779L16.4771 7.76833L19.1854 6.76583C19.35 6.70521 19.4583 6.54938 19.4583 6.375C19.4583 6.20062 19.35 6.04479 19.1854 5.98417L16.4771 4.98167L15.475 2.27208ZM15.0833 3.61729L15.7625 5.45042C15.8042 5.56458 15.8937 5.65438 16.0083 5.69667L17.8417 6.375L16.0083 7.05333C15.8937 7.09562 15.8042 7.18542 15.7625 7.29958L15.0833 9.13271L14.4042 7.29958C14.3625 7.18542 14.2729 7.09562 14.1583 7.05333L12.325 6.375L14.1583 5.69667C14.2729 5.65438 14.3625 5.56458 14.4042 5.45042L15.0833 3.61729ZM11.75 8.875H12.5833C12.8125 8.875 13 8.68833 13 8.45833C13 8.22833 12.8125 8.04167 12.5833 8.04167H11.75C11.5208 8.04167 11.3333 8.22833 11.3333 8.45833C11.3333 8.68833 11.5208 8.875 11.75 8.875ZM18.4167 3.45833H18C17.7708 3.45833 17.5833 3.645 17.5833 3.875C17.5833 4.105 17.7708 4.29167 18 4.29167H18.4167V4.70833C18.4167 4.93833 18.6042 5.125 18.8333 5.125C19.0625 5.125 19.25 4.93833 19.25 4.70833V4.29167H19.6667C19.8958 4.29167 20.0833 4.105 20.0833 3.875C20.0833 3.645 19.8958 3.45833 19.6667 3.45833H19.25V3.04167C19.25 2.81167 19.0625 2.625 18.8333 2.625C18.6042 2.625 18.4167 2.81167 18.4167 3.04167V3.45833Z" fill="black" />
-        // </svg>
-        ,
-        name: "AI content wizard",
-        href: "/app/create/ai-articles",
-      },
       {
         icon: <TextToVideoIcon />,
         name: "Text to avatar",
-        href: "/app/plan/text-to-video",
+        href: ALL_ROUTES.TEXT_TO_AVATAR,
       },
       {
         icon: <ProductAiIcon />,
         name: "AI background generator ",
-        href: "/app/create/product-ai",
+        href: ALL_ROUTES.AI_BACKGROUND_GENERATOR,
       },
+      {
+        icon: <SchedulerIcon />,
+        name: "Social media scheduler",
+        href: "/app/publish/scheduler/quick-posting",
+      },
+      {
+        icon: <SquareShapeIcon />,
+        name: "Social media conversation hub",
+        href: "/app/engage/Social-media",
+      },
+      {
+        icon: <PresentationAnalyticsIcon />,
+        name: "Social media analytics",
+        href: "/app/analyse/social-media",
+      },
+
       // {
       //   icon: <DocumentIcon />,
       //   //  (
@@ -138,20 +146,14 @@ const navLinks: NavLink[] = [
       //   name: "Text to video (coming soon)",
       //   href: "/text-to-video",
       // },
-
-      // {
-      //   icon: <MailIcon />,
-      //   name: "AI email builder",
-      //   href: "/app/create/email-builder",
-      // },
     ],
-    title: "Create",
+    title: "Social Portal",
   },
-  {
-    icon: <PublishIcon />,
-    title: "Publish",
-    href: "/app/publish/scheduler/quick-posting",
-  },
+  // {
+  //   icon: <PublishIcon />,
+  //   title: "Publish",
+  //   href: "/app/publish/scheduler/quick-posting",
+  // },
   // {
   //   icon: <PublishIcon />,
   //   sublinks: [
@@ -193,123 +195,114 @@ const navLinks: NavLink[] = [
   //   ],
   //   title: "Publish",
   // },
-  {
-    icon: <EngageIcon />,
-    sublinks: [
+  // {
+  //   icon: <EngageIcon />,
+  //   sublinks: [
 
-      // {
-      //   icon: <AutomationIcon />,
-      //   name: "WhatsApp and telegram automation with our apps",
-      //   subItems: [
-      //     {
-      //       icon: <WhatsappIcon />,
-      //       name: "WhatsApp overview",
-      //       href: "/app/engage/automation/whatsapp-automation",
-      //     },
-      //     {
-      //       icon: <TelegramIcon />,
-      //       name: "Telegram overview",
-      //       href: "/app/engage/automation/telegram-automation",
-      //     },
-      //     {
-      //       icon: <CampaignIcon />,
-      //       name: "Campaigns",
-      //       href: "/app/engage/automation/campaigns",
-      //     },
-      //     {
-      //       icon: <AiAssistantIcon />,
-      //       name: "AI assistant",
-      //       href: "/app/engage/automation/ai-assistant",
-      //     },
-      //     {
-      //       icon: <SettingsIcon />,
-      //       name: "Settings",
-      //       href: "/app/engage/automation/settings",
-      //     },
-      //   ],
-      // },
-      {
-        icon: <SquareShapeIcon />,
-        name: "Social media conversation hub",
-        href: "/app/engage/Social-media",
-      },
-      // {
-      //   icon: <WhatsappIcon />,
-      //   name: "WhatsApp automation (coming soon)",
-      //   href: "/whtasapp-automate",
-      // },
-      // {
-      //   icon: <TelegramIcon />,
-      //   name: "Telegram automation (coming soon)",
-      //   href: "/telegram-automate",
-      // },
-      // {
-      //   icon: <DocumentIcon />,
-      //   name: "Social advocacy",
-      //   href: "/app/engage/social-advocacy",
-      // },
+  //     // {
+  //     //   icon: <AutomationIcon />,
+  //     //   name: "WhatsApp and telegram automation with our apps",
+  //     //   subItems: [
+  //     //     {
+  //     //       icon: <WhatsappIcon />,
+  //     //       name: "WhatsApp overview",
+  //     //       href: "/app/engage/automation/whatsapp-automation",
+  //     //     },
+  //     //     {
+  //     //       icon: <TelegramIcon />,
+  //     //       name: "Telegram overview",
+  //     //       href: "/app/engage/automation/telegram-automation",
+  //     //     },
+  //     //     {
+  //     //       icon: <CampaignIcon />,
+  //     //       name: "Campaigns",
+  //     //       href: "/app/engage/automation/campaigns",
+  //     //     },
+  //     //     {
+  //     //       icon: <AiAssistantIcon />,
+  //     //       name: "AI assistant",
+  //     //       href: "/app/engage/automation/ai-assistant",
+  //     //     },
+  //     //     {
+  //     //       icon: <SettingsIcon />,
+  //     //       name: "Settings",
+  //     //       href: "/app/engage/automation/settings",
+  //     //     },
+  //     //   ],
+  //     // },
 
-    ],
-    title: "Engage",
-  },
+  //     // {
+  //     //   icon: <WhatsappIcon />,
+  //     //   name: "WhatsApp automation (coming soon)",
+  //     //   href: "/whtasapp-automate",
+  //     // },
+  //     // {
+  //     //   icon: <TelegramIcon />,
+  //     //   name: "Telegram automation (coming soon)",
+  //     //   href: "/telegram-automate",
+  //     // },
+  //     // {
+  //     //   icon: <DocumentIcon />,
+  //     //   name: "Social advocacy",
+  //     //   href: "/app/engage/social-advocacy",
+  //     // },
+
+  //   ],
+  //   title: "Engage",
+  // },
+  // {
+  //   icon: <AnalyseIcon />,
+  //   sublinks: [
+
+  //     // {
+  //     //   icon: <AdsAnalyticsIcon />,
+  //     //   name: "Social media AI insights (coming soon)",
+  //     //   href: "/ai-insights",
+  //     // },
+  //     // {
+  //     //   icon: <ReputationIcon />,
+  //     //   name: "Recommendation engine (coming soon)",
+  //     //   href: "/recommendation",
+  //     // },
+  //     // {
+  //     //   icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  //     //     <path d="M11.795 21H5C3.89543 21 3 20.1046 3 19V7C3 5.89543 3.89543 5 5 5H17C18.1046 5 19 5.89543 19 7V11" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+  //     //     <path d="M15 3V7" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+  //     //     <path d="M7 3V7" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+  //     //     <path d="M3 11H19" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+  //     //     <path d="M9.5 16.5L10.4675 17.6284L13.1642 14.8687" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+  //     //     <path d="M10.205 21H17C18.1046 21 19 20.1046 19 19V7C19 5.89543 18.1046 5 17 5H5C3.89543 5 3 5.89543 3 7V11" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
+  //     //   </svg>
+  //     //   ,
+  //     //   name: "Content calender (coming soon)",
+  //     //   href: "/content-calender",
+  //     // },
+  //     // {
+  //     //   icon: <ReportAnalyticsIcon />,
+  //     //   name: "Email & SMS Analytics",
+  //     //   href: "#",
+  //     // },
+  //   ],
+  //   title: "Analyse",
+  // },
   {
     icon: <AnalyseIcon />,
     sublinks: [
       {
-        icon: <PresentationAnalyticsIcon />,
-        name: "Social media analytics",
-        href: "/app/analyse/social-media",
-      },
-
-      // {
-      //   icon: <AdsAnalyticsIcon />,
-      //   name: "Social media AI insights (coming soon)",
-      //   href: "/ai-insights",
-      // },
-      // {
-      //   icon: <ReputationIcon />,
-      //   name: "Recommendation engine (coming soon)",
-      //   href: "/recommendation",
-      // },
-      // {
-      //   icon: <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      //     <path d="M11.795 21H5C3.89543 21 3 20.1046 3 19V7C3 5.89543 3.89543 5 5 5H17C18.1046 5 19 5.89543 19 7V11" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-      //     <path d="M15 3V7" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-      //     <path d="M7 3V7" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-      //     <path d="M3 11H19" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-      //     <path d="M9.5 16.5L10.4675 17.6284L13.1642 14.8687" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-      //     <path d="M10.205 21H17C18.1046 21 19 20.1046 19 19V7C19 5.89543 18.1046 5 17 5H5C3.89543 5 3 5.89543 3 7V11" stroke="#14171B" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" />
-      //   </svg>
-      //   ,
-      //   name: "Content calender (coming soon)",
-      //   href: "/content-calender",
-      // },
-      // {
-      //   icon: <ReportAnalyticsIcon />,
-      //   name: "Email & SMS Analytics",
-      //   href: "#",
-      // },
-    ],
-    title: "Analyse",
-  },
-  {
-    icon: <PlanIcon />,
-    sublinks: [
-      {
         icon: <ShapeIcon />,
         name: "AI workflow builder",
-        href: "/app/create/workflow-builder",
+        href: ALL_ROUTES.WORKFLOW_BUILDER,
       },
-      {
-        icon: <TridentIcon />,
-        name: "Prospect scraping",
-        href: "/app/engage/web-scraping",
-      },
-      {
-        icon: <UserIcon />,
-        name: "Contact repository",
-        href: "/app/engage/contacts",
-      },
+      // {
+      //   icon: <TridentIcon />,
+      //   name: "Prospect scraping",
+      //   href: "/app/engage/web-scraping",
+      // },
+      // {
+      //   icon: <UserIcon />,
+      //   name: "Contact repository",
+      //   href: "/app/engage/contacts",
+      // },
 
       // {
       //   icon: (
@@ -403,7 +396,7 @@ const navLinks: NavLink[] = [
       //   href: "/contact-intelligence",
       // },
     ],
-    title: "Automate",
+    title: "Automation Hub",
   },
 ];
 

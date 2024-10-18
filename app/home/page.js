@@ -32,7 +32,7 @@ function Page() {
       {/* <Features /> */}
       <Animation />
       <Facts />
-      <Carousel /> 
+      <Carousel />
 
       <PoweredBy />
       <Premium />

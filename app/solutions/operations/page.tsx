@@ -17,7 +17,7 @@ const page = () => {
     AOS.init({ duration: 500 });
   }, []);
   return (
-    <main className="bg-white overflow-hidden max-w-[1920px] w-full mx-auto" >
+    <main className="bg-white overflow-hidden max-w-[1920px] w-full mx-auto">
       <HeroSection />
       <section className=" flex flex-col xl:mt-10 w-full mb-20 2xl:mb-10  items-center justify-center mx-auto">
         <div className="py-16">

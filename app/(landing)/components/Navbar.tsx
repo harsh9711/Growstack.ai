@@ -20,19 +20,23 @@ export default function Navbar() {
           <div className="w-10 grid place-content-center ml-6 xl:hidden">
             <div
               className="flex flex-col items-end justify-center rounded-md transition duration-100 p-2 space-y-[7px] cursor-pointer group"
-              onClick={() => setIsExpanded(true)}>
+              onClick={() => setIsExpanded(true)}
+            >
               <span
                 className={`w-5 relative h-[2px] bg-[#8E93A4] block transition rounded-full duration-300 ${
                   isExpanded && "rotate-[135deg] translate-y-[9px] w-5"
-                }`}></span>
+                }`}
+              ></span>
               <span
                 className={`w-4 relative h-[2px] bg-[#8E93A4] transition  rounded-full duration-100 opacity-100 ${
                   isExpanded && "opacity-0 invisible"
-                } `}></span>
+                } `}
+              ></span>
               <span
                 className={`w-5 relative h-[2px] bg-[#8E93A4] rounded-full transition duration-300 ${
                   isExpanded && "-rotate-[135deg] -translate-y-[9px] w-5"
-                }`}></span>
+                }`}
+              ></span>
             </div>
           </div>
           <div className="hidden xl:flex items-center gap-x-12">
@@ -42,8 +46,10 @@ export default function Navbar() {
                   <Link href={link.href} key={index}>
                     <div
                       className={`flex flex-col gap-[10px] items-center justify-center cursor-pointer relative ${
-                        pathname === link.href && "text-primary-green font-medium"
-                      }`}>
+                        pathname === link.href &&
+                        "text-primary-green font-medium"
+                      }`}
+                    >
                       <h1 className="whitespace-nowrap">{link.label}</h1>
                       <div
                         className={`w-0 h-1 rounded-full bg-primary-green font-medium absolute left-0 mt-10 transition-all duration-300 ${
@@ -58,7 +64,10 @@ export default function Navbar() {
             <div className="flex gap-x-4 items-center">
               <div className="bg-[#C9C9C9] h-8 w-[1px]" />
 
-              <Link href="/auth/register" className="sheen bg-primary-green text-white py-3.5 px-9 rounded-xl flex gap-2 items-center justify-center">
+              <Link
+                href="/auth/register"
+                className="sheen bg-primary-green text-white py-3.5 px-9 rounded-xl flex gap-2 items-center justify-center"
+              >
                 Login
                 <MdArrowOutward size={22} />
               </Link>

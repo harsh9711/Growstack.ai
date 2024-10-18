@@ -1,6 +1,10 @@
 "use client";
 import React from "react";
-import { BrandVoiceIcon } from "@/components/svgs";
+import {
+  BrandVoiceIcon,
+  DocumentIcon,
+  PresentationAnalyticsIcon,
+} from "@/components/svgs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -20,6 +24,7 @@ import { deleteCookie } from "cookies-next";
 import Image from "next/image";
 import Wave from "@/components/svgs/wave";
 import { persistor } from "@/lib/store";
+import { ALL_ROUTES } from "@/utils/constant";
 
 export function ProfileButton() {
   const router = useRouter();
@@ -39,7 +44,9 @@ export function ProfileButton() {
       <DropdownMenuTrigger asChild>
         <Avatar className="rounded-xl">
           <AvatarImage src={currentUser?.profile_img} />
-          <AvatarFallback className="rounded-xl">{currentUser?.email?.slice(0, 1)}</AvatarFallback>
+          <AvatarFallback className="rounded-xl">
+            {currentUser?.email?.slice(0, 1)}
+          </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[300px] relative right-10 text-[15px]">
@@ -49,8 +56,12 @@ export function ProfileButton() {
             <AvatarFallback>{currentUser?.email?.slice(0, 1)}</AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
-            <h1 className="text-xl font-semibold capitalize truncate">{currentUser?.name ?? currentUser?.name ?? "Growstack User"}</h1>
-            <p className="text-primary-grey text-sm truncate">{currentUser?.email}</p>
+            <h1 className="text-xl font-semibold capitalize truncate">
+              {currentUser?.name ?? currentUser?.name ?? "Growstack User"}
+            </h1>
+            <p className="text-primary-grey text-sm truncate">
+              {currentUser?.email}
+            </p>
           </div>
         </div>
         <DropdownMenuSeparator />
@@ -61,21 +72,34 @@ export function ProfileButton() {
               My profile
             </DropdownMenuItem>
           </Link>
-          <Link href="/account/saved-documents">
-            <DropdownMenuItem className="flex gap-3 px-4">
-              <Settings size={22} />
-              Saved documents
-            </DropdownMenuItem>
-          </Link>
-          <Link href="/app/plan/ai-brandvoice">
+          <Link href={ALL_ROUTES.BRAND_VOICE}>
             <DropdownMenuItem className="flex gap-3 px-4">
               <Wave color="black" />
               Brand voice
             </DropdownMenuItem>
           </Link>
+          <Link href={ALL_ROUTES.SOCIAL_MEDIA_POSTING}>
+            <DropdownMenuItem className="flex gap-3 px-4">
+              <PresentationAnalyticsIcon />
+              Connect to social media profiles
+            </DropdownMenuItem>
+          </Link>
+          {/* <Link href="/account/saved-documents">
+            <DropdownMenuItem className="flex gap-3 px-4">
+              <Settings size={22} />
+              Posting Logs
+            </DropdownMenuItem>
+          </Link> */}
+          <Link href="/account/saved-documents">
+            <DropdownMenuItem className="flex gap-3 px-4">
+              {/* <Settings size={22} /> */}
+              <DocumentIcon />
+              Saved documents
+            </DropdownMenuItem>
+          </Link>
+
           <Link href="/account/billings/settings">
             <DropdownMenuItem className="flex gap-3 px-4">
-
               <Image src="/billing.svg" width={25} height={25} alt="width" />
               Billing
             </DropdownMenuItem>
@@ -87,15 +111,16 @@ export function ProfileButton() {
             </DropdownMenuItem>
           </Link> */}
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem className="flex gap-3 px-4" id="intercom-launcher">
+        {/* <DropdownMenuSeparator /> */}
+        {/* <DropdownMenuItem className="flex gap-3 px-4" id="intercom-launcher">
           <Info size={22} />
           Help
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
         <DropdownMenuSeparator />
         <button
           onClick={handleLogout}
-          className="relative flex select-none items-center rounded-lg h-12 p-4 outline-none w-full gap-3 text-[#D9000B] hover:bg-[#D9000B]/10 cursor-pointer">
+          className="relative flex select-none items-center rounded-lg h-12 p-4 outline-none w-full gap-3 text-[#D9000B] hover:bg-[#D9000B]/10 cursor-pointer"
+        >
           <LogOut size={20} />
           Sign out
         </button>

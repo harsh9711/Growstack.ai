@@ -1,6 +1,19 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import clsx from "clsx";
 import { Plus } from "lucide-react";
 import { useState } from "react";
@@ -33,24 +46,30 @@ export default function NewFieldDialog() {
                     onClick={() => setSelectedInput("Single line")}
                     className={clsx(
                       "border border-[#E4E4E4] w-full h-12 text-sm rounded-xl grid place-content-center transition-all duration-300",
-                      selectedInput === "Single line" && "bg-primary-green text-white"
-                    )}>
+                      selectedInput === "Single line" &&
+                        "bg-primary-green text-white"
+                    )}
+                  >
                     Single line
                   </button>
                   <button
                     onClick={() => setSelectedInput("Multi line")}
                     className={clsx(
                       "border border-[#E4E4E4] w-full h-12 text-sm rounded-xl grid place-content-center transition-all duration-300",
-                      selectedInput === "Multi line" && "bg-primary-green text-white"
-                    )}>
+                      selectedInput === "Multi line" &&
+                        "bg-primary-green text-white"
+                    )}
+                  >
                     Multi line
                   </button>
                   <button
                     onClick={() => setSelectedInput("Text box list")}
                     className={clsx(
                       "border border-[#E4E4E4] w-full h-12 text-sm rounded-xl grid place-content-center transition-all duration-300",
-                      selectedInput === "Text box list" && "bg-primary-green text-white"
-                    )}>
+                      selectedInput === "Text box list" &&
+                        "bg-primary-green text-white"
+                    )}
+                  >
                     Text box list
                   </button>
                 </div>
@@ -62,8 +81,10 @@ export default function NewFieldDialog() {
                     onClick={() => setSelectedValue("Number")}
                     className={clsx(
                       "border border-[#E4E4E4] w-full h-12 text-sm rounded-xl grid place-content-center transition-all duration-300",
-                      selectedValue === "Number" && "bg-primary-green text-white"
-                    )}>
+                      selectedValue === "Number" &&
+                        "bg-primary-green text-white"
+                    )}
+                  >
                     Number
                   </button>
                   <button
@@ -71,15 +92,18 @@ export default function NewFieldDialog() {
                     className={clsx(
                       "border border-[#E4E4E4] w-full h-12 text-sm rounded-xl grid place-content-center transition-all duration-300",
                       selectedValue === "Phone" && "bg-primary-green text-white"
-                    )}>
+                    )}
+                  >
                     Phone
                   </button>
                   <button
                     onClick={() => setSelectedValue("Monetary")}
                     className={clsx(
                       "border border-[#E4E4E4] w-full h-12 text-sm rounded-xl grid place-content-center transition-all duration-300",
-                      selectedValue === "Monetary" && "bg-primary-green text-white"
-                    )}>
+                      selectedValue === "Monetary" &&
+                        "bg-primary-green text-white"
+                    )}
+                  >
                     Monetary
                   </button>
                 </div>
@@ -91,40 +115,50 @@ export default function NewFieldDialog() {
                     onClick={() => setChoosingOption("Dropdown (Single)")}
                     className={clsx(
                       "border border-[#E4E4E4] w-full h-12 text-sm rounded-xl grid place-content-center transition-all duration-300",
-                      selectedOption === "Dropdown (Single)" && "bg-primary-green text-white"
-                    )}>
+                      selectedOption === "Dropdown (Single)" &&
+                        "bg-primary-green text-white"
+                    )}
+                  >
                     Dropdown (Single)
                   </button>
                   <button
                     onClick={() => setChoosingOption("Dropdown multiple")}
                     className={clsx(
                       "border border-[#E4E4E4] w-full h-12 text-sm rounded-xl grid place-content-center transition-all duration-300",
-                      selectedOption === "Dropdown multiple" && "bg-primary-green text-white"
-                    )}>
+                      selectedOption === "Dropdown multiple" &&
+                        "bg-primary-green text-white"
+                    )}
+                  >
                     Dropdown multiple
                   </button>
                   <button
                     onClick={() => setChoosingOption("Radio select")}
                     className={clsx(
                       "border border-[#E4E4E4] w-full h-12 text-sm rounded-xl grid place-content-center transition-all duration-300",
-                      selectedOption === "Radio select" && "bg-primary-green text-white"
-                    )}>
+                      selectedOption === "Radio select" &&
+                        "bg-primary-green text-white"
+                    )}
+                  >
                     Radio select
                   </button>
                   <button
                     onClick={() => setChoosingOption("Checkbox")}
                     className={clsx(
                       "border border-[#E4E4E4] w-full h-12 text-sm rounded-xl grid place-content-center transition-all duration-300",
-                      selectedOption === "Checkbox" && "bg-primary-green text-white"
-                    )}>
+                      selectedOption === "Checkbox" &&
+                        "bg-primary-green text-white"
+                    )}
+                  >
                     Checkbox
                   </button>
                   <button
                     onClick={() => setChoosingOption("Date picker")}
                     className={clsx(
                       "border border-[#E4E4E4] w-full h-12 text-sm rounded-xl grid place-content-center transition-all duration-300",
-                      selectedOption === "Date picker" && "bg-primary-green text-white"
-                    )}>
+                      selectedOption === "Date picker" &&
+                        "bg-primary-green text-white"
+                    )}
+                  >
                     Date picker
                   </button>
                 </div>
@@ -134,9 +168,9 @@ export default function NewFieldDialog() {
                 <div className="flex gap-4">
                   <button
                     onClick={() =>
-                      setOthers((prev) => {
+                      setOthers(prev => {
                         if (prev.includes("Field upload")) {
-                          return prev.filter((item) => item !== "Field upload");
+                          return prev.filter(item => item !== "Field upload");
                         } else {
                           return [...prev, "Field upload"];
                         }
@@ -144,15 +178,17 @@ export default function NewFieldDialog() {
                     }
                     className={clsx(
                       "border border-[#E4E4E4] w-full h-12 text-sm rounded-xl grid place-content-center transition-all duration-300",
-                      others.includes("Field upload") && "bg-primary-green text-white"
-                    )}>
+                      others.includes("Field upload") &&
+                        "bg-primary-green text-white"
+                    )}
+                  >
                     Field upload
                   </button>
                   <button
                     onClick={() =>
-                      setOthers((prev) => {
+                      setOthers(prev => {
                         if (prev.includes("Signature")) {
-                          return prev.filter((item) => item !== "Signature");
+                          return prev.filter(item => item !== "Signature");
                         } else {
                           return [...prev, "Signature"];
                         }
@@ -160,8 +196,10 @@ export default function NewFieldDialog() {
                     }
                     className={clsx(
                       "border border-[#E4E4E4] w-full h-12 text-sm rounded-xl grid place-content-center transition-all duration-300",
-                      others.includes("Signature") && "bg-primary-green text-white"
-                    )}>
+                      others.includes("Signature") &&
+                        "bg-primary-green text-white"
+                    )}
+                  >
                     Signature
                   </button>
                 </div>
@@ -176,7 +214,8 @@ export default function NewFieldDialog() {
                 <button
                   disabled={!selectedInput}
                   onClick={() => setIsNext(true)}
-                  className="border border-primary-green whitespace-nowrap px-10 py-2.5 sheen bg-primary-green text-white transition-all duration-300 rounded-lg">
+                  className="border border-primary-green whitespace-nowrap px-10 py-2.5 sheen bg-primary-green text-white transition-all duration-300 rounded-lg"
+                >
                   Next
                 </button>
               </div>
@@ -185,13 +224,19 @@ export default function NewFieldDialog() {
         ) : (
           <div>
             <h1 className="text-xl font-semibold">Field selected</h1>
-            <div className="bg-primary-green h-12 w-1/2 rounded-xl text-white flex justify-center items-center">{selectedInput}</div>
+            <div className="bg-primary-green h-12 w-1/2 rounded-xl text-white flex justify-center items-center">
+              {selectedInput}
+            </div>
             <div className="grid grid-cols-2 gap-4 mt-8">
               <div className="space-y-2">
                 <label htmlFor="" className="font-medium">
                   Name
                 </label>
-                <Input type="text" placeholder="Type address" className="text-[15px]" />
+                <Input
+                  type="text"
+                  placeholder="Type address"
+                  className="text-[15px]"
+                />
               </div>
               <div className="space-y-2">
                 <label htmlFor="" className="font-medium">
@@ -201,7 +246,7 @@ export default function NewFieldDialog() {
                   <SelectTrigger className="w-full border-none h-14">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
-                  <SelectContent defaultValue={"daily"}>
+                  <SelectContent defaultValue="daily">
                     <SelectGroup>
                       <SelectItem value="daily">Daily</SelectItem>
                       <SelectItem value="monthly">Monthly</SelectItem>
@@ -218,7 +263,7 @@ export default function NewFieldDialog() {
                   <SelectTrigger className="w-full border-none h-14">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
-                  <SelectContent defaultValue={"daily"}>
+                  <SelectContent defaultValue="daily">
                     <SelectGroup>
                       <SelectItem value="daily">Daily</SelectItem>
                       <SelectItem value="monthly">Monthly</SelectItem>
@@ -231,22 +276,33 @@ export default function NewFieldDialog() {
                 <label htmlFor="" className="font-medium">
                   Placeholder
                 </label>
-                <Input type="text" placeholder="Field placeholder" className="text-[15px]" />
+                <Input
+                  type="text"
+                  placeholder="Field placeholder"
+                  className="text-[15px]"
+                />
               </div>
               <div className="space-y-2">
                 <label htmlFor="" className="font-medium">
                   Prefill (For forms & surveys)
                 </label>
-                <Input type="text" placeholder="Prefill value" className="text-[15px]" />
+                <Input
+                  type="text"
+                  placeholder="Prefill value"
+                  className="text-[15px]"
+                />
               </div>
             </div>
             <div className="flex justify-end gap-4">
               <button
                 onClick={() => setIsNext(false)}
-                className="h-12 py-3 px-3 w-full max-w-[180px] bg-white border border-[#CF0000] text-[#CF0000] hover:bg-[#cf000009] rounded-xl mt-6">
+                className="h-12 py-3 px-3 w-full max-w-[180px] bg-white border border-[#CF0000] text-[#CF0000] hover:bg-[#cf000009] rounded-xl mt-6"
+              >
                 Cancel
               </button>
-              <button className="h-12 py-3 px-3 w-full max-w-[180px] bg-primary-green sheen rounded-xl text-white mt-6">Save</button>
+              <button className="h-12 py-3 px-3 w-full max-w-[180px] bg-primary-green sheen rounded-xl text-white mt-6">
+                Save
+              </button>
             </div>
           </div>
         )}

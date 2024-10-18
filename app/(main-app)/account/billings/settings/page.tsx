@@ -178,13 +178,16 @@ const OverViewSection = () => {
               ${planUsage?.usage_amount}
             </h1>
             <button
-              className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300 ${isCreditLoading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+              className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white sheen transition-all duration-300 ${
+                isCreditLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
               onClick={() => {
-                const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan?.plan_id);
+                const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some(
+                  val => val === currentPlan?.plan_id
+                );
 
                 if (isBasicPlan) {
-                  setIsUpgradeModalOpen(true)
+                  setIsUpgradeModalOpen(true);
                 } else {
                   setIsCreditInputDialogBoxOpen(true);
                 }
@@ -216,8 +219,9 @@ const OverViewSection = () => {
                   />
                 </div>
                 <p
-                  className={` text-opacity-50 ${isAmountError ? "text-destructive" : "text-primary-black"
-                    }`}
+                  className={` text-opacity-50 ${
+                    isAmountError ? "text-destructive" : "text-primary-black"
+                  }`}
                 >
                   Enter an amount between <span>$</span>5 and <span>$</span>100
                 </p>
@@ -233,7 +237,7 @@ const OverViewSection = () => {
         </Dialog>
 
         <GlobalModal
-          showCloseButton={true}
+          showCloseButton
           open={isUpgradeModalOpen}
           setOpen={() => {
             setIsUpgradeModalOpen(false);
@@ -247,7 +251,9 @@ const OverViewSection = () => {
 };
 
 export default function SettingsPage() {
-  const { user, currentPlan, isCurrentPlanFetching } = useSelector((rootState: RootState) => rootState.auth);
+  const { user, currentPlan, isCurrentPlanFetching } = useSelector(
+    (rootState: RootState) => rootState.auth
+  );
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
   const tabs = ["Overview", "Billing history"];
@@ -308,15 +314,19 @@ export default function SettingsPage() {
     <main>
       <div className="flex w-full justify-between ">
         <h1 className="text-2xl font-semibold">Billing</h1>
-        {
-          !isCurrentPlanFetching || !currentPlan ? <>
-            <div className="flex gap-x-2 items-center" >
+        {!isCurrentPlanFetching || !currentPlan ? (
+          <>
+            <div className="flex gap-x-2 items-center">
               <PlanIcon />
-              {getUserFriendlyPlanName(currentPlan?.plan_name! as PlanName)} Plan
-            </div></> : (
-            <Spinner color="#000" />
-          )
-        }
+              {getUserFriendlyPlanName(
+                currentPlan?.plan_name! as PlanName
+              )}{" "}
+              Plan
+            </div>
+          </>
+        ) : (
+          <Spinner color="#000" />
+        )}
       </div>
       <div className="flex flex-wrap gap-10 justify-between pb-6">
         <div className="space-y-3">
@@ -327,18 +337,17 @@ export default function SettingsPage() {
         </div>{" "}
         <div className="flex flex-row gap-x-6 items-end">
           <AddCreditDialog />
-          {
-            user?.isSubscribed && !planUsage?.isFreeCouponApplied && (
-              <button
-                className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-white border-red-500 border hover:font-semibold hover:border-2 text-red-500 sheen transition-all duration-300 ${cancelLoading ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
-                onClick={handleCancelSubscription}
-                disabled={cancelLoading}
-              >
-                {cancelLoading ? 'Canceling...' : 'Cancel Subscription'}
-              </button>
-            )
-          }
+          {user?.isSubscribed && !planUsage?.isFreeCouponApplied && (
+            <button
+              className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-white border-red-500 border hover:font-semibold hover:border-2 text-red-500 sheen transition-all duration-300 ${
+                cancelLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+              onClick={handleCancelSubscription}
+              disabled={cancelLoading}
+            >
+              {cancelLoading ? "Canceling..." : "Cancel Subscription"}
+            </button>
+          )}
         </div>
         {/* <div className="w-full max-w-[320px] bg-white shadow-2xl shadow-gray-200 px-3 py-2 rounded-xl">
           <div className="w-full flex relative">

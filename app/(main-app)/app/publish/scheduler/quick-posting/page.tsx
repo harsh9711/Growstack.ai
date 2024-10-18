@@ -28,7 +28,7 @@ export default function QuickPosting() {
   const [link, setLink] = useState("");
   const [loading, setLoading] = useState(false);
   const tabs = ["Published", "Scheduled"];
-  const [minDateTime, setMinDateTime] = useState('');
+  const [minDateTime, setMinDateTime] = useState("");
   const renderContent = (selectedTabIndex: number) => {
     switch (selectedTabIndex) {
       case 0:
@@ -40,17 +40,20 @@ export default function QuickPosting() {
 
   const handleGetProfileData = async () => {
     try {
-      setLoading(true)
-      const response = (await instance.get(
-        `${API_URL}/users/api/v1/social-media/profile`
-      )).data;
-      if (!response.success || response.data?.activeSocialAccounts.length === 0) {
+      setLoading(true);
+      const response = (
+        await instance.get(`${API_URL}/users/api/v1/social-media/profile`)
+      ).data;
+      if (
+        !response.success ||
+        response.data?.activeSocialAccounts.length === 0
+      ) {
         router.push("/app/publish/scheduler/quick-posting/profiles");
       }
     } catch (error) {
       console.log("Error fetching social profile:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 
@@ -58,14 +61,13 @@ export default function QuickPosting() {
     handleGetProfileData();
   }, []);
 
-
   useEffect(() => {
     const now = new Date();
     const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
     setMinDateTime(`${year}-${month}-${day}`);
   }, []);
   const handleValueChange = (value: string) => {
@@ -82,7 +84,7 @@ export default function QuickPosting() {
     const savedArticleImg = localStorage.getItem("savArticalImg");
     if (storedArticle) {
       try {
-        const parsedArticle:any = storedArticle;
+        const parsedArticle: any = storedArticle;
         setLink(parsedArticle);
       } catch (error) {
         console.error("Error parsing savedArticle:", error);
@@ -91,7 +93,7 @@ export default function QuickPosting() {
 
     if (savedArticleImg) {
       try {
-        const parsedArticleImg:any = savedArticleImg;
+        const parsedArticleImg: any = savedArticleImg;
         setMediaUrls((prevData: any) => [...prevData, parsedArticleImg]);
       } catch (error) {
         console.error("Error parsing savedArticleImg:", error);
@@ -102,7 +104,6 @@ export default function QuickPosting() {
       localStorage.removeItem("savArticalImg");
     };
   }, []);
-
 
   const handleBrowsImgAndVideo = async (
     event: ChangeEvent<HTMLInputElement>
@@ -131,7 +132,7 @@ export default function QuickPosting() {
 
   const handlePublish = async () => {
     setLoading(true);
-    let utcDateTime = null;
+    const utcDateTime = null;
     try {
       const requestData: any = {
         post: content + " " + link,
@@ -165,20 +166,20 @@ export default function QuickPosting() {
   };
 
   const handleSwitchChange = (network: string, isChecked: boolean) => {
-    setSelectedNetworks((prevState) => {
+    setSelectedNetworks(prevState => {
       if (isChecked) {
         return [...prevState, network];
       } else {
-        return prevState.filter((item) => item !== network);
+        return prevState.filter(item => item !== network);
       }
     });
   };
 
   const handleRemoveMediaUrls = (index: number) => {
-    setMediaUrls((prevUrls) => prevUrls.filter((_, i) => i !== index));
+    setMediaUrls(prevUrls => prevUrls.filter((_, i) => i !== index));
   };
 
-  console.log(mediaUrls)
+  console.log(mediaUrls);
 
   return (
     <Fragment>
@@ -211,7 +212,7 @@ export default function QuickPosting() {
                     placeholder="write something here..."
                     className="h-[129px] w-full bg-[#F2F2F2] rounded-2xl p-3 resize-none"
                     value={content}
-                    onChange={(e) => setContent(e.target.value)}
+                    onChange={e => setContent(e.target.value)}
                   />
                 </div>
               </section>
@@ -259,10 +260,28 @@ export default function QuickPosting() {
                             style={{ marginTop: 0, cursor: "pointer" }}
                             onClick={() => handleRemoveMediaUrls(index)}
                           >
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg
+                              width="20"
+                              height="20"
+                              viewBox="0 0 20 20"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
                               <circle cx="10" cy="10" r="10" fill="#FF0000" />
-                              <path d="M6.3 13.9001L13.6142 6.58586" stroke="white" stroke-width="2.28571" stroke-linecap="round" stroke-linejoin="round" />
-                              <path d="M6.30426 6.30414L13.6546 13.6545" stroke="white" stroke-width="2.28571" stroke-linecap="round" stroke-linejoin="round" />
+                              <path
+                                d="M6.3 13.9001L13.6142 6.58586"
+                                stroke="white"
+                                stroke-width="2.28571"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                              <path
+                                d="M6.30426 6.30414L13.6546 13.6545"
+                                stroke="white"
+                                stroke-width="2.28571"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
                             </svg>
                           </div>
                           <img
@@ -289,7 +308,7 @@ export default function QuickPosting() {
                       placeholder="Content share link"
                       className="w-full rounded-full"
                       value={link}
-                      onChange={(e) => setLink(e.target.value)}
+                      onChange={e => setLink(e.target.value)}
                     />
                   </div>
                 </div>
@@ -301,7 +320,7 @@ export default function QuickPosting() {
                 <div className="w-full flex justify-between mt-6 pb-6 border-b border-[#EDEFF0]">
                   <label className="font-medium">Facebook</label>
                   <Switch
-                    onCheckedChange={(checked) =>
+                    onCheckedChange={checked =>
                       handleSwitchChange("facebook", checked)
                     }
                   />
@@ -309,7 +328,7 @@ export default function QuickPosting() {
                 <div className="w-full flex justify-between mt-6 pb-6 border-b border-[#EDEFF0]">
                   <label className="font-medium">Twitter</label>
                   <Switch
-                    onCheckedChange={(checked) =>
+                    onCheckedChange={checked =>
                       handleSwitchChange("twitter", checked)
                     }
                   />
@@ -317,7 +336,7 @@ export default function QuickPosting() {
                 <div className="w-full flex justify-between mt-6 pb-6 border-b border-[#EDEFF0]">
                   <label className="font-medium">LinkedIn</label>
                   <Switch
-                    onCheckedChange={(checked) =>
+                    onCheckedChange={checked =>
                       handleSwitchChange("linkedin", checked)
                     }
                   />
@@ -325,7 +344,7 @@ export default function QuickPosting() {
                 <div className="w-full flex justify-between mt-6 pb-6 border-b border-[#EDEFF0]">
                   <label className="font-medium">Instagram</label>
                   <Switch
-                    onCheckedChange={(checked) =>
+                    onCheckedChange={checked =>
                       handleSwitchChange("instagram", checked)
                     }
                   />
@@ -375,7 +394,7 @@ export default function QuickPosting() {
                           type="date"
                           className="w-full bg-transparent outline-none"
                           value={scheduleDate}
-                          onChange={(e) => setScheduleDate(e.target.value)}
+                          onChange={e => setScheduleDate(e.target.value)}
                           min={minDateTime}
                         />
                       </div>
@@ -397,10 +416,11 @@ export default function QuickPosting() {
                   {tabs.map((tab, index) => (
                     <div
                       key={index}
-                      className={`w-full h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${selectedTabIndex === index
+                      className={`w-full h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
+                        selectedTabIndex === index
                           ? "!text-white"
                           : "!text-primary-grey"
-                        }`}
+                      }`}
                       onClick={() => {
                         const totalTabs = tabs.length;
                         const percentage = (index / totalTabs) * 100;

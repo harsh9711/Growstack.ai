@@ -31,7 +31,7 @@ const ImageGallerySecond = () => {
   }, [clickedImage]);
 
   const handleClick = (largeSrc: string) => {
-    setClickedImage((prev) => (prev === largeSrc ? null : largeSrc));
+    setClickedImage(prev => (prev === largeSrc ? null : largeSrc));
   };
 
   const handleClose = () => {
@@ -57,7 +57,7 @@ const ImageGallerySecond = () => {
       className:
         "w-[290.5px] h-[200px] translate-x-[480px] z-60 -translate-y-52",
       largeSrc: "/images_growstack/solutions/data17.svg",
-      buttonText:"Optimal logistics partners",
+      buttonText: "Optimal logistics partners",
     },
     {
       src: "/images_growstack/solutions/camp.svg",
@@ -102,11 +102,16 @@ const ImageGallerySecond = () => {
           ))}
           <div className="items-center justify-center flex flex-col gap-y-2 w-full  absolute -top-4 -left-14 right-[6700px]">
             <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit mx-auto">
-            Reliability
+              Reliability
             </div>
             <h1 className="text-center text-[26px] 2xl:text-[42px] leading-normal ">
-              <span className="text-black font-bold">Ensure supplier reliability and</span><br/>
-              <span className="text-black font-extralight">manage logistics</span>
+              <span className="text-black font-bold">
+                Ensure supplier reliability and
+              </span>
+              <br />
+              <span className="text-black font-extralight">
+                manage logistics
+              </span>
             </h1>
           </div>
         </motion.div>
@@ -132,7 +137,7 @@ const ImageGallerySecond = () => {
           >
             <div
               className="relative max-w-full max-h-full p-4 rounded-lg"
-              onClick={(e) => e.stopPropagation()}
+              onClick={e => e.stopPropagation()}
             >
               <div className="absolute top-0 left-0 right-0  text-white p-8 flex items-center justify-between rounded-t-lg">
                 <span className="text-lg font-semibold opacity-0">

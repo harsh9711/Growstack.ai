@@ -10,7 +10,9 @@ export default function MultipostingPage() {
         <div className="flex justify-between items-center mt-8">
           <div className="space-y-2 w-full">
             <h1 className="text-2xl font-semibold">Scheduler</h1>
-            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[16px]">Posting debug log </p>
+            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[16px]">
+              Posting debug log{" "}
+            </p>
           </div>
         </div>
         <div className="!bg-white border border-[#E8E8E8] shadow-box py-5 pl-16 pr-8 rounded-3xl mt-5">

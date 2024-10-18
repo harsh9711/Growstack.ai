@@ -10,20 +10,20 @@ import CoreFeatures from "@/components/customMarketingGpt/coreFeatures/CoreFeatu
 import Faqs from "@/components/home/faq/Faqs";
 
 function Page() {
-    return (
-        <React.Fragment>
-            <div className='transNav'>
-                <Navbar />
-                <Banner />
-                <Efficiency />
-                <CraftBrand />
-                <UseCases />
-                <CoreFeatures />
-                <Faqs />
-                <Footer />
-            </div>
-        </React.Fragment>
-    );
+  return (
+    <React.Fragment>
+      <div className="transNav">
+        <Navbar />
+        <Banner />
+        <Efficiency />
+        <CraftBrand />
+        <UseCases />
+        <CoreFeatures />
+        <Faqs />
+        <Footer />
+      </div>
+    </React.Fragment>
+  );
 }
 
 export default Page;

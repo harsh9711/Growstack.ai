@@ -45,11 +45,12 @@ const ImageGalleryResponsive = () => {
       id: 4,
       source: "scheduler",
       buttonText: "Align communications",
-    },    {
+    },
+    {
       src: "/images_growstack/solutions/aiProduct.svg",
       alt: "Image 5",
       id: 5,
-source: "eswiper5",
+      source: "eswiper5",
       buttonText: "Product visuals",
     },
   ];
@@ -79,12 +80,12 @@ source: "eswiper5",
               delay: 1000,
               disableOnInteraction: true,
             }}
-            loop={true}
+            loop
             speed={500}
             pagination={{ clickable: true }}
             data-aos="fade-up"
           >
-            {images.map((img) => (
+            {images.map(img => (
               <SwiperSlide key={img.id}>
                 <Image
                   src={img.src}
@@ -100,7 +101,7 @@ source: "eswiper5",
       ) : (
         <div className="relative flex flex-col gap-y-6  items-center justify-center">
           <div className="flex flex-col items-center justify-center gap-y-16 p-4">
-            {images.map((img) => (
+            {images.map(img => (
               <div
                 className="relative flex flex-col items-center justify-center"
                 key={img.id}

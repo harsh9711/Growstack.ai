@@ -3,7 +3,11 @@ import Intercom, { onUnreadCountChange } from "@intercom/messenger-js-sdk";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
-export default function IntercomProvider({ children }: { children: React.ReactNode }) {
+export default function IntercomProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [unreadCount, setUnreadCount] = useState(0);
   const pathname = usePathname();
 
@@ -28,7 +32,6 @@ export default function IntercomProvider({ children }: { children: React.ReactNo
     };
   }, []);
 
-
   return (
     <Fragment>
       {children}
@@ -38,7 +41,12 @@ export default function IntercomProvider({ children }: { children: React.ReactNo
         className=" rounded-full  fixed cursor-pointer bottom-10 right-10 z-50"
       >
         <div className="relative ">
-          <Image src="/assets/chat.png" alt="Chat icon" width={40} height={40} />
+          <Image
+            src="/assets/chat.png"
+            alt="Chat icon"
+            width={40}
+            height={40}
+          />
           {unreadCount > 0 && (
             <span
               style={{

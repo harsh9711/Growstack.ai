@@ -160,7 +160,7 @@ export default function QuickPostsTable() {
       icon: "warning",
       buttons: ["Cancel", "Delete"],
       dangerMode: true,
-    }).then(async (willDelete) => {
+    }).then(async willDelete => {
       if (willDelete) {
         try {
           const response = await instance.delete(
@@ -188,7 +188,7 @@ export default function QuickPostsTable() {
           pagination.pageIndex + 1
         }&type=published&status=error`
       );
-      if(response.data.data.history){
+      if (response.data.data.history) {
         setTableData(response.data.data.history);
       }
     } catch (error) {
@@ -236,9 +236,9 @@ export default function QuickPostsTable() {
         <div className="rounded-lg border overflow-hidden mt-5 bg-white min-h-[30vh]">
           <Table>
             <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
+              {table.getHeaderGroups().map(headerGroup => (
                 <TableRow key={headerGroup.id} className="bg-[#0347370D]">
-                  {headerGroup.headers.map((header) => {
+                  {headerGroup.headers.map(header => {
                     return (
                       <TableHead key={header.id}>
                         {header.isPlaceholder
@@ -255,13 +255,13 @@ export default function QuickPostsTable() {
             </TableHeader>
             <TableBody>
               {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
+                table.getRowModel().rows.map(row => (
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
                     className="bg-white"
                   >
-                    {row.getVisibleCells().map((cell) => (
+                    {row.getVisibleCells().map(cell => (
                       <TableCell key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,
@@ -297,7 +297,7 @@ export default function QuickPostsTable() {
                 Previous
               </Button>
               <div>
-                <div>{paginationButtons.map((u) => u)}</div>
+                <div>{paginationButtons.map(u => u)}</div>
               </div>
               <Button
                 variant="outline"

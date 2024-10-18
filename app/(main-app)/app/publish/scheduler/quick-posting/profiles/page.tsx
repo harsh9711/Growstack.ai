@@ -25,7 +25,7 @@ export default function SchedulerPage() {
 
   const handleGetProfileData = async () => {
     try {
-      setLoading(true)
+      setLoading(true);
       const response = await instance.get(
         `${API_URL}/users/api/v1/social-media/profile`
       );
@@ -35,14 +35,13 @@ export default function SchedulerPage() {
     } catch (error) {
       console.log("Error fetching social profile:", error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 
   const handleOnConnect = async () => {
     const currentPath = localStorage.getItem("currentPathname");
     try {
-
       const response = await instance.get(
         `${API_URL}/users/api/v1/social-media/connect?currentPath=${currentPath}`
       );

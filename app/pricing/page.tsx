@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Image from "next/image";
 import Navbar from "@/components/navbar/Navbar";
@@ -13,7 +13,6 @@ import "aos/dist/aos.css";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-
 
 const PricingPage: React.FC = () => {
   return (

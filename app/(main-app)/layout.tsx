@@ -18,10 +18,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
   const previousPathnameRef = useRef<string | null>(null);
 
   const shouldHideNavbar = () => {
-    return (
-      pathname.startsWith("/create") ||
-      pathname.includes("/app/create/email-builder/design")
-    );
+    return pathname.startsWith("/create");
   };
 
   useEffect(() => {

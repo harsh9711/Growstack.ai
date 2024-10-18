@@ -8,7 +8,13 @@ interface Props {
   variants: Variants;
   classNames?: string;
 }
-const Motion: React.FC<Props> = ({ children, transition, variants, classNames, ...restProps }) => {
+const Motion: React.FC<Props> = ({
+  children,
+  transition,
+  variants,
+  classNames,
+  ...restProps
+}) => {
   return (
     <motion.div
       {...restProps}
@@ -16,7 +22,8 @@ const Motion: React.FC<Props> = ({ children, transition, variants, classNames, .
       whileInView="visible"
       variants={variants}
       transition={transition}
-      className={clsx("w-full ", !!classNames && classNames)}>
+      className={clsx("w-full ", !!classNames && classNames)}
+    >
       {children}
     </motion.div>
   );

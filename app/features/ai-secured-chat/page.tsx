@@ -29,7 +29,10 @@ const page = () => {
                   <span className="font-semibold">
                     Keep your conversations private
                   </span>
-                  <span className="font-extralight"> with AI-driven security</span>
+                  <span className="font-extralight">
+                    {" "}
+                    with AI-driven security
+                  </span>
                 </h1>
                 <p className="text-[18px] text-black mt-4 flex gap-6 flex-col w-full lg:max-w-[600px] sm:!text-left !text-center leading-tight font-light">
                   <span>
@@ -37,9 +40,9 @@ const page = () => {
                     communication is more important than ever.
                   </span>
                   <span>
-                    Growstack's AI Secure Chat leverages cutting-edge AI technology to
-                    ensure your conversations remain private, confidential, and free
-                    from external threats.
+                    Growstack's AI Secure Chat leverages cutting-edge AI
+                    technology to ensure your conversations remain private,
+                    confidential, and free from external threats.
                   </span>
                 </p>
                 <div
@@ -87,7 +90,6 @@ const page = () => {
       <section className="flex 2xl:hidden xl:hidden pt-20 sm:pt-0   items-center justify-center mx-auto p-6">
         <CardResponsive />
       </section>
-
 
       <section className="items-center justify-center flex flex-col sm:py-20  overflow-hidden ">
         <div className="items-center justify-center flex flex-col gap-y-4  overflow-hidden ">

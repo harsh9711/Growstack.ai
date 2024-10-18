@@ -1,8 +1,14 @@
 import type { Config } from "tailwindcss";
-import defaultTheme from 'tailwindcss/defaultTheme';
+import defaultTheme from "tailwindcss/defaultTheme";
 const config = {
+  important: true,
   darkMode: ["class"],
-  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{js,ts,tsx}", "./app/**/*.{js,ts,tsx}", "./src/**/*.{js,ts,tsx}"],
+  content: [
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{js,ts,tsx}",
+    "./app/**/*.{js,ts,tsx}",
+    "./src/**/*.{js,ts,tsx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -14,27 +20,27 @@ const config = {
     },
     extend: {
       screens: {
-        '1.5xl':'1400px',
-        '3xl': '1600px',
-        '4xl': '120rem',
+        "1.5xl": "1400px",
+        "3xl": "1600px",
+        "4xl": "120rem",
         ...defaultTheme.screens,
       },
       inset: {
-        '-1.75rem': '-1.30rem',
-        '-1.00rem': '-0.55rem',
+        "-1.75rem": "-1.30rem",
+        "-1.00rem": "-0.55rem",
       },
       spacing: {
-        '1.75': '7px',
-        '7.5': '1.875rem',
-        '8.5': '2.125rem',
-        '12.5': '3.125rem',
+        "1.75": "7px",
+        "7.5": "1.875rem",
+        "8.5": "2.125rem",
+        "12.5": "3.125rem",
       },
       minWidth: {
-        '20rem': '20rem',
+        "20rem": "20rem",
       },
       maxWidth: {
-        '7.5xl': '82.5rem',
-        '8xl': '96rem',
+        "7.5xl": "82.5rem",
+        "8xl": "96rem",
       },
       colors: {
         "primary-green": "#034737",
@@ -57,7 +63,6 @@ const config = {
         "bookmark-green-1": "#26AB5B",
         // background: linear-gradient(180deg, #BC94FF 0%, #9F66FF 100%);
 
-
         header: "hsl(var(--header))",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -69,7 +74,7 @@ const config = {
           foreground: "hsl(var(--primary-foreground))",
         },
         animation: {
-          spin: 'spin2 1s linear infinite',
+          spin: "spin2 1s linear infinite",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -100,8 +105,8 @@ const config = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-        '2.5xl': '1.25rem',
-        '4xl': '1.875rem',
+        "2.5xl": "1.25rem",
+        "4xl": "1.875rem",
       },
       keyframes: {
         "accordion-down": {
@@ -123,7 +128,10 @@ const config = {
         "caret-blink": "caret-blink 1.25s ease-out infinite",
       },
       borderColor: {
-        'custom-gray': '#EAEAEA',
+        "custom-gray": "#EAEAEA",
+      },
+      fontFamily: {
+        poppins: ["var(--font-poppins)"],
       },
     },
   },

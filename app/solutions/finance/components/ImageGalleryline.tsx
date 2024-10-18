@@ -69,7 +69,7 @@ const ImageGalleryLine = () => {
         {
           src: "/solutions/finance/sideimages/data.svg",
           alt: "Related Image 1-1",
-          id:3,
+          id: 3,
         },
         {
           src: "/solutions/finance/sideimages/play.svg",
@@ -127,7 +127,7 @@ const ImageGalleryLine = () => {
   };
 
   const handleRelatedImageClick = (relatedImageId: number) => {
-    const newImage = images.find((img) => img.id === relatedImageId);
+    const newImage = images.find(img => img.id === relatedImageId);
     if (newImage) {
       setSelectedImage(newImage);
       setRelatedImages(newImage.relatedImages);
@@ -139,11 +139,11 @@ const ImageGalleryLine = () => {
   useEffect(() => {
     if (timerActive && selectedImage) {
       const timer = setTimeout(() => {
-        setCurrentRelatedIndex((prevIndex) => {
+        setCurrentRelatedIndex(prevIndex => {
           const nextIndex =
             (prevIndex + 1) % selectedImage.relatedImages.length;
           if (nextIndex === 0) {
-            setImagesShownCount((prevCount) => prevCount + 1); // Increment the count
+            setImagesShownCount(prevCount => prevCount + 1); // Increment the count
             if (imagesShownCount >= 2) {
               // Stop after showing 3 images (initial + 2 more)
               setTimerActive(false);
@@ -317,7 +317,7 @@ const ImageGalleryLine = () => {
         </div>
         {selectedImage && (
           <div className=" p-4 flex flex-col gap-y-16 translate-y-28">
-            {relatedImages.map((image) => (
+            {relatedImages.map(image => (
               <div
                 key={image.id}
                 className="cursor-pointer"

@@ -44,8 +44,6 @@ export interface Plan {
   updatedAt: string;
 }
 
-
-
 export type InputType = {
   variable_label: string;
   variable_type: string;
@@ -53,7 +51,6 @@ export type InputType = {
   variable_values: any;
   is_prompt?: boolean;
 };
-
 
 export interface Usage {
   ai_chat: boolean;
@@ -114,15 +111,14 @@ export interface UserPlan {
   __v: number;
 }
 
-
 export interface ChatResponse {
   response: string;
   conversation_id: string;
-  response_type: 'TEXT' | 'IMAGE' | 'VIDEO';
+  response_type: "TEXT" | "IMAGE" | "VIDEO";
   noOfMessagesLeft?: number;
   totalNoOfMessages?: number;
   chatId: string;
-  isImage?: boolean
+  isImage?: boolean;
 }
 
 export interface BrandVoice {

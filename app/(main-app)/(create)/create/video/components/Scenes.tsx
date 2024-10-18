@@ -13,7 +13,8 @@ export default function Scenes({
   currentScene: Scene;
   setCurrentScene: (scene: Scene) => void;
 }) {
-  const [activeSceneIndicatorPosition, setActiveSceneIndicatorPosition] = useState(0);
+  const [activeSceneIndicatorPosition, setActiveSceneIndicatorPosition] =
+    useState(0);
 
   const addScene = () => {
     const newScene: Scene = {
@@ -44,20 +45,35 @@ export default function Scenes({
               className="mx-4 flex flex-col items-center justify-center h-[80px]"
               onClick={() => {
                 selectScene(scene, index);
-              }}>
-              <h2 className={`text-[12px] uppercase ${scene.id === currentScene?.id ? "text-primary-green" : "text-gray-500"}`}>{scene.title}</h2>
+              }}
+            >
+              <h2
+                className={`text-[12px] uppercase ${scene.id === currentScene?.id ? "text-primary-green" : "text-gray-500"}`}
+              >
+                {scene.title}
+              </h2>
               <div
                 className={`p-2 cursor-pointer w-full h-12 rounded-lg transition-all duration-300 bg-white ${
-                  scene.id === currentScene?.id ? "border-2 border-primary-green w-full" : "border border-gray-100"
-                }`}></div>
+                  scene.id === currentScene?.id
+                    ? "border-2 border-primary-green w-full"
+                    : "border border-gray-100"
+                }`}
+              ></div>
             </motion.li>
           ))}
           <div
             className="absolute bottom-0 h-[48px] bg-primary-green transition-all duration-300 rounded-full"
-            style={{ top: `calc(${activeSceneIndicatorPosition}% + 25px)`, width: "2px" }}></div>
+            style={{
+              top: `calc(${activeSceneIndicatorPosition}% + 25px)`,
+              width: "2px",
+            }}
+          ></div>
         </ul>
         <div className="px-4 mt-2 w-full">
-          <button onClick={addScene} className="w-full h-12 bg-gray-200 text-gray-500 rounded-lg">
+          <button
+            onClick={addScene}
+            className="w-full h-12 bg-gray-200 text-gray-500 rounded-lg"
+          >
             +
           </button>
         </div>
