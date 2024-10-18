@@ -26,7 +26,7 @@ const initialChat: ChatAreaType[] = [
     conversation: [],
     awaitingUpdate: false,
     messages: [],
-    renderConversation: {}
+    renderConversation: {},
   },
   {
     id: 1,
@@ -35,10 +35,9 @@ const initialChat: ChatAreaType[] = [
     conversation: [],
     awaitingUpdate: false,
     messages: [],
-    renderConversation: {}
+    renderConversation: {},
   },
 ];
-
 
 export default function AiPlayground() {
   const [userPrompt, setUserPrompt] = useState<string>("");
@@ -60,7 +59,7 @@ export default function AiPlayground() {
         conversation: [],
         awaitingUpdate: false,
         messages: [],
-        renderConversation: {}
+        renderConversation: {},
       },
     ]);
   };
@@ -70,20 +69,18 @@ export default function AiPlayground() {
       .flatMap((category) => category.models)
       .find((model) => model.value === newModel)?.provider;
 
-
     setChatAreas(
       chatAreas.map((chatArea) =>
         chatArea.id === id
           ? {
-            ...chatArea,
-            selectedModel: newModel,
-            provider: newProvider || "",
-          }
+              ...chatArea,
+              selectedModel: newModel,
+              provider: newProvider || "",
+            }
           : chatArea
       )
     );
   };
-
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUserPrompt(event.target.value);
@@ -99,7 +96,7 @@ export default function AiPlayground() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    // renderConversation()  
+    // renderConversation()
   };
 
   const renderConversation = async (chatMessage?: string) => {
@@ -159,13 +156,15 @@ export default function AiPlayground() {
               ...chatArea,
               conversation: chatArea.awaitingUpdate
                 ? [
-                  ...chatArea.conversation.slice(0, -1),
-                  {
-                    ...chatArea.conversation[chatArea.conversation.length - 1],
-                    content: initialText,
-                    loading: false,
-                  },
-                ]
+                    ...chatArea.conversation.slice(0, -1),
+                    {
+                      ...chatArea.conversation[
+                        chatArea.conversation.length - 1
+                      ],
+                      content: initialText,
+                      loading: false,
+                    },
+                  ]
                 : chatArea.conversation,
               awaitingUpdate: updatedMessages?.length > 0,
               messages: updatedMessages,
@@ -183,26 +182,28 @@ export default function AiPlayground() {
   };
 
   return (
-    <div className="flex-1 h-full flex flex-col mt-10 overflow-x-auto">
-      <form onSubmit={handleSubmit} className="flex-1 h-full flex gap-6">
-        <div className="!bg-white h-full flex flex-col border border-[#E8E8E8] shadow-box p-5 space-y-5">
+    <div className="flex-1 h-full flex flex-col mt-10 w-full overflow-x-auto">
+      <form onSubmit={handleSubmit} className="flex-1 h-full flex gap-6 w-full">
+        <div className="!bg-white h-full flex flex-col border border-[#E8E8E8] shadow-box md:p-3 lg:p-5 space-y-5">
           <NewChatAlert handleNewChat={() => setChatAreas(initialChat)} />
         </div>
-        {chatAreas.map((chatArea) => (
-          <ChatArea
-            key={chatArea.id}
-            selectedModel={chatArea.selectedModel}
-            addChatArea={addChatArea}
-            onModelChange={(newModel) =>
-              updateChatAreaModel(chatArea.id, newModel)
-            }
-            handleChange={handleChange}
-            conversation={chatArea.conversation}
-            userPrompt={userPrompt}
-            handleDelete={() => handleDelete(chatArea.id)}
-            renderConversation={renderConversation}
-          />
-        ))}
+        <div className="container flex gap-6 flex-1">
+          {chatAreas.map((chatArea) => (
+            <ChatArea
+              key={chatArea.id}
+              selectedModel={chatArea.selectedModel}
+              addChatArea={addChatArea}
+              onModelChange={(newModel) =>
+                updateChatAreaModel(chatArea.id, newModel)
+              }
+              handleChange={handleChange}
+              conversation={chatArea.conversation}
+              userPrompt={userPrompt}
+              handleDelete={() => handleDelete(chatArea.id)}
+              renderConversation={renderConversation}
+            />
+          ))}
+        </div>
       </form>
     </div>
   );

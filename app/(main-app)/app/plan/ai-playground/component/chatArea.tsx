@@ -12,9 +12,7 @@ import "@/styles/editor.css";
 import clsx from "clsx";
 import { MoreHorizontal, Plus, Trash2Icon } from "lucide-react";
 import React, { useState, useRef, useEffect, useImperativeHandle } from "react";
-import {
-  llmComparisonModels,
-} from "../../../create/ai-articles/constants/options";
+import { llmComparisonModels } from "../../../create/ai-articles/constants/options";
 import { Message } from "../interface/playground";
 import ChatMessages from "./chatMessage";
 import AOS from "aos";
@@ -56,8 +54,8 @@ const ChatArea = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<
     | (HTMLTextAreaElement & {
-      handleRegenerate: (chartMessage: string) => void;
-    })
+        handleRegenerate: (chartMessage: string) => void;
+      })
     | null
   >(null); // Updated here
   const initialHeight = 32;
@@ -125,7 +123,7 @@ const ChatArea = ({
   //   .flatMap((provider) => provider.models)
   //   .find((model) => model.value === selectedModel);
 
-  const selectedOption = llmComparisonModels[0].models[0].value
+  const selectedOption = llmComparisonModels[0].models[0].value;
 
   const handleChatRegenerateClick = (chatMessage: any) => {
     console.log("chartMessage", chatMessage);
@@ -137,13 +135,12 @@ const ChatArea = ({
   };
 
   return (
-    <div className="flex-1 flex flex-col !bg-white border border-[#E8E8E8] shadow-box p-7 w-full justify-between min-w-[400px]">
-      <div className="flex items-start justify-between mb-[10px]">
+    <div className="flex-1 flex flex-col !bg-white border border-[#E8E8E8] shadow-box p-4 md:p-6 lg:p-7 w-full justify-between md:w-[300px] lg:min-w-[400px] 2xl:w-[700px]">
+      <div className="flex items-start justify-between mb-2">
         <AIModel
           selectedOption={selectedModel}
           setSelectedOption={onModelChange}
           selectedOptionLabel={selectedOption}
-        // selectedOptionLabel={selectedOption?.label}
         />
         <div className="flex items-center gap-2">
           <button
@@ -178,7 +175,8 @@ const ChatArea = ({
           </div>
         </div>
       </div>
-      <div className="flex-1 flex flex-col max-h-[68vh] overflow-y-auto mb-3">
+
+      <div className="flex-1 flex flex-col max-h-[60vh] overflow-y-auto mb-3">
         {conversation.length > 0 ? (
           <ChatMessages
             onRegenerateClick={handleChatRegenerateClick}
@@ -188,20 +186,12 @@ const ChatArea = ({
           <></>
         )}
       </div>
-      <div className="border border-gray-200 bg-[#F5F5F5] flex items-center gap-3 p-1 pl-4 rounded-xl mt-4">
-        {/* <input
-          type='text'
-          placeholder='Type your message...'
-          className='w-full h-11 rounded-xl bg-transparent'
-          onChange={handleInputChange}
-          onKeyDown={handleKeyDown} 
-          name='user_prompt'
-          value={inputValue}
-        /> */}
+
+      <div className="border border-gray-200 bg-[#F5F5F5] flex items-center gap-3 p-2 pl-4 rounded-xl mt-4">
         <textarea
           ref={textareaRef}
           placeholder="Type your message..."
-          className="w-full flex-1 bg-transparent mt-2 resize-none overflow-auto h-8 min-h-8 max-h-[200px]"
+          className="w-full flex-1 bg-transparent mt-2 resize-none overflow-auto h-8 min-h-[2rem] max-h-[200px] text-sm lg:text-base"
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           onInput={handleResize}
@@ -211,7 +201,7 @@ const ChatArea = ({
         <button
           type="submit"
           onClick={handleSend}
-          className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl self-end"
+          className="h-10 w-10 md:h-12 md:w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
         >
           <SendIcon2 />
         </button>
@@ -234,12 +224,13 @@ const AIModel = ({
   selectedOptionLabel,
 }: AIModelProps) => {
   // const allModels = modelData.flatMap((provider) => provider.models);
-  const { user, currentPlan } = useSelector((rootState: RootState) => rootState.auth);
+  const { user, currentPlan } = useSelector(
+    (rootState: RootState) => rootState.auth
+  );
 
   const selectedModelLabel = llmComparisonModels
     .flatMap((option) => option.models)
     .find((model) => model.value === selectedOption)?.label;
-
 
   const handleModalSelection = (value: string) => {
     if (!currentPlan) return;
@@ -258,7 +249,10 @@ const AIModel = ({
 
     const freeCategories = ["growStackAiMessagesModel"];
 
-    if (user?.user_type === "ADMIN" || freeCategories.includes(currentCategory.modelCategory)) {
+    if (
+      user?.user_type === "ADMIN" ||
+      freeCategories.includes(currentCategory.modelCategory)
+    ) {
       setSelectedOption(value);
       return;
     }
@@ -272,7 +266,9 @@ const AIModel = ({
     }
 
     if (usageLimit <= 0) {
-      toast.error(`You have no remaining usage for ${currentCategory.label}. Please switch to another model.`);
+      toast.error(
+        `You have no remaining usage for ${currentCategory.label}. Please switch to another model.`
+      );
       return;
     }
 
@@ -310,7 +306,7 @@ const AIModel = ({
                     className={clsx(
                       "flex items-center gap-2",
                       selectedOption === value &&
-                      "text-primary-green font-medium"
+                        "text-primary-green font-medium"
                     )}
                   >
                     <span className="min-w-fit">{icon}</span>

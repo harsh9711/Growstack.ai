@@ -1,4 +1,10 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
@@ -6,21 +12,24 @@ interface NewChatAlertProps {
   handleNewChat: () => void;
 }
 
-const  NewChatAlert = ({ handleNewChat }: NewChatAlertProps) => {
+const NewChatAlert = ({ handleNewChat }: NewChatAlertProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <button type="button" className="bg-primary-green p-3 rounded-[16px] text-white">
-          <Plus size={32} />
+        <button
+          type="button"
+          className="bg-primary-green p-2 md:p-3 rounded-[16px] text-white"
+        >
+          <Plus size={24} className="md:size-[32px]" />
         </button>
       </DialogTrigger>
       <DialogContent className="max-w-3xl pt-0">
         <DialogHeader className="border-b border-gray-200 py-4">
           <DialogTitle>New chat</DialogTitle>
         </DialogHeader>
-        <div className="">
+        <div>
           <div className="flex">
             <div>Do you want to continue to a new chat?</div>
           </div>
@@ -28,7 +37,8 @@ const  NewChatAlert = ({ handleNewChat }: NewChatAlertProps) => {
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="text-[14px] h-12 border border-red-500 bg-white text-red-500 px-5 rounded-xl">
+              className="text-[12px] md:text-[14px] h-10 md:h-12 border border-red-500 bg-white text-red-500 px-4 md:px-5 rounded-xl"
+            >
               Cancel
             </button>
             <button
@@ -37,7 +47,8 @@ const  NewChatAlert = ({ handleNewChat }: NewChatAlertProps) => {
                 handleNewChat();
                 setIsOpen(false);
               }}
-              className="text-[14px] h-12 bg-primary-green text-white px-5 rounded-xl">
+              className="text-[12px] md:text-[14px] h-10 md:h-12 bg-primary-green text-white px-4 md:px-5 rounded-xl"
+            >
               Continue
             </button>
           </div>
