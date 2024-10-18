@@ -73,7 +73,7 @@ const LoadingBar: React.FC = () => {
     let interval: NodeJS.Timeout;
     if (loading && selectedIndex === null) {
       interval = setInterval(() => {
-        setProgress((prevProgress) => {
+        setProgress(prevProgress => {
           const newProgress = [...prevProgress];
           if (newProgress[currentIndex] < 100) {
             newProgress[currentIndex] += 10;
@@ -94,7 +94,7 @@ const LoadingBar: React.FC = () => {
       const nextIndex = currentIndex + 1;
       if (nextIndex < contents.length) {
         setCurrentIndex(nextIndex);
-        setProgress((prevProgress) => {
+        setProgress(prevProgress => {
           const newProgress = [...prevProgress];
           newProgress[currentIndex] = 100;
           return newProgress;
@@ -109,7 +109,7 @@ const LoadingBar: React.FC = () => {
     setCurrentIndex(index);
     setSelectedIndex(index);
     setLoading(false);
-    setProgress((prevProgress) => {
+    setProgress(prevProgress => {
       const newProgress = Array(contents.length).fill(0);
       newProgress[index] = 100;
       return newProgress;

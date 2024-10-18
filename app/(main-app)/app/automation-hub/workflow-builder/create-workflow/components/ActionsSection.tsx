@@ -50,13 +50,17 @@ interface DropdownProps {
   onOptionChange: (value: string) => void;
 }
 
-const Dropdown2: React.FC<DropdownProps> = ({ options, selectedOption, onOptionChange }) => {
+const Dropdown2: React.FC<DropdownProps> = ({
+  options,
+  selectedOption,
+  onOptionChange,
+}) => {
   return (
     <select
       value={selectedOption}
-      onChange={(e) => onOptionChange(e.target.value)}
+      onChange={e => onOptionChange(e.target.value)}
       className="border w-64 p-1 rounded-xl"
-      style={{ fontSize: '12px', width: "100%" }}
+      style={{ fontSize: "12px", width: "100%" }}
     >
       {options.map((option, index) => (
         <option key={index} value={option}>
@@ -66,7 +70,6 @@ const Dropdown2: React.FC<DropdownProps> = ({ options, selectedOption, onOptionC
     </select>
   );
 };
-
 
 const ActionsSection = ({
   actions,
@@ -107,33 +110,31 @@ const ActionsSection = ({
           show: true,
         })),
       },
-      ...actions
-        .slice(0, indexId)
-        .map((action: any, index: number) => ({
-          type: "output",
-          name: action.name,
-          label: action.name,
-          index: index + 1,
-          isExpanded: false,
-          show: true,
-          icon: (
-            <img
-              src={action.icon}
-              alt={action.name}
-              width='24'
-              height='24'
-              className='flex-shrink-0 rounded-md object-contain min-h-[24px] min-w-[24px]'
-            />
-          ),
-          subOptions: [
-            {
-              label: "Output",
-              value: action.action_id,
-              name: `step${index + 1}.output`,
-              show: true,
-            },
-          ],
-        })),
+      ...actions.slice(0, indexId).map((action: any, index: number) => ({
+        type: "output",
+        name: action.name,
+        label: action.name,
+        index: index + 1,
+        isExpanded: false,
+        show: true,
+        icon: (
+          <img
+            src={action.icon}
+            alt={action.name}
+            width="24"
+            height="24"
+            className="flex-shrink-0 rounded-md object-contain min-h-[24px] min-w-[24px]"
+          />
+        ),
+        subOptions: [
+          {
+            label: "Output",
+            value: action.action_id,
+            name: `step${index + 1}.output`,
+            show: true,
+          },
+        ],
+      })),
     ]);
   }, [actions, activeAction.index, inputConfigs]);
 
@@ -148,18 +149,17 @@ const ActionsSection = ({
   };
 
   const handleSwitchChange = (network: string, isChecked: boolean) => {
-    setSelectedNetworks((prevState) => {
+    setSelectedNetworks(prevState => {
       if (isChecked) {
         return [...prevState, network];
       } else {
-        return prevState.filter((item) => item !== network);
+        return prevState.filter(item => item !== network);
       }
     });
   };
 
-
   const handleFieldChange = (key: number, value: any) => {
-    setEditableFields((prevFields) =>
+    setEditableFields(prevFields =>
       prevFields.map((field, index) =>
         index === key ? { ...field, variable_value: value } : field
       )
@@ -176,7 +176,6 @@ const ActionsSection = ({
     }));
   };
 
-
   const formatString = (
     str: string | undefined,
     values: Record<string, string>
@@ -188,8 +187,6 @@ const ActionsSection = ({
     return str.replace(/\${(.*?)}/g, (_, key) => values[key] || `{${key}}`);
   };
 
-
-
   return (
     <Motion
       transition={{ duration: 0.5 }}
@@ -198,117 +195,118 @@ const ActionsSection = ({
       <div className="flex flex-col items-start gap-4 ">
         <div className="w-full flex flex-col items-center gap-2">
           <div className="w-full flex flex-row items-center gap-2">
-
-            {activeAction.icon ? <img
-              src={activeAction.icon}
-              height='56'
-              width='56'
-              className='w-10 h-10 rounded-2xl'
-            /> :
+            {activeAction.icon ? (
+              <img
+                src={activeAction.icon}
+                height="56"
+                width="56"
+                className="w-10 h-10 rounded-2xl"
+              />
+            ) : (
               <div className="bg-primary-green p-4 rounded-lg">
                 <BlocksIcon className="text-white" />
-              </div>}
+              </div>
+            )}
             <div className="flex flex-col gap-2 w-full text-xl p-2.5 rounded-md">
               {activeAction.name}
             </div>
           </div>
-
         </div>
       </div>
 
       <div>
         {activeAction?.preset_json?.body?.length > 0 &&
-          activeAction.preset_json.body.map(
-            (option: any, index: number) => {
-              if (option.variable_type === "DROPDOWN" && !option.is_prompt) {
-                return (
-                  <div key={index} className="mt-4 ">
-                    <Dropdown
-                      option={option}
-                      setActiveAction={setActiveAction}
-                      index={index}
-                    />
-                  </div>
-                );
-              }
-
-              if (option.variable_type === "TEXT_AREA" && !option.is_prompt) {
-                return (
-                  <div key={index} className="mt-4 ">
-                    <TextArea
-                      option={option}
-                      index={index}
-                      suggestionOptions={suggestionOptions}
-                      setSuggestionOptions={setSuggestionOptions}
-                      setActiveAction={setActiveAction}
-                    />
-                  </div>
-                );
-              }
-              if (
-                option.variable_type === "SHORT_TEXT" && !option.is_prompt
-              ) {
-                return (
-                  <div key={index} className="mt-4">
-                    <ShortTextArea
-                      option={option}
-                      index={index}
-                      suggestionOptions={suggestionOptions}
-                      setSuggestionOptions={setSuggestionOptions}
-                      setActiveAction={setActiveAction}
-                    />
-                  </div>
-                );
-              }
-              if (option.variable_type === "BOOLEAN" && !option.is_prompt) {
-                return (
-                  <div key={index} className="mt-4">
-                    <Boolean
-                      option={option}
-                      index={index}
-                      setActiveAction={setActiveAction}
-                    />
-                  </div>
-                );
-              }
-
-              if (option.variable_type === "CHECKBOX" && !option.is_prompt) {
-                return (
-                  <div key={index} className="mt-4">
-                    <CheckboxComponent
-                      option={option}
-                      index={index}
-                      setActiveAction={setActiveAction}
-                      suggestionOptions={suggestionOptions}
-                      setSuggestionOptions={setSuggestionOptions}
-                    />
-                  </div>
-                );
-              }
-              if ((option.variable_type === "DATE" || option.variable_type === "TIME") && !option.is_prompt) {
-                return (
-                  <div key={index} className="mt-4">
-                    <ScheduleComponent
-                      option={option}
-                      index={index}
-                      setActiveAction={setActiveAction}
-                    />
-                  </div>
-                );
-              }
-              return null;
+          activeAction.preset_json.body.map((option: any, index: number) => {
+            if (option.variable_type === "DROPDOWN" && !option.is_prompt) {
+              return (
+                <div key={index} className="mt-4 ">
+                  <Dropdown
+                    option={option}
+                    setActiveAction={setActiveAction}
+                    index={index}
+                  />
+                </div>
+              );
             }
-          )}
+
+            if (option.variable_type === "TEXT_AREA" && !option.is_prompt) {
+              return (
+                <div key={index} className="mt-4 ">
+                  <TextArea
+                    option={option}
+                    index={index}
+                    suggestionOptions={suggestionOptions}
+                    setSuggestionOptions={setSuggestionOptions}
+                    setActiveAction={setActiveAction}
+                  />
+                </div>
+              );
+            }
+            if (option.variable_type === "SHORT_TEXT" && !option.is_prompt) {
+              return (
+                <div key={index} className="mt-4">
+                  <ShortTextArea
+                    option={option}
+                    index={index}
+                    suggestionOptions={suggestionOptions}
+                    setSuggestionOptions={setSuggestionOptions}
+                    setActiveAction={setActiveAction}
+                  />
+                </div>
+              );
+            }
+            if (option.variable_type === "BOOLEAN" && !option.is_prompt) {
+              return (
+                <div key={index} className="mt-4">
+                  <Boolean
+                    option={option}
+                    index={index}
+                    setActiveAction={setActiveAction}
+                  />
+                </div>
+              );
+            }
+
+            if (option.variable_type === "CHECKBOX" && !option.is_prompt) {
+              return (
+                <div key={index} className="mt-4">
+                  <CheckboxComponent
+                    option={option}
+                    index={index}
+                    setActiveAction={setActiveAction}
+                    suggestionOptions={suggestionOptions}
+                    setSuggestionOptions={setSuggestionOptions}
+                  />
+                </div>
+              );
+            }
+            if (
+              (option.variable_type === "DATE" ||
+                option.variable_type === "TIME") &&
+              !option.is_prompt
+            ) {
+              return (
+                <div key={index} className="mt-4">
+                  <ScheduleComponent
+                    option={option}
+                    index={index}
+                    setActiveAction={setActiveAction}
+                  />
+                </div>
+              );
+            }
+            return null;
+          })}
       </div>
 
       <button
-        className='flex items-center justify-center h-15 py-3.5 px-16 bg-primary-green sheen rounded-xl text-white mt-6 w-full text-center'
+        className="flex items-center justify-center h-15 py-3.5 px-16 bg-primary-green sheen rounded-xl text-white mt-6 w-full text-center"
         disabled={isAPICalling}
         type="button"
         onClick={() => onSaveAction(activeAction)}
       >
         {isAPICalling ? (
-          <div className='flex items-center justify-center h-full'>
+          <div className="flex items-center justify-center h-full">
             <DotsLoader />
           </div>
         ) : (

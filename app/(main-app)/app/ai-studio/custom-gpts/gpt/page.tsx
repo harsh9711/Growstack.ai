@@ -97,7 +97,7 @@ const Page = () => {
     images?: string[],
     file?: { file_type: string; file_id: string; file_name: string }[]
   ) => {
-    setConversation((prev) => [
+    setConversation(prev => [
       ...prev,
       {
         user_message: user_prompt,
@@ -110,7 +110,7 @@ const Page = () => {
   };
 
   const onSend = (response: string) => {
-    setConversation((prev) => {
+    setConversation(prev => {
       const conv = [...prev];
       conv[conv.length - 1].response = response;
       conv[conv.length - 1].loading = false;
@@ -250,7 +250,9 @@ const Page = () => {
                     className="inline-block pl-[0.15rem] mt-1 font-bold hover:cursor-pointer"
                     htmlFor="flexSwitchCheckDefault"
                   >
-                    {isToggleEnabled ? "Generate The Image" : "Generate The Image"}
+                    {isToggleEnabled
+                      ? "Generate The Image"
+                      : "Generate The Image"}
                   </label>
                 </div>
                 <ChatInput

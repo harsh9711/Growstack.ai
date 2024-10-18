@@ -44,7 +44,7 @@ const CreateVideoDialog = ({
     objective: z
       .string()
       .min(1, "Objective is required")
-      .refine((value) => value.trim().split(/\s+/).length >= 10, {
+      .refine(value => value.trim().split(/\s+/).length >= 10, {
         message: " Objective must be at least 10 words",
       }),
     language: z.string().optional(),
@@ -129,12 +129,12 @@ const CreateVideoDialog = ({
 
   const fetchPlanUsage = async () => {
     try {
-      setIsPlanUsageLoading(true)
+      setIsPlanUsageLoading(true);
       const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
       const data: PlanUsage = response.data.data;
       setPlanUsage(data);
       if (user?.user_type !== "ADMIN" && data.usage.no_of_text_to_video <= 0) {
-        setIsAddOnModalOpen(true)
+        setIsAddOnModalOpen(true);
       }
     } catch (error: any) {
       if (error.response) {
@@ -184,7 +184,7 @@ const CreateVideoDialog = ({
   ) => {
     const { name, value } = e.target;
 
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setFormData(prevData => ({ ...prevData, [name]: value }));
 
     const validation = formSchema.safeParse({
       ...formData,
@@ -192,13 +192,13 @@ const CreateVideoDialog = ({
     });
 
     if (validation.success) {
-      setFormErrors((prevErrors) => ({
+      setFormErrors(prevErrors => ({
         ...prevErrors,
         [name]: undefined,
       }));
     } else {
       const errors = validation.error.format();
-      setFormErrors((prevErrors) => ({
+      setFormErrors(prevErrors => ({
         ...prevErrors,
         [name]: errors[name as keyof typeof formData],
       }));
@@ -326,7 +326,7 @@ const CreateVideoDialog = ({
     setLoading(true);
 
     try {
-      const moments = scriptElements.map((scriptElement) => ({
+      const moments = scriptElements.map(scriptElement => ({
         transcript: scriptElement,
         avatarId: selectedAvatar.id,
         voiceId: selectedVoice || "",
@@ -404,7 +404,7 @@ const CreateVideoDialog = ({
     fetchPlanUsage();
   }, []);
 
-  const filteredAvatars = assistants.filter((avatar) =>
+  const filteredAvatars = assistants.filter(avatar =>
     avatar.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -418,27 +418,40 @@ const CreateVideoDialog = ({
       {loading2 && <LoadingOverlay progress={progress} />}
       <button
         disabled={isPlanUsageLoading}
-        onClick={(e) => {
+        onClick={e => {
           e.stopPropagation();
           if (planUsage) {
-            if (user?.user_type !== "ADMIN" && planUsage.usage.no_of_text_to_avatar <= 0) {
-              setIsAddOnModalOpen(true)
+            if (
+              user?.user_type !== "ADMIN" &&
+              planUsage.usage.no_of_text_to_avatar <= 0
+            ) {
+              setIsAddOnModalOpen(true);
             } else {
-              setDialogOpen(true)
+              setDialogOpen(true);
             }
           }
         }}
-        className="bg-primary-green text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2">
+        className="bg-primary-green text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2"
+      >
         <Plus size={20} />
         Create new avatar with AI
       </button>
-
-      <GlobalModal showCloseButton={false} open={isAddOnModalOpen} setOpen={() => { setIsAddOnModalOpen(false) }}>
+      <GlobalModal
+        showCloseButton={false}
+        open={isAddOnModalOpen}
+        setOpen={() => {
+          setIsAddOnModalOpen(false);
+        }}
+      >
         <div className="flex flex-col items-center justify-center px-6 pt-4 pb-8 gap-6 space-x-6">
           <Lock />
-          <h3 className="text-center text-[28px] font-semibold">You don’t have enough credit.</h3>
+          <h3 className="text-center text-[28px] font-semibold">
+            You don’t have enough credit.
+          </h3>
           <p className="text-center text-gray-700 text-sm md:text-base px-4">
-            You don’t have enough credits in your wallet to use this feature. It is an add-on, and requires additional credit to access. Please add credits to continue.
+            You don’t have enough credits in your wallet to use this feature. It
+            is an add-on, and requires additional credit to access. Please add
+            credits to continue.
           </p>
           <div className="flex items-center justify-between gap-3">
             <button
@@ -449,13 +462,13 @@ const CreateVideoDialog = ({
             </button>
             <Link
               className="bg-primary-green text-white text-nowrap py-2 px-6 rounded-md transition duration-300 hover:bg-green-600"
-              href="/account/billings/settings">
+              href="/account/billings/settings"
+            >
               Add Credit
             </Link>
           </div>
         </div>
       </GlobalModal>
-
       <Dialog open={isDialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent
           className="w-full 2xl:max-w-[90%] h-full 2xl:h-[90vh] px-10 py-7 overflow-x-hidden"
@@ -509,7 +522,8 @@ const CreateVideoDialog = ({
                       ></textarea>
                       {formErrors.objective && (
                         <span className="text-red-500 text-sm">
-                          {formErrors.objective._errors}<br></br>
+                          {formErrors.objective._errors}
+                          <br></br>
                         </span>
                       )}
                     </div>
@@ -643,13 +657,14 @@ const CreateVideoDialog = ({
                               type="text"
                               placeholder="Search Avatars..."
                               value={searchQuery}
-                              onChange={(e) => setSearchQuery(e.target.value)}
+                              onChange={e => setSearchQuery(e.target.value)}
                               className="p-2 rounded"
                             />
                           </div>
 
                           <button
-                            disabled={loading} style={{ whiteSpace: "nowrap" }}
+                            disabled={loading}
+                            style={{ whiteSpace: "nowrap" }}
                             className={clsx(
                               "bg-primary-green text-[12px] text-white py-3.5 px-10 w-full width-[30%] rounded-xl flex items-center justify-center mt-1",
                               {
@@ -681,8 +696,6 @@ const CreateVideoDialog = ({
           </div>
         </DialogContent>
       </Dialog>
-
-
     </div>
   );
 };

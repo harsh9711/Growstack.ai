@@ -105,23 +105,23 @@ const page = () => {
         <div className="2xl:flex xl:flex hidden z-[40] relative -top-16  xl:max-w-[1240px] max-w-[700px] max-h-[131px] h-full w-full rounded-[20px] items-center justify-center mx-auto text-white">
           <div className="overflow-visible flex flex-row items-center gap-8 justify-center h-[131px] w-full">
             <ExpandableCard
-              heading={"Instant ideas to "}
-              para={"jumpstart your writing."}
+              heading="Instant ideas to "
+              para="jumpstart your writing."
               data-aos="fade-up"
             />
             <ExpandableCard
-              heading={"Custom outlines to fit your"}
-              para={" style and tone."}
+              heading="Custom outlines to fit your"
+              para=" style and tone."
               data-aos="fade-up"
             />
             <ExpandableCard
-              heading={"AI images to"}
-              para={" enhance your content seamlessly."}
+              heading="AI images to"
+              para=" enhance your content seamlessly."
               data-aos="fade-up"
             />
             <ExpandableCard
-              heading={"Multilingual support to "}
-              para={"reach global audiences."}
+              heading="Multilingual support to "
+              para="reach global audiences."
               data-aos="fade-up"
             />
           </div>

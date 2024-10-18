@@ -51,7 +51,9 @@ export default function Customgpts() {
         <div className="flex justify-between items-center mt-8">
           <div className="space-y-2 w-full">
             <h1 className="text-2xl font-semibold">AI custom GPT</h1>
-            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">All custom GPTs apps</p>
+            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
+              All custom GPTs apps
+            </p>
           </div>
           <div className="w-full flex justify-end gap-2">
             <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
@@ -60,7 +62,7 @@ export default function Customgpts() {
                 type="search"
                 className="outline-none h-[40px] w-full"
                 placeholder="Search GPTs"
-                onChange={(e) => {
+                onChange={e => {
                   const value = e.target.value;
                   setCustomGpts(
                     customGpts.map((d: any) => ({
@@ -86,25 +88,48 @@ export default function Customgpts() {
               .map((_, index) => <SkeletonLoader key={index} />)
           ) : customGpts.length < 1 ? (
             <div className="mt-4 flex flex-col justify-center items-center space-y-4 col-span-3 py-8">
-              <h2 className="text-lg text-center font-semibold">You have Custom GPTs Created yet</h2>
-              <p>A custom GPT is specialized version of the GPT model, tailored to address specific needs or tasks</p>
+              <h2 className="text-lg text-center font-semibold">
+                You have Custom GPTs Created yet
+              </h2>
+              <p>
+                A custom GPT is specialized version of the GPT model, tailored
+                to address specific needs or tasks
+              </p>
               <Link href={ALL_ROUTES.AI_CUSTOM_GPT_NEW}>
-                <button className="bg-primary-green text-white h-14 px-6 rounded-xl sheen">Create new GPT</button>
+                <button className="bg-primary-green text-white h-14 px-6 rounded-xl sheen">
+                  Create new GPT
+                </button>
               </Link>
             </div>
           ) : (
             customGpts.map(
               ({ description, icon, name, _id, show }, index) =>
                 show && (
-                  <Link href={`/app/ai-studio/custom-gpts/gpt?custom_gpt_id=${_id}`}>
+                  <Link
+                    href={`/app/ai-studio/custom-gpts/gpt?custom_gpt_id=${_id}`}
+                  >
                     <div
                       key={index}
-                      className="bg-white border border-[#E8E8E8] rounded-2xl p-4 hover:shadow-2xl hover:shadow-gray-200 cursor-pointer transition-all duration-300 flex items-center gap-5">
-                      <Image src={icon} alt="" width={100} height={100} className="rounded-2xl w-[90px] h-[90px] object-cover" />
+                      className="bg-white border border-[#E8E8E8] rounded-2xl p-4 hover:shadow-2xl hover:shadow-gray-200 cursor-pointer transition-all duration-300 flex items-center gap-5"
+                    >
+                      <Image
+                        src={icon}
+                        alt=""
+                        width={100}
+                        height={100}
+                        className="rounded-2xl w-[90px] h-[90px] object-cover"
+                      />
                       <div className="space-y-2">
                         <h1 className="text-lg font-semibold">{name}</h1>
-                        <p className="text-primary-black text-opacity-50 leading-relaxed"
-                          style={{ width: "200px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        <p
+                          className="text-primary-black text-opacity-50 leading-relaxed"
+                          style={{
+                            width: "200px",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
                           {description}
                         </p>
                       </div>
@@ -121,7 +146,15 @@ export default function Customgpts() {
 
 const SkeletonLoader: React.FC = () => {
   return (
-    <ContentLoader speed={2} width="100%" height="80px" viewBox="0 0 600 80" backgroundColor="#f3f3f3" foregroundColor="#ecebeb" className="w-full">
+    <ContentLoader
+      speed={2}
+      width="100%"
+      height="80px"
+      viewBox="0 0 600 80"
+      backgroundColor="#f3f3f3"
+      foregroundColor="#ecebeb"
+      className="w-full"
+    >
       <rect x="0" y="0" rx="10" ry="10" width="70" height="70" />
       <rect x="90" y="10" rx="8" ry="8" width="350" height="15" />
       <rect x="90" y="35" rx="8" ry="8" width="420" height="15" />

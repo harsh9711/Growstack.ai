@@ -30,7 +30,7 @@ const PasswordUpdate: React.FC<PasswordUpdateProps> = ({
         .min(6, "Password must be at least 6 characters long"),
       confirmPassword: z.string(),
     })
-    .refine((data) => data.password === data.confirmPassword, {
+    .refine(data => data.password === data.confirmPassword, {
       message: "Passwords do not match",
       path: ["confirmPassword"],
     });
@@ -44,7 +44,7 @@ const PasswordUpdate: React.FC<PasswordUpdateProps> = ({
     resolver: zodResolver(PasswordUpdateSchema),
   });
 
-  const onSubmit: SubmitHandler<PasswordUpdateSchemaType> = async (data) => {
+  const onSubmit: SubmitHandler<PasswordUpdateSchemaType> = async data => {
     setIsPending(true);
     try {
       const response = await instance.put(

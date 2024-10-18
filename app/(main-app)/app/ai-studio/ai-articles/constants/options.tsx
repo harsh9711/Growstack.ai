@@ -1,4 +1,12 @@
-import { AnthropicClaude, ChatGptIcon2, GoogleGemini, Llama, LogoIcon, Mistra, Perplexity } from "@/components/svgs";
+import {
+  AnthropicClaude,
+  ChatGptIcon2,
+  GoogleGemini,
+  Llama,
+  LogoIcon,
+  Mistra,
+  Perplexity,
+} from "@/components/svgs";
 
 export const aiModelOptions = [
   {
@@ -58,7 +66,6 @@ export const aiModelOptions = [
       },
     ],
   },
-
 ];
 
 export const aiModelOptionsTemplate = [
@@ -118,7 +125,6 @@ export const aiModelOptionsTemplate = [
       },
     ],
   },
-
 ];
 
 export const llmComparisonModels = [
@@ -243,7 +249,6 @@ export const llmComparisonModels = [
     ],
   },
 ];
-
 
 export const writingToneOptions = [
   {

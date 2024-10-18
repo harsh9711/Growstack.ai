@@ -7,9 +7,18 @@ import { useGeneratedHtml } from "../../context/GeneratedHtmlContext";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useRef } from "react";
 import { WwwIcon } from "@/components/svgs";
-import { SlScreenDesktop, SlScreenTablet, SlScreenSmartphone } from "react-icons/sl";
+import {
+  SlScreenDesktop,
+  SlScreenTablet,
+  SlScreenSmartphone,
+} from "react-icons/sl";
 import { Switch } from "@/components/ui/switch";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import clsx from "clsx";
 
 export default function ViewGeneratedWebsite() {
@@ -18,7 +27,6 @@ export default function ViewGeneratedWebsite() {
   const [iframeWidth, setIframeWidth] = useState("100%");
   const [editingMode, setEditingMode] = useState(false); // State to track editing mode
   const iframeRef = useRef<HTMLIFrameElement>(null);
-
 
   const handleViewScreenChange = (view: string) => {
     switch (view) {
@@ -41,7 +49,7 @@ export default function ViewGeneratedWebsite() {
     if (iframeRef.current) {
       const iframeDocument = iframeRef.current.contentDocument;
       if (iframeDocument) {
-        iframeDocument.querySelectorAll<HTMLElement>("*").forEach((element) => {
+        iframeDocument.querySelectorAll<HTMLElement>("*").forEach(element => {
           element.contentEditable = editingMode ? "false" : "true"; // Toggle content editable
           if (editingMode) {
             element.style.outline = "none"; // Remove outline on edit disable
@@ -100,7 +108,8 @@ export default function ViewGeneratedWebsite() {
                       "border h-10 w-10 rounded-lg flex gap-2 items-center justify-center",
                       iframeWidth === "100%" && "border-[3px] border-blue-400"
                     )}
-                    onClick={() => handleViewScreenChange("desktop")}>
+                    onClick={() => handleViewScreenChange("desktop")}
+                  >
                     <SlScreenDesktop size={22} />
                   </button>
                 </TooltipTrigger>
@@ -117,7 +126,8 @@ export default function ViewGeneratedWebsite() {
                       "border h-10 w-10 rounded-lg flex gap-2 items-center justify-center",
                       iframeWidth === "768px" && "border-[3px] border-blue-400"
                     )}
-                    onClick={() => handleViewScreenChange("tablet")}>
+                    onClick={() => handleViewScreenChange("tablet")}
+                  >
                     <SlScreenTablet size={22} />
                   </button>
                 </TooltipTrigger>
@@ -134,7 +144,8 @@ export default function ViewGeneratedWebsite() {
                       "border h-10 w-10 rounded-lg flex gap-2 items-center justify-center",
                       iframeWidth === "375px" && "border-[3px] border-blue-400"
                     )}
-                    onClick={() => handleViewScreenChange("mobile")}>
+                    onClick={() => handleViewScreenChange("mobile")}
+                  >
                     <SlScreenSmartphone size={22} />
                   </button>
                 </TooltipTrigger>
@@ -164,7 +175,11 @@ export default function ViewGeneratedWebsite() {
             ref={iframeRef}
             srcDoc={generatedHtml}
             className="w-full h-full pt-3 bg-white"
-            style={{ width: iframeWidth, height: "calc(100vh - 100px)", margin: "0 auto" }} // Adjust width and center the iframe
+            style={{
+              width: iframeWidth,
+              height: "calc(100vh - 100px)",
+              margin: "0 auto",
+            }} // Adjust width and center the iframe
           />
         ) : (
           <p className="text-center text-gray-500">Loading...</p>

@@ -177,26 +177,26 @@ const Schedules: React.FC<Props> = ({ workflowId }) => {
                     </TableHead>
                     <TableHead className="min-w-[120px]">Created On</TableHead>
                     {schedules.some(
-                      (schedule) => schedule.frequency === "weekly"
+                      schedule => schedule.frequency === "weekly"
                     ) && (
-                        <TableHead className="min-w-[120px]">
-                          Day of Week
-                        </TableHead>
-                      )}
+                      <TableHead className="min-w-[120px]">
+                        Day of Week
+                      </TableHead>
+                    )}
                     {schedules.some(
-                      (schedule) => schedule.frequency === "monthly"
+                      schedule => schedule.frequency === "monthly"
                     ) && (
-                        <TableHead className="min-w-[120px]">
-                          Day of Month
-                        </TableHead>
-                      )}
+                      <TableHead className="min-w-[120px]">
+                        Day of Month
+                      </TableHead>
+                    )}
                     <TableHead className="min-w-[120px]">Time</TableHead>
                     <TableHead className="min-w-[120px]">Timezone</TableHead>
                     <TableHead className="min-w-[120px]">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {currentSchedules.map((schedule) => (
+                  {currentSchedules.map(schedule => (
                     <TableRow key={schedule._id} className="grids grid-cols-8">
                       <TableCell className="bg-gray-50 text-gray-500 capitalize min-w-[120px]">
                         {schedule.frequency || "-"}
@@ -213,19 +213,19 @@ const Schedules: React.FC<Props> = ({ workflowId }) => {
                           {schedule?.day_of_week || "-"}
                         </TableCell>
                       )) || (
-                          <TableCell className="bg-gray-50 text-gray-500 min-w-[120px]">
-                            {"-"}
-                          </TableCell>
-                        )}
+                        <TableCell className="bg-gray-50 text-gray-500 min-w-[120px]">
+                          -
+                        </TableCell>
+                      )}
                       {(schedule.frequency === "monthly" && (
                         <TableCell className="bg-gray-50 text-gray-500 min-w-[120px]">
                           {schedule?.day_of_month || "-"}
                         </TableCell>
                       )) || (
-                          <TableCell className="bg-gray-50 text-gray-500 min-w-[120px]">
-                            {"-"}
-                          </TableCell>
-                        )}
+                        <TableCell className="bg-gray-50 text-gray-500 min-w-[120px]">
+                          -
+                        </TableCell>
+                      )}
                       <TableCell className="bg-gray-50 text-gray-500 min-w-[120px]">
                         {schedule.time || "-"}
                       </TableCell>
@@ -248,12 +248,13 @@ const Schedules: React.FC<Props> = ({ workflowId }) => {
                     <TableCell colSpan={8} className="text-center py-3">
                       <div className="flex flex-row w-full justify-between">
                         <button
-                          className={`px-4 py-2 rounded-lg border border-gray-300 text-gray-700 bg-white hover:bg-gray-100 transition-transform transform ${currentPage === 1
-                            ? "cursor-not-allowed opacity-50"
-                            : "cursor-pointer"
-                            } hover:scale-105`}
+                          className={`px-4 py-2 rounded-lg border border-gray-300 text-gray-700 bg-white hover:bg-gray-100 transition-transform transform ${
+                            currentPage === 1
+                              ? "cursor-not-allowed opacity-50"
+                              : "cursor-pointer"
+                          } hover:scale-105`}
                           onClick={() =>
-                            setCurrentPage((page) => Math.max(page - 1, 1))
+                            setCurrentPage(page => Math.max(page - 1, 1))
                           }
                           disabled={currentPage === 1}
                         >
@@ -263,12 +264,13 @@ const Schedules: React.FC<Props> = ({ workflowId }) => {
                           Page {currentPage} of {totalPages}
                         </span>
                         <button
-                          className={`px-4 py-2 rounded-lg border border-gray-300 text-gray-700 bg-white hover:bg-gray-100 transition-transform transform ${currentPage === totalPages
-                            ? "cursor-not-allowed opacity-50"
-                            : "cursor-pointer"
-                            } hover:scale-105`}
+                          className={`px-4 py-2 rounded-lg border border-gray-300 text-gray-700 bg-white hover:bg-gray-100 transition-transform transform ${
+                            currentPage === totalPages
+                              ? "cursor-not-allowed opacity-50"
+                              : "cursor-pointer"
+                          } hover:scale-105`}
                           onClick={() =>
-                            setCurrentPage((page) =>
+                            setCurrentPage(page =>
                               Math.min(page + 1, totalPages)
                             )
                           }

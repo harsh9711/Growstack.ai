@@ -1,10 +1,10 @@
-import React, { useRef, useEffect } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import React, { useRef, useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const VideoPreviewModal = ({
   isOpen,
-  videoUrl, 
+  videoUrl,
   onClose,
 }: {
   isOpen: boolean;
@@ -22,38 +22,41 @@ const VideoPreviewModal = ({
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
         onClose();
       }
     };
 
     if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen, onClose]);
 
   useEffect(() => {
     if (isOpen) {
-      AOS.refresh(); 
+      AOS.refresh();
     }
   }, [isOpen]);
 
   useEffect(() => {
     const videoElement = videoRef.current;
-    
+
     if (videoElement) {
       const handleVideoEnd = () => {
         onClose();
       };
 
-      videoElement.addEventListener('ended', handleVideoEnd);
+      videoElement.addEventListener("ended", handleVideoEnd);
 
       return () => {
-        videoElement.removeEventListener('ended', handleVideoEnd);
+        videoElement.removeEventListener("ended", handleVideoEnd);
       };
     }
   }, [videoUrl, onClose]);

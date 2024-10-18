@@ -3,7 +3,11 @@ import { Provider } from "react-redux";
 import { persistor, store } from "@/lib/store";
 import { PersistGate } from "redux-persist/lib/integration/react";
 
-export default function StateProvider({ children }: { children: React.ReactNode }) {
+export default function StateProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor} loading={null}>

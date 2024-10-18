@@ -1,17 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 const useInView = (options?: IntersectionObserverInit) => {
   const [isInView, setIsInView] = useState<boolean>(false);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsInView(entry.isIntersecting);
-      },
-      options
-    );
+    const observer = new IntersectionObserver(([entry]) => {
+      setIsInView(entry.isIntersecting);
+    }, options);
 
-    const element = document.querySelector('#grid-component');
+    const element = document.querySelector("#grid-component");
     if (element) {
       observer.observe(element);
     }

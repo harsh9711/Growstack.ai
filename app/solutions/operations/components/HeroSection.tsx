@@ -19,7 +19,9 @@ const HeroSection = ({
   heroImageAlt = "Center Image",
 }) => {
   return (
-    <section className={`${bgGradient}  rounded-b-[60px] sm:rounded-b-[0px]  w-full mb-10 2xl:mb-20 overflow-hidden`}>
+    <section
+      className={`${bgGradient}  rounded-b-[60px] sm:rounded-b-[0px]  w-full mb-10 2xl:mb-20 overflow-hidden`}
+    >
       <Navbar logoUrl={logoUrl} logoAlt={logoAlt} backgroundColor="white" />
 
       <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1350px] 2xl:p-0 p-4 w-full  h-full justify-center mx-auto">

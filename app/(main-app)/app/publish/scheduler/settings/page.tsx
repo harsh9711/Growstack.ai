@@ -25,11 +25,10 @@ export default function page() {
 
   const handleOnConnect = async () => {
     const currentPath = localStorage.getItem("currentPathname");
-      try {
-  
-        const response = await instance.get(
-          `${API_URL}/users/api/v1/social-media/connect?currentPath=${currentPath}`
-        );
+    try {
+      const response = await instance.get(
+        `${API_URL}/users/api/v1/social-media/connect?currentPath=${currentPath}`
+      );
       const url = response?.data.data;
       if (url) {
         window.location.href = url;

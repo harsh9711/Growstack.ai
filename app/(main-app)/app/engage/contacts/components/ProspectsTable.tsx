@@ -1,8 +1,23 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { ColumnDef, flexRender, getCoreRowModel, getPaginationRowModel, getSortedRowModel, getFilteredRowModel, useReactTable } from "@tanstack/react-table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  getFilteredRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
 import clsx from "clsx";
 import { MailIcon, Search } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -32,8 +47,13 @@ export const columns: ColumnDef<Assistant>[] = [
     id: "select",
     header: ({ table }) => (
       <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-        onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value: any) =>
+          table.toggleAllPageRowsSelected(!!value)
+        }
         aria-label="Select all"
         className="w-[18px] h-[18px]"
       />
@@ -54,7 +74,9 @@ export const columns: ColumnDef<Assistant>[] = [
     header: () => <div className="uppercase">Name</div>,
     cell: ({ row }) => (
       <Link href={`/app/engage/contacts/assistant/${row.original._id}`}>
-        <div className="capitalize flex items-center gap-3">{row.getValue("title")}</div>
+        <div className="capitalize flex items-center gap-3">
+          {row.getValue("title")}
+        </div>
       </Link>
     ),
   },
@@ -78,7 +100,8 @@ export const columns: ColumnDef<Assistant>[] = [
     cell: ({ row }) => (
       <div className="flex gap-3">
         <Link href={`/app/engage/contacts/assistant/${row.original._id}`}>
-          <span>{row.original.created_on.date}</span> <span>{row.original.created_on.time}</span>
+          <span>{row.original.created_on.date}</span>{" "}
+          <span>{row.original.created_on.time}</span>
         </Link>
       </div>
     ),
@@ -93,22 +116,30 @@ export default function ProspectsTable() {
   const fetchAssistants = async () => {
     setIsPending(true);
     try {
-      const response = await instance.get(`${API_URL}/users/api/v1/contacts/prospects`);
+      const response = await instance.get(
+        `${API_URL}/users/api/v1/contacts/prospects`
+      );
       if (response.data.data.docs) {
-        const formattedAssistants = response.data.data.docs.map((assistant: any) => ({
-          _id: assistant._id,
-          title: assistant.title,
-          created_on: {
-            date: new Date(assistant.createdAt).toLocaleDateString().replace(/\//g, "-"),
-            time: new Date(assistant.createdAt).toLocaleTimeString(),
-          },
-          businesses: assistant.businesses.map((business: any, index: number) => ({
-            id: index,
-            name: business.name,
-            length: business.length,
-          })),
-          totalprospects: assistant.businesses.length || "",
-        }));
+        const formattedAssistants = response.data.data.docs.map(
+          (assistant: any) => ({
+            _id: assistant._id,
+            title: assistant.title,
+            created_on: {
+              date: new Date(assistant.createdAt)
+                .toLocaleDateString()
+                .replace(/\//g, "-"),
+              time: new Date(assistant.createdAt).toLocaleTimeString(),
+            },
+            businesses: assistant.businesses.map(
+              (business: any, index: number) => ({
+                id: index,
+                name: business.name,
+                length: business.length,
+              })
+            ),
+            totalprospects: assistant.businesses.length || "",
+          })
+        );
         setAssistants(formattedAssistants);
       } else {
         console.error("Unexpected API response format:", response.data);
@@ -143,15 +174,21 @@ export default function ProspectsTable() {
         onClick={() => table.setPageIndex(i)}
         className={clsx(
           "w-12 h-[45px] rounded-lg mx-1 bg-[#4B465C14] transition-all duration-300",
-          i === table.getState().pagination.pageIndex ? "!bg-primary-green hover:bg-opacity-50 text-white" : "hover:bg-[#4B465C29]"
-        )}>
+          i === table.getState().pagination.pageIndex
+            ? "!bg-primary-green hover:bg-opacity-50 text-white"
+            : "hover:bg-[#4B465C29]"
+        )}
+      >
         {i + 1}
       </button>
     );
   }
 
   return (
-    <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion
+      transition={{ duration: 0.2 }}
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+    >
       <div className="w-full">
         <div className="flex justify-between gap-10 items-center mt-5">
           <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
@@ -161,7 +198,7 @@ export default function ProspectsTable() {
               className="outline-none h-[40px] w-full"
               placeholder="Search"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={e => setSearchQuery(e.target.value)}
             />{" "}
           </div>
           {/* <div className="flex gap-x-2">
@@ -171,11 +208,18 @@ export default function ProspectsTable() {
         <div className="rounded-lg border overflow-hidden mt-5">
           <Table>
             <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
+              {table.getHeaderGroups().map(headerGroup => (
                 <TableRow key={headerGroup.id} className="bg-[#0347370D]">
-                  {headerGroup.headers.map((header) => {
+                  {headerGroup.headers.map(header => {
                     return (
-                      <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
                     );
                   })}
                 </TableRow>
@@ -184,21 +228,35 @@ export default function ProspectsTable() {
             <TableBody>
               {isPending ? (
                 <TableRow className="hover:bg-white">
-                  <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-[50vh] text-center font-semibold text-lg hover:bg-white"
+                  >
                     Loading...
                   </TableCell>
                 </TableRow>
               ) : table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                table.getRowModel().rows.map(row => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map(cell => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
                     ))}
                   </TableRow>
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={columns.length} className="h-24 text-center">
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
                     No results.
                   </TableCell>
                 </TableRow>

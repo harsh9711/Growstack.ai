@@ -82,7 +82,6 @@ export const features = [
     anchor: "bottom",
   },
 
-
   {
     id: 11,
     title: "AI",
@@ -101,4 +100,3 @@ export const features = [
     shadowColor: "voilet",
   },
 ];
-

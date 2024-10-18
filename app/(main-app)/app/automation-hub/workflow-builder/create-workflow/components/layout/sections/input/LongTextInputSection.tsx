@@ -20,7 +20,12 @@ interface ShortTextParams {
   variable_name: string;
 }
 
-export default function LongTextInputSection({ onParamsChange, inputParams, variableNameError, setVariableNameError }: LongTextInputSectionProps) {
+export default function LongTextInputSection({
+  onParamsChange,
+  inputParams,
+  variableNameError,
+  setVariableNameError,
+}: LongTextInputSectionProps) {
   const [params, setParams] = useState<ShortTextParams>({
     display_name: (inputParams as ShortTextParams).display_name || "",
     placeholder: (inputParams as ShortTextParams).placeholder || "",
@@ -38,17 +43,19 @@ export default function LongTextInputSection({ onParamsChange, inputParams, vari
     const updatedParams = { ...params, ...updates };
 
     if (updates.display_name) {
-      updatedParams.variable_name = updates.display_name.trim().toLowerCase().replace(/\s+/g, "_");
-    }
-    else if (updates.display_name === "") {
-      updatedParams.variable_name = ""
+      updatedParams.variable_name = updates.display_name
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "_");
+    } else if (updates.display_name === "") {
+      updatedParams.variable_name = "";
     }
 
     setParams(updatedParams);
-    if ('variable_name' in updatedParams) {
+    if ("variable_name" in updatedParams) {
       try {
         variableNameSchema.parse(updatedParams.variable_name);
-        setVariableNameError('');
+        setVariableNameError("");
       } catch (err) {
         if (err instanceof z.ZodError) {
           setVariableNameError(err.errors[0].message);
@@ -57,14 +64,17 @@ export default function LongTextInputSection({ onParamsChange, inputParams, vari
     }
   };
   return (
-    <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion
+      transition={{ duration: 0.5 }}
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+    >
       <div className="space-y-4">
         <div className="space-y-2">
           <label className="font-medium text-sm">Input label</label>
           <Input
             type="text"
             value={params.display_name}
-            onChange={(e) => updateParams({ display_name: e.target.value })}
+            onChange={e => updateParams({ display_name: e.target.value })}
             placeholder="Input label"
           />
         </div>
@@ -73,7 +83,7 @@ export default function LongTextInputSection({ onParamsChange, inputParams, vari
           <Input
             type="text"
             value={params.placeholder}
-            onChange={(e) => updateParams({ placeholder: e.target.value })}
+            onChange={e => updateParams({ placeholder: e.target.value })}
             placeholder="None"
           />
         </div>
@@ -82,27 +92,31 @@ export default function LongTextInputSection({ onParamsChange, inputParams, vari
           <Input
             type="text"
             value={params.default_value}
-            onChange={(e) => updateParams({ default_value: e.target.value })}
+            onChange={e => updateParams({ default_value: e.target.value })}
             placeholder="None"
           />
         </div>
         <div className="space-y-2">
           <label className="font-medium flex gap-2 items-center">
             Description{" "}
-            <span className="text-primary-black text-opacity-30 text-xs">Optional</span>{" "}
+            <span className="text-primary-black text-opacity-30 text-xs">
+              Optional
+            </span>{" "}
           </label>
           <textarea
             value={params.description}
-            onChange={(e) => updateParams({ description: e.target.value })}
+            onChange={e => updateParams({ description: e.target.value })}
             placeholder="Input label"
             className="bg-[#F2F2F2] p-3 h-[120px] block resize-none w-full rounded-xl"
           ></textarea>
         </div>
         <div className="space-y-2">
-          <label className="font-medium flex gap-2 items-center">Required</label>
+          <label className="font-medium flex gap-2 items-center">
+            Required
+          </label>
           <Switch
             checked={params.required}
-            onCheckedChange={(checked) => updateParams({ required: checked })}
+            onCheckedChange={checked => updateParams({ required: checked })}
           />
         </div>
         <div className="space-y-2">
@@ -110,7 +124,7 @@ export default function LongTextInputSection({ onParamsChange, inputParams, vari
           <Input
             type="text"
             value={params.variable_name}
-            onChange={(e) => updateParams({ variable_name: e.target.value })}
+            onChange={e => updateParams({ variable_name: e.target.value })}
             placeholder="Input Variable name"
           />
           <p className="text-red-400 text-xs"> {variableNameError}</p>
@@ -119,5 +133,3 @@ export default function LongTextInputSection({ onParamsChange, inputParams, vari
     </Motion>
   );
 }
-
-

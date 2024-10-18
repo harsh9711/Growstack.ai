@@ -87,13 +87,13 @@ const MarketingTechnology: React.FC = () => {
           >
             <Swiper
               ref={swiperRef}
-              effect={"coverflow"}
-              grabCursor={true}
-              centeredSlides={true}
-              loop={true}
+              effect="coverflow"
+              grabCursor
+              centeredSlides
+              loop
               slidesPerView={2.81}
               spaceBetween={-150}
-              watchOverflow={true}
+              watchOverflow
               coverflowEffect={{
                 rotate: 0,
                 stretch: 0,

@@ -26,7 +26,7 @@ const AvatarSelection = ({ avatars, onSelect }: AvatarSelectionProps) => {
 
   return (
     <div className="w-full flex flex-wrap gap-4 relative z-10 justify-center md:justify-start">
-      {avatars.map((avatar) => (
+      {avatars.map(avatar => (
         <div
           key={avatar.id}
           onClick={() => handleAvatarClick(avatar)}
@@ -57,8 +57,6 @@ const AvatarSelection = ({ avatars, onSelect }: AvatarSelectionProps) => {
         </div>
       ))}
     </div>
-
-
   );
 };
 

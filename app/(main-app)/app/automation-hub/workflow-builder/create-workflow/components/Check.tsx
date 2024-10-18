@@ -26,10 +26,10 @@ const CheckboxComponent: React.FC<CheckboxProps> = ({
   }, [option.variable_value]);
 
   const handleSwitchChange = (platform: string, checked: boolean) => {
-    setCheckedValues((prev) => {
+    setCheckedValues(prev => {
       const updatedValues = checked
         ? [...prev, platform]
-        : prev.filter((value) => value !== platform);
+        : prev.filter(value => value !== platform);
 
       console.log("Checked Values Array:", updatedValues);
 
@@ -64,30 +64,28 @@ const CheckboxComponent: React.FC<CheckboxProps> = ({
         <label className="font-medium">Facebook</label>
         <Switch
           checked={checkedValues.includes("facebook")}
-          onCheckedChange={(checked) => handleSwitchChange("facebook", checked)}
+          onCheckedChange={checked => handleSwitchChange("facebook", checked)}
         />
       </div>
       <div className="w-full flex justify-between mt-6 pb-6 border-b border-[#EDEFF0]">
         <label className="font-medium">Twitter</label>
         <Switch
           checked={checkedValues.includes("twitter")}
-          onCheckedChange={(checked) => handleSwitchChange("twitter", checked)}
+          onCheckedChange={checked => handleSwitchChange("twitter", checked)}
         />
       </div>
       <div className="w-full flex justify-between mt-6 pb-6 border-b border-[#EDEFF0]">
         <label className="font-medium">LinkedIn</label>
         <Switch
           checked={checkedValues.includes("linkedin")}
-          onCheckedChange={(checked) => handleSwitchChange("linkedin", checked)}
+          onCheckedChange={checked => handleSwitchChange("linkedin", checked)}
         />
       </div>
       <div className="w-full flex justify-between mt-6 pb-6 border-b border-[#EDEFF0]">
         <label className="font-medium">Instagram</label>
         <Switch
           checked={checkedValues.includes("instagram")}
-          onCheckedChange={(checked) =>
-            handleSwitchChange("instagram", checked)
-          }
+          onCheckedChange={checked => handleSwitchChange("instagram", checked)}
         />
       </div>
     </div>

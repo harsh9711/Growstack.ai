@@ -29,5 +29,6 @@ const documentSlice = createSlice({
   },
 });
 
-export const { editDocument, savedDecument, isActiveLoader } = documentSlice.actions;
+export const { editDocument, savedDecument, isActiveLoader } =
+  documentSlice.actions;
 export default documentSlice.reducer;

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState } from "react";
 
 interface Props {
   otpValue: string;
@@ -24,7 +24,7 @@ export const OtpInput = (props: Props) => {
       const cleanedValues = newInputValues.filter(
         value => value === 0 || (value && !isNaN(value))
       );
-      const calculatedOtp = cleanedValues.join('');
+      const calculatedOtp = cleanedValues.join("");
       setOtpValue(calculatedOtp);
       inputRefs.current[index]?.blur();
       inputRefs.current[index + 1]?.focus();
@@ -32,7 +32,7 @@ export const OtpInput = (props: Props) => {
       const isCurrentInputFocused =
         inputRefs.current[index] === document.activeElement;
       const isCurrentInputValueExists = inputRefs.current?.[index]?.value;
-      const targetValue = e.target.value.toString().split('');
+      const targetValue = e.target.value.toString().split("");
       for (let i = 0; i < targetValue.length; i++) {
         newInputValues[index + i] = Number(targetValue[i]);
         inputRefs.current[index + i]?.blur();
@@ -47,16 +47,16 @@ export const OtpInput = (props: Props) => {
           setOtpValue(prev => {
             const prevValCopy = prev;
             const cleanedPrevValue = removeChar(prevValCopy, index);
-            return cleanedPrevValue + targetValue.join('');
+            return cleanedPrevValue + targetValue.join("");
           });
         } else {
-          setOtpValue(prev => prev + targetValue.join(''));
+          setOtpValue(prev => prev + targetValue.join(""));
         }
       } else {
-        setOtpValue(targetValue.join(''));
+        setOtpValue(targetValue.join(""));
       }
     } else {
-      alert('Pasted OTP exceeds 6 digits');
+      alert("Pasted OTP exceeds 6 digits");
     }
   };
 
@@ -65,7 +65,7 @@ export const OtpInput = (props: Props) => {
     index: number
   ) => {
     const key = e.key;
-    if (key === 'Backspace' || key === 'Delete') {
+    if (key === "Backspace" || key === "Delete") {
       e.preventDefault();
       const newInputValues = [...inputValues];
       newInputValues[index] = Number(undefined);
@@ -73,7 +73,7 @@ export const OtpInput = (props: Props) => {
       const cleanedValues = newInputValues.filter(
         value => value && !isNaN(value)
       );
-      const calculatedOtp = cleanedValues.join('');
+      const calculatedOtp = cleanedValues.join("");
       setOtpValue(calculatedOtp);
       if (index > 0) {
         inputRefs.current[index - 1]?.focus();
@@ -81,11 +81,11 @@ export const OtpInput = (props: Props) => {
       }
     }
 
-    if (key === 'ArrowLeft') {
+    if (key === "ArrowLeft") {
       inputRefs.current[index - 1]?.focus();
     }
 
-    if (key === 'ArrowRight') {
+    if (key === "ArrowRight") {
       inputRefs.current[index + 1]?.focus();
     }
   };
@@ -93,34 +93,34 @@ export const OtpInput = (props: Props) => {
   return (
     <div
       style={{
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'space-between',
-        margin: '20px 0',
+        width: "100%",
+        display: "flex",
+        justifyContent: "space-between",
+        margin: "20px 0",
       }}
     >
       {Array.from(Array(numberOfInputs)).map((_, index) => (
         <input
           key={index}
           style={{
-            border: 'none',
-            borderBottom: '2px solid #ddd',
-            padding: '10px',
-            width: '80px',
-            textAlign: 'center',
-            fontSize: '18px',
-            marginRight: '10px',
-            outline: 'none',
-            transition: 'border-color 0.2s ease',
+            border: "none",
+            borderBottom: "2px solid #ddd",
+            padding: "10px",
+            width: "80px",
+            textAlign: "center",
+            fontSize: "18px",
+            marginRight: "10px",
+            outline: "none",
+            transition: "border-color 0.2s ease",
           }}
-          className='focus:border-green-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+          className="focus:border-green-500 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
           value={inputValues[index]}
           onChange={e => numberChangeHandler(e, index)}
           onKeyDown={e => numberKeyDownHandler(e, index)}
           maxLength={1}
-          type='number'
-          pattern='[0-9]*'
-          inputMode='numeric'
+          type="number"
+          pattern="[0-9]*"
+          inputMode="numeric"
           ref={el => {
             inputRefs.current[index] = el;
           }}

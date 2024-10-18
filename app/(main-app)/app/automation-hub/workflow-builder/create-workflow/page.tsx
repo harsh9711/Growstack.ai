@@ -43,8 +43,9 @@ function PublishModal({
 }: PublishModalProps) {
   return (
     <div
-      className={`z-50 fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center ${show ? "block" : "hidden"
-        }`}
+      className={`z-50 fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center ${
+        show ? "block" : "hidden"
+      }`}
     >
       <div className="fixed top-0 left-0 right-0 bottom-0 bg-black opacity-50"></div>
       <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center">
@@ -73,7 +74,7 @@ function PublishModal({
                     value={workflowId}
                     className="flex-1 h-10 rounded-md border text-black dark:text-white cursor-not-allowed"
                     type="text"
-                    disabled={true}
+                    disabled
                   />
                   <div
                     className="cursor-pointer"
@@ -88,8 +89,9 @@ function PublishModal({
               </div>
             </div>
             <button
-              className={`mt-2 bg-primary-green text-white sheen transition duration-500 px-6 py-4 h-12 rounded-xl flex items-center gap-2 ${loading ? "opacity-70 cursor-not-allowed" : ""
-                }`}
+              className={`mt-2 bg-primary-green text-white sheen transition duration-500 px-6 py-4 h-12 rounded-xl flex items-center gap-2 ${
+                loading ? "opacity-70 cursor-not-allowed" : ""
+              }`}
               disabled={loading}
               onClick={onRunDashboard} // Trigger the dashboard navigation
             >
@@ -178,8 +180,9 @@ export default function CreateWorkflowPage() {
           <div className="flex gap-4">
             <button
               onClick={handlePublishWorkFlow}
-              className={`bg-primary-green text-white px-6 py-2 rounded-lg flex items-center gap-2 transition duration-300 ${isPublishing ? "opacity-70 cursor-not-allowed" : ""
-                }`}
+              className={`bg-primary-green text-white px-6 py-2 rounded-lg flex items-center gap-2 transition duration-300 ${
+                isPublishing ? "opacity-70 cursor-not-allowed" : ""
+              }`}
             >
               {isPublishing && <Send className="icon-flight" size={20} />}
               Publish

@@ -15,23 +15,23 @@ import VideoTemplate from "@/components/textToVideoAndProductAi/videoTemplate/Vi
 import React from "react";
 
 function Page() {
-    return (
-        <React.Fragment>
-            <Navbar />
-            <Banner />
-            <VideoSolution />
-            <ElevateBrand />
-            {/* <VideoCreated /> */}
-            {/* <VideoTemplate /> */}
-            <AiProduct />
-            <AiSlider />
-            <CoreProduct />
-            <Editing />
-            {/* <CustomerStories />  */}
-            <Faqs />
-            <Footer />
-        </React.Fragment>
-    );
+  return (
+    <React.Fragment>
+      <Navbar />
+      <Banner />
+      <VideoSolution />
+      <ElevateBrand />
+      {/* <VideoCreated /> */}
+      {/* <VideoTemplate /> */}
+      <AiProduct />
+      <AiSlider />
+      <CoreProduct />
+      <Editing />
+      {/* <CustomerStories />  */}
+      <Faqs />
+      <Footer />
+    </React.Fragment>
+  );
 }
 
 export default Page;

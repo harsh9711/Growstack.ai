@@ -34,7 +34,7 @@ const GridComponent = () => {
       }
 
       const newTimer = setTimeout(() => {
-        setSelected((prev) => {
+        setSelected(prev => {
           const nextValue = prev === 4 ? 1 : (prev ?? 0) + 1;
           if (nextValue === 1 && prev === 4) {
             setIsTimerActive(false);
@@ -89,15 +89,14 @@ const GridComponent = () => {
                 onClick={() => handleClick(2)}
                 className="bg-white border font-medium text-[24px]  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
-              AI product
+                AI product
               </div>
               <div
                 onClick={() => handleClick(3)}
                 className="bg-white border font-medium text-[24px]  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
-            Web scraping
+                Web scraping
               </div>
-           
             </div>
           </div>
         );
@@ -118,15 +117,14 @@ const GridComponent = () => {
                 onClick={() => handleClick(1)}
                 className="bg-white border  font-medium text-[24px] whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
-             AI playground
+                AI playground
               </div>
               <div
                 onClick={() => handleClick(3)}
                 className="bg-white border  font-medium text-[24px] shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
-               Web scraping
+                Web scraping
               </div>
-             
             </div>
           </div>
         );
@@ -147,19 +145,18 @@ const GridComponent = () => {
                 onClick={() => handleClick(1)}
                 className="bg-white border  font-medium text-[24px] whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
-              AI playground
+                AI playground
               </div>
               <div
                 onClick={() => handleClick(2)}
                 className="bg-white border  font-medium text-[24px] shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
-           AI product
+                AI product
               </div>
-         
             </div>
           </div>
         );
-    
+
       default:
         return (
           <>

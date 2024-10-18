@@ -34,10 +34,10 @@ type WorkFlowResults = {
 
 interface Props {
   workflowId: string;
-  onTabChange:any
+  onTabChange: any;
 }
 
-const Run: React.FC<Props> = ({ workflowId,onTabChange  }) => {
+const Run: React.FC<Props> = ({ workflowId, onTabChange }) => {
   const [loading, setLoading] = useState(true);
   const [fileUrl2, setFileUrl2] = useState<string>("");
   const router = useRouter();
@@ -49,7 +49,7 @@ const Run: React.FC<Props> = ({ workflowId,onTabChange  }) => {
     temp_outputs: [],
     workflow_runner_id: "",
   });
-  const handleSomeAction = (RunnerId:any) => {
+  const handleSomeAction = (RunnerId: any) => {
     if (onTabChange) {
       onTabChange(RunnerId);
     }
@@ -116,14 +116,14 @@ const Run: React.FC<Props> = ({ workflowId,onTabChange  }) => {
 
     try {
       const payload = {
-        actions_with_runs: workFlowData.actions.map((action) => ({
+        actions_with_runs: workFlowData.actions.map(action => ({
           action: action._id,
         })),
-        inputs: workFlowData.input_configs.map((input) => ({
+        inputs: workFlowData.input_configs.map(input => ({
           variable_name: input.variable_name,
           variable_value: input.default_value || fileUrl2,
         })),
-        outputs: workFlowData.output_configs.map((output) => ({
+        outputs: workFlowData.output_configs.map(output => ({
           variable_name: output.display_name,
           variable_value: output.value,
           variable_type: output.type,
@@ -133,8 +133,8 @@ const Run: React.FC<Props> = ({ workflowId,onTabChange  }) => {
         `${API_URL}/workflow/api/v1/${workflowId}/runner`,
         payload
       );
-      handleSomeAction(response.data.data.workflow_runner_id)
-      
+      handleSomeAction(response.data.data.workflow_runner_id);
+
       setWorkFlowResults(response.data.data);
     } catch (error) {
       console.error("Error running workflow:", error);
@@ -171,8 +171,8 @@ const Run: React.FC<Props> = ({ workflowId,onTabChange  }) => {
       );
       const runnerData = response.data.data;
 
-      setWorkFlowData((prevData) => {
-        const updatedInputConfigs = prevData.input_configs.map((config) => {
+      setWorkFlowData(prevData => {
+        const updatedInputConfigs = prevData.input_configs.map(config => {
           const matchedInput = runnerData.inputs.find(
             (input: any) => input.variable_name === config.variable_name
           );
@@ -257,13 +257,11 @@ const Run: React.FC<Props> = ({ workflowId,onTabChange  }) => {
                     placeholder={input.placeholder}
                     className="w-full p-4 h-[46px] border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
                     value={input.default_value}
-                    onChange={(e) => handleChangeInput(e.target.value, idx)}
+                    onChange={e => handleChangeInput(e.target.value, idx)}
                   />
                 ) : (
                   <FileUpload
-                    onFileUploaded={(fileUrl) =>
-                      handleFileUploaded(fileUrl, idx)
-                    }
+                    onFileUploaded={fileUrl => handleFileUploaded(fileUrl, idx)}
                     acceptedFileTypes={input.file_type || "*/*"}
                   />
                 )}

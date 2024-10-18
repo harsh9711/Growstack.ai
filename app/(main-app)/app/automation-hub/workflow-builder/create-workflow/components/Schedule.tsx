@@ -134,7 +134,7 @@ const ScheduleComponent: React.FC<CheckboxProps> = ({
                 type="date"
                 className="w-full bg-transparent outline-none"
                 value={scheduleDate}
-                onChange={(e) => setScheduleDate(e.target.value)}
+                onChange={e => setScheduleDate(e.target.value)}
                 min={today}
               />
             </div>
@@ -167,7 +167,7 @@ const ScheduleComponent: React.FC<CheckboxProps> = ({
                 type="time"
                 className="w-full bg-transparent outline-none"
                 value={scheduleTime}
-                onChange={(e) => setScheduleTime(e.target.value)}
+                onChange={e => setScheduleTime(e.target.value)}
                 min={scheduleDate ? `${scheduleDate}T00:00` : undefined}
               />
             </div>

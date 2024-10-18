@@ -31,7 +31,7 @@ const ImageGallery = () => {
   }, [clickedImage]);
 
   const handleClick = (largeSrc: string) => {
-    setClickedImage((prev) => (prev === largeSrc ? null : largeSrc));
+    setClickedImage(prev => (prev === largeSrc ? null : largeSrc));
   };
 
   const handleClose = () => {
@@ -99,10 +99,7 @@ const ImageGallery = () => {
               </button>
             </motion.div>
           ))}
-      
         </motion.div>
-
-     
 
         {clickedImage && (
           <div
@@ -111,7 +108,7 @@ const ImageGallery = () => {
           >
             <div
               className="relative max-w-full max-h-full p-4 rounded-lg"
-              onClick={(e) => e.stopPropagation()}
+              onClick={e => e.stopPropagation()}
             >
               <div className="absolute top-0 left-0 right-0  text-white p-8 flex items-center justify-between rounded-t-lg">
                 <span className="text-lg font-semibold opacity-0">

@@ -3,9 +3,27 @@
 import Motion from "@/components/Motion";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Contact } from "@/types/contact";
 import {
   ColumnDef,
@@ -32,8 +50,13 @@ export const columns: ColumnDef<Contact>[] = [
     id: "select",
     header: ({ table }) => (
       <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-        onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value: any) =>
+          table.toggleAllPageRowsSelected(!!value)
+        }
         aria-label="Select all"
         className="w-[18px] h-[18px]"
       />
@@ -54,7 +77,13 @@ export const columns: ColumnDef<Contact>[] = [
     header: () => <div className="uppercase">Name</div>,
     cell: ({ row }) => (
       <div className="capitalize flex items-center gap-3">
-        <Image src={row.original.profile_image} alt="" width={100} height={100} className="h-[40px] w-[40px] object-cover rounded-full" />
+        <Image
+          src={row.original.profile_image}
+          alt=""
+          width={100}
+          height={100}
+          className="h-[40px] w-[40px] object-cover rounded-full"
+        />
         {row.getValue("name")}
       </div>
     ),
@@ -64,7 +93,8 @@ export const columns: ColumnDef<Contact>[] = [
     header: () => <div className="uppercase">Phone</div>,
     cell: ({ row }) => (
       <div className="flex items-center gap-2">
-        <Phone size={20} className="text-primary-green" /> <span>{row.getValue("phone")}</span>
+        <Phone size={20} className="text-primary-green" />{" "}
+        <span>{row.getValue("phone")}</span>
       </div>
     ),
   },
@@ -99,7 +129,7 @@ export const columns: ColumnDef<Contact>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex gap-2">
-          {row.original.tags.map((tag) => (
+          {row.original.tags.map(tag => (
             <div className="px-3 py-2 bg-[#0347370D] rounded-md">{tag}</div>
           ))}
         </div>
@@ -148,20 +178,30 @@ export default function CompanyTable() {
         onClick={() => table.setPageIndex(i)}
         className={clsx(
           "w-12 h-[45px] rounded-lg mx-1 bg-[#4B465C14] transition-all duration-300",
-          i === table.getState().pagination.pageIndex ? "!bg-primary-green hover:bg-opacity-50 text-white" : "hover:bg-[#4B465C29]"
-        )}>
+          i === table.getState().pagination.pageIndex
+            ? "!bg-primary-green hover:bg-opacity-50 text-white"
+            : "hover:bg-[#4B465C29]"
+        )}
+      >
         {i + 1}
       </button>
     );
   }
 
   return (
-    <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion
+      transition={{ duration: 0.2 }}
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+    >
       <div className="w-full">
         <div className="flex justify-between gap-10 items-center mt-5">
           <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
             <Search className="text-gray-500" size={20} />
-            <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" />
+            <input
+              type="search"
+              className="outline-none h-[40px] w-full"
+              placeholder="Search"
+            />
           </div>
           <div className="flex items-center justify-end gap-2">
             <Select>
@@ -178,7 +218,10 @@ export default function CompanyTable() {
               </SelectContent>
             </Select>
             <DropdownMenu>
-              <DropdownMenuTrigger asChild className="w-full h-12 rounded-lg max-w-[132px] border border-primary-green bg-white text-primary-green">
+              <DropdownMenuTrigger
+                asChild
+                className="w-full h-12 rounded-lg max-w-[132px] border border-primary-green bg-white text-primary-green"
+              >
                 <Button variant="outline" className="px-2 font-normal">
                   Columns <ChevronDown className="ml-4 h-4 w-4 opacity-50" />
                 </Button>
@@ -186,14 +229,17 @@ export default function CompanyTable() {
               <DropdownMenuContent align="end">
                 {table
                   .getAllColumns()
-                  .filter((column) => column.getCanHide())
-                  .map((column) => {
+                  .filter(column => column.getCanHide())
+                  .map(column => {
                     return (
                       <DropdownMenuCheckboxItem
                         key={column.id}
                         className="capitalize"
                         checked={column.getIsVisible()}
-                        onCheckedChange={(value) => column.toggleVisibility(!!value)}>
+                        onCheckedChange={value =>
+                          column.toggleVisibility(!!value)
+                        }
+                      >
                         {column.id}
                       </DropdownMenuCheckboxItem>
                     );
@@ -226,11 +272,18 @@ export default function CompanyTable() {
         <div className="rounded-lg border overflow-hidden mt-5">
           <Table>
             <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
+              {table.getHeaderGroups().map(headerGroup => (
                 <TableRow key={headerGroup.id} className="bg-[#0347370D]">
-                  {headerGroup.headers.map((header) => {
+                  {headerGroup.headers.map(header => {
                     return (
-                      <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
                     );
                   })}
                 </TableRow>
@@ -238,16 +291,28 @@ export default function CompanyTable() {
             </TableHeader>
             <TableBody>
               {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="bg-white">
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                table.getRowModel().rows.map(row => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                    className="bg-white"
+                  >
+                    {row.getVisibleCells().map(cell => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
                     ))}
                   </TableRow>
                 ))
               ) : (
                 <TableRow className="hover:bg-white">
-                  <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-[50vh] text-center font-semibold text-lg hover:bg-white"
+                  >
                     No results.
                   </TableCell>
                 </TableRow>
@@ -263,18 +328,20 @@ export default function CompanyTable() {
                 size="sm"
                 className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px]"
                 onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}>
+                disabled={!table.getCanPreviousPage()}
+              >
                 Previous
               </Button>
               <div>
-                <div>{paginationButtons.map((u) => u)}</div>
+                <div>{paginationButtons.map(u => u)}</div>
               </div>
               <Button
                 variant="outline"
                 size="sm"
                 className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px] px-4"
                 onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}>
+                disabled={!table.getCanNextPage()}
+              >
                 Next
               </Button>
             </div>

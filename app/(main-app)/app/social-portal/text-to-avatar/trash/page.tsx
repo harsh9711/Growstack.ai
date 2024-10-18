@@ -100,7 +100,7 @@ const VideosComponent = () => {
           ? Array(10)
               .fill(null)
               .map((_, index) => <TemplateLoader key={index} />)
-          : templates.map((template) => (
+          : templates.map(template => (
               <VideoTemplateCard key={template.id} {...template} />
             ))}
       </div>

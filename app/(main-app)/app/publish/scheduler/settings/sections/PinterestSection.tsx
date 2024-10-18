@@ -3,26 +3,41 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Plus } from "lucide-react";
 import { Fragment } from "react";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 export default function PinterestSection() {
   return (
     <Fragment>
-      <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+      <Motion
+        transition={{ duration: 0.2 }}
+        variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+      >
         <div className="flex gap-10 mt-3 border-b border-[#00000015] pb-10">
           <div className="w-full">
             <div className="space-y-4">
-              <h1 className="text-xl font-semibold text-primary-green">General settings</h1>
+              <h1 className="text-xl font-semibold text-primary-green">
+                General settings
+              </h1>
               <div className="flex items-center">
-                <label className="w-full max-w-[400px]">Enable auto posting to pinterest</label>
-                <Switch defaultChecked={true} />
+                <label className="w-full max-w-[400px]">
+                  Enable auto posting to pinterest
+                </label>
+                <Switch defaultChecked />
               </div>
             </div>
           </div>
           <div className="w-full">
             <div className="space-y-4 max-w-[400px]">
-              <h1 className="text-xl font-semibold text-primary-green">Proxy Settings</h1>
+              <h1 className="text-xl font-semibold text-primary-green">
+                Proxy Settings
+              </h1>
               <div className="flex justify-between items-center space-x-2">
                 <label>Enable Proxy</label>
                 <Switch />
@@ -31,14 +46,21 @@ export default function PinterestSection() {
           </div>
         </div>
         <div className="mt-10 space-y-5 border-b border-[#00000015] pb-10">
-          <h1 className="text-xl font-semibold text-primary-green">Pinterest API settings</h1>
+          <h1 className="text-xl font-semibold text-primary-green">
+            Pinterest API settings
+          </h1>
           <div className="flex items-center">
             <p className="w-full max-w-[400px]">Select authentication type</p>
             <div className="w-full flex justify-between">
-              <RadioGroup defaultValue="Pinterest APP Method" className="w-full flex items-center">
+              <RadioGroup
+                defaultValue="Pinterest APP Method"
+                className="w-full flex items-center"
+              >
                 <div className="flex space-x-2 w-full">
                   <RadioGroupItem value="Pinterest APP Method" id="r1" />
-                  <label htmlFor="r1">Pinterest APP Method ( Recommended )</label>
+                  <label htmlFor="r1">
+                    Pinterest APP Method ( Recommended )
+                  </label>
                 </div>
                 <div className="flex space-x-2 w-full">
                   <RadioGroupItem value="Pinterest cookie method" id="r2" />

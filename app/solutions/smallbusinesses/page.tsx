@@ -62,9 +62,7 @@ const Home = () => {
             <GridComponent />
           </div>
           <div className="items-center xl:flex hidden justify-center mx-auto relative   ">
-            <GridComponentResponsive
-            
-            />
+            <GridComponentResponsive />
           </div>
         </div>
       </section>

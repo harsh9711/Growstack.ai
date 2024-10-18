@@ -123,14 +123,17 @@ const Box = () => {
                   }`}
                 >
                   <span className="flex flex-col sm:text-[16px] text-[12px] gap-y-2">
-                  <h2 className="sm:hidden flex font-bold">
+                    <h2 className="sm:hidden flex font-bold">
                       Time
-                      <span className="sm:hidden flex font-medium">: {card.time}</span>
+                      <span className="sm:hidden flex font-medium">
+                        : {card.time}
+                      </span>
                     </h2>
                     <h2 className="font-bold">
                       Task
                       <span className="font-medium">: {card.activity}</span>
-                    </h2>{" "}  <h2 className="font-bold">
+                    </h2>{" "}
+                    <h2 className="font-bold">
                       Action{" "}
                       <span className="font-medium">: {card.action}</span>
                     </h2>
@@ -193,7 +196,9 @@ const Box = () => {
                   <span className="flex flex-col sm:text-[16px] text-[12px] gap-y-2">
                     <h2 className="sm:hidden flex font-bold">
                       Time
-                      <span className="sm:hidden flex font-medium">: {card.time}</span>
+                      <span className="sm:hidden flex font-medium">
+                        : {card.time}
+                      </span>
                     </h2>
                     <h2 className="font-bold">
                       Task

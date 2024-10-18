@@ -1,5 +1,11 @@
 import React from "react";
-import { Dialog, DialogTrigger, DialogContent, DialogClose, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogClose,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Trash2 } from "lucide-react";
 
 export default function DeleteAssistantDialog({
@@ -22,11 +28,14 @@ export default function DeleteAssistantDialog({
         <DialogTitle>Are you sure you want to delete this template</DialogTitle>
         <div className="flex justify-center gap-x-3 mt-4">
           <DialogClose>
-            <button className="border text-primary-black px-8 py-3 rounded-xl flex items-center gap-2">Cancel</button>
+            <button className="border text-primary-black px-8 py-3 rounded-xl flex items-center gap-2">
+              Cancel
+            </button>
           </DialogClose>
           <button
             onClick={() => handleDelete(id, fetchAssistants)}
-            className="bg-rose-600 text-white sheen transition duration-500 px-8 py-3 rounded-xl flex items-center gap-2">
+            className="bg-rose-600 text-white sheen transition duration-500 px-8 py-3 rounded-xl flex items-center gap-2"
+          >
             Delete
           </button>
         </div>

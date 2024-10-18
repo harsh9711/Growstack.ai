@@ -4,7 +4,12 @@ import instance from "@/config/axios.config";
 import { AnimatePresence } from "framer-motion";
 import React, { ChangeEvent, SetStateAction, useState } from "react";
 import toast from "react-hot-toast";
-import { creativityOptions, languageOptions, povOptions, writingToneOptions } from "../constants/options";
+import {
+  creativityOptions,
+  languageOptions,
+  povOptions,
+  writingToneOptions,
+} from "../constants/options";
 import AdvancedOptions from "./AdvancedOptions";
 import clsx from "clsx";
 import Motion from "@/components/Motion";
@@ -43,8 +48,12 @@ export default function IdeasComponent({
 
   //advanced options settings
   const [aiModel, setAiModel] = useState<string>("gpt-4o");
-  const [creativity, setCreativity] = useState<string>(creativityOptions[0].value);
-  const [writingTone, setWritingTone] = useState<string>(writingToneOptions[0].value);
+  const [creativity, setCreativity] = useState<string>(
+    creativityOptions[0].value
+  );
+  const [writingTone, setWritingTone] = useState<string>(
+    writingToneOptions[0].value
+  );
   const [language, setLanguage] = useState<string>(languageOptions[0].value);
   const [pov, setPov] = useState<string>(povOptions[0].value);
 
@@ -66,7 +75,7 @@ export default function IdeasComponent({
         setIdeas(data.response.topics);
         setViewKeywords(false);
       })
-      .catch((err) => {
+      .catch(err => {
         if (err.response) {
           toast.error(err.response.data.message);
         } else {
@@ -90,12 +99,12 @@ export default function IdeasComponent({
         language: language,
       })
       .then(({ data: { data, message } }) => {
-        console.log(data)
+        console.log(data);
         setGeneratedKeywords(data.response.keywords);
         toast.success(message);
         setViewKeywords(true);
       })
-      .catch((err) => {
+      .catch(err => {
         if (err.response) {
           toast.error(err.response.data.message);
         } else {
@@ -106,9 +115,9 @@ export default function IdeasComponent({
   };
 
   const handleKeywordClick = (keyword: string) => {
-    setKeywords((prevKeywords) => {
+    setKeywords(prevKeywords => {
       if (prevKeywords.includes(keyword)) {
-        return prevKeywords.filter((kw) => kw !== keyword);
+        return prevKeywords.filter(kw => kw !== keyword);
       }
       return [...prevKeywords, keyword];
     });
@@ -119,15 +128,17 @@ export default function IdeasComponent({
     setKeywordInputValue(value);
     const splitKeywords = value
       .split(",")
-      .map((kw) => kw.trim())
-      .filter((kw) => kw);
+      .map(kw => kw.trim())
+      .filter(kw => kw);
     setKeywords(splitKeywords);
   };
 
   const handleKeywordUpdate = (keyword: string) => {
     handleKeywordClick(keyword);
-    setKeywordInputValue((prevValue) => {
-      const newKeywords = keywords.includes(keyword) ? keywords.filter((kw) => kw !== keyword) : [...keywords, keyword];
+    setKeywordInputValue(prevValue => {
+      const newKeywords = keywords.includes(keyword)
+        ? keywords.filter(kw => kw !== keyword)
+        : [...keywords, keyword];
       return newKeywords.join(", ");
     });
   };
@@ -142,15 +153,22 @@ export default function IdeasComponent({
     setKeywordInputValue("");
   };
 
-  const allSelected = generatedKeywords.every((keyword) => keywords.includes(keyword));
-  const notAllSelected = generatedKeywords.some((keyword) => !keywords.includes(keyword));
+  const allSelected = generatedKeywords.every(keyword =>
+    keywords.includes(keyword)
+  );
+  const notAllSelected = generatedKeywords.some(
+    keyword => !keywords.includes(keyword)
+  );
 
   const toggleAdvancedOptions = () => {
-    setShowAdvanced((prev) => !prev);
+    setShowAdvanced(prev => !prev);
   };
 
   return (
-    <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion
+      transition={{ duration: 0.5 }}
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+    >
       <div className="flex gap-5 items-start !mt-10">
         <div className="w-full !bg-white shadow-box p-7 border rounded-3xl max-w-xl">
           <div className="space-y-1.5">
@@ -158,13 +176,15 @@ export default function IdeasComponent({
               <label className="font-medium" htmlFor="topic">
                 Topic <span className="text-rose-600">*</span>
               </label>
-              <span className="text-primary-black text-opacity-50 text-sm">{topic.length}/500</span>
+              <span className="text-primary-black text-opacity-50 text-sm">
+                {topic.length}/500
+              </span>
             </div>
             <input
               type="text"
               id="title"
               value={topic}
-              onChange={(e) => setTopic(e.target.value)}
+              onChange={e => setTopic(e.target.value)}
               maxLength={500}
               placeholder="Enter the topic"
               className="flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2"
@@ -182,7 +202,7 @@ export default function IdeasComponent({
                 name="num-topics"
                 min={1}
                 value={numTopics}
-                onChange={(e) => setNumTopics(parseInt(e.target.value))}
+                onChange={e => setNumTopics(parseInt(e.target.value))}
                 className="flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
               />
             </div>
@@ -196,7 +216,7 @@ export default function IdeasComponent({
                 name="max-topic-words"
                 min={1}
                 value={maxTopicWords}
-                onChange={(e) => setMaxTopicWords(parseInt(e.target.value))}
+                onChange={e => setMaxTopicWords(parseInt(e.target.value))}
                 className="flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
               />
             </div>
@@ -226,7 +246,7 @@ export default function IdeasComponent({
                 id="num-keywords"
                 name="num-keywords"
                 value={numKeywords}
-                onChange={(e) => setNumKeywords(parseInt(e.target.value))}
+                onChange={e => setNumKeywords(parseInt(e.target.value))}
                 className="flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2 ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
               />
             </div>
@@ -238,13 +258,17 @@ export default function IdeasComponent({
             className={clsx(
               "w-full p-2 h-14 !mt-8 text-white bg-black rounded-xl flex justify-center items-center",
               isKeywordPending && "opacity-80 cursor-not-allowed"
-            )}>
+            )}
+          >
             {isKeywordPending ? <Spinner /> : "Generate keywords"}
           </button>
 
           <div className="flex gap-4 items-center !mt-8">
             <div className="bg-gray-200 w-full h-0.5" />
-            <button onClick={toggleAdvancedOptions} className="w-full text-primary-green text-base">
+            <button
+              onClick={toggleAdvancedOptions}
+              className="w-full text-primary-green text-base"
+            >
               {showAdvanced ? "Advanced options -" : "Advanced options +"}
             </button>
             <div className="bg-gray-200 w-full h-0.5" />
@@ -273,45 +297,63 @@ export default function IdeasComponent({
             className={clsx(
               "w-full p-2 h-14 !mt-8 text-white bg-primary-green rounded-xl hover:bg-opacity-90 flex justify-center items-center",
               isPending && "opacity-80 cursor-not-allowed"
-            )}>
+            )}
+          >
             {isPending ? <Spinner /> : "Generate Ideas"}
           </button>
         </div>
 
         <div className="w-full">
           <div className="bg-primary-green rounded-2xl py-5 px-7 flex items-center gap-4">
-            <span className="bg-white h-12 w-12 grid place-content-center rounded-full">{currentStep + 1}</span>
+            <span className="bg-white h-12 w-12 grid place-content-center rounded-full">
+              {currentStep + 1}
+            </span>
             <h2 className="text-lg font-semibold text-white">Ideas list</h2>
           </div>
 
           {viewKeywords &&
             (isKeywordPending && generatedKeywords.length < 1 ? (
-              <div className="h-40 grid place-content-center">Generating keywords for you...</div>
+              <div className="h-40 grid place-content-center">
+                Generating keywords for you...
+              </div>
             ) : (
               generatedKeywords.length > 0 && (
-                <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
-                  <h1 className="text-lg text-center my-6 font-semibold">Choose your keywords</h1>
+                <Motion
+                  transition={{ duration: 0.5 }}
+                  variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+                >
+                  <h1 className="text-lg text-center my-6 font-semibold">
+                    Choose your keywords
+                  </h1>
                   <div className="flex flex-wrap justify-center gap-2 mt-3">
-                    {generatedKeywords.map((generatedKeyword) => (
+                    {generatedKeywords.map(generatedKeyword => (
                       <div
                         key={generatedKeyword}
                         onClick={() => handleKeywordUpdate(generatedKeyword)}
                         className={clsx(
                           "bg-gray-100 text-gray-600 p-3 rounded-xl first-letter:uppercase cursor-pointer transition-all duration-300",
-                          keywords.includes(generatedKeyword) && "bg-primary-green text-white"
-                        )}>
+                          keywords.includes(generatedKeyword) &&
+                            "bg-primary-green text-white"
+                        )}
+                      >
                         {generatedKeyword}
                       </div>
                     ))}
                   </div>
                   <div className="flex justify-center mt-4">
                     {!allSelected && (
-                      <button onClick={handleSelectAll} className="bg-gray-300 hover:bg-gray-300/90 text-gray-600 py-1.5 px-3 rounded-lg">
+                      <button
+                        onClick={handleSelectAll}
+                        className="bg-gray-300 hover:bg-gray-300/90 text-gray-600 py-1.5 px-3 rounded-lg"
+                      >
                         Select All
                       </button>
                     )}
                     {!notAllSelected && (
-                      <button onClick={handleUnselectAll} className="bg-red-500 hover:bg-red-600 text-white py-1.5 px-3 rounded-lg">
+                      <button
+                        onClick={handleUnselectAll}
+                        className="bg-red-500 hover:bg-red-600 text-white py-1.5 px-3 rounded-lg"
+                      >
                         Unselect All
                       </button>
                     )}
@@ -321,11 +363,16 @@ export default function IdeasComponent({
             ))}
 
           {isPending && ideas.length < 1 ? (
-            <div className="h-40 grid place-content-center">Generating ideas for you...</div>
+            <div className="h-40 grid place-content-center">
+              Generating ideas for you...
+            </div>
           ) : (
             ideas.length > 0 &&
             !viewKeywords && (
-              <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+              <Motion
+                transition={{ duration: 0.5 }}
+                variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+              >
                 <ul className="mt-5">
                   {ideas.map((idea, index) => (
                     <li
@@ -334,12 +381,15 @@ export default function IdeasComponent({
                       className={clsx(
                         "py-5 px-7 mb-3 border rounded-xl bg-white text-lg flex items-center gap-4 cursor-pointer group transition-all duration-300",
                         idea === articleTitle && "border-primary-green/70"
-                      )}>
+                      )}
+                    >
                       <span
                         className={clsx(
                           "border p-2 rounded-full text-gray-400 group-hover:text-primary-green group-hover:border-primary-green translate-all duration-300",
-                          idea === articleTitle && "text-primary-green border-primary-green"
-                        )}>
+                          idea === articleTitle &&
+                            "text-primary-green border-primary-green"
+                        )}
+                      >
                         <CheckIcon2 />
                       </span>
                       <span>{idea}</span>
@@ -348,7 +398,10 @@ export default function IdeasComponent({
                 </ul>
                 {articleTitle && (
                   <div className="flex justify-end">
-                    <button onClick={() => setCurrentStep(1)} className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px]">
+                    <button
+                      onClick={() => setCurrentStep(1)}
+                      className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px]"
+                    >
                       Next step
                     </button>
                   </div>

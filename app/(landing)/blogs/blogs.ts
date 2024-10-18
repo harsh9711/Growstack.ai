@@ -25,7 +25,8 @@ export const blogs = [
   {
     id: 1,
     title: "Learn from My Mistakes: 7 Digital Course Pitfalls to Skip",
-    description: "Lorem ipsum dolor sit amet consectetur. Id arcu arcu commodo vestibulum ut ornare. Malesuada aenean quam sed eu eget lacus tristique. Arcu.",
+    description:
+      "Lorem ipsum dolor sit amet consectetur. Id arcu arcu commodo vestibulum ut ornare. Malesuada aenean quam sed eu eget lacus tristique. Arcu.",
     author: {
       profile_img: "/dummy/person-0.png",
       names: "Josh Gould",
@@ -38,7 +39,8 @@ export const blogs = [
   {
     id: 1,
     title: "Learn from My Mistakes: 7 Digital Course Pitfalls to Skip",
-    description: "Lorem ipsum dolor sit amet consectetur. Id arcu arcu commodo vestibulum ut ornare. Malesuada aenean quam sed eu eget lacus tristique. Arcu.",
+    description:
+      "Lorem ipsum dolor sit amet consectetur. Id arcu arcu commodo vestibulum ut ornare. Malesuada aenean quam sed eu eget lacus tristique. Arcu.",
     author: {
       profile_img: "/dummy/person-1.png",
       names: "Josh Gould",
@@ -51,7 +53,8 @@ export const blogs = [
   {
     id: 1,
     title: "Learn from My Mistakes: 7 Digital Course Pitfalls to Skip",
-    description: "Lorem ipsum dolor sit amet consectetur. Id arcu arcu commodo vestibulum ut ornare. Malesuada aenean quam sed eu eget lacus tristique. Arcu.",
+    description:
+      "Lorem ipsum dolor sit amet consectetur. Id arcu arcu commodo vestibulum ut ornare. Malesuada aenean quam sed eu eget lacus tristique. Arcu.",
     author: {
       profile_img: "/dummy/person-2.png",
       names: "Josh Gould",
@@ -64,7 +67,8 @@ export const blogs = [
   {
     id: 1,
     title: "Learn from My Mistakes: 7 Digital Course Pitfalls to Skip",
-    description: "Lorem ipsum dolor sit amet consectetur. Id arcu arcu commodo vestibulum ut ornare. Malesuada aenean quam sed eu eget lacus tristique. Arcu.",
+    description:
+      "Lorem ipsum dolor sit amet consectetur. Id arcu arcu commodo vestibulum ut ornare. Malesuada aenean quam sed eu eget lacus tristique. Arcu.",
     author: {
       profile_img: "/dummy/person-3.png",
       names: "Josh Gould",
@@ -77,7 +81,8 @@ export const blogs = [
   {
     id: 1,
     title: "Learn from My Mistakes: 7 Digital Course Pitfalls to Skip",
-    description: "Lorem ipsum dolor sit amet consectetur. Id arcu arcu commodo vestibulum ut ornare. Malesuada aenean quam sed eu eget lacus tristique. Arcu.",
+    description:
+      "Lorem ipsum dolor sit amet consectetur. Id arcu arcu commodo vestibulum ut ornare. Malesuada aenean quam sed eu eget lacus tristique. Arcu.",
     author: {
       profile_img: "/dummy/person-4.png",
       names: "Josh Gould",
@@ -90,7 +95,8 @@ export const blogs = [
   {
     id: 1,
     title: "Learn from My Mistakes: 7 Digital Course Pitfalls to Skip",
-    description: "Lorem ipsum dolor sit amet consectetur. Id arcu arcu commodo vestibulum ut ornare. Malesuada aenean quam sed eu eget lacus tristique. Arcu.",
+    description:
+      "Lorem ipsum dolor sit amet consectetur. Id arcu arcu commodo vestibulum ut ornare. Malesuada aenean quam sed eu eget lacus tristique. Arcu.",
     author: {
       profile_img: "/dummy/person-5.png",
       names: "Josh Gould",
@@ -103,7 +109,8 @@ export const blogs = [
   {
     id: 1,
     title: "Learn from My Mistakes: 7 Digital Course Pitfalls to Skip",
-    description: "Lorem ipsum dolor sit amet consectetur. Id arcu arcu commodo vestibulum ut ornare. Malesuada aenean quam sed eu eget lacus tristique. Arcu.",
+    description:
+      "Lorem ipsum dolor sit amet consectetur. Id arcu arcu commodo vestibulum ut ornare. Malesuada aenean quam sed eu eget lacus tristique. Arcu.",
     author: {
       profile_img: "/dummy/person-1.png",
       names: "Josh Gould",
@@ -116,7 +123,8 @@ export const blogs = [
   {
     id: 1,
     title: "Learn from My Mistakes: 7 Digital Course Pitfalls to Skip",
-    description: "Lorem ipsum dolor sit amet consectetur. Id arcu arcu commodo vestibulum ut ornare. Malesuada aenean quam sed eu eget lacus tristique. Arcu.",
+    description:
+      "Lorem ipsum dolor sit amet consectetur. Id arcu arcu commodo vestibulum ut ornare. Malesuada aenean quam sed eu eget lacus tristique. Arcu.",
     author: {
       profile_img: "/dummy/person-2.png",
       names: "Josh Gould",

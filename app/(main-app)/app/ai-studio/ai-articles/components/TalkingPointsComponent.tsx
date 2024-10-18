@@ -72,7 +72,7 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
     const data = {
       title: articleTitle,
       keywords: keywords,
-      subtitles: selectedOutlines.subtitles.map((subtitle) => subtitle),
+      subtitles: selectedOutlines.subtitles.map(subtitle => subtitle),
       no_of_talking_point_per_outline: numTalkingPoints,
       max_takling_point_words: numTalkingPointsWords,
       model: aiModel,
@@ -88,7 +88,7 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
       .then(({ data: { data } }) => {
         setTalkingPoints(data.response.subtitles_talking_points);
       })
-      .catch((err) => {
+      .catch(err => {
         if (err.response) {
           toast.error(err.response.data.message);
         } else {
@@ -104,13 +104,13 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
     setKeywordInputValue(value);
     const splitKeywords = value
       .split(",")
-      .map((kw) => kw.trim())
-      .filter((kw) => kw);
+      .map(kw => kw.trim())
+      .filter(kw => kw);
     setKeywords(splitKeywords);
   };
 
   const toggleAdvancedOptions = () => {
-    setShowAdvanced((prev) => !prev);
+    setShowAdvanced(prev => !prev);
   };
 
   const handleReorder = (subtitles: string[]) => {
@@ -129,7 +129,7 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
   };
 
   const handleTalkingPointsRemove = (indexToRemove: number) => {
-    setTalkingPoints((prev) =>
+    setTalkingPoints(prev =>
       prev.filter((_, index) => index !== indexToRemove)
     );
   };
@@ -152,7 +152,10 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
   };
 
   return (
-    <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion
+      transition={{ duration: 0.5 }}
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+    >
       <div className="flex gap-5 !mt-10 items-start">
         <div className="w-full !bg-white shadow-box p-7 border rounded-3xl max-w-xl space-y-6">
           <div className="space-y-1.5">
@@ -160,13 +163,15 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
               <label className="font-medium" htmlFor="title">
                 Title <span className="text-rose-600">*</span>
               </label>
-              <span className="text-primary-black text-opacity-50 text-sm">{articleTitle.length}/500</span>
+              <span className="text-primary-black text-opacity-50 text-sm">
+                {articleTitle.length}/500
+              </span>
             </div>
             <input
               type="text"
               id="title"
               value={articleTitle}
-              onChange={(e) => setArticleTitle(e.target.value)}
+              onChange={e => setArticleTitle(e.target.value)}
               maxLength={500}
               placeholder="Enter the title"
               className="flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2"
@@ -187,12 +192,19 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
           </div>
           <div className="space-y-1.5">
             <label className="font-medium">Article outline</label>
-            {selectedOutlines.subtitles.length > 0 && <SubtitleList subtitles={selectedOutlines.subtitles} onReorder={handleReorder} onRemove={handleRemove} />}
+            {selectedOutlines.subtitles.length > 0 && (
+              <SubtitleList
+                subtitles={selectedOutlines.subtitles}
+                onReorder={handleReorder}
+                onRemove={handleRemove}
+              />
+            )}
             <div className="flex flex-col justify-end">
               {!showInput && (
                 <button
                   onClick={() => setShowInput(true)}
-                  className="self-end text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 p-1.5 rounded-lg text-sm items-center font-medium transition-all duration-300 mt-3">
+                  className="self-end text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 p-1.5 rounded-lg text-sm items-center font-medium transition-all duration-300 mt-3"
+                >
                   <Plus size={18} className="text-primary-green" />
                   Add new section
                 </button>
@@ -204,11 +216,12 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
                     className="flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2"
                     placeholder="Enter new section title"
                     value={newSubtitleName}
-                    onChange={(e) => setNewSubtitleName(e.target.value)}
+                    onChange={e => setNewSubtitleName(e.target.value)}
                   />
                   <button
                     onClick={addNewSection}
-                    className="self-end text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 p-1.5 rounded-lg text-sm items-center font-medium transition-all duration-300 mt-3">
+                    className="self-end text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 p-1.5 rounded-lg text-sm items-center font-medium transition-all duration-300 mt-3"
+                  >
                     <Plus size={18} className="text-primary-green" />
                     Confirm
                   </button>
@@ -224,7 +237,7 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
               type="number"
               id="num-talkingpoints"
               value={numTalkingPoints}
-              onChange={(e) => setNumTalkingPoints(parseInt(e.target.value))}
+              onChange={e => setNumTalkingPoints(parseInt(e.target.value))}
               className="flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2"
             />
           </div>
@@ -236,14 +249,17 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
               type="number"
               id="num-talkingpoints-words"
               value={numTalkingPointsWords}
-              onChange={(e) => setNumTalkingPointsWords(parseInt(e.target.value))}
+              onChange={e => setNumTalkingPointsWords(parseInt(e.target.value))}
               className="flex h-[50px] w-full rounded-xl bg-[#F5F5F5] px-4 py-2"
             />
           </div>
 
           <div className="flex gap-4 items-center !mt-8">
             <div className="bg-gray-200 w-full h-0.5" />
-            <button onClick={toggleAdvancedOptions} className="w-full text-primary-green text-base">
+            <button
+              onClick={toggleAdvancedOptions}
+              className="w-full text-primary-green text-base"
+            >
               {showAdvanced ? "Advanced options -" : "Advanced options +"}
             </button>
             <div className="bg-gray-200 w-full h-0.5" />
@@ -271,17 +287,22 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
             className={clsx(
               "w-full p-2 h-14 !mt-8 text-white bg-primary-green rounded-xl hover:bg-opacity-90 flex justify-center items-center",
               isPending && "opacity-80 cursor-not-allowed"
-            )}>
+            )}
+          >
             {isPending ? <Spinner /> : "Generate talking points"}
           </button>
         </div>
         <div className="w-full">
           <div className="bg-primary-green rounded-2xl py-5 px-7 flex items-center gap-4">
-            <span className="bg-white h-12 w-12 grid place-content-center rounded-full">{currentStep + 1}</span>
+            <span className="bg-white h-12 w-12 grid place-content-center rounded-full">
+              {currentStep + 1}
+            </span>
             <h2 className="text-lg font-semibold text-white">Talking points</h2>
           </div>
           {isPending && talkingPoints.length < 1 && (
-            <div className="h-40 grid place-content-center">Please hang on as we generate talking points for you...</div>
+            <div className="h-40 grid place-content-center">
+              Please hang on as we generate talking points for you...
+            </div>
           )}
           {talkingPoints.length > 0 && (
             <div className="">
@@ -291,7 +312,10 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
                 talkingPoints={talkingPoints}
               />
               <div className="flex justify-end">
-                <button onClick={() => setCurrentStep(3)} className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px]">
+                <button
+                  onClick={() => setCurrentStep(3)}
+                  className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px]"
+                >
                   Next step
                 </button>
               </div>

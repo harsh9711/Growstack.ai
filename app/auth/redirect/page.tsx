@@ -11,7 +11,6 @@ import { useSearchParams } from "next/navigation";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 
-
 export default function Login() {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -19,7 +18,8 @@ export default function Login() {
 
   const fetchUserAfterRedirectionSuccess = async () => {
     try {
-      const userData = (await instance.get(`${API_URL}/users/api/v1`)).data?.data;
+      const userData = (await instance.get(`${API_URL}/users/api/v1`)).data
+        ?.data;
       if (!userData) {
         router.push("/auth/login");
       }
@@ -28,7 +28,10 @@ export default function Login() {
 
       if (!userData.isSubscribed) {
         router.push("/Payment");
-      } else if (userData.isSubscribed === "true" && userData.isExpired === "true") {
+      } else if (
+        userData.isSubscribed === "true" &&
+        userData.isExpired === "true"
+      ) {
         router.push("/account/billings/settings/due");
       } else {
         router.push("/app");
@@ -54,7 +57,7 @@ export default function Login() {
         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         // domain: process.env.NEXT_PUBLIC_APP_BASE_URL,
       });
-      fetchUserAfterRedirectionSuccess()
+      fetchUserAfterRedirectionSuccess();
     } else {
       router.push("/auth/login");
     }

@@ -9,7 +9,11 @@ interface RectangleCardProps {
   imgsrc1: any;
 }
 
-const Box: React.FC<RectangleCardProps> = ({ firsttext, secondtext, imgsrc1 }) => {
+const Box: React.FC<RectangleCardProps> = ({
+  firsttext,
+  secondtext,
+  imgsrc1,
+}) => {
   return (
     <div
       className="max-w-[400px] h-full flex flex-col gap-y-4 items-center justify-center text-white"
@@ -17,7 +21,9 @@ const Box: React.FC<RectangleCardProps> = ({ firsttext, secondtext, imgsrc1 }) =
     >
       <Image src={imgsrc1} width={50} height={50} alt="image" />
       <h2 className="sm:text-[24px] text-[16px] font-bold">{firsttext}</h2>
-      <p className="text-[16px] font-light text-white text-center">{secondtext}</p>
+      <p className="text-[16px] font-light text-white text-center">
+        {secondtext}
+      </p>
     </div>
   );
 };
@@ -48,29 +54,23 @@ const Benefits = () => {
       </div>
       <div className="flex flex-col sm:flex-row gap-10 mt-6">
         <Box
-          firsttext={"Time efficiency"}
-          secondtext={
-            "Streamline your prospecting by automating data collection, significantly reducing the time spent on manual searches and allowing you to focus on more strategic tasks."
-          }
-          imgsrc1={"/features/b1.svg"}
+          firsttext="Time efficiency"
+          secondtext="Streamline your prospecting by automating data collection, significantly reducing the time spent on manual searches and allowing you to focus on more strategic tasks."
+          imgsrc1="/features/b1.svg"
           data-aos="fade-right"
           data-aos-delay="1900"
         />
         <Box
-          firsttext={"Improved accuracy"}
-          secondtext={
-            "Leverage precise, up-to-date information pulled directly from Google Maps to ensure your data is reliable and accurate, minimizing errors in your outreach efforts."
-          }
-          imgsrc1={"/features/b2.svg"}
+          firsttext="Improved accuracy"
+          secondtext="Leverage precise, up-to-date information pulled directly from Google Maps to ensure your data is reliable and accurate, minimizing errors in your outreach efforts."
+          imgsrc1="/features/b2.svg"
           data-aos="fade-right" // Slide in from right
           data-aos-delay="1800" // Delay after the first box
         />
         <Box
-          firsttext={"Enhanced targeting"}
-          secondtext={
-            "Utilize detailed business insights to refine your targeting strategy, enabling more focused and effective outreach to high-potential prospects."
-          }
-          imgsrc1={"/features/b3.svg"}
+          firsttext="Enhanced targeting"
+          secondtext="Utilize detailed business insights to refine your targeting strategy, enabling more focused and effective outreach to high-potential prospects."
+          imgsrc1="/features/b3.svg"
           data-aos="fade-right" // Slide in from right
           data-aos-delay="2000" // Delay after the second box
         />

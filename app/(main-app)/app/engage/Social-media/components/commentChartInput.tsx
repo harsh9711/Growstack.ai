@@ -4,7 +4,7 @@ import { IoMdSend } from "react-icons/io"; // Importing send icon
 const CommentChatInput = (props: any) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [input, setInput] = useState(props.chatInput);
-  const canSend = input.trim() !== ""; 
+  const canSend = input.trim() !== "";
 
   return (
     <div className="shadow-lg rounded-lg bg-white">
@@ -12,11 +12,11 @@ const CommentChatInput = (props: any) => {
         <textarea
           ref={textareaRef}
           value={input}
-          onChange={(e) => {
+          onChange={e => {
             setInput(e.target.value);
             props.handleChatInputCallback(e);
           }}
-          onKeyDown={(e) => {
+          onKeyDown={e => {
             if (e.key === "Enter") {
               e.preventDefault();
               if (canSend) {
@@ -37,8 +37,8 @@ const CommentChatInput = (props: any) => {
           }`}
           onClick={() => {
             if (canSend) {
-              props.handlePostComment(input); 
-              setInput(""); 
+              props.handlePostComment(input);
+              setInput("");
             }
           }}
           disabled={!canSend}

@@ -3,7 +3,7 @@ import styles from "../styles/modules/loader.module.css";
 
 const Loader: React.FC<{
   display: boolean;
-}> = (props) => {
+}> = props => {
   const { display } = props;
   return display ? (
     <div className={styles.overlay}>

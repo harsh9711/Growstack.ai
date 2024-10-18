@@ -1,6 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { ChevronRight, FilterIcon, Search } from "lucide-react";
 
 export default function FilterSheet() {
@@ -18,7 +27,11 @@ export default function FilterSheet() {
         </SheetHeader>
         <div className="bg-[#F2F2F2] border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md mt-5">
           <Search className="text-gray-500" size={20} />
-          <input type="search" className="bg-[#F2F2F2] outline-none h-[40px] w-full" placeholder="Search" />
+          <input
+            type="search"
+            className="bg-[#F2F2F2] outline-none h-[40px] w-full"
+            placeholder="Search"
+          />
         </div>
 
         <div className="mt-8 space-y-4">

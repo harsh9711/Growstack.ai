@@ -40,8 +40,8 @@ interface IProps {
   selectedLanguage: string;
   switchLanguage: (language: string) => void;
   selectedAiModel: string;
-  setSelectedAiModel: React.Dispatch<React.SetStateAction<string>>,
-  messagesData: any
+  setSelectedAiModel: React.Dispatch<React.SetStateAction<string>>;
+  messagesData: any;
 }
 
 export default function Topbar({
@@ -53,23 +53,27 @@ export default function Topbar({
   switchLanguage,
   selectedAiModel,
   setSelectedAiModel,
-  messagesData
+  messagesData,
 }: IProps) {
-  const { user, currentPlan } = useSelector((rootState: RootState) => rootState.auth);
+  const { user, currentPlan } = useSelector(
+    (rootState: RootState) => rootState.auth
+  );
 
-  const filteredAiModelOptions = user?.user_type !== "ADMIN" && currentPlan &&
-    planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan.plan_id)
-    ? [aiModelOptions[0]]
-    : aiModelOptions;
+  const filteredAiModelOptions =
+    user?.user_type !== "ADMIN" &&
+    currentPlan &&
+    planIdsMap[PlanName.AI_ESSENTIALS].some(val => val === currentPlan.plan_id)
+      ? [aiModelOptions[0]]
+      : aiModelOptions;
 
   const handleModalSelection = (value: string) => {
     if (!currentPlan) return;
-    const currentCategory = aiModelOptions.find((category) =>
-      category.models.some((model) => model.value === value)
+    const currentCategory = aiModelOptions.find(category =>
+      category.models.some(model => model.value === value)
     );
 
     const currentModal = currentCategory?.models.find(
-      (model) => model.value === value
+      model => model.value === value
     );
 
     if (!currentCategory || !currentModal) {
@@ -79,7 +83,10 @@ export default function Topbar({
 
     const freeCategories = ["growStackAiMessagesModel"];
 
-    if (user?.user_type === "ADMIN" || freeCategories.includes(currentCategory.modelCategory)) {
+    if (
+      user?.user_type === "ADMIN" ||
+      freeCategories.includes(currentCategory.modelCategory)
+    ) {
       setSelectedAiModel(value);
       return;
     }
@@ -93,7 +100,9 @@ export default function Topbar({
     }
 
     if (usageLimit <= 0) {
-      toast.error(`You have no remaining usage for ${currentCategory.label}. Please switch to another model.`);
+      toast.error(
+        `You have no remaining usage for ${currentCategory.label}. Please switch to another model.`
+      );
       return;
     }
 
@@ -162,9 +171,11 @@ export default function Topbar({
                 {selectedAiModel && (
                   <div className="flex items-center gap-2">
                     <span className="min-w-fit">
-                      {filteredAiModelOptions
-                        .flatMap((option) => option.models) // Flattening the models array to find the icon
-                        .find((model) => model.value === selectedAiModel)?.icon}
+                      {
+                        filteredAiModelOptions
+                          .flatMap(option => option.models) // Flattening the models array to find the icon
+                          .find(model => model.value === selectedAiModel)?.icon
+                      }
                     </span>
                     {selectedAiModel}
                   </div>
@@ -172,26 +183,31 @@ export default function Topbar({
               </SelectValue>
             </SelectTrigger>
             <SelectContent>
-              {filteredAiModelOptions.map(({ label: categoryLabel, models }) => (
-                <SelectGroup key={categoryLabel}>
-                  <React.Fragment key={categoryLabel}>
-                    <div className="font-bold text-gray-500 px-4 py-2">{categoryLabel}</div>
-                    {models.map(({ icon, label, value }) => (
-                      <SelectItem key={value} value={value}>
-                        <div
-                          className={clsx(
-                            "flex items-center gap-2",
-                            selectedAiModel === value && "text-primary-green font-medium"
-                          )}
-                        >
-                          <span className="min-w-fit">{icon}</span>
-                          {label}
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </React.Fragment>
-                </SelectGroup>
-              ))}
+              {filteredAiModelOptions.map(
+                ({ label: categoryLabel, models }) => (
+                  <SelectGroup key={categoryLabel}>
+                    <React.Fragment key={categoryLabel}>
+                      <div className="font-bold text-gray-500 px-4 py-2">
+                        {categoryLabel}
+                      </div>
+                      {models.map(({ icon, label, value }) => (
+                        <SelectItem key={value} value={value}>
+                          <div
+                            className={clsx(
+                              "flex items-center gap-2",
+                              selectedAiModel === value &&
+                                "text-primary-green font-medium"
+                            )}
+                          >
+                            <span className="min-w-fit">{icon}</span>
+                            {label}
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </React.Fragment>
+                  </SelectGroup>
+                )
+              )}
             </SelectContent>
           </Select>
 

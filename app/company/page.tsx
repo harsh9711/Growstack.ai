@@ -46,9 +46,9 @@ const Company = () => {
         <Owner />
       </section>
       <section className="px-20 pb-20" data-aos="zoom-in">
-  <Teams/>
-</section>
-      <Footer/>
+        <Teams />
+      </section>
+      <Footer />
     </div>
   );
 };

@@ -7,36 +7,34 @@ import PostCard from "./post";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
-import {
-    SheduleBackground,
-} from "@/components/svgs";
+import { SheduleBackground } from "@/components/svgs";
 
 interface TimeLeft {
-    days: number;
-    hours: number;
-    minutes: number;
-    seconds: number;
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
 }
 
 const calculateTimeLeft = (endTime: number): TimeLeft => {
-    const difference = endTime - new Date().getTime();
-    let timeLeft: TimeLeft = {
-        days: 0,
-        hours: 0,
-        minutes: 0,
-        seconds: 0,
+  const difference = endTime - new Date().getTime();
+  let timeLeft: TimeLeft = {
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  };
+
+  if (difference > 0) {
+    timeLeft = {
+      days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+      hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+      minutes: Math.floor((difference / 1000 / 60) % 60),
+      seconds: Math.floor((difference / 1000) % 60),
     };
+  }
 
-    if (difference > 0) {
-        timeLeft = {
-            days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-            hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-            minutes: Math.floor((difference / 1000 / 60) % 60),
-            seconds: Math.floor((difference / 1000) % 60),
-        };
-    }
-
-    return timeLeft;
+  return timeLeft;
 };
 
 import { FlagIcon } from "@/components/svgs";
@@ -51,366 +49,375 @@ import AddPages from "./AddPages";
 import PostComment from "./PostComment";
 import Spinner from "@/components/Spinner";
 
-
 interface BoxContent {
-    name: string;
-    flagIcon?: any;
-    content1?: string;
-    growStackData?: string;
-    growstackIcon?: any;
-    growstackSubData?: string;
-    connected?: string;
-    userCircleIcon?: any;
-    buildingStoreIcon?: any;
-    content2?: string;
-    content3?: string;
-    briefCase?: any;
-    buildingIcon?: any;
-    plusIcon?: any;
-    notesIcon?: any;
-    addAccountIcon?: any;
-    infoIcon?: any;
-    rightIcon?: any;
+  name: string;
+  flagIcon?: any;
+  content1?: string;
+  growStackData?: string;
+  growstackIcon?: any;
+  growstackSubData?: string;
+  connected?: string;
+  userCircleIcon?: any;
+  buildingStoreIcon?: any;
+  content2?: string;
+  content3?: string;
+  briefCase?: any;
+  buildingIcon?: any;
+  plusIcon?: any;
+  notesIcon?: any;
+  addAccountIcon?: any;
+  infoIcon?: any;
+  rightIcon?: any;
 }
 
 const contentMap: { [key: string]: BoxContent } = {
-    facebook: {
-        name: "Facebook",
-        growstackIcon: <GrowstackIcon />,
-        growStackData: "GrowStact AI",
-        growstackSubData: "@GrowStackai",
-        connected: "CONNECTED",
-        flagIcon: <FlagIcon />,
-        content1: "Add Facebook Pages",
-    },
+  facebook: {
+    name: "Facebook",
+    growstackIcon: <GrowstackIcon />,
+    growStackData: "GrowStact AI",
+    growstackSubData: "@GrowStackai",
+    connected: "CONNECTED",
+    flagIcon: <FlagIcon />,
+    content1: "Add Facebook Pages",
+  },
 
-    instagram: {
-        name: "Instagram",
-        growstackIcon: <GrowstackIcon />,
-        growStackData: "GrowStactAi",
-        growstackSubData: "@GrowStackai",
-        connected: "CONNECTED",
-        buildingStoreIcon: <BuildingStore />,
-        userCircleIcon: <UserCircleIcon />,
-        content1: "Add Instagram Professional Accounts",
-        content2: "Add Instagram Personal Profiles Or Pages",
-    },
+  instagram: {
+    name: "Instagram",
+    growstackIcon: <GrowstackIcon />,
+    growStackData: "GrowStactAi",
+    growstackSubData: "@GrowStackai",
+    connected: "CONNECTED",
+    buildingStoreIcon: <BuildingStore />,
+    userCircleIcon: <UserCircleIcon />,
+    content1: "Add Instagram Professional Accounts",
+    content2: "Add Instagram Personal Profiles Or Pages",
+  },
 
-    tiktok: {
-        name: "Tiktok",
-        growstackIcon: <GrowstackIcon />,
-        growStackData: "GrowStactAi",
-        growstackSubData: "@GrowStackai",
-        connected: "CONNECTED",
-        briefCase: <BriefCase />,
-        addAccountIcon: <UserCircleIcon />,
-        content1: "Add Tiktok Accounts",
-        content2: "business accounts",
-    },
+  tiktok: {
+    name: "Tiktok",
+    growstackIcon: <GrowstackIcon />,
+    growStackData: "GrowStactAi",
+    growstackSubData: "@GrowStackai",
+    connected: "CONNECTED",
+    briefCase: <BriefCase />,
+    addAccountIcon: <UserCircleIcon />,
+    content1: "Add Tiktok Accounts",
+    content2: "business accounts",
+  },
 
-    x: {
-        name: "X",
-        growstackIcon: <GrowstackIcon />,
-        growStackData: "GrowStactAi",
-        growstackSubData: "@GrowStackai",
-        connected: "CONNECTED",
-        plusIcon: <PlusIcon />,
-        userCircleIcon: <UserCircleIcon />,
-        content1: "Add X (Twitter) Profiles",
-        content2: "Create a mockup page",
-    },
+  x: {
+    name: "X",
+    growstackIcon: <GrowstackIcon />,
+    growStackData: "GrowStactAi",
+    growstackSubData: "@GrowStackai",
+    connected: "CONNECTED",
+    plusIcon: <PlusIcon />,
+    userCircleIcon: <UserCircleIcon />,
+    content1: "Add X (Twitter) Profiles",
+    content2: "Create a mockup page",
+  },
 
-    pinterest: {
-        name: "Pinterest",
-        growstackIcon: <GrowstackIcon />,
-        growStackData: "GrowStactAi",
-        growstackSubData: "@GrowStackai",
-        connected: "CONNECTED",
-        notesIcon: <NotesIcon />,
-        plusIcon: <PlusIcon />,
-        content1: "Add Pinterest Business Pages",
-        content2: "Create a mockup page",
-    },
+  pinterest: {
+    name: "Pinterest",
+    growstackIcon: <GrowstackIcon />,
+    growStackData: "GrowStactAi",
+    growstackSubData: "@GrowStackai",
+    connected: "CONNECTED",
+    notesIcon: <NotesIcon />,
+    plusIcon: <PlusIcon />,
+    content1: "Add Pinterest Business Pages",
+    content2: "Create a mockup page",
+  },
 
-    linkedin: {
-        name: "Linkedin",
-        growstackIcon: <GrowstackIcon />,
-        growStackData: "GrowStactAi",
-        growstackSubData: "@GrowStackai",
-        connected: "CONNECTED",
-        userCircleIcon: <UserCircleIcon />,
-        buildingIcon: <BuildingIcon />,
-        content1: "Add Linkedin company Pages",
-        content2: "Add Linkedin Personal Pages",
-    },
+  linkedin: {
+    name: "Linkedin",
+    growstackIcon: <GrowstackIcon />,
+    growStackData: "GrowStactAi",
+    growstackSubData: "@GrowStackai",
+    connected: "CONNECTED",
+    userCircleIcon: <UserCircleIcon />,
+    buildingIcon: <BuildingIcon />,
+    content1: "Add Linkedin company Pages",
+    content2: "Add Linkedin Personal Pages",
+  },
 };
 
-
 export default function Publish() {
-    const [openModel, setOpenModel] = useState(false);
-    const [selectedIcon, setSelectedIcon] = useState<any>(null);
+  const [openModel, setOpenModel] = useState(false);
+  const [selectedIcon, setSelectedIcon] = useState<any>(null);
 
-    const [genPost, isGenPost] = useState(false)
-    const tick = (
-        <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <path
-                d="M5 12L10 17L20 7"
-                stroke="white"
-                stroke-width="1.75"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            />
-        </svg>
-    );
+  const [genPost, isGenPost] = useState(false);
+  const tick = (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M5 12L10 17L20 7"
+        stroke="white"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
 
-    const connectsvg = (
-        <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <path
-                d="M3 12H6"
-                stroke="#034737"
-                stroke-width="1.75"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            />
-            <path
-                d="M12 3V6"
-                stroke="#034737"
-                stroke-width="1.75"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            />
-            <path
-                d="M7.80156 7.79961L5.60156 5.59961"
-                stroke="#034737"
-                stroke-width="1.75"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            />
-            <path
-                d="M16.1992 7.79961L18.3992 5.59961"
-                stroke="#034737"
-                stroke-width="1.75"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            />
-            <path
-                d="M7.80156 16.1992L5.60156 18.3992"
-                stroke="#034737"
-                stroke-width="1.75"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            />
-            <path
-                d="M12 12L21 15L17 17L15 21L12 12"
-                stroke="#034737"
-                stroke-width="1.75"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-            />
-        </svg>
-    );
-    const [loading, setLoading] = useState(true);
-    const [profile, setProfile] = useState<any>([]);
-    const [platforms, setPlatforms] = useState<string[]>([]);
-    const [skipNow, setSkipNow] = useState<boolean>(false);
-    useEffect(() => {
-        handleGetProfileData();
-    }, []);
-   
+  const connectsvg = (
+    <svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M3 12H6"
+        stroke="#034737"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M12 3V6"
+        stroke="#034737"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M7.80156 7.79961L5.60156 5.59961"
+        stroke="#034737"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M16.1992 7.79961L18.3992 5.59961"
+        stroke="#034737"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M7.80156 16.1992L5.60156 18.3992"
+        stroke="#034737"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M12 12L21 15L17 17L15 21L12 12"
+        stroke="#034737"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  );
+  const [loading, setLoading] = useState(true);
+  const [profile, setProfile] = useState<any>([]);
+  const [platforms, setPlatforms] = useState<string[]>([]);
+  const [skipNow, setSkipNow] = useState<boolean>(false);
+  useEffect(() => {
+    handleGetProfileData();
+  }, []);
 
-    const handleGetProfileData = async () => {
-        try {
-            setLoading(true);
-            const response = await instance.get(
-                `${API_URL}/users/api/v1/social-media/profile`
-            );
-            const extractedPlatforms = response.data.data.activeSocialAccounts.map(
-                (account: any) => account.platform
-            );
-            setPlatforms(extractedPlatforms);
-            if (response.data.data.activeSocialAccounts.length > 0) {
-                setProfile(response.data.data);
-                setSelectedIcon(platforms[0].toLowerCase())
-            }
-        } catch (error) {
-            setLoading(false);
-            console.error("Error fetching social profile:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
-    const skipNowFn = async () => {
-        setSkipNow(true);
-    };
-    const handleOnConnect = async () => {
-        setLoading(true);
-        const currentPath = localStorage.getItem("currentPathname");
-        try {
-            const response = await instance.get(
-                `${API_URL}/users/api/v1/social-media/connect?currentPath=${currentPath}`
-            );
-            setLoading(false);
-            const url = response?.data.data;
-            if (url) {
-                window.location.href = url;
-            }
-        } catch (error: any) {
-            setLoading(false);
+  const handleGetProfileData = async () => {
+    try {
+      setLoading(true);
+      const response = await instance.get(
+        `${API_URL}/users/api/v1/social-media/profile`
+      );
+      const extractedPlatforms = response.data.data.activeSocialAccounts.map(
+        (account: any) => account.platform
+      );
+      setPlatforms(extractedPlatforms);
+      if (response.data.data.activeSocialAccounts.length > 0) {
+        setProfile(response.data.data);
+        setSelectedIcon(platforms[0].toLowerCase());
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error("Error fetching social profile:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  const skipNowFn = async () => {
+    setSkipNow(true);
+  };
+  const handleOnConnect = async () => {
+    setLoading(true);
+    const currentPath = localStorage.getItem("currentPathname");
+    try {
+      const response = await instance.get(
+        `${API_URL}/users/api/v1/social-media/connect?currentPath=${currentPath}`
+      );
+      setLoading(false);
+      const url = response?.data.data;
+      if (url) {
+        window.location.href = url;
+      }
+    } catch (error: any) {
+      setLoading(false);
 
-            toast.error(error.response.data.message);
-        }
-    };
+      toast.error(error.response.data.message);
+    }
+  };
 
-    return (
-        <div className="flex-1 h-full w-full flex flex-col items-center justify-center ">
-            {loading && <div className="absolute lex-1 h-full flex flex-col gap-5 justify-center items-center">
-                <Spinner color="black" size={100} />
-                Loading...
-            </div>
+  return (
+    <div className="flex-1 h-full w-full flex flex-col items-center justify-center ">
+      {loading && (
+        <div className="absolute lex-1 h-full flex flex-col gap-5 justify-center items-center">
+          <Spinner color="black" size={100} />
+          Loading...
+        </div>
+      )}
+      <div className="absolute">
+        <SheduleBackground />
+      </div>
+      <AddPages
+        setOpenModel={setOpenModel}
+        openModel={openModel}
+        selectedIcon={selectedIcon}
+      />
+      <PostComment
+        openPostModel={genPost}
+        isGenPost={isGenPost}
+        selectedIcon={selectedIcon}
+        profile={profile}
+      />
+      <div>
+        {!skipNow ? (
+          <>
+            <div className="">
+              <div className="mt-7 ">
+                <div className="flex justify-start">
+                  <div className="row-span-1 ">
+                    <div>
+                      <h2 className="text-[28px] font-semibold">
+                        {" "}
+                        Add channels
+                      </h2>
+                      <p className="text-primary-black text-opacity-70 mt-3 leading-relaxed">
+                        Connect multiple pages or channels
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="w-full grid row-span-1 gap-2 mt-3 ">
+                  <div className="h-17  min-w-[500px]  flex justify-between items-center gap-3 bg-white  cursor-pointer rounded-xl py-2.5 px-8">
+                    <div className="flex text-center items-center">
+                      <svg
+                        width="65"
+                        height="65"
+                        viewBox="0 0 65 65"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <rect
+                          x="0.5"
+                          y="0.5"
+                          width="64"
+                          height="64"
+                          rx="14.4425"
+                          fill="#217BEE"
+                          stroke="#EBEBEB"
+                        />
+                        <path
+                          d="M34.9989 18.125C26.795 18.125 20.1211 24.7991 20.1211 33.0027C20.1211 41.2065 26.795 47.8808 34.9989 47.8808C43.2022 47.8808 49.8766 41.2065 49.8766 33.0027C49.8766 24.7991 43.2022 18.125 34.9989 18.125ZM39.2037 27.517C39.2037 27.5874 39.1758 27.655 39.1259 27.7048C39.0761 27.7546 39.0086 27.7826 38.9381 27.7826L37.2469 27.7837C36.131 27.7837 35.927 28.2182 35.927 29.0741V30.8495H38.8276C38.9039 30.8495 38.9766 30.8824 39.0268 30.9398C39.077 30.9972 39.1004 31.0734 39.0911 31.1491L38.6781 34.3454C38.6698 34.4094 38.6385 34.4683 38.59 34.5109C38.5415 34.5535 38.4791 34.577 38.4146 34.577H35.927V42.5136C35.927 42.5841 35.899 42.6516 35.8492 42.7015C35.7994 42.7513 35.7318 42.7793 35.6613 42.7793H32.3612C32.2907 42.7793 32.2232 42.7513 32.1734 42.7015C32.1235 42.6516 32.0956 42.5841 32.0956 42.5136V34.577H29.6C29.5295 34.577 29.462 34.549 29.4122 34.4992C29.3624 34.4494 29.3344 34.3818 29.3344 34.3114V31.1151C29.3344 31.0447 29.3624 30.9771 29.4122 30.9273C29.462 30.8775 29.5295 30.8495 29.6 30.8495H32.0956V28.7577C32.0956 25.9872 33.7722 24.2665 36.4718 24.2665C37.6323 24.2665 38.6579 24.3528 38.9729 24.3945C39.0368 24.403 39.0954 24.4343 39.1378 24.4828C39.1803 24.5312 39.2037 24.5934 39.2037 24.6578V27.517Z"
+                          fill="white"
+                        />
+                      </svg>
+                      <div className="ml-2 text-base">Facebook</div>
+                    </div>
+                    {platforms.includes("facebook") ? (
+                      <button
+                        className="min-w-[100px] py-3 px-1 bg-primary-green sheen rounded-xl text-white  flex justify-center items-center"
+                        type="submit"
+                      >
+                        {tick} &nbsp;Done
+                      </button>
+                    ) : (
+                      <button
+                        onClick={handleOnConnect}
+                        type="submit"
+                        className="min-w-[140px] py-3 rounded-xl text-green sheen flex justify-center items-center border border-emerald-600 cursor-pointer"
+                      >
+                        {connectsvg}&nbsp; Connect
+                      </button>
+                    )}
+                  </div>
+                </div>
+                <div className="w-full grid row-span-1 gap-2 mt-3 ">
+                  <div className="h-17 w-[100%] min-w-[500px] flex  flex justify-between items-center gap-3 bg-[#FFFFFF] transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8">
+                    <div className="flex text-center items-center">
+                      <svg
+                        width="65"
+                        height="65"
+                        viewBox="0 0 65 65"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <rect
+                          x="0.5"
+                          y="0.5"
+                          width="64"
+                          height="64"
+                          rx="14.4425"
+                          fill="#E4405F"
+                          stroke="#EBEBEB"
+                        />
+                        <g clip-path="url(#clip0_10048_17044)">
+                          <path
+                            d="M41.1997 27.4314C41.0565 27.0606 40.8372 26.7239 40.556 26.4429C40.2748 26.162 39.9378 25.9431 39.5669 25.8003C39.0561 25.6111 38.5166 25.5111 37.9719 25.5047C37.0661 25.4634 36.7945 25.4531 34.5 25.4531C32.2055 25.4531 31.9339 25.4634 31.0281 25.5047C30.4829 25.5109 29.9428 25.6109 29.4314 25.8003C29.0606 25.9435 28.7239 26.1628 28.4429 26.444C28.162 26.7252 27.9431 27.0622 27.8003 27.4331C27.6111 27.9439 27.5111 28.4834 27.5047 29.0281C27.4634 29.9339 27.4531 30.2055 27.4531 32.5C27.4531 34.7945 27.4634 35.0661 27.5047 35.9719C27.5109 36.5171 27.6109 37.0572 27.8003 37.5686C27.9435 37.9394 28.1628 38.2761 28.444 38.5571C28.7252 38.838 29.0622 39.0569 29.4331 39.1997C29.9439 39.3889 30.4834 39.4889 31.0281 39.4953C31.9339 39.5366 32.2055 39.5469 34.5 39.5469C36.7945 39.5469 37.0661 39.5366 37.9719 39.4953C38.5171 39.4891 39.0572 39.3891 39.5686 39.1997C39.9394 39.0565 40.2761 38.8372 40.5571 38.556C40.838 38.2748 41.0569 37.9378 41.1997 37.5669C41.3889 37.0561 41.4889 36.5166 41.4953 35.9719C41.5366 35.0661 41.5469 34.7945 41.5469 32.5C41.5469 30.2055 41.5366 29.9339 41.4953 29.0281C41.4891 28.4829 41.3891 27.9428 41.1997 27.4314ZM34.5 36.9137C33.627 36.9137 32.7737 36.6549 32.0479 36.1699C31.322 35.6849 30.7563 34.9956 30.4222 34.1891C30.0882 33.3826 30.0008 32.4951 30.1711 31.6389C30.3414 30.7827 30.7617 29.9963 31.379 29.379C31.9963 28.7617 32.7827 28.3414 33.6389 28.1711C34.4951 28.0008 35.3826 28.0882 36.1891 28.4222C36.9956 28.7563 37.6849 29.322 38.1699 30.0479C38.6549 30.7737 38.9137 31.627 38.9137 32.5C38.9137 33.6706 38.4487 34.7933 37.621 35.621C36.7933 36.4487 35.6706 36.9137 34.5 36.9137ZM39.0873 28.9439C38.8834 28.9439 38.684 28.8834 38.5144 28.7701C38.3448 28.6568 38.2126 28.4957 38.1346 28.3073C38.0565 28.1189 38.0361 27.9115 38.0759 27.7115C38.1157 27.5114 38.2139 27.3277 38.3581 27.1835C38.5024 27.0392 38.6861 26.941 38.8862 26.9012C39.0862 26.8614 39.2935 26.8819 39.482 26.9599C39.6704 27.038 39.8315 27.1701 39.9448 27.3397C40.0581 27.5093 40.1186 27.7087 40.1186 27.9127C40.1186 28.1862 40.0099 28.4485 39.8165 28.6419C39.6231 28.8353 39.3608 28.9439 39.0873 28.9439Z"
+                            fill="white"
+                          />
+                          <path
+                            d="M34.5019 35.3651C36.0843 35.3651 37.367 34.0823 37.367 32.4999C37.367 30.9175 36.0843 29.6348 34.5019 29.6348C32.9195 29.6348 31.6367 30.9175 31.6367 32.4999C31.6367 34.0823 32.9195 35.3651 34.5019 35.3651Z"
+                            fill="white"
+                          />
+                          <path
+                            d="M34.5 16C31.2366 16 28.0465 16.9677 25.3331 18.7808C22.6197 20.5938 20.5048 23.1707 19.256 26.1857C18.0071 29.2007 17.6804 32.5183 18.3171 35.719C18.9537 38.9197 20.5252 41.8597 22.8327 44.1673C25.1403 46.4748 28.0803 48.0463 31.281 48.683C34.4817 49.3196 37.7993 48.9929 40.8143 47.744C43.8293 46.4952 46.4062 44.3803 48.2193 41.6669C50.0323 38.9535 51 35.7634 51 32.5C51 28.1239 49.2616 23.9271 46.1673 20.8327C43.0729 17.7384 38.8761 16 34.5 16ZM43.0422 36.0441C43.0275 36.7566 42.892 37.4616 42.6417 38.1289C42.421 38.6997 42.0835 39.218 41.6507 39.6507C41.218 40.0834 40.6997 40.421 40.1289 40.6417C39.4616 40.892 38.7567 41.0274 38.0441 41.0422C37.1263 41.0834 36.8341 41.0938 34.5 41.0938C32.1659 41.0938 31.8738 41.0834 30.9559 41.0422C30.2434 41.0274 29.5384 40.892 28.8711 40.6417C28.3003 40.421 27.782 40.0834 27.3493 39.6507C26.9166 39.218 26.579 38.6997 26.3583 38.1289C26.108 37.4616 25.9726 36.7566 25.9578 36.0441C25.9166 35.1262 25.9063 34.8341 25.9063 32.5C25.9063 30.1659 25.9166 29.8737 25.9578 28.9559C25.9726 28.2434 26.108 27.5384 26.3583 26.8711C26.579 26.3003 26.9166 25.782 27.3493 25.3493C27.782 24.9166 28.3003 24.579 28.8711 24.3583C29.5384 24.108 30.2434 23.9726 30.9559 23.9578C31.8738 23.9166 32.1659 23.9062 34.5 23.9062C36.8341 23.9062 37.1263 23.9166 38.0441 23.9578C38.7567 23.9726 39.4616 24.108 40.1289 24.3583C40.6997 24.579 41.218 24.9166 41.6507 25.3493C42.0835 25.782 42.421 26.3003 42.6417 26.8711C42.892 27.5384 43.0275 28.2434 43.0422 28.9559C43.0834 29.8737 43.0938 30.1659 43.0938 32.5C43.0938 34.8341 43.0834 35.1262 43.0422 36.0441Z"
+                            fill="white"
+                          />
+                        </g>
+                        <defs>
+                          <clipPath id="clip0_10048_17044">
+                            <rect
+                              width="33"
+                              height="33"
+                              fill="white"
+                              transform="translate(18 16)"
+                            />
+                          </clipPath>
+                        </defs>
+                      </svg>
+                      <div className="ml-2 text-base">Instagram</div>
+                    </div>
 
-            }
-            <div className="absolute">
-                <SheduleBackground />
-            </div>
-            <AddPages setOpenModel={setOpenModel} openModel={openModel} selectedIcon={selectedIcon}/>
-            <PostComment openPostModel={genPost} isGenPost={isGenPost} selectedIcon={selectedIcon} profile={profile}/>
-            <div>
-                {!skipNow ? (
-                    <>
-                        <div className="">
-                            <div className="mt-7 ">
-                                <div className="flex justify-start">
-                                    <div className="row-span-1 ">
-                                        <div>
-                                            <h2 className="text-[28px] font-semibold"> Add channels</h2>
-                                            <p className="text-primary-black text-opacity-70 mt-3 leading-relaxed">
-                                                Connect multiple pages or channels
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="w-full grid row-span-1 gap-2 mt-3 ">
-                                    <div className="h-17  min-w-[500px]  flex justify-between items-center gap-3 bg-white  cursor-pointer rounded-xl py-2.5 px-8">
-                                        <div className="flex text-center items-center">
-                                            <svg
-                                                width="65"
-                                                height="65"
-                                                viewBox="0 0 65 65"
-                                                fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <rect
-                                                    x="0.5"
-                                                    y="0.5"
-                                                    width="64"
-                                                    height="64"
-                                                    rx="14.4425"
-                                                    fill="#217BEE"
-                                                    stroke="#EBEBEB"
-                                                />
-                                                <path
-                                                    d="M34.9989 18.125C26.795 18.125 20.1211 24.7991 20.1211 33.0027C20.1211 41.2065 26.795 47.8808 34.9989 47.8808C43.2022 47.8808 49.8766 41.2065 49.8766 33.0027C49.8766 24.7991 43.2022 18.125 34.9989 18.125ZM39.2037 27.517C39.2037 27.5874 39.1758 27.655 39.1259 27.7048C39.0761 27.7546 39.0086 27.7826 38.9381 27.7826L37.2469 27.7837C36.131 27.7837 35.927 28.2182 35.927 29.0741V30.8495H38.8276C38.9039 30.8495 38.9766 30.8824 39.0268 30.9398C39.077 30.9972 39.1004 31.0734 39.0911 31.1491L38.6781 34.3454C38.6698 34.4094 38.6385 34.4683 38.59 34.5109C38.5415 34.5535 38.4791 34.577 38.4146 34.577H35.927V42.5136C35.927 42.5841 35.899 42.6516 35.8492 42.7015C35.7994 42.7513 35.7318 42.7793 35.6613 42.7793H32.3612C32.2907 42.7793 32.2232 42.7513 32.1734 42.7015C32.1235 42.6516 32.0956 42.5841 32.0956 42.5136V34.577H29.6C29.5295 34.577 29.462 34.549 29.4122 34.4992C29.3624 34.4494 29.3344 34.3818 29.3344 34.3114V31.1151C29.3344 31.0447 29.3624 30.9771 29.4122 30.9273C29.462 30.8775 29.5295 30.8495 29.6 30.8495H32.0956V28.7577C32.0956 25.9872 33.7722 24.2665 36.4718 24.2665C37.6323 24.2665 38.6579 24.3528 38.9729 24.3945C39.0368 24.403 39.0954 24.4343 39.1378 24.4828C39.1803 24.5312 39.2037 24.5934 39.2037 24.6578V27.517Z"
-                                                    fill="white"
-                                                />
-                                            </svg>
-                                            <div className="ml-2 text-base">Facebook</div>
-                                        </div>
-                                        {platforms.includes("facebook") ? (
-                                            <button
-                                                className="min-w-[100px] py-3 px-1 bg-primary-green sheen rounded-xl text-white  flex justify-center items-center"
-                                                type="submit"
-                                            >
-                                                {tick} &nbsp;Done
-                                            </button>
-                                        ) : (
-                                            <button
-                                                onClick={handleOnConnect}
-                                                type="submit"
-                                                className="min-w-[140px] py-3 rounded-xl text-green sheen flex justify-center items-center border border-emerald-600 cursor-pointer"
-                                            >
-                                                {connectsvg}&nbsp; Connect
-                                            </button>
-                                        )}
-                                    </div>
-                                </div>
-                                <div className="w-full grid row-span-1 gap-2 mt-3 ">
-                                    <div className="h-17 w-[100%] min-w-[500px] flex  flex justify-between items-center gap-3 bg-[#FFFFFF] transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8">
-                                        <div className="flex text-center items-center">
-                                            <svg
-                                                width="65"
-                                                height="65"
-                                                viewBox="0 0 65 65"
-                                                fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <rect
-                                                    x="0.5"
-                                                    y="0.5"
-                                                    width="64"
-                                                    height="64"
-                                                    rx="14.4425"
-                                                    fill="#E4405F"
-                                                    stroke="#EBEBEB"
-                                                />
-                                                <g clip-path="url(#clip0_10048_17044)">
-                                                    <path
-                                                        d="M41.1997 27.4314C41.0565 27.0606 40.8372 26.7239 40.556 26.4429C40.2748 26.162 39.9378 25.9431 39.5669 25.8003C39.0561 25.6111 38.5166 25.5111 37.9719 25.5047C37.0661 25.4634 36.7945 25.4531 34.5 25.4531C32.2055 25.4531 31.9339 25.4634 31.0281 25.5047C30.4829 25.5109 29.9428 25.6109 29.4314 25.8003C29.0606 25.9435 28.7239 26.1628 28.4429 26.444C28.162 26.7252 27.9431 27.0622 27.8003 27.4331C27.6111 27.9439 27.5111 28.4834 27.5047 29.0281C27.4634 29.9339 27.4531 30.2055 27.4531 32.5C27.4531 34.7945 27.4634 35.0661 27.5047 35.9719C27.5109 36.5171 27.6109 37.0572 27.8003 37.5686C27.9435 37.9394 28.1628 38.2761 28.444 38.5571C28.7252 38.838 29.0622 39.0569 29.4331 39.1997C29.9439 39.3889 30.4834 39.4889 31.0281 39.4953C31.9339 39.5366 32.2055 39.5469 34.5 39.5469C36.7945 39.5469 37.0661 39.5366 37.9719 39.4953C38.5171 39.4891 39.0572 39.3891 39.5686 39.1997C39.9394 39.0565 40.2761 38.8372 40.5571 38.556C40.838 38.2748 41.0569 37.9378 41.1997 37.5669C41.3889 37.0561 41.4889 36.5166 41.4953 35.9719C41.5366 35.0661 41.5469 34.7945 41.5469 32.5C41.5469 30.2055 41.5366 29.9339 41.4953 29.0281C41.4891 28.4829 41.3891 27.9428 41.1997 27.4314ZM34.5 36.9137C33.627 36.9137 32.7737 36.6549 32.0479 36.1699C31.322 35.6849 30.7563 34.9956 30.4222 34.1891C30.0882 33.3826 30.0008 32.4951 30.1711 31.6389C30.3414 30.7827 30.7617 29.9963 31.379 29.379C31.9963 28.7617 32.7827 28.3414 33.6389 28.1711C34.4951 28.0008 35.3826 28.0882 36.1891 28.4222C36.9956 28.7563 37.6849 29.322 38.1699 30.0479C38.6549 30.7737 38.9137 31.627 38.9137 32.5C38.9137 33.6706 38.4487 34.7933 37.621 35.621C36.7933 36.4487 35.6706 36.9137 34.5 36.9137ZM39.0873 28.9439C38.8834 28.9439 38.684 28.8834 38.5144 28.7701C38.3448 28.6568 38.2126 28.4957 38.1346 28.3073C38.0565 28.1189 38.0361 27.9115 38.0759 27.7115C38.1157 27.5114 38.2139 27.3277 38.3581 27.1835C38.5024 27.0392 38.6861 26.941 38.8862 26.9012C39.0862 26.8614 39.2935 26.8819 39.482 26.9599C39.6704 27.038 39.8315 27.1701 39.9448 27.3397C40.0581 27.5093 40.1186 27.7087 40.1186 27.9127C40.1186 28.1862 40.0099 28.4485 39.8165 28.6419C39.6231 28.8353 39.3608 28.9439 39.0873 28.9439Z"
-                                                        fill="white"
-                                                    />
-                                                    <path
-                                                        d="M34.5019 35.3651C36.0843 35.3651 37.367 34.0823 37.367 32.4999C37.367 30.9175 36.0843 29.6348 34.5019 29.6348C32.9195 29.6348 31.6367 30.9175 31.6367 32.4999C31.6367 34.0823 32.9195 35.3651 34.5019 35.3651Z"
-                                                        fill="white"
-                                                    />
-                                                    <path
-                                                        d="M34.5 16C31.2366 16 28.0465 16.9677 25.3331 18.7808C22.6197 20.5938 20.5048 23.1707 19.256 26.1857C18.0071 29.2007 17.6804 32.5183 18.3171 35.719C18.9537 38.9197 20.5252 41.8597 22.8327 44.1673C25.1403 46.4748 28.0803 48.0463 31.281 48.683C34.4817 49.3196 37.7993 48.9929 40.8143 47.744C43.8293 46.4952 46.4062 44.3803 48.2193 41.6669C50.0323 38.9535 51 35.7634 51 32.5C51 28.1239 49.2616 23.9271 46.1673 20.8327C43.0729 17.7384 38.8761 16 34.5 16ZM43.0422 36.0441C43.0275 36.7566 42.892 37.4616 42.6417 38.1289C42.421 38.6997 42.0835 39.218 41.6507 39.6507C41.218 40.0834 40.6997 40.421 40.1289 40.6417C39.4616 40.892 38.7567 41.0274 38.0441 41.0422C37.1263 41.0834 36.8341 41.0938 34.5 41.0938C32.1659 41.0938 31.8738 41.0834 30.9559 41.0422C30.2434 41.0274 29.5384 40.892 28.8711 40.6417C28.3003 40.421 27.782 40.0834 27.3493 39.6507C26.9166 39.218 26.579 38.6997 26.3583 38.1289C26.108 37.4616 25.9726 36.7566 25.9578 36.0441C25.9166 35.1262 25.9063 34.8341 25.9063 32.5C25.9063 30.1659 25.9166 29.8737 25.9578 28.9559C25.9726 28.2434 26.108 27.5384 26.3583 26.8711C26.579 26.3003 26.9166 25.782 27.3493 25.3493C27.782 24.9166 28.3003 24.579 28.8711 24.3583C29.5384 24.108 30.2434 23.9726 30.9559 23.9578C31.8738 23.9166 32.1659 23.9062 34.5 23.9062C36.8341 23.9062 37.1263 23.9166 38.0441 23.9578C38.7567 23.9726 39.4616 24.108 40.1289 24.3583C40.6997 24.579 41.218 24.9166 41.6507 25.3493C42.0835 25.782 42.421 26.3003 42.6417 26.8711C42.892 27.5384 43.0275 28.2434 43.0422 28.9559C43.0834 29.8737 43.0938 30.1659 43.0938 32.5C43.0938 34.8341 43.0834 35.1262 43.0422 36.0441Z"
-                                                        fill="white"
-                                                    />
-                                                </g>
-                                                <defs>
-                                                    <clipPath id="clip0_10048_17044">
-                                                        <rect
-                                                            width="33"
-                                                            height="33"
-                                                            fill="white"
-                                                            transform="translate(18 16)"
-                                                        />
-                                                    </clipPath>
-                                                </defs>
-                                            </svg>
-                                            <div className="ml-2 text-base">Instagram</div>
-                                        </div>
-
-                                        {platforms.includes("instagram") ? (
-                                            <button
-                                                className="min-w-[100px] py-3 px-1 bg-primary-green sheen rounded-xl text-white  flex justify-center items-center"
-                                                type="submit"
-                                            >
-                                                {tick} &nbsp;Done
-                                            </button>
-                                        ) : (
-                                            <button
-                                                onClick={handleOnConnect}
-                                                type="submit"
-                                                className="min-w-[140px] py-3 rounded-xl text-green sheen flex justify-center items-center border border-emerald-600 cursor-pointer"
-                                            >
-                                                {connectsvg}&nbsp; Connect
-                                            </button>
-                                        )}
-                                    </div>
-                                </div>
-                                {/* <div className="w-full grid row-span-1 gap-2 mt-3 ">
+                    {platforms.includes("instagram") ? (
+                      <button
+                        className="min-w-[100px] py-3 px-1 bg-primary-green sheen rounded-xl text-white  flex justify-center items-center"
+                        type="submit"
+                      >
+                        {tick} &nbsp;Done
+                      </button>
+                    ) : (
+                      <button
+                        onClick={handleOnConnect}
+                        type="submit"
+                        className="min-w-[140px] py-3 rounded-xl text-green sheen flex justify-center items-center border border-emerald-600 cursor-pointer"
+                      >
+                        {connectsvg}&nbsp; Connect
+                      </button>
+                    )}
+                  </div>
+                </div>
+                {/* <div className="w-full grid row-span-1 gap-2 mt-3 ">
                                     <div className="h-17 w-[100%] min-w-[500px] flex  flex justify-between items-center gap-3 bg-[#FFFFFF] transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8">
                                         <div className="flex text-center items-center">
                                             <svg
@@ -472,52 +479,52 @@ export default function Publish() {
                                         )}
                                     </div>
                                 </div> */}
-                                <div className="w-full grid row-span-1 gap-2 mt-3 ">
-                                    <div className="h-17 w-[70%] min-w-[500px] flex  flex justify-between items-center gap-3 bg-[#FFFFFF] transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8">
-                                        <div className="flex text-center items-center">
-                                            <svg
-                                                width="65"
-                                                height="65"
-                                                viewBox="0 0 65 65"
-                                                fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <rect
-                                                    x="0.5"
-                                                    y="0.5"
-                                                    width="64"
-                                                    height="64"
-                                                    rx="14.4425"
-                                                    fill="#0A66C2"
-                                                    stroke="#EBEBEB"
-                                                />
-                                                <path
-                                                    d="M32.8582 16C23.5481 16 16 23.5524 16 32.868C16 42.1838 23.5478 49.7365 32.8582 49.7365C42.169 49.7365 49.7174 42.1838 49.7174 32.868C49.7171 23.5524 42.169 16 32.8582 16ZM25.8629 23.6078C27.0096 23.6078 27.9398 24.4566 27.9398 25.5037C27.9398 26.5507 27.0096 27.3995 25.8629 27.3995C24.7155 27.3995 23.7859 26.5507 23.7859 25.5037C23.7859 24.4566 24.7155 23.6078 25.8629 23.6078ZM27.9555 39.823H23.8518V29.1087H27.9555V39.823ZM41.9002 39.823H37.7767V33.9314C37.7767 33.2588 37.6519 32.7828 37.4033 32.5034C37.1544 32.2245 36.8048 32.0845 36.3551 32.0845C35.8575 32.0845 35.4537 32.273 35.1448 32.6498C34.8355 33.0266 34.6813 33.7024 34.6813 34.6777V39.823H30.5773V29.1087H34.3985V30.8537C34.9696 30.1412 35.5479 29.6316 36.1326 29.3254C36.7174 29.0194 37.4295 28.8666 38.2699 28.8666C39.4062 28.8666 40.295 29.2043 40.9371 29.8804C41.5787 30.5562 41.8999 31.6004 41.8999 33.0129L41.9002 39.823Z"
-                                                    fill="white"
-                                                />
-                                            </svg>
+                <div className="w-full grid row-span-1 gap-2 mt-3 ">
+                  <div className="h-17 w-[70%] min-w-[500px] flex  flex justify-between items-center gap-3 bg-[#FFFFFF] transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8">
+                    <div className="flex text-center items-center">
+                      <svg
+                        width="65"
+                        height="65"
+                        viewBox="0 0 65 65"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <rect
+                          x="0.5"
+                          y="0.5"
+                          width="64"
+                          height="64"
+                          rx="14.4425"
+                          fill="#0A66C2"
+                          stroke="#EBEBEB"
+                        />
+                        <path
+                          d="M32.8582 16C23.5481 16 16 23.5524 16 32.868C16 42.1838 23.5478 49.7365 32.8582 49.7365C42.169 49.7365 49.7174 42.1838 49.7174 32.868C49.7171 23.5524 42.169 16 32.8582 16ZM25.8629 23.6078C27.0096 23.6078 27.9398 24.4566 27.9398 25.5037C27.9398 26.5507 27.0096 27.3995 25.8629 27.3995C24.7155 27.3995 23.7859 26.5507 23.7859 25.5037C23.7859 24.4566 24.7155 23.6078 25.8629 23.6078ZM27.9555 39.823H23.8518V29.1087H27.9555V39.823ZM41.9002 39.823H37.7767V33.9314C37.7767 33.2588 37.6519 32.7828 37.4033 32.5034C37.1544 32.2245 36.8048 32.0845 36.3551 32.0845C35.8575 32.0845 35.4537 32.273 35.1448 32.6498C34.8355 33.0266 34.6813 33.7024 34.6813 34.6777V39.823H30.5773V29.1087H34.3985V30.8537C34.9696 30.1412 35.5479 29.6316 36.1326 29.3254C36.7174 29.0194 37.4295 28.8666 38.2699 28.8666C39.4062 28.8666 40.295 29.2043 40.9371 29.8804C41.5787 30.5562 41.8999 31.6004 41.8999 33.0129L41.9002 39.823Z"
+                          fill="white"
+                        />
+                      </svg>
 
-                                            <div className="ml-2 text-base">LinkedIn</div>
-                                        </div>
-                                        {platforms.includes("linkedin") ? (
-                                            <button
-                                                className="min-w-[100px] py-3 px-1 bg-primary-green sheen rounded-xl text-white  flex justify-center items-center"
-                                                type="submit"
-                                            >
-                                                {tick} &nbsp;Done
-                                            </button>
-                                        ) : (
-                                            <button
-                                                onClick={handleOnConnect}
-                                                type="submit"
-                                                className="min-w-[140px] py-3 rounded-xl text-green sheen flex justify-center items-center border border-emerald-600 cursor-pointer"
-                                            >
-                                                {connectsvg}&nbsp; Connect
-                                            </button>
-                                        )}
-                                    </div>
-                                </div>
-                                {/* <div className="w-full grid row-span-1 gap-2 mt-3 ">
+                      <div className="ml-2 text-base">LinkedIn</div>
+                    </div>
+                    {platforms.includes("linkedin") ? (
+                      <button
+                        className="min-w-[100px] py-3 px-1 bg-primary-green sheen rounded-xl text-white  flex justify-center items-center"
+                        type="submit"
+                      >
+                        {tick} &nbsp;Done
+                      </button>
+                    ) : (
+                      <button
+                        onClick={handleOnConnect}
+                        type="submit"
+                        className="min-w-[140px] py-3 rounded-xl text-green sheen flex justify-center items-center border border-emerald-600 cursor-pointer"
+                      >
+                        {connectsvg}&nbsp; Connect
+                      </button>
+                    )}
+                  </div>
+                </div>
+                {/* <div className="w-full grid row-span-1 gap-2 mt-3 ">
                                     <div className="h-17 w-[70%] min-w-[500px] flex  flex justify-between items-center gap-3 bg-[#FFFFFF] transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8">
                                         <div className="flex text-center items-center">
                                             <svg
@@ -561,54 +568,93 @@ export default function Publish() {
                                     </div>
 
                                 </div> */}
-                                <div className="w-full grid row-span-1 gap-2 mt-3 ">
-                                    <div
-                                        className="h-17 w-[70%] min-w-[500px] flex  flex justify-between items-center gap-3 bg-[#FFFFFF] transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8"
-                                    >
-                                        <div className="flex text-center items-center">
-                                            <svg width="65" height="65" viewBox="0 0 65 65" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <rect x="0.5" y="0.5" width="64" height="64" rx="14.4425" fill="black" stroke="#EBEBEB" />
-                                                <path d="M32.5893 50C41.7514 50 49.1787 42.3888 49.1787 33C49.1787 23.6112 41.7514 16 32.5893 16C23.4273 16 16 23.6112 16 33C16 42.3888 23.4273 50 32.5893 50Z" fill="black" stroke="white" stroke-miterlimit="10" />
-                                                <path d="M22.3703 23.1504L30.2998 34.0152L22.3203 42.8487H24.1163L31.1025 35.1146L36.7469 42.8487H42.8584L34.4825 31.373L41.9099 23.1504H40.1139L33.6802 30.2731L28.4817 23.1504H22.3703ZM25.0114 24.5059H27.819L40.2169 41.4932H37.4094L25.0114 24.5059Z" fill="white" />
-                                            </svg>
+                <div className="w-full grid row-span-1 gap-2 mt-3 ">
+                  <div className="h-17 w-[70%] min-w-[500px] flex  flex justify-between items-center gap-3 bg-[#FFFFFF] transition-all duration-300 cursor-pointer rounded-xl py-2.5 px-8">
+                    <div className="flex text-center items-center">
+                      <svg
+                        width="65"
+                        height="65"
+                        viewBox="0 0 65 65"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <rect
+                          x="0.5"
+                          y="0.5"
+                          width="64"
+                          height="64"
+                          rx="14.4425"
+                          fill="black"
+                          stroke="#EBEBEB"
+                        />
+                        <path
+                          d="M32.5893 50C41.7514 50 49.1787 42.3888 49.1787 33C49.1787 23.6112 41.7514 16 32.5893 16C23.4273 16 16 23.6112 16 33C16 42.3888 23.4273 50 32.5893 50Z"
+                          fill="black"
+                          stroke="white"
+                          stroke-miterlimit="10"
+                        />
+                        <path
+                          d="M22.3703 23.1504L30.2998 34.0152L22.3203 42.8487H24.1163L31.1025 35.1146L36.7469 42.8487H42.8584L34.4825 31.373L41.9099 23.1504H40.1139L33.6802 30.2731L28.4817 23.1504H22.3703ZM25.0114 24.5059H27.819L40.2169 41.4932H37.4094L25.0114 24.5059Z"
+                          fill="white"
+                        />
+                      </svg>
 
-                                            <div className="ml-2 text-base">X profile</div>
-                                        </div>
-                                        {platforms.includes('twitter') ?
-                                            <button className="min-w-[100px] py-3 px-1 bg-primary-green sheen rounded-xl text-white  flex justify-center items-center"
-                                                type="submit"
-                                            >{tick}  &nbsp;Done</button> :
-                                            <button
-                                                onClick={handleOnConnect} type="submit"
-                                                className="min-w-[140px] py-3 rounded-xl text-green sheen flex justify-center items-center border border-emerald-600 cursor-pointer"
-                                            >
-                                                {connectsvg}&nbsp;
-                                                Connect
-                                            </button>
-                                        }
-                                    </div>
-                                </div>
-                                {platforms.length > 0 &&
-                                    <div className="flex justify-end ... mt-5">
-                                        <button onClick={skipNowFn}  style={{whiteSpace:"nowrap"}}
-                                            className=" max-w-[140px] py-3 px-5 bg-primary-green sheen rounded-xl text-white  flex justify-center items-center"
-                                            type="submit"
-                                        >Skip for now</button>
-                                    </div>
-                                }
-
-                            </div>
-                        </div>
-                    </>) : <>
-                    <div className="flex-1 h-full w-full flex flex-col items-center justify-center text-center">
-                        <SocialNavBar setOpenModel={setOpenModel} platforms={platforms} setOpen={setOpenModel} setOpenAddAcc={isGenPost} selectedIcon={selectedIcon} setSelectedIcon={setSelectedIcon} />
-                        <div className="mt-[10vh]"></div>
-                        <PostCard platforms={platforms} selectedIcon={selectedIcon} profile={profile} />
+                      <div className="ml-2 text-base">X profile</div>
                     </div>
-                </>
-                }
+                    {platforms.includes("twitter") ? (
+                      <button
+                        className="min-w-[100px] py-3 px-1 bg-primary-green sheen rounded-xl text-white  flex justify-center items-center"
+                        type="submit"
+                      >
+                        {tick} &nbsp;Done
+                      </button>
+                    ) : (
+                      <button
+                        onClick={handleOnConnect}
+                        type="submit"
+                        className="min-w-[140px] py-3 rounded-xl text-green sheen flex justify-center items-center border border-emerald-600 cursor-pointer"
+                      >
+                        {connectsvg}&nbsp; Connect
+                      </button>
+                    )}
+                  </div>
+                </div>
+                {platforms.length > 0 && (
+                  <div className="flex justify-end ... mt-5">
+                    <button
+                      onClick={skipNowFn}
+                      style={{ whiteSpace: "nowrap" }}
+                      className=" max-w-[140px] py-3 px-5 bg-primary-green sheen rounded-xl text-white  flex justify-center items-center"
+                      type="submit"
+                    >
+                      Skip for now
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
-
-        </div>
-    );
+          </>
+        ) : (
+          <>
+            <div className="flex-1 h-full w-full flex flex-col items-center justify-center text-center">
+              <SocialNavBar
+                setOpenModel={setOpenModel}
+                platforms={platforms}
+                setOpen={setOpenModel}
+                setOpenAddAcc={isGenPost}
+                selectedIcon={selectedIcon}
+                setSelectedIcon={setSelectedIcon}
+              />
+              <div className="mt-[10vh]"></div>
+              <PostCard
+                platforms={platforms}
+                selectedIcon={selectedIcon}
+                profile={profile}
+              />
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
 }

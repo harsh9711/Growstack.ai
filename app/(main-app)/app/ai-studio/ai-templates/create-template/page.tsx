@@ -37,14 +37,14 @@ export default function CreateTemplatePage() {
   ]);
 
   const addUserInput = () => {
-    setUserInputs((prevInputs) => [
+    setUserInputs(prevInputs => [
       ...prevInputs,
       { title: "", description: "", type: "", required: "Optional" },
     ]);
   };
 
   const removeUserInput = (index: number) => {
-    setUserInputs((prevInputs) => {
+    setUserInputs(prevInputs => {
       const updatedInputs = [...prevInputs];
       updatedInputs.splice(index, 1);
       return updatedInputs;
@@ -77,22 +77,31 @@ export default function CreateTemplatePage() {
     // resolver: zodResolver(ValidationSchema), // Removed
   });
 
-  const validataFormData = async (name: string, description: string, icon: string, custom_prompt: string, category: string, userInputs: any) => {
-    let tempErrors: any = {};
+  const validataFormData = async (
+    name: string,
+    description: string,
+    icon: string,
+    custom_prompt: string,
+    category: string,
+    userInputs: any
+  ) => {
+    const tempErrors: any = {};
     let isErrors = false;
     let userInputFields: any = [];
-    if (!name) tempErrors.name = 'Name is required';
-    if (!description) tempErrors.description = 'Description is required';
-    if (!icon) tempErrors.icon = 'Icon is required';
-    if (!custom_prompt) tempErrors.custom_prompt = 'Custom prompt is required';
-    if (custom_prompt && custom_prompt?.length < 100) tempErrors.custom_prompt = 'Custom prompt must be at least 100 words';
-    if (!category) tempErrors.category = 'Category is required';
-    if (!userInputs) tempErrors.user_inputs = 'User Inputs are required';
+    if (!name) tempErrors.name = "Name is required";
+    if (!description) tempErrors.description = "Description is required";
+    if (!icon) tempErrors.icon = "Icon is required";
+    if (!custom_prompt) tempErrors.custom_prompt = "Custom prompt is required";
+    if (custom_prompt && custom_prompt?.length < 100)
+      tempErrors.custom_prompt = "Custom prompt must be at least 100 words";
+    if (!category) tempErrors.category = "Category is required";
+    if (!userInputs) tempErrors.user_inputs = "User Inputs are required";
 
     // Prepare userInputs to be sent with the POST request
     userInputFields = userInputs.map((input: any, index: number) => {
       if (!input.title) {
-        tempErrors[`userInput[${index}].title`] = "Input Field Title is required";
+        tempErrors[`userInput[${index}].title`] =
+          "Input Field Title is required";
       }
       if (!input.type) {
         tempErrors[`userInput[${index}].type`] = "Input Field Type is required";
@@ -111,10 +120,10 @@ export default function CreateTemplatePage() {
       if (isSubmitClicked) {
         await setFormErrors(tempErrors);
       }
-      isErrors = true
+      isErrors = true;
     } else {
       await setFormErrors({});
-      isErrors = false
+      isErrors = false;
     }
     return [isErrors, userInputFields];
   };
@@ -125,21 +134,39 @@ export default function CreateTemplatePage() {
     const debounceTimeout = setTimeout(() => {
       const validateFormDataAsync = async () => {
         const { name, description, icon, custom_prompt } = formData;
-        await validataFormData(name, description, icon, custom_prompt, category, userInputs);
+        await validataFormData(
+          name,
+          description,
+          icon,
+          custom_prompt,
+          category,
+          userInputs
+        );
       };
       validateFormDataAsync();
     }, 300);
 
     return () => clearTimeout(debounceTimeout);
-  }, [JSON.stringify(formData), JSON.stringify(userInputs), category, isSubmitClicked]);
+  }, [
+    JSON.stringify(formData),
+    JSON.stringify(userInputs),
+    category,
+    isSubmitClicked,
+  ]);
 
-
-  const onSubmit: SubmitHandler<any> = async (data) => {
+  const onSubmit: SubmitHandler<any> = async data => {
     await setIsSubmitClicked(true);
     setIsPending(true);
     try {
       const { name, description, icon, custom_prompt } = formData;
-      const [isErrors, userInputFields] = await validataFormData(name, description, icon, custom_prompt, category, userInputs);
+      const [isErrors, userInputFields] = await validataFormData(
+        name,
+        description,
+        icon,
+        custom_prompt,
+        category,
+        userInputs
+      );
 
       if (isErrors) {
         return;
@@ -158,7 +185,7 @@ export default function CreateTemplatePage() {
       );
 
       toast.success(response.data.message);
-      setIsSubmitClicked(false)
+      setIsSubmitClicked(false);
       // Clear form data after successful submission
       setFormData({
         name: "",
@@ -186,7 +213,7 @@ export default function CreateTemplatePage() {
   const handleChange = (e: { target: { name: any; value: any } }) => {
     const { name, value } = e.target;
 
-    return setFormData((prevFormData) => ({
+    return setFormData(prevFormData => ({
       ...prevFormData,
       [name]: value,
     }));
@@ -201,7 +228,7 @@ export default function CreateTemplatePage() {
     key: keyof UserInput,
     value: string
   ) => {
-    setUserInputs((prevInputs) => {
+    setUserInputs(prevInputs => {
       const updatedInputs = [...prevInputs];
       updatedInputs[index][key] = value;
 
@@ -220,21 +247,23 @@ export default function CreateTemplatePage() {
   };
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: { "image/*": [] },
-    onDrop: async (acceptedFiles) => {
+    onDrop: async acceptedFiles => {
       const file = acceptedFiles[0];
       if (file) {
         if (file.size > 1 * 1024 * 1024) {
           toast.error("File size should be less than 1 MB");
         } else {
-
           const formData = new FormData();
           formData.append("document", file);
 
           setFileUploadLoading(true);
           try {
-            const response = await instance.post(`${API_URL}/users/api/v1/file/upload`, formData);
+            const response = await instance.post(
+              `${API_URL}/users/api/v1/file/upload`,
+              formData
+            );
             const fileUrl = response.data.data.fileUrl;
-            setFormData((prevState) => ({
+            setFormData(prevState => ({
               ...prevState,
               icon: fileUrl,
             }));
@@ -246,12 +275,11 @@ export default function CreateTemplatePage() {
           }
         }
       }
-
     },
   });
 
   const clearImg = () => {
-    setFormData((prevState) => ({
+    setFormData(prevState => ({
       ...prevState,
       icon: "",
     }));
@@ -261,7 +289,9 @@ export default function CreateTemplatePage() {
   return (
     <div className="mt-10">
       <div className="flex justify-between">
-        <h1 className="text-2xl:text-2xl md:text-xl font-semibold">Create your own AI template</h1>
+        <h1 className="text-2xl:text-2xl md:text-xl font-semibold">
+          Create your own AI template
+        </h1>
         <button
           onClick={() => router.back()}
           className="text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-1.5 rounded-full font-medium lg:font-medium md:font-small items-center  transition-all duration-300"
@@ -305,7 +335,9 @@ export default function CreateTemplatePage() {
                   onChange={handleChange}
                 />
                 {formErrors?.description && (
-                  <p className="text-rose-600 text-sm">{formErrors?.description}</p>
+                  <p className="text-rose-600 text-sm">
+                    {formErrors?.description}
+                  </p>
                 )}
               </div>
 
@@ -336,7 +368,9 @@ export default function CreateTemplatePage() {
                   </SelectContent>
                 </Select>
                 {formErrors?.category && (
-                  <p className="text-rose-600 text-sm">{formErrors?.category}</p>
+                  <p className="text-rose-600 text-sm">
+                    {formErrors?.category}
+                  </p>
                 )}
               </div>
               <div className="space-y-2">
@@ -352,11 +386,21 @@ export default function CreateTemplatePage() {
                 ) : formData.icon ? (
                   <>
                     <div className="h-36 w-full mx-auto flex items-center justify-center border border-[#F2F2F2] rounded-xl">
-                      <img src={formData.icon} alt="Logo" className="w-16 h-16 object-contain" />
+                      <img
+                        src={formData.icon}
+                        alt="Logo"
+                        className="w-16 h-16 object-contain"
+                      />
                     </div>
                     <div className="flex justify-end m-2">
-                      <button onClick={clearImg} type="button" className="hover-underline">
-                        <span style={{ textDecoration: "undeline" }}>Undo image</span>
+                      <button
+                        onClick={clearImg}
+                        type="button"
+                        className="hover-underline"
+                      >
+                        <span style={{ textDecoration: "undeline" }}>
+                          Undo image
+                        </span>
                       </button>
                     </div>
                   </>
@@ -393,31 +437,35 @@ export default function CreateTemplatePage() {
                       type="text"
                       placeholder="Type input field title (required)"
                       value={input.title}
-                      onChange={(e) =>
+                      onChange={e =>
                         handleInputChange(index, "title", e.target.value)
                       }
-                       className="md:placeholder:text-sm"
+                      className="md:placeholder:text-sm"
                     />
                     {formErrors?.[`userInput[${index}].title`] && (
-                      <p className="text-rose-600 text-sm">{formErrors[`userInput[${index}].title`]}</p>
+                      <p className="text-rose-600 text-sm">
+                        {formErrors[`userInput[${index}].title`]}
+                      </p>
                     )}
                   </div>
 
                   <div className="w-full space-y-2">
                     <Select
                       value={input.type}
-                      onValueChange={(value) =>
+                      onValueChange={value =>
                         handleInputChange(index, "type", value)
-                        
                       }
-                     
                     >
                       <SelectTrigger className="w-full border-none h-14">
-                        <SelectValue placeholder={InputFieldType.SHORT_TEXT} 
-                        className="md:text-sm"/>
+                        <SelectValue
+                          placeholder={InputFieldType.SHORT_TEXT}
+                          className="md:text-sm"
+                        />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value={InputFieldType.SHORT_TEXT}>Input field</SelectItem>
+                        <SelectItem value={InputFieldType.SHORT_TEXT}>
+                          Input field
+                        </SelectItem>
                         <SelectItem value={InputFieldType.LONG_TEXT}>
                           Textarea field
                         </SelectItem>
@@ -433,55 +481,56 @@ export default function CreateTemplatePage() {
                       </SelectContent>
                     </Select>
                     {formErrors?.[`userInput[${index}].type`] && (
-                      <p className="text-rose-600 text-sm">{formErrors[`userInput[${index}].type`]}</p>
+                      <p className="text-rose-600 text-sm">
+                        {formErrors[`userInput[${index}].type`]}
+                      </p>
                     )}
                   </div>
 
                   {(input.type === InputFieldType.SHORT_TEXT ||
                     input.type === InputFieldType.LONG_TEXT) && (
-                      <div className="w-full space-y-2">
-                        <Input
-                          type="text"
-                          placeholder="Type input field description (required)"
-                          value={input.description}
-                          onChange={(e) =>
-                            handleInputChange(
-                              index,
-                              "description",
-                              e.target.value
-                            )
-                          }
-                          className="md:placeholder:text-sm"
-                        />
-                      </div>
-                    )}
+                    <div className="w-full space-y-2">
+                      <Input
+                        type="text"
+                        placeholder="Type input field description (required)"
+                        value={input.description}
+                        onChange={e =>
+                          handleInputChange(
+                            index,
+                            "description",
+                            e.target.value
+                          )
+                        }
+                        className="md:placeholder:text-sm"
+                      />
+                    </div>
+                  )}
 
                   {(input.type === InputFieldType.SELECT_LIST ||
                     input.type === InputFieldType.CHECKBOX ||
                     input.type === InputFieldType.RADIO) && (
-                      <div className="w-full space-y-2">
-                        <Input
-                          type="text"
-                          placeholder="Comma separated options"
-                          value={input.options || ""}
-                          onChange={(e) =>
-                            handleInputChange(index, "options", e.target.value)
-                          }
-                          className="md:placeholder:text-sm"
-                        />
-                      </div>
-                    )}
+                    <div className="w-full space-y-2">
+                      <Input
+                        type="text"
+                        placeholder="Comma separated options"
+                        value={input.options || ""}
+                        onChange={e =>
+                          handleInputChange(index, "options", e.target.value)
+                        }
+                        className="md:placeholder:text-sm"
+                      />
+                    </div>
+                  )}
 
                   <div className="w-full space-y-2">
                     <Select
                       value={input.required || "Required"}
-                      onValueChange={(value) =>
+                      onValueChange={value =>
                         handleInputChange(index, "required", value)
                       }
                     >
                       <SelectTrigger className="w-full border-none h-14">
-                        <SelectValue placeholder="Required" 
-                        />
+                        <SelectValue placeholder="Required" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="Required">Required</SelectItem>
@@ -500,8 +549,7 @@ export default function CreateTemplatePage() {
                     </button>
                   )}
 
-
-                  {index === userInputs.length - 1 && index>0 && (
+                  {index === userInputs.length - 1 && index > 0 && (
                     <button
                       type="button"
                       className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
@@ -522,13 +570,13 @@ export default function CreateTemplatePage() {
                 </div>
               ))}
 
-
               {formErrors?.user_inputs && (
-                <p className="text-rose-600 text-sm">{formErrors?.user_inputs}</p>
+                <p className="text-rose-600 text-sm">
+                  {formErrors?.user_inputs}
+                </p>
               )}
             </div>
-            <div className="flex justify-end">
-            </div>
+            <div className="flex justify-end"></div>
             <div className="space-y-2">
               <label className="font-medium">
                 Custom prompt <span className="text-[#F00]">*</span>
@@ -541,7 +589,9 @@ export default function CreateTemplatePage() {
                 onChange={handleChange}
               />
               {formErrors?.custom_prompt && (
-                <p className="text-rose-600 text-sm">{formErrors?.custom_prompt}</p>
+                <p className="text-rose-600 text-sm">
+                  {formErrors?.custom_prompt}
+                </p>
               )}
             </div>
           </div>

@@ -1,4 +1,8 @@
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+} from "@/components/ui/dropdown-menu";
 import { Search, UserCircle } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { avatars } from "../../constants/avatars";
@@ -9,13 +13,18 @@ interface AvatarDropdownProps {
   setSelectedAvatarId: (avatarId: string) => void;
 }
 
-export default function AvatarDropdown({ onAvatarSelect, setSelectedAvatarId }: AvatarDropdownProps) {
+export default function AvatarDropdown({
+  onAvatarSelect,
+  setSelectedAvatarId,
+}: AvatarDropdownProps) {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [filteredAvatars, setFilteredAvatars] = useState(avatars);
 
   useEffect(() => {
     const filterAvatars = () => {
-      const filtered = avatars.filter((avatar) => avatar["Avatar Name"].toLowerCase().includes(searchQuery.toLowerCase()));
+      const filtered = avatars.filter(avatar =>
+        avatar["Avatar Name"].toLowerCase().includes(searchQuery.toLowerCase())
+      );
       setFilteredAvatars(filtered);
     };
 
@@ -39,7 +48,7 @@ export default function AvatarDropdown({ onAvatarSelect, setSelectedAvatarId }: 
             className="bg-transparent outline-none h-[40px] w-full"
             placeholder="Search avatars"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={e => setSearchQuery(e.target.value)}
           />
         </div>
         <h2 className="text-[17px] font-semibold">All</h2>
@@ -53,7 +62,13 @@ export default function AvatarDropdown({ onAvatarSelect, setSelectedAvatarId }: 
                 onAvatarSelect(avatar.AVATAR_ID);
               }} // Handle avatar selection
             >
-              <Image src={avatar.Avatar_image} alt={avatar["Avatar Name"]} width={400} height={400} className="w-full h-[120px] object-cover overflow-hidden" />
+              <Image
+                src={avatar.Avatar_image}
+                alt={avatar["Avatar Name"]}
+                width={400}
+                height={400}
+                className="w-full h-[120px] object-cover overflow-hidden"
+              />
               <div className="p-4 py-2 ">
                 <h2>{avatar["Avatar Name"]}</h2>
                 {/* <p className="text-xs text-gray-400">{avatar.Gender}</p> */}
