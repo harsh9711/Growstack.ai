@@ -182,13 +182,13 @@ export default function AiPlayground() {
   };
 
   return (
-    <div className="flex-1 h-full flex flex-col mt-10 w-full overflow-x-auto">
+    <div className="flex-1 h-full flex flex-col mt-10 w-full justify-center overflow-x-auto">
       <form onSubmit={handleSubmit} className="flex-1 h-full flex gap-6 w-full">
         <div className="!bg-white h-full flex flex-col border border-[#E8E8E8] shadow-box md:p-3 lg:p-5 space-y-5">
           <NewChatAlert handleNewChat={() => setChatAreas(initialChat)} />
         </div>
-        <div className="container flex gap-6 flex-1">
-          {chatAreas.map(chatArea => (
+        <div className="container flex gap-6 flex-1 m-0 overflow-x-auto">
+          {chatAreas.map((chatArea) => (
             <ChatArea
               key={chatArea.id}
               selectedModel={chatArea.selectedModel}

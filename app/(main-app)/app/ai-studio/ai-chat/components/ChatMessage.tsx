@@ -164,7 +164,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
 
   return (
     <>
-      <div className="messages-container flex-1 w-full flex flex-col overflow-y-auto">
+      <div className="messages-container flex-1 w-full flex flex-col h-full overflow-y-auto">
         {conversation.map((chat, index) => {
           let image_tempurl: string | null = "";
           let file_tempurl: string | null = "";
