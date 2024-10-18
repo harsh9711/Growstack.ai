@@ -79,7 +79,7 @@ export default function AiAppTemplatesPage() {
   const validateImageUrl = (url: string) => {
     const imageRegex = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif))$/i;
     return imageRegex.test(url);
-  }
+  };
 
   const fetchAppTemplates = async (tag: string) => {
     try {
@@ -119,8 +119,8 @@ export default function AiAppTemplatesPage() {
       );
       toast.success(response.data.message);
 
-      setAppTemplates((prevAssistants) =>
-        prevAssistants.map((assistant) =>
+      setAppTemplates(prevAssistants =>
+        prevAssistants.map(assistant =>
           assistant._id === templateId
             ? { ...assistant, favorite: method === "add" }
             : assistant
@@ -155,7 +155,7 @@ export default function AiAppTemplatesPage() {
   const fetchSearchResults = async (query: string) => {
     try {
       setLoading(true);
-      let apiUrl = `${API_URL}/ai/api/v1/chat-template?searchQuery=${query.toLowerCase()}`;
+      const apiUrl = `${API_URL}/ai/api/v1/chat-template?searchQuery=${query.toLowerCase()}`;
       const response = await instance.get(apiUrl);
 
       const data = response.data.data;
@@ -185,7 +185,10 @@ export default function AiAppTemplatesPage() {
     }
   };
 
-  const debouncedHandleSearchData = useCallback(debounce(handleSearchData, 500), []);
+  const debouncedHandleSearchData = useCallback(
+    debounce(handleSearchData, 500),
+    []
+  );
 
   const handleChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
@@ -197,14 +200,14 @@ export default function AiAppTemplatesPage() {
     setSearchQuery("");
   };
   const tagStore = (tag: any) => {
-    localStorage.setItem("tagName", tag)
+    localStorage.setItem("tagName", tag);
   };
 
   useEffect(() => {
-    const tagname = localStorage.getItem("tagName")
+    const tagname = localStorage.getItem("tagName");
     if (tagname) {
       fetchAppTemplates(tagname);
-      setSelectedTag(tagname)
+      setSelectedTag(tagname);
     } else {
       fetchAppTemplates(selectedTag);
     }
@@ -224,43 +227,44 @@ export default function AiAppTemplatesPage() {
 
   return (
     <Fragment>
-      <main className=''>
-        <div className='flex flex-col lg:flex-row justify-between items-center mt-8'>
-          <div className='space-y-2 w-full'>
-            <h1 className=' text-2xl lg:text-2xl md:text-xl font-semibold '>AI templates</h1>
-            <p className='flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px] lg:text-[15px] md:text-[13px] '>
+      <main className="">
+        <div className="flex flex-col lg:flex-row justify-between items-center mt-8">
+          <div className="space-y-2 w-full">
+            <h1 className=" text-2xl lg:text-2xl md:text-xl font-semibold ">
+              AI templates
+            </h1>
+            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px] lg:text-[15px] md:text-[13px] ">
               What do you need to write ?
             </p>
           </div>
-          <div className='w-full flex lg:justify-end gap-2'>
-            <div className='bg-white border border-[#EBEBEB] px-4 py-1  rounded-xl flex gap-3 items-center w-[50%] max-w-md'>
-              <Search className='text-gray-500' size={20} />
+          <div className="w-full flex lg:justify-end gap-2">
+            <div className="bg-white border border-[#EBEBEB] px-4 py-1  rounded-xl flex gap-3 items-center w-[50%] max-w-md">
+              <Search className="text-gray-500" size={20} />
               <input
-                type='search'
-                className='outline-none h-[42px] lg:h-[42px] md:h-[35px] w-full'
-                placeholder='Search'
+                type="search"
+                className="outline-none h-[42px] lg:h-[42px] md:h-[35px] w-full"
+                placeholder="Search"
                 value={searchQuery}
                 onChange={handleChangeSearch}
               />
             </div>
 
             <Link href={ALL_ROUTES.CREATE_AI_TEMPLATE}>
-              <button className='bg-primary-green text-white sheen transition duration-500 px-5 py-1 rounded-xl flex items-center gap-2 lg:h-[52px] md:h-[42px]'>
+              <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-1 rounded-xl flex items-center gap-2 lg:h-[52px] md:h-[42px]">
                 <Plus size={20} />
                 Create AI template
               </button>
             </Link>
           </div>
         </div>
-        <div className='flex flex-row overflow-x-auto lg:flex-wrap gap-2 mt-10'>
+        <div className="flex flex-row overflow-x-auto lg:flex-wrap gap-2 mt-10">
           {tags.map((tag, index) => (
             <div
               key={index}
               onClick={() => {
                 setSelectedTag(tag.name);
-                tagStore(tag.name)
+                tagStore(tag.name);
                 clearSearchHandle();
-
               }}
               className={clsx(
                 "py-3.5 px-6 rounded-lg cursor-pointer flex items-center justify-center gap-2 transition duration-300",
@@ -269,12 +273,12 @@ export default function AiAppTemplatesPage() {
                   : "bg-[#E9E9E9] text-primary-green"
               )}
             >
-              <Image src={tag.icon} alt='' width={20} height={20} />
-              <span className='whitespace-nowrap'>{tag.name}</span>
+              <Image src={tag.icon} alt="" width={20} height={20} />
+              <span className="whitespace-nowrap">{tag.name}</span>
             </div>
           ))}
         </div>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-9'>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-9">
           {loading ? (
             Array(15)
               .fill(null)
@@ -282,17 +286,26 @@ export default function AiAppTemplatesPage() {
           ) : appTemplates.length < 1 ? (
             <div>No assistants found</div>
           ) : (
-            appTemplates.map((appTemplate) => (
+            appTemplates.map(appTemplate => (
               <div key={appTemplate._id}>
-                <div className='flex items-center min-h-[130px] lg:min-h-[130px] min-h-[100px] justify-between gap-5 bg-white border border-[#EEF0F4] rounded-2xl p-6 shadow-xl shadow-gray-100 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer'>
+                <div className="flex items-center min-h-[130px] lg:min-h-[130px] min-h-[100px] justify-between gap-5 bg-white border border-[#EEF0F4] rounded-2xl p-6 shadow-xl shadow-gray-100 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer">
                   <Link
                     href={`/app/ai-studio/ai-templates/${appTemplate._id}`}
-                    className='flex gap-4 items-start flex-grow overflow-hidden'
+                    className="flex gap-4 items-start flex-grow overflow-hidden"
                   >
                     {validateImageUrl(appTemplate.icon) ? (
-
                       <div className="flex items-center justify-center w-16 h-16">
-                        <img src={appTemplate.icon} alt="icon" style={{ width: "64px", height: "64px", minWidth: "64px", minHeight: "64px" }} className="rounded-lg object-contain w-full h-full"></img>
+                        <img
+                          src={appTemplate.icon}
+                          alt="icon"
+                          style={{
+                            width: "64px",
+                            height: "64px",
+                            minWidth: "64px",
+                            minHeight: "64px",
+                          }}
+                          className="rounded-lg object-contain w-full h-full"
+                        ></img>
                       </div>
                     ) : (
                       <div
@@ -302,15 +315,15 @@ export default function AiAppTemplatesPage() {
                           alignItems: "center",
                         }}
                         dangerouslySetInnerHTML={{ __html: appTemplate.icon }}
-                        className='w-[64px] h-[64px] flex-shrink-0'
+                        className="w-[64px] h-[64px] flex-shrink-0"
                       />
                     )}
-                    <div className='space-y-2 overflow-hidden flex-grow'>
-                      <h1 className='text-lg font-semibold overflow-hidden text-ellipsis whitespace-nowrap'>
+                    <div className="space-y-2 overflow-hidden flex-grow">
+                      <h1 className="text-lg font-semibold overflow-hidden text-ellipsis whitespace-nowrap">
                         {appTemplate["ASSISTANT NAME"]}
                       </h1>
                       <p
-                        className='text-primary-black text-opacity-70 text-[14px] line-clamp-2 leading-relaxed overflow-hidden text-ellipsis'
+                        className="text-primary-black text-opacity-70 text-[14px] line-clamp-2 leading-relaxed overflow-hidden text-ellipsis"
                         style={{
                           display: "-webkit-box",
                           WebkitLineClamp: 2,
@@ -321,18 +334,18 @@ export default function AiAppTemplatesPage() {
                       </p>
                     </div>
                   </Link>
-                  <div className='cursor-pointer w-full max-w-fit transition duration-300 hover:scale-125 flex justify-center items-center'>
+                  <div className="cursor-pointer w-full max-w-fit transition duration-300 hover:scale-125 flex justify-center items-center">
                     {appTemplate.favorite ? (
                       <BsStarFill
                         size={24}
-                        className='text-yellow-300'
+                        className="text-yellow-300"
                         onClick={() =>
                           handleFavorite("remove", appTemplate._id)
                         }
                       />
                     ) : (
                       <StarIcon
-                        className='text-[#ADADAD]'
+                        className="text-[#ADADAD]"
                         onClick={() => handleFavorite("add", appTemplate._id)}
                       />
                     )}
@@ -351,16 +364,16 @@ const AiAppSkeletonLoader: React.FC = () => {
   return (
     <ContentLoader
       speed={2}
-      width='100%'
-      height='80px'
-      viewBox='0 0 600 80'
-      backgroundColor='#f3f3f3'
-      foregroundColor='#ecebeb'
-      className='w-full'
+      width="100%"
+      height="80px"
+      viewBox="0 0 600 80"
+      backgroundColor="#f3f3f3"
+      foregroundColor="#ecebeb"
+      className="w-full"
     >
-      <rect x='0' y='0' rx='10' ry='10' width='70' height='70' />
-      <rect x='90' y='10' rx='8' ry='8' width='350' height='15' />
-      <rect x='90' y='35' rx='8' ry='8' width='420' height='15' />
+      <rect x="0" y="0" rx="10" ry="10" width="70" height="70" />
+      <rect x="90" y="10" rx="8" ry="8" width="350" height="15" />
+      <rect x="90" y="35" rx="8" ry="8" width="420" height="15" />
     </ContentLoader>
   );
 };

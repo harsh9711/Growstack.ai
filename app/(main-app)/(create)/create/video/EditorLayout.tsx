@@ -29,12 +29,19 @@ const EditorLayout: React.FC<IProps> = ({
   soundTrack,
   setSoundTrack,
 }) => {
-  const [scenes, setScenes] = useState<Scene[]>([{ id: "1", title: "scene 1" }]);
+  const [scenes, setScenes] = useState<Scene[]>([
+    { id: "1", title: "scene 1" },
+  ]);
   const [currentScene, setCurrentScene] = useState<Scene>(scenes[0]);
 
   return (
     <div className="flex-1 flex h-full items-stretch gap-4">
-      <Scenes scenes={scenes} setScenes={setScenes} currentScene={currentScene} setCurrentScene={setCurrentScene} />
+      <Scenes
+        scenes={scenes}
+        setScenes={setScenes}
+        currentScene={currentScene}
+        setCurrentScene={setCurrentScene}
+      />
       <EditCanvas
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}

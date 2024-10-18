@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import TickIcon from "./TickIcon";
 import DashIcon from "./DashIcon";
 import { ContentBoxProps } from "@/types/Box";
@@ -19,14 +19,20 @@ import { deleteCookie } from "cookies-next";
 import { LogOut } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { getCurrentUser } from "@/lib/features/auth/auth.selector";
-import { logout, setPlanLoading, setUserPlan } from "@/lib/features/auth/auth.slice";
+import {
+  logout,
+  setPlanLoading,
+  setUserPlan,
+} from "@/lib/features/auth/auth.slice";
 import PlanCard from "@/components/planCard";
 import { planIdsMap } from "@/lib/utils";
 import { persistor, RootState } from "@/lib/store";
 import { useSelector } from "react-redux";
 
 const PricingPage: React.FC = () => {
-  const { isAuthenticated } = useSelector((rootState: RootState) => rootState.auth);
+  const { isAuthenticated } = useSelector(
+    (rootState: RootState) => rootState.auth
+  );
 
   useEffect(() => {
     AOS.init();
@@ -57,7 +63,6 @@ const PricingPage: React.FC = () => {
     }
   }, [router]);
 
-
   useEffect(() => {
     const tab = tabQueryParam ? Number(tabQueryParam) : 0;
     setSelectedTabIndex(tab);
@@ -69,7 +74,9 @@ const PricingPage: React.FC = () => {
   const fetchPlanUsage = async () => {
     try {
       dispatch(setPlanLoading(true));
-      const response = (await instance.get(`${API_URL}/users/api/v1/plan-usage`)).data;
+      const response = (
+        await instance.get(`${API_URL}/users/api/v1/plan-usage`)
+      ).data;
       const userCurrentPlan: UserPlan = response.data;
       dispatch(setUserPlan(userCurrentPlan));
     } catch (error: any) {
@@ -78,18 +85,17 @@ const PricingPage: React.FC = () => {
       } else {
         toast.error(error.message);
       }
-      console.error('Error fetching plan usage:', error);
+      console.error("Error fetching plan usage:", error);
     } finally {
       dispatch(setPlanLoading(false));
     }
   };
 
-
   useEffect(() => {
     if (isAuthenticated) {
       fetchPlanUsage();
     }
-  }, [isAuthenticated])
+  }, [isAuthenticated]);
 
   useEffect(() => {
     const fetchPlans = async () => {
@@ -127,12 +133,18 @@ const PricingPage: React.FC = () => {
             id: plan.plan_id,
             stripe_price_id: plan.stripe_price_id,
             title: plan.plan,
-            monthlyPrice: plan.plan_type === "MONTHLY" && plan.price !== null && plan.price !== undefined
-              ? plan.price
-              : null,
-            yearlyPrice: plan.plan_type === "YEARLY" && plan.price !== null && plan.price !== undefined
-              ? plan.price
-              : null,
+            monthlyPrice:
+              plan.plan_type === "MONTHLY" &&
+              plan.price !== null &&
+              plan.price !== undefined
+                ? plan.price
+                : null,
+            yearlyPrice:
+              plan.plan_type === "YEARLY" &&
+              plan.price !== null &&
+              plan.price !== undefined
+                ? plan.price
+                : null,
             priceSuffix: "/mo",
             description,
             planType: plan.plan_type,
@@ -150,7 +162,7 @@ const PricingPage: React.FC = () => {
         }
         console.error("Error fetching plans:", error);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     };
     fetchPlans();
@@ -158,10 +170,9 @@ const PricingPage: React.FC = () => {
 
   const view = selectedTabIndex === 0 ? "monthly" : "yearly";
 
-
   const filteredPlans = plans
     .filter(
-      (plan) =>
+      plan =>
         (view === "monthly" && plan.planType === "MONTHLY") ||
         (view === "yearly" && plan.planType === "YEARLY")
     )
@@ -184,8 +195,8 @@ const PricingPage: React.FC = () => {
             ? parseFloat(b.yearlyPrice)
             : Infinity;
 
-      const isBusinessPlanA = planIdsMap.BUSINESS.some((val) => val === a?.id);
-      const isBusinessPlanB = planIdsMap.BUSINESS.some((val) => val === b?.id);
+      const isBusinessPlanA = planIdsMap.BUSINESS.some(val => val === a?.id);
+      const isBusinessPlanB = planIdsMap.BUSINESS.some(val => val === b?.id);
 
       if (isBusinessPlanA && !isBusinessPlanB) return 1;
       if (!isBusinessPlanA && isBusinessPlanB) return -1;
@@ -225,15 +236,16 @@ const PricingPage: React.FC = () => {
   return (
     <div
       style={{
-        zoom: "0.75"
+        zoom: "0.75",
       }}
-      className="flex flex-col min-h-screen">
+      className="flex flex-col min-h-screen"
+    >
       <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 px-12">
         <div
           className="relative overflow-y-auto bg-white w-full md:w-3xl md:max-h-[70%]  xl:max-h-[70%] h-full max-w-[1600px] mx-4 sm:mx-6 md:mx-8 lg:mx-auto rounded-2xl shadow-lg"
           data-aos="zoom-in"
           data-aos-duration="500"
-          onClick={(e) => e.stopPropagation()}
+          onClick={e => e.stopPropagation()}
         >
           <div
             className="p-6 mx-auto flex md:flex-row flex-col gap-y-4 gap-x-10 overflow-hidden w-full  items-center justify-between"
@@ -253,39 +265,37 @@ const PricingPage: React.FC = () => {
                 Upgrade your plan anytime for more advanced features
               </p>
             </div>
-            {
-              isAuthenticated ? (
-                <div
-                  className="border-[#034737]  gap-4 text-[#034737] flex-wrap w-full flex justify-center sm:justify-end"
-                  data-aos="fade-left"
+            {isAuthenticated ? (
+              <div
+                className="border-[#034737]  gap-4 text-[#034737] flex-wrap w-full flex justify-center sm:justify-end"
+                data-aos="fade-left"
+              >
+                <Link
+                  className="border-[#034737] flex items-center justify-between gap-2  border rounded-xl font-semibold text-[#034737] px-8 py-4 "
+                  href="/app"
                 >
-                  <Link
-                    className="border-[#034737] flex items-center justify-between gap-2  border rounded-xl font-semibold text-[#034737] px-8 py-4 "
-
-                    href="/app" >
-                    Go to Dashboard
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="border-[#034737] flex items-center justify-between gap-2  border rounded-xl font-semibold text-[#034737] px-10 py-4 ">
-                    <LogOut size={20} />
-                    Sign out
+                  Go to Dashboard
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="border-[#034737] flex items-center justify-between gap-2  border rounded-xl font-semibold text-[#034737] px-10 py-4 "
+                >
+                  <LogOut size={20} />
+                  Sign out
+                </button>
+              </div>
+            ) : (
+              <div
+                className="border-[#034737] text-[#034737] w-full flex justify-end"
+                data-aos="fade-left"
+              >
+                <Link href="/auth/register">
+                  <button className="border-[#034737]  border rounded-xl font-semibold text-[#034737] px-10 py-4 ">
+                    Register
                   </button>
-                </div>
-              ) : (
-                <div
-                  className="border-[#034737] text-[#034737] w-full flex justify-end"
-                  data-aos="fade-left"
-                >
-                  <Link href="/auth/register">
-                    <button className="border-[#034737]  border rounded-xl font-semibold text-[#034737] px-10 py-4 ">
-                      Register
-                    </button>
-                  </Link>
-                </div>
-              )
-            }
-
+                </Link>
+              </div>
+            )}
           </div>
           <div className="border "></div>
           <section className="p-4 overflow-y-auto">
@@ -294,10 +304,11 @@ const PricingPage: React.FC = () => {
                 {tabs.map((tab, index) => (
                   <div
                     key={index}
-                    className={`w-full flex p-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${selectedTabIndex === index
-                      ? "!text-white font-semibold bg-[#034737] custom-transition rounded-xl"
-                      : "!text-[#034737]"
-                      }`}
+                    className={`w-full flex p-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
+                      selectedTabIndex === index
+                        ? "!text-white font-semibold bg-[#034737] custom-transition rounded-xl"
+                        : "!text-[#034737]"
+                    }`}
                     onClick={() => handleTabClick(index)}
                   >
                     {tab}
@@ -345,14 +356,12 @@ const PricingPage: React.FC = () => {
   );
 };
 
-
 const ContentBox: React.FC<ContentBoxProps> = ({ sections }) => {
-  const allFeatures = sections.flatMap((section) => section.features);
+  const allFeatures = sections.flatMap(section => section.features);
 
   return (
     <div className="max-w-[1400px] w-full px-4 mx-auto">
       {" "}
-
       <PricingPage />
     </div>
   );

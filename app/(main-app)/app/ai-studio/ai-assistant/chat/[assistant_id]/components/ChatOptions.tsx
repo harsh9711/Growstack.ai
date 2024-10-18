@@ -21,7 +21,6 @@ const ChatOptions: React.FC<ChatOptionsProps> = ({
   switchLanguage,
   selectedLanguage,
 }) => {
-
   return (
     <div className="flex gap-4 pt-3 justify-end">
       <div className="w-full max-w-[400px]">

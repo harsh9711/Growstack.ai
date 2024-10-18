@@ -1,6 +1,12 @@
 "use client";
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import Spinner from "@/public/svgs/spinner";
@@ -20,7 +26,14 @@ interface EditModalProps {
   onSave: () => void;
 }
 
-function EditModal({ show, onHide, editWorkFlow, setEditWorkFlow, onSave, isEditRequestPending }: EditModalProps) {
+function EditModal({
+  show,
+  onHide,
+  editWorkFlow,
+  setEditWorkFlow,
+  onSave,
+  isEditRequestPending,
+}: EditModalProps) {
   const router = useRouter();
   return (
     <Dialog open={show} onOpenChange={onHide}>
@@ -36,27 +49,34 @@ function EditModal({ show, onHide, editWorkFlow, setEditWorkFlow, onSave, isEdit
               type="text"
               placeholder="Type your workflow name"
               value={editWorkFlow.name}
-              onChange={(e) => setEditWorkFlow({ ...editWorkFlow, name: e.target.value })}
+              onChange={e =>
+                setEditWorkFlow({ ...editWorkFlow, name: e.target.value })
+              }
             />
           </div>
           <div className="flex ">
             <button
               className="py-3.5 h-14 w-full max-w-[200px] px-6 bg-primary-green sheen rounded-xl text-white mt-6 flex items-center justify-center gap-3 whitespace-nowrap"
               onClick={() => {
-                router.push(`/app/automation-hub/workflow-builder/create-workflow?workflow_id=${editWorkFlow.workflow_id}`);
-              }}>
+                router.push(
+                  `/app/automation-hub/workflow-builder/create-workflow?workflow_id=${editWorkFlow.workflow_id}`
+                );
+              }}
+            >
               Edit Workflow Steps
             </button>
             <div className="flex justify-end gap-4 w-full">
               <button
                 className="py-3.5 h-14 w-full max-w-[140px] px-6 bg-white border text-primary-green border-primary-green rounded-xl mt-6"
-                onClick={() => onHide(false)}>
+                onClick={() => onHide(false)}
+              >
                 Cancel
               </button>
               <button
                 disabled={isEditRequestPending}
                 className="py-3.5 h-14 w-full max-w-[200px] px-6 bg-primary-green sheen rounded-xl text-white mt-6 flex items-center justify-center gap-3 whitespace-nowrap"
-                onClick={onSave}>
+                onClick={onSave}
+              >
                 {isEditRequestPending && <Spinner />}
                 Save
               </button>

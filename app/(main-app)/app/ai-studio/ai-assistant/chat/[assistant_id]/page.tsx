@@ -7,7 +7,10 @@ import { Assistant, Conversation, Chat } from "../../components/types";
 import Topbar from "./components/Topbar";
 import ChatSection from "./components/ChatSection";
 import Sidebar from "./components/Sidebar";
-import { aiModelOptions, languageOptions } from "@/app/(main-app)/app/ai-studio/ai-articles/constants/options";
+import {
+  aiModelOptions,
+  languageOptions,
+} from "@/app/(main-app)/app/ai-studio/ai-articles/constants/options";
 import Spinner from "@/components/Spinner";
 
 interface PageProps {

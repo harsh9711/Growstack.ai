@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -10,10 +10,7 @@ interface HeroSectionProps {
   description: string;
 }
 
-const HeroSection: React.FC<HeroSectionProps> = ({
-  title,
-  description,
-}) => {
+const HeroSection: React.FC<HeroSectionProps> = ({ title, description }) => {
   useEffect(() => {
     AOS.init({ duration: 1000 });
   }, []);
@@ -44,13 +41,18 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           />
         </svg>
 
-        <div className="flex  xl:p-0 p-4 flex-col w-full gap-4" data-aos="fade-up">
+        <div
+          className="flex  xl:p-0 p-4 flex-col w-full gap-4"
+          data-aos="fade-up"
+        >
           <h2 className="text-white w-full font-bold xl:text-[42px] text-[24px] tracking-normal">
             {title}
           </h2>
-         
         </div>
-        <div className="mt-6 xl:p-0 p-4  max-w-[400px] w-full flex justify-end" data-aos="fade-left">
+        <div
+          className="mt-6 xl:p-0 p-4  max-w-[400px] w-full flex justify-end"
+          data-aos="fade-left"
+        >
           <p className="justify-end text-white text-[18px] font-extralight">
             {description}
           </p>

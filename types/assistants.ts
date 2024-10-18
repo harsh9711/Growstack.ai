@@ -1,11 +1,11 @@
 export interface Assistant {
   category: string | undefined;
   id: string;
-  title:string;
-  icon:string;
+  title: string;
+  icon: string;
   name: string;
   description: string;
-  status: 'disabled' | 'active' | 'inactive';
+  status: "disabled" | "active" | "inactive";
   created_on: {
     date: string;
     time: string;
@@ -14,7 +14,7 @@ export interface Assistant {
   inputs: inputs[]; // Ensure userInputs is part of the type
 }
 export interface inputs {
-  icon:string;
+  icon: string;
   title: string;
   description: string;
   type: string;

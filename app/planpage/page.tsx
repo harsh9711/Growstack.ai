@@ -64,7 +64,7 @@ const page = () => {
       payload
     );
     if (res) {
-      const redirectUrl = res.data.url; 
+      const redirectUrl = res.data.url;
       window.location.href = redirectUrl;
     }
   };
@@ -118,7 +118,7 @@ const page = () => {
             </div>
             <div className="border-[#D3D3D3] border w-[0.2px] h-[159px] -translate-x-[400px]"></div>
             <div className="absolute flex flex-row translate-x-52 -translate-y-6">
-              {plans.map((plan) => (
+              {plans.map(plan => (
                 <Plan
                   plan={plan}
                   amount={plan.amount}

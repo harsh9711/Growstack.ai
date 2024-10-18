@@ -165,11 +165,11 @@ export default function Addoutput({
 
   const updateOutput = async () => {
     try {
-      const updatedOutputs = outputConfigs.map((output) =>
+      const updatedOutputs = outputConfigs.map(output =>
         output._id === editID ? { ...output, ...outputParams } : output
       );
       setOutputConfigs(updatedOutputs);
-      const payload = updatedOutputs.find((output) => output._id === editID);
+      const payload = updatedOutputs.find(output => output._id === editID);
       const response = await instance.put(
         `${API_URL}/workflow/api/v1/${workflowId}/outputconfig/${editID}`,
         {
@@ -194,7 +194,7 @@ export default function Addoutput({
         return;
       }
       const updatedOutputs = outputConfigs.filter(
-        (output) => output._id !== outputId
+        output => output._id !== outputId
       );
       setOutputConfigs(updatedOutputs);
       await instance.delete(
@@ -208,7 +208,7 @@ export default function Addoutput({
   const handleEditClick = async (outputId: string) => {
     try {
       const outputToUpdate = outputConfigs.find(
-        (output) => output._id === outputId
+        output => output._id === outputId
       );
       if (!outputToUpdate) {
         console.error(`Output with id ${outputId} not found.`);

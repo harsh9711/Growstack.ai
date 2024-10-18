@@ -19,7 +19,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { ALL_ROUTES } from "@/utils/constant";
 
-
 type PreBuiltTemplate = {
   _id: number;
   name: string;
@@ -33,7 +32,9 @@ export default function WorkflowBuilder() {
   const [preBuiltTemplates, setPreBuiltTemplates] = useState<
     PreBuiltTemplate[]
   >([]);
-  const { isCurrentPlanFetching } = useSelector((rootState: RootState) => rootState.auth);
+  const { isCurrentPlanFetching } = useSelector(
+    (rootState: RootState) => rootState.auth
+  );
 
   const [loading, setLoading] = useState<boolean>(false);
   const getPreBuiltTemplates = async () => {
@@ -71,20 +72,20 @@ export default function WorkflowBuilder() {
         <div className="mt-10">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {isCurrentPlanFetching || preBuiltTemplates.length > 0
-              ? preBuiltTemplates.map((template) => (
-                <Card
-                  key={template._id}
-                  title={template.name}
-                  description={template.description}
-                  imageSrc={template.image}
-                  slug={template.slug}
-                  workflow_id={template.workflow_id}
-                  setLoading={setLoading}
-                />
-              ))
+              ? preBuiltTemplates.map(template => (
+                  <Card
+                    key={template._id}
+                    title={template.name}
+                    description={template.description}
+                    imageSrc={template.image}
+                    slug={template.slug}
+                    workflow_id={template.workflow_id}
+                    setLoading={setLoading}
+                  />
+                ))
               : Array(5)
-                .fill(null)
-                .map((_, index) => <WorkflowLoader key={index} />)}
+                  .fill(null)
+                  .map((_, index) => <WorkflowLoader key={index} />)}
           </div>
         </div>
         {loading && (
@@ -107,25 +108,33 @@ type CardProps = {
   description: string;
   imageSrc: string;
   slug: string;
-  workflow_id: string; setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  workflow_id: string;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflow_id, setLoading }) => {
+const Card: React.FC<CardProps> = ({
+  title,
+  description,
+  imageSrc,
+  slug,
+  workflow_id,
+  setLoading,
+}) => {
   useEffect(() => {
     AOS.init({ duration: 1000 });
   }, []);
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { currentPlan, user } = useSelector((rootState: RootState) => rootState.auth);
+  const { currentPlan, user } = useSelector(
+    (rootState: RootState) => rootState.auth
+  );
 
-
-  const handleDuplicateClick = async (e: { stopPropagation: () => void; }) => {
-    e.stopPropagation()
+  const handleDuplicateClick = async (e: { stopPropagation: () => void }) => {
+    e.stopPropagation();
     setIsModalOpen(true);
   };
 
   const handleConfirmDuplicate = async () => {
-
     setIsModalOpen(false);
     const canCreateWorkflow = await checkWorkAccessPermission(false);
     if (!canCreateWorkflow) {
@@ -146,7 +155,9 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
       }
     } catch (error: any) {
       console.error("Error duplicating workflow:", error);
-      toast.error(error?.response?.data?.error || "Failed to duplicate workflow");
+      toast.error(
+        error?.response?.data?.error || "Failed to duplicate workflow"
+      );
     } finally {
       setTimeout(() => {
         setLoading(false);
@@ -163,14 +174,19 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
   const checkWorkAccessPermission = async (redirect: boolean = false) => {
     try {
       if (!currentPlan) return;
-      if (user?.user_type !== "ADMIN" && currentPlan.usage.ai_worfklow_credits <= 0) {
-        setIsAddOnModalOpen(true)
+      if (
+        user?.user_type !== "ADMIN" &&
+        currentPlan.usage.ai_worfklow_credits <= 0
+      ) {
+        setIsAddOnModalOpen(true);
         return false;
       } else {
         if (!redirect) {
           return true;
         } else {
-          router.push(`/app/automation-hub/workflow-builder/workflows/${slug}?workflow_id=${workflow_id}`);
+          router.push(
+            `/app/automation-hub/workflow-builder/workflows/${slug}?workflow_id=${workflow_id}`
+          );
         }
       }
     } catch (error: any) {
@@ -184,7 +200,6 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
     }
   };
 
-
   return (
     <>
       <div
@@ -193,7 +208,6 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
         data-aos="fade-up"
       >
         <div className="relative" data-aos="zoom-in">
-
           <Image
             src={imageSrc}
             alt={title}
@@ -203,7 +217,10 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
           />
 
           <Menu as="div" className="absolute top-2 right-2">
-            <MenuButton onClick={(e) => e.stopPropagation()} className="p-2 text-gray-500 hover:text-gray-700">
+            <MenuButton
+              onClick={e => e.stopPropagation()}
+              className="p-2 text-gray-500 hover:text-gray-700"
+            >
               <BsThreeDotsVertical className="w-6 h-6" />
             </MenuButton>
             <MenuItems className="absolute right-0 mt-2 w-[105px] bg-white border border-gray-200 rounded-md shadow-lg">
@@ -235,12 +252,14 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
         {/* Modal Component */}
         {isModalOpen && (
           <div
-            onClick={(e) => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
             className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50"
             data-aos="fade-in"
           >
-
-            <div className="bg-white p-6 rounded-lg w-80 max-w-lg flex flex-col items-center" data-aos="zoom-in">
+            <div
+              className="bg-white p-6 rounded-lg w-80 max-w-lg flex flex-col items-center"
+              data-aos="zoom-in"
+            >
               <h2 className="text-lg font-semibold">Confirm Duplicate</h2>
               <p className="mt-2">
                 Are you sure you want to duplicate this workflow?
@@ -263,12 +282,22 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
           </div>
         )}
       </div>
-      <GlobalModal showCloseButton={false} open={isAddOnModalOpen} setOpen={() => { setIsAddOnModalOpen(false) }}>
+      <GlobalModal
+        showCloseButton={false}
+        open={isAddOnModalOpen}
+        setOpen={() => {
+          setIsAddOnModalOpen(false);
+        }}
+      >
         <div className="flex flex-col items-center justify-center px-6 pt-4 pb-8 gap-6 space-x-6">
           <Lock />
-          <h3 className="text-center text-[28px] font-semibold">You don’t have enough credit.</h3>
+          <h3 className="text-center text-[28px] font-semibold">
+            You don’t have enough credit.
+          </h3>
           <p className="text-center text-gray-700 text-sm md:text-base px-4">
-            You don’t have enough credits in your wallet to use this feature. It is an add-on, and requires additional credit to access. Please add credits to continue.
+            You don’t have enough credits in your wallet to use this feature. It
+            is an add-on, and requires additional credit to access. Please add
+            credits to continue.
           </p>
           <div className="flex items-center justify-between gap-3">
             <button
@@ -279,7 +308,8 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc, slug, workflo
             </button>
             <Link
               className="bg-primary-green text-white text-nowrap py-2 px-6 rounded-md transition duration-300 hover:bg-green-600"
-              href="/account/billings/settings">
+              href="/account/billings/settings"
+            >
               Add Credit
             </Link>
           </div>

@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useState, useContext, useEffect, ReactNode } from "react";
+import {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  ReactNode,
+} from "react";
 import { Base64 } from "js-base64";
 
 interface GeneratedHtmlContextType {
@@ -8,9 +14,15 @@ interface GeneratedHtmlContextType {
   setGeneratedHtml: (html: string | null) => void;
 }
 
-const GeneratedHtmlContext = createContext<GeneratedHtmlContextType | undefined>(undefined);
+const GeneratedHtmlContext = createContext<
+  GeneratedHtmlContextType | undefined
+>(undefined);
 
-export const GeneratedHtmlProvider = ({ children }: { children: ReactNode }) => {
+export const GeneratedHtmlProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
   const [generatedHtml, setGeneratedHtmlState] = useState<string | null>(null);
 
   useEffect(() => {
@@ -31,13 +43,19 @@ export const GeneratedHtmlProvider = ({ children }: { children: ReactNode }) => 
     setGeneratedHtmlState(html);
   };
 
-  return <GeneratedHtmlContext.Provider value={{ generatedHtml, setGeneratedHtml }}>{children}</GeneratedHtmlContext.Provider>;
+  return (
+    <GeneratedHtmlContext.Provider value={{ generatedHtml, setGeneratedHtml }}>
+      {children}
+    </GeneratedHtmlContext.Provider>
+  );
 };
 
 export const useGeneratedHtml = () => {
   const context = useContext(GeneratedHtmlContext);
   if (!context) {
-    throw new Error("useGeneratedHtml must be used within a GeneratedHtmlProvider");
+    throw new Error(
+      "useGeneratedHtml must be used within a GeneratedHtmlProvider"
+    );
   }
   return context;
 };

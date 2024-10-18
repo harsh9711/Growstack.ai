@@ -54,8 +54,8 @@ const ChatArea = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<
     | (HTMLTextAreaElement & {
-      handleRegenerate: (chartMessage: string) => void;
-    })
+        handleRegenerate: (chartMessage: string) => void;
+      })
     | null
   >(null); // Updated here
   const initialHeight = 32;
@@ -229,17 +229,17 @@ const AIModel = ({
   );
 
   const selectedModelLabel = llmComparisonModels
-    .flatMap((option) => option.models)
-    .find((model) => model.value === selectedOption)?.label;
+    .flatMap(option => option.models)
+    .find(model => model.value === selectedOption)?.label;
 
   const handleModalSelection = (value: string) => {
     if (!currentPlan) return;
-    const currentCategory = llmComparisonModels.find((category) =>
-      category.models.some((model) => model.value === value)
+    const currentCategory = llmComparisonModels.find(category =>
+      category.models.some(model => model.value === value)
     );
 
     const currentModal = currentCategory?.models.find(
-      (model) => model.value === value
+      model => model.value === value
     );
 
     if (!currentCategory || !currentModal) {
@@ -284,8 +284,8 @@ const AIModel = ({
               <span className="min-w-fit">
                 {
                   llmComparisonModels
-                    .flatMap((option) => option.models) // Flattening the models array to find the icon
-                    .find((model) => model.value === selectedOption)?.icon
+                    .flatMap(option => option.models) // Flattening the models array to find the icon
+                    .find(model => model.value === selectedOption)?.icon
                 }
               </span>
               {selectedModelLabel}
@@ -306,7 +306,7 @@ const AIModel = ({
                     className={clsx(
                       "flex items-center gap-2",
                       selectedOption === value &&
-                      "text-primary-green font-medium"
+                        "text-primary-green font-medium"
                     )}
                   >
                     <span className="min-w-fit">{icon}</span>
@@ -335,8 +335,8 @@ const InitialMsg = ({
   //   .flatMap((provider) => provider.models)
   //   .find((model) => model.value === selectedOption);
   const selectedOptionModel = llmComparisonModels
-    .flatMap((option) => option.models)
-    .find((model) => model.value === selectedOption);
+    .flatMap(option => option.models)
+    .find(model => model.value === selectedOption);
   return (
     <div className="bg-[#F5F5F5] border border-[#E8E8E8] rounded-3xl space-y-5">
       <div className="space-y-5 px-7 pt-7 pb-4">

@@ -64,17 +64,17 @@ export default function BillingHistorySection() {
         <div className="rounded-lg border overflow-hidden mt-10 bg-white min-h-[50vh]">
           {loading ? (
             <div className="loading-container">
-            <div className="loading-card">
-              <div className="card-chip"></div>
-              <div className="card-lines">
-                <div className="line"></div>
-                <div className="line"></div>
-                <div className="line"></div>
+              <div className="loading-card">
+                <div className="card-chip"></div>
+                <div className="card-lines">
+                  <div className="line"></div>
+                  <div className="line"></div>
+                  <div className="line"></div>
+                </div>
+                <div className="card-wave"></div>
               </div>
-              <div className="card-wave"></div>
+              <p>Billing History...</p>
             </div>
-            <p>Billing History...</p>
-          </div>
           ) : error ? (
             <div>Error: {error}</div>
           ) : (
@@ -89,7 +89,7 @@ export default function BillingHistorySection() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data.map((item) => (
+                {data.map(item => (
                   <TableRow key={item.plan_id}>
                     <TableCell className="text-[16px] font-medium">
                       {item.payment_id}
@@ -100,8 +100,8 @@ export default function BillingHistorySection() {
                         item.status === "SUCCESS"
                           ? " text-primary-green bg-[#0347371A]"
                           : item.status === " Pending"
-                          ? "text-yellow-8 bg-yellow-100"
-                          : "text-[#CF0000] bg-[#FF00001A]"
+                            ? "text-yellow-8 bg-yellow-100"
+                            : "text-[#CF0000] bg-[#FF00001A]"
                       )}
                     >
                       {item.status}

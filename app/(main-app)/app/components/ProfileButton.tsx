@@ -1,6 +1,10 @@
 "use client";
 import React from "react";
-import { BrandVoiceIcon, DocumentIcon, PresentationAnalyticsIcon } from "@/components/svgs";
+import {
+  BrandVoiceIcon,
+  DocumentIcon,
+  PresentationAnalyticsIcon,
+} from "@/components/svgs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -40,7 +44,9 @@ export function ProfileButton() {
       <DropdownMenuTrigger asChild>
         <Avatar className="rounded-xl">
           <AvatarImage src={currentUser?.profile_img} />
-          <AvatarFallback className="rounded-xl">{currentUser?.email?.slice(0, 1)}</AvatarFallback>
+          <AvatarFallback className="rounded-xl">
+            {currentUser?.email?.slice(0, 1)}
+          </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-[300px] relative right-10 text-[15px]">
@@ -50,8 +56,12 @@ export function ProfileButton() {
             <AvatarFallback>{currentUser?.email?.slice(0, 1)}</AvatarFallback>
           </Avatar>
           <div className="flex-1 min-w-0">
-            <h1 className="text-xl font-semibold capitalize truncate">{currentUser?.name ?? currentUser?.name ?? "Growstack User"}</h1>
-            <p className="text-primary-grey text-sm truncate">{currentUser?.email}</p>
+            <h1 className="text-xl font-semibold capitalize truncate">
+              {currentUser?.name ?? currentUser?.name ?? "Growstack User"}
+            </h1>
+            <p className="text-primary-grey text-sm truncate">
+              {currentUser?.email}
+            </p>
           </div>
         </div>
         <DropdownMenuSeparator />
@@ -90,7 +100,6 @@ export function ProfileButton() {
 
           <Link href="/account/billings/settings">
             <DropdownMenuItem className="flex gap-3 px-4">
-
               <Image src="/billing.svg" width={25} height={25} alt="width" />
               Billing
             </DropdownMenuItem>
@@ -110,7 +119,8 @@ export function ProfileButton() {
         <DropdownMenuSeparator />
         <button
           onClick={handleLogout}
-          className="relative flex select-none items-center rounded-lg h-12 p-4 outline-none w-full gap-3 text-[#D9000B] hover:bg-[#D9000B]/10 cursor-pointer">
+          className="relative flex select-none items-center rounded-lg h-12 p-4 outline-none w-full gap-3 text-[#D9000B] hover:bg-[#D9000B]/10 cursor-pointer"
+        >
           <LogOut size={20} />
           Sign out
         </button>

@@ -5,12 +5,12 @@ export interface Template {
   doc_name: string;
   workbook: string;
   category: string;
-  
+
   doc_content: {
     video_id: string;
     status: string;
     video_thumbnailUrl: string;
-    video_url:string;
+    video_url: string;
   };
   createdAt: string;
   updatedAt: string;
@@ -23,6 +23,6 @@ export interface Template {
   author: string;
   initial: string;
   editedTime: string;
-  title:string;
-  onSuccess?: () => void; 
+  title: string;
+  onSuccess?: () => void;
 }

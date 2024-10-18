@@ -47,7 +47,11 @@ interface ConfigureGPTSectionProps {
     description: string;
     instructions: string;
   };
-  setFormData: (value: { name: string; description: string; instructions: string }) => void;
+  setFormData: (value: {
+    name: string;
+    description: string;
+    instructions: string;
+  }) => void;
   uploadedSerachFiles: CustomFile[];
   setUploadedSerachFiles: (value: CustomFile[]) => void;
   isSearchModalOpen: boolean;
@@ -147,7 +151,10 @@ export default function ConfigureGPTSection({
           data: {
             data: { fileUrl },
           },
-        } = await instance.post(`${API_URL}/users/api/v1/file/upload`, formData);
+        } = await instance.post(
+          `${API_URL}/users/api/v1/file/upload`,
+          formData
+        );
         setIconImage(fileUrl);
         toast.success("Icon uploaded successfully");
       } catch (error) {
@@ -155,35 +162,74 @@ export default function ConfigureGPTSection({
         toast.error("Error uploading file");
       }
     };
-    const handleImageUpload: ChangeEventHandler<HTMLInputElement> = (event) => {
+    const handleImageUpload: ChangeEventHandler<HTMLInputElement> = event => {
       const file = event.target.files?.[0];
       if (file) {
         handleUploadFile(file);
       }
     };
 
-    const handleFileInputChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+    const handleFileInputChange: ChangeEventHandler<
+      HTMLInputElement
+    > = event => {
       handleImageUpload(event);
       event.target.value = "";
     };
 
-
     return (
       <div className="text-center">
-        <label className="flex items-center justify-center mx-auto" htmlFor="fileInput">
+        <label
+          className="flex items-center justify-center mx-auto"
+          htmlFor="fileInput"
+        >
           <div className="relative w-28 h-28">
             {iconImage ? (
-              <img src={iconImage} alt="Uploaded" className="w-full h-full object-cover rounded-full cursor-pointer" />
+              <img
+                src={iconImage}
+                alt="Uploaded"
+                className="w-full h-full object-cover rounded-full cursor-pointer"
+              />
             ) : (
-              <svg width="112" height="112" viewBox="0 0 112 112" fill="none" xmlns="http://www.w3.org/2000/svg" className="cursor-pointer">
-                <circle cx="56" cy="56" r="55.5" stroke="black" strokeDasharray="2 2" />
-                <path d="M56.0001 42.582V69.4154" stroke="#14171B" strokeWidth="3.35417" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M42.5833 56.0013H69.4166" stroke="#14171B" strokeWidth="3.35417" strokeLinecap="round" strokeLinejoin="round" />
+              <svg
+                width="112"
+                height="112"
+                viewBox="0 0 112 112"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="cursor-pointer"
+              >
+                <circle
+                  cx="56"
+                  cy="56"
+                  r="55.5"
+                  stroke="black"
+                  strokeDasharray="2 2"
+                />
+                <path
+                  d="M56.0001 42.582V69.4154"
+                  stroke="#14171B"
+                  strokeWidth="3.35417"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M42.5833 56.0013H69.4166"
+                  stroke="#14171B"
+                  strokeWidth="3.35417"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             )}
           </div>
         </label>
-        <input id="fileInput" type="file" accept="image/*" className="hidden" onChange={handleFileInputChange} />
+        <input
+          id="fileInput"
+          type="file"
+          accept="image/*"
+          className="hidden"
+          onChange={handleFileInputChange}
+        />
       </div>
     );
   };
@@ -203,13 +249,13 @@ export default function ConfigureGPTSection({
         return;
       }
       setIsAPICalled(true);
-      let payload: ConversationPayLoad = {
+      const payload: ConversationPayLoad = {
         name: formData.name,
         description: formData.description,
         instruction: formData.instructions,
         icon: iconImage,
       };
-      let tools = [],
+      const tools = [],
         tool_resources: ToolResources = {},
         cap = [];
       if (isToggleCheckedForSearch) {
@@ -222,7 +268,7 @@ export default function ConfigureGPTSection({
         tools.push({ type: "code_interpreter" });
         if (uploadedIntepreterFiles.length > 0) {
           tool_resources.code_interpreter = {
-            file_ids: uploadedIntepreterFiles.map((file) => file.id ?? ""),
+            file_ids: uploadedIntepreterFiles.map(file => file.id ?? ""),
           };
         }
       }
@@ -232,8 +278,13 @@ export default function ConfigureGPTSection({
       if (Object.keys(tool_resources).length) {
         payload.tool_resources = tool_resources;
       }
-      if (conversationStarters.length > 1 || (conversationStarters.length === 1 && conversationStarters[0] !== "")) {
-        payload.conversation_starter = conversationStarters.filter((starter) => starter !== "");
+      if (
+        conversationStarters.length > 1 ||
+        (conversationStarters.length === 1 && conversationStarters[0] !== "")
+      ) {
+        payload.conversation_starter = conversationStarters.filter(
+          starter => starter !== ""
+        );
       }
       if (capabilities.IMAGE || capabilities.WEB_BROWSING) {
         if (capabilities.IMAGE) {
@@ -255,7 +306,9 @@ export default function ConfigureGPTSection({
       });
       setIsAPICalled(false);
       toast.success("Conversation created successfully");
-      router.push(`/app/ai-studio/custom-gpts/gpt/?custom_gpt_id=${custom_gpt_id}`);
+      router.push(
+        `/app/ai-studio/custom-gpts/gpt/?custom_gpt_id=${custom_gpt_id}`
+      );
     } catch (error: any) {
       toast.error("Failed to create conversation");
       console.error(error);
@@ -268,8 +321,7 @@ export default function ConfigureGPTSection({
       <div className="w-full h-full overflow-auto bg-white rounded-3xl border relative">
         <div className="w-full flex flex-col items-center">
           <div className="w-80 flex relative bg-white border shadow-2xl translate-y-10 rounded-2xl overflow-hidden">
-            <div
-              className={`w-full h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 bg-primary-green !text-white font-medium`}>
+            <div className="w-full h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 bg-primary-green !text-white font-medium">
               Configure
             </div>
           </div>
@@ -283,14 +335,27 @@ export default function ConfigureGPTSection({
                   <form onSubmit={handleSubmit}>
                     {/* Form Fields */}
                     <div className="mb-4 space-y-2">
-                      <label htmlFor="name" className="block text-[14px] text-gray-700">
+                      <label
+                        htmlFor="name"
+                        className="block text-[14px] text-gray-700"
+                      >
                         Name
                       </label>
-                      <Input type="text" placeholder="Name your GPT" id="name" name="name" value={formData.name} onChange={handleChange} />
+                      <Input
+                        type="text"
+                        placeholder="Name your GPT"
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                      />
                     </div>
 
                     <div className="mb-4 space-y-2">
-                      <label htmlFor="description" className="block text-[14px] text-gray-700">
+                      <label
+                        htmlFor="description"
+                        className="block text-[14px] text-gray-700"
+                      >
                         Description
                       </label>
                       <Input
@@ -304,7 +369,10 @@ export default function ConfigureGPTSection({
                     </div>
 
                     <div className="mb-4 space-y-2">
-                      <label htmlFor="instructions" className="block text-[14px] text-gray-700">
+                      <label
+                        htmlFor="instructions"
+                        className="block text-[14px] text-gray-700"
+                      >
                         Instructions
                       </label>
                       <textarea
@@ -313,7 +381,8 @@ export default function ConfigureGPTSection({
                         name="instructions"
                         value={formData.instructions}
                         onChange={handleChange}
-                        className="mt-1 block w-full p-4 h-40 text-black bg-[#F2F2F2] border-gray-300 rounded-xl resize-none"></textarea>
+                        className="mt-1 block w-full p-4 h-40 text-black bg-[#F2F2F2] border-gray-300 rounded-xl resize-none"
+                      ></textarea>
                     </div>
 
                     <div className="mb-4 space-y-2">
@@ -325,7 +394,9 @@ export default function ConfigureGPTSection({
 
                     <div className="mb-4 space-y-4">
                       <div className="border-b border-gray-200 mt-2 pb-2">
-                        <p className="block text-[14px] text-gray-700">Capabilities</p>
+                        <p className="block text-[14px] text-gray-700">
+                          Capabilities
+                        </p>
                       </div>
                       <div className="flex gap-8">
                         <div className="flex items-center space-x-2">
@@ -338,7 +409,10 @@ export default function ConfigureGPTSection({
                               })
                             }
                           />
-                          <label htmlFor="IMAGE" className="text-sm font-medium leading-none cursor-pointer">
+                          <label
+                            htmlFor="IMAGE"
+                            className="text-sm font-medium leading-none cursor-pointer"
+                          >
                             Image
                           </label>
                         </div>
@@ -352,7 +426,10 @@ export default function ConfigureGPTSection({
                               })
                             }
                           />
-                          <label htmlFor="WEB_BROWSING" className="text-sm font-medium leading-none cursor-pointer">
+                          <label
+                            htmlFor="WEB_BROWSING"
+                            className="text-sm font-medium leading-none cursor-pointer"
+                          >
                             Web Browsing
                           </label>
                         </div>
@@ -361,7 +438,9 @@ export default function ConfigureGPTSection({
 
                     <div className="relative !mt-8">
                       <div className="border-b border-gray-200 mt-2 pb-2 mb-4">
-                        <p className="block text-[14px] text-gray-700">Conversation Starters</p>
+                        <p className="block text-[14px] text-gray-700">
+                          Conversation Starters
+                        </p>
                       </div>
                       {conversationStarters.map((starter, index) => (
                         <div key={index} className="relative gap-2 mt-2 flex">
@@ -372,7 +451,7 @@ export default function ConfigureGPTSection({
                               id={`name${index}`}
                               name={`name${index}`}
                               value={starter}
-                              onChange={(e) => handleStartersChange(index, e)}
+                              onChange={e => handleStartersChange(index, e)}
                               className="w-full p-3 bg-transparent h-[50px]"
                             />
                             {/* {conversationStarters.length > 1 && (
@@ -382,8 +461,6 @@ export default function ConfigureGPTSection({
                                 </button>
                               </div>
                             )} */}
-
-
                           </div>
                           {conversationStarters.length > 1 && (
                             <button
@@ -394,15 +471,16 @@ export default function ConfigureGPTSection({
                               <Minus />
                             </button>
                           )}
-                          {index === conversationStarters.length - 1 && index > 0 && (
-                            <button
-                              type="button"
-                              className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
-                              onClick={handleAddStarterField}
-                            >
-                              <Plus />
-                            </button>
-                          )}
+                          {index === conversationStarters.length - 1 &&
+                            index > 0 && (
+                              <button
+                                type="button"
+                                className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                                onClick={handleAddStarterField}
+                              >
+                                <Plus />
+                              </button>
+                            )}
                           {conversationStarters.length === 1 && (
                             <button
                               type="button"
@@ -422,7 +500,11 @@ export default function ConfigureGPTSection({
                           Add Conversation Starter
                         </div> */}
 
-                        <CreateForm handleCreateConversation={handleCreateConversation} isAPICalled={isAPICalled} from="CREATE" />
+                        <CreateForm
+                          handleCreateConversation={handleCreateConversation}
+                          isAPICalled={isAPICalled}
+                          from="CREATE"
+                        />
                       </div>
                     </div>
                   </form>
@@ -440,20 +522,34 @@ export default function ConfigureGPTSection({
           <div className="flex-1 flex flex-col justify-center items-center mb-48">
             <div className="flex justify-center items-center flex-col mb-7">
               {iconImage ? (
-                <Image src={iconImage} alt="cookie" width={112} height={112} className="rounded-full w-28 h-28" />
+                <Image
+                  src={iconImage}
+                  alt="cookie"
+                  width={112}
+                  height={112}
+                  className="rounded-full w-28 h-28"
+                />
               ) : (
                 <div className="w-28 h-28 rounded-full bg-white grid place-content-center">
                   <ImageIcon size={30} className="text-gray-400" />
                 </div>
               )}
               <div className="mt-5 space-y-3">
-                <h2 className="font-bold text-[18px] text-center">{formData.name ? formData.name : "[Your GPT Name]"}</h2>
-                <p className="text-[14px] text-center">{formData.description ? formData.description : "[Your custom GPT description ie Short & Concise]"}</p>
+                <h2 className="font-bold text-[18px] text-center">
+                  {formData.name ? formData.name : "[Your GPT Name]"}
+                </h2>
+                <p className="text-[14px] text-center">
+                  {formData.description
+                    ? formData.description
+                    : "[Your custom GPT description ie Short & Concise]"}
+                </p>
               </div>
             </div>
-            {conversationStarters.some((starter) => starter.length > 0) && (
+            {conversationStarters.some(starter => starter.length > 0) && (
               <div className="w-full">
-                <h2 className="font-bold text-xl text-center">Your Conversation Starters</h2>
+                <h2 className="font-bold text-xl text-center">
+                  Your Conversation Starters
+                </h2>
                 <div
                   className={clsx(
                     "w-full grid gap-4 mt-6",
@@ -464,9 +560,13 @@ export default function ConfigureGPTSection({
                         : conversationStarters.length === 3
                           ? "grid-cols-3"
                           : "grid-cols-4"
-                  )}>
+                  )}
+                >
                   {conversationStarters.map((starter, index) => (
-                    <div key={index} className="text-sm whitespace-pre-line bg-white p-4 border rounded-2xl shadow-md break-words">
+                    <div
+                      key={index}
+                      className="text-sm whitespace-pre-line bg-white p-4 border rounded-2xl shadow-md break-words"
+                    >
                       {starter}
                     </div>
                   ))}

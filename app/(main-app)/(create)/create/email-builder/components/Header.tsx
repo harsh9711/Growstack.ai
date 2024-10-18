@@ -6,18 +6,27 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import clsx from "clsx";
 import { ArrowLeft, ChevronDown, Redo2, Undo2, X } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { HiOutlineQuestionMarkCircle } from "react-icons/hi2";
-import { SlScreenDesktop, SlScreenSmartphone, SlScreenTablet } from "react-icons/sl";
+import {
+  SlScreenDesktop,
+  SlScreenSmartphone,
+  SlScreenTablet,
+} from "react-icons/sl";
 
 export default function Header({
   handleViewScreenChange,
   iframeWidth,
-  handleExport
+  handleExport,
 }: {
   handleViewScreenChange: (value: string) => void;
   iframeWidth: string;
@@ -43,17 +52,29 @@ export default function Header({
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-[200px] relative right-10 text-[15px]">
             <DropdownMenuGroup>
-              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">New</DropdownMenuItem>
+              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">
+                New
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">Clear</DropdownMenuItem>
+              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">
+                Clear
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">New from template</DropdownMenuItem>
+              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">
+                New from template
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">Upload template</DropdownMenuItem>
+              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">
+                Upload template
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">Save</DropdownMenuItem>
+              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">
+                Save
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">Exit</DropdownMenuItem>
+              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">
+                Exit
+              </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -66,21 +87,37 @@ export default function Header({
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-[200px] relative right-10 text-[15px]">
             <DropdownMenuGroup>
-              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">Blank</DropdownMenuItem>
+              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">
+                Blank
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">Pricing table</DropdownMenuItem>
+              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">
+                Pricing table
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">Listing & tables</DropdownMenuItem>
+              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">
+                Listing & tables
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">Forms building</DropdownMenuItem>
+              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">
+                Forms building
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">1-2-1 column layout</DropdownMenuItem>
+              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">
+                1-2-1 column layout
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">1-2 column layout</DropdownMenuItem>
+              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">
+                1-2 column layout
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">1-3-1 column layout</DropdownMenuItem>
+              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">
+                1-3-1 column layout
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">1-3-2 column layout</DropdownMenuItem>
+              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">
+                1-3-2 column layout
+              </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -93,9 +130,13 @@ export default function Header({
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-[200px] relative right-10 text-[15px]">
             <DropdownMenuGroup>
-              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">Desktop</DropdownMenuItem>
+              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">
+                Desktop
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">Mobile</DropdownMenuItem>
+              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">
+                Mobile
+              </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -108,9 +149,13 @@ export default function Header({
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-[200px] relative right-10 text-[15px]">
             <DropdownMenuGroup>
-              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">Design</DropdownMenuItem>
+              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">
+                Design
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">Source</DropdownMenuItem>
+              <DropdownMenuItem className="flex gap-3 px-4 py-2 rounded">
+                Source
+              </DropdownMenuItem>
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -125,7 +170,8 @@ export default function Header({
                   "h-10 w-10 rounded-lg flex gap-2 items-center justify-center transition-all duration-300",
                   iframeWidth === "100%" && "bg-white text-primary-green"
                 )}
-                onClick={() => handleViewScreenChange("desktop")}>
+                onClick={() => handleViewScreenChange("desktop")}
+              >
                 <SlScreenDesktop size={22} />
               </button>
             </TooltipTrigger>
@@ -142,7 +188,8 @@ export default function Header({
                   "h-10 w-10 rounded-lg flex gap-2 items-center justify-center transition-all duration-300",
                   iframeWidth === "768px" && "bg-white text-primary-green"
                 )}
-                onClick={() => handleViewScreenChange("tablet")}>
+                onClick={() => handleViewScreenChange("tablet")}
+              >
                 <SlScreenTablet size={22} />
               </button>
             </TooltipTrigger>
@@ -159,7 +206,8 @@ export default function Header({
                   "h-10 w-10 rounded-lg flex gap-2 items-center justify-center transition-all duration-300",
                   iframeWidth === "375px" && "bg-white text-primary-green"
                 )}
-                onClick={() => handleViewScreenChange("mobile")}>
+                onClick={() => handleViewScreenChange("mobile")}
+              >
                 <SlScreenSmartphone size={22} />
               </button>
             </TooltipTrigger>
@@ -176,7 +224,8 @@ export default function Header({
                   "h-10 w-10 rounded-lg flex gap-2 items-center justify-center transition-all duration-300",
                   iframeWidth === "675px" && "bg-white text-primary-green"
                 )}
-                onClick={() => handleViewScreenChange("portrait")}>
+                onClick={() => handleViewScreenChange("portrait")}
+              >
                 <SlScreenSmartphone size={22} className="rotate-90" />
               </button>
             </TooltipTrigger>
@@ -208,10 +257,14 @@ export default function Header({
         </button>
         <button
           onClick={handleExport}
-          className="bg-[#fff]/20 hover:bg-white text-white hover:text-primary-green h-10 px-4 flex justify-center items-center rounded-lg transition-all duration-300">
+          className="bg-[#fff]/20 hover:bg-white text-white hover:text-primary-green h-10 px-4 flex justify-center items-center rounded-lg transition-all duration-300"
+        >
           Export
         </button>
-        <button onClick={() => router.back()} className="bg-[#FF0000] h-9 w-9 grid place-content-center text-white rounded">
+        <button
+          onClick={() => router.back()}
+          className="bg-[#FF0000] h-9 w-9 grid place-content-center text-white rounded"
+        >
           <X size={20} />
         </button>
       </div>

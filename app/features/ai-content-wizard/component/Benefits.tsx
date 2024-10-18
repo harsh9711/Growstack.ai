@@ -75,11 +75,11 @@ const boxessecond = [
 const Benefits = () => {
   useEffect(() => {
     AOS.init({
-      duration: 500, 
+      duration: 500,
       easing: "ease-in-out",
       offset: 1,
     });
-    AOS.refresh(); 
+    AOS.refresh();
   }, []);
 
   return (
@@ -88,7 +88,6 @@ const Benefits = () => {
       data-aos="flip-left"
       data-aos-duration="500"
     >
-      
       <div
         className="max-w-[104px] rounded-2xl item-center justify-center w-full py-2 text-black bg-[#03473714]"
         data-aos="zoom-in"
@@ -147,7 +146,8 @@ const Benefits = () => {
         </div>
         <div
           className="flex flex-col-reverse sm:flex-row-reverse items-end justify-between gap-10 w-full"
-          data-aos="fade-left" data-aos-delay="100"
+          data-aos="fade-left"
+          data-aos-delay="100"
         >
           <div className="flex flex-col gap-y-6">
             <Image
@@ -186,7 +186,8 @@ const Benefits = () => {
         </div>
         <div
           className="flex flex-col sm:flex-row items-center justify-between gap-10 w-full"
-          data-aos="fade-right" data-aos-delay="100"
+          data-aos="fade-right"
+          data-aos-delay="100"
         >
           <div className="">
             <Image

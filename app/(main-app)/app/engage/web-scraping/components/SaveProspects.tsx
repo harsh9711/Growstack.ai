@@ -1,6 +1,12 @@
 "use client";
 import Spinner from "@/components/Spinner";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import clsx from "clsx";
@@ -20,9 +26,11 @@ const SaveProspects = ({ places }: { places: Place[] }) => {
     setIsPending(true);
 
     try {
-      const businesses = places.map((place) => ({
+      const businesses = places.map(place => ({
         business_name: place.title,
-        business_phone_number: place.phoneNumber ? Number(place.phoneNumber.replace(/\D/g, "")) : 0,
+        business_phone_number: place.phoneNumber
+          ? Number(place.phoneNumber.replace(/\D/g, ""))
+          : 0,
         address: place.address,
         rating: place.rating,
         rating_count: place.ratingCount,
@@ -35,7 +43,9 @@ const SaveProspects = ({ places }: { places: Place[] }) => {
           first_name: "Swapnil",
           last_name: "Amin",
           email: "swapnil@webbuddy.agency",
-          phone: place.phoneNumber ? Number(place.phoneNumber.replace(/\D/g, "")) : 0,
+          phone: place.phoneNumber
+            ? Number(place.phoneNumber.replace(/\D/g, ""))
+            : 0,
         },
       }));
 
@@ -44,7 +54,10 @@ const SaveProspects = ({ places }: { places: Place[] }) => {
         businesses: businesses,
       };
 
-      const response = await instance.post(`${API_URL}/users/api/v1/contacts/prospects/save`, data);
+      const response = await instance.post(
+        `${API_URL}/users/api/v1/contacts/prospects/save`,
+        data
+      );
       toast.success("Data saved successfully!");
 
       setTimeout(() => {
@@ -78,7 +91,8 @@ const SaveProspects = ({ places }: { places: Place[] }) => {
             "mx-auto mt-4 w-[160px] text-xl h-14 flex items-center justify-center bg-primary-green rounded-xl sheen text-white",
             isPending && "bg-opacity-90"
           )}
-          disabled={isPending}>
+          disabled={isPending}
+        >
           Save
           <FaArrowCircleLeft className="rotate-180 text-white ml-4" />
         </button>
@@ -90,17 +104,21 @@ const SaveProspects = ({ places }: { places: Place[] }) => {
         <input
           type="text"
           value={fileTitle}
-          onChange={(e) => setFileTitle(e.target.value)}
+          onChange={e => setFileTitle(e.target.value)}
           className="w-full h-12 p-2 mb-4 border rounded-lg"
           placeholder="Enter file title"
         />
         <div className="flex justify-end z-[40] relative">
           <button
             onClick={() => setIsModalOpen(false)}
-            className="w-[100px] h-12 px-4 py-2 mr-2 text-white bg-gray-500 rounded-xl flex justify-center items-center">
+            className="w-[100px] h-12 px-4 py-2 mr-2 text-white bg-gray-500 rounded-xl flex justify-center items-center"
+          >
             Cancel
           </button>
-          <button onClick={handleModalSubmit} className="w-[100px] h-12 px-4 py-2 text-white bg-primary-green rounded-xl flex justify-center items-center">
+          <button
+            onClick={handleModalSubmit}
+            className="w-[100px] h-12 px-4 py-2 text-white bg-primary-green rounded-xl flex justify-center items-center"
+          >
             {isPending ? <Spinner /> : "Submit"}
           </button>
         </div>

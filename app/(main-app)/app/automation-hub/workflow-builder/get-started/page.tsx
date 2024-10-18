@@ -13,16 +13,25 @@ export default function GetStarted() {
           <div className="space-y-2 w-full">
             <h1 className="text-2xl font-semibold">Get started</h1>
             <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
-              Explore pre-built templates, create a new workflow, or import an existing one.
+              Explore pre-built templates, create a new workflow, or import an
+              existing one.
             </p>
           </div>
         </div>
         <div className="w-full py-14 px-5 bg-white rounded-3xl border border-[#E8E8E8] mt-16 max-w-[1600px] mx-auto">
           <div className="flex flex-col justify-center items-center space-y-8">
-            <Image src="/logo/growstack-mini.png" alt="" width={50} height={50} />
-            <h2 className="text-3xl font-semibold text-center">Let's build your first workflow</h2>
+            <Image
+              src="/logo/growstack-mini.png"
+              alt=""
+              width={50}
+              height={50}
+            />
+            <h2 className="text-3xl font-semibold text-center">
+              Let's build your first workflow
+            </h2>
             <p className="text-primary-black text-opacity-60 max-w-2xl mx-auto text-[16px] leading-relaxed text-center !mt-2">
-              You don't have any workflows yet. Explore our template library to get started or build your own from scratch.
+              You don't have any workflows yet. Explore our template library to
+              get started or build your own from scratch.
             </p>
             <div className="flex gap-4">
               <Link href={ALL_ROUTES.WORKFLOW_BUILDER_CREATE}>

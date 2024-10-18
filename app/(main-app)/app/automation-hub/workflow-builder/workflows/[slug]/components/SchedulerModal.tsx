@@ -66,14 +66,14 @@ function SchedulerModal({
 
     try {
       const runner_payload = {
-        actions_with_runs: workFlowData.actions.map((action) => ({
+        actions_with_runs: workFlowData.actions.map(action => ({
           action: action._id,
         })),
-        inputs: workFlowData.input_configs.map((input) => ({
+        inputs: workFlowData.input_configs.map(input => ({
           variable_name: input.variable_name,
           variable_value: input.default_value,
         })),
-        outputs: workFlowData.output_configs.map((output) => ({
+        outputs: workFlowData.output_configs.map(output => ({
           variable_name: output.display_name,
           variable_value: output.value,
           variable_type: output.type,
@@ -105,7 +105,7 @@ function SchedulerModal({
   };
 
   const handleChangeField = (field: keyof Fields, value: string) => {
-    setFields((prevFields) => ({
+    setFields(prevFields => ({
       ...prevFields,
       [field]: value || "-",
     }));
@@ -113,7 +113,7 @@ function SchedulerModal({
 
   const handleChangeInput = (value: string, idx: number) => {
     const updatedInputs = [...workFlowData.input_configs];
-    updatedInputs[idx].default_value = value || "-"; 
+    updatedInputs[idx].default_value = value || "-";
     setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
   };
 
@@ -135,31 +135,31 @@ function SchedulerModal({
               <Dropdown
                 label="Select frequency"
                 items={frequency_options}
-                showTitle={true}
+                showTitle
                 title="Frequency"
                 value={fields.frequency}
-                onChange={(value) => handleChangeField("frequency", value)}
-                required={true}
+                onChange={value => handleChangeField("frequency", value)}
+                required
               />
               <Dropdown
                 label="Select Timezone"
                 items={timezones}
-                showTitle={true}
+                showTitle
                 title="Timezone"
                 value={fields.timezone}
-                onChange={(value) => handleChangeField("timezone", value)}
-                required={true}
+                onChange={value => handleChangeField("timezone", value)}
+                required
               />
 
               {fields.frequency === "weekly" && (
                 <Dropdown
                   label="Select day of the week"
                   items={days_of_week}
-                  showTitle={true}
+                  showTitle
                   title="Day of the Week"
                   value={fields.day_of_week}
-                  onChange={(value) => handleChangeField("day_of_week", value)}
-                  required={true}
+                  onChange={value => handleChangeField("day_of_week", value)}
+                  required
                 />
               )}
 
@@ -167,11 +167,11 @@ function SchedulerModal({
                 <Dropdown
                   label="Select day of the month"
                   items={days_of_month}
-                  showTitle={true}
+                  showTitle
                   title="Day of the Month"
                   value={fields.day_of_month}
-                  onChange={(value) => handleChangeField("day_of_month", value)}
-                  required={true}
+                  onChange={value => handleChangeField("day_of_month", value)}
+                  required
                 />
               )}
 
@@ -180,8 +180,8 @@ function SchedulerModal({
                 <Input
                   type="time"
                   value={fields.time}
-                  onChange={(e) => handleChangeField("time", e.target.value)}
-                  required={true}
+                  onChange={e => handleChangeField("time", e.target.value)}
+                  required
                 />
               </div>
             </div>
@@ -196,7 +196,7 @@ function SchedulerModal({
                   placeholder={input.placeholder}
                   className="w-full p-4 h-[46px] border border-gray-100 bg-[#F5F5F5] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
                   value={input.default_value}
-                  onChange={(e) => handleChangeInput(e.target.value, idx)}
+                  onChange={e => handleChangeInput(e.target.value, idx)}
                 />
               </div>
             ))}

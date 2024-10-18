@@ -1,6 +1,14 @@
 import { MasterCardIcon } from "@/components/svgs";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Plus } from "lucide-react";
 import CreditCardInput from "./CreditCardInput";
@@ -12,7 +20,7 @@ export default function AddPaymentDialog() {
         <div className="flex justify-end mt-4">
           <button className="font-medium flex items-center gap-3 px-3 py-4  bg-primary-green text-white sheen transition-all duration-300 rounded-lg">
             {/* <Plus /> */}
-        Pay
+            Pay
           </button>
         </div>
       </DialogTrigger>

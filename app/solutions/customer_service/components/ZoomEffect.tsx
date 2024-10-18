@@ -31,7 +31,7 @@ const ImageGallery = () => {
   }, [clickedImage]);
 
   const handleClick = (largeSrc: string) => {
-    setClickedImage((prev) => (prev === largeSrc ? null : largeSrc));
+    setClickedImage(prev => (prev === largeSrc ? null : largeSrc));
   };
 
   const handleClose = () => {
@@ -98,8 +98,9 @@ const ImageGallery = () => {
                 alt={`Image ${index}`}
                 width={100}
                 height={100}
-                className={`relative w-[1260px] h-[360px] ${clickedImage === image.largeSrc ? "opacity-50" : ""
-                  }`}
+                className={`relative w-[1260px] h-[360px] ${
+                  clickedImage === image.largeSrc ? "opacity-50" : ""
+                }`}
               />
               <button className="absolute -bottom-6 text-left right-4 hover:text-[#14171B] text-[20px] font-semibold max-w-[250px] w-full py-2 rounded-2xl">
                 {image.buttonText}
@@ -121,8 +122,9 @@ const ImageGallery = () => {
         </motion.div>
 
         <div
-          className={`mx-auto z-30 items-center justify-center inset-0 transition-opacity duration-500 ${clickedImage ? "opacity-0" : "opacity-60"
-            }`}
+          className={`mx-auto z-30 items-center justify-center inset-0 transition-opacity duration-500 ${
+            clickedImage ? "opacity-0" : "opacity-60"
+          }`}
         >
           <Image
             src="/customer2.svg"
@@ -140,7 +142,7 @@ const ImageGallery = () => {
           >
             <div
               className="relative max-w-full max-h-full p-4 rounded-lg"
-              onClick={(e) => e.stopPropagation()}
+              onClick={e => e.stopPropagation()}
             >
               <div className="absolute top-0 left-0 right-0  text-white p-8 flex items-center justify-between rounded-t-lg">
                 <span className="text-lg font-semibold opacity-0">

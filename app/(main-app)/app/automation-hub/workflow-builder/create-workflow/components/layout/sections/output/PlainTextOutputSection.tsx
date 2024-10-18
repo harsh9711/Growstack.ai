@@ -29,21 +29,29 @@ type SuggestionOption = {
   index: number;
   isExpanded: boolean;
   subOptions: SubOption[];
-  show: boolean
+  show: boolean;
 };
 
 type SubOption = {
   label: string;
   name: string;
-  show: boolean
+  show: boolean;
 };
 
-export default function PlainTextOutputSection({ actions, inputConfigs, outputParams, onParamsChange, jsonKeyError, setJsonKeyError }: PlainTextOutputSectionProps) {
-
+export default function PlainTextOutputSection({
+  actions,
+  inputConfigs,
+  outputParams,
+  onParamsChange,
+  jsonKeyError,
+  setJsonKeyError,
+}: PlainTextOutputSectionProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const [suggestionOptions, setSuggestionOptions] = useState<SuggestionOption[]>([]);
+  const [suggestionOptions, setSuggestionOptions] = useState<
+    SuggestionOption[]
+  >([]);
   const [isDropdownVisible, setDropdownVisible] = useState(false);
 
   const [params, setParams] = useState<PlainTextParams>({
@@ -59,16 +67,18 @@ export default function PlainTextOutputSection({ actions, inputConfigs, outputPa
   const updateParams = (updates: Partial<PlainTextParams>) => {
     const updatedParams = { ...params, ...updates };
     if (updates.display_name) {
-      updatedParams.json_key = updates.display_name.trim().toLowerCase().replace(/\s+/g, "_");
-    }
-    else if(updates.display_name === ""){
-      updatedParams.json_key = ""
+      updatedParams.json_key = updates.display_name
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, "_");
+    } else if (updates.display_name === "") {
+      updatedParams.json_key = "";
     }
     setParams(updatedParams);
-    if ('json_key' in updatedParams) {
+    if ("json_key" in updatedParams) {
       try {
         jsonKeySchema.parse(updatedParams.json_key);
-        setJsonKeyError('');
+        setJsonKeyError("");
       } catch (err) {
         if (err instanceof z.ZodError) {
           setJsonKeyError(err.errors[0].message);
@@ -77,13 +87,12 @@ export default function PlainTextOutputSection({ actions, inputConfigs, outputPa
     }
   };
 
-
   useEffect(() => {
     setSuggestionOptions([
       {
-        type: 'input',
-        name: 'Input',
-        label: 'Input',
+        type: "input",
+        name: "Input",
+        label: "Input",
         icon: <InputIcon2 />,
         isExpanded: false,
         index: 0,
@@ -92,39 +101,56 @@ export default function PlainTextOutputSection({ actions, inputConfigs, outputPa
           label: inputConfig.variable_name,
           value: inputConfig._id,
           name: inputConfig.variable_name,
-          show: true
-        }))
+          show: true,
+        })),
       },
       ...actions.map((action: any, index: number) => ({
-        type: 'output',
+        type: "output",
         name: action.name,
         label: action.name,
         index: index + 1,
         isExpanded: false,
         show: true,
-        icon: <img src={action.icon} alt={action.name} width="24" height="24" className="flex-shrink-0 rounded-md object-contain min-h-[24px] min-w-[24px]" />,
-        subOptions: [{
-          label: 'Output',
-          value: action.action_id,
-          name: `step${index + 1}.output`,
-          show: true
-        }]
-      }))
+        icon: (
+          <img
+            src={action.icon}
+            alt={action.name}
+            width="24"
+            height="24"
+            className="flex-shrink-0 rounded-md object-contain min-h-[24px] min-w-[24px]"
+          />
+        ),
+        subOptions: [
+          {
+            label: "Output",
+            value: action.action_id,
+            name: `step${index + 1}.output`,
+            show: true,
+          },
+        ],
+      })),
     ]);
   }, []);
 
   // Handle clicking outside of the dropdown
   useEffect(() => {
     const handleClickOutside = (event: any) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target) && textareaRef.current && !textareaRef.current.contains(event.target)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target) &&
+        textareaRef.current &&
+        !textareaRef.current.contains(event.target)
+      ) {
         setDropdownVisible(false);
-        setSuggestionOptions((prevState) => prevState.map((option) => ({ ...option, isExpanded: false })));
+        setSuggestionOptions(prevState =>
+          prevState.map(option => ({ ...option, isExpanded: false }))
+        );
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -135,49 +161,60 @@ export default function PlainTextOutputSection({ actions, inputConfigs, outputPa
       const textarea = textareaRef.current;
       const startPos = textarea.selectionStart;
       const endPos = textarea.selectionEnd;
-      const newDescription = params.value.substring(0, startPos) + `{$` + `{${subOption.name}}}` + params.value.substring(endPos);
+      const newDescription =
+        params.value.substring(0, startPos) +
+        `{$` +
+        `{${subOption.name}}}` +
+        params.value.substring(endPos);
       updateParams({ value: newDescription });
-  
-      
-      const placeholderIndex = newDescription.indexOf(`{$` + `{${subOption.name}}}`);
-  
-      const totalPlaceholders = newDescription.split('{').length - 1;
-  
-      const newCursorPos = placeholderIndex + subOption.name.length + 2 * (totalPlaceholders - 1);
-  
-     
+
+      const placeholderIndex = newDescription.indexOf(
+        `{$` + `{${subOption.name}}}`
+      );
+
+      const totalPlaceholders = newDescription.split("{").length - 1;
+
+      const newCursorPos =
+        placeholderIndex + subOption.name.length + 2 * (totalPlaceholders - 1);
+
       textarea.setSelectionRange(newCursorPos, newCursorPos);
       textarea.focus();
-
-     
     }
   };
-  
-  
 
   return (
-    <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion
+      transition={{ duration: 0.5 }}
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+    >
       <div className="space-y-4">
         <div className="space-y-2">
           <label className="font-medium text-sm">Output label</label>
           <Input
             type="text"
             placeholder="Output label"
-            onChange={(e) => updateParams({ display_name: e.target.value })}
+            onChange={e => updateParams({ display_name: e.target.value })}
             value={params.display_name}
           />
         </div>
 
         <div className="space-y-2">
-          <label className="font-medium flex gap-2 items-center">Value </label> 
+          <label className="font-medium flex gap-2 items-center">Value </label>
           <textarea
             ref={textareaRef}
             value={params.value}
-            onChange={(e) => updateParams({ value: e.target.value })}
+            onChange={e => updateParams({ value: e.target.value })}
             onFocus={handleTextareaFocus}
             placeholder="Reference variables from previous steps using '@' to autocomplete"
-            className="bg-[#F2F2F2] p-3 h-[120px] block resize-none w-full rounded-xl"></textarea>
-          <SuggestionDropdown dropdownRef={dropdownRef} isDropdownVisible={isDropdownVisible} handleSubOptionClick={handleSubOptionClick} suggestionOptions={suggestionOptions} setSuggestionOptions={setSuggestionOptions} />
+            className="bg-[#F2F2F2] p-3 h-[120px] block resize-none w-full rounded-xl"
+          ></textarea>
+          <SuggestionDropdown
+            dropdownRef={dropdownRef}
+            isDropdownVisible={isDropdownVisible}
+            handleSubOptionClick={handleSubOptionClick}
+            suggestionOptions={suggestionOptions}
+            setSuggestionOptions={setSuggestionOptions}
+          />
         </div>
 
         <div className="space-y-2">
@@ -186,7 +223,7 @@ export default function PlainTextOutputSection({ actions, inputConfigs, outputPa
             type="text"
             placeholder="Key (e.g. download_link)"
             value={params.json_key}
-            onChange={(e) => updateParams({ json_key: e.target.value })}
+            onChange={e => updateParams({ json_key: e.target.value })}
           />
           <p className="text-red-400 text-xs"> {jsonKeyError}</p>
         </div>

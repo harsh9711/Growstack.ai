@@ -1,5 +1,11 @@
 import Spinner from "@/components/Spinner";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { Trash2 } from "lucide-react";
@@ -16,7 +22,9 @@ const DeleteContact = ({ selectedIds, getContacts }: DeleteContactProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleSubmit = async (e: React.FormEvent) => {
     if (!selectedIds.length) {
-      return toast.error("No selected contacts. Select at least one user to proceed.");
+      return toast.error(
+        "No selected contacts. Select at least one user to proceed."
+      );
     }
 
     e.preventDefault();
@@ -28,7 +36,10 @@ const DeleteContact = ({ selectedIds, getContacts }: DeleteContactProps) => {
           delete: true,
         },
       };
-      const response = await instance.put(`${API_URL}/users/api/v1/contacts/bulk-edit`, payload);
+      const response = await instance.put(
+        `${API_URL}/users/api/v1/contacts/bulk-edit`,
+        payload
+      );
       getContacts();
       toast.success(response.data.message);
     } catch (error: any) {
@@ -58,13 +69,15 @@ const DeleteContact = ({ selectedIds, getContacts }: DeleteContactProps) => {
             <button
               type="button"
               onClick={() => setIsOpen(false)}
-              className="text-[14px] w-[100px] h-12 border border-red-500 bg-white text-red-500 rounded-xl flex justify-center items-center">
+              className="text-[14px] w-[100px] h-12 border border-red-500 bg-white text-red-500 rounded-xl flex justify-center items-center"
+            >
               Cancel
             </button>
             <button
               disabled={loading}
               type="submit"
-              className="text-[14px] w-[100px] h-12 bg-primary-green text-white rounded-xl flex justify-center items-center">
+              className="text-[14px] w-[100px] h-12 bg-primary-green text-white rounded-xl flex justify-center items-center"
+            >
               {loading ? <Spinner /> : "Delete"}
             </button>
           </div>

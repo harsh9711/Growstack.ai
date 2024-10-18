@@ -15,7 +15,10 @@ import "@/styles/swiper.css";
 
 export default function ShowCaseReviewsSection() {
   return (
-    <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion
+      transition={{ duration: 0.2 }}
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+    >
       <div className="relative bg-white border border-[#E1E1E1] rounded-3xl py-7 px-10 text-sm">
         <div className="flex justify-between items-center border-b border-[#D6D6D6] pb-5 mb-7">
           <h1 className="text-2xl font-semibold">GrowStack Reviews</h1>
@@ -26,7 +29,11 @@ export default function ShowCaseReviewsSection() {
                 {Array(5)
                   .fill(null)
                   .map((_, index) => (
-                    <BsStarFill size={18} className="text-[#FFA800]" key={index} />
+                    <BsStarFill
+                      size={18}
+                      className="text-[#FFA800]"
+                      key={index}
+                    />
                   ))}
               </div>
               5.0 Stars
@@ -36,21 +43,27 @@ export default function ShowCaseReviewsSection() {
         <Swiper
           modules={[Navigation, Scrollbar, A11y, Pagination]}
           spaceBetween={20}
-          loop={true}
+          loop
           className="w-full"
           slidesPerView={1}
           navigation={{
             nextEl: ".button-next-slide",
             prevEl: ".button-prev-slide",
           }}
-          pagination={{ clickable: true }}>
+          pagination={{ clickable: true }}
+        >
           <SwiperSlide className="cursor-grab active:cursor-grabbing w-full">
             <div className="w-full space-y-4">
               <p className="leading-relaxed">
-                Lorem ipsum dolor sit amet consectetur. Sed non ac volutpat ornare vitae suspendisse massa tincidunt quis. Duis tristique sit nulla ut
-                sollicitudin auctor ac nascetur ut. Risus nullam lacus lorem tellus adipiscing hendrerit. Adipiscing integer tempor aliquam accumsan nulla
-                feugiat lacinia maecenas. Vitae nunc maecenas pretium velit nisi vulputate eu. Bibendum placerat in semper rutrum ridiculus risus sit. Eu purus
-                ultricies maecenas nulla pellentesque rhoncus aliquam viverra. Nisi ultricies ut condimentum feugiat.
+                Lorem ipsum dolor sit amet consectetur. Sed non ac volutpat
+                ornare vitae suspendisse massa tincidunt quis. Duis tristique
+                sit nulla ut sollicitudin auctor ac nascetur ut. Risus nullam
+                lacus lorem tellus adipiscing hendrerit. Adipiscing integer
+                tempor aliquam accumsan nulla feugiat lacinia maecenas. Vitae
+                nunc maecenas pretium velit nisi vulputate eu. Bibendum placerat
+                in semper rutrum ridiculus risus sit. Eu purus ultricies
+                maecenas nulla pellentesque rhoncus aliquam viverra. Nisi
+                ultricies ut condimentum feugiat.
               </p>
               <div className="flex justify-between">
                 <div className="flex gap-3 items-center font-medium">
@@ -58,11 +71,20 @@ export default function ShowCaseReviewsSection() {
                     {Array(5)
                       .fill(null)
                       .map((_, index) => (
-                        <BsStarFill size={18} className="text-[#FFA800]" key={index} />
+                        <BsStarFill
+                          size={18}
+                          className="text-[#FFA800]"
+                          key={index}
+                        />
                       ))}
                   </div>
                   5.0 Stars
-                  <Image src="/icons/google.svg" alt="" width={30} height={30} />
+                  <Image
+                    src="/icons/google.svg"
+                    alt=""
+                    width={30}
+                    height={30}
+                  />
                 </div>
                 <div className="font-medium">13th Mar 2024</div>
               </div>
@@ -71,10 +93,15 @@ export default function ShowCaseReviewsSection() {
           <SwiperSlide className="cursor-grab active:cursor-grabbing w-full">
             <div className="w-full space-y-4">
               <p className="leading-relaxed">
-                Lorem ipsum dolor sit amet consectetur. Sed non ac volutpat ornare vitae suspendisse massa tincidunt quis. Duis tristique sit nulla ut
-                sollicitudin auctor ac nascetur ut. Risus nullam lacus lorem tellus adipiscing hendrerit. Adipiscing integer tempor aliquam accumsan nulla
-                feugiat lacinia maecenas. Vitae nunc maecenas pretium velit nisi vulputate eu. Bibendum placerat in semper rutrum ridiculus risus sit. Eu purus
-                ultricies maecenas nulla pellentesque rhoncus aliquam viverra. Nisi ultricies ut condimentum feugiat.
+                Lorem ipsum dolor sit amet consectetur. Sed non ac volutpat
+                ornare vitae suspendisse massa tincidunt quis. Duis tristique
+                sit nulla ut sollicitudin auctor ac nascetur ut. Risus nullam
+                lacus lorem tellus adipiscing hendrerit. Adipiscing integer
+                tempor aliquam accumsan nulla feugiat lacinia maecenas. Vitae
+                nunc maecenas pretium velit nisi vulputate eu. Bibendum placerat
+                in semper rutrum ridiculus risus sit. Eu purus ultricies
+                maecenas nulla pellentesque rhoncus aliquam viverra. Nisi
+                ultricies ut condimentum feugiat.
               </p>
               <div className="flex justify-between">
                 <div className="flex gap-3 items-center font-medium">
@@ -82,11 +109,20 @@ export default function ShowCaseReviewsSection() {
                     {Array(5)
                       .fill(null)
                       .map((_, index) => (
-                        <BsStarFill size={18} className="text-[#FFA800]" key={index} />
+                        <BsStarFill
+                          size={18}
+                          className="text-[#FFA800]"
+                          key={index}
+                        />
                       ))}
                   </div>
                   5.0 Stars
-                  <Image src="/icons/google.svg" alt="" width={30} height={30} />
+                  <Image
+                    src="/icons/google.svg"
+                    alt=""
+                    width={30}
+                    height={30}
+                  />
                 </div>
                 <div className="font-medium">13th Mar 2024</div>
               </div>
@@ -95,10 +131,15 @@ export default function ShowCaseReviewsSection() {
           <SwiperSlide className="cursor-grab active:cursor-grabbing w-full">
             <div className="w-full space-y-4">
               <p className="leading-relaxed">
-                Lorem ipsum dolor sit amet consectetur. Sed non ac volutpat ornare vitae suspendisse massa tincidunt quis. Duis tristique sit nulla ut
-                sollicitudin auctor ac nascetur ut. Risus nullam lacus lorem tellus adipiscing hendrerit. Adipiscing integer tempor aliquam accumsan nulla
-                feugiat lacinia maecenas. Vitae nunc maecenas pretium velit nisi vulputate eu. Bibendum placerat in semper rutrum ridiculus risus sit. Eu purus
-                ultricies maecenas nulla pellentesque rhoncus aliquam viverra. Nisi ultricies ut condimentum feugiat.
+                Lorem ipsum dolor sit amet consectetur. Sed non ac volutpat
+                ornare vitae suspendisse massa tincidunt quis. Duis tristique
+                sit nulla ut sollicitudin auctor ac nascetur ut. Risus nullam
+                lacus lorem tellus adipiscing hendrerit. Adipiscing integer
+                tempor aliquam accumsan nulla feugiat lacinia maecenas. Vitae
+                nunc maecenas pretium velit nisi vulputate eu. Bibendum placerat
+                in semper rutrum ridiculus risus sit. Eu purus ultricies
+                maecenas nulla pellentesque rhoncus aliquam viverra. Nisi
+                ultricies ut condimentum feugiat.
               </p>
               <div className="flex justify-between">
                 <div className="flex gap-3 items-center font-medium">
@@ -106,11 +147,20 @@ export default function ShowCaseReviewsSection() {
                     {Array(5)
                       .fill(null)
                       .map((_, index) => (
-                        <BsStarFill size={18} className="text-[#FFA800]" key={index} />
+                        <BsStarFill
+                          size={18}
+                          className="text-[#FFA800]"
+                          key={index}
+                        />
                       ))}
                   </div>
                   5.0 Stars
-                  <Image src="/icons/google.svg" alt="" width={30} height={30} />
+                  <Image
+                    src="/icons/google.svg"
+                    alt=""
+                    width={30}
+                    height={30}
+                  />
                 </div>
                 <div className="font-medium">13th Mar 2024</div>
               </div>
@@ -119,10 +169,15 @@ export default function ShowCaseReviewsSection() {
           <SwiperSlide className="cursor-grab active:cursor-grabbing w-full">
             <div className="w-full space-y-4">
               <p className="leading-relaxed">
-                Lorem ipsum dolor sit amet consectetur. Sed non ac volutpat ornare vitae suspendisse massa tincidunt quis. Duis tristique sit nulla ut
-                sollicitudin auctor ac nascetur ut. Risus nullam lacus lorem tellus adipiscing hendrerit. Adipiscing integer tempor aliquam accumsan nulla
-                feugiat lacinia maecenas. Vitae nunc maecenas pretium velit nisi vulputate eu. Bibendum placerat in semper rutrum ridiculus risus sit. Eu purus
-                ultricies maecenas nulla pellentesque rhoncus aliquam viverra. Nisi ultricies ut condimentum feugiat.
+                Lorem ipsum dolor sit amet consectetur. Sed non ac volutpat
+                ornare vitae suspendisse massa tincidunt quis. Duis tristique
+                sit nulla ut sollicitudin auctor ac nascetur ut. Risus nullam
+                lacus lorem tellus adipiscing hendrerit. Adipiscing integer
+                tempor aliquam accumsan nulla feugiat lacinia maecenas. Vitae
+                nunc maecenas pretium velit nisi vulputate eu. Bibendum placerat
+                in semper rutrum ridiculus risus sit. Eu purus ultricies
+                maecenas nulla pellentesque rhoncus aliquam viverra. Nisi
+                ultricies ut condimentum feugiat.
               </p>
               <div className="flex justify-between">
                 <div className="flex gap-3 items-center font-medium">
@@ -130,11 +185,20 @@ export default function ShowCaseReviewsSection() {
                     {Array(5)
                       .fill(null)
                       .map((_, index) => (
-                        <BsStarFill size={18} className="text-[#FFA800]" key={index} />
+                        <BsStarFill
+                          size={18}
+                          className="text-[#FFA800]"
+                          key={index}
+                        />
                       ))}
                   </div>
                   5.0 Stars
-                  <Image src="/icons/google.svg" alt="" width={30} height={30} />
+                  <Image
+                    src="/icons/google.svg"
+                    alt=""
+                    width={30}
+                    height={30}
+                  />
                 </div>
                 <div className="font-medium">13th Mar 2024</div>
               </div>
@@ -143,10 +207,15 @@ export default function ShowCaseReviewsSection() {
           <SwiperSlide className="cursor-grab active:cursor-grabbing w-full">
             <div className="w-full space-y-4">
               <p className="leading-relaxed">
-                Lorem ipsum dolor sit amet consectetur. Sed non ac volutpat ornare vitae suspendisse massa tincidunt quis. Duis tristique sit nulla ut
-                sollicitudin auctor ac nascetur ut. Risus nullam lacus lorem tellus adipiscing hendrerit. Adipiscing integer tempor aliquam accumsan nulla
-                feugiat lacinia maecenas. Vitae nunc maecenas pretium velit nisi vulputate eu. Bibendum placerat in semper rutrum ridiculus risus sit. Eu purus
-                ultricies maecenas nulla pellentesque rhoncus aliquam viverra. Nisi ultricies ut condimentum feugiat.
+                Lorem ipsum dolor sit amet consectetur. Sed non ac volutpat
+                ornare vitae suspendisse massa tincidunt quis. Duis tristique
+                sit nulla ut sollicitudin auctor ac nascetur ut. Risus nullam
+                lacus lorem tellus adipiscing hendrerit. Adipiscing integer
+                tempor aliquam accumsan nulla feugiat lacinia maecenas. Vitae
+                nunc maecenas pretium velit nisi vulputate eu. Bibendum placerat
+                in semper rutrum ridiculus risus sit. Eu purus ultricies
+                maecenas nulla pellentesque rhoncus aliquam viverra. Nisi
+                ultricies ut condimentum feugiat.
               </p>
               <div className="flex justify-between">
                 <div className="flex gap-3 items-center font-medium">
@@ -154,11 +223,20 @@ export default function ShowCaseReviewsSection() {
                     {Array(5)
                       .fill(null)
                       .map((_, index) => (
-                        <BsStarFill size={18} className="text-[#FFA800]" key={index} />
+                        <BsStarFill
+                          size={18}
+                          className="text-[#FFA800]"
+                          key={index}
+                        />
                       ))}
                   </div>
                   5.0 Stars
-                  <Image src="/icons/google.svg" alt="" width={30} height={30} />
+                  <Image
+                    src="/icons/google.svg"
+                    alt=""
+                    width={30}
+                    height={30}
+                  />
                 </div>
                 <div className="font-medium">13th Mar 2024</div>
               </div>
@@ -167,10 +245,15 @@ export default function ShowCaseReviewsSection() {
           <SwiperSlide className="cursor-grab active:cursor-grabbing w-full">
             <div className="w-full space-y-4">
               <p className="leading-relaxed">
-                Lorem ipsum dolor sit amet consectetur. Sed non ac volutpat ornare vitae suspendisse massa tincidunt quis. Duis tristique sit nulla ut
-                sollicitudin auctor ac nascetur ut. Risus nullam lacus lorem tellus adipiscing hendrerit. Adipiscing integer tempor aliquam accumsan nulla
-                feugiat lacinia maecenas. Vitae nunc maecenas pretium velit nisi vulputate eu. Bibendum placerat in semper rutrum ridiculus risus sit. Eu purus
-                ultricies maecenas nulla pellentesque rhoncus aliquam viverra. Nisi ultricies ut condimentum feugiat.
+                Lorem ipsum dolor sit amet consectetur. Sed non ac volutpat
+                ornare vitae suspendisse massa tincidunt quis. Duis tristique
+                sit nulla ut sollicitudin auctor ac nascetur ut. Risus nullam
+                lacus lorem tellus adipiscing hendrerit. Adipiscing integer
+                tempor aliquam accumsan nulla feugiat lacinia maecenas. Vitae
+                nunc maecenas pretium velit nisi vulputate eu. Bibendum placerat
+                in semper rutrum ridiculus risus sit. Eu purus ultricies
+                maecenas nulla pellentesque rhoncus aliquam viverra. Nisi
+                ultricies ut condimentum feugiat.
               </p>
               <div className="flex justify-between">
                 <div className="flex gap-3 items-center font-medium">
@@ -178,11 +261,20 @@ export default function ShowCaseReviewsSection() {
                     {Array(5)
                       .fill(null)
                       .map((_, index) => (
-                        <BsStarFill size={18} className="text-[#FFA800]" key={index} />
+                        <BsStarFill
+                          size={18}
+                          className="text-[#FFA800]"
+                          key={index}
+                        />
                       ))}
                   </div>
                   5.0 Stars
-                  <Image src="/icons/google.svg" alt="" width={30} height={30} />
+                  <Image
+                    src="/icons/google.svg"
+                    alt=""
+                    width={30}
+                    height={30}
+                  />
                 </div>
                 <div className="font-medium">13th Mar 2024</div>
               </div>
@@ -191,10 +283,15 @@ export default function ShowCaseReviewsSection() {
           <SwiperSlide className="cursor-grab active:cursor-grabbing w-full">
             <div className="w-full space-y-4">
               <p className="leading-relaxed">
-                Lorem ipsum dolor sit amet consectetur. Sed non ac volutpat ornare vitae suspendisse massa tincidunt quis. Duis tristique sit nulla ut
-                sollicitudin auctor ac nascetur ut. Risus nullam lacus lorem tellus adipiscing hendrerit. Adipiscing integer tempor aliquam accumsan nulla
-                feugiat lacinia maecenas. Vitae nunc maecenas pretium velit nisi vulputate eu. Bibendum placerat in semper rutrum ridiculus risus sit. Eu purus
-                ultricies maecenas nulla pellentesque rhoncus aliquam viverra. Nisi ultricies ut condimentum feugiat.
+                Lorem ipsum dolor sit amet consectetur. Sed non ac volutpat
+                ornare vitae suspendisse massa tincidunt quis. Duis tristique
+                sit nulla ut sollicitudin auctor ac nascetur ut. Risus nullam
+                lacus lorem tellus adipiscing hendrerit. Adipiscing integer
+                tempor aliquam accumsan nulla feugiat lacinia maecenas. Vitae
+                nunc maecenas pretium velit nisi vulputate eu. Bibendum placerat
+                in semper rutrum ridiculus risus sit. Eu purus ultricies
+                maecenas nulla pellentesque rhoncus aliquam viverra. Nisi
+                ultricies ut condimentum feugiat.
               </p>
               <div className="flex justify-between">
                 <div className="flex gap-3 items-center font-medium">
@@ -202,11 +299,20 @@ export default function ShowCaseReviewsSection() {
                     {Array(5)
                       .fill(null)
                       .map((_, index) => (
-                        <BsStarFill size={18} className="text-[#FFA800]" key={index} />
+                        <BsStarFill
+                          size={18}
+                          className="text-[#FFA800]"
+                          key={index}
+                        />
                       ))}
                   </div>
                   5.0 Stars
-                  <Image src="/icons/google.svg" alt="" width={30} height={30} />
+                  <Image
+                    src="/icons/google.svg"
+                    alt=""
+                    width={30}
+                    height={30}
+                  />
                 </div>
                 <div className="font-medium">13th Mar 2024</div>
               </div>

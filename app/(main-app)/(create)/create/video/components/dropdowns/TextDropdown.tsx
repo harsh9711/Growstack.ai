@@ -1,5 +1,9 @@
 import { TextIcon } from "@/components/svgs";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Search } from "lucide-react";
 import Image from "next/image";
 import { avatars } from "../../constants/avatars";
@@ -17,7 +21,11 @@ export default function TextDropdown() {
         <h1 className="text-xl font-semibold">Add text</h1>
         <div className="bg-[#F5F5F5] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
           <Search className="text-gray-500" size={20} />
-          <input type="search" className="bg-transparent outline-none h-[40px] w-full" placeholder="Search text" />
+          <input
+            type="search"
+            className="bg-transparent outline-none h-[40px] w-full"
+            placeholder="Search text"
+          />
         </div>
         <div className="space-y-3 max-h-[500px] overflow-y-auto hidden-scrollbar">
           <h1 className="text-3xl cursor-pointer">Title</h1>

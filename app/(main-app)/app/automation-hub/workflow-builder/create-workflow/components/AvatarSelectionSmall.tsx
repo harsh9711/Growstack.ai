@@ -25,7 +25,7 @@ const AvatarSelectionSmall = ({ avatars, onSelect }: AvatarSelectionProps) => {
 
   return (
     <div className="w-full grid grid-cols-6 gap-4 relative z-10">
-      {avatars.map((avatar) => (
+      {avatars.map(avatar => (
         <div
           key={avatar.id}
           onClick={() => handleAvatarClick(avatar)}

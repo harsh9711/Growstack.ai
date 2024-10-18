@@ -47,7 +47,9 @@ import { PlanName } from "@/types/enums";
 import React from "react";
 
 export default function ProfilePage() {
-  const { user, currentPlan, isCurrentPlanFetching } = useSelector((rootState: RootState) => rootState.auth);
+  const { user, currentPlan, isCurrentPlanFetching } = useSelector(
+    (rootState: RootState) => rootState.auth
+  );
   const router = useRouter();
   const dispatch = useDispatch();
   const currentUser = getCurrentUser();
@@ -105,11 +107,15 @@ export default function ProfilePage() {
     //   icon: <Settings2Icon />,
     //   title: "set defaults",
     // },
-    ...(user?.provider !== "socialSignUp" ? [{
-      link: "#",
-      icon: <KeyIcon />,
-      title: "Change password",
-    }] : []),
+    ...(user?.provider !== "socialSignUp"
+      ? [
+          {
+            link: "#",
+            icon: <KeyIcon />,
+            title: "Change password",
+          },
+        ]
+      : []),
     // {
     //   link: "#",
     //   icon: <ShieldCheckIcon />,
@@ -176,7 +182,7 @@ export default function ProfilePage() {
 
   function removeNullProperties(obj: any) {
     const filteredObject = {};
-    Object.keys(obj).forEach((key) => {
+    Object.keys(obj).forEach(key => {
       if (obj[key] !== null) {
         // @ts-ignore
         filteredObject[key] = obj[key];
@@ -185,7 +191,7 @@ export default function ProfilePage() {
     return filteredObject;
   }
 
-  const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
+  const onSubmit: SubmitHandler<ValidationSchemaType> = async data => {
     setIsPending(true);
     try {
       const validatedData = ValidationSchema.parse({
@@ -229,9 +235,8 @@ export default function ProfilePage() {
     if (title === "Change password") setChangePasswordEnable(true);
     if (title === "View profile") setChangePasswordEnable(false);
     if (title === "Billing") {
-      window.location.href = '/account/billings/settings'
+      window.location.href = "/account/billings/settings";
     }
-
   };
 
   const handleDeleteProfile = () => {
@@ -241,7 +246,7 @@ export default function ProfilePage() {
       icon: "warning",
       buttons: ["Cancel", "Delete"],
       dangerMode: true,
-    }).then(async (willDelete) => {
+    }).then(async willDelete => {
       if (willDelete) {
         try {
           await instance.delete(`${API_URL}/users/api/v1`);
@@ -336,16 +341,19 @@ export default function ProfilePage() {
                 <Edit size={20} />
                 Edit your profile
               </h1>
-              {
-                !isCurrentPlanFetching || !currentPlan ? <>
-                  <div className="flex gap-x-2 items-center" >
+              {!isCurrentPlanFetching || !currentPlan ? (
+                <>
+                  <div className="flex gap-x-2 items-center">
                     <PlanIcon />
-                    {getUserFriendlyPlanName(currentPlan?.plan_name! as PlanName)} Plan
+                    {getUserFriendlyPlanName(
+                      currentPlan?.plan_name! as PlanName
+                    )}{" "}
+                    Plan
                   </div>
-                </> : (
-                  <Spinner color="#000" />
-                )
-              }
+                </>
+              ) : (
+                <Spinner color="#000" />
+              )}
             </div>
             <div>
               <div className="grid grid-cols-2 gap-x-5 gap-y-6 mt-6">
@@ -479,7 +487,7 @@ export default function ProfilePage() {
                     control={control}
                     render={({ field }) => (
                       <Select
-                        onValueChange={(value) => field.onChange(value)}
+                        onValueChange={value => field.onChange(value)}
                         value={field.value}
                       >
                         <SelectTrigger className="h-[54px] w-full border border-[#eee] rounded-xl px-4 text-sm bg-white">
@@ -487,7 +495,7 @@ export default function ProfilePage() {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectGroup>
-                            {countries.map((country) => {
+                            {countries.map(country => {
                               return (
                                 <SelectItem value={country.country}>
                                   {country.country}

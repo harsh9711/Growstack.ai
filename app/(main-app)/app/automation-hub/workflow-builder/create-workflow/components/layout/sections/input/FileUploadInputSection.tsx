@@ -25,7 +25,7 @@ export default function FileUploadInputSection({
   onParamsChange,
   inputParams,
   variableNameError,
-  setVariableNameError
+  setVariableNameError,
 }: FileUploadInputSectionProps) {
   const [params, setParams] = useState<FileParams>({
     display_name: (inputParams as FileParams).display_name || "",
@@ -66,14 +66,17 @@ export default function FileUploadInputSection({
   };
 
   return (
-    <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion
+      transition={{ duration: 0.5 }}
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+    >
       <div className="space-y-4">
         <div className="space-y-2">
           <label className="font-medium text-sm">Input label</label>
           <Input
             type="text"
             value={params.display_name}
-            onChange={(e) => updateParams({ display_name: e.target.value })}
+            onChange={e => updateParams({ display_name: e.target.value })}
             placeholder="Input label"
           />
         </div>
@@ -81,21 +84,25 @@ export default function FileUploadInputSection({
         <div className="space-y-2">
           <label className="font-medium flex gap-2 items-center">
             Description{" "}
-            <span className="text-primary-black text-opacity-30 text-xs">Optional</span>{" "}
+            <span className="text-primary-black text-opacity-30 text-xs">
+              Optional
+            </span>{" "}
           </label>
           <textarea
             value={params.description}
-            onChange={(e) => updateParams({ description: e.target.value })}
+            onChange={e => updateParams({ description: e.target.value })}
             placeholder="Input label"
             className="bg-[#F2F2F2] p-3 h-[120px] block resize-none w-full rounded-xl"
           ></textarea>
         </div>
 
         <div className="space-y-2">
-          <label className="font-medium flex gap-2 items-center">Required</label>
+          <label className="font-medium flex gap-2 items-center">
+            Required
+          </label>
           <Switch
             checked={params.required}
-            onCheckedChange={(checked) => updateParams({ required: checked })}
+            onCheckedChange={checked => updateParams({ required: checked })}
           />
         </div>
 
@@ -103,9 +110,9 @@ export default function FileUploadInputSection({
           <label className="font-medium text-sm">File Type</label>
           <div className="relative">
             <select
-            required
+              required
               value={params.file_type}
-              onChange={(e) => updateParams({ file_type: e.target.value })}
+              onChange={e => updateParams({ file_type: e.target.value })}
               className="block w-full px-4 py-3 pr-8 leading-tight bg-[#F2F2F2] text-gray-700 rounded-xl appearance-none transition ease-in-out duration-150"
             >
               <option value="IMAGE">IMAGE</option>
@@ -121,7 +128,11 @@ export default function FileUploadInputSection({
               <option value="OTHERS">OTHERS</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <svg
+                className="fill-current h-4 w-4"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+              >
                 <path d="M7 10l5 5 5-5H7z" />
               </svg>
             </div>
@@ -133,7 +144,7 @@ export default function FileUploadInputSection({
           <Input
             type="text"
             value={params.variable_name}
-            onChange={(e) => updateParams({ variable_name: e.target.value })}
+            onChange={e => updateParams({ variable_name: e.target.value })}
             placeholder="Input Variable name"
           />
           <p className="text-red-400 text-xs"> {variableNameError}</p>

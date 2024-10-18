@@ -10,7 +10,7 @@ interface ChatSectionProps {
   assistant: Assistant;
   selectedLanguage: string;
   selectedAiModel: string;
-  setMessagesData: any
+  setMessagesData: any;
 }
 
 const ChatSection: React.FC<ChatSectionProps> = ({
@@ -18,7 +18,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({
   assistant,
   selectedLanguage,
   selectedAiModel,
-  setMessagesData
+  setMessagesData,
 }) => {
   const [messages, setMessages] = useState<Chat[]>([]);
 
@@ -38,18 +38,17 @@ const ChatSection: React.FC<ChatSectionProps> = ({
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
+    setMessages(prevMessages => [...prevMessages, newMessage]);
   };
 
   const updateMessage = (prompt: string, response: string) => {
-    setMessages((prevMessages) => {
+    setMessages(prevMessages => {
       const messageIndex = prevMessages.length - 1;
       const updatedMessages = [...prevMessages];
       updatedMessages[messageIndex].response = response;
       return updatedMessages;
     });
   };
-
 
   return (
     <div className="flex-1 h-full flex flex-col px-8 pb-8">

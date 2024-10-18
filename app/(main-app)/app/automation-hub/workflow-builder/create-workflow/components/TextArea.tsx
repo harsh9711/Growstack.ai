@@ -34,9 +34,7 @@ const TextArea = ({
   suggestionOptions,
   setSuggestionOptions,
 }: TextAreaProps) => {
-  const [description, setDescription] = useState<string>(
-    option.variable_value
-  );
+  const [description, setDescription] = useState<string>(option.variable_value);
   const [isDropdownVisible, setDropdownVisible] = useState(false);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -51,7 +49,7 @@ const TextArea = ({
           if (i === index && input.variable_type === "TEXT_AREA") {
             return {
               ...input,
-              variable_value: description, 
+              variable_value: description,
             };
           }
           return input;
@@ -105,23 +103,23 @@ const TextArea = ({
   };
   return (
     <>
-      <div className='font-medium  text-xl mb-2 capitalize'>
+      <div className="font-medium  text-xl mb-2 capitalize">
         {option.variable_label}
       </div>
       <textarea
         ref={textareaRef}
         onFocus={handleTextareaFocus}
-        id='description'
-        name='description'
+        id="description"
+        name="description"
         value={description}
         rows={5}
-        onChange={(e) => setDescription(e.target.value)}
+        onChange={e => setDescription(e.target.value)}
         placeholder={
           option?.input_placeholder
             ? option.input_placeholder
             : "Please write here"
         }
-        className=' w-full bg-[#F5F5F5] rounded-xl block resize-none p-4 text-[15px]'
+        className=" w-full bg-[#F5F5F5] rounded-xl block resize-none p-4 text-[15px]"
       ></textarea>
       <SuggestionDropdown
         dropdownRef={dropdownRef}

@@ -4,22 +4,39 @@ import "aos/dist/aos.css";
 import "./Faqs.scss";
 import VideoBanner from "../videoBanner/VideoBanner";
 function Faqs() {
-    useEffect(() => {
-        AOS.init();
-    }, []);
-    return (
-        <React.Fragment>
-            <div className='faqsSection'>
-                <div className='container'>
-                    <h3 className='heading m-0' data-aos='fade-UP' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
-                        <span>Frequently asked</span> questions
-                    </h3>
-                    <div className='row mt-5'>
-                        <div data-aos='fade-right' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
-                            <img className='image-fluid' src='/images_growstack/home/faqsBack.svg' alt='faqsBack' />
-                        </div>
-                        <div data-aos='fade-left' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
-                            {/* <Accordion>
+  useEffect(() => {
+    AOS.init();
+  }, []);
+  return (
+    <React.Fragment>
+      <div className="faqsSection">
+        <div className="container">
+          <h3
+            className="heading m-0"
+            data-aos="fade-UP"
+            data-aos-easing="ease-in-sine"
+            data-aos-duration="1000"
+          >
+            <span>Frequently asked</span> questions
+          </h3>
+          <div className="row mt-5">
+            <div
+              data-aos="fade-right"
+              data-aos-easing="ease-in-sine"
+              data-aos-duration="1000"
+            >
+              <img
+                className="image-fluid"
+                src="/images_growstack/home/faqsBack.svg"
+                alt="faqsBack"
+              />
+            </div>
+            <div
+              data-aos="fade-left"
+              data-aos-easing="ease-in-sine"
+              data-aos-duration="1000"
+            >
+              {/* <Accordion>
                                 <Accordion.Item eventKey="0">
                                     <Accordion.Header>How can GrowStack transform my business strategies into success stories?</Accordion.Header>
                                     <Accordion.Body>
@@ -63,13 +80,13 @@ function Faqs() {
                                     </Accordion.Body>
                                 </Accordion.Item>
                             </Accordion> */}
-                        </div>
-                    </div>
-                </div>
-                {/* <VideoBanner /> */}
             </div>
-        </React.Fragment>
-    );
+          </div>
+        </div>
+        {/* <VideoBanner /> */}
+      </div>
+    </React.Fragment>
+  );
 }
 
 export default Faqs;

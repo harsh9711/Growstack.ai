@@ -22,7 +22,9 @@ import { ALL_ROUTES } from "@/utils/constant";
 import { planIdsMap } from "@/lib/utils";
 
 const PricingPage: React.FC = () => {
-  const { isAuthenticated } = useSelector((rootState: RootState) => rootState.auth);
+  const { isAuthenticated } = useSelector(
+    (rootState: RootState) => rootState.auth
+  );
 
   useEffect(() => {
     AOS.init();
@@ -53,7 +55,6 @@ const PricingPage: React.FC = () => {
     }
   }, [router]);
 
-
   useEffect(() => {
     const tab = tabQueryParam ? Number(tabQueryParam) : 0;
     setSelectedTabIndex(tab);
@@ -65,10 +66,10 @@ const PricingPage: React.FC = () => {
   useEffect(() => {
     if (user) {
       if (!user?.isSubscribed) {
-        router.replace(ALL_ROUTES.PAYMENT)
+        router.replace(ALL_ROUTES.PAYMENT);
       }
     }
-  }, [user])
+  }, [user]);
 
   useEffect(() => {
     const fetchPlans = async () => {
@@ -106,12 +107,18 @@ const PricingPage: React.FC = () => {
             id: plan.plan_id,
             stripe_price_id: plan.stripe_price_id,
             title: plan.plan,
-            monthlyPrice: plan.plan_type === "MONTHLY" && plan.price !== null && plan.price !== undefined
-              ? plan.price
-              : null,
-            yearlyPrice: plan.plan_type === "YEARLY" && plan.price !== null && plan.price !== undefined
-              ? plan.price
-              : null,
+            monthlyPrice:
+              plan.plan_type === "MONTHLY" &&
+              plan.price !== null &&
+              plan.price !== undefined
+                ? plan.price
+                : null,
+            yearlyPrice:
+              plan.plan_type === "YEARLY" &&
+              plan.price !== null &&
+              plan.price !== undefined
+                ? plan.price
+                : null,
             priceSuffix: "/mo",
             description,
             planType: plan.plan_type,
@@ -129,7 +136,7 @@ const PricingPage: React.FC = () => {
         }
         console.error("Error fetching plans:", error);
       } finally {
-        setIsLoading(false)
+        setIsLoading(false);
       }
     };
     fetchPlans();
@@ -137,34 +144,33 @@ const PricingPage: React.FC = () => {
 
   const view = selectedTabIndex === 0 ? "monthly" : "yearly";
 
-
   const filteredPlans = plans
     .filter(
-      (plan) =>
+      plan =>
         (view === "monthly" && plan.planType === "MONTHLY") ||
         (view === "yearly" && plan.planType === "YEARLY")
     )
     .sort((a, b) => {
       const priceA =
         view === "monthly"
-          ? (a.monthlyPrice !== null && a.monthlyPrice !== undefined
+          ? a.monthlyPrice !== null && a.monthlyPrice !== undefined
             ? parseFloat(a.monthlyPrice)
-            : Infinity)
-          : (a.yearlyPrice !== null && a.yearlyPrice !== undefined
+            : Infinity
+          : a.yearlyPrice !== null && a.yearlyPrice !== undefined
             ? parseFloat(a.yearlyPrice)
-            : Infinity);
+            : Infinity;
 
       const priceB =
         view === "monthly"
-          ? (b.monthlyPrice !== null && b.monthlyPrice !== undefined
+          ? b.monthlyPrice !== null && b.monthlyPrice !== undefined
             ? parseFloat(b.monthlyPrice)
-            : Infinity)
-          : (b.yearlyPrice !== null && b.yearlyPrice !== undefined
+            : Infinity
+          : b.yearlyPrice !== null && b.yearlyPrice !== undefined
             ? parseFloat(b.yearlyPrice)
-            : Infinity);
+            : Infinity;
 
-      const isBusinessPlanA = planIdsMap.BUSINESS.some((val) => val === a?.id);
-      const isBusinessPlanB = planIdsMap.BUSINESS.some((val) => val === b?.id);
+      const isBusinessPlanA = planIdsMap.BUSINESS.some(val => val === a?.id);
+      const isBusinessPlanB = planIdsMap.BUSINESS.some(val => val === b?.id);
 
       if (isBusinessPlanA && !isBusinessPlanB) return 1;
       if (!isBusinessPlanA && isBusinessPlanB) return -1;
@@ -174,7 +180,6 @@ const PricingPage: React.FC = () => {
 
       return priceA - priceB;
     });
-
 
   const handleTabClick = (index: number) => {
     const params = new URLSearchParams(window.location.search);
@@ -205,15 +210,16 @@ const PricingPage: React.FC = () => {
   return (
     <div
       style={{
-        zoom: "0.75"
+        zoom: "0.75",
       }}
-      className="flex flex-col min-h-screen">
+      className="flex flex-col min-h-screen"
+    >
       <div>
         <div
           className="relative mx-auto mt-16 overflow-y-auto bg-white w-full md:w-3xl md:max-h-[70%]  xl:max-h-[70%] h-full max-w-[1600px] sm:mx-6 md:mx-8 lg:mx-auto rounded-2xl shadow-lg"
           data-aos="zoom-in"
           data-aos-duration="500"
-          onClick={(e) => e.stopPropagation()}
+          onClick={e => e.stopPropagation()}
         >
           <div
             className="p-6 mx-auto flex md:flex-row flex-col gap-y-4 gap-x-10 overflow-hidden w-full  items-center justify-between"
@@ -233,33 +239,31 @@ const PricingPage: React.FC = () => {
                 Upgrade your plan anytime for more advanced features
               </p>
             </div>
-            {
-              isAuthenticated ? (
-                <div
-                  className="border-[#034737]  gap-4 text-[#034737] flex-wrap w-full flex justify-center sm:justify-end"
-                  data-aos="fade-left"
+            {isAuthenticated ? (
+              <div
+                className="border-[#034737]  gap-4 text-[#034737] flex-wrap w-full flex justify-center sm:justify-end"
+                data-aos="fade-left"
+              >
+                <button
+                  onClick={handleLogout}
+                  className="border-[#034737] flex items-center justify-between gap-2  border rounded-xl font-semibold text-[#034737] px-10 py-4 "
                 >
-                  <button
-                    onClick={handleLogout}
-                    className="border-[#034737] flex items-center justify-between gap-2  border rounded-xl font-semibold text-[#034737] px-10 py-4 ">
-                    <LogOut size={20} />
-                    Sign out
+                  <LogOut size={20} />
+                  Sign out
+                </button>
+              </div>
+            ) : (
+              <div
+                className="border-[#034737] text-[#034737] w-full flex justify-end"
+                data-aos="fade-left"
+              >
+                <Link href="/auth/register">
+                  <button className="border-[#034737]  border rounded-xl font-semibold text-[#034737] px-10 py-4 ">
+                    Register
                   </button>
-                </div>
-              ) : (
-                <div
-                  className="border-[#034737] text-[#034737] w-full flex justify-end"
-                  data-aos="fade-left"
-                >
-                  <Link href="/auth/register">
-                    <button className="border-[#034737]  border rounded-xl font-semibold text-[#034737] px-10 py-4 ">
-                      Register
-                    </button>
-                  </Link>
-                </div>
-              )
-            }
-
+                </Link>
+              </div>
+            )}
           </div>
           <div className="border "></div>
           <section className="p-4 overflow-y-auto">
@@ -268,10 +272,11 @@ const PricingPage: React.FC = () => {
                 {tabs.map((tab, index) => (
                   <div
                     key={index}
-                    className={`w-full flex p-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${selectedTabIndex === index
-                      ? "!text-white font-semibold bg-[#034737] custom-transition rounded-xl"
-                      : "!text-[#034737]"
-                      }`}
+                    className={`w-full flex p-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
+                      selectedTabIndex === index
+                        ? "!text-white font-semibold bg-[#034737] custom-transition rounded-xl"
+                        : "!text-[#034737]"
+                    }`}
                     onClick={() => handleTabClick(index)}
                   >
                     {tab}
@@ -294,16 +299,14 @@ const PricingPage: React.FC = () => {
                   <PlanSkeleton />
                 </div>
               ) : (
-                <div
-                  className="w-full"
-                >
+                <div className="w-full">
                   <div className="w-fit sm:w-full gap-3 mx-auto flex-1 sm:flex justify-center item-center flex-col sm:flex-row  overflow-y-auto sm:overflow-y-hidden p-2 space-x-0 sm:space-x-3  space-y-3 sm:space-y-0 custom-scrollbar mt-2 sm:mt-1 ">
                     {filteredPlans.map((plan, idx) => (
                       <PlanCard
                         key={idx}
                         plan={plan}
                         selectedTabIndex={selectedTabIndex}
-                        isUpgradePlan={true}
+                        isUpgradePlan
                       />
                     ))}
                   </div>

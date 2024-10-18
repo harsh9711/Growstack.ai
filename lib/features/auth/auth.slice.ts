@@ -17,7 +17,7 @@ const initialState: AuthState = {
   user: null,
   isUserFetching: false,
   isCurrentPlanFetching: false,
-  currentPlan: {} as UserPlan
+  currentPlan: {} as UserPlan,
 };
 
 const authSlice = createSlice({
@@ -31,7 +31,7 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.user = action.payload;
     },
-    logout: (state) => {
+    logout: state => {
       state.user = null;
       state.isAuthenticated = false;
       state.currentPlan = {} as UserPlan;
@@ -44,9 +44,16 @@ const authSlice = createSlice({
     },
     setUserLoading: (state, action: PayloadAction<boolean>) => {
       state.isUserFetching = action.payload;
-    }
+    },
   },
 });
 
-export const { login, logout, setInitialized, setUserPlan, setPlanLoading, setUserLoading } = authSlice.actions;
+export const {
+  login,
+  logout,
+  setInitialized,
+  setUserPlan,
+  setPlanLoading,
+  setUserLoading,
+} = authSlice.actions;
 export default authSlice.reducer;

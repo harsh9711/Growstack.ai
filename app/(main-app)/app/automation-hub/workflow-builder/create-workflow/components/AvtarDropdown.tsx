@@ -95,12 +95,12 @@ const AvtarDropdown = ({
   useEffect(() => {
     const query = searchQuery.trim().toLowerCase();
     setSuggestionOptions((prevState: SuggestionOption[]) =>
-      prevState.map((option) => ({
+      prevState.map(option => ({
         ...option,
-        show: option.subOptions.some((subOption) =>
+        show: option.subOptions.some(subOption =>
           subOption.label.toLowerCase().includes(query)
         ),
-        subOptions: option.subOptions.map((subOption) => ({
+        subOptions: option.subOptions.map(subOption => ({
           ...subOption,
           show: subOption.label.toLowerCase().includes(query),
         })),
@@ -114,7 +114,7 @@ const AvtarDropdown = ({
     toast.success(`Selected avatar: ${avatar.name}`);
   };
 
-  const filteredAvatars = assistants.filter((avatar) =>
+  const filteredAvatars = assistants.filter(avatar =>
     avatar.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 

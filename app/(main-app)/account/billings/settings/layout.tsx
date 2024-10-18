@@ -39,8 +39,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div
               className={clsx(
                 "w-full flex justify-between p-3 hover:bg-gray-50 rounded-xl cursor-pointer transition mt-3",
-                pathname === "/account/billings/settings" && "bg-primary-green text-white hover:bg-primary-green/90"
-              )}>
+                pathname === "/account/billings/settings" &&
+                  "bg-primary-green text-white hover:bg-primary-green/90"
+              )}
+            >
               <div className="flex items-center gap-2">
                 <BrowserCheckIcon />
                 <span>Billing Overview</span>
@@ -65,8 +67,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div
               className={clsx(
                 "w-full flex justify-between p-3 hover:bg-gray-50 rounded-xl cursor-pointer transition mt-3",
-                pathname === "/account/billings/settings/history" && "bg-primary-green text-white hover:bg-primary-green/90"
-              )}>
+                pathname === "/account/billings/settings/history" &&
+                  "bg-primary-green text-white hover:bg-primary-green/90"
+              )}
+            >
               <div className="flex items-center gap-2">
                 <SurveyIcon />
                 <span>Billing History</span>
@@ -74,7 +78,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <ChevronRight size={20} />
             </div>
           </Link>
-
         </div>
         <div className="w-full">{children}</div>
       </div>

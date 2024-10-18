@@ -5,7 +5,7 @@ import "./Faqs.scss";
 const CustomAccordion = () => {
   const [activeKey, setActiveKey] = useState(null);
 
-  const handleToggle = (key) => {
+  const handleToggle = key => {
     setActiveKey(activeKey === key ? null : key);
   };
 
@@ -43,9 +43,12 @@ const CustomAccordion = () => {
     <div className="w-full h-full transition transform duration-1000 ease-linear">
       {items.map((item, index) => {
         const isActive = activeKey === index;
-        
+
         return (
-          <div key={index} className="mb-4 w-full   bg-white border text-[12px] sm:text-[20px] rounded-[20px] font-bold items-start ease-in-out transition-transform duration-1000 cursor-pointer">
+          <div
+            key={index}
+            className="mb-4 w-full   bg-white border text-[12px] sm:text-[20px] rounded-[20px] font-bold items-start ease-in-out transition-transform duration-1000 cursor-pointer"
+          >
             <div
               className={`flex flex-row w-full items-center px-8 py-4 justify-between cursor-pointer`}
               onClick={() => handleToggle(index)}
@@ -59,15 +62,26 @@ const CustomAccordion = () => {
               <div
                 className={`sm:flex hidden ease-in-out transition-transform duration-300 items-center justify-center sm:border sm:w-12 sm:h-12 bg-${isActive ? "primary-green" : "white"} rounded-full ${isActive ? "-rotate-180" : "rotate-75"}`}
               >
-                <svg width="20" height="12" viewBox="0 0 20 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1.85156 1.93066L10.0003 10.0426L18.1491 1.93066" stroke={isActive ? "white" : "#034737"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>  
+                <svg
+                  width="20"
+                  height="12"
+                  viewBox="0 0 20 12"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1.85156 1.93066L10.0003 10.0426L18.1491 1.93066"
+                    stroke={isActive ? "white" : "#034737"}
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </div>
             </div>
 
             <div
               className={`overflow-hidden transition-all duration-700 ease-linear ${isActive ? "max-h-40" : "max-h-0"}`}
-             
             >
               <div className="rounded-[20px] border-b-8 border-[#D9D9D9] p-4  w-full font-normal text-[12px] sm:text-[18px] text-gray-700 bg-white">
                 {item.body}
@@ -77,26 +91,30 @@ const CustomAccordion = () => {
         );
       })}
     </div>
-  
   );
 };
 
 function Faqs() {
-    useEffect(() => {
-        AOS.init();
-    }, []);
-    return (
-        <React.Fragment>
-            <div className='faqs'>
-                <div className='container'>
-                    <div className='title' data-aos='fade-up' data-aos-easing='ease-in-sine' data-aos-duration='1000'>
-                        <span className='user'>FAQ</span>
-                        <h3 className='heading'>
-                            <span>Quick answers</span> on GrowStack
-                        </h3>
-                    </div>
-                  <CustomAccordion/>
-                    {/* <Accordion data-aos="fade-up"
+  useEffect(() => {
+    AOS.init();
+  }, []);
+  return (
+    <React.Fragment>
+      <div className="faqs">
+        <div className="container">
+          <div
+            className="title"
+            data-aos="fade-up"
+            data-aos-easing="ease-in-sine"
+            data-aos-duration="1000"
+          >
+            <span className="user">FAQ</span>
+            <h3 className="heading">
+              <span>Quick answers</span> on GrowStack
+            </h3>
+          </div>
+          <CustomAccordion />
+          {/* <Accordion data-aos="fade-up"
             data-aos-easing="ease-in-sine"
             data-aos-duration="1000">
             <Accordion.Item eventKey="0">
@@ -140,10 +158,10 @@ function Faqs() {
               </Accordion.Body>
             </Accordion.Item>
           </Accordion> */}
-                </div>
-            </div>
-        </React.Fragment>
-    );
+        </div>
+      </div>
+    </React.Fragment>
+  );
 }
 
 export default Faqs;

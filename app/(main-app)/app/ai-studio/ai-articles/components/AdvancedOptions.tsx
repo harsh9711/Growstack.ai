@@ -1,8 +1,21 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import clsx from "clsx";
-import { aiModelOptions, creativityOptions, languageOptions, povOptions, writingToneOptions } from "../constants/options";
+import {
+  aiModelOptions,
+  creativityOptions,
+  languageOptions,
+  povOptions,
+  writingToneOptions,
+} from "../constants/options";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import toast from "react-hot-toast";
@@ -32,16 +45,18 @@ const AdvancedOptions: React.FC<AdvancedOptionsProps> = ({
   language,
   setLanguage,
 }) => {
-  const { user, currentPlan } = useSelector((rootState: RootState) => rootState.auth);
+  const { user, currentPlan } = useSelector(
+    (rootState: RootState) => rootState.auth
+  );
 
   const handleModalSelection = (value: string) => {
     if (!currentPlan) return;
-    const currentCategory = aiModelOptions.find((category) =>
-      category.models.some((model) => model.value === value)
+    const currentCategory = aiModelOptions.find(category =>
+      category.models.some(model => model.value === value)
     );
 
     const currentModal = currentCategory?.models.find(
-      (model) => model.value === value
+      model => model.value === value
     );
 
     if (!currentCategory || !currentModal) {
@@ -51,7 +66,10 @@ const AdvancedOptions: React.FC<AdvancedOptionsProps> = ({
 
     const freeCategories = ["growStackAiMessagesModel"];
 
-    if (user?.user_type === "ADMIN" || freeCategories.includes(currentCategory.modelCategory)) {
+    if (
+      user?.user_type === "ADMIN" ||
+      freeCategories.includes(currentCategory.modelCategory)
+    ) {
       setAiModel(value);
       return;
     }
@@ -65,7 +83,9 @@ const AdvancedOptions: React.FC<AdvancedOptionsProps> = ({
     }
 
     if (usageLimit <= 0) {
-      toast.error(`You have no remaining usage for ${currentCategory.label}. Please switch to another model.`);
+      toast.error(
+        `You have no remaining usage for ${currentCategory.label}. Please switch to another model.`
+      );
       return;
     }
 
@@ -91,9 +111,11 @@ const AdvancedOptions: React.FC<AdvancedOptionsProps> = ({
                 {aiModel && (
                   <div className="flex items-center gap-2">
                     <span className="min-w-fit">
-                      {aiModelOptions
-                        .flatMap((option) => option.models)
-                        .find((model) => model.value === aiModel)?.icon}
+                      {
+                        aiModelOptions
+                          .flatMap(option => option.models)
+                          .find(model => model.value === aiModel)?.icon
+                      }
                     </span>
                     {aiModel}
                   </div>
@@ -104,13 +126,16 @@ const AdvancedOptions: React.FC<AdvancedOptionsProps> = ({
               {aiModelOptions.map(({ label: categoryLabel, models }) => (
                 <SelectGroup key={categoryLabel}>
                   <React.Fragment key={categoryLabel}>
-                    <div className="font-bold text-gray-500 px-4 py-2">{categoryLabel}</div>
+                    <div className="font-bold text-gray-500 px-4 py-2">
+                      {categoryLabel}
+                    </div>
                     {models.map(({ icon, label, value }) => (
                       <SelectItem key={value} value={value}>
                         <div
                           className={clsx(
                             "flex items-center gap-2",
-                            aiModel === value && "text-primary-green font-medium"
+                            aiModel === value &&
+                              "text-primary-green font-medium"
                           )}
                         >
                           <span className="min-w-fit">{icon}</span>
@@ -130,13 +155,21 @@ const AdvancedOptions: React.FC<AdvancedOptionsProps> = ({
           </label>
           <Select value={writingTone} onValueChange={setWritingTone}>
             <SelectTrigger className="w-full h-14 border-0">
-              <SelectValue placeholder="Select an option">{writingTone}</SelectValue>
+              <SelectValue placeholder="Select an option">
+                {writingTone}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
                 {writingToneOptions.map(({ label, value }) => (
                   <SelectItem key={value} value={value}>
-                    <div className={clsx("flex items-center gap-2", writingTone === value && "text-primary-green font-medium")}>
+                    <div
+                      className={clsx(
+                        "flex items-center gap-2",
+                        writingTone === value &&
+                          "text-primary-green font-medium"
+                      )}
+                    >
                       {label}
                     </div>
                   </SelectItem>
@@ -151,13 +184,20 @@ const AdvancedOptions: React.FC<AdvancedOptionsProps> = ({
           </label>
           <Select value={creativity} onValueChange={setCreativity}>
             <SelectTrigger className="w-full h-14 border-0">
-              <SelectValue placeholder="Select an option">{creativity}</SelectValue>
+              <SelectValue placeholder="Select an option">
+                {creativity}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
                 {creativityOptions.map(({ label, value }) => (
                   <SelectItem key={value} value={value}>
-                    <div className={clsx("flex items-center gap-2", creativity === value && "text-primary-green font-medium")}>
+                    <div
+                      className={clsx(
+                        "flex items-center gap-2",
+                        creativity === value && "text-primary-green font-medium"
+                      )}
+                    >
                       {label}
                     </div>
                   </SelectItem>
@@ -178,7 +218,14 @@ const AdvancedOptions: React.FC<AdvancedOptionsProps> = ({
               <SelectGroup>
                 {povOptions.map(({ label, value }) => (
                   <SelectItem key={value} value={value}>
-                    <div className={clsx("flex items-center gap-2", pov === value && "text-primary-green font-medium")}>{label}</div>
+                    <div
+                      className={clsx(
+                        "flex items-center gap-2",
+                        pov === value && "text-primary-green font-medium"
+                      )}
+                    >
+                      {label}
+                    </div>
                   </SelectItem>
                 ))}
               </SelectGroup>
@@ -202,13 +249,22 @@ const AdvancedOptions: React.FC<AdvancedOptionsProps> = ({
           </label>
           <Select value={language} onValueChange={setLanguage}>
             <SelectTrigger className="w-full h-14 border-0">
-              <SelectValue placeholder="Select an option">{language}</SelectValue>
+              <SelectValue placeholder="Select an option">
+                {language}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
                 {languageOptions.map(({ label, value }) => (
                   <SelectItem key={value} value={value}>
-                    <div className={clsx("flex items-center gap-2", language === value && "text-primary-green font-medium")}>{label}</div>
+                    <div
+                      className={clsx(
+                        "flex items-center gap-2",
+                        language === value && "text-primary-green font-medium"
+                      )}
+                    >
+                      {label}
+                    </div>
                   </SelectItem>
                 ))}
               </SelectGroup>

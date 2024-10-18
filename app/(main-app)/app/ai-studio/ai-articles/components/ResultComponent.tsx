@@ -22,15 +22,22 @@ interface ResultComponentProps {
   articleTitle: string;
   articleData: string;
   images: Array<{ revised_prompt: string; url: string }>;
-  setImages: React.Dispatch<React.SetStateAction<Array<{ revised_prompt: string; url: string }>>>;
+  setImages: React.Dispatch<
+    React.SetStateAction<Array<{ revised_prompt: string; url: string }>>
+  >;
 }
 
-const ResultComponent: React.FC<ResultComponentProps> = ({ articleTitle, articleData, images, setImages }) => {
+const ResultComponent: React.FC<ResultComponentProps> = ({
+  articleTitle,
+  articleData,
+  images,
+  setImages,
+}) => {
   const router = useRouter();
   const [isPending, setIsPending] = useState(false);
   const [copied, setCopied] = useState(false);
   const [open, setOpen] = useState(false);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   const handleShare = async () => {
     setIsPending(true);
     const payload = {
@@ -38,12 +45,15 @@ const ResultComponent: React.FC<ResultComponentProps> = ({ articleTitle, article
       article: articleData,
     };
     try {
-      const response = await instance.post(API_URL + "/ai/api/v1/wizard/generate/cms", payload);
+      const response = await instance.post(
+        API_URL + "/ai/api/v1/wizard/generate/cms",
+        payload
+      );
       toast.success(response.data.message);
       localStorage.setItem("savedArticle", response?.data?.data);
-      setInputValue(response?.data?.data)
-      setOpen(true)
-      handleClickOpen()
+      setInputValue(response?.data?.data);
+      setOpen(true);
+      handleClickOpen();
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
@@ -65,7 +75,7 @@ const ResultComponent: React.FC<ResultComponentProps> = ({ articleTitle, article
   };
 
   const handleDownload = async (selectedOption: string) => {
-    let plainTextContent = stripHtmlTags(articleData);
+    const plainTextContent = stripHtmlTags(articleData);
 
     const formats = {
       "Download as DOC": plainTextContent,
@@ -81,9 +91,13 @@ const ResultComponent: React.FC<ResultComponentProps> = ({ articleTitle, article
         saveAs(docBlob, `${articleTitle}.doc`);
         break;
       case "Download as PDF":
-        downloadPdf(formats["Download as PDF"], {
-          language: "english",
-        }, articleTitle);
+        downloadPdf(
+          formats["Download as PDF"],
+          {
+            language: "english",
+          },
+          articleTitle
+        );
         break;
       default:
         console.error("Unsupported download option");
@@ -115,11 +129,22 @@ const ResultComponent: React.FC<ResultComponentProps> = ({ articleTitle, article
   return (
     <div className="mt-10">
       <div className="!bg-white shadow-box max-w-2xl mx-auto flex flex-col justify-center items-center p-12 space-y-6">
-        <Image src="/logo/growstack-mini.png" alt="Growstack logo" width={40} height={40} />
+        <Image
+          src="/logo/growstack-mini.png"
+          alt="Growstack logo"
+          width={40}
+          height={40}
+        />
         <h1 className="text-xl font-semibold">Successfully generated</h1>
-        <p className="text-primary-black text-opacity-50 text-base !mt-4 text-center">Your article has been successfully generated! Feel free to share it on your social media accounts.</p>
+        <p className="text-primary-black text-opacity-50 text-base !mt-4 text-center">
+          Your article has been successfully generated! Feel free to share it on
+          your social media accounts.
+        </p>
         <div className="w-full max-w-[150px] mx-auto">
-          <button onClick={() => window.location.reload()} className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl">
+          <button
+            onClick={() => window.location.reload()}
+            className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl"
+          >
             Create New
           </button>
         </div>
@@ -131,13 +156,13 @@ const ResultComponent: React.FC<ResultComponentProps> = ({ articleTitle, article
             <Dropdown
               hideSearch
               label="Download"
-              items={[
-                "Download as DOC",
-                "Download as PDF",
-              ]}
+              items={["Download as DOC", "Download as PDF"]}
               onChange={(value: any) => handleDownload(value)}
             />
-            <div onClick={handleShare} className="bg-white h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
+            <div
+              onClick={handleShare}
+              className="bg-white h-11 w-11 grid place-content-center rounded-lg cursor-pointer"
+            >
               {isPending ? <Spinner color="black" /> : <Share2 />}
             </div>
           </div>
@@ -152,10 +177,18 @@ const ResultComponent: React.FC<ResultComponentProps> = ({ articleTitle, article
             <>
               <div className="flex justify-center items-center gap-2">
                 {images.map((image, index) => (
-                  <img src={image.url} key={index} alt="" width={300} height={300} className="rounded-2xl cursor-pointer" />
+                  <img
+                    src={image.url}
+                    key={index}
+                    alt=""
+                    width={300}
+                    height={300}
+                    className="rounded-2xl cursor-pointer"
+                  />
                 ))}
               </div>
-              <ReactMarkdown className="prose"
+              <ReactMarkdown
+                className="prose"
                 remarkPlugins={[remarkGfm, remarkBreaks]}
                 rehypePlugins={[rehypeRaw]}
               >
@@ -169,34 +202,48 @@ const ResultComponent: React.FC<ResultComponentProps> = ({ articleTitle, article
       <Dialog open={open} onOpenChange={handleClose}>
         <DialogContent>
           <DialogTitle>Share The Content in Linked In</DialogTitle>
-          <div className="flex justify-end" style={{position:'absolute',marginTop:"4rem",marginLeft:"41rem"}}>
-          {copied && (
-              <span className="text-green-600">Copied!</span>
-            )}
+          <div
+            className="flex justify-end"
+            style={{
+              position: "absolute",
+              marginTop: "4rem",
+              marginLeft: "41rem",
+            }}
+          >
+            {copied && <span className="text-green-600">Copied!</span>}
           </div>
-        
+
           <div className="flex">
             <input
-              readOnly className="w-full"
+              readOnly
+              className="w-full"
               placeholder="Url"
               value={inputValue}
               onChange={(e: any) => setInputValue(e.target.value)}
-
             />
-          
-            <div className="p-3" onClick={handleCopy} style={{ cursor: "pointer" }} >
+
+            <div
+              className="p-3"
+              onClick={handleCopy}
+              style={{ cursor: "pointer" }}
+            >
               <CopyIcon />
             </div>
           </div>
 
-
-
           <div className="flex justify-end">
-
             <button
-              className="bg-gray-300 px-4 py-2 rounded-md text-gray-700" onClick={handleClose}>Cancel</button>
+              className="bg-gray-300 px-4 py-2 rounded-md text-gray-700"
+              onClick={handleClose}
+            >
+              Cancel
+            </button>
             <button
-              className="bg-primary-green px-4 py-2 rounded-md text-white ml-3" onClick={handlePublish} >Publish</button>
+              className="bg-primary-green px-4 py-2 rounded-md text-white ml-3"
+              onClick={handlePublish}
+            >
+              Publish
+            </button>
           </div>
         </DialogContent>
       </Dialog>

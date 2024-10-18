@@ -5,7 +5,12 @@ import { useToast } from "@/components/ui/use-toast";
 import { useState } from "react";
 import { FileRejection } from "react-dropzone";
 import { Ppt } from "@/components/svgs";
-import { Dialog, DialogClose, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export default function PptDialog() {
   const [file, setFile] = useState<File | null>(null);
@@ -15,7 +20,10 @@ export default function PptDialog() {
     setFile(null);
   }
 
-  function onFileDrop(acceptedFiles: File[], rejectedFiles: FileRejection[]): void {
+  function onFileDrop(
+    acceptedFiles: File[],
+    rejectedFiles: FileRejection[]
+  ): void {
     // if (isLoaded) {
     //   if (!isSignedIn) {
     //     toast({
@@ -62,7 +70,9 @@ export default function PptDialog() {
         <div className="w-full hover-card flex items-center justify-between transition duration-500 ring-1 ring-[#E7E7E7] p-6 rounded-2xl cursor-pointer group">
           <div className="space-y-3">
             <h1 className="text-[18px] font-semibold">Import Power Point</h1>
-            <p className="text-primary-neutral">Convert slides to scene backgrounds</p>
+            <p className="text-primary-neutral">
+              Convert slides to scene backgrounds
+            </p>
           </div>
           <Ppt className="text-primary-neutral group-hover:text-primary-green transition duration-500" />
         </div>
@@ -70,15 +80,22 @@ export default function PptDialog() {
       <DialogContent className="max-w-[964px]">
         <div className="space-y-10">
           <div className="space-y-3">
-            <h1 className="text-3xl font-semibold text-center">Import PowerPoint</h1>
-            <p className="text-center">Each slide will be converted into an image and set as a scene background.</p>
+            <h1 className="text-3xl font-semibold text-center">
+              Import PowerPoint
+            </h1>
+            <p className="text-center">
+              Each slide will be converted into an image and set as a scene
+              background.
+            </p>
           </div>
           <div>
             <Dropzone onFileDrop={() => {}} />
           </div>
           <div className="flex justify-center gap-x-3 mt-4">
             <DialogClose>
-              <button className="border text-primary-black px-8 py-4 rounded-xl flex items-center gap-2">Cancel</button>
+              <button className="border text-primary-black px-8 py-4 rounded-xl flex items-center gap-2">
+                Cancel
+              </button>
             </DialogClose>
             <button className="bg-primary-green text-white sheen transition duration-500 px-8 py-4 rounded-xl flex items-center gap-2">
               Import power point

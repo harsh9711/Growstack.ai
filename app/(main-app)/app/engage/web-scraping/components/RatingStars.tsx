@@ -7,7 +7,8 @@ export const renderRatingStars = (rating: number) => {
         style={{
           color: i < rating ? "#FFD700" : "#E0E0E0",
           fontSize: "25px",
-        }}>
+        }}
+      >
         ★
       </span>
     );
