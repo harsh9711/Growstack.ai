@@ -187,7 +187,7 @@ export default function AiPlayground() {
         <div className="!bg-white h-full flex flex-col border border-[#E8E8E8] shadow-box md:p-3 lg:p-5 space-y-5">
           <NewChatAlert handleNewChat={() => setChatAreas(initialChat)} />
         </div>
-        <div className="container flex gap-6 flex-1">
+        <div className="container flex gap-6 flex-1 overflow-x-auto">
           {chatAreas.map((chatArea) => (
             <ChatArea
               key={chatArea.id}
