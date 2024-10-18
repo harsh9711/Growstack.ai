@@ -2,13 +2,18 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
 interface CustomSelectProps {
-    options: string[]; 
-    value: string;
-    onChange: (value: string) => void;
-    placeholder: string;
-  }
-  
-export const CustomSelect = ({ options, value, onChange, placeholder }: CustomSelectProps) => {
+  options: string[];
+  value: string;
+  onChange: (value: string) => void;
+  placeholder: string;
+}
+
+export const CustomSelect = ({
+  options,
+  value,
+  onChange,
+  placeholder,
+}: CustomSelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement>(null);
 
@@ -18,15 +23,18 @@ export const CustomSelect = ({ options, value, onChange, placeholder }: CustomSe
   };
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
+    if (
+      selectRef.current &&
+      !selectRef.current.contains(event.target as Node)
+    ) {
       setIsOpen(false);
     }
   };
 
   useEffect(() => {
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -41,7 +49,7 @@ export const CustomSelect = ({ options, value, onChange, placeholder }: CustomSe
         <span>{value ? value : placeholder}</span>
         <div
           className="custom-arrow"
-          style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0)' }}
+          style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0)" }}
         >
           <Image src="/arrowe.svg" width={10} height={10} alt="arrow" />
         </div>
@@ -53,7 +61,7 @@ export const CustomSelect = ({ options, value, onChange, placeholder }: CustomSe
           className="absolute z-20 mt-1 w-full bg-white border border-[#DEDEDE] rounded-xl shadow-lg"
           role="listbox"
         >
-          {options.map((option) => (
+          {options.map(option => (
             <li
               key={option}
               onClick={() => handleSelect(option)}
@@ -68,6 +76,3 @@ export const CustomSelect = ({ options, value, onChange, placeholder }: CustomSe
     </div>
   );
 };
-
-  
-

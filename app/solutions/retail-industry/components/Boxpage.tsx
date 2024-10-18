@@ -28,8 +28,13 @@ const Boxpage = () => {
 
           <ul className="straight-line-list pt-4 text-[12px]  text-start items-start flex flex-col sm:text-[18px] text-black">
             <li>Seamless integration with retail workflows for efficiency.</li>
-            <li>AI tools to automate communication, content creation, and marketing.</li>
-            <li>Empower retailers with data insights for better decision-making.</li>
+            <li>
+              AI tools to automate communication, content creation, and
+              marketing.
+            </li>
+            <li>
+              Empower retailers with data insights for better decision-making.
+            </li>
           </ul>
         </div>
       </div>

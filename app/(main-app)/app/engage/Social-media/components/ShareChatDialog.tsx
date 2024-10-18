@@ -1,8 +1,21 @@
 "use client";
 
 import { Checkbox } from "@/components/ui/checkbox";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Search } from "lucide-react";
 import { useState } from "react";
 import { IoIosShareAlt } from "react-icons/io";
@@ -14,7 +27,7 @@ export default function ShareChatDialog() {
       <DialogTrigger asChild>
         <button className="bg-primary-green p-3.5 rounded-xl hover:bg-primary-green/90 text-white fixed bottom-6 right-8 shadow-xl shadow-[#2fff0038]">
           <IoIosShareAlt size={30} />
-        </button> 
+        </button>
       </DialogTrigger>
       <DialogContent className="max-w-[630px] p-0">
         <DialogHeader className="border-b py-5 px-6">
@@ -25,11 +38,16 @@ export default function ShareChatDialog() {
             <div className="flex justify-between items-center border-b pb-4">
               <div className="space-y-2">
                 <h1 className="text-lg font-semibold">Export format</h1>
-                <p className="text-[15px] text-primary-black text-opacity-80">Text, PDF and DOCX</p>
+                <p className="text-[15px] text-primary-black text-opacity-80">
+                  Text, PDF and DOCX
+                </p>
               </div>
               <Select>
                 <SelectTrigger className="p-3 w-[90px] bg-primary-light-gray border-0 h-10">
-                  <SelectValue defaultValue={outputType[0].value} placeholder="Select an option" />
+                  <SelectValue
+                    defaultValue={outputType[0].value}
+                    placeholder="Select an option"
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
@@ -45,14 +63,20 @@ export default function ShareChatDialog() {
             <div className="flex justify-between items-center border-b pb-4">
               <div className="space-y-2">
                 <h1 className="text-lg font-semibold">Including context</h1>
-                <p className="text-[15px] text-primary-black text-opacity-80">Export context prompts in masks or not</p>
+                <p className="text-[15px] text-primary-black text-opacity-80">
+                  Export context prompts in masks or not
+                </p>
               </div>
               <Checkbox />
             </div>
             <div className="flex gap-3">
               <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
                 <Search className="text-gray-500" size={20} />
-                <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" />
+                <input
+                  type="search"
+                  className="outline-none h-[40px] w-full"
+                  placeholder="Search"
+                />
               </div>
               <div className="px-4 whitespace-nowrap text-sm bg-primary-light-gray text-gray-500 rounded-lg grid place-content-center cursor-pointer">
                 Select
@@ -66,7 +90,8 @@ export default function ShareChatDialog() {
             </div>
             <button
               onClick={() => setNextStep(true)}
-              className="!mt-8 bg-primary-green w-full h-14 rounded-xl hover:bg-primary-green/90 flex justify-center items-center text-white">
+              className="!mt-8 bg-primary-green w-full h-14 rounded-xl hover:bg-primary-green/90 flex justify-center items-center text-white"
+            >
               Next
             </button>
           </div>
@@ -79,7 +104,9 @@ export default function ShareChatDialog() {
               <button className="bg-primary-green w-full h-14 rounded-xl hover:bg-primary-green/90 flex justify-center items-center text-white">
                 Download
               </button>
-              <button className="bg-primary-green w-full h-14 rounded-xl hover:bg-primary-green/90 flex justify-center items-center text-white">Export</button>
+              <button className="bg-primary-green w-full h-14 rounded-xl hover:bg-primary-green/90 flex justify-center items-center text-white">
+                Export
+              </button>
             </div>
           </div>
         )}

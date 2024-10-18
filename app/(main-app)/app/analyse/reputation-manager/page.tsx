@@ -27,7 +27,8 @@ export default function Dashboard() {
           <div className="space-y-2">
             <h1 className="text-2xl font-semibold">Reputation manager</h1>
             <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
-              Seeking that perfect content? Look no further! Get ready to explore our fantastic lineup of templates
+              Seeking that perfect content? Look no further! Get ready to
+              explore our fantastic lineup of templates
             </p>
           </div>
           <div className="w-full max-w-[620px] bg-white shadow-2xl shadow-gray-200 px-3 py-2 rounded-xl">
@@ -36,20 +37,27 @@ export default function Dashboard() {
                 <div
                   key={index}
                   className={`w-full h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
-                    selectedTabIndex === index ? "!text-white" : "!text-primary-grey"
+                    selectedTabIndex === index
+                      ? "!text-white"
+                      : "!text-primary-grey"
                   }`}
                   onClick={() => {
                     const totalTabs = tabs.length;
                     const percentage = (index / totalTabs) * 100;
                     setSelectedTabIndex(index);
                     setTabUnderlineLeft(percentage);
-                  }}>
+                  }}
+                >
                   {tab}
                 </div>
               ))}
               <div
                 className="absolute bottom-0 h-[48px] bg-primary-green custom-transition rounded-lg"
-                style={{ left: `calc(${tabUnderlineLeft}%)`, width: `${100 / tabs.length}%` }}></div>
+                style={{
+                  left: `calc(${tabUnderlineLeft}%)`,
+                  width: `${100 / tabs.length}%`,
+                }}
+              ></div>
             </div>
           </div>
         </div>

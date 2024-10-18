@@ -30,8 +30,14 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const { user, currentPlan, isUserFetching, isCurrentPlanFetching, isAuthenticated: isLoggedIn, initialized } =
-    useSelector((rootState: RootState) => rootState.auth);
+  const {
+    user,
+    currentPlan,
+    isUserFetching,
+    isCurrentPlanFetching,
+    isAuthenticated: isLoggedIn,
+    initialized,
+  } = useSelector((rootState: RootState) => rootState.auth);
 
   const init = async () => {
     const token = getCookie("token");
@@ -67,11 +73,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     init();
   }, []);
 
-
   const isSubscribed = user?.isSubscribed || false;
   const [isAddOnModalOpen, setIsAddOnModalOpen] = useState<boolean>(false);
-
-
 
   const fetchPlanUsage = async () => {
     try {
@@ -112,7 +115,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       pathname !== "/Payment" &&
       !isSubscribed &&
       user?.user_type !== "ADMIN" &&
-      !planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan.plan_id)
+      !planIdsMap[PlanName.AI_ESSENTIALS].some(
+        val => val === currentPlan.plan_id
+      )
     ) {
       console.log("You need a subscription to view this page!");
       router.push("/Payment");
@@ -145,7 +150,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return <Spinner2 />;
   }
 
-
   if (isMobile()) {
     return (
       <>
@@ -155,13 +159,17 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             Mobile Access Restricted
           </h3>
           <p className="text-center text-sm md:text-base mb-6">
-            This application is not accessible on mobile devices. Please switch to a laptop or desktop for the best experience.
+            This application is not accessible on mobile devices. Please switch
+            to a laptop or desktop for the best experience.
           </p>
           <h3 className="text-center  text-black text-md font-bold mb-4">
             Mobile app coming soon
           </h3>
-          <Link href="/" className="no-underline"><p className="text-center no-underline text-sm md:text-base mb-6">
-            Go back </p></Link>
+          <Link href="/" className="no-underline">
+            <p className="text-center no-underline text-sm md:text-base mb-6">
+              Go back{" "}
+            </p>
+          </Link>
           {/* <div className="flex  gap-4">
                   <Link href="/auth/register">
                     <img src="/images_growstack/banner/playStore.svg" alt="banner" />
@@ -174,7 +182,6 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     Learn More
   </button> */}
         </div>
-
       </>
     );
   }
@@ -184,7 +191,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       {children}
       <GlobalModal
         showCloseButton={false}
-        disableCloseOnOverlayClick={true}
+        disableCloseOnOverlayClick
         open={isAddOnModalOpen}
         setOpen={() => {
           setIsAddOnModalOpen(false);

@@ -22,7 +22,10 @@ export default function OverViewSection() {
     }
   };
   return (
-    <Motion transition={{ duration: 0.5 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion
+      transition={{ duration: 0.5 }}
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+    >
       <div>
         <div className="flex ml-7 translate-y-[1.5px]">
           {tabs.map((tab, index) => (
@@ -31,13 +34,17 @@ export default function OverViewSection() {
               onClick={() => setSelectedTab(tab)}
               className={clsx(
                 "pt-5 pb-3 px-8 rounded-t-3xl cursor-pointer",
-                selectedTab === tab && "bg-white border-t border-x border-[#E4E4E4] text-primary-green font-medium"
-              )}>
+                selectedTab === tab &&
+                  "bg-white border-t border-x border-[#E4E4E4] text-primary-green font-medium"
+              )}
+            >
               {tab}
             </div>
           ))}
         </div>
-        <div className="bg-white border border-[#E4E4E4] rounded-3xl p-10">{renderSection()}</div>
+        <div className="bg-white border border-[#E4E4E4] rounded-3xl p-10">
+          {renderSection()}
+        </div>
       </div>
     </Motion>
   );

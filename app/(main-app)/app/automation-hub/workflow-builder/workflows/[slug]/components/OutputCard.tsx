@@ -31,7 +31,10 @@ const OutputCard = ({ index, output }: OutputCardProps) => {
         <h2 className="font-medium text-lg">
           {index + 1}. {output.variable_name}
         </h2>
-        <button className="bg-primary-green ml-auto text-white px-4 py-2 rounded-lg" onClick={handleCopy}>
+        <button
+          className="bg-primary-green ml-auto text-white px-4 py-2 rounded-lg"
+          onClick={handleCopy}
+        >
           {!copied ? "Copy" : "Copied!"}
         </button>
       </div>

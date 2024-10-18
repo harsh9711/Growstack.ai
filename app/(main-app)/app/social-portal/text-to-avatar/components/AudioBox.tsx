@@ -25,7 +25,9 @@ const CreateVideoDialog = ({
   useEffect(() => {
     const fetchVoices = async () => {
       try {
-        const response = await instance.get(`${API_URL}/ai/api/v1/video/voices`);
+        const response = await instance.get(
+          `${API_URL}/ai/api/v1/video/voices`
+        );
         setVoices(response.data.data);
       } catch (error) {
         console.error("Error fetching voices");
@@ -83,18 +85,18 @@ const CreateVideoDialog = ({
           <button
             ref={buttonRef}
             className="border border-[#DEDEDE] bg-[#F5F5F5] h-full w-full rounded-xl outline-none focus:border-primary-green transition-all p-4 text-left flex justify-between items-center"
-            onClick={() => setDropdownOpen((prev) => !prev)}
+            onClick={() => setDropdownOpen(prev => !prev)}
           >
             {selectedVoice
-              ? voices.find((v) => v.id === selectedVoice)?.name
+              ? voices.find(v => v.id === selectedVoice)?.name
               : "Select Voice"}
             <span
               className={`ml-2 transition-transform ${
                 dropdownOpen ? "rotate-180" : ""
-              }`} 
+              }`}
               style={{ display: "inline-block" }}
             >
-              <Image src="/arrowe.svg" width={10} height={10} alt="arrow"/>
+              <Image src="/arrowe.svg" width={10} height={10} alt="arrow" />
             </span>
           </button>
           <motion.div
@@ -106,7 +108,7 @@ const CreateVideoDialog = ({
             className="absolute top-full left-0 w-full border border-[#DEDEDE] bg-[#F5F5F5] rounded-xl mt-2"
             style={{ display: dropdownOpen ? "block" : "none" }}
           >
-            {voices.map((voice) => (
+            {voices.map(voice => (
               <div
                 key={voice.id}
                 className={`p-2 flex justify-between items-center cursor-pointer hover:bg-[#EDEDED] ${
@@ -117,8 +119,8 @@ const CreateVideoDialog = ({
                 <span>{voice.name}</span>
                 <button
                   type="button"
-                  onClick={(e) => {
-                    e.stopPropagation(); 
+                  onClick={e => {
+                    e.stopPropagation();
                     handlePlaySample(voice.sampleUrl);
                   }}
                   className="ml-2"

@@ -66,17 +66,17 @@ export default function AiPlayground() {
 
   const updateChatAreaModel = (id: number, newModel: string) => {
     const newProvider = llmComparisonModels
-      .flatMap((category) => category.models)
-      .find((model) => model.value === newModel)?.provider;
+      .flatMap(category => category.models)
+      .find(model => model.value === newModel)?.provider;
 
     setChatAreas(
-      chatAreas.map((chatArea) =>
+      chatAreas.map(chatArea =>
         chatArea.id === id
           ? {
-            ...chatArea,
-            selectedModel: newModel,
-            provider: newProvider || "",
-          }
+              ...chatArea,
+              selectedModel: newModel,
+              provider: newProvider || "",
+            }
           : chatArea
       )
     );
@@ -88,7 +88,7 @@ export default function AiPlayground() {
 
   const handleDelete = (id: number) => {
     if (chatAreas.length > 1) {
-      setChatAreas(chatAreas.filter((chatArea) => chatArea.id !== id));
+      setChatAreas(chatAreas.filter(chatArea => chatArea.id !== id));
     } else {
       toast.error("Minimum of One Chat");
     }
@@ -114,8 +114,8 @@ export default function AiPlayground() {
       role: "assistant",
       loading: true,
     };
-    setChatAreas((prevChatAreas) =>
-      prevChatAreas.map((chatArea) => ({
+    setChatAreas(prevChatAreas =>
+      prevChatAreas.map(chatArea => ({
         ...chatArea,
         conversation: [
           ...chatArea.conversation,
@@ -128,7 +128,7 @@ export default function AiPlayground() {
     );
     try {
       const responses = await Promise.all(
-        chatAreas.map(async (chatArea) => {
+        chatAreas.map(async chatArea => {
           const payload = {
             user_prompt: userPrompt?.trim() || chatMessage?.trim(),
             model: chatArea.selectedModel,
@@ -145,10 +145,10 @@ export default function AiPlayground() {
           return { chatArea, initialText, updatedMessages };
         })
       );
-      setChatAreas((prevChatAreas) =>
-        prevChatAreas.map((chatArea) => {
+      setChatAreas(prevChatAreas =>
+        prevChatAreas.map(chatArea => {
           const response = responses.find(
-            (res) => res.chatArea.id === chatArea.id
+            res => res.chatArea.id === chatArea.id
           );
           if (response) {
             const { initialText, updatedMessages } = response;
@@ -156,15 +156,15 @@ export default function AiPlayground() {
               ...chatArea,
               conversation: chatArea.awaitingUpdate
                 ? [
-                  ...chatArea.conversation.slice(0, -1),
-                  {
-                    ...chatArea.conversation[
-                    chatArea.conversation.length - 1
-                    ],
-                    content: initialText,
-                    loading: false,
-                  },
-                ]
+                    ...chatArea.conversation.slice(0, -1),
+                    {
+                      ...chatArea.conversation[
+                        chatArea.conversation.length - 1
+                      ],
+                      content: initialText,
+                      loading: false,
+                    },
+                  ]
                 : chatArea.conversation,
               awaitingUpdate: updatedMessages?.length > 0,
               messages: updatedMessages,
@@ -174,7 +174,7 @@ export default function AiPlayground() {
         })
       );
     } catch (error: any) {
-      setChatAreas((prevChatAreas) => prevChatAreas);
+      setChatAreas(prevChatAreas => prevChatAreas);
       toast.error(error?.response?.data?.message || "Something went wrong");
       console.error("Error sending prompt:", error);
     }
@@ -182,18 +182,18 @@ export default function AiPlayground() {
   };
 
   return (
-    <div className="flex-1 h-full flex flex-col mt-10 w-full overflow-x-auto">
+    <div className="flex-1 h-full flex flex-col mt-10 w-full justify-center overflow-x-auto">
       <form onSubmit={handleSubmit} className="flex-1 h-full flex gap-6 w-full">
         <div className="!bg-white h-full flex flex-col border border-[#E8E8E8] shadow-box md:p-3 lg:p-5 space-y-5">
           <NewChatAlert handleNewChat={() => setChatAreas(initialChat)} />
         </div>
-        <div className="container flex gap-6 flex-1 overflow-x-auto">
+        <div className="container flex gap-6 flex-1 m-0 overflow-x-auto">
           {chatAreas.map((chatArea) => (
             <ChatArea
               key={chatArea.id}
               selectedModel={chatArea.selectedModel}
               addChatArea={addChatArea}
-              onModelChange={(newModel) =>
+              onModelChange={newModel =>
                 updateChatAreaModel(chatArea.id, newModel)
               }
               handleChange={handleChange}

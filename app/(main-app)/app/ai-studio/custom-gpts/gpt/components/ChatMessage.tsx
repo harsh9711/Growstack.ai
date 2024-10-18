@@ -36,7 +36,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ conversation, icon }) => {
 
   const handleScroll = () => {
     if (scrollContainerRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = scrollContainerRef.current;
+      const { scrollTop, scrollHeight, clientHeight } =
+        scrollContainerRef.current;
       setIsBottom(scrollTop + clientHeight >= scrollHeight - 10); // Adjust threshold for precision
     }
   };

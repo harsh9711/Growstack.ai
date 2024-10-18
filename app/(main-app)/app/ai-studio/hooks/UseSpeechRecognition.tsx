@@ -10,7 +10,7 @@ declare global {
 
 const useSpeechRecognition = (
   language: string,
-  isMicOpen : any,
+  isMicOpen: any,
   onResult: (transcript: string) => void,
   onEndCallback: () => void
 ) => {
@@ -46,8 +46,10 @@ const useSpeechRecognition = (
         onResult(transcript);
       };
     } else {
-      if(isMicOpen){
-        toast.error("Speech recognition not supported in this browser.", { duration: Infinity });
+      if (isMicOpen) {
+        toast.error("Speech recognition not supported in this browser.", {
+          duration: Infinity,
+        });
       }
     }
   }, [language, onResult, onEndCallback, isMicOpen]);
@@ -72,7 +74,7 @@ const useSpeechRecognition = (
       const utterance = new SpeechSynthesisUtterance(text);
 
       const loadVoices = () => {
-        return new Promise((resolve) => {
+        return new Promise(resolve => {
           let voices = window.speechSynthesis.getVoices();
           if (voices.length) {
             resolve(voices);

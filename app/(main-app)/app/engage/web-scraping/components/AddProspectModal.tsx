@@ -1,8 +1,20 @@
 "use client";
 import { countries } from "@/app/(main-app)/account/profile/data";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import "leaflet/dist/leaflet.css";
 import { ArrowRight } from "lucide-react";
@@ -45,9 +57,11 @@ const AddProspectModal: React.FC<AddProspectProps> = ({ onProspectAdded }) => {
 
   const [isChecked, setIsChecked] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
-    setFormData((prevFormData) => ({
+    setFormData(prevFormData => ({
       ...prevFormData,
       [name]: value,
     }));
@@ -106,32 +120,62 @@ const AddProspectModal: React.FC<AddProspectProps> = ({ onProspectAdded }) => {
               <label className="font-medium">
                 Business name <span className="text-[#F00]">*</span>
               </label>
-              <Input type="text" name="businessName" value={formData.businessName} onChange={handleChange} placeholder="Type your Business name" />
+              <Input
+                type="text"
+                name="businessName"
+                value={formData.businessName}
+                onChange={handleChange}
+                placeholder="Type your Business name"
+              />
             </div>
             <div className="space-y-2">
               <label className="font-medium">
                 Business phone number <span className="text-[#F00]">*</span>
               </label>
-              <Input type="text" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} placeholder="Type your phone number" />
+              <Input
+                type="text"
+                name="phoneNumber"
+                value={formData.phoneNumber}
+                onChange={handleChange}
+                placeholder="Type your phone number"
+              />
             </div>
             <div className="space-y-2">
               <label className="font-medium">
                 Address <span className="text-[#F00]">*</span>
               </label>
-              <Input type="text" name="address" value={formData.address} onChange={handleChange} placeholder="Type Business Address" />
+              <Input
+                type="text"
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                placeholder="Type Business Address"
+              />
             </div>
             <div className="grid grid-cols-2 gap-5">
               <div className="space-y-2">
                 <label className="font-medium">
                   City <span className="text-[#F00]">*</span>
                 </label>
-                <Input type="text" name="city" value={formData.city} onChange={handleChange} placeholder="Type City" />
+                <Input
+                  type="text"
+                  name="city"
+                  value={formData.city}
+                  onChange={handleChange}
+                  placeholder="Type City"
+                />
               </div>
               <div className="space-y-2">
                 <label className="font-medium">
                   State <span className="text-[#F00]">*</span>
                 </label>
-                <Input type="text" name="state" value={formData.state} onChange={handleChange} placeholder="Type State" />
+                <Input
+                  type="text"
+                  name="state"
+                  value={formData.state}
+                  onChange={handleChange}
+                  placeholder="Type State"
+                />
               </div>
               <div className="space-y-2">
                 <label className="font-medium">
@@ -139,12 +183,13 @@ const AddProspectModal: React.FC<AddProspectProps> = ({ onProspectAdded }) => {
                 </label>
                 <Select
                   value={formData.country as any}
-                  onValueChange={(value) => {
-                    setFormData((prevFormData) => ({
+                  onValueChange={value => {
+                    setFormData(prevFormData => ({
                       ...prevFormData,
                       country: value,
                     }));
-                  }}>
+                  }}
+                >
                   <SelectTrigger className="w-full border-none">
                     <SelectValue placeholder="Country" />
                   </SelectTrigger>
@@ -161,37 +206,76 @@ const AddProspectModal: React.FC<AddProspectProps> = ({ onProspectAdded }) => {
                 <label className="font-medium">
                   Zip code <span className="text-[#F00]">*</span>
                 </label>
-                <Input type="text" name="zipCode" value={formData.zipCode} onChange={handleChange} placeholder="Type Zip code" />
+                <Input
+                  type="text"
+                  name="zipCode"
+                  value={formData.zipCode}
+                  onChange={handleChange}
+                  placeholder="Type Zip code"
+                />
               </div>
             </div>
             <div className="space-y-2">
               <label className="font-medium">
                 Website <span className="text-[#F00]">*</span>
               </label>
-              <Input type="url" name="website" value={formData.website} onChange={handleChange} placeholder="Type Website URL" />
+              <Input
+                type="url"
+                name="website"
+                value={formData.website}
+                onChange={handleChange}
+                placeholder="Type Website URL"
+              />
             </div>
 
             <div className="flex items-center gap-3">
-              <Switch checked={isChecked} onCheckedChange={() => setIsChecked((prev) => !prev)} />
+              <Switch
+                checked={isChecked}
+                onCheckedChange={() => setIsChecked(prev => !prev)}
+              />
               Do you have a point of contact at this business?
             </div>
             {isChecked && (
               <div className="grid grid-cols-2 gap-5">
                 <div className="space-y-2">
                   <label className="font-medium">First name</label>
-                  <Input type="text" name="firstName" value={formData.firstName} onChange={handleChange} placeholder="Type First name" />
+                  <Input
+                    type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    placeholder="Type First name"
+                  />
                 </div>
                 <div className="space-y-2">
                   <label className="font-medium">Last name</label>
-                  <Input type="text" name="lastName" value={formData.lastName} onChange={handleChange} placeholder="Type Last name" />
+                  <Input
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    placeholder="Type Last name"
+                  />
                 </div>
                 <div className="space-y-2">
                   <label className="font-medium">Email</label>
-                  <Input type="text" name="email" value={formData.email} onChange={handleChange} placeholder="Type Email" />
+                  <Input
+                    type="text"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="Type Email"
+                  />
                 </div>
                 <div className="space-y-2">
                   <label className="font-medium">Phone</label>
-                  <Input type="text" name="phone" value={formData.phone} onChange={handleChange} placeholder="Type Phone" />
+                  <Input
+                    type="text"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder="Type Phone"
+                  />
                 </div>
               </div>
             )}
@@ -199,12 +283,14 @@ const AddProspectModal: React.FC<AddProspectProps> = ({ onProspectAdded }) => {
             <div className="flex justify-end gap-4 w-full">
               <button
                 className="py-3.5 h-14 w-full max-w-[140px] px-6 bg-white border text-primary-green border-primary-green  rounded-xl mt-6"
-                onClick={resetFormData}>
+                onClick={resetFormData}
+              >
                 Reset
               </button>
               <button
                 className="py-3.5 h-14 w-full max-w-[200px] px-6 bg-primary-green sheen rounded-xl text-white mt-6 flex items-center justify-center gap-3 whitespace-nowrap"
-                onClick={handleSubmit}>
+                onClick={handleSubmit}
+              >
                 Save Prospect{" "}
                 <span className="relative p-2 text-primary-green bg-white rounded-full">
                   <ArrowRight size={20} />

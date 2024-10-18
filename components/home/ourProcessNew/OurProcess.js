@@ -23,7 +23,6 @@ const HoverVideo = () => {
       videoRef.current.play();
       setIsPlaying(true);
 
-
       setTimeout(() => {
         stopAndFreezeVideo();
       }, 12000);

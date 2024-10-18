@@ -2,7 +2,12 @@ import { EditIcon, MessageIcon2 } from "@/components/svgs";
 import clsx from "clsx";
 import { Trash2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import Spinner from "@/components/Spinner";
 
 interface SidebarItemProps {
@@ -85,13 +90,25 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
         )}
       >
         <div
-          className={clsx("h-14 flex gap-4 w-full items-center relative overflow-hidden")}
-          onClick={(e) => {
+          className={clsx(
+            "h-14 flex gap-4 w-full items-center relative overflow-hidden"
+          )}
+          onClick={e => {
             if (!editing) onSelect();
           }}
         >
-          <MessageIcon2 className={clsx("group-hover:text-primary-green w-full max-w-fit")} />
-          {!editing && <span className={clsx("flex-1 whitespace-nowrap overflow-hidden text-ellipsis")}>{title}</span>}
+          <MessageIcon2
+            className={clsx("group-hover:text-primary-green w-full max-w-fit")}
+          />
+          {!editing && (
+            <span
+              className={clsx(
+                "flex-1 whitespace-nowrap overflow-hidden text-ellipsis"
+              )}
+            >
+              {title}
+            </span>
+          )}
           {editing && (
             <input
               type="text"
@@ -99,14 +116,21 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
               onChange={handleInputChange}
               onBlur={handleRenameClick}
               onKeyDown={handleKeyDown} // Listen for Enter key
-              onClick={(e) => e.stopPropagation()} // Prevent onSelect when clicking the input
+              onClick={e => e.stopPropagation()} // Prevent onSelect when clicking the input
               className="border-gray-300 focus:border-primary-green rounded px-2 py-1 w-full mb-1 ring-2 ring-primary-green"
             />
           )}
         </div>
         <div className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition duration-500 flex items-center gap-3 w-full max-w-fit">
-          <Trash2 size={18} className="cursor-pointer" onClick={() => setIsDeleteOpen(true)} />
-          <EditIcon className="cursor-pointer h-4 w-4" onClick={handleRenameClick} />
+          <Trash2
+            size={18}
+            className="cursor-pointer"
+            onClick={() => setIsDeleteOpen(true)}
+          />
+          <EditIcon
+            className="cursor-pointer h-4 w-4"
+            onClick={handleRenameClick}
+          />
         </div>
       </div>
       <DeleteChatModal
@@ -130,7 +154,13 @@ interface DeleteModalProps {
   id: string;
 }
 
-function DeleteChatModal({ show, onHide, onDelete, pending, id }: DeleteModalProps) {
+function DeleteChatModal({
+  show,
+  onHide,
+  onDelete,
+  pending,
+  id,
+}: DeleteModalProps) {
   return (
     <Dialog open={show} onOpenChange={onHide}>
       <DialogContent className="max-w-xl pt-0">
@@ -138,7 +168,10 @@ function DeleteChatModal({ show, onHide, onDelete, pending, id }: DeleteModalPro
           <DialogTitle>Delete History</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-2">
-          <p className="text-gray-500">Are you sure you want to delete this chat? This action cannot be undone!</p>
+          <p className="text-gray-500">
+            Are you sure you want to delete this chat? This action cannot be
+            undone!
+          </p>
           <div className="flex justify-end gap-3 w-full">
             <button
               className="h-11 w-full max-w-[100px] px-6 bg-white border text-primary-green border-primary-green rounded-lg mt-6"

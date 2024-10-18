@@ -1,15 +1,32 @@
-
 "use client";
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import "jspdf-autotable";
 import { Info } from "lucide-react";
 
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
-
-
-const Dropdown = ({ label, items, infoIcon, hideLabel, value, onChange, placeholder, info }: any) => (
+const Dropdown = ({
+  label,
+  items,
+  infoIcon,
+  hideLabel,
+  value,
+  onChange,
+  placeholder,
+  info,
+}: any) => (
   <div className="space-y-3">
     {!hideLabel && (
       <h2 className="font-medium flex items-center gap-2">
@@ -19,7 +36,10 @@ const Dropdown = ({ label, items, infoIcon, hideLabel, value, onChange, placehol
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <Info size={18} className="text-primary-black text-opacity-50" />
+                  <Info
+                    size={18}
+                    className="text-primary-black text-opacity-50"
+                  />
                 </TooltipTrigger>
                 <TooltipContent className="bg-white">
                   <p>{info}</p>
@@ -44,6 +64,5 @@ const Dropdown = ({ label, items, infoIcon, hideLabel, value, onChange, placehol
     </Select>
   </div>
 );
-
 
 export default Dropdown;

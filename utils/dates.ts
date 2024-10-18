@@ -1,4 +1,9 @@
-import { differenceInDays, differenceInMonths, differenceInYears, format } from "date-fns";
+import {
+  differenceInDays,
+  differenceInMonths,
+  differenceInYears,
+  format,
+} from "date-fns";
 
 export const formatRelativeDate = (dateString: string) => {
   const date = new Date(dateString);
@@ -37,22 +42,19 @@ export function timeDiffFromNow(inputDate: string): string {
   const year = 365 * day;
 
   if (diffInMs < hour) {
-      return `${Math.floor(diffInMs / minute)}m`;
+    return `${Math.floor(diffInMs / minute)}m`;
   } else if (diffInMs < day) {
-      return `${Math.floor(diffInMs / hour)}h`;
+    return `${Math.floor(diffInMs / hour)}h`;
   } else if (diffInMs < week) {
-      return `${Math.floor(diffInMs / day)}d`;
+    return `${Math.floor(diffInMs / day)}d`;
   } else if (diffInMs < month) {
-      return `${Math.floor(diffInMs / week)}w`;
+    return `${Math.floor(diffInMs / week)}w`;
   } else if (diffInMs < year) {
-      return `${Math.floor(diffInMs / month)}M`;
+    return `${Math.floor(diffInMs / month)}M`;
   } else {
-      return `${Math.floor(diffInMs / year)}Y`;
+    return `${Math.floor(diffInMs / year)}Y`;
   }
 }
-
-
-
 
 export const formatDateTime = (dateString: string) => {
   const date = new Date(dateString);

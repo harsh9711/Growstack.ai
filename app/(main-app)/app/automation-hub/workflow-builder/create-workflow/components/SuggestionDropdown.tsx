@@ -55,13 +55,13 @@ const SuggestionDropdown = ({
   useEffect(() => {
     const query = searchQuery.trim().toLowerCase();
     setSuggestionOptions((prevState: SuggestionOption[]) =>
-      prevState.map((option) => {
+      prevState.map(option => {
         return {
           ...option,
-          show: option.subOptions.some((subOption) =>
+          show: option.subOptions.some(subOption =>
             subOption.label.toLowerCase().includes(query)
           ),
-          subOptions: option.subOptions.map((subOption) => ({
+          subOptions: option.subOptions.map(subOption => ({
             ...subOption,
             show: subOption.label.toLowerCase().includes(query),
           })),
@@ -74,30 +74,30 @@ const SuggestionDropdown = ({
     <>
       {isDropdownVisible && (
         <div
-          className='dropdown border border-white shadow-md rounded-xl mt-2'
+          className="dropdown border border-white shadow-md rounded-xl mt-2"
           ref={dropdownRef}
         >
           <input
-            type='text'
+            type="text"
             value={searchQuery}
             onChange={handleSearchChange}
-            className='p-2 border border-gray-300 rounded-md w-full mb-2'
-            placeholder='Search...'
+            className="p-2 border border-gray-300 rounded-md w-full mb-2"
+            placeholder="Search..."
           />
           {suggestionOptions.map(
             (suggestion, index) =>
               suggestion.show && (
-                <div key={index} className='mb-2'>
+                <div key={index} className="mb-2">
                   <div
-                    className='flex w-full justify-between items-center gap-3 cursor-pointer p-2 rounded-md hover:bg-gray-100'
+                    className="flex w-full justify-between items-center gap-3 cursor-pointer p-2 rounded-md hover:bg-gray-100"
                     onClick={() => toggleSuggestion(index)}
                   >
-                    <div className='flex flex-row gap-x-2'>
+                    <div className="flex flex-row gap-x-2">
                       {/* <MenuIcon className='rounded-xl border border-x-white shadow-md' /> */}
-                      <div className='flex items-center'>{suggestion.icon}</div>
+                      <div className="flex items-center">{suggestion.icon}</div>
                       <span>{suggestion.label}</span>
                     </div>
-                    <div className='text-gray-400'>
+                    <div className="text-gray-400">
                       <IoIosArrowDropdown
                         className={`transform ${
                           suggestion.isExpanded
@@ -113,13 +113,12 @@ const SuggestionDropdown = ({
                         subOption.show && (
                           <div
                             key={subIndex}
-                            className='flex items-center gap-3 cursor-pointer p-2 rounded-md hover:bg-gray-100 ml-8'
+                            className="flex items-center gap-3 cursor-pointer p-2 rounded-md hover:bg-gray-100 ml-8"
                             onClick={() => handleSubOptionClick(subOption)}
                           >
-                            <div className='flex flex-row gap-x-2'>
+                            <div className="flex flex-row gap-x-2">
                               {" "}
-                              {suggestion.icon}{" "}
-                              <div>{subOption.label}</div>
+                              {suggestion.icon} <div>{subOption.label}</div>
                             </div>
                           </div>
                         )

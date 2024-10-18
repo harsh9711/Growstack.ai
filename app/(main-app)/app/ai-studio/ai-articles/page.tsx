@@ -16,10 +16,14 @@ export default function AiArticles() {
   const [selectedOutlines, setSelectedOutlines] = useState<IOutline | any>({});
   const [keywords, setKeywords] = useState<string[]>([]);
   const [keywordInputValue, setKeywordInputValue] = useState<string>("");
-  const [talkingPoints, setTalkingPoints] = useState<ISubtitleTalkingPoints[]>([]);
+  const [talkingPoints, setTalkingPoints] = useState<ISubtitleTalkingPoints[]>(
+    []
+  );
   const [articleTitle, setArticleTitle] = useState<string>("");
   const [outlines, setOutlines] = useState<IOutline[]>([]);
-  const [images, setImages] = useState<Array<{ revised_prompt: string; url: string }>>([]);
+  const [images, setImages] = useState<
+    Array<{ revised_prompt: string; url: string }>
+  >([]);
   const [articleData, setArticleData] = useState<string>("");
 
   const renderComponent = () => {
@@ -87,7 +91,14 @@ export default function AiArticles() {
           />
         );
       case 4:
-        return <ResultComponent articleTitle={articleTitle} articleData={articleData} images={images} setImages={setImages} />;
+        return (
+          <ResultComponent
+            articleTitle={articleTitle}
+            articleData={articleData}
+            images={images}
+            setImages={setImages}
+          />
+        );
     }
   };
 
@@ -98,7 +109,7 @@ export default function AiArticles() {
           <div className="space-y-2 w-full">
             <h1 className="text-2xl font-semibold">AI content wizard</h1>
             {/* <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]"> */}
-              {/* <svg xmlns="http://www.w3.org/2000/svg" width="14" height="21" viewBox="0 0 14 21" fill="none">
+            {/* <svg xmlns="http://www.w3.org/2000/svg" width="14" height="21" viewBox="0 0 14 21" fill="none">
                 <path
                   d="M5.75349 1H12.4815L8.23221 7.01975H12.4815L2.3541 18.2802L5.8243 10.6316H2L5.75349 1Z"
                   fill="#F9DE6F"
@@ -107,12 +118,16 @@ export default function AiArticles() {
                   strokeMiterlimit="10"
                 />
               </svg>{" "} */}
-              {/* Your Balance is <span className="font-semibold text-primary-green">10,000 Words</span>{" "} */}
+            {/* Your Balance is <span className="font-semibold text-primary-green">10,000 Words</span>{" "} */}
             {/* </p> */}
           </div>
         </div>
         <div className="mx-auto p-4">
-          <StepIndicator steps={steps} currentStep={currentStep} setCurrentStep={setCurrentStep} />
+          <StepIndicator
+            steps={steps}
+            currentStep={currentStep}
+            setCurrentStep={setCurrentStep}
+          />
           {renderComponent()}
         </div>
       </main>

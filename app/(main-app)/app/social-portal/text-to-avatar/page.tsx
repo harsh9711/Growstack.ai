@@ -47,7 +47,7 @@ const VideoTable: React.FC<{
   );
 
   useEffect(() => {
-    videos.forEach((video) => {
+    videos.forEach(video => {
       const videoElement = document.createElement("video");
       videoElement.src = video.videoUrl;
 
@@ -58,7 +58,7 @@ const VideoTable: React.FC<{
         const formattedDuration = `${String(minutes).padStart(2, "0")}:${String(
           seconds
         ).padStart(2, "0")}`;
-        setVideoDuration((prev) => ({
+        setVideoDuration(prev => ({
           ...prev,
           [video._id]: formattedDuration,
         }));
@@ -98,12 +98,17 @@ const VideoTable: React.FC<{
     try {
       const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
       const data = response.data.data;
-      console.log(data.usage_amount)
+      console.log(data.usage_amount);
       setPlanUsage(data);
 
-      if (user?.user_type !== "ADMIN" && (data?.usage?.no_of_text_to_avatar || 0) <= 0) {
-        toast.error('Trial expired');
-        window.location.href = isSubscribed ? ALL_ROUTES.UPGRADE : ALL_ROUTES.PAYMENT
+      if (
+        user?.user_type !== "ADMIN" &&
+        (data?.usage?.no_of_text_to_avatar || 0) <= 0
+      ) {
+        toast.error("Trial expired");
+        window.location.href = isSubscribed
+          ? ALL_ROUTES.UPGRADE
+          : ALL_ROUTES.PAYMENT;
       }
     } catch (error: any) {
       if (error.response) {
@@ -111,7 +116,7 @@ const VideoTable: React.FC<{
       } else {
         toast.error(error.message);
       }
-      console.error('Error fetching plan usage:', error);
+      console.error("Error fetching plan usage:", error);
     }
   };
 
@@ -149,7 +154,6 @@ const VideoTable: React.FC<{
       return () => {
         document.removeEventListener("mousedown", handleClickOutside);
       };
-
     }, []);
 
     const handleSelectChange = async (
@@ -228,8 +232,9 @@ const VideoTable: React.FC<{
                     }
                     setIsOpen(false);
                   }}
-                  className={`flex items-center gap-2 px-4 py-2 w-full text-left ${value === selectedValue ? "bg-gray-100" : "hover:bg-blue-50"
-                    }`}
+                  className={`flex items-center gap-2 px-4 py-2 w-full text-left ${
+                    value === selectedValue ? "bg-gray-100" : "hover:bg-blue-50"
+                  }`}
                 >
                   {icon}
                   {label}
@@ -267,7 +272,7 @@ const VideoTable: React.FC<{
           </TableRow>
         </TableHeader>
         <TableBody>
-          {videos.map((video) => (
+          {videos.map(video => (
             <TableRow key={video._id}>
               <TableCell onClick={() => onPreview(video.videoUrl)}>
                 <img
@@ -283,14 +288,15 @@ const VideoTable: React.FC<{
                 {videoDuration[video._id] || "Loading..."}
               </TableCell>
               <TableCell
-                className={`text-[14px] ${video.status === "Success"
-                  ? "text-green-500"
-                  : video.status === "Pending"
-                    ? "text-yellow-500"
-                    : video.status === "Failed"
-                      ? "text-red-500"
-                      : ""
-                  }`}
+                className={`text-[14px] ${
+                  video.status === "Success"
+                    ? "text-green-500"
+                    : video.status === "Pending"
+                      ? "text-yellow-500"
+                      : video.status === "Failed"
+                        ? "text-red-500"
+                        : ""
+                }`}
               >
                 {video.status}
               </TableCell>
@@ -305,12 +311,15 @@ const VideoTable: React.FC<{
 
                   if (totalMinutes >= 60) {
                     const hours = Math.floor(totalMinutes / 60);
-                    return `Created about ${hours} ${hours === 1 ? "hr" : "hrs"
-                      } ago`;
+                    return `Created about ${hours} ${
+                      hours === 1 ? "hr" : "hrs"
+                    } ago`;
                   } else {
-                    return `Created about ${totalMinutes} ${totalMinutes === 1 ? "min" : "mins"
-                      } and ${totalSeconds} ${totalSeconds === 1 ? "sec" : "secs"
-                      } ago`;
+                    return `Created about ${totalMinutes} ${
+                      totalMinutes === 1 ? "min" : "mins"
+                    } and ${totalSeconds} ${
+                      totalSeconds === 1 ? "sec" : "secs"
+                    } ago`;
                   }
                 })()}
               </TableCell>
@@ -407,10 +416,10 @@ export default function TextToVideoPage() {
   };
 
   const filteredTemplates = templates
-    ?.filter((template) =>
+    ?.filter(template =>
       template.doc_name.toLowerCase().includes(searchQuery.toLowerCase())
     )
-    .map((template) => ({
+    .map(template => ({
       _id: template._id,
       title: template.doc_name,
       thumbnailUrl: template.doc_content.video_thumbnailUrl,
@@ -437,7 +446,7 @@ export default function TextToVideoPage() {
                 className="outline-none h-[40px] w-full"
                 placeholder="Search template"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
               />
             </div>
             <CreateVideoDialog templates={templates} />

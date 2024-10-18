@@ -51,7 +51,7 @@ export default function Sidebar({ isOpen, onClose, assistant_id }: IProps) {
 
   const filteredAssistants = useMemo(() => {
     return assistants.filter(
-      (assistant) =>
+      assistant =>
         assistant.name.toLowerCase().includes(searchTerm) ||
         assistant.role.toLowerCase().includes(searchTerm)
     );
@@ -100,7 +100,7 @@ export default function Sidebar({ isOpen, onClose, assistant_id }: IProps) {
             </div>
           ) : (
             <div className="flex flex-col gap-3 max-h-[calc(100vh-412px)] overflow-y-auto hidden-scrollbar">
-              {filteredAssistants.map((assistant) => (
+              {filteredAssistants.map(assistant => (
                 <Link
                   key={assistant.id}
                   href={`/app/ai-studio/ai-assistant/chat/${assistant.id}`}

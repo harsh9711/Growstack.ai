@@ -126,7 +126,6 @@ export default function ToolsDialog({ setInput }: ToolsDialogProps) {
   const [favouritePrompts, setFavouritePrompts] = useState<boolean[]>([]);
   const [errorMessage, setErrorMessage] = useState("");
 
-
   const [promptLib, setPromptLib] = useState<
     { title: string; prompt: string; isFavourite: boolean }[]
   >(() => {
@@ -138,7 +137,7 @@ export default function ToolsDialog({ setInput }: ToolsDialogProps) {
     const savedPrompts = localStorage.getItem("promptLib");
     const parsedSavedPrompts = savedPrompts ? JSON.parse(savedPrompts) : [];
     if (parsedSavedPrompts?.length === 0 || !parsedSavedPrompts) {
-      const initialPrompts = menuItem.map((item) => ({
+      const initialPrompts = menuItem.map(item => ({
         title: item.title,
         prompt: item.description,
         isFavourite: false,
@@ -158,13 +157,13 @@ export default function ToolsDialog({ setInput }: ToolsDialogProps) {
   };
 
   const handleAddPrompt = () => {
-    if (promptLib.some((item) => item.title === title)) {
+    if (promptLib.some(item => item.title === title)) {
       setErrorMessage("Title already exists. Please give a unique title.");
       return;
     }
 
     if (title && prompt) {
-      setPromptLib((prevLib) => [
+      setPromptLib(prevLib => [
         ...prevLib,
         { title, prompt, isFavourite: false },
       ]);
@@ -180,7 +179,7 @@ export default function ToolsDialog({ setInput }: ToolsDialogProps) {
   };
 
   const handleEditClick = (title: string) => {
-    const selectedPrompt = promptLib.find((item) => item.title === title);
+    const selectedPrompt = promptLib.find(item => item.title === title);
     if (selectedPrompt) {
       setTitle(selectedPrompt.title);
       setPrompt(selectedPrompt.prompt);
@@ -194,14 +193,14 @@ export default function ToolsDialog({ setInput }: ToolsDialogProps) {
   const handleUpdatePrompt = () => {
     if (
       title !== currentEditTitle &&
-      promptLib.some((item) => item.title === title)
+      promptLib.some(item => item.title === title)
     ) {
       setErrorMessage("Title already exists. Please give a unique title.");
       return;
     }
 
     if (title && prompt && currentEditTitle) {
-      const updatedPrompts = promptLib.map((item) =>
+      const updatedPrompts = promptLib.map(item =>
         item.title === currentEditTitle ? { ...item, title, prompt } : item
       );
       setPromptLib(updatedPrompts);
@@ -214,11 +213,11 @@ export default function ToolsDialog({ setInput }: ToolsDialogProps) {
   };
 
   const handleDeleteClick = (title: string) => {
-    setPromptLib((prevLib) => prevLib.filter((item) => item.title !== title));
+    setPromptLib(prevLib => prevLib.filter(item => item.title !== title));
   };
 
   const handleStarClick = (title: string) => {
-    const updatedPrompts = promptLib.map((item) =>
+    const updatedPrompts = promptLib.map(item =>
       item.title === title ? { ...item, isFavourite: !item.isFavourite } : item
     );
     setPromptLib(updatedPrompts);
@@ -226,12 +225,12 @@ export default function ToolsDialog({ setInput }: ToolsDialogProps) {
 
   const filteredPrompts = searchTerm
     ? promptLib.filter(
-      (item) =>
-        (item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.prompt.toLowerCase().includes(searchTerm.toLowerCase())) &&
-        (!showFavourites || item.isFavourite)
-    )
-    : promptLib.filter((item) => !showFavourites || item.isFavourite);
+        item =>
+          (item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            item.prompt.toLowerCase().includes(searchTerm.toLowerCase())) &&
+          (!showFavourites || item.isFavourite)
+      )
+    : promptLib.filter(item => !showFavourites || item.isFavourite);
 
   const handleCancelEditOrAdd = () => {
     setEditPromptOpen(false);
@@ -282,19 +281,21 @@ export default function ToolsDialog({ setInput }: ToolsDialogProps) {
             <div className="flex justify-between px-2 gap-4">
               <div className="flex gap-4">
                 <button
-                  className={`h-10 px-4 ${!showFavourites
-                    ? "font-bold text-green-600 border-b-2 border-green-600"
-                    : "font-bold text-black"
-                    }`}
+                  className={`h-10 px-4 ${
+                    !showFavourites
+                      ? "font-bold text-green-600 border-b-2 border-green-600"
+                      : "font-bold text-black"
+                  }`}
                   onClick={() => setShowFavourites(false)}
                 >
                   All
                 </button>
                 <button
-                  className={`h-10 px-4 ${showFavourites
-                    ? "font-bold text-green-600 border-b-2 border-green-600"
-                    : "font-bold text-black"
-                    }`}
+                  className={`h-10 px-4 ${
+                    showFavourites
+                      ? "font-bold text-green-600 border-b-2 border-green-600"
+                      : "font-bold text-black"
+                  }`}
                   onClick={() => setShowFavourites(true)}
                 >
                   Favourites
@@ -326,7 +327,7 @@ export default function ToolsDialog({ setInput }: ToolsDialogProps) {
                         <p className="font-bold">{item.title}</p>
                         <div className="flex gap-2">
                           <button
-                            onClick={(e) => {
+                            onClick={e => {
                               e.stopPropagation();
                               handleEditClick(item.title);
                             }}
@@ -334,7 +335,7 @@ export default function ToolsDialog({ setInput }: ToolsDialogProps) {
                             <Edit className="text-gray-500" size={16} />
                           </button>
                           <button
-                            onClick={(e) => {
+                            onClick={e => {
                               e.stopPropagation();
                               handleDeleteClick(item.title);
                             }}
@@ -342,17 +343,18 @@ export default function ToolsDialog({ setInput }: ToolsDialogProps) {
                             <TrashIcon className="text-gray-500" size={16} />
                           </button>
                           <button
-                            onClick={(e) => {
+                            onClick={e => {
                               e.stopPropagation();
                               handleStarClick(item.title);
                             }}
                           >
                             <StarIcon
                               size={16}
-                              className={`${item.isFavourite
-                                ? "text-green-500 fill-green-900"
-                                : "text-gray-500"
-                                }`}
+                              className={`${
+                                item.isFavourite
+                                  ? "text-green-500 fill-green-900"
+                                  : "text-gray-500"
+                              }`}
                             />
                           </button>
                         </div>
@@ -381,7 +383,7 @@ export default function ToolsDialog({ setInput }: ToolsDialogProps) {
 
       {/* Add/Edit Prompt Dialog */}
       {addPromptOpen || editPromptOpen ? (
-        <Dialog open={addPromptOpen || editPromptOpen} onOpenChange={() => { }}>
+        <Dialog open={addPromptOpen || editPromptOpen} onOpenChange={() => {}}>
           <DialogContent
             className="w-[80%] md:w-[60%] max-w-xl p-4 border-0"
             showCloseButton={false}
@@ -400,7 +402,7 @@ export default function ToolsDialog({ setInput }: ToolsDialogProps) {
                 placeholder="Add title"
                 className="outline-none bg-[#F3F3F3] rounded-md p-2"
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={e => setTitle(e.target.value)}
               />
               {errorMessage ? (
                 <p className="text-red-500">{errorMessage}</p>
@@ -412,7 +414,7 @@ export default function ToolsDialog({ setInput }: ToolsDialogProps) {
                 placeholder="Add custom prompt"
                 className="outline-none bg-[#F3F3F3] rounded-md p-2 h-40 resize-none"
                 value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
+                onChange={e => setPrompt(e.target.value)}
               />
             </div>
             <div className="flex justify-end mt-4 gap-4">

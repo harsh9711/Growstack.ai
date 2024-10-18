@@ -1,9 +1,21 @@
 "use client";
 
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
-import { Edit, History, MoreVertical, Plus, Trash2, WorkflowIcon } from "lucide-react";
+import {
+  Edit,
+  History,
+  MoreVertical,
+  Plus,
+  Trash2,
+  WorkflowIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
@@ -36,7 +48,8 @@ export default function Workflows() {
   const [isAddOnModalOpen, setIsAddOnModalOpen] = useState<boolean>(false);
   const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
 
-  const [isCreateWorkflowReqPending, setIsCreateWorkflowReqPending] = useState(false);
+  const [isCreateWorkflowReqPending, setIsCreateWorkflowReqPending] =
+    useState(false);
   const [clickedBtnIdx, setClickedBtnIdx] = useState<number | null>(null);
   const createWorkflow = async () => {
     setIsCreateWorkflowReqPending(true);
@@ -51,7 +64,9 @@ export default function Workflows() {
       const response = await instance.post(`${API_URL}/workflow/api/v1`);
       const newWorkflowId = response.data.data.workflow_id;
       setWorkflowId(newWorkflowId);
-      router.push(`/app/automation-hub/workflow-builder/create-workflow?workflow_id=${newWorkflowId}`);
+      router.push(
+        `/app/automation-hub/workflow-builder/create-workflow?workflow_id=${newWorkflowId}`
+      );
     } catch (error) {
       console.error("Error creating workflow:", error);
       toast.error("Error creating workflow");
@@ -62,14 +77,16 @@ export default function Workflows() {
 
   const runWorkflow = async (workflowId: string) => {
     if (user?.user_type === "ADMIN") {
-      router.push(`/app/automation-hub/workflow-builder/workflows/user-work-flow?workflow_id=${workflowId}`);
+      router.push(
+        `/app/automation-hub/workflow-builder/workflows/user-work-flow?workflow_id=${workflowId}`
+      );
       return;
     }
     const canCreateWorkflow = await fetchPlanUsage();
     if (!canCreateWorkflow) {
       return;
     }
-  }
+  };
 
   const fetchPlanUsage = async () => {
     setIsPlanUsageLoading(true);
@@ -83,7 +100,6 @@ export default function Workflows() {
       } else {
         return true;
       }
-
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
@@ -96,8 +112,6 @@ export default function Workflows() {
       setIsPlanUsageLoading(false);
     }
   };
-
-
 
   const getAllWorkFlows = async () => {
     try {
@@ -128,7 +142,10 @@ export default function Workflows() {
       if (!editWorkFlow.name) {
         toast.error("please provide a name");
       }
-      await instance.put(`${API_URL}/workflow/api/v1/${editWorkFlow.workflow_id}`, { name: editWorkFlow.name });
+      await instance.put(
+        `${API_URL}/workflow/api/v1/${editWorkFlow.workflow_id}`,
+        { name: editWorkFlow.name }
+      );
       toast.success("Workflow edited successfully");
       setShowEditModal(false);
       getAllWorkFlows();
@@ -167,8 +184,13 @@ export default function Workflows() {
             onClick={() => {
               setClickedBtnIdx(0);
               createWorkflow();
-            }}>
-            {isCreateWorkflowReqPending && clickedBtnIdx === 0 ? <Spinner /> : <Plus size={20} />}
+            }}
+          >
+            {isCreateWorkflowReqPending && clickedBtnIdx === 0 ? (
+              <Spinner />
+            ) : (
+              <Plus size={20} />
+            )}
             Create workflow
           </button>
         </div>
@@ -180,10 +202,14 @@ export default function Workflows() {
             </div>
           ) : workFlows.length < 1 ? (
             <div className="mt-4 flex flex-col justify-center items-center space-y-4 py-8 mx-auto col-span-2">
-              <h2 className="text-lg text-center font-semibold">You have Custom Workflows Created yet</h2>
+              <h2 className="text-lg text-center font-semibold">
+                You have Custom Workflows Created yet
+              </h2>
               <p className="max-w-4xl text-center text-gray-500">
-                Explore and manage your personalized workflows effortlessly. With custom workflows already created, you can streamline tasks, automate
-                processes, and enhance productivity tailored to your specific needs.
+                Explore and manage your personalized workflows effortlessly.
+                With custom workflows already created, you can streamline tasks,
+                automate processes, and enhance productivity tailored to your
+                specific needs.
               </p>
               <div className="flex space-x-3 items-center">
                 <Link href={ALL_ROUTES.WORKFLOW_BUILDER}>
@@ -199,23 +225,38 @@ export default function Workflows() {
                   onClick={() => {
                     setClickedBtnIdx(1);
                     createWorkflow();
-                  }}>
-                  {isCreateWorkflowReqPending && clickedBtnIdx === 1 ? <Spinner /> : <Plus size={20} />}
+                  }}
+                >
+                  {isCreateWorkflowReqPending && clickedBtnIdx === 1 ? (
+                    <Spinner />
+                  ) : (
+                    <Plus size={20} />
+                  )}
                   Create your own workflow
                 </button>
               </div>
             </div>
           ) : (
-            workFlows.map((workflow) => (
-              <div key={workflow._id} className="w-full p-7 bg-white rounded-3xl border border-[#E8E8E8] flex items-center justify-between">
+            workFlows.map(workflow => (
+              <div
+                key={workflow._id}
+                className="w-full p-7 bg-white rounded-3xl border border-[#E8E8E8] flex items-center justify-between"
+              >
                 <div className="space-y-2">
                   <h1 className="text-xl font-semibold">{workflow.name}</h1>
                   <p className="text-sm">
-                    Last edited <span className="font-medium text-primary-green">about {formatUpdatedAt(workflow.updatedAt)}</span>
+                    Last edited{" "}
+                    <span className="font-medium text-primary-green">
+                      about {formatUpdatedAt(workflow.updatedAt)}
+                    </span>
                   </p>
                 </div>
                 <div className="flex items-center gap-4">
-                  <button key={workflow._id} onClick={() => runWorkflow(workflow.workflow_id)} className="flex items-center gap-3 rounded-xl h-12 bg-primary-green sheen px-6 text-white text-[14px]">
+                  <button
+                    key={workflow._id}
+                    onClick={() => runWorkflow(workflow.workflow_id)}
+                    className="flex items-center gap-3 rounded-xl h-12 bg-primary-green sheen px-6 text-white text-[14px]"
+                  >
                     <FaPlay size={12} />
                     Run workflow
                   </button>
@@ -232,7 +273,8 @@ export default function Workflows() {
                         onClick={() => {
                           setShowEditModal(true);
                           setEditWorkFlow(workflow);
-                        }}>
+                        }}
+                      >
                         <div className="flex gap-3">
                           <Edit size={20} />
                           <h2>Edit</h2>
@@ -241,7 +283,8 @@ export default function Workflows() {
                       <DropdownMenuItem
                         inset
                         className="min-w-[200px] flex justify-between gap-8 items-center my-1"
-                        onClick={() => deleteWorkFlow(workflow.workflow_id)}>
+                        onClick={() => deleteWorkFlow(workflow.workflow_id)}
+                      >
                         <div className="flex gap-3">
                           <Trash2 size={20} />
                           <h2>Delete</h2>
@@ -250,7 +293,12 @@ export default function Workflows() {
                       <DropdownMenuItem
                         inset
                         className="min-w-[200px] flex justify-between gap-8 items-center my-1"
-                        onClick={() => router.push(`/app/automation-hub/workflow-builder/workflows/user-work-flow?workflow_id=${workflow.workflow_id}&tab=1`)}>
+                        onClick={() =>
+                          router.push(
+                            `/app/automation-hub/workflow-builder/workflows/user-work-flow?workflow_id=${workflow.workflow_id}&tab=1`
+                          )
+                        }
+                      >
                         <div className="flex gap-3">
                           <History size={20} />
                           <h2>View History</h2>
@@ -264,12 +312,22 @@ export default function Workflows() {
           )}
         </div>
       </main>
-      <GlobalModal showCloseButton={false} open={isAddOnModalOpen} setOpen={() => { setIsAddOnModalOpen(false) }}>
+      <GlobalModal
+        showCloseButton={false}
+        open={isAddOnModalOpen}
+        setOpen={() => {
+          setIsAddOnModalOpen(false);
+        }}
+      >
         <div className="flex flex-col items-center justify-center px-6 pt-4 pb-8 gap-6 space-x-6">
           <Lock />
-          <h3 className="text-center text-[28px] font-semibold">You don’t have enough credit.</h3>
+          <h3 className="text-center text-[28px] font-semibold">
+            You don’t have enough credit.
+          </h3>
           <p className="text-center text-gray-700 text-sm md:text-base px-4">
-            You don’t have enough credits in your wallet to use this feature. It is an add-on, and requires additional credit to access. Please add credits to continue.
+            You don’t have enough credits in your wallet to use this feature. It
+            is an add-on, and requires additional credit to access. Please add
+            credits to continue.
           </p>
           <div className="flex items-center justify-between gap-3">
             <button
@@ -280,7 +338,8 @@ export default function Workflows() {
             </button>
             <Link
               className="bg-primary-green text-white text-nowrap py-2 px-6 rounded-md transition duration-300 hover:bg-green-600"
-              href="/account/billings/settings">
+              href="/account/billings/settings"
+            >
               Add Credit
             </Link>
           </div>

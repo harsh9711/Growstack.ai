@@ -14,8 +14,13 @@ import Editor from "./components/Editor";
 import Spinner from "@/components/Spinner";
 import { Switch } from "@/components/ui/switch";
 import { Info } from "lucide-react";
-import axios from 'axios';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import axios from "axios";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 import {
   Tooltip,
@@ -34,17 +39,27 @@ import {
 import { useRouter } from "next-nprogress-bar";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
-import { aiModelOptionsTemplate, languageOptions } from "../../ai-articles/constants/options";
+import {
+  aiModelOptionsTemplate,
+  languageOptions,
+} from "../../ai-articles/constants/options";
 import Dropdown from "./components/Dropdown";
 import { Plus } from "lucide-react";
 import { getCookie } from "cookies-next";
-import EventSource from 'eventsource';
+import EventSource from "eventsource";
 import { parseJsonString } from "@/lib/utils";
 import downloadPdf from "@/utils/downloadPdf";
 import { InputFieldType, PlanName } from "@/types/enums";
 import { ALL_ROUTES } from "@/utils/constant";
 
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { planIdsMap } from "@/lib/utils";
@@ -65,12 +80,16 @@ export default function AiAppPage({
   const isEdit = isEditDecument();
   const editDocumentData: any = getSavedDecumentForEdit();
   const dispatch = useDispatch();
-  const { user, currentPlan } = useSelector((rootState: RootState) => rootState.auth);
+  const { user, currentPlan } = useSelector(
+    (rootState: RootState) => rootState.auth
+  );
 
-  const filteredAiModelOptions = user?.user_type !== "ADMIN" && currentPlan &&
-    planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlan.plan_id)
-    ? [aiModelOptionsTemplate[0]]
-    : aiModelOptionsTemplate;
+  const filteredAiModelOptions =
+    user?.user_type !== "ADMIN" &&
+    currentPlan &&
+    planIdsMap[PlanName.AI_ESSENTIALS].some(val => val === currentPlan.plan_id)
+      ? [aiModelOptionsTemplate[0]]
+      : aiModelOptionsTemplate;
   const [appTemplate, setAppTemplate] = useState<any>({});
   const [userPrompts, setUserPrompts] = useState<string[]>([]); // Initialize as empty array
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -98,11 +117,9 @@ export default function AiAppPage({
   const [userInput1, setUserInput1] = useState("");
   const brandNames = allBrandVoices?.map((item: any) => item.brand_name);
 
-
-
-
-
-  const [selectedModel, setSelectedModel] = useState<string>(filteredAiModelOptions[0].models[0].value || "");
+  const [selectedModel, setSelectedModel] = useState<string>(
+    filteredAiModelOptions[0].models[0].value || ""
+  );
 
   const stripHtmlTags = (html: string) => {
     const temp = document.createElement("div");
@@ -189,7 +206,7 @@ export default function AiAppPage({
     const contentState = editorState.getCurrentContent();
     const rawContentState = convertToRaw(contentState);
     const formattedContent = generatedContent;
-    let plainTextContent = stripHtmlTags(formattedContent);
+    const plainTextContent = stripHtmlTags(formattedContent);
 
     // Prepare different formats
     const formats = {
@@ -319,18 +336,20 @@ export default function AiAppPage({
   //   }
   // };
 
-
   const streamResponse = async (chatId: string) => {
     try {
       const token = getCookie("token");
-      const eventSource = new EventSource(`${API_URL}/ai/api/v1/chat-template/generate/stream/${chatId}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-        withCredentials: true,
-      });
+      const eventSource = new EventSource(
+        `${API_URL}/ai/api/v1/chat-template/generate/stream/${chatId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        }
+      );
 
-      let accumulatedResponse = '';
+      let accumulatedResponse = "";
 
       eventSource.onmessage = (event: MessageEvent) => {
         const chunk = event.data;
@@ -340,19 +359,17 @@ export default function AiAppPage({
       };
 
       eventSource.onerror = (error: MessageEvent) => {
-        console.error('EventSource failed:', error);
+        console.error("EventSource failed:", error);
         eventSource.close();
       };
 
-      eventSource.addEventListener('end', (event: MessageEvent) => {
-        console.log('EventSource end:', event);
+      eventSource.addEventListener("end", (event: MessageEvent) => {
+        console.log("EventSource end:", event);
         eventSource.close();
       });
-
-
     } catch (error) {
-      console.error('Error setting up EventSource:', error);
-      toast.error('Error setting up stream');
+      console.error("Error setting up EventSource:", error);
+      toast.error("Error setting up stream");
     }
   };
 
@@ -386,7 +403,7 @@ export default function AiAppPage({
           brand_voice: selectedBrandVoice,
         }
       );
-      await streamResponse(response.data.data.chat_id)
+      await streamResponse(response.data.data.chat_id);
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
@@ -403,7 +420,7 @@ export default function AiAppPage({
   };
 
   const handleDropdownChange = (field: string, value: any) => {
-    setUserInput((prevInput) => ({
+    setUserInput(prevInput => ({
       ...prevInput,
       [field]: value,
     }));
@@ -414,7 +431,7 @@ export default function AiAppPage({
     index: number
   ) => {
     const { value } = e.target;
-    setUserPrompts((prevPrompts) => {
+    setUserPrompts(prevPrompts => {
       const updatedPrompts = [...prevPrompts];
       updatedPrompts[index] = value;
       return updatedPrompts;
@@ -426,7 +443,7 @@ export default function AiAppPage({
     index: number
   ) => {
     const option = e.target.value.trim();
-    setUserPrompts((prevPrompts) => {
+    setUserPrompts(prevPrompts => {
       const updatedPrompts = [...prevPrompts];
       if (e.target.checked) {
         if (!updatedPrompts[index].includes(option)) {
@@ -443,7 +460,7 @@ export default function AiAppPage({
     e: React.ChangeEvent<HTMLInputElement>,
     index: number
   ) => {
-    setUserPrompts((prevPrompts) => {
+    setUserPrompts(prevPrompts => {
       const updatedPrompts = [...prevPrompts];
       updatedPrompts[index] = e.target.value.trim();
       return updatedPrompts;
@@ -451,7 +468,7 @@ export default function AiAppPage({
   };
 
   const handleSelectChange = (value: string, index: number) => {
-    setUserPrompts((prevPrompts) => {
+    setUserPrompts(prevPrompts => {
       const updatedPrompts = [...prevPrompts];
       updatedPrompts[index] = value.trim();
       return updatedPrompts;
@@ -466,16 +483,16 @@ export default function AiAppPage({
     try {
       const formattedContent = generatedContent;
       let plainTextContent = stripHtmlTags(formattedContent);
-      let tempCategory = ""
-      if (fileType === 'text') {
+      let tempCategory = "";
+      if (fileType === "text") {
         plainTextContent = stripHtmlTags(formattedContent);
-        tempCategory = "text"
-      } else if (fileType === 'pdf' || fileType === 'doc') {
+        tempCategory = "text";
+      } else if (fileType === "pdf" || fileType === "doc") {
         plainTextContent = formattedContent;
-        tempCategory = "document"
+        tempCategory = "document";
       } else if (fileType === "html") {
         plainTextContent = formattedContent;
-        tempCategory = "website"
+        tempCategory = "website";
       }
       const payload = {
         doc_name: fileName,
@@ -538,7 +555,7 @@ export default function AiAppPage({
   const validateImageUrl = (url: string) => {
     const imageRegex = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif))$/i;
     return imageRegex.test(url);
-  }
+  };
 
   const handleFavorite = async (method: string, templateId: string) => {
     try {
@@ -577,12 +594,12 @@ export default function AiAppPage({
 
   const handleModalSelection = (value: string) => {
     if (!currentPlan) return;
-    const currentCategory = filteredAiModelOptions.find((category) =>
-      category.models.some((model) => model.value === value)
+    const currentCategory = filteredAiModelOptions.find(category =>
+      category.models.some(model => model.value === value)
     );
 
     const currentModal = currentCategory?.models.find(
-      (model) => model.value === value
+      model => model.value === value
     );
 
     if (!currentCategory || !currentModal) {
@@ -592,7 +609,10 @@ export default function AiAppPage({
 
     const freeCategories = ["growStackAiMessagesModel"];
 
-    if (user?.user_type === "ADMIN" || freeCategories.includes(currentCategory.modelCategory)) {
+    if (
+      user?.user_type === "ADMIN" ||
+      freeCategories.includes(currentCategory.modelCategory)
+    ) {
       setSelectedModel(value);
       return;
     }
@@ -606,29 +626,27 @@ export default function AiAppPage({
     }
 
     if (usageLimit <= 0) {
-      toast.error(`You have no remaining usage for ${currentCategory.label}. Please switch to another model.`);
+      toast.error(
+        `You have no remaining usage for ${currentCategory.label}. Please switch to another model.`
+      );
       return;
     }
 
     setSelectedModel(value);
   };
-  const menuItems = [
-    "Copy as Text",
-    "Copy as HTML",
-  ];
+  const menuItems = ["Copy as Text", "Copy as HTML"];
   const downloadItems = [
     "Download as DOC",
     "Download as TXT",
     "Download as PDF",
     "Download as HTML",
-
-  ]
+  ];
   const saveItems = [
     "Save as DOC",
     "Save as TXT",
     "Save as PDF",
     "Save as HTML",
-  ]
+  ];
   return (
     <Fragment>
       <div className="flex items-center justify-between mt-10">
@@ -655,7 +673,11 @@ export default function AiAppPage({
               <div className="flex flex-row items-center gap-3">
                 {validateImageUrl(appTemplate.icon) ? (
                   <div className="flex items-center justify-center w-16 h-16">
-                    <img src={appTemplate.icon} alt="icon" className="rounded-lg object-contain w-full h-full"></img>
+                    <img
+                      src={appTemplate.icon}
+                      alt="icon"
+                      className="rounded-lg object-contain w-full h-full"
+                    ></img>
                   </div>
                 ) : (
                   <div
@@ -665,7 +687,7 @@ export default function AiAppPage({
                       alignItems: "center",
                     }}
                     dangerouslySetInnerHTML={{ __html: appTemplate.icon }}
-                    className='w-[64px] h-[64px] flex-shrink-0'
+                    className="w-[64px] h-[64px] flex-shrink-0"
                   />
                 )}
 
@@ -693,7 +715,7 @@ export default function AiAppPage({
           <div className="flex items-center gap-2">
             <Switch
               checked={isChecked}
-              onCheckedChange={() => setIsChecked((prev) => !prev)}
+              onCheckedChange={() => setIsChecked(prev => !prev)}
             />
             <label htmlFor="include-brand" className="text-sm">
               Include your brand
@@ -741,7 +763,7 @@ export default function AiAppPage({
           <div>
             <Dropdown
               label="Language"
-              items={languageOptions.map((language) => language.label)}
+              items={languageOptions.map(language => language.label)}
               value={userInput1}
               onChange={(value: any) => {
                 handleDropdownChange("language", value);
@@ -764,13 +786,13 @@ export default function AiAppPage({
                   {input.field_type !== InputFieldType.CHECKBOX &&
                     input.field_type !== InputFieldType.RADIO &&
                     input.field_type !== InputFieldType.SELECT_LIST && (
-                      <span className='text-primary-black text-opacity-50 text-sm'>
+                      <span className="text-primary-black text-opacity-50 text-sm">
                         {userPrompts[index].length}/2000
                       </span>
                     )}
                 </label>
                 {input.field_type === InputFieldType.CHECKBOX ? (
-                  <div className='flex flex-col space-y-2'>
+                  <div className="flex flex-col space-y-2">
                     {input.description
                       .split(",")
                       .map((option: string, optionIndex: number) => (
@@ -784,7 +806,7 @@ export default function AiAppPage({
                             checked={userPrompts[index]?.includes(
                               option.trim()
                             )}
-                            onChange={(e) => handleCheckboxChange(e, index)}
+                            onChange={e => handleCheckboxChange(e, index)}
                             required
                           />
                           <span className="ml-2">{option.trim()}</span>
@@ -793,7 +815,7 @@ export default function AiAppPage({
                   </div>
                 ) : null}
                 {input.field_type === InputFieldType.RADIO && (
-                  <div className='flex flex-col space-y-2'>
+                  <div className="flex flex-col space-y-2">
                     {input.description
                       .split(",")
                       .map((option: string, optionIndex: number) => (
@@ -805,7 +827,7 @@ export default function AiAppPage({
                             type="radio"
                             value={option.trim()}
                             checked={userPrompts[index] === option.trim()}
-                            onChange={(e) => handleRadioChange(e, index)}
+                            onChange={e => handleRadioChange(e, index)}
                             required
                           />
                           <span className="ml-2">{option.trim()}</span>
@@ -834,7 +856,7 @@ export default function AiAppPage({
                       className="w-full p-4 rounded-xl resize-none bg-[#F2F2F2]"
                       placeholder={input.description}
                       value={userPrompts[index]}
-                      onChange={(e) => handleUserPromptChange(e, index)}
+                      onChange={e => handleUserPromptChange(e, index)}
                       maxLength={2000}
                     ></textarea>
                   )}
@@ -849,51 +871,60 @@ export default function AiAppPage({
             {/* new design dropdown */}
             <Select
               value={selectedModel}
-              onValueChange={(value) => {
+              onValueChange={value => {
                 handleModalSelection(value); // Existing handler
                 handleDropdownChange("model", value); // Your additional handler
               }}
             >
-              <SelectTrigger className='h-12 w-full  text-black border-0 rounded-xl flex items-center justify-between px-4'>
+              <SelectTrigger className="h-12 w-full  text-black border-0 rounded-xl flex items-center justify-between px-4">
                 <SelectValue placeholder="Select an option">
                   {selectedModel && (
                     <div className="flex items-center gap-2">
                       <span className="min-w-fit">
-                        {filteredAiModelOptions
-                          .flatMap((option) => option.models) // Flattening the models array to find the icon
-                          .find((model) => model.value === selectedModel)?.icon}
+                        {
+                          filteredAiModelOptions
+                            .flatMap(option => option.models) // Flattening the models array to find the icon
+                            .find(model => model.value === selectedModel)?.icon
+                        }
                       </span>
                       {selectedModel}
                     </div>
                   )}
                 </SelectValue>
               </SelectTrigger>
-              <SelectContent className="max-h-60 overflow-y-auto" style={{ scrollBehavior: 'smooth' }}>
-                {filteredAiModelOptions.map(({ label: categoryLabel, models }) => (
-                  <SelectGroup key={categoryLabel}>
-                    <React.Fragment key={categoryLabel}>
-                      <div className="font-bold text-gray-500 px-4 py-2">{categoryLabel}</div>
-                      {models.map(({ icon, label, value }) => (
-                        <SelectItem key={value} value={value}>
-                          <div
-                            className={clsx(
-                              "flex items-center gap-2",
-                              selectedModel === value && "text-primary-green font-medium"
-                            )}
-                          >
-                            <span className="min-w-fit">{icon}</span>
-                            {label}
-                          </div>
-                        </SelectItem>
-                      ))}
-                    </React.Fragment>
-                  </SelectGroup>
-                ))}
+              <SelectContent
+                className="max-h-60 overflow-y-auto"
+                style={{ scrollBehavior: "smooth" }}
+              >
+                {filteredAiModelOptions.map(
+                  ({ label: categoryLabel, models }) => (
+                    <SelectGroup key={categoryLabel}>
+                      <React.Fragment key={categoryLabel}>
+                        <div className="font-bold text-gray-500 px-4 py-2">
+                          {categoryLabel}
+                        </div>
+                        {models.map(({ icon, label, value }) => (
+                          <SelectItem key={value} value={value}>
+                            <div
+                              className={clsx(
+                                "flex items-center gap-2",
+                                selectedModel === value &&
+                                  "text-primary-green font-medium"
+                              )}
+                            >
+                              <span className="min-w-fit">{icon}</span>
+                              {label}
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </React.Fragment>
+                    </SelectGroup>
+                  )
+                )}
               </SelectContent>
             </Select>
 
             {/* new design drop down */}
-
           </div>
           {/* <div>
             <Dropdown
@@ -920,9 +951,7 @@ export default function AiAppPage({
               onChange={(value: any) =>
                 handleDropdownChange("creativity", value)
               }
-              info={
-                "Increase or decrease the creativity level to get various results"
-              }
+              info="Increase or decrease the creativity level to get various results"
             />
             <Dropdown
               label="Tone of Voice"
@@ -932,7 +961,7 @@ export default function AiAppPage({
               onChange={(value: any) =>
                 handleDropdownChange("tone_of_voice", value)
               }
-              info={"Set result tone of the text as needed"}
+              info="Set result tone of the text as needed"
             />
           </div>
           <div className="grid grid-cols-2 gap-2">
@@ -1012,27 +1041,55 @@ export default function AiAppPage({
                 type="text"
                 placeholder="Enter file name"
                 value={fileName}
-                onChange={(e) => setFileName(e.target.value)}
+                onChange={e => setFileName(e.target.value)}
                 className="w-full h-12 px-4 rounded-xl"
               />
             </div>
             <div className="flex items-center gap-3">
-              <DropdownMenu key={"menu"}>
+              <DropdownMenu key="menu">
                 <DropdownMenuTrigger asChild>
-                  <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="0.465341" y="0.465341" width="36.9934" height="36.2966" rx="5.78884" fill="#F5F9FC" />
-                    <rect x="0.465341" y="0.465341" width="36.9934" height="36.2966" rx="5.78884" stroke="white" stroke-width="0.930681" />
-                    <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5117 14.7489C16.5117 13.3737 16.7919 12.6307 17.2125 12.2101C17.6331 11.7895 18.3762 11.5093 19.7513 11.5093H23.2513C24.6264 11.5093 25.3695 11.7895 25.7901 12.2101C26.2107 12.6307 26.4909 13.3737 26.4909 14.7489V18.2489C26.4909 19.624 26.2107 20.3671 25.7901 20.7877C25.3695 21.2083 24.6264 21.4884 23.2513 21.4884H23.1784V19.7489C23.1784 18.2073 22.8752 16.9087 21.9833 16.0168C21.0914 15.1249 19.7929 14.8218 18.2513 14.8218H16.5117V14.7489ZM14.8242 14.8218V14.7489C14.8242 13.2073 15.1274 11.9087 16.0193 11.0168C16.9112 10.1249 18.2097 9.82178 19.7513 9.82178H23.2513C24.7929 9.82178 26.0914 10.1249 26.9833 11.0168C27.8752 11.9087 28.1784 13.2073 28.1784 14.7489V18.2489C28.1784 19.7904 27.8752 21.089 26.9833 21.9809C26.0914 22.8728 24.7929 23.1759 23.2513 23.1759H23.1784V23.2489C23.1784 24.7904 22.8752 26.089 21.9833 26.9809C21.0914 27.8728 19.7929 28.1759 18.2513 28.1759H14.7513C13.2098 28.1759 11.9112 27.8728 11.0193 26.9809C10.1274 26.089 9.82422 24.7904 9.82422 23.2489V19.7489C9.82422 18.2073 10.1274 16.9087 11.0193 16.0168C11.9112 15.1249 13.2098 14.8218 14.7513 14.8218H14.8242ZM15.668 16.5093L14.7513 16.5093C13.3762 16.5093 12.6331 16.7895 12.2125 17.2101C11.7919 17.6307 11.5117 18.3737 11.5117 19.7489V23.2489C11.5117 24.624 11.7919 25.3671 12.2125 25.7877C12.6331 26.2083 13.3762 26.4884 14.7513 26.4884H18.2513C19.6264 26.4884 20.3695 26.2083 20.7901 25.7877C21.2107 25.3671 21.4909 24.624 21.4909 23.2489V22.3322V19.7489C21.4909 18.3737 21.2107 17.6307 20.7901 17.2101C20.3695 16.7895 19.6264 16.5093 18.2513 16.5093H15.668Z" fill="black" fill-opacity="0.44" />
+                  <svg
+                    width="38"
+                    height="38"
+                    viewBox="0 0 38 38"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <rect
+                      x="0.465341"
+                      y="0.465341"
+                      width="36.9934"
+                      height="36.2966"
+                      rx="5.78884"
+                      fill="#F5F9FC"
+                    />
+                    <rect
+                      x="0.465341"
+                      y="0.465341"
+                      width="36.9934"
+                      height="36.2966"
+                      rx="5.78884"
+                      stroke="white"
+                      stroke-width="0.930681"
+                    />
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M16.5117 14.7489C16.5117 13.3737 16.7919 12.6307 17.2125 12.2101C17.6331 11.7895 18.3762 11.5093 19.7513 11.5093H23.2513C24.6264 11.5093 25.3695 11.7895 25.7901 12.2101C26.2107 12.6307 26.4909 13.3737 26.4909 14.7489V18.2489C26.4909 19.624 26.2107 20.3671 25.7901 20.7877C25.3695 21.2083 24.6264 21.4884 23.2513 21.4884H23.1784V19.7489C23.1784 18.2073 22.8752 16.9087 21.9833 16.0168C21.0914 15.1249 19.7929 14.8218 18.2513 14.8218H16.5117V14.7489ZM14.8242 14.8218V14.7489C14.8242 13.2073 15.1274 11.9087 16.0193 11.0168C16.9112 10.1249 18.2097 9.82178 19.7513 9.82178H23.2513C24.7929 9.82178 26.0914 10.1249 26.9833 11.0168C27.8752 11.9087 28.1784 13.2073 28.1784 14.7489V18.2489C28.1784 19.7904 27.8752 21.089 26.9833 21.9809C26.0914 22.8728 24.7929 23.1759 23.2513 23.1759H23.1784V23.2489C23.1784 24.7904 22.8752 26.089 21.9833 26.9809C21.0914 27.8728 19.7929 28.1759 18.2513 28.1759H14.7513C13.2098 28.1759 11.9112 27.8728 11.0193 26.9809C10.1274 26.089 9.82422 24.7904 9.82422 23.2489V19.7489C9.82422 18.2073 10.1274 16.9087 11.0193 16.0168C11.9112 15.1249 13.2098 14.8218 14.7513 14.8218H14.8242ZM15.668 16.5093L14.7513 16.5093C13.3762 16.5093 12.6331 16.7895 12.2125 17.2101C11.7919 17.6307 11.5117 18.3737 11.5117 19.7489V23.2489C11.5117 24.624 11.7919 25.3671 12.2125 25.7877C12.6331 26.2083 13.3762 26.4884 14.7513 26.4884H18.2513C19.6264 26.4884 20.3695 26.2083 20.7901 25.7877C21.2107 25.3671 21.4909 24.624 21.4909 23.2489V22.3322V19.7489C21.4909 18.3737 21.2107 17.6307 20.7901 17.2101C20.3695 16.7895 19.6264 16.5093 18.2513 16.5093H15.668Z"
+                      fill="black"
+                      fill-opacity="0.44"
+                    />
                   </svg>
-
                 </DropdownMenuTrigger>
-                <DropdownMenuContent >
+                <DropdownMenuContent>
                   {menuItems.map((item, index) => (
-                    <button onClick={() => handleDownload(item)}
+                    <button
+                      onClick={() => handleDownload(item)}
                       key={index}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray"
                       role="menuitem"
-                      id={`menu-item-${index}`} style={{ cursor: "pointer" }}
+                      id={`menu-item-${index}`}
+                      style={{ cursor: "pointer" }}
                     >
                       {item}
                     </button>
@@ -1040,22 +1097,48 @@ export default function AiAppPage({
                 </DropdownMenuContent>
               </DropdownMenu>
 
-              <DropdownMenu key={"menu"}>
+              <DropdownMenu key="menu">
                 <DropdownMenuTrigger asChild>
-                  <svg width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="1.21339" y="0.465341" width="36.9934" height="36.2966" rx="5.78884" fill="#F5F9FC" />
-                    <rect x="1.21339" y="0.465341" width="36.9934" height="36.2966" rx="5.78884" stroke="white" stroke-width="0.930681" />
-                    <path opacity="0.7" d="M18.2912 10.3425H20.6179C20.996 10.3425 21.3159 10.6625 21.3159 11.0405V15.9266H23.8462C24.3697 15.9266 24.6314 16.5665 24.2534 16.9446L19.8326 21.3653C19.629 21.5689 19.2509 21.5689 19.0474 21.3653L14.6266 16.9446C14.2485 16.5665 14.5103 15.9266 15.0338 15.9266H17.5932V11.0405C17.5932 10.6625 17.884 10.3425 18.2912 10.3425ZM26.9 21.278V24.5354C26.9 24.9426 26.5801 25.2334 26.202 25.2334H12.7071C12.2999 25.2334 12.0091 24.9426 12.0091 24.5354V21.278C12.0091 20.8999 12.2999 20.58 12.7071 20.58H16.9533L18.3784 22.0051C18.9601 22.6159 19.9199 22.6159 20.5015 22.0051L21.9267 20.58H26.202C26.5801 20.58 26.9 20.8999 26.9 21.278ZM23.2936 23.8374C23.2936 23.5175 23.0318 23.2557 22.7119 23.2557C22.392 23.2557 22.1302 23.5175 22.1302 23.8374C22.1302 24.1573 22.392 24.4191 22.7119 24.4191C23.0318 24.4191 23.2936 24.1573 23.2936 23.8374ZM25.155 23.8374C25.155 23.5175 24.8932 23.2557 24.5733 23.2557C24.2534 23.2557 23.9916 23.5175 23.9916 23.8374C23.9916 24.1573 24.2534 24.4191 24.5733 24.4191C24.8932 24.4191 25.155 24.1573 25.155 23.8374Z" fill="#434345" />
+                  <svg
+                    width="39"
+                    height="38"
+                    viewBox="0 0 39 38"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <rect
+                      x="1.21339"
+                      y="0.465341"
+                      width="36.9934"
+                      height="36.2966"
+                      rx="5.78884"
+                      fill="#F5F9FC"
+                    />
+                    <rect
+                      x="1.21339"
+                      y="0.465341"
+                      width="36.9934"
+                      height="36.2966"
+                      rx="5.78884"
+                      stroke="white"
+                      stroke-width="0.930681"
+                    />
+                    <path
+                      opacity="0.7"
+                      d="M18.2912 10.3425H20.6179C20.996 10.3425 21.3159 10.6625 21.3159 11.0405V15.9266H23.8462C24.3697 15.9266 24.6314 16.5665 24.2534 16.9446L19.8326 21.3653C19.629 21.5689 19.2509 21.5689 19.0474 21.3653L14.6266 16.9446C14.2485 16.5665 14.5103 15.9266 15.0338 15.9266H17.5932V11.0405C17.5932 10.6625 17.884 10.3425 18.2912 10.3425ZM26.9 21.278V24.5354C26.9 24.9426 26.5801 25.2334 26.202 25.2334H12.7071C12.2999 25.2334 12.0091 24.9426 12.0091 24.5354V21.278C12.0091 20.8999 12.2999 20.58 12.7071 20.58H16.9533L18.3784 22.0051C18.9601 22.6159 19.9199 22.6159 20.5015 22.0051L21.9267 20.58H26.202C26.5801 20.58 26.9 20.8999 26.9 21.278ZM23.2936 23.8374C23.2936 23.5175 23.0318 23.2557 22.7119 23.2557C22.392 23.2557 22.1302 23.5175 22.1302 23.8374C22.1302 24.1573 22.392 24.4191 22.7119 24.4191C23.0318 24.4191 23.2936 24.1573 23.2936 23.8374ZM25.155 23.8374C25.155 23.5175 24.8932 23.2557 24.5733 23.2557C24.2534 23.2557 23.9916 23.5175 23.9916 23.8374C23.9916 24.1573 24.2534 24.4191 24.5733 24.4191C24.8932 24.4191 25.155 24.1573 25.155 23.8374Z"
+                      fill="#434345"
+                    />
                   </svg>
-
                 </DropdownMenuTrigger>
-                <DropdownMenuContent >
+                <DropdownMenuContent>
                   {downloadItems.map((item, index) => (
-                    <button onClick={() => handleDownload(item)}
+                    <button
+                      onClick={() => handleDownload(item)}
                       key={index}
                       className="block px-4 py-2 text-sm text-gray-700"
                       role="menuitem"
-                      id={`menu-item-${index}`} style={{ cursor: "pointer" }}
+                      id={`menu-item-${index}`}
+                      style={{ cursor: "pointer" }}
                     >
                       {item}
                     </button>
@@ -1063,30 +1146,63 @@ export default function AiAppPage({
                 </DropdownMenuContent>
               </DropdownMenu>
 
-              <DropdownMenu key={"menu"}>
+              <DropdownMenu key="menu">
                 <DropdownMenuTrigger asChild>
-                  <svg width="39" height="38" viewBox="0 0 39 38" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="1.03956" y="0.465341" width="36.9934" height="36.2966" rx="5.78884" fill="#F5F9FC" />
-                    <rect x="1.03956" y="0.465341" width="36.9934" height="36.2966" rx="5.78884" stroke="white" stroke-width="0.930681" />
+                  <svg
+                    width="39"
+                    height="38"
+                    viewBox="0 0 39 38"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <rect
+                      x="1.03956"
+                      y="0.465341"
+                      width="36.9934"
+                      height="36.2966"
+                      rx="5.78884"
+                      fill="#F5F9FC"
+                    />
+                    <rect
+                      x="1.03956"
+                      y="0.465341"
+                      width="36.9934"
+                      height="36.2966"
+                      rx="5.78884"
+                      stroke="white"
+                      stroke-width="0.930681"
+                    />
                     <g opacity="0.7" clip-path="url(#clip0_917_10412)">
-                      <path d="M28.0275 14.6622L24.2655 10.9002C23.9775 10.6122 23.5815 10.4502 23.1855 10.4502H21.4395V13.6002C21.4395 13.9242 21.1695 14.1942 20.8455 14.1942H15.9135C15.5895 14.1942 15.3195 13.9242 15.3195 13.6002V10.4502H13.0515C12.2055 10.4502 11.5215 11.1342 11.5215 11.9802V26.0202C11.5215 26.8662 12.2055 27.5502 13.0515 27.5502H26.9655C27.8115 27.5502 28.4955 26.8662 28.4955 26.0202V15.7422C28.4775 15.3462 28.3155 14.9502 28.0275 14.6622ZM24.8415 24.0762C24.8415 24.4002 24.5715 24.6702 24.2475 24.6702H15.7335C15.4095 24.6702 15.1395 24.4002 15.1395 24.0762V18.1722C15.1395 17.8482 15.4095 17.5782 15.7335 17.5782H24.2655C24.5895 17.5782 24.8595 17.8482 24.8595 18.1722V24.0762H24.8415Z" fill="#434345" />
-                      <path d="M18.9552 13.1862H20.1072C20.2332 13.1862 20.3412 13.0782 20.3412 12.9522V10.6842C20.3412 10.5582 20.2332 10.4502 20.1072 10.4502H18.9552C18.8292 10.4502 18.7212 10.5582 18.7212 10.6842V12.9342C18.7212 13.0782 18.8292 13.1862 18.9552 13.1862ZM22.5012 19.2342H17.4972C17.1552 19.2342 16.8672 19.5042 16.8672 19.8642C16.8672 20.2062 17.1372 20.4942 17.4972 20.4942H22.4832C22.8252 20.4942 23.1132 20.2242 23.1132 19.8642C23.1132 19.5042 22.8432 19.2342 22.5012 19.2342ZM22.5012 21.7902H17.4972C17.1552 21.7902 16.8672 22.0602 16.8672 22.4202C16.8672 22.7622 17.1372 23.0502 17.4972 23.0502H22.4832C22.8252 23.0502 23.1132 22.7802 23.1132 22.4202C23.1132 22.0782 22.8432 21.7902 22.5012 21.7902Z" fill="#434345" />
+                      <path
+                        d="M28.0275 14.6622L24.2655 10.9002C23.9775 10.6122 23.5815 10.4502 23.1855 10.4502H21.4395V13.6002C21.4395 13.9242 21.1695 14.1942 20.8455 14.1942H15.9135C15.5895 14.1942 15.3195 13.9242 15.3195 13.6002V10.4502H13.0515C12.2055 10.4502 11.5215 11.1342 11.5215 11.9802V26.0202C11.5215 26.8662 12.2055 27.5502 13.0515 27.5502H26.9655C27.8115 27.5502 28.4955 26.8662 28.4955 26.0202V15.7422C28.4775 15.3462 28.3155 14.9502 28.0275 14.6622ZM24.8415 24.0762C24.8415 24.4002 24.5715 24.6702 24.2475 24.6702H15.7335C15.4095 24.6702 15.1395 24.4002 15.1395 24.0762V18.1722C15.1395 17.8482 15.4095 17.5782 15.7335 17.5782H24.2655C24.5895 17.5782 24.8595 17.8482 24.8595 18.1722V24.0762H24.8415Z"
+                        fill="#434345"
+                      />
+                      <path
+                        d="M18.9552 13.1862H20.1072C20.2332 13.1862 20.3412 13.0782 20.3412 12.9522V10.6842C20.3412 10.5582 20.2332 10.4502 20.1072 10.4502H18.9552C18.8292 10.4502 18.7212 10.5582 18.7212 10.6842V12.9342C18.7212 13.0782 18.8292 13.1862 18.9552 13.1862ZM22.5012 19.2342H17.4972C17.1552 19.2342 16.8672 19.5042 16.8672 19.8642C16.8672 20.2062 17.1372 20.4942 17.4972 20.4942H22.4832C22.8252 20.4942 23.1132 20.2242 23.1132 19.8642C23.1132 19.5042 22.8432 19.2342 22.5012 19.2342ZM22.5012 21.7902H17.4972C17.1552 21.7902 16.8672 22.0602 16.8672 22.4202C16.8672 22.7622 17.1372 23.0502 17.4972 23.0502H22.4832C22.8252 23.0502 23.1132 22.7802 23.1132 22.4202C23.1132 22.0782 22.8432 21.7902 22.5012 21.7902Z"
+                        fill="#434345"
+                      />
                     </g>
                     <defs>
                       <clipPath id="clip0_917_10412">
-                        <rect width="18" height="18" fill="white" transform="translate(11 10)" />
+                        <rect
+                          width="18"
+                          height="18"
+                          fill="white"
+                          transform="translate(11 10)"
+                        />
                       </clipPath>
                     </defs>
                   </svg>
-
                 </DropdownMenuTrigger>
-                <DropdownMenuContent >
+                <DropdownMenuContent>
                   {saveItems.map((item, index) => (
-                    <button onClick={() => handleDownload(item)}
+                    <button
+                      onClick={() => handleDownload(item)}
                       key={index}
                       className="block px-4 py-2 text-sm text-gray-700"
                       role="menuitem"
-                      id={`menu-item-${index}`} style={{ cursor: "pointer" }}
+                      id={`menu-item-${index}`}
+                      style={{ cursor: "pointer" }}
                     >
                       {item}
                     </button>
@@ -1127,7 +1243,7 @@ export default function AiAppPage({
             </div>
           </div>
           <div className="flex-1">
-            <Editor content={generatedContent} onChange={handleEditorChange} />
+            <Editor content={generatedContent} onChange={handleEditorChange} isLoading={isGeneratedResultPending} />
           </div>
         </div>
       </div>

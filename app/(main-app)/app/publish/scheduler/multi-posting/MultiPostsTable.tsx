@@ -3,8 +3,20 @@
 import Motion from "@/components/Motion";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -37,8 +49,13 @@ export const columns: ColumnDef<Post>[] = [
     header: ({ table }) => (
       <div className="uppercase flex gap-3">
         <Checkbox
-          checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-          onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value: any) =>
+            table.toggleAllPageRowsSelected(!!value)
+          }
           aria-label="Select all"
           className="w-[18px] h-[18px]"
         />
@@ -64,7 +81,13 @@ export const columns: ColumnDef<Post>[] = [
     header: () => <div className="uppercase">Image</div>,
     cell: ({ row }) => (
       <div className="flex gap-2 items-center">
-        <Image src={row.original.image} alt="" width={100} height={100} className="rounded-full h-[48px] w-[48px] object-cover" />
+        <Image
+          src={row.original.image}
+          alt=""
+          width={100}
+          height={100}
+          className="rounded-full h-[48px] w-[48px] object-cover"
+        />
       </div>
     ),
   },
@@ -138,24 +161,37 @@ export default function MultiPostsTable() {
         onClick={() => table.setPageIndex(i)}
         className={clsx(
           "w-12 h-[45px] rounded-lg mx-1 bg-[#4B465C14] transition-all duration-300",
-          i === table.getState().pagination.pageIndex ? "!bg-primary-green hover:bg-opacity-50 text-white" : "hover:bg-[#4B465C29]"
-        )}>
+          i === table.getState().pagination.pageIndex
+            ? "!bg-primary-green hover:bg-opacity-50 text-white"
+            : "hover:bg-[#4B465C29]"
+        )}
+      >
         {i + 1}
       </button>
     );
   }
 
   return (
-    <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion
+      transition={{ duration: 0.2 }}
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+    >
       <div className="w-full">
         <div className="rounded-lg border overflow-hidden mt-5 bg-white min-h-[50vh]">
           <Table>
             <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
+              {table.getHeaderGroups().map(headerGroup => (
                 <TableRow key={headerGroup.id} className="bg-[#0347370D]">
-                  {headerGroup.headers.map((header) => {
+                  {headerGroup.headers.map(header => {
                     return (
-                      <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
                     );
                   })}
                 </TableRow>
@@ -163,16 +199,28 @@ export default function MultiPostsTable() {
             </TableHeader>
             <TableBody>
               {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="bg-white">
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                table.getRowModel().rows.map(row => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                    className="bg-white"
+                  >
+                    {row.getVisibleCells().map(cell => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
                     ))}
                   </TableRow>
                 ))
               ) : (
                 <TableRow className="hover:bg-white">
-                  <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-[50vh] text-center font-semibold text-lg hover:bg-white"
+                  >
                     No posts found.
                   </TableCell>
                 </TableRow>
@@ -188,18 +236,20 @@ export default function MultiPostsTable() {
                 size="sm"
                 className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px]"
                 onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}>
+                disabled={!table.getCanPreviousPage()}
+              >
                 Previous
               </Button>
               <div>
-                <div>{paginationButtons.map((u) => u)}</div>
+                <div>{paginationButtons.map(u => u)}</div>
               </div>
               <Button
                 variant="outline"
                 size="sm"
                 className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px] px-4"
                 onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}>
+                disabled={!table.getCanNextPage()}
+              >
                 Next
               </Button>
             </div>

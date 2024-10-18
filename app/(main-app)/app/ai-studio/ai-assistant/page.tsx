@@ -91,7 +91,7 @@ export default function AiAssistants() {
 
     if (query) {
       const filteredAssistants = allAssistants.filter(
-        (assistant) =>
+        assistant =>
           assistant.name.toLowerCase().includes(query.toLowerCase()) ||
           assistant.role.toLowerCase().includes(query.toLowerCase())
       );
@@ -112,11 +112,11 @@ export default function AiAssistants() {
     localStorage.setItem("groupName", group);
   };
 
-  useEffect(() =>{
-    if(searchQuery?.length === 0){
-      setAssistants(categoryAssistants || [])
+  useEffect(() => {
+    if (searchQuery?.length === 0) {
+      setAssistants(categoryAssistants || []);
     }
-  },[searchQuery]);
+  }, [searchQuery]);
 
   return (
     <Fragment>

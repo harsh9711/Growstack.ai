@@ -33,73 +33,79 @@ const SecondLastCard = () => {
 
       <div className="max-w-[400px] pb-32   sm:max-w-[1000px]  sm:mt-10  w-full">
         {/* First Column */}
-       
-          <div className="flex flex-row  ">
-            <div className=" flex flex-col h-full gap-y-10">
-              <div>
-              <h2 className="opacity-0 text-primary-green text-[10px] font-bold sm:text-[28px] pt-8">AI </h2>
 
-              </div>
-              <div className="space-y-4">
-                {[
-                  "Content creation",
-                  "AI models",
-                  "Integrated Workflow",
-                  "Customizable Outlines",
-                  "Image Generation",
-                  "Task Automation",
-                  "Speed of Execution",
-                  "Multilingual  Support ",
-                  "Personalization ",
-                ].map((item, idx) => (
-                  <div
-                    key={idx}
-                    className={`${
-                      idx % 2 === 0 ? "bg-[#03473714] " : "bg-[#FFFFFF14]"
-                    } text-[10px] sm:text-[16px] p-4  max-h-20 h-full  rounded-l-2xl font-medium text-center  sm:text-start max-w-[400px] w-full `}
-                  >
-                    <h2 className="">{item}</h2>
-                  </div>
-                ))}
+        <div className="flex flex-row  ">
+          <div className=" flex flex-col h-full gap-y-10">
+            <div>
+              <h2 className="opacity-0 text-primary-green text-[10px] font-bold sm:text-[28px] pt-8">
+                AI{" "}
+              </h2>
+            </div>
+            <div className="space-y-4">
+              {[
+                "Content creation",
+                "AI models",
+                "Integrated Workflow",
+                "Customizable Outlines",
+                "Image Generation",
+                "Task Automation",
+                "Speed of Execution",
+                "Multilingual  Support ",
+                "Personalization ",
+              ].map((item, idx) => (
+                <div
+                  key={idx}
+                  className={`${
+                    idx % 2 === 0 ? "bg-[#03473714] " : "bg-[#FFFFFF14]"
+                  } text-[10px] sm:text-[16px] p-4  max-h-20 h-full  rounded-l-2xl font-medium text-center  sm:text-start max-w-[400px] w-full `}
+                >
+                  <h2 className="">{item}</h2>
                 </div>
+              ))}
             </div>
+          </div>
 
-            <div className="items-center flex flex-col bg-[#D2F1E6] h-full rounded-l-2xl gap-y-10">
+          <div className="items-center flex flex-col bg-[#D2F1E6] h-full rounded-l-2xl gap-y-10">
             <div>
-            <h2 className="text-primary-green text-[10px] font-bold sm:text-[28px] pt-8">AI Content Wizard</h2>
-              </div>
-              <div className="space-y-4">
-                {[
-                 "Streamlined process for text and images",
-                 "Choose various advanced models",
-                 "Idea generation, publication all in one",
-                 "Flexible structures to match style,   tone",
-                 "Create visuals directly in the platform",
-                 "Eliminates manual tasks",
-                 "Accelerated from start to finish",
-                 "Generate  content in multiple languages",
-                 "High level of customization and adaptability",
-                ].map((item, idx) => (
-                  <div
-                    key={idx}
-                    className={`${
-                      idx % 2 === 0 ? "bg-[#03473714]" : "bg-[#FFFFFF14]"
-                    } text-[10px] sm:text-[16px] p-4 ${
-                      idx ===8 ? "pb-36 sm:pb-10 rounded-bl-xl  bg-[#03473714]" : ""
-                    } font-medium text-center max-h-20 h-full  max-w-[400px] w-full `}
-                  >
-                    <h2>{item}</h2>
-                  </div>
-                ))}
-              </div>
+              <h2 className="text-primary-green text-[10px] font-bold sm:text-[28px] pt-8">
+                AI Content Wizard
+              </h2>
             </div>
-            <div className="items-center flex flex-col bg-[#E7E7E7] h-full rounded-r-2xl gap-y-10">
+            <div className="space-y-4">
+              {[
+                "Streamlined process for text and images",
+                "Choose various advanced models",
+                "Idea generation, publication all in one",
+                "Flexible structures to match style,   tone",
+                "Create visuals directly in the platform",
+                "Eliminates manual tasks",
+                "Accelerated from start to finish",
+                "Generate  content in multiple languages",
+                "High level of customization and adaptability",
+              ].map((item, idx) => (
+                <div
+                  key={idx}
+                  className={`${
+                    idx % 2 === 0 ? "bg-[#03473714]" : "bg-[#FFFFFF14]"
+                  } text-[10px] sm:text-[16px] p-4 ${
+                    idx === 8
+                      ? "pb-36 sm:pb-10 rounded-bl-xl  bg-[#03473714]"
+                      : ""
+                  } font-medium text-center max-h-20 h-full  max-w-[400px] w-full `}
+                >
+                  <h2>{item}</h2>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="items-center flex flex-col bg-[#E7E7E7] h-full rounded-r-2xl gap-y-10">
             <div>
-            <h2 className="text-primary-green text-[10px] font-bold sm:text-[28px] pt-8">Competitors</h2>
-
-              </div>
-              <div className="space-y-4">
-                {[
+              <h2 className="text-primary-green text-[10px] font-bold sm:text-[28px] pt-8">
+                Competitors
+              </h2>
+            </div>
+            <div className="space-y-4">
+              {[
                 "Unlinked features",
                 "Limited model selection",
                 "Requires multiple tools for each step",
@@ -109,21 +115,20 @@ const SecondLastCard = () => {
                 "Slower, due to disconnected tools",
                 "Limited or no multilingual features ",
                 "Lacks comprehensive customization options",
-                ].map((item, idx) => (
-                  <div
-                    key={idx}
-                    className={`${
-                      idx % 2 === 0 ? "bg-[#03473714]" : "bg-[#FFFFFF14]"
-                    } text-[10px] sm:text-[16px] p-4 ${
-                      idx ===8 ? "pb-36 sm:pb-10  bg-[#03473714]" : ""
-                    } font-medium text-center max-h-20 h-full rounded-r-2xl max-w-[400px] w-full `}
-                  >
-                    <h2>{item}</h2>
-                  </div>
-                ))}
-              </div>
+              ].map((item, idx) => (
+                <div
+                  key={idx}
+                  className={`${
+                    idx % 2 === 0 ? "bg-[#03473714]" : "bg-[#FFFFFF14]"
+                  } text-[10px] sm:text-[16px] p-4 ${
+                    idx === 8 ? "pb-36 sm:pb-10  bg-[#03473714]" : ""
+                  } font-medium text-center max-h-20 h-full rounded-r-2xl max-w-[400px] w-full `}
+                >
+                  <h2>{item}</h2>
+                </div>
+              ))}
             </div>
-         
+          </div>
         </div>
       </div>
     </div>

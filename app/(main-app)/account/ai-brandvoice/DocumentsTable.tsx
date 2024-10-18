@@ -23,7 +23,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
-import { EllipsisVertical, MoreHorizontal, Trash2 } from 'lucide-react';
+import { EllipsisVertical, MoreHorizontal, Trash2 } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import instance from "@/config/axios.config";
 import { Input } from "@/components/ui/input";
@@ -31,11 +31,11 @@ import swal from "sweetalert";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import BrandVoiceModal from "./components/BrandVoiceModalProps";
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import remarkBreaks from 'remark-breaks';
-import rehypeRaw from 'rehype-raw';
-import { EditIcon, Edit, Target } from '@/components/svgs';
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks";
+import rehypeRaw from "rehype-raw";
+import { EditIcon, Edit, Target } from "@/components/svgs";
 import { API_URL } from "@/lib/api";
 import DotsLoader from "@/components/DotLoader";
 import {
@@ -50,7 +50,6 @@ import React from "react";
 import GlobalModal from "@/components/modal/global.modal";
 import { BrandVoice } from "@/types/common";
 import Spinner from "@/components/Spinner";
-
 
 interface BrandVoiceSetDefault {
   _id: string;
@@ -70,7 +69,11 @@ interface DocumentsTableProps {
   setTotalBrandVoiceCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export default function ({ search, setTotalBrandVoiceCount, triggerFetchingBrandVoice }: DocumentsTableProps) {
+export default function ({
+  search,
+  setTotalBrandVoiceCount,
+  triggerFetchingBrandVoice,
+}: DocumentsTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -91,10 +94,15 @@ export default function ({ search, setTotalBrandVoiceCount, triggerFetchingBrand
   }, [search, triggerFetchingBrandVoice]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedBrandId, setSelectedBrandId] = useState<string | null>(null);
-  const [selectedDeletedBrandVoice, setSelectedDeletedBrandVoice] = useState<BrandVoice | null>(null);
+  const [selectedDeletedBrandVoice, setSelectedDeletedBrandVoice] =
+    useState<BrandVoice | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const fetchBrandVoice = async (search: string, page: number, limit: number) => {
+  const fetchBrandVoice = async (
+    search: string,
+    page: number,
+    limit: number
+  ) => {
     try {
       setIsFetching(true);
       const response = await instance.get(
@@ -125,28 +133,52 @@ export default function ({ search, setTotalBrandVoiceCount, triggerFetchingBrand
 
   const setAsDefault = async (brandData: Partial<BrandVoiceSetDefault>) => {
     setLoading(true);
-    brandData.is_default = true
-    await instance.put(`${API_URL}/users/api/v1/brand-voice/${brandData._id}`, brandData);
-    setOpenDropdown(null)
+    brandData.is_default = true;
+    await instance.put(
+      `${API_URL}/users/api/v1/brand-voice/${brandData._id}`,
+      brandData
+    );
+    setOpenDropdown(null);
     fetchBrandVoice(search, pagination.pageIndex + 1, pagination.pageSize);
-    setLoading(false)
+    setLoading(false);
     toast.success("Brand voice updated successfully!");
-  }
+  };
 
   const columns: ColumnDef<BrandVoice>[] = [
     {
       accessorKey: "brand_name",
-      header: () => <div className="uppercase flex " style={{ whiteSpace: "nowrap" }}><Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-        onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-        className="w-[14px] h-[14px] mr-1"
-      />&nbsp; Brand&nbsp;Name</div>,
-      cell: ({ row }) => <div className="capitalize flex" style={{ whiteSpace: "nowrap" }}> <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-        onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
-        className="w-[14px] h-[14px] mr-1"
-      />&nbsp; {row.getValue("brand_name")}</div>,
+      header: () => (
+        <div className="uppercase flex " style={{ whiteSpace: "nowrap" }}>
+          <Checkbox
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && "indeterminate")
+            }
+            onCheckedChange={(value: any) =>
+              table.toggleAllPageRowsSelected(!!value)
+            }
+            aria-label="Select all"
+            className="w-[14px] h-[14px] mr-1"
+          />
+          &nbsp; Brand&nbsp;Name
+        </div>
+      ),
+      cell: ({ row }) => (
+        <div className="capitalize flex" style={{ whiteSpace: "nowrap" }}>
+          {" "}
+          <Checkbox
+            checked={
+              table.getIsAllPageRowsSelected() ||
+              (table.getIsSomePageRowsSelected() && "indeterminate")
+            }
+            onCheckedChange={(value: any) =>
+              table.toggleAllPageRowsSelected(!!value)
+            }
+            className="w-[14px] h-[14px] mr-1"
+          />
+          &nbsp; {row.getValue("brand_name")}
+        </div>
+      ),
     },
     {
       accessorKey: "brand_voice",
@@ -154,7 +186,9 @@ export default function ({ search, setTotalBrandVoiceCount, triggerFetchingBrand
       cell: ({ row }) => {
         const brandVoice = row.getValue("brand_voice") as string;
         const truncatedBrandVoice =
-          brandVoice.length > 200 ? brandVoice.slice(0, 200) + "..." : brandVoice;
+          brandVoice.length > 200
+            ? brandVoice.slice(0, 200) + "..."
+            : brandVoice;
 
         return (
           <div
@@ -171,19 +205,26 @@ export default function ({ search, setTotalBrandVoiceCount, triggerFetchingBrand
           </div>
         );
       },
-    }
-    ,
+    },
 
     {
       accessorKey: "document_url",
       header: () => <div className="uppercase">Document</div>,
       cell: ({ row }) => (
         <div>
-          {row.getValue("document_url") ? (<>
-            <a href={row.getValue("document_url")} target="_blank" rel="noopener noreferrer">
-              {row.getValue("document_url") ? "View Document" : "-"}
-            </a>
-          </>) : (<>{"-"}</>)}
+          {row.getValue("document_url") ? (
+            <>
+              <a
+                href={row.getValue("document_url")}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {row.getValue("document_url") ? "View Document" : "-"}
+              </a>
+            </>
+          ) : (
+            <>-</>
+          )}
         </div>
       ),
     },
@@ -194,35 +235,33 @@ export default function ({ search, setTotalBrandVoiceCount, triggerFetchingBrand
         <div className="relative flex items-center">
           <button
             className="p-1 hover:bg-gray-200 rounded-lg transition duration-300"
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation();
-              setOpenDropdown(openDropdown === row.original._id ? null : row.original._id);
+              setOpenDropdown(
+                openDropdown === row.original._id ? null : row.original._id
+              );
             }}
-          >
-          </button>
-          <Select >
+          ></button>
+          <Select>
             <SelectTrigger
               showChevronDownIcon={false}
               className="px-1 py-[5px] bg-white border-0 h-fit hover:bg-gray-100 rounded-lg"
             >
               <EllipsisVertical size={20} className="text-gray-800" />
-
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                {
-                  !row.original.is_default && (
-                    <button
-                      style={{ whiteSpace: "nowrap" }}
-                      className="w-full text-left p-2 hover:bg-gray-100 flex items-center gap-2"
-                      onClick={() => {
-                        setAsDefault(row.original);
-                      }}
-                    >
-                      <Target /> Set as default
-                    </button>
-                  )
-                }
+                {!row.original.is_default && (
+                  <button
+                    style={{ whiteSpace: "nowrap" }}
+                    className="w-full text-left p-2 hover:bg-gray-100 flex items-center gap-2"
+                    onClick={() => {
+                      setAsDefault(row.original);
+                    }}
+                  >
+                    <Target /> Set as default
+                  </button>
+                )}
                 <button
                   className="w-full text-left p-2 hover:bg-gray-100 flex items-center gap-2"
                   onClick={() => handleOpenModal(row.original._id)}
@@ -240,31 +279,28 @@ export default function ({ search, setTotalBrandVoiceCount, triggerFetchingBrand
                 </button>
               </SelectGroup>
             </SelectContent>
-
           </Select>
         </div>
       ),
       enableSorting: false,
       enableHiding: false,
-    }
+    },
   ];
 
   const handleDeleteBrandVoice = async (id: string) => {
     setIsDeleting(true);
     try {
-      await instance.delete(
-        `${API_URL}/users/api/v1/brand-voice/${id}`
-      );
-      setDocuments((prev) => prev.filter((doc) => doc._id !== id));
-      setTotalBrandVoiceCount((prev) => prev - 1);
+      await instance.delete(`${API_URL}/users/api/v1/brand-voice/${id}`);
+      setDocuments(prev => prev.filter(doc => doc._id !== id));
+      setTotalBrandVoiceCount(prev => prev - 1);
       toast.success("Document deleted successfully");
     } catch (error) {
-      console.error("Error deleting brand voice")
+      console.error("Error deleting brand voice");
     } finally {
       setIsDeleting(false);
       setSelectedDeletedBrandVoice(null);
     }
-  }
+  };
 
   const table = useReactTable({
     data: documents,
@@ -288,47 +324,69 @@ export default function ({ search, setTotalBrandVoiceCount, triggerFetchingBrand
 
   return (
     <>
-      <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
-        <div className="w-full bg-white border rounded-3xl" onClick={() => { setOpenDropdown(null) }}>
+      <Motion
+        transition={{ duration: 0.2 }}
+        variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+      >
+        <div
+          className="w-full bg-white border rounded-3xl"
+          onClick={() => {
+            setOpenDropdown(null);
+          }}
+        >
           <div className="bg-white rounded-lg border overflow-hidden min-h-[50vh]">
             <Table>
               <TableHeader>
-                {table.getHeaderGroups().map((headerGroup) => (
+                {table.getHeaderGroups().map(headerGroup => (
                   <TableRow key={headerGroup.id} className="bg-[#0347370D]">
-                    {headerGroup.headers.map((header) => (
+                    {headerGroup.headers.map(header => (
                       <TableHead key={header.id}>
-                        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
                       </TableHead>
                     ))}
                   </TableRow>
                 ))}
               </TableHeader>
               <TableBody className="mb-4">
-
                 {isFetching ? (
                   <TableRow className="hover:bg-white">
-                    <TableCell colSpan={columns.length + 20} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
+                    <TableCell
+                      colSpan={columns.length + 20}
+                      className="h-[50vh] text-center font-semibold text-lg hover:bg-white"
+                    >
                       <div className="flex-1 flex flex-col gap-5 justify-center items-center">
                         <Spinner color="black" size={56} />
                       </div>
                     </TableCell>
                   </TableRow>
-                ) :
-                  table.getRowModel().rows?.length ? (
-                    table.getRowModel().rows.map((row) => (
-                      <TableRow key={row.id} className="bg-white">
-                        {row.getVisibleCells().map((cell) => (
-                          <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
-                        ))}
-                      </TableRow>
-                    ))
-                  ) : (
-                    <TableRow className="hover:bg-white">
-                      <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg">
-                        No Brand Voice Found.
-                      </TableCell>
+                ) : table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map(row => (
+                    <TableRow key={row.id} className="bg-white">
+                      {row.getVisibleCells().map(cell => (
+                        <TableCell key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
                     </TableRow>
-                  )}
+                  ))
+                ) : (
+                  <TableRow className="hover:bg-white">
+                    <TableCell
+                      colSpan={columns.length}
+                      className="h-[50vh] text-center font-semibold text-lg"
+                    >
+                      No Brand Voice Found.
+                    </TableCell>
+                  </TableRow>
+                )}
               </TableBody>
             </Table>
           </div>
@@ -349,11 +407,15 @@ export default function ({ search, setTotalBrandVoiceCount, triggerFetchingBrand
 
         <div className="flex items-center space-x-2">
           <Button
-            variant="outline" className="bg-[#4B465C14]"
+            variant="outline"
+            className="bg-[#4B465C14]"
             size="sm"
             onClick={() => {
               if (pagination.pageIndex > 0) {
-                setPagination((prev: { pageIndex: number; }) => ({ ...prev, pageIndex: prev.pageIndex - 1 }));
+                setPagination((prev: { pageIndex: number }) => ({
+                  ...prev,
+                  pageIndex: prev.pageIndex - 1,
+                }));
               }
             }}
             disabled={pagination.pageIndex === 0}
@@ -364,19 +426,30 @@ export default function ({ search, setTotalBrandVoiceCount, triggerFetchingBrand
             <Button
               key={index}
               variant="outline"
-              size="sm" style={{ width: "35px", height: "35px", borderRadius: '8px' }}
-              onClick={() => setPagination((prev: any) => ({ ...prev, pageIndex: index }))}
-              className={pagination.pageIndex === index ? "bg-[#034737] text-white" : "bg-[#4B465C14] text-black"}
+              size="sm"
+              style={{ width: "35px", height: "35px", borderRadius: "8px" }}
+              onClick={() =>
+                setPagination((prev: any) => ({ ...prev, pageIndex: index }))
+              }
+              className={
+                pagination.pageIndex === index
+                  ? "bg-[#034737] text-white"
+                  : "bg-[#4B465C14] text-black"
+              }
             >
               {index + 1}
             </Button>
           ))}
           <Button
             variant="outline"
-            size="sm" className="bg-[#4B465C14]"
+            size="sm"
+            className="bg-[#4B465C14]"
             onClick={() => {
               if (pagination.pageIndex < totalPages - 1) {
-                setPagination((prev: { pageIndex: number; }) => ({ ...prev, pageIndex: prev.pageIndex + 1 }));
+                setPagination((prev: { pageIndex: number }) => ({
+                  ...prev,
+                  pageIndex: prev.pageIndex + 1,
+                }));
               }
             }}
             disabled={pagination.pageIndex >= totalPages - 1}
@@ -390,11 +463,23 @@ export default function ({ search, setTotalBrandVoiceCount, triggerFetchingBrand
         <BrandVoiceModal brandId={selectedBrandId} onClose={handleCloseModal} />
       )}
 
-      <GlobalModal className="" showCloseButton={false} open={!!selectedDeletedBrandVoice} setOpen={() => { setSelectedDeletedBrandVoice(null) }}>
+      <GlobalModal
+        className=""
+        showCloseButton={false}
+        open={!!selectedDeletedBrandVoice}
+        setOpen={() => {
+          setSelectedDeletedBrandVoice(null);
+        }}
+      >
         <div className="flex flex-col items-start justify-center px-6 pt-4 pb-8 gap-6 ">
-          <h3 className="text-center text-xl font-semibold">Are you sure you want to delete <strong>{selectedDeletedBrandVoice?.brand_name}</strong> Brand Voice?</h3>
+          <h3 className="text-center text-xl font-semibold">
+            Are you sure you want to delete{" "}
+            <strong>{selectedDeletedBrandVoice?.brand_name}</strong> Brand
+            Voice?
+          </h3>
           <p className="text-left text-gray-700 text-sm md:text-base">
-            This action is irreversible. Once deleted, you will not be able to recover this Brand Voice.
+            This action is irreversible. Once deleted, you will not be able to
+            recover this Brand Voice.
           </p>
           <div className="flex items-center justify-start gap-3">
             <button
@@ -406,18 +491,17 @@ export default function ({ search, setTotalBrandVoiceCount, triggerFetchingBrand
             <button
               disabled={isDeleting}
               className="text-white bg-red-500 text-nowrap flex items-center gap-1 py-2 px-6 rounded-md transition duration-300 hover:bg-red-600"
-              onClick={() => selectedDeletedBrandVoice && handleDeleteBrandVoice(selectedDeletedBrandVoice._id)}
-            >
-
-              {
-                isDeleting ? <DotsLoader /> : <Trash2 size={18} />
+              onClick={() =>
+                selectedDeletedBrandVoice &&
+                handleDeleteBrandVoice(selectedDeletedBrandVoice._id)
               }
+            >
+              {isDeleting ? <DotsLoader /> : <Trash2 size={18} />}
               Delete
             </button>
           </div>
         </div>
       </GlobalModal>
-
     </>
   );
 }

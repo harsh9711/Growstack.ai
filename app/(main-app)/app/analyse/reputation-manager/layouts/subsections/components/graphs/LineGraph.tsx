@@ -1,7 +1,22 @@
-import { CategoryScale, Chart as ChartJS, LineElement, LinearScale, PointElement, Title, Tooltip } from "chart.js";
+import {
+  CategoryScale,
+  Chart as ChartJS,
+  LineElement,
+  LinearScale,
+  PointElement,
+  Title,
+  Tooltip,
+} from "chart.js";
 import { Line } from "react-chartjs-2";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip
+);
 
 export const options = {
   responsive: true,
@@ -34,8 +49,21 @@ export const options = {
   },
 };
 
-const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const labels = months.map((month) => month + " " + new Date().getFullYear());
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+const labels = months.map(month => month + " " + new Date().getFullYear());
 
 const generateRandomData = (numPoints: number, min: number, max: number) => {
   const data = [];

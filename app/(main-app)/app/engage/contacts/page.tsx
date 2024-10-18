@@ -100,7 +100,9 @@ export default function ContactsDashboard() {
     <Fragment>
       <main className="">
         <div className="flex justify-between items-center mt-8">
-          <div className="space-y-2 w-full">{renderTitle(selectedTabIndex)}</div>
+          <div className="space-y-2 w-full">
+            {renderTitle(selectedTabIndex)}
+          </div>
           <div className="w-full flex items-center justify-end gap-3">
             <div className="w-full max-w-md bg-white shadow-2xl shadow-gray-200 px-3 py-2 rounded-xl">
               <div className="w-full flex relative">
@@ -108,9 +110,12 @@ export default function ContactsDashboard() {
                   <div
                     key={index}
                     className={`w-full h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
-                      selectedTabIndex === index ? "!text-white" : "!text-primary-grey"
+                      selectedTabIndex === index
+                        ? "!text-white"
+                        : "!text-primary-grey"
                     }`}
-                    onClick={() => handleTabClick(index)}>
+                    onClick={() => handleTabClick(index)}
+                  >
                     {tab}
                   </div>
                 ))}
@@ -120,7 +125,8 @@ export default function ContactsDashboard() {
                   style={{
                     left: `calc(${tabDistanceFromLeft}%)`,
                     width: `${100 / tabs.length}%`,
-                  }}></div>
+                  }}
+                ></div>
               </div>
             </div>
             {/* <Link href="/app/engage/contacts/settings">

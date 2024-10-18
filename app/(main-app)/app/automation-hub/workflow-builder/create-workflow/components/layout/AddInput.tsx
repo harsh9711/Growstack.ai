@@ -154,9 +154,7 @@ export default function AddInput({
         console.error("workflow_id is missing");
         return;
       }
-      const updatedInputs = inputConfig.filter(
-        (input) => input._id !== inputId
-      );
+      const updatedInputs = inputConfig.filter(input => input._id !== inputId);
       setInputConfigs(updatedInputs);
       await instance.delete(
         `${API_URL}/workflow/api/v1/${workflowId}/inputconfig/${inputId}`
@@ -168,7 +166,7 @@ export default function AddInput({
   const handleEditClick = async (inputId: string) => {
     try {
       // Find the input to update
-      const inputToUpdate = inputConfig.find((input) => input._id === inputId);
+      const inputToUpdate = inputConfig.find(input => input._id === inputId);
       if (!inputToUpdate) {
         console.error(`Input with id ${inputId} not found.`);
         return;
@@ -184,11 +182,11 @@ export default function AddInput({
   const updateInput = async () => {
     try {
       setLoading(true);
-      const updatedInputs = inputConfig.map((input) =>
+      const updatedInputs = inputConfig.map(input =>
         input._id === editID ? { ...input, ...inputParams } : input
       );
       setInputConfigs(updatedInputs);
-      const payload = updatedInputs.find((input) => input._id === editID);
+      const payload = updatedInputs.find(input => input._id === editID);
       const response = await instance.put(
         `${API_URL}/workflow/api/v1/${workflowId}/inputconfig/${editID}`,
         {
@@ -300,7 +298,7 @@ export default function AddInput({
                 Continue
               </button>
             }
-            onSelectAction={(data) => onSelectAction(data, 1)}
+            onSelectAction={data => onSelectAction(data, 1)}
           />
         </div>
       </div>

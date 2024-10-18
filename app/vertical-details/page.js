@@ -5,13 +5,13 @@ import VerticalDetails from "@/components/verticals/vertical-details/VerticalDet
 import React from "react";
 
 function Page() {
-    return (
-        <React.Fragment>
-            <Navbar />
-            <VerticalDetails />
-            <Footer />
-        </React.Fragment>
-    );
+  return (
+    <React.Fragment>
+      <Navbar />
+      <VerticalDetails />
+      <Footer />
+    </React.Fragment>
+  );
 }
 
 export default Page;

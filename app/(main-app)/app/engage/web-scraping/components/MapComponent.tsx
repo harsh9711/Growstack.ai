@@ -37,7 +37,7 @@ const MapComponent = ({ places }: { places: Place[] }) => {
         anchor: new google.maps.Point(0, 20),
       };
 
-      places.forEach((place) => {
+      places.forEach(place => {
         const { latitude, longitude } = place;
         const position = new window.google.maps.LatLng(latitude, longitude);
         bounds.extend(position);
@@ -68,7 +68,13 @@ const MapComponent = ({ places }: { places: Place[] }) => {
 
   return (
     <LoadScript googleMapsApiKey="AIzaSyB8uvaGZVlIgN8HaF4zU72wBeMIYmCBVwo">
-      <GoogleMap mapContainerStyle={mapContainerStyle} center={center} zoom={zoom} onLoad={onLoad} onUnmount={onUnmount}></GoogleMap>
+      <GoogleMap
+        mapContainerStyle={mapContainerStyle}
+        center={center}
+        zoom={zoom}
+        onLoad={onLoad}
+        onUnmount={onUnmount}
+      ></GoogleMap>
     </LoadScript>
   );
 };

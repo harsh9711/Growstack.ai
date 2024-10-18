@@ -151,14 +151,14 @@ const EditAssistantDialog = ({
   }, [selectedRowId, reset]);
 
   const addUserInput = () => {
-    setinputs((prevInputs) => [
+    setinputs(prevInputs => [
       ...prevInputs,
       { title: "", description: "", type: "", required: "Optional", icon: "" },
     ]);
   };
 
   const removeUserInput = (index: number) => {
-    setinputs((prevInputs) => {
+    setinputs(prevInputs => {
       const updatedInputs = [...prevInputs];
       updatedInputs.splice(index, 1);
       return updatedInputs;
@@ -170,7 +170,7 @@ const EditAssistantDialog = ({
     key: keyof UserInput,
     value: any
   ) => {
-    setinputs((prevInputs) => {
+    setinputs(prevInputs => {
       const updatedInputs: any = [...prevInputs];
 
       updatedInputs[index][key] = value;
@@ -192,7 +192,7 @@ const EditAssistantDialog = ({
 
   const [fileUploadLoading, setFileUploadLoading] = useState(false);
 
-  const handleUpdate: SubmitHandler<ValidationSchemaType> = async (data) => {
+  const handleUpdate: SubmitHandler<ValidationSchemaType> = async data => {
     setIsPending(true);
 
     try {
@@ -222,7 +222,7 @@ const EditAssistantDialog = ({
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: { "image/*": [] },
-    onDrop: async (acceptedFiles) => {
+    onDrop: async acceptedFiles => {
       const file = acceptedFiles[0];
       if (file) {
         if (file.size > 1 * 1024 * 1024) {
@@ -242,7 +242,7 @@ const EditAssistantDialog = ({
           const fileUrl = response.data.data.fileUrl;
 
           // Set the uploaded file URL as the icon in the form data
-          setFormData((prevState) => ({
+          setFormData(prevState => ({
             ...prevState,
             icon: fileUrl,
           }));
@@ -272,7 +272,9 @@ const EditAssistantDialog = ({
   return (
     <Dialog open={!!selectedRowId} onOpenChange={() => setSelectedRowId(null)}>
       <DialogContent className="max-w-[1400px]">
-        <h1 className="text-2xl lg:text-2xl md:text-xl font-semibold">Edit Assistant</h1>
+        <h1 className="text-2xl lg:text-2xl md:text-xl font-semibold">
+          Edit Assistant
+        </h1>
         {isLoading ? (
           <section className="grid place-content-center h-[40vh]">
             Loading...
@@ -389,7 +391,7 @@ const EditAssistantDialog = ({
                             type="text"
                             placeholder="Type input field title (required)"
                             value={input.title}
-                            onChange={(e) =>
+                            onChange={e =>
                               handleInputChange(index, "title", e.target.value)
                             }
                             className="md:placeholder:text-sm"
@@ -398,7 +400,7 @@ const EditAssistantDialog = ({
                         <div className="w-full space-y-2">
                           <Select
                             value={input.field_type}
-                            onValueChange={(value) =>
+                            onValueChange={value =>
                               handleInputChange(index, "field_type", value)
                             }
                           >
@@ -432,7 +434,7 @@ const EditAssistantDialog = ({
                             type="text"
                             placeholder="Type input field description (required)"
                             value={input.description}
-                            onChange={(e) =>
+                            onChange={e =>
                               handleInputChange(
                                 index,
                                 "description",
@@ -487,7 +489,6 @@ const EditAssistantDialog = ({
                                 placeholder={
                                   input.requirement ? "required" : "optional"
                                 }
-                                
                               />
                             </SelectTrigger>
                             <SelectContent>

@@ -8,9 +8,18 @@ interface SubtitleListProps {
   onReorder: (subtitles: string[]) => void;
 }
 
-const SubtitleList: React.FC<SubtitleListProps> = ({ subtitles, onRemove, onReorder }) => {
+const SubtitleList: React.FC<SubtitleListProps> = ({
+  subtitles,
+  onRemove,
+  onReorder,
+}) => {
   return (
-    <Reorder.Group axis="y" values={subtitles} onReorder={onReorder} className="mt-4 space-y-4">
+    <Reorder.Group
+      axis="y"
+      values={subtitles}
+      onReorder={onReorder}
+      className="mt-4 space-y-4"
+    >
       <AnimatePresence>
         {subtitles.map((subtitle, index) => (
           <Reorder.Item
@@ -19,11 +28,18 @@ const SubtitleList: React.FC<SubtitleListProps> = ({ subtitles, onRemove, onReor
             animate={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 20 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.15 }}>
+            transition={{ duration: 0.15 }}
+          >
             <div className="flex items-center gap-4">
               <DraggableIcon className="cursor-grab active:cursor-grabbing w-full max-w-fit" />
-              <div className="w-full bg-[#F5F5F5] p-3 rounded-lg">{subtitle}</div>
-              <X size={25} className="text-primary-green cursor-pointer" onClick={() => onRemove(index)} />
+              <div className="w-full bg-[#F5F5F5] p-3 rounded-lg">
+                {subtitle}
+              </div>
+              <X
+                size={25}
+                className="text-primary-green cursor-pointer"
+                onClick={() => onRemove(index)}
+              />
             </div>
           </Reorder.Item>
         ))}

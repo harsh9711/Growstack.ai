@@ -66,8 +66,6 @@ export default function Dashboard() {
     }
   }, [router]);
 
-
-
   useEffect(() => {
     AOS.init({ duration: 1000 });
     AOS.refresh();
@@ -87,10 +85,6 @@ export default function Dashboard() {
       setAiAppsLoading(false);
     }
   };
-
-
-
-
 
   const fetchSocialMediaProfile = async () => {
     try {
@@ -127,11 +121,9 @@ export default function Dashboard() {
     fetchSocialMediaProfile();
   }, []);
 
-
   if (!hasRefreshed) {
     return null;
   }
-
 
   return (
     <main>

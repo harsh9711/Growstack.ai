@@ -5,9 +5,16 @@ import Links from "./links/Links";
 import SocialLinks from "./socialLinks/SocialLinks";
 import styles from "./navbar.module.scss";
 
-function Navbar({ logoUrl = "/images/logo.png", logoAlt = "logo", backgroundColor = "" }) {
+function Navbar({
+  logoUrl = "/images/logo.png",
+  logoAlt = "logo",
+  backgroundColor = "",
+}) {
   return (
-    <div className={`relative z-90 ${styles.navbar}`} style={{ '--navbar-bg-color': backgroundColor }}>
+    <div
+      className={`relative z-90 ${styles.navbar}`}
+      style={{ "--navbar-bg-color": backgroundColor }}
+    >
       <div className="container relative z-90">
         <div className={styles.flex}>
           <div className={styles.flext}>

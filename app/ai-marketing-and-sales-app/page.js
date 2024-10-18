@@ -22,7 +22,7 @@ function Page() {
       <EasySteps />
       <CreateUltimate />
       <DetailFeatures />
-      {/* <AiPartner/> */} 
+      {/* <AiPartner/> */}
       <UniqueModel />
       <BusinessSolution />
       {/* <CustomerStories /> */}

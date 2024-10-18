@@ -43,7 +43,7 @@ export default function ProvidersDrawer({
   const filteredTools =
     selectedCategory === "All"
       ? tools
-      : tools.filter((tool) => tool.category === selectedCategory);
+      : tools.filter(tool => tool.category === selectedCategory);
 
   return (
     <Drawer>
@@ -68,13 +68,14 @@ export default function ProvidersDrawer({
           <div className="flex items-start gap-6 mt-5 h-full">
             <div className="w-full max-w-[350px] border border-[#E8E8E8] !bg-white shadow-box p-4 !rounded-2xl">
               <ul className="space-y-3">
-                {categories.map((category) => (
+                {categories.map(category => (
                   <li key={category}>
                     <button
-                      className={`w-full flex justify-between text-left px-4 py-3 mt-2 rounded-xl ${selectedCategory === category
+                      className={`w-full flex justify-between text-left px-4 py-3 mt-2 rounded-xl ${
+                        selectedCategory === category
                           ? "bg-primary-green text-white"
                           : ""
-                        }`}
+                      }`}
                       onClick={() => setSelectedCategory(category)}
                     >
                       {category}
@@ -88,7 +89,7 @@ export default function ProvidersDrawer({
             <div className="w-full p-4 h-full overflow-y-auto">
               <h2 className="text-xl font-semibold mb-4">{selectedCategory}</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {filteredTools.map((data) => (
+                {filteredTools.map(data => (
                   <DrawerClose
                     asChild
                     className="absolute right-3 top-0 rounded-lg transition-opacity p-2 hover:bg-[#ff00001f] hover:opacity-100 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"

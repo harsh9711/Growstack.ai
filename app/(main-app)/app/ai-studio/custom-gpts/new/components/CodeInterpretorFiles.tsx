@@ -35,8 +35,14 @@ const CodeIntepreterFiles = ({
     try {
       const {
         data: { data },
-      } = await instance.post(`${API_URL}/ai/api/v1/customgpt/upload`, formData);
-      setUploadedIntepreterFiles([...uploadedIntepreterFiles, { ...file, name: data.filename, id: data.id }]);
+      } = await instance.post(
+        `${API_URL}/ai/api/v1/customgpt/upload`,
+        formData
+      );
+      setUploadedIntepreterFiles([
+        ...uploadedIntepreterFiles,
+        { ...file, name: data.filename, id: data.id },
+      ]);
       setIsInterpreterModalOpen(false);
       toast.success("File uploaded successfully");
     } catch (error) {
@@ -52,7 +58,9 @@ const CodeIntepreterFiles = ({
       instance.delete(`${API_URL}/ai/api/v1/customgpt/file?code=true`, {
         data: { payload },
       });
-      setUploadedIntepreterFiles(uploadedIntepreterFiles.filter((file) => file.id !== id));
+      setUploadedIntepreterFiles(
+        uploadedIntepreterFiles.filter(file => file.id !== id)
+      );
       toast.success("File removed successfully");
     } catch (error) {
       console.error("Error removing file:", error);
@@ -63,7 +71,10 @@ const CodeIntepreterFiles = ({
     <>
       <div className="flex flex-row justify-between gap-x-20">
         <div className="mb-4 gap-2 flex items-center">
-          <Switch checked={isToggleCheckedForInterpreter} onCheckedChange={setIsToggleCheckedForInterpreter} />
+          <Switch
+            checked={isToggleCheckedForInterpreter}
+            onCheckedChange={setIsToggleCheckedForInterpreter}
+          />
           <span className="text-md font-medium flex flex-row gap-x-2 ">
             Code Interpreter
             <TooltipProvider>
@@ -74,8 +85,14 @@ const CodeIntepreterFiles = ({
                     className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
                   />
                 </TooltipTrigger>
-                <TooltipContent className="bg-white" style={{ width: "250px", zIndex: "1000" }}>
-                  <p style={{ fontSize: "10px !important" }}>The Code Interpreter allows you to run code snippets and analyze data seamlessly within this platform.</p>
+                <TooltipContent
+                  className="bg-white"
+                  style={{ width: "250px", zIndex: "1000" }}
+                >
+                  <p style={{ fontSize: "10px !important" }}>
+                    The Code Interpreter allows you to run code snippets and
+                    analyze data seamlessly within this platform.
+                  </p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
@@ -97,10 +114,16 @@ const CodeIntepreterFiles = ({
           <h2 className="text-md font-semibold">Uploaded Files</h2>
           <div className="grid grid-cols-2 gap-x-4 gap-y-2">
             {uploadedIntepreterFiles.map((file, index) => (
-              <div key={index} className="flex items-center bg-gray-100 p-2 rounded-md">
+              <div
+                key={index}
+                className="flex items-center bg-gray-100 p-2 rounded-md"
+              >
                 <File size={24} />
                 <span className="text-sm truncate ml-2">{file.name}</span>
-                <button className="ml-auto focus:outline-none" onClick={() => handleRemoveUploadedFile(file.id)}>
+                <button
+                  className="ml-auto focus:outline-none"
+                  onClick={() => handleRemoveUploadedFile(file.id)}
+                >
                   <Trash size={20} />
                 </button>
               </div>

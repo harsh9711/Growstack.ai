@@ -1,8 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import Motion from "@/components/Motion";
 import Spinner from "@/components/Spinner";
-import { ClockIcon, DictionIcon, GestureIcon, MarkerIcon } from "@/components/svgs";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  ClockIcon,
+  DictionIcon,
+  GestureIcon,
+  MarkerIcon,
+} from "@/components/svgs";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import autosize from "autosize";
 import { Pause, Play } from "lucide-react";
 import { VideoData } from "./types";
@@ -17,7 +29,14 @@ interface IProps {
   setVideoScript: (videoScript: string) => void;
 }
 
-const EditCanvas: React.FC<IProps> = ({ videoData, isPlaying, setIsPlaying, loading, setVideoScript, videoScript }) => {
+const EditCanvas: React.FC<IProps> = ({
+  videoData,
+  isPlaying,
+  setIsPlaying,
+  loading,
+  setVideoScript,
+  videoScript,
+}) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
@@ -117,14 +136,23 @@ const EditCanvas: React.FC<IProps> = ({ videoData, isPlaying, setIsPlaying, load
       <div className="flex-1 flex flex-col">
         <div className="flex-1 bg-white w-full h-full min-h-[60vh] max-w-[1246px] mx-auto rounded-2xl flex justify-center items-center">
           {loading ? (
-            <Motion transition={{ duration: 1 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+            <Motion
+              transition={{ duration: 1 }}
+              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+            >
               <div className="flex gap-3 items-center py-4 px-6 w-full rounded-lg bg-gray-200 text-gray-700 max-w-3xl mx-auto">
                 <Spinner />
-                <p className="ml-2">Updating your video, this might take a while</p>
+                <p className="ml-2">
+                  Updating your video, this might take a while
+                </p>
               </div>
             </Motion>
           ) : (
-            <video ref={videoRef} controls={false} className="rounded-xl w-full max-w-4xl">
+            <video
+              ref={videoRef}
+              controls={false}
+              className="rounded-xl w-full max-w-4xl"
+            >
               <source src={videoData.download} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
@@ -153,7 +181,10 @@ const EditCanvas: React.FC<IProps> = ({ videoData, isPlaying, setIsPlaying, load
             </button>
           </div>
           <div className="mt-4 flex items-center bg-[#F2F2F2] h-9 text-sm p-3 rounded-lg space-x-2">
-            <span className="cursor-pointer" onClick={() => setIsPlaying(!isPlaying)}>
+            <span
+              className="cursor-pointer"
+              onClick={() => setIsPlaying(!isPlaying)}
+            >
               {isPlaying ? <Pause size={18} /> : <Play size={18} />}
             </span>
             <span>
@@ -166,7 +197,7 @@ const EditCanvas: React.FC<IProps> = ({ videoData, isPlaying, setIsPlaying, load
             ref={textareaRef}
             value={videoScript}
             rows={1}
-            onChange={(e) => setVideoScript(e.target.value)}
+            onChange={e => setVideoScript(e.target.value)}
             placeholder="Type your script here..."
             className="w-full p-2 bg-transparent resize-none overflow-hidden min-h-11 max-h-[300px]"
           />

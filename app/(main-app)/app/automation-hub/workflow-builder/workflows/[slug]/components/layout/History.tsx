@@ -152,7 +152,7 @@ const History: React.FC<Props> = ({ workflowId, runnerId }) => {
             </Button>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Link href={``}>
+                <Link href="">
                   <Button variant="outline" className="h-8 w-8 p-0 !bg-white">
                     <MoreHorizontal className="h-4 w-4" />
                   </Button>
@@ -194,7 +194,7 @@ const History: React.FC<Props> = ({ workflowId, runnerId }) => {
   const [workFlowHistory, setWorkFlowHistory] = useState<WorkflowHistoryItem[]>(
     []
   );
-  const [runnerIdStatus, setRunnerIdStatus] = useState(false)
+  const [runnerIdStatus, setRunnerIdStatus] = useState(false);
   const [loading, setLoading] = useState(true);
   const [sorting, setSorting] = useState<SortingState>([]);
   const router = useRouter();
@@ -249,7 +249,7 @@ const History: React.FC<Props> = ({ workflowId, runnerId }) => {
   };
   useEffect(() => {
     let intervalId: any;
-    setRunnerIdStatus(true)
+    setRunnerIdStatus(true);
     if (runnerId) {
       const fetchData = async () => {
         try {
@@ -258,8 +258,8 @@ const History: React.FC<Props> = ({ workflowId, runnerId }) => {
           );
           if (response.data.data != "Running") {
             clearInterval(intervalId);
-            setRunnerIdStatus(false)
-            runnerId = null
+            setRunnerIdStatus(false);
+            runnerId = null;
             fetchWorkflowHistory(workflowId);
           }
         } catch (error) {
@@ -271,7 +271,6 @@ const History: React.FC<Props> = ({ workflowId, runnerId }) => {
       intervalId = setInterval(fetchData, 5000);
       return () => clearInterval(intervalId);
     }
-
   }, [runnerId]);
 
   const handleDeleteHistoryItem = async (runner_id: string) => {
@@ -333,7 +332,7 @@ const History: React.FC<Props> = ({ workflowId, runnerId }) => {
                 .getColumn("workflow_runner_id")
                 ?.getFilterValue() as string) ?? ""
             }
-            onChange={(event) =>
+            onChange={event =>
               table
                 .getColumn("workflow_runner_id")
                 ?.setFilterValue(event.target.value)
@@ -350,13 +349,13 @@ const History: React.FC<Props> = ({ workflowId, runnerId }) => {
               <DropdownMenuContent align="end">
                 {table
                   .getAllColumns()
-                  .filter((column) => column.getCanHide())
-                  .map((column) => (
+                  .filter(column => column.getCanHide())
+                  .map(column => (
                     <DropdownMenuCheckboxItem
                       key={column.id}
                       className="capitalize"
                       checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
+                      onCheckedChange={value =>
                         column.toggleVisibility(!!value)
                       }
                     >
@@ -377,16 +376,16 @@ const History: React.FC<Props> = ({ workflowId, runnerId }) => {
         <div className="rounded-xl overflow-hidden border bg-white">
           <Table>
             <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
+              {table.getHeaderGroups().map(headerGroup => (
                 <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => (
+                  {headerGroup.headers.map(header => (
                     <TableHead key={header.id}>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                     </TableHead>
                   ))}
                 </TableRow>
@@ -394,24 +393,30 @@ const History: React.FC<Props> = ({ workflowId, runnerId }) => {
             </TableHeader>
             <TableBody>
               {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
-                    {row.getVisibleCells().map((cell) => (
+                table.getRowModel().rows.map(row => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map(cell => (
                       <TableCell key={cell.id}>
-                        {cell.column.columnDef.header === "Status" && (
-                          row.original.workflow_runner_id === runnerId && runnerId != null) && runnerIdStatus ? (
+                        {cell.column.columnDef.header === "Status" &&
+                        row.original.workflow_runner_id === runnerId &&
+                        runnerId != null &&
+                        runnerIdStatus ? (
                           <div className=" flex gap-2">
                             <Spinner color="black" size={15} />
                             Loading...
                           </div>
                         ) : (
-                          flexRender(cell.column.columnDef.cell, cell.getContext())
+                          flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )
                         )}
                       </TableCell>
                     ))}
                   </TableRow>
-
-
                 ))
               ) : (
                 <TableRow className="hover:bg-white">

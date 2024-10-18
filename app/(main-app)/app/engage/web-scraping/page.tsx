@@ -2,7 +2,14 @@
 
 import Motion from "@/components/Motion";
 import Spinner from "@/components/Spinner";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import clsx from "clsx";
@@ -22,7 +29,9 @@ import { renderRatingStars } from "./components/RatingStars";
 import SaveProspects from "./components/SaveProspects";
 
 const WebScraping: React.FC = () => {
-  const [fields, setFields] = useState<{ id: number; value: string }[]>([{ id: 1, value: "" }]);
+  const [fields, setFields] = useState<{ id: number; value: string }[]>([
+    { id: 1, value: "" },
+  ]);
   const [count, setCount] = useState(1);
   const [bulkInput, setBulkInput] = useState("");
   const [countryCode, setCountryCode] = useState("");
@@ -52,7 +61,7 @@ const WebScraping: React.FC = () => {
     }
     instance
       .get(url)
-      .then((response) => {
+      .then(response => {
         let data = response.data;
         if (countryName) {
           data = data[0];
@@ -62,7 +71,7 @@ const WebScraping: React.FC = () => {
           setCountryCode(data.country_code);
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.error("Error fetching country code:", error);
       });
   };
@@ -74,12 +83,14 @@ const WebScraping: React.FC = () => {
   };
 
   const removeField = (id: number) => {
-    const updatedFields = fields.filter((field) => field.id !== id);
+    const updatedFields = fields.filter(field => field.id !== id);
     setFields(updatedFields);
   };
 
   const handleInputChange = (id: number, value: string) => {
-    const updatedFields = fields.map((field) => (field.id === id ? { ...field, value } : field));
+    const updatedFields = fields.map(field =>
+      field.id === id ? { ...field, value } : field
+    );
     setFields(updatedFields);
   };
 
@@ -93,9 +104,9 @@ const WebScraping: React.FC = () => {
     const allTerms = [
       ...bulkInput
         .split(",")
-        .map((term) => term.trim())
+        .map(term => term.trim())
         .filter(Boolean),
-      ...fields.map((field) => field.value.trim()).filter(Boolean),
+      ...fields.map(field => field.value.trim()).filter(Boolean),
     ];
 
     setIsPending(true);
@@ -109,7 +120,10 @@ const WebScraping: React.FC = () => {
       };
       const allResults = [];
 
-      const response = await instance.post(`${API_URL}/ai/api/v1/webscrape`, postData);
+      const response = await instance.post(
+        `${API_URL}/ai/api/v1/webscrape`,
+        postData
+      );
       const places = response.data.data[0].places.map((place: Place) => ({
         title: place.title,
         address: place.address,
@@ -142,13 +156,21 @@ const WebScraping: React.FC = () => {
   } | null>(null);
   const { autocompleteInputRef } = UseGoogleAutocomplete({ setInputCountry });
 
-  const handleCountryInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCountryInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { value } = event.target;
     setInputCountry(value);
   };
 
-  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
-    if ((event.key === "Backspace" || event.key === "Delete") && inputCountry === "" && selectedOption !== null) {
+  const handleInputKeyDown = (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ): void => {
+    if (
+      (event.key === "Backspace" || event.key === "Delete") &&
+      inputCountry === "" &&
+      selectedOption !== null
+    ) {
       event.preventDefault();
       setSelectedOption(null);
     }
@@ -190,11 +212,13 @@ const WebScraping: React.FC = () => {
         <div className="mt-8">
           <div className="space-y-2 w-full">
             <h1 className="text-2xl font-semibold">Web scraping</h1>
-            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">Google my business scraping tool</p>
+            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
+              Google my business scraping tool
+            </p>
           </div>
           <section className="bg-primary-green p-10 rounded-3xl mt-4 text-white">
             <h1 className="text-xl font-semibold">Search Terms</h1>
-            {fields.map((field) => (
+            {fields.map(field => (
               <div key={field.id} className="flex items-center gap-4 mt-5">
                 <span className="text-lg font-semibold">{field.id}.</span>
                 <input
@@ -202,10 +226,13 @@ const WebScraping: React.FC = () => {
                   className="h-12 bg-[#F2F2F2] rounded-xl text-primary-black px-5 w-full"
                   placeholder="Enter search term"
                   value={field.value}
-                  onChange={(e) => handleInputChange(field.id, e.target.value)}
+                  onChange={e => handleInputChange(field.id, e.target.value)}
                 />
                 {fields.length > 1 && (
-                  <button className="bg-[#F2F2F2] p-3 rounded-full grid place-content-center" onClick={() => removeField(field.id)}>
+                  <button
+                    className="bg-[#F2F2F2] p-3 rounded-full grid place-content-center"
+                    onClick={() => removeField(field.id)}
+                  >
                     <X className="text-[#FF0000]" />
                   </button>
                 )}
@@ -215,7 +242,10 @@ const WebScraping: React.FC = () => {
               <button className=" h-12 px-7 rounded-xl text-primary-green flex items-center gap-3 font-medium"></button>
               <div className="flex items-center gap-4 relative z-[20]">
                 <BulkDialog onBulkAdd={handleBulkAdd} />
-                <button className="bg-white h-12 px-8 rounded-xl text-primary-green flex items-center gap-3 font-medium" onClick={addField}>
+                <button
+                  className="bg-white h-12 px-8 rounded-xl text-primary-green flex items-center gap-3 font-medium"
+                  onClick={addField}
+                >
                   <Plus size={23} />
                   Add field
                 </button>
@@ -258,7 +288,8 @@ const WebScraping: React.FC = () => {
             className={clsx(
               "mx-auto mt-4 w-[160px] h-14 text-xl flex items-center justify-center bg-primary-green rounded-xl sheen text-white",
               isPending && "bg-opacity-90"
-            )}>
+            )}
+          >
             {isPending ? <Spinner /> : "Start"}
             <FaArrowCircleLeft className="rotate-180 text-white ml-4" />
           </button>
@@ -267,8 +298,11 @@ const WebScraping: React.FC = () => {
             <Motion
               transition={{ duration: 0.2 }}
               variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
-              classNames="rounded-3xl border overflow-hidden mt-5 bg-white">
-              <h1 className="text-2xl font-semibold my-4 text-center p-4">Scraped Places</h1>
+              classNames="rounded-3xl border overflow-hidden mt-5 bg-white"
+            >
+              <h1 className="text-2xl font-semibold my-4 text-center p-4">
+                Scraped Places
+              </h1>
               <Table>
                 <TableHeader>
                   <TableRow className="bg-[#0347370D]">
@@ -281,13 +315,19 @@ const WebScraping: React.FC = () => {
                 <TableBody>
                   {!isPending && currentResults.length < 1 ? (
                     <TableRow>
-                      <TableCell colSpan={4} className="text-lg text-center h-48">
+                      <TableCell
+                        colSpan={4}
+                        className="text-lg text-center h-48"
+                      >
                         <h1>No results found</h1>
                       </TableCell>
                     </TableRow>
                   ) : isPending ? (
                     <TableRow>
-                      <TableCell colSpan={4} className="text-lg text-center h-48">
+                      <TableCell
+                        colSpan={4}
+                        className="text-lg text-center h-48"
+                      >
                         <h1>Loading...</h1>
                       </TableCell>
                     </TableRow>
@@ -295,22 +335,40 @@ const WebScraping: React.FC = () => {
                     currentResults.map((place, index) => (
                       <TableRow key={index}>
                         <TableCell className="flex flex-col min-w-[400px]">
-                          <div className="text-base font-semibold">{place?.title || "—"}</div>
+                          <div className="text-base font-semibold">
+                            {place?.title || "—"}
+                          </div>
                           <div className="mt-1">{place?.address || "—"}</div>
                         </TableCell>
                         <TableCell className="min-w-[220px] max-w-[220px]">
-                          {place?.rating && <div>{renderRatingStars(place?.rating || 0)}</div>}
+                          {place?.rating && (
+                            <div>{renderRatingStars(place?.rating || 0)}</div>
+                          )}
                           <div className="flex flex-row justify-between gap-4 text-md mt-1">
-                            <h2 className="font-semibold">{place?.rating || "—"} </h2>
-                            <h2 className="text-sky-500 mr-20">{place?.ratingCount ? place.ratingCount.toLocaleString() + " Ratings" : "—"}</h2>
+                            <h2 className="font-semibold">
+                              {place?.rating || "—"}{" "}
+                            </h2>
+                            <h2 className="text-sky-500 mr-20">
+                              {place?.ratingCount
+                                ? place.ratingCount.toLocaleString() +
+                                  " Ratings"
+                                : "—"}
+                            </h2>
                           </div>
                         </TableCell>
                         <TableCell className="min-w-[200px]">
-                          <div className="text-[14px] flex whitespace-nowrap">{place?.phoneNumber || "—"}</div>
+                          <div className="text-[14px] flex whitespace-nowrap">
+                            {place?.phoneNumber || "—"}
+                          </div>
                         </TableCell>
                         <TableCell>
                           {place.website ? (
-                            <Link href={place?.website} target="_blank" rel="noopener noreferrer" className="underline text-blue-600">
+                            <Link
+                              href={place?.website}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="underline text-blue-600"
+                            >
                               {place.website}
                             </Link>
                           ) : (
@@ -329,13 +387,17 @@ const WebScraping: React.FC = () => {
                   className={clsx(
                     "mt-4 w-[160px] h-14 text-lg flex items-center justify-center bg-primary-green rounded-xl sheen text-white",
                     currentPageNumber === 1 && "cursor-not-allowed opacity-50"
-                  )}>
-                  <FaArrowCircleLeft className="-rotate-270 text-white text-lg mr-4" /> Previous
+                  )}
+                >
+                  <FaArrowCircleLeft className="-rotate-270 text-white text-lg mr-4" />{" "}
+                  Previous
                 </button>
                 <button
                   onClick={handleNextPage}
-                  className=" mt-4 w-[160px] h-14 text-lg flex items-center justify-center bg-primary-green rounded-xl sheen text-white">
-                  Next <FaArrowCircleLeft className="rotate-180 text-white text-lg ml-4" />
+                  className=" mt-4 w-[160px] h-14 text-lg flex items-center justify-center bg-primary-green rounded-xl sheen text-white"
+                >
+                  Next{" "}
+                  <FaArrowCircleLeft className="rotate-180 text-white text-lg ml-4" />
                 </button>
               </div>
             </Motion>

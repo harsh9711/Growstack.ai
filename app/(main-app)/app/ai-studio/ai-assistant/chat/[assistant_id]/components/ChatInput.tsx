@@ -8,7 +8,7 @@ import { API_URL } from "@/lib/api";
 import useSpeechRecognition from "../../../../hooks/UseSpeechRecognition";
 import Microphone from "../../../../ai-chat/components/Microphone";
 import { getCookie } from "cookies-next";
-import EventSource from 'eventsource';
+import EventSource from "eventsource";
 import { parseJsonString } from "@/lib/utils";
 
 interface ChatInputProps {
@@ -19,23 +19,30 @@ interface ChatInputProps {
   selectedModel: string;
 }
 
-const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateMessage, selectedLanguage, selectedModel }) => {
+const ChatInput: React.FC<ChatInputProps> = ({
+  assistant_id,
+  addMessage,
+  updateMessage,
+  selectedLanguage,
+  selectedModel,
+}) => {
   const [input, setInput] = useState("");
   const [open, setOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isAnimating, setIsAnimating] = useState(false);
-  const { startRecognition, stopRecognition, textToSpeech } = useSpeechRecognition(
-    selectedLanguage,
-    open,
-    (transcript: string) => {
-      setInput(transcript);
-      handleSend(transcript, true);
-    },
-    () => {
-      setOpen(false);
-      setIsAnimating(false);
-    }
-  );
+  const { startRecognition, stopRecognition, textToSpeech } =
+    useSpeechRecognition(
+      selectedLanguage,
+      open,
+      (transcript: string) => {
+        setInput(transcript);
+        handleSend(transcript, true);
+      },
+      () => {
+        setOpen(false);
+        setIsAnimating(false);
+      }
+    );
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -49,18 +56,24 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateM
     }
   }, [input]);
 
-
-  const streamResponse = async (chatId: string, prompt: string, fromMic: boolean) => {
+  const streamResponse = async (
+    chatId: string,
+    prompt: string,
+    fromMic: boolean
+  ) => {
     try {
       const token = getCookie("token");
-      const eventSource = new EventSource(`${API_URL}/ai/api/v1/assistant/chat/stream/${chatId}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-        withCredentials: true,
-      });
+      const eventSource = new EventSource(
+        `${API_URL}/ai/api/v1/assistant/chat/stream/${chatId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        }
+      );
 
-      let accumulatedResponse = '';
+      let accumulatedResponse = "";
 
       eventSource.onmessage = (event: MessageEvent) => {
         const chunk = event.data;
@@ -71,23 +84,22 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateM
       };
 
       eventSource.onerror = (error: MessageEvent) => {
-        console.error('EventSource failed:', error);
+        console.error("EventSource failed:", error);
         if (fromMic) {
           textToSpeech(accumulatedResponse);
         }
         eventSource.close();
       };
 
-      eventSource.addEventListener('end', (event: MessageEvent) => {
+      eventSource.addEventListener("end", (event: MessageEvent) => {
         if (fromMic) {
           textToSpeech(accumulatedResponse);
         }
         eventSource.close();
       });
-
     } catch (error) {
-      console.error('Error setting up EventSource:', error);
-      toast.error('Error setting up stream');
+      console.error("Error setting up EventSource:", error);
+      toast.error("Error setting up stream");
     }
   };
 
@@ -102,13 +114,16 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateM
     addMessage(prompt, "");
 
     try {
-      const response = await instance.post(`/ai/api/v1/assistant/chat/${assistant_id}`, {
-        user_prompt: prompt,
-        language: selectedLanguage,
-        tone: "friendly",
-        writing_style: "poetic",
-        model: selectedModel
-      });
+      const response = await instance.post(
+        `/ai/api/v1/assistant/chat/${assistant_id}`,
+        {
+          user_prompt: prompt,
+          language: selectedLanguage,
+          tone: "friendly",
+          writing_style: "poetic",
+          model: selectedModel,
+        }
+      );
 
       const chatId = response.data.data.chat_id;
       await streamResponse(chatId, prompt, fromMic);
@@ -141,11 +156,18 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateM
 
   return (
     <div className="flex p-2 border gap-2 rounded-xl items-end">
-      <Image src="/logo/growstack-mini.png" alt="" width={25} height={25} draggable={false} className="select-none ml-2 mb-3" />
+      <Image
+        src="/logo/growstack-mini.png"
+        alt=""
+        width={25}
+        height={25}
+        draggable={false}
+        className="select-none ml-2 mb-3"
+      />
       <textarea
         ref={textareaRef}
         value={input}
-        onChange={(e) => setInput(e.target.value)}
+        onChange={e => setInput(e.target.value)}
         onKeyDown={handleKeyDown}
         rows={1}
         className="w-full flex-1 p-2 bg-transparent resize-none overflow-hidden min-h-11 max-h-[300px]"
@@ -153,13 +175,19 @@ const ChatInput: React.FC<ChatInputProps> = ({ assistant_id, addMessage, updateM
       />
       <button
         // onClick={startRecognition}
-        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
+        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
+      >
         {/* <MicrophoneIcon /> */}
-        <Microphone open={open} isAnimating={isAnimating} handleOpenChange={handleOpenChange} />
+        <Microphone
+          open={open}
+          isAnimating={isAnimating}
+          handleOpenChange={handleOpenChange}
+        />
       </button>
       <button
         onClick={() => handleSend()}
-        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
+        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
+      >
         <SendIcon2 />
       </button>
     </div>

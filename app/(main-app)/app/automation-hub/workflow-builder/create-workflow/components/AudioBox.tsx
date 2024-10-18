@@ -28,7 +28,7 @@ const CreateVideoDialog = ({
 
   useEffect(() => {
     setFilteredVoices(
-      voices.filter((voice) =>
+      voices.filter(voice =>
         voice.name.toLowerCase().includes(searchQuery.toLowerCase())
       )
     );
@@ -53,7 +53,7 @@ const CreateVideoDialog = ({
   }, []);
 
   const handleVoiceSelect = (voiceId: string) => {
-    const selectedVoice = voices.find((voice) => voice.id === voiceId);
+    const selectedVoice = voices.find(voice => voice.id === voiceId);
     if (selectedVoice) {
       onVoiceSelect(voiceId);
       toast.success(`Selected voice: ${selectedVoice.name}`);
@@ -84,7 +84,7 @@ const CreateVideoDialog = ({
             className="absolute top-full left-0 w-full border border-[#DEDEDE] bg-[#F5F5F5] rounded-xl mt-2"
           >
             {filteredVoices.length > 0 ? (
-              filteredVoices.map((voice) => (
+              filteredVoices.map(voice => (
                 <div
                   key={voice.id}
                   className={`p-2 flex justify-between items-center cursor-pointer hover:bg-[#EDEDED] ${
@@ -95,7 +95,7 @@ const CreateVideoDialog = ({
                   <span>{voice.name}</span>
                   <button
                     type="button"
-                    onClick={(e) => {
+                    onClick={e => {
                       e.stopPropagation();
                       handlePlaySample(voice.sampleUrl);
                     }}

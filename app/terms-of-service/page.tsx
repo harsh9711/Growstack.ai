@@ -37,9 +37,7 @@ const Tnc: React.FC = () => {
             content={tnc.content}
             linksSection={tnc.links_section}
             collectionOfInformation={tnc.collection_of_information}
-            howYourInformationMayBeUsed={
-              tnc.how_your_information_may_be_used
-            }
+            howYourInformationMayBeUsed={tnc.how_your_information_may_be_used}
           />
         </div>
         <Image

@@ -31,7 +31,7 @@ const SearchFiles = ({
   setUploadedSerachFiles,
 }: SearchFilesProps) => {
   const [isAPILoading, setIsAPILoading] = useState(false);
-  
+
   const handleSearchFileUpload = async (file: File) => {
     const formData = new FormData();
     formData.append("file", file);
@@ -39,8 +39,14 @@ const SearchFiles = ({
     try {
       const {
         data: { data },
-      } = await instance.post(`${API_URL}/ai/api/v1/customgpt/upload`, formData);
-      setUploadedSerachFiles([...uploadedSerachFiles, { ...file, name: data.filename, id: data.id }]);
+      } = await instance.post(
+        `${API_URL}/ai/api/v1/customgpt/upload`,
+        formData
+      );
+      setUploadedSerachFiles([
+        ...uploadedSerachFiles,
+        { ...file, name: data.filename, id: data.id },
+      ]);
       setIsAPILoading(false);
       toast.success("File uploaded successfully");
     } catch (error) {
@@ -52,7 +58,7 @@ const SearchFiles = ({
 
   const handleRemoveUploadedFile = (id: any) => {
     try {
-      const updatedFiles = uploadedSerachFiles.filter((file) => file.id !== id);
+      const updatedFiles = uploadedSerachFiles.filter(file => file.id !== id);
       setUploadedSerachFiles(updatedFiles);
       toast.success("File removed successfully");
     } catch (error) {
@@ -67,9 +73,12 @@ const SearchFiles = ({
         data: {
           data: { vector_store_id },
         },
-      } = await instance.post(`${API_URL}/ai/api/v1/customgpt/batch-vector-store`, {
-        file_ids: uploadedSerachFiles.map((file) => file.id),
-      });
+      } = await instance.post(
+        `${API_URL}/ai/api/v1/customgpt/batch-vector-store`,
+        {
+          file_ids: uploadedSerachFiles.map(file => file.id),
+        }
+      );
       setVectorStoreId(vector_store_id);
       toast.success("Files attached successfully");
     } catch (error) {
@@ -82,7 +91,10 @@ const SearchFiles = ({
     <>
       <div className="flex flex-row justify-between gap-x-20">
         <div className="mb-4 gap-2 flex items-center">
-          <Switch checked={isToggleCheckedForSearch} onCheckedChange={setIsToggleCheckedForSearch} />
+          <Switch
+            checked={isToggleCheckedForSearch}
+            onCheckedChange={setIsToggleCheckedForSearch}
+          />
           <span className="text-md font-medium flex flex-row gap-x-2">
             File Search
             <TooltipProvider>
@@ -93,7 +105,7 @@ const SearchFiles = ({
                     className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
                   />
                 </TooltipTrigger>
-                <TooltipContent className="bg-white" >
+                <TooltipContent className="bg-white">
                   <p>upload pdf file.</p>
                 </TooltipContent>
               </Tooltip>
@@ -118,10 +130,16 @@ const SearchFiles = ({
           <h2 className="text-md font-semibold">Uploaded Files</h2>
           <div className="grid grid-cols-2 gap-x-4 gap-y-2">
             {uploadedSerachFiles.map((file, index) => (
-              <div key={index} className="flex items-center bg-gray-100 p-2 rounded-md">
+              <div
+                key={index}
+                className="flex items-center bg-gray-100 p-2 rounded-md"
+              >
                 <File size={24} />
                 <span className="text-sm truncate ml-2">{file.name}</span>
-                <button className="ml-auto focus:outline-none" onClick={() => handleRemoveUploadedFile(file.id)}>
+                <button
+                  className="ml-auto focus:outline-none"
+                  onClick={() => handleRemoveUploadedFile(file.id)}
+                >
                   <Trash size={20} />
                 </button>
               </div>

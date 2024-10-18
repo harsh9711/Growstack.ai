@@ -1,6 +1,12 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
@@ -12,7 +18,9 @@ export default function CreateReputationReport() {
       <div className="flex justify-between items-center mt-8">
         <div className="space-y-2">
           <h1 className="text-2xl font-semibold">Reputation manager</h1>
-          <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">Add report</p>
+          <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
+            Add report
+          </p>
         </div>
         <div className="">
           <Link href="/app/analyse/reputation-manager">
@@ -28,7 +36,8 @@ export default function CreateReputationReport() {
           <div className="grid grid-cols-2 gap-y-8 gap-x-10 border-t border-[#EBEBEB] pb-4 pt-8">
             <div className="space-y-2">
               <label className="font-medium">
-                Which location is this report for? <span className="text-[#F00]">*</span>
+                Which location is this report for?{" "}
+                <span className="text-[#F00]">*</span>
               </label>
               <Select>
                 <SelectTrigger className="w-full">
@@ -49,13 +58,17 @@ export default function CreateReputationReport() {
             </div>
             <div className="flex items-center space-x-2">
               <Checkbox id="remember-me" />
-              <label htmlFor="remember-me" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+              <label
+                htmlFor="remember-me"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
                 Enable a white-label version of this report?
               </label>
             </div>
             <div className="space-y-2">
               <label className="font-medium">
-                Choose a white-label profile <span className="text-[#F00]">*</span>
+                Choose a white-label profile{" "}
+                <span className="text-[#F00]">*</span>
               </label>
               <Select>
                 <SelectTrigger className="w-full">
@@ -70,7 +83,8 @@ export default function CreateReputationReport() {
             </div>
             <div className="space-y-2">
               <label className="font-medium">
-                How often do you want this report to run? <span className="text-[#F00]">*</span>
+                How often do you want this report to run?{" "}
+                <span className="text-[#F00]">*</span>
               </label>
               <Select>
                 <SelectTrigger className="w-full">
@@ -193,7 +207,9 @@ export default function CreateReputationReport() {
                 Phone number <span className="text-[#F00]">*</span>
               </label>
               <Input type="text" placeholder="Type your Phone number" />
-              <p className="text-primary-black text-opacity-70">Use correct format -e.g, 888-645-0838 oir 02 7010 1123</p>
+              <p className="text-primary-black text-opacity-70">
+                Use correct format -e.g, 888-645-0838 oir 02 7010 1123
+              </p>
             </div>
             <div className="space-y-2">
               <label className="font-medium">
@@ -220,7 +236,9 @@ export default function CreateReputationReport() {
           <div className="w-full">
             <h1 className="text-2xl font-semibold">Report connections</h1>
             <p className="text-primary-black text-opacity-50 leading-relaxed mt-2">
-              Connect your business profile listing and Facebook page to get daily review updates and to respond to those reviews from within your report.
+              Connect your business profile listing and Facebook page to get
+              daily review updates and to respond to those reviews from within
+              your report.
             </p>
           </div>
           <button className="py-4 px-6 bg-primary-green sheen rounded-xl text-white mt-6 flex gap-3">
@@ -231,7 +249,8 @@ export default function CreateReputationReport() {
           <div className="w-full">
             <h1 className="text-2xl font-semibold">Review sources</h1>
             <p className="mt-3 text-[#6A37E3] bg-[#6A37E3]/10 leading-relaxed flex gap-2 py-3 px-4 rounded-lg">
-              <PiWarningFill size={20} /> Please enter business details above to allow us to find relevant review sources.
+              <PiWarningFill size={20} /> Please enter business details above to
+              allow us to find relevant review sources.
             </p>
           </div>
         </div>
@@ -239,10 +258,14 @@ export default function CreateReputationReport() {
           <div className="w-full">
             <h1 className="text-2xl font-semibold">Email alerts</h1>
             <p className="text-primary-black text-opacity-50 leading-relaxed mt-2">
-              We can send you an email alert when your report is completed. We can also send you an alert with details of any new reviews you have recieved.{" "}
+              We can send you an email alert when your report is completed. We
+              can also send you an alert with details of any new reviews you
+              have recieved.{" "}
             </p>
             <div className="space-y-2 mt-8">
-              <label className="font-medium">Receive an email when this report is completed?</label>
+              <label className="font-medium">
+                Receive an email when this report is completed?
+              </label>
               <Select>
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select" />
@@ -255,16 +278,23 @@ export default function CreateReputationReport() {
             </div>
             <div className="space-y-2 mt-8">
               <label className="font-medium">
-                Enter your email address(es) <span className="text-[#F00]">*</span>
+                Enter your email address(es){" "}
+                <span className="text-[#F00]">*</span>
               </label>
               <textarea className="bg-[#F2F2F2] p-4 h-[300px] block resize-none w-full rounded-2xl"></textarea>
-              <p className="text-primary-black text-opacity-70">Enter 1 email address per line: max 5 email addresses</p>
+              <p className="text-primary-black text-opacity-70">
+                Enter 1 email address per line: max 5 email addresses
+              </p>
             </div>
           </div>
         </div>
         <div className="flex justify-end gap-4">
-          <button className="py-3.5 px-6 bg-white border border-[#CF0000] text-[#CF0000] hover:bg-[#cf000009] rounded-xl mt-6">Cancel</button>
-          <button className="py-3.5 px-6 bg-primary-green sheen rounded-xl text-white mt-6">Run report</button>
+          <button className="py-3.5 px-6 bg-white border border-[#CF0000] text-[#CF0000] hover:bg-[#cf000009] rounded-xl mt-6">
+            Cancel
+          </button>
+          <button className="py-3.5 px-6 bg-primary-green sheen rounded-xl text-white mt-6">
+            Run report
+          </button>
         </div>
       </div>
     </main>

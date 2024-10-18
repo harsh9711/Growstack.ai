@@ -1,0 +1,82 @@
+{
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "plugins": [
+    "@typescript-eslint",
+    "prettier"
+  ],
+  "rules": {
+    "prefer-const": "error",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      },
+      {
+        "usePrettierrc": true
+      }
+    ],
+    "react/no-unescaped-entities": 0,
+    "@typescript-eslint/no-unused-vars": "warn",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/consistent-type-imports": "off",
+    "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/strict-boolean-expressions": "off",
+    "@typescript-eslint/no-invalid-void-type": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/consistent-type-assertions": "off"
+  },
+  "overrides": [
+    {
+      "files": [
+        "*.ts",
+        "*.tsx",
+        ".js",
+        ".jsx"
+      ],
+      "rules": {
+        // Disable the "no-unused-vars" rule for interfaces
+        "@typescript-eslint/no-unused-vars": [
+          "warn",
+          {
+            "varsIgnorePattern": "^_",
+            "argsIgnorePattern": "^_"
+          }
+        ],
+        "import/extensions": "off",
+        "import/no-unresolved": "off",
+        "import/no-anonymous-default-export": "off",
+        "no-unused-vars": "warn",
+        "no-unused-expressions": "off",
+        "no-use-before-define": "warn",
+        "no-param-reassign": "off",
+        "no-shadow": "off",
+        "react/jsx-props-no-spreading": "off",
+        "react/function-component-definition": "off",
+        "react/destructuring-assignment": "off",
+        "jsx-a11y/click-events-have-key-events": "off",
+        "jsx-a11y/no-static-element-interactions": "off",
+        "react/no-unused-prop-types": "warn",
+        "react/jsx-key": "warn",
+        "camelcase": "off",
+        "no-undef": "warn",
+        "react/no-array-index-key": "off",
+        "react-hooks/exhaustive-deps": "warn",
+        "react-hooks/rules-of-hooks": "warn",
+        "no-unsafe-optional-chaining": "warn",
+        "consistent-return": "warn",
+        "import/order": "off",
+        "react/jsx-curly-brace-presence": "warn",
+        "react/require-default-props": "off",
+        "react/prop-types": "off",
+        "no-unneeded-ternary": "off",
+        "react/jsx-boolean-value": "warn",
+        "jsx-a11y/label-has-associated-control": "off"
+      }
+    }
+  ]
+}

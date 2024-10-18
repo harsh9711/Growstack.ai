@@ -36,13 +36,16 @@ const HeroSection = () => {
               Leverage real-time analytics, automated workflows, and seamless
               communication to drive better business outcomes.
             </p>
-            <ul  data-aos="fade-right"
-              data-aos-duration="1500" className="straight-line-list pt-4 text-[12px]  text-start items-start flex flex-col sm:text-[18px] text-black">
+            <ul
+              data-aos="fade-right"
+              data-aos-duration="1500"
+              className="straight-line-list pt-4 text-[12px]  text-start items-start flex flex-col sm:text-[18px] text-black"
+            >
               <li>Instant ideas to jumpstart your writing.</li>
               <li>Custom outlines to fit your style and tone.</li>
               <li>AI images to enhance your content seamlessly.</li>
               <li>Multilingual support to reach global audiences.</li>
-            </ul>   
+            </ul>
 
             <div className="flex flex-col gap-20 mt-10">
               <div

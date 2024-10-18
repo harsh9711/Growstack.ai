@@ -36,7 +36,9 @@ const ShortTextArea: React.FC<TextAreaProps> = ({
   suggestionOptions,
   setSuggestionOptions,
 }) => {
-  const [description, setDescription] = useState<string>(option.variable_value || "");
+  const [description, setDescription] = useState<string>(
+    option.variable_value || ""
+  );
   const [selectedVoice, setSelectedVoice] = useState<string | null>(null);
   const [isDropdownVisible, setDropdownVisible] = useState(false);
 
@@ -48,17 +50,19 @@ const ShortTextArea: React.FC<TextAreaProps> = ({
       ...prevState,
       preset_json: {
         ...prevState.preset_json,
-        body: prevState.preset_json.body.map(
-          (input: InputType, i: number) => {
-            if (i === index && (input.variable_type === "TEXT_AREA" || input.variable_type === "SHORT_TEXT")) {
-              return {
-                ...input,
-                variable_value: description,
-              };
-            }
-            return input;
+        body: prevState.preset_json.body.map((input: InputType, i: number) => {
+          if (
+            i === index &&
+            (input.variable_type === "TEXT_AREA" ||
+              input.variable_type === "SHORT_TEXT")
+          ) {
+            return {
+              ...input,
+              variable_value: description,
+            };
           }
-        ),
+          return input;
+        }),
       },
     }));
   }, [description]);
@@ -72,8 +76,8 @@ const ShortTextArea: React.FC<TextAreaProps> = ({
         !textareaRef.current.contains(event.target as Node)
       ) {
         setDropdownVisible(false);
-        setSuggestionOptions((prevState : any) =>
-          prevState.map((option : any) => ({ ...option, isExpanded: false }))
+        setSuggestionOptions((prevState: any) =>
+          prevState.map((option: any) => ({ ...option, isExpanded: false }))
         );
       }
     };
@@ -97,11 +101,12 @@ const ShortTextArea: React.FC<TextAreaProps> = ({
         `{${subOption.name}}}` +
         description.substring(endPos);
       setDescription(newDescription);
-  
+
       const placeholderIndex = newDescription.indexOf(`{${subOption.name}}`);
-      const totalPlaceholders = newDescription.split('{').length - 1;
-      const newCursorPos = placeholderIndex + subOption.name.length + 2 * (totalPlaceholders - 1);
-  
+      const totalPlaceholders = newDescription.split("{").length - 1;
+      const newCursorPos =
+        placeholderIndex + subOption.name.length + 2 * (totalPlaceholders - 1);
+
       textarea.setSelectionRange(newCursorPos, newCursorPos);
       textarea.focus();
     }
@@ -172,7 +177,7 @@ const ShortTextArea: React.FC<TextAreaProps> = ({
         id="description"
         name="description"
         value={description}
-        onChange={(e) => setDescription(e.target.value)}
+        onChange={e => setDescription(e.target.value)}
         placeholder="Please write here"
         className="h-[50px] w-full bg-[#F5F5F5] rounded-xl block resize-none p-4 text-[15px]"
       ></textarea>

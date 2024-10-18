@@ -28,7 +28,7 @@ const Page = () => {
     workflow_id: "",
   });
   const [tabs, setTabs] = useState(["Run", "History", "Schedules"]);
-  const [runnerId, setRunnerId] = useState("")
+  const [runnerId, setRunnerId] = useState("");
 
   useEffect(() => {
     const tab = tabQueryParam ? Number(tabQueryParam) : 0;
@@ -46,8 +46,8 @@ const Page = () => {
     }
   }, [searchParams]);
   const handleTabChange = (RunnerId: any) => {
-    setRunnerId(RunnerId)
-    handleTabClick(1)
+    setRunnerId(RunnerId);
+    handleTabClick(1);
   };
   useEffect(() => {
     if (!workFlowData.social_media_requirement) {
@@ -64,8 +64,7 @@ const Page = () => {
     try {
       const response = await instance.get(`${API_URL}/workflow/api/v1/${id}`);
       setWorkFlowData(response.data.data);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
 
   const handleTabClick = (index: number) => {
@@ -77,13 +76,23 @@ const Page = () => {
   const renderContent = (selectedTabIndex: number) => {
     switch (selectedTabIndex) {
       case 0:
-        return <Run onTabChange={(runnerId: any) => handleTabChange(runnerId)} workflowId={workflowId} />;
+        return (
+          <Run
+            onTabChange={(runnerId: any) => handleTabChange(runnerId)}
+            workflowId={workflowId}
+          />
+        );
       case 1:
         return <History runnerId={runnerId} workflowId={workflowId} />;
       case 2:
         return <Schedules workflowId={workflowId} />;
       default:
-        return <Run onTabChange={(runnerId: any) => handleTabChange(runnerId)} workflowId={workflowId} />;
+        return (
+          <Run
+            onTabChange={(runnerId: any) => handleTabChange(runnerId)}
+            workflowId={workflowId}
+          />
+        );
     }
   };
 
@@ -102,9 +111,13 @@ const Page = () => {
               {tabs.map((tab, index) => (
                 <div
                   key={index}
-                  className={`w-full h-[40px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${selectedTabIndex === index ? "!text-primary-green" : "!text-primary-grey"
-                    }`}
-                  onClick={() => handleTabClick(index)}>
+                  className={`w-full h-[40px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
+                    selectedTabIndex === index
+                      ? "!text-primary-green"
+                      : "!text-primary-grey"
+                  }`}
+                  onClick={() => handleTabClick(index)}
+                >
                   {tab}
                 </div>
               ))}
@@ -113,7 +126,8 @@ const Page = () => {
                 style={{
                   left: `calc(${tabDistanceFromLeft}%)`,
                   width: `${100 / tabs.length}%`,
-                }}></div>
+                }}
+              ></div>
             </div>
           </div>
         </div>

@@ -49,8 +49,9 @@ const page = () => {
         <SecondBox />
       </section>
       <section className="pt-10 sm:px-0 px-6  sm:pt-32">
-        <SixCard/>
-      </section> <section className="items-center sm:px-0 px-6   justify-center flex flex-col  sm:py-20  overflow-hidden ">
+        <SixCard />
+      </section>{" "}
+      <section className="items-center sm:px-0 px-6   justify-center flex flex-col  sm:py-20  overflow-hidden ">
         <div className="items-center justify-center flex flex-col gap-y-4  overflow-hidden ">
           <Image
             src="/solutions/design.svg"
@@ -61,7 +62,8 @@ const page = () => {
           />
         </div>
         <Faq />
-      </section>      <Footer />
+      </section>{" "}
+      <Footer />
     </main>
   );
 };

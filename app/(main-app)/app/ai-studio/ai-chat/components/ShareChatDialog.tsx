@@ -48,18 +48,18 @@ export default function ShareChatDialog({
   );
   const [loading, setLoading] = useState<boolean>(false);
 
-  const filteredItems = sidebarItems.filter((item) =>
+  const filteredItems = sidebarItems.filter(item =>
     item.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleItemClick = (id: string) => {
-    setActiveIds((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+    setActiveIds(prev =>
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
     );
   };
 
   const handleSelectAll = () => {
-    setActiveIds(filteredItems.map((item) => item._id));
+    setActiveIds(filteredItems.map(item => item._id));
   };
 
   const handleSelectLatest = () => {
@@ -91,11 +91,11 @@ export default function ShareChatDialog({
       try {
         setLoading(true);
         const responses = await Promise.all(
-          activeIds.map((id) =>
+          activeIds.map(id =>
             instance.get(`${API_URL}/ai/api/v1/conversation/${id}`)
           )
         );
-        const data = responses.map((response) => {
+        const data = responses.map(response => {
           const { title, chats } = response.data.data;
           const conversationData = chats
             .map((chat: any) => {
@@ -201,7 +201,7 @@ export default function ShareChatDialog({
             </div>
           </div>
           <div className="border border-[#EBEBEB] rounded-xl max-h-[150px] overflow-auto">
-            {filteredItems.map((item) => (
+            {filteredItems.map(item => (
               <div
                 className={`border-b p-3 last:border-b-0 cursor-pointer ${
                   activeIds.includes(item._id)
@@ -228,7 +228,6 @@ export default function ShareChatDialog({
     </Dialog>
   );
 }
-
 
 const outputType = [
   {

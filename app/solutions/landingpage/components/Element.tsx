@@ -33,7 +33,7 @@ export const InteractiveElement = () => {
     <>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="view_feature_area">
-          {(provided) => (
+          {provided => (
             <div>
               {provided.placeholder}
               <div className="absolute top-0 left-0 min-h-[800px] w-full justify-center">

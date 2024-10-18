@@ -4,7 +4,8 @@ export const featuresData = [
     bgColor: "bg-[#DCEFFF]/70",
     title: "Say Goodbye to Writer's Block",
     number: "01",
-    description: "Unleash Your Creativity with our Ready-to-Use Templates for Effortless Content Creation Tailored to Your Brand!",
+    description:
+      "Unleash Your Creativity with our Ready-to-Use Templates for Effortless Content Creation Tailored to Your Brand!",
     listItems: [
       "Ad Creation",
       "Content Generation",
@@ -18,7 +19,8 @@ export const featuresData = [
     bgColor: "bg-[#F9DE6F]/30",
     title: "Transform Text into Captivating Videos and Perfect Product Photos",
     number: "02",
-    description: "Effortlessly convert text into stunning videos and create flawless product photos using advanced AI technology",
+    description:
+      "Effortlessly convert text into stunning videos and create flawless product photos using advanced AI technology",
     listItems: [
       "Ad Creation",
       "Content Generation",
@@ -32,7 +34,8 @@ export const featuresData = [
     bgColor: "bg-[#9AEEE7]/30",
     title: "Empower Your Success with Specialized AI  Assistants",
     number: "03",
-    description: "Experience the future of personalized support with AI assistants, expertly designed to cater to your specific needs and drive your success",
+    description:
+      "Experience the future of personalized support with AI assistants, expertly designed to cater to your specific needs and drive your success",
     listItems: [
       "Real-Time Data Access",
       "Expert Domain Conversations",
@@ -46,7 +49,8 @@ export const featuresData = [
     bgColor: "bg-[#FAE8F1]/30",
     title: "Build Stunning Landing Pages with AI",
     number: "04",
-    description: "Effortlessly create beautiful and high-converting landing pages tailored to your brand using our AI-powered builder.",
+    description:
+      "Effortlessly create beautiful and high-converting landing pages tailored to your brand using our AI-powered builder.",
     listItems: [
       "Intuitive Drag-and-Drop Interface",
       "SEO Optimization",
@@ -60,7 +64,8 @@ export const featuresData = [
     bgColor: "bg-[#FFEDE6]/30",
     title: "Craft Perfect Emails with AI Precision",
     number: "05",
-    description: "Design and send beautiful, personalized emails effortlessly using our AI-powered builder.",
+    description:
+      "Design and send beautiful, personalized emails effortlessly using our AI-powered builder.",
     listItems: [
       "Intuitive Drag-and-Drop Interface",
       "Customizable Templates",
@@ -74,7 +79,8 @@ export const featuresData = [
     bgColor: "bg-[#E2F0CB]/30",
     title: "Streamline Your Social Media Management",
     number: "06",
-    description: "The Social Planner Hub streamlines social media management with a Conversation Hub, Analytics, and Scheduler for effective planning and execution.",
+    description:
+      "The Social Planner Hub streamlines social media management with a Conversation Hub, Analytics, and Scheduler for effective planning and execution.",
     listItems: [
       "Social media conversation hub",
       "Scheduler page plan and schedule social media posts",

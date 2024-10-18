@@ -35,16 +35,26 @@ type ConversationPayLoad = {
   icon?: string;
 };
 
-const CreateNewGPTPage: React.FC<PageProps> = ({ params: { assistant_id } }: PageProps) => {
+const CreateNewGPTPage: React.FC<PageProps> = ({
+  params: { assistant_id },
+}: PageProps) => {
   const [isAPICalled, setIsAPICalled] = useState<boolean>(false);
   const router = useRouter();
 
-  const [conversationStarters, setConversationStarters] = useState<string[]>([""]);
-  const [isToggleCheckedForSearch, setIsToggleCheckedForSearch] = useState(false);
-  const [isToggleCheckedForInterpreter, setIsToggleCheckedForInterpreter] = useState(false);
+  const [conversationStarters, setConversationStarters] = useState<string[]>([
+    "",
+  ]);
+  const [isToggleCheckedForSearch, setIsToggleCheckedForSearch] =
+    useState(false);
+  const [isToggleCheckedForInterpreter, setIsToggleCheckedForInterpreter] =
+    useState(false);
   const [vectorStoreId, setVectorStoreId] = useState<string | null>(null);
-  const [uploadedIntepreterFiles, setUploadedIntepreterFiles] = useState<CustomFile[]>([]);
-  const [uploadedSerachFiles, setUploadedSerachFiles] = useState<CustomFile[]>([]);
+  const [uploadedIntepreterFiles, setUploadedIntepreterFiles] = useState<
+    CustomFile[]
+  >([]);
+  const [uploadedSerachFiles, setUploadedSerachFiles] = useState<CustomFile[]>(
+    []
+  );
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [capabilities, setCapabilities] = useState<{
     IMAGE: boolean;
@@ -76,13 +86,13 @@ const CreateNewGPTPage: React.FC<PageProps> = ({ params: { assistant_id } }: Pag
         return;
       }
       setIsAPICalled(true);
-      let payload: ConversationPayLoad = {
+      const payload: ConversationPayLoad = {
         name: formData.name,
         description: formData.description,
         instruction: formData.instructions,
         icon: iconImage,
       };
-      let tools = [],
+      const tools = [],
         tool_resources: ToolResources = {},
         cap = [];
       if (isToggleCheckedForSearch) {
@@ -95,7 +105,7 @@ const CreateNewGPTPage: React.FC<PageProps> = ({ params: { assistant_id } }: Pag
         tools.push({ type: "code_interpreter" });
         if (uploadedIntepreterFiles.length > 0) {
           tool_resources.code_interpreter = {
-            file_ids: uploadedIntepreterFiles.map((file) => file.id ?? ""),
+            file_ids: uploadedIntepreterFiles.map(file => file.id ?? ""),
           };
         }
       }
@@ -105,8 +115,13 @@ const CreateNewGPTPage: React.FC<PageProps> = ({ params: { assistant_id } }: Pag
       if (Object.keys(tool_resources).length) {
         payload.tool_resources = tool_resources;
       }
-      if (conversationStarters.length > 1 || (conversationStarters.length === 1 && conversationStarters[0] !== "")) {
-        payload.conversation_starter = conversationStarters.filter((starter) => starter !== "");
+      if (
+        conversationStarters.length > 1 ||
+        (conversationStarters.length === 1 && conversationStarters[0] !== "")
+      ) {
+        payload.conversation_starter = conversationStarters.filter(
+          starter => starter !== ""
+        );
       }
       if (capabilities.IMAGE || capabilities.WEB_BROWSING) {
         if (capabilities.IMAGE) {
@@ -128,7 +143,9 @@ const CreateNewGPTPage: React.FC<PageProps> = ({ params: { assistant_id } }: Pag
       });
       setIsAPICalled(false);
       toast.success("Conversation created successfully");
-      router.push(`/app/ai-studio/custom-gpts/gpt/?custom_gpt_id=${custom_gpt_id}`);
+      router.push(
+        `/app/ai-studio/custom-gpts/gpt/?custom_gpt_id=${custom_gpt_id}`
+      );
     } catch (error: any) {
       toast.error("Failed to create conversation");
       console.error(error);
@@ -139,7 +156,11 @@ const CreateNewGPTPage: React.FC<PageProps> = ({ params: { assistant_id } }: Pag
   return (
     <div className="flex-1 flex flex-col h-full w-full">
       <div className="flex flex-col h-full !bg-gray-100 shadow-box mt-8 border">
-        <Topbar handleCreateConversation={handleCreateConversation} isAPICalled={isAPICalled} from="CREATE" />
+        <Topbar
+          handleCreateConversation={handleCreateConversation}
+          isAPICalled={isAPICalled}
+          from="CREATE"
+        />
         <div className="h-full">
           <ConfigureGPTSection
             conversationStarters={conversationStarters}

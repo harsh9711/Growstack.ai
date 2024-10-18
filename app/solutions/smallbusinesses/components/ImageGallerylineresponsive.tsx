@@ -3,7 +3,7 @@ import Image from "next/image";
 import "aos/dist/aos.css";
 import Aos from "aos";
 import "../../midmarketenterprise/components/grid.css";
-import "../../../../styles/myanimation.css"
+import "../../../../styles/myanimation.css";
 const ImageGalleryLineB = () => {
   type ImageData = {
     src: string;
@@ -127,7 +127,7 @@ const ImageGalleryLineB = () => {
   };
 
   const handleRelatedImageClick = (relatedImageId: number) => {
-    const newImage = images.find((img) => img.id === relatedImageId);
+    const newImage = images.find(img => img.id === relatedImageId);
     if (newImage) {
       setSelectedImage(newImage);
       setRelatedImages(newImage.relatedImages);
@@ -139,11 +139,11 @@ const ImageGalleryLineB = () => {
   useEffect(() => {
     if (timerActive && selectedImage) {
       const timer = setTimeout(() => {
-        setCurrentRelatedIndex((prevIndex) => {
+        setCurrentRelatedIndex(prevIndex => {
           const nextIndex =
             (prevIndex + 1) % selectedImage.relatedImages.length;
           if (nextIndex === 0) {
-            setImagesShownCount((prevCount) => prevCount + 1); // Increment the count
+            setImagesShownCount(prevCount => prevCount + 1); // Increment the count
             if (imagesShownCount >= 2) {
               // Stop after showing 3 images (initial + 2 more)
               setTimerActive(false);
@@ -317,7 +317,7 @@ const ImageGalleryLineB = () => {
         </div>
         {selectedImage && (
           <div className=" p-4 flex flex-col gap-y-16 translate-y-28">
-            {relatedImages.map((image) => (
+            {relatedImages.map(image => (
               <div
                 key={image.id}
                 className="cursor-pointer"

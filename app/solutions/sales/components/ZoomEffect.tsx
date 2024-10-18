@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
-
 const ImageGallery = () => {
   const [clickedImage, setClickedImage] = useState<string | null>(null);
 
@@ -10,17 +9,19 @@ const ImageGallery = () => {
     document.body.style.overflow = clickedImage ? "hidden" : "auto";
 
     if (clickedImage) {
-      const imageElement = document.querySelector<HTMLImageElement>('.zoomed-image');
+      const imageElement =
+        document.querySelector<HTMLImageElement>(".zoomed-image");
       if (imageElement) {
         const rect = imageElement.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
         const scrollUpOffset = 290;
 
-        const offsetTop = rect.top + window.pageYOffset - (viewportHeight / 2) + (rect.height / 2);
-        
+        const offsetTop =
+          rect.top + window.pageYOffset - viewportHeight / 2 + rect.height / 2;
+
         window.scrollTo({
           top: offsetTop,
-          behavior: 'smooth'
+          behavior: "smooth",
         });
       }
     }
@@ -30,7 +31,7 @@ const ImageGallery = () => {
   }, [clickedImage]);
 
   const handleClick = (largeSrc: string) => {
-    setClickedImage((prev) => (prev === largeSrc ? null : largeSrc));
+    setClickedImage(prev => (prev === largeSrc ? null : largeSrc));
   };
 
   const handleClose = () => {
@@ -40,7 +41,7 @@ const ImageGallery = () => {
   type ImageType = {
     src: string;
     largeSrc: string;
-    className?: string; 
+    className?: string;
     buttonText: string;
   };
 
@@ -48,27 +49,32 @@ const ImageGallery = () => {
     {
       src: "/images_growstack/solutions/aichat.svg",
       className: "w-[301px] h-[200px]  -translate-y-48 translate-x-40   z-60",
-      largeSrc: "/solutions/sales2/boxes/solution3rdpage/imagshown/imageshown1.svg",
-      buttonText: "Competitive edge", 
+      largeSrc:
+        "/solutions/sales2/boxes/solution3rdpage/imagshown/imageshown1.svg",
+      buttonText: "Competitive edge",
     },
     {
       src: "/images_growstack/solutions/aiapps.svg",
       className:
         "w-[290.5px] h-[200px] translate-x-[420px] z-60  -translate-y-52",
-        largeSrc: "/solutions/sales2/boxes/solution3rdpage/imagshown/imageshown3.svg",
-        buttonText: "Tech variety", 
+      largeSrc:
+        "/solutions/sales2/boxes/solution3rdpage/imagshown/imageshown3.svg",
+      buttonText: "Tech variety",
     },
     {
       src: "/images_growstack/solutions/sociail2.svg",
       className: "w-[301px] h-[200px] -translate-x-[700px] z-60 translate-y-24",
-      largeSrc: "/solutions/sales2/boxes/solution3rdpage/imagshown/imageshown4.svg",
-      buttonText: "Brand amplification", 
+      largeSrc:
+        "/solutions/sales2/boxes/solution3rdpage/imagshown/imageshown4.svg",
+      buttonText: "Brand amplification",
     },
     {
       src: "/images_growstack/solutions/wat.svg",
-      className: "w-[301px] h-[200px] z-60 translate-y-32  -translate-x-[500px]",
-      largeSrc: "/solutions/sales2/boxes/solution3rdpage/imagshown/imageshown2.svg",
-      buttonText: "Automated communication", 
+      className:
+        "w-[301px] h-[200px] z-60 translate-y-32  -translate-x-[500px]",
+      largeSrc:
+        "/solutions/sales2/boxes/solution3rdpage/imagshown/imageshown2.svg",
+      buttonText: "Automated communication",
     },
   ];
 
@@ -100,12 +106,11 @@ const ImageGallery = () => {
                   clickedImage === image.largeSrc ? "opacity-50" : ""
                 }`}
               />
-                <button className="absolute -bottom-10 text-center  bg-white hover:text-[#034737] max-w-[250px] w-full py-2 rounded-2xl shadow-md ">
+              <button className="absolute -bottom-10 text-center  bg-white hover:text-[#034737] max-w-[250px] w-full py-2 rounded-2xl shadow-md ">
                 {image.buttonText}
               </button>
             </motion.div>
           ))}
-       
         </motion.div>
 
         <div
@@ -114,8 +119,7 @@ const ImageGallery = () => {
           }`}
         >
           <Image
-                      src="/images_growstack/solutions/efficiency.svg"
-
+            src="/images_growstack/solutions/efficiency.svg"
             width={1000}
             height={227}
             alt="Dashboard Image"
@@ -125,19 +129,17 @@ const ImageGallery = () => {
 
         {clickedImage && (
           <div
-          className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50"
-           
-          onClick={handleClose}
+            className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50"
+            onClick={handleClose}
           >
             <div
               className="relative max-w-full max-h-full p-4 rounded-lg"
-              onClick={(e) => e.stopPropagation()}
+              onClick={e => e.stopPropagation()}
             >
               <div className="absolute top-0 left-0 right-0  text-white p-8 flex items-center justify-between rounded-t-lg">
                 <span className="text-lg font-semibold opacity-0">
                   Image Preview
                 </span>
-              
               </div>
               <Image
                 src={clickedImage}

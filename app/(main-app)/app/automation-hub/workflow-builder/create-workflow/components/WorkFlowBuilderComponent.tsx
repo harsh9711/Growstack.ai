@@ -8,7 +8,7 @@ import InputSection from "./InputSection";
 import OutputSection from "./OutputSection";
 import ActionsSection from "./ActionsSection";
 import ProvidersDrawer from "./ProvidersDrawer";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,7 +20,7 @@ import { API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
 import { tools } from "./data/tools";
 import { InputType } from "@/types/common";
-import { paragon } from '@useparagon/connect';
+import { paragon } from "@useparagon/connect";
 
 export default function WorkFlowBuilderComponent() {
   const [activeTag, setActiveTag] = useState<"Input" | "Output" | "Actions">(
@@ -33,14 +33,23 @@ export default function WorkFlowBuilderComponent() {
   const [isAPICalling, setIsAPICalling] = useState(false);
   const [inputConfigs, setInputConfigs] = useState<any[]>([]);
   const [outputConfigs, setOutputConfigs] = useState<any[]>([]);
-  const [paragonList, setParagonList] = useState<any[]>(['whatsapp', 'facebookpages', 'linkedin', 'googlesheets', 'gmail', 'slack', 'salesforce', 'googledocs']);
+  const [paragonList, setParagonList] = useState<any[]>([
+    "whatsapp",
+    "facebookpages",
+    "linkedin",
+    "googlesheets",
+    "gmail",
+    "slack",
+    "salesforce",
+    "googledocs",
+  ]);
   interface Input {
     input_label: string;
     input_default_value: any;
     is_prompt: boolean;
     prompt?: string;
   }
-  const handleAddStep = () => { };
+  const handleAddStep = () => {};
 
   const postAction = async (action: any, index: any) => {
     try {
@@ -72,7 +81,7 @@ export default function WorkFlowBuilderComponent() {
         payload
       );
 
-      const updatedActions = actions.map((act) => {
+      const updatedActions = actions.map(act => {
         if (act.action_id === action.action_id) {
           return {
             ...act,
@@ -80,7 +89,7 @@ export default function WorkFlowBuilderComponent() {
           };
         }
         return act;
-      })
+      });
 
       setActions(updatedActions);
       setIsAPICalling(false);
@@ -122,11 +131,9 @@ export default function WorkFlowBuilderComponent() {
     };
   };
 
-
-
   const mapActionInputs = (actions: ActionType[], tools: ToolType[]) => {
     return actions.map((action: ActionType) => {
-      const tool = tools.find((tool) => tool.name === action.name);
+      const tool = tools.find(tool => tool.name === action.name);
 
       if (!tool || !tool.preset_json) {
         return action;
@@ -141,8 +148,6 @@ export default function WorkFlowBuilderComponent() {
       };
     });
   };
-
-
 
   const getWorkFlowDetails = async (id: string | number) => {
     try {
@@ -159,13 +164,12 @@ export default function WorkFlowBuilderComponent() {
     }
   };
 
-
   const deleteAction = async (actionId: string, index: number) => {
     try {
       await instance.delete(
         `${API_URL}/workflow/api/v1/${workflowId}/actions/${actionId}`
       );
-      setActions(actions.filter((action) => action._id !== actionId));
+      setActions(actions.filter(action => action._id !== actionId));
       if (index === 0) {
         setActiveTag("Input");
         setActiveAction({});
@@ -184,9 +188,9 @@ export default function WorkFlowBuilderComponent() {
       await instance.put(
         `${API_URL}/workflow/api/v1/${workflowId}/actions/${actionId}/reorder?direction=${direction}`
       );
-      setActions((prevActions) => {
+      setActions(prevActions => {
         const actionIndex = prevActions.findIndex(
-          (action) => action._id === actionId
+          action => action._id === actionId
         );
         const action = prevActions[actionIndex];
         const updatedActions = [...prevActions];
@@ -275,7 +279,7 @@ export default function WorkFlowBuilderComponent() {
         );
       case "Actions":
         const activeActionIndex = actions.findIndex(
-          (action) => action.action_id === activeAction.action_id
+          action => action.action_id === activeAction.action_id
         );
         return (
           <ActionsSection
@@ -296,28 +300,34 @@ export default function WorkFlowBuilderComponent() {
 
   const authenticateUser = async (integrationType: string) => {
     try {
-      const response = await instance.post(`${API_URL}/users/api/v1/connectors/connect`, {});
+      const response = await instance.post(
+        `${API_URL}/users/api/v1/connectors/connect`,
+        {}
+      );
       const token = response.data.data.token;
-      await paragon.authenticate(process.env.NEXT_PUBLIC_PARAGON_PROJECT_ID || "", token);
+      await paragon.authenticate(
+        process.env.NEXT_PUBLIC_PARAGON_PROJECT_ID || "",
+        token
+      );
       const user = { ...paragon.getUser() };
       if (user.authenticated && !user.integrations[integrationType]?.enabled) {
         const result = await Swal.fire({
-          title: 'Integration not enabled',
+          title: "Integration not enabled",
           text: `Would you like to enable this ${integrationType} integration? `,
-          icon: 'warning',
+          icon: "warning",
           showCancelButton: true,
-          confirmButtonText: 'Yes',
-          cancelButtonText: 'No'
+          confirmButtonText: "Yes",
+          cancelButtonText: "No",
         });
 
         if (result.isConfirmed) {
           await paragon.connect(integrationType, {});
         }
       } else {
-        return true
+        return true;
       }
     } catch (error) {
-      console.error('Error during authentication:', error);
+      console.error("Error during authentication:", error);
     }
   };
 
@@ -358,7 +368,7 @@ export default function WorkFlowBuilderComponent() {
               {index === 0 && (
                 <ProvidersDrawer
                   trigger={<Plus size={16} onClick={() => handleAddStep()} />}
-                  onSelectAction={(data) => onSelectAction(data, index + 1)}
+                  onSelectAction={data => onSelectAction(data, index + 1)}
                 />
               )}
               <button
@@ -370,8 +380,8 @@ export default function WorkFlowBuilderComponent() {
                 className={clsx(
                   "w-full max-w-[340px] transition-all duration-300 p-3 border border-[#E5E7EB] rounded-xl flex items-center gap-4 cursor-pointer",
                   index === activeAction.index &&
-                  activeTag === "Actions" &&
-                  "!border-primary-green"
+                    activeTag === "Actions" &&
+                    "!border-primary-green"
                 )}
               >
                 {action?.icon ? (
@@ -407,7 +417,7 @@ export default function WorkFlowBuilderComponent() {
                       <DropdownMenuItem
                         inset
                         className="min-w-[200px] flex justify-between gap-8 items-center my-1"
-                        onClick={(event) => {
+                        onClick={event => {
                           event.stopPropagation();
                           deleteAction(action._id, index);
                         }}
@@ -420,7 +430,7 @@ export default function WorkFlowBuilderComponent() {
                         inset
                         className="min-w-[200px] flex justify-between gap-8 items-center my-1"
                         disabled={index === 0}
-                        onClick={(event) => {
+                        onClick={event => {
                           event.stopPropagation(),
                             reorderActions(action._id, "up");
                         }}
@@ -433,7 +443,7 @@ export default function WorkFlowBuilderComponent() {
                         inset
                         className="min-w-[200px] flex justify-between gap-8 items-center my-1"
                         disabled={index === actions.length - 1}
-                        onClick={(event) => {
+                        onClick={event => {
                           event.stopPropagation(),
                             reorderActions(action._id, "down");
                         }}
@@ -448,7 +458,7 @@ export default function WorkFlowBuilderComponent() {
               </button>
               <ProvidersDrawer
                 trigger={<Plus size={16} onClick={() => handleAddStep()} />}
-                onSelectAction={(data) => onSelectAction(data, index + 2)}
+                onSelectAction={data => onSelectAction(data, index + 2)}
               />
             </>
           ))}
@@ -460,7 +470,7 @@ export default function WorkFlowBuilderComponent() {
                   Add Step <Plus size={16} />
                 </button>
               }
-              onSelectAction={(data) => onSelectAction(data, 1)}
+              onSelectAction={data => onSelectAction(data, 1)}
             />
           )}
 
@@ -484,10 +494,7 @@ export default function WorkFlowBuilderComponent() {
         </div>
 
         <div className="border-l flex-1 border-[#F0F0F0] w-full max-w-[482px] md:w-1/3 p-10 flex flex-col">
-          <div className="sticky top-36">
-
-            {renderSection()}
-          </div>
+          <div className="sticky top-36">{renderSection()}</div>
         </div>
       </div>
     </>

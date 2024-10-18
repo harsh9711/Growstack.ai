@@ -35,7 +35,7 @@ interface ChatInputProps {
   setChatMessages: React.Dispatch<React.SetStateAction<ChatMessageType[]>>;
   setIsToggleEnabled?: Dispatch<SetStateAction<boolean>>;
   isToggleEnabled?: boolean;
-  image:string;
+  image: string;
 }
 
 type CustomGptType = {
@@ -69,14 +69,14 @@ const ChatInput: React.FC<ChatInputProps> = ({
       textareaRef.current.style.overflow = "auto";
     }
   }, [input]);
-  
-    let responsetype ="";
+
+  let responsetype = "";
   if (isToggleEnabled) {
     console.log("not enabled");
-    responsetype=image;
+    responsetype = image;
   } else {
     console.log("enabled ");
-    responsetype="";
+    responsetype = "";
   }
 
   const handleSend = async () => {
@@ -95,7 +95,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
           user_prompt: input,
           custom_gpt_id: customeGptData._id,
           assistant_id: customeGptData.assistant_id,
-          image_attachments: imageUrl.map((url) => ({ url })),
+          image_attachments: imageUrl.map(url => ({ url })),
           attachments: file,
         });
         setChatMessages([...chatMessages, data]);
@@ -108,7 +108,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
           custom_gpt_id: customeGptData._id,
           assistant_id: customeGptData.assistant_id,
           thread_id: chatMessages[0].thread_id,
-          image_attachments: imageUrl.map((url) => ({ url })),
+          image_attachments: imageUrl.map(url => ({ url })),
           attachments: file,
           response_type: responsetype,
         });
@@ -149,7 +149,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
           `${API_URL}/ai/api/v1/customgpt/upload`,
           formData
         );
-        setFile((prev) => [
+        setFile(prev => [
           ...prev,
           { file_name: file.name, file_id: data.id, file_type: "FILE" },
         ]);
@@ -164,7 +164,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
           `${API_URL}/users/api/v1/file/upload`,
           formData
         );
-        setImageUrl((prev) => [...prev, fileUrl]);
+        setImageUrl(prev => [...prev, fileUrl]);
       }
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -184,7 +184,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
           id="fileUpload"
           className="hidden"
           disabled={isApiCall}
-          onChange={(e) => {
+          onChange={e => {
             if (e.target.files && e.target.files[0]) {
               handleUploadFile(e.target.files[0]);
               e.target.value = "";
@@ -208,7 +208,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
                 key={index}
                 className="group relative inline-block text-sm text-token-text-primary"
                 onClick={() => {
-                  setImageUrl((prev) => prev.filter((_, i) => i !== index));
+                  setImageUrl(prev => prev.filter((_, i) => i !== index));
                 }}
               >
                 <div className="relative overflow-hidden rounded-xl border border-token-border-light bg-token-main-surface-primary">
@@ -224,7 +224,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
                 <button
                   className="bg-white absolute right-1 top-1 -translate-y-1/2 translate-x-1/2 rounded-full border  p-0.5  transition-colors hover:opacity-100 group-hover:opacity-100 md:opacity-0"
                   onClick={() => {
-                    setImageUrl((prev) => prev.filter((_, i) => i !== index));
+                    setImageUrl(prev => prev.filter((_, i) => i !== index));
                   }}
                 >
                   <X size={10} />
@@ -249,7 +249,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
                     <button
                       className="ml-auto focus:outline-none"
                       onClick={() => {
-                        setFile((prev) => prev.filter((_, i) => i !== index));
+                        setFile(prev => prev.filter((_, i) => i !== index));
                       }}
                     >
                       <Trash size={20} />
@@ -264,7 +264,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
         <textarea
           ref={textareaRef}
           value={input}
-          onChange={(e) => setInput(e.target.value)}
+          onChange={e => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           rows={1}
           className="w-full flex-1 p-2 bg-transparent resize-none overflow-auto min-h-11 max-h-[300px]"

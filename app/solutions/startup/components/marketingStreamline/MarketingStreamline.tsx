@@ -26,7 +26,9 @@ const MarketingStreamline: React.FC = () => {
             <span className="user"> optimize</span>
             <h3 className="text-black font-light text-[24px] xl:text-[42px]">
               {" "}
-              <span className="font-extrabold">Your ultimate guide to optimizing </span>
+              <span className="font-extrabold">
+                Your ultimate guide to optimizing{" "}
+              </span>
               business processes with GrowStack
             </h3>
           </div>
@@ -38,7 +40,7 @@ const MarketingStreamline: React.FC = () => {
             delay: 500,
             disableOnInteraction: false,
           }}
-          loop={true}
+          loop
           speed={5000}
           modules={[Autoplay]}
           className="mySwiper"
