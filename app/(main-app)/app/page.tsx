@@ -15,6 +15,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import "@/styles/globals.css";
 import { useRouter } from "next/navigation";
+import { ALL_ROUTES } from "@/utils/constant";
 interface AiApp {
   _id: string;
   "ASSISTANT NAME": string;
@@ -166,27 +167,7 @@ export default function Dashboard() {
               </p>
             </div>
             <div className="">
-
-              {/* <Link href="/app/plan/ai-chat">
-              <div
-                className="!mt-7 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                data-aos="fade-up"
-              >
-                {/* <div className="flex gap-4 items-center">
-                  <Image
-                    src="/icons/ai-chat.svg"
-                    alt=""
-                    width={60}
-                    height={60}
-                  />
-                  <h2 className="font-medium">AI chat</h2>
-                </div> */}
-              {/* <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
-                  <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
-                </button>
-              </div>
-            </Link> */}
-              <Link href="/app/plan/ai-templates">
+              <Link href={ALL_ROUTES.AI_TEMPLATE}>
                 <div
                   className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
                 >
@@ -205,7 +186,7 @@ export default function Dashboard() {
                   </button>
                 </div>
               </Link>
-              <Link href="/app/plan/ai-assistant">
+              <Link href={ALL_ROUTES.AI_ASSISTANT}>
                 <div
                   className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
                 >
@@ -224,7 +205,7 @@ export default function Dashboard() {
                   </button>
                 </div>
               </Link>
-              <Link href="/app/plan/custom-gpts">
+              <Link href={ALL_ROUTES.AI_CUSTOM_GPT}>
                 <div
                   className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
                 >
@@ -243,7 +224,7 @@ export default function Dashboard() {
                   </button>
                 </div>
               </Link>
-              <Link href="/app/plan/text-to-video">
+              <Link href={ALL_ROUTES.TEXT_TO_AVATAR}>
                 <div
                   className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
                 >
@@ -258,7 +239,7 @@ export default function Dashboard() {
                   </button>
                 </div>
               </Link>
-              <Link href="/app/create/workflow-builder">
+              <Link href={ALL_ROUTES.WORKFLOW_BUILDER}>
                 <div
                   className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
                 >
@@ -277,7 +258,7 @@ export default function Dashboard() {
                   </button>
                 </div>
               </Link>
-              <Link href="/app/create/ai-articles">
+              <Link href={ALL_ROUTES.AI_WIZARD}>
                 <div
                   className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
                 >

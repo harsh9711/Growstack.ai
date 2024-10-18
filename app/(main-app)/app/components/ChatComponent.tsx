@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState, useCallback, useRef } from "react";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { aiModelOptions } from "../create/ai-articles/constants/options";
+import { aiModelOptions } from "../ai-studio/ai-articles/constants/options";
 import clsx from "clsx";
-import ChatInput from "../plan/ai-chat/components/ChatInput";
+import ChatInput from "../ai-studio/ai-chat/components/ChatInput";
 import DashboardChatModal from "./DashboardchatModal";
 import Image from "next/image";
 import { API_URL } from "@/lib/api";
@@ -19,8 +19,8 @@ import { RootState } from "@/lib/store";
 import { parseJsonString, planIdsMap } from "@/lib/utils";
 import Link from "next/link";
 import { ChatResponse } from "@/types/common";
-import ChatMessages from "../plan/ai-chat/components/ChatMessage";
-import ChatMessage from "../plan/ai-chat/components/ChatMessage";
+import ChatMessages from "../ai-studio/ai-chat/components/ChatMessage";
+import ChatMessage from "../ai-studio/ai-chat/components/ChatMessage";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Info } from "lucide-react";
 import { getCookie } from "cookies-next";

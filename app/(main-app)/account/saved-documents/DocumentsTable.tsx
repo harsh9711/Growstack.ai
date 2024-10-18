@@ -40,7 +40,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import swal from "sweetalert";
-import { downloadTxt } from "../../app/plan/custom-gpts/new/components/utils/downloadHelpers";
+import { downloadTxt } from "../../app/ai-studio/custom-gpts/new/components/utils/downloadHelpers";
 import { renderToString } from 'react-dom/server';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
@@ -90,20 +90,20 @@ export default function DocumentsTable() {
 
   const handleDownload = (rowData: any) => {
     let plainTextContent = stripHtmlTags(rowData?.doc_content);
-    if(rowData?.doc_type === "PDF"){
-      downloadPdf(plainTextContent,{language : rowData?.doc_language},rowData?.doc_name);
-    }else if(rowData?.doc_type === "DOC"){
+    if (rowData?.doc_type === "PDF") {
+      downloadPdf(plainTextContent, { language: rowData?.doc_language }, rowData?.doc_name);
+    } else if (rowData?.doc_type === "DOC") {
       const docContent = stripHtmlTags(rowData?.doc_content);
       const docBlob = new Blob([docContent], {
         type: "application/msword;charset=utf-8",
       });
       saveAs(docBlob, `${rowData?.doc_name}.doc`);
-    }else if(rowData?.doc_type === "HTML"){
+    } else if (rowData?.doc_type === "HTML") {
       const htmlBlob = new Blob([rowData?.doc_content], {
         type: "text/html;charset=utf-8",
       });
       saveAs(htmlBlob, `${rowData?.doc_name}.html`);
-    }else{
+    } else {
       downloadTxtFile(rowData)
     }
   }
@@ -210,9 +210,6 @@ export default function DocumentsTable() {
         console.log(row.original);
         return (
           <div className="flex items-center gap-2">
-            {/* <button className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300" onClick={() => handleEdit(row?.original)}>
-              <Edit size={20} className="text-gray-800 cursor-pointer" />
-            </button> */}
             <button
               className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300"
               onClick={() => handleDeleteDocs(row?.original?._id)}
@@ -315,22 +312,6 @@ export default function DocumentsTable() {
       } else {
       }
     });
-  };
-
-  const handleEdit = (row: any) => {
-    switch (row.doc_type) {
-      case "TEXT":
-        //TODO: remove this static ID
-        return router.push(`/app/plan/ai-templates/668fba4cda6b851455c8caf0`);
-      case "HTML":
-        return router.push(`/app/create/website-builder`);
-      case "VIDEO":
-        return router.push(`/app/plan/text-to-video`);
-      case "IMAGE":
-        return router.push(`/app/create/product-ai`);
-    }
-    dispatch(editDocument(true));
-    dispatch(savedDecument(row));
   };
 
   return (

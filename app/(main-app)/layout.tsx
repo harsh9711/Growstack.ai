@@ -19,8 +19,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
   const shouldHideNavbar = () => {
     return (
-      pathname.startsWith("/create") ||
-      pathname.includes("/app/create/email-builder/design")
+      pathname.startsWith("/create")
     );
   };
 

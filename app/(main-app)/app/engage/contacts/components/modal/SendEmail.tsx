@@ -10,7 +10,7 @@ import { AlertTriangle, Mail } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import Editor from "@/app/(main-app)/app/plan/ai-templates/[appId]/components/Editor";
+import Editor from "@/app/(main-app)/app/ai-studio/ai-templates/[appId]/components/Editor";
 
 interface SendEmailProps {
   selectedIds: string[];

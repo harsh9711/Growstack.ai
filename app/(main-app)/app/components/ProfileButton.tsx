@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { BrandVoiceIcon } from "@/components/svgs";
+import { BrandVoiceIcon, DocumentIcon, PresentationAnalyticsIcon } from "@/components/svgs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -20,6 +20,7 @@ import { deleteCookie } from "cookies-next";
 import Image from "next/image";
 import Wave from "@/components/svgs/wave";
 import { persistor } from "@/lib/store";
+import { ALL_ROUTES } from "@/utils/constant";
 
 export function ProfileButton() {
   const router = useRouter();
@@ -61,18 +62,32 @@ export function ProfileButton() {
               My profile
             </DropdownMenuItem>
           </Link>
-          <Link href="/account/saved-documents">
-            <DropdownMenuItem className="flex gap-3 px-4">
-              <Settings size={22} />
-              Saved documents
-            </DropdownMenuItem>
-          </Link>
-          <Link href="/app/plan/ai-brandvoice">
+          <Link href={ALL_ROUTES.BRAND_VOICE}>
             <DropdownMenuItem className="flex gap-3 px-4">
               <Wave color="black" />
               Brand voice
             </DropdownMenuItem>
           </Link>
+          <Link href={ALL_ROUTES.SOCIAL_MEDIA_POSTING}>
+            <DropdownMenuItem className="flex gap-3 px-4">
+              <PresentationAnalyticsIcon />
+              Connect to social media profiles
+            </DropdownMenuItem>
+          </Link>
+          {/* <Link href="/account/saved-documents">
+            <DropdownMenuItem className="flex gap-3 px-4">
+              <Settings size={22} />
+              Posting Logs
+            </DropdownMenuItem>
+          </Link> */}
+          <Link href="/account/saved-documents">
+            <DropdownMenuItem className="flex gap-3 px-4">
+              {/* <Settings size={22} /> */}
+              <DocumentIcon />
+              Saved documents
+            </DropdownMenuItem>
+          </Link>
+
           <Link href="/account/billings/settings">
             <DropdownMenuItem className="flex gap-3 px-4">
 
@@ -87,11 +102,11 @@ export function ProfileButton() {
             </DropdownMenuItem>
           </Link> */}
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem className="flex gap-3 px-4" id="intercom-launcher">
+        {/* <DropdownMenuSeparator /> */}
+        {/* <DropdownMenuItem className="flex gap-3 px-4" id="intercom-launcher">
           <Info size={22} />
           Help
-        </DropdownMenuItem>
+        </DropdownMenuItem> */}
         <DropdownMenuSeparator />
         <button
           onClick={handleLogout}
