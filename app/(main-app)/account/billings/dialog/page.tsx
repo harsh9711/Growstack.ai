@@ -87,7 +87,6 @@ const AddCreditDialog2: React.FC<AddCreditDialog2Props> = () => {
 
   const handlePay = async () => {
     try {
-      //   await onAddCredit(); // Call the onAddCredit prop function
       const response = await instance.post(
         `${API_URL}/users/api/v1/payments/pay-dues`,
         {
@@ -139,7 +138,7 @@ const AddCreditDialog2: React.FC<AddCreditDialog2Props> = () => {
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  {paymentMethods.map((paymentMethod) => (
+                  {paymentMethods.map(paymentMethod => (
                     <SelectItem key={paymentMethod.id} value={paymentMethod.id}>
                       <div className="flex items-center gap-4">
                         <div className="w-10 h-10">
@@ -153,8 +152,9 @@ const AddCreditDialog2: React.FC<AddCreditDialog2Props> = () => {
                         </div>
                         <div className="space-y-1">
                           <h1 className="text-lg">
-                            {`${paymentMethod.card.brand.toUpperCase()} **** **** **** ${paymentMethod.card.last4
-                              }`}
+                            {`${paymentMethod.card.brand.toUpperCase()} **** **** **** ${
+                              paymentMethod.card.last4
+                            }`}
                           </h1>
                           <p className="text-primary-black text-opacity-50 text-left">
                             Expires{" "}

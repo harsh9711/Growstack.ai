@@ -7,13 +7,22 @@ interface ChatMessageProps {
   time: string;
 }
 
-const ChatMessage: React.FC<ChatMessageProps> = ({ message, imageUrl, title, time }) => {
+const ChatMessage: React.FC<ChatMessageProps> = ({
+  message,
+  imageUrl,
+  title,
+  time,
+}) => {
   return (
     <div className="my-4">
       <div className="flex items-start gap-4">
         <img
-          src={imageUrl && !imageUrl.includes("ton.twitter.com")?imageUrl:"/logo/growstack-mini.png"}
-          onError={(e) => (e.currentTarget.src = "/logo/growstack-mini.png")}
+          src={
+            imageUrl && !imageUrl.includes("ton.twitter.com")
+              ? imageUrl
+              : "/logo/growstack-mini.png"
+          }
+          onError={e => (e.currentTarget.src = "/logo/growstack-mini.png")}
           alt="contact"
           width={40}
           height={40}

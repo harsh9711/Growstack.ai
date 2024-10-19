@@ -1,14 +1,25 @@
 import Motion from "@/components/Motion";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import TextEditor from "../Editor";
-import Editor from "@/app/(main-app)/app/plan/ai-templates/[appId]/components/Editor";
+import Editor from "@/app/(main-app)/app/ai-studio/ai-templates/[appId]/components/Editor";
 
 export default function AiWriterSection() {
   return (
-    <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion
+      transition={{ duration: 0.2 }}
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+    >
       <div className="flex gap-5 mt-8">
         <div className="w-full !bg-white border border-[#EDEFF0] rounded-3xl shadow-box p-10">
-          <h1 className="text-xl font-semibold border-b border-[#EDEFF0] pb-4">Add new bot reply</h1>
+          <h1 className="text-xl font-semibold border-b border-[#EDEFF0] pb-4">
+            Add new bot reply
+          </h1>
           <div className="mt-4 flex flex-col gap-5">
             <div className="space-y-2">
               <label className="font-medium">Use case </label>

@@ -8,7 +8,9 @@ export default function Integrations() {
       <div className="flex justify-between">
         <div className="space-y-2">
           <h1 className="text-2xl font-semibold">Integrations</h1>
-          <p className="text-primary-black text-opacity-50">Use one of our integrations to supercharge your productivity.</p>
+          <p className="text-primary-black text-opacity-50">
+            Use one of our integrations to supercharge your productivity.
+          </p>
         </div>
       </div>
       <div className="space-y-4 mt-5">
@@ -18,7 +20,8 @@ export default function Integrations() {
             <div className="space-y-2">
               <h1 className="text-lg font-semibold">Calendar Feed</h1>
               <p className="text-primary-black text-opacity-50">
-                Use the calendar feed integration to one-way sync all your tasks with Google, Apple or Outlook.
+                Use the calendar feed integration to one-way sync all your tasks
+                with Google, Apple or Outlook.
               </p>
             </div>
           </div>
@@ -26,11 +29,17 @@ export default function Integrations() {
         </div>
         <div className="bg-white px-8 py-5 rounded-3xl border border-[#E8E8E8] flex items-center justify-between hover:shadow-xl hover:shadow-gray-100 cursor-pointer transition-all duration-300">
           <div className="flex items-center gap-5">
-            <Image src="/assets/google-calendar.svg" alt="" width={90} height={90} />
+            <Image
+              src="/assets/google-calendar.svg"
+              alt=""
+              width={90}
+              height={90}
+            />
             <div className="space-y-2">
               <h1 className="text-lg font-semibold">Calendar Feed</h1>
               <p className="text-primary-black text-opacity-50">
-                Use the calendar feed integration to one-way sync all your tasks with Google, Apple or Outlook.
+                Use the calendar feed integration to one-way sync all your tasks
+                with Google, Apple or Outlook.
               </p>
             </div>
           </div>
@@ -42,7 +51,8 @@ export default function Integrations() {
             <div className="space-y-2">
               <h1 className="text-lg font-semibold">Calendar Feed</h1>
               <p className="text-primary-black text-opacity-50">
-                Use the calendar feed integration to one-way sync all your tasks with Google, Apple or Outlook.
+                Use the calendar feed integration to one-way sync all your tasks
+                with Google, Apple or Outlook.
               </p>
             </div>
           </div>

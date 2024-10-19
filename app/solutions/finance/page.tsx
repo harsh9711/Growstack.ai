@@ -19,7 +19,6 @@ const page = () => {
   }, []);
   return (
     <main className="bg-white overflow-hidden">
-
       <HeroSection />
 
       <section className="flex flex-col 2xl:pt-20">

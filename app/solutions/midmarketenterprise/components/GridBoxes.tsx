@@ -34,7 +34,7 @@ const GridComponent = () => {
       }
 
       const newTimer = setTimeout(() => {
-        setSelected((prev) => {
+        setSelected(prev => {
           const nextValue = prev === 4 ? 1 : (prev ?? 0) + 1;
           if (nextValue === 1 && prev === 4) {
             setIsTimerActive(false);
@@ -377,8 +377,6 @@ const GridComponent = () => {
   return (
     <div
       className="flex flex-col sm:mt-10 mt-8 justify-center relative left-10 sm:left-8 mx-auto items-center"
-
-      
       onClick={handleComponentClick}
     >
       {renderContent()}

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import Image from "next/image";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { } from "@/components/svgs/icons";
+import {} from "@/components/svgs/icons";
 export const cases = [
   {
     id: 1,
@@ -53,7 +53,7 @@ const Box = () => {
         <div
           key={index}
           data-aos="fade-up"
-          className={`relative text-black hover:bg-[#F7FBF0] text-start border-2 rounded-[20px] flex  p-6 transition-transform duration-500 ease-in-out max-w-[660px] max-h-[500px]  h-full flex-row  items-start justify-between group overflow-hidden`}
+          className="relative text-black hover:bg-[#F7FBF0] text-start border-2 rounded-[20px] flex  p-6 transition-transform duration-500 ease-in-out max-w-[660px] max-h-[500px]  h-full flex-row  items-start justify-between group overflow-hidden"
         >
           <div className="relative z-10 text-[#14171B] flex flex-col gap-y-4 group-hover:fill-primary-green">
             <div className="" data-aos="zoom-in">
@@ -72,8 +72,6 @@ const Box = () => {
   );
 };
 const OneCard = () => {
-
-
   return (
     <div>
       <div className="max-w-[1340px] sm:items-start items-center flex flex-col gap-y-8  w-full mx-auto">

@@ -42,7 +42,7 @@ export default function TwitterSection({
               <label className="w-full max-w-[400px]">Enable messaging</label>
               <Switch
                 checked={messagingActive}
-                onCheckedChange={(checked) => setMessagingActive(checked)}
+                onCheckedChange={checked => setMessagingActive(checked)}
               />
             </div>
           </div>

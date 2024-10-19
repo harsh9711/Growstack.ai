@@ -34,7 +34,7 @@ const GridComponent = () => {
       }
 
       const newTimer = setTimeout(() => {
-        setSelected((prev) => {
+        setSelected(prev => {
           const nextValue = prev === 4 ? 1 : (prev ?? 0) + 1;
           if (nextValue === 1 && prev === 4) {
             setIsTimerActive(false);
@@ -89,14 +89,14 @@ const GridComponent = () => {
                 onClick={() => handleClick(2)}
                 className="bg-white border font-medium text-[18px]  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
-GENX AI              </div>
+                GENX AI{" "}
+              </div>
               <div
                 onClick={() => handleClick(3)}
                 className="bg-white border font-medium text-[20px]  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
-           ARTICLE WIZARD
+                ARTICLE WIZARD
               </div>
-           
             </div>
           </div>
         );
@@ -117,15 +117,14 @@ GENX AI              </div>
                 onClick={() => handleClick(1)}
                 className="bg-white border  font-medium text-[20px]  whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
-        AI assistants
+                AI assistants
               </div>
               <div
                 onClick={() => handleClick(3)}
                 className="bg-white border  font-medium text-[20px]  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
-        ARTICLE WIZARD
+                ARTICLE WIZARD
               </div>
-             
             </div>
           </div>
         );
@@ -146,18 +145,18 @@ GENX AI              </div>
                 onClick={() => handleClick(1)}
                 className="bg-white border  font-medium text-[20px]  whitespace-nowrap shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
-         AI assistants
+                AI assistants
               </div>
               <div
                 onClick={() => handleClick(2)}
                 className="bg-white border font-medium text-[18px]  shadow-md hover:shadow-lg max-w-[400px] w-full max-h-[82px] h-full text-center p-4 rounded-2xl"
               >
-GENX AI              </div>
-         
+                GENX AI{" "}
+              </div>
             </div>
           </div>
         );
-    
+
       default:
         return (
           <>

@@ -10,7 +10,7 @@ export const billHistoryData: BillHistory[] = [
     },
     status: "Paid",
   },
- 
+
   {
     invoice: "ABB06B2B - 0012",
     amount: 150.75,

@@ -1,6 +1,6 @@
 import React from "react";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const MonthlyCard = () => {
   const tickIcon = (
@@ -65,10 +65,16 @@ const MonthlyCard = () => {
           data-aos="fade-up"
         >
           <div className="text-center flex flex-col gap-y-4">
-            <h2 className="text-[#000000] text-[20px] xl:text-[24px] font-bold" data-aos="fade-down">
+            <h2
+              className="text-[#000000] text-[20px] xl:text-[24px] font-bold"
+              data-aos="fade-down"
+            >
               {plan.title}
             </h2>
-            <h2 className="text-[24px] xl:text-[34px] text-center justify-center font-bold flex gap-2 items-center text-[#034737]" data-aos="fade-up">
+            <h2
+              className="text-[24px] xl:text-[34px] text-center justify-center font-bold flex gap-2 items-center text-[#034737]"
+              data-aos="fade-up"
+            >
               {plan.price}
               {plan.priceSuffix && (
                 <span className="text-[20px] xl:text-[28px] opacity-20 text-black">
@@ -76,7 +82,10 @@ const MonthlyCard = () => {
                 </span>
               )}
             </h2>
-            <p className="opacity-60 w-full max-w-[450px] mx-auto" data-aos="fade-up">
+            <p
+              className="opacity-60 w-full max-w-[450px] mx-auto"
+              data-aos="fade-up"
+            >
               {plan.description}
             </p>
           </div>

@@ -173,7 +173,7 @@ export default function BillingHistorySection() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {unpaidData.map((item) => (
+                      {unpaidData.map(item => (
                         <TableRow key={item.invoice}>
                           <TableCell className="py-3 px-4 font-bold text-gray-700">
                             $ {item.amount_due}

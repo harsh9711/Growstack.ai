@@ -8,7 +8,8 @@ export const sampleReviews: Review[] = [
     review: "Excellent service and support.",
     status: "approved",
     reviewer: "Nicola Walsh",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "17 Oct, 2020",
@@ -17,7 +18,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "approved",
     reviewer: "John Doe",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "8 Sep, 2020",
@@ -26,7 +28,8 @@ export const sampleReviews: Review[] = [
     review: "Average experience.",
     status: "pending",
     reviewer: "Jane Smith",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "1 Feb, 2020",
@@ -35,7 +38,8 @@ export const sampleReviews: Review[] = [
     review: "Excellent service and support.",
     status: "approved",
     reviewer: "Nicola Walsh",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "22 Oct, 2020",
@@ -44,7 +48,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "rejected",
     reviewer: "Alice Johnson",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "4 Jun, 2023 ",
@@ -53,7 +58,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "rejected",
     reviewer: "Robert Brown",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "17 Oct, 2020",
@@ -62,7 +68,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "approved",
     reviewer: "John Doe",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "1 Feb, 2020",
@@ -71,7 +78,8 @@ export const sampleReviews: Review[] = [
     review: "Excellent service and support.",
     status: "approved",
     reviewer: "Nicola Walsh",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "8 Sep, 2020",
@@ -80,7 +88,8 @@ export const sampleReviews: Review[] = [
     review: "Average experience.",
     status: "pending",
     reviewer: "Jane Smith",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "22 Oct, 2020",
@@ -89,7 +98,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "rejected",
     reviewer: "Alice Johnson",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "4 Jun, 2023 ",
@@ -98,7 +108,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "rejected",
     reviewer: "Robert Brown",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "17 Oct, 2020",
@@ -107,7 +118,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "approved",
     reviewer: "John Doe",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "8 Sep, 2020",
@@ -116,7 +128,8 @@ export const sampleReviews: Review[] = [
     review: "Average experience.",
     status: "pending",
     reviewer: "Jane Smith",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "22 Oct, 2020",
@@ -125,7 +138,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "rejected",
     reviewer: "Alice Johnson",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "4 Jun, 2023 ",
@@ -134,7 +148,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "rejected",
     reviewer: "Robert Brown",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "1 Feb, 2020",
@@ -143,7 +158,8 @@ export const sampleReviews: Review[] = [
     review: "Excellent service and support.",
     status: "approved",
     reviewer: "Nicola Walsh",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "17 Oct, 2020",
@@ -152,7 +168,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "approved",
     reviewer: "John Doe",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "8 Sep, 2020",
@@ -161,7 +178,8 @@ export const sampleReviews: Review[] = [
     review: "Average experience.",
     status: "pending",
     reviewer: "Jane Smith",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "22 Oct, 2020",
@@ -170,7 +188,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "rejected",
     reviewer: "Alice Johnson",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "4 Jun, 2023 ",
@@ -179,7 +198,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "rejected",
     reviewer: "Robert Brown",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "1 Feb, 2020",
@@ -188,7 +208,8 @@ export const sampleReviews: Review[] = [
     review: "Excellent service and support.",
     status: "approved",
     reviewer: "Nicola Walsh",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "17 Oct, 2020",
@@ -197,7 +218,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "approved",
     reviewer: "John Doe",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "8 Sep, 2020",
@@ -206,7 +228,8 @@ export const sampleReviews: Review[] = [
     review: "Average experience.",
     status: "pending",
     reviewer: "Jane Smith",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "1 Feb, 2020",
@@ -215,7 +238,8 @@ export const sampleReviews: Review[] = [
     review: "Excellent service and support.",
     status: "approved",
     reviewer: "Nicola Walsh",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "4 Jun, 2023 ",
@@ -224,7 +248,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "rejected",
     reviewer: "Robert Brown",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "17 Oct, 2020",
@@ -233,7 +258,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "approved",
     reviewer: "John Doe",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "8 Sep, 2020",
@@ -242,7 +268,8 @@ export const sampleReviews: Review[] = [
     review: "Average experience.",
     status: "pending",
     reviewer: "Jane Smith",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "22 Oct, 2020",
@@ -251,7 +278,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "rejected",
     reviewer: "Alice Johnson",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "4 Jun, 2023 ",
@@ -260,7 +288,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "rejected",
     reviewer: "Robert Brown",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "1 Feb, 2020",
@@ -269,7 +298,8 @@ export const sampleReviews: Review[] = [
     review: "Excellent service and support.",
     status: "approved",
     reviewer: "Nicola Walsh",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "17 Oct, 2020",
@@ -278,7 +308,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "approved",
     reviewer: "John Doe",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "8 Sep, 2020",
@@ -287,7 +318,8 @@ export const sampleReviews: Review[] = [
     review: "Average experience.",
     status: "pending",
     reviewer: "Jane Smith",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "22 Oct, 2020",
@@ -296,7 +328,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "rejected",
     reviewer: "Alice Johnson",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "4 Jun, 2023 ",
@@ -305,7 +338,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "rejected",
     reviewer: "Robert Brown",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "22 Oct, 2020",
@@ -314,7 +348,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "rejected",
     reviewer: "Alice Johnson",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "4 Jun, 2023 ",
@@ -323,7 +358,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "rejected",
     reviewer: "Robert Brown",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "17 Oct, 2020",
@@ -332,7 +368,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "approved",
     reviewer: "John Doe",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "1 Feb, 2020",
@@ -341,7 +378,8 @@ export const sampleReviews: Review[] = [
     review: "Excellent service and support.",
     status: "approved",
     reviewer: "Nicola Walsh",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "8 Sep, 2020",
@@ -350,7 +388,8 @@ export const sampleReviews: Review[] = [
     review: "Average experience.",
     status: "pending",
     reviewer: "Jane Smith",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "22 Oct, 2020",
@@ -359,7 +398,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "rejected",
     reviewer: "Alice Johnson",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "8 Sep, 2020",
@@ -368,7 +408,8 @@ export const sampleReviews: Review[] = [
     review: "Average experience.",
     status: "pending",
     reviewer: "Jane Smith",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "22 Oct, 2020",
@@ -377,7 +418,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "rejected",
     reviewer: "Alice Johnson",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "4 Jun, 2023 ",
@@ -386,7 +428,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "rejected",
     reviewer: "Robert Brown",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "22 Oct, 2020",
@@ -395,7 +438,8 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "rejected",
     reviewer: "Alice Johnson",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
   {
     date: "4 Jun, 2023 ",
@@ -404,6 +448,7 @@ export const sampleReviews: Review[] = [
     review: "Lorem ipsum dolor sit amet consectetur. Commodo viverra.",
     status: "rejected",
     reviewer: "Robert Brown",
-    reviewText: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
+    reviewText:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nisl laoreet erat a aliquet nisl morbi lectus auctor.",
   },
 ];

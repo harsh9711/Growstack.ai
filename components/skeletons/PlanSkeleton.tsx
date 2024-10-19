@@ -25,8 +25,8 @@ function PlanSkeleton({ totalCard = 4 }) {
 
             <button
               type="button"
-              className={`cusBtn w-40 h-12 animate-pulse  bg-grayLighter dark:bg-gray-600 rounded-full opacity-80 mb-4 absolute bottom-2`}
-              disabled={true}
+              className="cusBtn w-40 h-12 animate-pulse  bg-grayLighter dark:bg-gray-600 rounded-full opacity-80 mb-4 absolute bottom-2"
+              disabled
             ></button>
           </div>
         </div>

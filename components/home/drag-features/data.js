@@ -812,20 +812,20 @@ export const featureItems = [
       },
     ],
   },
-//   {
-//     id: 7,
-//     categoryId: 6,
-//     title: "Generate",
-//     icon: {
-//       path: "/assets/ai_features/Bookmark.svg",
-//       alt: "Tick",
-//     },
-//     color: {
-//       from: "from-bookmark-orange-0",
-//       to: "to-bookmark-orange-1",
-//     },
-//     cordinate: "md:left-[13.30%] md:top-[41.77%]",
-//   },
+  //   {
+  //     id: 7,
+  //     categoryId: 6,
+  //     title: "Generate",
+  //     icon: {
+  //       path: "/assets/ai_features/Bookmark.svg",
+  //       alt: "Tick",
+  //     },
+  //     color: {
+  //       from: "from-bookmark-orange-0",
+  //       to: "to-bookmark-orange-1",
+  //     },
+  //     cordinate: "md:left-[13.30%] md:top-[41.77%]",
+  //   },
   {
     id: 8,
     categoryId: 6,
@@ -896,15 +896,14 @@ export const featureItems = [
       //   cordinate: "md:left-[84.11%] md:top-[41.13%]",
       // },
       {
-         id: 6,
-         title: "Contacts",
-         icon: {
-           path: "/assets/ai_features/Contacts.svg",
-           alt: "Contacts",
-         },
-         cordinate: "md:left-[84.11%] md:top-[41.13%]",
-
-       },
+        id: 6,
+        title: "Contacts",
+        icon: {
+          path: "/assets/ai_features/Contacts.svg",
+          alt: "Contacts",
+        },
+        cordinate: "md:left-[84.11%] md:top-[41.13%]",
+      },
       {
         id: 7,
         title: "Linkedin Agent",
@@ -933,14 +932,14 @@ export const featureItems = [
       //   cordinate: "md:left-[50%] md:-translate-x-1/2 md:top-[74.52%]",
       // },
       {
-         id: 9,
-         title: "Prospect Scraping",
-         icon: {
-           path: "/assets/ai_features/WebScraping.svg",
-           alt: "Web Scraping",
-         },
-         cordinate: "md:left-[50%] md:-translate-x-1/2 md:top-[70.52%]",
-       },
+        id: 9,
+        title: "Prospect Scraping",
+        icon: {
+          path: "/assets/ai_features/WebScraping.svg",
+          alt: "Web Scraping",
+        },
+        cordinate: "md:left-[50%] md:-translate-x-1/2 md:top-[70.52%]",
+      },
     ],
   },
   {
@@ -1227,14 +1226,14 @@ export const featureItems = [
       //   cordinate: "md:left-[84.11%] md:top-[41.13%]",
       // },
       {
-         id: 7,
-         title: "Social Media Hub",
-         icon: {
-           path: "/assets/ai_features/SocialMediaHub.svg",
-           alt: "Social Media Hub",
-         },
-         cordinate: "md:left-[84.11%] md:top-[41.13%]",
-       },
+        id: 7,
+        title: "Social Media Hub",
+        icon: {
+          path: "/assets/ai_features/SocialMediaHub.svg",
+          alt: "Social Media Hub",
+        },
+        cordinate: "md:left-[84.11%] md:top-[41.13%]",
+      },
       // {
       //   id: 7,
       //   title: "Social Media Hub",
@@ -1346,13 +1345,13 @@ export const featureItems = [
     categoryId: 2,
     title: "Generate",
     icon: {
-            path: "/assets/ai_features/Bookmark.svg",
-            alt: "Tick",
-          },
-          color: {
-            from: "from-bookmark-orange-0",
-            to: "to-bookmark-orange-1",
-          },
+      path: "/assets/ai_features/Bookmark.svg",
+      alt: "Tick",
+    },
+    color: {
+      from: "from-bookmark-orange-0",
+      to: "to-bookmark-orange-1",
+    },
     children: [
       {
         id: 1,
@@ -1471,6 +1470,6 @@ export const featureCategoryData = [
 ];
 
 export const childItems = new Map();
-featureItems.forEach((item) => {
+featureItems.forEach(item => {
   childItems.set(item.id, item.children);
 });

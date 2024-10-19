@@ -3,7 +3,14 @@
 import Motion from "@/components/Motion";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import instance from "@/config/axios.config";
 import { formatDate } from "@/lib/utils";
 import { Contact } from "@/types/contacts";
@@ -35,8 +42,13 @@ export const columns: ColumnDef<Contact>[] = [
     id: "select",
     header: ({ table }) => (
       <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-        onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value: any) =>
+          table.toggleAllPageRowsSelected(!!value)
+        }
         aria-label="Select all"
         className="w-[18px] h-[18px]"
       />
@@ -58,7 +70,13 @@ export const columns: ColumnDef<Contact>[] = [
     cell: ({ row }) => (
       <div className="capitalize flex items-center gap-3 min-w-[240px] max-w-lg">
         {row.original.logo ? (
-          <Image src={row.original.logo} alt="" width={100} height={100} className="h-11 w-11 object-cover rounded-full" />
+          <Image
+            src={row.original.logo}
+            alt=""
+            width={100}
+            height={100}
+            className="h-11 w-11 object-cover rounded-full"
+          />
         ) : (
           <div className="bg-red-100 text-gray-500 w-11 h-11 rounded-full grid place-content-center text-xl border border-white">
             {row.original.name.slice(0, 1)}
@@ -92,7 +110,13 @@ export const columns: ColumnDef<Contact>[] = [
     cell: ({ row }) => (
       <div className="flex gap-3 items-start max-w-2xl">
         <MailIcon size={20} className="text-primary-green w-full max-w-fit" />
-        <span>{row.original.email.length > 0 ? <>{row.original.email.join(", ")}</> : "-"}</span>
+        <span>
+          {row.original.email.length > 0 ? (
+            <>{row.original.email.join(", ")}</>
+          ) : (
+            "-"
+          )}
+        </span>
       </div>
     ),
   },
@@ -108,12 +132,16 @@ export const columns: ColumnDef<Contact>[] = [
   {
     accessorKey: "contact_type",
     header: () => "CONTACT TYPE",
-    cell: ({ row }) => <div className="min-w-[120px]">{row.getValue("contact_type")}</div>,
+    cell: ({ row }) => (
+      <div className="min-w-[120px]">{row.getValue("contact_type")}</div>
+    ),
   },
   {
     accessorKey: "time_zone",
     header: "TIME ZONE",
-    cell: ({ row }) => <div className="min-w-[100px]">{row.getValue("time_zone")}</div>,
+    cell: ({ row }) => (
+      <div className="min-w-[100px]">{row.getValue("time_zone")}</div>
+    ),
   },
 ];
 
@@ -134,7 +162,9 @@ export default function ContactsTable() {
 
   const getContacts = async () => {
     setLoading(true);
-    const response = await instance.get(`/users/api/v1/contacts?page=${pagination.pageIndex}&limit=${pagination.pageSize}`);
+    const response = await instance.get(
+      `/users/api/v1/contacts?page=${pagination.pageIndex}&limit=${pagination.pageSize}`
+    );
     setLoading(false);
     const data = response.data.data.contacts;
 
@@ -187,7 +217,9 @@ export default function ContactsTable() {
   const onRowSelect = setSelectedIds;
   useEffect(() => {
     if (onRowSelect) {
-      const selected = table.getSelectedRowModel().rows.map(({ original }) => original.id);
+      const selected = table
+        .getSelectedRowModel()
+        .rows.map(({ original }) => original.id);
       onRowSelect(selected);
     }
   }, [onRowSelect, rowSelection, table]);
@@ -200,8 +232,11 @@ export default function ContactsTable() {
         onClick={() => table.setPageIndex(i)}
         className={clsx(
           "w-12 h-[45px] rounded-lg mx-1 bg-[#4B465C14] transition-all duration-300",
-          i === table.getState().pagination.pageIndex ? "!bg-primary-green hover:bg-opacity-50 text-white" : "hover:bg-[#4B465C29]"
-        )}>
+          i === table.getState().pagination.pageIndex
+            ? "!bg-primary-green hover:bg-opacity-50 text-white"
+            : "hover:bg-[#4B465C29]"
+        )}
+      >
         {i + 1}
       </button>
     );
@@ -215,22 +250,38 @@ export default function ContactsTable() {
     if (searchQuery.trim() === "") {
       setContacts(contacts);
     } else {
-      setContacts(contacts.filter((contant: any) => contant.name.toLowerCase().includes(searchQuery)));
+      setContacts(
+        contacts.filter((contant: any) =>
+          contant.name.toLowerCase().includes(searchQuery)
+        )
+      );
     }
   }, [searchQuery]);
 
   return (
-    <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion
+      transition={{ duration: 0.2 }}
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+    >
       <div className="w-full">
         <div className="flex justify-between gap-10 items-center mt-5">
           <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
             <Search className="text-gray-500" size={20} />
-            <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" value={searchQuery} onChange={handleSearch} />
+            <input
+              type="search"
+              className="outline-none h-[40px] w-full"
+              placeholder="Search"
+              value={searchQuery}
+              onChange={handleSearch}
+            />
           </div>
 
           <div className="flex justify-center items-center space-x-2">
             <AddContact getContacts={getContacts} />
-            <DeleteContact getContacts={getContacts} selectedIds={selectedIds} />
+            <DeleteContact
+              getContacts={getContacts}
+              selectedIds={selectedIds}
+            />
             {/* <SendSMS contacts={contacts} selectedIds={selectedIds} /> */}
             {/* <SendEmail contacts={contacts} selectedIds={selectedIds} /> */}
             {/* <button className="w-[45px] h-[45px] border border-[#EBEBEB] rounded-lg grid place-content-center p-3 hover:bg-primary-light-gray text-primary-black">
@@ -242,11 +293,18 @@ export default function ContactsTable() {
         <div className="rounded-lg border overflow-hidden mt-5 flex justify-center">
           <Table>
             <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
+              {table.getHeaderGroups().map(headerGroup => (
                 <TableRow key={headerGroup.id} className="bg-[#0347370D]">
-                  {headerGroup.headers.map((header) => {
+                  {headerGroup.headers.map(header => {
                     return (
-                      <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
                     );
                   })}
                 </TableRow>
@@ -255,21 +313,36 @@ export default function ContactsTable() {
             <TableBody>
               {loading ? (
                 <TableRow className="hover:bg-white">
-                  <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-[50vh] text-center font-semibold text-lg hover:bg-white"
+                  >
                     Loading...
                   </TableCell>
                 </TableRow>
               ) : table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="bg-white">
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                table.getRowModel().rows.map(row => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                    className="bg-white"
+                  >
+                    {row.getVisibleCells().map(cell => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
                     ))}
                   </TableRow>
                 ))
               ) : (
                 <TableRow className="hover:bg-white">
-                  <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-[50vh] text-center font-semibold text-lg hover:bg-white"
+                  >
                     No results.
                   </TableCell>
                 </TableRow>
@@ -285,18 +358,20 @@ export default function ContactsTable() {
                 size="sm"
                 className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px]"
                 onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}>
+                disabled={!table.getCanPreviousPage()}
+              >
                 Previous
               </Button>
               <div>
-                <div>{paginationButtons.map((u) => u)}</div>
+                <div>{paginationButtons.map(u => u)}</div>
               </div>
               <Button
                 variant="outline"
                 size="sm"
                 className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px] px-4"
                 onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}>
+                disabled={!table.getCanNextPage()}
+              >
                 Next
               </Button>
             </div>

@@ -22,7 +22,10 @@ export default function MonitorReviewsSection() {
     }
   };
   return (
-    <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion
+      transition={{ duration: 0.2 }}
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+    >
       <div>
         <div className="flex items-center justify-between">
           <div className="w-full max-w-[380px] bg-[#F5F5F5] px-3 py-2 rounded-2xl">
@@ -31,20 +34,27 @@ export default function MonitorReviewsSection() {
                 <div
                   key={index}
                   className={`w-full h-[42px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
-                    selectedTabIndex === index ? "!text-white" : "!text-primary-green"
+                    selectedTabIndex === index
+                      ? "!text-white"
+                      : "!text-primary-green"
                   }`}
                   onClick={() => {
                     const totalTabs = tabs.length;
                     const percentage = (index / totalTabs) * 100;
                     setSelectedTabIndex(index);
                     setTabUnderlineLeft(percentage);
-                  }}>
+                  }}
+                >
                   {tab}
                 </div>
               ))}
               <div
                 className="absolute bottom-0 h-[42px] bg-primary-green custom-transition rounded-lg"
-                style={{ left: `calc(${tabUnderlineLeft}%)`, width: `${100 / tabs.length}%` }}></div>
+                style={{
+                  left: `calc(${tabUnderlineLeft}%)`,
+                  width: `${100 / tabs.length}%`,
+                }}
+              ></div>
             </div>
           </div>
           <div className="flex items-center gap-x-3">
@@ -62,7 +72,10 @@ export default function MonitorReviewsSection() {
 
 const Overview = () => {
   return (
-    <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion
+      transition={{ duration: 0.2 }}
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+    >
       <OverviewGraphs />
     </Motion>
   );
@@ -70,7 +83,10 @@ const Overview = () => {
 
 const Reviews = () => {
   return (
-    <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion
+      transition={{ duration: 0.2 }}
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+    >
       <ReviewsTable />
     </Motion>
   );
@@ -78,7 +94,10 @@ const Reviews = () => {
 
 const Sources = () => {
   return (
-    <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion
+      transition={{ duration: 0.2 }}
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+    >
       <div>Sources</div>
     </Motion>
   );

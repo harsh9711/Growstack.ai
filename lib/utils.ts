@@ -18,24 +18,25 @@ export const isEmptyObject = (obj: object | undefined): boolean => {
 };
 
 export function isMobile() {
-  if (typeof window === 'undefined' || !window.matchMedia) {
+  if (typeof window === "undefined" || !window.matchMedia) {
     return false;
   }
 
-  const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
-  const isSmallScreen = window.matchMedia('(max-width: 768px)').matches;
+  const isTouchDevice = window.matchMedia("(pointer: coarse)").matches;
+  const isSmallScreen = window.matchMedia("(max-width: 600px)").matches;
 
   return isTouchDevice && isSmallScreen;
 }
 
-
-export function getUserFriendlyPlanName(planName: PlanName): string | undefined {
+export function getUserFriendlyPlanName(
+  planName: PlanName
+): string | undefined {
   const userFriendlyPlanNameMap = new Map<PlanName, string>([
-    [PlanName.SOCIAL_PORTAL, 'Social Portal'],
-    [PlanName.AI_STUDIO, 'AI Studio'],
-    [PlanName.AUTOMATION_HUB, 'Automation Hub'],
-    [PlanName.BUSINESS, 'Business'],
-    [PlanName.AI_ESSENTIALS, 'AI Essentials'],
+    [PlanName.SOCIAL_PORTAL, "Social Portal"],
+    [PlanName.AI_STUDIO, "AI Studio"],
+    [PlanName.AUTOMATION_HUB, "Automation Hub"],
+    [PlanName.BUSINESS, "Business"],
+    [PlanName.AI_ESSENTIALS, "AI Essentials"],
   ]);
 
   const userFriendlyPlanName = userFriendlyPlanNameMap.get(planName);
@@ -43,16 +44,33 @@ export function getUserFriendlyPlanName(planName: PlanName): string | undefined 
   return userFriendlyPlanName;
 }
 
-
 export const planIdsMap: Record<PlanName, string[]> = {
-  [PlanName.SOCIAL_PORTAL]: ["grs/creator/monthly_planjh4qViTCP2gsvT", "grs/creator/yearly_planWfodY4MFnK074E"],
-  [PlanName.AI_STUDIO]: ["grs/pro/monthly_plan002mLAqmLKnWAk", "grs/pro/yearly_plan8OT7i48BejFfMI"],
-  [PlanName.AUTOMATION_HUB]: ["grs/advanced_pro/monthly_planIsLCnfld6wkjWB", "grs/advanced_pro/yearly_planlsjArmd2EoVuhr"],
-  [PlanName.BUSINESS]: ["grs/business/monthly_planhsPv4QB1ZZ1vS1", "grs/business/yearly_plannB1eoCa7NOhmfh"],
-  [PlanName.AI_ESSENTIALS]: ["grs/basic_plan", "grs/basic/yearly_planyrwjxt3Jh4i3iU"],
+  [PlanName.SOCIAL_PORTAL]: [
+    "grs/creator/monthly_planjh4qViTCP2gsvT",
+    "grs/creator/yearly_planWfodY4MFnK074E",
+  ],
+  [PlanName.AI_STUDIO]: [
+    "grs/pro/monthly_plan002mLAqmLKnWAk",
+    "grs/pro/yearly_plan8OT7i48BejFfMI",
+  ],
+  [PlanName.AUTOMATION_HUB]: [
+    "grs/advanced_pro/monthly_planIsLCnfld6wkjWB",
+    "grs/advanced_pro/yearly_planlsjArmd2EoVuhr",
+  ],
+  [PlanName.BUSINESS]: [
+    "grs/business/monthly_planhsPv4QB1ZZ1vS1",
+    "grs/business/yearly_plannB1eoCa7NOhmfh",
+  ],
+  [PlanName.AI_ESSENTIALS]: [
+    "grs/basic_plan",
+    "grs/basic/yearly_planyrwjxt3Jh4i3iU",
+  ],
 };
 
-export const hasAccessToRoute = (currentPlanUsage: any, pathname: string): boolean => {
+export const hasAccessToRoute = (
+  currentPlanUsage: any,
+  pathname: string
+): boolean => {
   let routeExistsInMap = false;
 
   for (const feature in featureRouteMap) {
@@ -62,7 +80,7 @@ export const hasAccessToRoute = (currentPlanUsage: any, pathname: string): boole
       let matches = false;
 
       if (route.partialMatch) {
-        const pathRegex = new RegExp(route.path.replace(/:[^\s/]+/g, '[^/]+'));
+        const pathRegex = new RegExp(route.path.replace(/:[^\s/]+/g, "[^/]+"));
         matches = pathRegex.test(pathname);
       } else {
         matches = route.path === pathname;
@@ -71,14 +89,17 @@ export const hasAccessToRoute = (currentPlanUsage: any, pathname: string): boole
       if (matches) {
         routeExistsInMap = true;
 
-
         if (route?.excepts) {
           for (const except of route.excepts) {
-            const ancestorPathRegex = new RegExp(`${except.ancestorRoute}(\\/[^/]+)?$`);
+            const ancestorPathRegex = new RegExp(
+              `${except.ancestorRoute}(\\/[^/]+)?$`
+            );
 
             if (ancestorPathRegex.test(pathname)) {
               for (const exceptPath of except.exceptPath) {
-                const exceptRegex = new RegExp(exceptPath.replace(/:[^\s/]+/g, '[^/]+'));
+                const exceptRegex = new RegExp(
+                  exceptPath.replace(/:[^\s/]+/g, "[^/]+")
+                );
 
                 if (exceptRegex.test(pathname)) {
                   return true;
@@ -87,7 +108,6 @@ export const hasAccessToRoute = (currentPlanUsage: any, pathname: string): boole
             }
           }
         }
-
 
         if (currentPlanUsage[feature]) {
           return true;
@@ -103,7 +123,10 @@ export const hasAccessToRoute = (currentPlanUsage: any, pathname: string): boole
   return false;
 };
 
-export function debounce<T extends (...args: any[]) => any>(fn: T, delay: number = 300) {
+export function debounce<T extends (...args: any[]) => any>(
+  fn: T,
+  delay: number = 300
+) {
   let timeoutId: ReturnType<typeof setTimeout>;
   return function (...args: Parameters<T>) {
     clearTimeout(timeoutId);
@@ -111,11 +134,10 @@ export function debounce<T extends (...args: any[]) => any>(fn: T, delay: number
   };
 }
 
-
 export function parseJsonString(str: string): any {
   try {
     return JSON.parse(str);
   } catch (e) {
-    return '';
+    return "";
   }
 }

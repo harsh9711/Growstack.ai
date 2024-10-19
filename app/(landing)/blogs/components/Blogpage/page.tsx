@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
-import HeroSection from '../HeroSection';
-import { ContentBox } from '../ContentBox';
-import Image from 'next/image';
-import { blogs } from '../../blogs';
-import Link from 'next/link';
+import HeroSection from "../HeroSection";
+import { ContentBox } from "../ContentBox";
+import Image from "next/image";
+import { blogs } from "../../blogs";
+import Link from "next/link";
 
 const Blogpage = () => {
   return (
@@ -28,7 +28,7 @@ const Blogpage = () => {
       <div className="p-4 sm:p-0 max-w-[1240px] mt-10 sm:mt-40 items-center justify-center mx-auto">
         <h1 className="text-2xl sm:text-3xl font-semibold">Related articles</h1>
         {blogs.map((item, index) => (
-          <Link href={"blogs/components/Blogpage"} key={index}>
+          <Link href="blogs/components/Blogpage" key={index}>
             <div className="p-4 sm:p-0 mt-6 sm:mt-10 space-y-4 sm:flex sm:flex-row flex-col gap-4 sm:gap-10 items-center shadow-box-sm bg-white rounded-2xl sm:rounded-3xl border border-[#E8E8E8]">
               <div className="relative w-full sm:w-1/2 flex justify-center items-center">
                 <Image
@@ -51,7 +51,7 @@ const Blogpage = () => {
               <div className="w-full sm:w-1/2 flex flex-col justify-between gap-4 sm:gap-y-4 gap-x-3">
                 <div className="space-y-2 sm:space-y-4">
                   <div
-                    className={`py-2 sm:py-3 px-4 sm:px-5 font-semibold text-[10px] sm:text-[14px] rounded-full max-w-fit`}
+                    className="py-2 sm:py-3 px-4 sm:px-5 font-semibold text-[10px] sm:text-[14px] rounded-full max-w-fit"
                     style={{ backgroundColor: item.tag.theme_color }}
                   >
                     {item.tag.tage_title}

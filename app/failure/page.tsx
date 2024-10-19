@@ -7,7 +7,6 @@ import Image from "next/image";
 import { ALL_ROUTES } from "@/utils/constant";
 import { setCookie } from "cookies-next";
 
-
 const PricingPage: React.FC = () => {
   const [seconds, setSeconds] = useState(5);
   const router = useRouter();
@@ -33,7 +32,7 @@ const PricingPage: React.FC = () => {
     }, [searchParams, router]);
 
     const timer = setInterval(() => {
-      setSeconds((prev) => {
+      setSeconds(prev => {
         if (prev <= 1) {
           clearInterval(timer);
           router.push(targetPage);
@@ -53,7 +52,7 @@ const PricingPage: React.FC = () => {
           className="relative bg-white xl:max-h-[374px] h-full w-full max-w-[599px] mx-4 sm:mx-6 md:mx-8 lg:mx-auto rounded-2xl shadow-lg p-6"
           data-aos="zoom-in"
           data-aos-duration="500"
-          onClick={(e) => e.stopPropagation()}
+          onClick={e => e.stopPropagation()}
         >
           <div
             className="text-center"
@@ -73,7 +72,9 @@ const PricingPage: React.FC = () => {
             </p>
             <div className="mt-6">
               <p className="text-lg text-gray-600">
-                Redirecting to {searchParams.get("isCredit") === "true" ? "app" : "payment"} page in
+                Redirecting to{" "}
+                {searchParams.get("isCredit") === "true" ? "app" : "payment"}{" "}
+                page in
               </p>
               <h3 className="text-4xl font-bold text-red-600">
                 {seconds} seconds

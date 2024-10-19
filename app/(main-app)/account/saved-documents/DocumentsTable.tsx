@@ -40,12 +40,12 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import swal from "sweetalert";
-import { downloadTxt } from "../../app/plan/custom-gpts/new/components/utils/downloadHelpers";
-import { renderToString } from 'react-dom/server';
-import ReactMarkdown from 'react-markdown';
-import rehypeRaw from 'rehype-raw';
+import { downloadTxt } from "../../app/ai-studio/custom-gpts/new/components/utils/downloadHelpers";
+import { renderToString } from "react-dom/server";
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
 import { saveAs } from "file-saver";
-import axios from 'axios';
+import axios from "axios";
 import downloadPdf from "@/utils/downloadPdf";
 interface Document {
   name: string;
@@ -64,7 +64,6 @@ const languageFlags = {
   French: "/assets/flags/france.svg",
   Hindi: "/assets/flags/india.svg",
 };
-
 
 export default function DocumentsTable() {
   const router = useRouter();
@@ -89,31 +88,39 @@ export default function DocumentsTable() {
   };
 
   const handleDownload = (rowData: any) => {
-    let plainTextContent = stripHtmlTags(rowData?.doc_content);
-    if(rowData?.doc_type === "PDF"){
-      downloadPdf(plainTextContent,{language : rowData?.doc_language},rowData?.doc_name);
-    }else if(rowData?.doc_type === "DOC"){
+    const plainTextContent = stripHtmlTags(rowData?.doc_content);
+    if (rowData?.doc_type === "PDF") {
+      downloadPdf(
+        plainTextContent,
+        { language: rowData?.doc_language },
+        rowData?.doc_name
+      );
+    } else if (rowData?.doc_type === "DOC") {
       const docContent = stripHtmlTags(rowData?.doc_content);
       const docBlob = new Blob([docContent], {
         type: "application/msword;charset=utf-8",
       });
       saveAs(docBlob, `${rowData?.doc_name}.doc`);
-    }else if(rowData?.doc_type === "HTML"){
+    } else if (rowData?.doc_type === "HTML") {
       const htmlBlob = new Blob([rowData?.doc_content], {
         type: "text/html;charset=utf-8",
       });
       saveAs(htmlBlob, `${rowData?.doc_name}.html`);
-    }else{
-      downloadTxtFile(rowData)
+    } else {
+      downloadTxtFile(rowData);
     }
-  }
+  };
 
   const downloadTxtFile = (rowData: any) => {
     const markdownContent = (
-      <ReactMarkdown rehypePlugins={[rehypeRaw]}>{rowData.doc_content}</ReactMarkdown>
+      <ReactMarkdown rehypePlugins={[rehypeRaw]}>
+        {rowData.doc_content}
+      </ReactMarkdown>
     );
     //added new empty line after line ends, as similar is showing when downloaded
-    const parsedContent = renderToString(markdownContent).replace(/(<([^>]+)>)/gi, "").replace(/(.)(?=\n|$)/g, "$1\n");
+    const parsedContent = renderToString(markdownContent)
+      .replace(/(<([^>]+)>)/gi, "")
+      .replace(/(.)(?=\n|$)/g, "$1\n");
 
     const blob = new Blob([parsedContent], { type: "text/plain" });
     const url = window.URL.createObjectURL(blob);
@@ -128,7 +135,6 @@ export default function DocumentsTable() {
 
     window.URL.revokeObjectURL(url);
   };
-
 
   const columns: ColumnDef<Document>[] = [
     {
@@ -179,7 +185,7 @@ export default function DocumentsTable() {
               <Image
                 src={
                   languageFlags[
-                  row.getValue("doc_language") as keyof typeof languageFlags
+                    row.getValue("doc_language") as keyof typeof languageFlags
                   ]
                 }
                 alt=""
@@ -210,9 +216,6 @@ export default function DocumentsTable() {
         console.log(row.original);
         return (
           <div className="flex items-center gap-2">
-            {/* <button className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300" onClick={() => handleEdit(row?.original)}>
-              <Edit size={20} className="text-gray-800 cursor-pointer" />
-            </button> */}
             <button
               className="p-1.5 hover:bg-gray-200 rounded-lg transition duration-300"
               onClick={() => handleDeleteDocs(row?.original?._id)}
@@ -300,7 +303,7 @@ export default function DocumentsTable() {
       icon: "warning",
       buttons: ["Cancel", "Delete"],
       dangerMode: true,
-    }).then(async (willDelete) => {
+    }).then(async willDelete => {
       if (willDelete) {
         try {
           const response = await instance.delete(
@@ -315,22 +318,6 @@ export default function DocumentsTable() {
       } else {
       }
     });
-  };
-
-  const handleEdit = (row: any) => {
-    switch (row.doc_type) {
-      case "TEXT":
-        //TODO: remove this static ID
-        return router.push(`/app/plan/ai-templates/668fba4cda6b851455c8caf0`);
-      case "HTML":
-        return router.push(`/app/create/website-builder`);
-      case "VIDEO":
-        return router.push(`/app/plan/text-to-video`);
-      case "IMAGE":
-        return router.push(`/app/create/product-ai`);
-    }
-    dispatch(editDocument(true));
-    dispatch(savedDecument(row));
   };
 
   return (
@@ -360,17 +347,17 @@ export default function DocumentsTable() {
             <div className="bg-white rounded-lg border border-x-0 overflow-hidden mt-5 min-h-[50vh]">
               <Table>
                 <TableHeader>
-                  {table.getHeaderGroups().map((headerGroup) => (
+                  {table.getHeaderGroups().map(headerGroup => (
                     <TableRow key={headerGroup.id} className="bg-[#0347370D]">
-                      {headerGroup.headers.map((header) => {
+                      {headerGroup.headers.map(header => {
                         return (
                           <TableHead key={header.id}>
                             {header.isPlaceholder
                               ? null
                               : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
+                                  header.column.columnDef.header,
+                                  header.getContext()
+                                )}
                           </TableHead>
                         );
                       })}
@@ -379,13 +366,13 @@ export default function DocumentsTable() {
                 </TableHeader>
                 <TableBody>
                   {table.getRowModel().rows?.length ? (
-                    table.getRowModel().rows.map((row) => (
+                    table.getRowModel().rows.map(row => (
                       <TableRow
                         key={row.id}
                         data-state={row.getIsSelected() && "selected"}
                         className="bg-white"
                       >
-                        {row.getVisibleCells().map((cell) => (
+                        {row.getVisibleCells().map(cell => (
                           <TableCell key={cell.id}>
                             {flexRender(
                               cell.column.columnDef.cell,
@@ -421,7 +408,7 @@ export default function DocumentsTable() {
                     Previous
                   </Button>
                   <div>
-                    <div>{paginationButtons.map((u) => u)}</div>
+                    <div>{paginationButtons.map(u => u)}</div>
                   </div>
                   <Button
                     variant="outline"

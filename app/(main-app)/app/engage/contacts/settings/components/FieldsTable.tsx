@@ -3,8 +3,20 @@
 import Motion from "@/components/Motion";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Field } from "@/types/field";
 import {
   ColumnDef,
@@ -31,8 +43,13 @@ export const columns: ColumnDef<Field>[] = [
     id: "select",
     header: ({ table }) => (
       <Checkbox
-        checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && "indeterminate")}
-        onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value: any) =>
+          table.toggleAllPageRowsSelected(!!value)
+        }
         aria-label="Select all"
         className="w-[18px] h-[18px]"
       />
@@ -51,12 +68,20 @@ export const columns: ColumnDef<Field>[] = [
   {
     accessorKey: "name",
     header: () => <div className="uppercase">Field name</div>,
-    cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("name")}</div>,
+    cell: ({ row }) => (
+      <div className="capitalize flex items-center gap-3">
+        {row.getValue("name")}
+      </div>
+    ),
   },
   {
     accessorKey: "object",
     header: () => <div className="uppercase">Object</div>,
-    cell: ({ row }) => <div className="capitalize flex items-center gap-3">{row.getValue("object")}</div>,
+    cell: ({ row }) => (
+      <div className="capitalize flex items-center gap-3">
+        {row.getValue("object")}
+      </div>
+    ),
   },
   {
     accessorKey: "folder",
@@ -140,20 +165,30 @@ export default function FieldsTable() {
         onClick={() => table.setPageIndex(i)}
         className={clsx(
           "w-12 h-[45px] rounded-lg mx-1 bg-[#4B465C14] transition-all duration-300",
-          i === table.getState().pagination.pageIndex ? "!bg-primary-green hover:bg-opacity-50 text-white" : "hover:bg-[#4B465C29]"
-        )}>
+          i === table.getState().pagination.pageIndex
+            ? "!bg-primary-green hover:bg-opacity-50 text-white"
+            : "hover:bg-[#4B465C29]"
+        )}
+      >
         {i + 1}
       </button>
     );
   }
 
   return (
-    <Motion transition={{ duration: 0.2 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+    <Motion
+      transition={{ duration: 0.2 }}
+      variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+    >
       <div className="w-full">
         <div className="flex justify-between gap-10 items-center mt-5">
           <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
             <Search className="text-gray-500" size={20} />
-            <input type="search" className="outline-none h-[40px] w-full" placeholder="Search" />
+            <input
+              type="search"
+              className="outline-none h-[40px] w-full"
+              placeholder="Search"
+            />
           </div>
           <div className="flex items-center gap-3">
             <button className="border border-primary-green text-primary-green px-4 py-2.5 sheen hover:bg-primary-green hover:text-white transition-all duration-300 rounded-lg flex gap-2">
@@ -166,11 +201,18 @@ export default function FieldsTable() {
         <div className="rounded-lg border overflow-hidden mt-5 bg-white min-h-[50vh]">
           <Table>
             <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
+              {table.getHeaderGroups().map(headerGroup => (
                 <TableRow key={headerGroup.id} className="bg-[#0347370D]">
-                  {headerGroup.headers.map((header) => {
+                  {headerGroup.headers.map(header => {
                     return (
-                      <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
                     );
                   })}
                 </TableRow>
@@ -178,16 +220,28 @@ export default function FieldsTable() {
             </TableHeader>
             <TableBody>
               {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="bg-white">
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                table.getRowModel().rows.map(row => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                    className="bg-white"
+                  >
+                    {row.getVisibleCells().map(cell => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
                     ))}
                   </TableRow>
                 ))
               ) : (
                 <TableRow className="hover:bg-white">
-                  <TableCell colSpan={columns.length} className="h-[50vh] text-center font-semibold text-lg hover:bg-white">
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-[50vh] text-center font-semibold text-lg hover:bg-white"
+                  >
                     No results.
                   </TableCell>
                 </TableRow>
@@ -203,18 +257,20 @@ export default function FieldsTable() {
                 size="sm"
                 className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px]"
                 onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}>
+                disabled={!table.getCanPreviousPage()}
+              >
                 Previous
               </Button>
               <div>
-                <div>{paginationButtons.map((u) => u)}</div>
+                <div>{paginationButtons.map(u => u)}</div>
               </div>
               <Button
                 variant="outline"
                 size="sm"
                 className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px] px-4"
                 onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}>
+                disabled={!table.getCanNextPage()}
+              >
                 Next
               </Button>
             </div>

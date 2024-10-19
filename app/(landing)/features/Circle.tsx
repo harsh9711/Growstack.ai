@@ -47,14 +47,18 @@ interface CircleProps {
 
 const Circle: React.FC<CircleProps> = ({ size, animation }) => {
   return (
-    <div className={`absolute flex items-center justify-center rounded-full border ${animation}`} style={{ width: size, height: size }}>
+    <div
+      className={`absolute flex items-center justify-center rounded-full border ${animation}`}
+      style={{ width: size, height: size }}
+    >
       {icons.map((icon, index) => (
         <div
           key={index}
           className="absolute"
           style={{
             transform: `rotate(${(index / icons.length) * 360}deg) translate(${size / 2}px) rotate(${-(index / icons.length) * 360}deg)`,
-          }}>
+          }}
+        >
           {icon}
         </div>
       ))}

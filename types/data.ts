@@ -407,7 +407,8 @@ export const solutionsteams = [
     bgcolor: "#fcf4dd",
     textcolor: "#034737",
     href: "/solutions/supplychain",
-  }, {
+  },
+  {
     id: 9,
     imageUrl: "/solutionsicon/img13.svg",
     name: "Solution by Company Type",
@@ -452,7 +453,8 @@ export const solutionsteams = [
     bgcolor: "#ddedea ",
     textcolor: "#034737",
     href: "/solutions/startup",
-  }, {
+  },
+  {
     id: 14,
     imageUrl: "/solutionsicon/img13.svg",
     name: "Solution by Teams",

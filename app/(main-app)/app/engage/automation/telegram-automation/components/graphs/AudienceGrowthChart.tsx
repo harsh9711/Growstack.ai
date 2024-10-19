@@ -3,10 +3,29 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Filler, Legend } from "chart.js";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Filler,
+  Legend,
+} from "chart.js";
 import { Line } from "react-chartjs-2";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Filler, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Filler,
+  Legend
+);
 
 // Function to generate random data points between a range
 const generateRandomData = (min: number, max: number) => {
@@ -23,13 +42,26 @@ const generateMonthlyData = (points: number, months: number) => {
     //@ts-ignore
     data[monthIndex].push(generateRandomData(0, 3));
   }
-  return data.map((monthData) => {
+  return data.map(monthData => {
     const monthSum = monthData.reduce((sum, value) => sum + value, 0);
     return monthSum / (monthData.length || 1); // Avoid division by zero
   });
 };
 
-const labels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const labels = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
 
 const data = {
   labels,

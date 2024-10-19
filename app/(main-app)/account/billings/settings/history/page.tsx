@@ -95,7 +95,7 @@ const BillingHistorySection = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data.map((item) => (
+                {data.map(item => (
                   <TableRow key={item.plan_id}>
                     <TableCell className="text-[16px] font-medium">
                       {item.payment_id}
@@ -135,7 +135,7 @@ const BillingHistorySection = () => {
       </div>
     </Motion>
   );
-}
+};
 
 interface PlanUsage {
   usage_amount: number;
@@ -218,8 +218,9 @@ const OverViewSection = () => {
         <div className="flex flex-row gap-x-6 items-end">
           <AddCreditDialog />
           <button
-            className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-white border-red-500 border hover:font-semibold hover:border-2 text-red-500 sheen transition-all duration-300 ${cancelLoading ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+            className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-white border-red-500 border hover:font-semibold hover:border-2 text-red-500 sheen transition-all duration-300 ${
+              cancelLoading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
             onClick={handleCancelSubscription}
             disabled={cancelLoading} // Disable button while canceling
           >

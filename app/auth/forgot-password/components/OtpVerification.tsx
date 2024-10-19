@@ -31,7 +31,7 @@ const OtpVerification: React.FC<OtpVerificationProps> = ({
     formState: { errors },
   } = useForm<{ otp: string }>();
 
-  const onSubmit: SubmitHandler<{ otp: string }> = async (data) => {
+  const onSubmit: SubmitHandler<{ otp: string }> = async data => {
     setIsPending(true);
     try {
       const response = await instance.post(
@@ -77,7 +77,7 @@ const OtpVerification: React.FC<OtpVerificationProps> = ({
             <div className="relative group space-y-2 cursor-text w-full flex justify-center">
               <InputOTP
                 maxLength={4}
-                onChange={(value) =>
+                onChange={value =>
                   setValue("otp", value, { shouldValidate: true })
                 }
               >

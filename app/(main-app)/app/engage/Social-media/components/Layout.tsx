@@ -237,7 +237,7 @@ const Layout = () => {
         `${API_URL}/users/api/v1/social-media/comments/${item.id}`
       );
       setSelectedPost(item);
-      let tempData = response?.data?.data?.[selectedPost?.platform];
+      const tempData = response?.data?.data?.[selectedPost?.platform];
       setCommentData(response?.data?.data);
       setSelectedPostComments(tempData);
     } catch (error) {
@@ -248,11 +248,11 @@ const Layout = () => {
 
   const handleGetComments = async () => {
     try {
-      let response = await instance.get(
+      const response = await instance.get(
         `${API_URL}/users/api/v1/social-media/posts/history`
       );
       if (response?.data?.data?.history?.length > 0) {
-        let result: any = [];
+        const result: any = [];
         setHistoryData(response?.data?.data?.history);
         response?.data?.data?.history?.forEach((ele: any) => {
           ele?.platforms?.forEach((platform: any) => {
@@ -272,9 +272,7 @@ const Layout = () => {
         });
         setFilteredData(result);
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
   };
   const sendMessage = async (payload: {}) => {
     try {
@@ -341,9 +339,7 @@ const Layout = () => {
       const response = await instance.get(
         `${API_URL}/users/api/v1/social-media/profile/messages`
       );
-    } catch (error) {
-
-    }
+    } catch (error) {}
   };
 
   const handleDeleteComment = async (eachComment: any) => {
@@ -454,7 +450,7 @@ const Layout = () => {
   };
 
   const toggleMenu = (index: number) => {
-    setVisibleMenuIndex((prevIndex) => (prevIndex === index ? null : index));
+    setVisibleMenuIndex(prevIndex => (prevIndex === index ? null : index));
   };
   const sidebarData: any = [];
   const [filteredData, setFilteredData] = useState(sidebarData);
@@ -612,7 +608,7 @@ const Layout = () => {
                                           width={100}
                                           height={300}
                                           className="rounded-xl border mt-2"
-                                          onError={(e) => {
+                                          onError={e => {
                                             e.currentTarget.src =
                                               "/logo/growstack-mini.png";
                                           }}
@@ -648,9 +644,7 @@ const Layout = () => {
                         </button>
 
                         {visibleMenuIndex === index && (
-                          <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md z-10">
-                           
-                          </div>
+                          <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md z-10"></div>
                         )}
                       </div>
                     </div>
@@ -706,7 +700,7 @@ const Layout = () => {
                 >
                   <ChatMessage
                     message={<>{eachComment?.comment}</>}
-                    imageUrl={"/contact.png"}
+                    imageUrl="/contact.png"
                     title={eachComment?.name}
                     time={`${eachComment?.platform} Post`}
                   />
@@ -741,7 +735,7 @@ const Layout = () => {
                       <div className="fixed inset-0 z-50 flex items-center justify-center">
                         <div
                           className="relative bg-white p-6 rounded-lg shadow-lg"
-                          onClick={(e) => e.stopPropagation()}
+                          onClick={e => e.stopPropagation()}
                         >
                           <button
                             className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
@@ -753,7 +747,7 @@ const Layout = () => {
                           <div className="relative">
                             <textarea
                               value={selectedEditMessage}
-                              onChange={(e) =>
+                              onChange={e =>
                                 setSelectedEditMessage(e.target.value)
                               }
                               className="w-full p-1 border border-gray-300 rounded-md pr-16 resize-none overflow-hidden" // Remove resize handle and hide overflow
@@ -893,7 +887,6 @@ const Layout = () => {
                 <h2 className="font-light text-[10px] text-black text-ellipsis">
                   {selectedPost?.message}
                 </h2>
-                
               </div>
 
               <button

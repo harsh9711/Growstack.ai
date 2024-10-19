@@ -1,10 +1,29 @@
 "use client";
 
 import React, { useMemo } from "react";
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Filler, Legend } from "chart.js";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Filler,
+  Legend,
+} from "chart.js";
 import { Line } from "react-chartjs-2";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Filler, Legend);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Filler,
+  Legend
+);
 
 const options = {
   responsive: true,
@@ -36,8 +55,14 @@ const options = {
 
 const labels: string[] = ["01", "02", "03", "04", "05", "06", "07", "08", "10"];
 
-const generateRandomData = (length: number, min: number, max: number): number[] => {
-  return Array.from({ length }, () => parseFloat((Math.random() * (max - min) + min).toFixed(2)));
+const generateRandomData = (
+  length: number,
+  min: number,
+  max: number
+): number[] => {
+  return Array.from({ length }, () =>
+    parseFloat((Math.random() * (max - min) + min).toFixed(2))
+  );
 };
 
 interface DataSet {
