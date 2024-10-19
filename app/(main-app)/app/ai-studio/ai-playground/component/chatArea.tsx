@@ -11,7 +11,7 @@ import {
 import "@/styles/editor.css";
 import clsx from "clsx";
 import { MoreHorizontal, Plus, Trash2Icon } from "lucide-react";
-import React, { useState, useRef, useEffect, useImperativeHandle } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { llmComparisonModels } from "../../ai-articles/constants/options";
 import { Message } from "../interface/playground";
 import ChatMessages from "./chatMessage";
@@ -86,12 +86,6 @@ const ChatArea = ({
     }
   };
 
-  // const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-  //   if (event.key === "Enter" && !event.shiftKey) {
-  //     event.preventDefault(); // To prevent the default behavior of Enter key
-  //     handleSend();
-  //   }
-  // };
   useEffect(() => {
     if (textareaRef.current) {
       autosize(textareaRef.current);
@@ -118,10 +112,6 @@ const ChatArea = ({
     textarea.style.height = "auto"; // Reset the height to auto
     textarea.style.height = `${textarea.scrollHeight}px`; // Set the height based on scrollHeight
   };
-
-  // const selectedOption = modelData
-  //   .flatMap((provider) => provider.models)
-  //   .find((model) => model.value === selectedModel);
 
   const selectedOption = llmComparisonModels[0].models[0].value;
 
@@ -159,6 +149,7 @@ const ChatArea = ({
                 <SelectGroup>
                   {outputType.map(({ label, value, icon }) => (
                     <SelectItem
+                      showIndicator={false}
                       value={value}
                       key={value}
                       className="pl-2 cursor-pointer"
