@@ -303,6 +303,7 @@ const Layout = ({
     ) {
       if (currentModal.value === "perplexity") {
         setEnableWebAccess(true);
+        setSelectedBrandVoice("");
       }
       setSelectedModel(value);
       return;
@@ -325,6 +326,7 @@ const Layout = ({
 
     if (currentModal.value === "perplexity") {
       setEnableWebAccess(true);
+      setSelectedBrandVoice("");
     }
     setSelectedModel(value);
   };
@@ -341,6 +343,7 @@ const Layout = ({
     } else {
       setEnableWebAccess(true);
       setSelectedModel("perplexity");
+      setSelectedBrandVoice("");
     }
   };
   const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some(
@@ -354,6 +357,17 @@ const Layout = ({
       setSelectedModel("gpt-4o-mini");
     }
   }, []);
+
+  const handleBrandVoiceSelection = (value: string) => {
+    setSelectedBrandVoice(value);
+    if (selectedModel === "perplexity") {
+      if (isBasicPlan) {
+        setSelectedModel("growstack-llm");
+      } else {
+        setSelectedModel("gpt-4o-mini");
+      }
+    }
+  };
 
   return (
     <>
@@ -415,7 +429,7 @@ const Layout = ({
 
           <Select
             value={selectedBrandVoice}
-            onValueChange={setSelectedBrandVoice}
+            onValueChange={handleBrandVoiceSelection}
           >
             <SelectTrigger className="h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4">
               <div className="flex items-center gap-2">

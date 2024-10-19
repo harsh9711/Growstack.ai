@@ -274,6 +274,7 @@ export default function ChatComponent() {
       freeCategories.includes(currentCategory.modelCategory)
     ) {
       if (currentModal.value === "perplexity") {
+        setSelectedBrandVoice("");
         setEnableWebAccess(true);
       } else {
         setEnableWebAccess(false);
@@ -301,6 +302,7 @@ export default function ChatComponent() {
 
     if (currentModal.value === "perplexity") {
       setEnableWebAccess(true);
+      setSelectedBrandVoice("");
     } else {
       setEnableWebAccess(false);
     }
@@ -335,6 +337,7 @@ export default function ChatComponent() {
     } else {
       setEnableWebAccess(true);
       setSelectedModel("perplexity");
+      setSelectedBrandVoice("");
     }
   };
 
@@ -345,6 +348,17 @@ export default function ChatComponent() {
       setSelectedModel("gpt-4o-mini");
     }
   }, []);
+
+  const handleBrandVoiceSelection = (value: string) => {
+    setSelectedBrandVoice(value);
+    if (selectedModel === "perplexity") {
+      if (isBasicPlan) {
+        setSelectedModel("growstack-llm");
+      } else {
+        setSelectedModel("gpt-4o-mini");
+      }
+    }
+  };
 
   return (
     <div
@@ -458,7 +472,7 @@ export default function ChatComponent() {
 
           <Select
             value={selectedBrandVoice}
-            onValueChange={setSelectedBrandVoice}
+            onValueChange={handleBrandVoiceSelection}
           >
             <SelectTrigger className="h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4">
               <div className="flex items-center gap-2">
