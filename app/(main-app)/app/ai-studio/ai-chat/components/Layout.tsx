@@ -347,6 +347,14 @@ const Layout = ({
     val => val === currentPlan?.plan_id
   );
 
+  useEffect(() => {
+    if (isBasicPlan) {
+      setSelectedModel("growstack-llm");
+    } else {
+      setSelectedModel("gpt-4o-mini");
+    }
+  }, []);
+
   return (
     <>
       <div className="flex pt-3 pb-8 w-full items-center justify-between">

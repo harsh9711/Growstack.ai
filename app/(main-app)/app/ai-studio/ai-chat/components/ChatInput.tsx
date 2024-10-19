@@ -1,6 +1,6 @@
-import { MicrophoneIcon, SendIcon2, TrashIcon } from "@/components/svgs";
+/* eslint-disable react/display-name */
+import { SendIcon2 } from "@/components/svgs";
 import autosize from "autosize";
-import Image from "next/image";
 import React, {
   forwardRef,
   useEffect,
@@ -8,7 +8,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-import ToolsDialog from "./ToolsDialog";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
@@ -20,12 +19,9 @@ import { BrandVoice, ChatResponse } from "@/types/common";
 import { parseJsonString, planIdsMap } from "@/lib/utils";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
-import Swal from "sweetalert2";
-import { log } from "console";
 import { getCookie } from "cookies-next";
 import EventSource from "eventsource";
 import { X } from "lucide-react";
-import { strict } from "assert";
 import { ALL_ROUTES } from "@/utils/constant";
 import { PlanName } from "@/types/enums";
 
@@ -92,7 +88,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
     const [newConversationId, setNewConversationId] = useState("");
     const [lastPrompt, setLastPrompt] = useState("");
     const [showSecureChatErrorMsg, setShowSecureChatErrorMsg] = useState(false);
-
+    const [error, setError] = useState(false);
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const { startRecognition, stopRecognition, textToSpeech } =
       useSpeechRecognition(
@@ -128,7 +124,6 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
       if (user_prompt) {
         user_prompt = user_prompt.trim();
       }
-      setIsLoading(true);
       setShowSecureChatErrorMsg(false);
       const prompt = user_prompt || input.trim();
       if (prompt === "") return;
@@ -143,6 +138,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
       if (textareaRef.current) {
         autosize.update(textareaRef.current);
       }
+      setIsLoading(true);
       try {
         setIsAnimating(false);
         setOpen(false);
@@ -221,6 +217,8 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
           toast.error(errorMsg);
         }
         removeMessage();
+        setIsLoading(false);
+      } finally {
         setIsLoading(false);
       }
     };
@@ -747,6 +745,11 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
           <p className="text-destructive mt-3 ml-2 transition duration-500">
             Input contains sensitive or harmful content. Please remove any
             inappropriate material and try again.
+          </p>
+        )}
+        {!input && imageUrl && error && (
+          <p className="text-destructive mt-3 ml-2 transition duration-500">
+            input Field should not be Empty
           </p>
         )}
       </>

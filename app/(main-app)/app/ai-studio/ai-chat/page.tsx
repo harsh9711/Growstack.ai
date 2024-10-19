@@ -1,13 +1,10 @@
 "use client";
 
 import Layout from "./components/Layout";
-import ShareChatDialog from "./components/ShareChatDialog";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { ISidebarItem } from "./interface/chat.interface";
-import { ArrowBack } from "@/components/svgs";
-import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [sidebarItems, setSidebarItems] = useState<ISidebarItem[]>([]);
@@ -31,8 +28,6 @@ export default function Home() {
   useEffect(() => {
     fetchConversations();
   }, []);
-
-  const router = useRouter();
 
   return (
     <div className="flex-1 flex flex-col h-full w-full mt-6">
