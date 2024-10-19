@@ -17,8 +17,8 @@ const links = [
         path: "/ai-marketing-and-sales-app",
       },
       {
-        title: "Text to avatar and AI background",
-        path: "/text-to-avatar-and-ai-background",
+        title: "Text to avatar and AI backdrop",
+        path: "/text-to-avatar-and-ai-backdrop",
       },
       {
         title: "Marketing and sales assistants",

@@ -73,8 +73,8 @@ function Footer() {
                     </Link>
                   </li>
                   <li>
-                    <Link href="/text-to-avatar-and-ai-background">
-                      Text to avatar and AI background
+                    <Link href="/text-to-avatar-and-ai-backdrop">
+                      Text to avatar and AI backdrop
                     </Link>
                   </li>
                   <li>

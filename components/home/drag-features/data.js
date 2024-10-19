@@ -1394,7 +1394,7 @@ export const featureItems = [
       },
       {
         id: 8,
-        title: "AI Background",
+        title: "AI Backdrops",
         icon: {
           path: "/assets/ai_features/CameraStar.svg",
           alt: "Camera Star",
