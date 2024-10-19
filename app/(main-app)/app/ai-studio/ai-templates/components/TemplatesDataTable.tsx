@@ -178,7 +178,7 @@ const TemplatesTable: React.FC<TemplatesTableProps> = ({
   const fetchAssistants = async () => {
     try {
       const response = await instance.get(
-        `${API_URL}/ai/api/v1/chat-template?category=MyAssistants`
+        `${API_URL}/ai/api/v1/chat-template?category=My Templates`
       );
       const data = response.data.data;
       if (data) {

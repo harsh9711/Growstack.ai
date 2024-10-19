@@ -41,27 +41,40 @@ const initialChat: ChatAreaType[] = [
 
 export default function AiPlayground() {
   const [userPrompt, setUserPrompt] = useState<string>("");
-  const [chatAreas, setChatAreas] = useState(initialChat);
+  const [chatAreas, setChatAreas] = useState<ChatAreaType[]>(initialChat);
 
   const [retainedMessage, setRetainedMessage] = useState<string>("");
 
+  const getNextAvailableId = (): number => {
+    const usedIds = chatAreas.map(area => area.id);
+    for (let i = 0; i <= 2; i++) {
+      if (!usedIds.includes(i)) {
+        return i;
+      }
+    }
+    return -1; // This should never happen if we maintain max 3 chat areas
+  };
+
   const addChatArea = () => {
-    if (chatAreas.length > 2) {
-      toast.error("Maximum of Three chats");
+    if (chatAreas.length >= 3) {
+      toast.error("Maximum of 3 chats allowed.");
       return;
     }
-    setChatAreas([
-      ...chatAreas,
-      {
-        id: chatAreas.length,
-        selectedModel: llmComparisonModels[0].models[0].value,
-        provider: llmComparisonModels[0].models[0].provider,
-        conversation: [],
-        awaitingUpdate: false,
-        messages: [],
-        renderConversation: {},
-      },
-    ]);
+    const newId = getNextAvailableId();
+    if (newId === -1) {
+      toast.error("Unable to add new chat area");
+      return;
+    }
+    const newChatArea: ChatAreaType = {
+      id: newId,
+      selectedModel: llmComparisonModels[0].models[0].value,
+      provider: llmComparisonModels[0].models[0].provider,
+      conversation: [],
+      awaitingUpdate: false,
+      messages: [],
+      renderConversation: {},
+    };
+    setChatAreas(prevAreas => [...prevAreas, newChatArea]);
   };
 
   const updateChatAreaModel = (id: number, newModel: string) => {
@@ -87,11 +100,11 @@ export default function AiPlayground() {
   };
 
   const handleDelete = (id: number) => {
-    if (chatAreas.length > 1) {
-      setChatAreas(chatAreas.filter(chatArea => chatArea.id !== id));
-    } else {
-      toast.error("Minimum of One Chat");
+    if (chatAreas.length <= 1) {
+      toast.error("At least 1 chat required.");
+      return;
     }
+    setChatAreas(prevAreas => prevAreas.filter(area => area.id !== id));
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -182,12 +195,12 @@ export default function AiPlayground() {
   };
 
   return (
-    <div className="flex-1 h-full flex flex-col mt-10 w-full overflow-x-auto">
+    <div className="flex-1 h-full flex flex-col mt-10 w-full justify-center overflow-x-auto">
       <form onSubmit={handleSubmit} className="flex-1 h-full flex gap-6 w-full">
         <div className="!bg-white h-full flex flex-col border border-[#E8E8E8] shadow-box md:p-3 lg:p-5 space-y-5">
           <NewChatAlert handleNewChat={() => setChatAreas(initialChat)} />
         </div>
-        <div className="container flex gap-6 flex-1">
+        <div className="container flex gap-6 flex-1 m-0 overflow-x-auto">
           {chatAreas.map(chatArea => (
             <ChatArea
               key={chatArea.id}

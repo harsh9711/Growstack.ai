@@ -19,7 +19,6 @@ app.post("/", (req, res) => {
 
   fs.appendFile("subscribers.txt", `${email}\n`, err => {
     if (err) {
-      console.error("Error writing to file:", err);
       return res.status(500).send("Internal Server Error");
     }
     res.send("Subscription successful");
