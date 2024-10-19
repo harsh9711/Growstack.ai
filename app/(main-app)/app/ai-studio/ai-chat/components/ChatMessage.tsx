@@ -234,9 +234,11 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
                         <p className="font-semibold">{chat.filename}</p>
                       </div>
                     )}
-                    <div className="text-container max-w-5xl bg-primary-green text-white whitespace-pre-wrap py-3 px-5 rounded-xl text-[14.5px] leading-relaxed min-h-11 flex justify-center text-justify">
-                      {textContent}
-                    </div>
+                    {textContent && (
+                      <div className="text-container max-w-5xl bg-primary-green text-white whitespace-pre-wrap py-3 px-5 rounded-xl text-[14.5px] leading-relaxed min-h-11 flex justify-center text-justify">
+                        {textContent}
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div

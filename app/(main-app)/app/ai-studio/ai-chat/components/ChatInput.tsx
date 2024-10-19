@@ -126,7 +126,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
       }
       setShowSecureChatErrorMsg(false);
       const prompt = user_prompt || input.trim();
-      if (prompt === "") return;
+      if (prompt === "" && !(imageUrl || fileUrl)) return;
       setInput("");
       addMessage("user", prompt, false);
       const temp_img = imageUrl;
