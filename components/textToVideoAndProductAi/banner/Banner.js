@@ -15,7 +15,7 @@ function Banner() {
                 <h2 className="vtitle">
                   {" "}
                   <span>Text to avatar &</span> <br />
-                  AI background
+                  AI backdrop
                 </h2>
                 <p>
                   Our innovative AI features seamlessly converts your written

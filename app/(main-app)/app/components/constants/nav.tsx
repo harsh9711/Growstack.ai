@@ -106,7 +106,7 @@ const navLinks: NavLink[] = [
       },
       {
         icon: <ProductAiIcon />,
-        name: "AI background generator ",
+        name: "AI backdrop",
         href: ALL_ROUTES.AI_BACKGROUND_GENERATOR,
       },
       {
