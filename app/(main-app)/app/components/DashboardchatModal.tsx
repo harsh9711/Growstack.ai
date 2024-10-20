@@ -27,7 +27,7 @@ const DashboardChatModal: React.FC<ModalProps> = ({
   >(null);
   const [deleteRequestPending, setDeleteRequestPending] = useState(false);
   const [loading, setLoading] = useState(true);
-
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 1280);
   const fetchConversations = async () => {
     setLoading(true);
     try {
@@ -126,18 +126,29 @@ const DashboardChatModal: React.FC<ModalProps> = ({
       setDeleteRequestPending(false);
     }
   };
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth < 1280);
+    };
 
+    window.addEventListener('resize', handleResize);
+    
+    // Cleanup on unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-start">
+     <div className={`flex items-start justify-start ${isSmallScreen ? 'fixed inset-0 z-50' : ''}`}>
       <div
         className="bg-white pt-4 pb-4 m-4 rounded-3xl border border-[#E8E8E8] w-[320px]"
-        style={{ height: "95%" }}
+        
       >
         <div className="flex justify-between items-center pl-7 pr-7 border-b">
           <h1 className="text-xl font-semibold">AI Chat</h1>
           <button
             onClick={onClose}
-            className="text-gray-500 hover:text-gray-800"
+            className="text-gray-500 hover:text-gray-800 xl:hidden"
           >
             <svg
               width="24"
@@ -216,7 +227,7 @@ const DashboardChatModal: React.FC<ModalProps> = ({
           </div>
         </div>
 
-        <div className="flex-1 max-h-[520px] overflow-y-auto p-5 space-y-4">
+        <div className="flex-1 h-[50vh] overflow-y-auto p-5 space-y-4">
           {loading ? (
             <div
               role="status"
