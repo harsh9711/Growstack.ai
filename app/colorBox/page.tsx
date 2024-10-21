@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -149,17 +150,18 @@ const Capability2 = () => {
                   </div>
                 </div>
               </div>
-          
-            <div className="bg-[#FDDF6E] p-8 rounded-xl shadow-md">
-              <h5 className="text-2xl font-semibold">
-                Discover valuable contacts <br />{" "}
-                <span>with Google web scraping</span>
-              </h5>
-              <p className="text-sm mt-4">
-                Use our Google web scraping tool to identify and collect contact
-                details, enhancing your marketing and outreach efforts.
-              </p>
-            </div>  </div>
+              <div className="bg-[#FDDF6E] p-8 rounded-xl shadow-md">
+                <h5 className="text-2xl font-semibold">
+                  Discover valuable contacts <br />{" "}
+                  <span>with Google web scraping</span>
+                </h5>
+                <p className="text-sm mt-4">
+                  Use our Google web scraping tool to identify and collect
+                  contact details, enhancing your marketing and outreach
+                  efforts.
+                </p>
+              </div>{" "}
+            </div>
           </div>
         </div>
       </div>
