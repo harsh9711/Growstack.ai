@@ -157,18 +157,14 @@ const Animation = () => {
                 {item.name}
               </h2>
               <HoverVideoPlayer
-                className="absolute  left-0 w-full h-full rounded-md sm:rounded-2xl border-none outline-none"
+                className="w-full h-full rounded-md sm:rounded-2xl border-none outline-none"
                 videoSrc={`/landingpage/Box ${item.id}.mp4`}
                 pausedOverlay={
                   <img
                     src={`/landingpage/img${item.id}.svg`}
                     alt=""
                     className="rounded-2xl flex"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "fill", // Ensures the image fits well
-                    }}
+                   
                   />
                 }
                 loadingOverlay={
@@ -205,18 +201,14 @@ const Animation = () => {
                 {item.name}
               </h2>
               <HoverVideoPlayer
-                className="absolute  left-0 w-full h-full rounded-sm sm:rounded-2xl border-none outline-none"
+                className=" w-full h-full rounded-sm sm:rounded-2xl border-none outline-none"
                 videoSrc={`/landingpage/Box ${item.id}.mp4`}
                 pausedOverlay={
                   <img
                     src={`/landingpage/img${item.id}.svg`}
                     alt=""
                     className="rounded-2xl flex"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "fill", // Ensures the image fits well
-                    }}
+                   
                   />
                 }
                 loadingOverlay={

@@ -1165,14 +1165,12 @@ body {
   animation: rotateCounterClockwise 100s linear infinite;
 }
 
-/* Define keyframe animations for border color change */
 
-/* Apply transition and animation styles to the border */
 .border-animate {
   border-width: 1px;
   border-style: solid;
   border-color: transparent;
-  transition: 1s ease-in-out;
+  transition: 1s ease-in-out !important;
 }
 
 @keyframes aiEffect {
