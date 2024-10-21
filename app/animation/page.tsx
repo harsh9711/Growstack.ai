@@ -193,7 +193,7 @@ const Animation = () => {
         >
           <div
             data-aos="fade-left "
-            className={`relative mt-20 flex w-full -translate-x-[300px]   justify-center gap-28 flex-row max-w-[300px] sm:max-w-[800px] h-[74.48px] sm:h-[198.62px] p-4 rounded-[5px] sm:rounded-[20px] `}
+            className={`relative mt-20 flex w-full justify-center gap-28 flex-row max-w-[300px] sm:max-w-[800px] h-[74.48px] sm:h-[198.62px] p-4 rounded-[5px] sm:rounded-[20px] `}
           >
             <div
               className="absolute h-[195.28px] flex sm:h-[275.86px] sm:hover:translate-x-[300px] transition-transform duration-1000 ease-in-out   shadow-lg hover:border-t-8 -translate-y-[60px] p-3.5 w-full max-w-[300px] sm:max-w-[452.41px]  flex-col gap-y-2 bg-white rounded-[5px] sm:rounded-[20px] border-animate"
