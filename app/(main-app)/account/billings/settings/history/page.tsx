@@ -45,7 +45,6 @@ const BillingHistorySection = () => {
           throw new Error("Network response was not ok");
         }
         const result = response.data.data;
-        console.log("r", result);
         setData(result);
       } catch (error: any) {
         setError(error.message);
