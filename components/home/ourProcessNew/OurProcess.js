@@ -32,6 +32,7 @@ const HoverVideo = () => {
 
   return (
     <div
+    className="sm:flex hidden"
       onMouseEnter={playVideo}
       style={{
         width: "100%",
@@ -111,11 +112,11 @@ function OurProcess() {
               </div>
             </div>
             <div>
-              {/* <div className="process" data-aos="flip-up"
+              <div className="process sm:hidden flex" data-aos="flip-up"
             data-aos-easing="ease-in-sine"
             data-aos-duration="1000">
             <img src="/images_growstack/home/process.svg" alt="process" />
-            </div> */}
+            </div>
               {/* <HoverVideoPlayer
                 className="absolute  left-0 w-full h-full rounded-2xl border-none outline-none"
                 loop={false}

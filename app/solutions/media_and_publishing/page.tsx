@@ -12,6 +12,7 @@ import Faq from "./components/Faq";
 import SecondBox from "./components/SecondBox";
 import SixCard from "./components/SixCard";
 import Footer from "@/components/footer/Footer";
+import ButtonCard from "./components/ButtonCard";
 
 const page = () => {
   useEffect(() => {
@@ -49,7 +50,9 @@ const page = () => {
           </div>
           <div className="flex sm:text-start text-center max-w-[1140px] w-full flex-col gap-y-4">
             <h2 className="font-light text-[26px] xl:text-[40px]">
-              <span className="font-bold">Overcome industry challenges with  </span>
+              <span className="font-bold">
+                Overcome industry challenges with{" "}
+              </span>
               AI-driven solutions
             </h2>
           </div>{" "}
@@ -64,17 +67,23 @@ const page = () => {
         <SixCard />
       </section>{" "}
       <section className="sm:p-0 px-6 mx-auto pt-10  sm:pt-32 flex flex-col items-center max-w-[1520px] w-full">
-        <div className="  flex flex-col gap-y-6 items-center sm:items-start">
-          <div className="bg-[#03473714] py-2 px-3.5 flex sm:items-start items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit ">
+        <div className="  flex flex-col gap-y-8 items-center ">
+          <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit ">
             Customer stories
           </div>
-          <div className="flex sm:text-start text-center flex-col gap-y-4">
-            <h2 className="font-light text-[26px] xl:text-[40px]">
-              <span className="font-bold">Beat competition, </span>
-              lower acquisition costs
-            </h2>
+          <div className="flex max-w-[610px] w-full  text-center flex-col  items-center justify-center gap-y-4">
+            <h1 className="text-[26px] xl:text-[40px] w-full gap-2 leading-tight font-semibold  text-black">
+              See Growstack
+              <span className="font-light"> in action! </span>
+            </h1>
+            <p className="sm:text-[18px] text-[16px] font-medium w-full">
+              Interested in how Growstack can transform your media and
+              publishing processes? Schedule a personalized demo with our
+              experts to see our features in action.
+            </p>
           </div>{" "}
-          <AboveFaq />
+          {/* <AboveFaq /> */}
+          <ButtonCard />
         </div>
       </section>
       <section className="items-center sm:px-0 px-6   justify-center flex flex-col  sm:py-20  overflow-hidden ">
