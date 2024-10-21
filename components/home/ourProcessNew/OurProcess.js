@@ -84,7 +84,7 @@ function OurProcess() {
               <div className="lg:flex hidden w-full h-full">
                 <div
                   className="animate"
-                  data-aos="fade-up"
+                  data-aos="fade-in"
                   data-aos-easing="ease-in-sine"
                   data-aos-duration="1000"
                 >
