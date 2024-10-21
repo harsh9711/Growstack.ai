@@ -70,29 +70,23 @@ const Benefits = () => {
         className="flex flex-col sm:flex-row px-6 sm:px-0 gap-10 mt-6 mx-auto"
       >
         <Box
-          firsttext={"Model customization"}
-          secondtext={
-            "Fine-tune models like GPT 4 or Claude 3 to meet specific industry needs."
-          }
-          imgsrc1={"/features/b4.svg"}
+          firsttext="Model customization"
+          secondtext="Fine-tune models like GPT 4 or Claude 3 to meet specific industry needs."
+          imgsrc1="/features/b4.svg"
           data-aos="fade-right"
           data-aos-delay="1900"
         />
         <Box
-          firsttext={"Performance  metrics"}
-          secondtext={
-            "Compare models based on speed, contextual accuracy, and efficiency."
-          }
-          imgsrc1={"/features/b5.svg"}
+          firsttext="Performance  metrics"
+          secondtext="Compare models based on speed, contextual accuracy, and efficiency."
+          imgsrc1="/features/b5.svg"
           data-aos="fade-right"
           data-aos-delay="1800"
         />
         <Box
-          firsttext={"Side-by-side comparison"}
-          secondtext={
-            "Analyze 3 models simultaneously to make an informed decision based on your needs."
-          }
-          imgsrc1={"/features/b6.svg"}
+          firsttext="Side-by-side comparison"
+          secondtext="Analyze 3 models simultaneously to make an informed decision based on your needs."
+          imgsrc1="/features/b6.svg"
           data-aos="fade-right"
           data-aos-delay="2000"
         />

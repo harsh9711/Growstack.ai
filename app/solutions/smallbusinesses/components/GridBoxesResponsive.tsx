@@ -41,7 +41,7 @@ const GridComponentResponsive = () => {
       }
 
       const newTimer = setTimeout(() => {
-        setSelected((prev) => {
+        setSelected(prev => {
           const nextValue = prev === 4 ? 1 : (prev ?? 0) + 1;
           if (nextValue === 1 && prev === 4) {
             setIsTimerActive(false);

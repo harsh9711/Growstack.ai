@@ -60,10 +60,12 @@ export default function MultiPostsTable() {
       icon: "warning",
       buttons: ["Cancel", "Delete"],
       dangerMode: true,
-    }).then(async (willDelete) => {
+    }).then(async willDelete => {
       if (willDelete) {
         try {
-          const response = await instance.delete(`${API_URL}/users/api/v1/social-media/posts/${id}`);
+          const response = await instance.delete(
+            `${API_URL}/users/api/v1/social-media/posts/${id}`
+          );
           if (response.data.success) {
             handleGetPostingLogsData();
           }
@@ -111,12 +113,16 @@ export default function MultiPostsTable() {
     {
       accessorKey: "social_type",
       header: () => <div className="uppercase">Social Type</div>,
-      cell: ({ row }) => <span className="capitalize">{row.getValue("social_type")}</span>,
+      cell: ({ row }) => (
+        <span className="capitalize">{row.getValue("social_type")}</span>
+      ),
     },
     {
       accessorKey: "status",
       header: () => <div className="uppercase">Status</div>,
-      cell: ({ row }) => <span className="capitalize">{row.getValue("status")}</span>,
+      cell: ({ row }) => (
+        <span className="capitalize">{row.getValue("status")}</span>
+      ),
     },
     {
       id: "actions",
@@ -183,7 +189,7 @@ export default function MultiPostsTable() {
           pagination.pageIndex + 1
         }`
       );
-      if(response?.data?.data?.length<1){
+      if (response?.data?.data?.length < 1) {
         Swal.fire({
           title: "Social Media Account Required",
           text: `Please connect your social media account to proceed.`,
@@ -191,8 +197,8 @@ export default function MultiPostsTable() {
           showCancelButton: true,
           confirmButtonText: "Yes, connect now!",
           cancelButtonText: "Cancel",
-          allowOutsideClick: true
-        }).then((result) => {
+          allowOutsideClick: true,
+        }).then(result => {
           if (result.isConfirmed) {
             router.push("/app/publish/scheduler/quick-posting/profiles");
           }
@@ -223,9 +229,9 @@ export default function MultiPostsTable() {
         <div className="rounded-lg border overflow-hidden mt-5 bg-white min-h-[50vh]">
           <Table>
             <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
+              {table.getHeaderGroups().map(headerGroup => (
                 <TableRow key={headerGroup.id} className="bg-[#0347370D]">
-                  {headerGroup.headers.map((header) => {
+                  {headerGroup.headers.map(header => {
                     return (
                       <TableHead key={header.id}>
                         {header.isPlaceholder
@@ -242,13 +248,13 @@ export default function MultiPostsTable() {
             </TableHeader>
             <TableBody>
               {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
+                table.getRowModel().rows.map(row => (
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
                     className="bg-white"
                   >
-                    {row.getVisibleCells().map((cell) => (
+                    {row.getVisibleCells().map(cell => (
                       <TableCell key={cell.id}>
                         {flexRender(
                           cell.column.columnDef.cell,
@@ -284,7 +290,7 @@ export default function MultiPostsTable() {
                 Previous
               </Button>
               <div>
-                <div>{paginationButtons.map((u) => u)}</div>
+                <div>{paginationButtons.map(u => u)}</div>
               </div>
               <Button
                 variant="outline"

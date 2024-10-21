@@ -23,7 +23,7 @@ function Footer() {
             <h3>Ready to see a personalized demo?</h3>
             <div className="btns fbtn">
               <Link href="/demo" className="sheen">
-              Get Demo
+                Get Demo
               </Link>
               <Link href="/auth/register" className="sheen">
                 Get 7-day free trial
@@ -73,8 +73,8 @@ function Footer() {
                     </Link>
                   </li>
                   <li>
-                    <Link href="/text-to-avatar-and-ai-background">
-                      Text to avatar and AI background
+                    <Link href="/text-to-avatar-and-ai-backdrop">
+                      Text to avatar and AI backdrop
                     </Link>
                   </li>
                   <li>

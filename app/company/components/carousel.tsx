@@ -12,19 +12,16 @@ const Carousel = () => {
         {" "}
         <div className=" w-full text-white gap-y-4 flex flex-col items-center justify-center mx-auto">
           <div className="bg-[#ffffff]/10 text-white whitespace-nowrap py-2 px-4 flex items-center gap-3 text-[12px] rounded-full tracking-widest  font-semibold uppercase w-full max-w-[103px] ">
-          Funding
+            Funding
           </div>
 
           <div className="  items-center flex flex-col gap-y-4 justify-center  mx-auto ">
             <h1 className="text-[24px] xl:text-[42px] gap-2 leading-12 flex   items-center justify-center bg-gradient-to-b from-black to-black/30 bg-clip-text ">
-              <span className="font-semibold text-center">
-              Backed by             </span>
-              <span className="font-light text-center">
-              the best  
-              </span>
+              <span className="font-semibold text-center">Backed by </span>
+              <span className="font-light text-center">the best</span>
             </h1>
             <p className="text-[18px] text-white  items-center justify-center text-center max-w-[920px] leading-loose">
-            GrowStack proud to have 100+ founders as investors and supporters
+              GrowStack proud to have 100+ founders as investors and supporters
             </p>{" "}
             <svg
               className="absolute translate-x-64 translate-y-36"
@@ -58,78 +55,77 @@ const Carousel = () => {
               </defs>
             </svg>
           </div>
-        </div>
-          {" "}
-          <div className="flex  ">
-            <Swiper
-              slidesPerView={4.5}
-              spaceBetween={20}
-              autoplay={{
-                delay: 500,
-                disableOnInteraction: false,
-              }}
-              loop={true}
-              speed={5000}
-              modules={[Autoplay]}
-              className="mySwiper"
-              breakpoints={{
-                1400: {
-                  slidesPerView: 3.5,
-                  spaceBetween: 10,
-                },
-                1000: {
-                  slidesPerView: 3,
-                  spaceBetween: 10,
-                },
-                600: {
-                  slidesPerView: 2,
-                  spaceBetween: 10,
-                },
-                0: {
-                  slidesPerView: 1,
-                  spaceBetween: 10,
-                },
-              }}
-            >
-              {companyemployees.map((item, index) => (
-                <SwiperSlide>
-                  <div className="w-full">
-                    <div className="w-full max-w-[268px] items-center flex flex-row justify-between">
-                      <div className="  max-w-[208px] max-h-[209px]  flex flex-col gap-y-4 mb-10 items-start w-full">
-                        <div className="max-h-[80px] ">
-                          {" "}
-                          <Image
-                            src={item.imageUrl}
-                            width={20}
-                            height={20}
-                            className="w-full h-full"
-                            alt="svg"
-                          />
-                        </div>
-                        <h2 className=" whitespace-nowrap text-[28px] font-bold text-white">
-                          {item.name}
-                        </h2>
-                        <h2 className=" whitespace-nowrap text-[18px] font-medium text-white">
-                          {item.role}
-                        </h2>
-                        <div className="max-h-[30px] h-full mb-40">
-                          {" "}
-                          <Image
-                            src={item.imageUrlbox}
-                            width={20}
-                            height={20}
-                            className="w-4 h-4 flex"
-                            alt="svg"
-                          />
-                        </div>
+        </div>{" "}
+        <div className="flex  ">
+          <Swiper
+            slidesPerView={4.5}
+            spaceBetween={20}
+            autoplay={{
+              delay: 500,
+              disableOnInteraction: false,
+            }}
+            loop
+            speed={5000}
+            modules={[Autoplay]}
+            className="mySwiper"
+            breakpoints={{
+              1400: {
+                slidesPerView: 3.5,
+                spaceBetween: 10,
+              },
+              1000: {
+                slidesPerView: 3,
+                spaceBetween: 10,
+              },
+              600: {
+                slidesPerView: 2,
+                spaceBetween: 10,
+              },
+              0: {
+                slidesPerView: 1,
+                spaceBetween: 10,
+              },
+            }}
+          >
+            {companyemployees.map((item, index) => (
+              <SwiperSlide>
+                <div className="w-full">
+                  <div className="w-full max-w-[268px] items-center flex flex-row justify-between">
+                    <div className="  max-w-[208px] max-h-[209px]  flex flex-col gap-y-4 mb-10 items-start w-full">
+                      <div className="max-h-[80px] ">
+                        {" "}
+                        <Image
+                          src={item.imageUrl}
+                          width={20}
+                          height={20}
+                          className="w-full h-full"
+                          alt="svg"
+                        />
                       </div>
-                      <div className="border-white border-1 h-[58px] rotate-180 "></div>
+                      <h2 className=" whitespace-nowrap text-[28px] font-bold text-white">
+                        {item.name}
+                      </h2>
+                      <h2 className=" whitespace-nowrap text-[18px] font-medium text-white">
+                        {item.role}
+                      </h2>
+                      <div className="max-h-[30px] h-full mb-40">
+                        {" "}
+                        <Image
+                          src={item.imageUrlbox}
+                          width={20}
+                          height={20}
+                          className="w-4 h-4 flex"
+                          alt="svg"
+                        />
+                      </div>
                     </div>
+                    <div className="border-white border-1 h-[58px] rotate-180 "></div>
                   </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
       </div>
     </div>
   );

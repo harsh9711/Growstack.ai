@@ -25,12 +25,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 
 const Register = () => {
-  const { isAuthenticated } = useSelector((rootState: RootState) => rootState.auth);
+  const { isAuthenticated } = useSelector(
+    (rootState: RootState) => rootState.auth
+  );
 
   const router = useRouter();
   const dispatch = useDispatch();
   const [isEmailOtpModalOpen, setIsEmailOtpModalOpen] = useState(false);
-  const [otpValue, setOtpValue] = useState('');
+  const [otpValue, setOtpValue] = useState("");
   const [count, setCount] = useState(60);
   const [canResend, setCanResend] = useState(true);
   const [isSendOtpLoading, setIsSendOtpLoading] = useState(false);
@@ -53,15 +55,14 @@ const Register = () => {
         .regex(/[0-9]/, "Password must contain at least one number")
         .regex(/[\W_]/, "Password must contain at least one special character"),
       confirmPassword: z.string(),
-      agreeToTerms: z.boolean().refine((val) => val === true, {
+      agreeToTerms: z.boolean().refine(val => val === true, {
         message: "You must agree to the terms and conditions",
       }),
     })
-    .refine((data) => data.password === data.confirmPassword, {
+    .refine(data => data.password === data.confirmPassword, {
       message: "Passwords don't match",
       path: ["confirmPassword"],
     });
-
 
   const [isPending, setIsPending] = useState(false);
 
@@ -82,7 +83,7 @@ const Register = () => {
     if (isAuthenticated) {
       router.push("/app");
     }
-  }, [isAuthenticated])
+  }, [isAuthenticated]);
 
   const handleRegister = async (token: string) => {
     setIsPending(true);
@@ -92,7 +93,7 @@ const Register = () => {
       const response = await instance.post(API_URL + "/users/api/v1/signup", {
         email,
         password,
-        token
+        token,
       });
       setCookie("token", response.data.data.token, {
         secure: true,
@@ -111,9 +112,15 @@ const Register = () => {
       const currentPlanId = response.data.data.plan_id;
       const expiryDate = new Date(planUsageData?.usage_expiry_date);
 
-      const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some((val) => val === currentPlanId);
+      const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some(
+        val => val === currentPlanId
+      );
 
-      if (isEmptyObject(planUsageData) || expiryDate <= currentDate || isBasicPlan) {
+      if (
+        isEmptyObject(planUsageData) ||
+        expiryDate <= currentDate ||
+        isBasicPlan
+      ) {
         router.push("/Payment");
       } else {
         toast.success("Authorized: Trial is active");
@@ -130,17 +137,20 @@ const Register = () => {
     } finally {
       setIsPending(false);
     }
-  }
+  };
 
   const handleOTPSubmit = async () => {
     try {
       setIsPending(true);
       const { email } = getValues();
 
-      const response = await instance.post(`${API_URL}/users/api/v1/signup/verify`, {
-        email: email,
-        otp: otpValue
-      });
+      const response = await instance.post(
+        `${API_URL}/users/api/v1/signup/verify`,
+        {
+          email: email,
+          otp: otpValue,
+        }
+      );
       if (response.data.success) {
         handleRegister(response.data.data.token);
       }
@@ -156,7 +166,6 @@ const Register = () => {
     }
   };
 
-
   useEffect(() => {
     if (count > 0) {
       const timer = setTimeout(() => {
@@ -165,7 +174,7 @@ const Register = () => {
       return () => clearTimeout(timer);
     } else {
       setCanResend(true);
-      return () => { };
+      return () => {};
     }
   }, [count]);
 
@@ -186,9 +195,12 @@ const Register = () => {
   const sendEmailOTP = async (email: string) => {
     try {
       setIsPending(true);
-      const response = await instance.post(`${API_URL}/users/api/v1/signup/otp`, {
-        email: email
-      });
+      const response = await instance.post(
+        `${API_URL}/users/api/v1/signup/otp`,
+        {
+          email: email,
+        }
+      );
       return response.data.success;
     } catch (error: any) {
       if (error.response) {
@@ -197,17 +209,16 @@ const Register = () => {
         toast.error(error.message);
       }
       console.error("Error fetching user profile:", error);
-    }
-    finally {
+    } finally {
       setIsPending(false);
     }
   };
 
-  const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
+  const onSubmit: SubmitHandler<ValidationSchemaType> = async data => {
     try {
       const response = await sendEmailOTP(getValues().email);
       if (response) {
-        setIsEmailOtpModalOpen(true)
+        setIsEmailOtpModalOpen(true);
       }
     } catch (error: any) {
       if (error.response) {
@@ -219,28 +230,48 @@ const Register = () => {
     }
   };
 
-
   return (
     <main>
       <div className="flex flex-col-reverse xl:flex-row-reverse h-screen overflow-y-auto gap-10">
         <section className="w-full h-full flex justify-center items-center bg-white">
           <div className="w-full max-w-2xl max-h-[900px] h-full p-14 bg-[#F7FAFC] rounded-[30px]">
             <div className="slide-reveal w-full h-full max-w-[460px] mx-auto flex flex-col justify-between items-center md:items-start space-y-10">
-              <Image src={"/logo/growstack.png"} alt="growstack" height={180} width={180} className="max-h-14" />
+              <Image
+                src="/logo/growstack.png"
+                alt="growstack"
+                height={180}
+                width={180}
+                className="max-h-14"
+              />
               <div className="space-y-6 w-full">
                 <div className="space-y-3">
-                  <h1 className="text-3xl font-bold text-center md:text-left">Get started</h1>
-                  <p className="text-[#002030B2] text-base text-center md:text-left">Create your account now.</p>
+                  <h1 className="text-3xl font-bold text-center md:text-left">
+                    Get started
+                  </h1>
+                  <p className="text-[#002030B2] text-base text-center md:text-left">
+                    Create your account now.
+                  </p>
                 </div>
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-7 !mt-7 w-full">
+                <form
+                  onSubmit={handleSubmit(onSubmit)}
+                  className="space-y-7 !mt-7 w-full"
+                >
                   {/* styled input field for email */}
                   <div>
                     <div
                       className={clsx(
                         "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
-                        errors["email"] && "border-rose-600 focus-within:border-rose-600"
-                      )}>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16" fill="none">
+                        errors["email"] &&
+                          "border-rose-600 focus-within:border-rose-600"
+                      )}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
                         <path
                           fillRule="evenodd"
                           clipRule="evenodd"
@@ -258,7 +289,11 @@ const Register = () => {
                         />
                       </div>
                     </div>
-                    {errors.email && <span className="text-rose-600 text-sm">{errors.email?.message}</span>}
+                    {errors.email && (
+                      <span className="text-rose-600 text-sm">
+                        {errors.email?.message}
+                      </span>
+                    )}
                   </div>
 
                   {/* styled input field for password */}
@@ -266,9 +301,17 @@ const Register = () => {
                     <div
                       className={clsx(
                         "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
-                        errors["password"] && "border-rose-600 focus-within:border-rose-600"
-                      )}>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16" fill="none">
+                        errors["password"] &&
+                          "border-rose-600 focus-within:border-rose-600"
+                      )}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
                         <path
                           fillRule="evenodd"
                           clipRule="evenodd"
@@ -282,12 +325,18 @@ const Register = () => {
                           id="password"
                           autoComplete="password"
                           placeholder="Enter your password..."
-                          className={clsx("text-sm peer focus:ring-0 h-[60px] w-full")}
+                          className={clsx(
+                            "text-sm peer focus:ring-0 h-[60px] w-full"
+                          )}
                           {...register("password")}
                         />
                       </div>
                     </div>
-                    {errors.password && <span className="text-rose-600 text-sm">{errors.password?.message}</span>}
+                    {errors.password && (
+                      <span className="text-rose-600 text-sm">
+                        {errors.password?.message}
+                      </span>
+                    )}
                   </div>
 
                   {/* styled input field for password confirmation*/}
@@ -295,9 +344,17 @@ const Register = () => {
                     <div
                       className={clsx(
                         "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
-                        errors["confirmPassword"] && "border-rose-600 focus-within:border-rose-600"
-                      )}>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16" fill="none">
+                        errors["confirmPassword"] &&
+                          "border-rose-600 focus-within:border-rose-600"
+                      )}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                      >
                         <path
                           fillRule="evenodd"
                           clipRule="evenodd"
@@ -311,35 +368,59 @@ const Register = () => {
                           id="confirm-password"
                           autoComplete="confirm-password"
                           placeholder="Confirm password"
-                          className={clsx("text-sm peer focus:ring-0 h-[60px] w-full")}
+                          className={clsx(
+                            "text-sm peer focus:ring-0 h-[60px] w-full"
+                          )}
                           {...register("confirmPassword")}
                         />
                       </div>
                     </div>
-                    {errors.confirmPassword && <span className="text-rose-600 text-sm">{errors.confirmPassword?.message}</span>}
+                    {errors.confirmPassword && (
+                      <span className="text-rose-600 text-sm">
+                        {errors.confirmPassword?.message}
+                      </span>
+                    )}
                   </div>
 
                   <div>
                     <div className="flex items-center space-x-2">
-                      <Checkbox id="agree-to-terms" defaultChecked={false} onCheckedChange={(checked) => setValue("agreeToTerms", Boolean(checked))} />
+                      <Checkbox
+                        id="agree-to-terms"
+                        defaultChecked={false}
+                        onCheckedChange={checked =>
+                          setValue("agreeToTerms", Boolean(checked))
+                        }
+                      />
                       <label
                         htmlFor="agree-to-terms"
-                        className="text-sm font-medium text-[#667085] leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                        className="text-sm font-medium text-[#667085] leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
                         I agree to the{" "}
-                        <Link href="/user-agreements/terms-and-conditions" className="text-primary-green">
+                        <Link
+                          href="/user-agreements/terms-and-conditions"
+                          className="text-primary-green"
+                        >
                           Terms & Conditions
                         </Link>{" "}
                         and{" "}
-                        <Link href="/user-agreements/privacy-policy" className="text-primary-green">
+                        <Link
+                          href="/user-agreements/privacy-policy"
+                          className="text-primary-green"
+                        >
                           Privacy Policy
                         </Link>
                       </label>
                     </div>
-                    {errors.agreeToTerms && <span className="text-rose-600 text-sm">{errors.agreeToTerms.message}</span>}
+                    {errors.agreeToTerms && (
+                      <span className="text-rose-600 text-sm">
+                        {errors.agreeToTerms.message}
+                      </span>
+                    )}
                   </div>
                   <button
                     type="submit"
-                    className="bg-primary-green hover:bg-primary-green/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center">
+                    className="bg-primary-green hover:bg-primary-green/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center"
+                  >
                     {isPending ? <Spinner /> : "Register"}
                   </button>
                 </form>
@@ -352,20 +433,35 @@ const Register = () => {
                 <div className="space-y-3">
                   <Link
                     href={`${API_URL}/users/api/v1/auth/facebook`}
-                    className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021] textDecorationNone">
-                    <Image src="/icons/facebook.svg" alt="" width={20} height={20} />
+                    className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021] textDecorationNone"
+                  >
+                    <Image
+                      src="/icons/facebook.svg"
+                      alt=""
+                      width={20}
+                      height={20}
+                    />
                     Continue with Facebook
                   </Link>
                   <Link
                     href={`${API_URL}/users/api/v1/auth/google`}
-                    className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021] textDecorationNone">
-                    <Image src="/icons/google.svg" alt="" width={20} height={20} />
+                    className="h-[56px] w-full border border-[#D0D5DD] flex justify-center items-center gap-2 px-4 rounded-xl hover:bg-primary-light-gray transition-all outline-none focus:ring focus:ring-[#00203021] textDecorationNone"
+                  >
+                    <Image
+                      src="/icons/google.svg"
+                      alt=""
+                      width={20}
+                      height={20}
+                    />
                     Continue with Google
                   </Link>
                 </div>
                 <p className="text-center text-[#667085]">
                   Already have an account?{" "}
-                  <Link href="/auth/login" className="text-primary-green font-semibold">
+                  <Link
+                    href="/auth/login"
+                    className="text-primary-green font-semibold"
+                  >
                     Login Now
                   </Link>
                 </p>
@@ -380,15 +476,21 @@ const Register = () => {
         </section>
       </div>
       <GlobalModal
-        showCloseButton={true}
-        disableCloseOnOverlayClick={true}
+        showCloseButton
+        disableCloseOnOverlayClick
         open={isEmailOtpModalOpen}
         setOpen={() => {
           setIsEmailOtpModalOpen(false);
         }}
       >
         <div className="flex flex-col items-center justify-center px-6 pt-4 pb-8 gap-6 space-x-6">
-          <Image src={"/logo/growstack.png"} alt="growstack" height={180} width={180} className="max-h-14" />
+          <Image
+            src="/logo/growstack.png"
+            alt="growstack"
+            height={180}
+            width={180}
+            className="max-h-14"
+          />
 
           <div>
             <h3 className="text-center text-[26px] font-semibold">
@@ -399,7 +501,10 @@ const Register = () => {
             </h4>
           </div>
           <p className="text-center text-gray-700 text-sm  px-4">
-            A One-time password has been sent to  <span className="text-primary-green cursor-pointer hover:underline">{getValues("email")}</span>
+            A One-time password has been sent to{" "}
+            <span className="text-primary-green cursor-pointer hover:underline">
+              {getValues("email")}
+            </span>
           </p>
           <div className="flex flex-col w-2/3 items-center justify-between gap-3">
             <OtpInput
@@ -410,23 +515,26 @@ const Register = () => {
             <button
               onClick={handleOTPSubmit}
               type="submit"
-              className="bg-primary-green mt-3 text-sm hover:bg-primary-green/90 text-white h-[40px] w-full rounded-xl flex justify-center items-center">
+              className="bg-primary-green mt-3 text-sm hover:bg-primary-green/90 text-white h-[40px] w-full rounded-xl flex justify-center items-center"
+            >
               {isPending ? <Spinner /> : "Verify"}
             </button>
 
             {canResend ? (
               <div className="text-center text-gray-700 text-sm  px-4">
-                Didn’t get the otp{" "} <button className="text-primary-green cursor-pointer hover:underline"
+                Didn’t get the otp{" "}
+                <button
+                  className="text-primary-green cursor-pointer hover:underline"
                   onClick={resendOtp}
                   disabled={isSendOtpLoading}
                 >
-                  {isSendOtpLoading ? 'sending...' : 'resend'}
+                  {isSendOtpLoading ? "sending..." : "resend"}
                 </button>
               </div>
             ) : (
-              <button className='text-center text-gray-700 text-sm  px-4'>
-                <span className='font-bold'>Send code again</span>
-                {` 00:${count < 10 ? '0' + count : count}`}
+              <button className="text-center text-gray-700 text-sm  px-4">
+                <span className="font-bold">Send code again</span>
+                {` 00:${count < 10 ? "0" + count : count}`}
               </button>
             )}
           </div>
@@ -434,6 +542,6 @@ const Register = () => {
       </GlobalModal>
     </main>
   );
-}
+};
 
 export default withUnAuthGuard(Register);

@@ -1,13 +1,10 @@
 import { FC, useEffect } from "react";
-import {
-  FaFacebookF,
-  FaInstagram,
-  FaLinkedinIn,
-} from "react-icons/fa";
-
+import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 import Image from "next/image";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import { FaXTwitter } from "react-icons/fa6";
+import { toast } from "react-toastify";
+
 const socialMediaIcons = [
   { icon: FaFacebookF, name: "facebook", bgColor: "bg-blue-600" },
   { icon: FaInstagram, name: "instagram", bgColor: "bg-pink-500" },
@@ -20,7 +17,7 @@ interface SocialNavBarProps {
   setOpenAddAcc: (open: boolean) => void;
   selectedIcon: string; // Receiving selectedIcon from the parent
   setSelectedIcon: (name: string) => void; // Function to set selectedIcon in the parent
-  platforms: string[]
+  platforms: string[];
   setOpenModel: (open: boolean) => void;
 }
 
@@ -30,14 +27,14 @@ const SocialNavBar: FC<SocialNavBarProps> = ({
   selectedIcon,
   setSelectedIcon,
   platforms,
-  setOpenModel
+  setOpenModel,
 }) => {
   const handleDialogToggle = () => {
     setOpenAddAcc(true);
   };
 
   useEffect(() => {
-    setSelectedIcon(platforms[0])
+    setSelectedIcon(platforms[0]);
   }, []);
 
   const handleOpenAddAccDialog = () => {
@@ -48,10 +45,19 @@ const SocialNavBar: FC<SocialNavBarProps> = ({
     if (platforms.includes(name.toLowerCase())) {
       setSelectedIcon(name);
     } else {
-      setOpenModel(true)
+      setOpenModel(true);
     }
   };
-
+  useEffect(() => {
+    if (localStorage.getItem("savedArticle")) {
+      setOpenAddAcc(true);
+      if (platforms.includes("linkedin")) {
+        setSelectedIcon("linkedIn");
+      } else {
+        toast.error("linkedIn Account is not Connected");
+      }
+    }
+  }, []);
   return (
     <div
       className="fixed top-20 left-0 right-0 w-[90%] mx-auto flex items-center justify-between p-4 shadow-lg z-50 rounded-l-full rounded-r-full"
@@ -67,7 +73,6 @@ const SocialNavBar: FC<SocialNavBarProps> = ({
             color="black"
           />
           <span className="px-1">Feed view</span>
-
         </button>
       </div>
       <div className="flex items-center space-x-8">
@@ -75,8 +80,9 @@ const SocialNavBar: FC<SocialNavBarProps> = ({
           {socialMediaIcons.map(({ icon: Icon, name, bgColor }) => (
             <div
               key={name}
-              className={`flex items-center justify-center w-12 h-12 rounded-full border border-white bg-white cursor-pointer transition-transform duration-200 ${selectedIcon === name ? "ring-3" : ""
-                } ${selectedIcon === name ? "scale-125" : "hover:scale-110"}`}
+              className={`flex items-center justify-center w-12 h-12 rounded-full border border-white bg-white cursor-pointer transition-transform duration-200 ${
+                selectedIcon === name ? "ring-3" : ""
+              } ${selectedIcon === name ? "scale-125" : "hover:scale-110"}`}
               style={{
                 boxShadow: selectedIcon === name ? "0 0 0 1px #034737" : "none",
               }}
@@ -86,9 +92,6 @@ const SocialNavBar: FC<SocialNavBarProps> = ({
                 <Icon className="text-white hover:opacity-80" size={20} />
               </div>
             </div>
-
-
-
           ))}
         </div>
 
@@ -104,7 +107,9 @@ const SocialNavBar: FC<SocialNavBarProps> = ({
           >
             <span className="text-4xl font-normal">+</span>
           </button>
-          <span className="ml-2 flex items-center font-semibold">Add Account</span>
+          <span className="ml-2 flex items-center font-semibold">
+            Add Account
+          </span>
         </div>
       </div>
 

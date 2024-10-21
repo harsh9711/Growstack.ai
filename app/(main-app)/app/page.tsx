@@ -15,6 +15,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import "@/styles/globals.css";
 import { useRouter } from "next/navigation";
+import { ALL_ROUTES } from "@/utils/constant";
 interface AiApp {
   _id: string;
   "ASSISTANT NAME": string;
@@ -65,8 +66,6 @@ export default function Dashboard() {
     }
   }, [router]);
 
-
-
   useEffect(() => {
     AOS.init({ duration: 1000 });
     AOS.refresh();
@@ -86,10 +85,6 @@ export default function Dashboard() {
       setAiAppsLoading(false);
     }
   };
-
-
-
-
 
   const fetchSocialMediaProfile = async () => {
     try {
@@ -126,11 +121,9 @@ export default function Dashboard() {
     fetchSocialMediaProfile();
   }, []);
 
-
   if (!hasRefreshed) {
     return null;
   }
-
 
   return (
     <main>
@@ -149,155 +142,9 @@ export default function Dashboard() {
             </h1>
           </div>
         </div>
-        <div className="w-full flex flex-col lg:flex-row gap-7 mt-4 h-[95%]" >
-          <div className="w-full lg:w-2/3 space-y-6 " data-aos="fade-left">
+        <div className="w-full mt-4 h-[95%]" >
+          <div className="w-full space-y-6 h-full" data-aos="fade-left">
             <ChatComponent />
-          </div>
-          <div
-            className="w-full lg:w-1/3  min-h-[580px] overflow-y-auto bg-white p-8 rounded-3xl border border-[#E8E8E8] h-full"
-            data-aos="fade-right"
-          >
-            <div className="space-y-3">
-              <h1 className="text-xl font-semibold text-center">
-                Most Used Features
-              </h1>
-              <p className="text-[#6C7275] text-center">
-                Chat with the smartest AI - Experience the power of AI with us
-              </p>
-            </div>
-            <div className="">
-
-              {/* <Link href="/app/plan/ai-chat">
-              <div
-                className="!mt-7 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                data-aos="fade-up"
-              >
-                {/* <div className="flex gap-4 items-center">
-                  <Image
-                    src="/icons/ai-chat.svg"
-                    alt=""
-                    width={60}
-                    height={60}
-                  />
-                  <h2 className="font-medium">AI chat</h2>
-                </div> */}
-              {/* <button className="p-2 hover:bg-[#f2f2f2] rounded-lg transition">
-                  <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
-                </button>
-              </div>
-            </Link> */}
-              <Link href="/app/plan/ai-templates">
-                <div
-                  className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                >
-                  <div className="flex gap-4 items-center">
-                    <Image
-                      className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
-                      src="/icons/ai-templates.svg"
-                      alt=""
-                      width={60}
-                      height={60}
-                    />
-                    <h2 className="font-medium">AI templates </h2>
-                  </div>
-                  <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
-                    <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
-                  </button>
-                </div>
-              </Link>
-              <Link href="/app/plan/ai-assistant">
-                <div
-                  className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                >
-                  <div className="flex gap-4 items-center">
-                    <Image
-                      className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
-                      src="/icons/chatbot.svg"
-                      alt=""
-                      width={60}
-                      height={60}
-                    />
-                    <h2 className="font-medium">AI assistants</h2>
-                  </div>
-                  <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
-                    <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
-                  </button>
-                </div>
-              </Link>
-              <Link href="/app/plan/custom-gpts">
-                <div
-                  className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                >
-                  <div className="flex gap-4 items-center">
-                    <Image
-                      className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
-                      src="/icons/custom-gpts.svg"
-                      alt=""
-                      width={60}
-                      height={60}
-                    />
-                    <h2 className="font-medium">AI custom GPT </h2>
-                  </div>
-                  <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
-                    <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
-                  </button>
-                </div>
-              </Link>
-              <Link href="/app/plan/text-to-video">
-                <div
-                  className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                >
-                  <div className="flex gap-4 items-center">
-                    <Image
-                      className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
-                      src="/icons/media.svg" alt="" width={60} height={60} />
-                    <h2 className="font-medium">Text to avatar </h2>
-                  </div>
-                  <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
-                    <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
-                  </button>
-                </div>
-              </Link>
-              <Link href="/app/create/workflow-builder">
-                <div
-                  className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                >
-                  <div className="flex gap-4 items-center">
-                    <Image
-                      className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
-                      src="/icons/workflow-builder.svg"
-                      alt=""
-                      width={60}
-                      height={60}
-                    />
-                    <h2 className="font-medium">Workflow builder</h2>
-                  </div>
-                  <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
-                    <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
-                  </button>
-                </div>
-              </Link>
-              <Link href="/app/create/ai-articles">
-                <div
-                  className="!mt-4 group bg-white border border-[#E8ECEF] rounded-2xl p-4 flex justify-between items-center cursor-pointer transition duration-300 hover:border-primary-green hover:shadow-xl hover:shadow-[#39bfc7]/10"
-                >
-                  <div className="flex gap-4 items-center">
-                    <Image
-                      className="w-10 h-10 md:w-12 md:h-12 xl:w-14 xl:h-14"
-                      src="/icons/text-generator.svg"
-                      alt=""
-                      width={60}
-                      height={60}
-                    />
-                    <h2 className="font-medium">AI article wizard</h2>
-                  </div>
-                  <button className="p-2 block md:hidden xl:block hover:bg-[#f2f2f2] rounded-lg transition">
-                    <ArrowRight className="text-gray-400 group-hover:text-primary-green transition-all duration-300" />
-                  </button>
-                </div>
-              </Link>
-            </div>
-
           </div>
         </div>
       </div>

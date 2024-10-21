@@ -72,16 +72,15 @@ export const cases = [
   },
 ];
 const Box = () => {
-
-
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-y-10">
       {cases.map((item, index) => (
         <div
           key={index}
           data-aos="fade-up"
-          className={`relative text-black text-start  ${(item.id === 5 || item.id === 6) ? "" : "border-b-2"
-            } flex  p-6 transition-transform duration-500 ease-in-out max-w-[660px] sm:max-h-[358px]  h-full flex-col sm:text-start text-center sm:flex-row gap-6 items-center sm:items-start justify-between group overflow-hidden`}
+          className={`relative text-black text-start  ${
+            item.id === 5 || item.id === 6 ? "" : "border-b-2"
+          } flex  p-6 transition-transform duration-500 ease-in-out max-w-[660px] sm:max-h-[358px]  h-full flex-col sm:text-start text-center sm:flex-row gap-6 items-center sm:items-start justify-between group overflow-hidden`}
         >
           <div className="" data-aos="zoom-in">
             {item.imageUrl}
@@ -129,7 +128,8 @@ const Cases = () => {
           data-aos="fade-right"
         >
           <h1 className="text-[26px] xl:text-[40px] xl:max-w-[500px] gap-2 leading-tight font-semibold sm:!text-left !text-center text-black">
-            Features that elevate your<span className="font-light"> content game </span>
+            Features that elevate your
+            <span className="font-light"> content game </span>
           </h1>
         </div>
         <div>

@@ -32,7 +32,7 @@ const EmailForm: React.FC<EmailFormProps> = ({ onEmailSubmitted }) => {
     resolver: zodResolver(EmailValidationSchema),
   });
 
-  const onSubmit: SubmitHandler<EmailValidationSchemaType> = async (data) => {
+  const onSubmit: SubmitHandler<EmailValidationSchemaType> = async data => {
     setIsPending(true);
     try {
       const validatedData = EmailValidationSchema.parse(data);

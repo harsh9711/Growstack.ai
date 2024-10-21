@@ -49,8 +49,7 @@ const Vision = () => {
 
           <div className="mb-12" data-aos="fade-left">
             <h2 className="text-3xl font-bold mb-4 text-gray-800">
-            Our vision
-
+              Our vision
             </h2>
             <div className="border border-[#E8E8E8] my-8"></div>
 
@@ -74,7 +73,8 @@ const Vision = () => {
                   <strong className="text-[#034737] text-[20px]">
                     Develop cutting-edge technology
                   </strong>{" "}
-                  We pioneer advanced solutions to keep our clients ahead in a rapidly evolving digital landscape.
+                  We pioneer advanced solutions to keep our clients ahead in a
+                  rapidly evolving digital landscape.
                   <div className="border border-[#E8E8E8] mt-2"></div>
                 </p>
               </div>
@@ -99,7 +99,8 @@ const Vision = () => {
                   <strong className="text-[#034737] text-[20px]">
                     Enable automation and efficiency
                   </strong>{" "}
-                  We leverage AI automation to help businesses streamline processes and boost productivity.
+                  We leverage AI automation to help businesses streamline
+                  processes and boost productivity.
                   <div className="border border-[#E8E8E8] mt-2"></div>
                 </p>
               </div>
@@ -122,9 +123,10 @@ const Vision = () => {
                 </div>
                 <p className="text-[16px] text-gray-600 flex flex-col gap-y-4">
                   <strong className="text-[#034737] text-[20px]">
-                  Drive innovation
+                    Drive innovation
                   </strong>{" "}
-                  We drive change and innovation, helping businesses unlock opportunities and lead with transformative ideas.
+                  We drive change and innovation, helping businesses unlock
+                  opportunities and lead with transformative ideas.
                 </p>
               </div>
             </div>

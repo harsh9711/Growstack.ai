@@ -92,58 +92,48 @@ export { default as Llama } from "@/public/svgs/llama.svg";
 export { default as Mistra } from "@/public/svgs/mistral.svg";
 export { default as ArrowBack } from "@/public/svgs/arrow-back.svg";
 export { default as Target } from "@/public/target.svg";
-export { default as TrashIcon } from "@/public/trash.svg"
-export { default as Star } from "@/public/svgs/star.svg"
-export { default as StarIcon } from "@/public/svgs/Path.svg"
-export { default as CopyIcon } from "@/public/copy.svg"
-export { default as Regenerate } from "@/public/Regenerate.svg"
-export { default as VerticalLineIcon } from "@/public/vertical-lineIcon.svg"
-export { default as LoginBackgroundImg } from "@/public/Login-Background.svg"
-export { default as LoginRightImg } from "@/public/register page image.svg"
-export { default as Edit } from "@/public/edit.svg"
-export { default as LogoIcon } from "@/public/svgs/logo.svg"
-export { default as Perplexity } from "@/public/svgs/Vector.svg"
-export {default as SheduleBackground} from "@/public/shedulerbackground.svg"
-export { default as FbIcon} from "@/public/PublishFacebook.svg"
-export { default as InstaIcon} from "@/public/PublishInsta.svg"
-export { default as XIcon} from "@/public/PublishX.svg"
-export { default as TiktokIcon} from "@/public/PublishTiktok.svg"
-export { default as PinterestIcon} from "@/public/PublishPinterest.svg"
-export { default as LinkedinIcon} from "@/public/PublishLinkedin.svg"
-export { default as FlagIcon} from "@/public/Publishflag.svg"
-export { default as GrowstackIcon} from "@/public/PublishGrowstack.svg"
-export { default as BuildingStore} from "@/public/building-store.svg"
-export { default as UserCircle} from "@/public/user-circle.svg"
-export { default as BriefCase} from "@/public/briefcase.svg"
-export { default as BuildingIcon} from "@/public/building.svg"
-export { default as NotesIcon} from "@/public/notes.svg"
-export { default as PlusIcon} from "@/public/plus.svg"
-export { default as RightIcon} from "@/public/right.svg"
-export { default as InfoIcon} from "@/public/info-circle.svg"
-export { default as CrossMark } from "@/public/cross-mark.svg"
-export { default as GenAi } from "@/public/GenAI.svg"
-export { default as InsertImage } from "@/public/img-attach.svg"
-export { default as Gif } from "@/public/gif.svg"
-export { default as ImgVector } from "@/public/img-dir.svg"
-export { default as LinkIcon } from "@/public/link-icon.svg"
-export { default as SmileEmoji } from "@/public/smile-emoji.svg"
-export { default as Clock } from "@/public/clock.svg"
-export { default as CaretDown } from "@/public/caret-down.svg"
-export { default as Calender } from "@/public/calendar-event.svg"
-export { default as Tick } from "@/public/check.svg"
-export { default as ThumbUp } from "@/public/Thumbup.svg"
-export { default as ThumbDown } from "@/public/Thumbdown.svg"
-export { default as Rewrite } from "@/public/pencil.svg"
-export { default as Columns } from "@/public/columns.svg"
-export { default as TwitterIcon } from "@/public/TwitterIcon.svg"
-export { default as UserCircleIcon } from "@/public/UserCircleIcon.svg"
-
-
-
-
-
-
-
-
-
-
+export { default as TrashIcon } from "@/public/trash.svg";
+export { default as Star } from "@/public/svgs/star.svg";
+export { default as StarIcon } from "@/public/svgs/Path.svg";
+export { default as CopyIcon } from "@/public/copy.svg";
+export { default as Regenerate } from "@/public/Regenerate.svg";
+export { default as VerticalLineIcon } from "@/public/vertical-lineIcon.svg";
+export { default as LoginBackgroundImg } from "@/public/Login-Background.svg";
+export { default as LoginRightImg } from "@/public/register page image.svg";
+export { default as Edit } from "@/public/edit.svg";
+export { default as LogoIcon } from "@/public/svgs/logo.svg";
+export { default as Perplexity } from "@/public/svgs/Vector.svg";
+export { default as SheduleBackground } from "@/public/shedulerbackground.svg";
+export { default as FbIcon } from "@/public/PublishFacebook.svg";
+export { default as InstaIcon } from "@/public/PublishInsta.svg";
+export { default as XIcon } from "@/public/PublishX.svg";
+export { default as TiktokIcon } from "@/public/PublishTiktok.svg";
+export { default as PinterestIcon } from "@/public/PublishPinterest.svg";
+export { default as LinkedinIcon } from "@/public/PublishLinkedin.svg";
+export { default as FlagIcon } from "@/public/Publishflag.svg";
+export { default as GrowstackIcon } from "@/public/PublishGrowstack.svg";
+export { default as BuildingStore } from "@/public/building-store.svg";
+export { default as UserCircle } from "@/public/user-circle.svg";
+export { default as BriefCase } from "@/public/briefcase.svg";
+export { default as BuildingIcon } from "@/public/building.svg";
+export { default as NotesIcon } from "@/public/notes.svg";
+export { default as PlusIcon } from "@/public/plus.svg";
+export { default as RightIcon } from "@/public/right.svg";
+export { default as InfoIcon } from "@/public/info-circle.svg";
+export { default as CrossMark } from "@/public/cross-mark.svg";
+export { default as GenAi } from "@/public/GenAI.svg";
+export { default as InsertImage } from "@/public/img-attach.svg";
+export { default as Gif } from "@/public/gif.svg";
+export { default as ImgVector } from "@/public/img-dir.svg";
+export { default as LinkIcon } from "@/public/link-icon.svg";
+export { default as SmileEmoji } from "@/public/smile-emoji.svg";
+export { default as Clock } from "@/public/clock.svg";
+export { default as CaretDown } from "@/public/caret-down.svg";
+export { default as Calender } from "@/public/calendar-event.svg";
+export { default as Tick } from "@/public/check.svg";
+export { default as ThumbUp } from "@/public/Thumbup.svg";
+export { default as ThumbDown } from "@/public/Thumbdown.svg";
+export { default as Rewrite } from "@/public/pencil.svg";
+export { default as Columns } from "@/public/columns.svg";
+export { default as TwitterIcon } from "@/public/TwitterIcon.svg";
+export { default as UserCircleIcon } from "@/public/UserCircleIcon.svg";

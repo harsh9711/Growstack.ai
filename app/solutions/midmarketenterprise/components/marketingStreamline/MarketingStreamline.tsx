@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import './MarketingStreamline.scss';
-import { Autoplay } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import { testimonials, testimonialsdata } from '@/types/data';
-import Image from 'next/image';
+import "./MarketingStreamline.scss";
+import { Autoplay } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import { testimonials, testimonialsdata } from "@/types/data";
+import Image from "next/image";
 
 const MarketingStreamline: React.FC = () => {
   useEffect(() => {
@@ -18,26 +18,28 @@ const MarketingStreamline: React.FC = () => {
       <div className="marketingStreamline">
         <div className="container">
           <div
-            className='title'
+            className="title"
             data-aos="fade-right"
             data-aos-easing="ease-in-sine"
             data-aos-duration="1000"
           >
             <span className="user">Streamline</span>
             <h3 className="text-black font-light text-[24px] xl:text-[42px]">
-              <span className='font-extrabold'>Your ultimate guide to optimizing </span> 
+              <span className="font-extrabold">
+                Your ultimate guide to optimizing{" "}
+              </span>
               business processes with GrowStack
             </h3>
           </div>
         </div>
         <Swiper
-          slidesPerView={3.5}  // Default slides per view
+          slidesPerView={3.5} // Default slides per view
           spaceBetween={10}
           autoplay={{
             delay: 500,
             disableOnInteraction: false,
           }}
-          loop={true}
+          loop
           speed={5000}
           modules={[Autoplay]}
           className="mySwiper"
@@ -60,30 +62,31 @@ const MarketingStreamline: React.FC = () => {
             },
           }}
         >
-  {testimonialsdata.map((item, index) => (
-    <SwiperSlide key={index}>
-      <div className="card">
-      <div className="flex flex-col ">
-                <h1 className="text-[18px] text-black leading-normal font-light multi-line-ellipsis">
+          {testimonialsdata.map((item, index) => (
+            <SwiperSlide key={index}>
+              <div className="card">
+                <div className="flex flex-col ">
+                  <h1 className="text-[18px] text-black leading-normal font-light multi-line-ellipsis">
                     {item.id}
-                  </h1> 
+                  </h1>
                   <Image
                     width={10}
                     height={10}
-                    src={`${item.imageUrl}`} 
+                    src={`${item.imageUrl}`}
                     alt={`Image for ${item.id}`}
-                    className="w-full rounded-full" 
-                  />  
+                    className="w-full rounded-full"
+                  />
                 </div>
-        <h4>{item.name}</h4>
-        <p>{item.role}</p>
-      </div>
-    </SwiperSlide>
-  ))}
+                <h4>{item.name}</h4>
+                <p>{item.role}</p>
+              </div>
+            </SwiperSlide>
+          ))}
         </Swiper>
       </div>
     </React.Fragment>
   );
-}
+};
 
-export default MarketingStreamline;3.5
+export default MarketingStreamline;
+3.5;

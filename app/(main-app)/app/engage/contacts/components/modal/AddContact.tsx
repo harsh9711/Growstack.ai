@@ -1,7 +1,19 @@
 import Spinner from "@/components/Spinner";
 import { PhoneIcon } from "@/components/svgs/icons";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { CirclePlusIcon, Plus, XIcon } from "lucide-react";
@@ -46,7 +58,7 @@ const AddContact = ({ getContacts }: AddContactProps) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setContactData((prevState) => ({
+    setContactData(prevState => ({
       ...prevState,
       [name]: value,
     }));
@@ -55,7 +67,7 @@ const AddContact = ({ getContacts }: AddContactProps) => {
   const handlePhoneChange = (index: number, value: string, country: any) => {
     const newPhones = [...contactData.phones];
     newPhones[index] = { country_code: country.dialCode, number: value };
-    setContactData((prevState) => ({
+    setContactData(prevState => ({
       ...prevState,
       phones: newPhones,
     }));
@@ -64,21 +76,21 @@ const AddContact = ({ getContacts }: AddContactProps) => {
   const handleEmailChange = (index: number, value: string) => {
     const newEmails = [...contactData.emails];
     newEmails[index] = value;
-    setContactData((prevState) => ({
+    setContactData(prevState => ({
       ...prevState,
       emails: newEmails,
     }));
   };
 
   const addEmailField = () => {
-    setContactData((prevState) => ({
+    setContactData(prevState => ({
       ...prevState,
       emails: [...prevState.emails, ""],
     }));
   };
 
   const addPhoneField = () => {
-    setContactData((prevState) => ({
+    setContactData(prevState => ({
       ...prevState,
       phones: [...prevState.phones, { country_code: "", number: "" }],
     }));
@@ -86,7 +98,7 @@ const AddContact = ({ getContacts }: AddContactProps) => {
 
   const removeEmailField = (index: number) => {
     const newEmails = contactData.emails.filter((_, i) => i !== index);
-    setContactData((prevState) => ({
+    setContactData(prevState => ({
       ...prevState,
       emails: newEmails,
     }));
@@ -94,14 +106,14 @@ const AddContact = ({ getContacts }: AddContactProps) => {
 
   const removePhoneField = (index: number) => {
     const newPhones = contactData.phones.filter((_, i) => i !== index);
-    setContactData((prevState) => ({
+    setContactData(prevState => ({
       ...prevState,
       phones: newPhones,
     }));
   };
 
   const handleSelectChange = (name: string, value: string) => {
-    setContactData((prevState) => ({
+    setContactData(prevState => ({
       ...prevState,
       [name]: value,
     }));
@@ -114,9 +126,12 @@ const AddContact = ({ getContacts }: AddContactProps) => {
       formData.append("document", file);
       setFileUpload(true);
       try {
-        const response = await instance.post(`${API_URL}/users/api/v1/file/upload`, formData);
+        const response = await instance.post(
+          `${API_URL}/users/api/v1/file/upload`,
+          formData
+        );
         const fileUrl = response.data.data.fileUrl;
-        setContactData((prevState) => ({
+        setContactData(prevState => ({
           ...prevState,
           logo: fileUrl,
         }));
@@ -134,7 +149,10 @@ const AddContact = ({ getContacts }: AddContactProps) => {
     e.preventDefault();
     try {
       setLoading(true);
-      const response = await instance.post(`${API_URL}/users/api/v1/contacts/add`, contactData);
+      const response = await instance.post(
+        `${API_URL}/users/api/v1/contacts/add`,
+        contactData
+      );
       toast.success(response.data.message);
       resetContactData();
       getContacts();
@@ -176,29 +194,46 @@ const AddContact = ({ getContacts }: AddContactProps) => {
               {fileUpload ? (
                 <Spinner />
               ) : contactData.logo ? (
-                <img src={contactData.logo} alt="Logo" className="w-full h-full object-cover rounded-xl" />
+                <img
+                  src={contactData.logo}
+                  alt="Logo"
+                  className="w-full h-full object-cover rounded-xl"
+                />
               ) : (
                 <PhoneIcon />
               )}
             </div>
             <div>
-              <div className="font-semibold text-[18px] text-header mb-2">Personal Logo</div>
+              <div className="font-semibold text-[18px] text-header mb-2">
+                Personal Logo
+              </div>
               <div className="text-[14px] text-[#3D3D3D] text-opacity-50">
                 The proposed size is 512*512px
                 <br />
                 no bigger than 2.5mb
               </div>
               <div className="mt-5">
-                <input type="file" accept="image/*" onChange={uploadFile} className="hidden" id="upload-logo" name="document" />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={uploadFile}
+                  className="hidden"
+                  id="upload-logo"
+                  name="document"
+                />
                 <label
                   htmlFor="upload-logo"
-                  className="text-[14px] border border-primary-green bg-primary-green text-white px-[20px] py-[6px] rounded-lg mr-[10px] cursor-pointer">
+                  className="text-[14px] border border-primary-green bg-primary-green text-white px-[20px] py-[6px] rounded-lg mr-[10px] cursor-pointer"
+                >
                   Change
                 </label>
                 <button
                   type="button"
-                  onClick={() => setContactData((prevState) => ({ ...prevState, logo: "" }))}
-                  className="text-[14px] bg-white text-red-500 border border-red-500 px-[20px] py-[6px] rounded-lg">
+                  onClick={() =>
+                    setContactData(prevState => ({ ...prevState, logo: "" }))
+                  }
+                  className="text-[14px] bg-white text-red-500 border border-red-500 px-[20px] py-[6px] rounded-lg"
+                >
                   Reset
                 </button>
               </div>
@@ -214,7 +249,7 @@ const AddContact = ({ getContacts }: AddContactProps) => {
                 onChange={handleChange}
                 name="first_name"
                 value={contactData.first_name}
-                required={true}
+                required
               />
             </div>
             <div className="flex-1">
@@ -226,26 +261,33 @@ const AddContact = ({ getContacts }: AddContactProps) => {
                 onChange={handleChange}
                 name="last_name"
                 value={contactData.last_name}
-                required={true}
+                required
               />
             </div>
           </div>
           <div className="mt-6">
             <div className="text-[14px] mb-2">Email</div>
             {contactData.emails.map((email, index) => (
-              <div className="mb-2 w-full rounded-xl bg-[#F2F2F2] items-center flex" key={index}>
+              <div
+                className="mb-2 w-full rounded-xl bg-[#F2F2F2] items-center flex"
+                key={index}
+              >
                 <input
                   type="text"
                   placeholder="Add email"
                   className="w-full p-3 bg-transparent h-[50px]"
-                  onChange={(e) => handleEmailChange(index, e.target.value)}
+                  onChange={e => handleEmailChange(index, e.target.value)}
                   name="email"
                   value={email}
-                  required={true}
+                  required
                 />
                 {contactData.emails.length > 1 && index !== 0 && (
                   <div className="flex justify-end">
-                    <button type="button" onClick={() => removeEmailField(index)} className="bg-white p-1 rounded-xl mr-2">
+                    <button
+                      type="button"
+                      onClick={() => removeEmailField(index)}
+                      className="bg-white p-1 rounded-xl mr-2"
+                    >
                       <XIcon size={20} className="text-rose-500" />
                     </button>
                   </div>
@@ -256,7 +298,8 @@ const AddContact = ({ getContacts }: AddContactProps) => {
               <button
                 type="button"
                 onClick={addEmailField}
-                className="flex gap-1 items-center justify-center text-primary-green bg-primary-green/10 rounded-lg text-sm py-1.5 px-2">
+                className="flex gap-1 items-center justify-center text-primary-green bg-primary-green/10 rounded-lg text-sm py-1.5 px-2"
+              >
                 <Plus size={20} />
                 Add another email
               </button>
@@ -265,17 +308,26 @@ const AddContact = ({ getContacts }: AddContactProps) => {
           <div className="mt-5">
             <div className="text-[14px] mb-2">Phone</div>
             {contactData.phones.map((phone, index) => (
-              <div className="mb-2 w-full rounded-xl bg-[#F2F2F2] items-center flex p-1" key={index}>
+              <div
+                className="mb-2 w-full rounded-xl bg-[#F2F2F2] items-center flex p-1"
+                key={index}
+              >
                 <PhoneInput
-                  country={"us"}
+                  country="us"
                   inputClass="w-full p-3 bg-transparent h-[50px]"
                   containerClass="w-full"
-                  onChange={(value, country) => handlePhoneChange(index, value, country)}
+                  onChange={(value, country) =>
+                    handlePhoneChange(index, value, country)
+                  }
                   value={phone.number}
                 />
                 {contactData.phones.length > 1 && index !== 0 && (
                   <div className="flex justify-end">
-                    <button type="button" onClick={() => removePhoneField(index)} className="bg-white p-1 rounded-xl mr-2">
+                    <button
+                      type="button"
+                      onClick={() => removePhoneField(index)}
+                      className="bg-white p-1 rounded-xl mr-2"
+                    >
                       <XIcon size={20} className="text-rose-500" />
                     </button>
                   </div>
@@ -286,7 +338,8 @@ const AddContact = ({ getContacts }: AddContactProps) => {
               <button
                 type="button"
                 onClick={addPhoneField}
-                className="flex gap-1 items-center justify-center text-primary-green bg-primary-green/10 rounded-lg text-sm py-1.5 px-2">
+                className="flex gap-1 items-center justify-center text-primary-green bg-primary-green/10 rounded-lg text-sm py-1.5 px-2"
+              >
                 <Plus size={20} />
                 Add another phone number
               </button>
@@ -298,7 +351,9 @@ const AddContact = ({ getContacts }: AddContactProps) => {
               label="Choose one"
               items={["Lead", "customer"]}
               value={contactData.contact_type}
-              onChange={(value: any) => handleSelectChange("contact_type", value)}
+              onChange={(value: any) =>
+                handleSelectChange("contact_type", value)
+              }
             />
           </div>
           <div className="mt-6">
@@ -314,7 +369,8 @@ const AddContact = ({ getContacts }: AddContactProps) => {
             <button
               disabled={loading || fileUpload}
               type="submit"
-              className="text-[14px] w-[100px] h-12 bg-primary-green text-white rounded-xl flex justify-center items-center">
+              className="text-[14px] w-[100px] h-12 bg-primary-green text-white rounded-xl flex justify-center items-center"
+            >
               {loading ? <Spinner /> : "Save"}
             </button>
           </div>

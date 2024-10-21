@@ -26,8 +26,9 @@ const MarketingStreamline: React.FC = () => {
             <span className="user">Streamline</span>
             <h3 className="text-black gap-2 mt-4 flex flex-col leading-10  font-light text-[26px] 2xl:text-[40px]">
               {" "}
-              <span className="font-extrabold xl:whitespace-nowrap">Streamline your entire marketing process</span>
-              
+              <span className="font-extrabold xl:whitespace-nowrap">
+                Streamline your entire marketing process
+              </span>
               from to execution and beyond
             </h3>
           </div>
@@ -39,7 +40,7 @@ const MarketingStreamline: React.FC = () => {
             delay: 500,
             disableOnInteraction: false,
           }}
-          loop={true}
+          loop
           speed={5000}
           modules={[Autoplay]}
           className="mySwiper"

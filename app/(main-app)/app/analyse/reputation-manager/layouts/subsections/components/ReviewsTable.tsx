@@ -1,10 +1,28 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import RatingStars from "@/components/ui/rating";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Review } from "@/types/reviews";
 import {
   ColumnDef,
@@ -50,7 +68,9 @@ export const columns: ColumnDef<Review>[] = [
     cell: ({ row }) => (
       <div className="flex items-center gap-1">
         <RatingStars rating={row.getValue("rating")} />
-        <span className="ml-2 text-[15px] font-medium">{row.getValue("rating")}</span>
+        <span className="ml-2 text-[15px] font-medium">
+          {row.getValue("rating")}
+        </span>
       </div>
     ),
   },
@@ -60,7 +80,9 @@ export const columns: ColumnDef<Review>[] = [
     cell: ({ row }) => (
       <div className="space-y-1">
         <p>{row.getValue("review")}</p>
-        <span className="text-xs text-primary-black text-opacity-50">Reviewer: {row.original.reviewer}</span>
+        <span className="text-xs text-primary-black text-opacity-50">
+          Reviewer: {row.original.reviewer}
+        </span>
       </div>
     ),
   },
@@ -68,14 +90,21 @@ export const columns: ColumnDef<Review>[] = [
     accessorKey: "status",
     header: () => "Status",
     cell: ({ row }) => {
-      const status = row.getValue("status") as "pending" | "approved" | "rejected";
+      const status = row.getValue("status") as
+        | "pending"
+        | "approved"
+        | "rejected";
       const statusClasses = {
         pending: "text-yellow-500",
         approved: "text-green-500",
         rejected: "text-red-500",
       };
 
-      return <div className={`text-left font-medium ${statusClasses[status] || ""}`}>{status}</div>;
+      return (
+        <div className={`text-left font-medium ${statusClasses[status] || ""}`}>
+          {status}
+        </div>
+      );
     },
   },
   {
@@ -127,8 +156,11 @@ export default function ReviewsTable() {
         onClick={() => table.setPageIndex(i)}
         className={clsx(
           "w-12 h-[45px] rounded-lg mx-1 bg-[#4B465C14] transition-all duration-300",
-          i === table.getState().pagination.pageIndex ? "!bg-primary-green hover:bg-opacity-50 text-white" : "hover:bg-[#4B465C29]"
-        )}>
+          i === table.getState().pagination.pageIndex
+            ? "!bg-primary-green hover:bg-opacity-50 text-white"
+            : "hover:bg-[#4B465C29]"
+        )}
+      >
         {i + 1}
       </button>
     );
@@ -140,10 +172,11 @@ export default function ReviewsTable() {
         <h1 className="text-xl font-semibold">Reviews</h1>
         <div className="flex items-center justify-end py-4 gap-2">
           <Select
-            onValueChange={(value) => {
+            onValueChange={value => {
               if (value === "All Sources") return table.resetColumnFilters();
               table.getColumn("source")?.setFilterValue(value);
-            }}>
+            }}
+          >
             <SelectTrigger className="w-full h-12 rounded-lg max-w-[132px] border border-primary-green bg-white text-primary-green">
               <SelectValue placeholder="All Sources" />
             </SelectTrigger>
@@ -157,7 +190,10 @@ export default function ReviewsTable() {
             </SelectContent>
           </Select>
           <DropdownMenu>
-            <DropdownMenuTrigger asChild className="w-full h-12 rounded-lg max-w-[132px] border border-primary-green bg-white text-primary-green">
+            <DropdownMenuTrigger
+              asChild
+              className="w-full h-12 rounded-lg max-w-[132px] border border-primary-green bg-white text-primary-green"
+            >
               <Button variant="outline" className="px-2 font-normal">
                 Columns <ChevronDown className="ml-4 h-4 w-4 opacity-50" />
               </Button>
@@ -165,14 +201,17 @@ export default function ReviewsTable() {
             <DropdownMenuContent align="end">
               {table
                 .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
+                .filter(column => column.getCanHide())
+                .map(column => {
                   return (
                     <DropdownMenuCheckboxItem
                       key={column.id}
                       className="capitalize"
                       checked={column.getIsVisible()}
-                      onCheckedChange={(value) => column.toggleVisibility(!!value)}>
+                      onCheckedChange={value =>
+                        column.toggleVisibility(!!value)
+                      }
+                    >
                       {column.id}
                     </DropdownMenuCheckboxItem>
                   );
@@ -205,26 +244,50 @@ export default function ReviewsTable() {
       <div className="rounded-2xl border overflow-hidden">
         <Table>
           <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="bg-[#0347370D] rounded-t-2xl">
-                {headerGroup.headers.map((header) => {
-                  return <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>;
+            {table.getHeaderGroups().map(headerGroup => (
+              <TableRow
+                key={headerGroup.id}
+                className="bg-[#0347370D] rounded-t-2xl"
+              >
+                {headerGroup.headers.map(header => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
                 })}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="bg-white">
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+              table.getRowModel().rows.map(row => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  className="bg-white"
+                >
+                  {row.getVisibleCells().map(cell => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow className="hover:bg-white">
-                <TableCell colSpan={columns.length} className="h-24 text-center font-semibold text-lg hover:bg-white">
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center font-semibold text-lg hover:bg-white"
+                >
                   No results.
                 </TableCell>
               </TableRow>
@@ -240,18 +303,20 @@ export default function ReviewsTable() {
               size="sm"
               className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px]"
               onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}>
+              disabled={!table.getCanPreviousPage()}
+            >
               Previous
             </Button>
             <div>
-              <div>{paginationButtons.map((u) => u)}</div>
+              <div>{paginationButtons.map(u => u)}</div>
             </div>
             <Button
               variant="outline"
               size="sm"
               className="bg-[#4B465C14] hover:bg-[#4B465C29] border-none h-[45px] px-4"
               onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}>
+              disabled={!table.getCanNextPage()}
+            >
               Next
             </Button>
           </div>

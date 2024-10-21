@@ -10,20 +10,20 @@ import SocialInteraction from "@/components/socialPlannerHub/socialInteraction/S
 import React from "react";
 
 function Page() {
-    return (
-        <React.Fragment>
-            <div className='clrNav'>
-                <Navbar logoUrl='/images/growhite.svg' logoAlt='Custom Logo' />
-                <Banner />
-                {/* <PlannerSolution /> */}
-                <Partnership />
-                <SocialInteraction />
-                <Schedule />
-                <Faqs />
-                <Footer />
-            </div>
-        </React.Fragment>
-    );
+  return (
+    <React.Fragment>
+      <div className="clrNav">
+        <Navbar logoUrl="/images/growhite.svg" logoAlt="Custom Logo" />
+        <Banner />
+        {/* <PlannerSolution /> */}
+        <Partnership />
+        <SocialInteraction />
+        <Schedule />
+        <Faqs />
+        <Footer />
+      </div>
+    </React.Fragment>
+  );
 }
 
 export default Page;

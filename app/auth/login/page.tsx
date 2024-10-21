@@ -18,14 +18,16 @@ import { useDispatch } from "react-redux";
 import { login } from "@/lib/features/auth/auth.slice";
 import { setCookie } from "cookies-next";
 import { useSearchParams } from "next/navigation";
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { LoginBackgroundImg, LoginRightImg } from "@/components/svgs";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import withUnAuthGuard from "@/components/guard/unAuthGuard";
 
 const Login = () => {
-  const { isAuthenticated } = useSelector((rootState: RootState) => rootState.auth);
+  const { isAuthenticated } = useSelector(
+    (rootState: RootState) => rootState.auth
+  );
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -52,7 +54,7 @@ const Login = () => {
     if (isAuthenticated) {
       router.push("/app");
     }
-  }, [isAuthenticated])
+  }, [isAuthenticated]);
 
   const {
     watch,
@@ -64,7 +66,7 @@ const Login = () => {
     resolver: zodResolver(ValidationSchema),
   });
 
-  const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
+  const onSubmit: SubmitHandler<ValidationSchemaType> = async data => {
     setIsPending(true);
     try {
       const validatedData = ValidationSchema.parse(data);
@@ -126,7 +128,7 @@ const Login = () => {
           <div className="w-full max-w-2xl max-h-[840px] h-full p-14 bg-[#F7FAFC] rounded-[30px]">
             <div className="slide-reveal w-full h-full max-w-[460px] mx-auto flex flex-col justify-between items-center md:items-start space-y-10">
               <Image
-                src={"/logo/growstack.png"}
+                src="/logo/growstack.png"
                 alt="growstack"
                 height={180}
                 width={180}
@@ -151,7 +153,7 @@ const Login = () => {
                       className={clsx(
                         "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
                         errors["email"] &&
-                        "border-rose-600 focus-within:border-rose-600"
+                          "border-rose-600 focus-within:border-rose-600"
                       )}
                     >
                       <svg
@@ -191,7 +193,7 @@ const Login = () => {
                       className={clsx(
                         "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
                         errors["password"] &&
-                        "border-rose-600 focus-within:border-rose-600"
+                          "border-rose-600 focus-within:border-rose-600"
                       )}
                     >
                       <svg
@@ -219,13 +221,12 @@ const Login = () => {
                           )}
                           {...register("password")}
                         />
-                        <span style={{ marginLeft: "20px", opacity: "0.6" }}
+                        <span
+                          style={{ marginLeft: "20px", opacity: "0.6" }}
                           onClick={togglePasswordVisibility}
                           className="absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer"
                         >
-                          {passwordVisible ? (
-                            <FaEye />) : (
-                            <FaEyeSlash />)}
+                          {passwordVisible ? <FaEye /> : <FaEyeSlash />}
                         </span>
                       </div>
                     </div>
@@ -243,7 +244,8 @@ const Login = () => {
                         checked={watch("remember_me")}
                         onCheckedChange={() => {
                           setValue("remember_me", !watch("remember_me"));
-                        }} />
+                        }}
+                      />
                       <label
                         htmlFor="remember-me"
                         className="text-sm font-medium text-[#667085] leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -313,16 +315,20 @@ const Login = () => {
         </section>
         <section className="w-full flex flex-col justify-center items-center p-5 py-12 md:py-20 gap-20 bg-[#F7FAFC] rounded-l-[60px]">
           <div className="relative">
-            <h1 className="absolute text-2xl font-semibold top-10 " style={{ marginLeft: "18.5rem" }}>Unlock the Power of AI</h1>
+            <h1
+              className="absolute text-2xl font-semibold top-10 "
+              style={{ marginLeft: "18.5rem" }}
+            >
+              Unlock the Power of AI
+            </h1>
             <div className="scale-[0.6] md:scale-100">
               <LoginRightImg />
             </div>
-
           </div>
         </section>
       </div>
     </motion.main>
   );
-}
+};
 
 export default withUnAuthGuard(Login);

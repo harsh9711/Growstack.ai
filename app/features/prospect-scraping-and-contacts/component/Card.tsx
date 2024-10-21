@@ -18,8 +18,8 @@ const RectangleCard: React.FC<RectangleCardProps> = ({
   const sectionRef = useRef(null);
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             setIsVisible(true);
           } else {
@@ -43,7 +43,6 @@ const RectangleCard: React.FC<RectangleCardProps> = ({
       className={`bg-[#F9F9F9] shadow-xl mb-60 max-w-[1240px] 2xl:translate-x-0 xl:translate-x-60 w-full mx-auto relative py-20 h-full rounded-[20px] container-bg ${
         isVisible ? "container-bg-animate" : ""
       }`}
-
       ref={sectionRef}
     >
       <div className="2xl:max-w-[988px] xl:max-w-[605px] relative w-full flex flex-row justify-end items-center">
@@ -58,7 +57,6 @@ const RectangleCard: React.FC<RectangleCardProps> = ({
             className={`sm:text-[28px] text-[16px] font-semibold  ${
               isVisible ? "text-fade appear-with-delay" : "text-fade"
             }`}
-
           >
             {firsttext}
           </h2>
@@ -66,7 +64,6 @@ const RectangleCard: React.FC<RectangleCardProps> = ({
             className={`sm:text-[16px] text-[12px] font-medium text-[#5B5D60]  ${
               isVisible ? "text-fade appear-with-delay" : "text-fade"
             }`}
-
           >
             {secondtext}
           </p>
@@ -85,8 +82,8 @@ const RectangleCardRight: React.FC<RectangleCardProps> = ({
   const sectionRef = useRef(null);
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             setIsVisible(true);
           } else {
@@ -107,8 +104,9 @@ const RectangleCardRight: React.FC<RectangleCardProps> = ({
   }, []);
   return (
     <div
-      className={`bg-[#F9F9F9] mb-60 max-w-[1240px] 2xl:-translate-x-20 xl:-translate-x-60 mx-auto relative py-20 h-full rounded-[20px] container-bg ${isVisible ? "container-bg-animate" : ""
-        }`}
+      className={`bg-[#F9F9F9] mb-60 max-w-[1240px] 2xl:-translate-x-20 xl:-translate-x-60 mx-auto relative py-20 h-full rounded-[20px] container-bg ${
+        isVisible ? "container-bg-animate" : ""
+      }`}
       ref={sectionRef}
     >
       <div className="2xl:max-w-[1088px] xl:max-w-[1005px] relative w-full px-20 flex flex-row justify-start items-center">
@@ -123,7 +121,6 @@ const RectangleCardRight: React.FC<RectangleCardProps> = ({
             className={`sm:text-[28px] text-[16px] font-semibold  ${
               isVisible ? "text-fade appear-with-delay" : "text-fade"
             }`}
-
           >
             {firsttext}
           </h2>
@@ -131,7 +128,6 @@ const RectangleCardRight: React.FC<RectangleCardProps> = ({
             className={`sm:text-[16px] text-[12px] font-medium text-[#5B5D60]  ${
               isVisible ? "text-fade appear-with-delay" : "text-fade"
             }`}
-
           >
             {secondtext}
           </p>
@@ -158,29 +154,23 @@ const Card = () => {
         </div>
         <div className="">
           <RectangleCard
-            firsttext={" Comprehensive data retrieval"}
-            secondtext={
-              "Effortlessly pull detailed business information directly from Google Maps, ensuring you get accurate and up-to-date data for effective prospecting."
-            }
-            imgsrc1={"/features/map4.svg"}
-            imgsrc2={"/features/map3.svg"}
+            firsttext=" Comprehensive data retrieval"
+            secondtext="Effortlessly pull detailed business information directly from Google Maps, ensuring you get accurate and up-to-date data for effective prospecting."
+            imgsrc1="/features/map4.svg"
+            imgsrc2="/features/map3.svg"
           />
 
           <RectangleCardRight
-            firsttext={"Detailed listings & tabular format"}
-            secondtext={
-              "Access essential business details in a clear, organized table. This format makes it easy to scan, compare, and analyze information at a glance, streamlining your data review and decision-making process. "
-            }
-            imgsrc1={"/features/map5.svg"}
-            imgsrc2={"/features/map6.svg"}
+            firsttext="Detailed listings & tabular format"
+            secondtext="Access essential business details in a clear, organized table. This format makes it easy to scan, compare, and analyze information at a glance, streamlining your data review and decision-making process. "
+            imgsrc1="/features/map5.svg"
+            imgsrc2="/features/map6.svg"
           />
           <RectangleCard
-            firsttext={"Data export and management"}
-            secondtext={
-              "Save your lists to the Prospects tab under Contact repository for easy access and streamlined management, keeping all your lead information in one place."
-            }
-            imgsrc1={"/features/map7.svg"}
-            imgsrc2={"/features/map8.svg"}
+            firsttext="Data export and management"
+            secondtext="Save your lists to the Prospects tab under Contact repository for easy access and streamlined management, keeping all your lead information in one place."
+            imgsrc1="/features/map7.svg"
+            imgsrc2="/features/map8.svg"
           />
         </div>
       </div>

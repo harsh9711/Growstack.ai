@@ -1,13 +1,13 @@
-import React from 'react'
-import './AiTextSlider.scss'
-import { Autoplay, Navigation } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/navigation';
+import React from "react";
+import "./AiTextSlider.scss";
+import { Autoplay, Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
 function AiTextSlider() {
   return (
     <React.Fragment>
-        <div className="aiTextSlider">
+      <div className="aiTextSlider">
         <Swiper
           slidesPerView={4.5}
           spaceBetween={10}
@@ -40,17 +40,20 @@ function AiTextSlider() {
             },
           }}
         >
-      {[...Array(20).keys()].map((index) => (
-                        <SwiperSlide key={index}>
-                            <div className="imgBlock">
-                                <img src={`/images_growstack/textVideo/ais${(index % 5) + 1}.svg`} alt="ais" />
-                            </div>
-                        </SwiperSlide>
-                    ))}
+          {[...Array(20).keys()].map(index => (
+            <SwiperSlide key={index}>
+              <div className="imgBlock">
+                <img
+                  src={`/images_growstack/textVideo/ais${(index % 5) + 1}.svg`}
+                  alt="ais"
+                />
+              </div>
+            </SwiperSlide>
+          ))}
         </Swiper>
-        </div>
+      </div>
     </React.Fragment>
-  )
+  );
 }
 
-export default AiTextSlider
+export default AiTextSlider;

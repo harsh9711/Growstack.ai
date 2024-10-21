@@ -5,7 +5,8 @@ export const testimonials = [
       name: "Alex Issac",
       job_position: "Head of product design",
     },
-    content: "“The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.”",
+    content:
+      "“The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.”",
     company_logo: "/dummy/logoipsum1.png",
   },
   {
@@ -14,7 +15,8 @@ export const testimonials = [
       name: "Alex Issac",
       job_position: "Head of product design",
     },
-    content: "“The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.”",
+    content:
+      "“The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.”",
     company_logo: "/dummy/logoipsum1.png",
   },
   {
@@ -23,7 +25,8 @@ export const testimonials = [
       name: "Alex Issac",
       job_position: "Head of product design",
     },
-    content: "“The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.”",
+    content:
+      "“The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.”",
     company_logo: "/dummy/logoipsum1.png",
   },
   {
@@ -32,7 +35,8 @@ export const testimonials = [
       name: "Alex Issac",
       job_position: "Head of product design",
     },
-    content: "“The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.”",
+    content:
+      "“The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.”",
     company_logo: "/dummy/logoipsum1.png",
   },
   {
@@ -41,7 +45,8 @@ export const testimonials = [
       name: "Alex Issac",
       job_position: "Head of product design",
     },
-    content: "“The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.”",
+    content:
+      "“The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.”",
     company_logo: "/dummy/logoipsum1.png",
   },
   {
@@ -50,7 +55,8 @@ export const testimonials = [
       name: "Alex Issac",
       job_position: "Head of product design",
     },
-    content: "“The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.”",
+    content:
+      "“The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.”",
     company_logo: "/dummy/logoipsum1.png",
   },
   {
@@ -59,7 +65,8 @@ export const testimonials = [
       name: "Alex Issac",
       job_position: "Head of product design",
     },
-    content: "“The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.”",
+    content:
+      "“The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.”",
     company_logo: "/dummy/logoipsum1.png",
   },
   {
@@ -68,7 +75,8 @@ export const testimonials = [
       name: "Alex Issac",
       job_position: "Head of product design",
     },
-    content: "“The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.”",
+    content:
+      "“The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.”",
     company_logo: "/dummy/logoipsum1.png",
   },
   {
@@ -77,7 +85,8 @@ export const testimonials = [
       name: "Alex Issac",
       job_position: "Head of product design",
     },
-    content: "“The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.”",
+    content:
+      "“The reporting and analytics features are fantastic and have allowed us to stay on top of our projects and make data-driven decisions.”",
     company_logo: "/dummy/logoipsum1.png",
   },
 ];

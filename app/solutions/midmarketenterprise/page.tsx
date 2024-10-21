@@ -12,11 +12,11 @@ import MarketingStreamline from "./components/marketingStreamline/MarketingStrea
 import ImageGalleryLineResponsive from "./components/ImageGallerylineresponsive";
 import Footer from "@/components/footer/Footer";
 import Link from "next/link";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import AOS from "aos";
+import "aos/dist/aos.css";
 const page = () => {
   useEffect(() => {
-    AOS.init({ duration: 1000, easing: 'ease-in-out', once: true });
+    AOS.init({ duration: 1000, easing: "ease-in-out", once: true });
   }, []);
 
   return (
@@ -48,15 +48,20 @@ const page = () => {
                   effectively and scale efficiently.
                 </p>
                 <div className="flex flex-col gap-20  items-center justify-center sm:justify-start sm:items-start  mt-10">
-
                   <div className="flex flex-row gap-8  group text-[16px] sm:text-[18px]">
-                    <Link href="/auth/register" className="no-underline">   <button className="bg-white font-medium flex items-center gap-2 text-[#034737] sm:py-4 sm:px-7 rounded-xl p-2 group-hover:font-bold shadow-md hover:shadow-">
-                      Free trial <ArrowRight />
-                    </button></Link>
-                    <Link href="/demo" className="no-underline">  <button className="border border-white flex items-center gap-2 text-white hover:font-bold font-medium sm:py-4 sm:px-7 p-2 rounded-xl shadow-md shadow-[#00000025]">
-                      Get demo
-                      <ArrowRight className="text-white" />
-                    </button></Link>
+                    <Link href="/auth/register" className="no-underline">
+                      {" "}
+                      <button className="bg-white font-medium flex items-center gap-2 text-[#034737] sm:py-4 sm:px-7 rounded-xl p-2 group-hover:font-bold shadow-md hover:shadow-">
+                        Free trial <ArrowRight />
+                      </button>
+                    </Link>
+                    <Link href="/demo" className="no-underline">
+                      {" "}
+                      <button className="border border-white flex items-center gap-2 text-white hover:font-bold font-medium sm:py-4 sm:px-7 p-2 rounded-xl shadow-md shadow-[#00000025]">
+                        Get demo
+                        <ArrowRight className="text-white" />
+                      </button>
+                    </Link>
                   </div>
                   {/* <div className="flex flex-row gap-4  ">
                     <button className=" flex items-center gap-2 hover:shadow-white shadow-md text-primary-green rounded-xl  shadow-[#00000025]">

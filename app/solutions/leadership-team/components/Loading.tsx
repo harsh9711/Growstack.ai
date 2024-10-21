@@ -67,7 +67,7 @@ const LoadingBar: React.FC = () => {
     let interval: NodeJS.Timeout;
     if (loading && selectedIndex === null) {
       interval = setInterval(() => {
-        setProgress((prevProgress) => {
+        setProgress(prevProgress => {
           const newProgress = [...prevProgress];
           if (newProgress[currentIndex] < 100) {
             newProgress[currentIndex] += 10;
@@ -88,7 +88,7 @@ const LoadingBar: React.FC = () => {
       const nextIndex = currentIndex + 1;
       if (nextIndex < contents.length) {
         setCurrentIndex(nextIndex);
-        setProgress((prevProgress) => {
+        setProgress(prevProgress => {
           const newProgress = [...prevProgress];
           newProgress[currentIndex] = 100;
           return newProgress;
@@ -103,7 +103,7 @@ const LoadingBar: React.FC = () => {
     setCurrentIndex(index);
     setSelectedIndex(index);
     setLoading(false);
-    setProgress((prevProgress) => {
+    setProgress(prevProgress => {
       const newProgress = Array(contents.length).fill(0);
       newProgress[index] = 100;
       return newProgress;
@@ -155,12 +155,14 @@ const LoadingBar: React.FC = () => {
           className="text-start items-center sm:items-start justify-center max-w-[800px] flex flex-wrap gap-2 text-[26px] 2xl:text-[42px] leading-normal"
         >
           <span className="relative text-center sm:text-start text-black font-semibold">
-            Streamline workflows and eliminate          <span className="text-black text-start font-extralight">manual tasks </span>
-
+            Streamline workflows and eliminate{" "}
+            <span className="text-black text-start font-extralight">
+              manual tasks{" "}
+            </span>
           </span>
         </h1>
       </div>
-    
+
       <div className="gallery-wrapper" ref={galleryRef}>
         <div className="content-display">
           {contents.map((content, index) => (

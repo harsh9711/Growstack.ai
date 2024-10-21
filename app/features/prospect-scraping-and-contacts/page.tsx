@@ -5,7 +5,10 @@ import Navbar from "@/components/navbar/Navbar";
 
 import Footer from "@/components/footer/Footer";
 import Link from "next/link";
-import { ReactCompareSlider, ReactCompareSliderImage, } from "react-compare-slider";
+import {
+  ReactCompareSlider,
+  ReactCompareSliderImage,
+} from "react-compare-slider";
 
 import ExpandableCard from "./component/ExpandableCard";
 import Card from "./component/Card";
@@ -79,7 +82,6 @@ const page = () => {
                   transition="0.25s cubic-bezier(.17,.67,.83,.67)"
                   boundsPadding={0}
                   changePositionOnHover
-
                   itemOne={
                     <ReactCompareSliderImage
                       src=""
@@ -98,7 +100,7 @@ const page = () => {
                   position={50}
                   style={{
                     flexGrow: 1,
-                    width: '100%'
+                    width: "100%",
                   }}
                   handle={
                     <svg
@@ -152,23 +154,23 @@ const page = () => {
       <div className="2xl:flex xl:flex hidden bg-[#034737] z-[40] relative -top-40 xl:max-w-[1240px] max-w-[700px] max-h-[131px] h-full w-full rounded-[20px] items-center justify-center mx-auto text-white">
         <div className="overflow-visible flex flex-row items-center gap-8 justify-center h-[131px]  w-full">
           <ExpandableCard
-            heading={"Essential data"}
-            para={"Get key business details for informed decisions."}
+            heading="Essential data"
+            para="Get key business details for informed decisions."
           />
           <div className="border-white border-2 rounded-lg h-20"></div>
           <ExpandableCard
-            heading={"Effortless collection"}
-            para={" Automate data gathering to save time."}
+            heading="Effortless collection"
+            para=" Automate data gathering to save time."
           />
           <div className="border-white border-2 rounded-lg h-20"></div>
           <ExpandableCard
-            heading={"Boost efficiency"}
-            para={"Streamline prospecting with organized data"}
+            heading="Boost efficiency"
+            para="Streamline prospecting with organized data"
           />
           <div className="border-white border-2 rounded-lg h-20"></div>
           <ExpandableCard
-            heading={"Strategic insights"}
-            para={"Enhance market analysis and targeting."}
+            heading="Strategic insights"
+            para="Enhance market analysis and targeting."
           />
         </div>
       </div>

@@ -1,5 +1,5 @@
-import React from 'react';
-import '../../../../styles/expandablecard.css';
+import React from "react";
+import "../../../../styles/expandablecard.css";
 interface ExpandableCardProps {
   heading: string;
   para: string;
@@ -9,12 +9,8 @@ const ExpandableCard: React.FC<ExpandableCardProps> = ({ heading, para }) => {
     <div className="expandable-card-container">
       <div className="expand-card">
         <div className="panel-container">
-          <div className="panel">
-            {heading}
-          </div>
-          <p className='para'>
-            {para}
-          </p>
+          <div className="panel">{heading}</div>
+          <p className="para">{para}</p>
         </div>
       </div>
     </div>

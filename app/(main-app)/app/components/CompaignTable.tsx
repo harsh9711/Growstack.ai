@@ -26,7 +26,14 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import Image from "next/image";
 import Link from "next/link";
 import { Campaign } from "@/types/campaign";
@@ -38,7 +45,13 @@ const columns: ColumnDef<Campaign>[] = [
     header: "Creator",
     cell: ({ row }) => (
       <div className="flex items-center">
-        <Image src={row.original.creatorAvatarUrl} alt="" width={100} height={100} className="w-10 h-10 object-cover rounded-full mr-3" />
+        <Image
+          src={row.original.creatorAvatarUrl}
+          alt=""
+          width={100}
+          height={100}
+          className="w-10 h-10 object-cover rounded-full mr-3"
+        />
         <p>{row.getValue("creator")}</p>
       </div>
     ),
@@ -48,10 +61,23 @@ const columns: ColumnDef<Campaign>[] = [
     header: "Campaign",
     cell: ({ row }) => (
       <div className="flex items-center gap-3">
-        <Image src={row.original.campaignIcon} alt={row.original.campaign} width={200} height={200} className="w-12 h-12 mr-2" />
-        <Link href={`https://${row.original.campaignUrl}`} target="_blank" rel="noopener noreferrer" className="space-y-2">
+        <Image
+          src={row.original.campaignIcon}
+          alt={row.original.campaign}
+          width={200}
+          height={200}
+          className="w-12 h-12 mr-2"
+        />
+        <Link
+          href={`https://${row.original.campaignUrl}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="space-y-2"
+        >
           <h1 className="font-medium">{row.getValue("campaign")}</h1>
-          <p className="text-primary-black text-opacity-50">{row.original.campaignUrl}</p>
+          <p className="text-primary-black text-opacity-50">
+            {row.original.campaignUrl}
+          </p>
         </Link>
       </div>
     ),
@@ -66,7 +92,9 @@ const columns: ColumnDef<Campaign>[] = [
     cell: ({ row }) => (
       <div className="flex flex-col gap-2 text-[13px]">
         <span>{row.original.lastEdit.date}</span>
-        <span className="text-primary-black text-opacity-50">{row.original.lastEdit.time}</span>
+        <span className="text-primary-black text-opacity-50">
+          {row.original.lastEdit.time}
+        </span>
       </div>
     ),
   },
@@ -89,15 +117,22 @@ const columns: ColumnDef<Campaign>[] = [
         default:
           color = "";
       }
-      return <span className={`${color} py-2 px-3 rounded-full`}>{status as React.ReactNode}</span>;
+      return (
+        <span className={`${color} py-2 px-3 rounded-full`}>
+          {status as React.ReactNode}
+        </span>
+      );
     },
   },
 ];
 
 export function CampaignTable() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  );
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = React.useState({});
 
   const table = useReactTable({
@@ -132,14 +167,15 @@ export function CampaignTable() {
           <DropdownMenuContent align="end">
             {table
               .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
+              .filter(column => column.getCanHide())
+              .map(column => {
                 return (
                   <DropdownMenuCheckboxItem
                     key={column.id}
                     className="capitalize"
                     checked={column.getIsVisible()}
-                    onCheckedChange={(value) => column.toggleVisibility(!!value)}>
+                    onCheckedChange={value => column.toggleVisibility(!!value)}
+                  >
                     {column.id}
                   </DropdownMenuCheckboxItem>
                 );
@@ -150,26 +186,50 @@ export function CampaignTable() {
       <div className="rounded-md border-none">
         <Table>
           <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id} className="border-none bg-[#F5F7FA] p-3">
-                {headerGroup.headers.map((header) => {
-                  return <TableHead key={header.id}>{header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}</TableHead>;
+            {table.getHeaderGroups().map(headerGroup => (
+              <TableRow
+                key={headerGroup.id}
+                className="border-none bg-[#F5F7FA] p-3"
+              >
+                {headerGroup.headers.map(header => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
                 })}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"} className="border-none">
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+              table.getRowModel().rows.map(row => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                  className="border-none"
+                >
+                  {row.getVisibleCells().map(cell => (
+                    <TableCell key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
                   ))}
                 </TableRow>
               ))
             ) : (
               <TableRow className="hover:bg-white">
-                <TableCell colSpan={columns.length} className="h-24 text-center font-semibold text-lg hover:bg-white">
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center font-semibold text-lg hover:bg-white"
+                >
                   No results.
                 </TableCell>
               </TableRow>

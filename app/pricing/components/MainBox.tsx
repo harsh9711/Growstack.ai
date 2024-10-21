@@ -8,7 +8,8 @@ const sections: Section[] = [
     features: [
       {
         title: "Multiple AI models",
-        description: "GrowStack's AI Engine combines several large language models, including our own marketing-specific model, so you get the highest quality outputs and superior uptime.",
+        description:
+          "GrowStack's AI Engine combines several large language models, including our own marketing-specific model, so you get the highest quality outputs and superior uptime.",
         hasDash: false,
         tickCount: 3,
         id: "",
@@ -18,11 +19,12 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
         title: "Always the newest models",
-        description: "GrowStack's model auto-updates so you will always be using the most advanced AI models available.",
+        description:
+          "GrowStack's model auto-updates so you will always be using the most advanced AI models available.",
         hasDash: false,
         tickCount: 3,
         id: "",
@@ -32,11 +34,12 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
         title: "Recent news & cite sources",
-        description: "Ask GrowStack to write about news from this morning and cite its sources of information with backlinks to each site.",
+        description:
+          "Ask GrowStack to write about news from this morning and cite its sources of information with backlinks to each site.",
         hasDash: false,
         tickCount: 3,
         id: "",
@@ -46,7 +49,7 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
         title: "30+ languages",
@@ -60,15 +63,17 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
     ],
-  }, {
+  },
+  {
     title: "Company Knowledge Hub",
     features: [
       {
         title: "Style guide",
-        description: "Maintain a series of rules in a style guide that ensures you're always on-brand, and see these style guide updates visually in the editor with x-ray view.",
+        description:
+          "Maintain a series of rules in a style guide that ensures you're always on-brand, and see these style guide updates visually in the editor with x-ray view.",
         hasDash: false,
         tickCount: 3,
         id: "",
@@ -78,11 +83,12 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
         title: "Company knowledge",
-        description: "Teach GrowStack new knowledge by uploading assets like details of business, product, audiences, and reference specific content like FAQs and PDFs so it always writes factually.",
+        description:
+          "Teach GrowStack new knowledge by uploading assets like details of business, product, audiences, and reference specific content like FAQs and PDFs so it always writes factually.",
         hasDash: false,
         tickCount: 3,
         id: "",
@@ -92,11 +98,12 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
         title: "Brand voice",
-        description: "Let AI analyze your content's tone of voice, then set tone and formatting rules so GrowStack's writing always sounds like you.",
+        description:
+          "Let AI analyze your content's tone of voice, then set tone and formatting rules so GrowStack's writing always sounds like you.",
         hasDash: false,
         tickCount: 3,
         id: "",
@@ -106,7 +113,7 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
     ],
   },
@@ -115,9 +122,10 @@ const sections: Section[] = [
     features: [
       {
         title: "Document collaboration",
-        description: "Built-in features that allow for real-time interaction among your team members.",
+        description:
+          "Built-in features that allow for real-time interaction among your team members.",
         hasDash: true,
-         tickCount: 2,
+        tickCount: 2,
         id: "",
         price: "",
         buttonLabel: "",
@@ -125,13 +133,14 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
         title: "Custom workflows & templates",
-        description: "Let our team create custom templates and workflows to fit your business needs.",
+        description:
+          "Let our team create custom templates and workflows to fit your business needs.",
         hasDash: true,
-         tickCount: 2,
+        tickCount: 2,
         id: "",
         price: "",
         buttonLabel: "",
@@ -139,13 +148,14 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
         title: "Savable tasks",
-        description: "Create reproducible outputs by saving template fields & content, which can then be easily accessed again at any time.",
+        description:
+          "Create reproducible outputs by saving template fields & content, which can then be easily accessed again at any time.",
         hasDash: true,
-         tickCount: 2,
+        tickCount: 2,
         id: "",
         price: "",
         buttonLabel: "",
@@ -153,13 +163,14 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
         title: "Campaigns",
-        description: "Generate assets for a full marketing campaign by uploading your teams campaign brief.",
+        description:
+          "Generate assets for a full marketing campaign by uploading your teams campaign brief.",
         hasDash: true,
-         tickCount: 2,
+        tickCount: 2,
         id: "",
         price: "",
         buttonLabel: "",
@@ -167,13 +178,14 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
         title: "Remix content",
-        description: "Repurpose existing content into new assets for other marketing channels.",
+        description:
+          "Repurpose existing content into new assets for other marketing channels.",
         hasDash: true,
-         tickCount: 2,
+        tickCount: 2,
         id: "",
         price: "",
         buttonLabel: "",
@@ -181,11 +193,12 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
         title: "Plagiarism checker",
-        description: "Scan your content for sources using our add-on for Copyscape, the best plagiarism search on the web.",
+        description:
+          "Scan your content for sources using our add-on for Copyscape, the best plagiarism search on the web.",
         hasDash: false,
         tickCount: 3,
         id: "",
@@ -195,11 +208,12 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
         title: "Documents",
-        description: "Write, edit, and format all of your content inside our user-friendly document editor.",
+        description:
+          "Write, edit, and format all of your content inside our user-friendly document editor.",
         hasDash: false,
         tickCount: 3,
         id: "",
@@ -209,11 +223,12 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
         title: "Rephrase & rewrite",
-        description: "Highlight text and with 1-click you can improve your writing, change the tone, adjust the length, or repurpose for a different channel.",
+        description:
+          "Highlight text and with 1-click you can improve your writing, change the tone, adjust the length, or repurpose for a different channel.",
         hasDash: false,
         tickCount: 3,
         id: "",
@@ -223,11 +238,12 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
         title: "Dynamic templates",
-        description: "Generate and save unique templates based on your specific needs.",
+        description:
+          "Generate and save unique templates based on your specific needs.",
         hasDash: false,
         tickCount: 3,
         id: "",
@@ -237,11 +253,12 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
         title: "50+ templates",
-        description: "AI trained in over 50 specific skills from writing high-converting headlines to SEO optimized blog posts in just a few clicks.",
+        description:
+          "AI trained in over 50 specific skills from writing high-converting headlines to SEO optimized blog posts in just a few clicks.",
         hasDash: false,
         tickCount: 3,
         id: "",
@@ -251,11 +268,12 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
         title: "Chat",
-        description: "Our chatbot can assist you with tasks, do research quickly, and answer questions all through a human-like conversation.",
+        description:
+          "Our chatbot can assist you with tasks, do research quickly, and answer questions all through a human-like conversation.",
         hasDash: false,
         tickCount: 3,
         id: "",
@@ -265,11 +283,12 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
         title: "Lookback",
-        description: "When composing content in the document editor, GrowStack reads 1,500 characters worth of context before continuing to write which gives the AI higher quality outputs.",
+        description:
+          "When composing content in the document editor, GrowStack reads 1,500 characters worth of context before continuing to write which gives the AI higher quality outputs.",
         hasDash: false,
         tickCount: 3,
         id: "",
@@ -279,19 +298,20 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
     ],
   },
- 
+
   {
     title: "Visual & Multimodal Functionality",
     features: [
       {
         title: "Clipdrop API",
-        description: "Integrate state of the art image processing & AI capabilities directly in your products.",
+        description:
+          "Integrate state of the art image processing & AI capabilities directly in your products.",
         hasDash: true,
-         tickCount: 2,
+        tickCount: 2,
         id: "",
         price: "",
         buttonLabel: "",
@@ -299,13 +319,14 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
         title: "Image generation",
-        description: "Use AI to generate amazing art and images in seconds for ads, thumbnails, illustrations, and more in high resolution without a watermark.",
+        description:
+          "Use AI to generate amazing art and images in seconds for ads, thumbnails, illustrations, and more in high resolution without a watermark.",
         hasDash: true,
-         tickCount: 2,
+        tickCount: 2,
         id: "",
         price: "",
         buttonLabel: "",
@@ -313,13 +334,14 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
         title: "Replace image background",
-        description: "Replace the background of an image automatically or using a prompt.",
+        description:
+          "Replace the background of an image automatically or using a prompt.",
         hasDash: true,
-         tickCount: 2,
+        tickCount: 2,
         id: "",
         price: "",
         buttonLabel: "",
@@ -327,13 +349,14 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
         title: "Image upscaling",
-        description: "Upscale your images by 2x in seconds, removing noise & recovering beautiful details.",
+        description:
+          "Upscale your images by 2x in seconds, removing noise & recovering beautiful details.",
         hasDash: true,
-         tickCount: 2,
+        tickCount: 2,
         id: "",
         price: "",
         buttonLabel: "",
@@ -341,13 +364,13 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
         title: "Reimagine image",
         description: "Create multiple variants of an image with ease.",
         hasDash: true,
-         tickCount: 2,
+        tickCount: 2,
         id: "",
         price: "",
         buttonLabel: "",
@@ -355,11 +378,12 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
         title: "Remove image background",
-        description: "Extract the main subject from a picture with incredible accuracy.",
+        description:
+          "Extract the main subject from a picture with incredible accuracy.",
         hasDash: false,
         tickCount: 3,
         id: "",
@@ -369,7 +393,7 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
         title: "Make image square",
@@ -383,7 +407,7 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
         title: "Remove image text",
@@ -397,18 +421,19 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
     ],
   },
   {
-    title: 'Extensions, Integrations & API',
+    title: "Extensions, Integrations & API",
     features: [
       {
-        title: 'API access',
-        description: 'Build a custom integration or automate manual processes with GrowStack\'s API.',
+        title: "API access",
+        description:
+          "Build a custom integration or automate manual processes with GrowStack's API.",
         hasDash: true,
-         tickCount: 2,
+        tickCount: 2,
         id: "",
         price: "",
         buttonLabel: "",
@@ -416,13 +441,14 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
-        title: 'API integrations',
-        description: 'Get on-brand AI wherever you work using GrowStack API-powered integrations like BigQuery, Google Sheets, Zapier, Make and more.',
+        title: "API integrations",
+        description:
+          "Get on-brand AI wherever you work using GrowStack API-powered integrations like BigQuery, Google Sheets, Zapier, Make and more.",
         hasDash: true,
-         tickCount: 2,
+        tickCount: 2,
         id: "",
         price: "",
         buttonLabel: "",
@@ -430,13 +456,14 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
-        title: 'Clipdrop API',
-        description: 'Integrate state of the art image processing & AI capabilities directly in your products.',
+        title: "Clipdrop API",
+        description:
+          "Integrate state of the art image processing & AI capabilities directly in your products.",
         hasDash: true,
-         tickCount: 2,
+        tickCount: 2,
         id: "",
         price: "",
         buttonLabel: "",
@@ -444,11 +471,12 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
-        title: 'Integrations',
-        description: 'Tap into our growing integrations marketplace to level-up your AI processes with Webflow, Google Docs, Surfer SEO and more.',
+        title: "Integrations",
+        description:
+          "Tap into our growing integrations marketplace to level-up your AI processes with Webflow, Google Docs, Surfer SEO and more.",
         hasDash: false,
         tickCount: 3,
         id: "",
@@ -458,11 +486,12 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
-        title: 'SEO mode',
-        description: 'Analyze your content against SERP competitors and optimize accordingly with our SurferSEO add-on.',
+        title: "SEO mode",
+        description:
+          "Analyze your content against SERP competitors and optimize accordingly with our SurferSEO add-on.",
         hasDash: false,
         tickCount: 3,
         id: "",
@@ -472,11 +501,12 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
-        title: 'Browser extension',
-        description: 'Use AI everywhere you work by adding the GrowStack extension to your Chrome or Edge browser.',
+        title: "Browser extension",
+        description:
+          "Use AI everywhere you work by adding the GrowStack extension to your Chrome or Edge browser.",
         hasDash: false,
         tickCount: 3,
         id: "",
@@ -486,134 +516,19 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
-      }, ],
-    },
-    {
-        title: 'Account management & organization',
-        features: [
-      {
-        title: 'Team usage analytics',
-        description: 'See valuable data on team usage over time including total generations, active users, hours saved & more.',
-        hasDash: true,
-         tickCount: 2,
-        id: "",
-        price: "",
-        buttonLabel: "",
-        buttonStyle: "",
-        featureList: [],
-        stripe_price_id: undefined,
-        planType: "",
-        plan_id: null
-      },
-      {
-        title: 'Advanced admin controls',
-        description: 'Gain 100% control over your GrowStack instance with the ability to toggle on or off core features like image generation at the workspace level.',
-        hasDash: true,
-         tickCount: 2,
-        id: "",
-        price: "",
-        buttonLabel: "",
-        buttonStyle: "",
-        featureList: [],
-        stripe_price_id: undefined,
-        planType: "",
-        plan_id: null
-      },
-      {
-        title: 'Sharing & project management',
-        description: 'Share documents between your team and apply status labels to quickly know what\'s ready for review.',
-        hasDash: true,
-         tickCount: 2,
-        id: "",
-        price: "",
-        buttonLabel: "",
-        buttonStyle: "",
-        featureList: [],
-        stripe_price_id: undefined,
-        planType: "",
-        plan_id: null
-      },
-      {
-        title: 'User management',
-        description: 'Control who can access documents in your workspace with user-specific permission settings to make them private, view-only, editable, or available to everyone in your workspace.',
-        hasDash: true,
-         tickCount: 2,
-        id: "",
-        price: "",
-        buttonLabel: "",
-        buttonStyle: "",
-        featureList: [],
-        stripe_price_id: undefined,
-        planType: "",
-        plan_id: null
-      },
-      {
-        title: 'Personal usage analytics',
-        description: 'See data on your individual usage over time including total generations, hours saved & more.',
-        hasDash: false,
-        tickCount: 3,
-        id: "",
-        price: "",
-        buttonLabel: "",
-        buttonStyle: "",
-        featureList: [],
-        stripe_price_id: undefined,
-        planType: "",
-        plan_id: null
-      },
-      {
-        title: 'History & backups',
-        description: 'Automatically save all your prompts and outputs without the worry of losing work, and if you need to restore a past version of your documents you can turn back time in one click.',
-        hasDash: false,
-        tickCount: 3,
-        id: "",
-        price: "",
-        buttonLabel: "",
-        buttonStyle: "",
-        featureList: [],
-        stripe_price_id: undefined,
-        planType: "",
-        plan_id: null
-      },
-      {
-        title: 'Save, star, tag',
-        description: 'Save your prompts & outputs for later, or star your favorites for a more organized workspace.',
-        hasDash: false,
-        tickCount: 3,
-        id: "",
-        price: "",
-        buttonLabel: "",
-        buttonStyle: "",
-        featureList: [],
-        stripe_price_id: undefined,
-        planType: "",
-        plan_id: null
-      },
-      {
-        title: 'User logins',
-        description: 'Collaborate on content with your team.',
-        hasDash: false,
-        tickCount: 3,
-        id: "",
-        price: "",
-        buttonLabel: "",
-        buttonStyle: "",
-        featureList: [],
-        stripe_price_id: undefined,
-        planType: "",
-        plan_id: null
+        plan_id: null,
       },
     ],
-    },
-    {
-      title: "Data security & privacy",
-      features: [
+  },
+  {
+    title: "Account management & organization",
+    features: [
       {
-        title: 'SSO',
-        description: 'Single sign-on to securely authenticate all users’ logins.',
+        title: "Team usage analytics",
+        description:
+          "See valuable data on team usage over time including total generations, active users, hours saved & more.",
         hasDash: true,
-         tickCount: 2,
+        tickCount: 2,
         id: "",
         price: "",
         buttonLabel: "",
@@ -621,13 +536,14 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
-        title: 'Enterprise security',
-        description: 'Your data is not only protected from threats, but also completely under your control.',
+        title: "Advanced admin controls",
+        description:
+          "Gain 100% control over your GrowStack instance with the ability to toggle on or off core features like image generation at the workspace level.",
         hasDash: true,
-         tickCount: 2,
+        tickCount: 2,
         id: "",
         price: "",
         buttonLabel: "",
@@ -635,13 +551,14 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
-        title: 'Role-based permissions',
-        description: 'Limit access to change the brand voice settings or upload knowledge to administrators only.',
+        title: "Sharing & project management",
+        description:
+          "Share documents between your team and apply status labels to quickly know what's ready for review.",
         hasDash: true,
-         tickCount: 2,
+        tickCount: 2,
         id: "",
         price: "",
         buttonLabel: "",
@@ -649,11 +566,27 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
-        title: 'Security',
-        description: 'Built with robust enterprise access control and regular security audits.',
+        title: "User management",
+        description:
+          "Control who can access documents in your workspace with user-specific permission settings to make them private, view-only, editable, or available to everyone in your workspace.",
+        hasDash: true,
+        tickCount: 2,
+        id: "",
+        price: "",
+        buttonLabel: "",
+        buttonStyle: "",
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null,
+      },
+      {
+        title: "Personal usage analytics",
+        description:
+          "See data on your individual usage over time including total generations, hours saved & more.",
         hasDash: false,
         tickCount: 3,
         id: "",
@@ -663,11 +596,12 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
-        title: 'SOC2 compliant',
-        description: 'GrowStack is SOC 2 certified to meet the strict technical and organizational requirement for protecting customer data and follows best practices for cybersecurity.',
+        title: "History & backups",
+        description:
+          "Automatically save all your prompts and outputs without the worry of losing work, and if you need to restore a past version of your documents you can turn back time in one click.",
         hasDash: false,
         tickCount: 3,
         id: "",
@@ -677,11 +611,12 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
-        title: 'Reliability',
-        description: 'Were proud to have 99% uptime thanks to our multi-model interoperability and enterprise-grade infrastructure.',
+        title: "Save, star, tag",
+        description:
+          "Save your prompts & outputs for later, or star your favorites for a more organized workspace.",
         hasDash: false,
         tickCount: 3,
         id: "",
@@ -691,11 +626,11 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
-        title: 'Data privacy',
-        description: 'Your data and outputs are safe with GrowStack – we never train 3rd party AI models with customer data, and data is encrypted in transit and at rest.',
+        title: "User logins",
+        description: "Collaborate on content with your team.",
         hasDash: false,
         tickCount: 3,
         id: "",
@@ -705,18 +640,19 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
-    ]
-},
-{
+    ],
+  },
+  {
     title: "Data security & privacy",
     features: [
       {
-        title: 'Dedicated customer success manager',
-        description: 'Your organization will be assigned a dedicated Customer Success Manager to create an action plan, and implement AI into your workflows, and train your team on best practices.',
-        hasDash: false,
-        tickCount: 3,
+        title: "SSO",
+        description:
+          "Single sign-on to securely authenticate all users’ logins.",
+        hasDash: true,
+        tickCount: 2,
         id: "",
         price: "",
         buttonLabel: "",
@@ -724,13 +660,14 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
-        title: 'Product training',
-        description: 'Attend live workshops or watch our on-demand series GrowStack Jumpstart to learn how to use GrowStack to its fullest potential.',
-        hasDash: false,
-        tickCount: 3,
+        title: "Enterprise security",
+        description:
+          "Your data is not only protected from threats, but also completely under your control.",
+        hasDash: true,
+        tickCount: 2,
         id: "",
         price: "",
         buttonLabel: "",
@@ -738,11 +675,27 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
       },
       {
-        title: 'Support',
-        description: 'Get your questions answered from our global customer success team.',
+        title: "Role-based permissions",
+        description:
+          "Limit access to change the brand voice settings or upload knowledge to administrators only.",
+        hasDash: true,
+        tickCount: 2,
+        id: "",
+        price: "",
+        buttonLabel: "",
+        buttonStyle: "",
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null,
+      },
+      {
+        title: "Security",
+        description:
+          "Built with robust enterprise access control and regular security audits.",
         hasDash: false,
         tickCount: 3,
         id: "",
@@ -752,7 +705,102 @@ const sections: Section[] = [
         featureList: [],
         stripe_price_id: undefined,
         planType: "",
-        plan_id: null
+        plan_id: null,
+      },
+      {
+        title: "SOC2 compliant",
+        description:
+          "GrowStack is SOC 2 certified to meet the strict technical and organizational requirement for protecting customer data and follows best practices for cybersecurity.",
+        hasDash: false,
+        tickCount: 3,
+        id: "",
+        price: "",
+        buttonLabel: "",
+        buttonStyle: "",
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null,
+      },
+      {
+        title: "Reliability",
+        description:
+          "Were proud to have 99% uptime thanks to our multi-model interoperability and enterprise-grade infrastructure.",
+        hasDash: false,
+        tickCount: 3,
+        id: "",
+        price: "",
+        buttonLabel: "",
+        buttonStyle: "",
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null,
+      },
+      {
+        title: "Data privacy",
+        description:
+          "Your data and outputs are safe with GrowStack – we never train 3rd party AI models with customer data, and data is encrypted in transit and at rest.",
+        hasDash: false,
+        tickCount: 3,
+        id: "",
+        price: "",
+        buttonLabel: "",
+        buttonStyle: "",
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null,
+      },
+    ],
+  },
+  {
+    title: "Data security & privacy",
+    features: [
+      {
+        title: "Dedicated customer success manager",
+        description:
+          "Your organization will be assigned a dedicated Customer Success Manager to create an action plan, and implement AI into your workflows, and train your team on best practices.",
+        hasDash: false,
+        tickCount: 3,
+        id: "",
+        price: "",
+        buttonLabel: "",
+        buttonStyle: "",
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null,
+      },
+      {
+        title: "Product training",
+        description:
+          "Attend live workshops or watch our on-demand series GrowStack Jumpstart to learn how to use GrowStack to its fullest potential.",
+        hasDash: false,
+        tickCount: 3,
+        id: "",
+        price: "",
+        buttonLabel: "",
+        buttonStyle: "",
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null,
+      },
+      {
+        title: "Support",
+        description:
+          "Get your questions answered from our global customer success team.",
+        hasDash: false,
+        tickCount: 3,
+        id: "",
+        price: "",
+        buttonLabel: "",
+        buttonStyle: "",
+        featureList: [],
+        stripe_price_id: undefined,
+        planType: "",
+        plan_id: null,
       },
     ],
   },
