@@ -15,6 +15,19 @@ import OutputCard from "../OutputCard";
 import { useRouter, useSearchParams } from "next/navigation";
 import SchedulerModal from "../SchedulerModal";
 import FileUpload from "../FileUpload";
+import { BrandVoice } from "@/types/common";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+} from "@/components/ui/select";
+import Ellipse from "@/components/svgs/ellipse";
+import Wave from "@/components/svgs/wave";
+import Link from "next/link";
+import { ALL_ROUTES } from "@/utils/constant";
+import ExternalLink from "@/components/svgs/externalLink";
 
 type TempOutput = {
   variable_name: string;
@@ -42,6 +55,9 @@ const Run: React.FC<Props> = ({ workflowId, onTabChange }) => {
   const [fileUrl2, setFileUrl2] = useState<string>("");
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [selectedBrandVoice, setSelectedBrandVoice] = useState<string>("");
+  const [brandVoices, setBrandVoices] = useState<BrandVoice[]>([]);
+
   const [workFlowResults, setWorkFlowResults] = useState<WorkFlowResults>({
     outputs: [],
     status: true,
@@ -82,6 +98,22 @@ const Run: React.FC<Props> = ({ workflowId, onTabChange }) => {
       }
     }
   };
+
+  const fetchBrandVoice = async () => {
+    try {
+      const response = await instance.get(
+        `${API_URL}/users/api/v1/brand-voice/all`
+      );
+      const data = response.data.data;
+      setBrandVoices(data);
+    } catch (error) {
+      console.error("Error fetching brand voices", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchBrandVoice();
+  }, []);
 
   const handleGetProfile = async () => {
     try {
@@ -201,6 +233,15 @@ const Run: React.FC<Props> = ({ workflowId, onTabChange }) => {
   };
 
   useEffect(() => {
+    if (brandVoices?.length > 0) {
+      const defaultBrandVoice = brandVoices.find(voice => voice.is_default);
+      if (defaultBrandVoice) {
+        setSelectedBrandVoice(defaultBrandVoice._id);
+      }
+    }
+  }, [brandVoices]);
+
+  useEffect(() => {
     const tab = searchParams.get("tab");
     const preFilled = searchParams.get("pre_filled");
     const runnerId = searchParams.get("runner_id");
@@ -215,6 +256,10 @@ const Run: React.FC<Props> = ({ workflowId, onTabChange }) => {
         .finally(() => setLoading(false));
     }
   }, [workflowId]);
+
+  const handleBrandVoiceSelection = (value: string) => {
+    setSelectedBrandVoice(value);
+  };
 
   if (loading) {
     return (
@@ -251,7 +296,86 @@ const Run: React.FC<Props> = ({ workflowId, onTabChange }) => {
                 <div className="font-light mt-3 mb-2 text-[14px]">
                   {input.description}
                 </div>
-                {input.type !== "FILE_UPLOAD" ? (
+                {input?.brand_voice ? (
+                  <Select
+                    value={selectedBrandVoice}
+                    onValueChange={value => {
+                      const selectedBrandVoice = brandVoices.find(
+                        voice => voice._id === value
+                      )?.brand_voice;
+                      console.log(value, selectedBrandVoice);
+                      if (selectedBrandVoice) {
+                        handleChangeInput(selectedBrandVoice, idx);
+                        handleBrandVoiceSelection(value);
+                      } else {
+                        handleChangeInput("", idx);
+                      }
+                    }}
+                  >
+                    <SelectTrigger className="h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4">
+                      <div className="flex items-center gap-2">
+                        <span className="min-w-fit">
+                          <Wave />
+                        </span>
+                        {selectedBrandVoice
+                          ? brandVoices.find(
+                              voice => voice._id === selectedBrandVoice
+                            )?.brand_name
+                          : "Brand Voice"}
+                      </div>
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <div className="flex w-full border-b border-[#EBEBEB] p-2 items-center gap-2">
+                          <span className="min-w-fit">
+                            <Wave color="#034737" />
+                          </span>
+                          <p className="text-sm">Brand Voice</p>
+                          <Link
+                            href={ALL_ROUTES.BRAND_VOICE}
+                            className="min-w-fit text-right"
+                          >
+                            <ExternalLink width={22} height={22} />
+                          </Link>
+                        </div>
+                        {brandVoices.map(voice => (
+                          <SelectItem
+                            className="relative ite"
+                            key={voice._id}
+                            value={voice._id}
+                            showIndicator={false}
+                          >
+                            <span className="absolute left-2 top-3 flex  items-center justify-center">
+                              <Ellipse
+                                isFilled={selectedBrandVoice === voice._id}
+                              />
+                            </span>
+
+                            <div
+                              className={clsx(
+                                "flex items-center line-clamp-1 gap-2",
+                                selectedBrandVoice === voice._id &&
+                                  "text-primary-green font-medium"
+                              )}
+                            >
+                              {voice.brand_name}
+                            </div>
+                          </SelectItem>
+                        ))}
+                        <div
+                          onClick={() => {
+                            setSelectedBrandVoice("");
+                            handleChangeInput("", idx);
+                          }}
+                          className="flex w-full cursor-pointer  border-t border-[#EBEBEB] p-2 items-center gap-2"
+                        >
+                          <Ellipse isFilled={!!!selectedBrandVoice} />
+                          <p className="text-sm">No brand voice</p>
+                        </div>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                ) : input.type !== "FILE_UPLOAD" ? (
                   <input
                     type="text"
                     placeholder={input.placeholder}
@@ -267,6 +391,7 @@ const Run: React.FC<Props> = ({ workflowId, onTabChange }) => {
                 )}
               </div>
             ))}
+
             <button
               disabled={!isWorkFlowFetched || isSchedulerModalOpen}
               className={clsx(
