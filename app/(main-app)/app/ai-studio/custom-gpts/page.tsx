@@ -1,6 +1,6 @@
 "use client";
 
-import { Plus, Search } from "lucide-react";
+import { DivideIcon, Plus, Search } from "lucide-react";
 import Link from "next/link";
 import { Fragment, useEffect, useState } from "react";
 import Image from "next/image";
@@ -9,6 +9,8 @@ import { API_URL } from "@/lib/api";
 import ContentLoader from "react-content-loader";
 import toast from "react-hot-toast";
 import { ALL_ROUTES } from "@/utils/constant";
+import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 
 type CustomGpt = {
   description: string;
@@ -16,8 +18,26 @@ type CustomGpt = {
   name: string;
   _id: string;
   show: boolean;
+  pre_built: boolean
 };
-
+const avatars = [
+  {
+    src: "http://localhost:3000/_next/image?url=https%3A%2F%2Fgrowstackai.s3.amazonaws.com%2FqIZsZn%2FNag.jpeg&w=256&q=75",
+    fallback: "email1"
+  },
+  {
+    src: "http://localhost:3000/_next/image?url=https%3A%2F%2Fgrowstackai.s3.amazonaws.com%2FqIZsZn%2FNag.jpeg&w=256&q=75",
+    fallback: "email2"
+  },
+  {
+    src: "http://localhost:3000/_next/image?url=https%3A%2F%2Fgrowstackai.s3.amazonaws.com%2FqIZsZn%2FNag.jpeg&w=256&q=75",
+    fallback: "email3"
+  },
+  {
+    src: "http://localhost:3000/_next/image?url=https%3A%2F%2Fgrowstackai.s3.amazonaws.com%2FqIZsZn%2FNag.jpeg&w=256&q=75",
+    fallback: "email4"
+  }
+];
 export default function Customgpts() {
   const [customGpts, setCustomGpts] = useState<CustomGpt[]>([]);
   const [loading, setLoading] = useState(false);
@@ -49,12 +69,12 @@ export default function Customgpts() {
     <Fragment>
       <main className="">
         <div className="flex justify-between items-center mt-8">
-          <div className="space-y-2 w-full">
+          {/* <div className="space-y-2 w-full">
             <h1 className="text-2xl font-semibold">AI custom GPT</h1>
             <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
               All custom GPTs apps
             </p>
-          </div>
+          </div> */}
           <div className="w-full flex justify-end gap-2">
             <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
               <Search className="text-gray-500" size={20} />
@@ -81,13 +101,13 @@ export default function Customgpts() {
             </Link>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-5 mt-8">
+        <div>
           {loading ? (
             Array(7)
               .fill(null)
               .map((_, index) => <SkeletonLoader key={index} />)
           ) : customGpts.length < 1 ? (
-            <div className="mt-4 flex flex-col justify-center items-center space-y-4 col-span-3 py-8">
+            <div className="mt-4 hover:scale-120 flex flex-col justify-center items-center space-y-4 col-span-3 py-8">
               <h2 className="text-lg text-center font-semibold">
                 You have Custom GPTs Created yet
               </h2>
@@ -102,41 +122,145 @@ export default function Customgpts() {
               </Link>
             </div>
           ) : (
-            customGpts.map(
-              ({ description, icon, name, _id, show }, index) =>
-                show && (
-                  <Link
-                    href={`/app/ai-studio/custom-gpts/gpt?custom_gpt_id=${_id}`}
-                  >
-                    <div
-                      key={index}
-                      className="bg-white border border-[#E8E8E8] rounded-2xl p-4 hover:shadow-2xl hover:shadow-gray-200 cursor-pointer transition-all duration-300 flex items-center gap-5"
-                    >
-                      <Image
-                        src={icon}
-                        alt=""
-                        width={100}
-                        height={100}
-                        className="rounded-2xl w-[90px] h-[90px] object-cover"
-                      />
-                      <div className="space-y-2">
-                        <h1 className="text-lg font-semibold">{name}</h1>
-                        <p
-                          className="text-primary-black text-opacity-50 leading-relaxed"
-                          style={{
-                            width: "200px",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          {description}
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-                )
-            )
+            <>
+              <h1 className="text-2xl font-semibold">GPTs by GrowStack</h1>
+
+              <div className="grid grid-cols-3 gap-5 mt-8">
+                {customGpts.map(
+                  ({ description, icon, name, _id, show, pre_built }, index) =>
+                    show && pre_built && (
+                      <Link
+                        href={`/app/ai-studio/custom-gpts/gpt?custom_gpt_id=${_id}`}
+                      >
+                        <div className="bg-white border border-[#E8E8E8] rounded-2xl p-6 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer transition-all duration-300">
+
+                          <div
+                            key={index}
+                            className="flex items-center gap-5"
+                          >
+                            <Image
+                              src={icon}
+                              alt=""
+                              width={200}
+                              height={200}
+                              className="rounded-2xl w-[90px] h-[90px] object-cover"
+                            />
+                            <div className="space-y-2">
+                              <h1 className="text-lg font-semibold">{name}</h1>
+                              <p
+                                className="text-primary-black text-opacity-50 leading-relaxed"
+                                style={{
+                                  display: "-webkit-box",
+                                  WebkitLineClamp: 3,
+                                  WebkitBoxOrient: "vertical",
+                                  overflow: "hidden",
+                                  width: "80%",
+                                }}
+                              >
+                                {description}...
+                              </p>
+
+                            </div>
+
+                          </div>
+                          <div className="mt-3 mb-3">
+                            <DropdownMenuSeparator />
+
+                          </div>
+                          <div className="flex items-center">
+                            <div className="flex -space-x-3">
+                              {avatars.map((avatar, index) => (
+                                <Avatar key={index} className="w-[60%] h-[60%]">
+                                  <AvatarImage
+                                    style={{ borderRadius: "50%", border: index > 0 ? '3px solid white' : 'none' }}
+                                    className="w-[50px] h-[50px]"
+                                    src={icon}
+                                  />
+                                  <AvatarFallback>{avatar.fallback}</AvatarFallback>
+                                </Avatar>
+                              ))}
+                            </div>
+                            <strong className="ml-4 text-gray-700">Used by: 10 users</strong>
+                          </div>
+
+
+                        </div>
+
+                      </Link>
+                    )
+                )}
+              </div>
+              <div className="mt-8 mb-3">
+                <DropdownMenuSeparator />
+              </div>
+              <h1 className="text-2xl font-semibold mt-4">GPTs Created by users</h1>
+              <div className="grid grid-cols-3 gap-5 mt-8">
+                {customGpts.map(
+                  ({ description, icon, name, _id, show, pre_built }, index) =>
+                    show && !pre_built && (
+                      <Link
+                        href={`/app/ai-studio/custom-gpts/gpt?custom_gpt_id=${_id}`}
+                      >
+                        <div className="bg-white border border-[#E8E8E8] rounded-2xl p-6 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer transition-all duration-300">
+
+                          <div
+                            key={index}
+                            className=" flex items-center gap-5"
+                          >
+                            <Image
+                              src={icon}
+                              alt=""
+                              width={200}
+                              height={200}
+                              className="rounded-2xl w-[90px] h-[90px] object-cover"
+                            />
+                            <div className="space-y-2">
+                              <h1 className="text-lg font-semibold">{name}</h1>
+                              <p
+                                className="text-primary-black text-opacity-50 leading-relaxed"
+                                style={{
+                                  display: "-webkit-box",
+                                  WebkitLineClamp: 3,
+                                  WebkitBoxOrient: "vertical",
+                                  overflow: "hidden",
+                                  width: "80%"
+                                }}
+                              >
+                                {description}...
+                              </p>
+
+                            </div>
+
+                          </div>
+                          <div className="mt-3 mb-3">
+                            <DropdownMenuSeparator />
+                          </div>
+                          <div className="flex items-center">
+                            <div className="flex -space-x-3">
+                              {avatars.map((avatar, index) => (
+                                <Avatar key={index} className="w-[60%] h-[60%]">
+                                  <AvatarImage
+                                    style={{ borderRadius: "50%", border: index > 0 ? '3px solid white' : 'none' }}
+                                    className="w-[50px] h-[50px]"
+                                    src={icon}
+                                  />
+                                  <AvatarFallback>{avatar.fallback}</AvatarFallback>
+                                </Avatar>
+                              ))}
+                            </div>
+                            <strong className="ml-4 text-gray-700">Used by: 10 users</strong>
+                          </div>
+
+
+                        </div>
+
+                      </Link>
+                    )
+                )}
+              </div>
+
+
+            </>
           )}
         </div>
       </main>

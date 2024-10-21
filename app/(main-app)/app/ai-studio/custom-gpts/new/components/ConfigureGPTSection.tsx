@@ -317,15 +317,16 @@ export default function ConfigureGPTSection({
   };
 
   return (
-    <div className="flex h-[calc(100vh-248px)]">
+<>
+
+<div className="flex h-[calc(100vh-248px)]">
+  
       <div className="w-full h-full overflow-auto bg-white rounded-3xl border relative">
-        <div className="w-full flex flex-col items-center">
-          <div className="w-80 flex relative bg-white border shadow-2xl translate-y-10 rounded-2xl overflow-hidden">
-            <div className="w-full h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 bg-primary-green !text-white font-medium">
-              Configure
+      <div className="w-[20%] h-[58px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 bg-primary-green !text-white font-medium" style={{borderBottomRightRadius:"30px"}}>
+           <h1>Configure</h1>
             </div>
-          </div>
-          <div className="w-full p-4 px-8 mt-4">
+        <div className="w-full flex flex-col items-center">
+          <div className="w-full p-2 px-8">
             <div className="mt-10 flex flex-col gap-y-4 ">
               <div className="flex flex-col gap-y-4">
                 <div className="mx-auto">
@@ -577,5 +578,6 @@ export default function ConfigureGPTSection({
         </div>
       </div>
     </div>
+</>
   );
 }
