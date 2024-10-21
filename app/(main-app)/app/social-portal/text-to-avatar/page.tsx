@@ -24,6 +24,7 @@ import { ALL_ROUTES } from "@/utils/constant";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import React from "react";
+import GroupSvgTextAvatarIcon from "@/components/svgs/groupSVG";
 
 const VideoTable: React.FC<{
   videos: Array<{
@@ -292,10 +293,10 @@ const VideoTable: React.FC<{
                   video.status === "Success"
                     ? "text-green-500"
                     : video.status === "Pending"
-                      ? "text-yellow-500"
-                      : video.status === "Failed"
-                        ? "text-red-500"
-                        : ""
+                    ? "text-yellow-500"
+                    : video.status === "Failed"
+                    ? "text-red-500"
+                    : ""
                 }`}
               >
                 {video.status}
@@ -431,43 +432,75 @@ export default function TextToVideoPage() {
   return (
     <>
       <main>
-        <div className="flex justify-between items-center mt-8 ">
-          <div className="space-y-2 w-full">
-            <h1 className="text-2xl font-semibold">Text to avatar</h1>
-            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
-              My Avatars
-            </p>
-          </div>
-          <div className="w-full flex justify-end gap-2">
-            <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
-              <Search className="text-gray-500" size={20} />
-              <input
-                type="search"
-                className="outline-none h-[40px] w-full"
-                placeholder="Search template"
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-              />
-            </div>
-            <CreateVideoDialog templates={templates} />
-          </div>
-        </div>
         <div className="grid grid-cols-1 gap-5 mt-8">
           {loading ? (
             <div className="grid grid-cols-1 gap-5 mt-8">
               <TemplateLoader />
             </div>
-          ) : filteredTemplates && filteredTemplates.length > 0 ? (
-            <Suspense fallback={<TemplateLoader />}>
-              <VideoTable
-                videos={filteredTemplates}
-                onRemove={handleRemove}
-                onPreview={handlePreview}
-              />
-            </Suspense>
+          ) : filteredTemplates && filteredTemplates.length > 3 ? (
+            <div className="flex justify-between items-center mt-8 ">
+              <div className="space-y-2 w-full">
+                <h1 className="text-2xl font-semibold">Text to avatar</h1>
+                <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
+                  My Avatars
+                </p>
+              </div>
+              <div className="w-full flex justify-end gap-2">
+                <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
+                  <Search className="text-gray-500" size={20} />
+                  <input
+                    type="search"
+                    className="outline-none h-[40px] w-full"
+                    placeholder="Search template"
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                  />
+                </div>
+                <CreateVideoDialog templates={templates} />
+              </div>
+              <Suspense fallback={<TemplateLoader />}>
+                <VideoTable
+                  videos={filteredTemplates}
+                  onRemove={handleRemove}
+                  onPreview={handlePreview}
+                />
+              </Suspense>
+            </div>
           ) : (
-            <div className="text-center text-gray-500 text-2xl font-semibold col-span-4">
-              No Avatar Available
+            <div className="flex flex-col gap-10 items-center w-full h-[85vh] max-h-screen overflow-hidden col-span-4">
+              <div>
+                <h1 className="text-[#14171B] lg:text-[32px] md:text-[30px] font-semibold font-poppins tracking-[0.3%]">
+                  What's your vision for your video
+                </h1>
+              </div>
+              <div className="rounded-[10px] shadow-lg border border-[#E0E0E0] min-w-[300px] min-h-[428px] w-full h-auto sm:w-[400px] md:w-full md:min-h-[428px] lg:w-[818px] lg:h-[428px] 2xl:w-[1000px] 2xl:h-[600px]">
+                <div className="flex flex-col gap-3 p-5 items-center justify-center w-full h-full">
+                  <div>
+                    <GroupSvgTextAvatarIcon />
+                  </div>
+                  <div className="text-[22px] text-[#034737] cursor-pointer">
+                    +Create a video
+                  </div>
+                  <div className="text-[16px] text-[#14171B] text-center">
+                    "Design Your Unique Avatar for Engaging Masterclasses,
+                    Personal<br></br> Branding, and Internal Training!"
+                  </div>
+                  <div className="flex flex-row gap-5 w-full items-center justify-center">
+                    <div className="h-[170px] w-[140px] flex items-center justify-center border border-[#E0E0E0]">
+                      image1
+                    </div>
+                    <div className="h-[170px] w-[140px] flex items-center justify-center border border-[#E0E0E0]">
+                      image2
+                    </div>
+                    <div className="h-[170px] w-[140px] flex items-center justify-center border border-[#E0E0E0]">
+                      image3
+                    </div>
+                    <div className="h-[170px] w-[140px] flex items-center justify-center border border-[#E0E0E0]">
+                      image4
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </div>
