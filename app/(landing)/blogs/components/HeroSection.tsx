@@ -34,14 +34,14 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           data-aos="fade-up"
         >
           <h1 className="text-[16px] sm:text-[28px] md:text-[42px] max-w-xl sm:max-w-2xl md:max-w-4xl mx-auto leading-normal text-center font-semibold text-black">
-            Learn from My Mistakes: 7 Digital
+          Cutting Through the Hype:
           </h1>
           <h1 className="text-[16px] sm:text-[28px] md:text-[42px] max-w-xl sm:max-w-2xl md:max-w-4xl mx-auto leading-normal text-center font-light text-black">
-            Course Pitfalls to Skip
+          Demystifying the Noise of Gen AI in Market Expansion
           </h1>
           <p className="text-black text-center text-[12px] sm:text-[16px] md:text-[18px] font-light max-w-[610px]">
-            Lorem ipsum dolor sit amet consectetur. Id arcu arcu commodo
-            vestibulum ut ornare.
+          “The greatest enemy of knowledge is not ignorance, but the illusion of knowledge.” – Stephen Hawking.
+
           </p>
         </div>
       </div>
