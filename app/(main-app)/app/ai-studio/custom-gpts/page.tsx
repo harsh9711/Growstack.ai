@@ -11,14 +11,15 @@ import toast from "react-hot-toast";
 import { ALL_ROUTES } from "@/utils/constant";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
-
+import { FaEllipsisV } from "react-icons/fa";
 type CustomGpt = {
   description: string;
   icon: string;
   name: string;
   _id: string;
   show: boolean;
-  pre_built: boolean
+  pre_built: boolean;
+  is_public: boolean;
 };
 const avatars = [
   {
@@ -40,16 +41,26 @@ const avatars = [
 ];
 export default function Customgpts() {
   const [customGpts, setCustomGpts] = useState<CustomGpt[]>([]);
+  const [customGptsUser, setCustomGptsUser] = useState<CustomGpt[]>([]);
+  const [menuOpenIndex, setMenuOpenIndex] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const getCustomGpts = async () => {
     setLoading(true);
     try {
-      const {
-        data: { data },
-      } = await instance.get(`${API_URL}/ai/api/v1/customgpt`);
+      const resposne = await instance.get(`${API_URL}/ai/api/v1/customgpt`);
+      const { data: { data } } = resposne
+      const { data: { publicdata } } = resposne
 
-      setCustomGpts(data.map((d: any) => ({ ...d, show: true })));
+
+      setCustomGpts(publicdata.map((d: any) => ({ ...d, show: true })));
+      setCustomGpts(
+        publicdata
+          .filter((d: any) => d.is_public === true)
+          .map((d: any) => ({ ...d, show: true }))
+      );
+      setCustomGptsUser(data.filter((d: any) => d.is_public === false)
+        .map((d: any) => ({ ...d, show: true })))
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.error);
@@ -61,20 +72,33 @@ export default function Customgpts() {
     }
   };
 
+  const CustomGptPublic = async (id: string) => {
+    setLoading(true);
+    try {
+      await instance.post(`${API_URL}/ai/api/v1/customgpt/customgpt_public`, { "_id": id });
+      getCustomGpts()
+    }
+    catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
     getCustomGpts();
   }, []);
-
+  const toggleMenu = (index: any) => {
+    setMenuOpenIndex(menuOpenIndex === index ? null : index);
+  };
   return (
     <Fragment>
       <main className="">
         <div className="flex justify-between items-center mt-8">
-          {/* <div className="space-y-2 w-full">
-            <h1 className="text-2xl font-semibold">AI custom GPT</h1>
-            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
-              All custom GPTs apps
-            </p>
-          </div> */}
           <div className="w-full flex justify-end gap-2">
             <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
               <Search className="text-gray-500" size={20} />
@@ -124,20 +148,14 @@ export default function Customgpts() {
           ) : (
             <>
               <h1 className="text-2xl font-semibold">GPTs by GrowStack</h1>
-
               <div className="grid grid-cols-3 gap-5 mt-8">
-                {customGpts.map(
-                  ({ description, icon, name, _id, show, pre_built }, index) =>
-                    show && pre_built && (
-                      <Link
-                        href={`/app/ai-studio/custom-gpts/gpt?custom_gpt_id=${_id}`}
-                      >
-                        <div className="bg-white border border-[#E8E8E8] rounded-2xl p-6 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer transition-all duration-300">
+                {customGpts.map(({ description, icon, name, _id, show, pre_built, is_public }, index) =>
+                  show && (
+                    <div className="bg-white border border-[#E8E8E8] rounded-2xl p-6 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer transition-all duration-300 relative">
+                      <div className="flex justify-between">
+                        <Link href={`/app/ai-studio/custom-gpts/gpt?custom_gpt_id=${_id}`} key={_id}>
 
-                          <div
-                            key={index}
-                            className="flex items-center gap-5"
-                          >
+                          <div className="flex items-center gap-5">
                             <Image
                               src={icon}
                               alt=""
@@ -159,54 +177,62 @@ export default function Customgpts() {
                               >
                                 {description}...
                               </p>
-
                             </div>
-
                           </div>
-                          <div className="mt-3 mb-3">
-                            <DropdownMenuSeparator />
-
-                          </div>
-                          <div className="flex items-center">
-                            <div className="flex -space-x-3">
-                              {avatars.map((avatar, index) => (
-                                <Avatar key={index} className="w-[60%] h-[60%]">
-                                  <AvatarImage
-                                    style={{ borderRadius: "50%", border: index > 0 ? '3px solid white' : 'none' }}
-                                    className="w-[50px] h-[50px]"
-                                    src={icon}
-                                  />
-                                  <AvatarFallback>{avatar.fallback}</AvatarFallback>
-                                </Avatar>
-                              ))}
+                        </Link>
+                        {/* <div className="relative">
+                          <button onClick={(e) => { e.preventDefault(); toggleMenu(index); }}>
+                            <FaEllipsisV className="text-gray-500" />
+                          </button>
+                          {menuOpenIndex === index && (
+                            <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-10">
+                              <ul className="py-1">
+                                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                                  Public
+                                </li>
+                              </ul>
                             </div>
-                            <strong className="ml-4 text-gray-700">Used by: 10 users</strong>
-                          </div>
-
-
+                          )}
+                        </div> */}
+                      </div>
+                      {/* <div className="mt-3 mb-3">
+                        <DropdownMenuSeparator />
+                      </div>
+                      <div className="flex items-center">
+                        <div className="flex -space-x-3">
+                          {avatars.map((avatar, idx) => (
+                            <Avatar key={idx} className="w-[60%] h-[60%]">
+                              <AvatarImage
+                                style={{
+                                  borderRadius: "50%",
+                                  border: idx > 0 ? "3px solid white" : "none",
+                                }}
+                                className="w-[50px] h-[50px]"
+                                src={icon}
+                              />
+                              <AvatarFallback>{avatar.fallback}</AvatarFallback>
+                            </Avatar>
+                          ))}
                         </div>
-
-                      </Link>
-                    )
+                        <strong className="ml-4 text-gray-700">Used by: 10 users</strong>
+                      </div> */}
+                    </div>
+                  )
                 )}
               </div>
+              {customGpts?.length == 0 && <h1 className="text-center">GPTs by GrowStack Records Not Available</h1>}
               <div className="mt-8 mb-3">
                 <DropdownMenuSeparator />
               </div>
               <h1 className="text-2xl font-semibold mt-4">GPTs Created by users</h1>
               <div className="grid grid-cols-3 gap-5 mt-8">
-                {customGpts.map(
-                  ({ description, icon, name, _id, show, pre_built }, index) =>
-                    show && !pre_built && (
-                      <Link
-                        href={`/app/ai-studio/custom-gpts/gpt?custom_gpt_id=${_id}`}
-                      >
-                        <div className="bg-white border border-[#E8E8E8] rounded-2xl p-6 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer transition-all duration-300">
+                {customGptsUser.map(({ description, icon, name, _id, show, pre_built, is_public }, index) =>
+                  show && !is_public && (
+                    <div className="bg-white border border-[#E8E8E8] rounded-2xl p-6 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer transition-all duration-300 relative">
+                      <div className="flex justify-between">
+                        <Link href={`/app/ai-studio/custom-gpts/gpt?custom_gpt_id=${_id}`} key={_id}>
 
-                          <div
-                            key={index}
-                            className=" flex items-center gap-5"
-                          >
+                          <div className="flex items-center gap-5">
                             <Image
                               src={icon}
                               alt=""
@@ -223,43 +249,55 @@ export default function Customgpts() {
                                   WebkitLineClamp: 3,
                                   WebkitBoxOrient: "vertical",
                                   overflow: "hidden",
-                                  width: "80%"
+                                  width: "80%",
                                 }}
                               >
                                 {description}...
                               </p>
-
                             </div>
-
                           </div>
-                          <div className="mt-3 mb-3">
-                            <DropdownMenuSeparator />
-                          </div>
-                          <div className="flex items-center">
-                            <div className="flex -space-x-3">
-                              {avatars.map((avatar, index) => (
-                                <Avatar key={index} className="w-[60%] h-[60%]">
-                                  <AvatarImage
-                                    style={{ borderRadius: "50%", border: index > 0 ? '3px solid white' : 'none' }}
-                                    className="w-[50px] h-[50px]"
-                                    src={icon}
-                                  />
-                                  <AvatarFallback>{avatar.fallback}</AvatarFallback>
-                                </Avatar>
-                              ))}
+                        </Link>
+                        <div className="relative">
+                          <button onClick={(e) => { e.preventDefault(); toggleMenu(index); }}>
+                            <FaEllipsisV className="text-gray-500" />
+                          </button>
+                          {menuOpenIndex === index && (
+                            <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-10">
+                              <ul className="py-1">
+                                <button className="px-4 py-2 cursor-pointer" onClick={() => { CustomGptPublic(_id) }}>
+                                  Public
+                                </button>
+                              </ul>
                             </div>
-                            <strong className="ml-4 text-gray-700">Used by: 10 users</strong>
-                          </div>
-
-
+                          )}
                         </div>
-
-                      </Link>
-                    )
+                      </div>
+                      {/* <div className="mt-3 mb-3">
+                        <DropdownMenuSeparator />
+                      </div>
+                      <div className="flex items-center">
+                        <div className="flex -space-x-3">
+                          {avatars.map((avatar, idx) => (
+                            <Avatar key={idx} className="w-[60%] h-[60%]">
+                              <AvatarImage
+                                style={{
+                                  borderRadius: "50%",
+                                  border: idx > 0 ? "3px solid white" : "none",
+                                }}
+                                className="w-[50px] h-[50px]"
+                                src={icon}
+                              />
+                              <AvatarFallback>{avatar.fallback}</AvatarFallback>
+                            </Avatar>
+                          ))}
+                        </div>
+                        <strong className="ml-4 text-gray-700">Used by: 10 users</strong>
+                      </div> */}
+                    </div>
+                  )
                 )}
               </div>
-
-
+              {customGptsUser?.length == 0 && <h1 className="text-center">GPTs Created by users Records Not Available</h1>}
             </>
           )}
         </div>
