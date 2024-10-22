@@ -8,7 +8,7 @@ import { Minus, Plus } from "lucide-react";
 
 interface CheckListParams {
   display_name: string;
-  options: string[];
+  list_values: string[];
   description: string;
   required: boolean;
   variable_name: string;
@@ -29,7 +29,7 @@ export default function CheckListInputSection({
 }: CheckListInputSectionProps) {
   const [params, setParams] = useState<CheckListParams>({
     display_name: (inputParams as CheckListParams).display_name || "",
-    options: (inputParams as CheckListParams).options || [""],
+    list_values: (inputParams as CheckListParams).list_values || [""],
     description: (inputParams as CheckListParams).description || "",
     required: (inputParams as CheckListParams).required || false,
     variable_name: (inputParams as CheckListParams).variable_name || "",
@@ -67,21 +67,21 @@ export default function CheckListInputSection({
   const handleAddOption = () => {
     setParams(prev => ({
       ...prev,
-      options: [...prev.options, ""],
+      list_values: [...prev.list_values, ""],
     }));
   };
 
   const handleRemoveOption = (index: number) => {
     setParams(prev => ({
       ...prev,
-      options: prev.options.filter((_, i) => i !== index),
+      list_values: prev.list_values.filter((_, i) => i !== index),
     }));
   };
 
   const updateOption = (index: number, value: string) => {
-    const updatedOptions = [...params.options];
+    const updatedOptions = [...params.list_values];
     updatedOptions[index] = value;
-    setParams({ ...params, options: updatedOptions });
+    setParams({ ...params, list_values: updatedOptions });
   };
 
   return (
@@ -102,7 +102,7 @@ export default function CheckListInputSection({
         <div className="space-y-2">
           <label className="font-medium text-sm">Options</label>
           <div className="flex flex-col gap-2">
-            {params.options.map((option, index) => (
+            {params.list_values.map((option, index) => (
               <div key={index} className="flex items-center gap-2">
                 <Input
                   type="text"
@@ -110,7 +110,7 @@ export default function CheckListInputSection({
                   onChange={e => updateOption(index, e.target.value)}
                   placeholder={`Option ${index + 1}`}
                 />
-                {params.options.length > 1 && (
+                {params.list_values.length > 1 && (
                   <button
                     type="button"
                     className="text-red-500"
@@ -119,7 +119,7 @@ export default function CheckListInputSection({
                     <Minus />
                   </button>
                 )}
-                {index === params.options.length - 1 && (
+                {index === params.list_values.length - 1 && (
                   <button
                     type="button"
                     className="text-primary-green"
