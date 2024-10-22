@@ -99,7 +99,7 @@ const ContentBox = () => {
             by the bubble.
           </p>
         </div>
-        <div className="flex justify-center mt-5">
+        <div className="flex justify-center mt-5 mb-5">
           <img
             src="/l1.svg"
             alt="Gen AI in Action"
