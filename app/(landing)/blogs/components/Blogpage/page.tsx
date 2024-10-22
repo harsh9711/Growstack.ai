@@ -2,10 +2,10 @@ import React from "react";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
 import HeroSection from "../HeroSection";
-import { ContentBox } from "../ContentBox";
 import Image from "next/image";
 import { blogs } from "../../blogs";
 import Link from "next/link";
+import ContentBox from "../ContentBox";
 
 const Blogpage = () => {
   return (
