@@ -1,6 +1,6 @@
 "use client";
 
-import { DivideIcon, Plus, Search } from "lucide-react";
+import { DivideIcon, Plus, Search, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { Fragment, useEffect, useState } from "react";
 import Image from "next/image";
@@ -12,6 +12,8 @@ import { ALL_ROUTES } from "@/utils/constant";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { FaEllipsisV } from "react-icons/fa";
+import GlobalModal from "@/components/modal/global.modal";
+import DotsLoader from "@/components/DotLoader";
 type CustomGpt = {
   description: string;
   icon: string;
@@ -26,7 +28,9 @@ export default function Customgpts() {
   const [customGptsUser, setCustomGptsUser] = useState<CustomGpt[]>([]);
   const [menuOpenIndex, setMenuOpenIndex] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const [isDeleting,setIsDeleting] = useState(false)
+  const [deleteId,setDeleteId] = useState("")
+  const [viewAll, setViewAll] = useState(false);
   const getCustomGpts = async () => {
     setLoading(true);
     try {
@@ -37,8 +41,7 @@ export default function Customgpts() {
           .filter((d: any) => d.is_public === true)
           .map((d: any) => ({ ...d, show: true }))
       );
-      setCustomGptsUser(data.filter((d: any) => d.is_public === false)
-        .map((d: any) => ({ ...d, show: true })))
+      setCustomGptsUser(data.map((d: any) => ({ ...d, show: true })))
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.error);
@@ -54,6 +57,7 @@ export default function Customgpts() {
     setLoading(true);
     try {
       await instance.post(`${API_URL}/ai/api/v1/customgpt/customgpt_public`, { "_id": id });
+      setMenuOpenIndex(null)
       getCustomGpts()
     }
     catch (error: any) {
@@ -67,12 +71,54 @@ export default function Customgpts() {
     }
   }
 
+  const revokeCustomGpt = async (id: string) => {
+    setLoading(true);
+    try {
+      await instance.post(`${API_URL}/ai/api/v1/customgpt/revokecustomgpt`, { "_id": id });
+      setMenuOpenIndex(null)
+
+      getCustomGpts()
+    }
+    catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const deleteGpt = async () => {
+    setLoading(true);
+    setMenuOpenIndex(null)
+    try {
+      await instance.post(`${API_URL}/ai/api/v1/customgpt/deletecustomgpt`, { "_id": deleteId });
+      setIsDeleting(false)
+      setMenuOpenIndex(null)
+      getCustomGpts()
+    }
+    catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.error);
+      } else {
+        toast.error(error.message);
+      }
+    } finally {
+      setIsDeleting(false)
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
     getCustomGpts();
   }, []);
   const toggleMenu = (index: any) => {
     setMenuOpenIndex(menuOpenIndex === index ? null : index);
   };
+  const visibleItems = viewAll ? customGpts : customGpts.slice(0, 5);
+
   return (
     <Fragment>
       <main className="">
@@ -127,76 +173,52 @@ export default function Customgpts() {
             <>
               <h1 className="text-2xl font-semibold">GPTs by GrowStack</h1>
               <div className="grid grid-cols-3 gap-5 mt-8">
-                {customGpts.map(({ description, icon, name, _id, show, pre_built, is_public }, index) =>
-                  show && (
-                    <div className="bg-white border border-[#E8E8E8] rounded-2xl p-6 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer transition-all duration-300 relative">
-                      <div className="flex justify-between">
-                        <Link href={`/app/ai-studio/custom-gpts/gpt?custom_gpt_id=${_id}`} key={_id}>
+              {visibleItems.map(({ description, icon, name, _id, show }, index) =>
+        show && (
+          <div
+            key={_id}
+            className="bg-white border border-[#E8E8E8] rounded-2xl p-6 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer transition-all duration-300 relative"
+          >
+            <div className="flex justify-between">
+              <Link href={`/app/ai-studio/custom-gpts/gpt?custom_gpt_id=${_id}`}>
+                <div className="flex items-center gap-5">
+                  <Image
+                    src={icon}
+                    alt=""
+                    width={200}
+                    height={200}
+                    className="rounded-2xl w-[90px] h-[90px] object-cover"
+                  />
+                  <div className="space-y-2">
+                    <h1 className="text-lg font-semibold">{name}</h1>
+                    <p
+                      className="text-primary-black text-opacity-50 leading-relaxed"
+                      style={{
+                        display: "-webkit-box",
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                        width: "80%",
+                      }}
+                    >
+                      {description}...
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            </div>
+          </div>
+        )
+      )}
 
-                          <div className="flex items-center gap-5">
-                            <Image
-                              src={icon}
-                              alt=""
-                              width={200}
-                              height={200}
-                              className="rounded-2xl w-[90px] h-[90px] object-cover"
-                            />
-                            <div className="space-y-2">
-                              <h1 className="text-lg font-semibold">{name}</h1>
-                              <p
-                                className="text-primary-black text-opacity-50 leading-relaxed"
-                                style={{
-                                  display: "-webkit-box",
-                                  WebkitLineClamp: 3,
-                                  WebkitBoxOrient: "vertical",
-                                  overflow: "hidden",
-                                  width: "80%",
-                                }}
-                              >
-                                {description}...
-                              </p>
-                            </div>
-                          </div>
-                        </Link>
-                        {/* <div className="relative">
-                          <button onClick={(e) => { e.preventDefault(); toggleMenu(index); }}>
-                            <FaEllipsisV className="text-gray-500" />
-                          </button>
-                          {menuOpenIndex === index && (
-                            <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-10">
-                              <ul className="py-1">
-                                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                                  Public
-                                </li>
-                              </ul>
-                            </div>
-                          )}
-                        </div> */}
-                      </div>
-                      {/* <div className="mt-3 mb-3">
-                        <DropdownMenuSeparator />
-                      </div>
-                      <div className="flex items-center">
-                        <div className="flex -space-x-3">
-                          {avatars.map((avatar, idx) => (
-                            <Avatar key={idx} className="w-[60%] h-[60%]">
-                              <AvatarImage
-                                style={{
-                                  borderRadius: "50%",
-                                  border: idx > 0 ? "3px solid white" : "none",
-                                }}
-                                className="w-[50px] h-[50px]"
-                                src={icon}
-                              />
-                              <AvatarFallback>{avatar.fallback}</AvatarFallback>
-                            </Avatar>
-                          ))}
-                        </div>
-                        <strong className="ml-4 text-gray-700">Used by: 10 users</strong>
-                      </div> */}
-                    </div>
-                  )
-                )}
+      {customGpts.length > 5 && !viewAll && (
+        <button
+          onClick={() => setViewAll(true)}
+          className="mt-4 w-20px h-10px px-4 py-2 rounded text-green-500"
+        >
+          View All
+        </button>
+      )}
               </div>
               {customGpts?.length == 0 && <h1 className="text-center">GPTs by GrowStack Records Not Available</h1>}
               <div className="mt-8 mb-3">
@@ -205,7 +227,7 @@ export default function Customgpts() {
               <h1 className="text-2xl font-semibold mt-4">GPTs Created by users</h1>
               <div className="grid grid-cols-3 gap-5 mt-8">
                 {customGptsUser.map(({ description, icon, name, _id, show, pre_built, is_public }, index) =>
-                  show && !is_public && (
+                  show && (
                     <div className="bg-white border border-[#E8E8E8] rounded-2xl p-6 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer transition-all duration-300 relative">
                       <div className="flex justify-between">
                         <Link href={`/app/ai-studio/custom-gpts/gpt?custom_gpt_id=${_id}`} key={_id}>
@@ -242,9 +264,15 @@ export default function Customgpts() {
                           {menuOpenIndex === index && (
                             <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-10">
                               <ul className="py-1">
-                                <button className="px-4 py-2 cursor-pointer" onClick={() => { CustomGptPublic(_id) }}>
-                                  Public
-                                </button>
+                                <li className="px-4 py-2 cursor-pointer" onClick={() => { CustomGptPublic(_id) }}>
+                                set as public
+                                </li>
+                                <li className="px-4 py-2 cursor-pointer" onClick={() => { revokeCustomGpt(_id) }}>
+                                remove from public
+                                </li>
+                                <li className="px-4 py-2 cursor-pointer text-rose-600" onClick={() => { setIsDeleting(true);setDeleteId(_id) }}>
+                                  Delete
+                                </li>
                               </ul>
                             </div>
                           )}
@@ -279,6 +307,38 @@ export default function Customgpts() {
             </>
           )}
         </div>
+        <GlobalModal
+        className=""
+        open={isDeleting}
+        setOpen={() => {
+          setIsDeleting(false);
+        }}
+      >
+        <div className="flex flex-col items-start justify-center px-6 pt-4 pb-8 gap-6 ">
+          <h3 className="text-center text-xl font-semibold">
+            Are you sure you want to delete{" "}
+            <strong>GPT</strong>
+          </h3>
+          <p className="text-left text-gray-700 text-sm md:text-base">
+            This action is irreversible. Once deleted, you will not be able to
+            recover this GPT.
+          </p>
+          <div className="flex items-center justify-start gap-3">
+            <button
+              className="text-gray-500 border border-gray-500 bg-transparent text-nowrap py-2 px-8 rounded-md transition duration-300"
+              
+            >
+              Cancel
+            </button>
+            <button onClick={()=>{deleteGpt()}}
+              className="text-white bg-red-500 text-nowrap flex items-center gap-1 py-2 px-6 rounded-md transition duration-300 hover:bg-red-600"
+            >
+             <Trash2 size={18} />
+              Delete
+            </button>
+          </div>
+        </div>
+      </GlobalModal>
       </main>
     </Fragment>
   );
