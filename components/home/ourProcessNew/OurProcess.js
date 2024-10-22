@@ -33,6 +33,7 @@ const HoverVideo = () => {
     <div
     className="sm:flex hidden"
       onMouseEnter={playVideo}
+      className="sm:flex hidden"
       style={{
         width: "100%",
         height: "100%",
@@ -81,14 +82,13 @@ function OurProcess() {
                   collaborate seamlessly with our fun no-code tool.
                 </p>
               </div>
-              <div className="lg:flex hidden w-full h-full">
+              <div className="sm:flex hidden w-full h-full">
                 <div
                   className="animate"
                   data-aos="fade-in"
                   data-aos-easing="ease-in-sine"
                   data-aos-duration="1000"
                 >
-                  {/* <img src="/images_growstack/home/animate.svg" alt="process" /> */}
                   <video
                     width="720"
                     height="640"

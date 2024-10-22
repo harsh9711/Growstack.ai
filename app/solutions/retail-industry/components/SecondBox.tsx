@@ -107,24 +107,6 @@ const SecondBox = () => {
   }, []);
 
   return (
-<<<<<<< HEAD
-    <div className="flex flex-col mt-10 sm:mt-20 gap-y-16 sm:gap-y-40 w-full items-center mx-auto px-6 lg:px-0">
-      {props.map((inf, index) => (
-        <div
-          key={index}
-          className="flex flex-col xl:py-28 bg-[#FAFBFC]  rounded-[40px] px-10 py-10 max-w-[1520px] xl:w-[1520px] xl:px-40 items-center justify-center sm:max-h-[727px] xl:h-[727px]  h-full w-full mx-auto transition-all duration-300 ease-in-out hover:shadow-2xl"
-          data-aos="fade-up"
-        >
-          <h2
-            className="w-full font-light text-[24px] xl:text-[40px] sm:text-[28px] text-center text-gray-800"
-            data-aos="fade-right"
-          >
-            <span className="font-bold ">{inf.title}</span>{" "}
-            {inf.subtitle}
-          </h2>
-          <div
-            className={`flex flex-col sm:flex-row mt-6 sm:mt-16 ${inf.classNaming} gap-6 sm:gap-10 w-full justify-between items-center`}
-=======
     <div className="flex flex-col mt-10 sm:mt-20 gap-y-16 sm:gap-y-32 max-w-[1287px] w-full items-center mx-auto">
       {props.map((inf, index) => (
         <div
@@ -140,40 +122,11 @@ const SecondBox = () => {
           </h2>
           <div
             className={`flex flex-col sm:flex-row mt-6 sm:mt-16 ${inf.classNaming} gap-6 sm:gap-10 w-full justify-between`}
->>>>>>> 65ce5f70852844a5b76b473fb7dfec519ae56444
             data-aos="fade-left"
           >
             <div data-aos="zoom-in" className="w-full sm:w-auto">
               <Image
                 src={inf.img || "/default-image.svg"}
-<<<<<<< HEAD
-                width={780}
-                height={700}
-                alt="image"
-                className="w-full h-full max-h-[700px] sm:max-w-[720px] rounded-lg shadow-lg transition-transform duration-500 scale-100 hover:scale-105"
-              />
-            </div>
-            <div className="flex flex-col gap-y-4" data-aos="fade-up">
-              {inf.Subpoints.map((point, idx) => (
-                <div
-                  className="max-w-[600px] w-full flex flex-col gap-y-2 items-center sm:items-start"
-                  key={idx}
-                >
-                  <h2
-                    className="w-full text-[#034737] font-bold text-[18px] xl:text-[22px] sm:text-start text-center sm:text-[20px] leading-snug"
-                    data-aos="fade-right"
-                  >
-                    {point.subpointspheading}
-                  </h2>
-                  <div
-                    className="bg-white shadow-md text-[#034737] rounded-[12px] sm:text-start text-center p-6 font-medium w-full sm:max-w-[505px] sm:text-[16px] text-[14px] transition-transform duration-500 hover:scale-105"
-                    data-aos="fade-up"
-                  >
-                    <p>{point.subpointspdiscription}</p>
-                  </div>
-                </div>
-              ))}{" "}
-=======
                 width={720}
                 height={500}
                 alt="image"
@@ -181,11 +134,11 @@ const SecondBox = () => {
               />
             </div>
             <div className="max-w-[600px] w-full flex flex-col gap-y-2 items-center sm:items-start">
-              <h2
+              {/* <h2
                 className="w-full font-bold text-[16px] xl:text-[20px] sm:text-start text-center sm:text-[18px]"
                 data-aos="fade-right"
               >
-                {inf.subpointspheading}
+                {inf.}
               </h2>
               <div
                 className="bg-[#FAFBFC] text-[#034737] rounded-[10px] sm:text-start text-center p-4 font-medium w-full sm:max-w-[505px] sm:text-[16px] text-[14px]"
@@ -198,25 +151,25 @@ const SecondBox = () => {
                 data-aos="fade-right"
               >
                 {inf.subpheading}
-              </h2>
+              </h2> */}
               <div className="flex flex-col gap-y-4" data-aos="fade-up">
-                {inf.Subsubpoints.map((information, index) => (
+                {inf.Subpoints.map((information, index) => (
                   <div
                     className="bg-[#FAFBFC] rounded-[10px] p-6 font-medium w-full sm:max-w-[505px] sm:text-[16px] text-[14px]"
                     key={index}
                   >
                     <div className="flex">
                       <h2 className="font-bold">
-                        {information.pbolddiscription}:{" "}
+                        {information.subpointspheading}:{" "}
                         <span className="font-medium">
-                          {information.subpdiscription}
+                          {information.subpointspdiscription}
                         </span>
                       </h2>
                     </div>
                   </div>
                 ))}
               </div>
-              <div className="flex mt-4 flex-row max-w-[450px] items-center gap-4 font-medium w-full sm:text-[16px] text-[14px]">
+              {/* <div className="flex mt-4 flex-row max-w-[450px] items-center gap-4 font-medium w-full sm:text-[16px] text-[14px]">
                 {inf.Subsubsubpoints.map((information, index) => (
                   <div
                     className="bg-[#03473714] flex items-center justify-center w-full rounded-[20px] p-2"
@@ -227,8 +180,7 @@ const SecondBox = () => {
                     </h2>
                   </div>
                 ))}
-              </div>
->>>>>>> 65ce5f70852844a5b76b473fb7dfec519ae56444
+              </div> */}
             </div>
           </div>
         </div>
@@ -238,3 +190,4 @@ const SecondBox = () => {
 };
 
 export default SecondBox;
+

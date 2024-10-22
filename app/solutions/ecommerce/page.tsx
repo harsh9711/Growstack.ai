@@ -13,7 +13,6 @@ import SecondBox from "./components/SecondBox";
 import SixCard from "./components/SixCard";
 import Footer from "@/components/footer/Footer";
 
-
 const page = () => {
   useEffect(() => {
     AOS.init({ duration: 500 });
