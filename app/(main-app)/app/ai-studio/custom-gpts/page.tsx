@@ -21,24 +21,6 @@ type CustomGpt = {
   pre_built: boolean;
   is_public: boolean;
 };
-const avatars = [
-  {
-    src: "http://localhost:3000/_next/image?url=https%3A%2F%2Fgrowstackai.s3.amazonaws.com%2FqIZsZn%2FNag.jpeg&w=256&q=75",
-    fallback: "email1"
-  },
-  {
-    src: "http://localhost:3000/_next/image?url=https%3A%2F%2Fgrowstackai.s3.amazonaws.com%2FqIZsZn%2FNag.jpeg&w=256&q=75",
-    fallback: "email2"
-  },
-  {
-    src: "http://localhost:3000/_next/image?url=https%3A%2F%2Fgrowstackai.s3.amazonaws.com%2FqIZsZn%2FNag.jpeg&w=256&q=75",
-    fallback: "email3"
-  },
-  {
-    src: "http://localhost:3000/_next/image?url=https%3A%2F%2Fgrowstackai.s3.amazonaws.com%2FqIZsZn%2FNag.jpeg&w=256&q=75",
-    fallback: "email4"
-  }
-];
 export default function Customgpts() {
   const [customGpts, setCustomGpts] = useState<CustomGpt[]>([]);
   const [customGptsUser, setCustomGptsUser] = useState<CustomGpt[]>([]);
