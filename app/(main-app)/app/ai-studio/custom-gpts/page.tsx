@@ -48,11 +48,7 @@ export default function Customgpts() {
   const getCustomGpts = async () => {
     setLoading(true);
     try {
-      const resposne = await instance.get(`${API_URL}/ai/api/v1/customgpt`);
-      const { data: { data } } = resposne
-      const { data: { publicdata } } = resposne
-
-
+      const { data: { data, publicdata } } = await instance.get(`${API_URL}/ai/api/v1/customgpt`);
       setCustomGpts(publicdata.map((d: any) => ({ ...d, show: true })));
       setCustomGpts(
         publicdata
