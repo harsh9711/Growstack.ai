@@ -232,7 +232,7 @@ const CreateBrandVoice = ({ isOpen, setIsOpen, onSuccess }: Props) => {
                 <label className="font-medium">Url</label>
                 <div className="flex w-full flex-col items-center gap-2">
                   {urlFields.map((_, index) => (
-                    <div className="w-full space-y-2">
+                    <div key={index} className="w-full space-y-2">
                       <div
                         key={index}
                         className="flex items-center w-full gap-2"
