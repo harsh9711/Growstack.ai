@@ -179,8 +179,6 @@ export default function QuickPosting() {
     setMediaUrls(prevUrls => prevUrls.filter((_, i) => i !== index));
   };
 
-  console.log(mediaUrls);
-
   return (
     <Fragment>
       {loading ? (
