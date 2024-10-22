@@ -99,11 +99,11 @@ const ContentBox = () => {
             by the bubble.
           </p>
         </div>
-        <div className="flex justify-center mt-5 mb-5">
+        <div className="flex justify-center mt-6 mb-2">
           <img
             src="/l1.svg"
             alt="Gen AI in Action"
-            className="w-2/3 h-auto rounded shadow-md"
+            className="w-2/3 h-auto rounded"
           />
         </div>
 
@@ -113,7 +113,7 @@ const ContentBox = () => {
           </h2>
           <blockquote className="text-gray-600 italic bg-[#F1F8FF] py-4 text-center rounded-2xl  ">
             “The future is already here — it’s just not very evenly
-            distributed.” – <span className="font-bold ">William Gibson.</span>
+            distributed.” –<span className="font-bold  not-italic">William Gibson.</span>
           </blockquote>
           <p className="text-gray-700 mt-2 leading-relaxed">
             Gen AI, short for{" "}
@@ -139,7 +139,6 @@ const ContentBox = () => {
             sports car and then using it solely for getting milk.
           </p>
         </div>
-
         <div id="choosing" className="flex flex-col gap-y-6">
           <h2 className="text-[24px] font-bold text-[#034737]">
             3. Say No to “Black Box” AI: Transparency is King
@@ -147,7 +146,7 @@ const ContentBox = () => {
           <blockquote className="text-gray-600 italic bg-[#F1F8FF] py-4 text-center rounded-2xl  ">
             “If you can’t explain it to a six-year-old, you really don’t
             understand it.” –{" "}
-            <span className="font-bold">Albert Einstein.</span>
+          <span className="font-bold  not-italic">Albert Einstein.</span>
           </blockquote>
           <p className="text-gray-700 mt-2 leading-relaxed">
             Some Gen AI platforms are like mystery boxes: they give you nice
@@ -178,11 +177,47 @@ const ContentBox = () => {
 
         <div id="black-box" className="flex flex-col gap-y-6">
           <h2 className="text-[24px] font-bold text-[#034737]">
+            3. Say No to “Black Box” AI: Transparency is King
+          </h2>
+          <blockquote className="text-gray-600 italic bg-[#F1F8FF] py-4 text-center rounded-2xl  ">
+            “If you can’t explain it to a six-year-old, you really don’t
+            understand it.” –{" "}
+          <span className="font-bold  not-italic">Albert Einstein.</span>
+          </blockquote>
+          <p className="text-gray-700 mt-2 leading-relaxed">
+            Some Gen AI platforms are like mystery boxes: they give you nice
+            results but don’t tell you how they are making those decisions. It’s
+            like ending up with a pile of charts and graphs that say, “Well,
+            here we are, but how did we get here?” They call this the{" "}
+            <strong>“Black Box” effect</strong>, and it’s not good news for
+            anyone.
+          </p>
+          <p className="text-gray-700 mt-2 leading-relaxed">
+            I believe no one wakes up in the morning and decides they want to go
+            have dinner at a restaurant, order a nice juicy steak only to have
+            the chef not explain what all is in the dish. Sketchy, right? The
+            same goes for AI: if you do not know why your AI is providing advice
+            on a particular strategy, you should not implement it.{" "}
+            <strong>Transparency is a key value at GrowStack.</strong>
+          </p>
+          <p className="text-gray-700 mt-2 leading-relaxed">
+            As cited by Gartner the other day, <strong>65% of customers</strong>{" "}
+            would like to understand how their data is utilized. We welcome Open
+            AI as the novelty. If you wish to make your marketing strategy more
+            specific to the actions of consumers, then? Not only do we explain
+            why these particular strategies are the best ones to employ, but we
+            also deconstruct how we came up with such strategies, providing you
+            with the confidence you need to gain an edge.
+          </p>
+        </div>
+
+        <div id="personalization" className="flex flex-col gap-y-6">
+          <h2 className="text-[24px] font-bold text-[#034737]">
             4. Personalization is Key: No More Fishing with a Net
           </h2>
           <blockquote className="text-gray-600 italic bg-[#F1F8FF] py-4 text-center rounded-2xl  ">
-            “People don’t buy what you do; they buy why you do it.” – <span className="font-bold"> Simon
-            Sinek.</span>
+            “People don’t buy what you do; they buy why you do it.” –{" "}
+          <span className="font-bold  not-italic"> Simon Sinek.</span>
           </blockquote>
           <p className="text-gray-700 mt-2 leading-relaxed">
             If your marketing is unfocused, you are fishing with a seine;
@@ -205,13 +240,13 @@ const ContentBox = () => {
           </p>
         </div>
 
-        <div id="personalization" className="flex flex-col gap-y-6">
+        <div id="co-pilot" className="flex flex-col gap-y-6">
           <h2 className="text-[24px] font-bold text-[#034737]">
             5. Gen AI is a Co-Pilot and Not an Auto-Pilot
           </h2>
           <blockquote className="text-gray-600 italic bg-[#F1F8FF] py-4 text-center rounded-2xl  ">
             “This steam technology is the best because it enables people to come
-            closer.” – <span className="font-bold">Matt Mullenweg.</span>
+            closer.” – <span className="font-bold  not-italic">Matt Mullenweg.</span>
           </blockquote>
           <p className="text-gray-700 mt-2 leading-relaxed">
             Let’s be clear: Finally, let me chat for a while about what AI is
