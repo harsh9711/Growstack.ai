@@ -4,7 +4,6 @@ import Image from "next/image";
 import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
 
-
 const RequestForm = () => {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -28,7 +27,11 @@ const RequestForm = () => {
 
   return (
     <div className="flex rounded-5xl  max-h-screen overflow-y-scroll">
-      <div className="tidycal-embed rounded-3xl" data-path="growstack/30-minute-meeting"></div><script src="https://asset-tidycal.b-cdn.net/js/embed.js" async></script>
+      <div
+        className="tidycal-embed rounded-3xl"
+        data-path="growstack/30-minute-meeting"
+      ></div>
+      <script src="https://asset-tidycal.b-cdn.net/js/embed.js" async></script>
     </div>
   );
 };
@@ -37,7 +40,9 @@ const Demo = () => {
   return (
     <div>
       {" "}
-      <div className="relative z-40"><Navbar /></div>
+      <div className="relative z-40">
+        <Navbar />
+      </div>
       <div className="z-0 relative p-4 2xl:p-0 max-w-[1280px] mt-6 flex flex-wrap gap-6 w-full items-start mx-auto justify-between">
         <div className="relative z-20 flex flex-col gap-y-6 max-w-[543px] w-full">
           <h2 className="text-[48px]  font-bold text-black">
@@ -91,7 +96,6 @@ const Demo = () => {
                 <p className="text-black text-[16px]">
                   Get tailored demonstration that fits your business needs.
                 </p>
-
               </div>
             </div>
             <div className="border w-full border-[#E1E1E1]"></div>
@@ -152,8 +156,8 @@ const Demo = () => {
                   Discover key features:
                 </h2>
                 <p className="text-black text-[16px]">
-                  See GrowStack's powerful features in action.                </p>
-
+                  See GrowStack's powerful features in action.{" "}
+                </p>
               </div>
             </div>
             <div className="border w-full border-[#E1E1E1]"></div>
@@ -189,12 +193,11 @@ const Demo = () => {
                   Ask questions and get answers from our knowledgeable team.{" "}
                 </p>
               </div>
-            </div>                <div className="border w-full border-[#E1E1E1]"></div>
-
+            </div>{" "}
+            <div className="border w-full border-[#E1E1E1]"></div>
           </div>
         </div>
         <div className="relative z-20 bg-[#F7FAFC] mb-52 rounded-[30px] p-10 gap-y-6 max-w-[610px] max-h-[1471px] w-full flex flex-col">
-
           <div className="flex flex-col gap-y-6">
             <h2 className="text-[28px]  font-bold text-black">
               Request a demo

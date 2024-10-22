@@ -8,7 +8,9 @@ export default function MultipostingPage() {
         <div className="flex justify-between items-center mt-8">
           <div className="space-y-2 w-full">
             <h1 className="text-2xl font-semibold">Scheduler</h1>
-            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[16px]">Posting log </p>
+            <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[16px]">
+              Posting log{" "}
+            </p>
           </div>
         </div>
         <LogsTable />

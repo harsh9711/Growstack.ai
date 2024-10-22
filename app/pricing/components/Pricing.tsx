@@ -65,10 +65,11 @@ const Pricing = () => {
             {tabs.map((tab, index) => (
               <div
                 key={index}
-                className={`w-full h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${selectedTabIndex === index
-                  ? "!text-[#034737] font-semibold"
-                  : "!text-white"
-                  }`}
+                className={`w-full h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 ${
+                  selectedTabIndex === index
+                    ? "!text-[#034737] font-semibold"
+                    : "!text-white"
+                }`}
                 onClick={() => handleTabClick(index)}
               >
                 {tab}

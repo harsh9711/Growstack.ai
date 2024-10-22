@@ -98,7 +98,9 @@ const page = () => {
             data-aos-delay="300"
             className="text-center text-[22px] 2xl:text-[42px] leading-normal"
           >
-            <span className="text-black font-bold">Adapt to technological </span>
+            <span className="text-black font-bold">
+              Adapt to technological{" "}
+            </span>
             <span className="text-black font-extralight"> changes</span>
           </h1>
 

@@ -11,20 +11,20 @@ import Benefits from "@/components/marketingSalesAssistant/benefits/Benefits";
 import AgentsDepartment from "@/components/marketingSalesAssistant/agentsDepartment/AgentsDepartment";
 
 function Page() {
-    return (
-        <React.Fragment>
-            <div className='transNav'>
-                <Navbar />
-                <Banner />
-                <AiEnhanced />
-                <AiSlider />
-                <Interface />
-                <AgentsDepartment />
-                <Benefits />
-                <Footer />
-            </div>
-        </React.Fragment>
-    );
+  return (
+    <React.Fragment>
+      <div className="transNav">
+        <Navbar />
+        <Banner />
+        <AiEnhanced />
+        <AiSlider />
+        <Interface />
+        <AgentsDepartment />
+        <Benefits />
+        <Footer />
+      </div>
+    </React.Fragment>
+  );
 }
 
 export default Page;

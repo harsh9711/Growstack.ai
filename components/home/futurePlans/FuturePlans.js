@@ -41,7 +41,7 @@ function FuturePlans() {
                       <span>May 2025</span>
                     </div>
                     <div className="content-box">
-                      <h3>May 2025:  GTM Advanced Capabilities</h3>
+                      <h3>May 2025: GTM Advanced Capabilities</h3>
                       <ul>
                         <li>Agentic Workflows</li>
                         <li>AI-Powered Calling</li>

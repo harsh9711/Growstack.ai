@@ -1,6 +1,19 @@
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Plus } from "lucide-react";
 
 export default function AddContactDialog() {
@@ -25,7 +38,8 @@ export default function AddContactDialog() {
           </div>
           <div className="space-y-2">
             <label className="font-medium">
-              Phone (with country phone code) <span className="text-[#F00]">*</span>
+              Phone (with country phone code){" "}
+              <span className="text-[#F00]">*</span>
             </label>
             <Input type="text" placeholder="-" />
           </div>
@@ -54,7 +68,9 @@ export default function AddContactDialog() {
           </div>
 
           <div className="flex justify-end">
-            <button className="flex items-center gap-2 bg-primary-green text-white px-6 py-2 h-12 rounded-xl sheen w-full max-w-fit">Submit</button>
+            <button className="flex items-center gap-2 bg-primary-green text-white px-6 py-2 h-12 rounded-xl sheen w-full max-w-fit">
+              Submit
+            </button>
           </div>
         </div>
       </DialogContent>

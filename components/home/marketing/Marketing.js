@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import './Marketing.scss';
-import walletStackList from './walletStackList.json';
-import Image from 'next/image';
-import { Autoplay, Navigation, Pagination } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/effect-fade';
-import 'swiper/css/pagination';
-import 'swiper/css/navigation';
-import { Swiper, SwiperSlide } from 'swiper/react';
+import "./Marketing.scss";
+import walletStackList from "./walletStackList.json";
+import Image from "next/image";
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/effect-fade";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 function Marketing() {
   const [tabs, setTabs] = useState(0);
@@ -20,18 +20,25 @@ function Marketing() {
     <React.Fragment>
       <div className="marketing">
         <div className="container">
-          <div className="title" data-aos="fade-up"
+          <div
+            className="title"
+            data-aos="fade-up"
             data-aos-easing="ease-in-sine"
-            data-aos-duration="1000">
+            data-aos-duration="1000"
+          >
             <span className="user">Complete Marketing Ecosystem</span>
             <h3 className="heading">
-              <span>Streamline your marketing workflow from</span> planning to engagement with Growstack
+              <span>Streamline your marketing workflow from</span> planning to
+              engagement with Growstack
             </h3>
           </div>
         </div>
-        <div className="wallet_tech_wrap" data-aos="fade-up"
+        <div
+          className="wallet_tech_wrap"
+          data-aos="fade-up"
           data-aos-easing="ease-in-sine"
-          data-aos-duration="1000">
+          data-aos-duration="1000"
+        >
           <div className="container">
             <div className="wallet_tech">
               <ul>
@@ -39,9 +46,10 @@ function Marketing() {
                   <li key={`custom-${index}`}>
                     <button
                       onClick={() => setTabs(index)}
-                      className={`${tabs === index ? 'active' : ''}`}
+                      className={`${tabs === index ? "active" : ""}`}
                     >
-                      <Image src={tab_img} alt='img' width={100} height={100} /> {tab_button}
+                      <Image src={tab_img} alt="img" width={100} height={100} />{" "}
+                      {tab_button}
                     </button>
                   </li>
                 ))}
@@ -79,11 +87,17 @@ function Marketing() {
             >
               {walletStackList[tabs].slides.map((slide, index) => (
                 <SwiperSlide key={index}>
-                  <div className="card" style={{ backgroundColor: slide.bgColor }}>
+                  <div
+                    className="card"
+                    style={{ backgroundColor: slide.bgColor }}
+                  >
                     <div className="row ">
                       <div className="">
                         <div className="writterImg">
-                          <img src="/images_growstack/home/marketSlider.svg" alt="marketSlider" />
+                          <img
+                            src="/images_growstack/home/marketSlider.svg"
+                            alt="marketSlider"
+                          />
                         </div>
                       </div>
                       <div className="">
@@ -94,7 +108,11 @@ function Marketing() {
                             <li>Features</li>
                             {slide.features.map((feature, i) => (
                               <li key={i}>
-                                <img src="/images_growstack/home/check.svg" alt="check" /> {feature}
+                                <img
+                                  src="/images_growstack/home/check.svg"
+                                  alt="check"
+                                />{" "}
+                                {feature}
                               </li>
                             ))}
                           </ul>
@@ -105,7 +123,6 @@ function Marketing() {
                 </SwiperSlide>
               ))}
             </Swiper>
-
           </div>
         </div>
       </div>

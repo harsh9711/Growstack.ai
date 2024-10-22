@@ -15,10 +15,10 @@ export default function Layout({
 }>) {
   return (
     <div>
-     {/* <Navbar textColor="#ffffff" loginBgColor="#ffffff" />  */}
+      {/* <Navbar textColor="#ffffff" loginBgColor="#ffffff" />  */}
 
       <div className="">{children}</div>
-    {/* <div className=" bg-white"> <Footer/></div> */}
+      {/* <div className=" bg-white"> <Footer/></div> */}
     </div>
   );
 }

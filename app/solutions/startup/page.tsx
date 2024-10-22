@@ -13,13 +13,12 @@ import GridComponent from "./components/GridBoxes";
 import ImageGalleryLine from "./components/ImageGalleryline";
 import GridComponentResponsive from "./components/GridBoxesresponsive";
 
-
 const page = () => {
   useEffect(() => {
     AOS.init({ duration: 500 });
   }, []);
   return (
-    <main className="bg-white overflow-hidden max-w-[1920px] w-full mx-auto" >
+    <main className="bg-white overflow-hidden max-w-[1920px] w-full mx-auto">
       <Navbar
         logoUrl="/images/logo.png"
         logoAlt="Custom Logo"
@@ -33,7 +32,8 @@ const page = () => {
               <div
                 data-aos="fade-up"
                 data-aos-duration="1000"
-                className="bg-[#03473714]/10 text-[#034737] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit">
+                className="bg-[#03473714]/10 text-[#034737] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit"
+              >
                 {" "}
                 manage
               </div>
@@ -46,7 +46,8 @@ const page = () => {
                   Maintain consistent
                 </span>
                 <span className=" text-black font-normal">
-                  service standards                 </span>
+                  service standards{" "}
+                </span>
               </h1>
             </div>
             <div
@@ -76,9 +77,6 @@ const page = () => {
           <ImageGalleryLineResponsive />
         </div>
       </section>
-
-
-
 
       <section className="mx-auto w-full flex items-center justify-center py-10 2xl:py-40 ">
         <div

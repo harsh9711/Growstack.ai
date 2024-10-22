@@ -44,7 +44,7 @@ export default function EmailBuilder() {
     if (iframeRef.current) {
       const iframeDocument = iframeRef.current.contentDocument;
       if (iframeDocument) {
-        iframeDocument.querySelectorAll<HTMLElement>("*").forEach((element) => {
+        iframeDocument.querySelectorAll<HTMLElement>("*").forEach(element => {
           element.contentEditable = "true";
           element.addEventListener("mouseover", handleMouseOver);
           element.addEventListener("mouseout", handleMouseOut);
@@ -62,7 +62,9 @@ export default function EmailBuilder() {
       const iframeDocument = iframeRef.current.contentDocument;
       if (iframeDocument) {
         const element = document.createElement("a");
-        const file = new Blob([iframeDocument.documentElement.innerHTML], { type: "text/html" });
+        const file = new Blob([iframeDocument.documentElement.innerHTML], {
+          type: "text/html",
+        });
         element.href = URL.createObjectURL(file);
         element.download = "index.html";
         document.body.appendChild(element);
@@ -108,12 +110,19 @@ export default function EmailBuilder() {
 
   return (
     <div className="flex-1 h-screen flex flex-col">
-      <Header handleViewScreenChange={handleViewScreenChange} iframeWidth={iframeWidth} handleExport={handleExport} />
+      <Header
+        handleViewScreenChange={handleViewScreenChange}
+        iframeWidth={iframeWidth}
+        handleExport={handleExport}
+      />
       <div className="flex-1 flex gap-3">
         <Sidebar selectedTab={selectedTab} setSelectedTab={setSelectedTab} />
         <div className="w-full bg-[#F8F6FF] p-5">
           {loading && (
-            <Motion transition={{ duration: 1 }} variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}>
+            <Motion
+              transition={{ duration: 1 }}
+              variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+            >
               <div className="flex gap-3 items-center py-4 px-6 w-full rounded-lg mt-2 bg-gray-200 text-gray-700 max-w-5xl mx-auto">
                 <Spinner /> <p className="ml-2">Generating email...</p>
               </div>
@@ -124,12 +133,20 @@ export default function EmailBuilder() {
               ref={iframeRef}
               srcDoc={generatedHtml}
               className="w-full h-full"
-              style={{ width: iframeWidth, height: "calc(100vh - 100px)", margin: "0 auto" }}
+              style={{
+                width: iframeWidth,
+                height: "calc(100vh - 100px)",
+                margin: "0 auto",
+              }}
             />
           )}
         </div>
       </div>
-      <NewEmailDialog generateHtml={generatedHtml} setGeneratedHtml={setGeneratedHtml} setLoading={setLoading} />
+      <NewEmailDialog
+        generateHtml={generatedHtml}
+        setGeneratedHtml={setGeneratedHtml}
+        setLoading={setLoading}
+      />
     </div>
   );
 }

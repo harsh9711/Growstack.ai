@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { z } from "zod";
@@ -6,8 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Edit } from "lucide-react";
 import toast from "react-hot-toast";
-import { FaEye, FaEyeSlash, FaEdit } from 'react-icons/fa';
-
+import { FaEye, FaEyeSlash, FaEdit } from "react-icons/fa";
 
 const ChangePassword = () => {
   const [showOldPassword, setShowOldPassword] = useState(false);
@@ -38,7 +37,7 @@ const ChangePassword = () => {
     resolver: zodResolver(ValidationSchema),
   });
 
-  const onSubmit: SubmitHandler<ValidationSchemaType> = async (data) => {
+  const onSubmit: SubmitHandler<ValidationSchemaType> = async data => {
     try {
       const validatedData = ValidationSchema.parse(data);
       const response = await instance.put(
@@ -80,10 +79,10 @@ const ChangePassword = () => {
                 />
                 <div
                   className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
-                  style={{ marginTop:"34px" }}
+                  style={{ marginTop: "34px" }}
                   onClick={() => setShowOldPassword(!showOldPassword)}
                 >
-                  {showOldPassword ? <FaEye />  : <FaEyeSlash />}
+                  {showOldPassword ? <FaEye /> : <FaEyeSlash />}
                 </div>
                 {errors.oldPassword && (
                   <span className="text-rose-600 text-sm">
@@ -101,10 +100,10 @@ const ChangePassword = () => {
                 />
                 <div
                   className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
-                  style={{ marginTop:"34px" }}
+                  style={{ marginTop: "34px" }}
                   onClick={() => setShowNewPassword(!showNewPassword)}
                 >
-                  {showNewPassword ? <FaEye />  : <FaEyeSlash />}
+                  {showNewPassword ? <FaEye /> : <FaEyeSlash />}
                 </div>
                 {errors.newPassword && (
                   <span className="text-rose-600 text-sm">

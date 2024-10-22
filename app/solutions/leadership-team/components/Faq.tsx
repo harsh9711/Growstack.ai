@@ -56,7 +56,7 @@ const CustomAccordion = () => {
             className="mb-4 w-full   bg-white border text-[12px] sm:text-[20px] rounded-[20px] font-bold items-start ease-in-out transition-transform duration-1000 cursor-pointer"
           >
             <div
-              className={`flex flex-row w-full items-center p-4 justify-between cursor-pointer`}
+              className="flex flex-row w-full items-center p-4 justify-between cursor-pointer"
               onClick={() => handleToggle(index)}
             >
               <div

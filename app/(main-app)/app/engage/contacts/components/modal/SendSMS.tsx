@@ -1,6 +1,12 @@
 import Spinner from "@/components/Spinner";
 import { LinkIcon, SmileIcon } from "@/components/svgs/icons";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { Contact } from "@/types/contacts";
@@ -35,11 +41,15 @@ const SendSMS = ({ selectedIds, contacts }: SendSMSProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const getSelectedContactsDetails = () => {
-    const selectedContacts = contacts.filter((contact) => selectedIds.includes(contact.id));
+    const selectedContacts = contacts.filter(contact =>
+      selectedIds.includes(contact.id)
+    );
 
-    const formattedPhones = selectedContacts.map((contact) => ({
+    const formattedPhones = selectedContacts.map(contact => ({
       img: contact.logo,
-      phones: contact.phones.map((phone: any) => `+${phone.country_code}${phone.number}`),
+      phones: contact.phones.map(
+        (phone: any) => `+${phone.country_code}${phone.number}`
+      ),
       name: contact.name,
     }));
 
@@ -48,7 +58,7 @@ const SendSMS = ({ selectedIds, contacts }: SendSMSProps) => {
 
   useEffect(() => {
     const selectedDetails = getSelectedContactsDetails();
-    setSMSData((prevState) => ({
+    setSMSData(prevState => ({
       ...prevState,
       contacts: selectedDetails,
     }));
@@ -56,7 +66,9 @@ const SendSMS = ({ selectedIds, contacts }: SendSMSProps) => {
 
   const handleProceed = () => {
     if (selectedIds.length < 1) {
-      toast.error("No contacts selected. Select at least one contact to proceed.");
+      toast.error(
+        "No contacts selected. Select at least one contact to proceed."
+      );
       return;
     }
     setProceed(true);
@@ -67,10 +79,13 @@ const SendSMS = ({ selectedIds, contacts }: SendSMSProps) => {
     try {
       setLoading(true);
       const payload = {
-        contacts: smsData.contacts.flatMap((ph) => ph.phones),
+        contacts: smsData.contacts.flatMap(ph => ph.phones),
         message: smsData.message,
       };
-      const response = await instance.post(`${API_URL}/users/api/v1/sms/send`, payload);
+      const response = await instance.post(
+        `${API_URL}/users/api/v1/sms/send`,
+        payload
+      );
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.error);
@@ -95,10 +110,14 @@ const SendSMS = ({ selectedIds, contacts }: SendSMSProps) => {
 
         <div>
           {selectedIds.length < 1 ? (
-            <div className="text-[24px] font-semibold text-header mt-4">No contacts have been selected</div>
+            <div className="text-[24px] font-semibold text-header mt-4">
+              No contacts have been selected
+            </div>
           ) : (
             <>
-              <div className="text-[24px] font-semibold text-header mt-4">Send SMS to following contacts</div>
+              <div className="text-[24px] font-semibold text-header mt-4">
+                Send SMS to following contacts
+              </div>
               <div className="flex gap-2 items-center relative h-11 my-3">
                 {smsData.contacts.slice(0, 8).map((contact, index) => (
                   <div
@@ -107,16 +126,28 @@ const SendSMS = ({ selectedIds, contacts }: SendSMSProps) => {
                     style={{
                       left: index * 30,
                       zIndex: smsData.contacts.length - index,
-                    }}>
+                    }}
+                  >
                     {contact.img ? (
-                      <div title={contact.name} className="border border-white rounded-full cursor-pointer relative h-11 w-11 overflow-hidden">
-                        <Image src={contact.img} alt={contact.name} fill objectFit="cover" />
+                      <div
+                        title={contact.name}
+                        className="border border-white rounded-full cursor-pointer relative h-11 w-11 overflow-hidden"
+                      >
+                        <Image
+                          src={contact.img}
+                          alt={contact.name}
+                          fill
+                          objectFit="cover"
+                        />
                       </div>
                     ) : (
                       <div
                         title={contact.name}
-                        className="bg-gray-200 border border-white h-11 w-11 rounded-full flex justify-center items-center cursor-pointer">
-                        <p className="text-xl text-gray-500">{contact.name.slice(0, 1)}</p>
+                        className="bg-gray-200 border border-white h-11 w-11 rounded-full flex justify-center items-center cursor-pointer"
+                      >
+                        <p className="text-xl text-gray-500">
+                          {contact.name.slice(0, 1)}
+                        </p>
                       </div>
                     )}
                   </div>
@@ -127,10 +158,14 @@ const SendSMS = ({ selectedIds, contacts }: SendSMSProps) => {
                     className="absolute"
                     style={{
                       left: (smsData.contacts.length - 2) * 30,
-                      zIndex: smsData.contacts.length - (smsData.contacts.length - 1),
-                    }}>
+                      zIndex:
+                        smsData.contacts.length - (smsData.contacts.length - 1),
+                    }}
+                  >
                     <div className="bg-gray-200 border border-white h-11 w-11 rounded-full flex justify-center items-center cursor-pointer">
-                      <p className="text-gray-500">+{smsData.contacts.length - 8}</p>
+                      <p className="text-gray-500">
+                        +{smsData.contacts.length - 8}
+                      </p>
                     </div>
                   </div>
                 )}
@@ -142,11 +177,16 @@ const SendSMS = ({ selectedIds, contacts }: SendSMSProps) => {
               <div className="flex items-center gap-2 mt-4">
                 <AlertTriangle />
                 <span className="text-[14px]">
-                  Please note the actions will be performed over a period of time, you can track the progress on the bulk action page.
+                  Please note the actions will be performed over a period of
+                  time, you can track the progress on the bulk action page.
                 </span>
               </div>
               <div className="flex justify-end mt-5">
-                <button type="button" onClick={handleProceed} className="text-[16px] bg-primary-green text-white px-5 h-12 rounded-xl">
+                <button
+                  type="button"
+                  onClick={handleProceed}
+                  className="text-[16px] bg-primary-green text-white px-5 h-12 rounded-xl"
+                >
                   Okay, proceed
                 </button>
               </div>
@@ -159,14 +199,14 @@ const SendSMS = ({ selectedIds, contacts }: SendSMSProps) => {
                   placeholder="Enter your SMS"
                   className="bg-[#F2F2F2] p-3 h-[120px] block resize-none w-full"
                   value={smsData.message}
-                  onChange={(e) =>
-                    setSMSData((prevState) => ({
+                  onChange={e =>
+                    setSMSData(prevState => ({
                       ...prevState,
                       message: e.target.value,
                     }))
                   }
-                  name={"message"}
-                  required={true}
+                  name="message"
+                  required
                 />
                 <div className="flex bg-[#F2F2F2] p-3">
                   <SmileIcon />{" "}
@@ -180,7 +220,8 @@ const SendSMS = ({ selectedIds, contacts }: SendSMSProps) => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="text-[16px] w-[150px] sheen text-white bg-primary-green h-12 px-6 rounded-xl flex justify-center items-center">
+                  className="text-[16px] w-[150px] sheen text-white bg-primary-green h-12 px-6 rounded-xl flex justify-center items-center"
+                >
                   {loading ? <Spinner /> : "Send SMS"}
                 </button>
               </div>

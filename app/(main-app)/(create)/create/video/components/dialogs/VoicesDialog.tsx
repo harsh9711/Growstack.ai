@@ -1,5 +1,11 @@
 import { Checkbox } from "@/components/ui/checkbox";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { ChevronDown, Search } from "lucide-react";
 import { FaCirclePlay } from "react-icons/fa6";
 
@@ -19,12 +25,17 @@ export default function VoicesDialog() {
         <h2 className="uppercase font-medium">Other Languages</h2>
         <div className="bg-[#F5F5F5] px-4 py-1 rounded-xl flex gap-3 items-center w-full">
           <Search className="text-gray-500" size={20} />
-          <input type="search" className="bg-transparent outline-none h-[40px] w-full" placeholder="Search voices" />
+          <input
+            type="search"
+            className="bg-transparent outline-none h-[40px] w-full"
+            placeholder="Search voices"
+          />
         </div>
         {voices.map((voice, index) => (
           <div
             key={index}
-            className="flex justify-between items-center py-4 px-6 rounded-xl border transition-all delay-300 hover:bg-primary-green hover:text-white cursor-pointer">
+            className="flex justify-between items-center py-4 px-6 rounded-xl border transition-all delay-300 hover:bg-primary-green hover:text-white cursor-pointer"
+          >
             <div className="space-y-1">
               <h1 className="text-lg font-semibold">
                 {voice.langauge} - {voice.style}

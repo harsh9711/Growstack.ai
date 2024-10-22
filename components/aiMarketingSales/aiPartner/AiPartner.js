@@ -1,23 +1,26 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import './AiPartner.scss';
-import { Autoplay, Navigation } from 'swiper/modules';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import 'swiper/css/navigation';
+import "./AiPartner.scss";
+import { Autoplay, Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
 
 function AiPartner() {
   useEffect(() => {
     AOS.init();
-}, []);
+  }, []);
   return (
     <React.Fragment>
       <div className="aiPartner">
         <div className="container">
-          <div className="head" data-aos="fade-right"
-                            data-aos-easing="ease-in-sine"
-                            data-aos-duration="1000">
+          <div
+            className="head"
+            data-aos="fade-right"
+            data-aos-easing="ease-in-sine"
+            data-aos-duration="1000"
+          >
             <h3>Our trusted AI partners</h3>
             <span className="user">Partners</span>
           </div>
@@ -54,10 +57,13 @@ function AiPartner() {
             },
           }}
         >
-          {[...Array(20).keys()].map((index) => (
+          {[...Array(20).keys()].map(index => (
             <SwiperSlide key={index}>
               <div className="imgBlock">
-                <img src={`/images_growstack/aiMarket/aiPartner${(index % 12) + 1}.svg`} alt={`ai-partner-${index}`} />
+                <img
+                  src={`/images_growstack/aiMarket/aiPartner${(index % 12) + 1}.svg`}
+                  alt={`ai-partner-${index}`}
+                />
               </div>
             </SwiperSlide>
           ))}

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -54,7 +54,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             Last updated on: {lastUpdatedDate}
           </p>
         </div>
-        <div className="mt-6 max-w-[400px] w-full flex justify-end" data-aos="fade-left">
+        <div
+          className="mt-6 max-w-[400px] w-full flex justify-end"
+          data-aos="fade-left"
+        >
           <p className="justify-end text-white text-[18px] font-extralight">
             {description}
           </p>

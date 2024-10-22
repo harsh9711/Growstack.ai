@@ -11,19 +11,19 @@ import Navbar from "@/components/navbar/Navbar";
 import React from "react";
 
 function Page() {
-    return (
-        <React.Fragment>
-            <Navbar />
-            <Banner />
-            <ConceptCode />
-            <AiBuilder />
-            <SingleHub />
-            <Template />
-            <UseIt />
-            <Faqs />
-            <Footer />
-        </React.Fragment>
-    );
+  return (
+    <React.Fragment>
+      <Navbar />
+      <Banner />
+      <ConceptCode />
+      <AiBuilder />
+      <SingleHub />
+      <Template />
+      <UseIt />
+      <Faqs />
+      <Footer />
+    </React.Fragment>
+  );
 }
 
 export default Page;

@@ -39,7 +39,6 @@ const ImageGalleryResponsiveSecond = () => {
       source: "data14",
       buttonText: "Insights",
     },
-   
   ];
 
   const [selectedImage, setSelectedImage] = useState<ImageData | null>(null);
@@ -56,7 +55,6 @@ const ImageGalleryResponsiveSecond = () => {
 
   return (
     <div className="w-full h-full">
-       
       <div className="items-center justify-center flex flex-col gap-y-2"></div>
       {showSwiper ? (
         <div className="swiper-container p-4">
@@ -68,12 +66,12 @@ const ImageGalleryResponsiveSecond = () => {
               delay: 1000,
               disableOnInteraction: true,
             }}
-            loop={true}
+            loop
             speed={500}
             pagination={{ clickable: true }}
             data-aos="fade-up"
           >
-            {images.map((img) => (
+            {images.map(img => (
               <SwiperSlide key={img.id}>
                 <Image
                   src={img.src}
@@ -89,7 +87,7 @@ const ImageGalleryResponsiveSecond = () => {
       ) : (
         <div className="relative flex flex-col gap-y-6 items-center justify-center">
           <div className="flex flex-col items-center justify-center gap-y-16 p-4">
-            {images.map((img) => (
+            {images.map(img => (
               <div
                 className="relative flex flex-col items-center justify-center"
                 key={img.id}

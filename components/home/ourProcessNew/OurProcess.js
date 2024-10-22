@@ -23,7 +23,6 @@ const HoverVideo = () => {
       videoRef.current.play();
       setIsPlaying(true);
 
-
       setTimeout(() => {
         stopAndFreezeVideo();
       }, 12000);
@@ -33,6 +32,7 @@ const HoverVideo = () => {
   return (
     <div
       onMouseEnter={playVideo}
+      className="sm:flex hidden"
       style={{
         width: "100%",
         height: "100%",
@@ -81,14 +81,13 @@ function OurProcess() {
                   collaborate seamlessly with our fun no-code tool.
                 </p>
               </div>
-              <div className="lg:flex hidden w-full h-full">
+              <div className="sm:flex hidden w-full h-full">
                 <div
                   className="animate"
                   data-aos="fade-up"
                   data-aos-easing="ease-in-sine"
                   data-aos-duration="1000"
                 >
-                  {/* <img src="/images_growstack/home/animate.svg" alt="process" /> */}
                   <video
                     width="720"
                     height="640"
@@ -111,11 +110,11 @@ function OurProcess() {
               </div>
             </div>
             <div>
-              {/* <div className="process" data-aos="flip-up"
+              <div className="process sm:hidden flex" data-aos="flip-up"
             data-aos-easing="ease-in-sine"
             data-aos-duration="1000">
             <img src="/images_growstack/home/process.svg" alt="process" />
-            </div> */}
+            </div>
               {/* <HoverVideoPlayer
                 className="absolute  left-0 w-full h-full rounded-2xl border-none outline-none"
                 loop={false}

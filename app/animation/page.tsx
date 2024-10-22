@@ -119,7 +119,7 @@ const Animation = () => {
         >
           <div
             data-aos="fade-left "
-            className={`relative mt-32 flex w-full  justify-between gap-28 flex-row max-w-[300px] sm:max-w-[800px] h-[74.48px] sm:h-[198.62px] p-4 rounded-[5px] sm:rounded-[20px] border`}
+            className="relative mt-32 flex w-full  justify-between gap-28 flex-row max-w-[300px] sm:max-w-[800px] h-[74.48px] sm:h-[198.62px] p-4 rounded-[5px] sm:rounded-[20px] border"
             style={{
               backgroundColor: item.background,
               border: `1px solid ${item.border}`,
@@ -157,18 +157,14 @@ const Animation = () => {
                 {item.name}
               </h2>
               <HoverVideoPlayer
-                className="absolute  left-0 w-full h-full rounded-md sm:rounded-2xl border-none outline-none"
+                className="w-full h-full rounded-md sm:rounded-2xl border-none outline-none"
                 videoSrc={`/landingpage/Box ${item.id}.mp4`}
                 pausedOverlay={
                   <img
                     src={`/landingpage/img${item.id}.svg`}
                     alt=""
                     className="rounded-2xl flex"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "fill", // Ensures the image fits well
-                    }}
+                   
                   />
                 }
                 loadingOverlay={
@@ -193,9 +189,8 @@ const Animation = () => {
         >
           <div
             data-aos="fade-left "
-            className={`relative mt-20 flex w-full -translate-x-[300px]   justify-center gap-28 flex-row max-w-[300px] sm:max-w-[800px] h-[74.48px] sm:h-[198.62px] p-4 rounded-[5px] sm:rounded-[20px] `}
+            className={`relative mt-20 flex w-full justify-center gap-28 flex-row max-w-[300px] sm:max-w-[800px] h-[74.48px] sm:h-[198.62px] p-4 rounded-[5px] sm:rounded-[20px] `}
           >
-          
             <div
               className="absolute h-[195.28px] flex sm:h-[275.86px] sm:hover:translate-x-[300px] transition-transform duration-1000 ease-in-out   shadow-lg hover:border-t-8 -translate-y-[60px] p-3.5 w-full max-w-[300px] sm:max-w-[452.41px]  flex-col gap-y-2 bg-white rounded-[5px] sm:rounded-[20px] border-animate"
               style={{
@@ -206,18 +201,14 @@ const Animation = () => {
                 {item.name}
               </h2>
               <HoverVideoPlayer
-                className="absolute  left-0 w-full h-full rounded-sm sm:rounded-2xl border-none outline-none"
+                className=" w-full h-full rounded-sm sm:rounded-2xl border-none outline-none"
                 videoSrc={`/landingpage/Box ${item.id}.mp4`}
                 pausedOverlay={
                   <img
                     src={`/landingpage/img${item.id}.svg`}
                     alt=""
                     className="rounded-2xl flex"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "fill", // Ensures the image fits well
-                    }}
+                   
                   />
                 }
                 loadingOverlay={
@@ -425,7 +416,7 @@ const Animation = () => {
             </clipPath>
           </defs>
         </svg> */}
-     
+
         {/* <svg width="70" height="3771" viewBox="0 0 70 3771" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M27 0L26.9998 3771" stroke="#034737" stroke-width="2"/>
 <circle cx="35" cy="98" r="30.5" fill="#F1F8FF" stroke="#4FA7FF"/>

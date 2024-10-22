@@ -5,7 +5,6 @@ import Carousel from "../carousel/page";
 import Footer from "@/components/footer/Footer";
 import Banner from "@/components/home/banner/Banner";
 import Capability from "@/components/home/capability/Capability";
-import Cta from "@/components/home/cta/Cta";
 import DragFeatures from "@/components/home/drag-features/DragFeatures";
 import Faqs from "@/components/home/faq/Faqs";
 import Features from "@/components/home/featuresNew/Features";
@@ -18,6 +17,8 @@ import WhyChoose from "@/components/home/whyChoose/WhyChoose";
 import Navbar from "@/components/navbar/Navbar";
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import Animation from "../animation/page";
+import Capability2 from "../colorBox/page";
+import Cta2 from "../control/page";
 // I commented this bootstrapp CDN because of conflicting styles with tailwindcss, NB: I'll uncomment it as soon as reliable solution is found
 function Page() {
   return (
@@ -31,15 +32,17 @@ function Page() {
       <OurProcess />
       {/* <Features /> */}
       <Animation />
+  
       <Facts />
-      <Carousel /> 
+      <Carousel />
 
       <PoweredBy />
       <Premium />
-      <Capability />
+      {/* <Capability /> */}
+      <Capability2/>
       <WhyChoose />
       <FuturePlans />
-      <Cta />
+       <Cta2 />
       <Faqs />
       <Footer />
     </React.Fragment>

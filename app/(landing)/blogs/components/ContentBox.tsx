@@ -23,10 +23,14 @@ export const ContentBox = () => {
           />
           <div className="flex flex-col">
             <h2 className="font-bold mt-4 text-[12px] sm:text-[16px] md:text-[18px]">
+              
               Josh Gould
+            
             </h2>
             <p className="text-[12px] sm:text-[13px] md:text-[14px] font-light">
+              
               Blog writer
+            
             </p>
           </div>
         </div>
@@ -79,21 +83,15 @@ export const ContentBox = () => {
           className="flex flex-col gap-y-2 sm:gap-y-4 md:gap-y-6"
           id="firstid"
         >
+          <h2 className="font-bold text-[16px] sm:text-[18px]">
+            Omnis ipsum ratione optio sed quos aspernatur nam.
+          </h2>
           <p className="text-[12px] sm:text-[14px]">
-            This is the world of Gen AI, and the noise is getting louder, where
-            adjectives are becoming ad nauseam and the hyperbole is all hyped
-            up. But do not despair – today we are going to take the noise apart
-            and explain how Gen AI can lead to market growth in practice.
-            <br />
-            <br />
-            Picture it like this: If traditional marketing is a map, then Gen AI
-            is your GPS system, guiding marketers to their destination. It is a
-            tool for prospering in intricate environments, for finding blind
-            spots that extend opportunities, and for bringing you to paths
-            otherwise inaccessible. However, if incompetent, it can have you
-            speeding in circles you do not even know exist. Here is how to fully
-            harness it and grow your business frontiers without being consumed
-            by the bubble.
+            Maxime distinctio nulla aliquam. Illo voluptatibus nulla. Ut
+            consequuntur consequatur tempore suscipit minima voluptatem labore
+            laudantium et. Quaerat praesentium consequatur voluptas dolore
+            voluptates adipisci. Delectus delectus consequatur ex rerum.
+            Laudantium quaerat reprehenderit vel animi.
           </p>
           <h2 className="font-bold text-[16px] sm:text-[18px]">
             Understanding Gen AI: More Than Just Hype
@@ -106,34 +104,23 @@ export const ContentBox = () => {
           <div className="flex flex-row gap-2 sm:gap-4 md:gap-6">
             <div className="border-[#E2E2E2] rounded-2xl border-[4.8px]"></div>
             <p className="max-w-[708px]">
-              Gen AI, short for Generative Artificial Intelligence, has been
-              touted as the next big thing for almost everything: writing
-              content, data processing, product suggestions, and so on. But what
-              does it really do?
+              Modi praesentium maxime quos aperiam nulla nihil consequatur
+              soluta enim. Vitae eos eius totam atque. Corrupti voluptatem porro
+              quis aut qui aperiam odit hic. Libero sint ea quia quaerat.
             </p>
           </div>
           <p>
-            Let's now compare Gen AI to being the “n”th generation of knives,
-            where it is in fact a Swiss Army Knife of data intelligence. That
-            doesn't mean it spits out facts; it is capable of learning and
-            coming up with decisions based on patterns in large sets of data.
-            Take, for example, an intern who sorts out the documents and tells
-            you which client is most likely to close next, writes the email for
-            the offer, and tells you where the client is likely to be reached.
-            But here's the kicker: With the current reported hit rates at
-            approximately 70%, that means up to 30% of any corresponding
-            investment into Gen AI does not generate a positive ROI. Why?
-            Because they overemphasize the capacity of the weapon or
-            underutilize the weapon system's potential. It's similar to
-            purchasing a great-looking high-end sports car and then using it
-            solely for getting milk.
+            Vero placeat delectus cupiditate placeat ab dicta. Neque dolorem
+            sequi culpa quo. Iste ab esse qui quibusdam. Et ullam rerum
+            temporibus. Quaerat sit est corporis sit nihil nisi sapiente. Enim
+            laudantium ut earum beatae eveniet earum.
           </p>
-          {/* <p>
+          <p>
             Quia iusto sint qui recusandae maxime ipsum eos vitae. Deserunt
             quisquam reprehenderit sit et alias doloremque nam necessitatibus
             sit. Est rerum cupiditate commodi sint enim velit suscipit.
-          </p> */}
-          {/* <h2 className="font-bold text-[16px] sm:text-[18px]">
+          </p>
+          <h2 className="font-bold text-[16px] sm:text-[18px]">
             Repellendus architecto atque.
           </h2>
           <p className="text-[12px] sm:text-[14px]">
@@ -142,16 +129,16 @@ export const ContentBox = () => {
           </p>
           <h2 className="font-bold text-[18px] sm:text-[20px]">
             Quia qui et et atque repellat et.
-          </h2> */}
-          {/* <div className="flex flex-row gap-2 sm:gap-4 md:gap-6">
+          </h2>
+          <div className="flex flex-row gap-2 sm:gap-4 md:gap-6">
             <div className="border-[#E2E2E2] rounded-2xl border-[4.8px]"></div>
             <p className="max-w-[708px]">
               Est unde sequi cumque iusto sunt nisi nemo. Dolorem et provident
               tempora dolores suscipit dicta dolores. Laudantium sed cupiditate
               aut. Rem aut omnis sunt ut.
             </p>
-          </div> */}
-          {/* <p>
+          </div>
+          <p>
             Nihil occaecati impedit sunt omnis sed quis. Repudiandae ut
             voluptatem sed voluptate rem. Quis et ut et ipsum.
           </p>
@@ -160,9 +147,9 @@ export const ContentBox = () => {
             architecto voluptas sit vitae qui laudantium voluptatum tempora.
             Doloremque et incidunt ipsam qui modi. Dolorem sit iure earum nihil.
             Harum cumque perferendis.
-          </p> */}
-          {/* <Image src="/box.svg" width={925} height={515} alt="box" /> */}
-          {/* <div id="secondid">
+          </p>
+          <Image src="/box.svg" width={925} height={515} alt="box" />
+          <div id="secondid">
             <h2 className="font-bold text-[16px] sm:text-[18px]">
               Omnis ipsum ratione optio sed quos aspernatur nam.
             </h2>
@@ -172,42 +159,6 @@ export const ContentBox = () => {
               laudantium et. Quaerat praesentium consequatur voluptas dolore
               voluptates adipisci. Delectus delectus consequatur ex rerum.
               Laudantium quaerat reprehenderit vel animi.
-            </p>
-          </div> */}
-        </div>
-        <div
-          className="flex flex-col gap-y-2 sm:gap-y-4 md:gap-y-6"
-          id="secondid"
-        >
-          <p className="text-[12px] opacity-0 sm:text-[14px]">
-            This is the world of Gen AI, and the noise is getting louder, where
-            adjectives are becoming ad nauseam and the hyperbole is all hyped
-            up. But do not despair – today we are going to take the noise apart
-            and explain how Gen AI can lead to market growth in practice.
-            <br />
-            <br />
-          
-          </p>
-          <h2 className="font-bold text-[16px] sm:text-[18px]">
-            Choosing the Right Gen AI Partner: One Size Doesn’t Fit All
-          </h2>
-
-          <h2 className="font-semibold">
-            “It is all therefore never afterward, for quality we know is not
-            designed by happenstance, but it comes as the end segment of a whole
-            multi-faceted planned sequence.” – John Ruskin.
-          </h2>
-          <div className="flex flex-row gap-2 sm:gap-4 md:gap-6">
-            <div className="border-[#E2E2E2] rounded-2xl border-[4.8px]"></div>
-            <p className="max-w-[708px]">
-              Here, too, it is essential to distinguish between different types
-              of AI tools. Some are as simple as search engines that pull
-              information from various locations; some others are a lot more
-              predictive and can create strategies based on the needs of
-              businesses. When choosing your AI provider, avoid those who
-              promise to provide a universal solution. Imagine shopping for a
-              suit: would you want something that is readymade, or would you
-              want a dress that is made to order?
             </p>
           </div>
           <p>

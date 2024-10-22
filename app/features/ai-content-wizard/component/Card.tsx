@@ -18,8 +18,8 @@ const RectangleCard: React.FC<RectangleCardProps> = ({
   const sectionRef = useRef(null);
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             setIsVisible(true);
           } else {
@@ -82,8 +82,8 @@ const RectangleCardRight: React.FC<RectangleCardProps> = ({
   const sectionRef = useRef(null);
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
+      entries => {
+        entries.forEach(entry => {
           if (entry.isIntersecting) {
             setIsVisible(true);
           } else {
@@ -154,29 +154,23 @@ const Card = () => {
         </div>
         <div className="">
           <RectangleCard
-            firsttext={" Comprehensive data retrieval"}
-            secondtext={
-              "Effortlessly pull detailed business information directly from Google Maps, ensuring you get accurate and up-to-date data for effective prospecting."
-            }
-            imgsrc1={"/features/map4.svg"}
-            imgsrc2={"/features/map3.svg"}
+            firsttext=" Comprehensive data retrieval"
+            secondtext="Effortlessly pull detailed business information directly from Google Maps, ensuring you get accurate and up-to-date data for effective prospecting."
+            imgsrc1="/features/map4.svg"
+            imgsrc2="/features/map3.svg"
           />
 
           <RectangleCardRight
-            firsttext={"Detailed listings & tabular format"}
-            secondtext={
-              "Access essential business details in a clear, organized table. This format makes it easy to scan, compare, and analyze information at a glance, streamlining your data review and decision-making process. "
-            }
-            imgsrc1={"/features/map5.svg"}
-            imgsrc2={"/features/map6.svg"}
+            firsttext="Detailed listings & tabular format"
+            secondtext="Access essential business details in a clear, organized table. This format makes it easy to scan, compare, and analyze information at a glance, streamlining your data review and decision-making process. "
+            imgsrc1="/features/map5.svg"
+            imgsrc2="/features/map6.svg"
           />
           <RectangleCard
-            firsttext={"Data export and management"}
-            secondtext={
-              "Save your lists to the Prospects tab under Contact repository for easy access and streamlined management, keeping all your lead information in one place."
-            }
-            imgsrc1={"/features/map7.svg"}
-            imgsrc2={"/features/map8.svg"}
+            firsttext="Data export and management"
+            secondtext="Save your lists to the Prospects tab under Contact repository for easy access and streamlined management, keeping all your lead information in one place."
+            imgsrc1="/features/map7.svg"
+            imgsrc2="/features/map8.svg"
           />
         </div>
       </div>

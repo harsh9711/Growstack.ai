@@ -36,7 +36,7 @@ const Carousel = () => {
           delay: 500,
           disableOnInteraction: false,
         }}
-        loop={true}
+        loop
         speed={5000}
         modules={[Autoplay]}
         className="mySwiper"
@@ -105,7 +105,7 @@ const Carousel = () => {
                     hoveredIndex === index ? "items-start" : "items-center"
                   } w-full`}
                 >
-                  <span className={`flex flex-col items-center`}>
+                  <span className="flex flex-col items-center">
                     {hoveredIndex === index && (
                       <Link href={item.href}>
                         <svg
@@ -133,8 +133,8 @@ const Carousel = () => {
                     </h2>
                     <p
                       style={{ color: item.textcolor }}
-                      className={`text-[12px] 2xl:text-[12px] text-center overflow-hidden text-ellipsis  font-medium w-full  xl:max-w-[260px]`}
-                      >
+                      className="text-[12px] 2xl:text-[12px] text-center overflow-hidden text-ellipsis  font-medium w-full  xl:max-w-[260px]"
+                    >
                       {item.role}
                     </p>
                   </span>

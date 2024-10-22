@@ -73,11 +73,11 @@ const BarGraph: React.FC = ({ graphData }: any) => {
   // console.log("normali", normalizedData);
 
   // Extracting dates and values
-  const labels = Object.keys(graphData).map((date) => {
+  const labels = Object.keys(graphData).map(date => {
     const [year, month] = date.split("-");
     return `${parseInt(month, 10)}/${year.slice(-2)}`;
   });
-  const normalizedData = labels.map((date) => {
+  const normalizedData = labels.map(date => {
     const originalDate = `2024-${date.split("/")[0].padStart(2, "0")}`;
     const { likes, accountReach, postActivity } = graphData[originalDate];
     return [likes, accountReach, postActivity];
@@ -92,21 +92,21 @@ const BarGraph: React.FC = ({ graphData }: any) => {
       datasets: [
         {
           label: "Followers",
-          data: normalizedData.map((d) => d[0]),
+          data: normalizedData.map(d => d[0]),
           backgroundColor: "#034737",
           barPercentage: 0.6,
           categoryPercentage: 0.3, // Further adjusted category width
         },
         {
           label: "Account Reached",
-          data: normalizedData.map((d) => d[1]),
+          data: normalizedData.map(d => d[1]),
           backgroundColor: "#248D74",
           barPercentage: 0.6,
           categoryPercentage: 0.3, // Further adjusted category width
         },
         {
           label: "Post Activity",
-          data: normalizedData.map((d) => d[2]),
+          data: normalizedData.map(d => d[2]),
           backgroundColor: "#46DEBA",
           barPercentage: 0.6,
           categoryPercentage: 0.3, // Further adjusted category width

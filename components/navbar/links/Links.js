@@ -17,8 +17,8 @@ const links = [
         path: "/ai-marketing-and-sales-app",
       },
       {
-        title: "Text to avatar and AI background",
-        path: "/text-to-avatar-and-ai-background",
+        title: "Text to avatar and AI backdrop",
+        path: "/text-to-avatar-and-ai-backdrop",
       },
       {
         title: "Marketing and sales assistants",
@@ -33,7 +33,10 @@ const links = [
         path: "/custom-marketing-gpt-apps",
       },
       { title: "Social planner hub", path: "/social-planner-hub" },
-      { title: "Prospect scraping ", path: "/features/prospect-scraping-and-contacts" },
+      {
+        title: "Prospect scraping ",
+        path: "/features/prospect-scraping-and-contacts",
+      },
       { title: "AI secured chat", path: "/features/ai-secured-chat" },
       { title: "AI LLM comparison", path: "/features/ai-llm-comparison" },
       { title: "AI content wizard", path: "/features/ai-content-wizard" },
@@ -93,7 +96,7 @@ const Links = () => {
   const [openSubmenu, setOpenSubmenu] = useState(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const handleToggleSubmenu = (title) => {
+  const handleToggleSubmenu = title => {
     setOpenSubmenu(openSubmenu === title ? null : title);
   };
 
@@ -111,7 +114,7 @@ const Links = () => {
         {" "}
         {/* Add this class */}
         <div className="links">
-          {links.map((link) => (
+          {links.map(link => (
             <NavLink
               item={{ ...link, isOpen: openSubmenu === link.title }}
               key={link.title}
@@ -130,7 +133,7 @@ const Links = () => {
         />
         {isMobileMenuOpen && (
           <div className="mobileLinks">
-            {links.map((link) => (
+            {links.map(link => (
               <NavLink
                 item={{ ...link, isOpen: openSubmenu === link.title }}
                 key={link.title}

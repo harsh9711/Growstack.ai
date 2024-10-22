@@ -4,7 +4,12 @@ import React, { useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Scene } from "./types";
 import { motion, AnimatePresence } from "framer-motion";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const predefinedColors = [
   "off_white",
@@ -59,7 +64,7 @@ export default function Options({
         <div className="mb-2">
           <span>Background Color</span>
           <div className="flex flex-wrap gap-3 mt-2 ">
-            {predefinedColors.map((color) => (
+            {predefinedColors.map(color => (
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
@@ -85,7 +90,10 @@ export default function Options({
         </label>
         <label className="mb-2 flex justify-between">
           Music
-          <Switch checked={isMusicEnabled} onCheckedChange={setIsMusicEnabled} />
+          <Switch
+            checked={isMusicEnabled}
+            onCheckedChange={setIsMusicEnabled}
+          />
         </label>
         <AnimatePresence>
           {isMusicEnabled && (
@@ -94,14 +102,16 @@ export default function Options({
               animate={{ translateY: 0, opacity: 1 }}
               exit={{ translateY: 12, opacity: 0 }}
               transition={{ duration: 0.4 }}
-              className="overflow-hidden mt-4 bg-gray-50 p-4 rounded-xl">
+              className="overflow-hidden mt-4 bg-gray-50 p-4 rounded-xl"
+            >
               <span className="font-medium">Select Soundtrack</span>
               <div className="flex flex-wrap gap-3 mt-3">
-                {soundtracks.map((soundtrack) => (
+                {soundtracks.map(soundtrack => (
                   <div
                     key={soundtrack}
                     onClick={() => setSoundTrack(soundtrack)}
-                    className={`cursor-pointer py-1.5 px-4 rounded-lg transition-all duration-200 capitalize ${soundTrack === soundtrack ? "bg-primary-green text-white" : "bg-gray-200"}`}>
+                    className={`cursor-pointer py-1.5 px-4 rounded-lg transition-all duration-200 capitalize ${soundTrack === soundtrack ? "bg-primary-green text-white" : "bg-gray-200"}`}
+                  >
                     {soundtrack}
                   </div>
                 ))}

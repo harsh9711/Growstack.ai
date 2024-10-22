@@ -39,15 +39,15 @@ export default function SocialMediaAnalyticsPage() {
       toast.success(response.data.message);
     } catch (error: any) {
       setErrorMessage(error.response.data.message);
-      
+
       setAnalyticsData(null);
     } finally {
       setLoading(false);
     }
   };
-  const connectToSocialMedia = () =>{
+  const connectToSocialMedia = () => {
     router.push("/app/publish/scheduler/quick-posting/profiles");
-  }
+  };
   useEffect(() => {
     fetchAnalytics(selectedPlatform);
   }, [selectedPlatform]);
@@ -73,7 +73,7 @@ export default function SocialMediaAnalyticsPage() {
         </div>
         <div className="flex mt-6 gap-5">
           <div className="w-full max-w-[400px] space-y-3">
-            {platforms.map((platform) => (
+            {platforms.map(platform => (
               <div
                 key={platform.name}
                 className={`group bg-white border rounded-xl p-3 flex gap-4 items-center cursor-pointer transition duration-300 hover:shadow-xl hover:shadow-gray-100 ${
@@ -218,10 +218,23 @@ export default function SocialMediaAnalyticsPage() {
               </>
             ) : (
               <div className="flex justify-center items-center h-full">
-                <p style={{fontWeight:800}}>{errorMessage ? errorMessage : "Loading..."} <br></br>
-               <div style={{textAlign : "center"}}>
-               <button onClick={connectToSocialMedia} style={{height:"40px",border : "1px solid #034737",backgroundColor:"#034737",color:"white",padding : "0 12px",borderRadius:"4px"}} >connect now!</button>
-               </div>
+                <p style={{ fontWeight: 800 }}>
+                  {errorMessage ? errorMessage : "Loading..."} <br></br>
+                  <div style={{ textAlign: "center" }}>
+                    <button
+                      onClick={connectToSocialMedia}
+                      style={{
+                        height: "40px",
+                        border: "1px solid #034737",
+                        backgroundColor: "#034737",
+                        color: "white",
+                        padding: "0 12px",
+                        borderRadius: "4px",
+                      }}
+                    >
+                      connect now!
+                    </button>
+                  </div>
                 </p>
               </div>
             )}

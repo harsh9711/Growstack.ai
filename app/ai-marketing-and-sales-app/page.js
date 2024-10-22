@@ -11,8 +11,8 @@ import AiPartner from "@/components/aiMarketingSales/aiPartner/AiPartner";
 import UniqueModel from "@/components/aiMarketingSales/uniqueModel/UniqueModel";
 import BusinessSolution from "@/components/aiMarketingSales/businessSolution/BusinessSolution";
 import CustomerStories from "@/components/aiMarketingSales/customerStories/CustomerStories";
-import Cta from "@/components/home/cta/Cta";
 import Faqs from "@/components/home/faq/Faqs";
+import Cta2 from "../control/page";
 
 function Page() {
   return (
@@ -22,11 +22,11 @@ function Page() {
       <EasySteps />
       <CreateUltimate />
       <DetailFeatures />
-      {/* <AiPartner/> */} 
+      {/* <AiPartner/> */}
       <UniqueModel />
       <BusinessSolution />
       {/* <CustomerStories /> */}
-      <Cta />
+      <Cta2/>
       <Faqs />
       <Footer />
     </React.Fragment>

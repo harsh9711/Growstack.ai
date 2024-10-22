@@ -81,7 +81,7 @@ function VideoSolution() {
         <div className="container ">
           <div className="video-frames-wrap">
             <div
-              className="flex flex-col sm:flex-row justify-center mx-auto pt-6"
+              className="flex flex-col sm:flex-row items-center justify-center mx-auto pt-6"
               data-aos="fade-up"
               data-aos-easing="ease-in-sine"
               data-aos-duration="1000"
@@ -128,7 +128,7 @@ function VideoSolution() {
               </div>
             </div>
             <div
-              className="flex flex-col sm:flex-row-reverse justify-center mx-auto pt-6"
+              className="flex flex-col sm:flex-row-reverse items-center justify-center mx-auto pt-6"
               data-aos="fade-up"
               data-aos-easing="ease-in-sine"
               data-aos-duration="1000"
