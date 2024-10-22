@@ -13,3 +13,12 @@ export enum InputFieldType {
   CHECKBOX = "CHECKBOX",
   RADIO = "RADIO",
 }
+
+export enum WorkflowInputFieldType {
+  SHORT_TEXT = "SHORT_TEXT",
+  LONG_TEXT = "LONG_TEXT",
+  BOOLEAN = "BOOLEAN",
+  NUMBER = "NUMBER",
+  CHECKLIST = "CHECKLIST",
+  FILE_UPLOAD = "FILE_UPLOAD",
+}
