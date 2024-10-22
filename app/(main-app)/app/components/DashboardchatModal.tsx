@@ -130,45 +130,11 @@ const DashboardChatModal: React.FC<ModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-start">
       <div
-        className="bg-white pt-4 pb-4 m-4 rounded-3xl border border-[#E8E8E8] w-[320px]"
-        style={{ height: "95%" }}
+        className="bg-white pt-4 pb-4 m-4 rounded-3xl border border-[#E8E8E8] w-[320px] h-[95%] max-h-[95%] flex flex-col"
+        onMouseLeave={onClose}
       >
         <div className="flex justify-between items-center pl-7 pr-7 border-b">
           <h1 className="text-xl font-semibold">AI Chat</h1>
-          <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-800"
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M21 12H3"
-                stroke="#034737"
-                strokeWidth="1.75"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M6 9L3 12L6 15"
-                stroke="#034737"
-                strokeWidth="1.75"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M21 9V15"
-                stroke="#034737"
-                strokeWidth="1.75"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
         </div>
 
         <div className="flex flex-row pt-4 pb-4 pl-6 pr-6 justify-between">
