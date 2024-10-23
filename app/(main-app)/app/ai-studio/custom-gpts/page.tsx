@@ -13,7 +13,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { FaEllipsisV } from "react-icons/fa";
 import GlobalModal from "@/components/modal/global.modal";
-import DotsLoader from "@/components/DotLoader";
 type CustomGpt = {
   description: string;
   icon: string;
@@ -56,7 +55,7 @@ export default function Customgpts() {
   const CustomGptPublic = async (id: string) => {
     setLoading(true);
     try {
-      await instance.post(`${API_URL}/ai/api/v1/customgpt/customgpt_public`, { "_id": id });
+      await instance.post(`${API_URL}/ai/api/v1/customgpt/changetopublicaccess`, { "_id": id });
       setMenuOpenIndex(null)
       getCustomGpts()
     }
@@ -219,6 +218,14 @@ export default function Customgpts() {
           View All
         </button>
       )}
+      {customGpts.length > 5 && viewAll && (
+        <button
+          onClick={() => setViewAll(false)}
+          className="mt-4 w-20px h-10px px-4 py-2 rounded text-green-500"
+        >
+          Minimize
+        </button>
+      )}
               </div>
               {customGpts?.length == 0 && <h1 className="text-center">GPTs by GrowStack Records Not Available</h1>}
               <div className="mt-8 mb-3">
@@ -264,13 +271,13 @@ export default function Customgpts() {
                           {menuOpenIndex === index && (
                             <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-10">
                               <ul className="py-1">
-                                <li className="px-4 py-2 cursor-pointer" onClick={() => { CustomGptPublic(_id) }}>
+                                <li className="px-4 py-2 cursor-pointer hover:bg-gray-100" onClick={() => { CustomGptPublic(_id) }}>
                                 set as public
                                 </li>
-                                <li className="px-4 py-2 cursor-pointer" onClick={() => { revokeCustomGpt(_id) }}>
+                                <li className="px-4 py-2 cursor-pointer hover:bg-gray-100" onClick={() => { revokeCustomGpt(_id) }}>
                                 remove from public
                                 </li>
-                                <li className="px-4 py-2 cursor-pointer text-rose-600" onClick={() => { setIsDeleting(true);setDeleteId(_id) }}>
+                                <li className="px-4 py-2 cursor-pointer text-rose-600 hover:bg-gray-100" onClick={() => { setIsDeleting(true);setDeleteId(_id) }}>
                                   Delete
                                 </li>
                               </ul>
