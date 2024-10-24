@@ -9,6 +9,7 @@ import TemplateLoader from "./components/TemplateLoader";
 import "@/styles/editor.css";
 import ConfirmDialog from "./components/ConfirmDialog";
 import VideoPreviewModal from "./components/VideoPreview";
+import { Plus } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -25,6 +26,13 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import React from "react";
 import GroupSvgTextAvatarIcon from "@/components/svgs/groupSVG";
+import { useRouter } from "next/navigation";
+import avatarImg1 from "../../../../../public/images/text-to-avatar/image.png";
+import avatarImg2 from "../../../../../public/images/text-to-avatar/image-1.png";
+import avatarImg3 from "../../../../../public/images/text-to-avatar/image-2.png";
+import avatarImg4 from "../../../../../public/images/text-to-avatar/image-3.png";
+import avatarImg5 from "../../../../../public/images/text-to-avatar/image-4.png";
+import Image from "next/image";
 
 const VideoTable: React.FC<{
   videos: Array<{
@@ -46,6 +54,8 @@ const VideoTable: React.FC<{
   const [videoDuration, setVideoDuration] = useState<{ [key: string]: string }>(
     {}
   );
+
+  console.log("=====================", videos);
 
   useEffect(() => {
     videos.forEach(video => {
@@ -209,7 +219,29 @@ const VideoTable: React.FC<{
     };
     return (
       <div className="relative inline-block text-left" ref={dropdownRef}>
-        <button
+        {outputType.map(({ label, value, icon }) => (
+          <button
+            key={value}
+            onClick={() => {
+              // Check if the value is already selected
+              if (value === selectedValue) {
+                setSelectedValue(null);
+                handleSelectChange("", videoUrl, _id);
+              } else {
+                handleSelectChange(value, videoUrl, _id);
+                setSelectedValue(value);
+              }
+              setIsOpen(false);
+            }}
+            className={`flex items-center gap-2 px-4 py-2 w-full text-left ${
+              value === selectedValue ? "bg-gray-100" : "hover:bg-blue-50"
+            }`}
+          >
+            {icon}
+            {label}
+          </button>
+        ))}
+        {/* <button
           type="button"
           className="p-1 bg-white border-0 h-10 hover:bg-gray-100 rounded-lg flex items-center"
           onClick={() => setIsOpen(!isOpen)}
@@ -219,28 +251,7 @@ const VideoTable: React.FC<{
         {isOpen && (
           <div className="absolute  -translate-y-[70px] right-8 mt-2 w-44 bg-white  border border-gray-300 rounded-lg shadow-lg z-50">
             <div className="py-1">
-              {outputType.map(({ label, value, icon }) => (
-                <button
-                  key={value}
-                  onClick={() => {
-                    // Check if the value is already selected
-                    if (value === selectedValue) {
-                      setSelectedValue(null);
-                      handleSelectChange("", videoUrl, _id);
-                    } else {
-                      handleSelectChange(value, videoUrl, _id);
-                      setSelectedValue(value);
-                    }
-                    setIsOpen(false);
-                  }}
-                  className={`flex items-center gap-2 px-4 py-2 w-full text-left ${
-                    value === selectedValue ? "bg-gray-100" : "hover:bg-blue-50"
-                  }`}
-                >
-                  {icon}
-                  {label}
-                </button>
-              ))}
+              
             </div>
           </div>
         )}
@@ -255,96 +266,20 @@ const VideoTable: React.FC<{
             </div>
           </div>
         )}
+       */}
       </div>
     );
   };
 
   return (
-    <div className="rounded-lg border   mt-5 bg-white min-h-[50vh]">
-      <Table className="">
-        <TableHeader>
-          <TableRow className="bg-[#0347370D]">
-            <TableHead>Thumbnail</TableHead>
-            <TableHead>Title</TableHead>
-            <TableHead>Duration</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Edited At</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {videos.map(video => (
-            <TableRow key={video._id}>
-              <TableCell onClick={() => onPreview(video.videoUrl)}>
-                <img
-                  className="object-cover w-[64px] h-[64px] rounded-2xl"
-                  src={video.thumbnailUrl}
-                  alt="avatar thumbnail"
-                />
-              </TableCell>
-              <TableCell className="text-[16px] font-medium truncate max-w-[200px]">
-                {video.title}
-              </TableCell>
-              <TableCell className="text-[14px] text-gray-500">
-                {videoDuration[video._id] || "Loading..."}
-              </TableCell>
-              <TableCell
-                className={`text-[14px] ${
-                  video.status === "Success"
-                    ? "text-green-500"
-                    : video.status === "Pending"
-                    ? "text-yellow-500"
-                    : video.status === "Failed"
-                    ? "text-red-500"
-                    : ""
-                }`}
-              >
-                {video.status}
-              </TableCell>
-              <TableCell className="text-[16px] text-[#151B23]">
-                {(() => {
-                  const timeDifference =
-                    new Date().getTime() - new Date(video.editedAt).getTime();
-                  const totalMinutes = Math.floor(timeDifference / 60000);
-                  const totalSeconds = Math.floor(
-                    (timeDifference % 60000) / 1000
-                  );
-
-                  if (totalMinutes >= 60) {
-                    const hours = Math.floor(totalMinutes / 60);
-                    return `Created about ${hours} ${
-                      hours === 1 ? "hr" : "hrs"
-                    } ago`;
-                  } else {
-                    return `Created about ${totalMinutes} ${
-                      totalMinutes === 1 ? "min" : "mins"
-                    } and ${totalSeconds} ${
-                      totalSeconds === 1 ? "sec" : "secs"
-                    } ago`;
-                  }
-                })()}
-              </TableCell>
-              <TableCell className="">
-                <CustomSelect videoUrl={video.videoUrl} _id={video._id} />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-        <TableFooter></TableFooter>
-        {/* <TableCaption>Your video table caption here</TableCaption> */}
-      </Table>
-      <ConfirmDialog
-        isOpen={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
-        onConfirm={handleConfirmDelete}
-        message="Are you sure you want to delete this avatar?"
-        isLoading={isDeleting}
-      />
+    <div className="w-full flex flex-wrap gap-4 relative items-center z-10 justify-start mt-10">
+      hello
     </div>
   );
 };
 
 export default function TextToVideoPage() {
+  const router = useRouter();
   const [templates, setTemplates] = useState<Template[] | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
@@ -362,6 +297,7 @@ export default function TextToVideoPage() {
           docs: Template[];
         };
       }>(url);
+      console.log(",,,,",response.data.data.docs);
       setTemplates(response.data.data.docs);
     } catch (error: any) {
       if (error.response) {
@@ -380,7 +316,7 @@ export default function TextToVideoPage() {
     fetchData();
 
     const handleVideoGenerationSuccess = () => {
-      fetchData(); // Refresh the data when the custom event is received
+      fetchData();
     };
 
     window.addEventListener(
@@ -429,6 +365,10 @@ export default function TextToVideoPage() {
       videoUrl: template.doc_content.video_url,
     }));
 
+  const handleNavigation = () => {
+    router.push("/app/social-portal/text-to-avatar/create-avatar");
+  };
+
   return (
     <>
       <main>
@@ -437,27 +377,43 @@ export default function TextToVideoPage() {
             <div className="grid grid-cols-1 gap-5 mt-8">
               <TemplateLoader />
             </div>
-          ) : filteredTemplates && filteredTemplates.length > 3 ? (
-            <div className="flex justify-between items-center mt-8 ">
-              <div className="space-y-2 w-full">
-                <h1 className="text-2xl font-semibold">Text to avatar</h1>
-                <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
-                  My Avatars
-                </p>
-              </div>
-              <div className="w-full flex justify-end gap-2">
-                <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
-                  <Search className="text-gray-500" size={20} />
-                  <input
-                    type="search"
-                    className="outline-none h-[40px] w-full"
-                    placeholder="Search template"
-                    value={searchQuery}
-                    onChange={e => setSearchQuery(e.target.value)}
-                  />
+          ) : filteredTemplates && filteredTemplates.length > 1 ? (
+            <div className="flex flex-col items-center">
+              <div className="flex justify-between items-center w-full h-[52px] space-x-4">
+                <div className="space-y-1 flex-grow">
+                  <h1 className="text-[22px] font-semibold text-gray-800">
+                    Text to Avatar
+                  </h1>
+                  <p className="text-[15px] text-gray-500">
+                    Videos made by you!
+                  </p>
                 </div>
-                <CreateVideoDialog templates={templates} />
+
+                <div className="flex items-center h-[52px] space-x-4">
+                  <div className="relative w-full max-w-md h-[52px]">
+                    <div className="bg-white border border-[#EBEBEB] h-[52px] px-4 py-2 rounded-xl flex items-center shadow-sm">
+                      <Search className="text-gray-500" size={20} />
+                      <input
+                        type="search"
+                        className="ml-2 outline-none w-full text-gray-700 placeholder-gray-400"
+                        placeholder="Search template"
+                        value={searchQuery}
+                        onChange={e => setSearchQuery(e.target.value)}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <button
+                      className="bg-primary-green text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center md:w-[180px] lg:w-[282px] h-[52px] gap-2"
+                      onClick={handleNavigation}
+                    >
+                      <Plus size={20} />
+                      Create new avatar with AI
+                    </button>
+                  </div>
+                </div>
               </div>
+
               <Suspense fallback={<TemplateLoader />}>
                 <VideoTable
                   videos={filteredTemplates}
@@ -478,25 +434,31 @@ export default function TextToVideoPage() {
                   <div>
                     <GroupSvgTextAvatarIcon />
                   </div>
-                  <div className="text-[22px] text-[#034737] cursor-pointer">
+                  <div
+                    className="text-[22px] text-[#034737] cursor-pointer"
+                    onClick={handleNavigation}
+                  >
                     +Create a video
                   </div>
                   <div className="text-[16px] text-[#14171B] text-center">
                     "Design Your Unique Avatar for Engaging Masterclasses,
                     Personal<br></br> Branding, and Internal Training!"
                   </div>
-                  <div className="flex flex-row gap-5 w-full items-center justify-center">
-                    <div className="h-[170px] w-[140px] flex items-center justify-center border border-[#E0E0E0]">
-                      image1
+                  <div className="flex flex-row gap-3 w-full items-center justify-center">
+                    <div className="h-[170px] w-[140px] flex items-center justify-center">
+                      <Image src={avatarImg1} alt="avatar1" />
                     </div>
-                    <div className="h-[170px] w-[140px] flex items-center justify-center border border-[#E0E0E0]">
-                      image2
+                    <div className="h-[170px] w-[140px] flex items-center justify-center">
+                      <Image src={avatarImg2} alt="avatar1" />
                     </div>
-                    <div className="h-[170px] w-[140px] flex items-center justify-center border border-[#E0E0E0]">
-                      image3
+                    <div className="h-[170px] w-[140px] flex items-center justify-center">
+                      <Image src={avatarImg3} alt="avatar1" />
                     </div>
-                    <div className="h-[170px] w-[140px] flex items-center justify-center border border-[#E0E0E0]">
-                      image4
+                    <div className="h-[170px] w-[140px] flex items-center justify-center">
+                      <Image src={avatarImg4} alt="avatar1" />
+                    </div>
+                    <div className="h-[170px] w-[140px] flex items-center justify-center">
+                      <Image src={avatarImg5} alt="avatar1" />
                     </div>
                   </div>
                 </div>
@@ -505,11 +467,6 @@ export default function TextToVideoPage() {
           )}
         </div>
       </main>
-      <VideoPreviewModal
-        isOpen={isPreviewOpen}
-        onClose={() => setIsPreviewOpen(false)}
-        videoUrl={previewVideoUrl}
-      />
     </>
   );
 }

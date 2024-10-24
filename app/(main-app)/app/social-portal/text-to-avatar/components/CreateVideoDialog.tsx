@@ -687,6 +687,7 @@ const CreateVideoDialog = ({
                       <AvatarSelection
                         avatars={filteredAvatars}
                         onSelect={handleAvatarSelect}
+                        selectedAvatarId={selectedAvatar?.id || null}
                       />
                     </div>
                   </Motion>
