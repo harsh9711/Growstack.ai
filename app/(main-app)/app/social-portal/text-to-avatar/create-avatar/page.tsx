@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import DownloadCircle from "@/components/svgs/download";
 import Delete from "@/components/svgs/delete";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 interface FormData {
   title: string;
@@ -233,8 +234,11 @@ const CreateScript = () => {
             setIsPreviewScriptPage={setIsPreviewScriptPage}
             avatarName={selectedAvatar?.name}
             avatarThumbnil={selectedAvatar?.thumbnailUrl}
-            title={formData?.title}
+            usertitle={formData?.title}
             Script={scriptResponseData}
+            setIsSelectedAvatar={setIsSelectedAvatar}
+            voiceId={formData?.voices}
+            avatarId={selectedAvatar?.id}
           />
         </div>
       ) : (
@@ -537,21 +541,40 @@ interface PreviewScriptPageProps {
   setIsPreviewScriptPage: (value: boolean) => void;
   avatarName?: string;
   avatarThumbnil?: string;
-  title?: string;
+  usertitle?: string;
   Script?: string[];
+  setIsSelectedAvatar: (value: boolean) => void;
+  voiceId?: string;
+  avatarId?: string;
+}
+
+interface FormattedInput {
+  transcript: string;
+  avatarId: string;
+  voiceId: string;
+}
+
+interface FormattedData {
+  title: string;
+  input: FormattedInput[];
+  thumbnailUrl: string;
 }
 
 const PreviewScriptPage: React.FC<PreviewScriptPageProps> = ({
   isPreviewScriptPage,
   setIsPreviewScriptPage,
   avatarName,
-  avatarThumbnil,
-  title,
-  Script,
+  avatarThumbnil = "",
+  usertitle = "Untitled Video",
+  Script = [],
+  setIsSelectedAvatar,
+  voiceId = "",
+  avatarId = "",
 }) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const getScenePair = (
     index: number
@@ -559,6 +582,23 @@ const PreviewScriptPage: React.FC<PreviewScriptPageProps> = ({
     const firstPart = Script?.[index * 2] || "";
     const secondPart = Script?.[index * 2 + 1] || "";
     return { firstPart, secondPart };
+  };
+
+  const combinedScript: string[] = [];
+  for (let i = 0; i < Script.length; i += 2) {
+    combinedScript.push(`${Script[i]} ${Script[i + 1]}`);
+  }
+
+  const formattedData: FormattedData = {
+    title: usertitle,
+    input: combinedScript.map(
+      (transcript: string): FormattedInput => ({
+        transcript,
+        avatarId: avatarId,
+        voiceId: voiceId,
+      })
+    ),
+    thumbnailUrl: avatarThumbnil,
   };
 
   const toggleDropdown = () => {
@@ -580,11 +620,67 @@ const PreviewScriptPage: React.FC<PreviewScriptPageProps> = ({
     };
   }, [dropdownRef]);
 
-  const handleNavigate = () => {
-    router.push("/app/social-portal/text-to-avatar");
+  const handleVideoCreation = async () => {
+    setIsModalOpen(true);
+    try {
+      const response = await instance.post(
+        `${API_URL}/ai/api/v1/generate/video`,
+        formattedData
+      );
+  
+      toast.success('Video creation started successfully!');
+    } catch (error) {
+      toast.error('Failed to create video. Please try again.');
+    }
   };
+
+  const handleNavigate = () => {
+    // router.push("/app/social-portal/text-to-avatar/create-avatar");
+    setIsModalOpen(false);
+    setIsSelectedAvatar(false);
+    setIsPreviewScriptPage(false);
+  };
+  // onOpenChange={() => setIsModalOpen(false)}
   return (
     <div className="flex flex-col mt-2">
+      <Dialog open={isModalOpen}>
+        <DialogContent
+          showCloseButton
+          className="w-[80%] md:w-[85%] max-w-3xl p-0 pb-4 border-0"
+        >
+          <div className="flex flex-col h-fill w-full p-4 items-center justify-center space-y-5">
+            <div className="h-[150px] w-[150px] rounded-[20px]">
+              <img
+                src={avatarThumbnil}
+                className="h-full w-full rounded-[20px] object-cover"
+              />
+            </div>
+            <div>
+              <p className="text-[22px] text-[#14171B]">{`${avatarName} is creating your Masterpiece...`}</p>
+            </div>
+            <div>
+              <p className="text-center text-[16px] text-[#b6b6b6]">
+                Everything happens on our side, we will send you an email when
+                <br></br>your video is ready.
+              </p>
+            </div>
+            <div className="space-x-5">
+              <button
+                className="rounded-[10px] h-[52px] w-[212px] border-[1px] border-[#14171B]"
+                onClick={() => router.push("/app/social-portal/text-to-avatar")}
+              >
+                Back To AI Text to Avatar
+              </button>
+              <button
+                className="text-white bg-[#034737] rounded-[10px] h-[52px] w-[200px]"
+                onClick={handleNavigate}
+              >
+                Create another video
+              </button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
       <div className="w-full h-[65px] bg-[#EBF0F6] rounded-[100px]">
         <div className="h-full w-full flex flex-row justify-between items-center p-3">
           <div>
@@ -604,13 +700,16 @@ const PreviewScriptPage: React.FC<PreviewScriptPageProps> = ({
               <div className="h-6 border-[1px] border-[#BFBFBF] mx-2"></div>
 
               <div className="text-[#14171B] text-[22px]">
-                {`${avatarName} talks about ${title}`}
+                {`${avatarName} talks about ${usertitle}`}
               </div>
             </div>
           </div>
           <div>
             <div className="flex flex-row items-center justify-center space-x-2 p-3">
-              <button className="flex items-center space-x-2 p-3 text-white bg-[#034737] rounded-[10px] h-[40px]">
+              <button
+                className="flex items-center space-x-2 p-3 text-white bg-[#034737] rounded-[10px] h-[40px]"
+                onClick={handleVideoCreation}
+              >
                 <span>
                   <Plus />
                 </span>
@@ -647,7 +746,10 @@ const PreviewScriptPage: React.FC<PreviewScriptPageProps> = ({
                         Download
                       </button>
                       <button
-                        onClick={() => alert("Delete clicked")}
+                        onClick={() => {
+                          setIsPreviewScriptPage(false);
+                          setIsSelectedAvatar(false);
+                        }}
                         className="flex space-y-2 items-center px-4 py-2 w-[150px] text-left hover:bg-gray-100"
                       >
                         <Delete />
@@ -663,10 +765,14 @@ const PreviewScriptPage: React.FC<PreviewScriptPageProps> = ({
       </div>
 
       <div className="flex mt-5 px-5 space-x-3 h-[75vh]">
-        <div className="w-[500px] h[700px] flex items-center justify-center">
-          image section
+        <div className="w-[500px] h[700px] flex items-center justify-center pt-4 rounded-[10px]">
+          <img
+            src={avatarThumbnil}
+            alt="Avatar"
+            className="h-full w-full object-cover rounded-[10px]"
+          />
         </div>
-        <div className="w-full">
+        <div className="w-full pt-2">
           <div>
             <div className="w-full max-w-4xl mx-auto space-y-4 p-4">
               {[0, 1, 2, 3].map(sceneIndex => {
