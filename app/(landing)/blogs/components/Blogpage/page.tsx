@@ -28,7 +28,7 @@ const Blogpage = () => {
       <div className="p-4 sm:p-0 max-w-[1240px] mt-10 sm:mt-40 items-center justify-center mx-auto">
         <h1 className="text-2xl sm:text-3xl font-semibold">Related articles</h1>
         {blogs.map((item, index) => (
-          <Link href="blogs/components/Blogpage" key={index}>
+          <Link href={item.href} key={index}>
             <div className="p-4 sm:p-0 mt-6 sm:mt-10 space-y-4 sm:flex sm:flex-row flex-col gap-4 sm:gap-10 items-center shadow-box-sm bg-white rounded-2xl sm:rounded-3xl border border-[#E8E8E8]">
               <div className="relative w-full sm:w-1/2 flex justify-center items-center">
                 <Image
