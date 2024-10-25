@@ -168,12 +168,13 @@ const ContentBoxGame = () => {
             Keep Up
           </h2>{" "}
           <div className="flex justify-center mt-6 mb-2">
-            <img
-              src="/da.png"
-              alt="Gen AI in Action"
-              className="w-2/3 h-auto rounded"
-            />
-          </div>
+          <img
+            src="/da.png"
+            alt="Gen AI in Action"
+            className="w-2/3 h-auto rounded"
+          />
+        </div>
+         
           {/* <blockquote className="text-gray-600 italic bg-[#F1F8FF] py-4 text-center rounded-2xl">
             “If one cannot explain the matter of discussion to a six-year-old,
             he cannot explain it at all.” –{" "}
