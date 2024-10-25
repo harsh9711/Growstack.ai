@@ -1,7 +1,13 @@
 "use client";
 import FrameIconSvg from "@/components/svgs/frameicon";
 import { use } from "marked";
-import React, { useState, ChangeEvent, useEffect, useRef } from "react";
+import React, {
+  useState,
+  ChangeEvent,
+  useEffect,
+  useRef,
+  Fragment,
+} from "react";
 import AvatarSelection from "../components/AvatarSelection";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
@@ -20,6 +26,7 @@ import {
 import DownloadCircle from "@/components/svgs/download";
 import Delete from "@/components/svgs/delete";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import Spinner from "@/components/Spinner";
 
 interface FormData {
   title: string;
@@ -182,13 +189,11 @@ const CreateScript = () => {
           `${API_URL}/ai/api/v1/generate/video/video-script`,
           formData
         );
-        console.log(formData);
 
         if (scriptResponse.data.success) {
           // setVideoScript(scriptResponse.data.data.script);
           // await generateVideo(scriptResponse.data.data.script);
           setProgress(100);
-          console.log("=====================", scriptResponse.data.data.script);
           setScriptResponseData(scriptResponse.data.data.script);
           setIsPreviewScriptPage(true);
         } else {
@@ -482,7 +487,7 @@ const CreateScript = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-center md:w-[600px] lg:w-[718px] 2xl:w-[818px] h-[50px]">
+                  <div className="flex items-center justify-center md:w-[600px] lg:w-[718px] 2xl:w-[818px] h-[50px] pb-[20px]">
                     <div className="w-full flex justify-end gap-x-4 items-center">
                       <button
                         type="button"
@@ -575,6 +580,7 @@ const PreviewScriptPage: React.FC<PreviewScriptPageProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [videoLoading, isVideoLoading] = useState<boolean>(false);
 
   const getScenePair = (
     index: number
@@ -621,16 +627,18 @@ const PreviewScriptPage: React.FC<PreviewScriptPageProps> = ({
   }, [dropdownRef]);
 
   const handleVideoCreation = async () => {
-    setIsModalOpen(true);
+    isVideoLoading(true);
     try {
       const response = await instance.post(
         `${API_URL}/ai/api/v1/generate/video`,
         formattedData
       );
-  
-      toast.success('Video creation started successfully!');
+      toast.success("Video creation started successfully!");
     } catch (error) {
-      toast.error('Failed to create video. Please try again.');
+      toast.error("Failed to create video. Please try again.");
+    } finally {
+      isVideoLoading(false);
+      setIsModalOpen(true);
     }
   };
 
@@ -645,8 +653,8 @@ const PreviewScriptPage: React.FC<PreviewScriptPageProps> = ({
     <div className="flex flex-col mt-2">
       <Dialog open={isModalOpen}>
         <DialogContent
-          showCloseButton
-          className="w-[80%] md:w-[85%] max-w-3xl p-0 pb-4 border-0"
+          showCloseButton={false}
+          className="w-[80%] md:w-[85%] h-[550px] max-w-3xl p-0 pb-4 border-0"
         >
           <div className="flex flex-col h-fill w-full p-4 items-center justify-center space-y-5">
             <div className="h-[150px] w-[150px] rounded-[20px]">
@@ -699,7 +707,7 @@ const PreviewScriptPage: React.FC<PreviewScriptPageProps> = ({
 
               <div className="h-6 border-[1px] border-[#BFBFBF] mx-2"></div>
 
-              <div className="text-[#14171B] text-[22px]">
+              <div className="text-[#14171B] text-[20px] font-semibold">
                 {`${avatarName} talks about ${usertitle}`}
               </div>
             </div>
@@ -709,11 +717,18 @@ const PreviewScriptPage: React.FC<PreviewScriptPageProps> = ({
               <button
                 className="flex items-center space-x-2 p-3 text-white bg-[#034737] rounded-[10px] h-[40px]"
                 onClick={handleVideoCreation}
+                disabled={videoLoading}
               >
-                <span>
-                  <Plus />
-                </span>
-                <span>Generate avatar</span>
+                {videoLoading ? (
+                  <Spinner />
+                ) : (
+                  <>
+                    <span>
+                      <Plus />
+                    </span>
+                    <span>Generate Avatar</span>
+                  </>
+                )}
               </button>
               <div>
                 <div className="relative inline-flex" ref={dropdownRef}>
@@ -740,7 +755,7 @@ const PreviewScriptPage: React.FC<PreviewScriptPageProps> = ({
                     <div className="p-1 space-y-0.5 w-[150px]">
                       <button
                         onClick={() => alert("Download clicked")}
-                        className="flex space-y-2 items-center px-4 py-2 w-[150px] text-left text-gray-700 hover:bg-gray-100"
+                        className="flex gap-3 items-center px-2 py-2 w-[150px] text-left text-gray-700 hover:bg-gray-100"
                       >
                         <DownloadCircle />
                         Download
@@ -750,7 +765,7 @@ const PreviewScriptPage: React.FC<PreviewScriptPageProps> = ({
                           setIsPreviewScriptPage(false);
                           setIsSelectedAvatar(false);
                         }}
-                        className="flex space-y-2 items-center px-4 py-2 w-[150px] text-left hover:bg-gray-100"
+                        className="flex gap-3 items-center px-2 py-2 w-[150px] text-left hover:bg-gray-100"
                       >
                         <Delete />
                         Delete
@@ -764,8 +779,8 @@ const PreviewScriptPage: React.FC<PreviewScriptPageProps> = ({
         </div>
       </div>
 
-      <div className="flex mt-5 px-5 space-x-3 h-[75vh]">
-        <div className="w-[500px] h[700px] flex items-center justify-center pt-4 rounded-[10px]">
+      <div className="flex flex-col lg:flex-row mt-5 px-5 space-y-5 lg:space-y-0 lg:space-x-3 h-auto lg:h-[75vh]">
+        <div className="w-full lg:w-[500px] h-[500px] flex items-center justify-center pt-4 rounded-[10px]">
           <img
             src={avatarThumbnil}
             alt="Avatar"
@@ -774,20 +789,20 @@ const PreviewScriptPage: React.FC<PreviewScriptPageProps> = ({
         </div>
         <div className="w-full pt-2">
           <div>
-            <div className="w-full max-w-4xl mx-auto space-y-4 p-4">
+            <div className="ml-0 mr-0 w-full max-w-4xl mx-auto space-y-4 p-4">
               {[0, 1, 2, 3].map(sceneIndex => {
                 const { firstPart, secondPart } = getScenePair(sceneIndex);
 
                 return (
                   <div key={sceneIndex}>
                     <div className="bg-white rounded-lg shadow-md">
-                      <div className="w-[80px] pt-3">
-                        <div className="bg-green-800 text-white w-full px-3 py-1 text-sm rounded-r-[30px]">
+                      <div className="w-[100px] pt-3">
+                        <div className="bg-green-800 text-[#FFFFFF] w-full px-3 py-1 text-[18px] rounded-r-[30px]">
                           Scene {sceneIndex + 1}
                         </div>
                       </div>
                       <div className="p-3">
-                        <p className="text-gray-700 text-sm">
+                        <p className="text-[#000000] text-[16px]">
                           {`${firstPart}${
                             secondPart ? ` ${secondPart.trim()}` : ""
                           }`}

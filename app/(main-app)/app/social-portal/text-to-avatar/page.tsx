@@ -77,9 +77,7 @@ const VideoTable: React.FC<{
       });
     });
 
-    return () => {
-      // Clean up listeners if necessary
-    };
+    return () => {};
   }, [videos]);
 
   const handleConfirmDelete = async () => {
@@ -279,15 +277,18 @@ const VideoTable: React.FC<{
   return (
     <div className="w-full flex flex-wrap gap-4 relative items-center z-10 justify-start mt-10">
       {videos.map(video => (
-        <div key={video._id} className="border rounded-lg p-4 shadow-lg">
-          <div className="relative w-full h-48">
+        <div
+          key={video._id}
+          className="border rounded-[10px] w-[300px] h-[220px] p-4 shadow-lg"
+        >
+          <div className="relative w-[260px] h-[125px] rounded-[15px]">
             <img
               src={video.thumbnailUrl}
               alt="image"
-              className="w-full h-full object-cover rounded-lg"
+              className="w-full h-full object-cover rounded-[15px]"
             />
             {video.status === "Pending" && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-[15px]">
                 <div role="status">
                   <svg
                     aria-hidden="true"
@@ -325,12 +326,11 @@ const VideoTable: React.FC<{
                     <Delete />
                     Delete
                   </li>
-                  {/* Add more options here if needed */}
                 </ul>
               </div>
             )}
           </div>
-          <h3 className="text-lg font-semibold mt-2">
+          <h3 className="text-[15px] text-[#14171B] mt-2">
             {video.title.charAt(0).toUpperCase() + video.title.slice(1)}
           </h3>
           <p className="text-gray-500 text-sm">{`Edited ${timeAgo(
@@ -349,6 +349,9 @@ export default function TextToVideoPage() {
   const [loading, setLoading] = useState(true);
   const [previewVideoUrl, setPreviewVideoUrl] = useState<string | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const { user } = useSelector((rootState: RootState) => rootState.auth);
+  const isSubscribed = user?.isSubscribed || false;
+  const [planUsage, setPlanUsage] = useState(null);
 
   const fetchData = async () => {
     setLoading(true);
@@ -428,12 +431,32 @@ export default function TextToVideoPage() {
       videoUrl: template.doc_content.video_url,
     }));
 
-  const handleNavigation = () => {
-    router.push("/app/social-portal/text-to-avatar/create-avatar");
+  const handleNavigation = async () => {
+    try {
+      const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
+      const data = response.data.data;
+
+      setPlanUsage(data);
+
+      if (
+        user?.user_type !== "ADMIN" &&
+        data?.usage?.no_of_text_to_avatar <= 0
+      ) {
+        toast.error("Trial expired");
+        window.location.href = isSubscribed
+          ? ALL_ROUTES.UPGRADE
+          : ALL_ROUTES.PAYMENT;
+        return;
+      } else {
+        router.push("/app/social-portal/text-to-avatar/create-avatar");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
-    <>
+    <Fragment>
       <main>
         <div className="grid grid-cols-1 gap-5 mt-8">
           {loading ? (
@@ -488,7 +511,7 @@ export default function TextToVideoPage() {
           ) : (
             <div className="flex flex-col gap-10 items-center w-full h-[85vh] max-h-screen overflow-hidden col-span-4">
               <div>
-                <h1 className="text-[#14171B] lg:text-[32px] md:text-[30px] font-semibold font-poppins tracking-[0.3%]">
+                <h1 className="text-[#14171B] lg:text-[32px] md:text-[30px] leading-[32px] font-poppins tracking-[0.003em]">
                   What's your vision for your video
                 </h1>
               </div>
@@ -498,12 +521,12 @@ export default function TextToVideoPage() {
                     <GroupSvgTextAvatarIcon />
                   </div>
                   <div
-                    className="text-[22px] text-[#034737] cursor-pointer"
+                    className="text-[22px] text-[#034737] leading-[24px] tracking-[0.003em] cursor-pointer"
                     onClick={handleNavigation}
                   >
                     +Create a video
                   </div>
-                  <div className="text-[16px] text-[#14171B] text-center">
+                  <div className="text-[16px] text-[#b6b6b6] text-center mb-3">
                     "Design Your Unique Avatar for Engaging Masterclasses,
                     Personal<br></br> Branding, and Internal Training!"
                   </div>
@@ -530,6 +553,6 @@ export default function TextToVideoPage() {
           )}
         </div>
       </main>
-    </>
+    </Fragment>
   );
 }
