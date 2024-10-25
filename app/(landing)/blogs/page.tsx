@@ -101,7 +101,7 @@ export default function page() {
           </div>
         ))}
       </div>
-
+{/* final */}
       <div>
         <h1 className="text-[18px] sm:text-2xl md:text-3xl font-semibold">
           All articles
