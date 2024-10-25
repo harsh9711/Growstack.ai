@@ -318,10 +318,7 @@ export default function SettingsPage() {
           <>
             <div className="flex gap-x-2 items-center">
               <PlanIcon />
-              {getUserFriendlyPlanName(
-                currentPlan?.plan_name! as PlanName
-              )}{" "}
-              Plan
+              {getUserFriendlyPlanName(currentPlan?.plan_name as PlanName)} Plan
             </div>
           </>
         ) : (

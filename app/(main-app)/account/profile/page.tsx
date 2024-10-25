@@ -13,15 +13,11 @@ import {
   Edit,
   ImageIcon,
   KeyIcon,
-  Settings2Icon,
-  ShieldCheckIcon,
   UserIcon as UserIcon2,
   UserX2,
 } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useState } from "react";
-import { BiPencil } from "react-icons/bi";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { z } from "zod";
@@ -38,7 +34,6 @@ import { countries } from "./data";
 import { useRouter } from "next-nprogress-bar";
 import clsx from "clsx";
 import "@/styles/profile.css";
-import { FaMoneyBill1 } from "react-icons/fa6";
 import { PlanIcon } from "@/components/svgs";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
@@ -50,6 +45,7 @@ export default function ProfilePage() {
   const { user, currentPlan, isCurrentPlanFetching } = useSelector(
     (rootState: RootState) => rootState.auth
   );
+  console.log(currentPlan?.plan_name);
   const router = useRouter();
   const dispatch = useDispatch();
   const currentUser = getCurrentUser();
@@ -184,7 +180,8 @@ export default function ProfilePage() {
     const filteredObject = {};
     Object.keys(obj).forEach(key => {
       if (obj[key] !== null) {
-        // @ts-ignore
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
         filteredObject[key] = obj[key];
       }
     });
@@ -346,7 +343,7 @@ export default function ProfilePage() {
                   <div className="flex gap-x-2 items-center">
                     <PlanIcon />
                     {getUserFriendlyPlanName(
-                      currentPlan?.plan_name! as PlanName
+                      currentPlan?.plan_name as PlanName
                     )}{" "}
                     Plan
                   </div>

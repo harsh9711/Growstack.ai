@@ -15,6 +15,8 @@ import GlobalModal from "./modal/global.modal";
 import { useDispatch } from "react-redux";
 import CouponModal from "./modal/coupon.modal";
 import { ALL_ROUTES } from "@/utils/constant";
+import { setUserPlan } from "@/lib/features/auth/auth.slice";
+import { useRouter } from "next/navigation";
 
 const PlanCard = ({
   plan,
@@ -32,6 +34,7 @@ const PlanCard = ({
     (rootState: RootState) => rootState.auth
   );
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -41,7 +44,40 @@ const PlanCard = ({
       toast.error("Please log in to select a plan");
       return;
     }
-    setIsOpen(true);
+    setLoading(true);
+    try {
+      const product = {
+        plan_id: plan.id,
+        plan_type: plan.planType,
+        price_id: plan.stripe_price_id,
+      };
+      setIsOpen(false);
+      const currentPath = localStorage.getItem("currentPathname");
+
+      const response = await instance.post(
+        `${API_URL}/users/api/v1/payments/create-checkout-session?currentPath=${currentPath}`,
+        { product }
+      );
+      const { url, data } = response.data;
+      if (url) {
+        window.location.href = url;
+      } else if (data) {
+        dispatch(setUserPlan(data));
+        toast.success("Subscription successful");
+        router.push("/app");
+      } else {
+        toast.error("An error occurred");
+      }
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message || "An error occurred");
+      } else {
+        toast.error(error.message || "An error occurred");
+      }
+      console.error("Error creating checkout session:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleUpgradePlan = async () => {
