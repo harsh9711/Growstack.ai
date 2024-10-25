@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import React, { useState } from "react";
 const ContentBox = () => {
   const [selectedSection, setSelectedSection] = useState<string>("intro");
@@ -113,7 +114,8 @@ const ContentBox = () => {
           </h2>
           <blockquote className="text-gray-600 italic bg-[#F1F8FF] py-4 text-center rounded-2xl  ">
             “The future is already here — it’s just not very evenly
-            distributed.” –<span className="font-bold  not-italic">William Gibson.</span>
+            distributed.” –
+            <span className="font-bold  not-italic">William Gibson.</span>
           </blockquote>
           <p className="text-gray-700 mt-2 leading-relaxed">
             Gen AI, short for{" "}
@@ -141,28 +143,35 @@ const ContentBox = () => {
         </div>
         <div id="choosing" className="flex flex-col gap-y-6">
           <h2 className="text-[24px] font-bold text-[#034737]">
-            3. Say No to “Black Box” AI: Transparency is King
+            2. Choosing the Right Gen AI Partner: One Size Doesn’t Fit All
           </h2>
           <blockquote className="text-gray-600 italic bg-[#F1F8FF] py-4 text-center rounded-2xl  ">
-            “If you can’t explain it to a six-year-old, you really don’t
-            understand it.” –{" "}
-          <span className="font-bold  not-italic">Albert Einstein.</span>
+            “It is all therefore never afterward, for quality we know is not
+            designed by happenstance, but it comes as the end segment of a whole
+            multi-faceted planned sequence.” –
+            <span className="font-bold  not-italic"> John Ruskin.</span>
           </blockquote>
-          <p className="text-gray-700 mt-2 leading-relaxed">
-            Some Gen AI platforms are like mystery boxes: they give you nice
-            results but don’t tell you how they are making those decisions. It’s
-            like ending up with a pile of charts and graphs that say, “Well,
-            here we are, but how did we get here?” They call this the{" "}
-            <strong>“Black Box” effect</strong>, and it’s not good news for
-            anyone.
+          <p className="text-gray-700 mt-2 leading-relaxed text-sm">
+            According to a <strong>Forbes</strong> article, <strong>84%</strong>{" "}
+            of executives stated that scalability and customization are vital
+            for the future success of AI. Gen AI solutions from <Link href="https://growstack.ai/" className="underline text-blue-600 font-bold">GrowStack</Link> are
+            built to be unique for your business, like a tailor-made suit.
+            Whether you're launching a startup, developing content automation,
+            or working as an enterprise aiming to get closer to consumers, our
+            tools adapt to your needs. We don’t just want to be a presence; we
+            aim to lead that presence.
           </p>
+
           <p className="text-gray-700 mt-2 leading-relaxed">
-            I believe no one wakes up in the morning and decides they want to go
-            have dinner at a restaurant, order a nice juicy steak only to have
-            the chef not explain what all is in the dish. Sketchy, right? The
-            same goes for AI: if you do not know why your AI is providing advice
-            on a particular strategy, you should not implement it.{" "}
-            <strong>Transparency is a key value at GrowStack.</strong>
+            According to a<strong> Forbes</strong> article, <strong>84%</strong>{" "}
+            of executives stated that scalability and customization are vital
+            for the future success of AI. Gen AI solutions from GrowStack are
+            built to be unique for your business, like a tailor-made suit.
+            Regardless of whether you use our tools to launch a new startup, to
+            develop an idea of content automation, or as an enterprise of any
+            kind trying to get closer to the consumer, our tools adjust to your
+            requirements. We don’t just want to be a presence; we want to be
+            leading that presence.
           </p>
           <p className="text-gray-700 mt-2 leading-relaxed">
             As cited by Gartner the other day, <strong>65% of customers</strong>{" "}
@@ -182,7 +191,7 @@ const ContentBox = () => {
           <blockquote className="text-gray-600 italic bg-[#F1F8FF] py-4 text-center rounded-2xl  ">
             “If you can’t explain it to a six-year-old, you really don’t
             understand it.” –{" "}
-          <span className="font-bold  not-italic">Albert Einstein.</span>
+            <span className="font-bold  not-italic">Albert Einstein.</span>
           </blockquote>
           <p className="text-gray-700 mt-2 leading-relaxed">
             Some Gen AI platforms are like mystery boxes: they give you nice
@@ -217,7 +226,7 @@ const ContentBox = () => {
           </h2>
           <blockquote className="text-gray-600 italic bg-[#F1F8FF] py-4 text-center rounded-2xl  ">
             “People don’t buy what you do; they buy why you do it.” –{" "}
-          <span className="font-bold  not-italic"> Simon Sinek.</span>
+            <span className="font-bold  not-italic"> Simon Sinek.</span>
           </blockquote>
           <p className="text-gray-700 mt-2 leading-relaxed">
             If your marketing is unfocused, you are fishing with a seine;
@@ -246,7 +255,8 @@ const ContentBox = () => {
           </h2>
           <blockquote className="text-gray-600 italic bg-[#F1F8FF] py-4 text-center rounded-2xl  ">
             “This steam technology is the best because it enables people to come
-            closer.” – <span className="font-bold  not-italic">Matt Mullenweg.</span>
+            closer.” –{" "}
+            <span className="font-bold  not-italic">Matt Mullenweg.</span>
           </blockquote>
           <p className="text-gray-700 mt-2 leading-relaxed">
             Let’s be clear: Finally, let me chat for a while about what AI is
