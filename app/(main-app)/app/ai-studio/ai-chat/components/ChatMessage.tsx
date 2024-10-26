@@ -44,7 +44,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
-
+ 
   useLayoutEffect(() => {
     const timer = setTimeout(() => {
       scrollToBottom();
@@ -161,7 +161,11 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
       );
     },
   };
-
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [conversation]);
   return (
     <>
       <div className="messages-container flex-1 w-full flex flex-col h-full overflow-y-auto">
@@ -251,7 +255,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
                     {chat.loading ? (
                       <DotsLoader />
                     ) : (
-                      <div className="relative">
+                      <div className="relative" >
                         {chat.imageUrl && chat.role !== "user" && (
                           <div className="image-container mb-2">
                             <img
@@ -261,7 +265,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
                             />
                           </div>
                         )}
-                        <ReactMarkdown
+                        <ReactMarkdown 
                           className="prose"
                           key={chat.content}
                           remarkPlugins={[remarkGfm, remarkBreaks]}
@@ -300,7 +304,10 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
                             )}
                           </div>
                         </div>
+                        <div className="mt-5" ref={messagesEndRef} />
+
                       </div>
+                      
                     )}
                   </div>
                 )}
@@ -308,7 +315,6 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
             </div>
           );
         })}
-        <div ref={messagesEndRef} />
       </div>
     </>
   );

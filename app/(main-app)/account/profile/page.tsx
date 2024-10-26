@@ -13,6 +13,7 @@ import {
   Edit,
   ImageIcon,
   KeyIcon,
+  Trash2,
   UserIcon as UserIcon2,
   UserX2,
 } from "lucide-react";
@@ -40,6 +41,7 @@ import { RootState } from "@/lib/store";
 import { getUserFriendlyPlanName } from "@/lib/utils";
 import { PlanName } from "@/types/enums";
 import React from "react";
+import GlobalModal from "@/components/modal/global.modal";
 
 export default function ProfilePage() {
   const { user, currentPlan, isCurrentPlanFetching } = useSelector(
@@ -132,7 +134,7 @@ export default function ProfilePage() {
     // },
   ];
   const [activeTab, setActiveTab] = useState(options[0]);
-
+  const [isDelete, setIsDelete] = useState(false);
   useEffect(() => {
     handleGetProfileData();
   }, []);
@@ -159,9 +161,13 @@ export default function ProfilePage() {
   };
 
   const handleChangeAvatar = async (event: ChangeEvent<HTMLInputElement>) => {
-    handleAvatarPreview(event);
     const file = event.target.files?.[0];
     if (file) {
+      if (!file.type.startsWith("image/")) {
+        toast.error("Please upload a valid image file.");
+        return;
+      }
+      handleAvatarPreview(event);
       const formData = new FormData();
       formData.append("document", file);
       try {
@@ -228,7 +234,7 @@ export default function ProfilePage() {
 
   const handleMenuClick = (title: string) => {
     setActiveTab(title as any);
-    if (title === "Delete Account") handleDeleteProfile();
+    if (title === "Delete Account") setIsDelete(true);
     if (title === "Change password") setChangePasswordEnable(true);
     if (title === "View profile") setChangePasswordEnable(false);
     if (title === "Billing") {
@@ -236,24 +242,14 @@ export default function ProfilePage() {
     }
   };
 
-  const handleDeleteProfile = () => {
-    swal({
-      title: "Delete Account",
-      text: "Are you sure you want to delete it?",
-      icon: "warning",
-      buttons: ["Cancel", "Delete"],
-      dangerMode: true,
-    }).then(async willDelete => {
-      if (willDelete) {
-        try {
-          await instance.delete(`${API_URL}/users/api/v1`);
-          router.push("/auth/login");
-        } catch (error) {
-          toast.error("Error deleting profile");
-        }
-      } else {
-      }
-    });
+  const handleDeleteProfile = async () => {
+    try {
+      await instance.delete(`${API_URL}/users/api/v1`);
+      setIsDelete(false);
+      router.push("/auth/login");
+    } catch (error) {
+      toast.error("Error deleting profile");
+    }
   };
 
   return (
@@ -304,7 +300,7 @@ export default function ProfilePage() {
               <input
                 type="file"
                 id="profile-image"
-                accept="images/*"
+                accept="image/*"
                 className="hidden"
                 onChange={handleChangeAvatar}
               />
@@ -525,6 +521,42 @@ export default function ProfilePage() {
       ) : (
         <ChangePassword />
       )}
+
+      <GlobalModal
+        className=""
+        showCloseButton
+        open={isDelete}
+        setOpen={() => {
+          setIsDelete(false);
+        }}
+      >
+        <div className="flex flex-col items-start justify-center px-6 pt-4 pb-8 gap-6 ">
+          <h3 className="text-center text-xl font-semibold">
+            Are you sure you want to delete your account?
+          </h3>
+          <p className="text-left text-gray-700 text-sm md:text-base">
+            This action is irreversible, and all your data will be permanently
+            deleted. Please confirm if you wish to proceed.
+          </p>
+          <div className="flex items-center justify-start gap-3">
+            <button
+              className="text-gray-500 border border-gray-500 bg-transparent text-nowrap py-2 px-8 rounded-md transition duration-300"
+              onClick={() => setIsDelete(false)}
+            >
+              Cancel
+            </button>
+            <button
+              className="text-white bg-red-500 text-nowrap flex items-center gap-1 py-2 px-6 rounded-md transition duration-300 hover:bg-red-600"
+              onClick={() => {
+                handleDeleteProfile();
+              }}
+            >
+              <Trash2 size={18} />
+              Delete
+            </button>
+          </div>
+        </div>
+      </GlobalModal>
     </div>
   );
 }
