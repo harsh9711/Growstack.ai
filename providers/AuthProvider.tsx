@@ -19,7 +19,12 @@ import {
 import GlobalModal from "@/components/modal/global.modal";
 import Link from "next/link";
 import Lock from "@/components/svgs/lock";
-import { hasAccessToRoute, isMobile, planIdsMap } from "@/lib/utils";
+import {
+  hasAccessToRoute,
+  isEmptyObject,
+  isMobile,
+  planIdsMap,
+} from "@/lib/utils";
 import { ALL_ROUTES } from "@/utils/constant";
 import Spinner2 from "@/components/Spinner2/Spinner2";
 import { PlanName } from "@/types/enums";
@@ -134,7 +139,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [isLoggedIn, isSubscribed, pathname, router, currentPlan]);
 
   useEffect(() => {
-    if (isLoggedIn && currentPlan) {
+    if (isLoggedIn && currentPlan && !isEmptyObject(currentPlan)) {
       if (user?.user_type === "ADMIN") {
         return;
       }
@@ -235,7 +240,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         </div>
       </GlobalModal>
       <GlobalModal
-        showCloseButton
+        showCloseButton={false}
         disableCloseOnOverlayClick
         open={isSubscriptionModalOpen}
         setOpen={() => {
