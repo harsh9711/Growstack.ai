@@ -72,6 +72,9 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
     const { currentPlan, user } = useSelector(
       (rootState: RootState) => rootState.auth
     );
+    const isFreePlan = planIdsMap[PlanName.FREE].some(
+      val => val === currentPlan?.plan_id
+    );
     const isSubscribed = user?.isSubscribed || false;
     const selectedLanguage = languageOptions[0].value;
     const [open, setOpen] = useState(false);
@@ -176,17 +179,14 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
           conversation_id,
           chatId,
           noOfMessagesLeft,
-          totalNoOfMessages,
+          totalMessages,
         } = conversation.data.data as ChatResponse;
 
-        const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some(
-          val => val === currentPlan?.plan_id
-        );
-
-        if (isBasicPlan) {
-          if (noOfMessagesLeft && totalNoOfMessages) {
-            if (noOfMessagesLeft <= 0) {
+        if (isFreePlan) {
+          if (noOfMessagesLeft && totalMessages) {
+            if (noOfMessagesLeft < 0) {
               setIsDailyLimitExceeded(true);
+              return;
             } else {
               setIsDailyLimitExceeded(false);
             }
@@ -476,16 +476,17 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
             You've Exceeded Your Daily Free Chat Limit
           </h2>
 
-          <p className="mt-4 w-2/3 text-base ">
-            Come back tomorrow to start chatting again or upgrade your plan to
-            access all the amazing AI features.
+          <p className="mt-4 w-2/3 text-base">
+            Come back tomorrow to start chatting again or{" "}
+            {isSubscribed ? "upgrade your plan" : "subscribe"} to access all the
+            amazing AI features.
           </p>
 
           <Link
             className="bg-primary-green mt-3 text-nowrap text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2"
             href={isSubscribed ? ALL_ROUTES.UPGRADE : ALL_ROUTES.PAYMENT}
           >
-            Upgrade Your Plan
+            {isSubscribed ? "Upgrade Your Plan" : "Subscribe Now"}
           </Link>
         </div>
       );
