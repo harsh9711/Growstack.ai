@@ -67,16 +67,16 @@ const page = () => {
         <SixCard />
       </section>{" "}
       <section className="sm:p-0 px-6 mx-auto pt-10  sm:pt-32 flex flex-col items-center max-w-[1520px] w-full">
-        <div className="  flex flex-col gap-y-8 items-center ">
+        <div className="  flex flex-col gap-y-8 items-start ">
           <div className="bg-[#03473714] py-2 px-3.5 flex items-center gap-3 rounded-full text-[12px] font-semibold uppercase max-w-fit ">
             Customer stories
           </div>
-          <div className="flex max-w-[610px] w-full  text-center flex-col  items-center justify-center gap-y-4">
-            <h1 className="text-[26px] xl:text-[40px] w-full gap-2 leading-tight font-semibold  text-black">
+          <div className="flex max-w-[610px] w-full  text-center flex-col  items-start justify-center gap-y-4">
+            <h1 className="text-[26px] xl:text-[40px]  text-start w-full gap-2 leading-tight font-semibold  text-black">
               See Growstack
               <span className="font-light"> in action! </span>
             </h1>
-            <p className="sm:text-[18px] text-[16px] font-medium w-full">
+            <p className="sm:text-[18px] text-[16px] text-start  font-medium w-full">
               Interested in how Growstack can transform your media and
               publishing processes? Schedule a personalized demo with our
               experts to see our features in action.

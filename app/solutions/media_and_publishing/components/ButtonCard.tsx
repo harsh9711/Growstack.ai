@@ -5,12 +5,13 @@ import "aos/dist/aos.css";
 import { Icon1011, Icon311, Icon911 } from "@/components/svgs/icons";
 import ArrowRight from "@/components/home/drag-features/icons/ArrowRight";
 import Link from "next/link";
-
+import "../../../../styles/animate.css";
 export const cases = [
   {
     id: 1,
     imageUrl: <Icon311 />,
     name: "Tailored experience",
+    background: "bg-[#E7F4FF]",
     description:
       "Get a demo customized to your specific needs and challenges in the media industry.",
   },
@@ -18,6 +19,8 @@ export const cases = [
     id: 2,
     imageUrl: <Icon911 />,
     name: "Live Q&A",
+    background: "bg-[#FEF6D4]",
+
     subname: "real-time",
     description:
       "Ask questions in real-time and get insights on how Growstack can benefit your organization.",
@@ -26,6 +29,8 @@ export const cases = [
     id: 3,
     imageUrl: <Icon1011 />,
     name: "Explore features",
+    background: "bg-[#FAE8F1]",
+
     description:
       "Discover how to leverage our tools, including AI Custom GPT, Content Calendar, and more.",
   },
@@ -48,7 +53,7 @@ const Box = () => {
         <div
           key={index}
           data-aos="fade-up"
-          className="relative text-black bg-white rounded-[20px] hover:shadow-lg p-4 text-center sm:text-start items-center sm:items-start  transition-transform duration-500 ease-in-out  w-full max-w-[610px] border-2   max-h-[200px] sm:max-h-[252px] py-20  h-full flex flex-col gap-y-2  justify-center group overflow-hidden"
+          className={`relative text-black ${item.background} rounded-[20px] hover:shadow-lg p-4 text-center sm:text-start items-center sm:items-start  transition-transform duration-500 ease-in-out  w-full max-w-[610px] border-2   max-h-[200px] sm:max-h-[252px] h-full flex flex-col gap-y-2  justify-center group overflow-hidden`}
         >
           <div className="relative z-10 fill-black  group-hover:fill-primary-green">
             {item.imageUrl}
@@ -62,19 +67,6 @@ const Box = () => {
           <p className="text-[12px] sm:text-[16px] w-full font-light text-black transition-colors duration-300">
             {item.description}
           </p>
-
-          <div
-            data-aos="fade-right"
-            data-aos-duration="1500"
-            className="flex flex-row items-center justify-center sm:items-start sm:justify-start gap-8 group text-[12px] 2xl:text-[18px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300"
-          >
-            <Link href="/demo" className="no-underline">
-              <button className="font-medium flex items-center gap-2 text-primary-green 2xl:py-4 2xl:px-7 border border-primary-green rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
-                See Demo
-                <ArrowRight className="text-primary-green" />
-              </button>
-            </Link>
-          </div>
         </div>
       ))}
     </div>
@@ -95,11 +87,26 @@ const ButtonCard = () => {
         <div className=" flex flex-row  items-center gap-y-6 p-6 max-w-[1240px] w-full rounded-[30px] ">
           <div>
             <Image
+              className="rocketUpAnimation relative z-20 "
               src="/girlgrowstack.svg"
               width={400}
               height={700}
               alt={"girlgrowstack"}
-            />
+            />{" "}
+            <Image
+              className="absolute -translate-y-[600px] z-0 left-80"
+              src="/greenwhite2.svg"
+              width={450}
+              height={450}
+              alt={"girlgrowstack"}
+            />{" "}
+            <Image
+              className="relative motionrolling  z-40 -translate-y-96"
+              src="/fan.svg"
+              width={200}
+              height={200}
+              alt={"girlgrowstack"}
+            />{" "}
           </div>
           <Box />
         </div>
