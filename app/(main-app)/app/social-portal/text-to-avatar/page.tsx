@@ -274,12 +274,17 @@ const VideoTable: React.FC<{
     handleConfirmDelete(); // Call the confirm delete handler
   };
 
+  const VideoDisplay = (videoUrl: string) => {
+    window.open(videoUrl, "_blank");
+  };
+
   return (
     <div className="w-full flex flex-wrap gap-4 relative items-center z-10 justify-start mt-10">
       {videos.map(video => (
         <div
           key={video._id}
-          className="border rounded-[10px] w-[300px] h-[220px] p-4 shadow-lg"
+          className="border rounded-[10px] w-[300px] h-[220px] p-4 shadow-lg cursor-pointer"
+          onClick={() => VideoDisplay(video.videoUrl)}
         >
           <div className="relative w-[260px] h-[125px] rounded-[15px]">
             <img
@@ -349,7 +354,9 @@ export default function TextToVideoPage() {
   const [loading, setLoading] = useState(true);
   const [previewVideoUrl, setPreviewVideoUrl] = useState<string | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-  const { user } = useSelector((rootState: RootState) => rootState.auth);
+  const { user, currentPlan } = useSelector(
+    (rootState: RootState) => rootState.auth
+  );
   const isSubscribed = user?.isSubscribed || false;
   const [planUsage, setPlanUsage] = useState(null);
 
@@ -433,14 +440,9 @@ export default function TextToVideoPage() {
 
   const handleNavigation = async () => {
     try {
-      const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
-      const data = response.data.data;
-
-      setPlanUsage(data);
-
       if (
         user?.user_type !== "ADMIN" &&
-        data?.usage?.no_of_text_to_avatar <= 0
+        (currentPlan?.usage?.no_of_text_to_avatar ?? 0) <= 0
       ) {
         toast.error("Trial expired");
         window.location.href = isSubscribed
