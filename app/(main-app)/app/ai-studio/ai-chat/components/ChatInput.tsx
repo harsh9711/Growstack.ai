@@ -92,6 +92,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
     const [lastPrompt, setLastPrompt] = useState("");
     const [showSecureChatErrorMsg, setShowSecureChatErrorMsg] = useState(false);
     const [error, setError] = useState(false);
+    const [emptyPrompt, isEmptyPrompt] = useState('');
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const { startRecognition, stopRecognition, textToSpeech } =
       useSpeechRecognition(
@@ -124,6 +125,14 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
       user_prompt?: string,
       fromMic: boolean = false
     ) => {
+
+      if (input.trim() === '') {
+        isEmptyPrompt('Please enter any prompt...!');
+        return;
+      }
+
+      isEmptyPrompt('');
+
       if (user_prompt) {
         user_prompt = user_prompt.trim();
       }
@@ -605,6 +614,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
               onChange={e => {
                 setInput(e.target.value);
                 setShowSecureChatErrorMsg(false);
+                isEmptyPrompt('');
               }}
               onKeyDown={handleKeyDown}
               rows={1}
@@ -742,6 +752,12 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
             <SendIcon2 />
           </button>
         </div>
+        {
+          emptyPrompt && (
+          <div className="text-red-500 mt-2 ml-2">
+              {emptyPrompt}
+          </div>)
+        }
         {showSecureChatErrorMsg && (
           <p className="text-destructive mt-3 ml-2 transition duration-500">
             Input contains sensitive or harmful content. Please remove any
