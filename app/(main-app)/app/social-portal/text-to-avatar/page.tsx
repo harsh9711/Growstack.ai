@@ -80,13 +80,13 @@ const VideoTable: React.FC<{
     return () => {};
   }, [videos]);
 
-  const handleConfirmDelete = async () => {
-    if (!currentVideoId) return;
+  const handleDelete = async (videoId: string) => {
+    if (!videoId) return;
 
     setIsDeleting(true);
     try {
-      await instance.delete(`/users/api/v1/docs/${currentVideoId}`);
-      onRemove(currentVideoId);
+      await instance.delete(`/users/api/v1/docs/${videoId}`);
+      onRemove(videoId);
       toast.success("Avatar removed");
     } catch (error) {
       toast.error("Failed to remove avatar");
@@ -269,11 +269,6 @@ const VideoTable: React.FC<{
     }
   };
 
-  const handleDeleteClick = (videoId: string) => {
-    setCurrentVideoId(videoId);
-    handleConfirmDelete(); // Call the confirm delete handler
-  };
-
   const VideoDisplay = (videoUrl: string) => {
     window.open(videoUrl, "_blank");
   };
@@ -284,13 +279,13 @@ const VideoTable: React.FC<{
         <div
           key={video._id}
           className="border rounded-[10px] w-[300px] h-[220px] p-4 shadow-lg cursor-pointer"
-          onClick={() => VideoDisplay(video.videoUrl)}
         >
           <div className="relative w-[260px] h-[125px] rounded-[15px]">
             <img
               src={video.thumbnailUrl}
               alt="image"
               className="w-full h-full object-cover rounded-[15px]"
+              onClick={() => VideoDisplay(video.videoUrl)}
             />
             {video.status === "Pending" && (
               <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-[15px]">
@@ -326,7 +321,7 @@ const VideoTable: React.FC<{
                 <ul className="text-sm text-gray-700">
                   <li
                     className="p-2 cursor-pointer flex items-center justify-center "
-                    onClick={() => handleDeleteClick(video._id)}
+                    onClick={() => handleDelete(video._id)}
                   >
                     <Delete />
                     Delete
