@@ -77,7 +77,7 @@ export default function Sidebar({ isOpen, onClose, assistant_id }: IProps) {
       className={clsx(
         !isOpen &&
           "xl:w-[400px] xl:border-r xl:overflow-hidden xl:transition-all xl:duration-500 xl:opacity-100",
-        !isOpen && "xl:w-0 xl:opacity-0 lg:w-0 lg:opacity-0",
+        !isOpen && "xl:!w-0 xl:!opacity-0 lg:w-0 lg:opacity-0",
         isOpen
           ? "md:w-[400px] md:opacity-100 sm:w-[400px] sm:opacity-100 w-[400px] opacity-100"
           : "md:!w-0 md:!opacity-0 sm:!w-0 sm:!opacity-0 !w-0 !opacity-0",
@@ -89,7 +89,7 @@ export default function Sidebar({ isOpen, onClose, assistant_id }: IProps) {
           <h1 className="text-xl font-semibold whitespace-nowrap">
             Chat with our AI team
           </h1>
-          <CloseIcon className="cursor-pointer lg:hidden" onClick={onClose} />{" "}
+          <CloseIcon className="cursor-pointer lg:hidden" onClick={onClose} />
         </div>
         <p className="text-primary-black text-opacity-50 mt-1 whitespace-nowrap">
           AI professionals
