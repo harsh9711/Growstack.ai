@@ -1321,3 +1321,20 @@ body {
 .motionrolling {
   animation: rollingmotion 20s linear infinite;
 }
+/* AboveFaq.module.css */
+.animateScaleup {
+  animation: scaleUp 0.5s ease-in-out;
+}
+
+@keyframes scaleUp {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
