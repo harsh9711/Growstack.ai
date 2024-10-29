@@ -34,12 +34,10 @@ export default function Customgpts() {
     setLoading(true);
     try {
       const { data: { data, publicdata } } = await instance.get(`${API_URL}/ai/api/v1/customgpt`);
-      setCustomGpts(publicdata.map((d: any) => ({ ...d, show: true })));
-      setCustomGpts(
-        publicdata
+      publicdata? setCustomGpts(publicdata
           .filter((d: any) => d.is_public === true)
           .map((d: any) => ({ ...d, show: true }))
-      );
+      ):""
       setCustomGptsUser(data.map((d: any) => ({ ...d, show: true })))
     } catch (error: any) {
       if (error.response) {
@@ -51,31 +49,11 @@ export default function Customgpts() {
       setLoading(false);
     }
   };
-
-  const CustomGptPublic = async (id: string) => {
+  const CustomGptPublic = async (id: string,makePublic:boolean) => {
     setLoading(true);
     try {
-      await instance.post(`${API_URL}/ai/api/v1/customgpt/changetopublicaccess`, { "_id": id });
+      await instance.post(`${API_URL}/ai/api/v1/customgpt/changetopublicaccess`, { "_id": id,"makePublic":makePublic });
       setMenuOpenIndex(null)
-      getCustomGpts()
-    }
-    catch (error: any) {
-      if (error.response) {
-        toast.error(error.response.data.error);
-      } else {
-        toast.error(error.message);
-      }
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  const revokeCustomGpt = async (id: string) => {
-    setLoading(true);
-    try {
-      await instance.post(`${API_URL}/ai/api/v1/customgpt/revokecustomgpt`, { "_id": id });
-      setMenuOpenIndex(null)
-
       getCustomGpts()
     }
     catch (error: any) {
@@ -153,7 +131,7 @@ export default function Customgpts() {
             Array(7)
               .fill(null)
               .map((_, index) => <SkeletonLoader key={index} />)
-          ) : customGpts.length < 1 ? (
+          ) : customGpts.length < 1 && customGptsUser.length<1 ? (
             <div className="mt-4 hover:scale-120 flex flex-col justify-center items-center space-y-4 col-span-3 py-8">
               <h2 className="text-lg text-center font-semibold">
                 You have Custom GPTs Created yet
@@ -271,10 +249,10 @@ export default function Customgpts() {
                           {menuOpenIndex === index && (
                             <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-10">
                               <ul className="py-1">
-                                <li className="px-4 py-2 cursor-pointer hover:bg-gray-100" onClick={() => { CustomGptPublic(_id) }}>
+                                <li className="px-4 py-2 cursor-pointer hover:bg-gray-100" onClick={() => { CustomGptPublic(_id,true) }}>
                                 set as public
                                 </li>
-                                <li className="px-4 py-2 cursor-pointer hover:bg-gray-100" onClick={() => { revokeCustomGpt(_id) }}>
+                                <li className="px-4 py-2 cursor-pointer hover:bg-gray-100" onClick={() => { CustomGptPublic(_id,false) }}>
                                 remove from public
                                 </li>
                                 <li className="px-4 py-2 cursor-pointer text-rose-600 hover:bg-gray-100" onClick={() => { setIsDeleting(true);setDeleteId(_id) }}>
