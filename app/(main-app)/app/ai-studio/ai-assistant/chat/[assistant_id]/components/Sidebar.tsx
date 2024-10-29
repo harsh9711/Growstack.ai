@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import clsx from "clsx";
 import Image from "next/image";
+import { CloseIcon } from "@/components/svgs";
 
 interface IProps {
   isOpen: boolean;
@@ -74,14 +75,22 @@ export default function Sidebar({ isOpen, onClose, assistant_id }: IProps) {
   return (
     <div
       className={clsx(
-        "w-[400px] border-r overflow-hidden transition-all duration-500 opacity-100",
-        !isOpen && "!w-0 !opacity-0"
+        !isOpen &&
+          "xl:w-[400px] xl:border-r xl:overflow-hidden xl:transition-all xl:duration-500 xl:opacity-100",
+        !isOpen && "xl:w-0 xl:opacity-0 lg:w-0 lg:opacity-0",
+        isOpen
+          ? "md:w-[400px] md:opacity-100 sm:w-[400px] sm:opacity-100 w-[400px] opacity-100"
+          : "md:!w-0 md:!opacity-0 sm:!w-0 sm:!opacity-0 !w-0 !opacity-0",
+        "md:absolute md:h-auto md:bg-white md:z-50 sm:absolute sm:h-auto sm:bg-white sm:z-50 lg:relative lg:border-r lg:h-auto lg:bg-transparent lg:z-auto xl:relative xl:border-r xl:h-auto xl:bg-transparent xl:z-auto absolute h-auto bg-white z-50"
       )}
     >
       <div className="border-b py-[18px] px-8">
-        <h1 className="text-xl font-semibold whitespace-nowrap">
-          Chat with our AI team
-        </h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-xl font-semibold whitespace-nowrap">
+            Chat with our AI team
+          </h1>
+          <CloseIcon className="cursor-pointer lg:hidden" onClick={onClose} />{" "}
+        </div>
         <p className="text-primary-black text-opacity-50 mt-1 whitespace-nowrap">
           AI professionals
         </p>
