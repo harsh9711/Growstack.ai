@@ -272,7 +272,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
                           rehypePlugins={[rehypeRaw]}
                           components={components}
                         >
-                          {textContent}
+                            {textContent}
                         </ReactMarkdown>
                         <div className="flex justify-between">
                           <div></div>
