@@ -10,17 +10,6 @@ import "@/styles/editor.css";
 import ConfirmDialog from "./components/ConfirmDialog";
 import VideoPreviewModal from "./components/VideoPreview";
 import { Plus } from "lucide-react";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { API_URL } from "@/lib/api";
 import { ALL_ROUTES } from "@/utils/constant";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
@@ -35,6 +24,7 @@ import avatarImg5 from "../../../../../public/images/text-to-avatar/image-4.png"
 import Image from "next/image";
 import { template } from "lodash";
 import Delete from "@/components/svgs/delete";
+import { formatDistanceToNow } from "date-fns";
 
 const VideoTable: React.FC<{
   videos: Array<{
@@ -48,37 +38,9 @@ const VideoTable: React.FC<{
   onRemove: (id: string) => void;
   onPreview: (url: string) => void;
 }> = ({ videos, onRemove, onPreview }) => {
-  const { user } = useSelector((rootState: RootState) => rootState.auth);
-  const isSubscribed = user?.isSubscribed || false;
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [videoDuration, setVideoDuration] = useState<{ [key: string]: string }>(
-    {}
-  );
-  const [currentVideoId, setCurrentVideoId] = useState<string | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState<string | null>(null);
-
-  useEffect(() => {
-    videos.forEach(video => {
-      const videoElement = document.createElement("video");
-      videoElement.src = video.videoUrl;
-
-      videoElement.addEventListener("loadedmetadata", () => {
-        const totalSeconds = Math.floor(videoElement.duration);
-        const minutes = Math.floor(totalSeconds / 60);
-        const seconds = totalSeconds % 60;
-        const formattedDuration = `${String(minutes).padStart(2, "0")}:${String(
-          seconds
-        ).padStart(2, "0")}`;
-        setVideoDuration(prev => ({
-          ...prev,
-          [video._id]: formattedDuration,
-        }));
-      });
-    });
-
-    return () => {};
-  }, [videos]);
 
   const handleDelete = async (videoId: string) => {
     if (!videoId) return;
@@ -97,168 +59,8 @@ const VideoTable: React.FC<{
     }
   };
 
-  interface OutputType {
-    label: string;
-    value: string;
-    icon: JSX.Element;
-  }
-  const [planUsage, setPlanUsage] = useState(null);
-
-  const fetchPlanUsage = async () => {
-    try {
-      const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
-      const data = response.data.data;
-      setPlanUsage(data);
-
-      if (
-        user?.user_type !== "ADMIN" &&
-        (data?.usage?.no_of_text_to_avatar || 0) <= 0
-      ) {
-        toast.error("Trial expired");
-        window.location.href = isSubscribed
-          ? ALL_ROUTES.UPGRADE
-          : ALL_ROUTES.PAYMENT;
-      }
-    } catch (error: any) {
-      if (error.response) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error(error.message);
-      }
-      console.error("Error fetching plan usage:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchPlanUsage();
-  }, []);
-
-  const outputType: OutputType[] = [
-    { label: "Delete", value: "delete", icon: <span>🗑️</span> },
-    { label: "Download", value: "download", icon: <span>📥</span> },
-  ];
-
-  const CustomSelect: React.FC<{ videoUrl: string; _id: string }> = ({
-    videoUrl,
-    _id,
-  }) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const [selectedValue, setSelectedValue] = useState<string | null>(null);
-    const dropdownRef = useRef<HTMLDivElement | null>(null);
-    const [downloadProgress, setDownloadProgress] = useState<number | null>(
-      null
-    );
-
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    useEffect(() => {
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, []);
-
-    const handleSelectChange = async (
-      value: string,
-      videoUrl: string,
-      _id: string
-    ) => {
-      if (value === "delete") {
-        setCurrentVideoId(_id);
-        setIsDialogOpen(true);
-      } else if (value === "download") {
-        try {
-          const response = await fetch(videoUrl);
-          if (!response.ok) {
-            throw new Error("File not found");
-          }
-
-          const totalSize = +response.headers.get("content-length")!;
-          let loadedSize = 0;
-
-          const reader = response.body!.getReader();
-          const chunks: Uint8Array[] = [];
-
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            chunks.push(value);
-            loadedSize += value.length;
-
-            setDownloadProgress(Math.round((loadedSize / totalSize) * 100));
-          }
-
-          const blob = new Blob(chunks);
-          const url = URL.createObjectURL(blob);
-
-          const link = document.createElement("a");
-          link.href = url;
-          link.download = `${_id}.mp4`;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          URL.revokeObjectURL(url);
-
-          setDownloadProgress(null);
-          toast.success("Download completed");
-        } catch (error) {
-          toast.error("Failed to download avatar");
-          console.error("Download error:", error);
-          setDownloadProgress(null);
-        }
-      }
-    };
-    return (
-      <div className="relative inline-block text-left" ref={dropdownRef}>
-        {outputType.map(({ label, value, icon }) => (
-          <button
-            key={value}
-            onClick={() => {
-              // Check if the value is already selected
-              if (value === selectedValue) {
-                setSelectedValue(null);
-                handleSelectChange("", videoUrl, _id);
-              } else {
-                handleSelectChange(value, videoUrl, _id);
-                setSelectedValue(value);
-              }
-              setIsOpen(false);
-            }}
-            className={`flex items-center gap-2 px-4 py-2 w-full text-left ${
-              value === selectedValue ? "bg-gray-100" : "hover:bg-blue-50"
-            }`}
-          >
-            {icon}
-            {label}
-          </button>
-        ))}
-      </div>
-    );
-  };
-
   const timeAgo = (date: string) => {
-    const seconds = Math.floor(
-      (new Date().getTime() - new Date(date).getTime()) / 1000
-    );
-    let interval = Math.floor(seconds / 31536000);
-
-    if (interval > 1) return `${interval} years ago`;
-    interval = Math.floor(seconds / 2592000);
-    if (interval > 1) return `${interval} months ago`;
-    interval = Math.floor(seconds / 86400);
-    if (interval > 1) return `${interval} days ago`;
-    interval = Math.floor(seconds / 3600);
-    if (interval > 1) return `${interval} hours ago`;
-    interval = Math.floor(seconds / 60);
-    if (interval > 1) return `${interval} minutes ago`;
-    return "Just now";
+    return formatDistanceToNow(new Date(date), { addSuffix: true });
   };
 
   const toggleDropdown = (videoId: string) => {
@@ -353,7 +155,6 @@ export default function TextToVideoPage() {
     (rootState: RootState) => rootState.auth
   );
   const isSubscribed = user?.isSubscribed || false;
-  const [planUsage, setPlanUsage] = useState(null);
 
   const fetchData = async () => {
     setLoading(true);
@@ -439,7 +240,7 @@ export default function TextToVideoPage() {
         user?.user_type !== "ADMIN" &&
         (currentPlan?.usage?.no_of_text_to_avatar ?? 0) <= 0
       ) {
-        toast.error("Trial expired");
+        toast.error("Text to Avatar Credits Are Over");
         window.location.href = isSubscribed
           ? ALL_ROUTES.UPGRADE
           : ALL_ROUTES.PAYMENT;

@@ -1,6 +1,5 @@
 "use client";
 import FrameIconSvg from "@/components/svgs/frameicon";
-import { use } from "marked";
 import React, {
   useState,
   ChangeEvent,
@@ -17,12 +16,6 @@ import AudioBox from "../components/AudioBox";
 import { useRouter } from "next/navigation";
 import { ArrowBack } from "@/components/svgs";
 import { MoreHorizontal, Plus } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectTrigger,
-} from "@/components/ui/select";
 import DownloadCircle from "@/components/svgs/download";
 import Delete from "@/components/svgs/delete";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -650,126 +643,130 @@ const PreviewScriptPage: React.FC<PreviewScriptPageProps> = ({
   };
   // onOpenChange={() => setIsModalOpen(false)}
   return (
-    <div className="flex flex-col mt-2">
-      <Dialog open={isModalOpen}>
-        <DialogContent
-          showCloseButton={false}
-          className="w-[80%] md:w-[85%] h-[550px] max-w-3xl p-0 pb-4 border-0"
-        >
-          <div className="flex flex-col h-fill w-full p-4 items-center justify-center space-y-5">
-            <div className="h-[150px] w-[150px] rounded-[20px]">
-              <img
-                src={avatarThumbnil}
-                className="h-full w-full rounded-[20px] object-cover"
-              />
-            </div>
-            <div>
-              <p className="text-[22px] text-[#14171B]">{`${avatarName} is creating your Masterpiece...`}</p>
-            </div>
-            <div>
-              <p className="text-center text-[16px] text-[#b6b6b6]">
-                Everything happens on our side, we will send you an email when
-                <br></br>your video is ready.
-              </p>
-            </div>
-            <div className="space-x-5">
-              <button
-                className="rounded-[10px] h-[52px] w-[212px] border-[1px] border-[#14171B]"
-                onClick={() => router.push("/app/social-portal/text-to-avatar")}
-              >
-                Back To AI Text to Avatar
-              </button>
-              <button
-                className="text-white bg-[#034737] rounded-[10px] h-[52px] w-[200px]"
-                onClick={handleNavigate}
-              >
-                Create another video
-              </button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-      <div className="w-full h-[65px] bg-[#EBF0F6] rounded-[100px]">
-        <div className="h-full w-full flex flex-row justify-between items-center p-3">
-          <div>
-            <div className="flex flex-row items-center justify-center">
-              <button
-                className="flex items-center space-x-1 p-1"
-                onClick={() => setIsPreviewScriptPage(false)}
-              >
-                <span>
-                  <ArrowBack />
-                </span>
-                <span className="text-[16px] text-[#212833] font-semibold">
-                  Back
-                </span>
-              </button>
-
-              <div className="h-6 border-[1px] border-[#BFBFBF] mx-2"></div>
-
-              <div className="text-[#14171B] text-[20px] font-semibold">
-                {`${avatarName} talks about ${usertitle}`}
+    <Fragment>
+      <div className="flex flex-col mt-2">
+        <Dialog open={isModalOpen}>
+          <DialogContent
+            showCloseButton={false}
+            className="w-[80%] md:w-[85%] h-[550px] max-w-3xl p-0 pb-4 border-0"
+          >
+            <div className="flex flex-col h-fill w-full p-4 items-center justify-center space-y-5">
+              <div className="h-[150px] w-[150px] rounded-[20px]">
+                <img
+                  src={avatarThumbnil}
+                  className="h-full w-full rounded-[20px] object-cover"
+                />
+              </div>
+              <div>
+                <p className="text-[22px] text-[#14171B]">{`${avatarName} is creating your Masterpiece...`}</p>
+              </div>
+              <div>
+                <p className="text-center text-[16px] text-[#b6b6b6]">
+                  Everything happens on our side, we will send you an email when
+                  <br></br>your video is ready.
+                </p>
+              </div>
+              <div className="space-x-5">
+                <button
+                  className="rounded-[10px] h-[52px] w-[212px] border-[1px] border-[#14171B]"
+                  onClick={() =>
+                    router.push("/app/social-portal/text-to-avatar")
+                  }
+                >
+                  Back To AI Text to Avatar
+                </button>
+                <button
+                  className="text-white bg-[#034737] rounded-[10px] h-[52px] w-[200px]"
+                  onClick={handleNavigate}
+                >
+                  Create another video
+                </button>
               </div>
             </div>
-          </div>
-          <div>
-            <div className="flex flex-row items-center justify-center space-x-2 p-3">
-              <button
-                className="flex items-center space-x-2 p-3 text-white bg-[#034737] rounded-[10px] h-[40px]"
-                onClick={handleVideoCreation}
-                disabled={videoLoading}
-              >
-                {videoLoading ? (
-                  <Spinner />
-                ) : (
-                  <>
-                    <span>
-                      <Plus />
-                    </span>
-                    <span>Generate Avatar</span>
-                  </>
-                )}
-              </button>
-              <div>
-                <div className="relative inline-flex" ref={dropdownRef}>
-                  <button
-                    id="hs-dropdown-custom-icon-trigger"
-                    aria-haspopup="menu"
-                    aria-expanded={isOpen ? "true" : "false"}
-                    aria-label="Dropdown"
-                    type="button"
-                    className="flex bg-[#FFFFFF] rounded-[10px] h-[40px] w-[50px] items-center justify-center"
-                    onClick={toggleDropdown}
-                  >
-                    <MoreHorizontal />
-                  </button>
+          </DialogContent>
+        </Dialog>
+        <div className="w-full h-[65px] bg-[#EBF0F6] rounded-[100px]">
+          <div className="h-full w-full flex flex-row justify-between items-center p-3">
+            <div>
+              <div className="flex flex-row items-center justify-center">
+                <button
+                  className="flex items-center space-x-1 p-1"
+                  onClick={() => setIsPreviewScriptPage(false)}
+                >
+                  <span>
+                    <ArrowBack />
+                  </span>
+                  <span className="text-[16px] text-[#212833] font-semibold">
+                    Back
+                  </span>
+                </button>
 
-                  <div
-                    className={`absolute right-0 z-10 transition-[opacity,margin] duration ${
-                      isOpen ? "opacity-100 block" : "opacity-0 hidden"
-                    } bg-white shadow-md rounded-lg mt-[50px] w-[150px] dark:bg-neutral-800 dark:border dark:border-neutral-700`}
-                    role="menu"
-                    aria-orientation="vertical"
-                    aria-labelledby="hs-dropdown-custom-icon-trigger"
-                  >
-                    <div className="p-1 space-y-0.5 w-[150px]">
-                      <button
-                        onClick={() => alert("Download clicked")}
-                        className="flex gap-3 items-center px-2 py-2 w-[150px] text-left text-gray-700 hover:bg-gray-100"
-                      >
-                        <DownloadCircle />
-                        Download
-                      </button>
-                      <button
-                        onClick={() => {
-                          setIsPreviewScriptPage(false);
-                          setIsSelectedAvatar(false);
-                        }}
-                        className="flex gap-3 items-center px-2 py-2 w-[150px] text-left hover:bg-gray-100"
-                      >
-                        <Delete />
-                        Delete
-                      </button>
+                <div className="h-6 border-[1px] border-[#BFBFBF] mx-2"></div>
+
+                <div className="text-[#14171B] text-[20px] font-semibold">
+                  {`${avatarName} talks about ${usertitle}`}
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="flex flex-row items-center justify-center space-x-2 p-3">
+                <button
+                  className="flex items-center space-x-2 p-3 text-white bg-[#034737] rounded-[10px] h-[40px]"
+                  onClick={handleVideoCreation}
+                  disabled={videoLoading}
+                >
+                  {videoLoading ? (
+                    <Spinner />
+                  ) : (
+                    <>
+                      <span>
+                        <Plus />
+                      </span>
+                      <span>Generate Avatar</span>
+                    </>
+                  )}
+                </button>
+                <div>
+                  <div className="relative inline-flex" ref={dropdownRef}>
+                    <button
+                      id="hs-dropdown-custom-icon-trigger"
+                      aria-haspopup="menu"
+                      aria-expanded={isOpen ? "true" : "false"}
+                      aria-label="Dropdown"
+                      type="button"
+                      className="flex bg-[#FFFFFF] rounded-[10px] h-[40px] w-[50px] items-center justify-center"
+                      onClick={toggleDropdown}
+                    >
+                      <MoreHorizontal />
+                    </button>
+
+                    <div
+                      className={`absolute right-0 z-10 transition-[opacity,margin] duration ${
+                        isOpen ? "opacity-100 block" : "opacity-0 hidden"
+                      } bg-white shadow-md rounded-lg mt-[50px] w-[150px] dark:bg-neutral-800 dark:border dark:border-neutral-700`}
+                      role="menu"
+                      aria-orientation="vertical"
+                      aria-labelledby="hs-dropdown-custom-icon-trigger"
+                    >
+                      <div className="p-1 space-y-0.5 w-[150px]">
+                        <button
+                          onClick={() => alert("Download clicked")}
+                          className="flex gap-3 items-center px-2 py-2 w-[150px] text-left text-gray-700 hover:bg-gray-100"
+                        >
+                          <DownloadCircle />
+                          Download
+                        </button>
+                        <button
+                          onClick={() => {
+                            setIsPreviewScriptPage(false);
+                            setIsSelectedAvatar(false);
+                          }}
+                          className="flex gap-3 items-center px-2 py-2 w-[150px] text-left hover:bg-gray-100"
+                        >
+                          <Delete />
+                          Delete
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -777,45 +774,45 @@ const PreviewScriptPage: React.FC<PreviewScriptPageProps> = ({
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="flex flex-col lg:flex-row mt-5 px-5 space-y-5 lg:space-y-0 lg:space-x-3 h-auto lg:h-[75vh]">
-        <div className="w-full lg:w-[500px] h-[500px] flex items-center justify-center pt-4 rounded-[10px]">
-          <img
-            src={avatarThumbnil}
-            alt="Avatar"
-            className="h-full w-full object-cover rounded-[10px]"
-          />
-        </div>
-        <div className="w-full pt-2">
-          <div>
-            <div className="ml-0 mr-0 w-full max-w-4xl mx-auto space-y-4 p-4">
-              {[0, 1, 2, 3].map(sceneIndex => {
-                const { firstPart, secondPart } = getScenePair(sceneIndex);
+        <div className="flex flex-col lg:flex-row mt-5 px-5 space-y-5 lg:space-y-0 lg:space-x-3 h-auto lg:h-[75vh]">
+          <div className="w-full lg:w-[500px] h-[500px] flex items-center justify-center pt-4 rounded-[10px]">
+            <img
+              src={avatarThumbnil}
+              alt="Avatar"
+              className="h-full w-full object-cover rounded-[10px]"
+            />
+          </div>
+          <div className="w-full pt-2">
+            <div>
+              <div className="ml-0 mr-0 w-full max-w-4xl mx-auto space-y-4 p-4">
+                {[0, 1, 2, 3].map(sceneIndex => {
+                  const { firstPart, secondPart } = getScenePair(sceneIndex);
 
-                return (
-                  <div key={sceneIndex}>
-                    <div className="bg-white rounded-lg shadow-md">
-                      <div className="w-[100px] pt-3">
-                        <div className="bg-green-800 text-[#FFFFFF] w-full px-3 py-1 text-[18px] rounded-r-[30px]">
-                          Scene {sceneIndex + 1}
+                  return (
+                    <div key={sceneIndex}>
+                      <div className="bg-white rounded-lg shadow-md">
+                        <div className="w-[100px] pt-3">
+                          <div className="bg-green-800 text-[#FFFFFF] w-full px-3 py-1 text-[18px] rounded-r-[30px]">
+                            Scene {sceneIndex + 1}
+                          </div>
+                        </div>
+                        <div className="p-3">
+                          <p className="text-[#000000] text-[16px]">
+                            {`${firstPart}${
+                              secondPart ? ` ${secondPart.trim()}` : ""
+                            }`}
+                          </p>
                         </div>
                       </div>
-                      <div className="p-3">
-                        <p className="text-[#000000] text-[16px]">
-                          {`${firstPart}${
-                            secondPart ? ` ${secondPart.trim()}` : ""
-                          }`}
-                        </p>
-                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </Fragment>
   );
 };
