@@ -27,7 +27,7 @@ import { PlanName } from "@/types/enums";
 
 interface ChatInputProps {
   selectedBrandVoice?: BrandVoice;
-  onSend: (content: string, role: string) => void;
+  onSend: (content: string, role: string, imageUrl:string) => void;
   selectedModel: string;
   fetchConversations: () => void;
   removeMessage: () => void;
@@ -71,6 +71,9 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
     const [isLoading, setIsLoading] = useState(false);
     const { currentPlan, user } = useSelector(
       (rootState: RootState) => rootState.auth
+    );
+    const isFreePlan = planIdsMap[PlanName.FREE].some(
+      val => val === currentPlan?.plan_id
     );
     const isSubscribed = user?.isSubscribed || false;
     const selectedLanguage = languageOptions[0].value;
@@ -170,23 +173,19 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
           setImageType(null);
           setFilename(null);
         }
-
         const {
           response,
           conversation_id,
           chatId,
           noOfMessagesLeft,
-          totalNoOfMessages,
+          totalMessages,
         } = conversation.data.data as ChatResponse;
 
-        const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some(
-          val => val === currentPlan?.plan_id
-        );
-
-        if (isBasicPlan) {
-          if (noOfMessagesLeft && totalNoOfMessages) {
-            if (noOfMessagesLeft <= 0) {
+        if (isFreePlan) {
+          if (noOfMessagesLeft && totalMessages) {
+            if (noOfMessagesLeft < 0) {
               setIsDailyLimitExceeded(true);
+              return;
             } else {
               setIsDailyLimitExceeded(false);
             }
@@ -367,14 +366,21 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
         );
 
         let accumulatedResponse = "";
+eventSource.onmessage = (event: MessageEvent) => {
+  let imageUrl = "";
+  const chunk = event.data;
+  const parsedData = parseJsonString(chunk);
+  const msg = parsedData?.text || "";
+  accumulatedResponse += msg ;
+  const imageMarkdownRegex = /!\[.*?\]\((https?:\/\/[^\s]+)\)/;
+  const imageMatch = chunk.match(imageMarkdownRegex);
 
-        eventSource.onmessage = (event: MessageEvent) => {
-          const chunk = event.data;
-          const msg = parseJsonString(chunk)?.text || "";
-          accumulatedResponse += msg;
-
-          onSend(accumulatedResponse, "assistant");
-        };
+  if (imageMatch && imageMatch[1]) {
+    imageUrl = imageMatch[1];
+    accumulatedResponse += chunk;
+  }
+  onSend(accumulatedResponse, "assistant", imageUrl);
+};
 
         eventSource.onerror = (error: MessageEvent) => {
           console.error("EventSource failed:", error);
@@ -418,7 +424,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
           .data as ChatResponse;
 
         setSelectedConversation(conversation_id);
-        onSend(response, "assistant");
+        onSend(response, "assistant","");
       } catch (error: any) {
         const errorMsg = error.response?.data.error ?? error.message;
         toast.error(errorMsg);
@@ -476,16 +482,17 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
             You've Exceeded Your Daily Free Chat Limit
           </h2>
 
-          <p className="mt-4 w-2/3 text-base ">
-            Come back tomorrow to start chatting again or upgrade your plan to
-            access all the amazing AI features.
+          <p className="mt-4 w-2/3 text-base">
+            Come back tomorrow to start chatting again or{" "}
+            {isSubscribed ? "upgrade your plan" : "subscribe"} to access all the
+            amazing AI features.
           </p>
 
           <Link
             className="bg-primary-green mt-3 text-nowrap text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2"
             href={isSubscribed ? ALL_ROUTES.UPGRADE : ALL_ROUTES.PAYMENT}
           >
-            Upgrade Your Plan
+            {isSubscribed ? "Upgrade Your Plan" : "Subscribe Now"}
           </Link>
         </div>
       );
