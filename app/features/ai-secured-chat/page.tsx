@@ -14,7 +14,7 @@ const page = () => {
   return (
     <main className="flex flex-col relative w-full overflow-hidden overflow-y-scroll mx-auto">
       <span className="relatvie z-20">
-        <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
+        <Navbar logoUrl="/imagelogo.svg" logoAlt="Custom Logo" />
       </span>
 
       <section className="bg-gradient-to-br from-[#C5E8C6] via-[#D6F6E9] to-[#FAF7F6]  rounded-b-[60px] sm:rounded-b-[0px] w-full sm:mb-20">
