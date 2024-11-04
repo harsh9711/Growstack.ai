@@ -27,7 +27,7 @@ import { PlanName } from "@/types/enums";
 
 interface ChatInputProps {
   selectedBrandVoice?: BrandVoice;
-  onSend: (content: string, role: string) => void;
+  onSend: (content: string, role: string, imageUrl:string) => void;
   selectedModel: string;
   fetchConversations: () => void;
   removeMessage: () => void;
@@ -182,7 +182,6 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
           setImageType(null);
           setFilename(null);
         }
-
         const {
           response,
           conversation_id,
@@ -376,14 +375,21 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
         );
 
         let accumulatedResponse = "";
+eventSource.onmessage = (event: MessageEvent) => {
+  let imageUrl = "";
+  const chunk = event.data;
+  const parsedData = parseJsonString(chunk);
+  const msg = parsedData?.text || "";
+  accumulatedResponse += msg ;
+  const imageMarkdownRegex = /!\[.*?\]\((https?:\/\/[^\s]+)\)/;
+  const imageMatch = chunk.match(imageMarkdownRegex);
 
-        eventSource.onmessage = (event: MessageEvent) => {
-          const chunk = event.data;
-          const msg = parseJsonString(chunk)?.text || "";
-          accumulatedResponse += msg;
-
-          onSend(accumulatedResponse, "assistant");
-        };
+  if (imageMatch && imageMatch[1]) {
+    imageUrl = imageMatch[1];
+    accumulatedResponse += chunk;
+  }
+  onSend(accumulatedResponse, "assistant", imageUrl);
+};
 
         eventSource.onerror = (error: MessageEvent) => {
           console.error("EventSource failed:", error);
@@ -427,7 +433,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
           .data as ChatResponse;
 
         setSelectedConversation(conversation_id);
-        onSend(response, "assistant");
+        onSend(response, "assistant","");
       } catch (error: any) {
         const errorMsg = error.response?.data.error ?? error.message;
         toast.error(errorMsg);
