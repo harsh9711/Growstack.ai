@@ -10,7 +10,7 @@ function Cta2() {
   }, []);
 
   return (
-    <div className="py-24 bg-primary-lightgreen relative overflow-hidden">
+    <div className="py-24  relative bg-[url('/greensvg.svg')] bg-cover bg-no-repeat">
       <div className="container flex w-full flex-row  justify-center sm:justify-between mx-auto">
         <div className="flex flex-col sm:flex-row items-center">
           <div
@@ -58,7 +58,7 @@ function Cta2() {
             data-aos-duration="1000"
           >
             <img
-              className="absolute -right-0 top-2.5 transform -translate-y-1/2 w-[700px] sm:w-[700px] max-w-full"
+              className="absolute -right-4 top-2.5 transform -translate-y-1/2 w-[600px] sm:w-[600px] max-w-full"
               src="/cta2.svg"
               alt="cta"
             />
