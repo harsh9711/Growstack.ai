@@ -66,7 +66,7 @@ const ScheduleComponent: React.FC<CheckboxProps> = ({
         scheduleDateTime: utcDateTime,
       };
 
-      console.log("Request Data:", requestData);
+      console.log("Request Data::", requestData);
 
       setActiveAction((prevState: any) => ({
         ...prevState,

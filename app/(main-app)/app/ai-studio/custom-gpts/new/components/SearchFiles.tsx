@@ -47,6 +47,18 @@ const SearchFiles = ({
         ...uploadedSerachFiles,
         { ...file, name: data.filename, id: data.id },
       ]);
+
+      const {
+        data: {
+          data: { vector_store_id },
+        },
+      } = await instance.post(
+        `${API_URL}/ai/api/v1/customgpt/batch-vector-store`,
+        {
+          file_ids: [data.id],
+        }
+      );
+      setVectorStoreId(vector_store_id);
       setIsAPILoading(false);
       toast.success("File uploaded successfully");
     } catch (error) {

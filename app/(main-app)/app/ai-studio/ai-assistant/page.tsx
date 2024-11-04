@@ -12,12 +12,12 @@ import { Search } from "lucide-react";
 
 const groups = [
   {
-    icon: "/icons/academicsvg.svg",
-    name: "Education",
-  },
-  {
     icon: "/icons/marketing.svg",
     name: "Marketing",
+  },
+  {
+    icon: "/icons/academicsvg.svg",
+    name: "Education",
   },
   {
     icon: "/icons/shoppingcart.svg",
@@ -121,14 +121,17 @@ export default function AiAssistants() {
   return (
     <Fragment>
       <main className="flex-1 h-full flex flex-col">
-        <div className="flex justify-between items-center mt-8">
+        {/* <div className="flex justify-between items-center mt-8"> */}
+        <div className="flex flex-col lg:flex-row lg:justify-end mt-8">
           <div className="space-y-2 w-full">
-            <h1 className="text-2xl font-semibold">AI assistant</h1>
+            {/* <h1 className="text-2xl font-semibold">AI assistant</h1> */}
+            <h1 className="lg:text-2xl md:text-xl font-semibold">AI assistant</h1>
             <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
               Chat with our AI team
             </p>
           </div>
-          <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md">
+          {/* <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md"> */}
+          <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md mt-4 lg:mt-0 lg">
             <Search className="text-gray-500" size={20} />
             <input
               type="search"
@@ -139,7 +142,8 @@ export default function AiAssistants() {
             />
           </div>
         </div>
-        <div className="flex flex-wrap gap-2 mt-10">
+        {/* <div className="flex flex-wrap gap-2 mt-10"> */}
+        <div className="flex flex-row overflow-x-auto lg:flex-wrap gap-2 mt-10">
           {groups.map((group, index) => (
             <div
               key={index}
@@ -148,7 +152,7 @@ export default function AiAssistants() {
                 groupStore(group.name);
               }}
               className={clsx(
-                "py-3.5 px-6 rounded-lg cursor-pointer flex items-center gap-2 transition duration-300",
+                "py-3.5 px-6 rounded-lg cursor-pointer flex items-center justify-center gap-2 transition duration-300",
                 searchQuery === "" && selectedGroup === group.name
                   ? "bg-primary-green text-white"
                   : "bg-[#E9E9E9] text-primary-green"
@@ -160,7 +164,8 @@ export default function AiAssistants() {
           ))}
         </div>
         {loading ? (
-          <div className="grid grid-cols-6 gap-6 mt-6">
+          // <div className="grid grid-cols-6 gap-6 mt-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6 mt-6">
             {Array(15)
               .fill(null)
               .map((_, index) => (
@@ -183,7 +188,8 @@ export default function AiAssistants() {
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-6 gap-3 mt-6">
+          // <div className="grid grid-cols-6 gap-3 mt-6">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 mt-6">
             {assistants.map((assistant, index) => (
               <AssistantCard {...assistant} key={index} />
             ))}

@@ -45,6 +45,9 @@ import { BrandVoice } from "@/types/common";
 import Wave from "@/components/svgs/wave";
 import ExternalLink from "@/components/svgs/externalLink";
 import Ellipse from "@/components/svgs/ellipse";
+import GlobalModal from "@/components/modal/global.modal";
+import UpgradePlan from "@/components/upgradePlan/upgradePlan";
+import SubscribePlan from "@/components/subscribePlan/subscribePlan";
 
 type Message = {
   content: string;
@@ -59,10 +62,15 @@ export default function ChatComponent() {
     (rootState: RootState) => rootState.auth
   );
 
+  const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some(
+    val => val === currentPlan?.plan_id
+  );
+
+  const isFreePlan = planIdsMap[PlanName.FREE].some(
+    val => val === currentPlan?.plan_id
+  );
   const filteredAiModelOptions =
-    user?.user_type !== "ADMIN" &&
-    currentPlan &&
-    planIdsMap[PlanName.AI_ESSENTIALS].some(val => val === currentPlan.plan_id)
+    user?.user_type !== "ADMIN" && currentPlan && (isBasicPlan || isFreePlan)
       ? [aiModelOptions[0]]
       : aiModelOptions;
   const [enableWebAccess, setEnableWebAccess] = useState<boolean>(false);
@@ -75,6 +83,10 @@ export default function ChatComponent() {
   const [selectedModel, setSelectedModel] = useState<string>(
     filteredAiModelOptions[0].models[0].value || ""
   );
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState<boolean>(false);
+  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] =
+    useState<boolean>(false);
+
   const [secureChatEnabled, setSecureChatEnabled] = useState<boolean>(false);
   const [isDailyLimitExceeded, setIsDailyLimitExceeded] = useState(false);
   const [isDashboardChatModalOpen, setIsDashboardChatModalOpen] =
@@ -106,11 +118,19 @@ export default function ChatComponent() {
       );
       const chatData = data.data.chats;
       const messages = chatData.flatMap((chats: any) =>
-        chats.thread.flatMap((thread: any) => [
-          { role: "user", content: thread.user_prompt, loading: false },
-          { role: "assistant", content: thread.response, loading: false },
-        ])
-      );
+        chats.thread.flatMap((thread: any) => {
+            const userContent = thread.user_prompt;
+            let assistantContent = typeof thread.response === 'object' ? JSON.stringify(thread.response) : thread.response;
+            assistantContent = assistantContent.replace("[object Object]", "");
+            return [
+                { role: "user", content: userContent, loading: false },
+                { role: "assistant", content: assistantContent, loading: false },
+            ];
+        })
+    );
+    
+      console.log("messages",messages);
+      
       setMessages(messages);
       setSelectedConversation(_id);
     } catch (error) {
@@ -210,11 +230,7 @@ export default function ChatComponent() {
         totalNoOfMessages,
       } = data.data as ChatResponse;
 
-      const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some(
-        val => val === currentPlan?.plan_id
-      );
-
-      if (isBasicPlan) {
+      if (isBasicPlan || isFreePlan) {
         if (noOfMessagesLeft && totalNoOfMessages) {
           if (noOfMessagesLeft <= 0) {
             setIsDailyLimitExceeded(true);
@@ -298,8 +314,6 @@ export default function ChatComponent() {
       return;
     }
 
-    console.log("Usage limit:", currentModal);
-
     if (currentModal.value === "perplexity") {
       setEnableWebAccess(true);
       setSelectedBrandVoice("");
@@ -317,9 +331,6 @@ export default function ChatComponent() {
       chatInputRef.current.handleRegenerate(chartMessage);
     }
   };
-  const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some(
-    val => val === currentPlan?.plan_id
-  );
 
   useEffect(() => {
     if (brandVoices?.length > 0) {
@@ -331,18 +342,34 @@ export default function ChatComponent() {
   }, [brandVoices]);
 
   const onChange = () => {
-    if (enableWebAccess) {
-      setEnableWebAccess(false);
-      setSelectedModel("growstack-llm");
+    if ((isBasicPlan || isFreePlan) && user?.user_type !== "ADMIN") {
+      isFreePlan
+        ? setIsSubscriptionModalOpen(true)
+        : setIsUpgradeModalOpen(true);
     } else {
-      setEnableWebAccess(true);
-      setSelectedModel("perplexity");
-      setSelectedBrandVoice("");
+      if (enableWebAccess) {
+        setEnableWebAccess(false);
+        setSelectedModel("growstack-llm");
+      } else {
+        setEnableWebAccess(true);
+        setSelectedModel("perplexity");
+        setSelectedBrandVoice("");
+      }
+    }
+  };
+
+  const handleSecureChatChange = () => {
+    if (user?.user_type !== "ADMIN" && (isBasicPlan || isFreePlan)) {
+      isFreePlan
+        ? setIsSubscriptionModalOpen(true)
+        : setIsUpgradeModalOpen(true);
+    } else {
+      setSecureChatEnabled(!secureChatEnabled);
     }
   };
 
   useEffect(() => {
-    if (isBasicPlan) {
+    if (isBasicPlan || isFreePlan) {
       setSelectedModel("growstack-llm");
     } else {
       setSelectedModel("gpt-4o-mini");
@@ -352,12 +379,20 @@ export default function ChatComponent() {
   const handleBrandVoiceSelection = (value: string) => {
     setSelectedBrandVoice(value);
     if (selectedModel === "perplexity") {
-      if (isBasicPlan) {
+      if (isBasicPlan || isFreePlan) {
         setSelectedModel("growstack-llm");
       } else {
         setSelectedModel("gpt-4o-mini");
       }
     }
+  };
+
+  const handleMouseEnter = () => {
+    setIsDashboardChatModalOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDashboardChatModalOpen(false);
   };
 
   return (
@@ -367,7 +402,7 @@ export default function ChatComponent() {
     >
       {isDashboardChatModalOpen && (
         <DashboardChatModal
-          onClose={() => setIsDashboardChatModalOpen(false)}
+          onClose={handleMouseLeave}
           onSelectConversation={handleSelectConversation}
         />
       )}
@@ -378,33 +413,24 @@ export default function ChatComponent() {
         <div className="flex flex-row gap-2 items-center justify-center">
           <div
             className="flex items-center justify-center cursor-pointer"
-            onClick={() => setIsDashboardChatModalOpen(true)}
+            onMouseEnter={handleMouseEnter}
           >
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 94 84"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M66.1699 41.0721L53.2119 41.0691V18.8491C53.2119 17.0401 51.7449 15.5781 49.9409 15.5781C48.1369 15.5781 46.6699 17.0411 46.6699 18.8491V44.3411C46.6699 46.1491 48.1369 47.6121 49.9409 47.6121H49.9459H66.1689C67.9739 47.6121 69.4389 46.1491 69.4389 44.3421C69.4379 42.5381 67.9729 41.0721 66.1699 41.0721Z"
-                      fill="#034737"
-                    />
-                    <path
-                      d="M81.1068 12.2085C64.8288 -4.0695 38.3408 -4.0695 22.0578 12.2085C14.8738 19.3945 10.6118 28.8005 9.92776 38.8755L5.67375 34.2945C4.44275 32.9725 2.36976 32.8935 1.04676 34.1225C-0.279245 35.3535 -0.355245 37.4265 0.874755 38.7525L10.3498 48.9545C10.9948 49.6485 11.8708 50.0005 12.7498 50.0005C13.5468 50.0005 14.3458 49.7115 14.9768 49.1265L25.1818 39.6505C26.5078 38.4195 26.5838 36.3465 25.3538 35.0225C24.1238 33.6975 22.0508 33.6175 20.7258 34.8505L16.5418 38.7345C17.2418 30.4655 20.7738 22.7565 26.6888 16.8385C40.4158 3.1135 62.7498 3.1135 76.4758 16.8385C90.2008 30.5645 90.2008 52.9005 76.4758 66.6265C69.8278 73.2755 60.9868 76.9375 51.5818 76.9375C42.1818 76.9375 33.3408 73.2765 26.6888 66.6265C25.4088 65.3475 23.3348 65.3475 22.0568 66.6265C20.7788 67.9055 20.7788 69.9805 22.0578 71.2575C29.9478 79.1445 40.4328 83.4865 51.5818 83.4865C62.7348 83.4865 73.2198 79.1435 81.1058 71.2575C97.3858 54.9785 97.3857 28.4875 81.1068 12.2085Z"
-                      fill="#034737"
-                    />
-                  </svg>
-                </TooltipTrigger>
-                <TooltipContent className="bg-white">
-                  <p>History</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 94 84"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M66.1699 41.0721L53.2119 41.0691V18.8491C53.2119 17.0401 51.7449 15.5781 49.9409 15.5781C48.1369 15.5781 46.6699 17.0411 46.6699 18.8491V44.3411C46.6699 46.1491 48.1369 47.6121 49.9409 47.6121H49.9459H66.1689C67.9739 47.6121 69.4389 46.1491 69.4389 44.3421C69.4379 42.5381 67.9729 41.0721 66.1699 41.0721Z"
+                fill="#034737"
+              />
+              <path
+                d="M81.1068 12.2085C64.8288 -4.0695 38.3408 -4.0695 22.0578 12.2085C14.8738 19.3945 10.6118 28.8005 9.92776 38.8755L5.67375 34.2945C4.44275 32.9725 2.36976 32.8935 1.04676 34.1225C-0.279245 35.3535 -0.355245 37.4265 0.874755 38.7525L10.3498 48.9545C10.9948 49.6485 11.8708 50.0005 12.7498 50.0005C13.5468 50.0005 14.3458 49.7115 14.9768 49.1265L25.1818 39.6505C26.5078 38.4195 26.5838 36.3465 25.3538 35.0225C24.1238 33.6975 22.0508 33.6175 20.7258 34.8505L16.5418 38.7345C17.2418 30.4655 20.7738 22.7565 26.6888 16.8385C40.4158 3.1135 62.7498 3.1135 76.4758 16.8385C90.2008 30.5645 90.2008 52.9005 76.4758 66.6265C69.8278 73.2755 60.9868 76.9375 51.5818 76.9375C42.1818 76.9375 33.3408 73.2765 26.6888 66.6265C25.4088 65.3475 23.3348 65.3475 22.0568 66.6265C20.7788 67.9055 20.7788 69.9805 22.0578 71.2575C29.9478 79.1445 40.4328 83.4865 51.5818 83.4865C62.7348 83.4865 73.2198 79.1435 81.1058 71.2575C97.3858 54.9785 97.3857 28.4875 81.1068 12.2085Z"
+                fill="#034737"
+              />
+            </svg>
           </div>
           <div className="flex items-center justify-center">
             <h1 className="text-xl font-semibold  text-nowrap">AI Chat</h1>
@@ -412,62 +438,55 @@ export default function ChatComponent() {
         </div>
         <div className="flex flex-row items-center justify-center gap-3">
           <div className="hidden xl:block">
-            {(!isBasicPlan || user?.user_type === "ADMIN") && (
-              <div className="flex ">
-                <div className="flex items-center gap-2">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Info
-                          size={18}
-                          className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent
-                        className="bg-white"
-                        style={{ width: "400px", zIndex: "1000" }}
-                      >
-                        <p>
-                          Blocks PII, jailbreaks, gibberish, toxicity, nudity,
-                          prompt injections, and celebrity content.
-                        </p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                  <div className="text-md  text-nowrap font-medium">
-                    Secure Chat
-                  </div>
-                  <Switch
-                    checked={secureChatEnabled}
-                    onCheckedChange={() =>
-                      setSecureChatEnabled(!secureChatEnabled)
-                    }
-                  />
+            <div className="flex ">
+              <div className="flex items-center gap-2">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Info
+                        size={18}
+                        className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
+                      />
+                    </TooltipTrigger>
+                    <TooltipContent
+                      className="bg-white"
+                      style={{ width: "400px", zIndex: "1000" }}
+                    >
+                      <p>
+                        Blocks PII, jailbreaks, gibberish, toxicity, nudity,
+                        prompt injections, and celebrity content.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                <div className="text-md  text-nowrap font-medium">
+                  Secure Chat
                 </div>
-                <div className="gap-2 flex pr-2 py-1.5 items-center border-r-2 border-[#EBEBEB]">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Info
-                          size={18}
-                          className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent side="bottom" className="bg-white">
-                        <p>To access real-time data, please enable it.</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                  <span className="text-md  text-nowrap flex flex-row gap-x-2 font-medium">
-                    Web chat
-                  </span>
-                  <Switch
-                    checked={enableWebAccess}
-                    onCheckedChange={onChange}
-                  />
-                </div>
+                <Switch
+                  checked={secureChatEnabled}
+                  onCheckedChange={handleSecureChatChange}
+                />
               </div>
-            )}
+              <div className="gap-2 flex pr-2 py-1.5 items-center border-r-2 border-[#EBEBEB]">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Info
+                        size={18}
+                        className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
+                      />
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom" className="bg-white">
+                      <p>To access real-time data, please enable it.</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                <span className="text-md  text-nowrap flex flex-row gap-x-2 font-medium">
+                  Web chat
+                </span>
+                <Switch checked={enableWebAccess} onCheckedChange={onChange} />
+              </div>
+            </div>
           </div>
 
           <Select
@@ -612,63 +631,58 @@ export default function ChatComponent() {
                   </div>
                 </div>
                 <div className="block xl:hidden">
-                  {(!isBasicPlan || user?.user_type === "ADMIN") && (
-                    <div className="flex ">
-                      <div className="flex items-center gap-2">
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Info
-                                size={18}
-                                className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
-                              />
-                            </TooltipTrigger>
-                            <TooltipContent
-                              className="bg-white"
-                              style={{ width: "400px", zIndex: "1000" }}
-                            >
-                              <p>
-                                Blocks PII, jailbreaks, gibberish, toxicity,
-                                nudity, prompt injections, and celebrity
-                                content.
-                              </p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                        <div className="text-md  text-nowrap font-medium">
-                          Secure Chat
-                        </div>
-                        <Switch
-                          checked={secureChatEnabled}
-                          onCheckedChange={() =>
-                            setSecureChatEnabled(!secureChatEnabled)
-                          }
-                        />
+                  <div className="flex ">
+                    <div className="flex items-center gap-2">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Info
+                              size={18}
+                              className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
+                            />
+                          </TooltipTrigger>
+                          <TooltipContent
+                            className="bg-white"
+                            style={{ width: "400px", zIndex: "1000" }}
+                          >
+                            <p>
+                              Blocks PII, jailbreaks, gibberish, toxicity,
+                              nudity, prompt injections, and celebrity content.
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      <div className="text-md  text-nowrap font-medium">
+                        Secure Chat
                       </div>
-                      <div className="gap-2 flex pr-4 py-1.5 items-center">
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Info
-                                size={18}
-                                className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
-                              />
-                            </TooltipTrigger>
-                            <TooltipContent side="bottom" className="bg-white">
-                              <p>To access real-time data, please enable it.</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                        <span className="text-md  gap-x-2 text-nowrap font-medium">
-                          Web chat
-                        </span>
-                        <Switch
-                          checked={enableWebAccess}
-                          onCheckedChange={onChange}
-                        />
-                      </div>
+                      <Switch
+                        checked={secureChatEnabled}
+                        onCheckedChange={handleSecureChatChange}
+                      />
                     </div>
-                  )}
+                    <div className="gap-2 flex pr-4 py-1.5 items-center">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Info
+                              size={18}
+                              className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
+                            />
+                          </TooltipTrigger>
+                          <TooltipContent side="bottom" className="bg-white">
+                            <p>To access real-time data, please enable it.</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      <span className="text-md  gap-x-2 text-nowrap font-medium">
+                        Web chat
+                      </span>
+                      <Switch
+                        checked={enableWebAccess}
+                        onCheckedChange={onChange}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-4 -mt-24">
@@ -722,6 +736,33 @@ export default function ChatComponent() {
           setFilename={setFilename}
         />
       </div>
+      <GlobalModal
+        showCloseButton
+        open={isUpgradeModalOpen}
+        setOpen={() => {
+          setIsUpgradeModalOpen(false);
+        }}
+      >
+        <UpgradePlan
+          goBackHandler={() => {
+            setIsUpgradeModalOpen(false);
+          }}
+        />
+      </GlobalModal>
+
+      <GlobalModal
+        showCloseButton
+        open={isSubscriptionModalOpen}
+        setOpen={() => {
+          setIsSubscriptionModalOpen(false);
+        }}
+      >
+        <SubscribePlan
+          goBackHandler={() => {
+            setIsSubscriptionModalOpen(false);
+          }}
+        />
+      </GlobalModal>
     </div>
   );
 }

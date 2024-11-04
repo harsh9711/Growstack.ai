@@ -11,14 +11,7 @@ import {
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import clsx from "clsx";
-import {
-  Download,
-  MoreVertical,
-  Plus,
-  Search,
-  Share2,
-  ShareIcon,
-} from "lucide-react";
+import { Download, MoreVertical, Plus, Search } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
@@ -47,6 +40,9 @@ import {
 } from "@/components/ui/tooltip";
 import { Info } from "lucide-react";
 import { PlanName } from "@/types/enums";
+import GlobalModal from "@/components/modal/global.modal";
+import UpgradePlan from "@/components/upgradePlan/upgradePlan";
+import SubscribePlan from "@/components/subscribePlan/subscribePlan";
 
 interface LayoutProps {
   sidebarItems: ISidebarItem[];
@@ -99,9 +95,19 @@ const Layout = ({
   const { user, currentPlan } = useSelector(
     (rootState: RootState) => rootState.auth
   );
+  const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some(
+    val => val === currentPlan?.plan_id
+  );
+
+  const isFreePlan = planIdsMap[PlanName.FREE].some(
+    val => val === currentPlan?.plan_id
+  );
   const [brandVoices, setBrandVoices] = useState<BrandVoice[]>([]);
   const [enableWebAccess, setEnableWebAccess] = useState<boolean>(false);
   const [enableSecureChat, setEnableSecureChat] = useState<boolean>(false);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState<boolean>(false);
+  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] =
+    useState<boolean>(false);
 
   useEffect(() => {
     fetchBrandVoice();
@@ -122,9 +128,7 @@ const Layout = ({
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [filename, setFilename] = useState<string | null>(null);
   const filteredAiModelOptions =
-    user?.user_type !== "ADMIN" &&
-    currentPlan &&
-    planIdsMap[PlanName.AI_ESSENTIALS].some(val => val === currentPlan.plan_id)
+    user?.user_type !== "ADMIN" && currentPlan && (isBasicPlan || isFreePlan)
       ? [aiModelOptions[0]]
       : aiModelOptions;
 
@@ -153,7 +157,7 @@ const Layout = ({
         (acc: Message[], chats: any) => {
           const flattenedThreads = chats.thread.flatMap((thread: any) => [
             { role: "user", content: thread.user_prompt, loading: false },
-            { role: "assistant", content: thread.response, loading: false },
+            { role: "assistant", content: thread.response!=="[object Object]"?thread.response:'', loading: false },
           ]);
           return acc.concat(flattenedThreads);
         },
@@ -337,18 +341,21 @@ const Layout = ({
   }>(null);
 
   const onChange = () => {
-    if (enableWebAccess) {
-      setEnableWebAccess(false);
-      setSelectedModel("growstack-llm");
+    if ((isBasicPlan || isFreePlan) && user?.user_type !== "ADMIN") {
+      isFreePlan
+        ? setIsSubscriptionModalOpen(true)
+        : setIsUpgradeModalOpen(true);
     } else {
-      setEnableWebAccess(true);
-      setSelectedModel("perplexity");
-      setSelectedBrandVoice("");
+      if (enableWebAccess) {
+        setEnableWebAccess(false);
+        setSelectedModel("growstack-llm");
+      } else {
+        setEnableWebAccess(true);
+        setSelectedModel("perplexity");
+        setSelectedBrandVoice("");
+      }
     }
   };
-  const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some(
-    val => val === currentPlan?.plan_id
-  );
 
   useEffect(() => {
     if (isBasicPlan) {
@@ -369,63 +376,71 @@ const Layout = ({
     }
   };
 
+  const handleSecureChatChange = () => {
+    if ((isBasicPlan || isFreePlan) && user?.user_type !== "ADMIN") {
+      isFreePlan
+        ? setIsSubscriptionModalOpen(true)
+        : setIsUpgradeModalOpen(true);
+    } else {
+      setEnableSecureChat(!enableSecureChat);
+    }
+  };
+
   return (
     <>
       <div className="flex pt-3 pb-8 w-full items-center justify-between">
         <h1 className="text-xl font-semibold">AI Chat</h1>
         <div className="flex gap-3 items-center">
-          {(!isBasicPlan || user?.user_type === "ADMIN") && (
-            <>
-              <div className="gap-2 flex pr-4 py-1.5 items-center border-r-2 border-[#EBEBEB]">
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Info
-                        size={18}
-                        className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
-                      />
-                    </TooltipTrigger>
-                    <TooltipContent
-                      side="bottom"
-                      className="bg-white"
-                      style={{ width: "450px" }}
-                    >
-                      <p>
-                        Blocks PII, jailbreaks, gibberish, toxicity, nudity,
-                        prompt injections, and celebrity content.
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-                <span className="text-md flex flex-row gap-x-2 font-medium">
-                  Secure chat
-                </span>
-                <Switch
-                  checked={enableSecureChat}
-                  onCheckedChange={setEnableSecureChat}
-                />
-              </div>
-              <div className="gap-2 flex pr-4 py-1.5 items-center border-r-2 border-[#EBEBEB]">
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Info
-                        size={18}
-                        className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
-                      />
-                    </TooltipTrigger>
-                    <TooltipContent side="bottom" className="bg-white">
-                      <p>To access real-time data, please enable it.</p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-                <span className="text-md flex flex-row gap-x-2 font-medium">
-                  Web chat
-                </span>
-                <Switch checked={enableWebAccess} onCheckedChange={onChange} />
-              </div>
-            </>
-          )}
+          <>
+            <div className="gap-2 flex pr-4 py-1.5 items-center border-r-2 border-[#EBEBEB]">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info
+                      size={18}
+                      className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent
+                    side="bottom"
+                    className="bg-white"
+                    style={{ width: "450px" }}
+                  >
+                    <p>
+                      Blocks PII, jailbreaks, gibberish, toxicity, nudity,
+                      prompt injections, and celebrity content.
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <span className="text-md flex flex-row gap-x-2 font-medium">
+                Secure chat
+              </span>
+              <Switch
+                checked={enableSecureChat}
+                onCheckedChange={handleSecureChatChange}
+              />
+            </div>
+            <div className="gap-2 flex pr-4 py-1.5 items-center border-r-2 border-[#EBEBEB]">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Info
+                      size={18}
+                      className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom" className="bg-white">
+                    <p>To access real-time data, please enable it.</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              <span className="text-md flex flex-row gap-x-2 font-medium">
+                Web chat
+              </span>
+              <Switch checked={enableWebAccess} onCheckedChange={onChange} />
+            </div>
+          </>
 
           <Select
             value={selectedBrandVoice}
@@ -657,6 +672,32 @@ const Layout = ({
           />
         </main>
       </div>
+      <GlobalModal
+        showCloseButton
+        open={isUpgradeModalOpen}
+        setOpen={() => {
+          setIsUpgradeModalOpen(false);
+        }}
+      >
+        <UpgradePlan
+          goBackHandler={() => {
+            setIsUpgradeModalOpen(false);
+          }}
+        />
+      </GlobalModal>
+      <GlobalModal
+        showCloseButton
+        open={isSubscriptionModalOpen}
+        setOpen={() => {
+          setIsSubscriptionModalOpen(false);
+        }}
+      >
+        <SubscribePlan
+          goBackHandler={() => {
+            setIsSubscriptionModalOpen(false);
+          }}
+        />
+      </GlobalModal>
       <ShareChatDialog
         sidebarItems={sidebarItems}
         isOpen={isDialogOpen}

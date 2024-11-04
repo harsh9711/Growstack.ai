@@ -71,7 +71,6 @@ const AddCreditDialog2: React.FC<AddCreditDialog2Props> = () => {
       const response = await instance.get(
         `${API_URL}/users/api/v1/payments/pending-dues`
       );
-      console.log("pending", response.data.pendingDues);
       if (!response) {
         throw new Error("Network response was not ok");
       }

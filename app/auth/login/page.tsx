@@ -86,7 +86,6 @@ const Login = () => {
       });
 
       const userData = await handleGetProfileData();
-      console.log(userData);
       dispatch(login(userData));
       router.push("/app");
       toast.success(response.data.message);

@@ -1,14 +1,15 @@
 import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import "./Editing.scss";
+
 function Editing() {
   useEffect(() => {
     AOS.init();
   }, []);
+
   return (
     <React.Fragment>
-      <div className="editing">
+      <div className="overflow-hidden">
         <div className="container">
           <div
             className="flex flex-col sm:flex-row items-center gap-4"
@@ -17,116 +18,75 @@ function Editing() {
             data-aos-duration="1000"
           >
             <div className="w-full sm:w-5/12">
-              <span className="user">Core Features</span>
-              <h3 className="heading mt-2 mb-2 mb-md-0">
-                <span>Beyond background </span> editing
+              <span className="text-lg font-semibold text-gray-700">
+                Core Features
+              </span>
+              <h3 className="mt-2 mb-2 sm:mb-0 text-2xl font-bold text-gray-900">
+                <span>Beyond background</span> editing
               </h3>
             </div>
             <div className="w-full sm:w-7/12">
-              <p>
+              <p className="text-gray-600">
                 Achieve polished and compelling product imagery that captivates
                 your audience and showcases your brand's excellence with expert
                 background editing that goes beyond ordinary standards.
               </p>
             </div>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-            <div
-              className=""
-              data-aos="fade-up"
-              data-aos-easing="ease-in-sine"
-              data-aos-duration="1000"
-            >
-              <div className="flex flex-col sm:flex-row items-center text-block">
-                <div className="flex-shrink-0">
-                  <img src="/images_growstack/textVideo/edit1.svg" alt="edit" />
-                </div>
-                <div className="flex-grow-1 ms-3">
-                  <h4>Background remover</h4>
-                  <p>Cutout Images</p>
-                </div>
-              </div>
-            </div>
-            <div
-              className=""
-              data-aos="fade-up"
-              data-aos-easing="ease-in-sine"
-              data-aos-duration="1000"
-            >
-              <div className="flex flex-col sm:flex-row items-center text-block">
-                <div className="flex-shrink-0">
-                  <img src="/images_growstack/textVideo/edit2.svg" alt="edit" />
-                </div>
-                <div className="flex-grow-1 ms-3">
-                  <h4>Magic eraser</h4>
-                  <p>remove objects</p>
-                </div>
-              </div>
-            </div>
-            <div
-              className=""
-              data-aos="fade-up"
-              data-aos-easing="ease-in-sine"
-              data-aos-duration="1000"
-            >
-              <div className="flex flex-col sm:flex-row items-center text-block">
-                <div className="flex-shrink-0">
-                  <img src="/images_growstack/textVideo/edit3.svg" alt="edit" />
-                </div>
-                <div className="flex-grow-1 ms-3">
-                  <h4>Batch edit</h4>
-                  <p>Edit multiple photos</p>
-                </div>
-              </div>
-            </div>
-            <div
-              className=""
-              data-aos="fade-up"
-              data-aos-easing="ease-in-sine"
-              data-aos-duration="1000"
-            >
-              <div className="flex flex-col sm:flex-row items-center text-block">
-                <div className="flex-shrink-0">
-                  <img src="/images_growstack/textVideo/edit4.svg" alt="edit" />
-                </div>
-                <div className="flex-grow-1 ms-3">
-                  <h4>Colorize</h4>
-                  <p>Colorize your image</p>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-6 mt-6">
+            {[
+              {
+                img: "/images_growstack/textVideo/edit1.svg",
+                title: "Background remover",
+                desc: "Cutout Images",
+              },
+              {
+                img: "/images_growstack/textVideo/edit2.svg",
+                title: "Magic eraser",
+                desc: "Remove objects",
+              },
+              {
+                img: "/images_growstack/textVideo/edit3.svg",
+                title: "Batch edit",
+                desc: "Edit multiple photos",
+              },
+              {
+                img: "/images_growstack/textVideo/edit4.svg",
+                title: "Colorize",
+                desc: "Colorize your image",
+              },
+              {
+                img: "/images_growstack/textVideo/edit5.svg",
+                title: "Upscaler",
+                desc: "Increase resolution",
+              },
+              {
+                img: "/images_growstack/textVideo/edit6.svg",
+                title: "Photo maker",
+                desc: "Make a profile photo",
+              },
+            ].map((item, index) => (
+              <div
+                key={index}
+                className=""
+                data-aos="fade-up"
+                data-aos-easing="ease-in-sine"
+                data-aos-duration="1000"
+              >
+                <div className="flex flex-col sm:flex-row items-center gap-3">
+                  <div className="flex-shrink-0">
+                    <img src={item.img} alt={item.title} />
+                  </div>
+                  <div className="flex flex-col items-center justify-center sm:items-start">
+                    <h4 className="text-lg sm:text-start text-center font-bold text-gray-900 mb-1">
+                      {item.title}
+                    </h4>
+                    <p className="text-sm sm:text-start text-center text-gray-600">{item.desc}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div
-              className=""
-              data-aos="fade-up"
-              data-aos-easing="ease-in-sine"
-              data-aos-duration="1000"
-            >
-              <div className="flex flex-col sm:flex-row items-center text-block">
-                <div className="flex-shrink-0">
-                  <img src="/images_growstack/textVideo/edit5.svg" alt="edit" />
-                </div>
-                <div className="flex-grow-1 ms-3">
-                  <h4>Upscaler</h4>
-                  <p>Increase resolution</p>
-                </div>
-              </div>
-            </div>
-            <div
-              className=""
-              data-aos="fade-up"
-              data-aos-easing="ease-in-sine"
-              data-aos-duration="1000"
-            >
-              <div className="flex flex-col sm:flex-row items-center text-block">
-                <div className="flex-shrink-0">
-                  <img src="/images_growstack/textVideo/edit6.svg" alt="edit" />
-                </div>
-                <div className="flex-grow-1 ms-3">
-                  <h4>Photo photos maker</h4>
-                  <p>Male a profile photo</p>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
