@@ -65,6 +65,7 @@ const ChatArea = ({
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(event.target.value);
     handleChange(event);
+    isEmptyPrompt('')
   };
 
   const handleSend = () => {
