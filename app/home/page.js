@@ -36,13 +36,13 @@ function Page() {
       <OurProcess />
       {/* <Features /> */} <SixCard />
       <SixCardVideo />
-      <SixCardSwitch/>
       <Animation />
       {/* <Facts /> */}
       {/* <Carousel /> */}
       {/* <PoweredBy /> */}
       <Premium />
       <SixCardTab />
+       {/* <SixCardSwitch /> */}
       {/* <Capability /> */}
       {/* <Capability2 /> */}
       <WhyChoose />
