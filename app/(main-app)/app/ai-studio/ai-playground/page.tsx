@@ -16,6 +16,7 @@ interface ChatAreaType {
   awaitingUpdate: boolean;
   messages: Message[];
   renderConversation: any;
+  responseLoading: boolean;
 }
 
 const initialChat: ChatAreaType[] = [
@@ -27,6 +28,7 @@ const initialChat: ChatAreaType[] = [
     awaitingUpdate: false,
     messages: [],
     renderConversation: {},
+    responseLoading: false,
   },
   {
     id: 1,
@@ -36,12 +38,14 @@ const initialChat: ChatAreaType[] = [
     awaitingUpdate: false,
     messages: [],
     renderConversation: {},
+    responseLoading: false,
   },
 ];
 
 export default function AiPlayground() {
   const [userPrompt, setUserPrompt] = useState<string>("");
   const [chatAreas, setChatAreas] = useState<ChatAreaType[]>(initialChat);
+  const [responseLoading, isResponseLoading] = useState(false);
 
   const [retainedMessage, setRetainedMessage] = useState<string>("");
 
@@ -73,6 +77,7 @@ export default function AiPlayground() {
       awaitingUpdate: false,
       messages: [],
       renderConversation: {},
+      responseLoading: false,
     };
     setChatAreas(prevAreas => [...prevAreas, newChatArea]);
   };
@@ -115,18 +120,23 @@ export default function AiPlayground() {
   const renderConversation = async (chatMessage?: string) => {
     const prompt = userPrompt?.trim() ?? "";
     const message = chatMessage?.trim() ?? "";
-
+  
     if (prompt === "" && message === "") return;
+  
+    isResponseLoading(true);
+  
     const newMessage: Message = {
       content: prompt || message,
       role: "user",
       loading: false,
     };
+  
     const loadingAssistantMessage: Message = {
       content: "",
       role: "assistant",
       loading: true,
     };
+  
     setChatAreas(prevChatAreas =>
       prevChatAreas.map(chatArea => ({
         ...chatArea,
@@ -139,61 +149,74 @@ export default function AiPlayground() {
         messages: chatArea.messages,
       }))
     );
-    try {
-      const responses = await Promise.all(
-        chatAreas.map(async chatArea => {
+  
+    const concurrencyLimit = 3;
+    let index = 0;
+  
+    while (index < chatAreas.length) {
+      // Get the current batch
+      const batch = chatAreas.slice(index, index + concurrencyLimit);
+  
+      await Promise.all(
+        batch.map(async chatArea => {
           const payload = {
-            user_prompt: userPrompt?.trim() || chatMessage?.trim(),
+            user_prompt: prompt || message,
             model: chatArea.selectedModel,
             provider: chatArea.provider,
             messages: chatArea.messages,
           };
-          const response = await instance.post(
-            `${API_URL}/ai/api/v1/playground`,
-            payload
-          );
-
-          const initialText = response.data.data.response.text;
-          const updatedMessages = response.data.data.response.updatedMessages;
-          return { chatArea, initialText, updatedMessages };
-        })
-      );
-      setChatAreas(prevChatAreas =>
-        prevChatAreas.map(chatArea => {
-          const response = responses.find(
-            res => res.chatArea.id === chatArea.id
-          );
-          if (response) {
-            const { initialText, updatedMessages } = response;
-            return {
-              ...chatArea,
-              conversation: chatArea.awaitingUpdate
-                ? [
-                    ...chatArea.conversation.slice(0, -1),
-                    {
-                      ...chatArea.conversation[
-                        chatArea.conversation.length - 1
-                      ],
-                      content: initialText,
-                      loading: false,
-                    },
-                  ]
-                : chatArea.conversation,
-              awaitingUpdate: updatedMessages?.length > 0,
-              messages: updatedMessages,
-            };
+  
+          try {
+            const response = await instance.post(
+              `${API_URL}/ai/api/v1/playground`,
+              payload
+            );
+  
+            const initialText = response.data.data.response.text;
+            const updatedMessages = response.data.data.response.updatedMessages;
+  
+            // Update each chatArea as soon as the response is received
+            setChatAreas(prevChatAreas =>
+              prevChatAreas.map(prevChatArea => {
+                if (prevChatArea.id === chatArea.id) {
+                  return {
+                    ...prevChatArea,
+                    conversation: prevChatArea.awaitingUpdate
+                      ? [
+                          ...prevChatArea.conversation.slice(0, -1),
+                          {
+                            ...prevChatArea.conversation[
+                              prevChatArea.conversation.length - 1
+                            ],
+                            content: initialText,
+                            loading: false,
+                          },
+                        ]
+                      : prevChatArea.conversation,
+                    awaitingUpdate: updatedMessages?.length > 0,
+                    messages: updatedMessages,
+                  };
+                }
+                return prevChatArea;
+              })
+            );
+          } catch (error: any) {
+            toast.error(error?.response?.data?.message || "Something went wrong");
+            console.error("Error sending prompt for chat area:", chatArea.id, error);
           }
-          return chatArea;
         })
       );
-    } catch (error: any) {
-      setChatAreas(prevChatAreas => prevChatAreas);
-      toast.error(error?.response?.data?.message || "Something went wrong");
-      console.error("Error sending prompt:", error);
+  
+      index += concurrencyLimit;
+  
+      // Optional delay between batches
+      await new Promise(resolve => setTimeout(resolve, 100)); // 100ms delay
     }
+  
+    isResponseLoading(false);
     setUserPrompt("");
   };
-
+  
   return (
     <div className="flex-1 h-full flex flex-col mt-10 w-full justify-center overflow-x-auto">
       <form
@@ -217,6 +240,7 @@ export default function AiPlayground() {
               userPrompt={userPrompt}
               handleDelete={() => handleDelete(chatArea.id)}
               renderConversation={renderConversation}
+              responseLoading={responseLoading}
             />
           ))}
         </div>

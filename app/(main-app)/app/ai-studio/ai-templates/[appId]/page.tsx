@@ -336,9 +336,13 @@ export default function AiAppPage({
   //   }
   // };
 
+  const [isStreaming, setIsStreaming] = useState(false);
+
+
   const streamResponse = async (chatId: string) => {
     try {
       const token = getCookie("token");
+      setIsStreaming(true);
       const eventSource = new EventSource(
         `${API_URL}/ai/api/v1/chat-template/generate/stream/${chatId}`,
         {
@@ -361,15 +365,18 @@ export default function AiAppPage({
       eventSource.onerror = (error: MessageEvent) => {
         console.error("EventSource failed:", error);
         eventSource.close();
+        setIsStreaming(false);
       };
 
       eventSource.addEventListener("end", (event: MessageEvent) => {
         console.log("EventSource end:", event);
         eventSource.close();
+        setIsStreaming(false);
       });
     } catch (error) {
       console.error("Error setting up EventSource:", error);
       toast.error("Error setting up stream");
+      setIsStreaming(false);
     }
   };
 
@@ -1027,6 +1034,7 @@ export default function AiAppPage({
           </div>
           <button
             className="w-full h-14 py-2 text-white bg-primary-green rounded-xl !mt-7 flex items-center justify-center"
+            disabled={isStreaming}
             onClick={generateResult}
           >
             <div className="flex items-center gap-2">
@@ -1243,7 +1251,7 @@ export default function AiAppPage({
             </div>
           </div>
           <div className="flex-1">
-            <Editor content={generatedContent} onChange={handleEditorChange} isLoading={isGeneratedResultPending} />
+            <Editor content={generatedContent} onChange={handleEditorChange} isLoading={isGeneratedResultPending} streaming={isStreaming} />
           </div>
         </div>
       </div>

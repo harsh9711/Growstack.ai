@@ -30,6 +30,7 @@ interface ChatAreaProps {
   userPrompt: string;
   handleDelete: () => void;
   renderConversation: (msg?: string) => void;
+  responseLoading:boolean;
 }
 
 const outputType = [
@@ -49,6 +50,7 @@ const ChatArea = ({
   userPrompt,
   handleDelete,
   renderConversation,
+  responseLoading
 }: ChatAreaProps) => {
   const [inputValue, setInputValue] = useState(userPrompt);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -65,6 +67,7 @@ const ChatArea = ({
   };
 
   const handleSend = () => {
+    if (responseLoading) return;
     if (textareaRef.current && inputValue.trim() !== "") {
       textareaRef.current.value = "";
       if (textareaRef.current.style) {
@@ -190,6 +193,7 @@ const ChatArea = ({
           value={inputValue}
         />
         <button
+          disabled={responseLoading}
           type="submit"
           onClick={handleSend}
           className="h-10 w-10 md:h-12 md:w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
