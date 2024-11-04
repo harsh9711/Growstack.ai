@@ -388,12 +388,6 @@ export default function AiAppPage({
       setUserInput1Error("");
     }
 
-    // if (userInput.user_prompt === ""){
-    //   setUserPromptError('Please Enter Your Prompt');
-    //   return;
-    // } else {
-    //   setUserPromptError('');
-    // }
 
     // Validate prompts
     const errors = userPrompts.map(prompt =>
