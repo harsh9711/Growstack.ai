@@ -157,7 +157,7 @@ const CreateScript = () => {
   };
 
   const handleSubmit = async () => {
-    let validationErrors: FormErrors = {
+    const validationErrors: FormErrors = {
       title: "",
       objective: "",
     };
@@ -184,8 +184,6 @@ const CreateScript = () => {
         );
 
         if (scriptResponse.data.success) {
-          // setVideoScript(scriptResponse.data.data.script);
-          // await generateVideo(scriptResponse.data.data.script);
           setProgress(100);
           setScriptResponseData(scriptResponse.data.data.script);
           setIsPreviewScriptPage(true);
@@ -413,17 +411,6 @@ const CreateScript = () => {
                           </div>
 
                           <div className="relative z-10">
-                            {/* <label className="block font-semibold text-[18px]">
-                          Voices
-                        </label>
-                        <select
-                          name="voices"
-                          value={formData.voices}
-                          onChange={handleChange}
-                          className="mt-1 block p-2 rounded-md border cursor-pointer border-[#DEDEDE] h-[44px] w-[98%] bg-[#F5F5F5] shadow-sm sm:text-sm"
-                        >
-                          <option>Select voice</option>
-                        </select> */}
                             <AudioBox
                               selectedVoice={selectedVoice}
                               onVoiceSelect={handleVoiceSelect}
@@ -636,12 +623,10 @@ const PreviewScriptPage: React.FC<PreviewScriptPageProps> = ({
   };
 
   const handleNavigate = () => {
-    // router.push("/app/social-portal/text-to-avatar/create-avatar");
     setIsModalOpen(false);
     setIsSelectedAvatar(false);
     setIsPreviewScriptPage(false);
   };
-  // onOpenChange={() => setIsModalOpen(false)}
   return (
     <Fragment>
       <div className="flex flex-col mt-2">
