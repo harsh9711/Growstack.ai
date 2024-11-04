@@ -73,39 +73,7 @@ export default function Sidebar({ isOpen, onClose, assistant_id }: IProps) {
   };
 
   return (
-    // <div
-    //   className={clsx(
-    //     !isOpen &&
-    //       "xl:w-[400px] xl:border-r xl:overflow-hidden xl:transition-all xl:duration-500 xl:opacity-100",
-    //     !isOpen && "xl:w-0 xl:opacity-0 lg:w-0 lg:opacity-0",
-    //     isOpen
-    //       ? "md:w-[400px] md:opacity-100 sm:w-[400px] sm:opacity-100 w-[400px] opacity-100"
-    //       : "md:!w-0 md:!opacity-0 sm:!w-0 sm:!opacity-0 !w-0 !opacity-0",
-    //     "md:absolute md:h-auto md:bg-white md:z-50 sm:absolute sm:h-auto sm:bg-white sm:z-50 lg:relative lg:border-r lg:h-auto lg:bg-transparent lg:z-auto xl:relative xl:border-r xl:h-auto xl:bg-transparent xl:z-auto absolute h-auto bg-white z-50"
-    //   )}
-    // >
-    // <div
-    //   className={clsx(
-    //     isOpen ? "w-[400px] opacity-100" : "w-0 opacity-0",
-    //     isOpen && "md:w-[400px] sm:w-[400px] md:opacity-100 sm:opacity-100",
-    //     !isOpen && "md:!w-0 md:!opacity-0 sm:!w-0 sm:!opacity-0",
-    //     // For extra large and large screens, handle separately to avoid conflicts
-    //     !isOpen &&
-    //       "xl:w-0 xl:opacity-0 lg:w-0 lg:opacity-0 xl:border-r xl:overflow-hidden xl:transition-all xl:duration-500",
-    //     isOpen && "lg:relative xl:relative lg:border-r xl:border-r",
-    //     "md:absolute md:h-auto md:bg-white md:z-50 sm:absolute sm:h-auto sm:bg-white sm:z-50 lg:bg-transparent xl:bg-transparent bg-white z-50 h-auto"
-    //   )}
-    // >
-    // <div
-    //   className={clsx(
-    //     isOpen ? "w-[400px] opacity-100" : "w-0 opacity-0",
-    //     isOpen ? "sm:w-[400px] sm:opacity-100 md:w-[400px] md:opacity-100" : "sm:!w-0 sm:!opacity-0 md:!w-0 md:!opacity-0",
-    //     isOpen
-    //       ? "lg:w-[400px] xl:w-[400px] lg:opacity-100 xl:opacity-100 lg:relative xl:relative lg:border-r xl:border-r"
-    //       : "lg:w-0 lg:opacity-0 xl:w-0 xl:opacity-0 xl:border-r xl:overflow-hidden xl:transition-all xl:duration-500",
-    //     "absolute h-auto bg-white z-50"
-    //   )}
-    // >
+    
     <div
       className={clsx(
         isOpen ? "opacity-100" : "opacity-0",
