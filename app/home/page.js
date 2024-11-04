@@ -19,6 +19,9 @@ import Navbar from "@/components/navbar/Navbar";
 import Animation from "../animation/page";
 import Capability2 from "../colorBox/page";
 import Cta2 from "../control/page";
+import SixCard from "../cards/page";
+import SixCardVideo from "../cardsvideo/page";
+import SixCardTab from "../cardstab/page";
 // I commented this bootstrapp CDN because of conflicting styles with tailwindcss, NB: I'll uncomment it as soon as reliable solution is found
 function Page() {
   return (
@@ -30,19 +33,19 @@ function Page() {
       </div>
       {/* <Banner /> */}
       <OurProcess />
-      {/* <Features /> */}
+      {/* <Features /> */} <SixCard />
+      <SixCardVideo/>
       <Animation />
-  
-      <Facts />
-      <Carousel />
-
-      <PoweredBy />
+      {/* <Facts /> */}
+      {/* <Carousel /> */}
+      {/* <PoweredBy /> */}
       <Premium />
+      <SixCardTab/>
       {/* <Capability /> */}
-      <Capability2/>
+      {/* <Capability2 /> */}
       <WhyChoose />
       <FuturePlans />
-       <Cta2 />
+      <Cta2 />
       <Faqs />
       <Footer />
     </React.Fragment>

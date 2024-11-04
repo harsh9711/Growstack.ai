@@ -10,7 +10,7 @@ function Cta2() {
   }, []);
 
   return (
-    <div className="py-24 bg-primary-green relative overflow-hidden">
+    <div className="py-24 bg-primary-lightgreen relative overflow-hidden">
       <div className="container flex w-full flex-row  justify-center sm:justify-between mx-auto">
         <div className="flex flex-col sm:flex-row items-center">
           <div
@@ -59,7 +59,7 @@ function Cta2() {
           >
             <img
               className="absolute -right-0 top-2.5 transform -translate-y-1/2 w-[700px] sm:w-[700px] max-w-full"
-              src="/images_growstack/home/cta.png"
+              src="/cta2.svg"
               alt="cta"
             />
           </div>
