@@ -22,6 +22,7 @@ import Cta2 from "../control/page";
 import SixCard from "../cards/page";
 import SixCardVideo from "../cardsvideo/page";
 import SixCardTab from "../cardstab/page";
+import SixCardSwitch from "../cardsswitch/page";
 // I commented this bootstrapp CDN because of conflicting styles with tailwindcss, NB: I'll uncomment it as soon as reliable solution is found
 function Page() {
   return (
@@ -34,13 +35,14 @@ function Page() {
       {/* <Banner /> */}
       <OurProcess />
       {/* <Features /> */} <SixCard />
-      <SixCardVideo/>
+      <SixCardVideo />
+      <SixCardSwitch/>
       <Animation />
       {/* <Facts /> */}
       {/* <Carousel /> */}
       {/* <PoweredBy /> */}
       <Premium />
-      <SixCardTab/>
+      <SixCardTab />
       {/* <Capability /> */}
       {/* <Capability2 /> */}
       <WhyChoose />

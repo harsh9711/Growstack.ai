@@ -9,142 +9,84 @@ import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
+import Company from "./components/Company";
+import Industry from "./components/Industry";
+import Team from "./components/Team";
 
-export const cases = [
-  {
-    id: 1,
-    text: "Imagine having ",
-    imageUrl: "/landingpagerevamp/1.svg",
-    name: "Tony Stark's",
-    description: "tech in your pocket.",
-  },
-  {
-    id: 2,
-    text: "You’re sipping coffee ☕, ",
-    imageUrl: "/landingpagerevamp/2.svg",
-    name: "",
-    description:
-      "and GrowStack is already taking care of your emails and LinkedIn replies – as smooth as Federer’s backhand.",
-  },
-  {
-    id: 3,
-    text: "Got a question? It’s like having ",
-    imageUrl: "/landingpagerevamp/3.svg",
-    name: "Sherlock ",
-    description: "right beside you, finding answers with style and precision.",
-  },
-  {
-    id: 4,
-    text: "Need content? GrowStack has it covered, as effortlessly as  ",
-    imageUrl: "/landingpagerevamp/4.svg",
-    name: "MJ's moonwalkr",
-    description: "",
-  },
-  {
-    id: 5,
-    text: "And when you need support, it’s as reliable as ",
-    imageUrl: "/landingpagerevamp/5.svg",
-    name: "Rocky’s trainer",
-    description: "in your corner.",
-  },
-  {
-    id: 6,
-    text: "GrowStack: your",
-    imageUrl: "/landingpagerevamp/6.svg",
-    name: " dream team,",
-    description: "making work feel easy and fun!",
-  },
-];
-const BillingOverview = () => <div>Billing Overview Content</div>;
-const BillingHistory = () => <div>Billing History Content</div>;
-const Credits = () => <div>Credits Content</div>;
 const Layout2 = ({ children }: { children: React.ReactNode }) => {
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("company");
+
+  useEffect(() => {
+    AOS.init({ duration: 1000 });
+  }, []);
 
   const renderContent = () => {
     switch (activeTab) {
-      case "overview":
-        return <BillingOverview />;
-      case "history":
-        return <BillingHistory />;
-      case "credits":
-        return <Credits />;
+      case "company":
+        return <Company />;
+      case "team":
+        return <Team />;
+      case "industry":
+        return <Industry />;
       default:
-        return <BillingOverview />;
+        return <Company />;
     }
   };
 
   return (
-    <main className="mt-10">
-      <div className="w-full flex  flex-col items-start gap-8 mt-5">
-        <div className="!bg-white flex flex-row shadow-box p-5 !rounded-3xl w-full max-w-[650px]">
-          <div
-            onClick={() => setActiveTab("overview")}
-            className={clsx(
-              "w-full flex justify-between p-3 hover:bg-gray-50 rounded-xl cursor-pointer transition mt-3",
-              activeTab === "overview" &&
-                "bg-primary-green text-white hover:bg-primary-green/90"
-            )}
-          >
-            <div className="flex items-center gap-2">
-              <BrowserCheckIcon />
-              <span>Billing Overview</span>
+    <main className="py-12 ">
+      <div className="w-full flex flex-col items-center justify-center mx-auto gap-8">
+        <div
+          className="bg-white p-4 flex flex-row shadow-lg items-center justify-center mx-auto rounded-3xl w-full max-w-[653px] transition duration-500"
+          data-aos="zoom-in"
+        >
+          {["company", "team", "industry"].map((tab) => (
+            <div
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={clsx(
+                "w-full flex justify-center p-3 text-center rounded-xl cursor-pointer transition-all duration-300 transform",
+                activeTab === tab
+                  ? "bg-primary-lightgreen text-white hover:scale-105"
+                  : "hover:bg-gray-50 hover:scale-105"
+              )}
+            >
+              <span className="text-base font-semibold capitalize">
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </span>
             </div>
-            <ChevronRight size={20} />
-          </div>
-          <div
-            onClick={() => setActiveTab("history")}
-            className={clsx(
-              "w-full flex justify-between p-3 hover:bg-gray-50 rounded-xl cursor-pointer transition mt-3",
-              activeTab === "history" &&
-                "bg-primary-green text-white hover:bg-primary-green/90"
-            )}
-          >
-            <div className="flex items-center gap-2">
-              <SurveyIcon />
-              <span>Billing History</span>
-            </div>
-            <ChevronRight size={20} />
-          </div>
-          <div
-            onClick={() => setActiveTab("credits")}
-            className={clsx(
-              "w-full flex justify-between p-3 hover:bg-gray-50 rounded-xl cursor-pointer transition mt-3",
-              activeTab === "credits" &&
-                "bg-primary-green text-white hover:bg-primary-green/90"
-            )}
-          >
-            <div className="flex items-center gap-2">
-              <FormsIcon />
-              <span>Credits</span>
-            </div>
-            <ChevronRight size={20} />
-          </div>
+          ))}
         </div>
-        <div className="w-full">{renderContent()}</div>
+        <div className="w-full px-4" data-aos="fade-up">
+          {renderContent()}
+        </div>
       </div>
     </main>
   );
 };
 
 const SixCardTab = () => {
+  useEffect(() => {
+    AOS.init();
+  }, []);
+
   return (
-    <div className="py-8">
-      <div className="max-w-[1340px] flex flex-col sm:items-start items-center gap-y-6 sm:gap-y-8 w-full mx-auto sm:py-40">
+    <div className="bg-gradient-to-b from-white to-[#F4F6F6] ">
+      <div className="max-w-[1628px] rounded-b-[60px] bg-[#F4F6F6] flex flex-col justify-center items-center gap-10 w-full mx-auto p-10 shadow-2xl">
         <div
-          className="max-w-[184px] rounded-2xl flex items-center justify-center w-full px-4 py-2 text-primary-lightgreen bg-[#2DA77114]"
+          className="max-w-[184px] rounded-2xl flex items-center justify-center w-full px-4 py-2 text-primary-lightgreen bg-[#2DA77114] shadow-md"
           data-aos="fade-in"
         >
-          <h2 className="text-center leading-snug capitalize text-[12px] sm:text-[16px] font-extrabold">
-            Value
+          <h2 className="text-center leading-snug uppercase text-[14px] sm:text-[18px] font-extrabold">
+            Solutions
           </h2>
         </div>
         <div
-          className="flex flex-col sm:text-start text-center gap-6 w-full justify-between items-center sm:items-start"
+          className="flex flex-col justify-center text-center gap-6 w-full items-center"
           data-aos="fade-right"
         >
-          <h1 className="text-[28px] xl:text-[40px] w-full leading-tight font-semibold text-black">
-            What value do <span className="font-light">we add? </span>
+          <h1 className="text-[30px] xl:text-[42px] w-full leading-tight font-semibold text-gray-800">
+            Enterprise-strong <span className="font-light">foundation</span>
           </h1>
         </div>
         <Layout2 children={undefined} />
