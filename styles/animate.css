@@ -1298,3 +1298,31 @@ body {
 .path-group-4 {
   animation-delay: 3s;
 }
+/* hero.css */
+.animated-bg {
+  animation: bgMove 15s ease-in-out infinite, bgPulse 10s ease-in-out infinite;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Keyframe for background movement */
+@keyframes bgMove {
+  0% {
+    background-position: center top;
+  }
+  50% {
+    background-position: center bottom;
+  }
+  100% {
+    background-position: center top;
+}
+}
+/* Keyframe for subtle pulsing effect */
+@keyframes bgPulse {
+  0%, 100% {
+    background-size: 100%;
+  }
+  50% {
+    background-size: 105%;
+  }
+}

@@ -72,7 +72,7 @@ function OurProcess() {
                 data-aos-easing="ease-in-sine"
                 data-aos-duration="1000"
               >
-                <span className="user">Our process</span>
+                <span className="user"><h2 className="text-primary-lightgreen">Our process</h2></span>
                 <h2 className="heading">
                   <span>Effortlessly create</span> AI magicflow!
                 </h2>
