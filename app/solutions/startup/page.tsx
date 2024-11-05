@@ -20,7 +20,7 @@ const page = () => {
   return (
     <main className="bg-white overflow-hidden max-w-[1920px] w-full mx-auto">
       <Navbar
-        logoUrl="/images/logo.png"
+        logoUrl="/imagelogo.svg"
         logoAlt="Custom Logo"
         backgroundColor="transparent"
       />
