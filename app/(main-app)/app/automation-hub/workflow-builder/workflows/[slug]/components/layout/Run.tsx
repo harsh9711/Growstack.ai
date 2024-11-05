@@ -28,6 +28,10 @@ import Wave from "@/components/svgs/wave";
 import Link from "next/link";
 import { ALL_ROUTES } from "@/utils/constant";
 import ExternalLink from "@/components/svgs/externalLink";
+import { Switch } from "@/components/ui/switch";
+import { WorkflowInputFieldType } from "@/types/enums";
+import { Checkbox } from "@/components/ui/checkbox";
+import { WorkFlowData } from "../types";
 
 type TempOutput = {
   variable_name: string;
@@ -57,6 +61,7 @@ const Run: React.FC<Props> = ({ workflowId, onTabChange }) => {
   const searchParams = useSearchParams();
   const [selectedBrandVoice, setSelectedBrandVoice] = useState<string>("");
   const [brandVoices, setBrandVoices] = useState<BrandVoice[]>([]);
+  // const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
   const [workFlowResults, setWorkFlowResults] = useState<WorkFlowResults>({
     outputs: [],
@@ -134,6 +139,7 @@ const Run: React.FC<Props> = ({ workflowId, onTabChange }) => {
     updatedInputs[idx].default_value = fileUrl;
     setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
   };
+
   const handleRunWorkFlow = async () => {
     setIsWorkFlowFetched(false);
     if (workFlowData.social_media_requirement) {
@@ -153,7 +159,10 @@ const Run: React.FC<Props> = ({ workflowId, onTabChange }) => {
         })),
         inputs: workFlowData.input_configs.map(input => ({
           variable_name: input.variable_name,
-          variable_value: input.default_value || fileUrl2,
+          variable_value:
+            input.type === WorkflowInputFieldType.CHECKLIST
+              ? input?.selected_values || []
+              : input.default_value || fileUrl2,
         })),
         outputs: workFlowData.output_configs.map(output => ({
           variable_name: output.display_name,
@@ -179,6 +188,29 @@ const Run: React.FC<Props> = ({ workflowId, onTabChange }) => {
   const handleChangeInput = (value: string, idx: number) => {
     const updatedInputs = [...workFlowData.input_configs];
     updatedInputs[idx].default_value = value;
+    setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
+  };
+
+  const handleBooleanInput = (value: boolean, idx: number) => {
+    const updatedInputs = [...workFlowData.input_configs];
+    updatedInputs[idx].default_value = value;
+    setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
+  };
+
+  const handleCheckListInput = (value: string, idx: number) => {
+    const updatedInputs = [...workFlowData.input_configs];
+    const selected_values = updatedInputs[idx]?.selected_values;
+    if (selected_values?.includes(value)) {
+      updatedInputs[idx].selected_values = selected_values.filter(
+        (item: string) => item !== value
+      );
+    } else {
+      if (selected_values === undefined) {
+        updatedInputs[idx].selected_values = [value];
+      } else {
+        updatedInputs[idx].selected_values = [...selected_values, value];
+      }
+    }
     setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
   };
 
@@ -375,19 +407,65 @@ const Run: React.FC<Props> = ({ workflowId, onTabChange }) => {
                       </SelectGroup>
                     </SelectContent>
                   </Select>
-                ) : input.type !== "FILE_UPLOAD" ? (
-                  <input
-                    type="text"
-                    placeholder={input.placeholder}
-                    className="w-full p-4 h-[46px] border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
-                    value={input.default_value}
-                    onChange={e => handleChangeInput(e.target.value, idx)}
-                  />
                 ) : (
-                  <FileUpload
-                    onFileUploaded={fileUrl => handleFileUploaded(fileUrl, idx)}
-                    acceptedFileTypes={input.file_type || "*/*"}
-                  />
+                  (() => {
+                    switch (input.type) {
+                      case WorkflowInputFieldType.BOOLEAN:
+                        return (
+                          <Switch
+                            checked={input.default_value}
+                            onCheckedChange={checked =>
+                              handleBooleanInput(checked, idx)
+                            }
+                          />
+                        );
+                      case WorkflowInputFieldType.FILE_UPLOAD:
+                        return (
+                          <FileUpload
+                            onFileUploaded={fileUrl =>
+                              handleFileUploaded(fileUrl, idx)
+                            }
+                            acceptedFileTypes={input.file_type || "*/*"}
+                          />
+                        );
+                      case WorkflowInputFieldType.CHECKLIST:
+                        return (
+                          <div className="flex gap-4">
+                            {input.list_values.map((option: string) => (
+                              <label
+                                key={option}
+                                className="flex items-center space-x-1.5"
+                              >
+                                <Checkbox
+                                  checked={
+                                    input?.selected_values?.includes(option) ||
+                                    false
+                                  }
+                                  onCheckedChange={() =>
+                                    handleCheckListInput(option, idx)
+                                  }
+                                />
+                                <span className="text-sm capitalize font-medium text-gray-700">
+                                  {option}
+                                </span>
+                              </label>
+                            ))}
+                          </div>
+                        );
+                      default:
+                        return (
+                          <input
+                            type="text"
+                            placeholder={input.placeholder}
+                            className="w-full p-4 h-[46px] border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
+                            value={input.default_value}
+                            onChange={e =>
+                              handleChangeInput(e.target.value, idx)
+                            }
+                          />
+                        );
+                    }
+                  })()
                 )}
               </div>
             ))}
