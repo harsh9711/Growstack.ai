@@ -23,6 +23,7 @@ import { PlanName } from "@/types/enums";
 import withUnAuthGuard from "@/components/guard/unAuthGuard";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
+import { ALL_ROUTES } from "@/utils/constant";
 
 const Register = () => {
   const { isAuthenticated } = useSelector(
@@ -121,7 +122,7 @@ const Register = () => {
         expiryDate <= currentDate ||
         isBasicPlan
       ) {
-        router.push("/Payment");
+        router.push(ALL_ROUTES.APP);
       } else {
         toast.success("Authorized: Trial is active");
         router.push("/app");

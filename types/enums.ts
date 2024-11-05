@@ -1,4 +1,5 @@
 export enum PlanName {
+  FREE = "FREE",
   SOCIAL_PORTAL = "Social Portal",
   AI_STUDIO = "AI Studio",
   AUTOMATION_HUB = "Automation Hub",

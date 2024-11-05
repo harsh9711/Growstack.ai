@@ -265,14 +265,12 @@ const PricingPage: React.FC = () => {
                 className="border-[#034737]  gap-4 text-[#034737] flex-wrap w-full flex justify-center sm:justify-end"
                 data-aos="fade-left"
               >
-                {user?.isSubscribed && (
-                  <Link
-                    className="border-[#034737] flex items-center justify-between gap-2  border rounded-xl font-semibold text-[#034737] px-8 py-4 "
-                    href="/app"
-                  >
-                    Go to Dashboard
-                  </Link>
-                )}
+                <Link
+                  className="border-[#034737] flex items-center justify-between gap-2  border rounded-xl font-semibold text-[#034737] px-8 py-4 "
+                  href="/app"
+                >
+                  Go to Dashboard
+                </Link>
 
                 <button
                   onClick={handleLogout}
