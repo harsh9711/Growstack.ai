@@ -1,44 +1,26 @@
 import React from "react";
-import "./SocialLinks.scss";
 import Link from "next/link";
+
 function SocialLinks() {
   return (
-    <React.Fragment>
-      <div className="social">
-        <div className="quote">
-          <Link href="/auth/login" className="sheen flex">
-            Login{" "}
-            <svg
-              width="13"
-              height="12"
-              viewBox="0 0 13 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M12.5 1C12.5 0.447714 12.0523 -7.61451e-07 11.5 -3.39982e-07L2.5 -2.13542e-07C1.94772 -5.50717e-07 1.5 0.447715 1.5 0.999999C1.5 1.55228 1.94772 2 2.5 2L10.5 2L10.5 10C10.5 10.5523 10.9477 11 11.5 11C12.0523 11 12.5 10.5523 12.5 10L12.5 1ZM2.20711 11.7071L12.2071 1.70711L10.7929 0.292893L0.792893 10.2929L2.20711 11.7071Z"
-                fill="white"
-              />
-            </svg>
-          </Link>
-          <Link href="/auth/register" className="sheen">
-            Free trial{" "}
-            <svg
-              width="13"
-              height="12"
-              viewBox="0 0 13 12"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M12.5 1C12.5 0.447714 12.0523 -7.61451e-07 11.5 -3.39982e-07L2.5 -2.13542e-07C1.94772 -5.50717e-07 1.5 0.447715 1.5 0.999999C1.5 1.55228 1.94772 2 2.5 2L10.5 2L10.5 10C10.5 10.5523 10.9477 11 11.5 11C12.0523 11 12.5 10.5523 12.5 10L12.5 1ZM2.20711 11.7071L12.2071 1.70711L10.7929 0.292893L0.792893 10.2929L2.20711 11.7071Z"
-                fill="white"
-              />
-            </svg>
-          </Link>
-        </div>
+    <div className=" hidden md:flex items-center ml-10">
+      <div className=" relative flex items-center space-x-2">
+        <Link href="/auth/login" className=" flex items-center text-[#2DA771] border-[#2DA771] border gap-4 text-lg px-5 py-2.5 rounded-lg transition-all duration-300 ease-in-out ">
+          Login{" "}
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14.8492 8.70711C15.2398 8.31658 15.2398 7.68342 14.8492 7.29289L8.48528 0.928932C8.09476 0.538408 7.46159 0.538408 7.07107 0.928932C6.68054 1.31946 6.68054 1.95262 7.07107 2.34315L12.7279 8L7.07107 13.6569C6.68054 14.0474 6.68054 14.6805 7.07107 15.0711C7.46159 15.4616 8.09476 15.4616 8.48528 15.0711L14.8492 8.70711ZM0 9H14.1421V7L0 7L0 9Z" fill="#2DA771" />
+          </svg>
+
+        </Link>
+        <Link href="/auth/register" className=" flex items-center text-[#2DA771] border-[#2DA771] border gap-4 text-lg px-5 py-2.5 rounded-lg transition-all duration-300 ease-in-out ">
+          Free trial{" "}
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14.8492 8.70711C15.2398 8.31658 15.2398 7.68342 14.8492 7.29289L8.48528 0.928932C8.09476 0.538408 7.46159 0.538408 7.07107 0.928932C6.68054 1.31946 6.68054 1.95262 7.07107 2.34315L12.7279 8L7.07107 13.6569C6.68054 14.0474 6.68054 14.6805 7.07107 15.0711C7.46159 15.4616 8.09476 15.4616 8.48528 15.0711L14.8492 8.70711ZM0 9H14.1421V7L0 7L0 9Z" fill="#2DA771" />
+          </svg>
+        </Link>
+        {/* <div className="absolute w-[2px] h-6 bg-gray-400 top-1/2 left-[-24px] transform -translate-y-1/2 rounded-full"></div> */}
       </div>
-    </React.Fragment>
+    </div>
   );
 }
 

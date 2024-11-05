@@ -27,7 +27,7 @@ const page = () => {
     <main className="bg-white">
       <section className="bg-gradient-to-r to-[#FFF4CB]/100 via-[#E6FFE2]/100 from-[#A9FF9B]/50 w-full mb-10 2xl:mb-20 overflow-hidden">
         <Navbar
-          logoUrl="/images/logo.png"
+          logoUrl="/imagelogo.svg"
           logoAlt="Custom Logo"
           backgroundColor="transparent"
         />

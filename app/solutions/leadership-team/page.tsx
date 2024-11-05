@@ -26,7 +26,7 @@ const page = () => {
     <main className="bg-white overflow-hidden max-w-[1920px] w-full mx-auto">
       <section className="bg-[#D2F1E6] w-full mb-10 2xl:mb-20 rounded-b-[60px] sm:rounded-b-[0px] items-center justify-center mx-auto">
         <Navbar
-          logoUrl="/images/logo.png"
+          logoUrl="/imagelogo.svg"
           logoAlt="Custom Logo"
           backgroundColor="transparent"
         />
