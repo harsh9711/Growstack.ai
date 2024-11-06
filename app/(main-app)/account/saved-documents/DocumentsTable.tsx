@@ -213,7 +213,6 @@ export default function DocumentsTable() {
       id: "actions",
       header: () => <div className="uppercase">Action</div>,
       cell: ({ row }) => {
-        console.log(row.original);
         return (
           <div className="flex items-center gap-2">
             <button
