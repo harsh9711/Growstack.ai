@@ -7,6 +7,7 @@ import { Assistant, Conversation, Chat } from "../../components/types";
 import Topbar from "./components/Topbar";
 import ChatSection from "./components/ChatSection";
 import Sidebar from "./components/Sidebar";
+import ChatHistory from "./components/ChatHistory";
 import {
   aiModelOptions,
   languageOptions,
@@ -28,6 +29,7 @@ const AssistantsChats: React.FC<PageProps> = ({
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const [isHistoryOpen, setHistoryOpen] = useState<boolean>(false);
   const [selectedLanguage, setSelectedLanguage] = useState<string>(
     languageOptions[0].value
   );
@@ -101,18 +103,21 @@ const AssistantsChats: React.FC<PageProps> = ({
   };
 
   return (
-    <div className={`flex-1 flex !bg-white shadow-box border ${isSidebarOpen ? 'overflow-hidden' : ''}`}>
+    <div className={`flex-1 flex !bg-white shadow-box border ${isSidebarOpen ? 'overflow-hidden' : ''} ${isHistoryOpen ? 'overflow-hidden' : ''}`}>
       <Sidebar
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
         assistant_id={assistant_id}
       />
+      <ChatHistory isOpen={isHistoryOpen} onClose={() => setHistoryOpen(false) } assistant_id={assistant_id} />
       <div className="flex-1 flex flex-col">
         <Topbar
           conversation={assistantConversation}
           assistant={assistantData!}
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
+          isHistoryOpen={isHistoryOpen}
+          setHistoryOpen={setHistoryOpen}
           selectedLanguage={selectedLanguage}
           switchLanguage={switchLanguage}
           setSelectedAiModel={setSelectedAiModel}
