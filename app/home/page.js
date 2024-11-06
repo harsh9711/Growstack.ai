@@ -19,11 +19,15 @@ import Navbar from "@/components/navbar/Navbar";
 import Animation from "../animation/page";
 import Capability2 from "../colorBox/page";
 import Cta2 from "../control/page";
+import AnimationStory from "../animationstory/page";
 // I commented this bootstrapp CDN because of conflicting styles with tailwindcss, NB: I'll uncomment it as soon as reliable solution is found
 function Page() {
   return (
     <React.Fragment>
       <Navbar logoUrl="/imagelogo.svg" logoAlt="Custom Logo" />
+      <div>
+        <AnimationStory/>
+      </div>
       <div className="sm:px-20 relative z-0">
         {" "}
         <DragFeatures />
