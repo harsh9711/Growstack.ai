@@ -417,7 +417,7 @@ export default function ConfigureGPTSection({
                               Image
                             </label>
                           </div>
-                          <div className="flex items-center space-x-2">
+                          {/* <div className="flex items-center space-x-2">
                             <Checkbox
                               id="WEB_BROWSING"
                               onClick={() =>
@@ -433,7 +433,7 @@ export default function ConfigureGPTSection({
                             >
                               Web Browsing
                             </label>
-                          </div>
+                          </div> */}
                         </div>
                       </div>
 
@@ -487,7 +487,6 @@ export default function ConfigureGPTSection({
                           </div>
                         ))}
                         <div className="flex gap-2 justify-end items-cente mt-5">
-
                           <CreateForm
                             handleCreateConversation={handleCreateConversation}
                             isAPICalled={isAPICalled}
