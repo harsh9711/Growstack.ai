@@ -1,4 +1,4 @@
-type WorkFlowData = {
+export type WorkFlowData = {
   actions: any[];
   input_configs: any[];
   output_configs: any[];

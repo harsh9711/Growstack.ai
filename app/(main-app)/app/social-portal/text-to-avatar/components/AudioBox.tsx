@@ -73,18 +73,19 @@ const CreateVideoDialog = ({
   };
 
   return (
-    <div className="flex flex-col gap-y-2">
+    <div className="flex flex-col">
       <label
         htmlFor="voice"
         className="flex items-center font-semibold gap-x-3"
       >
-        <span className="space-x-2 text-[15px] z-0 relative">Voices</span>
+        <span className="space-x-2 text-[18px] z-0 relative">Voices</span>
       </label>
       <div>
         <div className="relative z-20">
           <button
             ref={buttonRef}
-            className="border border-[#DEDEDE] bg-[#F5F5F5] h-full w-full rounded-xl outline-none focus:border-primary-green transition-all p-4 text-left flex justify-between items-center"
+            type="button" // Add this line to prevent form submission
+            className="border border-[#DEDEDE] bg-[#F5F5F5] h-[44px] w-[98%] rounded-md outline-none focus:border-primary-green transition-all p-4 text-left flex justify-between items-center"
             onClick={() => setDropdownOpen(prev => !prev)}
           >
             {selectedVoice
@@ -105,7 +106,7 @@ const CreateVideoDialog = ({
             initial={{ opacity: 0 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="absolute top-full left-0 w-full border border-[#DEDEDE] bg-[#F5F5F5] rounded-xl mt-2"
+            className="absolute top-full left-0 w-full border h-[120px] overflow-y-auto border-[#DEDEDE] bg-[#F5F5F5] rounded-xl mt-2"
             style={{ display: dropdownOpen ? "block" : "none" }}
           >
             {voices.map(voice => (

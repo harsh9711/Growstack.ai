@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 import "../../../../styles/myanimation.css";
 import Link from "next/link";
 const HeroSection = ({
-  logoUrl = "/images/logo.png",
+  logoUrl = "/imagelogo.svg",
   logoAlt = "Custom Logo",
   bgGradient = "bg-[#14171B]",
   title = "Streamline your business",
