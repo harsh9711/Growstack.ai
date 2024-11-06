@@ -118,6 +118,8 @@ export default function Topbar({
       <div
         className={`flex gap-3 ${
           isSidebarOpen ? "lg:flex-col" : "lg:flex-row"
+        } ${
+          isHistoryOpen ? "lg:flex-col" : "lg:flex-row"
         } xl:flex-row sm:flex-col md:flex-col flex-col lg:justify-between`}
       >
         <div className="flex items-center gap-4">
@@ -130,11 +132,11 @@ export default function Topbar({
           />
           <div>
             <h2 className="text-lg font-semibold sm:text-xl">
-              {assistant.name}
+              {assistant.role}
             </h2>
-            <p className="flex items-center gap-2 text-primary-black text-opacity-70">
+            {/* <p className="flex items-center gap-2 text-primary-black text-opacity-70">
               <span className="h-2 w-2 rounded-full bg-[#68D391]"></span>Online
-            </p>
+            </p> */}
           </div>
         </div>
         <div className="flex items-center gap-2 sm:gap-3">
@@ -249,7 +251,7 @@ export default function Topbar({
           </Select>
 
           <Select value={selectedLanguage} onValueChange={switchLanguage}>
-            <SelectTrigger className="bg-[#429A85] min-w-[120px] sm:min-w-[200px] h-9 sm:h-12 text-white border-0 rounded-xl flex items-center justify-between px-3 sm:px-4">
+            <SelectTrigger className="bg-[#429A85] min-w-[120px] sm:min-w-[150px] h-9 sm:h-12 text-white border-0 rounded-xl flex items-center justify-between px-3 sm:px-4">
               <SelectValue placeholder="Select an option" />
             </SelectTrigger>
             <SelectContent>
