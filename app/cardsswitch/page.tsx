@@ -74,30 +74,25 @@ const Box = () => {
           overflow: "hidden",
         }}
       >
-        {/* <ReactCompareSlider
+        <ReactCompareSlider
           transition="0.25s cubic-bezier(.17,.67,.83,.67)"
           boundsPadding={0}
           changePositionOnHover
           itemOne={
             <ReactCompareSliderImage
               src=""
-              srcSet="/switch2.png"
+              srcSet="/switch1.svg"
               alt="Image one"
             />
           }
           itemTwo={
             <ReactCompareSliderImage
               src=""
-              srcSet="/switch1.png"
+              srcSet="/switch2.svg"
               alt="Image two"
+            
             />
           }
-          keyboardIncrement="5%"
-          position={50}
-          style={{
-          
-            width: "100%",
-          }}
           handle={
             <svg
               width="53"
@@ -145,7 +140,7 @@ const Box = () => {
               />
             </svg>
           }
-        /> */}
+        />
       </div>
     </div>
   );
