@@ -1,16 +1,18 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { API_URL } from "@/lib/api";
 import instance from "@/config/axios.config";
 import toast from "react-hot-toast";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogHeader,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { z } from "zod";
 import DotsLoader from "@/components/DotLoader";
+import { X } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 
 interface BrandVoice {
   _id: string;
@@ -85,12 +87,19 @@ const BrandVoiceModal: React.FC<BrandVoiceModalProps> = ({
 
   return (
     <Dialog open onOpenChange={onClose}>
-      <DialogContent className="w-[80%] md:w-[85%] max-w-3xl p-0 pb-4 border-0">
-        <DialogHeader>
-          <DialogTitle className="px-5">
-            <div className="bg-white py-3 border-b border-[#EBEBEB] text-black font-inter">
+      <DialogContent
+        showCloseButton={false}
+        className="w-[80%] md:w-[85%] max-w-3xl p-0 pb-4 border-0"
+      >
+        <DialogHeader className="sticky top-0 z-10 bg-white">
+          <DialogTitle className="px-5 border-b border-[#EBEBEB] flex justify-between items-center">
+            <div className="bg-white py-3  text-black font-inter">
               <p className="text-lg font-semibold">Edit brand voice</p>
             </div>
+            <DialogClose className=" right-2 top-2 rounded-lg transition-opacity p-2 hover:bg-[#ff00001f] hover:opacity-100 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+              <X className="h-5 w-5 text-[#ff00009d]" />
+              <span className="sr-only">Close</span>
+            </DialogClose>
           </DialogTitle>
         </DialogHeader>
         <div className="m-3">
@@ -134,11 +143,13 @@ const BrandVoiceForm: React.FC<BrandVoiceFormProps> = ({
     brandData.is_default || false
   );
 
+  const [isUpdating, setIsUpdating] = useState(false);
+
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    setIsUpdating(true);
     try {
       const validatedData = brandVoiceSchema.parse({
         brand_name: brandName,
@@ -160,6 +171,8 @@ const BrandVoiceForm: React.FC<BrandVoiceFormProps> = ({
         });
         setErrors(fieldErrors);
       }
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -215,6 +228,7 @@ const BrandVoiceForm: React.FC<BrandVoiceFormProps> = ({
           <label className="block text-gray-700 font-bold mb-2">
             Description
           </label>
+
           <textarea
             value={description}
             onChange={e => setDescription(e.target.value)}
@@ -227,38 +241,12 @@ const BrandVoiceForm: React.FC<BrandVoiceFormProps> = ({
 
         <div className="mb-4">
           <div className="flex items-center gap-2">
-            <input
-              className="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] 
-        bg-primary-black before:pointer-events-none before:absolute 
-        before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent 
-        before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] 
-        after:h-5 after:w-5 after:rounded-full after:border-none 
-        after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] 
-        after:transition-[background-color_0.2s,transform_0.2s] 
-        checked:bg-primary-green checked:after:absolute checked:after:z-[2] 
-        checked:after:-mt-[3px] checked:after:ml-[1.0625rem] 
-        checked:after:h-5 checked:after:w-5 checked:after:rounded-full 
-        checked:after:border-none checked:after:bg-primary-white 
-        checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] 
-        checked:after:transition-[background-color_0.2s,transform_0.2s] 
-        hover:cursor-pointer focus:outline-none focus:ring-0 
-        focus:before:scale-100 focus:before:opacity-[0.12] 
-        focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] 
-        focus:before:transition-[box-shadow_0.2s,transform_0.2s] 
-        focus:after:absolute focus:after:z-[1] focus:after:block 
-        focus:after:h-5 focus:after:w-5 focus:after:rounded-full 
-        focus:after:content-[''] checked:focus:border-primary 
-        checked:focus:bg-primary checked:focus:before:ml-[1.0625rem] 
-        checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] 
-        checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] 
-        dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-primary 
-        dark:checked:after:bg-primary dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] 
-        dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
-              type="checkbox"
-              role="switch"
-              id="flexSwitchCheckDefault"
+            <Switch
+              disabled={isUpdating}
               checked={isDefault}
-              onChange={e => setIsDefault(e.target.checked)}
+              onCheckedChange={checked => {
+                setIsDefault(checked);
+              }}
             />
             Save as the default voice across your teamspace
           </div>
@@ -277,6 +265,7 @@ const BrandVoiceForm: React.FC<BrandVoiceFormProps> = ({
             className=" bg-primary-green text-white sheen transition duration-500 px-10 py-3.5 rounded-xl flex items-center gap-2"
           >
             Update
+            {isUpdating && <DotsLoader />}
           </button>
         </div>
       </form>

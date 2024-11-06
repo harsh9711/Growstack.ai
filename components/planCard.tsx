@@ -65,6 +65,7 @@ const PlanCard = ({
         dispatch(setUserPlan(data));
         toast.success("Subscription successful");
         router.push(ALL_ROUTES.APP);
+      
       } else {
         toast.error("An error occurred");
       }

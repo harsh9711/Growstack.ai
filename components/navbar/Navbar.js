@@ -6,7 +6,7 @@ import SocialLinks from "./socialLinks/SocialLinks";
 import styles from "./navbar.module.scss";
 
 function Navbar({
-  logoUrl = "/images/logo.png",
+  logoUrl = "/imagelogo.svg",
   logoAlt = "logo",
   backgroundColor = "",
 }) {

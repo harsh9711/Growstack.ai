@@ -68,8 +68,8 @@ const ChangePassword = () => {
             Edit your password
           </h1>
           <div>
-            <div className="grid grid-cols-2 gap-x-5 gap-y-6 mt-6">
-              <div className="space-y-3 w-full relative">
+            <div className="grid lg:grid-cols-2 gap-x-5 gap-y-6 mt-6 md:grid-cols-1">
+              <div className="space-y-3 w-full min-w-[150px] relative">
                 <label>Old Password</label>
                 <input
                   type={showOldPassword ? "text" : "password"}
@@ -78,8 +78,7 @@ const ChangePassword = () => {
                   {...register("oldPassword")}
                 />
                 <div
-                  className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
-                  style={{ marginTop: "34px" }}
+                  className="absolute right-3 top-[42px] cursor-pointer"
                   onClick={() => setShowOldPassword(!showOldPassword)}
                 >
                   {showOldPassword ? <FaEye /> : <FaEyeSlash />}
@@ -99,8 +98,7 @@ const ChangePassword = () => {
                   {...register("newPassword")}
                 />
                 <div
-                  className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
-                  style={{ marginTop: "34px" }}
+                  className="absolute right-3 top-[42px] cursor-pointer"
                   onClick={() => setShowNewPassword(!showNewPassword)}
                 >
                   {showNewPassword ? <FaEye /> : <FaEyeSlash />}
@@ -123,7 +121,7 @@ const ChangePassword = () => {
           </button>
           <button
             type="submit"
-            className="h-12 py-3 px-3 w-full max-w-[220px] uppercase bg-primary-green sheen rounded-xl text-white mt-6"
+            className="h-12 py-3 px-3 w-full min-w-[200px] max-w-[200px] uppercase bg-primary-green sheen rounded-xl text-white mt-6"
           >
             Change Password
           </button>

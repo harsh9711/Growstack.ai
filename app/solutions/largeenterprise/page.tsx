@@ -23,7 +23,7 @@ const Home = () => {
 
   return (
     <main className="bg-white overflow-hidden max-w-[1920px] w-full mx-auto">
-      <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
+      <Navbar logoUrl="/imagelogo.svg" logoAlt="Custom Logo" />
       <section className="">
         <div className="relative flex items-center w-full h-full  rounded-b-[60px] pt-10  2xl:pt-20 bg-[#F3F7F6] ">
           <div className="w-full h-full mx-auto flex flex-col  justify-between max-h-[600px] 2xl:max-h-[770px] max-w-[1920px] items-center">

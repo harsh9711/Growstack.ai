@@ -98,6 +98,7 @@ export interface UserPlan {
   plan_id: string;
   user_id: string;
   plan_name: string;
+  plan_type?: string;
   plan_amount: number;
   ai_background_generator_cost: number;
   smart_ai_messages: number;
@@ -116,9 +117,10 @@ export interface ChatResponse {
   conversation_id: string;
   response_type: "TEXT" | "IMAGE" | "VIDEO";
   noOfMessagesLeft?: number;
-  totalNoOfMessages?: number;
+  totalMessages?: number;
   chatId: string;
   isImage?: boolean;
+  totalNoOfMessages?:any
 }
 
 export interface BrandVoice {

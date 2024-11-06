@@ -5,7 +5,6 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { deleteCookie, getCookie } from "cookies-next";
 import { persistor, RootState } from "@/lib/store";
-import Spinner from "@/components/Spinner";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { UserPlan } from "@/types/common";
@@ -20,10 +19,16 @@ import {
 import GlobalModal from "@/components/modal/global.modal";
 import Link from "next/link";
 import Lock from "@/components/svgs/lock";
-import { hasAccessToRoute, isMobile, planIdsMap } from "@/lib/utils";
+import {
+  hasAccessToRoute,
+  isEmptyObject,
+  isMobile,
+  planIdsMap,
+} from "@/lib/utils";
 import { ALL_ROUTES } from "@/utils/constant";
 import Spinner2 from "@/components/Spinner2/Spinner2";
 import { PlanName } from "@/types/enums";
+import SubscribePlan from "@/components/subscribePlan/subscribePlan";
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch();
@@ -38,6 +43,10 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     isAuthenticated: isLoggedIn,
     initialized,
   } = useSelector((rootState: RootState) => rootState.auth);
+
+  const isFreePlan = planIdsMap[PlanName.FREE].some(
+    val => val === currentPlan?.plan_id
+  );
 
   const init = async () => {
     const token = getCookie("token");
@@ -75,6 +84,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const isSubscribed = user?.isSubscribed || false;
   const [isAddOnModalOpen, setIsAddOnModalOpen] = useState<boolean>(false);
+  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] =
+    useState<boolean>(false);
 
   const fetchPlanUsage = async () => {
     try {
@@ -110,30 +121,35 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       return;
     }
 
-    if (
-      pathname !== "/auth/redirect" &&
-      pathname !== "/Payment" &&
-      !isSubscribed &&
-      user?.user_type !== "ADMIN" &&
-      !planIdsMap[PlanName.AI_ESSENTIALS].some(
-        val => val === currentPlan.plan_id
-      )
-    ) {
-      console.log("You need a subscription to view this page!");
-      router.push("/Payment");
-    } else if (isLoggedIn && pathname === "/auth/login") {
+    // if (
+    //   pathname !== "/auth/redirect" &&
+    //   pathname !== "/Payment" &&
+    //   !isSubscribed &&
+    //   user?.user_type !== "ADMIN" &&
+    //   !planIdsMap[PlanName.AI_ESSENTIALS].some(
+    //     val => val === currentPlan.plan_id
+    //   )
+    // ) {
+    //   console.log("You need a subscription to view this page!");
+    //   router.push("/Payment");
+    // } else
+    if (isLoggedIn && pathname === "/auth/login") {
       router.push("/app");
     }
   }, [isLoggedIn, isSubscribed, pathname, router, currentPlan]);
 
   useEffect(() => {
-    if (isLoggedIn && currentPlan) {
+    if (isLoggedIn && currentPlan && !isEmptyObject(currentPlan)) {
       if (user?.user_type === "ADMIN") {
         return;
       }
       const hasAccess = hasAccessToRoute(currentPlan.usage, pathname);
       if (!hasAccess) {
-        setIsAddOnModalOpen(true);
+        if (isFreePlan) {
+          setIsSubscriptionModalOpen(true);
+        } else {
+          setIsAddOnModalOpen(true);
+        }
       } else {
         setIsAddOnModalOpen(false);
       }
@@ -222,6 +238,21 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             </Link>
           </div>
         </div>
+      </GlobalModal>
+      <GlobalModal
+        showCloseButton={false}
+        disableCloseOnOverlayClick
+        open={isSubscriptionModalOpen}
+        setOpen={() => {
+          setIsSubscriptionModalOpen(false);
+        }}
+      >
+        <SubscribePlan
+          goBackHandler={() => {
+            setIsSubscriptionModalOpen(false);
+            router.back();
+          }}
+        />
       </GlobalModal>
     </>
   );

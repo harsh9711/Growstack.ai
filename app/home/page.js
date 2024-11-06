@@ -29,6 +29,7 @@ function Page() {
     <React.Fragment>
       <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
       <div className="sm:px-10 relative z-0">
+   
         {" "}
         <DragFeatures />
       </div>

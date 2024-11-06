@@ -6,7 +6,11 @@ import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-const UpgradePlan = () => {
+interface Props {
+  goBackHandler?: () => void;
+}
+
+const UpgradePlan = ({ goBackHandler }: Props) => {
   const { user } = useSelector((rootState: RootState) => rootState.auth);
 
   const isSubscribed = user?.isSubscribed || false;
@@ -26,7 +30,7 @@ const UpgradePlan = () => {
       <div className="flex items-center justify-between gap-3">
         <button
           className="text-red-500 border border-red-500 bg-transparent text-nowrap py-2 px-6 rounded-md transition duration-300"
-          onClick={() => router.back()}
+          onClick={() => (goBackHandler ? goBackHandler() : router.back())}
         >
           Go back
         </button>
