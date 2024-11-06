@@ -455,13 +455,6 @@ export default function ConfigureGPTSection({
                               onChange={e => handleStartersChange(index, e)}
                               className="w-full p-3 bg-transparent h-[50px]"
                             />
-                            {/* {conversationStarters.length > 1 && (
-                              <div className="flex justify-end">
-                                <button type="button" onClick={() => handleRemoveStarterField(index)} className="bg-white p-1 rounded-xl mr-2">
-                                  <XIcon size={20} className="text-rose-500" />
-                                </button>
-                              </div>
-                            )} */}
                           </div>
                           {conversationStarters.length > 1 && (
                             <button
@@ -516,7 +509,6 @@ export default function ConfigureGPTSection({
         </div>
       </div>
 
-      {/* Preview Section */}
       <div className="w-full bg-gray-100 rounded-2xl relative flex flex-col">
         <div className="mt-4 flex-1 flex flex-col px-8 pb-8">
           <h2 className="font-semibold text-xl text-center">Preview</h2>

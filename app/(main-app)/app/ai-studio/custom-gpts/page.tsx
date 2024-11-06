@@ -196,14 +196,7 @@ export default function Customgpts() {
                     View All
                   </button>
                 )}
-                {/* {customGpts && customGpts.length > 5 && viewAll && (
-                  <button
-                    onClick={() => setViewAll(false)}
-                    className="mt-4 w-20px h-10px px-4 py-2 rounded text-green-500"
-                  >
-                    Minimize
-                  </button>
-                )} */}
+                
               </div>
               {customGpts?.length == 0 && <h1 className="text-center">GPTs by GrowStack Records Not Available</h1>}
               <div className="mt-8 mb-3">
@@ -263,27 +256,6 @@ export default function Customgpts() {
                           )}
                         </div>
                       </div>
-                      {/* <div className="mt-3 mb-3">
-                        <DropdownMenuSeparator />
-                      </div>
-                      <div className="flex items-center">
-                        <div className="flex -space-x-3">
-                          {avatars.map((avatar, idx) => (
-                            <Avatar key={idx} className="w-[60%] h-[60%]">
-                              <AvatarImage
-                                style={{
-                                  borderRadius: "50%",
-                                  border: idx > 0 ? "3px solid white" : "none",
-                                }}
-                                className="w-[50px] h-[50px]"
-                                src={icon}
-                              />
-                              <AvatarFallback>{avatar.fallback}</AvatarFallback>
-                            </Avatar>
-                          ))}
-                        </div>
-                        <strong className="ml-4 text-gray-700">Used by: 10 users</strong>
-                      </div> */}
                     </div>
                   )
                 )}

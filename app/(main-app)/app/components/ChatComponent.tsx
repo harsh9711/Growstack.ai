@@ -128,9 +128,6 @@ export default function ChatComponent() {
             ];
         })
     );
-    
-      console.log("messages",messages);
-      
       setMessages(messages);
       setSelectedConversation(_id);
     } catch (error) {
@@ -228,6 +225,7 @@ export default function ChatComponent() {
         chatId,
         noOfMessagesLeft,
         totalNoOfMessages,
+
       } = data.data as ChatResponse;
 
       if (isBasicPlan || isFreePlan) {

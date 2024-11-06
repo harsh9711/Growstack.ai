@@ -120,6 +120,7 @@ export interface ChatResponse {
   totalMessages?: number;
   chatId: string;
   isImage?: boolean;
+  totalNoOfMessages?:any
 }
 
 export interface BrandVoice {
