@@ -1,14 +1,11 @@
 "use client";
 import instance from "@/config/axios.config";
-import { Download, MoreHorizontal, Search, Trash } from "lucide-react";
+import { MoreHorizontal, Search } from "lucide-react";
 import { Fragment, Suspense, useEffect, useRef, useState } from "react";
-import CreateVideoDialog from "./components/CreateVideoDialog";
 import { Template } from "./components/types";
 import toast from "react-hot-toast";
 import TemplateLoader from "./components/TemplateLoader";
 import "@/styles/editor.css";
-import ConfirmDialog from "./components/ConfirmDialog";
-import VideoPreviewModal from "./components/VideoPreview";
 import { Plus } from "lucide-react";
 import { ALL_ROUTES } from "@/utils/constant";
 import { useSelector } from "react-redux";
@@ -22,9 +19,9 @@ import avatarImg3 from "../../../../../public/images/text-to-avatar/image-2.png"
 import avatarImg4 from "../../../../../public/images/text-to-avatar/image-3.png";
 import avatarImg5 from "../../../../../public/images/text-to-avatar/image-4.png";
 import Image from "next/image";
-import { template } from "lodash";
 import Delete from "@/components/svgs/delete";
 import { formatDistanceToNow } from "date-fns";
+import DownloadCircle from "@/components/svgs/download";
 
 const VideoTable: React.FC<{
   videos: Array<{
@@ -56,6 +53,7 @@ const VideoTable: React.FC<{
     } finally {
       setIsDeleting(false);
       setIsDialogOpen(false);
+      setIsDropdownOpen(null);
     }
   };
 
@@ -64,16 +62,29 @@ const VideoTable: React.FC<{
   };
 
   const toggleDropdown = (videoId: string) => {
-    if (isDropdownOpen === videoId) {
-      setIsDropdownOpen(null);
-    } else {
-      setIsDropdownOpen(videoId);
-    }
+    setIsDropdownOpen(isDropdownOpen === videoId ? null : videoId);
   };
 
   const VideoDisplay = (videoUrl: string) => {
     window.open(videoUrl, "_blank");
   };
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsDropdownOpen(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="w-full flex flex-wrap gap-4 relative items-center z-10 justify-start mt-10">
@@ -112,6 +123,50 @@ const VideoTable: React.FC<{
                 </div>
               </div>
             )}
+            {/* <div>
+              <div className="relative inline-flex" ref={dropdownRef}>
+                <button
+                  id="hs-dropdown-custom-icon-trigger"
+                  aria-haspopup="menu"
+                  aria-expanded={isOpen ? "true" : "false"}
+                  aria-label="Dropdown"
+                  type="button"
+                  className="flex bg-[#FFFFFF] rounded-[10px] h-[40px] w-[50px] items-center justify-center"
+                  onClick={toggleDropdown}
+                >
+                  <MoreHorizontal />
+                </button>
+
+                <div
+                  className={`absolute right-0 z-10 transition-[opacity,margin] duration ${
+                    isOpen ? "opacity-100 block" : "opacity-0 hidden"
+                  } bg-white shadow-md rounded-lg mt-[50px] w-[150px] dark:bg-neutral-800 dark:border dark:border-neutral-700`}
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="hs-dropdown-custom-icon-trigger"
+                >
+                  <div className="p-1 space-y-0.5 w-[150px]">
+                    <button
+                      onClick={() => alert("Download clicked")}
+                      className="flex gap-3 items-center px-2 py-2 w-[150px] text-left text-gray-700 hover:bg-gray-100"
+                    >
+                      <DownloadCircle />
+                      Download
+                    </button>
+                    <button
+                      onClick={() => {
+                        setIsPreviewScriptPage(false);
+                        setIsSelectedAvatar(false);
+                      }}
+                      className="flex gap-3 items-center px-2 py-2 w-[150px] text-left hover:bg-gray-100"
+                    >
+                      <Delete />
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div> */}
             <button
               className="absolute top-2 right-2 bg-white rounded-[10px] p-2 shadow-md"
               onClick={() => toggleDropdown(video._id)}
@@ -119,14 +174,30 @@ const VideoTable: React.FC<{
               <MoreHorizontal />
             </button>
             {isDropdownOpen === video._id && (
-              <div className="absolute top-12.5 right-2 w-25 bg-white shadow-lg rounded-lg z-20">
+              <div
+                className="absolute top-12.5 right-2 w-25 bg-white shadow-lg rounded-lg z-20"
+                ref={dropdownRef}
+              >
                 <ul className="text-sm text-gray-700">
-                  <li
-                    className="p-2 cursor-pointer flex items-center justify-center "
-                    onClick={() => handleDelete(video._id)}
-                  >
-                    <Delete />
-                    Delete
+                  <li className="cursor-pointer flex items-center justify-center">
+                    <button
+                      onClick={() => handleDelete(video._id)}
+                      className="flex gap-3 items-center px-2 py-2 w-[150px] text-left text-gray-700 hover:bg-gray-100"
+                    >
+                      <Delete />
+                      Delete
+                    </button>
+                  </li>
+                  <li className="cursor-pointer flex items-center justify-center ">
+                    <button
+                      onClick={() =>
+                        toast.error("video generation is not completed yet")
+                      }
+                      className="flex gap-3 items-center px-2 py-2 w-[150px] text-left text-gray-700 hover:bg-gray-100"
+                    >
+                      <DownloadCircle />
+                      Download
+                    </button>
                   </li>
                 </ul>
               </div>
