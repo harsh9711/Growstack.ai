@@ -22,6 +22,7 @@ import Image from "next/image";
 import Delete from "@/components/svgs/delete";
 import { formatDistanceToNow } from "date-fns";
 import DownloadCircle from "@/components/svgs/download";
+import axios, { AxiosProgressEvent } from "axios";
 
 const VideoTable: React.FC<{
   videos: Array<{
@@ -38,6 +39,9 @@ const VideoTable: React.FC<{
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState<string | null>(null);
+  const [downloadProgress, setDownloadProgress] = useState<{
+    [key: string]: number | null;
+  }>({});
 
   const handleDelete = async (videoId: string) => {
     if (!videoId) return;
@@ -86,12 +90,66 @@ const VideoTable: React.FC<{
     };
   }, []);
 
+  const handleDownload = async (videoUrl: string, _id: string) => {
+    try {
+      const response = await fetch(videoUrl);
+      if (!response.ok) {
+        throw new Error("File not found");
+      }
+
+      const totalSize = +response.headers.get("content-length")!;
+      let loadedSize = 0;
+
+      const reader = response.body!.getReader();
+      const chunks: Uint8Array[] = [];
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        chunks.push(value);
+        loadedSize += value.length;
+
+        // Update progress for the specific video
+        setDownloadProgress(prev => ({
+          ...(prev || {}), // Ensure 'prev' is an object
+          [_id]: Math.round((loadedSize / totalSize) * 100),
+        }));
+      }
+
+      const blob = new Blob(chunks);
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${_id}.mp4`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      // Reset progress after download completion
+      setDownloadProgress(prev => {
+        const { [_id]: removed, ...rest } = prev || {}; // Ensure 'prev' is an object
+        return rest;
+      });
+
+      toast.success("Download completed");
+    } catch (error) {
+      toast.error("Failed to download avatar");
+      console.error("Download error:", error);
+      setDownloadProgress(prev => {
+        const { [_id]: removed, ...rest } = prev || {}; // Ensure 'prev' is an object
+        return rest;
+      });
+    }
+  };
+
   return (
     <div className="w-full flex flex-wrap gap-4 relative items-center z-10 justify-start mt-10">
       {videos.map(video => (
         <div
           key={video._id}
-          className="border rounded-[10px] w-[300px] h-[220px] p-4 shadow-lg cursor-pointer"
+          className="border rounded-[10px] w-[300px] h-[220px] p-4 shadow-lg cursor-pointer relative"
         >
           <div className="relative w-[260px] h-[125px] rounded-[15px]">
             <img
@@ -123,50 +181,6 @@ const VideoTable: React.FC<{
                 </div>
               </div>
             )}
-            {/* <div>
-              <div className="relative inline-flex" ref={dropdownRef}>
-                <button
-                  id="hs-dropdown-custom-icon-trigger"
-                  aria-haspopup="menu"
-                  aria-expanded={isOpen ? "true" : "false"}
-                  aria-label="Dropdown"
-                  type="button"
-                  className="flex bg-[#FFFFFF] rounded-[10px] h-[40px] w-[50px] items-center justify-center"
-                  onClick={toggleDropdown}
-                >
-                  <MoreHorizontal />
-                </button>
-
-                <div
-                  className={`absolute right-0 z-10 transition-[opacity,margin] duration ${
-                    isOpen ? "opacity-100 block" : "opacity-0 hidden"
-                  } bg-white shadow-md rounded-lg mt-[50px] w-[150px] dark:bg-neutral-800 dark:border dark:border-neutral-700`}
-                  role="menu"
-                  aria-orientation="vertical"
-                  aria-labelledby="hs-dropdown-custom-icon-trigger"
-                >
-                  <div className="p-1 space-y-0.5 w-[150px]">
-                    <button
-                      onClick={() => alert("Download clicked")}
-                      className="flex gap-3 items-center px-2 py-2 w-[150px] text-left text-gray-700 hover:bg-gray-100"
-                    >
-                      <DownloadCircle />
-                      Download
-                    </button>
-                    <button
-                      onClick={() => {
-                        setIsPreviewScriptPage(false);
-                        setIsSelectedAvatar(false);
-                      }}
-                      className="flex gap-3 items-center px-2 py-2 w-[150px] text-left hover:bg-gray-100"
-                    >
-                      <Delete />
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div> */}
             <button
               className="absolute top-2 right-2 bg-white rounded-[10px] p-2 shadow-md"
               onClick={() => toggleDropdown(video._id)}
@@ -181,17 +195,10 @@ const VideoTable: React.FC<{
                 <ul className="text-sm text-gray-700">
                   <li className="cursor-pointer flex items-center justify-center">
                     <button
-                      onClick={() => handleDelete(video._id)}
-                      className="flex gap-3 items-center px-2 py-2 w-[150px] text-left text-gray-700 hover:bg-gray-100"
-                    >
-                      <Delete />
-                      Delete
-                    </button>
-                  </li>
-                  <li className="cursor-pointer flex items-center justify-center ">
-                    <button
                       onClick={() =>
-                        toast.error("video generation is not completed yet")
+                        video.status === "Pending"
+                          ? toast.error("Video generation is not completed yet")
+                          : handleDownload(video.videoUrl, video._id)
                       }
                       className="flex gap-3 items-center px-2 py-2 w-[150px] text-left text-gray-700 hover:bg-gray-100"
                     >
@@ -199,16 +206,33 @@ const VideoTable: React.FC<{
                       Download
                     </button>
                   </li>
+                  <li className="cursor-pointer flex items-center justify-center">
+                    <button
+                      onClick={() => handleDelete(video._id)}
+                      className="flex gap-3 items-center px-2 py-2 w-[150px] text-left text-gray-700 hover:bg-gray-100"
+                    >
+                      <Delete />
+                      Delete
+                    </button>
+                  </li>
                 </ul>
               </div>
             )}
           </div>
+          {downloadProgress[video._id] !== undefined && (
+            <div className="absolute bottom-0 left-0 w-full bg-gray-200 rounded-b-lg">
+              <div
+                className="bg-blue-500 text-xs font-medium text-white text-center p-0.5 leading-none rounded-b-lg"
+                style={{ width: `${downloadProgress[video._id]}%` }}
+              >
+                {downloadProgress[video._id]}%
+              </div>
+            </div>
+          )}
           <h3 className="text-[15px] text-[#14171B] mt-2">
             {video.title.charAt(0).toUpperCase() + video.title.slice(1)}
           </h3>
-          <p className="text-gray-500 text-sm">{`Edited ${timeAgo(
-            video.editedAt
-          )}`}</p>
+          <p className="text-gray-500 text-sm">{`Edited ${timeAgo(video.editedAt)}`}</p>
         </div>
       ))}
     </div>
