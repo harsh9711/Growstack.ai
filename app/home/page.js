@@ -25,9 +25,9 @@ function Page() {
   return (
     <React.Fragment>
       <Navbar logoUrl="/imagelogo.svg" logoAlt="Custom Logo" />
-      {/* <div>
+      <div>
         <AnimationStory/>
-      </div> */}
+      </div>
       <div className="sm:px-20 relative z-0">
         {" "}
         <DragFeatures />

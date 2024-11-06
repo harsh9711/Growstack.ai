@@ -94,7 +94,7 @@ const AnimationStory = () => {
               />
             </circle>
             <circle
-              className="animate-moveBall2 translate-x-80 translate-y-8 fill-gray-300"
+              className="animate-moveBall2 translate-x-80 translate-y-6 fill-gray-300"
               r="12"
             >
               <animateMotion
