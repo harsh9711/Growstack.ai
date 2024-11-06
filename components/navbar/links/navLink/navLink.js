@@ -29,82 +29,100 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
     onCloseMobileMenu();
     onToggleSubmenu(null);
   };
-  const renderNestedNav = list => {
-    return (
-      <div className="flex justify-between gap-4 w-full">
-        <div className="flex flex-col ">
-          <h3 className="font-extrabold text-gray-800  text-sm my-2">
-            Company Type
-          </h3>
-          <div className="grid grid-cols-1">
-            {list.slice(0, 4).map(nav => {
-              if (nav) {
-                return (
-                  <Link
-                    href={nav.path}
-                    key={nav.title}
-                    className="p-2 rounded flex flex-row items-center max-w-[400px] whitespace-nowrap text-[16px] gap-2 justify-between hover:bg-gray-300 transition-all duration-300 ease-in-out transform hover:scale-105"
-                    onClick={handleSubmenuItemClick}
-                  >
-                    <span className="flex gap-2 items-center overflow-hidden">
-                      <img
-                        src={nav.img}
-                        alt={nav.title}
-                        className="w-6 h-6 flex-shrink-0"
-                      />
-                      <span className="truncate">{nav.title}</span>
-                    </span>
-                    <img
-                      src="/images_growstack/header/arrow.svg"
-                      alt="arrow"
-                      className="w-2 h-2 flex-shrink-0"
-                    />
-                  </Link>
-                );
-              }
-            })}
+
+  const renderNestedNav = list => (
+    <div className="flex justify-between rounded-xl">
+      <div className="flex flex-row ">
+        <div className="border-b rounded-tl-[20px] rounded-bl-[20px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white w-full max-w-[60px] flex items-center justify-center">
+          <h3 className="font-extrabold whitespace-nowrap text-sm -rotate-90">BY TEAM</h3>
+        </div>
+        <div className="grid grid-cols-3 m-4 border-gray-300">
+          {list.slice(0, 9).map((nav, index) => (
+            nav && (
+              <Link
+                href={nav.path}
+                key={index}
+                className={`p-2 group rounded flex flex-row items-center max-w-[300px] text-[16px] gap-6 justify-between transition-all duration-300 ease-in-out transform hover:scale-105
+                  ${index % 3 !== 0 ? 'border-l' : ''} 
+                  ${index % 3 !== 2 ? 'border-r' : ''} 
+                  ${index < 6 ? 'border-b' : ''} 
+                  border-gray-300`}
+                onClick={handleSubmenuItemClick}
+              >
+                <span className="flex flex-col gap-2 w-full items-center">
+                  <img src={nav.img} alt={nav.title} className="w-6 h-6" />
+                  <span className="text-center group-hover:text-[#2DA771] sm:text-[13px] text-[10px] w-full">{nav.title}</span>
+                </span>
+              </Link>
+            )
+          ))}
+        </div>
+      </div>
+
+      <div className="flex flex-row">
+        <div className="border-b rounded-tl-[20px] rounded-bl-[20px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white w-full max-w-[60px] flex items-center justify-center">
+          <div className="-rotate-90 flex flex-row">
+            <h3 className="font-extrabold whitespace-nowrap text-sm">BY INDUSTRY</h3>
+            <div className="border border-gray-300 w-full h-6 mx-4"></div>
+            <h3 className="font-extrabold whitespace-nowrap text-sm">BY COMPANY</h3>
           </div>
         </div>
-
-        <div className=" px-2 flex  ">
-          <div className="border-1 border-gray-300 h-full rounded-2xl"></div>
+        <div className="grid grid-cols-4 m-4 border-gray-300">
+          {list.slice(9).map((nav, index) => (
+            nav && (
+              <Link
+                href={nav.path}
+                key={index}
+                className={`p-2 rounded group flex flex-row items-center max-w-[300px] text-[16px] gap-6 justify-between transition-all duration-300 ease-in-out transform hover:scale-105
+                  ${index % 4 !== 0 ? 'border-l' : ''} 
+                  ${index % 4 !== 3 ? 'border-r' : ''} 
+                  ${index < 8 ? 'border-b' : ''} 
+                  border-gray-300`}
+                onClick={handleSubmenuItemClick}
+              >
+                <span className="flex flex-col gap-2 w-full items-center">
+                  <img src={nav.img} alt={nav.title} className="w-6 h-6" />
+                  <span className="text-center group-hover:text-[#2DA771] sm:text-[13px] text-[10px] w-full">{nav.title}</span>
+                </span>
+              </Link>
+            )
+          ))}
         </div>
-
-        <div className="flex flex-col  ">
-          <h3 className="font-extrabold text-gray-800  text-sm my-2">Teams</h3>
-          <div className="grid grid-cols-2 gap-x-10  ">
-            {list.slice(4, 12).map(nav => {
-              if (nav) {
-                return (
-                  <Link
-                    href={nav.path}
-                    key={nav.title}
-                    className="p-2 rounded flex flex-row items-center max-w-[300px] whitespace-nowrap text-[16px] gap-6 justify-between hover:bg-gray-300 transition-all duration-300 ease-in-out transform hover:scale-105"
-                    onClick={handleSubmenuItemClick}
-                  >
-                    <span className="flex gap-2 items-center overflow-hidden">
-                      <img
-                        src={nav.img}
-                        alt={nav.title}
-                        className="w-6 h-6 flex-shrink-0"
-                      />
-                      <span className="truncate">{nav.title}</span>
-                    </span>
-                    <img
-                      src="/images_growstack/header/arrow.svg"
-                      alt="arrow"
-                      className="w-2 h-2 flex-shrink-0"
-                    />
-                  </Link>
-                );
-              }
-            })}
+      </div>
+    </div>
+  );
+  const renderNestedNavForFeatures = list => {
+    return (
+      <div className="flex justify-between rounded-xl">
+        <div className="flex flex-row">
+          <div className="border-b rounded-tl-[20px] rounded-bl-[20px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white w-full max-w-[60px] flex items-center justify-center">
+            <h3 className="font-extrabold whitespace-nowrap text-sm -rotate-90">FEATURES</h3>
+          </div>
+          <div className="grid grid-cols-3 m-4 border-gray-300">
+            {list.slice(0, 9).map((nav, index) => (
+              nav && (
+                <Link
+                  href={nav.path}
+                  key={index}
+                  className={`p-2 group rounded flex flex-row items-center max-w-[150px] text-[16px] gap-6 justify-between transition-all duration-300 ease-in-out transform hover:scale-105
+                  ${index % 3 !== 0 ? 'border-l' : ''} 
+                  ${index % 3 !== 2 ? 'border-r' : ''} 
+                  ${index < 6 ? 'border-b' : ''} 
+                  border-gray-300`}
+                  onClick={handleSubmenuItemClick}
+                >
+                  <span className="flex flex-col gap-2 w-full items-center">
+                    <img src={nav.img} alt={nav.title} className="w-6 h-6" />
+                    <span className="text-center group-hover:text-[#2DA771] sm:text-[13px] text-[10px] w-full">{nav.title}</span>
+                  </span>
+                </Link>
+              )
+            ))}
           </div>
         </div>
       </div>
     );
   };
-
   return (
     <div className="navLink">
       <div className="mainLink">
@@ -128,21 +146,22 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
       {hasSubmenu && (
         <div
           className={
-            item.title === "Solutions" ? "submenusolutions" : "submenu"
+            item.title === "Solutions" ? "submenusolutions" : "" || item.title === "Features" ? "submenufeatures" : "submenu"
           }
           style={{ display: item.isOpen ? "block" : "none" }}
         >
           {item.title === "Solutions"
             ? renderNestedNav(item.submenu)
-            : item.submenu.map(sub => (
+            : item.title === "Features"
+              ? renderNestedNavForFeatures(item.submenu)
+              : item.submenu.map(sub => (
                 <Link
                   key={sub.title}
                   href={sub.path}
                   className="submenu_item"
                   onClick={handleSubmenuItemClick}
                 >
-                  {sub.title}{" "}
-                  <img src="/images_growstack/header/arrow.svg" alt="arrow" />
+                  {sub.title}
                 </Link>
               ))}
         </div>
