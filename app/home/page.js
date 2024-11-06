@@ -23,7 +23,7 @@ import Cta2 from "../control/page";
 function Page() {
   return (
     <React.Fragment>
-      <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
+      <Navbar logoUrl="/imagelogo.svg" logoAlt="Custom Logo" />
       <div className="sm:px-20 relative z-0">
         {" "}
         <DragFeatures />

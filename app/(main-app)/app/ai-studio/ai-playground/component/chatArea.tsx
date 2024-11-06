@@ -30,7 +30,7 @@ interface ChatAreaProps {
   userPrompt: string;
   handleDelete: () => void;
   renderConversation: (msg?: string) => void;
-  responseLoading:boolean;
+  responseLoading: boolean;
 }
 
 const outputType = [
@@ -50,7 +50,7 @@ const ChatArea = ({
   userPrompt,
   handleDelete,
   renderConversation,
-  responseLoading
+  responseLoading,
 }: ChatAreaProps) => {
   const [inputValue, setInputValue] = useState(userPrompt);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -61,14 +61,17 @@ const ChatArea = ({
     | null
   >(null); // Updated here
   const initialHeight = 32;
+  const [emptyPrompt, isEmptyPrompt] = useState("");
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(event.target.value);
     handleChange(event);
+    isEmptyPrompt('')
   };
 
   const handleSend = () => {
     if (responseLoading) return;
     if (textareaRef.current && inputValue.trim() !== "") {
+      isEmptyPrompt("");
       textareaRef.current.value = "";
       if (textareaRef.current.style) {
         textareaRef.current.style.height = "2rem";
@@ -78,6 +81,9 @@ const ChatArea = ({
       }
       setInputValue("");
       renderConversation();
+    } else {
+      // Show error message if the input is empty
+      isEmptyPrompt("Please enter any prompt...!");
     }
   };
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -201,6 +207,9 @@ const ChatArea = ({
           <SendIcon2 />
         </button>
       </div>
+      {emptyPrompt && (
+        <div className="text-red-500 mt-2 ml-2">{emptyPrompt}</div>
+      )}
     </div>
   );
 };

@@ -159,12 +159,6 @@ const SearchFiles = ({
           </div>
         </div>
       )}
-      {vectorStoreId && (
-        <div className="flex items-center bg-gray-100 p-2 rounded-md">
-          <File size={24} />
-          <span className="text-sm truncate ml-2">{vectorStoreId}</span>
-        </div>
-      )}
     </>
   );
 };
