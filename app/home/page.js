@@ -23,13 +23,14 @@ import SixCard from "../cards/page";
 import SixCardVideo from "../cardsvideo/page";
 import SixCardTab from "../cardstab/page";
 import SixCardSwitch from "../cardsswitch/page";
+
 // I commented this bootstrapp CDN because of conflicting styles with tailwindcss, NB: I'll uncomment it as soon as reliable solution is found
 function Page() {
   return (
     <React.Fragment>
       <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
       <div className="sm:px-10 relative z-0">
-   
+
         {" "}
         <DragFeatures />
       </div>
