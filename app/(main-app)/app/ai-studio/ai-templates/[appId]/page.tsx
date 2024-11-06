@@ -92,6 +92,7 @@ export default function AiAppPage({
       : aiModelOptionsTemplate;
   const [appTemplate, setAppTemplate] = useState<any>({});
   const [userPrompts, setUserPrompts] = useState<string[]>([]); // Initialize as empty array
+  const [promptErrors, setPromptErrors] = useState<string[]>([]); // Array to store errors for each prompt
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [fileName, setFileName] = useState(""); // State for file name input
   const [loading, setLoading] = useState(true);
@@ -338,7 +339,6 @@ export default function AiAppPage({
 
   const [isStreaming, setIsStreaming] = useState(false);
 
-
   const streamResponse = async (chatId: string) => {
     try {
       const token = getCookie("token");
@@ -388,12 +388,15 @@ export default function AiAppPage({
       setUserInput1Error("");
     }
 
-    // if (userInput.user_prompt === ""){
-    //   setUserPromptError('Please Enter Your Prompt');
-    //   return;
-    // } else {
-    //   setUserPromptError('');
-    // }
+
+    // Validate prompts
+    const errors = userPrompts.map(prompt =>
+      !prompt ? "Please fill above field" : ""
+    );
+    setPromptErrors(errors);
+
+    // If there are any errors, prevent submission
+    if (errors.some(error => error)) return;
 
     setIsGeneratedResultPending(true);
     try {
@@ -442,6 +445,12 @@ export default function AiAppPage({
       const updatedPrompts = [...prevPrompts];
       updatedPrompts[index] = value;
       return updatedPrompts;
+    });
+
+    setPromptErrors(prevErrors => {
+      const updatedErrors = [...prevErrors];
+      updatedErrors[index] = ""; // Clear specific error
+      return updatedErrors;
     });
   };
 
@@ -862,13 +871,16 @@ export default function AiAppPage({
                       rows={4}
                       className="w-full p-4 rounded-xl resize-none bg-[#F2F2F2]"
                       placeholder={input.description}
-                      value={userPrompts[index]}
+                      value={userPrompts[index] || ""}
                       onChange={e => handleUserPromptChange(e, index)}
                       maxLength={2000}
                     ></textarea>
                   )}
                 {userPromptError && (
-                  <p style={{ color: "red" }}>{userPromptError}</p>
+                  <p style={{ color: "red", marginLeft:"5px" }}>{userPromptError}</p>
+                )}
+                {promptErrors[index] && (
+                  <div className="text-red-500 mt-1 ml-[5px]">{promptErrors[index]}</div>
                 )}
               </div>
             ))}
@@ -1251,7 +1263,12 @@ export default function AiAppPage({
             </div>
           </div>
           <div className="flex-1">
-            <Editor content={generatedContent} onChange={handleEditorChange} isLoading={isGeneratedResultPending} streaming={isStreaming} />
+            <Editor
+              content={generatedContent}
+              onChange={handleEditorChange}
+              isLoading={isGeneratedResultPending}
+              streaming={isStreaming}
+            />
           </div>
         </div>
       </div>

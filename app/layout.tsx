@@ -11,6 +11,7 @@ import "./layout.scss";
 import "aos/dist/aos.css";
 import "../styles/new.css";
 import Script from "next/script";
+import ClientProviders from "@/providers/ClientProvider";
 
 const poppins = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -67,7 +68,11 @@ export default function RootLayout({
         <StateProvider>
           <Suspense fallback={<SuspenseLoader />}>
             <Progressbar>
-              <main className="w-full">{children}</main>
+              <ClientProviders>
+                {" "}
+                {/* Moved client-specific providers here */}
+                <main className="w-full">{children}</main>
+              </ClientProviders>
             </Progressbar>
             <Toaster />
           </Suspense>

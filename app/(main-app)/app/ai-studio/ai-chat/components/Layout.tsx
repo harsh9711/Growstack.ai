@@ -157,7 +157,7 @@ const Layout = ({
         (acc: Message[], chats: any) => {
           const flattenedThreads = chats.thread.flatMap((thread: any) => [
             { role: "user", content: thread.user_prompt, loading: false },
-            { role: "assistant", content: thread.response, loading: false },
+            { role: "assistant", content: thread.response!=="[object Object]"?thread.response:'', loading: false },
           ]);
           return acc.concat(flattenedThreads);
         },

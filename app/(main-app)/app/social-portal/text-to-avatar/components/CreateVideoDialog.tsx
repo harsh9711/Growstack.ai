@@ -503,7 +503,7 @@ const CreateVideoDialog = ({
                       )}
                     </div>
                   </div>
-                  <div className="flex xl:flex-row md:flex-row flex-row flex-col 2xl:flex-row gap-x-6 w-full space-x-2">
+                  <div className="flex xl:flex-row md:flex-row flex-col 2xl:flex-row gap-x-6 w-full space-x-2">
                     <div className="flex flex-col w-[98%] space-y-2">
                       <label
                         htmlFor="objective"
@@ -687,6 +687,7 @@ const CreateVideoDialog = ({
                       <AvatarSelection
                         avatars={filteredAvatars}
                         onSelect={handleAvatarSelect}
+                        selectedAvatarId={selectedAvatar?.id || null}
                       />
                     </div>
                   </Motion>

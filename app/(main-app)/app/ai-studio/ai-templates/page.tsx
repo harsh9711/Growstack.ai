@@ -288,7 +288,7 @@ export default function AiAppTemplatesPage() {
           ) : (
             appTemplates.map(appTemplate => (
               <div key={appTemplate._id}>
-                <div className="flex items-center min-h-[130px] lg:min-h-[130px] min-h-[100px] justify-between gap-5 bg-white border border-[#EEF0F4] rounded-2xl p-6 shadow-xl shadow-gray-100 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer">
+                <div className="flex items-center min-h-[130px] lg:min-h-[130px] justify-between gap-5 bg-white border border-[#EEF0F4] rounded-2xl p-6 shadow-xl shadow-gray-100 transition-all duration-300 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer">
                   <Link
                     href={`/app/ai-studio/ai-templates/${appTemplate._id}`}
                     className="flex gap-4 items-start flex-grow overflow-hidden"

@@ -35,7 +35,7 @@ const page = () => {
   return (
     <main className="flex flex-col relative w-full overflow-hidden overflow-y-scroll mx-auto">
       <span className="relatvie z-20">
-        <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
+        <Navbar logoUrl="/imagelogo.svg" logoAlt="Custom Logo" />
       </span>
       <section>
         <div className="bg-[#E2F0CB4D] rounded-b-[60px] sm:rounded-none w-full  ">
