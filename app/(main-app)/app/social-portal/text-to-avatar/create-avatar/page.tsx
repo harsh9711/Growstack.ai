@@ -20,6 +20,7 @@ import DownloadCircle from "@/components/svgs/download";
 import Delete from "@/components/svgs/delete";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import Spinner from "@/components/Spinner";
+import Image from "next/image";
 
 interface FormData {
   title: string;
@@ -89,9 +90,7 @@ const CreateScript = () => {
 
   const handleAvatarSelect = (avatar: Avatar) => {
     setSelectedAvatar(avatar);
-    if (selectedAvatar) {
-      setIsSelectedAvatar(true);
-    }
+    setIsSelectedAvatar(true); // Set this to true immediately since we know we have a selection
   };
 
   useEffect(() => {
@@ -587,10 +586,6 @@ const PreviewScriptPage: React.FC<PreviewScriptPageProps> = ({
     thumbnailUrl: avatarThumbnil,
   };
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -640,6 +635,7 @@ const PreviewScriptPage: React.FC<PreviewScriptPageProps> = ({
                 <img
                   src={avatarThumbnil}
                   className="h-full w-full rounded-[20px] object-cover"
+                  alt="avatar thumbnail"
                 />
               </div>
               <div>
@@ -711,50 +707,6 @@ const PreviewScriptPage: React.FC<PreviewScriptPageProps> = ({
                     </>
                   )}
                 </button>
-                <div>
-                  <div className="relative inline-flex" ref={dropdownRef}>
-                    <button
-                      id="hs-dropdown-custom-icon-trigger"
-                      aria-haspopup="menu"
-                      aria-expanded={isOpen ? "true" : "false"}
-                      aria-label="Dropdown"
-                      type="button"
-                      className="flex bg-[#FFFFFF] rounded-[10px] h-[40px] w-[50px] items-center justify-center"
-                      onClick={toggleDropdown}
-                    >
-                      <MoreHorizontal />
-                    </button>
-
-                    <div
-                      className={`absolute right-0 z-10 transition-[opacity,margin] duration ${
-                        isOpen ? "opacity-100 block" : "opacity-0 hidden"
-                      } bg-white shadow-md rounded-lg mt-[50px] w-[150px] dark:bg-neutral-800 dark:border dark:border-neutral-700`}
-                      role="menu"
-                      aria-orientation="vertical"
-                      aria-labelledby="hs-dropdown-custom-icon-trigger"
-                    >
-                      <div className="p-1 space-y-0.5 w-[150px]">
-                        <button
-                          onClick={() => alert("Download clicked")}
-                          className="flex gap-3 items-center px-2 py-2 w-[150px] text-left text-gray-700 hover:bg-gray-100"
-                        >
-                          <DownloadCircle />
-                          Download
-                        </button>
-                        <button
-                          onClick={() => {
-                            setIsPreviewScriptPage(false);
-                            setIsSelectedAvatar(false);
-                          }}
-                          className="flex gap-3 items-center px-2 py-2 w-[150px] text-left hover:bg-gray-100"
-                        >
-                          <Delete />
-                          Delete
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
