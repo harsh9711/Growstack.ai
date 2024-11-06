@@ -118,11 +118,16 @@ export default function ChatComponent() {
       );
       const chatData = data.data.chats;
       const messages = chatData.flatMap((chats: any) =>
-        chats.thread.flatMap((thread: any) => [
-          { role: "user", content: thread.user_prompt, loading: false },
-          { role: "assistant", content: thread.response, loading: false },
-        ])
-      );
+        chats.thread.flatMap((thread: any) => {
+            const userContent = thread.user_prompt;
+            let assistantContent = typeof thread.response === 'object' ? JSON.stringify(thread.response) : thread.response;
+            assistantContent = assistantContent.replace("[object Object]", "");
+            return [
+                { role: "user", content: userContent, loading: false },
+                { role: "assistant", content: assistantContent, loading: false },
+            ];
+        })
+    );
       setMessages(messages);
       setSelectedConversation(_id);
     } catch (error) {
@@ -220,6 +225,7 @@ export default function ChatComponent() {
         chatId,
         noOfMessagesLeft,
         totalNoOfMessages,
+
       } = data.data as ChatResponse;
 
       if (isBasicPlan || isFreePlan) {
