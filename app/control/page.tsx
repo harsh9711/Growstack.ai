@@ -10,7 +10,7 @@ function Cta2() {
   }, []);
 
   return (
-    <div className="py-24  relative bg-[url('/greensvg.svg')] bg-cover bg-no-repeat">
+    <div className="py-10 sm:py-24   rounded-2xl relative bg-[url('/greensvg.svg')] bg-cover bg-no-repeat">
       <div className="container flex w-full flex-row  justify-center sm:justify-between mx-auto">
         <div className="flex flex-col sm:flex-row items-center">
           <div
@@ -22,7 +22,7 @@ function Cta2() {
             <span className="rounded-full  px-4 font-bold sm:text-[12px] text-[10px] py-2  bg-[#FFFFFF14] text-white   leading-tight">
               TAKE CONTROL
             </span>
-            <h3 className="text-white  sm:text-start text-center text-3xl sm:text-4xl font-bold my-5 leading-8">
+            <h3 className="text-white  sm:text-start text-center text-[16px]  leading-tight sm:text-[28px] font-bold my-5 ">
               On-The-Go with our mobile app{" "}
               <span className="font-medium">
                 integrated CRM platform built for success

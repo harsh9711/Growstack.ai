@@ -34,7 +34,7 @@ const Layout2 = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <main className="py-12 ">
+    <main className="sm:py-12 ">
       <div className="w-full flex flex-col items-center justify-center mx-auto gap-8">
         <div
           className="bg-white p-4 flex flex-row shadow-lg items-center justify-center mx-auto rounded-3xl w-full max-w-[653px] transition duration-500"
@@ -71,7 +71,7 @@ const SixCardTab = () => {
   }, []);
 
   return (
-    <div className="bg-gradient-to-b from-white to-[#F4F6F6] ">
+    <div className="">
       <div className="max-w-[1628px] rounded-b-[60px] bg-[#F4F6F6] flex flex-col justify-center items-center gap-10 w-full mx-auto p-10 shadow-2xl">
         <div
           className="max-w-[184px] rounded-2xl flex items-center justify-center w-full px-4 py-2 text-primary-lightgreen bg-[#2DA77114] shadow-md"
@@ -85,7 +85,7 @@ const SixCardTab = () => {
           className="flex flex-col justify-center text-center gap-6 w-full items-center"
           data-aos="fade-right"
         >
-          <h1 className="text-[30px] xl:text-[42px] w-full leading-tight font-semibold text-gray-800">
+          <h1 className="text-[24px] xl:text-[42px] w-full leading-tight font-semibold text-gray-800">
             Enterprise-strong <span className="font-light">foundation</span>
           </h1>
         </div>

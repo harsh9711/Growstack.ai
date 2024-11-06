@@ -40,14 +40,23 @@ function Page() {
       {/* <Facts /> */}
       {/* <Carousel /> */}
       {/* <PoweredBy /> */}
-      <Premium />
+      <section className="sm:px-0 px-6 ">
+        {" "}
+        <Premium />
+      </section>
       <SixCardTab />
-       {/* <SixCardSwitch /> */}
+      {/* <SixCardSwitch /> */}
       {/* <Capability /> */}
       {/* <Capability2 /> */}
-      <WhyChoose />
+      <section className="sm:px-0 px-6 py-10 sm:py-40 ">
+        {" "}
+        <WhyChoose />{" "}
+      </section>
       <FuturePlans />
-      <Cta2 />
+      <section className="sm:px-0 px-6 sm:mt-20 ">
+        {" "}
+        <Cta2 />{" "}
+      </section>
       <Faqs />
       <Footer />
     </React.Fragment>

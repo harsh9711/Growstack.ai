@@ -35,7 +35,7 @@ const Box = () => {
               <div className="loading-spinner" />
             </div>
           }
-          videoClassName="sm:rounded-2xl object-cover w-full h-full"
+          videoClassName="rounded-2xl object-cover w-full h-full"
         />
       </div>
     </div>
@@ -44,7 +44,7 @@ const Box = () => {
 
 const SixCardVideo = () => {
   return (
-    <div className="">
+    <div className="sm:p-0 p-6">
       <div className="max-w-fit flex flex-col items-center gap-y-6 sm:gap-y-8 w-full mx-auto sm:pb-40">
         <div
           className="flex flex-col text-center gap-6 w-full justify-between items-center"
@@ -58,7 +58,7 @@ const SixCardVideo = () => {
               GROWSTACK FACTS
             </h2>
           </div>
-          <h1 className="text-[28px] xl:text-[40px] w-full leading-tight font-semibold text-black">
+          <h1 className="text-[16px] sm:text-[28px] xl:text-[40px] w-full leading-tight font-semibold text-black">
             Hit play and unlock 10x your growth{" "}
             <span className="font-light">in just 1/10th the time!</span>
           </h1>

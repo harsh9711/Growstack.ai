@@ -390,7 +390,7 @@ const Company = () => {
   return (
     <div>
       <div className="max-w-[1340px] flex flex-col sm:items-start items-center gap-y-6 sm:gap-y-8 w-full mx-auto">
-        <div className="flex flex-row items-center gap-y-6 p-6 max-w-[1240px] w-full rounded-[30px] ">
+        <div className="flex flex-row items-center gap-y-6 sm:p-6 max-w-[1240px] w-full rounded-[30px] ">
           <Box />
         </div>
       </div>

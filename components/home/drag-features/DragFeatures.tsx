@@ -2,7 +2,7 @@ import Image from "next/image";
 import DragingBoard from "./DragingBoard";
 import SectionHeader from "./SectionHeader";
 import FeaturesCategory from "./category/FeaturesCategory";
-import "../../../styles/animate.css"
+import "../../../styles/animate.css";
 export default function DragFeatures() {
   return (
     <section className="rounded-3xl 2xl:mt-6 bg-gradient-to-b from-[#2DA771]/100 to-[#00693B]/100 sm:bg-[url('/landingpagerevamp/drag.svg')] bg-[100%] bg-cover bg-no-repeat animated-bg">

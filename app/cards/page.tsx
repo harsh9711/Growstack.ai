@@ -91,7 +91,7 @@ const Box = () => {
 
 const SixCard = () => {
   return (
-    <div className="py-8">
+    <div className="py-8 sm:p-0 p-6">
       <div className="max-w-[1340px] flex flex-col sm:items-start items-center gap-y-6 sm:gap-y-8 w-full mx-auto sm:py-40">
         <div
           className="max-w-[184px] rounded-2xl flex items-center justify-center w-full px-4 py-2 text-primary-lightgreen bg-[#2DA77114]"
@@ -105,7 +105,7 @@ const SixCard = () => {
           className="flex flex-col sm:text-start text-center gap-6 w-full justify-between items-center sm:items-start"
           data-aos="fade-right"
         >
-          <h1 className="text-[28px] xl:text-[40px] w-full leading-tight font-semibold text-black">
+          <h1 className="text-[16px] sm:text-[28px] xl:text-[40px] w-full leading-tight font-semibold text-black">
             What value do <span className="font-light">we add? </span>
           </h1>
         </div>
