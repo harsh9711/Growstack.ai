@@ -45,6 +45,7 @@ const PricingPage: React.FC = () => {
 
 
   //dummy commit
+  // dummy commit AS
 
   useLayoutEffect(() => {
     const hasRefreshedBefore = localStorage.getItem("hasRefreshed");
