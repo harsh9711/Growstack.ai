@@ -45,6 +45,9 @@ import { BrandVoice } from "@/types/common";
 import Wave from "@/components/svgs/wave";
 import ExternalLink from "@/components/svgs/externalLink";
 import Ellipse from "@/components/svgs/ellipse";
+import GlobalModal from "@/components/modal/global.modal";
+import UpgradePlan from "@/components/upgradePlan/upgradePlan";
+import SubscribePlan from "@/components/subscribePlan/subscribePlan";
 
 type Message = {
   content: string;
@@ -59,10 +62,15 @@ export default function ChatComponent() {
     (rootState: RootState) => rootState.auth
   );
 
+  const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some(
+    val => val === currentPlan?.plan_id
+  );
+
+  const isFreePlan = planIdsMap[PlanName.FREE].some(
+    val => val === currentPlan?.plan_id
+  );
   const filteredAiModelOptions =
-    user?.user_type !== "ADMIN" &&
-    currentPlan &&
-    planIdsMap[PlanName.AI_ESSENTIALS].some(val => val === currentPlan.plan_id)
+    user?.user_type !== "ADMIN" && currentPlan && (isBasicPlan || isFreePlan)
       ? [aiModelOptions[0]]
       : aiModelOptions;
   const [enableWebAccess, setEnableWebAccess] = useState<boolean>(false);
@@ -75,6 +83,10 @@ export default function ChatComponent() {
   const [selectedModel, setSelectedModel] = useState<string>(
     filteredAiModelOptions[0].models[0].value || ""
   );
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState<boolean>(false);
+  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] =
+    useState<boolean>(false);
+
   const [secureChatEnabled, setSecureChatEnabled] = useState<boolean>(false);
   const [isDailyLimitExceeded, setIsDailyLimitExceeded] = useState(false);
   const [isDashboardChatModalOpen, setIsDashboardChatModalOpen] =
@@ -106,11 +118,16 @@ export default function ChatComponent() {
       );
       const chatData = data.data.chats;
       const messages = chatData.flatMap((chats: any) =>
-        chats.thread.flatMap((thread: any) => [
-          { role: "user", content: thread.user_prompt, loading: false },
-          { role: "assistant", content: thread.response, loading: false },
-        ])
-      );
+        chats.thread.flatMap((thread: any) => {
+            const userContent = thread.user_prompt;
+            let assistantContent = typeof thread.response === 'object' ? JSON.stringify(thread.response) : thread.response;
+            assistantContent = assistantContent.replace("[object Object]", "");
+            return [
+                { role: "user", content: userContent, loading: false },
+                { role: "assistant", content: assistantContent, loading: false },
+            ];
+        })
+    );
       setMessages(messages);
       setSelectedConversation(_id);
     } catch (error) {
@@ -208,13 +225,10 @@ export default function ChatComponent() {
         chatId,
         noOfMessagesLeft,
         totalNoOfMessages,
+
       } = data.data as ChatResponse;
 
-      const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some(
-        val => val === currentPlan?.plan_id
-      );
-
-      if (isBasicPlan) {
+      if (isBasicPlan || isFreePlan) {
         if (noOfMessagesLeft && totalNoOfMessages) {
           if (noOfMessagesLeft <= 0) {
             setIsDailyLimitExceeded(true);
@@ -298,8 +312,6 @@ export default function ChatComponent() {
       return;
     }
 
-    console.log("Usage limit:", currentModal);
-
     if (currentModal.value === "perplexity") {
       setEnableWebAccess(true);
       setSelectedBrandVoice("");
@@ -317,9 +329,6 @@ export default function ChatComponent() {
       chatInputRef.current.handleRegenerate(chartMessage);
     }
   };
-  const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some(
-    val => val === currentPlan?.plan_id
-  );
 
   useEffect(() => {
     if (brandVoices?.length > 0) {
@@ -331,18 +340,34 @@ export default function ChatComponent() {
   }, [brandVoices]);
 
   const onChange = () => {
-    if (enableWebAccess) {
-      setEnableWebAccess(false);
-      setSelectedModel("growstack-llm");
+    if ((isBasicPlan || isFreePlan) && user?.user_type !== "ADMIN") {
+      isFreePlan
+        ? setIsSubscriptionModalOpen(true)
+        : setIsUpgradeModalOpen(true);
     } else {
-      setEnableWebAccess(true);
-      setSelectedModel("perplexity");
-      setSelectedBrandVoice("");
+      if (enableWebAccess) {
+        setEnableWebAccess(false);
+        setSelectedModel("growstack-llm");
+      } else {
+        setEnableWebAccess(true);
+        setSelectedModel("perplexity");
+        setSelectedBrandVoice("");
+      }
+    }
+  };
+
+  const handleSecureChatChange = () => {
+    if (user?.user_type !== "ADMIN" && (isBasicPlan || isFreePlan)) {
+      isFreePlan
+        ? setIsSubscriptionModalOpen(true)
+        : setIsUpgradeModalOpen(true);
+    } else {
+      setSecureChatEnabled(!secureChatEnabled);
     }
   };
 
   useEffect(() => {
-    if (isBasicPlan) {
+    if (isBasicPlan || isFreePlan) {
       setSelectedModel("growstack-llm");
     } else {
       setSelectedModel("gpt-4o-mini");
@@ -352,7 +377,7 @@ export default function ChatComponent() {
   const handleBrandVoiceSelection = (value: string) => {
     setSelectedBrandVoice(value);
     if (selectedModel === "perplexity") {
-      if (isBasicPlan) {
+      if (isBasicPlan || isFreePlan) {
         setSelectedModel("growstack-llm");
       } else {
         setSelectedModel("gpt-4o-mini");
@@ -362,11 +387,11 @@ export default function ChatComponent() {
 
   const handleMouseEnter = () => {
     setIsDashboardChatModalOpen(true);
-  }
- 
+  };
+
   const handleMouseLeave = () => {
     setIsDashboardChatModalOpen(false);
-  }
+  };
 
   return (
     <div
@@ -411,62 +436,55 @@ export default function ChatComponent() {
         </div>
         <div className="flex flex-row items-center justify-center gap-3">
           <div className="hidden xl:block">
-            {(!isBasicPlan || user?.user_type === "ADMIN") && (
-              <div className="flex ">
-                <div className="flex items-center gap-2">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Info
-                          size={18}
-                          className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent
-                        className="bg-white"
-                        style={{ width: "400px", zIndex: "1000" }}
-                      >
-                        <p>
-                          Blocks PII, jailbreaks, gibberish, toxicity, nudity,
-                          prompt injections, and celebrity content.
-                        </p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                  <div className="text-md  text-nowrap font-medium">
-                    Secure Chat
-                  </div>
-                  <Switch
-                    checked={secureChatEnabled}
-                    onCheckedChange={() =>
-                      setSecureChatEnabled(!secureChatEnabled)
-                    }
-                  />
+            <div className="flex ">
+              <div className="flex items-center gap-2">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Info
+                        size={18}
+                        className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
+                      />
+                    </TooltipTrigger>
+                    <TooltipContent
+                      className="bg-white"
+                      style={{ width: "400px", zIndex: "1000" }}
+                    >
+                      <p>
+                        Blocks PII, jailbreaks, gibberish, toxicity, nudity,
+                        prompt injections, and celebrity content.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                <div className="text-md  text-nowrap font-medium">
+                  Secure Chat
                 </div>
-                <div className="gap-2 flex pr-2 py-1.5 items-center border-r-2 border-[#EBEBEB]">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Info
-                          size={18}
-                          className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
-                        />
-                      </TooltipTrigger>
-                      <TooltipContent side="bottom" className="bg-white">
-                        <p>To access real-time data, please enable it.</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                  <span className="text-md  text-nowrap flex flex-row gap-x-2 font-medium">
-                    Web chat
-                  </span>
-                  <Switch
-                    checked={enableWebAccess}
-                    onCheckedChange={onChange}
-                  />
-                </div>
+                <Switch
+                  checked={secureChatEnabled}
+                  onCheckedChange={handleSecureChatChange}
+                />
               </div>
-            )}
+              <div className="gap-2 flex pr-2 py-1.5 items-center border-r-2 border-[#EBEBEB]">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Info
+                        size={18}
+                        className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
+                      />
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom" className="bg-white">
+                      <p>To access real-time data, please enable it.</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+                <span className="text-md  text-nowrap flex flex-row gap-x-2 font-medium">
+                  Web chat
+                </span>
+                <Switch checked={enableWebAccess} onCheckedChange={onChange} />
+              </div>
+            </div>
           </div>
 
           <Select
@@ -611,63 +629,58 @@ export default function ChatComponent() {
                   </div>
                 </div>
                 <div className="block xl:hidden">
-                  {(!isBasicPlan || user?.user_type === "ADMIN") && (
-                    <div className="flex ">
-                      <div className="flex items-center gap-2">
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Info
-                                size={18}
-                                className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
-                              />
-                            </TooltipTrigger>
-                            <TooltipContent
-                              className="bg-white"
-                              style={{ width: "400px", zIndex: "1000" }}
-                            >
-                              <p>
-                                Blocks PII, jailbreaks, gibberish, toxicity,
-                                nudity, prompt injections, and celebrity
-                                content.
-                              </p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                        <div className="text-md  text-nowrap font-medium">
-                          Secure Chat
-                        </div>
-                        <Switch
-                          checked={secureChatEnabled}
-                          onCheckedChange={() =>
-                            setSecureChatEnabled(!secureChatEnabled)
-                          }
-                        />
+                  <div className="flex ">
+                    <div className="flex items-center gap-2">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Info
+                              size={18}
+                              className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
+                            />
+                          </TooltipTrigger>
+                          <TooltipContent
+                            className="bg-white"
+                            style={{ width: "400px", zIndex: "1000" }}
+                          >
+                            <p>
+                              Blocks PII, jailbreaks, gibberish, toxicity,
+                              nudity, prompt injections, and celebrity content.
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      <div className="text-md  text-nowrap font-medium">
+                        Secure Chat
                       </div>
-                      <div className="gap-2 flex pr-4 py-1.5 items-center">
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Info
-                                size={18}
-                                className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
-                              />
-                            </TooltipTrigger>
-                            <TooltipContent side="bottom" className="bg-white">
-                              <p>To access real-time data, please enable it.</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                        <span className="text-md  gap-x-2 text-nowrap font-medium">
-                          Web chat
-                        </span>
-                        <Switch
-                          checked={enableWebAccess}
-                          onCheckedChange={onChange}
-                        />
-                      </div>
+                      <Switch
+                        checked={secureChatEnabled}
+                        onCheckedChange={handleSecureChatChange}
+                      />
                     </div>
-                  )}
+                    <div className="gap-2 flex pr-4 py-1.5 items-center">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Info
+                              size={18}
+                              className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
+                            />
+                          </TooltipTrigger>
+                          <TooltipContent side="bottom" className="bg-white">
+                            <p>To access real-time data, please enable it.</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      <span className="text-md  gap-x-2 text-nowrap font-medium">
+                        Web chat
+                      </span>
+                      <Switch
+                        checked={enableWebAccess}
+                        onCheckedChange={onChange}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-4 -mt-24">
@@ -721,6 +734,33 @@ export default function ChatComponent() {
           setFilename={setFilename}
         />
       </div>
+      <GlobalModal
+        showCloseButton
+        open={isUpgradeModalOpen}
+        setOpen={() => {
+          setIsUpgradeModalOpen(false);
+        }}
+      >
+        <UpgradePlan
+          goBackHandler={() => {
+            setIsUpgradeModalOpen(false);
+          }}
+        />
+      </GlobalModal>
+
+      <GlobalModal
+        showCloseButton
+        open={isSubscriptionModalOpen}
+        setOpen={() => {
+          setIsSubscriptionModalOpen(false);
+        }}
+      >
+        <SubscribePlan
+          goBackHandler={() => {
+            setIsSubscriptionModalOpen(false);
+          }}
+        />
+      </GlobalModal>
     </div>
   );
 }

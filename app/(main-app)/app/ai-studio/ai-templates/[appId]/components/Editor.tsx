@@ -12,9 +12,10 @@ interface EditorProps {
   content: string;
   onChange: (content: string) => void;
   isLoading: boolean;
+  streaming: boolean;
 }
 
-const Editor = ({ content, onChange, isLoading }: EditorProps) => {
+const Editor = ({ content, onChange, isLoading, streaming }: EditorProps) => {
   const [value, setValue] = useState("");
 
   useEffect(() => {
@@ -79,6 +80,7 @@ const Editor = ({ content, onChange, isLoading }: EditorProps) => {
         onChange={handleChange}
         modules={modules}
         formats={formats}
+        readOnly={streaming}
         className="h-[calc(100%-40px)]"
       />
     </div>

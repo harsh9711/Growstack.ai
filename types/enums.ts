@@ -1,4 +1,5 @@
 export enum PlanName {
+  FREE = "FREE",
   SOCIAL_PORTAL = "Social Portal",
   AI_STUDIO = "AI Studio",
   AUTOMATION_HUB = "Automation Hub",
@@ -12,4 +13,13 @@ export enum InputFieldType {
   SELECT_LIST = "SELECT_LIST",
   CHECKBOX = "CHECKBOX",
   RADIO = "RADIO",
+}
+
+export enum WorkflowInputFieldType {
+  SHORT_TEXT = "SHORT_TEXT",
+  LONG_TEXT = "LONG_TEXT",
+  BOOLEAN = "BOOLEAN",
+  NUMBER = "NUMBER",
+  CHECKLIST = "CHECKLIST",
+  FILE_UPLOAD = "FILE_UPLOAD",
 }

@@ -15,8 +15,8 @@ import GlobalModal from "./modal/global.modal";
 import { useDispatch } from "react-redux";
 import CouponModal from "./modal/coupon.modal";
 import { ALL_ROUTES } from "@/utils/constant";
-import { useRouter } from "next/navigation";
 import { setUserPlan } from "@/lib/features/auth/auth.slice";
+import { useRouter } from "next/navigation";
 
 const PlanCard = ({
   plan,

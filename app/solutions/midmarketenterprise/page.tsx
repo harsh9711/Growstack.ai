@@ -22,7 +22,7 @@ const page = () => {
   return (
     <main className="flex flex-col relative overflow-hidden mx-auto">
       <span className="relatvie z-20">
-        <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
+        <Navbar logoUrl="/imagelogo.svg" logoAlt="Custom Logo" />
       </span>
       <section className="bg-[#034737] rounded-b-[60px] sm:rounded-b-[0px] w-full  mb-20">
         <div className="relative flex items-center max-w-[1220px] 2xl:max-w-[1350px] 2xl:p-0 p-4 w-full 2xl:max-h-[1112px] sm:max-h-[800px]  h-full justify-center mx-auto">
