@@ -20,9 +20,14 @@ instance.interceptors.request.use(
   }
 );
 instance.interceptors.response.use(
+<<<<<<< HEAD
+  (res) => {
+    return res
+=======
   res => {
     // console.log(res);
     return res;
+>>>>>>> 65ce5f70852844a5b76b473fb7dfec519ae56444
   },
   error => {
     // console.log(error);

@@ -1,0 +1,26 @@
+/* Define the water quavering ripple effect */
+@keyframes waterRipple {
+    0%, 100% {
+      transform: scale(1);
+      filter: blur(0px);
+    }
+    50% {
+      transform: scale(1.05); /* Slightly increase size to simulate ripple */
+      filter: blur(2px); /* Add blur for a more fluid effect */
+    }
+  }
+  
+  /* Apply the animation */
+  .water-quavering-effect {
+    animation: waterRipple 5s infinite ease-in-out; /* Slow ripple effect */
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Optional: When hovered, the effect can stop */
+  .water-quavering-effect:hover {
+    animation: none; /* Stop the quavering effect when hovering */
+  }
+  

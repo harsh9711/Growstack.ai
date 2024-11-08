@@ -130,19 +130,19 @@ const links = [
       { title: "Startup", path: "/solutions/startup", img: "/navbar/12.svg" },
       {
         title: "Technology",
-        path: "/solutions/technology",
+        path: "/solutions/technology-industry",
         img: "/navbar/13.svg",
       },
       {
         title: "Retail",
-        path: "/solutions/retail",
+        path: "/solutions/retail-industry",
         img: "/navbar/14.svg",
       },
-      {
-        title: "Insurance",
-        path: "/solutions/insurance",
-        img: "/navbar/15.svg",
-      },
+      // {
+      //   title: "Insurance",
+      //   path: "/solutions/insurance",
+      //   img: "/navbar/15.svg",
+      // },
       {
         title: "Healthcare",
         path: "/solutions/healthcare",
@@ -155,19 +155,19 @@ const links = [
       },
       {
         title: "Media & Publishing",
-        path: "/solutions/media-publishing",
+        path: "/solutions/media_and_publishing",
         img: "/navbar/18.svg",
       },
-      {
-        title: "Real Estate",
-        path: "/solutions/real-estate",
-        img: "/navbar/19.svg",
-      },
-      {
-        title: "Education",
-        path: "/solutions/education",
-        img: "/navbar/20.svg",
-      },
+      // {
+      //   title: "Real Estate",
+      //   path: "/solutions/real-estate",
+      //   img: "/navbar/19.svg",
+      // },
+      // {
+      //   title: "Education",
+      //   path: "/solutions/education",
+      //   img: "/navbar/20.svg",
+      // },
     ],
   },
   // {
