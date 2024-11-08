@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Facts from "/components/home/facts/facts";
 import Carousel from "../carousel/page";
 import Footer from "@/components/footer/Footer";
@@ -26,6 +26,8 @@ import SixCardSwitch from "../cardsswitch/page";
 
 // I commented this bootstrapp CDN because of conflicting styles with tailwindcss, NB: I'll uncomment it as soon as reliable solution is found
 function Page() {
+  const [isFormFocused, setIsFormFocused] = useState(true);
+
   return (
     <React.Fragment>
       <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
