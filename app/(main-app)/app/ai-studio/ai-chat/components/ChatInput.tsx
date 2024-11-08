@@ -27,7 +27,7 @@ import { PlanName } from "@/types/enums";
 
 interface ChatInputProps {
   selectedBrandVoice?: BrandVoice;
-  onSend: (content: string, role: string, imageUrl:string) => void;
+  onSend: (content: string, role: string, imageUrl: string) => void;
   selectedModel: string;
   fetchConversations: () => void;
   removeMessage: () => void;
@@ -92,7 +92,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
     const [lastPrompt, setLastPrompt] = useState("");
     const [showSecureChatErrorMsg, setShowSecureChatErrorMsg] = useState(false);
     const [error, setError] = useState(false);
-    const [emptyPrompt, isEmptyPrompt] = useState('');
+    const [emptyPrompt, isEmptyPrompt] = useState("");
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const { startRecognition, stopRecognition, textToSpeech } =
       useSpeechRecognition(
@@ -125,20 +125,20 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
       user_prompt?: string,
       fromMic: boolean = false
     ) => {
-
-      if (input.trim() === '') {
+ 
+      if (!user_prompt && input.trim() === '') {
         isEmptyPrompt('Please enter any prompt...!');
         return;
       }
-
+ 
       isEmptyPrompt('');
-
+ 
       if (user_prompt) {
         user_prompt = user_prompt.trim();
       }
       setShowSecureChatErrorMsg(false);
-      const prompt = user_prompt || input.trim();
-      if (prompt === "" && !(imageUrl || fileUrl)) return;
+      const prompt = user_prompt ? user_prompt.trim() : input.trim();
+      if (!prompt && !(imageUrl || fileUrl)) return;
       setInput("");
       addMessage("user", prompt, false);
       const temp_img = imageUrl;
@@ -164,7 +164,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
         if (enableWebBrowsing) {
           apiUrl += `&webBrowsing=${enableWebBrowsing}`;
         }
-
+ 
         const conversation = await instance.post(apiUrl, {
           user_prompt: prompt,
           image_url: temp_img,
@@ -175,7 +175,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
             brand_voice: selectedBrandVoice.brand_voice,
           }),
         });
-
+ 
         if (imageUrl || fileUrl) {
           setImageUrl(null);
           setFileUrl(null);
@@ -189,7 +189,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
           noOfMessagesLeft,
           totalMessages,
         } = conversation.data.data as ChatResponse;
-
+ 
         if (isFreePlan) {
           if (noOfMessagesLeft && totalMessages) {
             if (noOfMessagesLeft < 0) {
@@ -203,7 +203,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
         setNewConversationId(conversation_id);
         await streamResponse(chatId, fromMic);
         if (selectedConversation || conversation_id) fetchConversations();
-
+ 
         if (fromMic) {
           setIsAnimating(true);
           setOpen(true);
@@ -211,7 +211,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
         }
       } catch (error: any) {
         const errorMsg = error.response?.data.error ?? error.message;
-
+ 
         if (errorMsg === "Please upgrade your plan") {
           setIsDailyLimitExceeded(true);
         }
@@ -230,6 +230,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
         setIsLoading(false);
       }
     };
+ 
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files ? e.target.files[0] : null;
@@ -375,21 +376,21 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
         );
 
         let accumulatedResponse = "";
-eventSource.onmessage = (event: MessageEvent) => {
-  let imageUrl = "";
-  const chunk = event.data;
-  const parsedData = parseJsonString(chunk);
-  const msg = parsedData?.text || "";
-  accumulatedResponse += msg ;
-  const imageMarkdownRegex = /!\[.*?\]\((https?:\/\/[^\s]+)\)/;
-  const imageMatch = chunk.match(imageMarkdownRegex);
+        eventSource.onmessage = (event: MessageEvent) => {
+          let imageUrl = "";
+          const chunk = event.data;
+          const parsedData = parseJsonString(chunk);
+          const msg = parsedData?.text || "";
+          accumulatedResponse += msg;
+          const imageMarkdownRegex = /!\[.*?\]\((https?:\/\/[^\s]+)\)/;
+          const imageMatch = chunk.match(imageMarkdownRegex);
 
-  if (imageMatch && imageMatch[1]) {
-    imageUrl = imageMatch[1];
-    accumulatedResponse += chunk;
-  }
-  onSend(accumulatedResponse, "assistant", imageUrl);
-};
+          if (imageMatch && imageMatch[1]) {
+            imageUrl = imageMatch[1];
+            accumulatedResponse += chunk;
+          }
+          onSend(accumulatedResponse, "assistant", imageUrl);
+        };
 
         eventSource.onerror = (error: MessageEvent) => {
           console.error("EventSource failed:", error);
@@ -433,7 +434,7 @@ eventSource.onmessage = (event: MessageEvent) => {
           .data as ChatResponse;
 
         setSelectedConversation(conversation_id);
-        onSend(response, "assistant","");
+        onSend(response, "assistant", "");
       } catch (error: any) {
         const errorMsg = error.response?.data.error ?? error.message;
         toast.error(errorMsg);
@@ -620,7 +621,7 @@ eventSource.onmessage = (event: MessageEvent) => {
               onChange={e => {
                 setInput(e.target.value);
                 setShowSecureChatErrorMsg(false);
-                isEmptyPrompt('');
+                isEmptyPrompt("");
               }}
               onKeyDown={handleKeyDown}
               rows={1}
@@ -758,12 +759,9 @@ eventSource.onmessage = (event: MessageEvent) => {
             <SendIcon2 />
           </button>
         </div>
-        {
-          emptyPrompt && (
-          <div className="text-red-500 mt-2 ml-2">
-              {emptyPrompt}
-          </div>)
-        }
+        {emptyPrompt && (
+          <div className="text-red-500 mt-2 ml-2">{emptyPrompt}</div>
+        )}
         {showSecureChatErrorMsg && (
           <p className="text-destructive mt-3 ml-2 transition duration-500">
             Input contains sensitive or harmful content. Please remove any

@@ -109,21 +109,21 @@ const navLinks: NavLink[] = [
         name: "AI backdrop",
         href: ALL_ROUTES.AI_BACKGROUND_GENERATOR,
       },
-      {
-        icon: <SchedulerIcon />,
-        name: "Social media scheduler",
-        href: "/app/publish/scheduler/quick-posting",
-      },
-      {
-        icon: <SquareShapeIcon />,
-        name: "Social media conversation hub",
-        href: "/app/engage/Social-media",
-      },
-      {
-        icon: <PresentationAnalyticsIcon />,
-        name: "Social media analytics",
-        href: "/app/analyse/social-media",
-      },
+      // {
+      //   icon: <SchedulerIcon />,
+      //   name: "Social media scheduler",
+      //   href: "/app/publish/scheduler/quick-posting",
+      // },
+      // {
+      //   icon: <SquareShapeIcon />,
+      //   name: "Social media conversation hub",
+      //   href: "/app/engage/Social-media",
+      // },
+      // {
+      //   icon: <PresentationAnalyticsIcon />,
+      //   name: "Social media analytics",
+      //   href: "/app/analyse/social-media",
+      // },
 
       // {
       //   icon: <DocumentIcon />,
