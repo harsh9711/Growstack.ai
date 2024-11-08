@@ -8,10 +8,11 @@ import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
-import { login } from "@/lib/features/auth/auth.slice";
+import { login, logout } from "@/lib/features/auth/auth.slice";
 import Spinner from "@/components/Spinner";
-import { setCookie } from "cookies-next";
+import { deleteCookie, setCookie } from "cookies-next";
 import { ALL_ROUTES } from "@/utils/constant";
+import { persistor } from "@/lib/store";
 
 const PricingPage: React.FC = () => {
   const searchParams = useSearchParams();
@@ -33,14 +34,21 @@ const PricingPage: React.FC = () => {
       router.push(ALL_ROUTES.LOGIN);
     }
   }, [searchParams, router, dispatch]);
-
+  const handleLogout = () => {
+    localStorage.clear();
+    dispatch(logout());
+    persistor.purge();
+    deleteCookie("token");
+    router.push("/auth/login");
+  };
   const fetchUserAfterPaymentSuccess = async () => {
     setIsPending(true);
     try {
       const userData = (await instance.get(`${API_URL}/users/api/v1`)).data
         ?.data;
       dispatch(login(userData));
-      router.push("/app");
+      handleLogout()
+      // router.push("/app");
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
