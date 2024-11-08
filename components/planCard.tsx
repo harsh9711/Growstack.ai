@@ -15,8 +15,8 @@ import GlobalModal from "./modal/global.modal";
 import { useDispatch } from "react-redux";
 import CouponModal from "./modal/coupon.modal";
 import { ALL_ROUTES } from "@/utils/constant";
-import { setUserPlan } from "@/lib/features/auth/auth.slice";
 import { useRouter } from "next/navigation";
+import { setUserPlan } from "@/lib/features/auth/auth.slice";
 
 const PlanCard = ({
   plan,
@@ -65,6 +65,7 @@ const PlanCard = ({
         dispatch(setUserPlan(data));
         toast.success("Subscription successful");
         router.push(ALL_ROUTES.APP);
+      
       } else {
         toast.error("An error occurred");
       }

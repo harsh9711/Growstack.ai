@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Facts from "/components/home/facts/facts";
 import Carousel from "../carousel/page";
 import Footer from "@/components/footer/Footer";
@@ -19,9 +19,15 @@ import Navbar from "@/components/navbar/Navbar";
 import Animation from "../animation/page";
 import Capability2 from "../colorBox/page";
 import Cta2 from "../control/page";
+import SixCard from "../cards/page";
+import SixCardVideo from "../cardsvideo/page";
+import SixCardTab from "../cardstab/page";
+import SixCardSwitch from "../cardsswitch/page";
 import AnimationStory from "../animationstory/page";
 // I commented this bootstrapp CDN because of conflicting styles with tailwindcss, NB: I'll uncomment it as soon as reliable solution is found
 function Page() {
+  const [isFormFocused, setIsFormFocused] = useState(true);
+
   return (
     <React.Fragment>
       <Navbar logoUrl="/imagelogo.svg" logoAlt="Custom Logo" />
@@ -34,19 +40,29 @@ function Page() {
       </div>
       {/* <Banner /> */}
       <OurProcess />
-      {/* <Features /> */}
+      {/* <Features /> */} <SixCard />
+      <SixCardVideo />
       <Animation />
-  
-      <Facts />
-      <Carousel />
-
-      <PoweredBy />
-      <Premium />
+      {/* <Facts /> */}
+      {/* <Carousel /> */}
+      {/* <PoweredBy /> */}
+      <section className="sm:px-0 px-6 ">
+        {" "}
+        <Premium />
+      </section>
+      <SixCardTab />
+      {/* <SixCardSwitch /> */}
       {/* <Capability /> */}
-      <Capability2/>
-      <WhyChoose />
+      {/* <Capability2 /> */}
+      <section className="sm:px-0 px-6 py-10 sm:py-40 ">
+        {" "}
+        <WhyChoose />{" "}
+      </section>
       <FuturePlans />
-       <Cta2 />
+      <section className="sm:px-0 px-6 sm:mt-20 ">
+        {" "}
+        <Cta2 />{" "}
+      </section>
       <Faqs />
       <Footer />
     </React.Fragment>
