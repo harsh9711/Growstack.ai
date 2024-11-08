@@ -1,7 +1,7 @@
 @import "../../../app/variables.scss";
 .premium{
     padding: 15px 0;
-    background: #FAFBFC;
+    background: #ffffff;
     overflow: hidden;
     @media (max-width: $breakpoint_mobile_portrait) {
        padding: 40px 0;
@@ -16,13 +16,13 @@
     max-width: 700px;
     h3{
         font-size: 34px;
-        color: #000;
+        color: #ffffff;
         font-weight: bold;
         margin: 20px 0;
         line-height: 44px;
         span{
             font-size: 12px;
-            color: #8e8e8e;
+            color: #ffffff;
             @media (max-width: $breakpoint_tablet) {
                 display: block;
                 line-height: normal;

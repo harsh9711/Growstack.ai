@@ -43,7 +43,7 @@ export default function CategoryBtn(props: CategoryProps) {
       className={cn(
         "group flex-1 inline-flex items-center justify-center space-x-2 !p-4 2xl:!px-5 !py-1.5 2xl:py-2 border border-[#F1F1F1] hover:border-primary-green hover:text-primary-green rounded-[61px] text-black transition-all",
         isActive &&
-          "text-white bg-primary-green border-primary-green hover:text-white"
+          "text-white bg-[#2DA771] border-[#2DA771] hover:text-white"
       )}
     >
       <span

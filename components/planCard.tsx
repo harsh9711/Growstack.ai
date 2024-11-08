@@ -15,8 +15,8 @@ import GlobalModal from "./modal/global.modal";
 import { useDispatch } from "react-redux";
 import CouponModal from "./modal/coupon.modal";
 import { ALL_ROUTES } from "@/utils/constant";
-import { setUserPlan } from "@/lib/features/auth/auth.slice";
 import { useRouter } from "next/navigation";
+import { setUserPlan } from "@/lib/features/auth/auth.slice";
 
 const PlanCard = ({
   plan,
@@ -53,9 +53,9 @@ const PlanCard = ({
       };
       setIsOpen(false);
       const currentPath = localStorage.getItem("currentPathname");
-
+      const currentUrl = currentPath ? currentPath : window.origin + '/app'
       const response = await instance.post(
-        `${API_URL}/users/api/v1/payments/create-checkout-session?currentPath=${currentPath}`,
+        `${API_URL}/users/api/v1/payments/create-checkout-session?currentPath=${currentUrl}`,
         { product }
       );
       const { url, data } = response.data;
@@ -64,7 +64,8 @@ const PlanCard = ({
       } else if (data) {
         dispatch(setUserPlan(data));
         toast.success("Subscription successful");
-        router.push("/app");
+        router.push(ALL_ROUTES.APP);
+
       } else {
         toast.error("An error occurred");
       }
@@ -171,9 +172,8 @@ const PlanCard = ({
         >
           {plan.featureList.map((feature, index) => (
             <p
-              className={`flex text-[12px] xl:text-[18px] ${
-                index === 0 && !isBasicPlan ? "font-bold" : "font-medium"
-              } items-center gap-x-2`}
+              className={`flex text-[12px] xl:text-[18px] ${index === 0 && !isBasicPlan ? "font-bold" : "font-medium"
+                } items-center gap-x-2`}
               key={index}
             >
               <span className="w-5 h-5 flex items-center justify-center">
@@ -230,9 +230,8 @@ const PlanCard = ({
               </div>
             ) : (
               <button
-                className={`  ${(loading || isDowngrade) && "cursor-not-allowed"} ${
-                  plan.buttonStyle
-                } group-hover:bg-[#034737] items-center justify-center mx-auto border-[#034737] rounded-xl py-4 w-full transition-all duration-300 hover:bg-[#034737] hover:text-white`}
+                className={`  ${(loading || isDowngrade) && "cursor-not-allowed"} ${plan.buttonStyle
+                  } group-hover:bg-[#034737] items-center justify-center mx-auto border-[#034737] rounded-xl py-4 w-full transition-all duration-300 hover:bg-[#034737] hover:text-white`}
                 onClick={
                   isUpgradePlan ? handleUpgradePlan : handleSubscribePlan
                 }
