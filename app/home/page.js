@@ -23,18 +23,16 @@ import SixCard from "../cards/page";
 import SixCardVideo from "../cardsvideo/page";
 import SixCardTab from "../cardstab/page";
 import SixCardSwitch from "../cardsswitch/page";
-import AnimationStory from "../animationstory/page";
+
 // I commented this bootstrapp CDN because of conflicting styles with tailwindcss, NB: I'll uncomment it as soon as reliable solution is found
 function Page() {
   const [isFormFocused, setIsFormFocused] = useState(true);
 
   return (
     <React.Fragment>
-      <Navbar logoUrl="/imagelogo.svg" logoAlt="Custom Logo" />
-      <div>
-        <AnimationStory/>
-      </div>
-      <div className="sm:px-20 relative z-0">
+      <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
+      <div className="sm:px-10 relative z-0">
+
         {" "}
         <DragFeatures />
       </div>
