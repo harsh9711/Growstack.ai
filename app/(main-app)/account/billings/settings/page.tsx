@@ -25,7 +25,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { DollarSign } from "lucide-react";
 import { useSelector } from "react-redux";
@@ -36,6 +35,8 @@ import { getUserFriendlyPlanName, planIdsMap } from "@/lib/utils";
 import { PlanName } from "@/types/enums";
 import GlobalModal from "@/components/modal/global.modal";
 import UpgradePlan from "@/components/upgradePlan/upgradePlan";
+import { useRouter } from "next/navigation";
+import { ALL_ROUTES } from "@/utils/constant";
 
 interface BillingHistoryItem {
   amount: ReactNode;
@@ -256,6 +257,7 @@ export default function SettingsPage() {
   );
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabUnderlineLeft, setTabUnderlineLeft] = useState(0);
+  const router = useRouter();
   const tabs = ["Overview", "Billing history"];
   // const renderContent = () => {
   //   switch (selectedTabIndex) {
@@ -292,8 +294,9 @@ export default function SettingsPage() {
       const response = await instance.put(
         `${API_URL}/users/api/v1/payments/cancel-subscription`
       );
+      await fetchPlanUsage();
       toast.success("Subscription canceled successfully");
-      window.location.href = "/Payment";
+      router.push(ALL_ROUTES.APP);
       console.log("Cancel Subscription Response:", response.data);
     } catch (error: any) {
       if (error.response) {
@@ -318,10 +321,7 @@ export default function SettingsPage() {
           <>
             <div className="flex gap-x-2 items-center">
               <PlanIcon />
-              {getUserFriendlyPlanName(
-                currentPlan?.plan_name! as PlanName
-              )}{" "}
-              Plan
+              {getUserFriendlyPlanName(currentPlan?.plan_name as PlanName)} Plan
             </div>
           </>
         ) : (

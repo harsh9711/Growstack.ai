@@ -3,6 +3,7 @@ import "./OurProcess.scss";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import HoverVideoPlayer from "react-hover-video-player";
+
 const HoverVideo = () => {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -25,14 +26,16 @@ const HoverVideo = () => {
 
       setTimeout(() => {
         stopAndFreezeVideo();
-      }, 12000);
+      }, 16000);
     }
   };
 
+  useEffect(() => {
+    playVideo();
+  }, []);
+
   return (
     <div
-    className="sm:flex hidden"
-      onMouseEnter={playVideo}
       className="sm:flex hidden"
       style={{
         width: "100%",
@@ -48,13 +51,15 @@ const HoverVideo = () => {
         muted
         loop={false}
         preload="metadata"
-        className=" rounded-2xl border-none outline-none"
+        className="rounded-2xl border-none outline-none"
       >
         <source src="/workflow_fast.mp4" type="video/mp4" />
       </video>
     </div>
   );
 };
+
+
 
 function OurProcess() {
   useEffect(() => {
@@ -85,7 +90,7 @@ function OurProcess() {
               <div className="sm:flex hidden w-full h-full">
                 <div
                   className="animate"
-                  data-aos="fade-in"
+                  data-aos="fade-up"
                   data-aos-easing="ease-in-sine"
                   data-aos-duration="1000"
                 >

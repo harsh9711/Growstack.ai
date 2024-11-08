@@ -23,7 +23,7 @@ const Home = () => {
 
   return (
     <main className="bg-white items-center justify-center mx-auto">
-      <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
+      <Navbar logoUrl="/imagelogo.svg" logoAlt="Custom Logo" />
       <section className=" ">
         <HeroSection />
       </section>

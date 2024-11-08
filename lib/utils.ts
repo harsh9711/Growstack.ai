@@ -12,7 +12,7 @@ export function formatDate(isoDate: string): string {
   return format(parseISO(isoDate), "MMM dd yyyy hh:mm a");
 }
 
-export const isEmptyObject = (obj: object | undefined): boolean => {
+export const isEmptyObject = (obj: object | undefined | null): boolean => {
   if (obj === undefined || obj === null) return true;
   return Object.keys(obj).length === 0;
 };
@@ -32,6 +32,7 @@ export function getUserFriendlyPlanName(
   planName: PlanName
 ): string | undefined {
   const userFriendlyPlanNameMap = new Map<PlanName, string>([
+    [PlanName.FREE, "Free"],
     [PlanName.SOCIAL_PORTAL, "Social Portal"],
     [PlanName.AI_STUDIO, "AI Studio"],
     [PlanName.AUTOMATION_HUB, "Automation Hub"],
@@ -45,6 +46,7 @@ export function getUserFriendlyPlanName(
 }
 
 export const planIdsMap: Record<PlanName, string[]> = {
+  [PlanName.FREE]: ["grs/free"],
   [PlanName.SOCIAL_PORTAL]: [
     "grs/creator/monthly_planjh4qViTCP2gsvT",
     "grs/creator/yearly_planWfodY4MFnK074E",
