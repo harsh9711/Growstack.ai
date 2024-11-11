@@ -39,7 +39,7 @@ function Page() {
       {/* <Banner /> */}
       <OurProcess />
       {/* <Features /> */} <SixCard />
-      <SixCardVideo />
+      {/* <SixCardVideo /> */}
       <Animation />
       {/* <Facts /> */}
       {/* <Carousel /> */}
