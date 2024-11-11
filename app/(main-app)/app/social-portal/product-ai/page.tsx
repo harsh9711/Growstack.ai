@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -17,25 +18,33 @@ import { PlanUsage } from "@/types/common";
 import Lock from "@/components/svgs/lock";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
-
+import Moveable from "react-moveable";
+import MoveableComponent from "./dragmove";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 interface Product {
   img_url: string;
   user_prompt: string;
-  number_of_images: number;
   color: string;
   negative_promt: string;
   remove_bg_toggle: boolean;
   category: string;
+  numberOfImages: string;
 }
 
 const initialProductValue: Product = {
   img_url: "",
   user_prompt: "",
-  number_of_images: 0,
   color: "",
   negative_promt: "",
   remove_bg_toggle: false,
-  category: "products",
+  category: "general",
+  numberOfImages: "",
 };
 
 interface FinalResultProps {
@@ -47,7 +56,10 @@ interface FinalResultProps {
   height: number;
   link: string;
 }
-
+interface Image {
+  url: string; // The URL of the image
+  ext: string; // The file extension
+}
 export default function Page() {
   const [fileUploadLoading, setFileUploadLoading] = useState<boolean>(false);
   const [productAI, setProductAI] = useState<Product>(initialProductValue);
@@ -58,6 +70,10 @@ export default function Page() {
   const [isAddOnModalOpen, setIsAddOnModalOpen] = useState<boolean>(false);
   const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
   const { user } = useSelector((rootState: RootState) => rootState.auth);
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
+
+  const [finalUrl, setFinalUrl] = useState<[]>([]);
+  const [numberOfImages, setnumberOfImages] = useState<string>("1");
 
   const fetchHistory = async () => {
     try {
@@ -136,8 +152,23 @@ export default function Page() {
     }));
   };
 
+  const handleDownloadAll = async () => {
+    setLoading(true);
+
+    try {
+      for (const image of selectedImages) {
+        handleDownload(image);
+      }
+    } catch (error) {
+      console.error("Download error:", error);
+    } finally {
+      setLoading(false); // Set loading to false after all downloads
+    }
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
     if (
       user?.user_type !== "ADMIN" &&
       (planUsage?.usage?.ai_background_generator_credits || 0) <= 0
@@ -145,6 +176,7 @@ export default function Page() {
       setIsAddOnModalOpen(true);
       return;
     }
+
     const {
       img_url,
       user_prompt,
@@ -152,7 +184,9 @@ export default function Page() {
       category,
       negative_promt,
       color,
+      numberOfImages,
     } = productAI;
+    console.log("productAI", productAI);
 
     if (!img_url) {
       toast.error("Please upload an image.");
@@ -165,120 +199,69 @@ export default function Page() {
     }
 
     const removeBg = async (): Promise<FinalResultProps | null> => {
-      const response = await instance.post(
-        `${API_URL}/ai/api/v1/products/bg-remover`,
-        {
-          img_url,
-          category,
-        }
-      );
-      const result_url = response.data.data.result_url;
+      try {
+        setLoading(true); // Set loading to true at the start
+        console.log("numberOfImages", numberOfImages);
 
-      if (result_url) {
-        const pollStatus = async (): Promise<FinalResultProps | null> => {
-          const statusResponse = await instance.post(
-            `${API_URL}/ai/api/v1/products/image/status`,
-            {
-              image_url: result_url,
-            }
-          );
-          const res = statusResponse.data;
-
-          if (res.data.status === "DONE") {
-            return {
-              name: "",
-              ext: res.data.result.output_object.ext,
-              mime: res.data.result.output_object.mime,
-              format: res.data.result.output_object.format,
-              width: res.data.result.output_object.width,
-              height: res.data.result.output_object.height,
-              link: res.data.originalUrl,
-            };
-          } else if (res.data.status === "PROCESSING") {
-            await new Promise(resolve => setTimeout(resolve, 5000));
-            return pollStatus();
-          } else {
-            throw new Error("Failed to process image");
+        const response = await instance.post(
+          `${API_URL}/ai/api/v1/products/bg-remover`,
+          {
+            img_url,
+            user_prompt,
+            remove_bg_toggle,
+            category,
+            negative_promt,
+            color,
+            numberOfImages,
           }
-        };
+        );
 
-        return await pollStatus();
+        console.log("response", response);
+
+        const result_url = response.data.data.originalUrls;
+
+        if (result_url) {
+          setResult(result_url);
+          setFinalUrl(result_url);
+        }
+
+        setLoading(false);
+        return result_url;
+      } catch (error) {
+        console.error("Error removing background:", error);
+        setLoading(false); // Ensure loading is stopped if there's an error
+        return null;
       }
-      return null;
     };
 
-    const userPrompt = async (
-      img_url: string
-    ): Promise<FinalResultProps | null> => {
-      const response = await instance.post(
-        `${API_URL}/ai/api/v1/products/image/edit`,
-        {
-          user_prompt,
-          negative_promt,
-          img_url,
-          category,
-          color,
-        }
-      );
-      const res = response.data.data.output[0];
-      return {
-        name: "",
-        ext: res.ext,
-        mime: res.mime,
-        format: res.format,
-        width: res.width,
-        height: res.height,
-        link: response.data.data.originalUrls,
-      };
-    };
-
-    setLoading(true);
-    try {
-      if (remove_bg_toggle && user_prompt) {
-        const bgResult = await removeBg();
-        if (bgResult && bgResult.link) {
-          const finalResult = await userPrompt(bgResult.link);
-          if (finalResult) {
-            setLoading(false);
-            setResult(finalResult);
-          }
-        }
-      } else if (remove_bg_toggle) {
-        const bgRemovedUrl = await removeBg();
-        if (bgRemovedUrl) {
-          setLoading(false);
-          setResult(bgRemovedUrl);
-        }
-      } else if (user_prompt) {
-        const finalResult = await userPrompt(img_url);
-        if (finalResult) {
-          setLoading(false);
-          setResult(finalResult);
-        }
-      }
-    } catch (error: any) {
-      console.error("Error processing request:", error);
-      toast.error(error.message);
-    }
+    // Call removeBg after defining it
+    await removeBg();
   };
 
-  const handleDownload = () => {
-    if (result) {
+  const handleDownload = async (image: any) => {
+    try {
       setLoading(true);
-      fetch(result.link)
-        .then(response => response.blob())
-        .then((blob: any) => {
-          const url = window.URL.createObjectURL(blob);
-          const link = document.createElement("a");
-          link.href = url;
-          link.download = `finalresult.${result.ext}`;
-          document.body.appendChild(link);
-          link.click();
-          link.remove();
-          window.URL.revokeObjectURL(url);
-          setLoading(false);
-        })
-        .catch(error => console.error("Download error:", error));
+
+      // Replace with your own image or API endpoint
+      const response = await fetch(image);
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `finalresult.png`; // You can adjust the file name as needed
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Download error:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -307,6 +290,30 @@ export default function Page() {
   useEffect(() => {
     fetchPlanUsage();
   }, []);
+  // Toggle image selection
+  const toggleImageSelection = (image: string) => {
+    setSelectedImages(prevSelected => {
+      if (prevSelected.includes(image)) {
+        return prevSelected.filter(img => img !== image);
+      } else {
+        return [...prevSelected, image];
+      }
+    });
+  };
+
+  // Download selected images
+  const downloadImages = () => {
+    selectedImages.forEach(imageUrl => {
+      const link = document.createElement("a");
+      link.href = imageUrl;
+      console.log("imageUrl", imageUrl);
+
+      link.download = imageUrl.split("/").pop() || "download.jpg";
+      console.log("link.download");
+
+      link.click();
+    });
+  };
   return (
     <>
       <main className="flex-1 h-full mt-10 flex flex-col">
@@ -334,39 +341,75 @@ export default function Page() {
             </div>
           </section>
           <section className="w-full">
-            {result ? (
+            {finalUrl.length > 0 ? (
               <>
-                <div className="h-[65vh] border border-[#F2F2F2]">
-                  <img
-                    className="w-[100%] h-[100%] object-contain"
-                    alt="img-result"
-                    src={result.link}
-                  />
+                <div>
+                  <div className="grid grid-cols-3 gap-4">
+                    {finalUrl.map(image => (
+                      <div
+                        key={image}
+                        className={`relative group border-2 p-1 cursor-pointer ${
+                          selectedImages.includes(image)
+                            ? "border-blue-500"
+                            : "border-transparent"
+                        }`}
+                        onClick={() => toggleImageSelection(image)}
+                      >
+                        <img
+                          className="w-full h-full object-cover"
+                          alt="img-result"
+                          src={image}
+                        />
+                        {selectedImages.includes(image) && (
+                          <div className="absolute inset-0 bg-blue-500 opacity-50"></div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <div className="flex justify-end mb-[30px] mt-[10px]">
-                  <button
-                    onClick={() => {
-                      setResult(null);
-                      setProductAI(initialProductValue);
-                    }}
-                    className="text-[16px] bg-white text-red-500 border border-red-500 px-[20px] py-[6px]"
-                    type="button"
-                  >
-                    Upload another
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleDownload}
-                    className="text-[16px] ml-2 bg-primary-green text-white px-[20px] py-[6px] min-w-[130px] flex justify-center items-center"
-                  >
-                    {loading ? <Spinner /> : "Download"}
-                  </button>
+                <div className="flex justify-end items-center mb-8 mt-4">
+                  <div className="flex flex-col items-end">
+                    {/* Message displayed when no images are selected */}
+                    {selectedImages.length === 0 && (
+                      <p className="text-red-500 mb-2 mr-4">
+                        Please select at least one image to download.
+                      </p>
+                    )}
+
+                    {/* Buttons */}
+                    <div className="flex">
+                      <button
+                        onClick={() => {
+                          setResult(null);
+                          setProductAI(initialProductValue);
+                          setSelectedImages([]);
+                          setFinalUrl([]); // Clear selections on reset
+                        }}
+                        className="text-base bg-white text-red-500 border border-red-500 px-5 py-2 mr-4"
+                        type="button"
+                      >
+                        Upload another
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleDownloadAll}
+                        disabled={selectedImages.length === 0} // Disable if no images are selected
+                        className={`text-base bg-primary-green text-white px-5 py-2 min-w-[130px] flex justify-center items-center ${
+                          selectedImages.length === 0
+                            ? "opacity-50 cursor-not-allowed"
+                            : ""
+                        }`}
+                      >
+                        {loading ? <Spinner /> : "Download Selected Image"}
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </>
             ) : (
               <form
                 onSubmit={handleSubmit}
-                className="bg-white border-gradient-blue-to-gray-to-r rounded-[28px] px-10 pb-6 space-y-8"
+                className="bg-white border-gradient-blue-to-gray-to-r rounded-[28px] px-10 pt-1 pb-6 space-y-8"
               >
                 <div className="relative z-[1] max-w-5xl mx-auto mt-4">
                   {fileUploadLoading ? (
@@ -375,10 +418,10 @@ export default function Page() {
                     </div>
                   ) : productAI.img_url ? (
                     <>
-                      <div className="h-[396px] w-full border border-[#F2F2F2] rounded-xl">
+                      <div className="h-[200px] w-full border border-[#F2F2F2] rounded-xl">
                         <img
                           src={productAI.img_url}
-                          alt="Logo"
+                          alt="Uploaded Preview"
                           className="w-full h-full object-contain"
                         />
                       </div>
@@ -388,7 +431,7 @@ export default function Page() {
                           type="button"
                           className="hover-underline"
                         >
-                          <span style={{ textDecoration: "undeline" }}>
+                          <span style={{ textDecoration: "underline" }}>
                             Undo image
                           </span>
                         </button>
@@ -400,7 +443,7 @@ export default function Page() {
 
                   <div className="border-t border-[#EDEEF3] flex items-center justify-between w-full pt-5 pb-10">
                     <div className="space-y-1">
-                      <h1 className=" text-lg">Remove background</h1>
+                      <h1 className="text-lg">Remove background</h1>
                       <h1 className="text-primary-grey">
                         Product images with transparent backgrounds give the
                         best results
@@ -411,6 +454,7 @@ export default function Page() {
                       onCheckedChange={handleSwitchChange}
                     />
                   </div>
+
                   <div className="text-[14px] text-header mb-[6px]">
                     Enter prompt (optional)
                   </div>
@@ -420,6 +464,39 @@ export default function Page() {
                     value={productAI.user_prompt}
                     onChange={handlePromptChange}
                   ></textarea>
+                  {productAI.user_prompt.length >= 3 && (
+                    <div className="pt-5">
+                      <div className="text-[14px] text-header mb-[6px]">
+                        Select number of images (optional)
+                      </div>
+                      <Select
+                        onValueChange={value => {
+                          setnumberOfImages(value); // Convert value to number and set it in state
+                          productAI.numberOfImages = value; // Also set the value on productAI
+                        }}
+                        value={numberOfImages} // Binds to the state
+                        defaultValue="1"
+                      >
+                        <SelectTrigger className="w-full border-none h-14">
+                          <SelectValue
+                            placeholder={
+                              numberOfImages
+                                ? numberOfImages
+                                : "Select a number of images"
+                            }
+                          />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {["1", "2", "3", "4"].map(num => (
+                            <SelectItem key={num} value={num}>
+                              {num}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  )}
+
                   <div className="flex justify-end mt-6 mb-3">
                     <button
                       type="submit"
