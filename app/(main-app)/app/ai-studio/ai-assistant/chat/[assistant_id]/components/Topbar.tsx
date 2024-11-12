@@ -125,9 +125,9 @@ export default function Topbar({
             className="h-[40px] w-[40px] sm:h-[50px] sm:w-[50px] rounded-xl object-cover shadow-md shadow-gray-200"
           />
           <div>
-            <h2 className="text-lg font-semibold sm:text-xl">{assistant.name}</h2>
+            <h2 className="text-lg font-semibold sm:text-xl">{assistant.role}</h2>
             <p className="flex items-center gap-2 text-primary-black text-opacity-70">
-              <span className="h-2 w-2 rounded-full bg-[#68D391]"></span>Online
+              <span className="h-2 w-2 rounded-full bg-[#68D391]"></span>{assistant.name}
             </p>
           </div>
         </div>
