@@ -20,9 +20,8 @@ instance.interceptors.request.use(
   }
 );
 instance.interceptors.response.use(
-  res => {
-    // console.log(res);
-    return res;
+  (res) => {
+    return res
   },
   error => {
     // console.log(error);

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Image from "next/image";
 
 interface Avatar {
@@ -15,12 +14,16 @@ interface AvatarSelectionProps {
   selectedAvatarId: string | null;
 }
 
-const AvatarSelection = ({ avatars, onSelect, selectedAvatarId }: AvatarSelectionProps) => {
+const AvatarSelection = ({
+  avatars,
+  onSelect,
+  selectedAvatarId,
+}: AvatarSelectionProps) => {
   if (!avatars?.length) return null;
 
   return (
     <div className="w-full flex flex-wrap gap-4 relative items-center z-10 justify-start ml-10">
-      {avatars.map((avatar) => {
+      {avatars.map(avatar => {
         const isSelected = avatar.id === selectedAvatarId;
 
         return (
