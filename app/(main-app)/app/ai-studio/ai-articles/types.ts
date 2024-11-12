@@ -1,5 +1,5 @@
 export interface IOutline {
-  subtitles: string[];
+  subtitles: any;
 }
 export interface ISubtitleTalkingPoints {
   subtitle_name: string;

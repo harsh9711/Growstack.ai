@@ -1,3 +1,4 @@
+
 import Spinner from "@/components/Spinner";
 import { CheckIcon2 } from "@/components/svgs";
 import instance from "@/config/axios.config";
@@ -35,8 +36,8 @@ export default function IdeasComponent({
 }) {
   const [isPending, setIsPending] = useState(false);
   const [isKeywordPending, setIsKeywordPending] = useState(false);
-  const [ideas, setIdeas] = useState<Array<string>>([]);
-  const [generatedKeywords, setGeneratedKeywords] = useState<Array<string>>([]);
+  const [ideas, setIdeas] = useState<any>([]);
+  const [generatedKeywords, setGeneratedKeywords] = useState<any>([]);
   const [viewKeywords, setViewKeywords] = useState(true);
 
   //form data settings
@@ -153,11 +154,11 @@ export default function IdeasComponent({
     setKeywordInputValue("");
   };
 
-  const allSelected = generatedKeywords.every(keyword =>
+  const allSelected = generatedKeywords.every((keyword:any) =>
     keywords.includes(keyword)
   );
   const notAllSelected = generatedKeywords.some(
-    keyword => !keywords.includes(keyword)
+    (keyword:any) => !keywords.includes(keyword)
   );
 
   const toggleAdvancedOptions = () => {
@@ -326,17 +327,22 @@ export default function IdeasComponent({
                     Choose your keywords
                   </h1>
                   <div className="flex flex-wrap justify-center gap-2 mt-3">
-                    {generatedKeywords.map(generatedKeyword => (
+                    {/* {generatedKeywords&&JSON.stringify(generatedKeywords)} */}
+                    {generatedKeywords.map((generatedKeyword:any,index:any) => (
+                      // <>
+                      // {JSON.stringify(generatedKeyword.keyword) && JSON.stringify(generatedKeyword.keyword)}
+                      // {JSON.stringify(generatedKeyword.score) && JSON.stringify(generatedKeyword.score)}
+                      // </>
                       <div
-                        key={generatedKeyword}
-                        onClick={() => handleKeywordUpdate(generatedKeyword)}
+                        key={generatedKeyword.keyword || generatedKeyword.score }
+                        onClick={() => handleKeywordUpdate(generatedKeyword.keyword)}
                         className={clsx(
                           "bg-gray-100 text-gray-600 p-3 rounded-xl first-letter:uppercase cursor-pointer transition-all duration-300",
-                          keywords.includes(generatedKeyword) &&
+                          keywords.includes(generatedKeyword.keyword || generatedKeyword.score ) &&
                             "bg-primary-green text-white"
                         )}
                       >
-                        {generatedKeyword}
+                        {generatedKeyword.keyword } <strong>Score :</strong> {generatedKeyword.score} 
                       </div>
                     ))}
                   </div>
@@ -374,26 +380,41 @@ export default function IdeasComponent({
                 variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
               >
                 <ul className="mt-5">
-                  {ideas.map((idea, index) => (
+                  {ideas.map((idea:any, index:any) => (
+                    <>
+                        <div className="relative">
+                      <span
+                        className={clsx(
+                          "h-6 w-13 bg-gray-100 grid place-content-center rounded-full transition-all duration-300",
+                          "bg-primary-green text-white",
+                          "absolute top-3 right-3"
+                        )}
+                      >
+                        {idea.score}
+                      </span>
+                      </div>
                     <li
-                      onClick={() => setArticleTitle(idea)}
+                      onClick={() => setArticleTitle(idea.topic)}
                       key={index}
                       className={clsx(
                         "py-5 px-7 mb-3 border rounded-xl bg-white text-lg flex items-center gap-4 cursor-pointer group transition-all duration-300",
-                        idea === articleTitle && "border-primary-green/70"
+                        idea.topic === articleTitle && "border-primary-green/70"
                       )}
                     >
+                    
                       <span
                         className={clsx(
                           "border p-2 rounded-full text-gray-400 group-hover:text-primary-green group-hover:border-primary-green translate-all duration-300",
-                          idea === articleTitle &&
+                          idea.topic === articleTitle &&
                             "text-primary-green border-primary-green"
                         )}
                       >
                         <CheckIcon2 />
                       </span>
-                      <span>{idea}</span>
-                    </li>
+                    
+                     <span>{idea.topic}</span>
+                    
+                    </li></>
                   ))}
                 </ul>
                 {articleTitle && (

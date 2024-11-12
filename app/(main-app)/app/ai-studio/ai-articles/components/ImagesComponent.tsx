@@ -23,6 +23,7 @@ interface ImagesComponentProps {
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   keywords: string[];
   articleTitle: string;
+  setScore:any;
   setArticleTitle: React.Dispatch<React.SetStateAction<string>>;
   talkingPoints: ISubtitleTalkingPoints[];
   articleData: string;
@@ -44,6 +45,7 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
   setArticleData,
   images,
   setImages,
+  setScore,
 }) => {
   const [isArticlePending, setIsArticlePending] = useState(false);
   const [isImageGenerationPending, setImageGenerationPending] = useState(false);
@@ -97,7 +99,10 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
           data: { data },
         } = response;
         setCurrentStep(4);
-        setArticleData(data.response);
+        console.log("data",data);
+        
+        setArticleData(data.article);
+        setScore(data.score.rank)
       })
       .catch(err => {
         toast.error(err.response.data.message || err.message);

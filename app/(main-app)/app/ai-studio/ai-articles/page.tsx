@@ -1,3 +1,4 @@
+
 "use client";
 
 import { Fragment, useState } from "react";
@@ -15,6 +16,7 @@ export default function AiArticles() {
   const steps = ["Get ideas", "Outlines", "Talking points", "Images"];
   const [selectedOutlines, setSelectedOutlines] = useState<IOutline | any>({});
   const [keywords, setKeywords] = useState<string[]>([]);
+  const [score,setScore] = useState<string>("");
   const [keywordInputValue, setKeywordInputValue] = useState<string>("");
   const [talkingPoints, setTalkingPoints] = useState<ISubtitleTalkingPoints[]>(
     []
@@ -87,6 +89,7 @@ export default function AiArticles() {
             articleData={articleData}
             setArticleData={setArticleData}
             images={images}
+            setScore={setScore}
             setImages={setImages}
           />
         );
@@ -94,9 +97,14 @@ export default function AiArticles() {
         return (
           <ResultComponent
             articleTitle={articleTitle}
+            setScore={setScore}
+            keywords={keywords}
+            setArticleData={setArticleData}
             articleData={articleData}
+            talkingPoints={talkingPoints}
             images={images}
             setImages={setImages}
+            score={score}
           />
         );
     }

@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
@@ -8,6 +9,7 @@ import remarkBreaks from "remark-breaks";
 import DotsLoader from "@/components/DotLoader";
 import { CopyIcon, Share2 } from "lucide-react";
 import instance from "@/config/axios.config";
+import { ISubtitleTalkingPoints } from "../types";
 import { API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
 import Spinner from "@/components/Spinner";
@@ -21,19 +23,30 @@ import { Button } from "@/components/ui/button";
 interface ResultComponentProps {
   articleTitle: string;
   articleData: string;
+  keywords: string[];
+  talkingPoints: ISubtitleTalkingPoints[];
+  setArticleData: React.Dispatch<React.SetStateAction<string>>;
   images: Array<{ revised_prompt: string; url: string }>;
+  setScore:React.Dispatch<React.SetStateAction<string>>;
+  score:string;
   setImages: React.Dispatch<
     React.SetStateAction<Array<{ revised_prompt: string; url: string }>>
+    
   >;
 }
 
 const ResultComponent: React.FC<ResultComponentProps> = ({
   articleTitle,
   articleData,
+  talkingPoints,
+  setScore,
+  keywords,
+  setArticleData,
+  score,
   images,
-  setImages,
 }) => {
   const router = useRouter();
+  const [isArticlePending, setIsArticlePending] = useState(false);
   const [isPending, setIsPending] = useState(false);
   const [copied, setCopied] = useState(false);
   const [open, setOpen] = useState(false);
@@ -65,6 +78,36 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
       setIsPending(false);
     }
   };
+
+  const generateArticle = () => {
+    const data = {
+      title: articleTitle,
+      subtitles_with_talking_points: talkingPoints,
+      keywords: keywords,
+    };
+
+    setArticleData("");
+    setIsArticlePending(true);
+    instance
+      .post("/ai/api/v1/wizard/generate", data)
+      .then(response => {
+        const {
+          data: { data },
+        } = response;
+        console.log("data",data);
+        
+        // setCurrentStep(4);
+        setArticleData(data);
+      })
+      .catch(err => {
+        toast.error(err.response.data.message || err.message);
+        console.log(err);
+      })
+      .finally(() => {
+        setIsArticlePending(false);
+      });
+  };
+  
 
   const stripHtmlTags = (html: string) => {
     const temp = document.createElement("div");
@@ -175,6 +218,16 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
             </div>
           ) : (
             <>
+            <div className="flex justify-end"><strong>Score : </strong>{ score}</div> 
+          <div className="flex justify-end">
+            
+                    <button
+                      onClick={generateArticle}
+                      className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px]"
+                    >
+                      Regenerate
+                    </button>
+                  </div>
               <div className="flex justify-center items-center gap-2">
                 {images.map((image, index) => (
                   <img
@@ -230,7 +283,6 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
               <CopyIcon />
             </div>
           </div>
-
           <div className="flex justify-end">
             <button
               className="bg-gray-300 px-4 py-2 rounded-md text-gray-700"

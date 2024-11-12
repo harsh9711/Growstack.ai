@@ -1,4 +1,3 @@
-// OutlinesComponent.tsx
 
 import Motion from "@/components/Motion";
 import Spinner from "@/components/Spinner";
@@ -224,7 +223,7 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
           {outlines.length > 0 && (
             <div>
               <div className={clsx("mt-4 space-y-2")}>
-                {outlines.map((outline, index) => (
+                {outlines.map((outline:any, index:any) => (
                   <ul
                     key={index}
                     className={clsx(
@@ -233,8 +232,11 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
                         "border border-primary-green text-primary-green"
                     )}
                     onClick={() => setSelectedOutlines(outlines[index])}
-                  >
-                    {outline.subtitles.map((subtitle, index) => (
+                   >
+                    <div style={{textAlign:"right"}}>
+                    <strong>Score</strong>: {outline.score}
+                    </div>
+                    {outline.subtitles.map((subtitle:any, index:any) => (
                       <li key={index}>{subtitle}</li>
                     ))}
                   </ul>
