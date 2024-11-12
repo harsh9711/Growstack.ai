@@ -340,7 +340,7 @@ export default function TextToVideoPage() {
           : ALL_ROUTES.PAYMENT;
         return;
       } else {
-        router.push("/app/social-portal/text-to-avatar/create-avatar");
+        router.push("/app/ai-studio/text-to-avatar/create-avatar");
       }
     } catch (error) {
       console.log(error);
