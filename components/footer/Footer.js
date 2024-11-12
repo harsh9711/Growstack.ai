@@ -564,12 +564,12 @@ function Footer() {
               width={1448}
               height={270}
               alt="big"
-              className="mx-auto mb-20"
+              className="mx-auto sm:mb-20"
             />
-            <div className="w-full mx-auto mt-6 border-t border-white max-w-[1345px] py-10  text-white text-sm">
+            <div className="w-full mx-auto mt-6 border-t border-white max-w-[1345px] py-8 sm:py-10  text-white text-sm">
               <div className="text-center flex flex-col  gap-4 sm:flex-row justify-between items-center w-full">
                 <p className="text-white">Copyright © 2024 Growstack</p>
-                <div className="grid sm:grid-cols-4 grid-cols-2 justify-center gap-4">
+                <div className="grid grid-cols-4  mt-2 justify-center gap-4">
                   {[
                     {
                       href: "https://x.com/Growstackai",
