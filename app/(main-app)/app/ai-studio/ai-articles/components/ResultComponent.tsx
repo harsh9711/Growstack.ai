@@ -93,10 +93,11 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
         const {
           data: { data },
         } = response;
-        console.log("data", data);
+        
+        setArticleData(data.article);
+        console.log("articleData",articleData);
 
-        // setCurrentStep(4);
-        setArticleData(data);
+        setScore(data.score.rank);
       })
       .catch(err => {
         toast.error(err.response.data.message || err.message);
@@ -241,7 +242,7 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
                       fill="#FFFFFF"
                     />
                   </svg>
-                  Regenerate
+                  Regenerates
                 </button>
               </div>
               <div className="flex justify-center items-center gap-2">
