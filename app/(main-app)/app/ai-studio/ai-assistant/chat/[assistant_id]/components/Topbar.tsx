@@ -110,27 +110,35 @@ export default function Topbar({
   };
 
   return (
-    <div className="border-b px-10 py-5">
-      <div className="flex justify-between">
+    <div className="border-b sm:px-6 px-10 py-5">
+      <div
+        className={`flex gap-3 ${
+          isSidebarOpen ? "lg:flex-col" : "lg:flex-row"
+        } xl:flex-row sm:flex-col md:flex-col flex-col lg:justify-between`}
+      >
         <div className="flex items-center gap-4">
           <Image
             src={assistant.avatar}
             alt=""
             width={200}
             height={200}
-            className="h-[50px] w-[50px] rounded-xl object-cover shadow-md shadow-gray-200"
+            className="h-[40px] w-[40px] sm:h-[50px] sm:w-[50px] rounded-xl object-cover shadow-md shadow-gray-200"
           />
           <div>
-            <h2 className="text-xl font-semibold">{assistant.name}</h2>
+            <h2 className="text-lg font-semibold sm:text-xl">{assistant.role}</h2>
             <p className="flex items-center gap-2 text-primary-black text-opacity-70">
-              <span className="h-2 w-2 rounded-full bg-[#68D391]"></span>Online
+              <span className="h-2 w-2 rounded-full bg-[#68D391]"></span>{assistant.name}
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-3">
-          <div
+        <div className="flex items-center gap-2 sm:gap-3">
+        <div
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="bg-primary-green/10 hover:text-white hover:bg-primary-green transition-all duration-300 h-11 w-11 grid place-content-center rounded-lg cursor-pointer"
+            className={`${
+              isSidebarOpen
+                ? "bg-primary-green text-white"
+                : "bg-primary-green/10 text-primary-green"
+            } transition-all duration-300 h-11 w-11 grid place-content-center rounded-lg cursor-pointer`}
           >
             <UserCircle />
           </div>
@@ -166,8 +174,8 @@ export default function Topbar({
           </DropdownMenu>
 
           <Select value={selectedAiModel} onValueChange={handleModalSelection}>
-            <SelectTrigger className="min-w-[200px] h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4">
-              <SelectValue placeholder="Select an option">
+          <SelectTrigger className="min-w-[160px] sm:min-w-[200px] h-9 sm:h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-3 sm:px-4">
+          <SelectValue placeholder="Select an option">
                 {selectedAiModel && (
                   <div className="flex items-center gap-2">
                     <span className="min-w-fit">
@@ -212,8 +220,8 @@ export default function Topbar({
           </Select>
 
           <Select value={selectedLanguage} onValueChange={switchLanguage}>
-            <SelectTrigger className="bg-[#429A85] min-w-[200px] h-12 text-white border-0 rounded-xl flex items-center justify-between px-4">
-              <SelectValue placeholder="Select an option" />
+          <SelectTrigger className="bg-[#429A85] min-w-[160px] sm:min-w-[200px] h-9 sm:h-12 text-white border-0 rounded-xl flex items-center justify-between px-3 sm:px-4">
+          <SelectValue placeholder="Select an option" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>

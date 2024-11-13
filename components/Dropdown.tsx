@@ -13,9 +13,9 @@ interface DropdownProps {
   label?: string;
   title?: string;
   showTitle?: boolean;
-  items: Array<any>;
-  value?: any;
-  onChange: (value: any) => void;
+  items: Array<string>;
+  value?: string;
+  onChange: (value: string) => void;
   required?: boolean;
   disabled?: boolean;
   hideSearch?: boolean;
@@ -34,9 +34,10 @@ const Dropdown = ({
 }: DropdownProps) => {
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredItems = items.filter(item =>
+  const filteredItems = items.filter((item) =>
     item.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
   return (
     <div className="space-y-2">
       {showTitle && <label className="text-[15px]">{title}</label>}
@@ -58,14 +59,14 @@ const Dropdown = ({
                   type="text"
                   placeholder="Search..."
                   value={searchTerm}
-                  onChange={e => setSearchTerm(e.target.value)}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full p-2 bg-transparent text-gray-700 rounded-md focus:outline-none"
                 />
               </div>
             </div>
           )}
           <SelectGroup>
-            {filteredItems.map((item: any, index: number) => (
+            {filteredItems.map((item: string, index: number) => (
               <SelectItem value={item} key={index}>
                 {item}
               </SelectItem>

@@ -30,6 +30,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
   const [open, setOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [emptyPrompt, isEmptyPrompt] = useState("");
   const { startRecognition, stopRecognition, textToSpeech } =
     useSpeechRecognition(
       selectedLanguage,
@@ -108,8 +109,12 @@ const ChatInput: React.FC<ChatInputProps> = ({
       user_prompt = user_prompt.trim();
     }
     const prompt = user_prompt || input.trim();
-    if (prompt === "") return;
+    if (prompt === "") {
+      isEmptyPrompt("Please enter any prompt...!");
+      return;
+    }
 
+    isEmptyPrompt("");
     setInput("");
     addMessage(prompt, "");
 
@@ -154,7 +159,9 @@ const ChatInput: React.FC<ChatInputProps> = ({
     }
   };
 
+
   return (
+    <>
     <div className="flex p-2 border gap-2 rounded-xl items-end">
       <Image
         src="/logo/growstack-mini.png"
@@ -167,7 +174,10 @@ const ChatInput: React.FC<ChatInputProps> = ({
       <textarea
         ref={textareaRef}
         value={input}
-        onChange={e => setInput(e.target.value)}
+        onChange={e => {
+          setInput(e.target.value);
+          isEmptyPrompt(''); // Clear error on input change
+        }}        
         onKeyDown={handleKeyDown}
         rows={1}
         className="w-full flex-1 p-2 bg-transparent resize-none overflow-hidden min-h-11 max-h-[300px]"
@@ -190,7 +200,12 @@ const ChatInput: React.FC<ChatInputProps> = ({
       >
         <SendIcon2 />
       </button>
+      
     </div>
+    {emptyPrompt && (
+      <div className="text-red-500 mt-2 ml-2">{emptyPrompt}</div>
+    )}
+    </>
   );
 };
 
