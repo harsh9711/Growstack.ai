@@ -145,20 +145,26 @@ export default function IdeasComponent({
   };
 
   const handleSelectAll = () => {
-    setKeywords(generatedKeywords);
-    setKeywordInputValue(generatedKeywords.join(", "));
+    const keywords = generatedKeywords.map((item:any) => 
+      typeof item === "object" && item.keyword ? item.keyword : item
+    );
+    
+    setKeywords(keywords);
+    setKeywordInputValue(keywords.join(", "));
   };
+  
 
   const handleUnselectAll = () => {
     setKeywords([]);
     setKeywordInputValue("");
   };
 
-  const allSelected = generatedKeywords.every((keyword: any) =>
-    keywords.includes(keyword)
+  const allSelected = generatedKeywords.every((item: any) => 
+    keywords.includes(typeof item === "object" && item.keyword ? item.keyword : item)
   );
-  const notAllSelected = generatedKeywords.some(
-    (keyword: any) => !keywords.includes(keyword)
+  
+  const notAllSelected = generatedKeywords.some((item: any) => 
+    !keywords.includes(typeof item === "object" && item.keyword ? item.keyword : item)
   );
 
   const toggleAdvancedOptions = () => {
@@ -355,7 +361,7 @@ export default function IdeasComponent({
                                 score={generatedKeyword.score}
                                 size={20}
                               />
-                              : {generatedKeyword.score}
+                              <strong>{generatedKeyword.score}</strong> 
                             </div>
                           </div>
                         </div>
