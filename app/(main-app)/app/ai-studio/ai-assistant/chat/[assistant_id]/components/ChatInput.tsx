@@ -120,7 +120,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
 
     try {
       const response = await instance.post(
-        `/ai/api/v1/assistant/chat/${assistant_id}`,
+        `/ai/api/v1/assistant/newchat/${assistant_id}`,
         {
           user_prompt: prompt,
           language: selectedLanguage,
