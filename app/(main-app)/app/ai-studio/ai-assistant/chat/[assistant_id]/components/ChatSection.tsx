@@ -11,6 +11,8 @@ interface ChatSectionProps {
   selectedLanguage: string;
   selectedAiModel: string;
   setMessagesData: any;
+  newChat: boolean; // Add newChat state
+  setNewChat: (value: boolean) => void; // Add setNewChat function,
 }
 
 const ChatSection: React.FC<ChatSectionProps> = ({
@@ -19,6 +21,8 @@ const ChatSection: React.FC<ChatSectionProps> = ({
   selectedLanguage,
   selectedAiModel,
   setMessagesData,
+  newChat,
+  setNewChat,
 }) => {
   const [messages, setMessages] = useState<Chat[]>([]);
 
@@ -69,6 +73,8 @@ const ChatSection: React.FC<ChatSectionProps> = ({
           addMessage={addMessage}
           updateMessage={updateMessage}
           selectedLanguage={selectedLanguage}
+          newChat={newChat} // Pass newChat state
+          setNewChat={setNewChat} // Pass setNewChat function
         />
       </div>
     </div>

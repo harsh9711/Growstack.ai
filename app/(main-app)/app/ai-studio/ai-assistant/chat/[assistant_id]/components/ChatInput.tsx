@@ -17,6 +17,8 @@ interface ChatInputProps {
   updateMessage: (prompt: string, response: string) => void;
   selectedLanguage: string;
   selectedModel: string;
+  newChat: boolean;
+  setNewChat: (value: boolean) => void;
 }
 
 const ChatInput: React.FC<ChatInputProps> = ({
@@ -25,6 +27,8 @@ const ChatInput: React.FC<ChatInputProps> = ({
   updateMessage,
   selectedLanguage,
   selectedModel,
+  newChat,
+  setNewChat,
 }) => {
   const [input, setInput] = useState("");
   const [open, setOpen] = useState(false);
@@ -132,6 +136,9 @@ const ChatInput: React.FC<ChatInputProps> = ({
 
       const chatId = response.data.data.chat_id;
       await streamResponse(chatId, prompt, fromMic);
+
+      // setNewChat(false);
+
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);

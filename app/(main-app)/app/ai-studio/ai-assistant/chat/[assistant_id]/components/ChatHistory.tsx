@@ -2,14 +2,19 @@
 import clsx from "clsx";
 import { CloseIcon } from "@/components/svgs";
 import { Plus } from "lucide-react";
+import { useState } from "react";
 
 interface IProps {
   isOpen: boolean;
   onClose: () => void;
   assistant_id: string;
+  newChat: boolean;
+  setNewChat: (value: boolean) => void;
 }
 
-export default function ChatHistory({ isOpen, onClose, assistant_id }: IProps) {
+export default function ChatHistory({ isOpen, onClose, assistant_id, newChat,
+  setNewChat }: IProps) {
+
   return (
     <div
       className={clsx(
@@ -46,7 +51,7 @@ export default function ChatHistory({ isOpen, onClose, assistant_id }: IProps) {
         <button
           className="text-white bg-primary-green rounded-full h-12 w-12 grid place-content-center"
           onClick={() => {
-            // handle click event
+            setNewChat(true);
           }}
         >
           <Plus size={22} />

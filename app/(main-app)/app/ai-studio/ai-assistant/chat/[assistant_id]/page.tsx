@@ -38,15 +38,19 @@ const AssistantsChats: React.FC<PageProps> = ({
   const [selectedAiModel, setSelectedAiModel] = useState(
     aiModelOptions[0].models[0].value
   );
+  const [newChat, setNewChat] = useState(false);
+  const [convId, setConvId] = useState('');
 
   useEffect(() => {
     const fetchAssistantConversation = async () => {
       setLoading(true);
       try {
         const response = await instance.get(
-          `/ai/api/v1/assistant/${assistant_id}`
+          `http://127.0.0.1:8081/ai/api/v1/assistant/${assistant_id}/${newChat}`
         );
+
         setAssistantConversation(response.data.data.convo);
+        setConvId(response.data.data.convo._id);
       } catch (error: any) {
         console.error("Error fetching assistant data:", error);
         setError("Something went wrong fetching assistant data.");
@@ -79,7 +83,7 @@ const AssistantsChats: React.FC<PageProps> = ({
 
     fetchAssistantConversation();
     fetchAssistantData();
-  }, [assistant_id]);
+  }, [newChat, assistant_id]);
 
   if (loading || !assistantData || !assistantConversation) {
     return (
@@ -103,13 +107,21 @@ const AssistantsChats: React.FC<PageProps> = ({
   };
 
   return (
-    <div className={`flex-1 flex !bg-white shadow-box border ${isSidebarOpen ? 'overflow-hidden' : ''} ${isHistoryOpen ? 'overflow-hidden' : ''}`}>
+    <div
+      className={`flex-1 flex !bg-white shadow-box border ${isSidebarOpen ? "overflow-hidden" : ""} ${isHistoryOpen ? "overflow-hidden" : ""}`}
+    >
       <Sidebar
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
         assistant_id={assistant_id}
       />
-      <ChatHistory isOpen={isHistoryOpen} onClose={() => setHistoryOpen(false) } assistant_id={assistant_id} />
+      <ChatHistory
+        isOpen={isHistoryOpen}
+        onClose={() => setHistoryOpen(false)}
+        assistant_id={assistant_id}
+        newChat={newChat}
+        setNewChat={setNewChat}
+      />
       <div className="flex-1 flex flex-col">
         <Topbar
           conversation={assistantConversation}
@@ -130,6 +142,8 @@ const AssistantsChats: React.FC<PageProps> = ({
           selectedLanguage={selectedLanguage}
           selectedAiModel={selectedAiModel}
           setMessagesData={setMessagesData}
+          newChat={newChat}
+          setNewChat={setNewChat}
         />
       </div>
     </div>
