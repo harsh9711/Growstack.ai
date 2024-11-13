@@ -26,7 +26,6 @@ import { RootState } from "@/lib/store";
 import { parseJsonString, planIdsMap } from "@/lib/utils";
 import Link from "next/link";
 import { ChatResponse } from "@/types/common";
-import ChatMessages from "../ai-studio/ai-chat/components/ChatMessage";
 import ChatMessage from "../ai-studio/ai-chat/components/ChatMessage";
 import {
   Tooltip,
@@ -95,16 +94,13 @@ export default function ChatComponent() {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [filename, setFilename] = useState<string | null>(null);
   const [isDialogOpen, setDialogOpen] = useState(false);
-  const [sidebarItems, setDownloadSetSidebarItems] = useState<[]>([]);
+  const [downloadSidebarItems, setDownloadSetSidebarItems] = useState<[]>([]);
+
   const pathname = usePathname();
 
   useEffect(() => {
     fetchBrandVoice();
   }, []);
-
-  const handleSetSidebarItems = (items: []) => {
-    setDownloadSetSidebarItems(items);
-  };
 
   const outputType = [
     {
@@ -410,6 +406,26 @@ export default function ChatComponent() {
     setIsDashboardChatModalOpen(false);
   };
 
+  const fetchConversations = async () => {
+    try {
+      const response = await instance.get(`${API_URL}/ai/api/v1/conversation/`);
+      const items = response.data.data.map((item: any) => ({
+        _id: item._id,
+        title: item.title,
+        selected: item.selected,
+        createdDate: item.createdAt,
+        updatedDate: item.updatedAt,
+      }));
+      setDownloadSetSidebarItems(items);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchConversations();
+  }, []);
+
   return (
     <div
       className=" flex flex-col bg-white px-8 py-8 rounded-3xl border border-[#E8E8E8] min-h-[580px] h-full"
@@ -419,7 +435,6 @@ export default function ChatComponent() {
         <DashboardChatModal
           onClose={handleMouseLeave}
           onSelectConversation={handleSelectConversation}
-          setDownloadSetSidebarItems={handleSetSidebarItems}
         />
       )}
       <div
@@ -807,7 +822,7 @@ export default function ChatComponent() {
         />
       </GlobalModal>
       <ShareChatDialog
-        sidebarItems={sidebarItems}
+        sidebarItems={downloadSidebarItems}
         isOpen={isDialogOpen}
         onClose={() => setDialogOpen(false)}
       />

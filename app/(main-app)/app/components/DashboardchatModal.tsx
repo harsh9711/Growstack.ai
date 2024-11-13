@@ -10,13 +10,11 @@ import toast from "react-hot-toast";
 type ModalProps = {
   onClose: () => void;
   onSelectConversation: (_id: string) => void;
-  setDownloadSetSidebarItems: (items: []) => void;
 };
 
 const DashboardChatModal: React.FC<ModalProps> = ({
   onClose,
   onSelectConversation,
-  setDownloadSetSidebarItems,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [toggleSearch, setToggleSearch] = useState<boolean>(false);
@@ -42,7 +40,6 @@ const DashboardChatModal: React.FC<ModalProps> = ({
         updatedDate: item.updatedAt,
       }));
       setSidebarItems(items);
-      setDownloadSetSidebarItems(items);
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
