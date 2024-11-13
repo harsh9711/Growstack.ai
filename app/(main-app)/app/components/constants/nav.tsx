@@ -68,11 +68,11 @@ const navLinks: NavLink[] = [
         name: "AI  LLM comparison",
         href: ALL_ROUTES.AI_PLAYGROUND,
       },
-      {
-        icon: <BotIcon />,
-        name: "AI chat",
-        href: ALL_ROUTES.AI_CHAT,
-      },
+      // {
+      //   icon: <BotIcon />,
+      //   name: "AI chat",
+      //   href: ALL_ROUTES.AI_CHAT,
+      // },
       {
         icon: <AiAppsIcon />,
         name: "AI templates",
