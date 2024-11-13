@@ -3157,6 +3157,10 @@ export const tools: Tool[] = [
     socialMediaRequirement: false,
   },
 
+
+
+
+
   {
     id: 58,
     description:
@@ -3407,6 +3411,9 @@ export const tools: Tool[] = [
     event_execute: "processLLM",
     socialMediaRequirement: false,
   },
+
+
+  
   {
     id: 63,
     description:
@@ -3657,6 +3664,10 @@ export const tools: Tool[] = [
     event_execute: "processLLM",
     socialMediaRequirement: false,
   },
+
+
+
+
   {
     id: 68,
     description:
@@ -6457,6 +6468,11 @@ export const tools: Tool[] = [
     event_execute: "processLLM",
     socialMediaRequirement: false,
   },
+
+
+
+
+
   {
     id: 124,
     description: "Generate a image through a text",
