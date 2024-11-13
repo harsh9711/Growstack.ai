@@ -34,7 +34,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Info } from "lucide-react";
+import { Download, Info, MoreVertical } from "lucide-react";
 import { getCookie } from "cookies-next";
 import EventSource from "eventsource";
 import { usePathname } from "next/navigation";
@@ -48,6 +48,7 @@ import Ellipse from "@/components/svgs/ellipse";
 import GlobalModal from "@/components/modal/global.modal";
 import UpgradePlan from "@/components/upgradePlan/upgradePlan";
 import SubscribePlan from "@/components/subscribePlan/subscribePlan";
+import ShareChatDialog from "../ai-studio/ai-chat/components/ShareChatDialog";
 
 type Message = {
   content: string;
@@ -93,11 +94,25 @@ export default function ChatComponent() {
     useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [filename, setFilename] = useState<string | null>(null);
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  const [sidebarItems, setDownloadSetSidebarItems] = useState<[]>([]);
   const pathname = usePathname();
 
   useEffect(() => {
     fetchBrandVoice();
   }, []);
+
+  const handleSetSidebarItems = (items: []) => {
+    setDownloadSetSidebarItems(items);
+  };
+
+  const outputType = [
+    {
+      icon: <Download size={20} />,
+      label: "Download",
+      value: "download_chat",
+    },
+  ];
 
   const fetchBrandVoice = async () => {
     try {
@@ -119,15 +134,18 @@ export default function ChatComponent() {
       const chatData = data.data.chats;
       const messages = chatData.flatMap((chats: any) =>
         chats.thread.flatMap((thread: any) => {
-            const userContent = thread.user_prompt;
-            let assistantContent = typeof thread.response === 'object' ? JSON.stringify(thread.response) : thread.response;
-            assistantContent = assistantContent.replace("[object Object]", "");
-            return [
-                { role: "user", content: userContent, loading: false },
-                { role: "assistant", content: assistantContent, loading: false },
-            ];
+          const userContent = thread.user_prompt;
+          let assistantContent =
+            typeof thread.response === "object"
+              ? JSON.stringify(thread.response)
+              : thread.response;
+          assistantContent = assistantContent.replace("[object Object]", "");
+          return [
+            { role: "user", content: userContent, loading: false },
+            { role: "assistant", content: assistantContent, loading: false },
+          ];
         })
-    );
+      );
       setMessages(messages);
       setSelectedConversation(_id);
     } catch (error) {
@@ -225,7 +243,6 @@ export default function ChatComponent() {
         chatId,
         noOfMessagesLeft,
         totalNoOfMessages,
-
       } = data.data as ChatResponse;
 
       if (isBasicPlan || isFreePlan) {
@@ -402,6 +419,7 @@ export default function ChatComponent() {
         <DashboardChatModal
           onClose={handleMouseLeave}
           onSelectConversation={handleSelectConversation}
+          setDownloadSetSidebarItems={handleSetSidebarItems}
         />
       )}
       <div
@@ -596,6 +614,33 @@ export default function ChatComponent() {
               )}
             </SelectContent>
           </Select>
+          <Select>
+            <SelectTrigger
+              showChevronDownIcon={false}
+              className="px-1 py-[5px] bg-white border-0 h-fit hover:bg-gray-100 rounded-lg"
+            >
+              <MoreVertical size={20} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {outputType.map(({ label, value, icon }) => (
+                  <div
+                    onClick={e => {
+                      e.stopPropagation();
+                      setDialogOpen(true);
+                    }}
+                    key={value}
+                    className=" cursor-pointer hover:bg-gray-100 items-center rounded-sm py-2.5 pr-2 pl-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+                  >
+                    <div className="flex gap-x-2">
+                      {icon}
+                      {label}
+                    </div>
+                  </div>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
         </div>
       </div>
       <div
@@ -761,6 +806,11 @@ export default function ChatComponent() {
           }}
         />
       </GlobalModal>
+      <ShareChatDialog
+        sidebarItems={sidebarItems}
+        isOpen={isDialogOpen}
+        onClose={() => setDialogOpen(false)}
+      />
     </div>
   );
 }
