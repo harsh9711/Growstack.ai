@@ -109,6 +109,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
   };
 
   const handleSend = async (user_prompt?: string, fromMic: boolean = false) => {
+    
     if (user_prompt) {
       user_prompt = user_prompt.trim();
     }
@@ -145,6 +146,9 @@ const ChatInput: React.FC<ChatInputProps> = ({
       } else {
         toast.error(error.message);
       }
+    }
+    finally {
+      setNewChat(false); 
     }
   };
 

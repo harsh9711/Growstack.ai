@@ -73,8 +73,8 @@ const ChatSection: React.FC<ChatSectionProps> = ({
           addMessage={addMessage}
           updateMessage={updateMessage}
           selectedLanguage={selectedLanguage}
-          newChat={newChat} // Pass newChat state
-          setNewChat={setNewChat} // Pass setNewChat function
+          newChat={newChat} 
+          setNewChat={setNewChat} 
         />
       </div>
     </div>

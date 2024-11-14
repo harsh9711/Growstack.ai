@@ -85,6 +85,13 @@ const AssistantsChats: React.FC<PageProps> = ({
     fetchAssistantData();
   }, [newChat, assistant_id]);
 
+  useEffect(() =>{
+    if (newChat){
+      setLoading(false);
+    }
+  },[newChat]);
+  
+
   if (loading || !assistantData || !assistantConversation) {
     return (
       <div className="flex-1 flex flex-col gap-5 justify-center items-center">
