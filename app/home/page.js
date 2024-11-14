@@ -32,7 +32,11 @@ function Page() {
 
   return (
     <React.Fragment>
-      <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
+      <Navbar
+        logoUrl="/white.png"
+        logoAlt="Custom Logo"
+        backgroundColor="#f5f5f5"
+      />
       <div className="bg-[#F5F5F5] w-full h-full">
         <AnimationStory />
         <div className="relative mx-auto p-6 sm:p-0  -translate-y-20 items-center justify-center flex  flex-col sm:flex-row gap-4">
