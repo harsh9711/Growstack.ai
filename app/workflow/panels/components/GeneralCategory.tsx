@@ -3,6 +3,7 @@ import Image from "next/image";
 import { AllData } from "../../data";
 import { useDispatch } from "react-redux";
 import { addNode } from "@/lib/features/workflow/node.slice";
+import { NodeDataState, NodeState } from "@/types/workflows";
 
 const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
     const dispatch = useDispatch();
@@ -19,9 +20,13 @@ const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
         {}
     );
 
-    const handleClick = (nodeData: any) => {
-        dispatch(addNode({ ...nodeData, id: Date.now().toString() }));
+    const handleClick = (nodeData: NodeState) => {
+        setNodes((prevNodes: NodeState[]) => [
+            ...prevNodes,
+            { ...nodeData, id: Date.now().toString() },
+        ]);
     };
+
 
     return (
         <div className="absolute w-4/5 h-[500px] top-[120px] rounded-2xl overflow-y-auto backdrop-blur-sm shadow-md">
@@ -60,7 +65,8 @@ const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
                                     <div
                                         key={_.toString()}
                                         className="h-[92px] w-[130px] bg-transparent m-1 rounded-lg flex justify-center items-center cursor-pointer border border-[#E5E5E5]"
-                                    >
+                                        onClick={() => handleClick(item.node)}
+                                   >
                                         <div className="h-full w-full rounded-lg bg-white flex justify-center items-center flex-col">
                                             {item?.image && (
                                                 <Image

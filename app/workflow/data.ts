@@ -703,7 +703,7 @@ export const AllData: AllDataState[] = [
     },
     node: {
       id: Date.now().toString(),
-      type: "growstack-llm",
+      type: "short-text",
       position: { x: 200, y: 200 },
       data: {
         label: "growstack-llm",
@@ -739,7 +739,7 @@ export const AllData: AllDataState[] = [
     },
     node: {
       id: Date.now().toString(),
-      type: "growstack-llm",
+      type: "long-text",
       position: { x: 200, y: 200 },
       data: {
         label: "growstack-llm",
@@ -775,7 +775,7 @@ export const AllData: AllDataState[] = [
     },
     node: {
       id: Date.now().toString(),
-      type: "growstack-llm",
+      type: "boolean",
       position: { x: 200, y: 200 },
       data: {
         label: "growstack-llm",
@@ -811,7 +811,7 @@ export const AllData: AllDataState[] = [
     },
     node: {
       id: Date.now().toString(),
-      type: "growstack-llm",
+      type: "number",
       position: { x: 200, y: 200 },
       data: {
         label: "growstack-llm",
