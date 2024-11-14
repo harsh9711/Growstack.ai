@@ -1,8 +1,10 @@
 "use client";
 import clsx from "clsx";
-import { CloseIcon } from "@/components/svgs";
+import { CloseIcon,MessageIcon2 } from "@/components/svgs";
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import instance from "@/config/axios.config";
+import { Chat } from "../../../components/types";
 
 interface IProps {
   isOpen: boolean;
@@ -12,8 +14,36 @@ interface IProps {
   setNewChat: (value: boolean) => void;
 }
 
-export default function ChatHistory({ isOpen, onClose, assistant_id, newChat,
-  setNewChat }: IProps) {
+export default function ChatHistory({
+  isOpen,
+  onClose,
+  assistant_id,
+  newChat,
+  setNewChat,
+}: IProps) {
+  const [chatHistory, setChatHistory] = useState<Chat[]>([]);
+
+  useEffect(() => {
+    const fetchChatHistory = async () => {
+      try {
+        const response = await instance.post(
+          "http://127.0.0.1:8081/ai/api/v1/assistant/getHistoryChat",
+          {
+            user_id: "670cbd21028930e25da735a8",
+            assistant_id: assistant_id,
+          }
+        );
+
+        setChatHistory(response.data);
+        console.log(response.data);
+        console.log("=================", response.data[4].chats);
+      } catch (error) {
+        console.error("Error fetching chat history:", error);
+      }
+    };
+
+    fetchChatHistory();
+  }, [assistant_id]);
 
   return (
     <div
@@ -56,6 +86,29 @@ export default function ChatHistory({ isOpen, onClose, assistant_id, newChat,
         >
           <Plus size={22} />
         </button>
+      </div>
+      <div className="px-6 py-4 max-h-[68vh] overflow-y-auto">
+        {chatHistory.length > 0 ? (
+          chatHistory.map((chat, index) => (
+            <div
+              key={index}
+              className={clsx(
+                "flex gap-4 w-full px-4 mb-1.5 hover:bg-gray-200/80 cursor-pointer group rounded-full transition-all duration-300 overflow-hidden",
+              )}
+            >
+              <div className="h-14 flex gap-4 w-full items-center relative overflow-hidden">
+                <MessageIcon2 className="group-hover:text-primary-green w-full max-w-fit" />
+                <span className="flex-1 whitespace-nowrap overflow-hidden text-ellipsis">
+                  {chat.chats && chat.chats.length > 0
+                    ? chat.chats[0].prompt
+                    : "Empty"}
+                </span>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p>Loading chat history...</p>
+        )}
       </div>
     </div>
   );

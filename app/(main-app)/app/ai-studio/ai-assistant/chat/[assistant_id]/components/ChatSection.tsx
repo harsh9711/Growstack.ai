@@ -41,6 +41,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({
       _id: new Date().toISOString(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      chats: undefined
     };
     setMessages(prevMessages => [...prevMessages, newMessage]);
   };
