@@ -98,14 +98,16 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
         const {
           data: { data },
         } = response;
-        setCurrentStep(4);
-        console.log("data", data);
 
-        setArticleData(data.article);
-        setScore(data.score.rank);
+        const parsedData = JSON.parse(data.response);
+
+        setCurrentStep(4);
+
+        setArticleData(parsedData.article);
+        setScore(parsedData.score.rank);
       })
       .catch(err => {
-        toast.error(err.response.data.message || err.message);
+        toast.error(err.response?.message || err.message);
         console.log(err);
       })
       .finally(() => {
