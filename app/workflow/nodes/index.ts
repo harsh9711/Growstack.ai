@@ -2,6 +2,10 @@ import type { NodeTypes } from "@xyflow/react";
 import { PositionLoggerNode } from "./PostitionLoggerNode";
 import { AppNode } from "./types";
 import ChatGptNode from "./ChatGptNode";
+import ShortText from "./ShortText";
+import LongText from "./LongText";
+import Boolean from "./Boolean";
+import Number from "./Number";
 
 export const initialNodes: AppNode[] = [
   {
@@ -28,4 +32,8 @@ export const initialNodes: AppNode[] = [
 export const nodeTypes = {
   "position-logger": PositionLoggerNode,
   "chat-gpt": ChatGptNode,
+  "short-text": ShortText,
+  "long-text":LongText,
+  "boolean":Boolean,
+  "number":Number
 } satisfies NodeTypes;
