@@ -49,7 +49,7 @@ function Page() {
         <Premium />
       </section>
       <SixCardTab />
-      {/* <SixCardSwitch /> */}
+      <SixCardSwitch />
       {/* <Capability /> */}
       {/* <Capability2 /> */}
       <section className="sm:px-0 px-6 py-10 sm:py-40 ">
