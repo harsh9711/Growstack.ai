@@ -35,7 +35,7 @@ function Page() {
       <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
       <div className="bg-[#F5F5F5] w-full h-full">
         <AnimationStory />
-        <div className="relative mx-auto -translate-y-20 items-center justify-center flex  flex-row gap-4">
+        <div className="relative mx-auto p-6 sm:p-0  -translate-y-20 items-center justify-center flex  flex-col sm:flex-row gap-4">
           <button className="flex items-center gap-2 text-primary-green rounded-xl">
             <Image
               className="w-full h-full"
@@ -66,7 +66,6 @@ function Page() {
         </div>
       </div>{" "}
       <div className="sm:px-10 sm:-translate-y-10 relative z-0">
-        {" "}
         <DragFeatures />
       </div>
       {/* <Banner /> */}

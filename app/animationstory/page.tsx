@@ -24,7 +24,6 @@ const KeyPoints = () => {
 
 const AnimationStory = () => {
   const videoRef = useRef(null);
-
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (videoRef.current) {
       const { clientX, clientY } = e;
@@ -33,7 +32,7 @@ const AnimationStory = () => {
       const yRotation = ((clientX - innerWidth / 2) / innerWidth) * -20;
       (
         videoRef.current as HTMLVideoElement
-      ).style.transform = `rotateX(${xRotation}deg) rotateY(${yRotation}deg) scale(1.1)`;
+      ).style.transform = `rotateX(${xRotation}deg) rotateY(${yRotation}deg) scale(1.05)`;
     }
   };
 
@@ -50,7 +49,6 @@ const AnimationStory = () => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Background video with 3D effect */}
       <video
         ref={videoRef}
         autoPlay
@@ -59,11 +57,10 @@ const AnimationStory = () => {
         className="absolute border-none outline-none top-0 left-0 right-0 w-full h-full hidden sm:block transition-transform duration-500 ease-out"
         style={{ border: "none", outline: "none", perspective: "1000px" }}
       >
-        <source src="/final.mp4" type="video/mp4" className="w-full h-full" />
+        <source src="/final2.mp4" type="video/mp4" className="w-full h-full" />
         Your browser does not support the video tag.
       </video>
 
-      {/* Foreground content */}
       <div className="relative z-10 mx-auto flex flex-col sm:mt-2 max-w-[1320px] p-4">
         <div className="flex w-full flex-col gap-6 sm:flex-row items-center justify-between">
           <h1 className="text-black text-[16px] sm:text-[24px] md:text-[36px] lg:text-[42px] text-center sm:text-start max-w-[620px] w-full font-medium mb-1">
