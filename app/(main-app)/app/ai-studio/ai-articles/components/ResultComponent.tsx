@@ -78,34 +78,41 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
     }
   };
 
-  const generateArticle = () => {
+  const generateArticle = async () => {
     const data = {
       title: articleTitle,
       subtitles_with_talking_points: talkingPoints,
       keywords: keywords,
     };
 
+    console.log("regenerate data", data);
+
     setArticleData("");
     setIsArticlePending(true);
-    instance
-      .post("/ai/api/v1/wizard/generate", data)
-      .then(response => {
-        const {
-          data: { data },
-        } = response;
-        
-        setArticleData(data.article);
-        console.log("articleData",articleData);
 
-        setScore(data.score.rank);
-      })
-      .catch(err => {
-        toast.error(err.response.data.message || err.message);
-        console.log(err);
-      })
-      .finally(() => {
-        setIsArticlePending(false);
-      });
+    try {
+      const response = await instance.post("/ai/api/v1/wizard/generate", data);
+
+      if (
+        response &&
+        response.data &&
+        response.data.data &&
+        response.data.data.response
+      ) {
+        const parsedResponse = JSON.parse(response.data.data.response);
+
+        setArticleData(parsedResponse.article || "");
+        setScore(parsedResponse.score?.rank || 0);
+      } else {
+        throw new Error("Unexpected response structure");
+      }
+    } catch (err: any) {
+      const errorMessage = err.response?.data?.message || err.message;
+      toast.error(errorMessage);
+      console.log("Error:", errorMessage);
+    } finally {
+      setIsArticlePending(false);
+    }
   };
 
   const stripHtmlTags = (html: string) => {
@@ -242,7 +249,7 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
                       fill="#FFFFFF"
                     />
                   </svg>
-                  Regenerates
+                  Regenerate
                 </button>
               </div>
               <div className="flex justify-center items-center gap-2">
