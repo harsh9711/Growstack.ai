@@ -120,7 +120,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
 
     try {
       const response = await instance.post(
-        `/ai/api/v1/assistant/newchat/${assistant_id}`,
+        `/ai/api/v1/assistant/chat/${assistant_id}`,
         {
           user_prompt: prompt,
           language: selectedLanguage,
@@ -159,52 +159,50 @@ const ChatInput: React.FC<ChatInputProps> = ({
     }
   };
 
-
   return (
     <>
-    <div className="flex p-2 border gap-2 rounded-xl items-end">
-      <Image
-        src="/logo/growstack-mini.png"
-        alt=""
-        width={25}
-        height={25}
-        draggable={false}
-        className="select-none ml-2 mb-3"
-      />
-      <textarea
-        ref={textareaRef}
-        value={input}
-        onChange={e => {
-          setInput(e.target.value);
-          isEmptyPrompt(''); // Clear error on input change
-        }}        
-        onKeyDown={handleKeyDown}
-        rows={1}
-        className="w-full flex-1 p-2 bg-transparent resize-none overflow-hidden min-h-11 max-h-[300px]"
-        placeholder="What's in your mind?"
-      />
-      <button
-        // onClick={startRecognition}
-        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
-      >
-        {/* <MicrophoneIcon /> */}
-        <Microphone
-          open={open}
-          isAnimating={isAnimating}
-          handleOpenChange={handleOpenChange}
+      <div className="flex p-2 border gap-2 rounded-xl items-end">
+        <Image
+          src="/logo/growstack-mini.png"
+          alt=""
+          width={25}
+          height={25}
+          draggable={false}
+          className="select-none ml-2 mb-3"
         />
-      </button>
-      <button
-        onClick={() => handleSend()}
-        className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
-      >
-        <SendIcon2 />
-      </button>
-      
-    </div>
-    {emptyPrompt && (
-      <div className="text-red-500 mt-2 ml-2">{emptyPrompt}</div>
-    )}
+        <textarea
+          ref={textareaRef}
+          value={input}
+          onChange={e => {
+            setInput(e.target.value);
+            isEmptyPrompt(""); // Clear error on input change
+          }}
+          onKeyDown={handleKeyDown}
+          rows={1}
+          className="w-full flex-1 p-2 bg-transparent resize-none overflow-hidden min-h-11 max-h-[300px]"
+          placeholder="What's in your mind?"
+        />
+        <button
+          // onClick={startRecognition}
+          className="h-12 w-12 flex justify-center items-center bg-[#2DA771] hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
+        >
+          {/* <MicrophoneIcon /> */}
+          <Microphone
+            open={open}
+            isAnimating={isAnimating}
+            handleOpenChange={handleOpenChange}
+          />
+        </button>
+        <button
+          onClick={() => handleSend()}
+          className="h-12 w-12 flex justify-center items-center bg-[#2DA771] hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
+        >
+          <SendIcon2 />
+        </button>
+      </div>
+      {emptyPrompt && (
+        <div className="text-red-500 mt-2 ml-2">{emptyPrompt}</div>
+      )}
     </>
   );
 };

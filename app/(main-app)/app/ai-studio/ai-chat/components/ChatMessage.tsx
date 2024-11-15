@@ -239,7 +239,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
                       </div>
                     )}
                     {textContent && (
-                      <div className="text-container max-w-5xl bg-primary-green text-white whitespace-pre-wrap py-3 px-5 rounded-xl text-[14.5px] leading-relaxed min-h-11 flex justify-center text-justify">
+                      <div className="text-container max-w-5xl bg-[#2DA771] text-white whitespace-pre-wrap py-3 px-5 rounded-xl text-[14.5px] leading-relaxed min-h-11 flex justify-center text-justify">
                         {textContent}
                       </div>
                     )}
@@ -248,7 +248,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
                   <div
                     className={`max-w-5xl ${
                       chat.role === "user"
-                        ? "bg-primary-green text-white whitespace-pre-wrap"
+                        ? "bg-[#2DA771] text-white whitespace-pre-wrap"
                         : "bg-[#F1F1F1] text-primary-black"
                     } py-3 px-5 rounded-xl text-[14.5px] leading-relaxed min-h-11 flex justify-center text-justify`}
                   >

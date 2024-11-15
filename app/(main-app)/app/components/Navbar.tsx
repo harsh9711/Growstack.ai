@@ -71,8 +71,7 @@ export default function Navbar() {
             inset
             className={clsx(
               "min-w-[300px] flex justify-between gap-8 items-center my-1",
-              pathname === item.href &&
-                "bg-primary-green hover:!bg-primary-green"
+              pathname === item.href && "bg-[#2DA771] hover:!bg-[#2DA771]"
             )}
           >
             <div className="flex gap-3">
@@ -191,7 +190,7 @@ const NavLinkBtn = ({
       className={clsx(
         "flex justify-center items-center p-[9px] pr-6 rounded-2xl gap-4 text-[18px] transition-all duration-200",
         isActive
-          ? "bg-primary-green text-white !hover:bg-primary-green hover:bg-opacity-90"
+          ? "bg-[#2DA771] text-white !hover:bg-[#2DA771] hover:bg-opacity-90"
           : "hover:bg-[#F1F1F1]"
       )}
     >
