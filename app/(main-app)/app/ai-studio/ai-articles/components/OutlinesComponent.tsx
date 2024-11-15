@@ -1,5 +1,3 @@
-// OutlinesComponent.tsx
-
 import Motion from "@/components/Motion";
 import Spinner from "@/components/Spinner";
 import instance from "@/config/axios.config";
@@ -16,6 +14,7 @@ import {
 import { IOutline } from "../types";
 import AdvancedOptions from "./AdvancedOptions";
 import { title } from "process";
+import { StarRating } from "./Star";
 
 interface OutlinesComponentProps {
   currentStep: number;
@@ -224,7 +223,7 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
           {outlines.length > 0 && (
             <div>
               <div className={clsx("mt-4 space-y-2")}>
-                {outlines.map((outline, index) => (
+                {outlines.map((outline: any, index: any) => (
                   <ul
                     key={index}
                     className={clsx(
@@ -234,7 +233,14 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
                     )}
                     onClick={() => setSelectedOutlines(outlines[index])}
                   >
-                    {outline.subtitles.map((subtitle, index) => (
+                    <div
+                      className="flex justify-end"
+                      style={{ textAlign: "right" }}
+                    >
+                      <StarRating score={outline.score} size={20} />:{" "}
+                      {outline.score}
+                    </div>
+                    {outline.subtitles.map((subtitle: any, index: any) => (
                       <li key={index}>{subtitle}</li>
                     ))}
                   </ul>

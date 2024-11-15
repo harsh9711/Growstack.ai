@@ -65,12 +65,11 @@ const Box = () => {
   }, []);
 
   return (
-    <div className="sm:flex hidden max-w-[1239px] w-full items-center justify-center">
+    <div className="flex  max-w-[1239px] w-full items-center justify-center">
       {/* <Image width={100} height={100} alt="map" /> */}
       {/* <Image  width={100} height={100} alt="map" /> */}
       <div
         style={{
-          border: "4px solid gray",
           borderRadius: "10px",
           overflow: "hidden",
         }}
@@ -149,7 +148,7 @@ const Box = () => {
 
 const SixCardSwitch = () => {
   return (
-    <div className="py-8">
+    <div className="py-8 sm:p-0 p-6">
       <div className="max-w-[1340px] flex flex-col  items-center gap-y-6 sm:gap-y-8 w-full mx-auto sm:py-40">
         <div
           className="max-w-[184px] rounded-2xl flex items-center justify-center w-full px-4 py-2 text-primary-lightgreen bg-[#2DA77114]"

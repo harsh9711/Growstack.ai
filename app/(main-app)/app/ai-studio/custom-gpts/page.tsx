@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 import { ALL_ROUTES } from "@/utils/constant";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
-import { FaEllipsisV } from "react-icons/fa";
+import { FaEllipsisV, FaUser } from "react-icons/fa";
 import GlobalModal from "@/components/modal/global.modal";
 type CustomGpt = {
   description: string;
@@ -21,6 +21,7 @@ type CustomGpt = {
   show: boolean;
   pre_built: boolean;
   is_public: boolean;
+  userProfiles: []
 };
 export default function Customgpts() {
   const [customGpts, setCustomGpts] = useState<CustomGpt[]>([]);
@@ -148,13 +149,13 @@ export default function Customgpts() {
             </div>
           ) : (
             <>
-              {/* <h1 className="text-2xl font-semibold">GPTs by GrowStack</h1>
+              <h1 className="text-2xl font-semibold">GPTs by GrowStack</h1>
               <div className="grid grid-cols-3 gap-5 mt-8">
-                {visibleItems.map(({ description, icon, name, _id, show }, index) =>
+                {visibleItems.map(({ description, icon, name, _id, show, userProfiles }, index) =>
                   show && (
                     <div
                       key={_id}
-                      className="bg-white border border-[#E8E8E8] rounded-2xl p-6 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer transition-all duration-300 relative"
+                      className="bg-white border border-[#E8E8E8] rounded-2xl p-2 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer transition-all duration-300 relative"
                     >
                       <div className="flex justify-between">
                         <Link href={`/app/ai-studio/custom-gpts/gpt?custom_gpt_id=${_id}`}>
@@ -184,6 +185,46 @@ export default function Customgpts() {
                           </div>
                         </Link>
                       </div>
+                      <div className="mt-3 mb-3">
+                        <DropdownMenuSeparator />
+                      </div>
+                      <div className="flex items-center">
+                        <div className={`flex ${userProfiles.length > 1 ? '-space-x-3' : ''}`}>
+                          {userProfiles.slice(0, 4).map((profile_img: any, index: number) => (
+                            <Avatar key={index} className="w-[100%] h-[100%]">
+                              {profile_img.profile_img ? (
+                                <AvatarImage
+                                  style={{
+                                    borderRadius: "50%",
+                                    border: "3px solid white",
+                                  }}
+                                  className="w-[50px] h-[50px]"
+                                  src={profile_img.profile_img}
+                                />
+                              ) : (
+                                <FaUser
+                                  style={{
+                                    width: "50px",
+                                    height: "50px",
+                                    borderRadius: "50%",
+                                    backgroundColor: "#e2e8f0",
+                                    color: "#64748b",
+                                    border: "3px solid white",
+                                  }}
+                                />
+                              )}
+                            </Avatar>
+                          ))}
+                          {userProfiles.length > 4 && (
+                            <div className="flex items-center justify-center w-[50px] h-[50px] bg-gray-300 rounded-full border-2 border-white text-gray-700">
+                              +{userProfiles.length - 4}
+                            </div>
+                          )}
+                        </div>
+                        <strong className="ml-4 text-gray-700">
+                          {`Used by ${userProfiles.length} user${userProfiles.length > 1 ? 's' : ''}`}
+                        </strong>
+                      </div>
                     </div>
                   )
                 )}
@@ -197,7 +238,7 @@ export default function Customgpts() {
                   </button>
                 )}
 
-              </div> */}
+              </div>
               {customGpts?.length == 0 && <h1 className="text-center">GPTs by GrowStack Records Not Available</h1>}
               {/* <div className="mt-8 mb-3">
                 <DropdownMenuSeparator />
@@ -242,12 +283,12 @@ export default function Customgpts() {
                           {menuOpenIndex === index && (
                             <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-10">
                               <ul className="py-1">
-                                {/* <li className="px-4 py-2 cursor-pointer hover:bg-gray-100" onClick={() => { CustomGptPublic(_id, true) }}>
+                                <li className="px-4 py-2 cursor-pointer hover:bg-gray-100" onClick={() => { CustomGptPublic(_id, true) }}>
                                   Set as public
                                 </li>
                                 <li className="px-4 py-2 cursor-pointer hover:bg-gray-100" onClick={() => { CustomGptPublic(_id, false) }}>
                                   Remove from public
-                                </li> */}
+                                </li>
                                 <li className="px-4 py-2 cursor-pointer text-rose-600 hover:bg-gray-100" onClick={() => { setIsDeleting(true); setDeleteId(_id) }}>
                                   Delete
                                 </li>
