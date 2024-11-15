@@ -25,7 +25,7 @@ export default function MyVideos() {
               />
             </div>
             <Link href={ALL_ROUTES.TEXT_TO_AVATAR_MY_AVATARS}>
-              <button className="text-primary-green bg-transparent border border-primary-green h-12 sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
+              <button className="text-[#2DA771] bg-transparent border border-[#2DA771] h-12 sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
                 <HiOutlineFolderPlus size={20} />
                 New Folder
               </button>

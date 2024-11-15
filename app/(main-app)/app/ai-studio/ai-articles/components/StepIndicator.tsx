@@ -21,7 +21,7 @@ const StepIndicator = ({
           <span
             className={clsx(
               "h-12 w-12 bg-gray-100 grid place-content-center rounded-full transition-all duration-300",
-              index <= currentStep && "bg-primary-green text-white",
+              index <= currentStep && "bg-[#2DA771] text-white",
               index > currentStep && "!cursor-default opacity-50"
             )}
           >
@@ -31,14 +31,14 @@ const StepIndicator = ({
             <h1
               className={clsx(
                 "text-base text-gray-400",
-                index <= currentStep && "!text-primary-green"
+                index <= currentStep && "!text-[#2DA771]"
               )}
             >
               {step}
             </h1>
             <div className="relative w-32 h-2 bg-[#E4E4E4] rounded-full">
               <div
-                className="bg-primary-green absolute inset-0 rounded-full transition-all duration-300"
+                className="bg-[#2DA771] absolute inset-0 rounded-full transition-all duration-300"
                 style={{
                   width:
                     index < currentStep

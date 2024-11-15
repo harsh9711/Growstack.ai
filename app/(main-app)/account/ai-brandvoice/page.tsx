@@ -60,7 +60,7 @@ export default function BrandVoice() {
                 setOpenCreateBrandVoice(true);
               }
             }}
-            className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2"
+            className="bg-[#2DA771] text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2"
           >
             <Plus size={20} />
             Create brand voice

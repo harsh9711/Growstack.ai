@@ -1,7 +1,7 @@
 import { Switch } from "@/components/ui/switch";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
-import { CircleAlert, File, PlusIcon, Trash } from "lucide-react";
+import { File, Trash } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import FileUploadModal from "./FileUploadModal";

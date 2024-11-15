@@ -382,7 +382,7 @@ export default function TextToVideoPage() {
                   </div>
                   <div>
                     <button
-                      className="bg-primary-green text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center md:w-[180px] lg:w-[282px] h-[52px] gap-2"
+                      className="bg-[#2DA771] text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center md:w-[180px] lg:w-[282px] h-[52px] gap-2"
                       onClick={handleNavigation}
                     >
                       <Plus size={20} />

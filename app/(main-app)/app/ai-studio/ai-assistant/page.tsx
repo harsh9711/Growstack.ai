@@ -125,7 +125,9 @@ export default function AiAssistants() {
         <div className="flex flex-col lg:flex-row lg:justify-end mt-8">
           <div className="space-y-2 w-full">
             {/* <h1 className="text-2xl font-semibold">AI assistant</h1> */}
-            <h1 className="lg:text-2xl md:text-xl font-semibold">AI assistant</h1>
+            <h1 className="lg:text-2xl md:text-xl font-semibold">
+              AI assistant
+            </h1>
             <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]">
               Chat with our AI team
             </p>
@@ -154,7 +156,7 @@ export default function AiAssistants() {
               className={clsx(
                 "py-3.5 px-6 rounded-lg cursor-pointer flex items-center justify-center gap-2 transition duration-300",
                 searchQuery === "" && selectedGroup === group.name
-                  ? "bg-primary-green text-white"
+                  ? "bg-[#2DA771] text-white"
                   : "bg-[#E9E9E9] text-primary-green"
               )}
             >
@@ -182,7 +184,7 @@ export default function AiAssistants() {
             <h2>No assistants found</h2>
             <button
               onClick={clearSearchHandle}
-              className="text-white bg-primary-green h-12 w-40 rounded-xl !mt-7 sheen transition-all duration-300"
+              className="text-white bg-[#2DA771] h-12 w-40 rounded-xl !mt-7 sheen transition-all duration-300"
             >
               Explore all
             </button>

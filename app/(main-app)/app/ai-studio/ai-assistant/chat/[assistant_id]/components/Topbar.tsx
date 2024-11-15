@@ -125,26 +125,29 @@ export default function Topbar({
             className="h-[40px] w-[40px] sm:h-[50px] sm:w-[50px] rounded-xl object-cover shadow-md shadow-gray-200"
           />
           <div>
-            <h2 className="text-lg font-semibold sm:text-xl">{assistant.role}</h2>
+            <h2 className="text-lg font-semibold sm:text-xl">
+              {assistant.role}
+            </h2>
             <p className="flex items-center gap-2 text-primary-black text-opacity-70">
-              <span className="h-2 w-2 rounded-full bg-[#68D391]"></span>{assistant.name}
+              <span className="h-2 w-2 rounded-full bg-[#68D391]"></span>
+              {assistant.name}
             </p>
           </div>
         </div>
         <div className="flex items-center gap-2 sm:gap-3">
-        <div
+          <div
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             className={`${
               isSidebarOpen
-                ? "bg-primary-green text-white"
-                : "bg-primary-green/10 text-primary-green"
+                ? "bg-[#2DA771] text-white"
+                : "bg-[#2DA771]/10 text-primary-green"
             } transition-all duration-300 h-11 w-11 grid place-content-center rounded-lg cursor-pointer`}
           >
             <UserCircle />
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <div className="bg-primary-green/10 hover:text-white hover:bg-primary-green transition-all duration-300 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
+              <div className="bg-[#2DA771]/10 hover:text-white hover:bg-[#2DA771] transition-all duration-300 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
                 <Download />
               </div>
             </DropdownMenuTrigger>
@@ -174,8 +177,8 @@ export default function Topbar({
           </DropdownMenu>
 
           <Select value={selectedAiModel} onValueChange={handleModalSelection}>
-          <SelectTrigger className="min-w-[160px] sm:min-w-[200px] h-9 sm:h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-3 sm:px-4">
-          <SelectValue placeholder="Select an option">
+            <SelectTrigger className="min-w-[160px] sm:min-w-[200px] h-9 sm:h-12 bg-[#2DA771] text-white border-0 rounded-xl flex items-center justify-between px-3 sm:px-4">
+              <SelectValue placeholder="Select an option">
                 {selectedAiModel && (
                   <div className="flex items-center gap-2">
                     <span className="min-w-fit">
@@ -204,7 +207,7 @@ export default function Topbar({
                             className={clsx(
                               "flex items-center gap-2",
                               selectedAiModel === value &&
-                                "text-primary-green font-medium"
+                                "text-[#2DA771] font-medium"
                             )}
                           >
                             <span className="min-w-fit">{icon}</span>
@@ -220,8 +223,8 @@ export default function Topbar({
           </Select>
 
           <Select value={selectedLanguage} onValueChange={switchLanguage}>
-          <SelectTrigger className="bg-[#429A85] min-w-[160px] sm:min-w-[200px] h-9 sm:h-12 text-white border-0 rounded-xl flex items-center justify-between px-3 sm:px-4">
-          <SelectValue placeholder="Select an option" />
+            <SelectTrigger className="bg-[#429A85] min-w-[160px] sm:min-w-[200px] h-9 sm:h-12 text-white border-0 rounded-xl flex items-center justify-between px-3 sm:px-4">
+              <SelectValue placeholder="Select an option" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>

@@ -420,7 +420,7 @@ const Register = () => {
                   </div>
                   <button
                     type="submit"
-                    className="bg-primary-green hover:bg-primary-green/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center"
+                    className="bg-[#2DA771] hover:bg-[#2DA771]/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center"
                   >
                     {isPending ? <Spinner /> : "Register"}
                   </button>
@@ -461,7 +461,7 @@ const Register = () => {
                   Already have an account?{" "}
                   <Link
                     href="/auth/login"
-                    className="text-primary-green font-semibold"
+                    className="text-[#2DA771] font-semibold"
                   >
                     Login Now
                   </Link>

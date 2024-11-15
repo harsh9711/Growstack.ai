@@ -20,7 +20,7 @@ const NewChatAlert = ({ handleNewChat }: NewChatAlertProps) => {
       <DialogTrigger asChild>
         <button
           type="button"
-          className="bg-primary-green p-2 md:p-3 rounded-[16px] text-white"
+          className="bg-[#2DA771] p-2 md:p-3 rounded-[16px] text-white"
         >
           <Plus size={24} className="md:size-[32px]" />
         </button>
@@ -47,7 +47,7 @@ const NewChatAlert = ({ handleNewChat }: NewChatAlertProps) => {
                 handleNewChat();
                 setIsOpen(false);
               }}
-              className="text-[12px] md:text-[14px] h-10 md:h-12 bg-primary-green text-white px-4 md:px-5 rounded-xl"
+              className="text-[12px] md:text-[14px] h-10 md:h-12 bg-[#2DA771] text-white px-4 md:px-5 rounded-xl"
             >
               Continue
             </button>

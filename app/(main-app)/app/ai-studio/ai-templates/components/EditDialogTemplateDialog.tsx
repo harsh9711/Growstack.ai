@@ -511,7 +511,7 @@ const EditAssistantDialog = ({
                         {index === inputs.length - 1 && index > 0 && (
                           <button
                             type="button"
-                            className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                            className="bg-[#2DA771] text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
                             onClick={addUserInput}
                           >
                             <Plus />
@@ -520,7 +520,7 @@ const EditAssistantDialog = ({
                         {inputs.length === 1 && (
                           <button
                             type="button"
-                            className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                            className="bg-[#2DA771] text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
                             onClick={addUserInput}
                           >
                             <Plus />
@@ -551,7 +551,7 @@ const EditAssistantDialog = ({
                       </button>
                     </DialogClose>
                     <button
-                      className="bg-primary-green text-white sheen transition duration-500 px-8 py-4 rounded-xl flex items-center gap-2 md:px-6 md:py-3 md:text-sm"
+                      className="bg-[#2DA771] text-white sheen transition duration-500 px-8 py-4 rounded-xl flex items-center gap-2 md:px-6 md:py-3 md:text-sm"
                       disabled={isPending}
                     >
                       {isPending ? "Updating..." : "Update Assistant"}

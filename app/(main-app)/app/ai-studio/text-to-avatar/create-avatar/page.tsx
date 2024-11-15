@@ -15,12 +15,9 @@ import TemplateLoader from "../components/TemplateLoader";
 import AudioBox from "../components/AudioBox";
 import { useRouter } from "next/navigation";
 import { ArrowBack } from "@/components/svgs";
-import { MoreHorizontal, Plus } from "lucide-react";
-import DownloadCircle from "@/components/svgs/download";
-import Delete from "@/components/svgs/delete";
+import { Plus } from "lucide-react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import Spinner from "@/components/Spinner";
-import Image from "next/image";
 
 interface FormData {
   title: string;
@@ -728,7 +725,7 @@ const PreviewScriptPage: React.FC<PreviewScriptPageProps> = ({
                     <div key={sceneIndex}>
                       <div className="bg-white rounded-lg shadow-md">
                         <div className="w-[100px] pt-3">
-                          <div className="bg-green-800 text-[#FFFFFF] w-full px-3 py-1 text-[18px] rounded-r-[30px]">
+                          <div className="bg-[#2DA771] text-[#FFFFFF] w-full px-3 py-1 text-[18px] rounded-r-[30px]">
                             Scene {sceneIndex + 1}
                           </div>
                         </div>

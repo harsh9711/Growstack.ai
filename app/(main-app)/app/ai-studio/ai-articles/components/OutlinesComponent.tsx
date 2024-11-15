@@ -174,7 +174,7 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
             <div className="bg-gray-200 w-full h-0.5" />
             <button
               onClick={toggleAdvancedOptions}
-              className="w-full text-primary-green text-base"
+              className="w-full text-[#2DA771] text-base"
             >
               {showAdvanced ? "Advanced options -" : "Advanced options +"}
             </button>
@@ -201,7 +201,7 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
             onClick={generateOutlines}
             disabled={isPending}
             className={clsx(
-              "w-full p-2 h-14 !mt-8 text-white bg-primary-green rounded-xl hover:bg-opacity-90 flex justify-center items-center",
+              "w-full p-2 h-14 !mt-8 text-white bg-[#2DA771] rounded-xl hover:bg-opacity-90 flex justify-center items-center",
               isPending && "opacity-80 cursor-not-allowed"
             )}
           >
@@ -209,7 +209,7 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
           </button>
         </div>
         <div className="w-full">
-          <div className="bg-primary-green rounded-2xl py-5 px-7 flex items-center gap-4">
+          <div className="bg-[#2DA771] rounded-2xl py-5 px-7 flex items-center gap-4">
             <span className="bg-white h-12 w-12 grid place-content-center rounded-full">
               {currentStep + 1}
             </span>
@@ -229,7 +229,7 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
                     className={clsx(
                       "py-7 px-12 mb-3 border rounded-2xl bg-white flex flex-col gap-4 cursor-pointer list-disc transition-all duration-300",
                       selectedOutlines === outline &&
-                        "border border-primary-green text-primary-green"
+                        "border border-[#2DA771] text-[#2DA771]"
                     )}
                     onClick={() => setSelectedOutlines(outlines[index])}
                   >
@@ -250,7 +250,7 @@ const OutlinesComponent: React.FC<OutlinesComponentProps> = ({
                 <div className="flex justify-end">
                   <button
                     onClick={() => setCurrentStep(2)}
-                    className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px]"
+                    className="w-full p-2 h-14 mt-4 text-white sheen bg-[#2DA771] rounded-xl max-w-[150px]"
                   >
                     Next step
                   </button>

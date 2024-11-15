@@ -293,7 +293,7 @@ export default function ProfilePage() {
 
               <label
                 htmlFor="profile-image"
-                className="w-full max-w-fit bg-primary-green text-white h-[54px] px-8 rounded-r-xl flex items-center justify-center cursor-pointer"
+                className="w-full max-w-fit bg-[#2DA771] text-white h-[54px] px-8 rounded-r-xl flex items-center justify-center cursor-pointer"
               >
                 Browse
               </label>
@@ -512,7 +512,7 @@ export default function ProfilePage() {
           <div className="flex justify-end gap-4">
             <button
               type="submit"
-              className="h-12 py-3 px-3 flex justify-center w-full max-w-[150px] uppercase bg-primary-green sheen rounded-xl text-white mt-6"
+              className="h-12 py-3 px-3 flex justify-center w-full max-w-[150px] uppercase bg-[#2DA771] sheen rounded-xl text-white mt-6"
             >
               {isPending ? <Spinner /> : " Update"}
             </button>

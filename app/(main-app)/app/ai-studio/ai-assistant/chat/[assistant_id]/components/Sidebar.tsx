@@ -73,13 +73,13 @@ export default function Sidebar({ isOpen, onClose, assistant_id }: IProps) {
   };
 
   return (
-    
     <div
       className={clsx(
         isOpen ? "opacity-100" : "opacity-0",
         "transition-all duration-300 bg-white z-50",
         {
-          "absolute top-30 lg:left-0 xl:left-0 sm:left-10 md:left-10 h-auto w-[400px] sm:w-[400px] md:w-[400px]": isOpen,
+          "absolute top-30 lg:left-0 xl:left-0 sm:left-10 md:left-10 h-auto w-[400px] sm:w-[400px] md:w-[400px]":
+            isOpen,
           "absolute w-0 overflow-hidden": !isOpen,
         },
         {
