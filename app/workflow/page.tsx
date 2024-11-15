@@ -24,7 +24,7 @@ import TopRightPanel2nd from "./panels/TopRightPanel2nd";
 import BottomCenterPanel from "./panels/BottomCenterPanel";
 
 const WorkflowPage: React.FC = () => {
-    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+    const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
     const onConnect: OnConnect = useCallback(
