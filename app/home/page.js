@@ -23,7 +23,8 @@ import SixCard from "../cards/page";
 import SixCardVideo from "../cardsvideo/page";
 import SixCardTab from "../cardstab/page";
 import SixCardSwitch from "../cardsswitch/page";
-
+import Image from "next/image";
+import "../../styles/animate.css"
 // I commented this bootstrapp CDN because of conflicting styles with tailwindcss, NB: I'll uncomment it as soon as reliable solution is found
 function Page() {
   const [isFormFocused, setIsFormFocused] = useState(true);
@@ -32,13 +33,27 @@ function Page() {
     <React.Fragment>
       <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
       <div className="sm:px-10 relative z-0">
-
         {" "}
         <DragFeatures />
       </div>
       {/* <Banner /> */}
       <OurProcess />
-      {/* <Features /> */} <SixCard />
+      {/* <Features /> */}{" "}
+      <div className="flex flex-row gap-x-20 mx-auto items-center justify-center">
+  <div className="flex flex-col gap-y-28">
+    <Image className="float-animation-1" src="/12.svg" width={110} height={110} />
+    <Image className="float-animation-2" src="/13.svg" width={110} height={110} />
+    <Image className="float-animation-3 t " src="/14.svg" width={110} height={110} />
+  </div>
+  <SixCard />
+  <div className="flex flex-col gap-y-28">
+    <Image className="float-animation-4" src="/15.svg" width={110} height={110} />
+    <Image className="float-animation-5" src="/16.svg" width={110} height={110} />
+    <Image className="float-animation-6" src="/17.svg" width={110} height={110} />
+  </div>
+</div>
+
+
       {/* <SixCardVideo /> */}
       <Animation />
       {/* <Facts /> */}

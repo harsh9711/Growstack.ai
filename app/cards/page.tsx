@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -62,6 +62,7 @@ const Box = () => {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-8">
+    
       {cases.map((item, index) => (
         <div
           key={index}

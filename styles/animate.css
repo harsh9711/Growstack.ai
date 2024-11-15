@@ -2,6 +2,87 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@keyframes float1 {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-40px);
+  }
+}
+
+@keyframes float2 {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(45px);
+  }
+}
+
+@keyframes float3 {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(45px) rotate(5deg);
+  }
+  
+}
+.float3{
+  transform:translateX(90px);
+
+}
+@keyframes float4 {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-40px);
+  }
+}
+
+@keyframes float5 {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(45px);
+  }
+}
+
+@keyframes float6 {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(45px) rotate(5deg);
+  }
+}
+
+.float-animation-1 {
+  animation: float1 3s ease-in-out infinite;
+}
+
+.float-animation-2 {
+  animation: float2 4s ease-in-out infinite;
+}
+
+.float-animation-3 {
+  animation: float3 2.5s ease-in-out infinite;
+}
+
+.float-animation-4 {
+  animation: float4 3.5s ease-in-out infinite;
+}
+
+.float-animation-5 {
+  animation: float5 4s ease-in-out infinite;
+}
+
+.float-animation-6 {
+  animation: float6 3s ease-in-out infinite;
+}
 
 .animate-moveBall1 {
   animation:  0.5s ease-in-out infinite;
