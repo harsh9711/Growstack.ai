@@ -27,7 +27,7 @@ export default function Microphone({
         <button
           type="button"
           onClick={() => handleOpenChange(!open)}
-          className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
+          className="h-12 w-12 flex justify-center items-center bg-[#2DA771] hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
         >
           {isAnimating ? <StopIcon /> : <MicrophoneIcon />}
         </button>

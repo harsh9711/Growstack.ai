@@ -14,9 +14,7 @@ import AdvancedOptions from "./AdvancedOptions";
 import Motion from "@/components/Motion";
 import { IOutline, ISubtitleTalkingPoints } from "../types";
 import { Plus, X } from "lucide-react";
-import { DraggableIcon } from "@/components/svgs";
 import SubtitleList from "./SubtitleList";
-import { Reorder } from "framer-motion";
 import TalkingPointsList from "./TalkingPointList";
 
 interface TalkingPointsComponentProps {
@@ -203,9 +201,9 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
               {!showInput && (
                 <button
                   onClick={() => setShowInput(true)}
-                  className="self-end text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 p-1.5 rounded-lg text-sm items-center font-medium transition-all duration-300 mt-3"
+                  className="self-end text-[#212833] hover:bg-[#2DA771]/10 sheen flex gap-2 p-1.5 rounded-lg text-sm items-center font-medium transition-all duration-300 mt-3"
                 >
-                  <Plus size={18} className="text-primary-green" />
+                  <Plus size={18} className="text-[#2DA771]" />
                   Add new section
                 </button>
               )}
@@ -220,9 +218,9 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
                   />
                   <button
                     onClick={addNewSection}
-                    className="self-end text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 p-1.5 rounded-lg text-sm items-center font-medium transition-all duration-300 mt-3"
+                    className="self-end text-[#212833] hover:bg-[#2DA771]/10 sheen flex gap-2 p-1.5 rounded-lg text-sm items-center font-medium transition-all duration-300 mt-3"
                   >
-                    <Plus size={18} className="text-primary-green" />
+                    <Plus size={18} className="text-[#2DA771]" />
                     Confirm
                   </button>
                 </div>
@@ -258,7 +256,7 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
             <div className="bg-gray-200 w-full h-0.5" />
             <button
               onClick={toggleAdvancedOptions}
-              className="w-full text-primary-green text-base"
+              className="w-full text-[#2DA771] text-base"
             >
               {showAdvanced ? "Advanced options -" : "Advanced options +"}
             </button>
@@ -285,7 +283,7 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
             onClick={generateTalkingPoints}
             disabled={isPending}
             className={clsx(
-              "w-full p-2 h-14 !mt-8 text-white bg-primary-green rounded-xl hover:bg-opacity-90 flex justify-center items-center",
+              "w-full p-2 h-14 !mt-8 text-white bg-[#2DA771] rounded-xl hover:bg-opacity-90 flex justify-center items-center",
               isPending && "opacity-80 cursor-not-allowed"
             )}
           >
@@ -293,7 +291,7 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
           </button>
         </div>
         <div className="w-full">
-          <div className="bg-primary-green rounded-2xl py-5 px-7 flex items-center gap-4">
+          <div className="bg-[#2DA771] rounded-2xl py-5 px-7 flex items-center gap-4">
             <span className="bg-white h-12 w-12 grid place-content-center rounded-full">
               {currentStep + 1}
             </span>
@@ -314,7 +312,7 @@ const TalkingPointsComponent: React.FC<TalkingPointsComponentProps> = ({
               <div className="flex justify-end">
                 <button
                   onClick={() => setCurrentStep(3)}
-                  className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px]"
+                  className="w-full p-2 h-14 mt-4 text-white sheen bg-[#2DA771] rounded-xl max-w-[150px]"
                 >
                   Next step
                 </button>

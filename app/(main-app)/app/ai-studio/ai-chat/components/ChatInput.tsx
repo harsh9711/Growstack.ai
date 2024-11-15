@@ -125,14 +125,13 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
       user_prompt?: string,
       fromMic: boolean = false
     ) => {
- 
-      if (!user_prompt && input.trim() === '') {
-        isEmptyPrompt('Please enter any prompt...!');
+      if (!user_prompt && input.trim() === "") {
+        isEmptyPrompt("Please enter any prompt...!");
         return;
       }
- 
-      isEmptyPrompt('');
- 
+
+      isEmptyPrompt("");
+
       if (user_prompt) {
         user_prompt = user_prompt.trim();
       }
@@ -164,7 +163,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
         if (enableWebBrowsing) {
           apiUrl += `&webBrowsing=${enableWebBrowsing}`;
         }
- 
+
         const conversation = await instance.post(apiUrl, {
           user_prompt: prompt,
           image_url: temp_img,
@@ -175,7 +174,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
             brand_voice: selectedBrandVoice.brand_voice,
           }),
         });
- 
+
         if (imageUrl || fileUrl) {
           setImageUrl(null);
           setFileUrl(null);
@@ -189,7 +188,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
           noOfMessagesLeft,
           totalMessages,
         } = conversation.data.data as ChatResponse;
- 
+
         if (isFreePlan) {
           if (noOfMessagesLeft && totalMessages) {
             if (noOfMessagesLeft < 0) {
@@ -203,7 +202,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
         setNewConversationId(conversation_id);
         await streamResponse(chatId, fromMic);
         if (selectedConversation || conversation_id) fetchConversations();
- 
+
         if (fromMic) {
           setIsAnimating(true);
           setOpen(true);
@@ -211,7 +210,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
         }
       } catch (error: any) {
         const errorMsg = error.response?.data.error ?? error.message;
- 
+
         if (errorMsg === "Please upgrade your plan") {
           setIsDailyLimitExceeded(true);
         }
@@ -230,7 +229,6 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
         setIsLoading(false);
       }
     };
- 
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
       const file = e.target.files ? e.target.files[0] : null;
@@ -499,7 +497,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
           </p>
 
           <Link
-            className="bg-primary-green mt-3 text-nowrap text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2"
+            className="bg-[#2DA771] mt-3 text-nowrap text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2"
             href={isSubscribed ? ALL_ROUTES.UPGRADE : ALL_ROUTES.PAYMENT}
           >
             {isSubscribed ? "Upgrade Your Plan" : "Subscribe Now"}
@@ -524,42 +522,42 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
             >
               <path
                 d="M10 14.0004C10.6583 14.6723 11.5594 15.0509 12.5 15.0509C13.4406 15.0509 14.3417 14.6723 15 14.0004L19 10.0004C20.3807 8.61967 20.3807 6.38109 19 5.00038C17.6193 3.61967 15.3807 3.61967 14 5.00038L13.5 5.50038"
-                stroke="#034737"
+                stroke="#2DA771"
                 stroke-width="1.75"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
               <path
                 d="M14 9.99973C13.3417 9.32784 12.4407 8.94922 11.5 8.94922C10.5594 8.94922 9.65832 9.32784 9.00001 9.99973L5.00001 13.9997C3.6193 15.3804 3.6193 17.619 5.00001 18.9997C6.38072 20.3804 8.6193 20.3804 10 18.9997L10.5 18.4997"
-                stroke="#034737"
+                stroke="#2DA771"
                 stroke-width="1.75"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
               <path
                 d="M16 21V19"
-                stroke="#034737"
+                stroke="#2DA771"
                 stroke-width="1.75"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
               <path
                 d="M19 16H21"
-                stroke="#034737"
+                stroke="#2DA771"
                 stroke-width="1.75"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
               <path
                 d="M3 8H5"
-                stroke="#034737"
+                stroke="#2DA771"
                 stroke-width="1.75"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
               <path
                 d="M8 3V5"
-                stroke="#034737"
+                stroke="#2DA771"
                 stroke-width="1.75"
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -730,7 +728,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
                       />
                     </label>
                   </div>
-                  <div className="h-12 w-52 flex justify-center cursor-pointer items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
+                  <div className="h-12 w-52 flex justify-center cursor-pointer items-center bg-[#2DA771] hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
                     <label
                       htmlFor="dropzone-file"
                       className="w-full h-full flex justify-center items-center cursor-pointer"
@@ -744,7 +742,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
           )}
 
           {/* <ToolsDialog setInput={(description: string) => promptInput(description)} /> */}
-          <div className="h-12 w-9 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
+          <div className="h-12 w-9 flex justify-center items-center bg-[#2DA771] hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
             <Microphone
               open={open}
               isAnimating={isAnimating}
@@ -754,7 +752,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
           <button
             disabled={isLoading}
             onClick={() => handleSend()}
-            className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
+            className="h-12 w-12 flex justify-center items-center bg-[#2DA771] hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
           >
             <SendIcon2 />
           </button>
