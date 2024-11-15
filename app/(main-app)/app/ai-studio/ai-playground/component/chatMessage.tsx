@@ -135,7 +135,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
               <div
                 className={`max-w-5xl ${
                   chat.role === "user"
-                    ? "bg-primary-green text-white break-words whitespace-pre-wrap"
+                    ? "bg-[#2DA771] text-white break-words whitespace-pre-wrap"
                     : "bg-[#F1F1F1] text-primary-black"
                 } py-3 px-5 rounded-xl text-[14.5px] leading-relaxed min-h-11 flex justify-center items-center text-justify`}
               >

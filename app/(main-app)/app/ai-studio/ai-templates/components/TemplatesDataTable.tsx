@@ -290,7 +290,7 @@ const TemplatesTable: React.FC<TemplatesTableProps> = ({
         className={clsx(
           "w-12 h-[45px] rounded-lg mx-1 bg-[#4B465C14] transition-all duration-300",
           i === table.getState().pagination.pageIndex
-            ? "!bg-primary-green hover:bg-opacity-50 text-white"
+            ? "!bg-[#2DA771] hover:bg-opacity-50 text-white"
             : "hover:bg-[#4B465C29]"
         )}
       >

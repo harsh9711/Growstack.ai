@@ -84,7 +84,7 @@ const TalkingPointsList: React.FC<SubtitleListProps> = ({
               </div>
               <X
                 size={25}
-                className="text-primary-green cursor-pointer mt-3"
+                className="text-[#2DA771] cursor-pointer mt-3"
                 onClick={() => handleTalkingPointsRemove(index)}
               />
             </div>
@@ -100,18 +100,18 @@ const TalkingPointsList: React.FC<SubtitleListProps> = ({
                   />
                   <button
                     onClick={() => addNewTalkingPoint(index)}
-                    className="self-end mt-2 text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 p-2 rounded-lg text-sm items-center font-medium transition-all duration-300"
+                    className="self-end mt-2 text-[#212833] hover:bg-[#2DA771]/10 sheen flex gap-2 p-2 rounded-lg text-sm items-center font-medium transition-all duration-300"
                   >
-                    <Plus size={18} className="text-primary-green" />
+                    <Plus size={18} className="text-[#2DA771]" />
                     Confirm
                   </button>
                 </div>
               ) : (
                 <button
                   onClick={() => toggleInput(index)}
-                  className="self-end mr-9 text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 p-2 rounded-lg text-sm items-center font-medium transition-all duration-300"
+                  className="self-end mr-9 text-[#212833] hover:bg-[#2DA771]/10 sheen flex gap-2 p-2 rounded-lg text-sm items-center font-medium transition-all duration-300"
                 >
-                  <Plus size={18} className="text-primary-green" />
+                  <Plus size={18} className="text-[#2DA771]" />
                   Add new section
                 </button>
               )}

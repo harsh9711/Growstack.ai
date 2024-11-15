@@ -294,7 +294,7 @@ export default function CreateTemplatePage() {
         </h1>
         <button
           onClick={() => router.back()}
-          className="text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-1.5 rounded-full font-medium lg:font-medium md:font-small items-center  transition-all duration-300"
+          className="text-[#212833] hover:bg-[#2DA771]/10 sheen flex gap-2 px-3.5 py-1.5 rounded-full font-medium lg:font-medium md:font-small items-center  transition-all duration-300"
         >
           <ArrowBack />
           Back
@@ -552,7 +552,7 @@ export default function CreateTemplatePage() {
                   {index === userInputs.length - 1 && index > 0 && (
                     <button
                       type="button"
-                      className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                      className="bg-[#2DA771] text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
                       onClick={addUserInput}
                     >
                       <Plus />
@@ -561,7 +561,7 @@ export default function CreateTemplatePage() {
                   {userInputs.length === 1 && (
                     <button
                       type="button"
-                      className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                      className="bg-[#2DA771] text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
                       onClick={addUserInput}
                     >
                       <Plus />
@@ -597,7 +597,7 @@ export default function CreateTemplatePage() {
           </div>
           <div className="flex justify-end gap-4">
             <button
-              className="min-w-[200px] py-3.5 px-6 bg-primary-green sheen rounded-xl text-white mt-6 flex justify-center items-center"
+              className="min-w-[200px] py-3.5 px-6 bg-[#2DA771] sheen rounded-xl text-white mt-6 flex justify-center items-center"
               type="submit"
             >
               {isPending ? <Spinner /> : "Create your own AI template"}

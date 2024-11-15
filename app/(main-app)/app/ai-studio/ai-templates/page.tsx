@@ -250,7 +250,7 @@ export default function AiAppTemplatesPage() {
             </div>
 
             <Link href={ALL_ROUTES.CREATE_AI_TEMPLATE}>
-              <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-1 rounded-xl flex items-center gap-2 lg:h-[52px] md:h-[42px]">
+              <button className="bg-[#2DA771] text-white sheen transition duration-500 px-5 py-1 rounded-xl flex items-center gap-2 lg:h-[52px] md:h-[42px]">
                 <Plus size={20} />
                 Create AI template
               </button>
@@ -269,7 +269,7 @@ export default function AiAppTemplatesPage() {
               className={clsx(
                 "py-3.5 px-6 rounded-lg cursor-pointer flex items-center justify-center gap-2 transition duration-300",
                 selectedTag === tag.name && searchQuery.length < 1
-                  ? "bg-primary-green text-white"
+                  ? "bg-[#2DA771] text-white"
                   : "bg-[#E9E9E9] text-primary-green"
               )}
             >

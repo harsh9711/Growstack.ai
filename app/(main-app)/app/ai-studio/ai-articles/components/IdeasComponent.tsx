@@ -278,7 +278,7 @@ export default function IdeasComponent({
             <div className="bg-gray-200 w-full h-0.5" />
             <button
               onClick={toggleAdvancedOptions}
-              className="w-full text-primary-green text-base"
+              className="w-full text-[#2DA771] text-base"
             >
               {showAdvanced ? "Advanced options -" : "Advanced options +"}
             </button>
@@ -306,7 +306,7 @@ export default function IdeasComponent({
             onClick={generateIdeas}
             disabled={isPending}
             className={clsx(
-              "w-full p-2 h-14 !mt-8 text-white bg-primary-green rounded-xl hover:bg-opacity-90 flex justify-center items-center",
+              "w-full p-2 h-14 !mt-8 text-white bg-[#2DA771] rounded-xl hover:bg-opacity-90 flex justify-center items-center",
               isPending && "opacity-80 cursor-not-allowed"
             )}
           >
@@ -315,7 +315,7 @@ export default function IdeasComponent({
         </div>
 
         <div className="w-full">
-          <div className="bg-primary-green rounded-2xl py-5 px-7 flex items-center gap-4">
+          <div className="bg-[#2DA771] rounded-2xl py-5 px-7 flex items-center gap-4">
             <span className="bg-white h-12 w-12 grid place-content-center rounded-full">
               {currentStep + 1}
             </span>
@@ -355,7 +355,7 @@ export default function IdeasComponent({
                             "bg-gray-100 text-gray-600 p-3 rounded-xl first-letter:uppercase cursor-pointer transition-all duration-300",
                             keywords.includes(
                               generatedKeyword.keyword || generatedKeyword.score
-                            ) && "bg-primary-green text-white"
+                            ) && "bg-[#2DA771] text-white"
                           )}
                         >
                           <div className="flex flex-row gap-2">
@@ -424,15 +424,14 @@ export default function IdeasComponent({
                         key={index}
                         className={clsx(
                           "py-5 px-7 mb-3 border rounded-xl bg-white text-lg flex items-center gap-4 cursor-pointer group transition-all duration-300",
-                          idea.topic === articleTitle &&
-                            "border-primary-green/70"
+                          idea.topic === articleTitle && "border-[#2DA771]/70"
                         )}
                       >
                         <span
                           className={clsx(
-                            "border p-2 rounded-full text-gray-400 group-hover:text-primary-green group-hover:border-primary-green translate-all duration-300",
+                            "border p-2 rounded-full text-gray-400 group-hover:text-[#2DA771] group-hover:border-[#2DA771] translate-all duration-300",
                             idea.topic === articleTitle &&
-                              "text-primary-green border-primary-green"
+                              "text-[#2DA771] border-[#2DA771]"
                           )}
                         >
                           <CheckIcon2 />
@@ -447,7 +446,7 @@ export default function IdeasComponent({
                   <div className="flex justify-end">
                     <button
                       onClick={() => setCurrentStep(1)}
-                      className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px]"
+                      className="w-full p-2 h-14 mt-4 text-white sheen bg-[#2DA771] rounded-xl max-w-[150px]"
                     >
                       Next step
                     </button>

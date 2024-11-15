@@ -27,7 +27,7 @@ const FileUploaderDropZone = ({ onFileUpload, type }: FileDropZoneProps) => {
       </div>
       <h2 className="text-black text-xl font-bold">
         Drag your files here or
-        <span className="text-primary-green"> click to upload</span>
+        <span className="text-[#2DA771]"> click to upload</span>
       </h2>
       <p className="text-[14px]">
         Information in attached files will be available to this assistant
