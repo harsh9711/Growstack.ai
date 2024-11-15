@@ -33,7 +33,7 @@ function Page() {
   return (
     <React.Fragment>
       <Navbar
-        logoUrl="/white.png"
+        logoUrl="/grey.svg"
         logoAlt="Custom Logo"
         backgroundColor="#f5f5f5"
       />
@@ -75,7 +75,7 @@ function Page() {
       {/* <Banner /> */}
       <OurProcess />
       {/* <Features /> */} <SixCard />
-      {/* <SixCardVideo /> */}
+      <SixCardVideo />
       <Animation />
       {/* <Facts /> */}
       {/* <Carousel /> */}
