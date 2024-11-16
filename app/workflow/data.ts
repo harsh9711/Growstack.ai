@@ -847,7 +847,7 @@ export const AllData: AllDataState[] = [
     },
     node: {
       id: Date.now().toString(),
-      type: "growstack-llm",
+      type: "file-upload",
       position: { x: 200, y: 200 },
       data: {
         label: "growstack-llm",

@@ -6,6 +6,7 @@ import ShortText from "./ShortText";
 import LongText from "./LongText";
 import Boolean from "./Boolean";
 import Number from "./Number";
+import FileUpload from "./FileUpload";
 
 export const initialNodes: AppNode[] = [
   {
@@ -30,4 +31,5 @@ export const nodeTypes = {
   "long-text": LongText,
   boolean: Boolean,
   number: Number,
+  "file-upload": FileUpload,
 } satisfies NodeTypes;
