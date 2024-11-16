@@ -23,6 +23,8 @@ import SixCard from "../cards/page";
 import SixCardVideo from "../cardsvideo/page";
 import SixCardTab from "../cardstab/page";
 import SixCardSwitch from "../cardsswitch/page";
+import AnimationStory from "../animationstory/page";
+import Image from "next/image";
 
 // I commented this bootstrapp CDN because of conflicting styles with tailwindcss, NB: I'll uncomment it as soon as reliable solution is found
 function Page() {
@@ -30,16 +32,50 @@ function Page() {
 
   return (
     <React.Fragment>
-      <Navbar logoUrl="/images/logo.png" logoAlt="Custom Logo" />
-      <div className="sm:px-10 relative z-0">
-
-        {" "}
+      <Navbar
+        logoUrl="/grey.svg"
+        logoAlt="Custom Logo"
+        backgroundColor="#f5f5f5"
+      />
+      <div className="bg-[#F5F5F5] w-full h-full">
+        <AnimationStory />
+        <div className="relative mx-auto p-6 sm:p-0  -translate-y-20 items-center justify-center flex  flex-col sm:flex-row gap-4">
+          <button className="flex items-center gap-2 text-primary-green rounded-xl">
+            <Image
+              className="w-full h-full"
+              src="/play2.png"
+              alt="Play Store"
+              width={180}
+              height={400}
+            />
+          </button>
+          <button className="flex items-center gap-2 text-primary-green rounded-xl">
+            <Image
+              className="w-full h-full"
+              src="/apple2.png"
+              alt="Apple Store"
+              width={180}
+              height={400}
+            />
+          </button>
+          <button className="flex  w-full h-full  max-w-[330px] max-h-[159px] items-center gap-2 text-primary-green rounded-xl">
+            <Image
+              className="w-full h-full"
+              src="/badge2.png"
+              alt="Apple Store"
+              width={280}
+              height={600}
+            />
+          </button>
+        </div>
+      </div>{" "}
+      <div className="sm:px-10 sm:-translate-y-10 relative z-0">
         <DragFeatures />
       </div>
       {/* <Banner /> */}
       <OurProcess />
       {/* <Features /> */} <SixCard />
-      {/* <SixCardVideo /> */}
+      <SixCardVideo />
       <Animation />
       {/* <Facts /> */}
       {/* <Carousel /> */}

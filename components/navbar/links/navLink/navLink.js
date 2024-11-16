@@ -34,7 +34,7 @@ const   NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
     <div className="flex justify-between rounded-xl">
       <div className="flex flex-row ">
       <div
-  className="border-b rounded-tl-[20px] rounded-bl-[20px] rounded-r-[40px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white w-full max-w-[60px] flex items-center justify-center shadow-lg shadow-indigo-500/40 hover:shadow-sm hover:shadow-indigo-500/70 transition-all duration-300 transform scale-105"
+  className="border-b rounded-tl-[20px] rounded-bl-[20px] rounded-r-[40px] bg-gradient-to-r from-[#2DA771]/100  to-[#008F50]/100 text-white w-full max-w-[60px] flex items-center justify-center shadow-lg shadow-indigo-500/40 hover:shadow-sm hover:shadow-indigo-500/70 transition-all duration-300 transform scale-105"
   style={{
     backdropFilter: 'blur(3px)', // Additional blur to enhance the fog effect
   }}
@@ -67,7 +67,7 @@ const   NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
 
       <div className="flex flex-row">
       <div
-  className="border-b rounded-tl-[20px] rounded-bl-[20px] rounded-r-[40px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white w-full max-w-[60px] flex items-center justify-center shadow-lg shadow-indigo-500/40 hover:shadow-sm hover:shadow-indigo-500/70 transition-all duration-300 transform scale-105"
+  className="border-b rounded-tl-[20px] rounded-bl-[20px] rounded-r-[40px] bg-gradient-to-r from-[#2DA771]/100  to-[#008F50]/100 text-white w-full max-w-[60px] flex items-center justify-center shadow-lg shadow-indigo-500/40 hover:shadow-sm hover:shadow-indigo-500/70 transition-all duration-300 transform scale-105"
   style={{
     backdropFilter: 'blur(3px)', // Additional blur to enhance the fog effect
   }}
@@ -106,7 +106,7 @@ const   NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
       <div className="flex justify-between rounded-xl">
         <div className="flex flex-row">
         <div
-  className="border-b rounded-tl-[20px] rounded-bl-[20px] rounded-r-[40px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white w-full max-w-[60px] flex items-center justify-center shadow-lg shadow-indigo-500/40 hover:shadow-sm hover:shadow-indigo-500/70 transition-all duration-300 transform scale-105"
+  className="border-b rounded-tl-[20px] rounded-bl-[20px] rounded-r-[40px] bg-gradient-to-r from-[#2DA771]/100  to-[#008F50]/100 text-white w-full max-w-[60px] flex items-center justify-center shadow-lg shadow-indigo-500/40 hover:shadow-sm hover:shadow-indigo-500/70 transition-all duration-300 transform scale-105"
   style={{
     backdropFilter: 'blur(3px)', // Additional blur to enhance the fog effect
   }}
