@@ -9,6 +9,7 @@ const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
     const dispatch = useDispatch();
 
     const generalData = AllData.filter(item => item.category === "general");
+
     const groupedGenerals = generalData.reduce(
         (acc: { [key: string]: typeof generalData }, model) => {
             if (!acc[model.subCategory]) {
@@ -21,12 +22,31 @@ const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
     );
 
     const handleClick = (nodeData: NodeState) => {
-        setNodes((prevNodes: NodeState[]) => [
-            ...prevNodes,
-            { ...nodeData, id: Date.now().toString() },
-        ]);
-    };
+        setNodes((prevNodes: NodeState[]) => {
+            const lastNode = prevNodes[prevNodes.length - 1];
+            let nextNodeX = 200;
+            let nextNodeY = 0;
+            if (lastNode) {
+                nextNodeX = lastNode.position.x + 200;
+                nextNodeY = lastNode.position.y;
 
+                if (nextNodeX > 1600) {
+                    nextNodeX = 200;
+                    nextNodeY += 200;
+                }
+            }
+
+
+            return [
+                ...prevNodes,
+                {
+                    ...nodeData,
+                    id: Date.now().toString(),
+                    position: { x: nextNodeX, y: nextNodeY },
+                },
+            ];
+        });
+    };
 
     return (
         <div className="absolute w-4/5 h-[500px] top-[120px] rounded-2xl overflow-y-auto backdrop-blur-sm shadow-md">
@@ -66,7 +86,7 @@ const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
                                         key={_.toString()}
                                         className="h-[92px] w-[130px] bg-transparent m-1 rounded-lg flex justify-center items-center cursor-pointer border border-[#E5E5E5]"
                                         onClick={() => handleClick(item.node)}
-                                   >
+                                    >
                                         <div className="h-full w-full rounded-lg bg-white flex justify-center items-center flex-col">
                                             {item?.image && (
                                                 <Image

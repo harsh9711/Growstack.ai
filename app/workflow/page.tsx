@@ -16,7 +16,7 @@ import {
     applyNodeChanges,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { initialNodes, nodeTypes } from "./nodes";
+import { nodeTypes } from "./nodes";
 import { initialEdges, edgeTypes } from "./edges";
 import TopLeftPanel2nd from "./panels/TopLeftPanel2nd";
 import TopRightPanel1st from "./panels/TopRightPanel1st";
@@ -31,6 +31,8 @@ const WorkflowPage: React.FC = () => {
         connection => setEdges(edges => addEdge(connection, edges)),
         [setEdges]
     );
+
+    console.log('----nodes----', nodes);
 
     //need to add this function and manage it by redux
     // const onNodeChange = useCallback((changes: any) => {
@@ -49,7 +51,7 @@ const WorkflowPage: React.FC = () => {
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
                 // fitViewOptions={{ minZoom: 0.1, padding: 0.1, maxZoom: 1.5 }}
-                defaultViewport={{ zoom: 0.9, x: 0, y: 0 }}
+                defaultViewport={{ zoom: 0.5, x: 500, y: 250 }}
             >
                 <Background
                     variant={BackgroundVariant.Lines}
