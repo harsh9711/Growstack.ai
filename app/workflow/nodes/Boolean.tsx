@@ -6,6 +6,8 @@ import Image from "next/image";
 
 const Boolean = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
   const [isNextBoxOpen, setIsNextBoxOpen] = useState(true);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
 
   const handleNextClick = () => {
     setIsNextBoxOpen(true);
@@ -14,11 +16,13 @@ const Boolean = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
   const handleEditClick = () => {
     setIsNextBoxOpen(false);
   };
+  const handleDropdownClick = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   return (
     <div>
-      {isNextBoxOpen ? (
-        <div className="boolean-box" id="large-box">
+       <div className="boolean-box" id="large-box">
           <div className="boolean-info-image">
             <div className="boolean-text text-center">
               <h4 className="text-sm font-medium text-[#2DA771]">
@@ -36,64 +40,72 @@ const Boolean = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
                 className="w-[140px] mx-auto"
               />
             </div>
-          </div>
+        <div
+         className="toggle-button-box absolute right-0 left-0 mx-auto bottom-[-10px] z-10 cursor-pointer"
+          onClick={handleDropdownClick}
+        >
+          <img
+            src="/assets/node_icon/toggle-switch.png"
+            alt="toggle switch"
+            className="w-[25px] mx-auto"
+            style={{ transform: isDropdownOpen ? "rotate(180deg)" : "" }}
+          />
+        </div>
+      </div>
 
-          <div className="boolean-form bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] relative">
-            <div className="toggle-button-box absolute right-0 left-0 mx-auto top-[-14px]">
-              <img
-                src="/assets/node_icon/toggle-switch.png"
-                alt="toggle switch"
-                className="w-[25px] mx-auto"
-              />
-            </div>
-            <div className="boolean-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-2">
+      {isDropdownOpen && (
+        <div className="boolean-text-form bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] absolute left-1/2 transform -translate-x-1/2">
+          {isNextBoxOpen ? (
+            <>
+              <div className="boolean-text-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-2">
               <img
                 src="/assets/node_icon/boolean-single.png"
                 alt="boolean icon"
                 className="w-[20px] mb-2"
               />
-
-              <h5 className="text-sm text-[#14171B] font-medium">Boolean</h5>
-            </div>
-
-            <div className="select-sheet-heading mb-2">
-              <h5 className="text-sm text-[#14171B] font-medium">
-                Select Sheet
-              </h5>
-            </div>
-
-            <div className="form-box">
-              <div className="input-box mb-2">
-                <div className="label-box flex gap-2 align-middle mb-1">
-                  <label className="font-medium text-[#14171B] text-[12px]">
-                    Input Label <span className="text-[#CF0000]">*</span>
-                  </label>
-
-                  <span>
-                    <img
-                      src="/assets/node_icon/info-circle.png"
-                      alt="info icon"
-                      className="w-[16px] object-cover object-center mx-auto"
-                    />
-                  </span>
-                </div>
-
-                <div className="input-group border-0">
-                  <input
-                    type="text"
-                    placeholder="Enter field label"
-                    className="form-control outline-0 shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
-                  />
-                </div>
+   <h5 className="text-sm text-[#14171B] font-medium">Boolean</h5>
               </div>
 
-              <div className="input-box flex align-bottom justify-between mb-2">
+              <div className="select-sheet-heading mb-2">
+                <h5 className="text-sm text-[#14171B] font-medium">
+                  Select Sheet
+                </h5>
+              </div>
+
+              <div className="form-box">
+                <div className="input-box mb-2">
+                  <div className="label-box flex gap-2 align-middle mb-1">
+                    <label className="font-medium text-[#14171B] text-[12px]">
+                      Input Label <span className="text-[#CF0000]">*</span>
+                    </label>
+
+                    <span>
+                      <img
+                        src="/assets/node_icon/info-circle.png"
+                        alt="info icon"
+                        className="w-[16px] object-cover object-center mx-auto"
+                      />
+                    </span>
+                  </div>
+
+                  <div className="input-group border-0">
+                    <input
+                      type="text"
+                      placeholder="Enter field label"
+                      className="form-control outline-0 shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
+                    />
+                  </div>
+                </div>
+
+              
+
+            <div className="input-box flex align-bottom justify-between mb-2">
                 <div className="label-box flex gap-2 align-middle mb-1">
                   <label className="font-medium text-[#14171B] text-[12px]">
                     Default Value
                   </label>
 
-                  <span>
+                    <span>
                     <img
                       src="/assets/node_icon/info-circle.png"
                       alt="info icon"
@@ -109,121 +121,93 @@ const Boolean = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
                     <div className="peer-checked:translate-x-5 absolute left-0 top-0 m-1 w-4 h-4 bg-white rounded-full transition-transform"></div>
                   </label>
                 </div>
-              </div>
+                                </div>
 
-              <div className="input-box mb-2">
-                <div className="label-box flex gap-2 align-middle mb-1">
-                  <label className="font-medium text-[#14171B] text-[12px]">
-                    Description
-                  </label>
+                <div className="input-box mb-2">
+                  <div className="label-box flex gap-2 align-middle mb-1">
+                    <label className="font-medium text-[#14171B] text-[12px]">
+                      Description
+                    </label>
 
-                  <span>
-                    <img
-                      src="/assets/node_icon/info-circle.png"
-                      alt="info icon"
-                      className="w-[16px] object-cover object-center mx-auto"
+                    <span>
+                      <img
+                        src="/assets/node_icon/info-circle.png"
+                        alt="info icon"
+                        className="w-[16px] object-cover object-center mx-auto"
+                      />
+                    </span>
+                  </div>
+
+                  <div className="input-group border-0">
+                    <textarea
+                      rows={4}
+                      placeholder="Enter description"
+                      className="form-control outline-0 focus:outline-none shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium"
                     />
-                  </span>
+                  </div>
                 </div>
 
-                <div className="input-group border-0">
-                  <textarea
-                    rows={4}
-                    placeholder="Enter description"
-                    className="form-control outline-0 focus:outline-none shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium"
-                  />
+                <div className="input-box flex align-bottom justify-between mb-2">
+                  <div className="label-box flex gap-2 align-middle mb-1">
+                    <label className="font-medium text-[#14171B] text-[12px]">
+                      Required
+                    </label>
+
+                    <span>
+                      <img
+                        src="/assets/node_icon/info-circle.png"
+                        alt="info icon"
+                        className="w-[16px] object-cover object-center mx-auto"
+                      />
+                    </span>
+                  </div>
+
+                  <div className="flex items-center">
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input type="checkbox" className="sr-only peer" />
+                      <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2-none peer-focus:ring-none rounded-full peer-checked:bg-[#2DA771]"></div>
+                      <div className="peer-checked:translate-x-5 absolute left-0 top-0 m-1 w-4 h-4 bg-white rounded-full transition-transform"></div>
+                    </label>
+                  </div>
                 </div>
-              </div>
 
-              <div className="input-box flex align-bottom justify-between mb-2">
-                <div className="label-box flex gap-2 align-middle mb-1">
-                  <label className="font-medium text-[#14171B] text-[12px]">
-                    Required
-                  </label>
+                <div className="input-box mb-2">
+                  <div className="label-box flex gap-2 align-middle mb-1">
+                    <label className="font-medium text-[#14171B] text-[12px]">
+                      Variable Name <span className="text-[#CF0000]">*</span>
+                    </label>
 
-                  <span>
-                    <img
-                      src="/assets/node_icon/info-circle.png"
-                      alt="info icon"
-                      className="w-[16px] object-cover object-center mx-auto"
+                    <span>
+                      <img
+                        src="/assets/node_icon/info-circle.png"
+                        alt="info icon"
+                        className="w-[16px] object-cover object-center mx-auto"
+                      />
+                    </span>
+                  </div>
+
+                  <div className="input-group border-0">
+                    <input
+                      type="text"
+                      placeholder="Enter the variable name"
+                      className="form-control outline-0 shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
                     />
-                  </span>
+                  </div>
                 </div>
 
-                <div className="flex items-center">
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" className="sr-only peer" />
-                    <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2-none peer-focus:ring-none rounded-full peer-checked:bg-[#2DA771]"></div>
-                    <div className="peer-checked:translate-x-5 absolute left-0 top-0 m-1 w-4 h-4 bg-white rounded-full transition-transform"></div>
-                  </label>
-                </div>
-              </div>
-
-              <div className="input-box mb-2">
-                <div className="label-box flex gap-2 align-middle mb-1">
-                  <label className="font-medium text-[#14171B] text-[12px]">
-                    Variable Name <span className="text-[#CF0000]">*</span>
-                  </label>
-
-                  <span>
-                    <img
-                      src="/assets/node_icon/info-circle.png"
-                      alt="info icon"
-                      className="w-[16px] object-cover object-center mx-auto"
-                    />
-                  </span>
-                </div>
-
-                <div className="input-group border-0">
-                  <input
-                    type="text"
-                    placeholder="Enter the variable name"
-                    className="form-control outline-0 shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
-                  />
+                <div className="submit-button">
+                  <button
+                    onClick={handleEditClick}
+                    className="bg-[#2DA771] text-white text-sm font-medium p-3 w-full rounded-[10px]"
+                  >
+                    Next
+                  </button>
                 </div>
               </div>
-
-              <div className="submit-button">
-                <button
-                  onClick={handleEditClick}
-                  className="bg-[#2DA771] text-white text-sm font-medium p-3 w-full rounded-[10px]"
-                >
-                  Next
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="boolean-box" id="small-box">
-          <div className="boolean-info-image">
-            <div className="boolean-text text-center">
-              <h4 className="text-sm font-medium text-[#2DA771]">
-                General input
-              </h4>
-              <span className="text-xs font-medium text-[#14171B]">
-                (Boolean)
-              </span>
-            </div>
-
-            <div className="text-image text-center">
-              <img
-                src="/assets/node_icon/boolean-img.png"
-                alt="boolean icon"
-                className="w-[140px] mx-auto"
-              />
-            </div>
-          </div>
-
-          <div className="boolean-form bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] relative">
-            <div className="toggle-button-box absolute right-0 left-0 mx-auto top-[-14px]">
-              <img
-                src="/assets/node_icon/toggle-switch.png"
-                alt="toggle switch"
-                className="w-[25px] mx-auto"
-              />
-            </div>
-            <div className="long-text-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-5">
+            </>
+          ) : (
+            <>
+        <div className="long-text-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-5">
               <img
                 src="/assets/node_icon/boolean-single.png"
                 alt="boolean icon"
@@ -231,9 +215,10 @@ const Boolean = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
               />
 
               <h5 className="text-sm text-[#14171B] font-medium">Boolean</h5>
-            </div>
 
-            <div className="form-box">
+              </div>
+
+              <div className="form-box">
               <div className="input-box flex align-bottom justify-between mb-5">
                 <div className="label-box flex gap-2 align-middle">
                   <label className="font-medium text-[#14171B] text-[12px]">
@@ -277,10 +262,12 @@ const Boolean = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
                 </button>
               </div>
             </div>
-          </div>
+            </>
+          )}
         </div>
       )}
     </div>
+  </div>
   );
 };
 

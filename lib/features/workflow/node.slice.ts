@@ -5,19 +5,20 @@ const initialState = [] as NodeState[];
 
 const nodeSlice = createSlice({
   name: "nodes",
-  initialState,
+  initialState: {
+    nodeData: {} as NodeState,
+  },
   reducers: {
     addNode: (state, action: PayloadAction<NodeState>) => {
-      state.push(action.payload);
+      state.nodeData = action.payload;
     },
 
-    removeNode: (state, action: PayloadAction<string>) => {
-      return state.filter(node => node.id !== action.payload);
+    removeNode: state => {
+      console.log("----remove---");
+      state.nodeData = {} as NodeState;
     },
 
-    updateNode: (state, action: PayloadAction<NodeState[]>) => {
-      state = action.payload;
-    },
+    updateNode: (state, action: PayloadAction<NodeState[]>) => {},
   },
 });
 
