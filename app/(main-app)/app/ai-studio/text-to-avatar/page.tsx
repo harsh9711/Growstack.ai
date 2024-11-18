@@ -331,7 +331,7 @@ export default function TextToVideoPage() {
   const handleNavigation = async () => {
     try {
       if (
-        user?.user_type !== "ADMIN" &&
+        user?.user_type === "ADMIN" &&
         (currentPlan?.usage?.no_of_text_to_avatar ?? 0) <= 0
       ) {
         toast.error("Text to Avatar Credits Are Over");
