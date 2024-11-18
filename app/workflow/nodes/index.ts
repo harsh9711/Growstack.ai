@@ -2,6 +2,12 @@ import type { NodeTypes } from "@xyflow/react";
 import { PositionLoggerNode } from "./PostitionLoggerNode";
 import { AppNode } from "./types";
 import ChatGptNode from "./ChatGptNode";
+import ShortText from "./ShortText";
+import LongText from "./LongText";
+import Boolean from "./Boolean";
+import Number from "./Number";
+import FileUpload from "./FileUpload";
+import Checklist from "./Checklist";
 
 export const initialNodes: AppNode[] = [
   {
@@ -9,12 +15,6 @@ export const initialNodes: AppNode[] = [
     type: "input",
     position: { x: 421, y: 421 },
     data: { label: "wire" },
-  },
-  {
-    id: "b",
-    type: "position-logger",
-    position: { x: 200, y: 200 },
-    data: { label: "drag me!" },
   },
   { id: "c", position: { x: 330, y: 340 }, data: { label: "your ideas" } },
   {
@@ -26,6 +26,12 @@ export const initialNodes: AppNode[] = [
 ];
 
 export const nodeTypes = {
-  "position-logger": PositionLoggerNode,
+  // "position-logger": PositionLoggerNode,
   "chat-gpt": ChatGptNode,
+  "short-text": ShortText,
+  "long-text": LongText,
+  "boolean": Boolean,
+  "number": Number,
+  "file-upload": FileUpload,
+  "checklist":Checklist,
 } satisfies NodeTypes;

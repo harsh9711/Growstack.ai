@@ -24,6 +24,7 @@ const TopLeftPanel2nd = ({ setNodes }: any): React.ReactElement => {
 
     return (
         <div style={{ display: "flex", gap: '10px' }}>
+            {/* Categories */}
             {dummyData1.map((item, index) => (
                 <div
                     key={index.toString()}
@@ -53,6 +54,8 @@ const TopLeftPanel2nd = ({ setNodes }: any): React.ReactElement => {
                     </div>
                 </div>
             ))}
+
+            {/* Subcategories*/}
 
             {selectedCategory && selectedCategory === "llms" && (
                 <LllmsCategory setNodes={setNodes} />
