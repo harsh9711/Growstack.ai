@@ -20,10 +20,30 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
     );
 
     const handleClick = (nodeData: NodeState) => {
-        setNodes((prevNodes: NodeState[]) => [
-            ...prevNodes,
-            { ...nodeData, id: Date.now().toString() },
-        ]);
+        setNodes((prevNodes: NodeState[]) => {
+            const lastNode = prevNodes[prevNodes.length - 1];
+            let nextNodeX = 200;
+            let nextNodeY = 0;
+            if (lastNode) {
+                nextNodeX = lastNode.position.x + 200;
+                nextNodeY = lastNode.position.y;
+
+                if (nextNodeX > 1600) {
+                    nextNodeX = 200;
+                    nextNodeY += 200;
+                }
+            }
+
+
+            return [
+                ...prevNodes,
+                {
+                    ...nodeData,
+                    id: Date.now().toString(),
+                    position: { x: nextNodeX, y: nextNodeY },
+                },
+            ];
+        });
     };
 
     return (

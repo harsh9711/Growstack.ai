@@ -247,7 +247,7 @@ p {
                     transform: translate(0, -50%);
                     border-radius: 100px;
                 }
-            }
+            }   
         } 
         @media screen and (max-width:768px) {
             .menuButton{
@@ -273,4 +273,12 @@ p {
 .data-\[state\=checked\]\:bg-primary-green[data-state=checked] {
     --tw-bg-opacity: 1;
     background-color: rgb(3 71 55 / var(--tw-bg-opacity)) !important;
+}
+
+.para{
+    p{
+        justify-content: center;
+        display: flex;
+        color: gray;
+    }
 }
