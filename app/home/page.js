@@ -29,7 +29,7 @@ import Image from "next/image";
 // I commented this bootstrapp CDN because of conflicting styles with tailwindcss, NB: I'll uncomment it as soon as reliable solution is found
 function Page() {
   const [isFormFocused, setIsFormFocused] = useState(true);
-
+// floating components 
   return (
     <React.Fragment>
       <Navbar

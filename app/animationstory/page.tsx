@@ -1,3 +1,4 @@
+"use client"
 import React, { useRef } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
