@@ -345,7 +345,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "chat-gpt",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -381,7 +381,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "chat-gpt",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "GPT 4O Mini",
         image: {
@@ -418,7 +418,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "chat-gpt",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "Claude 3 Haiku",
         image: {
@@ -451,7 +451,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "chat-gpt",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "Gemini 1.5 flash",
         image: {
@@ -487,7 +487,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "chat-gpt",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "GPT-40",
         image: {
@@ -523,7 +523,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "chat-gpt",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "GPT-4",
         image: {
@@ -559,7 +559,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "chat-gpt",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "GPT 4 Turbo",
         image: {
@@ -595,7 +595,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "chat-gpt",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "Claude 3 Opus",
         image: {
@@ -631,7 +631,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "chat-gpt",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "Claude 3 sonnet",
         image: {
@@ -667,7 +667,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "chat-gpt",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "perplexity",
         image: {
@@ -703,8 +703,8 @@ export const AllData: AllDataState[] = [
     },
     node: {
       id: Date.now().toString(),
-      type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      type: "short-text",
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -739,8 +739,8 @@ export const AllData: AllDataState[] = [
     },
     node: {
       id: Date.now().toString(),
-      type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      type: "long-text",
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -775,8 +775,8 @@ export const AllData: AllDataState[] = [
     },
     node: {
       id: Date.now().toString(),
-      type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      type: "boolean",
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -811,8 +811,8 @@ export const AllData: AllDataState[] = [
     },
     node: {
       id: Date.now().toString(),
-      type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      type: "number",
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -847,8 +847,8 @@ export const AllData: AllDataState[] = [
     },
     node: {
       id: Date.now().toString(),
-      type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      type: "file-upload",
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -871,8 +871,48 @@ export const AllData: AllDataState[] = [
     description: "",
     subCategory: "Input type",
   },
+
+
+
   {
-    id: 15,
+    id: 155,
+    name: "Checklist",
+    category: "general",
+    image: {
+      src: "/svgs/circle-checklist.svg",
+      alt: "Checklist",
+      width: 35,
+      height: 35,
+    },
+    node: {
+      id: Date.now().toString(),
+      type: "checklist",
+      position: { x: 0, y: 0 },
+      data: {
+        label: "growstack-llm",
+        image: {
+          src: "/images/workflow/growtackllm.svg",
+          alt: "Growstack LLM",
+          width: 35,
+          height: 35,
+        },
+        inputs: [
+          {
+            variable_type: "CHECKLIST",
+            variable_label: "text",
+            variable_value: "",
+            variable_values: [],
+          },
+        ],
+      },
+    },
+    thirdparty: "",
+    description: "",
+    subCategory: "Input type",
+  },
+
+  {
+    id: 16,
     name: "Plain Text",
     category: "general",
     image: {
@@ -884,7 +924,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -920,7 +960,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -956,7 +996,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -992,7 +1032,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1028,7 +1068,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1066,7 +1106,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1103,7 +1143,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1140,7 +1180,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1177,7 +1217,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1214,7 +1254,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1251,7 +1291,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1288,7 +1328,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1325,7 +1365,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1362,7 +1402,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1398,7 +1438,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1434,7 +1474,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1470,7 +1510,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1506,7 +1546,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1542,7 +1582,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1578,7 +1618,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1614,7 +1654,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1650,7 +1690,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1686,7 +1726,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1723,7 +1763,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1760,7 +1800,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1797,7 +1837,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1834,7 +1874,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1870,7 +1910,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1907,7 +1947,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1943,7 +1983,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -1980,7 +2020,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -2017,7 +2057,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -2053,7 +2093,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -2090,7 +2130,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -2126,7 +2166,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -2162,7 +2202,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -2198,7 +2238,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -2234,7 +2274,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -2271,7 +2311,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -2308,7 +2348,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         image: {
@@ -2345,7 +2385,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         inputs: [
@@ -2373,7 +2413,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         inputs: [
@@ -2401,7 +2441,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         inputs: [
@@ -2429,7 +2469,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         inputs: [
@@ -2458,7 +2498,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         inputs: [
@@ -2487,7 +2527,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         inputs: [
@@ -2516,7 +2556,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         inputs: [
@@ -2545,7 +2585,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         inputs: [
@@ -2574,7 +2614,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         inputs: [
@@ -2603,7 +2643,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         inputs: [
@@ -2632,7 +2672,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         inputs: [
@@ -2661,7 +2701,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         inputs: [
@@ -2692,7 +2732,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "chat-gpt",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         inputs: [
@@ -2723,7 +2763,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "chat-gpt",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         inputs: [
@@ -2754,7 +2794,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "chat-gpt",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         inputs: [
@@ -2785,7 +2825,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         inputs: [
@@ -2808,7 +2848,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         inputs: [
@@ -2831,7 +2871,7 @@ export const AllData: AllDataState[] = [
     node: {
       id: Date.now().toString(),
       type: "growstack-llm",
-      position: { x: 200, y: 200 },
+      position: { x: 0, y: 0 },
       data: {
         label: "growstack-llm",
         inputs: [

@@ -1,8 +1,9 @@
 "use client";
-import React from "react";
+import React, { useRef } from "react";
 import { useCallback } from "react";
 import Image from "next/image";
 import {
+    ReactFlowProvider,
     ReactFlow,
     Background,
     BackgroundVariant,
@@ -12,33 +13,71 @@ import {
     useNodesState,
     useEdgesState,
     Panel,
+    useReactFlow,
     type OnConnect,
-    applyNodeChanges,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { initialNodes, nodeTypes } from "./nodes";
+import { nodeTypes } from "./nodes";
 import { initialEdges, edgeTypes } from "./edges";
 import TopLeftPanel2nd from "./panels/TopLeftPanel2nd";
 import TopRightPanel1st from "./panels/TopRightPanel1st";
 import TopRightPanel2nd from "./panels/TopRightPanel2nd";
 import BottomCenterPanel from "./panels/BottomCenterPanel";
+import { useAppSelector } from "@/lib/hooks";
+
+
+let id = 0;
+const getId = () => `dndnode_${id++}`;
 
 const WorkflowPage: React.FC = () => {
-    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+    const reactFlowWrapper = useRef(null);
+    const { nodeData } = useAppSelector(state => state.nodes);
+    const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+    const { screenToFlowPosition } = useReactFlow();
 
     const onConnect: OnConnect = useCallback(
         connection => setEdges(edges => addEdge(connection, edges)),
         [setEdges]
     );
 
-    //need to add this function and manage it by redux
-    // const onNodeChange = useCallback((changes: any) => {
-    //     applyNodeChanges(changes, nodesData);
-    // }, []);
+    interface DragEvent extends React.DragEvent<HTMLDivElement> { }
+
+    const onDragOver = useCallback((event: DragEvent) => {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = "move";
+    }, []);
+
+
+    const onDrop = useCallback(
+        (event: React.DragEvent<HTMLDivElement>) => {
+            event.preventDefault();
+
+            if (!nodeData) {
+                return;
+            }
+
+            const position = screenToFlowPosition({
+                x: event.clientX,
+                y: event.clientY,
+            });
+            const newNode: any = {
+                ...nodeData,
+                id: getId(),
+                position,
+            };
+
+            setNodes(nds => nds.concat(newNode));
+        },
+        [screenToFlowPosition, nodeData]
+    );
 
     return (
-        <div style={{ height: "100vh", width: "100%" }}>
+        <div
+            style={{ height: "100vh", width: "100%" }}
+            className="reactflow-wrapper"
+            ref={reactFlowWrapper}
+        >
             <ReactFlow
                 nodes={nodes}
                 nodeTypes={nodeTypes}
@@ -48,7 +87,8 @@ const WorkflowPage: React.FC = () => {
                 snapToGrid={true}
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
-                // fitViewOptions={{ minZoom: 0.1, padding: 0.1, maxZoom: 1.5 }}
+                onDrop={onDrop}
+                onDragOver={onDragOver}
                 defaultViewport={{ zoom: 0.9, x: 0, y: 0 }}
             >
                 <Background
@@ -101,4 +141,8 @@ const WorkflowPage: React.FC = () => {
     );
 };
 
-export default WorkflowPage;
+export default () => (
+    <ReactFlowProvider>
+        <WorkflowPage />
+    </ReactFlowProvider>
+);

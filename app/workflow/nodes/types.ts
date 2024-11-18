@@ -28,6 +28,10 @@ export type FileUploadNodeProps = Node<
   { label: string; image: ImageProps },
   "fileUpload"
 >;
+export type ChecklistNodeProps = Node<
+  { label: string; image: ImageProps },
+  "checklist"
+>;
 export type AppNode =
   | BuiltInNode
   | ChatGptNodeProps
@@ -35,4 +39,5 @@ export type AppNode =
   | LongTexttNodeProps
   | BooleanNodeProps
   | NumberNodeProps
-  | FileUploadNodeProps;
+  | FileUploadNodeProps
+  | ChecklistNodeProps;
