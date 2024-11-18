@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import { AllData } from "../../data";
 import { useDispatch } from "react-redux";
-import { addNode } from "@/lib/features/workflow/node.slice";
-import { NodeDataState, NodeState } from "@/types/workflows";
+import { addNode, removeNode } from "@/lib/features/workflow/node.slice";
+import { NodeState } from "@/types/workflows";
+import "reactflow/dist/style.css";
 
 const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
     const dispatch = useDispatch();
@@ -21,10 +22,35 @@ const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
     );
 
     const handleClick = (nodeData: NodeState) => {
-        setNodes((prevNodes: NodeState[]) => [
-            ...prevNodes,
-            { ...nodeData, id: Date.now().toString() },
-        ]);
+        setNodes((prevNodes: NodeState[]) => {
+            const lastNode = prevNodes[prevNodes.length - 1];
+            let nextNodeX = 200;
+            let nextNodeY = 0;
+            if (lastNode) {
+                nextNodeX = lastNode.position.x + 200;
+                nextNodeY = lastNode.position.y;
+
+                if (nextNodeX > 1600) {
+                    nextNodeX = 200;
+                    nextNodeY += 200;
+                }
+            }
+
+
+            return [
+                ...prevNodes,
+                {
+                    ...nodeData,
+                    id: Date.now().toString(),
+                    position: { x: nextNodeX, y: nextNodeY },
+                },
+            ];
+        });
+    };
+
+    const handleDragStart = (event: React.DragEvent, item: NodeState) => {
+        dispatch(addNode(item));
+        event.dataTransfer.effectAllowed = "move";
     };
 
 
@@ -54,7 +80,9 @@ const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
                     <hr className="border-0 border-t border-gray-300 my-5" />
                 </div>
 
-                <div className="flex flex-wrap h-full overflow-y-auto">
+                <div
+                    className="flex flex-wrap h-full overflow-y-auto"
+                >
                     {Object.keys(groupedGenerals).map((subCategory, index) => (
                         <div key={index.toString()} className="mb-2.5 w-full">
                             <h3 className="text-base leading-6 font-normal text-[#878787]">
@@ -66,7 +94,14 @@ const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
                                         key={_.toString()}
                                         className="h-[92px] w-[130px] bg-transparent m-1 rounded-lg flex justify-center items-center cursor-pointer border border-[#E5E5E5]"
                                         onClick={() => handleClick(item.node)}
-                                   >
+                                        draggable
+                                        onDragStart={event => {
+                                            handleDragStart(event, item.node);
+                                        }}
+                                        onDragEnd={() => {
+                                            dispatch(removeNode());
+                                        }}
+                                    >
                                         <div className="h-full w-full rounded-lg bg-white flex justify-center items-center flex-col">
                                             {item?.image && (
                                                 <Image

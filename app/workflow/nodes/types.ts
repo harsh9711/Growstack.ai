@@ -24,4 +24,15 @@ export type NumberNodeProps = Node<
   { label: string; image: ImageProps },
   "number"
 >;
-export type AppNode = BuiltInNode | PositionLoggerNode | ChatGptNodeProps | ShortTexttNodeProps |LongTexttNodeProps | BooleanNodeProps |NumberNodeProps;
+export type FileUploadNodeProps = Node<
+  { label: string; image: ImageProps },
+  "fileUpload"
+>;
+export type AppNode =
+  | BuiltInNode
+  | ChatGptNodeProps
+  | ShortTexttNodeProps
+  | LongTexttNodeProps
+  | BooleanNodeProps
+  | NumberNodeProps
+  | FileUploadNodeProps;
