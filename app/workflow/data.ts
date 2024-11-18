@@ -871,8 +871,48 @@ export const AllData: AllDataState[] = [
     description: "",
     subCategory: "Input type",
   },
+
+
+
   {
-    id: 15,
+    id: 155,
+    name: "Checklist",
+    category: "general",
+    image: {
+      src: "/svgs/circle-checklist.svg",
+      alt: "Checklist",
+      width: 35,
+      height: 35,
+    },
+    node: {
+      id: Date.now().toString(),
+      type: "checklist",
+      position: { x: 0, y: 0 },
+      data: {
+        label: "growstack-llm",
+        image: {
+          src: "/images/workflow/growtackllm.svg",
+          alt: "Growstack LLM",
+          width: 35,
+          height: 35,
+        },
+        inputs: [
+          {
+            variable_type: "CHECKLIST",
+            variable_label: "text",
+            variable_value: "",
+            variable_values: [],
+          },
+        ],
+      },
+    },
+    thirdparty: "",
+    description: "",
+    subCategory: "Input type",
+  },
+
+  {
+    id: 16,
     name: "Plain Text",
     category: "general",
     image: {

@@ -4,7 +4,7 @@ import { Handle, Position, type NodeProps } from "@xyflow/react";
 import { type ChatGptNodeProps } from "./types";
 import Image from "next/image";
 
-const Boolean = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
+const Checklist = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
   const [isNextBoxOpen, setIsNextBoxOpen] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -15,27 +15,28 @@ const Boolean = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
   const handleEditClick = () => {
     setIsNextBoxOpen(false);
   };
+
   const handleDropdownClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
 
   return (
     <div>
-      <div className="boolean-box" id="large-box">
-        <div className="boolean-info-image">
-          <div className="boolean-text text-center">
+      <div className="short-text-box relative" id="small-box">
+        <div className="short-text-info-image relative">
+          <div className="short-text text-center">
             <h4 className="text-sm font-medium text-[#2DA771]">
               General input
             </h4>
             <span className="text-xs font-medium text-[#14171B]">
-              (Boolean)
+              (Checklist)
             </span>
           </div>
 
           <div className="text-image text-center">
             <img
-              src="/assets/node_icon/boolean-img.png"
-              alt="boolean icon"
+              src="/assets/node_icon/shorttext-img.png"
+              alt="short text icon"
               className="w-[140px] mx-auto"
             />
           </div>
@@ -53,17 +54,18 @@ const Boolean = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
         </div>
 
         {isDropdownOpen && (
-          <div className="boolean-text-form bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] absolute left-1/2 transform -translate-x-1/2">
+          <div className="short-text-form bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] absolute left-1/2 transform -translate-x-1/2">
             {isNextBoxOpen ? (
               <>
-                <div className="boolean-text-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-2">
+                <div className="short-text-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-2">
                   <img
-                    src="/assets/node_icon/boolean-single.png"
-                    alt="boolean icon"
+                    src="/assets/node_icon/short-single.png"
+                    alt="short text icon"
                     className="w-[20px] mb-2"
                   />
+
                   <h5 className="text-sm text-[#14171B] font-medium">
-                    Boolean
+                    Short Text
                   </h5>
                 </div>
 
@@ -124,27 +126,103 @@ const Boolean = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
                     </div>
                   </div>
 
-                  <div className="input-box flex items-center justify-between mb-3">
+                  <div className="input-box mb-3">
+                    <div className="label-box flex gap-2 items-center mb-1">
+                      <label className="font-medium text-[#14171B] text-[12px]">
+                        Placeholder
+                      </label>
+
+                      <span>
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 18 18"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle
+                            cx="9"
+                            cy="9"
+                            r="6.75"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M9.00406 6H9.01156"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M8.25 9H9V12H9.75"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </span>
+                    </div>
+
+                    <div className="input-group border-0">
+                      <input
+                        type="text"
+                        placeholder="Enter placeholder text"
+                        className="form-control outline-0 shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="input-box mb-3">
                     <div className="label-box flex gap-2 items-center mb-1">
                       <label className="font-medium text-[#14171B] text-[12px]">
                         Default Value
                       </label>
 
                       <span>
-                        <img
-                          src="/assets/node_icon/info-circle.png"
-                          alt="info icon"
-                          className="w-[16px] object-cover object-center mx-auto"
-                        />
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 18 18"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle
+                            cx="9"
+                            cy="9"
+                            r="6.75"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M9.00406 6H9.01156"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M8.25 9H9V12H9.75"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
                       </span>
                     </div>
 
-                    <div className="flex items-center">
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" className="sr-only peer" />
-                        <div className="w-11 h-6 bg-gray-300 shadow-md peer-focus:outline-none peer-focus:ring-2-none peer-focus:ring-none rounded-full peer-checked:bg-[#2DA771]"></div>
-                        <div className="peer-checked:translate-x-5 absolute left-0 top-0 m-1 w-4 h-4 bg-white rounded-full transition-transform"></div>
-                      </label>
+                    <div className="input-group border-0">
+                      <input
+                        type="text"
+                        placeholder="Enter default text"
+                        className="form-control focus:outline-none outline-0 shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium"
+                      />
                     </div>
                   </div>
 
@@ -189,17 +267,17 @@ const Boolean = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
                       </span>
                     </div>
 
-                    <div className="input-group">
+                    <div className="input-group border-0">
                       <textarea
                         rows={4}
                         placeholder="Enter description"
-                        className="form-control focus:outline-none shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium"
+                        className="form-control outline-0 focus:outline-none shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium"
                       />
                     </div>
                   </div>
 
                   <div className="input-box flex items-center justify-between mb-3">
-                    <div className="label-box flex gap-2 items-center mb-1">
+                    <div className="label-box flex gap-2 items-center">
                       <label className="font-medium text-[#14171B] text-[12px]">
                         Required
                       </label>
@@ -241,8 +319,8 @@ const Boolean = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
 
                     <div className="flex items-center">
                       <label className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" className="sr-only peer" />
-                        <div className="w-11 h-6 shadow-md bg-gray-300 peer-focus:outline-none peer-focus:ring-2-none peer-focus:ring-none rounded-full peer-checked:bg-[#2DA771]"></div>
+                        <input type="checkbox" className="sr-only peer " />
+                        <div className="w-11 shadow-md h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2-none peer-focus:ring-none rounded-full peer-checked:bg-[#2DA771]"></div>
                         <div className="peer-checked:translate-x-5 absolute left-0 top-0 m-1 w-4 h-4 bg-white rounded-full transition-transform"></div>
                       </label>
                     </div>
@@ -289,7 +367,7 @@ const Boolean = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
                       </span>
                     </div>
 
-                    <div className="input-group">
+                    <div className="input-group border-0">
                       <input
                         type="text"
                         placeholder="Enter the variable name"
@@ -310,24 +388,23 @@ const Boolean = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
               </>
             ) : (
               <>
-                <div className="long-text-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-5">
+                <div className="short-text-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-5">
                   <img
-                    src="/assets/node_icon/boolean-single.png"
-                    alt="boolean icon"
+                    src="/assets/node_icon/short-single.png"
+                    alt="short text icon"
                     className="w-[20px] mb-2"
                   />
 
                   <h5 className="text-sm text-[#14171B] font-medium">
-                    Boolean
+                    Short Text
                   </h5>
                 </div>
 
                 <div className="form-box">
-                  <div className="input-box flex items-center justify-between mb-7">
-                    <div className="label-box flex gap-2 items-center">
+                  <div className="input-box mb-5">
+                    <div className="label-box flex gap-2 items-center mb-1">
                       <label className="font-medium text-[#14171B] text-[12px]">
-                        Enable Notification{" "}
-                        <span className="text-[#CF0000]">*</span>
+                        Topic <span className="text-[#CF0000]">*</span>
                       </label>
 
                       <span>
@@ -365,20 +442,20 @@ const Boolean = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
                       </span>
                     </div>
 
-                    <div className="flex items-center">
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" className="sr-only peer" />
-                        <div className="w-11 h-6 shadow-md bg-gray-300 peer-focus:outline-none peer-focus:ring-2-none peer-focus:ring-none rounded-full peer-checked:bg-[#2DA771]"></div>
-                        <div className="peer-checked:translate-x-5 absolute left-0 top-0 m-1 w-4 h-4 bg-white rounded-full transition-transform"></div>
-                      </label>
+                    <div className="input-group border-0">
+                      <input
+                        type="text"
+                        placeholder="Enter the topic"
+                        className="form-control outline-0 shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
+                      />
                     </div>
                   </div>
 
                   <div className="text-box mb-5">
-                    <h4 className="text-[#14171B] font-medium text-sm">
+                    <h4 className="text-[#14171B] flex items-center gap-2 font-medium text-sm">
                       Variable name:{" "}
                       <span className="bg-[#FFE6FF] text-[#14171B] text-[12px] rounded-[20px] font-medium pt-3 pb-3 pr-4 pl-4">
-                        notification_status
+                        Topic
                       </span>
                     </h4>
                   </div>
@@ -401,4 +478,4 @@ const Boolean = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
   );
 };
 
-export default Boolean;
+export default Checklist;

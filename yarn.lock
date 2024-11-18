@@ -5049,7 +5049,7 @@ graphemer@^1.4.0:
     framer-motion "^11.9.0"
     fs "^0.0.1-security"
     fs-extra "^11.2.0"
-    growstack "file:C:/Users/mejer/AppData/Local/Yarn/Cache/v6/npm-growstack-0.1.0-7a948851-eba2-4c81-8d45-6dabab045519-1731582066746/node_modules/growstack"
+    growstack "file:C:/Users/mejer/AppData/Local/Yarn/Cache/v6/npm-growstack-0.1.0-500fe367-910e-42a4-ae03-00f98724af50-1731931092381/node_modules/growstack"
     history "^5.3.0"
     html2canvas "^1.4.1"
     input-otp "^1.2.4"
@@ -7004,7 +7004,7 @@ postcss-selector-parser@6.0.10:
     cssesc "^3.0.0"
     util-deprecate "^1.0.2"
 
-postcss-selector-parser@^6.0.11, postcss-selector-parser@^6.1.1:
+postcss-selector-parser@^6.0.11:
   version "6.1.1"
   resolved "https://registry.npmjs.org/postcss-selector-parser/-/postcss-selector-parser-6.1.1.tgz"
   integrity sha512-b4dlw/9V8A71rLIDsSwVmak9z2DuBUB7CA1/wSdelNEzqsjoSPeADTWNO09lpH49Diy3/JIZ2bSPB1dI3LJCHg==

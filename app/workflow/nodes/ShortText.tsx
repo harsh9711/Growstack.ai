@@ -76,42 +76,94 @@ const ShortText = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
                 </div>
 
                 <div className="form-box">
-                  <div className="input-box mb-2">
-                    <div className="label-box flex gap-2 align-middle mb-1">
+                  <div className="input-box mb-3">
+                    <div className="label-box flex gap-2 items-center mb-1">
                       <label className="font-medium text-[#14171B] text-[12px]">
                         Input Label <span className="text-[#CF0000]">*</span>
                       </label>
 
                       <span>
-                        <img
-                          src="/assets/node_icon/info-circle.png"
-                          alt="info icon"
-                          className="w-[16px] object-cover object-center mx-auto"
-                        />
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 18 18"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle
+                            cx="9"
+                            cy="9"
+                            r="6.75"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M9.00406 6H9.01156"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M8.25 9H9V12H9.75"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
                       </span>
                     </div>
 
-                    <div className="input-group border-0">
+                    <div className="input-group">
                       <input
                         type="text"
                         placeholder="Enter field label"
-                        className="form-control outline-0 shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
+                        className="form-control shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
                       />
                     </div>
                   </div>
 
-                  <div className="input-box mb-2">
-                    <div className="label-box flex gap-2 align-middle mb-1">
+                  <div className="input-box mb-3">
+                    <div className="label-box flex gap-2 items-center mb-1">
                       <label className="font-medium text-[#14171B] text-[12px]">
                         Placeholder
                       </label>
 
                       <span>
-                        <img
-                          src="/assets/node_icon/info-circle.png"
-                          alt="info icon"
-                          className="w-[16px] object-cover object-center mx-auto"
-                        />
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 18 18"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle
+                            cx="9"
+                            cy="9"
+                            r="6.75"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M9.00406 6H9.01156"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M8.25 9H9V12H9.75"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
                       </span>
                     </div>
 
@@ -124,18 +176,44 @@ const ShortText = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
                     </div>
                   </div>
 
-                  <div className="input-box mb-2">
-                    <div className="label-box flex gap-2 align-middle mb-1">
+                  <div className="input-box mb-3">
+                    <div className="label-box flex gap-2 items-center mb-1">
                       <label className="font-medium text-[#14171B] text-[12px]">
                         Default Value
                       </label>
 
                       <span>
-                        <img
-                          src="/assets/node_icon/info-circle.png"
-                          alt="info icon"
-                          className="w-[16px] object-cover object-center mx-auto"
-                        />
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 18 18"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle
+                            cx="9"
+                            cy="9"
+                            r="6.75"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M9.00406 6H9.01156"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M8.25 9H9V12H9.75"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
                       </span>
                     </div>
 
@@ -148,18 +226,44 @@ const ShortText = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
                     </div>
                   </div>
 
-                  <div className="input-box mb-2">
-                    <div className="label-box flex gap-2 align-middle mb-1">
+                  <div className="input-box mb-3">
+                    <div className="label-box flex gap-2 items-center mb-1">
                       <label className="font-medium text-[#14171B] text-[12px]">
                         Description
                       </label>
 
                       <span>
-                        <img
-                          src="/assets/node_icon/info-circle.png"
-                          alt="info icon"
-                          className="w-[16px] object-cover object-center mx-auto"
-                        />
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 18 18"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle
+                            cx="9"
+                            cy="9"
+                            r="6.75"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M9.00406 6H9.01156"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M8.25 9H9V12H9.75"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
                       </span>
                     </div>
 
@@ -172,42 +276,94 @@ const ShortText = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
                     </div>
                   </div>
 
-                  <div className="input-box flex align-bottom justify-between mb-2">
-                    <div className="label-box flex gap-2 align-middle mb-1">
+                  <div className="input-box flex items-center justify-between mb-3">
+                    <div className="label-box flex gap-2 items-center">
                       <label className="font-medium text-[#14171B] text-[12px]">
                         Required
                       </label>
 
                       <span>
-                        <img
-                          src="/assets/node_icon/info-circle.png"
-                          alt="info icon"
-                          className="w-[16px] object-cover object-center mx-auto"
-                        />
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 18 18"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle
+                            cx="9"
+                            cy="9"
+                            r="6.75"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M9.00406 6H9.01156"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M8.25 9H9V12H9.75"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
                       </span>
                     </div>
 
                     <div className="flex items-center">
                       <label className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" className="sr-only peer" />
-                        <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2-none peer-focus:ring-none rounded-full peer-checked:bg-[#2DA771]"></div>
+                        <input type="checkbox" className="sr-only peer " />
+                        <div className="w-11 shadow-md h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2-none peer-focus:ring-none rounded-full peer-checked:bg-[#2DA771]"></div>
                         <div className="peer-checked:translate-x-5 absolute left-0 top-0 m-1 w-4 h-4 bg-white rounded-full transition-transform"></div>
                       </label>
                     </div>
                   </div>
 
-                  <div className="input-box mb-2">
-                    <div className="label-box flex gap-2 align-middle mb-1">
+                  <div className="input-box mb-3">
+                    <div className="label-box flex gap-2 items-center mb-1">
                       <label className="font-medium text-[#14171B] text-[12px]">
                         Variable Name <span className="text-[#CF0000]">*</span>
                       </label>
 
                       <span>
-                        <img
-                          src="/assets/node_icon/info-circle.png"
-                          alt="info icon"
-                          className="w-[16px] object-cover object-center mx-auto"
-                        />
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 18 18"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle
+                            cx="9"
+                            cy="9"
+                            r="6.75"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M9.00406 6H9.01156"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M8.25 9H9V12H9.75"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
                       </span>
                     </div>
 
@@ -215,7 +371,7 @@ const ShortText = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
                       <input
                         type="text"
                         placeholder="Enter the variable name"
-                        className="form-control outline-0 shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
+                        className="form-control shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
                       />
                     </div>
                   </div>
@@ -246,17 +402,43 @@ const ShortText = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
 
                 <div className="form-box">
                   <div className="input-box mb-5">
-                    <div className="label-box flex gap-2 align-middle mb-1">
+                    <div className="label-box flex gap-2 items-center mb-1">
                       <label className="font-medium text-[#14171B] text-[12px]">
                         Topic <span className="text-[#CF0000]">*</span>
                       </label>
 
                       <span>
-                        <img
-                          src="/assets/node_icon/info-circle.png"
-                          alt="info icon"
-                          className="w-[16px] object-cover object-center mx-auto"
-                        />
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 18 18"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <circle
+                            cx="9"
+                            cy="9"
+                            r="6.75"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M9.00406 6H9.01156"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M8.25 9H9V12H9.75"
+                            stroke="#C3C3C3"
+                            stroke-width="0.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
                       </span>
                     </div>
 
@@ -270,7 +452,7 @@ const ShortText = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
                   </div>
 
                   <div className="text-box mb-5">
-                    <h4 className="text-[#14171B] font-medium text-sm">
+                    <h4 className="text-[#14171B] flex items-center gap-2 font-medium text-sm">
                       Variable name:{" "}
                       <span className="bg-[#FFE6FF] text-[#14171B] text-[12px] rounded-[20px] font-medium pt-3 pb-3 pr-4 pl-4">
                         Topic
