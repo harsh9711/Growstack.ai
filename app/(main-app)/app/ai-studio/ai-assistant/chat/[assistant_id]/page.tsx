@@ -38,14 +38,13 @@ const AssistantsChats: React.FC<PageProps> = ({
   const [selectedAiModel, setSelectedAiModel] = useState(
     aiModelOptions[0].models[0].value
   );
-  const [newChat, setNewChat] = useState(false);
+  const [newChat, setNewChat] = useState(true);
   const [convId, setConvId] = useState("");
 
   const [selectedConvoId, setSelectedConvoId] = useState("");
 
   useEffect(() => {
     const fetchAssistantConversation = async () => {
-      setLoading(true);
       try {
         const response = await instance.get(
           `http://127.0.0.1:8081/ai/api/v1/assistant/${assistant_id}/${newChat}`
@@ -53,7 +52,7 @@ const AssistantsChats: React.FC<PageProps> = ({
 
         setAssistantConversation(response.data.data.convo);
         setConvId(response.data.data.convo._id);
-        console.log("conv===================", convId);
+        console.log("conv===================", response.data.data.convo._id);
       } catch (error: any) {
         console.error("Error fetching assistant data:", error);
         setError("Something went wrong fetching assistant data.");
@@ -68,14 +67,22 @@ const AssistantsChats: React.FC<PageProps> = ({
       }
     };
 
+    if (newChat) {
+      setLoading(true); 
+      fetchAssistantConversation();
+    }
+  }, [newChat, assistant_id]);
+
+  useEffect(() => {
     const fetchAssistantData = async () => {
       try {
         const response = await instance.get("/ai/api/v1/assistant");
         setAssistantData(
-          response.data.data.filter(
+          response.data.data.find(
             (assistant: Assistant) => assistant.id === assistant_id
-          )[0]
+          )
         );
+        setLoading(false);
       } catch (error: any) {
         if (error.response) {
           toast.error(error.response.data.error);
@@ -84,10 +91,8 @@ const AssistantsChats: React.FC<PageProps> = ({
         }
       }
     };
-
-    fetchAssistantConversation();
     fetchAssistantData();
-  }, [newChat, assistant_id]);
+  }, []);
 
   useEffect(() => {
     if (selectedConvoId) {
@@ -97,6 +102,7 @@ const AssistantsChats: React.FC<PageProps> = ({
           const response = await instance.get(
             `http://127.0.0.1:8081/ai/api/v1/assistant/assistantConv/${selectedConvoId}`
           );
+          console.log("SelectedConvoId=======",selectedConvoId);
           console.log("response", response.data.data[0].chats);
           setAssistantConversation(response.data.data[0]);
           setConvId(response.data.data._id);

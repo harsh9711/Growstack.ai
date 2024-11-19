@@ -50,7 +50,7 @@ export default function ChatHistory({
   const [selectedConvo, setSelectedConvo] = useState<string | null>(null);
 
   const handleSelectedConvo = (convoId: string) => {
-    console.log("===========================+++++++++++++++++++",convoId)
+    console.log("===========================+++++++++++++++++++", convoId);
     setSelectedConvo(convoId);
     setSelectedConvoId(convoId);
   };
@@ -99,17 +99,19 @@ export default function ChatHistory({
           <Plus size={22} />
         </button>
       </div>
+      {selectedConvo}
       <div className="px-6 py-4 max-h-[68vh] overflow-y-auto">
         {chatHistory.length > 0 ? (
           chatHistory.map((chat, index) => (
             <div
               onClick={() => handleSelectedConvo(chat._id)}
               key={index}
-              className={clsx(
-                "flex gap-4 w-full px-4 mb-1.5 hover:bg-gray-200/80 cursor-pointer group rounded-full transition-all duration-300 overflow-hidden",
-                selectedConvo === chat._id && "bg-gray-100" 
-              )}
+              className={`flex gap-4 w-full px-4 mb-1.5 hover:bg-gray-200/80 cursor-pointer group rounded-full transition-all duration-300 overflow-hidden ${
+                selectedConvo === chat._id ? "bg-gray-200" : ""
+              }`}
             >
+              {/* {chat._id} */}
+
               <div className="h-14 flex gap-4 w-full items-center relative overflow-hidden">
                 <MessageIcon2 className="group-hover:text-primary-green w-full max-w-fit" />
                 <span className="flex-1 whitespace-nowrap overflow-hidden text-ellipsis">
