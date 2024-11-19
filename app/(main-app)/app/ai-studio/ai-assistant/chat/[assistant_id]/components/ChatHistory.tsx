@@ -1,6 +1,6 @@
 "use client";
 import clsx from "clsx";
-import { CloseIcon,MessageIcon2 } from "@/components/svgs";
+import { CloseIcon, MessageIcon2 } from "@/components/svgs";
 import { Plus } from "lucide-react";
 import { useState, useEffect } from "react";
 import instance from "@/config/axios.config";
@@ -12,6 +12,7 @@ interface IProps {
   assistant_id: string;
   newChat: boolean;
   setNewChat: (value: boolean) => void;
+  setSelectedConvoId: (convoId: string) => void;
 }
 
 export default function ChatHistory({
@@ -20,6 +21,7 @@ export default function ChatHistory({
   assistant_id,
   newChat,
   setNewChat,
+  setSelectedConvoId,
 }: IProps) {
   const [chatHistory, setChatHistory] = useState<Chat[]>([]);
 
@@ -44,6 +46,16 @@ export default function ChatHistory({
 
     fetchChatHistory();
   }, [assistant_id]);
+
+  const [selectedConvo, setSelectedConvo] = useState<string | null>(null);
+
+  const handleSelectedConvo = (convoId: string) => {
+    console.log("===========================+++++++++++++++++++",convoId)
+    setSelectedConvo(convoId);
+    setSelectedConvoId(convoId);
+  };
+
+  const [convId, setConvId] = useState("");
 
   return (
     <div
@@ -91,16 +103,18 @@ export default function ChatHistory({
         {chatHistory.length > 0 ? (
           chatHistory.map((chat, index) => (
             <div
+              onClick={() => handleSelectedConvo(chat._id)}
               key={index}
               className={clsx(
                 "flex gap-4 w-full px-4 mb-1.5 hover:bg-gray-200/80 cursor-pointer group rounded-full transition-all duration-300 overflow-hidden",
+                selectedConvo === chat._id && "bg-gray-100" 
               )}
             >
               <div className="h-14 flex gap-4 w-full items-center relative overflow-hidden">
                 <MessageIcon2 className="group-hover:text-primary-green w-full max-w-fit" />
                 <span className="flex-1 whitespace-nowrap overflow-hidden text-ellipsis">
                   {chat.chats && chat.chats.length > 0
-                    ? chat.chats[0].prompt
+                    ? chat.chats[chat.chats.length - 1].prompt
                     : "Empty"}
                 </span>
               </div>

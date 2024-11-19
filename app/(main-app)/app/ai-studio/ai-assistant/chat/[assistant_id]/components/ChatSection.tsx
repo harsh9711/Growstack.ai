@@ -11,8 +11,10 @@ interface ChatSectionProps {
   selectedLanguage: string;
   selectedAiModel: string;
   setMessagesData: any;
-  newChat: boolean; // Add newChat state
-  setNewChat: (value: boolean) => void; // Add setNewChat function,
+  newChat: boolean;
+  setNewChat: (value: boolean) => void;
+  convId: string;
+  setConvId: any;
 }
 
 const ChatSection: React.FC<ChatSectionProps> = ({
@@ -23,6 +25,8 @@ const ChatSection: React.FC<ChatSectionProps> = ({
   setMessagesData,
   newChat,
   setNewChat,
+  convId,
+  setConvId,
 }) => {
   const [messages, setMessages] = useState<Chat[]>([]);
 
@@ -41,7 +45,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({
       _id: new Date().toISOString(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      chats: undefined
+      chats: undefined,
     };
     setMessages(prevMessages => [...prevMessages, newMessage]);
   };
@@ -74,8 +78,10 @@ const ChatSection: React.FC<ChatSectionProps> = ({
           addMessage={addMessage}
           updateMessage={updateMessage}
           selectedLanguage={selectedLanguage}
-          newChat={newChat} 
-          setNewChat={setNewChat} 
+          newChat={newChat}
+          setNewChat={setNewChat}
+          convId={convId}
+          setConvId={setConvId}
         />
       </div>
     </div>
