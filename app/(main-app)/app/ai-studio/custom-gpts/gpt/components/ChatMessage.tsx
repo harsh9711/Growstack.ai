@@ -112,7 +112,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ conversation, icon }) => {
                       {currentUser?.email?.slice(0, 1)}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="max-w-5xl bg-primary-green text-white py-3 px-5 rounded-xl text-[14.5px] leading-relaxed">
+                  <div className="max-w-5xl bg-[#2DA771] text-white py-3 px-5 rounded-xl text-[14.5px] leading-relaxed">
                     {chat.user_message}
                   </div>
                 </div>
@@ -150,7 +150,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ conversation, icon }) => {
       {!isBottom && (
         <button
           onClick={scrollToBottom}
-          className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-primary-green text-white p-3 rounded-full hover:bg-primary-dark-green transition duration-300 ease-in-out"
+          className="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-[#2DA771] text-white p-3 rounded-full hover:bg-primary-dark-green transition duration-300 ease-in-out"
         >
           <FaLongArrowAltDown size={24} />
         </button>

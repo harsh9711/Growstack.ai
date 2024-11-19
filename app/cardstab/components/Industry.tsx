@@ -550,7 +550,7 @@ const Box = () => {
             className="flex flex-row items-start justify-center sm:items-start sm:justify-start gap-8 group text-[12px] 2xl:text-[18px] transition-opacity duration-300 "
           >
             <Link href="/demo" className="no-underline">
-              <button className="font-medium flex items-center gap-2 bg-transparent  text-black group-hover:text-primary-lightgreen  2xl:py-4 2xl:px-7  group-hover:font-bold ">
+              <button className="font-medium flex items-center gap-2 bg-transparent  text-black group-hover:text-primary-lightgreen  group-hover:font-bold ">
                 {item.button}
                 <ArrowRight className="text-black group-hover:text-primary-lightgreen" />
               </button>

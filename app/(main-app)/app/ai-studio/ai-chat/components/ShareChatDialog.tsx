@@ -219,7 +219,7 @@ export default function ShareChatDialog({
           </div>
           <button
             onClick={handleDownload}
-            className="!mt-8 bg-primary-green w-full h-14 rounded-xl hover:bg-primary-green/90 flex justify-center items-center text-white"
+            className="!mt-8 bg-[#2DA771] w-full h-14 rounded-xl hover:bg-[#2DA771]/90 flex justify-center items-center text-white"
           >
             {loading ? <Spinner /> : "Download"}
           </button>

@@ -254,14 +254,14 @@ const Login = () => {
                     </div>
                     <Link
                       href="/auth/forgot-password"
-                      className="text-primary-green"
+                      className="text-[#2DA771]"
                     >
                       Forgot password?
                     </Link>
                   </div>
                   <button
                     type="submit"
-                    className="bg-primary-green hover:bg-primary-green/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center"
+                    className="bg-[#2DA771] hover:bg-[#2DA771]/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center"
                   >
                     {isPending ? <Spinner /> : "Login"}
                   </button>
@@ -303,7 +303,7 @@ const Login = () => {
                   Do not have an account?{" "}
                   <Link
                     href="/auth/register"
-                    className="text-primary-green font-semibold"
+                    className="text-[#2DA771] font-semibold"
                   >
                     Register Now
                   </Link>

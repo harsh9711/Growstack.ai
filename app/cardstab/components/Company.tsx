@@ -13,7 +13,7 @@ export const cases = [
         width="65"
         height="62"
         viewBox="0 0 65 62"
-        // fill="none"
+        fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
@@ -182,7 +182,7 @@ export const cases = [
         width="60"
         height="60"
         viewBox="0 0 60 60"
-        // fill="none"
+        fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
         <g clip-path="url(#clip0_11523_38401)">
