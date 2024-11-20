@@ -36,7 +36,7 @@ export default function Dropzone({ onFileDrop: onFileDrop }: Props) {
   return (
     <div
       {...getRootProps()}
-      className="b outline-none w-full flex justify-center items-center h-[396px] cursor-pointer"
+      className="b outline-none w-full flex justify-center items-center h-[200px] cursor-pointer"
     >
       <input {...getInputProps()} accept="images/*" />
       {isDragActive ? (
@@ -50,10 +50,10 @@ export default function Dropzone({ onFileDrop: onFileDrop }: Props) {
             height={120}
           />
           <div className="space-y-2">
-            <h1 className="text-2xl text-primary-neutral font-semibold text-center">
+            <h1 className="text-xl text-primary-neutral font-semibold text-center">
               Upload your product image to get started
             </h1>
-            <h2 className="text-lg text-center font-semibold !mt-2">
+            <h2 className="text-xs text-center font-semibold !mt-2">
               <span className="text-primary-green">Click to upload</span> or
               drag and drop
             </h2>
