@@ -4,10 +4,10 @@
 @tailwind utilities;
 @keyframes float1 {
   0%, 100% {
-    transform: translateY(0);
+    transform: translateY(20);
   }
   50% {
-    transform: translateY(-40px);
+    transform: translateY(-20px);
   }
 }
 
@@ -35,10 +35,10 @@
 }
 @keyframes float4 {
   0%, 100% {
-    transform: translateY(0);
+    transform: translateY(20);
   }
   50% {
-    transform: translateY(-40px);
+    transform: translateY(-20px);
   }
 }
 
@@ -61,27 +61,27 @@
 }
 
 .float-animation-1 {
-  animation: float1 3s ease-in-out infinite;
+  animation: float1 6s ease-in-out infinite;
 }
 
 .float-animation-2 {
-  animation: float2 4s ease-in-out infinite;
+  animation: float2 7s ease-in-out infinite;
 }
 
 .float-animation-3 {
-  animation: float3 2.5s ease-in-out infinite;
+  animation: float3 5.5s ease-in-out infinite;
 }
 
 .float-animation-4 {
-  animation: float4 3.5s ease-in-out infinite;
+  animation: float4 6.5s ease-in-out infinite;
 }
 
 .float-animation-5 {
-  animation: float5 4s ease-in-out infinite;
+  animation: float5 7s ease-in-out infinite;
 }
 
 .float-animation-6 {
-  animation: float6 3s ease-in-out infinite;
+  animation: float6 6s ease-in-out infinite;
 }
 
 .animate-moveBall1 {

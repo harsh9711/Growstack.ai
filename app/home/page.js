@@ -24,7 +24,7 @@ import SixCardVideo from "../cardsvideo/page";
 import SixCardTab from "../cardstab/page";
 import SixCardSwitch from "../cardsswitch/page";
 import Image from "next/image";
-import "../../styles/animate.css"
+import "../../styles/animate.css";
 // I commented this bootstrapp CDN because of conflicting styles with tailwindcss, NB: I'll uncomment it as soon as reliable solution is found
 function Page() {
   const [isFormFocused, setIsFormFocused] = useState(true);
@@ -39,21 +39,67 @@ function Page() {
       {/* <Banner /> */}
       <OurProcess />
       {/* <Features /> */}{" "}
-      <div className="flex flex-row gap-x-20 mx-auto items-center justify-center">
-  <div className="flex flex-col gap-y-28">
-    <Image className="float-animation-1" src="/12.svg" width={110} height={110} />
-    <Image className="float-animation-2" src="/13.svg" width={110} height={110} />
-    <Image className="float-animation-3 t " src="/14.svg" width={110} height={110} />
-  </div>
-  <SixCard />
-  <div className="flex flex-col gap-y-28">
-    <Image className="float-animation-4" src="/15.svg" width={110} height={110} />
-    <Image className="float-animation-5" src="/16.svg" width={110} height={110} />
-    <Image className="float-animation-6" src="/17.svg" width={110} height={110} />
-  </div>
-</div>
+      <div className="relative w-full h-full overflow-hidden">
+        {/* Video Background */}
+        <video
+          className="absolute top-0 left-0 w-full h-full object-cover z-0 opacity-20"
+          autoPlay
+          loop
+          muted
+          playsInline
+        >
+          <source
+            src="https://video.gumlet.io/673d77b6f3970d5c7faa5a64/673d77ce94dde00045e95983/download.mp4"
+            type="video/mp4"
+          />
+          Your browser does not support the video tag.
+        </video>
 
-
+        {/* Content */}
+        <div className="2xl:p-0 xl:p-20 sm:p-10 relative z-10 flex flex-row sm:gap-x-20 mx-auto items-center justify-center h-full">
+          <div className="hidden md:flex flex-col gap-y-28">
+            <Image
+              className="float-animation-1"
+              src="/12.svg"
+              width={110}
+              height={110}
+            />
+            <Image
+              className="float-animation-2"
+              src="/13.svg"
+              width={110}
+              height={110}
+            />
+            <Image
+              className="float-animation-3"
+              src="/14.svg"
+              width={110}
+              height={110}
+            />
+          </div>
+          <SixCard />
+          <div className="hidden md:flex  flex-col gap-y-28">
+            <Image
+              className="float-animation-4"
+              src="/15.svg"
+              width={110}
+              height={110}
+            />
+            <Image
+              className="float-animation-5"
+              src="/16.svg"
+              width={110}
+              height={110}
+            />
+            <Image
+              className="float-animation-6"
+              src="/17.svg"
+              width={110}
+              height={110}
+            />
+          </div>
+        </div>
+      </div>
       {/* <SixCardVideo /> */}
       <Animation />
       {/* <Facts /> */}
