@@ -16,6 +16,7 @@ import { IoIosNotificationsOutline, IoIosMenu } from "react-icons/io";
 import navLinks from "./constants/nav";
 import { ProfileButton } from "./ProfileButton";
 import { useRouter } from "next-nprogress-bar";
+import { ALL_ROUTES } from "@/utils/constant";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -142,6 +143,17 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-5">
+          <button
+            className="blink-animation group relative inline-flex items-center h-12 gap-2 px-4 rounded-lg text-white font-semibold transition-all duration-800 overflow-hidden"
+            onClick={() => {
+              window.location.href = ALL_ROUTES.UPGRADE;
+            }}
+          >
+            <span className="text-md text-nowrap flex flex-row gap-x-2 font-medium">
+              Upgrade Your Plan
+            </span>
+            <div className="absolute inset-0 -z-10 bg-gradient-to-r from-emerald-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+          </button>
           <div className="lg:hidden">
             <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
               <IoIosMenu size={30} />

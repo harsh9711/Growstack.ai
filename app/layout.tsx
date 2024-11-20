@@ -35,6 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <link rel="icon" href="/logo/growstack-mini.svg" />
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-CLCETMEDBL"
