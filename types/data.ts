@@ -296,6 +296,72 @@ export const team = [
     Url: "https://www.linkedin.com/in/krishna-anudeep-41128b10b/",
   },
 ];
+export const teamvideos = [
+  {
+    id: 1,
+    videoUrl:
+      "https://video.gumlet.io/673d77b6f3970d5c7faa5a64/673d9044a1954734a552e434/download.mp4",
+    name: "Narasimha Rao",
+    role: "CEO,    Managing Director Balvantis Studio",
+    Url: "https://www.linkedin.com/in/narasimha-vadde/",
+  },
+  {
+    id: 2,
+    videoUrl:
+      "https://video.gumlet.io/673d77b6f3970d5c7faa5a64/673d9044a1954734a552e42e/download.mp4",
+    name: "Nagaraj Manne",
+    role: "Web Developer",
+    Url: "https://www.linkedin.com/in/nagaraj-manne-17168965/",
+  },
+  {
+    id: 3,
+    videoUrl:
+      "https://video.gumlet.io/673d77b6f3970d5c7faa5a64/673d904394dde00045ea1353/download.mp4",
+    name: "Ranjit Reddy",
+    role: "SAP SD/(OTC)/ Logistics S4",
+    Url: "https://linkedin.com/in/ranjith-annapu-828a241a2/",
+  },
+  {
+    id: 4,
+    videoUrl:
+      "https://video.gumlet.io/673d77b6f3970d5c7faa5a64/673d904394dde00045ea1351/download.mp4",
+    name: "Anudeep Devata",
+    role: "MBA, GDC, Ireland",
+    Url: "https://www.linkedin.com/in/krishna-anudeep-41128b10b/",
+  },
+  {
+    id: 5,
+    videoUrl:
+      "https://video.gumlet.io/673d77b6f3970d5c7faa5a64/673d9044a1954734a552e434/download.mp4",
+    name: "Narasimha Rao",
+    role: "CEO,    Managing Director Balvantis Studio",
+    Url: "https://www.linkedin.com/in/narasimha-vadde/",
+  },
+  {
+    id: 6,
+    videoUrl:
+      "https://video.gumlet.io/673d77b6f3970d5c7faa5a64/673d9044a1954734a552e42e/download.mp4",
+    name: "Nagaraj Manne",
+    role: "Web Developer",
+    Url: "https://www.linkedin.com/in/nagaraj-manne-17168965/",
+  },
+  {
+    id: 7,
+    videoUrl:
+      "https://video.gumlet.io/673d77b6f3970d5c7faa5a64/673d904394dde00045ea1353/download.mp4",
+    name: "Ranjit Reddy",
+    role: "SAP SD/(OTC)/ Logistics S4",
+    Url: "https://linkedin.com/in/ranjith-annapu-828a241a2/",
+  },
+  {
+    id: 8,
+    videoUrl:
+      "https://video.gumlet.io/673d77b6f3970d5c7faa5a64/673d904394dde00045ea1351/download.mp4",
+    name: "Anudeep Devata",
+    role: "MBA, GDC, Ireland",
+    Url: "https://www.linkedin.com/in/krishna-anudeep-41128b10b/",
+  },
+];
 // export const solutions = [
 //   {
 //     id: 1,

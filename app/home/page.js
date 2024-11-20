@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import Facts from "/components/home/facts/facts";
-import Carousel from "../carousel/page";
 import Footer from "@/components/footer/Footer";
 import Banner from "@/components/home/banner/Banner";
 import Capability from "@/components/home/capability/Capability";
@@ -25,6 +24,7 @@ import SixCardTab from "../cardstab/page";
 import SixCardSwitch from "../cardsswitch/page";
 import AnimationStory from "../animationstory/page";
 import Image from "next/image";
+import Carousel from "../carouselvideos/page";
 
 // I commented this bootstrapp CDN because of conflicting styles with tailwindcss, NB: I'll uncomment it as soon as reliable solution is found
 function Page() {
@@ -83,9 +83,10 @@ function Page() {
           loop
           muted
           playsInline
+          preload="auto"
         >
           <source
-            src="https://video.gumlet.io/673d77b6f3970d5c7faa5a64/673d77ce94dde00045e95983/download.mp4"
+            src="https://video.gumlet.io/673d77b6f3970d5c7faa5a64/673dc91294dde00045eb83bd/download.mp4"
             type="video/mp4"
           />
           Your browser does not support the video tag.
@@ -136,7 +137,9 @@ function Page() {
           </div>
         </div>
       </div>
+     
       <SixCardVideo />
+      <Carousel/>
       <Animation />
       {/* <Facts /> */}
       {/* <Carousel /> */}
