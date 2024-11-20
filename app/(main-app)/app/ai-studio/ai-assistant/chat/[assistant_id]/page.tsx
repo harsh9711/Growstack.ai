@@ -114,10 +114,10 @@ const AssistantsChats: React.FC<PageProps> = ({
 
   if (loading || !assistantData || !assistantConversation) {
     return (
-      <div className="flex-1 flex flex-col gap-5 justify-center items-center">
-        <Spinner color="black" size={100} />
-        Loading...
-      </div>
+        <div className="flex-1 flex flex-col gap-5 justify-center items-center">
+          <Spinner color="black" size={100} />
+          Loading...
+        </div>
     );
   }
 

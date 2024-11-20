@@ -71,7 +71,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
     try {
       const token = getCookie("token");
       const eventSource = new EventSource(
-        `/ai/api/v1/assistant/chat/stream/${chatId}/${convId}`,
+        `${API_URL}/ai/api/v1/assistant/chat/stream/${chatId}/${convId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

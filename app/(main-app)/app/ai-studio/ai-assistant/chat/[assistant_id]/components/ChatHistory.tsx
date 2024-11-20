@@ -5,6 +5,7 @@ import { Plus } from "lucide-react";
 import { useState, useEffect } from "react";
 import instance from "@/config/axios.config";
 import { Chat } from "../../../components/types";
+import { API_URL } from "@/lib/api";
 
 interface IProps {
   isOpen: boolean;
@@ -33,7 +34,7 @@ export default function ChatHistory({
     const fetchChatHistory = async () => {
       try {
         const response = await instance.post(
-          "/ai/api/v1/assistant/getHistoryChat",
+          `/ai/api/v1/assistant/getHistoryChat`,
           {
             user_id: localStorage.getItem("user_id"),
             assistant_id: assistant_id,
