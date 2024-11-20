@@ -13,6 +13,7 @@ import {
 import AdvancedOptions from "./AdvancedOptions";
 import clsx from "clsx";
 import Motion from "@/components/Motion";
+import { StarRating } from "./Star";
 
 export default function IdeasComponent({
   currentStep,
@@ -35,8 +36,8 @@ export default function IdeasComponent({
 }) {
   const [isPending, setIsPending] = useState(false);
   const [isKeywordPending, setIsKeywordPending] = useState(false);
-  const [ideas, setIdeas] = useState<Array<string>>([]);
-  const [generatedKeywords, setGeneratedKeywords] = useState<Array<string>>([]);
+  const [ideas, setIdeas] = useState<any>([]);
+  const [generatedKeywords, setGeneratedKeywords] = useState<any>([]);
   const [viewKeywords, setViewKeywords] = useState(true);
 
   //form data settings
@@ -144,8 +145,12 @@ export default function IdeasComponent({
   };
 
   const handleSelectAll = () => {
-    setKeywords(generatedKeywords);
-    setKeywordInputValue(generatedKeywords.join(", "));
+    const keywords = generatedKeywords.map((item: any) =>
+      typeof item === "object" && item.keyword ? item.keyword : item
+    );
+
+    setKeywords(keywords);
+    setKeywordInputValue(keywords.join(", "));
   };
 
   const handleUnselectAll = () => {
@@ -153,11 +158,17 @@ export default function IdeasComponent({
     setKeywordInputValue("");
   };
 
-  const allSelected = generatedKeywords.every(keyword =>
-    keywords.includes(keyword)
+  const allSelected = generatedKeywords.every((item: any) =>
+    keywords.includes(
+      typeof item === "object" && item.keyword ? item.keyword : item
+    )
   );
+
   const notAllSelected = generatedKeywords.some(
-    keyword => !keywords.includes(keyword)
+    (item: any) =>
+      !keywords.includes(
+        typeof item === "object" && item.keyword ? item.keyword : item
+      )
   );
 
   const toggleAdvancedOptions = () => {
@@ -267,7 +278,7 @@ export default function IdeasComponent({
             <div className="bg-gray-200 w-full h-0.5" />
             <button
               onClick={toggleAdvancedOptions}
-              className="w-full text-primary-green text-base"
+              className="w-full text-[#2DA771] text-base"
             >
               {showAdvanced ? "Advanced options -" : "Advanced options +"}
             </button>
@@ -295,7 +306,7 @@ export default function IdeasComponent({
             onClick={generateIdeas}
             disabled={isPending}
             className={clsx(
-              "w-full p-2 h-14 !mt-8 text-white bg-primary-green rounded-xl hover:bg-opacity-90 flex justify-center items-center",
+              "w-full p-2 h-14 !mt-8 text-white bg-[#2DA771] rounded-xl hover:bg-opacity-90 flex justify-center items-center",
               isPending && "opacity-80 cursor-not-allowed"
             )}
           >
@@ -304,7 +315,7 @@ export default function IdeasComponent({
         </div>
 
         <div className="w-full">
-          <div className="bg-primary-green rounded-2xl py-5 px-7 flex items-center gap-4">
+          <div className="bg-[#2DA771] rounded-2xl py-5 px-7 flex items-center gap-4">
             <span className="bg-white h-12 w-12 grid place-content-center rounded-full">
               {currentStep + 1}
             </span>
@@ -326,19 +337,40 @@ export default function IdeasComponent({
                     Choose your keywords
                   </h1>
                   <div className="flex flex-wrap justify-center gap-2 mt-3">
-                    {generatedKeywords.map(generatedKeyword => (
-                      <div
-                        key={generatedKeyword}
-                        onClick={() => handleKeywordUpdate(generatedKeyword)}
-                        className={clsx(
-                          "bg-gray-100 text-gray-600 p-3 rounded-xl first-letter:uppercase cursor-pointer transition-all duration-300",
-                          keywords.includes(generatedKeyword) &&
-                            "bg-primary-green text-white"
-                        )}
-                      >
-                        {generatedKeyword}
-                      </div>
-                    ))}
+                    {/* {generatedKeywords&&JSON.stringify(generatedKeywords)} */}
+                    {generatedKeywords.map(
+                      (generatedKeyword: any, index: any) => (
+                        // <>
+                        // {JSON.stringify(generatedKeyword.keyword) && JSON.stringify(generatedKeyword.keyword)}
+                        // {JSON.stringify(generatedKeyword.score) && JSON.stringify(generatedKeyword.score)}
+                        // </>
+                        <div
+                          key={
+                            generatedKeyword.keyword || generatedKeyword.score
+                          }
+                          onClick={() =>
+                            handleKeywordUpdate(generatedKeyword.keyword)
+                          }
+                          className={clsx(
+                            "bg-gray-100 text-gray-600 p-3 rounded-xl first-letter:uppercase cursor-pointer transition-all duration-300",
+                            keywords.includes(
+                              generatedKeyword.keyword || generatedKeyword.score
+                            ) && "bg-[#2DA771] text-white"
+                          )}
+                        >
+                          <div className="flex flex-row gap-2">
+                            <div>{generatedKeyword.keyword}</div>
+                            <div className="flex">
+                              <StarRating
+                                score={generatedKeyword.score}
+                                size={20}
+                              />
+                              <strong>{generatedKeyword.score}</strong>
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    )}
                   </div>
                   <div className="flex justify-center mt-4">
                     {!allSelected && (
@@ -374,33 +406,47 @@ export default function IdeasComponent({
                 variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
               >
                 <ul className="mt-5">
-                  {ideas.map((idea, index) => (
-                    <li
-                      onClick={() => setArticleTitle(idea)}
-                      key={index}
-                      className={clsx(
-                        "py-5 px-7 mb-3 border rounded-xl bg-white text-lg flex items-center gap-4 cursor-pointer group transition-all duration-300",
-                        idea === articleTitle && "border-primary-green/70"
-                      )}
-                    >
-                      <span
+                  {ideas.map((idea: any, index: any) => (
+                    <>
+                      <div className="relative">
+                        <span
+                          className={clsx(
+                            "h-6 w-13 flex transition-all duration-300",
+                            "absolute top-3 right-3"
+                          )}
+                        >
+                          <StarRating score={idea.score} size={20} />:{" "}
+                          {idea.score}
+                        </span>
+                      </div>
+                      <li
+                        onClick={() => setArticleTitle(idea.topic)}
+                        key={index}
                         className={clsx(
-                          "border p-2 rounded-full text-gray-400 group-hover:text-primary-green group-hover:border-primary-green translate-all duration-300",
-                          idea === articleTitle &&
-                            "text-primary-green border-primary-green"
+                          "py-5 px-7 mb-3 border rounded-xl bg-white text-lg flex items-center gap-4 cursor-pointer group transition-all duration-300",
+                          idea.topic === articleTitle && "border-[#2DA771]/70"
                         )}
                       >
-                        <CheckIcon2 />
-                      </span>
-                      <span>{idea}</span>
-                    </li>
+                        <span
+                          className={clsx(
+                            "border p-2 rounded-full text-gray-400 group-hover:text-[#2DA771] group-hover:border-[#2DA771] translate-all duration-300",
+                            idea.topic === articleTitle &&
+                              "text-[#2DA771] border-[#2DA771]"
+                          )}
+                        >
+                          <CheckIcon2 />
+                        </span>
+
+                        <span>{idea.topic}</span>
+                      </li>
+                    </>
                   ))}
                 </ul>
                 {articleTitle && (
                   <div className="flex justify-end">
                     <button
                       onClick={() => setCurrentStep(1)}
-                      className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px]"
+                      className="w-full p-2 h-14 mt-4 text-white sheen bg-[#2DA771] rounded-xl max-w-[150px]"
                     >
                       Next step
                     </button>

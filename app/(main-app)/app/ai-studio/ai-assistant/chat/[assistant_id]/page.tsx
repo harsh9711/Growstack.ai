@@ -101,7 +101,9 @@ const AssistantsChats: React.FC<PageProps> = ({
   };
 
   return (
-    <div className="flex-1 flex !bg-white shadow-box border">
+    <div
+      className={`flex-1 flex !bg-white shadow-box border ${isSidebarOpen ? "overflow-hidden" : ""}`}
+    >
       <Sidebar
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}

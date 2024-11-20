@@ -92,6 +92,7 @@ export default function AiAppPage({
       : aiModelOptionsTemplate;
   const [appTemplate, setAppTemplate] = useState<any>({});
   const [userPrompts, setUserPrompts] = useState<string[]>([]); // Initialize as empty array
+  const [promptErrors, setPromptErrors] = useState<string[]>([]); // Array to store errors for each prompt
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [fileName, setFileName] = useState(""); // State for file name input
   const [loading, setLoading] = useState(true);
@@ -338,7 +339,6 @@ export default function AiAppPage({
 
   const [isStreaming, setIsStreaming] = useState(false);
 
-
   const streamResponse = async (chatId: string) => {
     try {
       const token = getCookie("token");
@@ -388,12 +388,14 @@ export default function AiAppPage({
       setUserInput1Error("");
     }
 
-    // if (userInput.user_prompt === ""){
-    //   setUserPromptError('Please Enter Your Prompt');
-    //   return;
-    // } else {
-    //   setUserPromptError('');
-    // }
+    // Validate prompts
+    const errors = userPrompts.map(prompt =>
+      !prompt ? "Please fill above field" : ""
+    );
+    setPromptErrors(errors);
+
+    // If there are any errors, prevent submission
+    if (errors.some(error => error)) return;
 
     setIsGeneratedResultPending(true);
     try {
@@ -442,6 +444,12 @@ export default function AiAppPage({
       const updatedPrompts = [...prevPrompts];
       updatedPrompts[index] = value;
       return updatedPrompts;
+    });
+
+    setPromptErrors(prevErrors => {
+      const updatedErrors = [...prevErrors];
+      updatedErrors[index] = ""; // Clear specific error
+      return updatedErrors;
     });
   };
 
@@ -668,7 +676,7 @@ export default function AiAppPage({
           <span className="text-[#3D817B] font-medium">{appTemplate.name}</span>
         </p>
         <Link href={ALL_ROUTES.AI_TEMPLATE}>
-          <button className="text-primary-green hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-2.5 rounded-full font-semibold items-center">
+          <button className="text-[#2DA771] hover:bg-[#2DA771]/10 sheen flex gap-2 px-3.5 py-2.5 rounded-full font-semibold items-center">
             <ArrowLeft size={20} /> Back
           </button>
         </Link>
@@ -862,13 +870,20 @@ export default function AiAppPage({
                       rows={4}
                       className="w-full p-4 rounded-xl resize-none bg-[#F2F2F2]"
                       placeholder={input.description}
-                      value={userPrompts[index]}
+                      value={userPrompts[index] || ""}
                       onChange={e => handleUserPromptChange(e, index)}
                       maxLength={2000}
                     ></textarea>
                   )}
                 {userPromptError && (
-                  <p style={{ color: "red" }}>{userPromptError}</p>
+                  <p style={{ color: "red", marginLeft: "5px" }}>
+                    {userPromptError}
+                  </p>
+                )}
+                {promptErrors[index] && (
+                  <div className="text-red-500 mt-1 ml-[5px]">
+                    {promptErrors[index]}
+                  </div>
                 )}
               </div>
             ))}
@@ -916,7 +931,7 @@ export default function AiAppPage({
                               className={clsx(
                                 "flex items-center gap-2",
                                 selectedModel === value &&
-                                  "text-primary-green font-medium"
+                                  "text-[#2DA771] font-medium"
                               )}
                             >
                               <span className="min-w-fit">{icon}</span>
@@ -1033,7 +1048,7 @@ export default function AiAppPage({
             </div>
           </div>
           <button
-            className="w-full h-14 py-2 text-white bg-primary-green rounded-xl !mt-7 flex items-center justify-center"
+            className="w-full h-14 py-2 text-white bg-[#2DA771] rounded-xl !mt-7 flex items-center justify-center"
             disabled={isStreaming}
             onClick={generateResult}
           >
@@ -1251,7 +1266,12 @@ export default function AiAppPage({
             </div>
           </div>
           <div className="flex-1">
-            <Editor content={generatedContent} onChange={handleEditorChange} isLoading={isGeneratedResultPending} streaming={isStreaming} />
+            <Editor
+              content={generatedContent}
+              onChange={handleEditorChange}
+              isLoading={isGeneratedResultPending}
+              streaming={isStreaming}
+            />
           </div>
         </div>
       </div>

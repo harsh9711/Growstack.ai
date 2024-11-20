@@ -302,7 +302,7 @@ const CreateVideoDialog = ({
         <div className="flex flex-col items-center space-y-4">
           <div className="relative w-full max-w-sm bg-gray-200 rounded-lg">
             <div
-              className="absolute top-0 left-0 h-full bg-primary-green rounded-lg"
+              className="absolute top-0 left-0 h-full bg-[#2DA771] rounded-lg"
               style={{ width: `${progress}%`, transition: "width 0.5s ease" }}
             />
           </div>
@@ -431,7 +431,7 @@ const CreateVideoDialog = ({
             }
           }
         }}
-        className="bg-primary-green text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2"
+        className="bg-[#2DA771] text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2"
       >
         <Plus size={20} />
         Create new avatar with AI
@@ -461,7 +461,7 @@ const CreateVideoDialog = ({
               Cancel
             </button>
             <Link
-              className="bg-primary-green text-white text-nowrap py-2 px-6 rounded-md transition duration-300 hover:bg-green-600"
+              className="bg-[#2DA771] text-white text-nowrap py-2 px-6 rounded-md transition duration-300 hover:bg-green-600"
               href="/account/billings/settings"
             >
               Add Credit
@@ -494,7 +494,7 @@ const CreateVideoDialog = ({
                         placeholder="Type avatar title"
                         value={formData.title}
                         onChange={handleInputChange}
-                        className="border border-[#DEDEDE] bg-[#F5F5F5] h-[54px]  w-[98%] rounded-xl outline-none focus:border-primary-green transition-all p-4"
+                        className="border border-[#DEDEDE] bg-[#F5F5F5] h-[54px]  w-[98%] rounded-xl outline-none focus:border-[#2DA771] transition-all p-4"
                       />
                       {formErrors.title && (
                         <span className="text-red-500 text-sm">
@@ -503,7 +503,7 @@ const CreateVideoDialog = ({
                       )}
                     </div>
                   </div>
-                  <div className="flex xl:flex-row md:flex-row flex-row flex-col 2xl:flex-row gap-x-6 w-full space-x-2">
+                  <div className="flex xl:flex-row md:flex-row flex-col 2xl:flex-row gap-x-6 w-full space-x-2">
                     <div className="flex flex-col w-[98%] space-y-2">
                       <label
                         htmlFor="objective"
@@ -518,7 +518,7 @@ const CreateVideoDialog = ({
                         placeholder="Introduction to financial well-being"
                         value={formData.objective}
                         onChange={handleInputChange}
-                        className="border border-[#DEDEDE] bg-[#F5F5F5] resize-none h-[160px]  w-[98%] rounded-xl outline-none focus:border-primary-green transition-all p-4"
+                        className="border border-[#DEDEDE] bg-[#F5F5F5] resize-none h-[160px]  w-[98%] rounded-xl outline-none focus:border-[#2DA771] transition-all p-4"
                       ></textarea>
                       {formErrors.objective && (
                         <span className="text-red-500 text-sm">
@@ -547,7 +547,7 @@ const CreateVideoDialog = ({
                           placeholder="Give a name or title to the speaker"
                           value={formData.speaker}
                           onChange={handleInputChange}
-                          className="border border-[#DEDEDE] bg-[#F5F5F5] h-[54px] w-[98%] rounded-xl outline-none focus:border-primary-green transition-all p-4"
+                          className="border border-[#DEDEDE] bg-[#F5F5F5] h-[54px] w-[98%] rounded-xl outline-none focus:border-[#2DA771] transition-all p-4"
                         />
                       </div>
 
@@ -570,7 +570,7 @@ const CreateVideoDialog = ({
                           placeholder="Who will be watching this avatar?"
                           value={formData.audience}
                           onChange={handleInputChange}
-                          className="border border-[#DEDEDE] bg-[#F5F5F5] h-[54px] w-[98%] rounded-xl outline-none focus:border-primary-green transition-all p-4"
+                          className="border border-[#DEDEDE] bg-[#F5F5F5] h-[54px] w-[98%] rounded-xl outline-none focus:border-[#2DA771] transition-all p-4"
                         />
                       </div>
                     </div>
@@ -666,7 +666,7 @@ const CreateVideoDialog = ({
                             disabled={loading}
                             style={{ whiteSpace: "nowrap" }}
                             className={clsx(
-                              "bg-primary-green text-[12px] text-white py-3.5 px-10 w-full width-[30%] rounded-xl flex items-center justify-center mt-1",
+                              "bg-[#2DA771] text-[12px] text-white py-3.5 px-10 w-full width-[30%] rounded-xl flex items-center justify-center mt-1",
                               {
                                 "opacity-80 cursor-not-allowed": loading,
                               }
@@ -687,6 +687,7 @@ const CreateVideoDialog = ({
                       <AvatarSelection
                         avatars={filteredAvatars}
                         onSelect={handleAvatarSelect}
+                        selectedAvatarId={selectedAvatar?.id || null}
                       />
                     </div>
                   </Motion>

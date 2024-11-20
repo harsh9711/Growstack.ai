@@ -30,7 +30,7 @@ interface ChatAreaProps {
   userPrompt: string;
   handleDelete: () => void;
   renderConversation: (msg?: string) => void;
-  responseLoading:boolean;
+  responseLoading: boolean;
 }
 
 const outputType = [
@@ -50,7 +50,7 @@ const ChatArea = ({
   userPrompt,
   handleDelete,
   renderConversation,
-  responseLoading
+  responseLoading,
 }: ChatAreaProps) => {
   const [inputValue, setInputValue] = useState(userPrompt);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -61,14 +61,17 @@ const ChatArea = ({
     | null
   >(null); // Updated here
   const initialHeight = 32;
+  const [emptyPrompt, isEmptyPrompt] = useState("");
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(event.target.value);
     handleChange(event);
+    isEmptyPrompt("");
   };
 
   const handleSend = () => {
     if (responseLoading) return;
     if (textareaRef.current && inputValue.trim() !== "") {
+      isEmptyPrompt("");
       textareaRef.current.value = "";
       if (textareaRef.current.style) {
         textareaRef.current.style.height = "2rem";
@@ -78,6 +81,9 @@ const ChatArea = ({
       }
       setInputValue("");
       renderConversation();
+    } else {
+      // Show error message if the input is empty
+      isEmptyPrompt("Please enter any prompt...!");
     }
   };
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -196,11 +202,14 @@ const ChatArea = ({
           disabled={responseLoading}
           type="submit"
           onClick={handleSend}
-          className="h-10 w-10 md:h-12 md:w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
+          className="h-10 w-10 md:h-12 md:w-12 flex justify-center items-center bg-[#2DA771] hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
         >
           <SendIcon2 />
         </button>
       </div>
+      {emptyPrompt && (
+        <div className="text-red-500 mt-2 ml-2">{emptyPrompt}</div>
+      )}
     </div>
   );
 };
@@ -272,7 +281,7 @@ const AIModel = ({
 
   return (
     <Select value={selectedOption} onValueChange={handleModalSelection}>
-      <SelectTrigger className="h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-4">
+      <SelectTrigger className="h-12 bg-[#2DA771] text-white border-0 rounded-xl flex items-center justify-between px-4">
         <SelectValue placeholder="Select an option">
           {selectedModelLabel && (
             <div className="flex items-center gap-2">
@@ -300,8 +309,7 @@ const AIModel = ({
                   <div
                     className={clsx(
                       "flex items-center gap-2",
-                      selectedOption === value &&
-                        "text-primary-green font-medium"
+                      selectedOption === value && "text-[#2DA771] font-medium"
                     )}
                   >
                     <span className="min-w-fit">{icon}</span>
@@ -382,7 +390,7 @@ const InitialMsg = ({
             Pricing <OpenTabIcon className="w-5 h-5" />
           </span>
         </div>
-        <span className="flex items-center gap-2 text-primary-green cursor-pointer">
+        <span className="flex items-center gap-2 text-[#2DA771] cursor-pointer">
           Website <OpenTabIcon className="w-5 h-5" />
         </span>
       </div>

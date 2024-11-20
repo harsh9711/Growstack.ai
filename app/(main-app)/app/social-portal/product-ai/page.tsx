@@ -51,6 +51,13 @@ export default function Home() {
     favorites_bg_toggle: false,
     numOfImages: numOfImages | 1
   });
+  const initialProductAI: ProductAI = {
+    img_url: null,
+    remove_bg_toggle: false,
+    user_prompt: "",
+    favorites_bg_toggle: false,
+    numOfImages: numOfImages | 1
+  };
   const [loading, setLoading] = useState(false);
 
   const fetchHistory = async () => {
@@ -186,7 +193,7 @@ export default function Home() {
   const handleNumOfImagesChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    productAI.numOfImages = event.target.value;
+    productAI.numOfImages = Number(event.target.value);
     setNumOfImages(Number(event.target.value));
   };
 
@@ -301,7 +308,7 @@ export default function Home() {
                 Generate from text
               </h2>
               <h5 className="text-sx sx:text-base mt-2">
-              Place your image on the canvas.
+                Place your image on the canvas.
               </h5>
               <div>
                 {/* Image Preview */}
@@ -355,7 +362,7 @@ export default function Home() {
                     className="bg-gray-200 h-24 cursor-pointer flex justify-center items-center"
                     onClick={() => handleExampleClick(example.description)}
                   >
-                    <img src={example.image} className="w-[100%] h-[100%]"/>
+                    <img src={example.image} className="w-[100%] h-[100%]" />
                   </div>
                 ))}
               </div>
@@ -436,12 +443,12 @@ export default function Home() {
                         <button
                           onClick={() => {
                             setResult(null);
-                            setProductAI([]);
+                            setProductAI(initialProductAI);
                             setSelectedImages([]);
                             setSelectedImages([]);
                             setFinalUrl([]); // Clear selections on reset
                             setNumOfImages(1);
-                            productAI.user_prompt=""
+                            productAI.user_prompt = ""
                           }}
                           className="text-base bg-white text-red-500 border border-red-500 px-5 py-2 mr-4"
                           type="button"
@@ -484,22 +491,22 @@ export default function Home() {
                           </div>
 
                           <div className="flex justify-end ">
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-6 w-6 cursor-pointer"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-    onClick={clearImg}
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={2}
-      d="M6 18L18 6M6 6l12 12"
-    />
-  </svg>
-</div>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-6 w-6 cursor-pointer"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              onClick={clearImg}
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M6 18L18 6M6 6l12 12"
+                              />
+                            </svg>
+                          </div>
 
                         </>
                       ) : (
@@ -585,7 +592,12 @@ export default function Home() {
               id="imageUpload"
               type="file"
               accept="image/*"
-              onChange={e => onFileDrop(e.target.files, [])}
+              onChange={e => {
+                const files = e.target.files;
+                if (files) {
+                  onFileDrop(Array.from(files));
+                }
+              }}
               className="hidden"
             />
           </div>
@@ -619,9 +631,8 @@ export default function Home() {
 
                 {/* Like/Dislike Button */}
                 <button
-                  className={`absolute top-2 left-2 p-1 rounded-full shadow-md transition-colors duration-200 ${
-                    image.favourite ? "text-red-500" : "text-gray-500"
-                  } hover:bg-gray-100`}
+                  className={`absolute top-2 left-2 p-1 rounded-full shadow-md transition-colors duration-200 ${image.favourite ? "text-red-500" : "text-gray-500"
+                    } hover:bg-gray-100`}
                   onClick={() => updateFavourite(image, image.favourite)}
                   aria-label={`${likedImages[image.id] ? "Unlike" : "Like"} image with ID ${image.id}`}
                 >

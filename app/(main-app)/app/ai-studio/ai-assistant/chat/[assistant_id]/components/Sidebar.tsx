@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import clsx from "clsx";
 import Image from "next/image";
+import { CloseIcon } from "@/components/svgs";
 
 interface IProps {
   isOpen: boolean;
@@ -74,14 +75,27 @@ export default function Sidebar({ isOpen, onClose, assistant_id }: IProps) {
   return (
     <div
       className={clsx(
-        "w-[400px] border-r overflow-hidden transition-all duration-500 opacity-100",
-        !isOpen && "!w-0 !opacity-0"
+        isOpen ? "opacity-100" : "opacity-0",
+        "transition-all duration-300 bg-white z-50",
+        {
+          "absolute top-30 lg:left-0 xl:left-0 sm:left-10 md:left-10 h-auto w-[400px] sm:w-[400px] md:w-[400px]":
+            isOpen,
+          "absolute w-0 overflow-hidden": !isOpen,
+        },
+        {
+          "sm:w-[400px] sm:opacity-100 md:w-[400px] md:opacity-100": isOpen,
+          "lg:w-[400px] xl:w-[400px] lg:opacity-100 xl:opacity-100 lg:relative xl:relative lg:border-r xl:border-r":
+            isOpen,
+        }
       )}
     >
       <div className="border-b py-[18px] px-8">
-        <h1 className="text-xl font-semibold whitespace-nowrap">
-          Chat with our AI team
-        </h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-xl font-semibold whitespace-nowrap">
+            Chat with our AI team
+          </h1>
+          <CloseIcon className="cursor-pointer lg:hidden" onClick={onClose} />
+        </div>
         <p className="text-primary-black text-opacity-50 mt-1 whitespace-nowrap">
           AI professionals
         </p>
@@ -99,7 +113,7 @@ export default function Sidebar({ isOpen, onClose, assistant_id }: IProps) {
               Loading....
             </div>
           ) : (
-            <div className="flex flex-col gap-3 max-h-[calc(100vh-412px)] overflow-y-auto hidden-scrollbar">
+            <div className="flex flex-col gap-3 max-h-[68vh] overflow-y-auto hidden-scrollbar">
               {filteredAssistants.map(assistant => (
                 <Link
                   key={assistant.id}

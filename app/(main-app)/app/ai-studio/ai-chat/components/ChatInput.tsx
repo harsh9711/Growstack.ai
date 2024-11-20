@@ -27,7 +27,7 @@ import { PlanName } from "@/types/enums";
 
 interface ChatInputProps {
   selectedBrandVoice?: BrandVoice;
-  onSend: (content: string, role: string, imageUrl:string) => void;
+  onSend: (content: string, role: string, imageUrl: string) => void;
   selectedModel: string;
   fetchConversations: () => void;
   removeMessage: () => void;
@@ -92,6 +92,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
     const [lastPrompt, setLastPrompt] = useState("");
     const [showSecureChatErrorMsg, setShowSecureChatErrorMsg] = useState(false);
     const [error, setError] = useState(false);
+    const [emptyPrompt, isEmptyPrompt] = useState("");
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const { startRecognition, stopRecognition, textToSpeech } =
       useSpeechRecognition(
@@ -124,12 +125,19 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
       user_prompt?: string,
       fromMic: boolean = false
     ) => {
+      if (!user_prompt && input.trim() === "") {
+        isEmptyPrompt("Please enter any prompt...!");
+        return;
+      }
+
+      isEmptyPrompt("");
+
       if (user_prompt) {
         user_prompt = user_prompt.trim();
       }
       setShowSecureChatErrorMsg(false);
-      const prompt = user_prompt || input.trim();
-      if (prompt === "" && !(imageUrl || fileUrl)) return;
+      const prompt = user_prompt ? user_prompt.trim() : input.trim();
+      if (!prompt && !(imageUrl || fileUrl)) return;
       setInput("");
       addMessage("user", prompt, false);
       const temp_img = imageUrl;
@@ -366,21 +374,21 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
         );
 
         let accumulatedResponse = "";
-eventSource.onmessage = (event: MessageEvent) => {
-  let imageUrl = "";
-  const chunk = event.data;
-  const parsedData = parseJsonString(chunk);
-  const msg = parsedData?.text || "";
-  accumulatedResponse += msg ;
-  const imageMarkdownRegex = /!\[.*?\]\((https?:\/\/[^\s]+)\)/;
-  const imageMatch = chunk.match(imageMarkdownRegex);
+        eventSource.onmessage = (event: MessageEvent) => {
+          let imageUrl = "";
+          const chunk = event.data;
+          const parsedData = parseJsonString(chunk);
+          const msg = parsedData?.text || "";
+          accumulatedResponse += msg;
+          const imageMarkdownRegex = /!\[.*?\]\((https?:\/\/[^\s]+)\)/;
+          const imageMatch = chunk.match(imageMarkdownRegex);
 
-  if (imageMatch && imageMatch[1]) {
-    imageUrl = imageMatch[1];
-    accumulatedResponse += chunk;
-  }
-  onSend(accumulatedResponse, "assistant", imageUrl);
-};
+          if (imageMatch && imageMatch[1]) {
+            imageUrl = imageMatch[1];
+            accumulatedResponse += chunk;
+          }
+          onSend(accumulatedResponse, "assistant", imageUrl);
+        };
 
         eventSource.onerror = (error: MessageEvent) => {
           console.error("EventSource failed:", error);
@@ -424,7 +432,7 @@ eventSource.onmessage = (event: MessageEvent) => {
           .data as ChatResponse;
 
         setSelectedConversation(conversation_id);
-        onSend(response, "assistant","");
+        onSend(response, "assistant", "");
       } catch (error: any) {
         const errorMsg = error.response?.data.error ?? error.message;
         toast.error(errorMsg);
@@ -489,7 +497,7 @@ eventSource.onmessage = (event: MessageEvent) => {
           </p>
 
           <Link
-            className="bg-primary-green mt-3 text-nowrap text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2"
+            className="bg-[#2DA771] mt-3 text-nowrap text-white sheen transition duration-500 px-5 py-3.5 rounded-xl flex items-center gap-2"
             href={isSubscribed ? ALL_ROUTES.UPGRADE : ALL_ROUTES.PAYMENT}
           >
             {isSubscribed ? "Upgrade Your Plan" : "Subscribe Now"}
@@ -514,42 +522,42 @@ eventSource.onmessage = (event: MessageEvent) => {
             >
               <path
                 d="M10 14.0004C10.6583 14.6723 11.5594 15.0509 12.5 15.0509C13.4406 15.0509 14.3417 14.6723 15 14.0004L19 10.0004C20.3807 8.61967 20.3807 6.38109 19 5.00038C17.6193 3.61967 15.3807 3.61967 14 5.00038L13.5 5.50038"
-                stroke="#034737"
+                stroke="#2DA771"
                 stroke-width="1.75"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
               <path
                 d="M14 9.99973C13.3417 9.32784 12.4407 8.94922 11.5 8.94922C10.5594 8.94922 9.65832 9.32784 9.00001 9.99973L5.00001 13.9997C3.6193 15.3804 3.6193 17.619 5.00001 18.9997C6.38072 20.3804 8.6193 20.3804 10 18.9997L10.5 18.4997"
-                stroke="#034737"
+                stroke="#2DA771"
                 stroke-width="1.75"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
               <path
                 d="M16 21V19"
-                stroke="#034737"
+                stroke="#2DA771"
                 stroke-width="1.75"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
               <path
                 d="M19 16H21"
-                stroke="#034737"
+                stroke="#2DA771"
                 stroke-width="1.75"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
               <path
                 d="M3 8H5"
-                stroke="#034737"
+                stroke="#2DA771"
                 stroke-width="1.75"
                 stroke-linecap="round"
                 stroke-linejoin="round"
               />
               <path
                 d="M8 3V5"
-                stroke="#034737"
+                stroke="#2DA771"
                 stroke-width="1.75"
                 stroke-linecap="round"
                 stroke-linejoin="round"
@@ -611,6 +619,7 @@ eventSource.onmessage = (event: MessageEvent) => {
               onChange={e => {
                 setInput(e.target.value);
                 setShowSecureChatErrorMsg(false);
+                isEmptyPrompt("");
               }}
               onKeyDown={handleKeyDown}
               rows={1}
@@ -719,7 +728,7 @@ eventSource.onmessage = (event: MessageEvent) => {
                       />
                     </label>
                   </div>
-                  <div className="h-12 w-52 flex justify-center cursor-pointer items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
+                  <div className="h-12 w-52 flex justify-center cursor-pointer items-center bg-[#2DA771] hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
                     <label
                       htmlFor="dropzone-file"
                       className="w-full h-full flex justify-center items-center cursor-pointer"
@@ -733,7 +742,7 @@ eventSource.onmessage = (event: MessageEvent) => {
           )}
 
           {/* <ToolsDialog setInput={(description: string) => promptInput(description)} /> */}
-          <div className="h-12 w-9 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
+          <div className="h-12 w-9 flex justify-center items-center bg-[#2DA771] hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
             <Microphone
               open={open}
               isAnimating={isAnimating}
@@ -743,11 +752,14 @@ eventSource.onmessage = (event: MessageEvent) => {
           <button
             disabled={isLoading}
             onClick={() => handleSend()}
-            className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
+            className="h-12 w-12 flex justify-center items-center bg-[#2DA771] hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
           >
             <SendIcon2 />
           </button>
         </div>
+        {emptyPrompt && (
+          <div className="text-red-500 mt-2 ml-2">{emptyPrompt}</div>
+        )}
         {showSecureChatErrorMsg && (
           <p className="text-destructive mt-3 ml-2 transition duration-500">
             Input contains sensitive or harmful content. Please remove any

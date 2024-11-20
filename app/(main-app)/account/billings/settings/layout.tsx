@@ -40,7 +40,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               className={clsx(
                 "w-full flex justify-between p-3 hover:bg-gray-50 rounded-xl cursor-pointer transition mt-3",
                 pathname === "/account/billings/settings" &&
-                  "bg-primary-green text-white hover:bg-primary-green/90"
+                  "bg-[#2DA771] text-white hover:bg-[#2DA771]/90"
               )}
             >
               <div className="flex items-center gap-2">
@@ -68,7 +68,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               className={clsx(
                 "w-full flex justify-between p-3 hover:bg-gray-50 rounded-xl cursor-pointer transition mt-3",
                 pathname === "/account/billings/settings/history" &&
-                  "bg-primary-green text-white hover:bg-primary-green/90"
+                  "bg-[#2DA771] text-white hover:bg-[#2DA771]/90"
               )}
             >
               <div className="flex items-center gap-2">

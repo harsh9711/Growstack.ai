@@ -2,9 +2,6 @@
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { login } from "@/lib/features/auth/auth.slice";
-import { ArrowRight, StarIcon } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useLayoutEffect, useState } from "react";
 import ContentLoader from "react-content-loader";
 import toast from "react-hot-toast";
@@ -15,7 +12,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import "@/styles/globals.css";
 import { useRouter } from "next/navigation";
-import { ALL_ROUTES } from "@/utils/constant";
+
 interface AiApp {
   _id: string;
   "ASSISTANT NAME": string;
@@ -142,7 +139,7 @@ export default function Dashboard() {
             </h1>
           </div>
         </div>
-        <div className="w-full mt-4 h-[95%]" >
+        <div className="w-full mt-4 h-[95%]">
           <div className="w-full space-y-6 h-full" data-aos="fade-left">
             <ChatComponent />
           </div>

@@ -30,15 +30,12 @@ const withUnAuthGuard = (WrappedComponent: React.ComponentType) => {
           const userData = response.data.data;
           dispatch(login(userData));
         } catch (error: any) {
-          localStorage.clear();
           dispatch(logout());
-          deleteCookie("token");
           persistor.purge();
         } finally {
           dispatch(setUserLoading(false));
         }
       } else {
-        localStorage.clear();
         dispatch(logout());
         persistor.purge();
       }

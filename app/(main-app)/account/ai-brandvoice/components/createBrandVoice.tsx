@@ -281,7 +281,7 @@ const CreateBrandVoice = ({ isOpen, setIsOpen, onSuccess }: Props) => {
                       {urlFields.length - 1 === index && (
                         <button
                           type="button"
-                          className="flex items-center text-primary-green"
+                          className="flex items-center text-[#2DA771]"
                           onClick={handleAddUrlField}
                         >
                           <Plus className="mr-2" />
@@ -346,7 +346,7 @@ const CreateBrandVoice = ({ isOpen, setIsOpen, onSuccess }: Props) => {
               </button>
               <button
                 type="submit"
-                className="bg-primary-green text-white sheen transition duration-500 px-5 py-3 rounded-xl flex items-center gap-2"
+                className="bg-[#2DA771] text-white sheen transition duration-500 px-5 py-3 rounded-xl flex items-center gap-2"
                 disabled={isAnalyzing}
               >
                 {isAnalyzing ? "Analyzing..." : "Analyze brand voice"}
@@ -402,14 +402,14 @@ const CreateBrandVoice = ({ isOpen, setIsOpen, onSuccess }: Props) => {
 
             <div className="flex items-center justify-end gap-3">
               <button
-                className="text-primary-green border border-primary-green bg-transparent text-nowrap py-3 px-10 rounded-xl transition duration-300"
+                className="text-[#2DA771] border border-[#2DA771] bg-transparent text-nowrap py-3 px-10 rounded-xl transition duration-300"
                 onClick={handleRedoAnalysis}
               >
                 Redo analysis
               </button>
               <button
                 type="submit"
-                className="bg-primary-green text-white sheen transition duration-500 px-5 py-3 rounded-xl flex items-center gap-2"
+                className="bg-[#2DA771] text-white sheen transition duration-500 px-5 py-3 rounded-xl flex items-center gap-2"
                 disabled={isSaving}
               >
                 {isSaving ? "Saving..." : "Save brand voice"}

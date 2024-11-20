@@ -1,7 +1,7 @@
 import { Switch } from "@/components/ui/switch";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
-import { CircleAlert, File, Trash } from "lucide-react";
+import { File, Trash } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import FileUploadModal from "./FileUploadModal";
@@ -47,6 +47,18 @@ const SearchFiles = ({
         ...uploadedSerachFiles,
         { ...file, name: data.filename, id: data.id },
       ]);
+
+      const {
+        data: {
+          data: { vector_store_id },
+        },
+      } = await instance.post(
+        `${API_URL}/ai/api/v1/customgpt/batch-vector-store`,
+        {
+          file_ids: [data.id],
+        }
+      );
+      setVectorStoreId(vector_store_id);
       setIsAPILoading(false);
       toast.success("File uploaded successfully");
     } catch (error) {
@@ -145,12 +157,6 @@ const SearchFiles = ({
               </div>
             ))}
           </div>
-        </div>
-      )}
-      {vectorStoreId && (
-        <div className="flex items-center bg-gray-100 p-2 rounded-md">
-          <File size={24} />
-          <span className="text-sm truncate ml-2">{vectorStoreId}</span>
         </div>
       )}
     </>

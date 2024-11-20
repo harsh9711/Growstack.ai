@@ -144,7 +144,7 @@ const DashboardChatModal: React.FC<ModalProps> = ({
                 onSelectConversation("");
                 onClose();
               }}
-              className="text-white bg-primary-green hover:bg-primary-green/90 flex gap-2 justify-center items-center h-12 w-52 px-8 font-medium rounded-xl transition-all duration-300 text-base"
+              className="text-white bg-[#2DA771] hover:bg-[#2DA771]/90 flex gap-2 justify-center items-center h-12 w-52 px-8 font-medium rounded-xl transition-all duration-300 text-base"
             >
               Start New Chat
             </button>
@@ -176,7 +176,7 @@ const DashboardChatModal: React.FC<ModalProps> = ({
         <div className="border-y border-[#EFEFEF] flex items-center justify-between py-3 px-6">
           <h2 className="font-semibold">Your conversations</h2>
           <div className="cursor-pointer" onClick={clearAllConversations}>
-            <h2 className="font-semibold" style={{ color: "#0c4f0c" }}>
+            <h2 className="font-semibold" style={{ color: "#2DA771" }}>
               Clear All
             </h2>
           </div>

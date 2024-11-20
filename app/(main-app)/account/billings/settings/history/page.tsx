@@ -119,7 +119,7 @@ const BillingHistorySection = () => {
                     </TableCell>
                     <TableCell>
                       <Button
-                        className="bg-primary-green text-white"
+                        className="bg-[#2DA771] text-white"
                         onClick={() => handleAction(item.payment_receipt_url)}
                       >
                         View
