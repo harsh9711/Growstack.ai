@@ -11,7 +11,7 @@ export default function Progressbar({ children }: Props) {
     <Fragment>
       <ProgressBar
         height="4px"
-        color="#034737"
+        color="#2DA771"
         options={{ showSpinner: false }}
         shallowRouting
       />
