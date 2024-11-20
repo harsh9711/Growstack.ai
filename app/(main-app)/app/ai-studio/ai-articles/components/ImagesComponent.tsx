@@ -3,9 +3,7 @@
 import Motion from "@/components/Motion";
 import Spinner from "@/components/Spinner";
 import instance from "@/config/axios.config";
-import { API_URL } from "@/lib/api";
 import clsx from "clsx";
-import { AnimatePresence } from "framer-motion";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import {
@@ -15,7 +13,6 @@ import {
   writingToneOptions,
 } from "../constants/options";
 import { ISubtitleTalkingPoints } from "../types";
-import AdvancedOptions from "./AdvancedOptions";
 import ImageDialog from "./dialogs/ImageDialog";
 
 interface ImagesComponentProps {
@@ -23,6 +20,7 @@ interface ImagesComponentProps {
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   keywords: string[];
   articleTitle: string;
+  setScore: any;
   setArticleTitle: React.Dispatch<React.SetStateAction<string>>;
   talkingPoints: ISubtitleTalkingPoints[];
   articleData: string;
@@ -44,6 +42,7 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
   setArticleData,
   images,
   setImages,
+  setScore,
 }) => {
   const [isArticlePending, setIsArticlePending] = useState(false);
   const [isImageGenerationPending, setImageGenerationPending] = useState(false);
@@ -96,11 +95,16 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
         const {
           data: { data },
         } = response;
+
+        const parsedData = JSON.parse(data.response);
+
         setCurrentStep(4);
-        setArticleData(data.response);
+
+        setArticleData(parsedData.article);
+        setScore(parsedData.score.rank);
       })
       .catch(err => {
-        toast.error(err.response.data.message || err.message);
+        toast.error(err.response?.message || err.message);
         console.log(err);
       })
       .finally(() => {
@@ -152,7 +156,7 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
               onClick={generateImage}
               disabled={isImageGenerationPending}
               className={clsx(
-                "w-full p-2 h-12 !mt-4 text-white bg-primary-green rounded-xl hover:bg-opacity-90 flex justify-center items-center",
+                "w-full p-2 h-12 !mt-4 text-white bg-[#2DA771] rounded-xl hover:bg-opacity-90 flex justify-center items-center",
                 isImageGenerationPending ||
                   (isArticlePending && "opacity-70 cursor-not-allowed")
               )}
@@ -174,7 +178,7 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
                 isArticlePending
               }
               className={clsx(
-                "w-full p-2 h-12 !mt-4 text-white bg-primary-green rounded-xl hover:bg-opacity-90 flex justify-center items-center",
+                "w-full p-2 h-12 !mt-4 text-white bg-[#2DA771] rounded-xl hover:bg-opacity-90 flex justify-center items-center",
                 isImageGenerationPending ||
                   (isArticlePending && images.length < 1) ||
                   (isArticlePending && "opacity-70 cursor-not-allowed"),
@@ -190,7 +194,7 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
           </div>
         </div>
         <div className="w-full">
-          <div className="bg-primary-green rounded-2xl py-5 px-7 flex items-center gap-4">
+          <div className="bg-[#2DA771] rounded-2xl py-5 px-7 flex items-center gap-4">
             <span className="bg-white h-12 w-12 grid place-content-center rounded-full">
               {currentStep + 1}
             </span>
@@ -224,7 +228,7 @@ const ImagesComponent: React.FC<ImagesComponentProps> = ({
                   onClick={generateArticle}
                   disabled={isArticlePending}
                   className={clsx(
-                    "w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[200px] flex gap-2 items-center justify-center",
+                    "w-full p-2 h-14 mt-4 text-white sheen bg-[#2DA771] rounded-xl max-w-[200px] flex gap-2 items-center justify-center",
                     isArticlePending && "opacity-70"
                   )}
                 >

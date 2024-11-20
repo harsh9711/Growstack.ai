@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 import { ALL_ROUTES } from "@/utils/constant";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
-import { FaEllipsisV } from "react-icons/fa";
+import { FaEllipsisV, FaUser } from "react-icons/fa";
 import GlobalModal from "@/components/modal/global.modal";
 type CustomGpt = {
   description: string;
@@ -21,24 +21,36 @@ type CustomGpt = {
   show: boolean;
   pre_built: boolean;
   is_public: boolean;
+  userProfiles: [];
 };
 export default function Customgpts() {
   const [customGpts, setCustomGpts] = useState<CustomGpt[]>([]);
   const [customGptsUser, setCustomGptsUser] = useState<CustomGpt[]>([]);
   const [menuOpenIndex, setMenuOpenIndex] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false)
-  const [deleteId, setDeleteId] = useState("")
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteId, setDeleteId] = useState("");
   const [viewAll, setViewAll] = useState(false);
   const getCustomGpts = async () => {
     setLoading(true);
     try {
-      const { data: { data, publicdata } } = await instance.get(`${API_URL}/ai/api/v1/customgpt`);
-      publicdata ? setCustomGpts(publicdata
-        .filter((d: any) => d.is_public === true)
-        .map((d: any) => ({ ...d, show: true }))
-      ) : ""
-      data ? setCustomGptsUser(data.filter((d: any) => d.is_delete === false).map((d: any) => ({ ...d, show: true }))) : ""
+      const {
+        data: { data, publicdata },
+      } = await instance.get(`${API_URL}/ai/api/v1/customgpt`);
+      publicdata
+        ? setCustomGpts(
+            publicdata
+              .filter((d: any) => d.is_public === true)
+              .map((d: any) => ({ ...d, show: true }))
+          )
+        : "";
+      data
+        ? setCustomGptsUser(
+            data
+              .filter((d: any) => d.is_delete === false)
+              .map((d: any) => ({ ...d, show: true }))
+          )
+        : "";
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.error);
@@ -52,11 +64,13 @@ export default function Customgpts() {
   const CustomGptPublic = async (id: string, makePublic: boolean) => {
     setLoading(true);
     try {
-      await instance.post(`${API_URL}/ai/api/v1/customgpt/changeToPublicAccess`, { "_id": id, "makePublic": makePublic });
-      setMenuOpenIndex(null)
-      getCustomGpts()
-    }
-    catch (error: any) {
+      await instance.post(
+        `${API_URL}/ai/api/v1/customgpt/changeToPublicAccess`,
+        { _id: id, makePublic: makePublic }
+      );
+      setMenuOpenIndex(null);
+      getCustomGpts();
+    } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.error);
       } else {
@@ -65,28 +79,29 @@ export default function Customgpts() {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   const deleteGpt = async () => {
     setLoading(true);
-    setMenuOpenIndex(null)
+    setMenuOpenIndex(null);
     try {
-      await instance.post(`${API_URL}/ai/api/v1/customgpt/deleteCustomGpt`, { "_id": deleteId });
-      setIsDeleting(false)
-      setMenuOpenIndex(null)
-      getCustomGpts()
-    }
-    catch (error: any) {
+      await instance.post(`${API_URL}/ai/api/v1/customgpt/deleteCustomGpt`, {
+        _id: deleteId,
+      });
+      setIsDeleting(false);
+      setMenuOpenIndex(null);
+      getCustomGpts();
+    } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.error);
       } else {
         toast.error(error.message);
       }
     } finally {
-      setIsDeleting(false)
+      setIsDeleting(false);
       setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     getCustomGpts();
@@ -119,7 +134,7 @@ export default function Customgpts() {
               />
             </div>
             <Link href={ALL_ROUTES.AI_CUSTOM_GPT_NEW}>
-              <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
+              <button className="bg-[#2DA771] text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
                 <Plus size={20} />
                 Create new GPT
               </button>
@@ -141,51 +156,106 @@ export default function Customgpts() {
                 to address specific needs or tasks
               </p>
               <Link href={ALL_ROUTES.AI_CUSTOM_GPT_NEW}>
-                <button className="bg-primary-green text-white h-14 px-6 rounded-xl sheen">
+                <button className="bg-[#2DA771] text-white h-14 px-6 rounded-xl sheen">
                   Create new GPT
                 </button>
               </Link>
             </div>
           ) : (
             <>
-              {/* <h1 className="text-2xl font-semibold">GPTs by GrowStack</h1>
+              <h1 className="text-2xl font-semibold">GPTs by GrowStack</h1>
               <div className="grid grid-cols-3 gap-5 mt-8">
-                {visibleItems.map(({ description, icon, name, _id, show }, index) =>
-                  show && (
-                    <div
-                      key={_id}
-                      className="bg-white border border-[#E8E8E8] rounded-2xl p-6 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer transition-all duration-300 relative"
-                    >
-                      <div className="flex justify-between">
-                        <Link href={`/app/ai-studio/custom-gpts/gpt?custom_gpt_id=${_id}`}>
-                          <div className="flex items-center gap-5">
-                            <Image
-                              src={icon}
-                              alt=""
-                              width={200}
-                              height={200}
-                              className="rounded-2xl w-[90px] h-[90px] object-cover"
-                            />
-                            <div className="space-y-2">
-                              <h1 className="text-lg font-semibold">{name}</h1>
-                              <p
-                                className="text-primary-black text-opacity-50 leading-relaxed"
-                                style={{
-                                  display: "-webkit-box",
-                                  WebkitLineClamp: 3,
-                                  WebkitBoxOrient: "vertical",
-                                  overflow: "hidden",
-                                  width: "80%",
-                                }}
-                              >
-                                {description}...
-                              </p>
+                {visibleItems.map(
+                  (
+                    { description, icon, name, _id, show, userProfiles },
+                    index
+                  ) =>
+                    show && (
+                      <div
+                        key={_id}
+                        className="bg-white border border-[#E8E8E8] rounded-2xl p-2 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer transition-all duration-300 relative"
+                      >
+                        <div className="flex justify-between">
+                          <Link
+                            href={`/app/ai-studio/custom-gpts/gpt?custom_gpt_id=${_id}`}
+                          >
+                            <div className="flex items-center gap-5">
+                              <Image
+                                src={icon}
+                                alt=""
+                                width={200}
+                                height={200}
+                                className="rounded-2xl w-[90px] h-[90px] object-cover"
+                              />
+                              <div className="space-y-2">
+                                <h1 className="text-lg font-semibold">
+                                  {name}
+                                </h1>
+                                <p
+                                  className="text-primary-black text-opacity-50 leading-relaxed"
+                                  style={{
+                                    display: "-webkit-box",
+                                    WebkitLineClamp: 3,
+                                    WebkitBoxOrient: "vertical",
+                                    overflow: "hidden",
+                                    width: "80%",
+                                  }}
+                                >
+                                  {description}...
+                                </p>
+                              </div>
                             </div>
+                          </Link>
+                        </div>
+                        <div className="mt-3 mb-3">
+                          <DropdownMenuSeparator />
+                        </div>
+                        <div className="flex items-center">
+                          <div
+                            className={`flex ${userProfiles.length > 1 ? "-space-x-3" : ""}`}
+                          >
+                            {userProfiles
+                              .slice(0, 4)
+                              .map((profile_img: any, index: number) => (
+                                <Avatar
+                                  key={index}
+                                  className="w-[100%] h-[100%]"
+                                >
+                                  {profile_img.profile_img ? (
+                                    <AvatarImage
+                                      style={{
+                                        borderRadius: "50%",
+                                        border: "3px solid white",
+                                      }}
+                                      className="w-[50px] h-[50px]"
+                                      src={profile_img.profile_img}
+                                    />
+                                  ) : (
+                                    <FaUser
+                                      style={{
+                                        width: "50px",
+                                        height: "50px",
+                                        borderRadius: "50%",
+                                        backgroundColor: "#e2e8f0",
+                                        color: "#64748b",
+                                        border: "3px solid white",
+                                      }}
+                                    />
+                                  )}
+                                </Avatar>
+                              ))}
+                            {userProfiles.length > 4 && (
+                              <div className="flex items-center justify-center w-[50px] h-[50px] bg-gray-300 rounded-full border-2 border-white text-gray-700">
+                                +{userProfiles.length - 4}
+                              </div>
+                            )}
                           </div>
-                        </Link>
+                          <strong className="ml-4 text-gray-700">
+                            {`Used by ${userProfiles.length} user${userProfiles.length > 1 ? "s" : ""}`}
+                          </strong>
+                        </div>
                       </div>
-                    </div>
-                  )
+                    )
                 )}
 
                 {customGpts && customGpts.length > 5 && !viewAll && (
@@ -196,71 +266,118 @@ export default function Customgpts() {
                     View All
                   </button>
                 )}
-
-              </div> */}
-              {customGpts?.length == 0 && <h1 className="text-center">GPTs by GrowStack Records Not Available</h1>}
+              </div>
+              {customGpts?.length == 0 && (
+                <h1 className="text-center">
+                  GPTs by GrowStack Records Not Available
+                </h1>
+              )}
               {/* <div className="mt-8 mb-3">
                 <DropdownMenuSeparator />
               </div> */}
-              <h1 className="text-2xl font-semibold mt-4">GPTs Created by users</h1>
+              <h1 className="text-2xl font-semibold mt-4">
+                GPTs Created by users
+              </h1>
               <div className="grid grid-cols-3 gap-5 mt-8">
-                {customGptsUser && customGptsUser.map(({ description, icon, name, _id, show, pre_built, is_public }, index) =>
-                  show && (
-                    <div className="bg-white border border-[#E8E8E8] rounded-2xl p-6 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer transition-all duration-300 relative">
-                      <div className="flex justify-between">
-                        <Link href={`/app/ai-studio/custom-gpts/gpt?custom_gpt_id=${_id}`} key={_id}>
-
-                          <div className="flex items-center gap-5">
-                            <Image
-                              src={icon}
-                              alt=""
-                              width={200}
-                              height={200}
-                              className="rounded-2xl w-[90px] h-[90px] object-cover"
-                            />
-                            <div className="space-y-2">
-                              <h1 className="text-lg font-semibold">{name}</h1>
-                              <p
-                                className="text-primary-black text-opacity-50 leading-relaxed"
-                                style={{
-                                  display: "-webkit-box",
-                                  WebkitLineClamp: 3,
-                                  WebkitBoxOrient: "vertical",
-                                  overflow: "hidden",
-                                  width: "80%",
+                {customGptsUser &&
+                  customGptsUser.map(
+                    (
+                      {
+                        description,
+                        icon,
+                        name,
+                        _id,
+                        show,
+                        pre_built,
+                        is_public,
+                      },
+                      index
+                    ) =>
+                      show && (
+                        <div className="bg-white border border-[#E8E8E8] rounded-2xl p-6 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer transition-all duration-300 relative">
+                          <div className="flex justify-between">
+                            <Link
+                              href={`/app/ai-studio/custom-gpts/gpt?custom_gpt_id=${_id}`}
+                              key={_id}
+                            >
+                              <div className="flex items-center gap-5">
+                                <Image
+                                  src={icon}
+                                  alt=""
+                                  width={200}
+                                  height={200}
+                                  className="rounded-2xl w-[90px] h-[90px] object-cover"
+                                />
+                                <div className="space-y-2">
+                                  <h1 className="text-lg font-semibold">
+                                    {name}
+                                  </h1>
+                                  <p
+                                    className="text-primary-black text-opacity-50 leading-relaxed"
+                                    style={{
+                                      display: "-webkit-box",
+                                      WebkitLineClamp: 3,
+                                      WebkitBoxOrient: "vertical",
+                                      overflow: "hidden",
+                                      width: "80%",
+                                    }}
+                                  >
+                                    {description}...
+                                  </p>
+                                </div>
+                              </div>
+                            </Link>
+                            <div className="relative">
+                              <button
+                                onClick={e => {
+                                  e.preventDefault();
+                                  toggleMenu(index);
                                 }}
                               >
-                                {description}...
-                              </p>
+                                <FaEllipsisV className="text-gray-500" />
+                              </button>
+                              {menuOpenIndex === index && (
+                                <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-10">
+                                  <ul className="py-1">
+                                    <li
+                                      className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                                      onClick={() => {
+                                        CustomGptPublic(_id, true);
+                                      }}
+                                    >
+                                      Set as public
+                                    </li>
+                                    <li
+                                      className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                                      onClick={() => {
+                                        CustomGptPublic(_id, false);
+                                      }}
+                                    >
+                                      Remove from public
+                                    </li>
+                                    <li
+                                      className="px-4 py-2 cursor-pointer text-rose-600 hover:bg-gray-100"
+                                      onClick={() => {
+                                        setIsDeleting(true);
+                                        setDeleteId(_id);
+                                      }}
+                                    >
+                                      Delete
+                                    </li>
+                                  </ul>
+                                </div>
+                              )}
                             </div>
                           </div>
-                        </Link>
-                        <div className="relative">
-                          <button onClick={(e) => { e.preventDefault(); toggleMenu(index); }}>
-                            <FaEllipsisV className="text-gray-500" />
-                          </button>
-                          {menuOpenIndex === index && (
-                            <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-10">
-                              <ul className="py-1">
-                                {/* <li className="px-4 py-2 cursor-pointer hover:bg-gray-100" onClick={() => { CustomGptPublic(_id, true) }}>
-                                  Set as public
-                                </li>
-                                <li className="px-4 py-2 cursor-pointer hover:bg-gray-100" onClick={() => { CustomGptPublic(_id, false) }}>
-                                  Remove from public
-                                </li> */}
-                                <li className="px-4 py-2 cursor-pointer text-rose-600 hover:bg-gray-100" onClick={() => { setIsDeleting(true); setDeleteId(_id) }}>
-                                  Delete
-                                </li>
-                              </ul>
-                            </div>
-                          )}
                         </div>
-                      </div>
-                    </div>
-                  )
-                )}
+                      )
+                  )}
               </div>
-              {customGptsUser?.length == 0 && <h1 className="text-center">GPTs Created by users Records Not Available</h1>}
+              {customGptsUser?.length == 0 && (
+                <h1 className="text-center">
+                  GPTs Created by users Records Not Available
+                </h1>
+              )}
             </>
           )}
         </div>
@@ -273,21 +390,20 @@ export default function Customgpts() {
         >
           <div className="flex flex-col items-start justify-center px-6 pt-4 pb-8 gap-6 ">
             <h3 className="text-center text-xl font-semibold">
-              Are you sure you want to delete{" "}
-              <strong>GPT</strong>
+              Are you sure you want to delete <strong>GPT</strong>
             </h3>
             <p className="text-left text-gray-700 text-sm md:text-base">
               This action is irreversible. Once deleted, you will not be able to
               recover this GPT.
             </p>
             <div className="flex items-center justify-start gap-3">
-              <button
-                className="text-gray-500 border border-gray-500 bg-transparent text-nowrap py-2 px-8 rounded-md transition duration-300"
-
-              >
+              <button className="text-gray-500 border border-gray-500 bg-transparent text-nowrap py-2 px-8 rounded-md transition duration-300">
                 Cancel
               </button>
-              <button onClick={() => { deleteGpt() }}
+              <button
+                onClick={() => {
+                  deleteGpt();
+                }}
                 className="text-white bg-red-500 text-nowrap flex items-center gap-1 py-2 px-6 rounded-md transition duration-300 hover:bg-red-600"
               >
                 <Trash2 size={18} />

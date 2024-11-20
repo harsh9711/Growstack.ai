@@ -314,7 +314,7 @@ export default function Page() {
           <section className="relative mt-1 w-full min-h-[250px] max-w-[450px] bg-white rounded-[20px] overflow-y-auto h-[calc(100vh-175px)]">
             <div className="sticky top-0 px-7 py-4 bg-white">
               <div className=" border border-[#DBDBDB] bg-white p-1 rounded-xl">
-                <div className="w-full h-[40px] flex justify-center items-center cursor-pointer transition-all duration-500 text-[16px] !text-white bg-primary-green rounded-lg hover:bg-opacity-90">
+                <div className="w-full h-[40px] flex justify-center items-center cursor-pointer transition-all duration-500 text-[16px] !text-white bg-[#2DA771] rounded-lg hover:bg-opacity-90">
                   History
                 </div>
               </div>
@@ -357,7 +357,7 @@ export default function Page() {
                   <button
                     type="button"
                     onClick={handleDownload}
-                    className="text-[16px] ml-2 bg-primary-green text-white px-[20px] py-[6px] min-w-[130px] flex justify-center items-center"
+                    className="text-[16px] ml-2 bg-[#2DA771] text-white px-[20px] py-[6px] min-w-[130px] flex justify-center items-center"
                   >
                     {loading ? <Spinner /> : "Download"}
                   </button>
@@ -424,7 +424,7 @@ export default function Page() {
                     <button
                       type="submit"
                       disabled={loading}
-                      className="text-[16px] w-[120px] h-12 flex justify-center items-center bg-primary-green text-white rounded-xl"
+                      className="text-[16px] w-[120px] h-12 flex justify-center items-center bg-[#2DA771] text-white rounded-xl"
                     >
                       {loading ? <Spinner /> : "Submit"}
                     </button>
@@ -460,7 +460,7 @@ export default function Page() {
               Cancel
             </button>
             <Link
-              className="bg-primary-green text-white text-nowrap py-2 px-6 rounded-md transition duration-300 hover:bg-green-600"
+              className="bg-[#2DA771] text-white text-nowrap py-2 px-6 rounded-md transition duration-300 hover:bg-green-600"
               href="/account/billings/settings"
             >
               Add Credit

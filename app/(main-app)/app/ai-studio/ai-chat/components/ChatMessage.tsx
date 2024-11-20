@@ -44,7 +44,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
- 
+
   useLayoutEffect(() => {
     const timer = setTimeout(() => {
       scrollToBottom();
@@ -239,7 +239,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
                       </div>
                     )}
                     {textContent && (
-                      <div className="text-container max-w-5xl bg-primary-green text-white whitespace-pre-wrap py-3 px-5 rounded-xl text-[14.5px] leading-relaxed min-h-11 flex justify-center text-justify">
+                      <div className="text-container max-w-5xl bg-[#2DA771] text-white whitespace-pre-wrap py-3 px-5 rounded-xl text-[14.5px] leading-relaxed min-h-11 flex justify-center text-justify">
                         {textContent}
                       </div>
                     )}
@@ -248,14 +248,14 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
                   <div
                     className={`max-w-5xl ${
                       chat.role === "user"
-                        ? "bg-primary-green text-white whitespace-pre-wrap"
+                        ? "bg-[#2DA771] text-white whitespace-pre-wrap"
                         : "bg-[#F1F1F1] text-primary-black"
                     } py-3 px-5 rounded-xl text-[14.5px] leading-relaxed min-h-11 flex justify-center text-justify`}
                   >
                     {chat.loading ? (
                       <DotsLoader />
                     ) : (
-                      <div className="relative" >
+                      <div className="relative">
                         {chat.imageUrl && chat.role !== "user" && (
                           <div className="image-container mb-2">
                             <img
@@ -265,14 +265,14 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
                             />
                           </div>
                         )}
-                        <ReactMarkdown 
+                        <ReactMarkdown
                           className="prose"
                           key={chat.content}
                           remarkPlugins={[remarkGfm, remarkBreaks]}
                           rehypePlugins={[rehypeRaw]}
                           components={components}
                         >
-                            {textContent}
+                          {textContent}
                         </ReactMarkdown>
                         <div className="flex justify-between">
                           <div></div>
@@ -305,9 +305,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
                           </div>
                         </div>
                         <div className="mt-5" ref={messagesEndRef} />
-
                       </div>
-                      
                     )}
                   </div>
                 )}

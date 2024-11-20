@@ -167,15 +167,15 @@ export default function Topbar({
             onClick={() => {setHistoryOpen(false); setIsSidebarOpen(!isSidebarOpen);}}
             className={`${
               isSidebarOpen
-                ? "bg-primary-green text-white"
-                : "bg-primary-green/10 text-primary-green"
+                ? "bg-[#2DA771] text-white"
+                : "bg-[#2DA771]/10 text-primary-green"
             } transition-all duration-300 h-11 w-11 grid place-content-center rounded-lg cursor-pointer`}
           >
             <UserCircle />
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <div className="bg-primary-green/10 hover:text-white hover:bg-primary-green transition-all duration-300 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
+              <div className="bg-[#2DA771]/10 hover:text-white hover:bg-[#2DA771] transition-all duration-300 h-11 w-11 grid place-content-center rounded-lg cursor-pointer">
                 <Download />
               </div>
             </DropdownMenuTrigger>
@@ -205,7 +205,7 @@ export default function Topbar({
           </DropdownMenu>
 
           <Select value={selectedAiModel} onValueChange={handleModalSelection}>
-            <SelectTrigger className="min-w-[160px] sm:min-w-[200px] h-9 sm:h-12 bg-primary-green text-white border-0 rounded-xl flex items-center justify-between px-3 sm:px-4">
+            <SelectTrigger className="min-w-[160px] sm:min-w-[200px] h-9 sm:h-12 bg-[#2DA771] text-white border-0 rounded-xl flex items-center justify-between px-3 sm:px-4">
               <SelectValue placeholder="Select an option">
                 {selectedAiModel && (
                   <div className="flex items-center gap-2">
@@ -235,7 +235,7 @@ export default function Topbar({
                             className={clsx(
                               "flex items-center gap-2",
                               selectedAiModel === value &&
-                                "text-primary-green font-medium"
+                                "text-[#2DA771] font-medium"
                             )}
                           >
                             <span className="min-w-fit">{icon}</span>

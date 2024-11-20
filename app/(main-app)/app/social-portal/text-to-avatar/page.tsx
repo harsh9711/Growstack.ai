@@ -22,7 +22,6 @@ import Image from "next/image";
 import Delete from "@/components/svgs/delete";
 import { formatDistanceToNow } from "date-fns";
 import DownloadCircle from "@/components/svgs/download";
-import axios, { AxiosProgressEvent } from "axios";
 
 const VideoTable: React.FC<{
   videos: Array<{

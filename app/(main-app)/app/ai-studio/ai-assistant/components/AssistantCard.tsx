@@ -21,7 +21,7 @@ export default function AssistantCard({ avatar, name, role, id }: Assistant) {
         </div>
       </div>
       <Link href={`/app/ai-studio/ai-assistant/chat/${id}`}>
-        <button className="border border-primary-green bg-white text-primary-green h-12 w-full rounded-xl mt-3 hover:bg-primary-green hover:text-white transition-all duration-300">
+        <button className="border border-[#2DA771] bg-white text-[#2DA771] h-12 w-full rounded-xl mt-3 hover:bg-[#2DA771] hover:text-white transition-all duration-300">
           Chat now
         </button>
       </Link>

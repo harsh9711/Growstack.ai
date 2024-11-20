@@ -157,7 +157,12 @@ const Layout = ({
         (acc: Message[], chats: any) => {
           const flattenedThreads = chats.thread.flatMap((thread: any) => [
             { role: "user", content: thread.user_prompt, loading: false },
-            { role: "assistant", content: thread.response!=="[object Object]"?thread.response:'', loading: false },
+            {
+              role: "assistant",
+              content:
+                thread.response !== "[object Object]" ? thread.response : "",
+              loading: false,
+            },
           ]);
           return acc.concat(flattenedThreads);
         },
@@ -229,8 +234,6 @@ const Layout = ({
       setDeleteRequestPending(false);
     }
   };
-
-  const [openModel, setOpenModel] = useState(false);
 
   const addMessage = (role: string, content: string, loading: boolean) => {
     setMessages(prevMessages => [
@@ -546,7 +549,7 @@ const Layout = ({
               </SelectGroup>
             </SelectContent>
           </Select>
-          <div className="remove-caret">
+          {/* <div className="remove-caret">
             <Select>
               <SelectTrigger
                 showChevronDownIcon={false}
@@ -574,7 +577,7 @@ const Layout = ({
                 </SelectGroup>
               </SelectContent>
             </Select>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="flex-1 flex gap-4">

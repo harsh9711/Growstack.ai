@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ChatInput from "./ChatInput";
-import ChatOptions from "./ChatOptions";
 import ChatMessages from "./ChatMessages";
 import { Assistant, Chat, Conversation } from "../../../components/types";
-import { languageOptions } from "@/app/(main-app)/app/ai-studio/ai-articles/constants/options";
 
 interface ChatSectionProps {
   conversation: Conversation | any;
