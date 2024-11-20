@@ -41,9 +41,6 @@ export default function ChatHistory({
         );
         const filteredChats = response.data.filter((item: any) => item.chats.length > 0);
         setChatHistory(filteredChats);
-        // setChatHistory(response.data);
-        console.log(response.data);
-        console.log("=================", response.data[4].chats);
       } catch (error) {
         console.error("Error fetching chat history:", error);
       }
