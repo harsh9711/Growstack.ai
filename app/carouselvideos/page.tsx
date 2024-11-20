@@ -54,7 +54,7 @@ function App() {
 
         {/* Carousel Section */}
         <Swiper
-          slidesPerView={4}
+          slidesPerView={4.5}
           spaceBetween={20}
           autoplay={{
             delay: 4000,
@@ -65,10 +65,10 @@ function App() {
           modules={[Autoplay]}
           onSlideChange={({ activeIndex }) => setCurrentVideoIndex(activeIndex)}
           breakpoints={{
-            320: { slidesPerView: 1.2 },
-            640: { slidesPerView: 2.2 },
-            768: { slidesPerView: 3.2 },
-            1024: { slidesPerView: 4 },
+            320: { slidesPerView: 3.5 },
+            640: { slidesPerView: 2.5 },
+            768: { slidesPerView: 1.5 },
+            1024: { slidesPerView: 3.5 },
           }}
           className="w-full"
         >
@@ -87,7 +87,7 @@ function App() {
                   loop
                   muted
                   playsInline
-                  className="w-full h-[500px] object-cover rounded-2xl"
+                  className="w-full h-full sm:h-[500px] object-cover rounded-2xl"
                   ref={(el) => {
                     if (el) {
                       if (hoveredIndex === index) {
