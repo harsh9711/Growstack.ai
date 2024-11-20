@@ -262,7 +262,7 @@ const BrandVoiceForm: React.FC<BrandVoiceFormProps> = ({
           </button>
           <button
             type="submit"
-            className=" bg-primary-green text-white sheen transition duration-500 px-10 py-3.5 rounded-xl flex items-center gap-2"
+            className=" bg-[#2DA771] text-white sheen transition duration-500 px-10 py-3.5 rounded-xl flex items-center gap-2"
           >
             Update
             {isUpdating && <DotsLoader />}

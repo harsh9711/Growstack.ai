@@ -460,7 +460,7 @@ export default function Page() {
               Cancel
             </button>
             <Link
-              className="bg-primary-green text-white text-nowrap py-2 px-6 rounded-md transition duration-300 hover:bg-green-600"
+              className="bg-[#2DA771] text-white text-nowrap py-2 px-6 rounded-md transition duration-300 hover:bg-green-600"
               href="/account/billings/settings"
             >
               Add Credit

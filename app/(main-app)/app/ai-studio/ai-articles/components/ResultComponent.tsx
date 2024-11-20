@@ -17,7 +17,6 @@ import Dropdown from "@/components/Dropdown";
 import { saveAs } from "file-saver";
 import downloadPdf from "@/utils/downloadPdf";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
 import { StarRating } from "./Star";
 
 interface ResultComponentProps {
@@ -192,14 +191,14 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
         <div className="w-full max-w-[150px] mx-auto">
           <button
             onClick={() => window.location.reload()}
-            className="w-full p-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl"
+            className="w-full p-2 h-14 mt-4 text-white sheen bg-[#2DA771] rounded-xl"
           >
             Create New
           </button>
         </div>
       </div>
       <section className="max-w-6xl mx-auto">
-        <div className="bg-primary-green rounded-2xl py-6 px-8 flex items-center gap-4 mt-6 justify-between">
+        <div className="bg-[#2DA771] rounded-2xl py-6 px-8 flex items-center gap-4 mt-6 justify-between">
           <h2 className="text-lg font-semibold text-white">Final Article</h2>
           <div className="flex flex-row gap-2 items-center">
             <Dropdown
@@ -231,7 +230,7 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
               <div className="flex justify-end">
                 <button
                   onClick={generateArticle}
-                  className="w-full p-2 flex items-center justify-center gap-2 h-14 mt-4 text-white sheen bg-primary-green rounded-xl max-w-[150px]"
+                  className="w-full p-2 flex items-center justify-center gap-2 h-14 mt-4 text-white sheen bg-[#2DA771] rounded-xl max-w-[150px]"
                 >
                   <svg
                     width="24"
@@ -315,7 +314,7 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
               Cancel
             </button>
             <button
-              className="bg-primary-green px-4 py-2 rounded-md text-white ml-3"
+              className="bg-[#2DA771] px-4 py-2 rounded-md text-white ml-3"
               onClick={handlePublish}
             >
               Publish

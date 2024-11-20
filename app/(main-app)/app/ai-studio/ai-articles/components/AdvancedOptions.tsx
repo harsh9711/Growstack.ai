@@ -134,8 +134,7 @@ const AdvancedOptions: React.FC<AdvancedOptionsProps> = ({
                         <div
                           className={clsx(
                             "flex items-center gap-2",
-                            aiModel === value &&
-                              "text-primary-green font-medium"
+                            aiModel === value && "text-[#2DA771] font-medium"
                           )}
                         >
                           <span className="min-w-fit">{icon}</span>
@@ -166,8 +165,7 @@ const AdvancedOptions: React.FC<AdvancedOptionsProps> = ({
                     <div
                       className={clsx(
                         "flex items-center gap-2",
-                        writingTone === value &&
-                          "text-primary-green font-medium"
+                        writingTone === value && "text-[#2DA771] font-medium"
                       )}
                     >
                       {label}
@@ -195,7 +193,7 @@ const AdvancedOptions: React.FC<AdvancedOptionsProps> = ({
                     <div
                       className={clsx(
                         "flex items-center gap-2",
-                        creativity === value && "text-primary-green font-medium"
+                        creativity === value && "text-[#2DA771] font-medium"
                       )}
                     >
                       {label}
@@ -221,7 +219,7 @@ const AdvancedOptions: React.FC<AdvancedOptionsProps> = ({
                     <div
                       className={clsx(
                         "flex items-center gap-2",
-                        pov === value && "text-primary-green font-medium"
+                        pov === value && "text-[#2DA771] font-medium"
                       )}
                     >
                       {label}
@@ -260,7 +258,7 @@ const AdvancedOptions: React.FC<AdvancedOptionsProps> = ({
                     <div
                       className={clsx(
                         "flex items-center gap-2",
-                        language === value && "text-primary-green font-medium"
+                        language === value && "text-[#2DA771] font-medium"
                       )}
                     >
                       {label}

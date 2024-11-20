@@ -90,7 +90,7 @@ const navLinks: NavLink[] = [
       },
       {
         icon: <CampaignIcon />,
-        name: "AI content wizard",
+        name: "AI Blog wizard",
         href: ALL_ROUTES.AI_WIZARD,
       },
       {

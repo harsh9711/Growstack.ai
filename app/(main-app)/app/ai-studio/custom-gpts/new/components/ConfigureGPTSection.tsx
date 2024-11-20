@@ -321,7 +321,7 @@ export default function ConfigureGPTSection({
       <div className="flex h-[calc(100vh-248px)]">
         <div className="w-full h-full overflow-auto bg-white rounded-3xl border relative">
           <div
-            className="w-[20%] h-[58px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 bg-primary-green !text-white font-medium"
+            className="w-[20%] h-[58px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 bg-[#2DA771] !text-white font-medium"
             style={{ borderBottomRightRadius: "30px" }}
           >
             <h1>Configure</h1>
@@ -469,7 +469,7 @@ export default function ConfigureGPTSection({
                               index > 0 && (
                                 <button
                                   type="button"
-                                  className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                                  className="bg-[#2DA771] text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
                                   onClick={handleAddStarterField}
                                 >
                                   <Plus />
@@ -478,7 +478,7 @@ export default function ConfigureGPTSection({
                             {conversationStarters.length === 1 && (
                               <button
                                 type="button"
-                                className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                                className="bg-[#2DA771] text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
                                 onClick={handleAddStarterField}
                               >
                                 <Plus />

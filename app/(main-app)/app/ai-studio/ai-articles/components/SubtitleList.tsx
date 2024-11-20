@@ -1,5 +1,5 @@
 import { DraggableIcon } from "@/components/svgs";
-import { AnimatePresence, Reorder, useDragControls } from "framer-motion";
+import { AnimatePresence, Reorder } from "framer-motion";
 import { X } from "lucide-react";
 import React from "react";
 interface SubtitleListProps {
@@ -37,7 +37,7 @@ const SubtitleList: React.FC<SubtitleListProps> = ({
               </div>
               <X
                 size={25}
-                className="text-primary-green cursor-pointer"
+                className="text-[#2DA771] cursor-pointer"
                 onClick={() => onRemove(index)}
               />
             </div>
