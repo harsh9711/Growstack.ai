@@ -6,7 +6,7 @@ import { Assistant, Chat, Conversation } from "../../../components/types";
 import { languageOptions } from "@/app/(main-app)/app/ai-studio/ai-articles/constants/options";
 
 interface ChatSectionProps {
-  conversation: Conversation;
+  conversation: Conversation | any;
   assistant: Assistant;
   selectedLanguage: string;
   selectedAiModel: string;
@@ -14,9 +14,9 @@ interface ChatSectionProps {
   newChat: boolean;
   setNewChat: (value: boolean) => void;
   convId: string;
-  setConvId: any;
   setMessages:(value: any) => void;
   messages:any
+  setConvId: (value: string) => void;
 }
 
 const ChatSection: React.FC<ChatSectionProps> = ({
@@ -29,13 +29,16 @@ const ChatSection: React.FC<ChatSectionProps> = ({
   setNewChat,
   convId,
   messages,
+  setConvId,
   setMessages
 }) => {
   // const [messages, setMessages] = useState<Chat[]>([]);
 
   useEffect(() => {
+    if (conversation) {
     setMessages(conversation.chats);
-  }, [conversation.chats]);
+    }
+  }, [conversation]);
 
   useEffect(() => {
     setMessagesData(messages);
@@ -84,6 +87,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({
           newChat={newChat}
           setNewChat={setNewChat}
           convId={convId}
+
         />
       </div>
     </div>
