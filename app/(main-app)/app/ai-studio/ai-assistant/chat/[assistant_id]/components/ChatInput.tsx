@@ -184,7 +184,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
         />
         <button
           // onClick={startRecognition}
-          className="h-12 w-12 flex justify-center items-center bg-[#2DA771] hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
+          className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
         >
           {/* <MicrophoneIcon /> */}
           <Microphone
@@ -195,7 +195,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
         </button>
         <button
           onClick={() => handleSend()}
-          className="h-12 w-12 flex justify-center items-center bg-[#2DA771] hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
+          className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
         >
           <SendIcon2 />
         </button>

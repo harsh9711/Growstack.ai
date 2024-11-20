@@ -40,15 +40,15 @@ export default function RootLayout({
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-CLCETMEDBL"
         ></Script>
-        <Script id="google-analytics">
+        {/* <Script id="google-analytics">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'G-CLCETMEDBL');
           `}
-        </Script>
-        <Script id="happierleads" strategy="lazyOnload">
+        </Script> */}
+        {/* <Script id="happierleads" strategy="lazyOnload">
           {`
             !function(){var e="rest.happierleads.com/v3/script?clientId=ehacgbpBj346Npwip2yrSJ&version=4.0.0",
             t=document.createElement("script");window.location.protocol.split(":")[0];
@@ -57,7 +57,7 @@ export default function RootLayout({
             t.onload = function(){ new Happierleads.default };
             c.parentNode.insertBefore(t,c)}();
           `}
-        </Script>
+        </Script> */}
         <Script
           src="https://app.10xlaunch.ai/widget"
           data-app-id="889a8e5c-0c2c-44cb-8494-a1978142001e"
