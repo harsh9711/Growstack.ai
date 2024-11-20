@@ -94,6 +94,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         await instance.get(`${API_URL}/users/api/v1/plan-usage`)
       ).data;
       const userCurrentPlan: UserPlan = response.data;
+      localStorage.setItem("user_id",userCurrentPlan.user_id)
       dispatch(setUserPlan(userCurrentPlan));
     } catch (error: any) {
       if (error.response) {

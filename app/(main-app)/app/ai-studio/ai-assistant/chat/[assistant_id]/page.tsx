@@ -13,6 +13,7 @@ import {
   languageOptions,
 } from "@/app/(main-app)/app/ai-studio/ai-articles/constants/options";
 import Spinner from "@/components/Spinner";
+import { API_URL } from "@/lib/api";
 
 interface PageProps {
   params: {
@@ -40,21 +41,14 @@ const AssistantsChats: React.FC<PageProps> = ({
   );
   const [newChat, setNewChat] = useState(true);
   const [convId, setConvId] = useState("");
-
-  const [selectedConvoId, setSelectedConvoId] = useState("");
-
   useEffect(() => {
     const fetchAssistantConversation = async () => {
       try {
         const response = await instance.get(
-          `http://127.0.0.1:8081/ai/api/v1/assistant/${assistant_id}/${newChat}`
+          `/ai/api/v1/assistant/${assistant_id}/${newChat}`
         );
-
-        console.log("response",response.data);
-        
         setAssistantConversation(response.data.data.convo);
         setConvId(response.data.data.convo._id);
-        console.log("conv===================", response.data.data.convo._id);
       } catch (error: any) {
         console.error("Error fetching assistant data:", error);
         setError("Something went wrong fetching assistant data.");
@@ -102,14 +96,10 @@ const AssistantsChats: React.FC<PageProps> = ({
         setLoading(true);
         try {
           const response = await instance.get(
-            `http://127.0.0.1:8081/ai/api/v1/assistant/assistantConv/${convId}`
+            `/ai/api/v1/assistant/assistantConv/${convId}`
           );
-          console.log("response=======", response);
-          console.log("response", response.data.data[0].chats);
           setAssistantConversation(response.data.data[0]);
           setConvId(response.data.data[0]._id);
-          console.log("ConvId***",convId);
-          
         } catch (error: any) {
           console.error("Error fetching assistant conversation:", error);
           setError("Something went wrong fetching assistant conversation.");

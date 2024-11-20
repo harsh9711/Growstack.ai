@@ -33,9 +33,9 @@ export default function ChatHistory({
     const fetchChatHistory = async () => {
       try {
         const response = await instance.post(
-          "http://127.0.0.1:8081/ai/api/v1/assistant/getHistoryChat",
+          "/ai/api/v1/assistant/getHistoryChat",
           {
-            user_id: "670cbd21028930e25da735a8",
+            user_id: localStorage.getItem("user_id"),
             assistant_id: assistant_id,
           }
         );
