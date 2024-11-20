@@ -34,7 +34,7 @@ const AssistantsChats: React.FC<PageProps> = ({
     languageOptions[0].value
   );
   const [messagesData, setMessagesData] = useState<Chat[]>([]);
-
+  const [messages, setMessages] = useState<Chat[]>([]);
   const [selectedAiModel, setSelectedAiModel] = useState(
     aiModelOptions[0].models[0].value
   );
@@ -50,6 +50,8 @@ const AssistantsChats: React.FC<PageProps> = ({
           `http://127.0.0.1:8081/ai/api/v1/assistant/${assistant_id}/${newChat}`
         );
 
+        console.log("response",response.data);
+        
         setAssistantConversation(response.data.data.convo);
         setConvId(response.data.data.convo._id);
         console.log("conv===================", response.data.data.convo._id);
@@ -68,7 +70,7 @@ const AssistantsChats: React.FC<PageProps> = ({
     };
 
     if (newChat) {
-      setLoading(true); 
+      setLoading(true);
       fetchAssistantConversation();
     }
   }, [newChat, assistant_id]);
@@ -95,17 +97,19 @@ const AssistantsChats: React.FC<PageProps> = ({
   }, []);
 
   useEffect(() => {
-    if (selectedConvoId) {
+    if (convId) {
       const fetchAssistantConversation = async () => {
         setLoading(true);
         try {
           const response = await instance.get(
-            `http://127.0.0.1:8081/ai/api/v1/assistant/assistantConv/${selectedConvoId}`
+            `http://127.0.0.1:8081/ai/api/v1/assistant/assistantConv/${convId}`
           );
-          console.log("SelectedConvoId=======",selectedConvoId);
+          console.log("response=======", response);
           console.log("response", response.data.data[0].chats);
           setAssistantConversation(response.data.data[0]);
-          setConvId(response.data.data._id);
+          setConvId(response.data.data[0]._id);
+          console.log("ConvId***",convId);
+          
         } catch (error: any) {
           console.error("Error fetching assistant conversation:", error);
           setError("Something went wrong fetching assistant conversation.");
@@ -116,13 +120,7 @@ const AssistantsChats: React.FC<PageProps> = ({
 
       fetchAssistantConversation();
     }
-  }, [selectedConvoId]);
-
-  useEffect(() => {
-    if (newChat) {
-      setLoading(false);
-    }
-  }, [newChat]);
+  }, [convId]);
 
   if (loading || !assistantData || !assistantConversation) {
     return (
@@ -155,12 +153,14 @@ const AssistantsChats: React.FC<PageProps> = ({
         assistant_id={assistant_id}
       />
       <ChatHistory
+      messages = {messages}
         isOpen={isHistoryOpen}
         onClose={() => setHistoryOpen(false)}
         assistant_id={assistant_id}
         newChat={newChat}
         setNewChat={setNewChat}
-        setSelectedConvoId={setSelectedConvoId}
+        setConvId={setConvId}
+        convId={convId}
       />
       <div className="flex-1 flex flex-col">
         <Topbar
@@ -177,6 +177,8 @@ const AssistantsChats: React.FC<PageProps> = ({
           messagesData={messagesData}
         />
         <ChatSection
+          setMessages={setMessages}
+          messages={messages}
           conversation={assistantConversation}
           assistant={assistantData}
           selectedLanguage={selectedLanguage}
@@ -184,7 +186,7 @@ const AssistantsChats: React.FC<PageProps> = ({
           setMessagesData={setMessagesData}
           newChat={newChat}
           setNewChat={setNewChat}
-          convId={selectedConvoId}
+          convId={convId}
           setConvId={setConvId}
         />
       </div>

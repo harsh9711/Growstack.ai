@@ -15,6 +15,8 @@ interface ChatSectionProps {
   setNewChat: (value: boolean) => void;
   convId: string;
   setConvId: any;
+  setMessages:(value: any) => void;
+  messages:any
 }
 
 const ChatSection: React.FC<ChatSectionProps> = ({
@@ -26,9 +28,10 @@ const ChatSection: React.FC<ChatSectionProps> = ({
   newChat,
   setNewChat,
   convId,
-  setConvId,
+  messages,
+  setMessages
 }) => {
-  const [messages, setMessages] = useState<Chat[]>([]);
+  // const [messages, setMessages] = useState<Chat[]>([]);
 
   useEffect(() => {
     setMessages(conversation.chats);
@@ -47,11 +50,11 @@ const ChatSection: React.FC<ChatSectionProps> = ({
       updatedAt: new Date().toISOString(),
       chats: undefined,
     };
-    setMessages(prevMessages => [...prevMessages, newMessage]);
+    setMessages((prevMessages: any) => [...prevMessages, newMessage]);
   };
 
   const updateMessage = (prompt: string, response: string) => {
-    setMessages(prevMessages => {
+    setMessages((prevMessages: any) => {
       const messageIndex = prevMessages.length - 1;
       const updatedMessages = [...prevMessages];
       updatedMessages[messageIndex].response = response;
@@ -81,7 +84,6 @@ const ChatSection: React.FC<ChatSectionProps> = ({
           newChat={newChat}
           setNewChat={setNewChat}
           convId={convId}
-          setConvId={setConvId}
         />
       </div>
     </div>

@@ -38,7 +38,7 @@ interface IProps {
   setIsSidebarOpen: (isSidebarOpen: boolean) => void;
   isHistoryOpen: boolean;
   setHistoryOpen: (isHistoryOpen: boolean) => void;
-  conversation: Conversation;
+  conversation: Conversation | null;
   selectedLanguage: string;
   switchLanguage: (language: string) => void;
   selectedAiModel: string;

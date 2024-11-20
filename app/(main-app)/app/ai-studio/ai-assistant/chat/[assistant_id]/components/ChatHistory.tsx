@@ -12,7 +12,9 @@ interface IProps {
   assistant_id: string;
   newChat: boolean;
   setNewChat: (value: boolean) => void;
-  setSelectedConvoId: (convoId: string) => void;
+  messages : Chat[];
+  convId:any
+  setConvId: (convoId: string) => void;
 }
 
 export default function ChatHistory({
@@ -21,7 +23,9 @@ export default function ChatHistory({
   assistant_id,
   newChat,
   setNewChat,
-  setSelectedConvoId,
+  setConvId,
+  messages,
+  convId
 }: IProps) {
   const [chatHistory, setChatHistory] = useState<Chat[]>([]);
 
@@ -35,8 +39,9 @@ export default function ChatHistory({
             assistant_id: assistant_id,
           }
         );
-
-        setChatHistory(response.data);
+        const filteredChats = response.data.filter((item: any) => item.chats.length > 0);
+        setChatHistory(filteredChats);
+        // setChatHistory(response.data);
         console.log(response.data);
         console.log("=================", response.data[4].chats);
       } catch (error) {
@@ -45,17 +50,15 @@ export default function ChatHistory({
     };
 
     fetchChatHistory();
-  }, [assistant_id]);
+  }, [messages]);
 
-  const [selectedConvo, setSelectedConvo] = useState<string | null>(null);
 
   const handleSelectedConvo = (convoId: string) => {
     console.log("===========================+++++++++++++++++++", convoId);
-    setSelectedConvo(convoId);
-    setSelectedConvoId(convoId);
+    setConvId(convoId);
   };
 
-  const [convId, setConvId] = useState("");
+
 
   return (
     <div
@@ -99,7 +102,6 @@ export default function ChatHistory({
           <Plus size={22} />
         </button>
       </div>
-      {selectedConvo}
       <div className="px-6 py-4 max-h-[68vh] overflow-y-auto">
         {chatHistory.length > 0 ? (
           chatHistory.map((chat, index) => (
@@ -107,7 +109,7 @@ export default function ChatHistory({
               onClick={() => handleSelectedConvo(chat._id)}
               key={index}
               className={`flex gap-4 w-full px-4 mb-1.5 hover:bg-gray-200/80 cursor-pointer group rounded-full transition-all duration-300 overflow-hidden ${
-                selectedConvo === chat._id ? "bg-gray-200" : ""
+                convId === chat._id ? "bg-gray-200" : ""
               }`}
             >
               {/* {chat._id} */}

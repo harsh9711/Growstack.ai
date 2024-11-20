@@ -20,7 +20,6 @@ interface ChatInputProps {
   newChat: boolean;
   setNewChat: (value: boolean) => void;
   convId: string;
-  setConvId: string;
 }
 
 const ChatInput: React.FC<ChatInputProps> = ({
@@ -32,7 +31,6 @@ const ChatInput: React.FC<ChatInputProps> = ({
   newChat,
   setNewChat,
   convId,
-  setConvId,
 }) => {
   const [input, setInput] = useState("");
   const [open, setOpen] = useState(false);
