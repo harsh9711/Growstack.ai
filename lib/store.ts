@@ -13,18 +13,20 @@ import storage from "redux-persist/lib/storage";
 import authReducer from "./features/auth/auth.slice";
 import documentSlice from "./features/documents/document.slice";
 import nodeSlice from "./features/workflow/node.slice";
+import masterNodeSlice from "./features/workflow/masterNode.slice";
 
 const rootReducer = combineReducers({
   auth: authReducer,
   document: documentSlice,
   nodes: nodeSlice,
+  masterNode: masterNodeSlice,
 });
 
 const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  blacklist: ["nodes"],
+  blacklist: ["nodes", "masterNode"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

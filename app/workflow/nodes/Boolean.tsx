@@ -1,23 +1,146 @@
 import React, { useState } from "react";
 
 import { Handle, Position, type NodeProps } from "@xyflow/react";
-import { type ChatGptNodeProps } from "./types";
+import { BooleanNodeProps, type ChatGptNodeProps } from "./types";
 import Image from "next/image";
+import DynamicInput from "../inputsFields";
 
-const Boolean = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
-  const [isNextBoxOpen, setIsNextBoxOpen] = useState(true);
+const Boolean = ({ data, id }: NodeProps<BooleanNodeProps>) => {
+  const { parameters } = data;
+
+  const initialParameters =
+    parameters &&
+    Object.entries(parameters).reduce(
+      (acc: { [key: string]: any }, [key, param]: [string, any]) => {
+        acc[key] = {
+          ...param,
+          value: "",
+          error: "",
+        };
+        return acc;
+      },
+      {}
+    );
+
+  const [currentParameter, setCurrentParameter] = useState(initialParameters);
+  const [nextParameter, setNextParameter] = useState<{ [key: string]: any }>({
+    "6": {
+      label: "Enable Notifications",
+      type: "checkbox",
+      required: false,
+      options: [],
+      description: `Enable or disable notifications for updates and alerts.`,
+      value: "",
+      error: "",
+    },
+  });
+  const [variableName, setVariableName] = useState<string | null>(null);
+  const [isNextBoxOpen, setIsNextBoxOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [visibleTooltip, setVisibleTooltip] = useState<{
+    [key: string]: boolean;
+  }>({});
+
+  const toggleTooltip = (index: string, isVisible: boolean) => {
+    setVisibleTooltip(prevState => ({
+      ...prevState,
+      [index]: isVisible,
+    }));
+  };
+
 
   const handleNextClick = () => {
-    setIsNextBoxOpen(true);
+    const requiredParams = currentParameter ? Object.values(currentParameter).filter(param => param.required) : [];
+
+    const allRequiredParamsFilled = requiredParams.every(param => param.value);
+
+    if (allRequiredParamsFilled) {
+      setIsNextBoxOpen(true);
+    } else {
+      setCurrentParameter(prevState => {
+        const updatedState = { ...prevState };
+
+        requiredParams.forEach(param => {
+          const key = prevState ? Object.keys(prevState).find(k => prevState[k] === param) : undefined;
+          if (key && !param.value) {
+            updatedState[key] = {
+              ...(prevState?.[key] ?? {}),
+              error: "This field is required",
+            };
+          }
+        });
+
+        return updatedState;
+      });
+    }
   };
 
-  const handleEditClick = () => {
-    setIsNextBoxOpen(false);
-  };
+
   const handleDropdownClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
+
+  const convertToUnderscore = (value: string): string => {
+    return value.toLowerCase().replace(/\s+/g, "_");
+  };
+
+  const handleInputChange = (
+    key: string,
+    type: string,
+    value: string | boolean
+  ) => {
+    if (typeof value === "boolean") {
+      setCurrentParameter(prevState => ({
+        ...prevState,
+        [key]: {
+          ...(prevState?.[key] || {}),
+          value: value,
+          error: "",
+        },
+      }));
+
+      setNextParameter(prevState => ({
+        ...prevState,
+        "6": {
+          ...prevState["6"],
+          required: value,
+        },
+      }));
+      return;
+    }
+
+    setCurrentParameter(prevState => {
+      const updatedState = {
+        ...prevState,
+        [key]: {
+          ...(prevState?.[key] || {}),
+          value: value,
+          error: "",
+        },
+      };
+
+      if (type === "text_input_level") {
+        const variableNameKey = prevState
+          ? Object.keys(prevState).find(
+            k => prevState[k].type === "text_variable_name"
+          )
+          : undefined;
+        if (variableNameKey) {
+          updatedState[variableNameKey] = {
+            ...(prevState?.[variableNameKey] || {}),
+            value: convertToUnderscore(value),
+            error: "",
+          };
+        }
+      }
+
+      if (type === "text_variable_name" || type === "text_input_level") {
+        setVariableName(convertToUnderscore(value));
+      }
+      return updatedState;
+    });
+  };
+
 
   return (
     <div>
@@ -54,346 +177,80 @@ const Boolean = ({ data, id }: NodeProps<ChatGptNodeProps>) => {
 
         {isDropdownOpen && (
           <div className="boolean-text-form bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] absolute left-1/2 transform -translate-x-1/2">
-            {isNextBoxOpen ? (
-              <>
-                <div className="boolean-text-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-2">
-                  <img
-                    src="/assets/node_icon/boolean-single.png"
-                    alt="boolean icon"
-                    className="w-[20px] mb-2"
-                  />
-                  <h5 className="text-sm text-[#14171B] font-medium">
-                    Boolean
-                  </h5>
-                </div>
 
-                <div className="select-sheet-heading mb-2">
-                  <h5 className="text-sm text-[#14171B] font-medium">
-                    Select Sheet
-                  </h5>
-                </div>
+            <div className="boolean-text-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-2">
+              <img
+                src="/assets/node_icon/boolean-single.png"
+                alt="boolean icon"
+                className="w-[20px] mb-2"
+              />
+              <h5 className="text-sm text-[#14171B] font-medium">
+                Boolean
+              </h5>
+            </div>
 
-                <div className="form-box">
-                  <div className="input-box mb-3">
-                    <div className="label-box flex gap-2 items-center mb-1">
-                      <label className="font-medium text-[#14171B] text-[12px]">
-                        Input Label <span className="text-[#CF0000]">*</span>
-                      </label>
-
-                      <span>
-                        <svg
-                          width="18"
-                          height="18"
-                          viewBox="0 0 18 18"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <circle
-                            cx="9"
-                            cy="9"
-                            r="6.75"
-                            stroke="#C3C3C3"
-                            stroke-width="0.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                          <path
-                            d="M9.00406 6H9.01156"
-                            stroke="#C3C3C3"
-                            stroke-width="0.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                          <path
-                            d="M8.25 9H9V12H9.75"
-                            stroke="#C3C3C3"
-                            stroke-width="0.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-
-                    <div className="input-group">
-                      <input
-                        type="text"
-                        placeholder="Enter field label"
-                        className="form-control shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
+            {!isNextBoxOpen ? (
+              <div className="form-box">
+                {currentParameter &&
+                  Object.entries(currentParameter).map(([key, param]: any) => {
+                    return (
+                      <DynamicInput
+                        key={key}
+                        inputKey={key}
+                        param={param}
+                        handleInputChange={handleInputChange}
+                        toggleTooltip={toggleTooltip}
+                        visibleTooltip={visibleTooltip}
                       />
-                    </div>
-                  </div>
-
-                  <div className="input-box flex items-center justify-between mb-3">
-                    <div className="label-box flex gap-2 items-center mb-1">
-                      <label className="font-medium text-[#14171B] text-[12px]">
-                        Default Value
-                      </label>
-
-                      <span>
-                        <img
-                          src="/assets/node_icon/info-circle.png"
-                          alt="info icon"
-                          className="w-[16px] object-cover object-center mx-auto"
-                        />
-                      </span>
-                    </div>
-
-                    <div className="flex items-center">
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" className="sr-only peer" />
-                        <div className="w-11 h-6 bg-gray-300 shadow-md peer-focus:outline-none peer-focus:ring-2-none peer-focus:ring-none rounded-full peer-checked:bg-[#2DA771]"></div>
-                        <div className="peer-checked:translate-x-5 absolute left-0 top-0 m-1 w-4 h-4 bg-white rounded-full transition-transform"></div>
-                      </label>
-                    </div>
-                  </div>
-
-                  <div className="input-box mb-3">
-                    <div className="label-box flex gap-2 items-center mb-1">
-                      <label className="font-medium text-[#14171B] text-[12px]">
-                        Description
-                      </label>
-
-                      <span>
-                        <svg
-                          width="18"
-                          height="18"
-                          viewBox="0 0 18 18"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <circle
-                            cx="9"
-                            cy="9"
-                            r="6.75"
-                            stroke="#C3C3C3"
-                            stroke-width="0.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                          <path
-                            d="M9.00406 6H9.01156"
-                            stroke="#C3C3C3"
-                            stroke-width="0.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                          <path
-                            d="M8.25 9H9V12H9.75"
-                            stroke="#C3C3C3"
-                            stroke-width="0.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-
-                    <div className="input-group">
-                      <textarea
-                        rows={4}
-                        placeholder="Enter description"
-                        className="form-control focus:outline-none shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="input-box flex items-center justify-between mb-3">
-                    <div className="label-box flex gap-2 items-center mb-1">
-                      <label className="font-medium text-[#14171B] text-[12px]">
-                        Required
-                      </label>
-
-                      <span>
-                        <svg
-                          width="18"
-                          height="18"
-                          viewBox="0 0 18 18"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <circle
-                            cx="9"
-                            cy="9"
-                            r="6.75"
-                            stroke="#C3C3C3"
-                            stroke-width="0.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                          <path
-                            d="M9.00406 6H9.01156"
-                            stroke="#C3C3C3"
-                            stroke-width="0.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                          <path
-                            d="M8.25 9H9V12H9.75"
-                            stroke="#C3C3C3"
-                            stroke-width="0.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-
-                    <div className="flex items-center">
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" className="sr-only peer" />
-                        <div className="w-11 h-6 shadow-md bg-gray-300 peer-focus:outline-none peer-focus:ring-2-none peer-focus:ring-none rounded-full peer-checked:bg-[#2DA771]"></div>
-                        <div className="peer-checked:translate-x-5 absolute left-0 top-0 m-1 w-4 h-4 bg-white rounded-full transition-transform"></div>
-                      </label>
-                    </div>
-                  </div>
-
-                  <div className="input-box mb-3">
-                    <div className="label-box flex gap-2 items-center mb-1">
-                      <label className="font-medium text-[#14171B] text-[12px]">
-                        Variable Name <span className="text-[#CF0000]">*</span>
-                      </label>
-
-                      <span>
-                        <svg
-                          width="18"
-                          height="18"
-                          viewBox="0 0 18 18"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <circle
-                            cx="9"
-                            cy="9"
-                            r="6.75"
-                            stroke="#C3C3C3"
-                            stroke-width="0.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                          <path
-                            d="M9.00406 6H9.01156"
-                            stroke="#C3C3C3"
-                            stroke-width="0.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                          <path
-                            d="M8.25 9H9V12H9.75"
-                            stroke="#C3C3C3"
-                            stroke-width="0.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-
-                    <div className="input-group">
-                      <input
-                        type="text"
-                        placeholder="Enter the variable name"
-                        className="form-control shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="submit-button">
-                    <button
-                      onClick={handleEditClick}
-                      className="bg-[#2DA771] text-white text-sm font-medium p-3 w-full rounded-[10px]"
-                    >
-                      Next
-                    </button>
-                  </div>
+                    );
+                  })}
+                <div className="submit-button">
+                  <button
+                    onClick={handleNextClick}
+                    className="bg-[#2DA771] text-white text-sm font-medium p-3 w-full rounded-[10px]"
+                  >
+                    Next
+                  </button>
                 </div>
-              </>
+              </div>
             ) : (
-              <>
-                <div className="long-text-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-5">
-                  <img
-                    src="/assets/node_icon/boolean-single.png"
-                    alt="boolean icon"
-                    className="w-[20px] mb-2"
-                  />
+              <div className="form-box">
+                {nextParameter &&
+                  Object.entries(nextParameter).map(([key, param]: any) => (
+                    <DynamicInput
+                      key={key}
+                      inputKey={key}
+                      param={param}
+                      handleInputChange={handleInputChange}
+                      toggleTooltip={toggleTooltip}
+                      visibleTooltip={visibleTooltip}
+                    />
+                  ))}
 
-                  <h5 className="text-sm text-[#14171B] font-medium">
-                    Boolean
-                  </h5>
-                </div>
-
-                <div className="form-box">
-                  <div className="input-box flex items-center justify-between mb-7">
-                    <div className="label-box flex gap-2 items-center">
-                      <label className="font-medium text-[#14171B] text-[12px]">
-                        Enable Notification{" "}
-                        <span className="text-[#CF0000]">*</span>
-                      </label>
-
-                      <span>
-                        <svg
-                          width="18"
-                          height="18"
-                          viewBox="0 0 18 18"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <circle
-                            cx="9"
-                            cy="9"
-                            r="6.75"
-                            stroke="#C3C3C3"
-                            stroke-width="0.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                          <path
-                            d="M9.00406 6H9.01156"
-                            stroke="#C3C3C3"
-                            stroke-width="0.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                          <path
-                            d="M8.25 9H9V12H9.75"
-                            stroke="#C3C3C3"
-                            stroke-width="0.8"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
-                        </svg>
-                      </span>
-                    </div>
-
-                    <div className="flex items-center">
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" className="sr-only peer" />
-                        <div className="w-11 h-6 shadow-md bg-gray-300 peer-focus:outline-none peer-focus:ring-2-none peer-focus:ring-none rounded-full peer-checked:bg-[#2DA771]"></div>
-                        <div className="peer-checked:translate-x-5 absolute left-0 top-0 m-1 w-4 h-4 bg-white rounded-full transition-transform"></div>
-                      </label>
-                    </div>
-                  </div>
-
+                {variableName && (
                   <div className="text-box mb-5">
-                    <h4 className="text-[#14171B] font-medium text-sm">
+                    <h4 className="text-[#14171B] flex items-center gap-2 font-medium text-sm">
                       Variable name:{" "}
                       <span className="bg-[#FFE6FF] text-[#14171B] text-[12px] rounded-[20px] font-medium pt-3 pb-3 pr-4 pl-4">
-                        notification_status
+                        {variableName}
                       </span>
                     </h4>
                   </div>
+                )}
 
-                  <div className="submit-button">
-                    <button
-                      onClick={handleNextClick}
-                      className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
-                    >
-                      Edit
-                    </button>
-                  </div>
+                <div className="submit-button">
+                  <button
+                    onClick={() => {
+                      setIsNextBoxOpen(false);
+                    }}
+                    className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
+                  >
+                    Edit
+                  </button>
                 </div>
-              </>
+              </div>
             )}
+
           </div>
         )}
       </div>

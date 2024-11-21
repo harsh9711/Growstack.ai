@@ -1,11 +1,14 @@
 import React from "react";
 import Image from "next/image";
 import { AllData } from "../../data";
-import { useDispatch } from "react-redux";
-import { addNode } from "@/lib/features/workflow/node.slice";
-import { NodeDataState, NodeState } from "@/types/workflows";
+import { addNode, removeNode } from "@/lib/features/workflow/node.slice";
+import { NodeState } from "@/types/workflows";
+import { useAppDispatch } from "@/lib/hooks";
 
 const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
+
+    const dispatch = useAppDispatch();
+
     const llmsData = AllData.filter(item => item.category === "llms");
 
     const groupedModels = llmsData.reduce(
@@ -45,6 +48,12 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
             ];
         });
     };
+
+    const handleDragStart = (event: React.DragEvent, item: NodeState) => {
+        dispatch(addNode(item));
+        event.dataTransfer.effectAllowed = "move";
+    };
+
 
     return (
         <div className="absolute w-4/5 h-[500px] top-[120px] rounded-2xl overflow-y-auto backdrop-blur-sm shadow-md">
@@ -86,6 +95,13 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
                                         key={item.id}
                                         onClick={() => handleClick(item.node)}
                                         className="h-[92px] w-[130px] bg-transparent m-1 rounded-lg flex justify-center items-center cursor-pointer border border-[#E5E5E5]"
+                                        draggable
+                                        onDragStart={event => {
+                                            handleDragStart(event, item.node);
+                                        }}
+                                        onDragEnd={() => {
+                                            dispatch(removeNode());
+                                        }}
                                     >
                                         <div className="h-full w-full rounded-lg bg-white flex justify-center items-center flex-col">
                                             {item.image && (

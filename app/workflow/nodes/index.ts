@@ -8,6 +8,7 @@ import Boolean from "./Boolean";
 import Number from "./Number";
 import FileUpload from "./FileUpload";
 import Checklist from "./Checklist";
+import InputNode from "./InputNode";
 
 export const initialNodes: AppNode[] = [
   {
@@ -30,8 +31,9 @@ export const nodeTypes = {
   "chat-gpt": ChatGptNode,
   "short-text": ShortText,
   "long-text": LongText,
-  "boolean": Boolean,
-  "number": Number,
+  boolean: Boolean,
+  number: Number,
   "file-upload": FileUpload,
-  "checklist":Checklist,
+  checklist: Checklist,
+  "input-type": InputNode,
 } satisfies NodeTypes;

@@ -33,9 +33,13 @@ export interface PositionState {
 }
 
 export interface NodeDataState {
+  [key: string]: unknown;
   label: string;
-  image?: ImageProps;
-  inputs: InputState[];
+  functionToExecute?: string;
+  dynamicParams?: string[];
+  parameters?: {
+    [key: string]: NodeParameter;
+  };
 }
 
 export interface NodeState {
@@ -54,4 +58,34 @@ export interface AllDataState {
   subCategory: string;
   image?: ImageProps;
   node: NodeState;
+}
+
+export interface NodeParameter {
+  label: string;
+  type: string;
+  required: boolean;
+  options?: any[];
+  description?: string;
+}
+
+export interface MasterNodeProps {
+  _id: string;
+  name: string;
+  description: string;
+  type: string;
+  category: string;
+  subCategory: string;
+  functionToExecute: string;
+  logoUrl?: string;
+  parameters: {
+    [key: string]: NodeParameter;
+  };
+  dynamicParams?: string[];
+  __v: number;
+}
+
+export interface MasterNodeState {
+  masterNode: MasterNodeProps[];
+  isLoading: boolean;
+  error: any;
 }

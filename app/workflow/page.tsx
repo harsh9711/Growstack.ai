@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useCallback } from "react";
 import Image from "next/image";
 import {
@@ -23,25 +23,35 @@ import TopLeftPanel2nd from "./panels/TopLeftPanel2nd";
 import TopRightPanel1st from "./panels/TopRightPanel1st";
 import TopRightPanel2nd from "./panels/TopRightPanel2nd";
 import BottomCenterPanel from "./panels/BottomCenterPanel";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { getMasterNodes } from "@/lib/features/workflow/masterNode.slice";
 
+
+interface DragEvent extends React.DragEvent<HTMLDivElement> { }
 
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
 const WorkflowPage: React.FC = () => {
+    const dispatch = useAppDispatch();
+    const { screenToFlowPosition } = useReactFlow();
     const reactFlowWrapper = useRef(null);
     const { nodeData } = useAppSelector(state => state.nodes);
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-    const { screenToFlowPosition } = useReactFlow();
+
+
+    useEffect(() => {
+        dispatch(getMasterNodes());
+    }, [dispatch]);
+
+
 
     const onConnect: OnConnect = useCallback(
         connection => setEdges(edges => addEdge(connection, edges)),
         [setEdges]
     );
 
-    interface DragEvent extends React.DragEvent<HTMLDivElement> { }
 
     const onDragOver = useCallback((event: DragEvent) => {
         event.preventDefault();

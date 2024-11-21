@@ -872,8 +872,6 @@ export const AllData: AllDataState[] = [
     subCategory: "Input type",
   },
 
-
-
   {
     id: 155,
     name: "Checklist",

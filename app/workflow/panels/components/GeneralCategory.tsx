@@ -3,15 +3,37 @@ import Image from "next/image";
 import { AllData } from "../../data";
 import { useDispatch } from "react-redux";
 import { addNode, removeNode } from "@/lib/features/workflow/node.slice";
-import { NodeState } from "@/types/workflows";
+import { MasterNodeProps, NodeState } from "@/types/workflows";
 import "reactflow/dist/style.css";
+import { useAppSelector } from "@/lib/hooks";
+
+const convertNodeData = (data: MasterNodeProps) => {
+    const { _id, functionToExecute, type, parameters, dynamicParams, ...rest } = data;
+
+    return {
+        node: {
+            id: _id,
+            position: { x: 0, y: 0 },
+            type,
+            data: {
+                parameters,
+                dynamicParams,
+                functionToExecute,
+                label: data.name,
+                icon: data.logoUrl,
+            },
+        },
+        ...rest
+    };
+};
 
 const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
     const dispatch = useDispatch();
-
-    const generalData = AllData.filter(item => item.category === "general");
-    const groupedGenerals = generalData.reduce(
-        (acc: { [key: string]: typeof generalData }, model) => {
+    const { isLoading, masterNode } = useAppSelector(state => state.masterNode);
+    const generalData = masterNode?.filter(item => item.category === "general");
+    const modifiedNodes = generalData.map(convertNodeData);
+    const groupedGenerals = modifiedNodes.reduce(
+        (acc: { [key: string]: typeof modifiedNodes }, model) => {
             if (!acc[model.subCategory]) {
                 acc[model.subCategory] = [];
             }
@@ -55,7 +77,7 @@ const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
 
 
     return (
-        <div className="absolute w-4/5 h-[500px] top-[120px] rounded-2xl overflow-y-auto backdrop-blur-sm shadow-md">
+        <div className="bg-white absolute w-4/5 h-[500px] top-[120px] rounded-2xl overflow-y-auto backdrop-blur-sm shadow-md">
             <div className="bg-white p-5 pt-0">
                 <div className="sticky top-0 z-10 bg-white">
                     <div className="flex items-center justify-between pt-5">
@@ -103,12 +125,12 @@ const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
                                         }}
                                     >
                                         <div className="h-full w-full rounded-lg bg-white flex justify-center items-center flex-col">
-                                            {item?.image && (
+                                            {item?.logoUrl && (
                                                 <Image
-                                                    src={item.image.src}
-                                                    alt={item.image.alt}
-                                                    width={item.image.width}
-                                                    height={item.image.height}
+                                                    src={item.logoUrl}
+                                                    alt={item.name}
+                                                    width={26}
+                                                    height={17}
                                                     draggable={false}
                                                 />
                                             )}
