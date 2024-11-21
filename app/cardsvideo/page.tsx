@@ -23,7 +23,7 @@ const Box = () => {
       >
         <HoverVideoPlayer
           className="w-full h-full max-w-fit  rounded-sm sm:rounded-2xl border-none outline-none"
-          videoSrc={`/video.mp4`}
+          videoSrc={`https://video.gumlet.io/6736ff3173f4706c690ece0c/6736ffd073f4706c690ed072/download.mp4`}
           pausedOverlay={
             <img
               src="/staticvideo.svg"
