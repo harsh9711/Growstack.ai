@@ -104,6 +104,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
           handleSend(transcript, true);
         },
         () => {
+          // alert("107");
           setOpen(false);
           setIsAnimating(false);
         }

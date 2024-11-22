@@ -14,11 +14,10 @@ const useSpeechRecognition = (
   onResult: (transcript: string) => void,
   onEndCallback: () => void
 ) => {
-  const [isRecording, setIsRecording] = useState<boolean>(false);
+  const [isRecording, setIsRecording] = useState(false);
   const recognitionRef = useRef<any>(null);
 
-  useEffect(() => {
-    toast.dismiss();
+  const initializeRecognition = () => {
     if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
       const SpeechRecognition =
         window.webkitSpeechRecognition || window.SpeechRecognition;
@@ -33,6 +32,7 @@ const useSpeechRecognition = (
       };
 
       recognition.onend = () => {
+        if (!isRecording) return;
         setIsRecording(false);
         onEndCallback();
       };
@@ -54,18 +54,35 @@ const useSpeechRecognition = (
             errorMessage = event.error;
         }
         toast.error(errorMessage);
+        onEndCallback(); // Trigger the end callback when an error occurs as well
       };
 
       recognition.onresult = (event: any) => {
         const transcript = event.results[0][0].transcript.trim();
         onResult(transcript);
       };
-    } else if (isMicOpen) {
+
+      return recognition;
+    } else {
       toast.error("Speech recognition not supported in this browser.", {
         duration: Infinity,
       });
     }
-  }, [language, onResult, onEndCallback, isMicOpen]);
+  };
+
+  useEffect(() => {
+    if (isMicOpen) {
+      const recognition = initializeRecognition();
+      recognition?.start();
+    } else {
+      stopRecognition();
+    }
+
+    // Clean up the recognition instance if the component is unmounted
+    return () => {
+      stopRecognition();
+    };
+  }, [isMicOpen, language]);
 
   const startRecognition = () => {
     if (recognitionRef.current && !isRecording) {
@@ -120,14 +137,6 @@ const useSpeechRecognition = (
       toast.error("Text-to-speech not supported in this browser.");
     }
   };
-
-  useEffect(() => {
-    if (isMicOpen) {
-      startRecognition();
-    } else {
-      stopRecognition();
-    }
-  }, [isMicOpen]);
 
   return { isRecording, startRecognition, stopRecognition, textToSpeech };
 };
