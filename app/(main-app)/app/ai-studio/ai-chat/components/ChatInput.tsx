@@ -750,14 +750,6 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
               open={open}
               isAnimating={isAnimating}
               handleOpenChange={handleOpenChange}
-              startRecognition={() => {
-                setIsAnimating(true);
-                startRecognition();
-              }}
-              stopRecognition={() => {
-                setIsAnimating(false);
-                stopRecognition();
-              }}
             />
           </div>
           <button

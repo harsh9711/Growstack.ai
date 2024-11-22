@@ -1,44 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MicrophoneIcon, StopIcon } from "@/components/svgs";
+import useSpeechRecognition from "../../hooks/UseSpeechRecognition";
 import "../../../../../../styles/waveform.css";
 
 interface MicrophoneProps {
   open: boolean;
   isAnimating: boolean;
   handleOpenChange: (status: boolean) => void;
-  startRecognition: () => void;
-  stopRecognition: () => void;
+  // startRecognition: () => void;
+  // stopRecognition: () => void;
 }
 
 const NUM_WAVES = 40; // Number of wave elements
 
 export default function Microphone({
   open,
-  isAnimating,
   handleOpenChange,
-  startRecognition,
-  stopRecognition,
+  isAnimating,
+  // startRecognition,
+  // stopRecognition,
 }: MicrophoneProps) {
-  const handleToggle = () => {
-    if (isAnimating) {
-      stopRecognition();
-    } else {
-      startRecognition();
-    }
-    handleOpenChange(!open);
-  };
+  console.log(open, isAnimating);
 
   return (
     <DropdownMenu open={open} onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger asChild>
         <button
           type="button"
-          onClick={handleToggle}
+          onClick={() => handleOpenChange(!open)}
           className="h-12 w-12 flex justify-center items-center bg-[#2DA771] hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
         >
           {isAnimating ? <StopIcon /> : <MicrophoneIcon />}
