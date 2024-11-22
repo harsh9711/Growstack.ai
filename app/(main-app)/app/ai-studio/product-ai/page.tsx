@@ -95,12 +95,10 @@ export default function Home() {
       const response: any = await instance.post(
         `/ai/api/v1/generate/aibackdropregenerate`,
         {
-          user_prompt: productAI.user_prompt
+          user_prompt: productAI.user_prompt,
         }
       );
-      console.log("response.", response.data.data.prompt
-
-      );
+      console.log("response.", response.data.data.prompt);
 
       setProductAI(prevState => ({
         ...prevState,
@@ -112,7 +110,6 @@ export default function Home() {
       setIsGenerating(false);
     }
   };
-
 
   const fetchHistory = async (page = 1, limit = 10) => {
     try {
@@ -149,27 +146,17 @@ export default function Home() {
       ...prevState,
       remove_bg_toggle: false,
     }));
-  };
-
-  const handleContinueWithBGRemove = async () => {
-    setProductAI(prevState => ({
-      ...prevState,
-      remove_bg_toggle: true,
-    }));
     try {
       const { img_url, user_prompt, remove_bg_toggle, numOfImages } = productAI;
       setLoading(true);
-      const response = await instance.post(
-        `/ai/api/v1/products/bg-remover`,
-        {
-          img_url,
-          user_prompt,
-          remove_bg_toggle,
-          numOfImages,
-          normalizedPosition, // Send normalized position
-          normalizedScale, // Send normalized scale
-        }
-      );
+      const response = await instance.post(`/ai/api/v1/products/bg-remover`, {
+        img_url,
+        user_prompt,
+        remove_bg_toggle,
+        numOfImages,
+        normalizedPosition,
+        normalizedScale,
+      });
 
       const result_url = response.data.data.originalUrls;
 
@@ -184,14 +171,44 @@ export default function Home() {
       setLoading(false);
       toast.error("Failed to process image");
     }
+  };
 
+  const handleContinueWithBGRemove = async () => {
+    setProductAI(prevState => ({
+      ...prevState,
+      remove_bg_toggle: true,
+    }));
+    try {
+      const { img_url, user_prompt, remove_bg_toggle, numOfImages } = productAI;
+      setLoading(true);
+      const response = await instance.post(`/ai/api/v1/products/bg-remover`, {
+        img_url,
+        user_prompt,
+        remove_bg_toggle,
+        numOfImages,
+        normalizedPosition, // Send normalized position
+        normalizedScale, // Send normalized scale
+      });
+
+      const result_url = response.data.data.originalUrls;
+
+      if (result_url) {
+        setResult(result_url);
+        setFinalUrl(result_url);
+      }
+      fetchHistory();
+      setLoading(false);
+    } catch (error) {
+      console.error("Error removing background:", error);
+      setLoading(false);
+      toast.error("Failed to process image");
+    }
   };
   const updateFavourite = async (imageID: any, booleanValue: boolean) => {
     try {
-      const response = await instance.put(
-        `/users/api/v1/docs/${imageID.id}`,
-        { favourite: booleanValue ? false : true }
-      );
+      const response = await instance.put(`/users/api/v1/docs/${imageID.id}`, {
+        favourite: booleanValue ? false : true,
+      });
     } catch (error) {
       console.error("Error fetching history:", error);
       toast.error("Failed to fetch history");
@@ -233,17 +250,14 @@ export default function Home() {
 
     try {
       setLoading(true);
-      const response = await instance.post(
-        `/ai/api/v1/products/bg-remover`,
-        {
-          img_url,
-          user_prompt,
-          remove_bg_toggle,
-          numOfImages,
-          normalizedPosition, // Send normalized position
-          normalizedScale, // Send normalized scale
-        }
-      );
+      const response = await instance.post(`/ai/api/v1/products/bg-remover`, {
+        img_url,
+        user_prompt,
+        remove_bg_toggle,
+        numOfImages,
+        normalizedPosition, // Send normalized position
+        normalizedScale, // Send normalized scale
+      });
 
       const result_url = response.data.data.originalUrls;
 
@@ -410,9 +424,7 @@ export default function Home() {
   return (
     <>
       <div className="ml-1 mb-3 mt-3">
-        <h2 className="text-m sm:text-lg font-semibold">
-          AI backdrop</h2>
-
+        <h2 className="text-m sm:text-lg font-semibold">AI backdrop</h2>
       </div>
       <div className="flex justify-between h-screen">
         <aside
@@ -472,9 +484,7 @@ export default function Home() {
                     disabled={isGenerating}
                   />
                   <button
-                    onClick={() =>
-                      generatePrompt()
-                    }
+                    onClick={() => generatePrompt()}
                     disabled={isGenerating}
                     className="flex items-center rounded"
                   >
@@ -484,10 +494,11 @@ export default function Home() {
                     <span>Regenerate</span>
                   </button>
                 </div>
-
               </div>
               <div>
-                <div className="text-md sm:text-m mb-2 mt-2">Try an example</div>
+                <div className="text-md sm:text-m mb-2 mt-2">
+                  Try an example
+                </div>
                 <div className="grid grid-cols-3 gap-2">
                   {/* Map through examples */}
                   {examples.map((example, index) => (
@@ -526,10 +537,7 @@ export default function Home() {
                 </button>
               </div>
             </form>
-            <Dialog
-              open={openPostModel}
-              onOpenChange={setOpenPostModel}
-            >
+            <Dialog open={openPostModel} onOpenChange={setOpenPostModel}>
               <DialogContent
                 showCloseButton
                 className="w-full max-w-[498px] h-auto p-4 border-0 rounded-lg bg-white"
@@ -549,11 +557,11 @@ export default function Home() {
                 </DialogHeader>
 
                 <p className="text-gray-700 px-5 py-3">
-                  To get the best results, we recommend removing the existing background before creating a new one.
+                  To get the best results, we recommend removing the existing
+                  background before creating a new one.
                 </p>
 
                 <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 pt-3 border-t-1 border-solid border-[#034737]">
-
                   <button
                     className="flex-1 border bg-white-500 rounded-[5px] text-black px-4 py-2"
                     onClick={() => {
@@ -804,11 +812,13 @@ export default function Home() {
                       className="w-full h-36 object-cover"
                     />
                     <button
-                      className={`absolute top-2 left-2 p-1 rounded-full shadow-md transition-colors duration-200 ${image.favourite ? "text-red-500" : "text-gray-500"
-                        } hover:bg-gray-100`}
+                      className={`absolute top-2 left-2 p-1 rounded-full shadow-md transition-colors duration-200 ${
+                        image.favourite ? "text-red-500" : "text-gray-500"
+                      } hover:bg-gray-100`}
                       onClick={() => updateFavourite(image, image.favourite)}
-                      aria-label={`${image.favourite ? "Unlike" : "Like"
-                        } image with ID ${image.id}`}
+                      aria-label={`${
+                        image.favourite ? "Unlike" : "Like"
+                      } image with ID ${image.id}`}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

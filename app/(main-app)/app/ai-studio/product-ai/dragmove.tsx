@@ -19,18 +19,18 @@ const ResizableRotatableImages: React.FC<ResizableRotatableImagesProps> = ({
   const targetRef = useRef<HTMLImageElement | null>(null);
   const [target, setTarget] = useState<HTMLImageElement | null>(null);
   const [position, setPosition] = useState({
-    x: 0.1 * 300, // Start with normalized offset (dynamic for the card width)
-    y: 0.1 * 300, // Start with normalized offset (dynamic for the card height)
+    x: 0.4 * 300, // Start with normalized offset (dynamic for the card width)
+    y: 0.4 * 300, // Start with normalized offset (dynamic for the card height)
   });
   const [rotation, setRotation] = useState(0);
   const [size, setSize] = useState({ width: 50, height: 50 }); // Initial size
   const [cardSize, setCardSize] = useState({ width: 300, height: 300 }); // Dynamic container size
 
-  const MIN_SIZE = 50; // Minimum size
-  const MAX_SIZE = 200; // Maximum size
-  const minScale = 0.1; // Minimum scale value
-  const maxScale = 1.0; // Maximum scale value
-  const MIN_POSITION = 0.1; // Minimum normalized position offset
+  const MIN_SIZE = 50;
+  const MAX_SIZE = 200;
+  const minScale = 0.1;
+  const maxScale = 1.0;
+  const MIN_POSITION = 0.4;
 
   useEffect(() => {
     setTarget(targetRef.current);
@@ -98,8 +98,7 @@ const ResizableRotatableImages: React.FC<ResizableRotatableImagesProps> = ({
   return (
     <div
       style={{
-        backgroundImage:
-          'url("/assets/transparent-background.png")',
+        backgroundImage: 'url("/assets/transparent-background.png")',
         position: "relative",
         width: `${cardSize.width}px`,
         height: `${cardSize.height}px`,
@@ -156,8 +155,14 @@ const ResizableRotatableImages: React.FC<ResizableRotatableImagesProps> = ({
             const maxTop = cardSize.height - size.height;
 
             const normalizedPosition = {
-              x: Math.min(Math.max(MIN_POSITION * cardSize.width, position.x), maxLeft),
-              y: Math.min(Math.max(MIN_POSITION * cardSize.height, position.y), maxTop),
+              x: Math.min(
+                Math.max(MIN_POSITION * cardSize.width, position.x),
+                maxLeft
+              ),
+              y: Math.min(
+                Math.max(MIN_POSITION * cardSize.height, position.y),
+                maxTop
+              ),
             };
 
             setPosition(normalizedPosition);
