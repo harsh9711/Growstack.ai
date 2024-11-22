@@ -49,14 +49,14 @@ export default function Home() {
     remove_bg_toggle: false,
     user_prompt: "",
     favorites_bg_toggle: false,
-    numOfImages: numOfImages | 1
+    numOfImages: numOfImages | 1,
   });
   const initialProductAI: ProductAI = {
     img_url: null,
     remove_bg_toggle: false,
     user_prompt: "",
     favorites_bg_toggle: false,
-    numOfImages: numOfImages | 1
+    numOfImages: numOfImages | 1,
   };
   const [loading, setLoading] = useState(false);
 
@@ -331,7 +331,8 @@ export default function Home() {
                       border: "2px solid #ccc",
                       objectFit: "cover", // Adjusts the image to cover the area without overflow
                       borderRadius: "10px", // Optional: Gives a rounded look to the card
-                      backgroundImage:'url("/assets/transparent-background.png")',
+                      backgroundImage:
+                        'url("/assets/transparent-background.png")',
                       backgroundSize: "contain", // Ensures the background fits within the card
                     }}
                   >
@@ -447,7 +448,7 @@ export default function Home() {
                             setSelectedImages([]);
                             setFinalUrl([]); // Clear selections on reset
                             setNumOfImages(1);
-                            productAI.user_prompt = ""
+                            productAI.user_prompt = "";
                           }}
                           className="text-base bg-white text-red-500 border border-red-500 px-5 py-2 mr-4"
                           type="button"
@@ -506,7 +507,6 @@ export default function Home() {
                               />
                             </svg>
                           </div>
-
                         </>
                       ) : (
                         <div style={{ height: "200px" }}>
@@ -630,8 +630,9 @@ export default function Home() {
 
                 {/* Like/Dislike Button */}
                 <button
-                  className={`absolute top-2 left-2 p-1 rounded-full shadow-md transition-colors duration-200 ${image.favourite ? "text-red-500" : "text-gray-500"
-                    } hover:bg-gray-100`}
+                  className={`absolute top-2 left-2 p-1 rounded-full shadow-md transition-colors duration-200 ${
+                    image.favourite ? "text-red-500" : "text-gray-500"
+                  } hover:bg-gray-100`}
                   onClick={() => updateFavourite(image, image.favourite)}
                   aria-label={`${likedImages[image.id] ? "Unlike" : "Like"} image with ID ${image.id}`}
                 >

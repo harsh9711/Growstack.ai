@@ -94,9 +94,10 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
     const [error, setError] = useState(false);
     const [emptyPrompt, isEmptyPrompt] = useState("");
     const textareaRef = useRef<HTMLTextAreaElement>(null);
+
     const { startRecognition, stopRecognition, textToSpeech } =
       useSpeechRecognition(
-        selectedLanguage,
+        "en-us",
         open,
         (transcript: string) => {
           setInput(transcript);
@@ -447,9 +448,11 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
         toast.error("No previous prompt to regenerate.");
       }
     };
+
     useImperativeHandle(ref, () => ({
       handleRegenerate,
     }));
+
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
       if (isLoading) return;
       if (e.key === "Enter" && !e.shiftKey) {
@@ -747,6 +750,14 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
               open={open}
               isAnimating={isAnimating}
               handleOpenChange={handleOpenChange}
+              startRecognition={() => {
+                setIsAnimating(true);
+                startRecognition();
+              }}
+              stopRecognition={() => {
+                setIsAnimating(false);
+                stopRecognition();
+              }}
             />
           </div>
           <button

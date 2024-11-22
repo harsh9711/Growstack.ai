@@ -10,7 +10,7 @@ declare global {
 
 const useSpeechRecognition = (
   language: string,
-  isMicOpen: any,
+  isMicOpen: boolean,
   onResult: (transcript: string) => void,
   onEndCallback: () => void
 ) => {
@@ -34,23 +34,36 @@ const useSpeechRecognition = (
 
       recognition.onend = () => {
         setIsRecording(false);
+        onEndCallback();
       };
 
       recognition.onerror = (event: any) => {
         setIsRecording(false);
-        toast.error(event.error);
+        let errorMessage = "An error occurred.";
+        switch (event.error) {
+          case "no-speech":
+            errorMessage = "No speech detected. Please try again.";
+            break;
+          case "audio-capture":
+            errorMessage = "Microphone not found. Please check your device.";
+            break;
+          case "not-allowed":
+            errorMessage = "Microphone access denied.";
+            break;
+          default:
+            errorMessage = event.error;
+        }
+        toast.error(errorMessage);
       };
 
       recognition.onresult = (event: any) => {
-        const transcript = event.results[0][0].transcript;
+        const transcript = event.results[0][0].transcript.trim();
         onResult(transcript);
       };
-    } else {
-      if (isMicOpen) {
-        toast.error("Speech recognition not supported in this browser.", {
-          duration: Infinity,
-        });
-      }
+    } else if (isMicOpen) {
+      toast.error("Speech recognition not supported in this browser.", {
+        duration: Infinity,
+      });
     }
   }, [language, onResult, onEndCallback, isMicOpen]);
 
@@ -107,6 +120,14 @@ const useSpeechRecognition = (
       toast.error("Text-to-speech not supported in this browser.");
     }
   };
+
+  useEffect(() => {
+    if (isMicOpen) {
+      startRecognition();
+    } else {
+      stopRecognition();
+    }
+  }, [isMicOpen]);
 
   return { isRecording, startRecognition, stopRecognition, textToSpeech };
 };

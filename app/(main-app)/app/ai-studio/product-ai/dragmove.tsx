@@ -98,8 +98,7 @@ const ResizableRotatableImages: React.FC<ResizableRotatableImagesProps> = ({
   return (
     <div
       style={{
-        backgroundImage:
-          'url("/assets/transparent-background.png")',
+        backgroundImage: 'url("/assets/transparent-background.png")',
         position: "relative",
         width: `${cardSize.width}px`,
         height: `${cardSize.height}px`,
@@ -156,8 +155,14 @@ const ResizableRotatableImages: React.FC<ResizableRotatableImagesProps> = ({
             const maxTop = cardSize.height - size.height;
 
             const normalizedPosition = {
-              x: Math.min(Math.max(MIN_POSITION * cardSize.width, position.x), maxLeft),
-              y: Math.min(Math.max(MIN_POSITION * cardSize.height, position.y), maxTop),
+              x: Math.min(
+                Math.max(MIN_POSITION * cardSize.width, position.x),
+                maxLeft
+              ),
+              y: Math.min(
+                Math.max(MIN_POSITION * cardSize.height, position.y),
+                maxTop
+              ),
             };
 
             setPosition(normalizedPosition);
