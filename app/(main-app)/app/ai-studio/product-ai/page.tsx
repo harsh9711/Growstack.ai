@@ -83,39 +83,6 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [generatedText, setGeneratedText] = useState<string>("");
 
-  // Handle change in user prompt
-
-  // Call API to generate prompt
-  // const generatePrompt = async () => {
-  //   console.log("data.generatedText",productAI.user_prompt);
-
-  //   const response = await fetch(
-  //     "http://localhost:8081/ai/api/v1/generate/aitext",
-  //     {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization:
-  //           "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2VtYWlsIjoidGVzdGVyMUBncm93c3RhY2suYWkiLCJ1c2VyX3R5cGUiOiJBRE1JTiIsImlkIjoiNjcwY2JkMjEwMjg5MzBlMjVkYTczNWE4IiwidXNlcl9uYW1lIjoidGVzdGVyMTY3IiwiYXZhdGFyIjoiaHR0cHM6Ly9ncm93c3RhY2thaS5zMy5hbWF6b25hd3MuY29tL2F2YXRhci11c2VyLnBuZyIsInBsYW5faWQiOiJ1bmRlZmluZWQiLCJwbGFuX3VzYWdlIjp7InVzYWdlIjp7ImFpX2JhY2tncm91bmRfZ2VuZXJhdG9yX2NyZWRpdHMiOi02OCwibm9fb2ZfdGV4dF90b19hdmF0YXIiOi0yMX0sIl9pZCI6IjY3MTNkYmE3NDcyMmFhNjJiNjU1OThiMSIsInBsYW5faWQiOiJ1bmRlZmluZWQiLCJ1c2VyX2lkIjoiNjcwY2JkMjEwMjg5MzBlMjVkYTczNWE4IiwiX192IjowLCJjcmVhdGVkQXQiOiIyMDI0LTEwLTE5VDE2OjE3OjQzLjgzMFoiLCJpc0ZyZWVDb3Vwb25BcHBsaWVkIjpmYWxzZSwidXBkYXRlZEF0IjoiMjAyNC0xMS0yMFQwNTo0MTo1Ny45NzdaIiwidXNhZ2VfYW1vdW50IjowfSwiaWF0IjoxNzMyMDkzODM2LCJleHAiOjE3MzI2OTg2MzZ9.KVBpGi7mHbpCpq41fU7I1r5QSFFnc776T_JaSK-pzWg",
-  //       },
-  //       body: JSON.stringify({
-  //         userPrompt: productAI.user_prompt,
-  //         model: "gpt-4",
-  //       }),
-  //     }
-  //   );
-
-  //   console.log("response", response);
-
-  //   if (response.ok) {
-  //     const data = await response.json();
-  //     console.log("data.generatedText", data.generatedText);
-  //     setGeneratedText(data.generatedText); // assuming response contains a field `generatedText`
-  //   } else {
-  //     console.error("Error generating text");
-  //   }
-  // };
-
   const generatePrompt = async () => {
     try {
       setProductAI(prevState => ({
@@ -126,7 +93,7 @@ export default function Home() {
 
       // Send request to API
       const response: any = await instance.post(
-        "http://localhost:8081/ai/api/v1/generate/aibackdropregenerate",
+        `/ai/api/v1/generate/aibackdropregenerate`,
         {
           user_prompt: productAI.user_prompt
         }
@@ -146,73 +113,11 @@ export default function Home() {
     }
   };
 
-  // const generatePrompt = async () => {
-  //   setIsGenerating(true);
-
-  //   try {
-  //     const token = getCookie("token");
-  //     const url = `https://testing.growstack.ai/ai/api/v1/generate/aitext`;
-
-  //     // Using EventSource with Authorization header is not supported directly.
-  //     // You may need a polyfill like 'eventsource-polyfill' for this.
-  //     const eventSource = new EventSource(url, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       withCredentials: true, // Optional, depends on server CORS configuration
-  //     });
-
-  //     let accumulatedResponse = "";
-
-  //     eventSource.onmessage = (event: MessageEvent) => {
-  //       let imageUrl = "";
-  //       const chunk = event.data;
-
-  //       try {
-  //         const parsedData = parseJsonString(chunk);
-  //         const msg = parsedData?.text || "";
-  //         accumulatedResponse += msg;
-
-  //         // Extract image URL from markdown if present
-  //         const imageMarkdownRegex = /!\[.*?\]\((https?:\/\/[^\s]+)\)/;
-  //         const imageMatch = chunk.match(imageMarkdownRegex);
-
-  //         if (imageMatch && imageMatch[1]) {
-  //           imageUrl = imageMatch[1];
-  //         }
-
-  //         // Callback for sending accumulated data
-  //         onSend(accumulatedResponse, "assistant", imageUrl);
-  //       } catch (parseError) {
-  //         console.error("Error parsing event chunk:", parseError);
-  //       }
-  //     };
-
-  //     eventSource.onerror = (error: any) => {
-  //       console.error("EventSource error:", error);
-  //       toast.error("Stream error occurred. Please try again.");
-  //       eventSource.close();
-  //       setIsGenerating(false);
-  //     };
-
-  //     eventSource.addEventListener("end", () => {
-  //       if (fromMic) {
-  //         textToSpeech(accumulatedResponse);
-  //       }
-  //       eventSource.close();
-  //       setIsGenerating(false);
-  //     });
-  //   } catch (error) {
-  //     console.error("Error setting up EventSource:", error);
-  //     toast.error("Error setting up the stream. Please try again.");
-  //     setIsGenerating(false);
-  //   }
-  // };
 
   const fetchHistory = async (page = 1, limit = 10) => {
     try {
       const response = await instance.get(
-        `${API_URL}/users/api/v1/docs?page=${page}&limit=${limit}&category=image&favourite=${favImage}`
+        `/users/api/v1/docs?page=${page}&limit=${limit}&category=image&favourite=${favImage}`
       );
       const { docs, totalPages } = response.data.data;
       setHistory(
@@ -255,7 +160,7 @@ export default function Home() {
       const { img_url, user_prompt, remove_bg_toggle, numOfImages } = productAI;
       setLoading(true);
       const response = await instance.post(
-        `${API_URL}/ai/api/v1/products/bg-remover`,
+        `/ai/api/v1/products/bg-remover`,
         {
           img_url,
           user_prompt,
@@ -284,7 +189,7 @@ export default function Home() {
   const updateFavourite = async (imageID: any, booleanValue: boolean) => {
     try {
       const response = await instance.put(
-        `${API_URL}/users/api/v1/docs/${imageID.id}`,
+        `/users/api/v1/docs/${imageID.id}`,
         { favourite: booleanValue ? false : true }
       );
     } catch (error) {
@@ -329,7 +234,7 @@ export default function Home() {
     try {
       setLoading(true);
       const response = await instance.post(
-        `${API_URL}/ai/api/v1/products/bg-remover`,
+        `/ai/api/v1/products/bg-remover`,
         {
           img_url,
           user_prompt,
@@ -357,11 +262,7 @@ export default function Home() {
   const handleDownload = async (image: any) => {
     try {
       setLoading(true);
-
-      // Replace with your own image or API endpoint
       const response = await fetch(image);
-      console.log("response", response);
-
       if (!response.ok) {
         throw new Error("Failed to fetch data");
       }
@@ -452,7 +353,7 @@ export default function Home() {
       setFileUploadLoading(true);
       try {
         const response = await instance.post(
-          `${API_URL}/users/api/v1/file/upload`,
+          `/users/api/v1/file/upload`,
           formData
         );
         const fileUrl = response.data.data.fileUrl;
@@ -944,8 +845,6 @@ export default function Home() {
                 ))}
               </div>
 
-              {/* Pagination Controls */}
-              {/* Add Pagination Component */}
               <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}
