@@ -154,8 +154,8 @@ export default function Home() {
         user_prompt,
         remove_bg_toggle,
         numOfImages,
-        normalizedPosition, // Send normalized position
-        normalizedScale, // Send normalized scale
+        normalizedPosition,
+        normalizedScale,
       });
 
       const result_url = response.data.data.originalUrls;
