@@ -180,7 +180,7 @@ export default function Workflows() {
           </div>
           <button
             disabled={isCreateWorkflowReqPending}
-            className="w-full max-w-fit bg-primary-green text-white sheen transition duration-500 px-5 h-12 rounded-xl flex items-center gap-2 whitespace-nowrap"
+            className="w-full max-w-fit bg-[#2DA771] text-white sheen transition duration-500 px-5 h-12 rounded-xl flex items-center gap-2 whitespace-nowrap"
             onClick={() => {
               setClickedBtnIdx(0);
               createWorkflow();
@@ -213,7 +213,7 @@ export default function Workflows() {
               </p>
               <div className="flex space-x-3 items-center">
                 <Link href={ALL_ROUTES.WORKFLOW_BUILDER}>
-                  <button className="w-full max-w-fit bg-primary-green text-white sheen transition duration-500 px-5 h-14 rounded-xl flex items-center gap-2 whitespace-nowrap">
+                  <button className="w-full max-w-fit bg-[#2DA771] text-white sheen transition duration-500 px-5 h-14 rounded-xl flex items-center gap-2 whitespace-nowrap">
                     <WorkflowsIcon size={20} />
                     <WorkflowsIcon2 size={20} />
                     Explore prebuilt workflows
@@ -221,7 +221,7 @@ export default function Workflows() {
                 </Link>
                 <button
                   disabled={isCreateWorkflowReqPending}
-                  className="w-full max-w-fit bg-primary-green text-white sheen transition duration-500 px-5 h-14 rounded-xl flex items-center gap-2 whitespace-nowrap"
+                  className="w-full max-w-fit bg-[#2DA771] text-white sheen transition duration-500 px-5 h-14 rounded-xl flex items-center gap-2 whitespace-nowrap"
                   onClick={() => {
                     setClickedBtnIdx(1);
                     createWorkflow();
@@ -246,7 +246,7 @@ export default function Workflows() {
                   <h1 className="text-xl font-semibold">{workflow.name}</h1>
                   <p className="text-sm">
                     Last edited{" "}
-                    <span className="font-medium text-primary-green">
+                    <span className="font-medium text-[#2DA771]">
                       about {formatUpdatedAt(workflow.updatedAt)}
                     </span>
                   </p>
@@ -255,7 +255,7 @@ export default function Workflows() {
                   <button
                     key={workflow._id}
                     onClick={() => runWorkflow(workflow.workflow_id)}
-                    className="flex items-center gap-3 rounded-xl h-12 bg-primary-green sheen px-6 text-white text-[14px]"
+                    className="flex items-center gap-3 rounded-xl h-12 bg-[#2DA771] sheen px-6 text-white text-[14px]"
                   >
                     <FaPlay size={12} />
                     Run workflow
@@ -337,7 +337,7 @@ export default function Workflows() {
               Cancel
             </button>
             <Link
-              className="bg-primary-green text-white text-nowrap py-2 px-6 rounded-md transition duration-300 hover:bg-green-600"
+              className="bg-[#2DA771] text-white text-nowrap py-2 px-6 rounded-md transition duration-300 hover:bg-green-600"
               href="/account/billings/settings"
             >
               Add Credit

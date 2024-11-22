@@ -38,59 +38,81 @@ function FuturePlans() {
                 <div className="conference-timeline-content">
                   <div className="timeline-article timeline-article-bottom green">
                     <div className="meta-date">
-                      <span>May 2025</span>
+                      <span className="text-[#00B783] ">May 25</span>
                     </div>
-                    <div className="content-box">
-                      <h3>May 2025: GTM Advanced Capabilities</h3>
-                      <ul>
-                        <li>Agentic Workflows</li>
-                        <li>AI-Powered Calling</li>
+                    <div className="content-box1">
+                      <h3 className="px-4 py-2">May 2025</h3>
+                      <div className="text-white w-full px-6 p-2 bg-[#8CBD3B]">
+                        GTM Verticals
+                      </div>
+                      <ul className="mt-2 grid grid-cols-2 gap-x-6 text-black font-bold ">
+                        <li>AAI Agri</li>
+                        <li> AI Retail </li>
+                        <li>AI Manufacturing</li>
+                        <li> 2000+ Workflows</li>
+                        <li> ++Work Offline++ </li>
                         {/* <li>Offline Mode Support</li> */}
                       </ul>
                       <br />
-                      <h3>Offline Mode Support</h3>
+                      <h3 className="text-black px-4 py-0.5">
+                        Offline Mode Support
+                      </h3>
                     </div>
                   </div>
                   <div className="timeline-article timeline-article-top froze">
                     <div className="meta-date">
-                      <span>Feb 2025</span>
+                      <span>Dec 24</span>
                     </div>
-                    <div className="content-box">
-                      <h3>Feb 2025: GTM Marketing</h3>
-                      <ul>
-                        <li>Enterprise Launch</li>
-                        <li>AI Magic Ads</li>
-                        <li>AI-Assisted Lead Nurturing</li>
-                        <li>AI-Assisted LinkedIn Automation</li>
-                        <li>Integration with Sales Cloud</li>
-                        {/* <li</li> */}
+                    <div className="content-box2">
+                      <h3 className="px-4 py-2  text-[#00B783]">
+                        December 2024
+                      </h3>
+                      <div className="text-white w-full px-6 p-2 bg-[#06D2C2]">
+                        GTM Business
+                      </div>
+                      <ul className="mt-2  text-black font-bold ">
+                        <li>AI Finance</li>
+                        <li>AI Customer Service</li>
+                        <li>500+ Workflow Automation</li>
+                        <li>++ Desktop Apps ++</li>
                       </ul>
-                      <br /> <h3>Desktop Apps Release</h3>
+                      <br />{" "}
+                      <h3 className="text-black px-4 py-4">
+                        Desktop Apps Release
+                      </h3>
                     </div>
                   </div>
                   <div className="timeline-article timeline-article-bottom pink">
                     <div className="meta-date">
-                      <span>Dec 2024</span>
+                      <span>Oct 24</span>
                     </div>
-                    <div className="content-box">
-                      <h3>Dec 2024: GTM LLM</h3>
-                      <ul>
-                        <li>GrowStack LLM</li>
-                        <li>AI Parallel Workflows</li>
-                        <li></li>
+                    <div className="content-box3">
+                      <h3 className="text-[#00B783] p-4">October 2024</h3>{" "}
+                      <div className="text-white w-full px-6 p-2 bg-[#D75395]">
+                        GTM Sales
+                      </div>
+                      <ul className="grid  mt-2 grid-cols-2 gap-x-8 text-black font-bold ">
+                        <li>AI-Assisted Lead Nurturing</li>
+                        <li>AI Magic Ads</li>
+                        <li>200+ Workflow Automations</li>
+                        <li>++ Chrome Extension ++</li>
                       </ul>
                       <br />
-                      <h3>Mobile App Launch</h3>
+                      <h3 className="text-black px-4 py-2 ">
+                        Mobile App Launch
+                      </h3>
                     </div>
                   </div>
                   <div className="timeline-article timeline-article-top yellow">
                     <div className="meta-date">
-                      <span>Oct 2024</span>
+                      <span>Jul / Aug 24</span>
                     </div>
-                    <div className="content-box">
-                      <h3>Oct 2024: GTM Brand Awareness</h3>
-                      <ul>
-                        <li></li>
+                    <div className="content-box4">
+                      <h3 className="text-[#00B783] p-4">July/August 2024</h3>{" "}
+                      <div className="text-white w-full px-6 p-2 bg-[#E7C226]">
+                        GTM Marketing
+                      </div>
+                      <ul className="mt-2 text-black font-bold  ">
                         <li>AI Chat with Brand Integration</li>
                         <li>Secured Chat & Web Access</li>
                         <li>Workflow Builder</li>
@@ -99,16 +121,20 @@ function FuturePlans() {
                         <li> Scheduler, Conversation, Analytics</li>
                         <li>Chrome Extension Release</li>
                       </ul>
-                      <br /> <h3>Public Launch</h3>
+                      <br />{" "}
+                      <h3 className="text-black px-4 py-2 ">Public Launch</h3>
                     </div>
                   </div>
                   <div className="timeline-article timeline-article-bottom dGreen">
                     <div className="meta-date">
                       <span>May 24</span>
                     </div>
-                    <div className="content-box">
-                      <h3>May 24: GTM Content Generation</h3>{" "}
-                      <ul>
+                    <div className="content-box5">
+                    <h3 className="text-[#00B783] p-4">May 2024</h3>{" "}
+                      <div className="text-white w-full px-6 p-2 bg-[#00B783]">
+                        GTM Marketing
+                      </div>
+                      <ul className="grid grid-cols-3 mt-2 gap-x-8 text-black font-bold ">
                         <li>AI Chat</li>
                         <li>AI Content wizard</li>
                         <li>AI Assistants</li>
@@ -116,7 +142,7 @@ function FuturePlans() {
                         <li>Web App Launch</li>
                       </ul>
                       <br />
-                      <h3 className="text-[12px]">
+                      <h3 className="text-black px-4 py-2 ">
                         Friends & Family, Investor Preview
                       </h3>{" "}
                     </div>

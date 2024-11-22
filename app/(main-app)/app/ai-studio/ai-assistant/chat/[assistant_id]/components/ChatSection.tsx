@@ -4,11 +4,17 @@ import ChatMessages from "./ChatMessages";
 import { Assistant, Chat, Conversation } from "../../../components/types";
 
 interface ChatSectionProps {
-  conversation: Conversation;
+  conversation: Conversation | any;
   assistant: Assistant;
   selectedLanguage: string;
   selectedAiModel: string;
   setMessagesData: any;
+  newChat: boolean;
+  setNewChat: (value: boolean) => void;
+  convId: string;
+  setMessages:(value: any) => void;
+  messages:any
+  setConvId: (value: string) => void;
 }
 
 const ChatSection: React.FC<ChatSectionProps> = ({
@@ -17,12 +23,20 @@ const ChatSection: React.FC<ChatSectionProps> = ({
   selectedLanguage,
   selectedAiModel,
   setMessagesData,
+  newChat,
+  setNewChat,
+  convId,
+  messages,
+  setConvId,
+  setMessages
 }) => {
-  const [messages, setMessages] = useState<Chat[]>([]);
+  // const [messages, setMessages] = useState<Chat[]>([]);
 
   useEffect(() => {
+    if (conversation) {
     setMessages(conversation.chats);
-  }, [conversation.chats]);
+    }
+  }, [conversation]);
 
   useEffect(() => {
     setMessagesData(messages);
@@ -35,12 +49,13 @@ const ChatSection: React.FC<ChatSectionProps> = ({
       _id: new Date().toISOString(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      chats: undefined,
     };
-    setMessages(prevMessages => [...prevMessages, newMessage]);
+    setMessages((prevMessages: any) => [...prevMessages, newMessage]);
   };
 
   const updateMessage = (prompt: string, response: string) => {
-    setMessages(prevMessages => {
+    setMessages((prevMessages: any) => {
       const messageIndex = prevMessages.length - 1;
       const updatedMessages = [...prevMessages];
       updatedMessages[messageIndex].response = response;
@@ -67,6 +82,10 @@ const ChatSection: React.FC<ChatSectionProps> = ({
           addMessage={addMessage}
           updateMessage={updateMessage}
           selectedLanguage={selectedLanguage}
+          newChat={newChat}
+          setNewChat={setNewChat}
+          convId={convId}
+
         />
       </div>
     </div>
