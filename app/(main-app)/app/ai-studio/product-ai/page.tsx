@@ -8,8 +8,23 @@ import toast from "react-hot-toast";
 import { FileRejection } from "react-dropzone";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
+import Pagination from "./Pagination";
+import { getCookie } from "cookies-next";
+
 import ResizableRotatableImage from "./dragmove"; // Import the new component
 import { CloseIcon, MessageIcon2 } from "@/components/svgs";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { DialogTitle } from "@radix-ui/react-dialog";
+import { GenAi, ImgVector } from "@/components/svgs";
+import { parseJsonString } from "@/lib/utils";
+
 interface ProductAI {
   img_url: string | null;
   remove_bg_toggle: boolean;
@@ -37,6 +52,12 @@ export default function Home() {
   const [result, setResult] = useState<string[] | null>(null);
   const [finalUrl, setFinalUrl] = useState<string[]>([]);
   const [scale, setScale] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [openPostModel, setOpenPostModel] = useState(false);
+  const [page, setPage] = useState(1);
+  const limit = 10;
+
   const [normalizedPosition, setNormalizedPosition] = useState({
     x: 0.1,
     y: 0.1,
@@ -44,40 +65,209 @@ export default function Home() {
   const [normalizedScale, setNormalizedScale] = useState("0.10");
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const [favImage, setFavImage] = useState<boolean>(false);
+  const [isGenerating, setIsGenerating] = useState(false);
   const [productAI, setProductAI] = useState<ProductAI>({
     img_url: null,
     remove_bg_toggle: false,
     user_prompt: "",
     favorites_bg_toggle: false,
-    numOfImages: numOfImages | 1
+    numOfImages: numOfImages | 1,
   });
   const initialProductAI: ProductAI = {
     img_url: null,
     remove_bg_toggle: false,
     user_prompt: "",
     favorites_bg_toggle: false,
-    numOfImages: numOfImages | 1
+    numOfImages: numOfImages | 1,
   };
   const [loading, setLoading] = useState(false);
+  const [generatedText, setGeneratedText] = useState<string>("");
 
-  const fetchHistory = async () => {
+  // Handle change in user prompt
+
+  // Call API to generate prompt
+  // const generatePrompt = async () => {
+  //   console.log("data.generatedText",productAI.user_prompt);
+
+  //   const response = await fetch(
+  //     "http://localhost:8081/ai/api/v1/generate/aitext",
+  //     {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization:
+  //           "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2VtYWlsIjoidGVzdGVyMUBncm93c3RhY2suYWkiLCJ1c2VyX3R5cGUiOiJBRE1JTiIsImlkIjoiNjcwY2JkMjEwMjg5MzBlMjVkYTczNWE4IiwidXNlcl9uYW1lIjoidGVzdGVyMTY3IiwiYXZhdGFyIjoiaHR0cHM6Ly9ncm93c3RhY2thaS5zMy5hbWF6b25hd3MuY29tL2F2YXRhci11c2VyLnBuZyIsInBsYW5faWQiOiJ1bmRlZmluZWQiLCJwbGFuX3VzYWdlIjp7InVzYWdlIjp7ImFpX2JhY2tncm91bmRfZ2VuZXJhdG9yX2NyZWRpdHMiOi02OCwibm9fb2ZfdGV4dF90b19hdmF0YXIiOi0yMX0sIl9pZCI6IjY3MTNkYmE3NDcyMmFhNjJiNjU1OThiMSIsInBsYW5faWQiOiJ1bmRlZmluZWQiLCJ1c2VyX2lkIjoiNjcwY2JkMjEwMjg5MzBlMjVkYTczNWE4IiwiX192IjowLCJjcmVhdGVkQXQiOiIyMDI0LTEwLTE5VDE2OjE3OjQzLjgzMFoiLCJpc0ZyZWVDb3Vwb25BcHBsaWVkIjpmYWxzZSwidXBkYXRlZEF0IjoiMjAyNC0xMS0yMFQwNTo0MTo1Ny45NzdaIiwidXNhZ2VfYW1vdW50IjowfSwiaWF0IjoxNzMyMDkzODM2LCJleHAiOjE3MzI2OTg2MzZ9.KVBpGi7mHbpCpq41fU7I1r5QSFFnc776T_JaSK-pzWg",
+  //       },
+  //       body: JSON.stringify({
+  //         userPrompt: productAI.user_prompt,
+  //         model: "gpt-4",
+  //       }),
+  //     }
+  //   );
+
+  //   console.log("response", response);
+
+  //   if (response.ok) {
+  //     const data = await response.json();
+  //     console.log("data.generatedText", data.generatedText);
+  //     setGeneratedText(data.generatedText); // assuming response contains a field `generatedText`
+  //   } else {
+  //     console.error("Error generating text");
+  //   }
+  // };
+
+  const generatePrompt = async () => {
+    try {
+      setProductAI(prevState => ({
+        ...prevState,
+        user_prompt: "",
+      }));
+      setIsGenerating(true);
+
+      // Send request to API
+      const response: any = await instance.post(
+        "https://testing.growstack.ai/ai/api/v1/generate/aitext",
+        {
+          userPrompt: productAI.user_prompt,
+          model: "gpt-4",
+        },
+        {
+          responseType: "stream", // Ensure Axios understands you expect a stream
+        }
+      );
+
+      // Access the response body as a stream
+      const reader = response.data.getReader();
+      const decoder = new TextDecoder();
+      let done = false;
+
+      while (!done) {
+        const { value, done: readerDone } = await reader.read();
+        done = readerDone;
+
+        if (value) {
+          const decodedText = decoder.decode(value, { stream: true });
+
+          // Update `user_prompt` incrementally
+          setProductAI(prevState => ({
+            ...prevState,
+            user_prompt: prevState.user_prompt + decodedText,
+          }));
+        }
+      }
+
+      setIsGenerating(false);
+    } catch (error) {
+      console.error("Error during text generation:", error);
+      setIsGenerating(false);
+    }
+  };
+
+  // const generatePrompt = async () => {
+  //   setIsGenerating(true);
+
+  //   try {
+  //     const token = getCookie("token");
+  //     const url = `https://testing.growstack.ai/ai/api/v1/generate/aitext`;
+
+  //     // Using EventSource with Authorization header is not supported directly.
+  //     // You may need a polyfill like 'eventsource-polyfill' for this.
+  //     const eventSource = new EventSource(url, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //       withCredentials: true, // Optional, depends on server CORS configuration
+  //     });
+
+  //     let accumulatedResponse = "";
+
+  //     eventSource.onmessage = (event: MessageEvent) => {
+  //       let imageUrl = "";
+  //       const chunk = event.data;
+
+  //       try {
+  //         const parsedData = parseJsonString(chunk);
+  //         const msg = parsedData?.text || "";
+  //         accumulatedResponse += msg;
+
+  //         // Extract image URL from markdown if present
+  //         const imageMarkdownRegex = /!\[.*?\]\((https?:\/\/[^\s]+)\)/;
+  //         const imageMatch = chunk.match(imageMarkdownRegex);
+
+  //         if (imageMatch && imageMatch[1]) {
+  //           imageUrl = imageMatch[1];
+  //         }
+
+  //         // Callback for sending accumulated data
+  //         onSend(accumulatedResponse, "assistant", imageUrl);
+  //       } catch (parseError) {
+  //         console.error("Error parsing event chunk:", parseError);
+  //       }
+  //     };
+
+  //     eventSource.onerror = (error: any) => {
+  //       console.error("EventSource error:", error);
+  //       toast.error("Stream error occurred. Please try again.");
+  //       eventSource.close();
+  //       setIsGenerating(false);
+  //     };
+
+  //     eventSource.addEventListener("end", () => {
+  //       if (fromMic) {
+  //         textToSpeech(accumulatedResponse);
+  //       }
+  //       eventSource.close();
+  //       setIsGenerating(false);
+  //     });
+  //   } catch (error) {
+  //     console.error("Error setting up EventSource:", error);
+  //     toast.error("Error setting up the stream. Please try again.");
+  //     setIsGenerating(false);
+  //   }
+  // };
+
+  const fetchHistory = async (page = 1, limit = 10) => {
     try {
       const response = await instance.get(
-        `${API_URL}/users/api/v1/docs?page=1&limit=10&category=image&favourite=${favImage}`
+        `${API_URL}/users/api/v1/docs?page=${page}&limit=${limit}&category=image&favourite=${favImage}`
       );
-      const data = response.data.data.docs.map((item: any) => ({
-        id: item._id,
-        favourite: item.favourite,
-        doc_name: item.doc_name,
-        doc_type: item.doc_type,
-        img_url: item.doc_content.img_url,
-        updatedAt: item.updatedAt,
-      }));
-      setHistory(data);
+      const { docs, totalPages } = response.data.data;
+      setHistory(
+        docs.map((item: any) => ({
+          id: item._id,
+          favourite: item.favourite,
+          doc_name: item.doc_name,
+          doc_type: item.doc_type,
+          img_url: item.doc_content.img_url,
+          updatedAt: item.updatedAt,
+        }))
+      );
+      setTotalPages(totalPages);
+      setCurrentPage(page);
     } catch (error) {
       console.error("Error fetching history:", error);
       toast.error("Failed to fetch history");
     }
+  };
+  useEffect(() => {
+    fetchHistory(currentPage);
+  }, [currentPage]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+  const handleGenerateWithoutBGRemove = async () => {
+    setProductAI(prevState => ({
+      ...prevState,
+      remove_bg_toggle: false,
+    }));
+  };
+
+  const handleContinueWithBGRemove = async () => {
+    setProductAI(prevState => ({
+      ...prevState,
+      remove_bg_toggle: true,
+    }));
   };
   const updateFavourite = async (imageID: any, booleanValue: boolean) => {
     try {
@@ -89,7 +279,7 @@ export default function Home() {
       console.error("Error fetching history:", error);
       toast.error("Failed to fetch history");
     } finally {
-      fetchHistory();
+      fetchHistory(page, limit);
     }
   };
   const handleSubmit = async (event: React.FormEvent) => {
@@ -108,6 +298,11 @@ export default function Home() {
     // Log the normalized position and scale in the submit function
     console.log("Normalized Position:", normalizedPosition);
     console.log("Normalized Scale:", normalizedScale);
+    if (!remove_bg_toggle) {
+      // Open dialog if remove_bg_toggle is false
+      setOpenPostModel(true);
+      return;
+    }
 
     if (!img_url) {
       toast.error("Please upload an image.");
@@ -161,9 +356,14 @@ export default function Home() {
 
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
+
+      // Get the current date and time in a readable format (e.g., YYYY-MM-DD_HH-MM-SS)
+      const now = new Date();
+      const timestamp = now.toISOString().replace(/T/, "_").replace(/\..+/, ""); // Formats like: "2024-11-21_12-34-56"
+
       const link = document.createElement("a");
       link.href = url;
-      link.download = `GrowStackAIBackdrop.png`; // You can adjust the file name as needed
+      link.download = `GrowStackAIBackdrop_${timestamp}.png`; // Include timestamp in filename
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -331,7 +531,8 @@ export default function Home() {
                       border: "2px solid #ccc",
                       objectFit: "cover", // Adjusts the image to cover the area without overflow
                       borderRadius: "10px", // Optional: Gives a rounded look to the card
-                      backgroundImage:'url("/assets/transparent-background.png")',
+                      backgroundImage:
+                        'url("/assets/transparent-background.png")',
                       backgroundSize: "contain", // Ensures the background fits within the card
                     }}
                   >
@@ -341,15 +542,31 @@ export default function Home() {
               </div>
             </div>
             <div>
-              <div className="pb-2 pt-4 text-sx sx:text-base">
-                <p>Describe the scene around your product</p>
+              <div>
+                <div className="pb-2 pt-4 text-sx sx:text-base">
+                  <p>Describe the scene around your product</p>
+                </div>
+                <textarea
+                  className="w-full p-2 text-sm sm:text-base border border-gray-300 rounded-lg"
+                  placeholder="Describe the scene around your product..."
+                  value={productAI.user_prompt}
+                  onChange={handlePromptChange}
+                  disabled={isGenerating}
+                />
+                <button
+                  className="mt-4 bg-blue-500 text-white p-2 rounded"
+                  onClick={generatePrompt}
+                  disabled={isGenerating}
+                >
+                  {isGenerating ? "Generating..." : "Generate Prompt"}
+                </button>
               </div>
-              <textarea
-                className="w-full p-2 text-sm sm:text-base border border-gray-300 rounded-lg"
-                placeholder="Describe the scene around your product..."
-                value={productAI.user_prompt}
-                onChange={handlePromptChange}
-              />
+              {generatedText && (
+                <div className="mt-4">
+                  <h3>Generated Prompt:</h3>
+                  <p>{generatedText}</p>
+                </div>
+              )}
             </div>
             <div>
               <div className="text-md sm:text-m mb-2 mt-2">Try an example</div>
@@ -391,6 +608,109 @@ export default function Home() {
               </button>
             </div>
           </form>
+          {/* <Dialog open={openPostModel} onOpenChange={setOpenPostModel}>
+            <DialogContent
+              showCloseButton
+              className="w-[498px] h-auto p-4 border-0 max-w-none"
+            >
+              {loading && (
+                <div className="absolute z-50 inset-0 flex justify-center items-center">
+                  <div className="spinner-border" role="status"></div>
+                  Loading...
+                </div>
+              )}
+              <DialogHeader>
+                <DialogTitle className="px-5">
+                  <div className="bg-white py-3 border-b border-[#EBEBEB] text-black font-inter flex justify-between items-center">
+                    Remove Background Toggle is Disabled
+                  </div>
+                </DialogTitle>
+              </DialogHeader>
+
+              <p className="text-gray-700 px-5 py-3">
+                Do you want to continue with the current settings?
+              </p>
+
+              <div className="flex justify-between items-center border-t-2 border-solid border-[#034737] p-3">
+                <button
+                  className="border bg-red-500 rounded-[5px] text-white flex items-center px-4 py-2"
+                  onClick={() => setOpenPostModel(false)} // Close dialog
+                >
+                  Close
+                </button>
+                <button
+                  className="border bg-blue-500 rounded-[5px] text-white flex items-center px-4 py-2"
+                  onClick={handleGenerateWithoutBGRemove}
+                >
+                  Generate without Background Remove
+                </button>
+                <button
+                  className="border bg-green-500 rounded-[5px] text-white flex items-center px-4 py-2"
+                  onClick={handleContinueWithBGRemove}
+                >
+                  Continue with Remove Background Image
+                </button>
+              </div>
+            </DialogContent>
+          </Dialog>{" "} */}
+          <Dialog
+            className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50"
+            open={openPostModel}
+            onOpenChange={setOpenPostModel}
+          >
+            <DialogContent
+              showCloseButton
+              className="w-full max-w-[498px] h-auto p-4 border-0 rounded-lg bg-white"
+            >
+              {loading && (
+                <div className="absolute z-50 inset-0 flex justify-center items-center">
+                  <div className="spinner-border" role="status"></div>
+                  Loading...
+                </div>
+              )}
+              <DialogHeader>
+                <DialogTitle className="px-5">
+                  <div className="bg-white py-3 border-b border-[#EBEBEB] text-black font-inter flex justify-between items-center">
+                    Remove Background Toggle is Disabled
+                  </div>
+                </DialogTitle>
+              </DialogHeader>
+
+              <p className="text-gray-700 px-5 py-3">
+                Do you want to continue with the current settings?
+              </p>
+
+              <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 pt-3 border-t-2 border-solid border-[#034737]">
+                <button
+                  className="flex-1 border bg-red-500 rounded-[5px] text-white px-4 py-2"
+                  onClick={() => {
+                    setOpenPostModel(false); // Close dialog
+                    // Optional: Add additional actions for this button
+                  }}
+                >
+                  Close
+                </button>
+                <button
+                  className="flex-1 border bg-blue-500 rounded-[5px] text-white px-4 py-2"
+                  onClick={() => {
+                    handleGenerateWithoutBGRemove();
+                    setOpenPostModel(false); // Close dialog after action
+                  }}
+                >
+                  Generate without Background Remove
+                </button>
+                <button
+                  className="flex-1 border bg-green-500 rounded-[5px] text-white px-4 py-2"
+                  onClick={() => {
+                    handleContinueWithBGRemove();
+                    setOpenPostModel(false); // Close dialog after action
+                  }}
+                >
+                  Continue with Remove Background Image
+                </button>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </aside>
 
@@ -447,7 +767,7 @@ export default function Home() {
                             setSelectedImages([]);
                             setFinalUrl([]); // Clear selections on reset
                             setNumOfImages(1);
-                            productAI.user_prompt = ""
+                            productAI.user_prompt = "";
                           }}
                           className="text-base bg-white text-red-500 border border-red-500 px-5 py-2 mr-4"
                           type="button"
@@ -506,7 +826,6 @@ export default function Home() {
                               />
                             </svg>
                           </div>
-
                         </>
                       ) : (
                         <div style={{ height: "200px" }}>
@@ -553,7 +872,7 @@ export default function Home() {
                       key={index}
                       src={filename}
                       alt={`Sample Image ${index + 1}`}
-                      className="w-20 h-20 object-cover rounded-lg border border-gray-200 cursor-pointer"
+                      className="w-20 h-20 object-cover rounded-lg border border-gray-200 cursor-pointer hover:shadow-md transition-shadow"
                       onClick={() =>
                         setProductAI(prevState => ({
                           ...prevState,
@@ -575,8 +894,8 @@ export default function Home() {
       >
         <h2 className="text-lg sm:text-m font-semibold mb-4">Creations</h2>
 
+        {/* Upload Section */}
         <div className="mb-4">
-          {/* Upload Image Button */}
           <div
             className="mb-6 flex justify-center items-center"
             style={{ width: "100%", height: "80px" }}
@@ -602,74 +921,87 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex items-center  mb-2">
+        {/* Favorites Switch */}
+        <div className="flex items-center mb-2">
           <Switch
             checked={favImage}
-            onCheckedChange={handleFavoritesSwitchChange}
+            onCheckedChange={checked => {
+              setFavImage(checked);
+              setCurrentPage(1); // Reset to page 1 when toggling favorites
+            }}
           />
           <span className="text-sm sx:text-base font-semibold ml-2">
             Favorites only
           </span>
         </div>
 
+        {/* Image History */}
         {historyLoading ? (
           <p className="text-center text-gray-500">Loading...</p>
         ) : history.length > 0 ? (
-          <div className="grid grid-cols-2 gap-4 h-[90%]">
-            {history.map((image: any) => (
-              <div
-                key={image.id}
-                className="relative bg-gray-200 rounded shadow-md overflow-hidden"
-              >
-                {/* Display Image */}
-                <img
-                  src={image.img_url}
-                  alt={image.doc_name || "Saved Image"}
-                  className="w-full h-36 object-cover"
-                />
-
-                {/* Like/Dislike Button */}
-                <button
-                  className={`absolute top-2 left-2 p-1 rounded-full shadow-md transition-colors duration-200 ${image.favourite ? "text-red-500" : "text-gray-500"
-                    } hover:bg-gray-100`}
-                  onClick={() => updateFavourite(image, image.favourite)}
-                  aria-label={`${likedImages[image.id] ? "Unlike" : "Like"} image with ID ${image.id}`}
+          <div>
+            <div className="grid grid-cols-2 gap-4 h-[80%]">
+              {history.map((image: any) => (
+                <div
+                  key={image.id}
+                  className="relative bg-gray-200 rounded shadow-md overflow-hidden"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill={image.favourite ? "currentColor" : "none"}
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    className="w-6 h-6"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-                    />
-                  </svg>
-                </button>
-
-                {/* Download Tooltip */}
-                <div className="absolute bottom-2 right-2">
+                  <img
+                    src={image.img_url}
+                    alt={image.doc_name || "Saved Image"}
+                    className="w-full h-36 object-cover"
+                  />
                   <button
-                    className="p-2 rounded-full hover:bg-gray-100 transition"
-                    onClick={() => handleDownload(image.img_url)}
-                    aria-label="Download image"
+                    className={`absolute top-2 left-2 p-1 rounded-full shadow-md transition-colors duration-200 ${
+                      image.favourite ? "text-red-500" : "text-gray-500"
+                    } hover:bg-gray-100`}
+                    onClick={() => updateFavourite(image, image.favourite)}
+                    aria-label={`${
+                      image.favourite ? "Unlike" : "Like"
+                    } image with ID ${image.id}`}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
+                      fill={image.favourite ? "currentColor" : "none"}
                       viewBox="0 0 24 24"
-                      fill="currentColor"
-                      className="w-6 h-6 text-gray-600"
+                      stroke="currentColor"
+                      className="w-6 h-6"
                     >
-                      <path d="M5 20h14a1 1 0 001-1v-4h-2v3H6v-3H4v4a1 1 0 001 1zm7-3l-5-5h3V4h4v8h3l-5 5z" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                      />
                     </svg>
                   </button>
+                  <div className="absolute bottom-2 right-2">
+                    <button
+                      className="p-2 rounded-full hover:bg-gray-100 transition"
+                      onClick={() => handleDownload(image.img_url)}
+                      aria-label="Download image"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className="w-6 h-6 text-gray-600"
+                      >
+                        <path d="M5 20h14a1 1 0 001-1v-4h-2v3H6v-3H4v4a1 1 0 001 1zm7-3l-5-5h3V4h4v8h3l-5 5z" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            {/* Pagination Controls */}
+            {/* Add Pagination Component */}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
           </div>
         ) : (
           <p className="text-center text-gray-500">No images found.</p>
