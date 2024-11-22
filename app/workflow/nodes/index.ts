@@ -1,7 +1,6 @@
 import type { NodeTypes } from "@xyflow/react";
 import { PositionLoggerNode } from "./PostitionLoggerNode";
 import { AppNode } from "./types";
-import ChatGptNode from "./ChatGptNode";
 import ShortText from "./ShortText";
 import LongText from "./LongText";
 import Boolean from "./Boolean";
@@ -9,6 +8,13 @@ import Number from "./Number";
 import FileUpload from "./FileUpload";
 import Checklist from "./Checklist";
 import InputNode from "./InputNode";
+import OpenAi from "./OpenAi";
+import Anthropic from "./Anthropic";
+import Gemini from "./Gemini";
+import Perplexity from "./Perplexity";
+import Mistral from "./Mistral";
+import GenerateImage from "./GenerateImage";
+import ReadImage from "./ReadImage";
 
 export const initialNodes: AppNode[] = [
   {
@@ -28,12 +34,18 @@ export const initialNodes: AppNode[] = [
 
 export const nodeTypes = {
   // "position-logger": PositionLoggerNode,
-  "chat-gpt": ChatGptNode,
+  "open-ai": OpenAi,
   "short-text": ShortText,
   "long-text": LongText,
-  boolean: Boolean,
-  number: Number,
+  "boolean": Boolean,
+  "number": Number,
   "file-upload": FileUpload,
-  checklist: Checklist,
+  "checklist": Checklist,
   "input-type": InputNode,
+  "anthropic":Anthropic,
+  "gemini":Gemini,
+  "perplexity":Perplexity,
+  "mistral":Mistral,
+  "generate-image":GenerateImage,
+  "read-image":ReadImage
 } satisfies NodeTypes;

@@ -366,27 +366,27 @@ export const AllData: AllDataState[] = [
     },
   },
   {
-    id: 2,
+    id: 1,
     thirdparty: "",
-    description: "Post Content on Facebok Page",
-    name: "GPT 4O mini",
     category: "llms",
+    description: "",
+    name: "Open AI",
     subCategory: "Fast ai model",
     image: {
-      src: "/images/workflow/chatgpt.svg",
-      alt: "GPT 4O Mini",
+      src: "/svgs/openai.svg",
+      alt: "Growstack LLM",
       width: 35,
       height: 35,
     },
     node: {
       id: Date.now().toString(),
-      type: "chat-gpt",
+      type: "open-ai",
       position: { x: 0, y: 0 },
       data: {
-        label: "GPT 4O Mini",
+        label: "growstack-llm",
         image: {
-          src: "/images/workflow/chatgpt.svg",
-          alt: "GPT 4O Mini",
+          src: "/images/workflow/growtackllm.svg",
+          alt: "Growstack LLM",
           width: 35,
           height: 35,
         },
@@ -404,7 +404,7 @@ export const AllData: AllDataState[] = [
 
   {
     id: 3,
-    name: "Claude 3 Haiku",
+    name: "Anthropic",
     category: "llms",
     thirdparty: "",
     description: "",
@@ -417,7 +417,7 @@ export const AllData: AllDataState[] = [
     },
     node: {
       id: Date.now().toString(),
-      type: "chat-gpt",
+      type: "anthropic",
       position: { x: 0, y: 0 },
       data: {
         label: "Claude 3 Haiku",
@@ -450,7 +450,7 @@ export const AllData: AllDataState[] = [
     },
     node: {
       id: Date.now().toString(),
-      type: "chat-gpt",
+      type: "gemini",
       position: { x: 0, y: 0 },
       data: {
         label: "Gemini 1.5 flash",
@@ -656,7 +656,7 @@ export const AllData: AllDataState[] = [
   },
   {
     id: 10,
-    name: "perplexity",
+    name: "Perplexity",
     category: "llms",
     image: {
       src: "/images/workflow/perplexity.svg",
@@ -666,7 +666,117 @@ export const AllData: AllDataState[] = [
     },
     node: {
       id: Date.now().toString(),
-      type: "chat-gpt",
+      type: "perplexity",
+      position: { x: 0, y: 0 },
+      data: {
+        label: "perplexity",
+        image: {
+          src: "/images/workflow/perplexity.svg",
+          alt: "Perplexity",
+          width: 35,
+          height: 35,
+        },
+        inputs: [
+          {
+            variable_type: "SHORT_TEXT",
+            variable_label: "message",
+            variable_value: "",
+            variable_values: [],
+          },
+        ],
+      },
+    },
+    thirdparty: "",
+    description: "",
+    subCategory: "Smart ai model",
+  },
+
+  {
+    id: 100,
+    name: "Mistral",
+    category: "llms",
+    image: {
+      src: "/svgs/mistral.svg",
+      alt: "mistral",
+      width: 35,
+      height: 35,
+    },
+    node: {
+      id: Date.now().toString(),
+      type: "mistral",
+      position: { x: 0, y: 0 },
+      data: {
+        label: "perplexity",
+        image: {
+          src: "/images/workflow/perplexity.svg",
+          alt: "Perplexity",
+          width: 35,
+          height: 35,
+        },
+        inputs: [
+          {
+            variable_type: "SHORT_TEXT",
+            variable_label: "message",
+            variable_value: "",
+            variable_values: [],
+          },
+        ],
+      },
+    },
+    thirdparty: "",
+    description: "",
+    subCategory: "Smart ai model",
+  },
+  {
+    id: 110,
+    name: "Generate Image",
+    category: "llms",
+    image: {
+      src: "/svgs/generate-image.svg",
+      alt: "Generate Image",
+      width: 35,
+      height: 35,
+    },
+    node: {
+      id: Date.now().toString(),
+      type: "generate-image",
+      position: { x: 0, y: 0 },
+      data: {
+        label: "perplexity",
+        image: {
+          src: "/images/workflow/perplexity.svg",
+          alt: "Perplexity",
+          width: 35,
+          height: 35,
+        },
+        inputs: [
+          {
+            variable_type: "SHORT_TEXT",
+            variable_label: "message",
+            variable_value: "",
+            variable_values: [],
+          },
+        ],
+      },
+    },
+    thirdparty: "",
+    description: "",
+    subCategory: "Smart ai model",
+  },
+
+  {
+    id: 120,
+    name: "Read Image",
+    category: "llms",
+    image: {
+      src: "/svgs/read-image.svg",
+      alt: "Read Image",
+      width: 35,
+      height: 35,
+    },
+    node: {
+      id: Date.now().toString(),
+      type: "read-image",
       position: { x: 0, y: 0 },
       data: {
         label: "perplexity",

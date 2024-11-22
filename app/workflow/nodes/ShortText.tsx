@@ -169,7 +169,7 @@ const ShortText = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
         },
       };
 
-      if (type === "text_input_level") {
+      if (type === "text_input_label") {
         const variableNameKey = prevState
           ? Object.keys(prevState).find(
             k => prevState[k].type === "text_variable_name"
@@ -184,7 +184,7 @@ const ShortText = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
 
         }
       }
-      if (type === "text_variable_name" || type === "text_input_level") {
+      if (type === "text_variable_name" || type === "text_input_label") {
         setVariableName(convertToUnderscore(value));
       }
       return updatedState;
@@ -206,7 +206,7 @@ const ShortText = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
 
           <div className="text-image text-center">
             <img
-              src="/assets/node_icon/shorttext-img.png"
+              src="/assets/node_icon/shorttext-img.svg"
               alt="short text icon"
               className="w-[140px] mx-auto"
             />
@@ -216,7 +216,7 @@ const ShortText = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
             onClick={handleDropdownClick}
           >
             <img
-              src="/assets/node_icon/toggle-switch.png"
+              src="/assets/node_icon/toggle-switch.svg"
               alt="toggle switch"
               className="w-[25px] mx-auto"
               style={{ transform: isDropdownOpen ? "rotate(180deg)" : "" }}
@@ -228,7 +228,7 @@ const ShortText = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
           <div className="short-text-form bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] absolute left-1/2 transform -translate-x-1/2">
             <div className="short-text-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-2">
               <img
-                src="/assets/node_icon/short-single.png"
+                src="/assets/node_icon/short-single.svg"
                 alt="short text icon"
                 className="w-[20px] mb-2"
               />

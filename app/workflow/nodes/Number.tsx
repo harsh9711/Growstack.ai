@@ -119,7 +119,7 @@ const Number = ({ data, id }: NodeProps<NumberNodeProps>) => {
         },
       };
 
-      if (type === "text_input_level") {
+      if (type === "text_input_label") {
         const variableNameKey = prevState
           ? Object.keys(prevState).find(
             k => prevState[k].type === "text_variable_name"
@@ -134,7 +134,7 @@ const Number = ({ data, id }: NodeProps<NumberNodeProps>) => {
         }
       }
 
-      if (type === "text_variable_name" || type === "text_input_level") {
+      if (type === "text_variable_name" || type === "text_input_label") {
         setVariableName(convertToUnderscore(value));
       }
       return updatedState;
@@ -154,7 +154,7 @@ const Number = ({ data, id }: NodeProps<NumberNodeProps>) => {
 
           <div className="text-image text-center">
             <img
-              src="/assets/node_icon/number-img.png"
+              src="/assets/node_icon/number-img.svg"
               alt="number icon"
               className="w-[140px] mx-auto"
             />
@@ -164,7 +164,7 @@ const Number = ({ data, id }: NodeProps<NumberNodeProps>) => {
             onClick={handleDropdownClick}
           >
             <img
-              src="/assets/node_icon/toggle-switch.png"
+              src="/assets/node_icon/toggle-switch.svg"
               alt="toggle switch"
               className="w-[25px] mx-auto"
               style={{ transform: isDropdownOpen ? "rotate(180deg)" : "" }}
@@ -176,7 +176,7 @@ const Number = ({ data, id }: NodeProps<NumberNodeProps>) => {
           <div className="boolean-text-form bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] absolute left-1/2 transform -translate-x-1/2">
             <div className="short-text-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-2">
               <img
-                src="/assets/node_icon/number-single.png"
+                src="/assets/node_icon/number-single.svg"
                 alt="number icon"
                 className="w-[20px] mb-2"
               />
