@@ -59,8 +59,8 @@ export default function Home() {
   const limit = 10;
 
   const [normalizedPosition, setNormalizedPosition] = useState({
-    x: 0.4,
-    y: 0.4,
+    x: 0.1,
+    y: 0.1,
   });
   const [normalizedScale, setNormalizedScale] = useState("0.10");
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
