@@ -31,8 +31,8 @@ const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
     const dispatch = useDispatch();
     const { isLoading, masterNode } = useAppSelector(state => state.masterNode);
     const generalData = masterNode?.filter(item => item.category === "general");
-    const modifiedNodes = generalData.map(convertNodeData);
-    const groupedGenerals = modifiedNodes.reduce(
+    const modifiedNodes = generalData?.map(convertNodeData);
+    const groupedGenerals = modifiedNodes?.reduce(
         (acc: { [key: string]: typeof modifiedNodes }, model) => {
             if (!acc[model.subCategory]) {
                 acc[model.subCategory] = [];

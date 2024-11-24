@@ -2,11 +2,27 @@ import { CustomAxiosInstance } from "@/config/axios.config";
 import { MasterNodeState, MasterNodeProps } from "@/types/workflows";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+export const createMasterNode = createAsyncThunk(
+  "workflow/createMasterNode",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await CustomAxiosInstance("http://localhost:4500/").post(
+        "nodemaster"
+      );
+      return data.data;
+    } catch (error: any) {
+      return rejectWithValue(
+        error?.response?.data?.error_message || error?.message
+      );
+    }
+  }
+);
+
 export const getMasterNodes = createAsyncThunk(
   "masterNodes/getMasterNodes",
   async (_, { rejectWithValue }) => {
     try {
-      const data = await CustomAxiosInstance("http://192.168.1.33:4500/").get(
+      const data = await CustomAxiosInstance("http://localhost:4500/").get(
         "nodemaster"
       );
       console.log("---data----", data);
@@ -37,6 +53,18 @@ const masterNodeSlice = createSlice({
         }
       )
       .addCase(getMasterNodes.rejected, (state, action) => {
+        state.error = action.payload;
+      })
+      .addCase(createMasterNode.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(
+        createMasterNode.fulfilled,
+        (state, action: PayloadAction<MasterNodeProps[]>) => {
+          state.masterNode = action.payload;
+        }
+      )
+      .addCase(createMasterNode.rejected, (state, action) => {
         state.error = action.payload;
       });
   },
