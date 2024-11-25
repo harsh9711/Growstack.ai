@@ -20,8 +20,6 @@ export default function Microphone({
   handleOpenChange,
   isAnimating,
 }: MicrophoneProps) {
-  console.log(open, isAnimating);
-
   return (
     <DropdownMenu open={open} onOpenChange={handleOpenChange}>
       <DropdownMenuTrigger asChild>

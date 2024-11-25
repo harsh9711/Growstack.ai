@@ -108,7 +108,7 @@ const links = [
       },
       {
         title: "Leadership",
-        path: "/solutions/It",
+        path: "/solutions/leadership-team",
         img: "/navbar/9.svg",
       },
 
