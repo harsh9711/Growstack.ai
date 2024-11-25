@@ -339,7 +339,7 @@ export default function Customgpts() {
                               {menuOpenIndex === index && (
                                 <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg z-10">
                                   <ul className="py-1">
-                                    <li
+                                    {/* <li
                                       className="px-4 py-2 cursor-pointer hover:bg-gray-100"
                                       onClick={() => {
                                         CustomGptPublic(_id, true);
@@ -354,7 +354,7 @@ export default function Customgpts() {
                                       }}
                                     >
                                       Remove from public
-                                    </li>
+                                    </li> */}
                                     <li
                                       className="px-4 py-2 cursor-pointer text-rose-600 hover:bg-gray-100"
                                       onClick={() => {
