@@ -26,12 +26,10 @@ export default function Login() {
 
       dispatch(login(userData));
 
-      if (!userData.isSubscribed) {
-        router.push("/Payment");
-      } else if (
-        userData.isSubscribed === "true" &&
-        userData.isExpired === "true"
-      ) {
+      // if (!userData.isSubscribed) {
+      //   router.push("/app");
+      // } else
+      if (userData.isSubscribed === "true" && userData.isExpired === "true") {
         router.push("/account/billings/settings/due");
       } else {
         router.push("/app");
