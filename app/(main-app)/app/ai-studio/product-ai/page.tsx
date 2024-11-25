@@ -71,7 +71,7 @@ export default function Home() {
     remove_bg_toggle: false,
     user_prompt: "",
     favorites_bg_toggle: false,
-    numOfImages: numOfImages | 1,
+    numOfImages: numOfImages | 1,,
   });
   const initialProductAI: ProductAI = {
     img_url: null,
@@ -813,8 +813,9 @@ export default function Home() {
                     />
                     <button
                       className={`absolute top-2 left-2 p-1 rounded-full shadow-md transition-colors duration-200 ${
-                        image.favourite ? "text-red-500" : "text-gray-500"
-                      } hover:bg-gray-100`}
+                        
+                    image.favourite ? "text-red-500" : "text-gray-500"
+                    } hover:bg-gray-100`}
                       onClick={() => updateFavourite(image, image.favourite)}
                       aria-label={`${
                         image.favourite ? "Unlike" : "Like"

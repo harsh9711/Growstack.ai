@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MicrophoneIcon, StopIcon } from "@/components/svgs";
-import useSpeechRecognition from "../../hooks/UseSpeechRecognition";
 import "../../../../../../styles/waveform.css";
 
 interface MicrophoneProps {
