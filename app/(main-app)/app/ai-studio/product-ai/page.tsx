@@ -71,7 +71,7 @@ export default function Home() {
     remove_bg_toggle: false,
     user_prompt: "",
     favorites_bg_toggle: false,
-    numOfImages: numOfImages | 1,,
+    numOfImages: numOfImages | 1,
   });
   const initialProductAI: ProductAI = {
     img_url: null,
