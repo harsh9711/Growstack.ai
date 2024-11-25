@@ -19,8 +19,8 @@ const ResizableRotatableImages: React.FC<ResizableRotatableImagesProps> = ({
   const targetRef = useRef<HTMLImageElement | null>(null);
   const [target, setTarget] = useState<HTMLImageElement | null>(null);
   const [position, setPosition] = useState({
-    x: 0.4 * 300, // Start with normalized offset (dynamic for the card width)
-    y: 0.4 * 300, // Start with normalized offset (dynamic for the card height)
+    x: 0.1 * 300, // Start with normalized offset (dynamic for the card width)
+    y: 0.1 * 300, // Start with normalized offset (dynamic for the card height)
   });
   const [rotation, setRotation] = useState(0);
   const [size, setSize] = useState({ width: 50, height: 50 }); // Initial size
@@ -30,7 +30,7 @@ const ResizableRotatableImages: React.FC<ResizableRotatableImagesProps> = ({
   const MAX_SIZE = 200;
   const minScale = 0.1;
   const maxScale = 1.0;
-  const MIN_POSITION = 0.4;
+  const MIN_POSITION = 0.1;
 
   useEffect(() => {
     setTarget(targetRef.current);
