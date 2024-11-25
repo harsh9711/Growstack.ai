@@ -71,7 +71,7 @@ export default function Home() {
     remove_bg_toggle: false,
     user_prompt: "",
     favorites_bg_toggle: false,
-    numOfImages: numOfImages | 1,
+    numOfImages: numOfImages | 1,,
   });
   const initialProductAI: ProductAI = {
     img_url: null,
@@ -184,7 +184,7 @@ export default function Home() {
       const response = await instance.post(`/ai/api/v1/products/bg-remover`, {
         img_url,
         user_prompt,
-        remove_bg_toggle,
+        remove_bg_toggle: true,
         numOfImages,
         normalizedPosition, // Send normalized position
         normalizedScale, // Send normalized scale
@@ -273,24 +273,25 @@ export default function Home() {
       toast.error("Failed to process image");
     }
   };
-  const handleDownload = async (image: any) => {
+  const handleDownload = async (image: string) => {
     try {
       setLoading(true);
-      const response = await fetch(image);
+      const response = await fetch(image, { mode: "cors" });
       if (!response.ok) {
-        throw new Error("Failed to fetch data");
+        throw new Error(`Failed to fetch data: ${response.statusText}`);
       }
 
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-
-      // Get the current date and time in a readable format (e.g., YYYY-MM-DD_HH-MM-SS)
       const now = new Date();
-      const timestamp = now.toISOString().replace(/T/, "_").replace(/\..+/, ""); // Formats like: "2024-11-21_12-34-56"
+      const timestamp = now
+        .toISOString()
+        .replace(/:/g, "-")
+        .replace(/\..+/, ""); // YYYY-MM-DDTHH-MM-SS
 
       const link = document.createElement("a");
       link.href = url;
-      link.download = `GrowStackAIBackdrop_${timestamp}.png`; // Include timestamp in filename
+      link.download = `GrowStackAIBackdrop_${timestamp}.png`; // Filename includes timestamp
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -301,6 +302,7 @@ export default function Home() {
       setLoading(false);
     }
   };
+
   const handleDownloadAll = async () => {
     setLoading(true);
 
@@ -428,10 +430,10 @@ export default function Home() {
       </div>
       <div className="flex justify-between h-screen">
         <aside
-          className="bg-white border-r border-gray-200 overflow-y-auto max-h-screen"
+          className="bg-white border-r border-gray-200 overflow-y-auto h-screen flex flex-col justify-between"
           style={{ borderRadius: "20px" }}
         >
-          <div className="m-2">
+          <div className="m-2 flex-grow">
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <h2 className="text-m sm:text-lg font-semibold">
@@ -459,11 +461,11 @@ export default function Home() {
                       style={{
                         height: "300px", // Fixed height for consistency
                         border: "2px solid #ccc",
-                        objectFit: "cover", // Adjusts the image to cover the area without overflow
-                        borderRadius: "10px", // Optional: Gives a rounded look to the card
+                        objectFit: "cover",
+                        borderRadius: "10px",
                         backgroundImage:
                           'url("/assets/transparent-background.png")',
-                        backgroundSize: "contain", // Ensures the background fits within the card
+                        backgroundSize: "contain",
                       }}
                     >
                       No image uploaded
@@ -491,7 +493,7 @@ export default function Home() {
                     <div className="rounded-full p-1">
                       <Regenerate className="w-6 h-6 mt-1 bg-gray-0" />
                     </div>
-                    <span>Regenerate</span>
+                    <span>{isGenerating ? "Regenerating" : "Regenerate"}</span>
                   </button>
                 </div>
               </div>
@@ -813,8 +815,9 @@ export default function Home() {
                     />
                     <button
                       className={`absolute top-2 left-2 p-1 rounded-full shadow-md transition-colors duration-200 ${
-                        image.favourite ? "text-red-500" : "text-gray-500"
-                      } hover:bg-gray-100`}
+                        
+                    image.favourite ? "text-red-500" : "text-gray-500"
+                    } hover:bg-gray-100`}
                       onClick={() => updateFavourite(image, image.favourite)}
                       aria-label={`${
                         image.favourite ? "Unlike" : "Like"
