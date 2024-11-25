@@ -14,30 +14,65 @@ const useSpeechRecognition = (
   onResult: (transcript: string) => void,
   onEndCallback: () => void
 ) => {
-  const [isRecording, setIsRecording] = useState(false);
+  const [isRecording, setIsRecording] = useState<boolean>(false);
   const recognitionRef = useRef<any>(null);
+  const noSpeechTimeoutRef = useRef<any>(null);
+  const silenceTimeoutRef = useRef<any>(null);
+  const isSpeakingRef = useRef<boolean>(false);
 
-  const initializeRecognition = () => {
+  const clearTimeouts = () => {
+    if (noSpeechTimeoutRef.current) {
+      clearTimeout(noSpeechTimeoutRef.current);
+      noSpeechTimeoutRef.current = null;
+    }
+    if (silenceTimeoutRef.current) {
+      clearTimeout(silenceTimeoutRef.current);
+      silenceTimeoutRef.current = null;
+    }
+  };
+
+  const stopRecording = () => {
+    clearTimeouts();
+    if (recognitionRef.current && isRecording) {
+      recognitionRef.current.stop();
+      setIsRecording(false);
+    }
+  };
+
+  useEffect(() => {
+    toast.dismiss();
     if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
       const SpeechRecognition =
         window.webkitSpeechRecognition || window.SpeechRecognition;
       const recognition = new SpeechRecognition();
       recognition.continuous = false;
-      recognition.interimResults = false;
+      recognition.interimResults = true;
       recognition.lang = language;
       recognitionRef.current = recognition;
 
       recognition.onstart = () => {
         setIsRecording(true);
+        isSpeakingRef.current = false;
+
+        // Set timeout for no speech detection
+        noSpeechTimeoutRef.current = setTimeout(() => {
+          if (!isSpeakingRef.current) {
+            setIsRecording(false);
+            onEndCallback();
+          }
+        }, 4000);
       };
 
       recognition.onend = () => {
-        if (!isRecording) return;
         setIsRecording(false);
-        onEndCallback();
+      };
+
+      recognition.onaudiostart = () => {
+        isSpeakingRef.current = false;
       };
 
       recognition.onerror = (event: any) => {
+        stopRecording();
         setIsRecording(false);
         let errorMessage = "An error occurred.";
         switch (event.error) {
@@ -54,46 +89,67 @@ const useSpeechRecognition = (
             errorMessage = event.error;
         }
         toast.error(errorMessage);
-        onEndCallback(); // Trigger the end callback when an error occurs as well
+        onEndCallback();
       };
 
       recognition.onresult = (event: any) => {
-        const transcript = event.results[0][0].transcript.trim();
-        onResult(transcript);
+        const transcript = event.results[event.results.length - 1];
+
+        // Clear no-speech timeout as we've detected speech
+        if (noSpeechTimeoutRef.current) {
+          clearTimeout(noSpeechTimeoutRef.current);
+          noSpeechTimeoutRef.current = null;
+        }
+
+        if (transcript.isFinal) {
+          isSpeakingRef.current = true;
+          onResult(transcript[0].transcript.trim());
+
+          // Clear existing silence timeout
+          if (silenceTimeoutRef.current) {
+            clearTimeout(silenceTimeoutRef.current);
+          }
+
+          // Set new silence timeout after speech ends
+          silenceTimeoutRef.current = setTimeout(() => {
+            stopRecording();
+            setIsRecording(false);
+            onEndCallback();
+          }, 1500); // 1.5 seconds of silence to determine speech has ended
+        }
       };
 
-      return recognition;
-    } else {
+      recognition.onspeechstart = () => {
+        isSpeakingRef.current = true;
+        if (noSpeechTimeoutRef.current) {
+          clearTimeout(noSpeechTimeoutRef.current);
+          noSpeechTimeoutRef.current = null;
+        }
+      };
+
+      recognition.onspeechend = () => {
+        isSpeakingRef.current = false;
+      };
+    } else if (isMicOpen) {
       toast.error("Speech recognition not supported in this browser.", {
         duration: Infinity,
       });
     }
-  };
 
-  useEffect(() => {
-    if (isMicOpen) {
-      const recognition = initializeRecognition();
-      recognition?.start();
-    } else {
-      stopRecognition();
-    }
-
-    // Clean up the recognition instance if the component is unmounted
     return () => {
-      stopRecognition();
+      clearTimeouts();
     };
-  }, [isMicOpen, language]);
+  }, [language, onResult, onEndCallback, isMicOpen]);
 
   const startRecognition = () => {
     if (recognitionRef.current && !isRecording) {
+      clearTimeouts();
       recognitionRef.current.start();
     }
   };
 
   const stopRecognition = () => {
-    if (recognitionRef.current && isRecording) {
-      recognitionRef.current.stop();
-    }
+    stopRecording();
     if (window.speechSynthesis.speaking) {
       window.speechSynthesis.cancel();
     }
@@ -137,6 +193,14 @@ const useSpeechRecognition = (
       toast.error("Text-to-speech not supported in this browser.");
     }
   };
+
+  useEffect(() => {
+    if (isMicOpen) {
+      startRecognition();
+    } else {
+      stopRecognition();
+    }
+  }, [isMicOpen]);
 
   return { isRecording, startRecognition, stopRecognition, textToSpeech };
 };

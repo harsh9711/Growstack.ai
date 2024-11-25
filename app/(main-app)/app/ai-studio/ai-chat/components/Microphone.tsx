@@ -1,19 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MicrophoneIcon, StopIcon } from "@/components/svgs";
-import useSpeechRecognition from "../../hooks/UseSpeechRecognition";
 import "../../../../../../styles/waveform.css";
 
 interface MicrophoneProps {
   open: boolean;
   isAnimating: boolean;
   handleOpenChange: (status: boolean) => void;
-  // startRecognition: () => void;
-  // stopRecognition: () => void;
 }
 
 const NUM_WAVES = 40; // Number of wave elements
@@ -22,8 +19,6 @@ export default function Microphone({
   open,
   handleOpenChange,
   isAnimating,
-  // startRecognition,
-  // stopRecognition,
 }: MicrophoneProps) {
   console.log(open, isAnimating);
 

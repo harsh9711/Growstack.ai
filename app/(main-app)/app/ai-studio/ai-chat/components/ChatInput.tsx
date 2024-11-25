@@ -95,21 +95,6 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
     const [emptyPrompt, isEmptyPrompt] = useState("");
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-    const { startRecognition, stopRecognition, textToSpeech } =
-      useSpeechRecognition(
-        "en-us",
-        open,
-        (transcript: string) => {
-          setInput(transcript);
-          handleSend(transcript, true);
-        },
-        () => {
-          // alert("107");
-          setOpen(false);
-          setIsAnimating(false);
-        }
-      );
-
     useEffect(() => {
       if (textareaRef.current) {
         autosize(textareaRef.current);
@@ -509,6 +494,20 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
         </div>
       );
     }
+
+    const { startRecognition, stopRecognition, textToSpeech } =
+      useSpeechRecognition(
+        "en-us",
+        open,
+        (transcript: string) => {
+          setInput(transcript);
+          handleSend(transcript, true);
+        },
+        () => {
+          setOpen(false);
+          setIsAnimating(false);
+        }
+      );
 
     return (
       <>
