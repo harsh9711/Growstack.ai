@@ -399,33 +399,33 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
       }
     };
 
-    const handleFileUpload = async (
-      event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-      const file = event.target.files?.[0];
-      if (!file) return;
+    // const handleFileUpload = async (
+    //   event: React.ChangeEvent<HTMLInputElement>
+    // ) => {
+    //   const file = event.target.files?.[0];
+    //   if (!file) return;
 
-      const formData = new FormData();
-      formData.append("file", file);
-      addMessage("user", `Uploading file: ${file.name}`, false);
-      addMessage("assistant", "", true);
+    //   const formData = new FormData();
+    //   formData.append("file", file);
+    //   addMessage("user", `Uploading file: ${file.name}`, false);
+    //   addMessage("assistant", "", true);
 
-      try {
-        const conversation = await instance.post(
-          `${API_URL}/ai/api/v1/conversation/upload?conversation_id=${selectedConversation}&model=${selectedModel}&enableSecure=${enableSecure}`,
-          formData
-        );
-        const { response, conversation_id } = conversation.data
-          .data as ChatResponse;
+    //   try {
+    //     const conversation = await instance.post(
+    //       `${API_URL}/ai/api/v1/conversation/upload?conversation_id=${selectedConversation}&model=${selectedModel}&enableSecure=${enableSecure}`,
+    //       formData
+    //     );
+    //     const { response, conversation_id } = conversation.data
+    //       .data as ChatResponse;
 
-        setSelectedConversation(conversation_id);
-        onSend(response, "assistant", "");
-      } catch (error: any) {
-        const errorMsg = error.response?.data.error ?? error.message;
-        toast.error(errorMsg);
-        removeMessage();
-      }
-    };
+    //     setSelectedConversation(conversation_id);
+    //     onSend(response, "assistant", "");
+    //   } catch (error: any) {
+    //     const errorMsg = error.response?.data.error ?? error.message;
+    //     toast.error(errorMsg);
+    //     removeMessage();
+    //   }
+    // };
 
     const handleRegenerate = (chartMessage: string) => {
       if (chartMessage) {
@@ -458,19 +458,19 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
       }
     };
 
-    const promptInput = (description: string) => {
-      const trimmedDescription = description.replace(/\s+/g, " ").trim();
-      const newInput = `${input} ${trimmedDescription}`;
-      setInput(newInput);
-      setTimeout(() => {
-        if (textareaRef.current) {
-          textareaRef.current.value = newInput;
-          textareaRef.current.focus();
-          textareaRef.current.selectionStart =
-            textareaRef.current.selectionEnd = newInput.length;
-        }
-      }, 500);
-    };
+    // const promptInput = (description: string) => {
+    //   const trimmedDescription = description.replace(/\s+/g, " ").trim();
+    //   const newInput = `${input} ${trimmedDescription}`;
+    //   setInput(newInput);
+    //   setTimeout(() => {
+    //     if (textareaRef.current) {
+    //       textareaRef.current.value = newInput;
+    //       textareaRef.current.focus();
+    //       textareaRef.current.selectionStart =
+    //         textareaRef.current.selectionEnd = newInput.length;
+    //     }
+    //   }, 500);
+    // };
 
     if (isDailyLimitExceeded) {
       return (
