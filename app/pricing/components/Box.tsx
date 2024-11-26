@@ -43,7 +43,9 @@ const PricingPage: React.FC = () => {
   const tabs = ["Monthly billing", "Yearly billing"];
   const searchParams = useSearchParams();
   const tabQueryParam = searchParams.get("tab");
-  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+
+  const defaultTabIndex = tabQueryParam ? parseInt(tabQueryParam, 10) : 1;
+  const [selectedTabIndex, setSelectedTabIndex] = useState(defaultTabIndex);
   const [tabDistanceFromLeft, setDistanceFromLeft] = useState(0);
   const [plans, setPlans] = useState<Feature[]>([]);
 
@@ -64,11 +66,13 @@ const PricingPage: React.FC = () => {
   }, [router]);
 
   useEffect(() => {
-    const tab = tabQueryParam ? Number(tabQueryParam) : 0;
-    setSelectedTabIndex(tab);
-    const totalTabs = tabs.length;
-    const percentage = (tab / totalTabs) * 100;
-    setDistanceFromLeft(percentage);
+    if (!tabQueryParam) {
+      const params = new URLSearchParams(window.location.search);
+      params.set("tab", defaultTabIndex.toString());
+      history.replaceState(null, "", `?${params.toString()}`);
+    }
+
+    setDistanceFromLeft((defaultTabIndex / tabs.length) * 100);
   }, [tabQueryParam]);
 
   const fetchPlanUsage = async () => {
