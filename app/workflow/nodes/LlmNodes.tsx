@@ -157,10 +157,15 @@ const LlmNodes = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
                         </span>
                     </div>
 
-                    <div className="node-image-box">
+                    <div className="text-image text-center relative">
                         <img
                             src="/assets/node_icon/openai-img.svg"
                             alt="open ai node image"
+                        />
+                        <img
+                            src={data?.icon || "/assets/node_icon/node-bg.svg"}
+                            alt="short text icon"
+                            className="w-[30px] mx-auto absolute top-[55px] left-0 right-0"
                         />
                     </div>
                     <div
@@ -186,13 +191,19 @@ const LlmNodes = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
                                     className="w-[20px] mb-2"
                                 />
                             )}
-                            <h4 className="text-sm font-medium text-[#14171B]">  {data?.label || ""}</h4>
+                            <h4 className="text-sm font-medium text-[#14171B]">
+                                {" "}
+                                {data?.label || ""}
+                            </h4>
                         </div>
                         {!isNextBoxOpen ? (
                             <div className="form-box">
                                 {currentParameter &&
                                     Object.entries(currentParameter)
-                                        .filter(([key, param]: any) => param.required || showAdvancedOptions)
+                                        .filter(
+                                            ([key, param]: any) =>
+                                                param.required || showAdvancedOptions
+                                        )
                                         .map(([key, param]: any) => {
                                             return (
                                                 <DynamicInput
@@ -211,7 +222,9 @@ const LlmNodes = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
                                         onClick={handleToggleAdvancedOptions}
                                         className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
                                     >
-                                        {showAdvancedOptions ? 'Hide Advanced Options' : 'Show Advanced Options'}
+                                        {showAdvancedOptions
+                                            ? "Hide Advanced Options"
+                                            : "Show Advanced Options"}
                                     </button>
                                 </div>
                                 {/* <div className="topic-box mb-3">
