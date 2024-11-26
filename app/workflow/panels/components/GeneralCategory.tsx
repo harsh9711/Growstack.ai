@@ -325,6 +325,130 @@ const masterNode: MasterNodeProps[] = [
     dynamicParams: [],
     __v: 0,
   },
+
+  {
+    _id: "673e132c9ee6b3af4f35afe4",
+    name: "Plain Text",
+    description: "This is plain text field",
+    type: "plain-text",
+    category: "general",
+    subCategory: "Input type",
+    functionToExecute: "processTextGpt",
+    logoUrl: "/svgs/short-text.svg",
+    parameters: {
+      "0": {
+        label: "Joiner Label",
+        type: "text_input_label",
+        required: true,
+        options: [],
+        description: "This is text field.",
+      },
+
+      "1": {
+        label: "Value",
+        type: "text_input_label",
+        required: false,
+        options: [],
+        description: "Add default text",
+      },
+
+      "2": {
+        label: "Show in output preview tab",
+        type: "checkbox_required",
+        required: false,
+        options: [],
+        description: "Select if Topic is required",
+      },
+
+      "3": {
+        label: "Variable name",
+        type: "text_variable_name",
+        required: true,
+        options: [],
+        description: "Add default text",
+      },
+    },
+    dynamicParams: [],
+    __v: 0,
+  },
+
+  {
+    _id: "673e132c9ee6b3af4f35afe4",
+    name: "Markdown",
+    description: "This is markdown field",
+    type: "markdown",
+    category: "general",
+    subCategory: "Input type",
+    functionToExecute: "processTextGpt",
+    logoUrl: "/svgs/long-text.svg",
+    parameters: {
+      "0": {
+        label: "Joiner Label",
+        type: "text_input_label",
+        required: true,
+        options: [],
+        description: "This is text field.",
+      },
+
+      "1": {
+        label: "Value",
+        type: "text_input_label",
+        required: false,
+        options: [],
+        description: "Add default text",
+      },
+
+      "2": {
+        label: "Show in output preview tab",
+        type: "checkbox_required",
+        required: false,
+        options: [],
+        description: "Select if Topic is required",
+      },
+
+      "3": {
+        label: "Variable name",
+        type: "text_variable_name",
+        required: true,
+        options: [],
+        description: "Add default text",
+      },
+    },
+    dynamicParams: [],
+    __v: 0,
+  },
+
+  {
+    _id: "673e132c9ee6b3af4f35afe4",
+    name: "Form",
+    description: "This is form field",
+    type: "form",
+    category: "general",
+    subCategory: "Input type",
+    functionToExecute: "processTextGpt",
+    logoUrl: "assets/node_icon/form-single.svg",
+    parameters: {
+      "0": {
+        label: "Input Label",
+        type: "text_input_label",
+        required: true,
+        options: [],
+        description: "This is text field.",
+      },
+
+      "1": {
+        label: "Variable Name",
+        type: "text_input_label",
+        required: false,
+        options: [],
+        description: "Add default text",
+      },
+
+
+    },
+    dynamicParams: [],
+    __v: 0,
+  },
 ];
 
 const convertNodeData = (data: MasterNodeProps) => {

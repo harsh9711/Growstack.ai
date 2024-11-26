@@ -15,6 +15,9 @@ import Perplexity from "./Perplexity";
 import Mistral from "./Mistral";
 import GenerateImage from "./GenerateImage";
 import ReadImage from "./ReadImage";
+import PlainText from "./PlainText";
+import Markdown from "./Markdown";
+import Form from "./Form";
 
 export const initialNodes: AppNode[] = [
   {
@@ -47,5 +50,8 @@ export const nodeTypes = {
   "perplexity":Perplexity,
   "mistral":Mistral,
   "generate-image":GenerateImage,
-  "read-image":ReadImage
+  "read-image":ReadImage,
+  "plain-text":PlainText,
+  "markdown":Markdown,
+  "form":Form
 } satisfies NodeTypes;

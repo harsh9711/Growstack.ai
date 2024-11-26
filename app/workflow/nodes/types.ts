@@ -31,6 +31,12 @@ export type FileUploadNodeProps = Node<NodeDataState, "fileUpload">;
 
 export type ChecklistNodeProps = Node<NodeDataState, "checklist">;
 
+export type PlainTextNodeProps = Node<NodeDataState, "plain-text">;
+
+export type MarkdownNodeProps = Node<NodeDataState, "markdown">;
+
+export type FormNodeProps = Node<NodeDataState, "from">;
+
 export type AppNode =
   | BuiltInNode
   | OpenAiNodeProps
@@ -47,4 +53,7 @@ export type AppNode =
   | MistralNodeProps
   | GenerateImageNodeProps
   | ReadImageNodeProps
+  | PlainTextNodeProps
+  | MarkdownNodeProps
+  | FormNodeProps
   ;
