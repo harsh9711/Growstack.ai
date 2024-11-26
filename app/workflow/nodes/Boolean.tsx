@@ -119,7 +119,7 @@ const Boolean = ({ data, id }: NodeProps<BooleanNodeProps>) => {
         },
       };
 
-      if (type === "text_input_level") {
+      if (type === "text_input_label") {
         const variableNameKey = prevState
           ? Object.keys(prevState).find(
             k => prevState[k].type === "text_variable_name"
@@ -134,7 +134,7 @@ const Boolean = ({ data, id }: NodeProps<BooleanNodeProps>) => {
         }
       }
 
-      if (type === "text_variable_name" || type === "text_input_level") {
+      if (type === "text_variable_name" || type === "text_input_label") {
         setVariableName(convertToUnderscore(value));
       }
       return updatedState;
@@ -157,7 +157,7 @@ const Boolean = ({ data, id }: NodeProps<BooleanNodeProps>) => {
 
           <div className="text-image text-center">
             <img
-              src="/assets/node_icon/boolean-img.png"
+              src="/assets/node_icon/boolean-img.svg"
               alt="boolean icon"
               className="w-[140px] mx-auto"
             />
@@ -167,7 +167,7 @@ const Boolean = ({ data, id }: NodeProps<BooleanNodeProps>) => {
             onClick={handleDropdownClick}
           >
             <img
-              src="/assets/node_icon/toggle-switch.png"
+              src="/assets/node_icon/toggle-switch.svg"
               alt="toggle switch"
               className="w-[25px] mx-auto"
               style={{ transform: isDropdownOpen ? "rotate(180deg)" : "" }}
@@ -180,7 +180,7 @@ const Boolean = ({ data, id }: NodeProps<BooleanNodeProps>) => {
 
             <div className="boolean-text-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-2">
               <img
-                src="/assets/node_icon/boolean-single.png"
+                src="/assets/node_icon/boolean-single.svg"
                 alt="boolean icon"
                 className="w-[20px] mb-2"
               />

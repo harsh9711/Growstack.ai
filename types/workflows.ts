@@ -34,9 +34,11 @@ export interface PositionState {
 
 export interface NodeDataState {
   [key: string]: unknown;
+  nodeMasterId: string;
   label: string;
   functionToExecute?: string;
   dynamicParams?: string[];
+  icon?: string;
   parameters?: {
     [key: string]: NodeParameter;
   };

@@ -32,9 +32,11 @@ instance.interceptors.response.use(
 
 export default instance;
 
-export const CustomAxiosInstance = (customBaseURL?: string) => {
+export const CustomAxiosInstance = (
+  customBaseURL = "http://localhost:4500/"
+) => {
   const customInstance = axios.create({
-    baseURL: customBaseURL || API_URL,
+    baseURL: customBaseURL,
     withCredentials: true,
     timeout: 600000,
   });

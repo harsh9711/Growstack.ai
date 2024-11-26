@@ -25,9 +25,9 @@ const FileUploaded = ({ data, id }: NodeProps<FileUploadNodeProps>) => {
   const [currentParameter, setCurrentParameter] = useState(initialParameters);
   const [nextParameter, setNextParameter] = useState<{ [key: string]: any }>({
     "6": {
-      label: "Age",
-      type: "number",
-      required: false,
+      label: "Upload Resume",
+      type: "uploadfile_button",
+      required: true,
       options: [],
       description: `Enter age in years.`,
       value: "",
@@ -119,7 +119,7 @@ const FileUploaded = ({ data, id }: NodeProps<FileUploadNodeProps>) => {
         },
       };
 
-      if (type === "text_input_level") {
+      if (type === "text_input_label") {
         const variableNameKey = prevState
           ? Object.keys(prevState).find(
             k => prevState[k].type === "text_variable_name"
@@ -134,7 +134,7 @@ const FileUploaded = ({ data, id }: NodeProps<FileUploadNodeProps>) => {
         }
       }
 
-      if (type === "text_variable_name" || type === "text_input_level") {
+      if (type === "text_variable_name" || type === "text_input_label") {
         setVariableName(convertToUnderscore(value));
       }
       return updatedState;
@@ -157,8 +157,8 @@ const FileUploaded = ({ data, id }: NodeProps<FileUploadNodeProps>) => {
 
           <div className="text-image text-center">
             <img
-              src="/assets/node_icon/uploaded-file-img.png"
-              alt="long text icon"
+              src="/assets/node_icon/uploadfile-img.svg"
+              alt="upload file node image"
               className="w-[140px] mx-auto"
             />
           </div>
@@ -167,8 +167,8 @@ const FileUploaded = ({ data, id }: NodeProps<FileUploadNodeProps>) => {
             onClick={handleDropdownClick}
           >
             <img
-              src="/assets/node_icon/toggle-switch.png"
-              alt="toggle switch"
+              src="/assets/node_icon/toggle-switch.svg"
+              alt="toggle switch icon"
               className="w-[25px] mx-auto"
               style={{ transform: isDropdownOpen ? "rotate(180deg)" : "" }}
             />
@@ -181,8 +181,8 @@ const FileUploaded = ({ data, id }: NodeProps<FileUploadNodeProps>) => {
           <div className="long-text-form bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] absolute left-1/2 transform -translate-x-1/2">
             <div className="long-text-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-2">
               <img
-                src="/assets/node_icon/file-icon.png"
-                alt="long text icon"
+                src="/assets/node_icon/uploadfile-single.svg"
+                alt="upload file icon"
                 className="w-[20px] mb-2"
               />
 

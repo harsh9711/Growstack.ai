@@ -3,16 +3,23 @@ import Image from "next/image";
 import { AllData } from "../../data";
 import { addNode, removeNode } from "@/lib/features/workflow/node.slice";
 import { NodeState } from "@/types/workflows";
-import { useAppDispatch } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { convertNodeData } from "@/utils/dataResolver";
 
 const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
-
     const dispatch = useAppDispatch();
+    const { isLoading, masterNode } = useAppSelector(state => state.masterNode);
 
-    const llmsData = AllData.filter(item => item.category === "llms");
+    if ((masterNode && !masterNode.length) || !masterNode) {
+        return <div>Data not found</div>;
+    }
 
-    const groupedModels = llmsData.reduce(
-        (acc: { [key: string]: typeof llmsData }, model) => {
+    const llmsData = masterNode?.filter(item => item.category.toLocaleLowerCase() === "llms");
+    const modifiedNodes = llmsData.map(convertNodeData);
+
+
+    const groupedModels = modifiedNodes.reduce(
+        (acc: { [key: string]: typeof modifiedNodes }, model) => {
             if (!acc[model.subCategory]) {
                 acc[model.subCategory] = [];
             }
@@ -90,9 +97,9 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
                                 {subCategory}
                             </h3>
                             <div className="flex flex-wrap pt-1">
-                                {groupedModels[subCategory].map(item => (
+                                {groupedModels[subCategory].map((item, _) => (
                                     <div
-                                        key={item.id}
+                                        key={_.toString()}
                                         onClick={() => handleClick(item.node)}
                                         className="h-[92px] w-[130px] bg-transparent m-1 rounded-lg flex justify-center items-center cursor-pointer border border-[#E5E5E5]"
                                         draggable
@@ -104,12 +111,12 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
                                         }}
                                     >
                                         <div className="h-full w-full rounded-lg bg-white flex justify-center items-center flex-col">
-                                            {item.image && (
+                                            {item?.logoUrl && (
                                                 <Image
-                                                    src={item.image.src}
-                                                    alt={item.image.alt}
-                                                    width={item.image.width}
-                                                    height={item.image.height}
+                                                    src={item.logoUrl}
+                                                    alt={item.name}
+                                                    width={45}
+                                                    height={45}
                                                     draggable={false}
                                                 />
                                             )}
