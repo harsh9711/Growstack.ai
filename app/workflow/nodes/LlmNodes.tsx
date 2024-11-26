@@ -159,13 +159,13 @@ const LlmNodes = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
 
                     <div className="text-image text-center relative">
                         <img
-                            src="/assets/node_icon/openai-img.svg"
+                            src="/assets/node_icon/llm-single.svg"
                             alt="open ai node image"
                         />
                         <img
                             src={data?.icon || "/assets/node_icon/node-bg.svg"}
                             alt="short text icon"
-                            className="w-[30px] mx-auto absolute top-[55px] left-0 right-0"
+                            className="w-[30px] mx-auto absolute top-[45px] left-0 right-0"
                         />
                     </div>
                     <div
