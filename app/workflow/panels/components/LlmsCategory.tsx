@@ -56,7 +56,7 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
 
 
     return (
-        <div className="absolute w-4/5 h-[500px] top-[120px] rounded-2xl overflow-y-auto backdrop-blur-sm shadow-md">
+        <div className="absolute w-4/5 h-[500px] top-[120px] rounded-2xl overflow-y-auto backdrop-blur-sm drop-shadow-2xl">
             <div className="bg-white p-5 pt-0">
                 <div className="sticky top-0 z-10 bg-white">
                     <div className="flex items-center justify-between pt-5">

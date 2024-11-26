@@ -3,18 +3,18 @@ import React, { useEffect, useRef } from "react";
 import { useCallback } from "react";
 import Image from "next/image";
 import {
-    ReactFlowProvider,
-    ReactFlow,
-    Background,
-    BackgroundVariant,
-    Controls,
-    MiniMap,
-    addEdge,
-    useNodesState,
-    useEdgesState,
-    Panel,
-    useReactFlow,
-    type OnConnect,
+  ReactFlowProvider,
+  ReactFlow,
+  Background,
+  BackgroundVariant,
+  Controls,
+  MiniMap,
+  addEdge,
+  useNodesState,
+  useEdgesState,
+  Panel,
+  useReactFlow,
+  type OnConnect,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { nodeTypes } from "./nodes";
@@ -26,133 +26,139 @@ import BottomCenterPanel from "./panels/BottomCenterPanel";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { getMasterNodes } from "@/lib/features/workflow/masterNode.slice";
 
-
-interface DragEvent extends React.DragEvent<HTMLDivElement> { }
+interface DragEvent extends React.DragEvent<HTMLDivElement> {}
 
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
 const WorkflowPage: React.FC = () => {
-    const dispatch = useAppDispatch();
-    const { screenToFlowPosition } = useReactFlow();
-    const reactFlowWrapper = useRef(null);
-    const { nodeData } = useAppSelector(state => state.nodes);
-    const [nodes, setNodes, onNodesChange] = useNodesState([]);
-    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const dispatch = useAppDispatch();
+  const { screenToFlowPosition } = useReactFlow();
+  const reactFlowWrapper = useRef(null);
+  const { nodeData } = useAppSelector(state => state.nodes);
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
+  useEffect(() => {
+    dispatch(getMasterNodes());
+  }, [dispatch]);
 
-    useEffect(() => {
-        dispatch(getMasterNodes());
-    }, [dispatch]);
+  const onConnect: OnConnect = useCallback(
+    connection => setEdges(edges => addEdge(connection, edges)),
+    [setEdges]
+  );
 
+  const onDragOver = useCallback((event: DragEvent) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+  }, []);
 
+  const onDrop = useCallback(
+    (event: React.DragEvent<HTMLDivElement>) => {
+      event.preventDefault();
 
-    const onConnect: OnConnect = useCallback(
-        connection => setEdges(edges => addEdge(connection, edges)),
-        [setEdges]
-    );
+      if (!nodeData) {
+        return;
+      }
 
+      const position = screenToFlowPosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+      const newNode: any = {
+        ...nodeData,
+        id: getId(),
+        position,
+      };
 
-    const onDragOver = useCallback((event: DragEvent) => {
-        event.preventDefault();
-        event.dataTransfer.dropEffect = "move";
-    }, []);
+      setNodes(nds => nds.concat(newNode));
+    },
+    [screenToFlowPosition, nodeData]
+  );
 
-
-    const onDrop = useCallback(
-        (event: React.DragEvent<HTMLDivElement>) => {
-            event.preventDefault();
-
-            if (!nodeData) {
-                return;
-            }
-
-            const position = screenToFlowPosition({
-                x: event.clientX,
-                y: event.clientY,
-            });
-            const newNode: any = {
-                ...nodeData,
-                id: getId(),
-                position,
-            };
-
-            setNodes(nds => nds.concat(newNode));
-        },
-        [screenToFlowPosition, nodeData]
-    );
-
-    return (
-        <div
-            style={{ height: "100vh", width: "100%" }}
-            className="reactflow-wrapper"
-            ref={reactFlowWrapper}
+  return (
+    <div
+      style={{ height: "100vh", width: "100%" }}
+      className="reactflow-wrapper"
+      ref={reactFlowWrapper}
+    >
+      <ReactFlow
+        nodes={nodes}
+        nodeTypes={nodeTypes}
+        onNodesChange={onNodesChange}
+        edges={edges}
+        edgeTypes={edgeTypes}
+        snapToGrid={true}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+        onDrop={onDrop}
+        onDragOver={onDragOver}
+        defaultViewport={{ zoom: 0.9, x: 0, y: 0 }}
+      >
+        <Background
+          variant={BackgroundVariant.Lines}
+          style={{
+            backgroundColor: "#F8F8FA",
+            background:
+              "linear-gradient(180deg, rgba(248, 248, 250, 1), rgba(248, 248, 250, 0))",
+          }}
+        />
+        <MiniMap />
+        <Controls />
+        <Panel
+          position="top-left"
+          className="border-2 border-white rounded-lg p-1.5 bg-[#F8F8FA] left-[40px] cursor-pointer"
         >
-            <ReactFlow
-                nodes={nodes}
-                nodeTypes={nodeTypes}
-                onNodesChange={onNodesChange}
-                edges={edges}
-                edgeTypes={edgeTypes}
-                snapToGrid={true}
-                onEdgesChange={onEdgesChange}
-                onConnect={onConnect}
-                onDrop={onDrop}
-                onDragOver={onDragOver}
-                defaultViewport={{ zoom: 0.9, x: 0, y: 0 }}
-            >
-                <Background
-                    variant={BackgroundVariant.Lines}
-                    style={{
-                        backgroundColor: "#F8F8FA",
-                        background:
-                            "linear-gradient(180deg, rgba(248, 248, 250, 1), rgba(248, 248, 250, 0))",
-                    }}
-                />
-                <MiniMap />
-                <Controls />
-                <Panel
-                    position="top-left"
-                    className="border-2 border-white rounded-lg p-1.5 bg-[#F8F8FA] left-[40px] cursor-pointer"
-                >
-                    <div className="w-[198px] h-[44px] flex justify-center items-center">
-                        <Image
-                            src="/images/workflow/back.svg"
-                            alt="back"
-                            width={24}
-                            height={24}
-                        />
-                        <p className="text-[14px] font-semibold leading-[21px] font-poppins ml-2.5">
-                            Untitled workflow
-                        </p>
-                    </div>
-                </Panel>
+          <div className="w-[198px] h-[44px] flex justify-center items-center">
+            <Image
+              src="/images/workflow/back.svg"
+              alt="back"
+              width={24}
+              height={24}
+            />
+            <p className="text-[14px] font-semibold leading-[21px] font-poppins ml-2.5">
+              Untitled workflow
+            </p>
+          </div>
+        </Panel>
 
-                <Panel
+        {/* <Panel
                     position="top-left"
-                    className="absolute top-[75px] p-3 bg-white rounded-2xl left-[40px] backdrop-blur-sm shadow-md"
+                    className="absolute top-[75px] p-3 
+         
+                    bg-gradient-to-r from-[#FFFFFF] from-100% to-[#99999947] to-28%
+                    rounded-2xl left-[40px] backdrop-blur-md"
                 >
                     <TopLeftPanel2nd setNodes={setNodes} />
-                </Panel>
+                </Panel> */}
 
-                <Panel position="top-right" style={{ right: "40px" }}>
-                    <TopRightPanel1st />
-                </Panel>
+        <Panel
+          position="top-left"
+          className="absolute top-[75px] left-[40px] p-[1px] bg-gradient-to-b from-white from-10% via-[#FFFFFF] via-5% to-[#99999947] rounded-[20px] backdrop-blur-md"
+        >
+          <div className="bg-white rounded-[20px] p-3">
+            <TopLeftPanel2nd setNodes={setNodes} />
+          </div>
+        </Panel>
 
-                <Panel position="top-right" style={{ top: "60px", right: "40px" }}>
-                    <TopRightPanel2nd />
-                </Panel>
+        <Panel position="top-right" style={{ right: "40px" }}>
+          <TopRightPanel1st />
+        </Panel>
 
-                <Panel position="bottom-center" style={{ bottom: "20px" }}>
-                    <BottomCenterPanel />
-                </Panel>
-            </ReactFlow>
-        </div>
-    );
+        <Panel position="top-right" style={{ top: "60px", right: "40px" }}>
+          <TopRightPanel2nd />
+        </Panel>
+
+        <Panel position="bottom-center" style={{ bottom: "20px" }}>
+          <BottomCenterPanel />
+        </Panel>
+      </ReactFlow>
+    </div>
+  );
 };
 
 export default () => (
-    <ReactFlowProvider>
-        <WorkflowPage />
-    </ReactFlowProvider>
+  <ReactFlowProvider>
+    <WorkflowPage />
+  </ReactFlowProvider>
 );
