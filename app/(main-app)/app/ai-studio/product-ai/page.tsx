@@ -24,6 +24,10 @@ import {
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { GenAi, ImgVector } from "@/components/svgs";
 import { parseJsonString } from "@/lib/utils";
+import GlobalModal from "@/components/modal/global.modal";
+import SubscribePlan from "@/components/subscribePlan/subscribePlan";
+import { RootState } from "@/lib/store";
+import { useSelector } from "react-redux";
 
 interface ProductAI {
   img_url: string | null;
@@ -57,6 +61,13 @@ export default function Home() {
   const [openPostModel, setOpenPostModel] = useState(false);
   const [page, setPage] = useState(1);
   const limit = 10;
+  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] =
+    useState<boolean>(false);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState<boolean>(false);
+
+  const { user, currentPlan } = useSelector(
+    (rootState: RootState) => rootState.auth
+  );
 
   const [normalizedPosition, setNormalizedPosition] = useState({
     x: 0.1,
@@ -316,6 +327,7 @@ export default function Home() {
       setLoading(false); // Set loading to false after all downloads
     }
   };
+
   useEffect(() => {
     fetchHistory();
   }, [favImage]);
@@ -419,6 +431,7 @@ export default function Home() {
       }
     });
   };
+
   const filteredImages = productAI.favorites_bg_toggle
     ? (result?.filter(image => likedImages[image]) ?? [])
     : result;
@@ -534,6 +547,17 @@ export default function Home() {
                   type="submit"
                   disabled={loading}
                   className="text-[16px] w-full h-12 flex justify-center items-center bg-[#2DA771] text-white rounded-xl"
+                  onClick={e => {
+                    if (
+                      currentPlan?.plan_type === "FREE" &&
+                      user?.user_type !== "ADMIN"
+                    ) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setIsSubscriptionModalOpen(true);
+                      return;
+                    }
+                  }}
                 >
                   {loading ? <Spinner /> : "Generate Image(s)"}
                 </button>
@@ -815,9 +839,8 @@ export default function Home() {
                     />
                     <button
                       className={`absolute top-2 left-2 p-1 rounded-full shadow-md transition-colors duration-200 ${
-                        
-                    image.favourite ? "text-red-500" : "text-gray-500"
-                    } hover:bg-gray-100`}
+                        image.favourite ? "text-red-500" : "text-gray-500"
+                      } hover:bg-gray-100`}
                       onClick={() => updateFavourite(image, image.favourite)}
                       aria-label={`${
                         image.favourite ? "Unlike" : "Like"
@@ -869,6 +892,19 @@ export default function Home() {
           )}
         </aside>
       </div>
+      <GlobalModal
+        showCloseButton
+        open={isSubscriptionModalOpen}
+        setOpen={() => {
+          setIsSubscriptionModalOpen(false);
+        }}
+      >
+        <SubscribePlan
+          goBackHandler={() => {
+            setIsSubscriptionModalOpen(false);
+          }}
+        />
+      </GlobalModal>
     </>
   );
 }

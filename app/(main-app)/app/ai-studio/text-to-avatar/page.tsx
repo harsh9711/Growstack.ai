@@ -22,6 +22,9 @@ import Image from "next/image";
 import Delete from "@/components/svgs/delete";
 import { formatDistanceToNow } from "date-fns";
 import DownloadCircle from "@/components/svgs/download";
+import GlobalModal from "@/components/modal/global.modal";
+import SubscribePlan from "@/components/subscribePlan/subscribePlan";
+import UpgradePlan from "@/components/upgradePlan/upgradePlan";
 
 const VideoTable: React.FC<{
   videos: Array<{
@@ -245,6 +248,9 @@ export default function TextToVideoPage() {
   const [loading, setLoading] = useState(true);
   const [previewVideoUrl, setPreviewVideoUrl] = useState<string | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] =
+    useState<boolean>(false);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState<boolean>(false);
   const { user, currentPlan } = useSelector(
     (rootState: RootState) => rootState.auth
   );
@@ -330,14 +336,14 @@ export default function TextToVideoPage() {
 
   const handleNavigation = async () => {
     try {
-      if (
+      if (user?.user_type !== "ADMIN" && currentPlan?.plan_type === "FREE") {
+        setIsSubscriptionModalOpen(true);
+      } else if (
         user?.user_type !== "ADMIN" &&
         (currentPlan?.usage?.no_of_text_to_avatar ?? 0) <= 0
       ) {
         toast.error("Text to Avatar Credits Are Over");
-        window.location.href = isSubscribed
-          ? ALL_ROUTES.UPGRADE
-          : ALL_ROUTES.PAYMENT;
+        setIsUpgradeModalOpen(true);
         return;
       } else {
         router.push("/app/ai-studio/text-to-avatar/create-avatar");
@@ -444,6 +450,33 @@ export default function TextToVideoPage() {
             </div>
           )}
         </div>
+        <GlobalModal
+          showCloseButton
+          open={isSubscriptionModalOpen}
+          setOpen={() => {
+            setIsSubscriptionModalOpen(false);
+          }}
+        >
+          <SubscribePlan
+            goBackHandler={() => {
+              setIsSubscriptionModalOpen(false);
+            }}
+          />
+        </GlobalModal>
+
+        <GlobalModal
+          showCloseButton
+          open={isUpgradeModalOpen}
+          setOpen={() => {
+            setIsUpgradeModalOpen(false);
+          }}
+        >
+          <UpgradePlan
+            goBackHandler={() => {
+              setIsUpgradeModalOpen(false);
+            }}
+          />
+        </GlobalModal>
       </main>
     </Fragment>
   );
