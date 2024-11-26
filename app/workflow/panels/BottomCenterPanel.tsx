@@ -5,7 +5,7 @@ const BottomCenterPanel = () => {
 
     return (
         <div className="flex">
-            <div className="h-[44px] w-[44px] border border-[#ECECEC] rounded-full flex justify-center items-center bg-white mr-2.5">
+            <div className="h-[44px] w-[44px] border-[1px] border-[#ECECEC] rounded-full flex justify-center items-center shadow-md bg-white mr-2.5">
                 <Image
                     src="/images/workflow/book.svg"
                     alt="plus"
@@ -15,7 +15,7 @@ const BottomCenterPanel = () => {
                 />
             </div>
 
-            <div className="h-[44px] w-[44px] border border-[#ECECEC] rounded-full flex justify-center items-center bg-white mr-2.5">
+            <div className="h-[44px] w-[44px] border-[1px] border-[#ECECEC] rounded-full flex justify-center shadow-md items-center bg-white mr-2.5">
                 <Image
                     src="/images/workflow/zoom.svg"
                     alt="plus"
@@ -25,7 +25,7 @@ const BottomCenterPanel = () => {
                 />
             </div>
 
-            <div className="flex justify-center items-center bg-white p-[13px] rounded-full mr-2.5">
+            <div className="flex justify-center items-center border-[1px] border-[#ECECEC] bg-white shadow-md p-[13px] rounded-full mr-2.5">
                 <Image
                     src="/images/workflow/rectangle.svg"
                     alt="plus"
@@ -49,7 +49,7 @@ const BottomCenterPanel = () => {
                 />
             </div>
 
-            <div className="flex justify-center items-center bg-white p-[13px] rounded-full mr-2.5">
+            <div className="flex justify-center items-center border-[1px] border-[#ECECEC] bg-white shadow-md p-[13px] rounded-full mr-2.5">
                 <Image
                     src="/images/workflow/redo.svg"
                     alt="plus"
@@ -66,7 +66,7 @@ const BottomCenterPanel = () => {
                 />
             </div>
 
-            <div className="flex justify-center items-center bg-white p-[13px] rounded-full cursor-pointer">
+            <div className="flex justify-center items-center border-[1px] border-[#ECECEC] bg-white shadow-md p-[13px] rounded-full cursor-pointer">
                 <p className="text-sm font-normal mr-1">100%</p>
                 <Image
                     src="/images/workflow/chevron.svg"

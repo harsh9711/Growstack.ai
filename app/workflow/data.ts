@@ -13,6 +13,7 @@ export const dummyData1 = [
     color: {
       bg: "#FFE6FF",
       content: "#F985F9",
+      boxShadow: "0px 11.249px 21.092px 0px rgba(249, 133, 249, 0.25)"
     },
   },
   {
@@ -27,6 +28,7 @@ export const dummyData1 = [
     color: {
       bg: "#E8DFF5",
       content: "#B785FF",
+      boxShadow: "0px 9.642px 18.079px 0px rgba(183, 133, 255, 0.25)",
     },
   },
   {
@@ -41,6 +43,7 @@ export const dummyData1 = [
     color: {
       bg: "#FCE1E4",
       content: "#FB8491",
+      boxShadow: "0px 9.642px 18.079px 0px rgba(236, 176, 205, 0.25)"
     },
   },
   {
@@ -55,6 +58,7 @@ export const dummyData1 = [
     color: {
       bg: "#FCF4DD",
       content: "#F1B917",
+      boxShadow: "0px 9.642px 18.079px 0px rgba(241, 185, 22, 0.25)"
     },
   },
   {
@@ -69,6 +73,7 @@ export const dummyData1 = [
     color: {
       bg: "#DDEDEA",
       content: "#27C9AA",
+      boxShadow: "0px 9.642px 18.079px 0px rgba(39, 201, 170, 0.25)"
     },
   },
   {
@@ -83,6 +88,7 @@ export const dummyData1 = [
     color: {
       bg: "#DAEAF6",
       content: "#69BFFF",
+      boxShadow: "0px 9.642px 18.079px 0px rgba(105, 191, 255, 0.25)"
     },
   },
 ];

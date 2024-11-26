@@ -180,12 +180,17 @@ const ShortText = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
             </span>
           </div>
 
-          <div className="text-image text-center">
+          <div className="text-image text-center relative">
             <img
-              src="/assets/node_icon/shorttext-img.svg"
+              src="/assets/node_icon/node-bg.svg"
               alt="short text icon"
               className="w-[140px] mx-auto"
             />
+            <img
+              src="/assets/node_icon/short-single.svg"
+              alt="short text icon"
+              className="w-[30px] mx-auto absolute top-[55px] left-0 right-0"
+            />``
           </div>
           <div
             className="toggle-button-box absolute right-0 left-0 mx-auto bottom-[-10px] z-10 cursor-pointer"
