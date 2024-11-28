@@ -210,6 +210,13 @@ const Login = () => {
                         />
                       </svg>
                       <div className="relative w-full">
+                        <style jsx>{`
+                          input[type="password"]::-ms-reveal,
+                          input[type="password"]::-ms-clear,
+                          input[type="password"]::-webkit-inner-spin-button {
+                            display: none;
+                          }
+                        `}</style>
                         <input
                           type={passwordVisible ? "text" : "password"}
                           id="password"

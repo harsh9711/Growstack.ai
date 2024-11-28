@@ -24,6 +24,7 @@ import withUnAuthGuard from "@/components/guard/unAuthGuard";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { ALL_ROUTES } from "@/utils/constant";
+import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
 const Register = () => {
   const { isAuthenticated } = useSelector(
@@ -37,6 +38,8 @@ const Register = () => {
   const [count, setCount] = useState(60);
   const [canResend, setCanResend] = useState(true);
   const [isSendOtpLoading, setIsSendOtpLoading] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
   const ValidationSchema = z
     .object({
@@ -261,7 +264,7 @@ const Register = () => {
                   <div>
                     <div
                       className={clsx(
-                        "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
+                        "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-[#2DA771]",
                         errors["email"] &&
                           "border-rose-600 focus-within:border-rose-600"
                       )}
@@ -298,10 +301,17 @@ const Register = () => {
                   </div>
 
                   {/* styled input field for password */}
-                  <div>
+                  <div className="flex flex-col gap-7">
+                    <style jsx>{`
+                      input[type="password"]::-ms-reveal,
+                      input[type="password"]::-ms-clear,
+                      input[type="password"]::-webkit-inner-spin-button {
+                        display: none;
+                      }
+                    `}</style>
                     <div
                       className={clsx(
-                        "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
+                        "relative w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-[#2DA771]",
                         errors["password"] &&
                           "border-rose-600 focus-within:border-rose-600"
                       )}
@@ -320,17 +330,21 @@ const Register = () => {
                           fill="#667085"
                         />
                       </svg>
-                      <div className="relative group space-y-2 cursor-text w-full">
+                      <div className="relative w-full">
                         <input
-                          type="password"
+                          type={passwordVisible ? "text" : "password"}
                           id="password"
                           autoComplete="password"
                           placeholder="Enter your password..."
-                          className={clsx(
-                            "text-sm peer focus:ring-0 h-[60px] w-full"
-                          )}
+                          className="text-sm peer focus:ring-0 h-[60px] w-full"
                           {...register("password")}
                         />
+                        <span
+                          onClick={() => setPasswordVisible(!passwordVisible)}
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                        >
+                          {passwordVisible ? <FaEye /> : <FaEyeSlash />}
+                        </span>
                       </div>
                     </div>
                     {errors.password && (
@@ -338,13 +352,11 @@ const Register = () => {
                         {errors.password?.message}
                       </span>
                     )}
-                  </div>
 
-                  {/* styled input field for password confirmation*/}
-                  <div>
+                    {/* Confirm Password Field */}
                     <div
                       className={clsx(
-                        "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
+                        "relative w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-[#2DA771]",
                         errors["confirmPassword"] &&
                           "border-rose-600 focus-within:border-rose-600"
                       )}
@@ -363,17 +375,23 @@ const Register = () => {
                           fill="#667085"
                         />
                       </svg>
-                      <div className="relative group space-y-2 cursor-text w-full">
+                      <div className="relative w-full">
                         <input
-                          type="password"
-                          id="confirm-password"
+                          type={confirmPasswordVisible ? "text" : "password"}
+                          id="confirmPassword"
                           autoComplete="confirm-password"
-                          placeholder="Confirm password"
-                          className={clsx(
-                            "text-sm peer focus:ring-0 h-[60px] w-full"
-                          )}
+                          placeholder="Confirm your password..."
+                          className="text-sm peer focus:ring-0 h-[60px] w-full"
                           {...register("confirmPassword")}
                         />
+                        <span
+                          onClick={() =>
+                            setConfirmPasswordVisible(!confirmPasswordVisible)
+                          }
+                          className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                        >
+                          {confirmPasswordVisible ? <FaEye /> : <FaEyeSlash />}
+                        </span>
                       </div>
                     </div>
                     {errors.confirmPassword && (
