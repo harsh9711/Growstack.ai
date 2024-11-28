@@ -101,8 +101,8 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
       if (type === "text_input_label") {
         const variableNameKey = prevState
           ? Object.keys(prevState).find(
-            k => prevState[k].type === "text_variable_name"
-          )
+              k => prevState[k].type === "text_variable_name"
+            )
           : undefined;
         if (variableNameKey) {
           updatedState[variableNameKey] = {
@@ -136,17 +136,21 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
   const imageMapping = {
     "Short Text": "short-single.svg",
     "Long Text": "long-single.svg",
-    "Boolean": "boolean-single.svg",
-    "Number": "number-single.svg",
+    Boolean: "boolean-single.svg",
+    Number: "number-single.svg",
     "File Upload": "uploadfile-single.svg",
-    "CheckList": "checklist-single.svg"
+    CheckList: "checklist-single.svg",
   };
 
-  const options = (subNodes ?? []).filter(node => !node.isDefault).map(node => ({
-    value: node.nodeMasterId,
-    label: node.name,
-    imageUrl: imageMapping[node.name as keyof typeof imageMapping] || 'add-option-icon.svg'
-  }));
+  const options = (subNodes ?? [])
+    .filter(node => !node.isDefault)
+    .map(node => ({
+      value: node.nodeMasterId,
+      label: node.name,
+      imageUrl:
+        imageMapping[node.name as keyof typeof imageMapping] ||
+        "add-option-icon.svg",
+    }));
 
   return (
     <div>
@@ -161,22 +165,24 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
 
           <div className="text-image text-center">
             <img
-              src="/assets/node_icon/form-img.svg"
+              src="/assets/node_icon/node-bg.svg"
               alt="form node image"
               className="w-[140px] mx-auto"
             />
 
-            <div
-              className="absolute top-1/2 transform -translate-y-1/2 right-[-60px] flex items-center"
-            >
-              <div
-                className="h-px border-t-2 border-dashed border-[#2DA771] w-14 mr-1"
-              />
+            <img
+              src="/assets/node_icon/form-single.svg"
+              alt="foreground icon"
+              className="w-[30px] mx-auto absolute top-[55px] left-0 right-0"
+            />
+
+            <div className="absolute top-1/2 transform -translate-y-1/2 right-[-60px] flex items-center">
+              <div className="h-px border-t-2 border-dashed border-[#2DA771] w-14 mr-1" />
               <Handle
                 type="source"
                 position={Position.Right}
                 className="w-5 h-5 bg-white border-2 border-[#2DA771] rounded-full flex items-center justify-center text-[#2DA771] text-lg font-bold transform translate-x-1/2 -translate-y-1/2 p-0 m-0 leading-none"
-                onConnect={(params) => console.log("handle onConnect", params)}
+                onConnect={params => console.log("handle onConnect", params)}
                 isConnectable={isConnectable}
               >
                 +
@@ -270,8 +276,8 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
                               key={key}
                               inputKey={key}
                               param={param}
-                              handleInputChange={() => { }}
-                              toggleTooltip={() => { }}
+                              handleInputChange={() => {}}
+                              toggleTooltip={() => {}}
                               visibleTooltip={{}}
                             />
                           );
@@ -317,7 +323,9 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
               <AddFieldDropdown
                 options={options}
                 onSelect={option => {
-                  const selectedNode = subNodes?.find(node => node.nodeMasterId === option.value);
+                  const selectedNode = subNodes?.find(
+                    node => node.nodeMasterId === option.value
+                  );
                   if (selectedNode) {
                     handleAddSubNode(selectedNode);
                   }
