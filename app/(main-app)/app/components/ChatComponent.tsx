@@ -671,7 +671,7 @@ export default function ChatComponent() {
                   data-aos="fade-right"
                 >
                   <Image
-                    src="/logo/growstack-mini.png"
+                    src="/logo/growstack-mini1.png"
                     alt="growstack_ai_chat"
                     width={35}
                     height={35}

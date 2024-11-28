@@ -207,7 +207,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
                 ) : (
                   <div className="w-11 h-11 rounded-xl relative min-w-11">
                     <Image
-                      src="/logo/growstack-mini.png"
+                      src="/logo/growstack-mini1.png"
                       alt="growstack_ai_chat"
                       fill
                     />

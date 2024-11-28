@@ -127,7 +127,7 @@ const Login = () => {
           <div className="w-full max-w-2xl max-h-[840px] h-full p-14 bg-[#F7FAFC] rounded-[30px]">
             <div className="slide-reveal w-full h-full max-w-[460px] mx-auto flex flex-col justify-between items-center md:items-start space-y-10">
               <Image
-                src="/logo/growstack.png"
+                src="/logo/growstack1.png"
                 alt="growstack"
                 height={180}
                 width={180}

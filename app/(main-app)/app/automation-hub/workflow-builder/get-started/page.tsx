@@ -21,7 +21,7 @@ export default function GetStarted() {
         <div className="w-full py-14 px-5 bg-white rounded-3xl border border-[#E8E8E8] mt-16 max-w-[1600px] mx-auto">
           <div className="flex flex-col justify-center items-center space-y-8">
             <Image
-              src="/logo/growstack-mini.png"
+              src="/logo/growstack-mini1.png"
               alt=""
               width={50}
               height={50}

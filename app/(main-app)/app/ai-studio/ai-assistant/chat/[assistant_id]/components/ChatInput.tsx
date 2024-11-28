@@ -173,7 +173,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
     <>
       <div className="flex p-2 border gap-2 rounded-xl items-end">
         <Image
-          src="/logo/growstack-mini.png"
+          src="/logo/growstack-mini1.png"
           alt=""
           width={25}
           height={25}
