@@ -127,7 +127,7 @@ export default function Home() {
       const response = await instance.get(
         `/users/api/v1/docs?page=${page}&limit=${limit}&category=image&favourite=${favImage}`
       );
-      const { docs, totalPages } = response.data.data;
+      const { docs } = response.data.data;
       setHistory(
         docs.map((item: any) => ({
           id: item._id,
@@ -138,7 +138,7 @@ export default function Home() {
           updatedAt: item.updatedAt,
         }))
       );
-      setTotalPages(totalPages);
+      setTotalPages(response.data.data.metadata.totalPages);
       setCurrentPage(page);
     } catch (error) {
       console.error("Error fetching history:", error);
@@ -622,7 +622,7 @@ export default function Home() {
                     <div>
                       <div
                         className="grid grid-cols-2 gap-2"
-                        style={{ width: "100%", height: "500px" }}
+                        style={{ width: "100%" }}
                       >
                         {finalUrl.map(image => (
                           <div
@@ -635,7 +635,7 @@ export default function Home() {
                           // onClick={() => toggleImageSelection(image)}
                           >
                             <img
-                              className="w-[300px] h-[300px] object-cover"
+                              className="w-[160px] h-[160px] object-cover"
                               alt="img-result"
                               src={image}
                             />
