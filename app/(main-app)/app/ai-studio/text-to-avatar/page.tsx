@@ -343,6 +343,7 @@ export default function TextToVideoPage() {
           currentPlan?.plan_name === "AI Essentials")
       ) {
         setIsSubscriptionModalOpen(true);
+        return;
       } else if (
         user?.user_type !== "ADMIN" &&
         (currentPlan?.usage?.no_of_text_to_avatar ?? 0) <= 0
