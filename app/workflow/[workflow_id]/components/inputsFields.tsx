@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 interface Parameter {
   label: string;
@@ -47,6 +47,15 @@ const getTypeFromParam = (paramType: string): string => {
 };
 
 const InputFields = ({ param, inputKey, handleInputChange }: any) => {
+  const [isHovered, setIsHovered] = useState(null);
+
+  const handleMouseEnter = (inputName: any) => {
+    setIsHovered(inputName);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(null);
+  };
   return (
     <div key={inputKey} className="input-box mb-3">
       <div className="label-box flex gap-2 items-center mb-1 relative">
@@ -54,9 +63,31 @@ const InputFields = ({ param, inputKey, handleInputChange }: any) => {
           {param.label}{" "}
           {param.required && <span className="text-[#CF0000]">*</span>}
         </label>
-        <span className="cursor-pointer">
-          <img src="/assets/node_icon/info-circle.svg" alt="info icon" />
-        </span>
+        <button
+          className="relative"
+          onMouseEnter={() => handleMouseEnter("input1")}
+          onMouseLeave={handleMouseLeave}
+        >
+          <img
+            src="/assets/node_icon/info-circle.svg"
+            alt="info icon"
+            className="relative"
+          />
+        </button>
+
+        {isHovered === "input1" && (
+          <div className="absolute bottom-full left-[60px] mb-2 w-[250px] bg-white border-[1px] rounded-[10px] border-[#D3D3D3] p-2 break-words before:absolute before:left-[25px] before:bottom-0 before:w-[12px] before:h-[0px] before:bg-white before:border-[1px] before:border-[#fff] before:z-10">
+            <p className="mb-0 font-[400] text-[9px] text-[#14171B]">
+              {param.description}
+            </p>
+
+            <img
+              src="/assets/node_icon/Polygon-shape.svg"
+              alt="polygon shape"
+              className="absolute bottom-[-7px] left-[25px]"
+            />
+          </div>
+        )}
       </div>
       <div className="input-group">
         <input
@@ -78,6 +109,15 @@ const InputFields = ({ param, inputKey, handleInputChange }: any) => {
 };
 
 const TextAreaField = ({ param, inputKey, handleInputChange }: any) => {
+  const [isHovered, setIsHovered] = useState(null);
+
+  const handleMouseEnter = (inputName: any) => {
+    setIsHovered(inputName);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(null);
+  };
   return (
     <div className="input-box mb-3">
       <div className="label-box flex items-center gap-2 relative mb-1">
@@ -87,8 +127,8 @@ const TextAreaField = ({ param, inputKey, handleInputChange }: any) => {
         </label>
         <button
           className="relative"
-        // onMouseEnter={() => handleMouseEnter("input1")}
-        // onMouseLeave={handleMouseLeave}
+          onMouseEnter={() => handleMouseEnter("input2")}
+          onMouseLeave={handleMouseLeave}
         >
           <img
             src="/assets/node_icon/info-circle.svg"
@@ -97,21 +137,19 @@ const TextAreaField = ({ param, inputKey, handleInputChange }: any) => {
           />
         </button>
 
-        {/* {isHovered === "input1" && (
-          <div className="absolute bottom-full mb-2 w-full bg-white border-[1px] rounded-[10px] border-[#D3D3D3] p-2">
+        {isHovered === "input2" && (
+          <div className="absolute bottom-full left-[60px] mb-2 w-[250px] bg-white border-[1px] rounded-[10px] border-[#D3D3D3] p-2 break-words before:absolute before:left-[25px] before:bottom-0 before:w-[12px] before:h-[0px] before:bg-white before:border-[1px] before:border-[#fff] before:z-10">
             <p className="mb-0 font-[400] text-[9px] text-[#14171B]">
-              Provide a brief, descriptive text about the subject
-              matter or main focus. This field allows you to specify
-              the topic that will be used throughout the workflow.
+              {param.description}
             </p>
 
             <img
               src="/assets/node_icon/Polygon-shape.svg"
               alt="polygon shape"
-              className="absolute bottom-[-8px] left-0 right-[76px] mx-auto"
+              className="absolute bottom-[-7px] left-[25px]"
             />
           </div>
-        )} */}
+        )}
       </div>
 
       <div className="input-group">
@@ -126,6 +164,15 @@ const TextAreaField = ({ param, inputKey, handleInputChange }: any) => {
 };
 
 const Slider = ({ param, inputKey, handleInputChange }: any) => {
+  const [isHovered, setIsHovered] = useState(null);
+
+  const handleMouseEnter = (inputName: any) => {
+    setIsHovered(inputName);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(null);
+  };
   return (
     <div className="input-box mb-3">
       <div className="label-box flex items-center gap-2 relative mb-1">
@@ -135,8 +182,8 @@ const Slider = ({ param, inputKey, handleInputChange }: any) => {
         </label>
         <button
           className="relative"
-        // onMouseEnter={() => handleMouseEnter("input1")}
-        // onMouseLeave={handleMouseLeave}
+          onMouseEnter={() => handleMouseEnter("input3")}
+          onMouseLeave={handleMouseLeave}
         >
           <img
             src="/assets/node_icon/info-circle.svg"
@@ -145,21 +192,19 @@ const Slider = ({ param, inputKey, handleInputChange }: any) => {
           />
         </button>
 
-        {/* {isHovered === "input1" && (
-          <div className="absolute bottom-full mb-2 w-full bg-white border-[1px] rounded-[10px] border-[#D3D3D3] p-2">
+        {isHovered === "input3" && (
+          <div className="absolute bottom-full left-[60px] mb-2 w-[250px] bg-white border-[1px] rounded-[10px] border-[#D3D3D3] p-2 break-words before:absolute before:left-[25px] before:bottom-0 before:w-[12px] before:h-[0px] before:bg-white before:border-[1px] before:border-[#fff] before:z-10">
             <p className="mb-0 font-[400] text-[9px] text-[#14171B]">
-              Provide a brief, descriptive text about the subject
-              matter or main focus. This field allows you to specify
-              the topic that will be used throughout the workflow.
+              {param.description}
             </p>
 
             <img
               src="/assets/node_icon/Polygon-shape.svg"
               alt="polygon shape"
-              className="absolute bottom-[-8px] left-0 right-[76px] mx-auto"
+              className="absolute bottom-[-7px] left-[25px]"
             />
           </div>
-        )} */}
+        )}
       </div>
 
       <div className="input-group">
@@ -192,19 +237,50 @@ const Slider = ({ param, inputKey, handleInputChange }: any) => {
 };
 
 const BooleanField = ({ param, inputKey, handleInputChange }: any) => {
+  const [isHovered, setIsHovered] = useState(null);
+
+  const handleMouseEnter = (inputName: any) => {
+    setIsHovered(inputName);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(null);
+  };
   return (
     <div
       key={inputKey}
       className="input-box flex items-center justify-between mb-3"
     >
-      <div className="label-box flex gap-2 items-center mb-1">
+      <div className="label-box flex gap-2 items-center mb-1 relative">
         <label className="font-medium text-[#14171B] text-[12px]">
           {param.label}
           {param.required && <span className="text-[#CF0000]">*</span>}
         </label>
-        <span>
-          <img src="/assets/node_icon/info-circle.svg" alt="info icon" />
-        </span>
+        <button
+          className="relative"
+          onMouseEnter={() => handleMouseEnter("input4")}
+          onMouseLeave={handleMouseLeave}
+        >
+          <img
+            src="/assets/node_icon/info-circle.svg"
+            alt="info icon"
+            className="relative"
+          />
+        </button>
+
+        {isHovered === "input4" && (
+          <div className="absolute bottom-full left-[60px] mb-2 w-[250px] bg-white border-[1px] rounded-[10px] border-[#D3D3D3] p-2 break-words before:absolute before:left-[25px] before:bottom-0 before:w-[12px] before:h-[0px] before:bg-white before:border-[1px] before:border-[#fff] before:z-10">
+            <p className="mb-0 font-[400] text-[9px] text-[#14171B]">
+              {param.description}
+            </p>
+
+            <img
+              src="/assets/node_icon/Polygon-shape.svg"
+              alt="polygon shape"
+              className="absolute bottom-[-7px] left-[25px]"
+            />
+          </div>
+        )}
       </div>
       <div className="flex items-center">
         <label className="relative inline-flex items-center cursor-pointer">
@@ -232,20 +308,48 @@ const DropDown = ({ param, inputKey, handleInputChange }: any) => {
     // onSelect(option);
   };
 
+  const [isHovered, setIsHovered] = useState(null);
+
+  const handleMouseEnter = (inputName: any) => {
+    setIsHovered(inputName);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(null);
+  };
+
   return (
     <div key={inputKey} className="input-box mb-3">
-      <div className="label-box flex gap-2 items-center mb-1">
+      <div className="label-box flex gap-2 items-center mb-1 relative">
         <label className="text-[12px] text-[#14171B] font-medium">
           {param.label}
           {param.required && <span className="text-[#CF0000]">*</span>}
         </label>
-        <button className="relative">
+        <button
+          className="relative"
+          onMouseEnter={() => handleMouseEnter("input5")}
+          onMouseLeave={handleMouseLeave}
+        >
           <img
             src="/assets/node_icon/info-circle.svg"
             alt="info icon"
             className="relative"
           />
         </button>
+
+        {isHovered === "input5" && (
+          <div className="absolute bottom-full left-[60px] mb-2 w-[250px] bg-white border-[1px] rounded-[10px] border-[#D3D3D3] p-2 break-words before:absolute before:left-[25px] before:bottom-0 before:w-[12px] before:h-[0px] before:bg-white before:border-[1px] before:border-[#fff] before:z-10">
+            <p className="mb-0 font-[400] text-[9px] text-[#14171B]">
+              {param.description}
+            </p>
+
+            <img
+              src="/assets/node_icon/Polygon-shape.svg"
+              alt="polygon shape"
+              className="absolute bottom-[-7px] left-[25px]"
+            />
+          </div>
+        )}
       </div>
       <div className="input-group">
         <select
@@ -257,7 +361,7 @@ const DropDown = ({ param, inputKey, handleInputChange }: any) => {
           onChange={e =>
             handleInputChange(inputKey, param.type, e.target.value)
           }
-        // value={param?.value || ""}
+          // value={param?.value || ""}
         >
           {param?.options &&
             param.options.map((option: string, index: number) => (
@@ -279,6 +383,17 @@ const SelectOption = ({ param, inputKey }: any) => {
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
+
+  const [isHovered, setIsHovered] = useState(null);
+
+  const handleMouseEnter = (inputName: any) => {
+    setIsHovered(inputName);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(null);
+  };
+
   return (
     <div key={inputKey} className="input-box mb-3">
       <div className="label-box flex gap-2 items-center mb-1">
@@ -287,9 +402,31 @@ const SelectOption = ({ param, inputKey }: any) => {
           {param.required && <span className="text-[#CF0000]">*</span>}
         </label>
 
-        <span>
-          <img src="/assets/node_icon/info-circle.svg" alt="info icon" />
-        </span>
+        <button
+          className="relative"
+          onMouseEnter={() => handleMouseEnter("input6")}
+          onMouseLeave={handleMouseLeave}
+        >
+          <img
+            src="/assets/node_icon/info-circle.svg"
+            alt="info icon"
+            className="relative"
+          />
+        </button>
+
+        {isHovered === "input6" && (
+          <div className="absolute bottom-full left-[60px] mb-2 w-[250px] bg-white border-[1px] rounded-[10px] border-[#D3D3D3] p-2 break-words before:absolute before:left-[25px] before:bottom-0 before:w-[12px] before:h-[0px] before:bg-white before:border-[1px] before:border-[#fff] before:z-10">
+            <p className="mb-0 font-[400] text-[9px] text-[#14171B]">
+              {param.description}
+            </p>
+
+            <img
+              src="/assets/node_icon/Polygon-shape.svg"
+              alt="polygon shape"
+              className="absolute bottom-[-7px] left-[25px]"
+            />
+          </div>
+        )}
       </div>
 
       <div className="input-group border-0 relative overflow-hidden">
@@ -339,6 +476,16 @@ const SelectOption = ({ param, inputKey }: any) => {
 const CheckboxField = ({ param, inputKey, handleInputChange }: any) => {
   console.log(param);
 
+  const [isHovered, setIsHovered] = useState(null);
+
+  const handleMouseEnter = (inputName: any) => {
+    setIsHovered(inputName);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(null);
+  };
+
   return (
     <div key={inputKey} className="input-box mt-3 mb-3">
       <div className="label-box flex gap-2 items-center mb-1">
@@ -348,9 +495,31 @@ const CheckboxField = ({ param, inputKey, handleInputChange }: any) => {
             {param.required && <span className="text-[#CF0000]">*</span>}
           </span>
         </label>
-        <span>
-          <img src="/assets/node_icon/info-circle.svg" alt="info icon" />
-        </span>
+        <button
+          className="relative"
+          onMouseEnter={() => handleMouseEnter("input6")}
+          onMouseLeave={handleMouseLeave}
+        >
+          <img
+            src="/assets/node_icon/info-circle.svg"
+            alt="info icon"
+            className="relative"
+          />
+        </button>
+
+        {isHovered === "input6" && (
+          <div className="absolute bottom-full left-[60px] mb-2 w-[250px] bg-white border-[1px] rounded-[10px] border-[#D3D3D3] p-2 break-words before:absolute before:left-[25px] before:bottom-0 before:w-[12px] before:h-[0px] before:bg-white before:border-[1px] before:border-[#fff] before:z-10">
+            <p className="mb-0 font-[400] text-[9px] text-[#14171B]">
+              {param.description}
+            </p>
+
+            <img
+              src="/assets/node_icon/Polygon-shape.svg"
+              alt="polygon shape"
+              className="absolute bottom-[-7px] left-[25px]"
+            />
+          </div>
+        )}
       </div>
 
       {param?.options &&
@@ -381,19 +550,27 @@ const UploadButton = ({ param, inputKey, handleInputChange }: any) => {
       fileInputRef.current.click();
     }
   };
+
+  const [isHovered, setIsHovered] = useState(null);
+
+  const handleMouseEnter = (inputName: any) => {
+    setIsHovered(inputName);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(null);
+  };
   return (
     <div className="input-box mb-3">
       <div className="label-box flex items-center gap-2 relative mb-1">
         <label className="font-medium text-[#14171B] text-[12px]">
           {param.label}
-          <span>
-            {param.required && <span className="text-[#CF0000]">*</span>}
-          </span>
+        
         </label>
         <button
           className="relative"
-        // onMouseEnter={() => handleMouseEnter("input1")}
-        // onMouseLeave={handleMouseLeave}
+          onMouseEnter={() => handleMouseEnter("input6")}
+          onMouseLeave={handleMouseLeave}
         >
           <img
             src="/assets/node_icon/info-circle.svg"
@@ -401,6 +578,20 @@ const UploadButton = ({ param, inputKey, handleInputChange }: any) => {
             className="relative"
           />
         </button>
+
+        {isHovered === "input6" && (
+          <div className="absolute bottom-full left-[60px] mb-2 w-[250px] bg-white border-[1px] rounded-[10px] border-[#D3D3D3] p-2 break-words before:absolute before:left-[25px] before:bottom-0 before:w-[12px] before:h-[0px] before:bg-white before:border-[1px] before:border-[#fff] before:z-10">
+            <p className="mb-0 font-[400] text-[9px] text-[#14171B]">
+              {param.description}
+            </p>
+
+            <img
+              src="/assets/node_icon/Polygon-shape.svg"
+              alt="polygon shape"
+              className="absolute bottom-[-7px] left-[25px]"
+            />
+          </div>
+        )}
 
         {/* {isHovered === "input1" && (
           <div className="absolute bottom-full mb-2 w-full bg-white border-[1px] rounded-[10px] border-[#D3D3D3] p-2">
@@ -426,7 +617,8 @@ const UploadButton = ({ param, inputKey, handleInputChange }: any) => {
           ref={fileInputRef}
           className="hidden"
         />
-        <button className="w-full h-[40px] font-medium bg-[#2DA771] text-white text-[14px] rounded-[10px] flex items-center justify-center gap-2"
+        <button
+          className="w-full h-[40px] font-medium bg-[#2DA771] text-white text-[14px] rounded-[10px] flex items-center justify-center gap-2"
           onClick={handleButtonClick}
         >
           <img src="/assets/node_icon/file-upload-icon.svg" />
@@ -437,8 +629,152 @@ const UploadButton = ({ param, inputKey, handleInputChange }: any) => {
   );
 };
 
+const MultiSelectDropdown = ({ param, inputKey, handleInputChange }: any) => {
+  //MULTISLECT DROPDOWN MENU
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [inputValue, setInputValue] = useState<string>("");
+  const multiselectItems: string[] = ["Item 1", "Item 2", "Item 3", "Item 4"];
 
-export const AddFieldDropdown: React.FC<AddFieldDropdownProps> = ({ options, onSelect, inputKey }) => {
+  const dropdownRef = useRef<HTMLDivElement>(null); // Reference for dropdown container
+  const inputRef = useRef<HTMLInputElement>(null); // Reference for input field
+  const containerRef = useRef<HTMLDivElement>(null); // Reference for the entire container
+
+  const toggleDropdown = () => setIsOpen(!isOpen);
+
+  const handleInputSelectChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setInputValue(e.target.value);
+
+  const handleSelectItem = (item: string) => {
+    if (!selectedItems.includes(item)) {
+      setSelectedItems([...selectedItems, item]);
+    }
+  };
+
+  const handleRemoveItem = (item: string) => {
+    setSelectedItems(selectedItems.filter(selected => selected !== item));
+  };
+
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (
+      e.key === "Enter" &&
+      inputValue.trim() &&
+      !selectedItems.includes(inputValue.trim())
+    ) {
+      setSelectedItems([...selectedItems, inputValue.trim()]);
+      setInputValue("");
+      e.preventDefault();
+    }
+  };
+
+  // Close dropdown when clicked outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
+        setIsOpen(false); // Close dropdown if clicked outside
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Toggle dropdown when the input field is clicked
+  const handleInputClick = () => {
+    setIsOpen(!isOpen); // Toggle dropdown open/close
+  };
+  return (
+    <div
+      key={inputKey}
+      ref={containerRef}
+      className="relative w-full max-w-md mx-auto"
+    >
+      <div className="flex flex-wrap gap-2 items-center p-3 rounded-[10px] bg-[#F2F2F2]">
+        {selectedItems.map((item, i) => (
+          <div
+            key={i}
+            className="flex items-center bg-[#2DA771] text-[#fff] px-3 py-1 rounded-full text-sm"
+          >
+            {item}
+            <button
+              onClick={() => handleRemoveItem(item)}
+              className="ml-2 text-[#fff] hover:text-[#fff]"
+            >
+              &times;
+            </button>
+          </div>
+        ))}
+
+        <input
+          ref={inputRef}
+          type="text"
+          value={inputValue}
+          onChange={handleInputSelectChange}
+          onClick={handleInputClick} // Toggle dropdown on input click
+          onFocus={() => setIsOpen(true)} // Open on focus
+          onKeyDown={handleInputKeyDown}
+          placeholder="Add Option"
+          className="flex-grow bg-transparent outline-none text-[#14171B] text-sm font-medium"
+        />
+      </div>
+
+      <button
+        onClick={toggleDropdown}
+        className="absolute right-2 top-4 text-gray-500 hover:text-gray-700"
+      >
+        <img
+          src="/assets/node_icon/add-option-icon.svg"
+          alt="add item"
+          className="w-5 h-5"
+        />
+      </button>
+
+      {isOpen && (
+        <div
+          ref={dropdownRef}
+          className="absolute w-full bg-white border-[0.5px] border-[#EBEBEB] rounded-[5px] shadow-xl z-10 p-3"
+        >
+          <div className="py-1 max-h-60 overflow-y-auto">
+            {multiselectItems.map((item, i) => (
+              <a
+                key={i}
+                href="#"
+                onClick={() => handleSelectItem(item)}
+                className={`block p-2 pt-1 pb-1 mb-1 text-[11px] text-[#14171B] hover:bg-[#2da7711a] hover:text-[#2DA771] rounded-[5px] cursor-pointer ${
+                  selectedItems.includes(item)
+                    ? "bg-[#2da7711a] text-[#2DA771]"
+                    : ""
+                }`}
+              >
+                {item}
+              </a>
+            ))}
+            {inputValue && !multiselectItems.includes(inputValue) && (
+              <a
+                href="#"
+                onClick={() => handleSelectItem(inputValue.trim())}
+                className="block px-4 py-2 text-xs text-gray-700 hover:bg-blue-100 rounded-md cursor-pointer"
+              >
+                {inputValue.trim()}
+              </a>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export const AddFieldDropdown: React.FC<AddFieldDropdownProps> = ({
+  options,
+  onSelect,
+  inputKey,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<Option | null>(null);
 
@@ -489,12 +825,12 @@ export const AddFieldDropdown: React.FC<AddFieldDropdownProps> = ({ options, onS
           />
         </div>
         {isOpen && (
-          <div className="absolute left-0 w-full bg-white border-0.5 border-[#EBEBEB] rounded-5 shadow-xl z-10 p-3">
+          <div className="absolute left-0 w-full bg-white border-[0.5px] border-[#EBEBEB] rounded-[5px] shadow-xl z-10 p-3">
             {options.map(option => (
               <div
                 key={option.value}
                 onClick={() => selectOption(option)}
-                className="flex items-center justify-between rounded-5 p-2 pt-1 pb-1 mb-1 cursor-pointer text-[#14171B] text-11 font-500 hover:bg-[#2da7711a] hover:text-[#2DA771]"
+                className="flex items-center justify-between rounded-[5px] p-2 pt-1 pb-1 mb-1 cursor-pointer text-[#14171B] text-[11px] font-[500] hover:bg-[#2da7711a] hover:text-[#2DA771]"
               >
                 <span>{option.label}</span>
                 <img
@@ -591,6 +927,14 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
     case "button_upload":
       return (
         <UploadButton
+          param={param}
+          inputKey={inputKey}
+          handleInputChange={handleInputChange}
+        />
+      );
+    case "multiselect_dropdown":
+      return (
+        <MultiSelectDropdown
           param={param}
           inputKey={inputKey}
           handleInputChange={handleInputChange}

@@ -208,7 +208,7 @@ const GeneralInputNodes = memo(
                 type="text"
                 value={data?.descriptions || ""}
                 // onChange={handleDescriptionChange}
-                className="text-xs font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0"
+                className="form-control shadow-none bg-transparent border-0 text-[#14171B] text-sm font-medium text-center focus:outline-none"
                 placeholder="Enter description"
               />
             </div>
@@ -226,22 +226,22 @@ const GeneralInputNodes = memo(
                 />
               )}
 
-              <div className="absolute top-1/2 transform -translate-y-1/2 right-[-60px] flex items-center">
+              <div className="absolute top-[48%] transform -translate-y-1/2 right-[-50px] flex items-center">
                 <div className="h-px border-t-2 border-dashed border-[#2DA771] w-[65px] mr-1" />
                 <Handle
                   type="source"
                   position={Position.Right}
-                  className="w-5 h-5 bg-white border-2 border-[#2DA771] rounded-full flex items-center justify-center text-[#2DA771] text-lg font-bold transform translate-x-1/2 -translate-y-1/2 p-0 m-0 leading-none"
+                  className="w-6 h-6 bg-white border-2 border-[#2DA771] rounded-full flex items-center justify-center text-[#2DA771] text-lg font-bold transform translate-x-1/2 -translate-y-1/2 p-0 m-0 leading-none"
                   onConnect={params => console.log("handle onConnect", params)}
                   isConnectable={isConnectable}
                 >
-                  +
+                  <h3 className="text-[20px] font-medium">+</h3>
                 </Handle>
 
                 <Handle
                   type="source"
                   position={Position.Left}
-                  className="w-[10px] h-[10px] bg-[#2DA771]"
+                  className="w-[10px] h-[10px] bg-[#2DA771] border-0"
                   isConnectable={false}
                 />
               </div>

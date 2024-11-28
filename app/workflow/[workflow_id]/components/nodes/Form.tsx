@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Handle, Position, type NodeProps } from "@xyflow/react";
 import { FormNodeProps, type MarkdownNodeProps } from "./types";
 import Image from "next/image";
@@ -152,6 +152,8 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
         "add-option-icon.svg",
     }));
 
+ 
+
   return (
     <div>
       <div className="long-text-box" id="large-box">
@@ -160,7 +162,14 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
             <h4 className="text-sm font-medium text-[#2DA771]">
               General input
             </h4>
-            <span className="text-xs font-medium text-[#14171B]">(Form)</span>
+            {/* <span className="text-xs font-medium text-[#14171B]">(Form)</span> */}
+            <input
+              type="text"
+              value={data?.descriptions || ""}
+              // onChange={handleDescriptionChange}
+              className="form-control shadow-none bg-transparent border-0 text-[#14171B] text-sm font-medium text-center focus:outline-none"
+              placeholder="Enter description"
+            />
           </div>
 
           <div className="text-image text-center">
@@ -173,25 +182,29 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
             <img
               src="/assets/node_icon/form-single.svg"
               alt="foreground icon"
-              className="w-[30px] mx-auto absolute top-[55px] left-0 right-0"
+              className="w-[40px] mx-auto absolute top-[50%] left-0 right-0"
             />
 
-            <div className="absolute top-1/2 transform -translate-y-1/2 right-[-60px] flex items-center">
+            <div className="absolute top-[60%] transform -translate-y-1/2 right-[-42px] flex items-center">
               <div className="h-px border-t-2 border-dashed border-[#2DA771] w-14 mr-1" />
               <Handle
                 type="source"
                 position={Position.Right}
-                className="w-5 h-5 bg-white border-2 border-[#2DA771] rounded-full flex items-center justify-center text-[#2DA771] text-lg font-bold transform translate-x-1/2 -translate-y-1/2 p-0 m-0 leading-none"
+                className="w-6 h-6 bg-white border-2 border-[#2DA771] rounded-full flex items-center justify-center text-[#2DA771] text-lg font-bold transform translate-x-1/2 -translate-y-1/2 p-0 m-0 leading-none"
                 onConnect={params => console.log("handle onConnect", params)}
                 isConnectable={isConnectable}
               >
-                +
+                <img
+                  src="/assets/node_icon/plus-icon.svg"
+                  alt="plus icon"
+                  className="w-[17px]"
+                />
               </Handle>
 
               <Handle
                 type="source"
                 position={Position.Left}
-                className="w-[10px] h-[10px] bg-[#2DA771]"
+                className="w-[10px] h-[10px] bg-[#2DA771] border-0"
                 isConnectable={false}
               />
             </div>
@@ -225,7 +238,7 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
               <h3 className="text-sm text-[#14171B] font-medium">Short Text</h3>
             </div> */}
 
-            <div className="form-box">
+            <div className="form-box max-h-[500px] overflow-y-scroll">
               {/* {currentParameter &&
                 Object.entries(currentParameter)
                   .filter(
@@ -334,13 +347,15 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
               />
               {/* </div> */}
 
-              <div className="topic-box">
+              {/* <div className="topic-box">
                 <div className="topic-text w-auto p-3 inline-block rounded-full bg-[#FFE6FF]">
                   <h5 className="text-[12px] font-medium text-[#14171B]">
                     topic
                   </h5>
                 </div>
-              </div>
+              </div> */}
+
+
             </div>
           </div>
         )}
