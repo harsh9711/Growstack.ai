@@ -255,7 +255,7 @@ export default function TextToVideoPage() {
     (rootState: RootState) => rootState.auth
   );
   const isSubscribed = user?.isSubscribed || false;
-
+  console.log("=====", currentPlan);
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -336,7 +336,12 @@ export default function TextToVideoPage() {
 
   const handleNavigation = async () => {
     try {
-      if (user?.user_type !== "ADMIN" && currentPlan?.plan_type === "FREE") {
+      console.log("=====", currentPlan);
+      if (
+        user?.user_type !== "ADMIN" &&
+        (currentPlan?.plan_type === "FREE" ||
+          currentPlan?.plan_name === "AI Essentials")
+      ) {
         setIsSubscriptionModalOpen(true);
       } else if (
         user?.user_type !== "ADMIN" &&
