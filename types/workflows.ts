@@ -39,6 +39,8 @@ export interface NodeDataState {
   functionToExecute?: string;
   dynamicParams?: string[];
   icon?: string;
+  subNodes?: SubNodeProps[];
+  descriptions?: string;
   parameters?: {
     [key: string]: NodeParameter;
   };
@@ -79,6 +81,7 @@ export interface MasterNodeProps {
   subCategory: string;
   functionToExecute: string;
   logoUrl?: string;
+  subNodes?: SubNodeProps[];
   parameters: {
     [key: string]: NodeParameter;
   };
@@ -88,6 +91,46 @@ export interface MasterNodeProps {
 
 export interface MasterNodeState {
   masterNode: MasterNodeProps[];
+  isLoading: boolean;
+  error: any;
+}
+
+export interface WorkflowNodeState {
+  _id: string;
+  workflowId: string;
+  nodeMasterId: string;
+  type: string;
+  parameters: {
+    [key: string]: NodeParameter;
+  };
+  dependencies: string[];
+  subNodes: [];
+  __v: 0;
+}
+
+export interface SubNodeProps {
+  nodeMasterId: string;
+  name: string;
+  isDefault: boolean;
+  parameters: {
+    [key: string]: NodeParameter;
+  };
+}
+
+export interface WorkflowDataState {
+  _id?: string;
+  name: string;
+  description?: string;
+  nodes?: WorkflowNodeState[];
+  status?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  edges?: [];
+  __v?: number;
+}
+
+export interface WorkflowState {
+  workFlowData: WorkflowDataState;
   isLoading: boolean;
   error: any;
 }

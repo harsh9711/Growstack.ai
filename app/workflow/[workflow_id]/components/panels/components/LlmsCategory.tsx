@@ -1,15 +1,17 @@
 import React from "react";
 import Image from "next/image";
-import { AllData } from "../../data";
-import { addNode, removeNode } from "@/lib/features/workflow/node.slice";
+import { addNode, addNodeData, createNode, removeNode } from "@/lib/features/workflow/node.slice";
 import { NodeState } from "@/types/workflows";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { convertNodeData } from "@/utils/dataResolver";
+import { calculateNextNodePosition } from "@/utils/helper";
+import { unwrapResult } from "@reduxjs/toolkit";
+
 
 const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
     const dispatch = useAppDispatch();
     const { isLoading, masterNode } = useAppSelector(state => state.masterNode);
-
+    const { nodes, workflows } = useAppSelector(state => state);
     if ((masterNode && !masterNode.length) || !masterNode) {
         return <div>Data not found</div>;
     }
@@ -29,35 +31,37 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
         {}
     );
 
-    const handleClick = (nodeData: NodeState) => {
-        setNodes((prevNodes: NodeState[]) => {
-            const lastNode = prevNodes[prevNodes.length - 1];
-            let nextNodeX = 200;
-            let nextNodeY = 0;
-            if (lastNode) {
-                nextNodeX = lastNode.position.x + 200;
-                nextNodeY = lastNode.position.y;
+    const handleClick = async (nodeData: NodeState) => {
+        try {
+            const lastNode = nodes.nodes[nodes.nodes.length - 1];
+            const { nextNodeX, nextNodeY } = calculateNextNodePosition(lastNode);
 
-                if (nextNodeX > 1600) {
-                    nextNodeX = 200;
-                    nextNodeY += 200;
-                }
-            }
-
-
-            return [
-                ...prevNodes,
-                {
-                    ...nodeData,
-                    id: Date.now().toString(),
+            const resultAction = await dispatch(
+                createNode({
+                    workflowId: workflows.workFlowData._id,
+                    nodeMasterId: nodeData.id,
                     position: { x: nextNodeX, y: nextNodeY },
-                },
-            ];
-        });
+                    parameters: {},
+                })
+            );
+            const result = unwrapResult(resultAction);
+
+            const newNode = {
+                ...nodeData,
+                id: result._id,
+                position: { x: nextNodeX, y: nextNodeY },
+            };
+
+            setNodes((nds: NodeState[]) => nds.concat(newNode));
+            dispatch(addNode(newNode));
+        } catch (error) {
+            console.error("Error adding node:", error);
+        }
     };
 
+
     const handleDragStart = (event: React.DragEvent, item: NodeState) => {
-        dispatch(addNode(item));
+        dispatch(addNodeData(item));
         event.dataTransfer.effectAllowed = "move";
     };
 

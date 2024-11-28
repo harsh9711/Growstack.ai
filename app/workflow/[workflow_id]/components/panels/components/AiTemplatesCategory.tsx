@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { AllData, templatesHeader } from "../../data";
 import { useDispatch } from "react-redux";
-import { addNode } from "@/lib/features/workflow/node.slice";
+import { addNodeData } from "@/lib/features/workflow/node.slice";
 import { NodeDataState, NodeState } from "@/types/workflows";
 
 const AiTemplatesCategory = ({ setNodes }: any): React.ReactElement => {

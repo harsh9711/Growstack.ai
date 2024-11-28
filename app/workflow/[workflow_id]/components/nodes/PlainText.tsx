@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { type NodeProps } from "@xyflow/react";
-import { type ShortTextNodeProps } from "./types";
-import DynamicInput from "../inputsFields";
-import { extractParameterValues } from "@/utils/dataResolver";
-import { CustomAxiosInstance } from "@/config/axios.config";
 
-const ShortText = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
-  const { parameters, nodeMasterId } = data;
+import { Handle, Position, type NodeProps } from "@xyflow/react";
+import { type PlainTextNodeProps } from "./types";
+import Image from "next/image";
+import DynamicInput from "../inputsFields";
+
+const PlainText = ({ data, id, isConnectable }: NodeProps<PlainTextNodeProps>) => {
+  const { parameters } = data;
 
   const initialParameters =
     parameters &&
@@ -25,12 +25,11 @@ const ShortText = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
   const [currentParameter, setCurrentParameter] = useState(initialParameters);
   const [nextParameter, setNextParameter] = useState<{ [key: string]: any }>({
     "6": {
-      label: "Topic",
-      type: "text_topic",
-      placeholder: "Enter Topic",
-      required: false,
-      options: [],
-      description: `Add Topic`,
+      label: "Select Intrest",
+      type: "checkbox_field",
+      required: true,
+      options: ["Sports", "Music", "Reading"],
+      description: `select intrest.`,
       value: "",
       error: "",
     },
@@ -41,7 +40,6 @@ const ShortText = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
   const [visibleTooltip, setVisibleTooltip] = useState<{
     [key: string]: boolean;
   }>({});
-  const [isLoading, setIsLoading] = useState(false);
 
   const toggleTooltip = (index: string, isVisible: boolean) => {
     setVisibleTooltip(prevState => ({
@@ -50,56 +48,31 @@ const ShortText = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
     }));
   };
 
-  const handleNextClick = async () => {
-    if (!currentParameter) return;
+  // const handleNextClick = () => {
+  //   const requiredParams = currentParameter ? Object.values(currentParameter).filter(param => param.required) : [];
 
-    const requiredParams = currentParameter
-      ? Object.values(currentParameter).filter(param => param.required)
-      : [];
+  //   const allRequiredParamsFilled = requiredParams.every(param => param.value);
 
-    const allRequiredParamsFilled = requiredParams.every(param => param.value);
+  //   if (allRequiredParamsFilled) {
+  //     setIsNextBoxOpen(true);
+  //   } else {
+  //     setCurrentParameter(prevState => {
+  //       const updatedState = { ...prevState };
 
-    if (allRequiredParamsFilled) {
+  //       requiredParams.forEach(param => {
+  //         const key = prevState ? Object.keys(prevState).find(k => prevState[k] === param) : undefined;
+  //         if (key && !param.value) {
+  //           updatedState[key] = {
+  //             ...(prevState?.[key] ?? {}),
+  //             error: "This field is required",
+  //           };
+  //         }
+  //       });
 
-      const data = {
-        workflowId: "6745c94f1d389a68af3ff709",
-        nodeMasterId: nodeMasterId,
-        dependencies: [],
-        parameters: extractParameterValues(currentParameter),
-      };
-      console.log("data-->", JSON.stringify(data, null, 2));
-
-      try {
-        setIsLoading(true);
-        const result = await CustomAxiosInstance().post("node", data);
-        console.log("result-->", result);
-        setIsNextBoxOpen(true);
-
-      } catch (error: any) {
-        console.error("error-->", error?.message);
-      } finally {
-        setIsLoading(false);
-      }
-    } else {
-      setCurrentParameter(prevState => {
-        const updatedState = { ...prevState };
-
-        requiredParams.forEach(param => {
-          const key = prevState
-            ? Object.keys(prevState).find(k => prevState[k] === param)
-            : undefined;
-          if (key && !param.value) {
-            updatedState[key] = {
-              ...(prevState?.[key] ?? {}),
-              error: "This field is required",
-            };
-          }
-        });
-
-        return updatedState;
-      });
-    }
-  };
+  //       return updatedState;
+  //     });
+  //   }
+  // };
 
   const handleDropdownClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -158,6 +131,7 @@ const ShortText = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
           };
         }
       }
+
       if (type === "text_variable_name" || type === "text_input_label") {
         setVariableName(convertToUnderscore(value));
       }
@@ -165,32 +139,49 @@ const ShortText = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
     });
   };
 
-  // console.log("currentParameter-->", JSON.stringify(currentParameter, null, 2));
-
   return (
     <div>
-      <div className="short-text-box relative" id="small-box">
-        <div className="short-text-info-image relative">
-          <div className="short-text text-center">
+      <div className="long-text-box" id="large-box">
+        <div className="long-text-info-image relative">
+          <div className="long-text text-center">
             <h4 className="text-sm font-medium text-[#2DA771]">
               General input
             </h4>
             <span className="text-xs font-medium text-[#14171B]">
-              (short text)
+              (Plain Text)
             </span>
           </div>
 
-          <div className="text-image text-center relative">
+          <div className="text-image text-center">
             <img
-              src="/assets/node_icon/node-bg.svg"
-              alt="short text icon"
+              src="/assets/node_icon/shorttext-img.svg"
+              alt="short node image"
               className="w-[140px] mx-auto"
             />
-            <img
-              src="/assets/node_icon/short-single.svg"
-              alt="short text icon"
-              className="w-[30px] mx-auto absolute top-[55px] left-0 right-0"
-            />
+
+            <div
+              className="absolute top-1/2 transform -translate-y-1/2 right-[-60px] flex items-center"
+            >
+              <div
+                className="h-px border-t-2 border-dashed border-[#2DA771] w-14 mr-1"
+              />
+              <Handle
+                type="source"
+                position={Position.Right}
+                className="w-5 h-5 bg-white border-2 border-[#2DA771] rounded-full flex items-center justify-center text-[#2DA771] text-lg font-bold transform translate-x-1/2 -translate-y-1/2 p-0 m-0 leading-none"
+                onConnect={(params) => console.log("handle onConnect", params)}
+                isConnectable={isConnectable}
+              >
+                +
+              </Handle>
+
+              <Handle
+                type="source"
+                position={Position.Left}
+                className="w-[10px] h-[10px] bg-[#2DA771]"
+                isConnectable={false}
+              />
+            </div>
           </div>
           <div
             className="toggle-button-box absolute right-0 left-0 mx-auto bottom-[-10px] z-10 cursor-pointer"
@@ -198,7 +189,7 @@ const ShortText = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
           >
             <img
               src="/assets/node_icon/toggle-switch.svg"
-              alt="toggle switch"
+              alt="toggle switch icon"
               className="w-[25px] mx-auto"
               style={{ transform: isDropdownOpen ? "rotate(180deg)" : "" }}
             />
@@ -206,45 +197,51 @@ const ShortText = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
         </div>
 
         {isDropdownOpen && (
-          <div className="short-text-form bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] absolute left-1/2 transform -translate-x-1/2">
-            <div className="short-text-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-2">
+          <div className="long-text-form bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] absolute left-1/2 transform -translate-x-1/2">
+            <div className="long-text-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-2">
               <img
                 src="/assets/node_icon/short-single.svg"
                 alt="short text icon"
                 className="w-[20px] mb-2"
               />
 
-              <h5 className="text-sm text-[#14171B] font-medium">Short Text</h5>
+              <h5 className="text-sm text-[#14171B] font-medium">Plain Text</h5>
             </div>
-            {!isNextBoxOpen ? (
-              <div className="form-box">
-                {currentParameter &&
-                  Object.entries(currentParameter).map(([key, param]: any) => {
-                    return (
-                      <DynamicInput
-                        key={key}
-                        inputKey={key}
-                        param={param}
-                        handleInputChange={handleInputChange}
-                        toggleTooltip={toggleTooltip}
-                        visibleTooltip={visibleTooltip}
-                      />
-                    );
-                  })}
-                <div className="submit-button">
+
+            <div className="form-box">
+              {currentParameter &&
+                Object.entries(currentParameter).map(([key, param]: any) => {
+                  return (
+                    <DynamicInput
+                      key={key}
+                      inputKey={key}
+                      param={param}
+                      handleInputChange={handleInputChange}
+                      toggleTooltip={toggleTooltip}
+                      visibleTooltip={visibleTooltip}
+                    />
+                  );
+                })}
+              {/* <div className="submit-button">
                   <button
                     onClick={handleNextClick}
                     className="bg-[#2DA771] text-white text-sm font-medium p-3 w-full rounded-[10px]"
-                    disabled={isLoading}
                   >
-                    {isLoading ? (
-                      <div className="flex justify-center items-center">
-                        <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
-                      </div>
-                    ) : "Next"}
+                    Next
                   </button>
+                </div> */}
+
+              <div className="topic-box">
+                <div className="topic-text w-auto p-3 inline-block rounded-full bg-[#FFE6FF]">
+                  <h5 className="text-[12px] font-medium text-[#14171B]">
+                    topic
+                  </h5>
                 </div>
               </div>
+            </div>
+
+            {/* {!isNextBoxOpen ? (
+  
             ) : (
               <div className="form-box">
                 {nextParameter &&
@@ -281,7 +278,7 @@ const ShortText = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
                   </button>
                 </div>
               </div>
-            )}
+            )} */}
           </div>
         )}
       </div>
@@ -289,4 +286,4 @@ const ShortText = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
   );
 };
 
-export default ShortText;
+export default PlainText;

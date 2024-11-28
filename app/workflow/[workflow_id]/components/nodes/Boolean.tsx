@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
 import { Handle, Position, type NodeProps } from "@xyflow/react";
-import { BooleanNodeProps, type ChatGptNodeProps } from "./types";
+import { BooleanNodeProps, } from "./types";
 import Image from "next/image";
 import DynamicInput from "../inputsFields";
 
-const Boolean = ({ data, id }: NodeProps<BooleanNodeProps>) => {
+const Boolean = ({ data, id, isConnectable }: NodeProps<BooleanNodeProps>) => {
   const { parameters } = data;
 
   const initialParameters =
@@ -161,6 +161,30 @@ const Boolean = ({ data, id }: NodeProps<BooleanNodeProps>) => {
               alt="boolean icon"
               className="w-[140px] mx-auto"
             />
+
+            <div
+              className="absolute top-1/2 transform -translate-y-1/2 right-[-60px] flex items-center"
+            >
+              <div
+                className="h-px border-t-2 border-dashed border-[#2DA771] w-14 mr-1"
+              />
+              <Handle
+                type="source"
+                position={Position.Right}
+                className="w-5 h-5 bg-white border-2 border-[#2DA771] rounded-full flex items-center justify-center text-[#2DA771] text-lg font-bold transform translate-x-1/2 -translate-y-1/2 p-0 m-0 leading-none"
+                onConnect={(params) => console.log("handle onConnect", params)}
+                isConnectable={isConnectable}
+              >
+                +
+              </Handle>
+
+              <Handle
+                type="source"
+                position={Position.Left}
+                className="w-[10px] h-[10px] bg-[#2DA771]"
+                isConnectable={false}
+              />
+            </div>
           </div>
           <div
             className="toggle-button-box absolute right-0 left-0 mx-auto bottom-[-10px] z-10 cursor-pointer"

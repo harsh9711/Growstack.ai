@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { type NodeProps } from "@xyflow/react";
+import React, { memo, useState } from "react";
+import { Handle, Position, type NodeProps } from "@xyflow/react";
 import { type ShortTextNodeProps } from "./types";
 import DynamicInput from "../inputsFields";
 
-const LlmNodes = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
+const LlmNodes = memo(({ data, isConnectable }: NodeProps<ShortTextNodeProps>) => {
     const { parameters } = data;
 
     const initialParameters =
@@ -165,8 +165,32 @@ const LlmNodes = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
                         <img
                             src={data?.icon || "/assets/node_icon/node-bg.svg"}
                             alt="short text icon"
-                            className="w-[30px] mx-auto absolute top-[45px] left-0 right-0"
+                            className="mx-auto absolute top-[45px] left-0 right-0"
                         />
+                        <div
+                            className="absolute top-1/2 transform -translate-y-1/2 right-[-60px] flex items-center"
+                        >
+                            <div
+                                className="h-px border-t-2 border-dashed border-[#2DA771] w-[60px] mr-1"
+                            />
+                            <Handle
+                                type="source"
+                                position={Position.Right}
+                                className="w-5 h-5 bg-white border-2 border-[#2DA771] rounded-full flex items-center justify-center text-[#2DA771] text-lg font-bold transform translate-x-1/2 -translate-y-1/2 p-0 m-0 leading-none"
+                                onConnect={(params) => console.log("handle onConnect", params)}
+                                isConnectable={isConnectable}
+                            >
+                                +
+                            </Handle>
+
+                            <Handle
+                                type="source"
+                                position={Position.Left}
+                                className="w-[10px] h-[10px] bg-[#2DA771]"
+                                isConnectable={false}
+                            />
+
+                        </div>
                     </div>
                     <div
                         className="toggle-button-box absolute right-0 left-0 mx-auto bottom-[-10px] z-10 cursor-pointer"
@@ -277,6 +301,6 @@ const LlmNodes = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
             </div>
         </div>
     );
-};
+});
 
 export default LlmNodes;

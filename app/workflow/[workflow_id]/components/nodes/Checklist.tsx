@@ -1,9 +1,13 @@
+
+
 import React, { useState } from "react";
-import { type NodeProps } from "@xyflow/react";
-import { LongTextNodeProps } from "./types";
+
+import { Handle, Position, type NodeProps } from "@xyflow/react";
+import { type ChecklistNodeProps } from "./types";
+import Image from "next/image";
 import DynamicInput from "../inputsFields";
 
-const LongText = ({ data, id }: NodeProps<LongTextNodeProps>) => {
+const Checklist = ({ data, id, isConnectable }: NodeProps<ChecklistNodeProps>) => {
   const { parameters } = data;
 
   const initialParameters =
@@ -23,11 +27,13 @@ const LongText = ({ data, id }: NodeProps<LongTextNodeProps>) => {
   const [currentParameter, setCurrentParameter] = useState(initialParameters);
   const [nextParameter, setNextParameter] = useState<{ [key: string]: any }>({
     "6": {
-      label: "Project Overview",
-      type: "text_overview",
-      required: false,
-      options: [],
-      description: `Enter a brief description of the project`,
+      label: "Select Intrest",
+      type: "checkbox_field",
+      required: true,
+      options: [
+        "Sports", "Music", "Reading"
+      ],
+      description: `select intrest.`,
       value: "",
       error: "",
     },
@@ -46,56 +52,6 @@ const LongText = ({ data, id }: NodeProps<LongTextNodeProps>) => {
     }));
   };
 
-  // const handleNextClick = () => {
-  //   const inputLevel =
-  //     currentParameter &&
-  //     Object.values(currentParameter).find(
-  //       param => param.type === "text_input_level"
-  //     );
-  //   const variableName =
-  //     currentParameter &&
-  //     Object.values(currentParameter).find(
-  //       param => param.type === "text_variable_name"
-  //     );
-
-  //   if (inputLevel?.value && variableName?.value) {
-  //     setIsNextBoxOpen(true);
-  //   } else {
-  //     setCurrentParameter(prevState => {
-  //       const updatedState = { ...prevState };
-
-  //       if (!inputLevel?.value) {
-  //         const inputLevelKey = prevState
-  //           ? Object.keys(prevState).find(
-  //             key => prevState[key].type === "text_input_level"
-  //           )
-  //           : undefined;
-  //         if (inputLevelKey) {
-  //           updatedState[inputLevelKey] = {
-  //             ...(prevState?.[inputLevelKey] || {}),
-  //             error: "This field is required",
-  //           };
-  //         }
-  //       }
-
-  //       if (!variableName?.value) {
-  //         const variableNameKey = prevState
-  //           ? Object.keys(prevState).find(
-  //             key => prevState[key].type === "text_variable_name"
-  //           )
-  //           : undefined;
-  //         if (variableNameKey) {
-  //           updatedState[variableNameKey] = {
-  //             ...(prevState?.[variableNameKey] || {}),
-  //             error: "This field is required",
-  //           };
-  //         }
-  //       }
-
-  //       return updatedState;
-  //     });
-  //   }
-  // };
 
   const handleNextClick = () => {
     const requiredParams = currentParameter ? Object.values(currentParameter).filter(param => param.required) : [];
@@ -122,7 +78,6 @@ const LongText = ({ data, id }: NodeProps<LongTextNodeProps>) => {
       });
     }
   };
-
 
 
   const handleDropdownClick = () => {
@@ -180,18 +135,15 @@ const LongText = ({ data, id }: NodeProps<LongTextNodeProps>) => {
             value: convertToUnderscore(value),
             error: "",
           };
-          setVariableName(convertToUnderscore(value));
         }
-
       }
+
       if (type === "text_variable_name" || type === "text_input_label") {
         setVariableName(convertToUnderscore(value));
       }
       return updatedState;
     });
   };
-
-
 
 
   return (
@@ -203,18 +155,41 @@ const LongText = ({ data, id }: NodeProps<LongTextNodeProps>) => {
               General input
             </h4>
             <span className="text-xs font-medium text-[#14171B]">
-              (long text)
+              (Checklist)
             </span>
           </div>
 
           <div className="text-image text-center">
             <img
-              src="/assets/node_icon/longtext-img.svg"
-              alt="long text node image"
+              src="/assets/node_icon/checklist-img.svg"
+              alt="checklist node image"
               className="w-[140px] mx-auto"
             />
-          </div>
 
+            <div
+              className="absolute top-1/2 transform -translate-y-1/2 right-[-60px] flex items-center"
+            >
+              <div
+                className="h-px border-t-2 border-dashed border-[#2DA771] w-14 mr-1"
+              />
+              <Handle
+                type="source"
+                position={Position.Right}
+                className="w-5 h-5 bg-white border-2 border-[#2DA771] rounded-full flex items-center justify-center text-[#2DA771] text-lg font-bold transform translate-x-1/2 -translate-y-1/2 p-0 m-0 leading-none"
+                onConnect={(params) => console.log("handle onConnect", params)}
+                isConnectable={isConnectable}
+              >
+                +
+              </Handle>
+
+              <Handle
+                type="source"
+                position={Position.Left}
+                className="w-[10px] h-[10px] bg-[#2DA771]"
+                isConnectable={false}
+              />
+            </div>
+          </div>
           <div
             className="toggle-button-box absolute right-0 left-0 mx-auto bottom-[-10px] z-10 cursor-pointer"
             onClick={handleDropdownClick}
@@ -228,17 +203,19 @@ const LongText = ({ data, id }: NodeProps<LongTextNodeProps>) => {
           </div>
         </div>
 
+
         {isDropdownOpen && (
+
           <div className="long-text-form bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] absolute left-1/2 transform -translate-x-1/2">
             <div className="long-text-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-2">
               <img
-                src="/assets/node_icon/long-single.svg"
-                alt="long text icon"
+                src="/assets/node_icon/checklist-single.svg"
+                alt="checklist icon"
                 className="w-[20px] mb-2"
               />
 
               <h5 className="text-sm text-[#14171B] font-medium">
-                Long Text
+                Checklist
               </h5>
             </div>
 
@@ -303,9 +280,6 @@ const LongText = ({ data, id }: NodeProps<LongTextNodeProps>) => {
                 </div>
               </div>
             )}
-
-
-
           </div>
         )}
       </div>
@@ -313,4 +287,4 @@ const LongText = ({ data, id }: NodeProps<LongTextNodeProps>) => {
   );
 };
 
-export default LongText;
+export default Checklist;

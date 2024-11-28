@@ -60,6 +60,8 @@ export type FormNodeProps = Node<NodeDataState, "from">;
 
 export type LlmNodesNodeProps = Node<NodeDataState, "llms">;
 
+export type GeneralNodeProps = Node<NodeDataState, "short-text">;
+
 export type AppNode =
   | BuiltInNode
   | OpenAiNodeProps
@@ -79,4 +81,5 @@ export type AppNode =
   | PlainTextNodeProps
   | MarkdownNodeProps
   | FormNodeProps
-  | LlmNodesNodeProps;
+  | LlmNodesNodeProps
+  | GeneralNodeProps;

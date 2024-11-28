@@ -17,6 +17,31 @@ interface DynamicInputProps {
   handleInputChange: (key: string, type: string, value: string) => void;
 }
 
+interface Option {
+  value: string;
+  label: string;
+  imageUrl: string;
+}
+
+interface AddFieldDropdownProps {
+  options: Option[];
+  onSelect: (option: Option) => void;
+  inputKey: string;
+}
+
+const options = [
+  { label: "Short Text", value: "Short Text", imageUrl: "short-single.svg" },
+  { label: "Long Text", value: "Long Text", imageUrl: "long-single.svg" },
+  { label: "Boolean", value: "Boolean", imageUrl: "boolean-single.svg" },
+  { label: "Number", value: "Number", imageUrl: "number-single.svg" },
+  {
+    label: "File Upload",
+    value: "File Upload",
+    imageUrl: "uploadfile-single.svg",
+  },
+  { label: "Checklist", value: "Checklist", imageUrl: "checklist-single.svg" },
+];
+
 const getTypeFromParam = (paramType: string): string => {
   return paramType.split("_")[0];
 };
@@ -29,9 +54,7 @@ const InputFields = ({ param, inputKey, handleInputChange }: any) => {
           {param.label}{" "}
           {param.required && <span className="text-[#CF0000]">*</span>}
         </label>
-        <span
-          className="cursor-pointer"
-        >
+        <span className="cursor-pointer">
           <img src="/assets/node_icon/info-circle.svg" alt="info icon" />
         </span>
       </div>
@@ -53,7 +76,6 @@ const InputFields = ({ param, inputKey, handleInputChange }: any) => {
     </div>
   );
 };
-
 
 const TextAreaField = ({ param, inputKey, handleInputChange }: any) => {
   return (
@@ -100,8 +122,8 @@ const TextAreaField = ({ param, inputKey, handleInputChange }: any) => {
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
 const Slider = ({ param, inputKey, handleInputChange }: any) => {
   return (
@@ -160,21 +182,14 @@ const Slider = ({ param, inputKey, handleInputChange }: any) => {
         </div>
 
         <div className="range-text flex items-center justify-between">
-          <span className="text-[12px] font-medium text-[#5B5D60]">
-            0
-          </span>
+          <span className="text-[12px] font-medium text-[#5B5D60]">0</span>
 
-          <span className="text-[12px] font-medium text-[#5B5D60]">
-            1
-          </span>
+          <span className="text-[12px] font-medium text-[#5B5D60]">1</span>
         </div>
       </div>
     </div>
-  )
-}
-
-
-
+  );
+};
 
 const BooleanField = ({ param, inputKey, handleInputChange }: any) => {
   return (
@@ -216,9 +231,7 @@ const DropDown = ({ param, inputKey }: any) => {
           {param.label}
           {param.required && <span className="text-[#CF0000]">*</span>}
         </label>
-        <button
-          className="relative"
-        >
+        <button className="relative">
           <img
             src="/assets/node_icon/info-circle.svg"
             alt="info icon"
@@ -350,7 +363,6 @@ const CheckboxField = ({ param, inputKey, handleInputChange }: any) => {
 };
 
 const UploadButton = ({ param, inputKey, handleInputChange }: any) => {
-
   return (
     <div className="input-box mb-3">
       <div className="label-box flex items-center gap-2 relative mb-1">
@@ -399,6 +411,80 @@ const UploadButton = ({ param, inputKey, handleInputChange }: any) => {
   );
 };
 
+
+export const AddFieldDropdown: React.FC<AddFieldDropdownProps> = ({ options, onSelect, inputKey }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState<Option | null>(null);
+
+  const toggleDropdown = () => setIsOpen(!isOpen);
+  const selectOption = (option: Option) => {
+    setSelectedOption(option);
+    setIsOpen(false);
+    onSelect(option);
+  };
+
+  return (
+    <div key={inputKey} className="input-box mt-4 mb-3">
+      <div className="custom-select-box relative bg-white w-full">
+        <div
+          onClick={toggleDropdown}
+          className="flex items-center justify-between w-full p-3 bg-white border-[2px] border-[#2DA771] rounded-[10px] cursor-pointer"
+        >
+          {!selectedOption ? (
+            <div className="flex items-center space-x-2">
+              <img
+                src="/assets/node_icon/add-option-icon.svg"
+                alt="add icon"
+                className="w-[17px] h-[20px]"
+              />
+              <span className="text-14 font-400 text-[#2DA771]">
+                Add New Field
+              </span>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-2">
+              <img
+                src={`/assets/node_icon/${selectedOption.imageUrl}`}
+                alt={selectedOption.label}
+                className="w-[17px] h-[20px]"
+              />
+              <span className="text-14 font-400 text-[#2DA771]">
+                {selectedOption.label}
+              </span>
+            </div>
+          )}
+          <img
+            src="/assets/node_icon/chevron-down.svg"
+            alt="arrow down icon"
+            style={{
+              transform: isOpen ? "rotate(180deg)" : "rotate(0)",
+              transition: "transform 0.3s ease",
+            }}
+          />
+        </div>
+        {isOpen && (
+          <div className="absolute left-0 w-full bg-white border-0.5 border-[#EBEBEB] rounded-5 shadow-xl z-10 p-3">
+            {options.map(option => (
+              <div
+                key={option.value}
+                onClick={() => selectOption(option)}
+                className="flex items-center justify-between rounded-5 p-2 pt-1 pb-1 mb-1 cursor-pointer text-[#14171B] text-11 font-500 hover:bg-[#2da7711a] hover:text-[#2DA771]"
+              >
+                <span>{option.label}</span>
+                <img
+                  src={`/assets/node_icon/${option.imageUrl}`}
+                  alt={option.label}
+                  className="w-[16px] h-[16px] object-contain mr-2"
+                />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 const DynamicInput: React.FC<DynamicInputProps> = ({
   param,
   inputKey,
@@ -438,6 +524,7 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
     case "dropdown":
     case "dropdownn_model":
     case "dropdown_quality":
+    case "dropdown_options":
       return (
         <DropDown
           param={param}
@@ -459,15 +546,33 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
       return <UploadButton param={param} inputKey={inputKey} />;
 
     case "text_area":
-    case 'textarea_system_prompt':
-    case 'textarea_input_prompt':
+    case "textarea_system_prompt":
+    case "textarea_input_prompt":
     case "textarea_prompt":
-      return <TextAreaField param={param} inputKey={inputKey} handleInputChange={handleInputChange} />;
-    case 'slider':
-    case 'slider_creativity_level':
-      return <Slider param={param} inputKey={inputKey} handleInputChange={handleInputChange} />;
-    case 'button_upload':
-      return <UploadButton param={param} inputKey={inputKey} handleInputChange={handleInputChange} />;
+      return (
+        <TextAreaField
+          param={param}
+          inputKey={inputKey}
+          handleInputChange={handleInputChange}
+        />
+      );
+    case "slider":
+    case "slider_creativity_level":
+      return (
+        <Slider
+          param={param}
+          inputKey={inputKey}
+          handleInputChange={handleInputChange}
+        />
+      );
+    case "button_upload":
+      return (
+        <UploadButton
+          param={param}
+          inputKey={inputKey}
+          handleInputChange={handleInputChange}
+        />
+      );
     default:
       return null;
   }

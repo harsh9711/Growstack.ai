@@ -5,7 +5,7 @@ import { type MarkdownNodeProps } from "./types";
 import Image from "next/image";
 import DynamicInput from "../inputsFields";
 
-const Form = ({ data, id }: NodeProps<MarkdownNodeProps>) => {
+const Markdown = ({ data, id, isConnectable }: NodeProps<MarkdownNodeProps>) => {
   const { parameters } = data;
 
   const initialParameters =
@@ -120,8 +120,8 @@ const Form = ({ data, id }: NodeProps<MarkdownNodeProps>) => {
       if (type === "text_input_label") {
         const variableNameKey = prevState
           ? Object.keys(prevState).find(
-              k => prevState[k].type === "text_variable_name"
-            )
+            k => prevState[k].type === "text_variable_name"
+          )
           : undefined;
         if (variableNameKey) {
           updatedState[variableNameKey] = {
@@ -139,39 +139,6 @@ const Form = ({ data, id }: NodeProps<MarkdownNodeProps>) => {
     });
   };
 
-  //SHOW ADVANCE INPUT FIELDS STATE CALL HERE
-  const [isShowAdvanceOption, setIsShowAdvanceOption] = useState(false);
-  const toggleVisibility = () => {
-    setIsShowAdvanceOption(prevState => !prevState);
-  };
-
-  const [selected, setSelected] = useState("Option 1");
-
-  const options = [
-    {
-      label: "Option 1",
-      img: "short-single.svg",
-      //   icon: <CheckIcon className="w-5 h-5 text-blue-500" />,
-    },
-    {
-      label: "Option 2",
-      img: "long-single.svg",
-      //   icon: <ChevronDownIcon className="w-5 h-5 text-green-500" />,
-    },
-    {
-      label: "Option 3",
-      img: "boolean-single.svg",
-      //   icon: <ChevronDownIcon className="w-5 h-5 text-red-500" />,
-    },
-  ];
-
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleSelect = (option: { label: any }) => {
-    setSelected(option.label);
-    setIsOpen(false);
-  };
-
   return (
     <div>
       <div className="long-text-box" id="large-box">
@@ -180,15 +147,40 @@ const Form = ({ data, id }: NodeProps<MarkdownNodeProps>) => {
             <h4 className="text-sm font-medium text-[#2DA771]">
               General input
             </h4>
-            <span className="text-xs font-medium text-[#14171B]">(Form)</span>
+            <span className="text-xs font-medium text-[#14171B]">
+              (Markdown)
+            </span>
           </div>
 
           <div className="text-image text-center">
             <img
-              src="/assets/node_icon/form-img.svg"
-              alt="form node image"
+              src="/assets/node_icon/markdown-img.svg"
+              alt="markdown node image"
               className="w-[140px] mx-auto"
             />
+            <div
+              className="absolute top-1/2 transform -translate-y-1/2 right-[-60px] flex items-center"
+            >
+              <div
+                className="h-px border-t-2 border-dashed border-[#2DA771] w-14 mr-1"
+              />
+              <Handle
+                type="source"
+                position={Position.Right}
+                className="w-5 h-5 bg-white border-2 border-[#2DA771] rounded-full flex items-center justify-center text-[#2DA771] text-lg font-bold transform translate-x-1/2 -translate-y-1/2 p-0 m-0 leading-none"
+                onConnect={(params) => console.log("handle onConnect", params)}
+                isConnectable={isConnectable}
+              >
+                +
+              </Handle>
+
+              <Handle
+                type="source"
+                position={Position.Left}
+                className="w-[10px] h-[10px] bg-[#2DA771]"
+                isConnectable={false}
+              />
+            </div>
           </div>
           <div
             className="toggle-button-box absolute right-0 left-0 mx-auto bottom-[-10px] z-10 cursor-pointer"
@@ -200,6 +192,8 @@ const Form = ({ data, id }: NodeProps<MarkdownNodeProps>) => {
               className="w-[25px] mx-auto"
               style={{ transform: isDropdownOpen ? "rotate(180deg)" : "" }}
             />
+
+
           </div>
         </div>
 
@@ -207,16 +201,12 @@ const Form = ({ data, id }: NodeProps<MarkdownNodeProps>) => {
           <div className="long-text-form bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] absolute left-1/2 transform -translate-x-1/2">
             <div className="long-text-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-2">
               <img
-                src="/assets/node_icon/form-single.svg"
-                alt="form icon"
-                className="mb-2"
+                src="/assets/node_icon/markdown-single.svg"
+                alt="markdown icon"
+                className="w-[20px] mb-2"
               />
 
-              <h5 className="text-sm text-[#14171B] font-medium">Form</h5>
-            </div>
-
-            <div className="short-text-heading mb-2">
-              <h3 className="text-sm text-[#14171B] font-medium">Short Text</h3>
+              <h5 className="text-sm text-[#14171B] font-medium">Markdown</h5>
             </div>
 
             <div className="form-box">
@@ -233,68 +223,14 @@ const Form = ({ data, id }: NodeProps<MarkdownNodeProps>) => {
                     />
                   );
                 })}
-
-              {!isShowAdvanceOption && (
-                <div className="advance-option-button-box mb-3">
+              {/* <div className="submit-button">
                   <button
-                    onClick={toggleVisibility}
-                    className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
+                    onClick={handleNextClick}
+                    className="bg-[#2DA771] text-white text-sm font-medium p-3 w-full rounded-[10px]"
                   >
-                    Advance options
+                    Next
                   </button>
-                </div>
-              )}
-
-              {isShowAdvanceOption && (
-                <>
-                  <div className="input-box">
-                    <div className="relative w-64">
-                      <button
-                        type="button"
-                        className="w-full flex justify-between items-center bg-white border border-gray-300 rounded-md py-2 px-4 text-gray-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        onClick={() => setIsOpen(!isOpen)}
-                      >
-                        <span>{selected}</span>
-                        <img
-                          src={`/assets/node_icon/${selected.img}`}
-                          alt="node icon"
-                        />
-                      </button>
-
-                      {/* Dropdown Options */}
-                      {isOpen && (
-                        <ul className="absolute mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg z-10">
-                          {options.map((option, index) => (
-                            <li
-                              key={index}
-                              className="flex items-center justify-between px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                              onClick={() => handleSelect(option)}
-                            >
-                              <span>{option.label}</span>
-                              {/* {option.icon} */}
-                              <img
-                                src={`/assets/node_icon/${option.img}`}
-                                alt="node icon"
-                              />
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {isShowAdvanceOption && (
-                <div className="advance-option-button-box">
-                  <button
-                    onClick={toggleVisibility}
-                    className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
-                  >
-                    Hide Advance options
-                  </button>
-                </div>
-              )}
+                </div> */}
 
               <div className="topic-box">
                 <div className="topic-text w-auto p-3 inline-block rounded-full bg-[#FFE6FF]">
@@ -351,4 +287,4 @@ const Form = ({ data, id }: NodeProps<MarkdownNodeProps>) => {
   );
 };
 
-export default Form;
+export default Markdown;

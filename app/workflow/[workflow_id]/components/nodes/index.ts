@@ -19,6 +19,7 @@ import PlainText from "./PlainText";
 import Markdown from "./Markdown";
 import Form from "./Form";
 import LlmNodes from "./LlmNodes";
+import GeneralNodes from "./GeneralNodes";
 
 export const initialNodes: AppNode[] = [
   {
@@ -39,7 +40,7 @@ export const initialNodes: AppNode[] = [
 export const nodeTypes = {
   // "position-logger": PositionLoggerNode,
   "open-ai": OpenAi,
-  "short-text": ShortText,
+  "short-text": GeneralNodes,
   "long-text": LongText,
   boolean: Boolean,
   number: Number,

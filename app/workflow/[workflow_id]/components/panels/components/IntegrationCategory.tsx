@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { AllData } from "../../data";
 import { useDispatch } from "react-redux";
-import { addNode } from "@/lib/features/workflow/node.slice";
+import { addNodeData } from "@/lib/features/workflow/node.slice";
 import { NodeDataState, NodeState } from "@/types/workflows";
 
 const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
