@@ -60,7 +60,9 @@ export type FormNodeProps = Node<NodeDataState, "from">;
 
 export type LlmNodesNodeProps = Node<NodeDataState, "llms">;
 
-export type GeneralNodeProps = Node<NodeDataState, "short-text">;
+export type GeneralInputNodeProps = Node<NodeDataState, "inputType">;
+
+export type GeneralJoinerNodeProps = Node<NodeDataState, "joiner">;
 
 export type AppNode =
   | BuiltInNode
@@ -82,4 +84,5 @@ export type AppNode =
   | MarkdownNodeProps
   | FormNodeProps
   | LlmNodesNodeProps
-  | GeneralNodeProps;
+  | GeneralInputNodeProps
+  | GeneralJoinerNodeProps;

@@ -1,13 +1,12 @@
 import React, { memo, useState } from "react";
 import { Handle, Position, type NodeProps } from "@xyflow/react";
-import { GeneralNodeProps, type ShortTextNodeProps } from "./types";
+import { GeneralInputNodeProps } from "./types";
 import DynamicInput from "../inputsFields";
 import { extractParameterValues } from "@/utils/dataResolver";
-import { tree } from "next/dist/build/templates/app-page";
+import { convertToUnderscore } from "@/utils/helper";
 
-
-const GeneralNodes = memo(
-    ({ data, isConnectable, id }: NodeProps<GeneralNodeProps>) => {
+const GeneralInputNodes = memo(
+    ({ data, isConnectable, id }: NodeProps<GeneralInputNodeProps>) => {
         const { parameters, nodeMasterId } = data;
 
         console.log("----id----", id);
@@ -54,6 +53,25 @@ const GeneralNodes = memo(
             }));
         };
 
+        const getInputType = (label: string) => {
+            switch (label) {
+                case "Short Text":
+                    return "text";
+                case "Long Text":
+                    return "text_area";
+                case "Number":
+                    return "number";
+                case "Boolean":
+                    return "checkbox";
+                case "File Upload":
+                    return "button_upload";
+                case "Checklist":
+                    return "select_option";
+                default:
+                    return "text";
+            }
+        };
+
         const handleNextClick = async () => {
             if (!currentParameter) return;
 
@@ -68,15 +86,20 @@ const GeneralNodes = memo(
             if (allRequiredParamsFilled) {
                 const updatedValue = extractParameterValues(currentParameter);
 
+                console.log("updatedValue-->", updatedValue);
+
                 setNextParameter({
                     "6": {
                         label: updatedValue.inputLabel,
-                        type: data.label === "Short Text" ? "text" : data.label === "Long Text" ? "text_area" : "text",
+                        type: getInputType(data?.label),
                         placeholder: updatedValue.placeholder,
                         required: updatedValue.required,
                         options: [],
                         description: updatedValue.description,
-                        value: updatedValue.defaultValue,
+                        value:
+                            updatedValue.defaultValue ||
+                            updatedValue.fileType ||
+                            updatedValue.options,
                         error: "",
                     },
                 });
@@ -118,15 +141,13 @@ const GeneralNodes = memo(
             setIsDropdownOpen(!isDropdownOpen);
         };
 
-        const convertToUnderscore = (value: string): string => {
-            return value.toLowerCase().replace(/\s+/g, "_");
-        };
-
         const handleInputChange = (
             key: string,
             type: string,
             value: string | boolean
         ) => {
+            // console.log("key-->", key, "type-->", type, "value-->", value);
+
             if (typeof value === "boolean") {
                 setCurrentParameter(prevState => ({
                     ...prevState,
@@ -137,13 +158,6 @@ const GeneralNodes = memo(
                     },
                 }));
 
-                setNextParameter(prevState => ({
-                    ...prevState,
-                    "6": {
-                        ...prevState["6"],
-                        required: value,
-                    },
-                }));
                 return;
             }
 
@@ -337,4 +351,4 @@ const GeneralNodes = memo(
     }
 );
 
-export default GeneralNodes;
+export default GeneralInputNodes;

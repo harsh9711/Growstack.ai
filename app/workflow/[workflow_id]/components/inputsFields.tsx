@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 interface Parameter {
   label: string;
@@ -200,6 +200,7 @@ const BooleanField = ({ param, inputKey, handleInputChange }: any) => {
       <div className="label-box flex gap-2 items-center mb-1">
         <label className="font-medium text-[#14171B] text-[12px]">
           {param.label}
+          {param.required && <span className="text-[#CF0000]">*</span>}
         </label>
         <span>
           <img src="/assets/node_icon/info-circle.svg" alt="info icon" />
@@ -223,7 +224,14 @@ const BooleanField = ({ param, inputKey, handleInputChange }: any) => {
   );
 };
 
-const DropDown = ({ param, inputKey }: any) => {
+const DropDown = ({ param, inputKey, handleInputChange }: any) => {
+  const [selectedOption, setSelectedOption] = useState<Option | null>(null);
+  const selectOption = (option: Option) => {
+    setSelectedOption(option);
+    // setIsOpen(false);
+    // onSelect(option);
+  };
+
   return (
     <div key={inputKey} className="input-box mb-3">
       <div className="label-box flex gap-2 items-center mb-1">
@@ -244,9 +252,12 @@ const DropDown = ({ param, inputKey }: any) => {
           id="options"
           name="options"
           className="form-control outline-0 shadow-none w-full p-3 cursor-pointer rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-[12px] font-medium focus:outline-none"
-          defaultValue=""
           required={!!param.required}
           value={param?.value || ""}
+          onChange={e =>
+            handleInputChange(inputKey, param.type, e.target.value)
+          }
+        // value={param?.value || ""}
         >
           {param?.options &&
             param.options.map((option: string, index: number) => (
@@ -363,6 +374,13 @@ const CheckboxField = ({ param, inputKey, handleInputChange }: any) => {
 };
 
 const UploadButton = ({ param, inputKey, handleInputChange }: any) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleButtonClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
   return (
     <div className="input-box mb-3">
       <div className="label-box flex items-center gap-2 relative mb-1">
@@ -402,9 +420,17 @@ const UploadButton = ({ param, inputKey, handleInputChange }: any) => {
       </div>
 
       <div className="upload-image-button">
-        <button className="w-full h-[40px] font-medium bg-[#2DA771] text-white text-[14px] rounded-[10px] flex items-center justify-center gap-2">
+        <input
+          type="file"
+          accept={param?.value || ""}
+          ref={fileInputRef}
+          className="hidden"
+        />
+        <button className="w-full h-[40px] font-medium bg-[#2DA771] text-white text-[14px] rounded-[10px] flex items-center justify-center gap-2"
+          onClick={handleButtonClick}
+        >
           <img src="/assets/node_icon/file-upload-icon.svg" />
-          {param.placeholder || ""}
+          {param.placeholder || "Upload file"}
         </button>
       </div>
     </div>
@@ -542,9 +568,6 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
       );
     case "checkbox_field":
       return <CheckboxField param={param} inputKey={inputKey} />;
-    case "uploadfile_button":
-      return <UploadButton param={param} inputKey={inputKey} />;
-
     case "text_area":
     case "textarea_system_prompt":
     case "textarea_input_prompt":
