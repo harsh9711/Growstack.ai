@@ -173,7 +173,7 @@ export default function Customgpts() {
                     show && (
                       <div
                         key={_id}
-                        className="bg-white border border-[#E8E8E8] rounded-2xl p-2 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer transition-all duration-300 relative"
+                        className="bg-white border flex flex-col justify-between border-[#E8E8E8] rounded-2xl p-2 hover:shadow-2xl hover:shadow-gray-300 cursor-pointer transition-all duration-300 relative"
                       >
                         <div className="flex justify-between">
                           <Link
@@ -212,35 +212,19 @@ export default function Customgpts() {
                         </div>
                         <div className="flex items-center">
                           <div
-                            className={`flex ${userProfiles.length > 1 ? "-space-x-3" : ""}`}
+                            className={`flex ${userProfiles.length > 1 ? "-space-x-4 rtl:space-x-reverse" : ""}`}
                           >
                             {userProfiles
                               .slice(0, 4)
                               .map((profile_img: any, index: number) => (
-                                <Avatar
-                                  key={index}
-                                  className="w-[100%] h-[100%]"
-                                >
+                                <Avatar key={index} className="">
                                   {profile_img.profile_img ? (
                                     <AvatarImage
-                                      style={{
-                                        borderRadius: "50%",
-                                        border: "3px solid white",
-                                      }}
-                                      className="w-[50px] h-[50px]"
+                                      className="w-10 h-10 border-2 border-white rounded-full dark:border-gray-800"
                                       src={profile_img.profile_img}
                                     />
                                   ) : (
-                                    <FaUser
-                                      style={{
-                                        width: "50px",
-                                        height: "50px",
-                                        borderRadius: "50%",
-                                        backgroundColor: "#e2e8f0",
-                                        color: "#64748b",
-                                        border: "3px solid white",
-                                      }}
-                                    />
+                                    <FaUser className="w-10 h-10 border-2 border-white rounded-full bg-[#e2e8f0]" />
                                   )}
                                 </Avatar>
                               ))}

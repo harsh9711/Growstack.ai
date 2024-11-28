@@ -64,7 +64,6 @@ const OverViewSection = () => {
     try {
       const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
       const data: PlanUsage = response.data.data;
-      console.log(data);
       setPlanUsage(data);
     } catch (error: any) {
       if (error.response) {
@@ -313,6 +312,7 @@ export default function SettingsPage() {
   useEffect(() => {
     fetchPlanUsage();
   }, []);
+
   return (
     <main>
       <div className="flex w-full justify-between ">
@@ -322,6 +322,7 @@ export default function SettingsPage() {
             <div className="flex gap-x-2 items-center">
               <PlanIcon />
               {getUserFriendlyPlanName(currentPlan?.plan_name as PlanName)} Plan
+              ({currentPlan?.plan_type})
             </div>
           </>
         ) : (

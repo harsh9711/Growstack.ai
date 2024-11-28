@@ -28,16 +28,34 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       const previousFullPath = `${window.location.origin}${previousPathnameRef.current}`;
       localStorage.setItem("previousPathname", previousFullPath);
     }
-    if (hasRefreshed !== "true") {
-      localStorage.setItem("hasRefreshed", "true");
-      window.location.reload();
-    }
+
+    // if (hasRefreshed !== "true") {
+    //   localStorage.setItem("hasRefreshed", "true");
+    //   //window.location.reload();
+    // }
   }, [pathname]);
 
   return (
     <AuthProvider>
       <IntercomProvider>
-        {hasRefreshed !== "true" ? (
+        <main
+          className={clsx(
+            "pt-4 pb-12 bg-[#FBFBFB] text-[#14171B] min-h-screen text-[15px] flex flex-col hidden-scrollbar",
+            shouldHideNavbar() && "!p-0"
+          )}
+        >
+          {!shouldHideNavbar() && <Navbar />}
+          <PageTransition
+            classNames={clsx(
+              "w-full max-w-[90%] mx-auto flex-1 flex flex-col h-full mt-[70px]",
+              shouldHideNavbar() && "!max-w-none !mt-0"
+            )}
+          >
+            {children}
+          </PageTransition>
+        </main>
+
+        {/* {hasRefreshed === "true" ? (
           <></>
         ) : (
           <main
@@ -55,8 +73,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             >
               {children}
             </PageTransition>
-          </main>
-        )}
+          </main
+        )} */}
       </IntercomProvider>
     </AuthProvider>
   );

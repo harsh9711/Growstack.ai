@@ -24,6 +24,10 @@ import {
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { GenAi, ImgVector } from "@/components/svgs";
 import { parseJsonString } from "@/lib/utils";
+import GlobalModal from "@/components/modal/global.modal";
+import SubscribePlan from "@/components/subscribePlan/subscribePlan";
+import { RootState } from "@/lib/store";
+import { useSelector } from "react-redux";
 
 interface ProductAI {
   img_url: string | null;
@@ -57,10 +61,17 @@ export default function Home() {
   const [openPostModel, setOpenPostModel] = useState(false);
   const [page, setPage] = useState(1);
   const limit = 10;
+  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] =
+    useState<boolean>(false);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState<boolean>(false);
+
+  const { user, currentPlan } = useSelector(
+    (rootState: RootState) => rootState.auth
+  );
 
   const [normalizedPosition, setNormalizedPosition] = useState({
-    x: 0.4,
-    y: 0.4,
+    x: 0.1,
+    y: 0.1,
   });
   const [normalizedScale, setNormalizedScale] = useState("0.10");
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
@@ -154,8 +165,8 @@ export default function Home() {
         user_prompt,
         remove_bg_toggle,
         numOfImages,
-        normalizedPosition, // Send normalized position
-        normalizedScale, // Send normalized scale
+        normalizedPosition,
+        normalizedScale,
       });
 
       const result_url = response.data.data.originalUrls;
@@ -184,7 +195,7 @@ export default function Home() {
       const response = await instance.post(`/ai/api/v1/products/bg-remover`, {
         img_url,
         user_prompt,
-        remove_bg_toggle,
+        remove_bg_toggle: true,
         numOfImages,
         normalizedPosition, // Send normalized position
         normalizedScale, // Send normalized scale
@@ -273,24 +284,25 @@ export default function Home() {
       toast.error("Failed to process image");
     }
   };
-  const handleDownload = async (image: any) => {
+  const handleDownload = async (image: string) => {
     try {
       setLoading(true);
-      const response = await fetch(image);
+      const response = await fetch(image, { mode: "cors" });
       if (!response.ok) {
-        throw new Error("Failed to fetch data");
+        throw new Error(`Failed to fetch data: ${response.statusText}`);
       }
 
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-
-      // Get the current date and time in a readable format (e.g., YYYY-MM-DD_HH-MM-SS)
       const now = new Date();
-      const timestamp = now.toISOString().replace(/T/, "_").replace(/\..+/, ""); // Formats like: "2024-11-21_12-34-56"
+      const timestamp = now
+        .toISOString()
+        .replace(/:/g, "-")
+        .replace(/\..+/, ""); // YYYY-MM-DDTHH-MM-SS
 
       const link = document.createElement("a");
       link.href = url;
-      link.download = `GrowStackAIBackdrop_${timestamp}.png`; // Include timestamp in filename
+      link.download = `GrowStackAIBackdrop_${timestamp}.png`; // Filename includes timestamp
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -301,6 +313,7 @@ export default function Home() {
       setLoading(false);
     }
   };
+
   const handleDownloadAll = async () => {
     setLoading(true);
 
@@ -314,6 +327,7 @@ export default function Home() {
       setLoading(false); // Set loading to false after all downloads
     }
   };
+
   useEffect(() => {
     fetchHistory();
   }, [favImage]);
@@ -417,6 +431,7 @@ export default function Home() {
       }
     });
   };
+
   const filteredImages = productAI.favorites_bg_toggle
     ? (result?.filter(image => likedImages[image]) ?? [])
     : result;
@@ -428,10 +443,10 @@ export default function Home() {
       </div>
       <div className="flex justify-between h-screen">
         <aside
-          className="bg-white border-r border-gray-200 overflow-y-auto max-h-screen"
+          className="bg-white border-r border-gray-200 overflow-y-auto h-screen flex flex-col justify-between"
           style={{ borderRadius: "20px" }}
         >
-          <div className="m-2">
+          <div className="m-2 flex-grow">
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <h2 className="text-m sm:text-lg font-semibold">
@@ -459,11 +474,11 @@ export default function Home() {
                       style={{
                         height: "300px", // Fixed height for consistency
                         border: "2px solid #ccc",
-                        objectFit: "cover", // Adjusts the image to cover the area without overflow
-                        borderRadius: "10px", // Optional: Gives a rounded look to the card
+                        objectFit: "cover",
+                        borderRadius: "10px",
                         backgroundImage:
                           'url("/assets/transparent-background.png")',
-                        backgroundSize: "contain", // Ensures the background fits within the card
+                        backgroundSize: "contain",
                       }}
                     >
                       No image uploaded
@@ -491,7 +506,7 @@ export default function Home() {
                     <div className="rounded-full p-1">
                       <Regenerate className="w-6 h-6 mt-1 bg-gray-0" />
                     </div>
-                    <span>Regenerate</span>
+                    <span>{isGenerating ? "Regenerating" : "Regenerate"}</span>
                   </button>
                 </div>
               </div>
@@ -532,6 +547,17 @@ export default function Home() {
                   type="submit"
                   disabled={loading}
                   className="text-[16px] w-full h-12 flex justify-center items-center bg-[#2DA771] text-white rounded-xl"
+                  onClick={e => {
+                    if (
+                      currentPlan?.plan_type === "FREE" &&
+                      user?.user_type !== "ADMIN"
+                    ) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setIsSubscriptionModalOpen(true);
+                      return;
+                    }
+                  }}
                 >
                   {loading ? <Spinner /> : "Generate Image(s)"}
                 </button>
@@ -866,6 +892,19 @@ export default function Home() {
           )}
         </aside>
       </div>
+      <GlobalModal
+        showCloseButton
+        open={isSubscriptionModalOpen}
+        setOpen={() => {
+          setIsSubscriptionModalOpen(false);
+        }}
+      >
+        <SubscribePlan
+          goBackHandler={() => {
+            setIsSubscriptionModalOpen(false);
+          }}
+        />
+      </GlobalModal>
     </>
   );
 }
