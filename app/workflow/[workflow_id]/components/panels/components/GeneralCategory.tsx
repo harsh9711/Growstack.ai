@@ -28,9 +28,9 @@ const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
   const generalData = masterNode.masterNode?.filter(
     item => item.category.toLocaleLowerCase() === "general"
   );
-  const modifiedNodes = generalData.map(convertNodeData);
+  const modifiedNodes = generalData?.map(convertNodeData);
 
-  const groupedGenerals = modifiedNodes.reduce(
+  const groupedGenerals = modifiedNodes?.reduce(
     (acc: { [key: string]: typeof modifiedNodes }, model) => {
       if (!acc[model.subCategory]) {
         acc[model.subCategory] = [];
@@ -102,7 +102,7 @@ const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
           </div>
 
           <div className="flex flex-wrap h-full overflow-y-auto">
-            {Object.keys(groupedGenerals).map((subCategory, index) => (
+            {groupedGenerals && Object.keys(groupedGenerals).map((subCategory, index) => (
               <div key={index.toString()} className="mb-2.5 w-full">
                 <h3 className="text-base leading-6 font-normal text-[#878787]">
                   {subCategory}

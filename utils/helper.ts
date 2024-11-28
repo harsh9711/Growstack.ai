@@ -21,3 +21,7 @@ export const calculateNextNodePosition = (
 
   return { nextNodeX, nextNodeY };
 };
+
+export const convertToUnderscore = (value: string): string => {
+  return value.toLowerCase().replace(/\s+/g, "_");
+};

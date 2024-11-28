@@ -16,10 +16,11 @@ import Mistral from "./Mistral";
 import GenerateImage from "./GenerateImage";
 import ReadImage from "./ReadImage";
 import PlainText from "./PlainText";
-import Markdown from "./Markdown";
+import Markdown from "./GeneralJoinerNodes";
 import Form from "./Form";
 import LlmNodes from "./LlmNodes";
-import GeneralNodes from "./GeneralNodes";
+import GeneralInputNodes from "./GeneralInputNodes";
+import GeneralJoinerNodes from "./GeneralJoinerNodes";
 
 export const initialNodes: AppNode[] = [
   {
@@ -38,9 +39,9 @@ export const initialNodes: AppNode[] = [
 ];
 
 export const nodeTypes = {
-  // "position-logger": PositionLoggerNode,
   "open-ai": OpenAi,
-  "short-text": GeneralNodes,
+  "short-text": ShortText,
+  inputType: GeneralInputNodes,
   "long-text": LongText,
   boolean: Boolean,
   number: Number,
@@ -55,6 +56,7 @@ export const nodeTypes = {
   "read-image": ReadImage,
   "plain-text": PlainText,
   markdown: Markdown,
+  joiner: GeneralJoinerNodes,
   form: Form,
   llms: LlmNodes,
 } satisfies NodeTypes;
