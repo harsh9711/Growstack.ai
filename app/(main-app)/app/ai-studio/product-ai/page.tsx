@@ -160,6 +160,10 @@ export default function Home() {
     }));
     try {
       const { img_url, user_prompt, remove_bg_toggle, numOfImages } = productAI;
+      if(!user_prompt){
+        toast.error("Please Give a prompt");
+        return
+      }
       setLoading(true);
       const response = await instance.post(`/ai/api/v1/products/bg-remover`, {
         img_url,
