@@ -5,7 +5,7 @@ import DynamicInput from "../inputsFields";
 import { extractParameterValues } from "@/utils/dataResolver";
 import { convertToUnderscore } from "@/utils/helper";
 import { useAppDispatch } from "@/lib/hooks";
-import { removeNodeById } from "@/lib/features/workflow/node.slice";
+import { deleteNodeById, removeNodeById } from "@/lib/features/workflow/node.slice";
 
 const GeneralJoinerNodes = memo(
   ({ data, isConnectable, id }: NodeProps<GeneralInputNodeProps>) => {
@@ -111,9 +111,11 @@ const GeneralJoinerNodes = memo(
       });
     };
 
+    // Move this function on the Global level.
     const handleDeleteNode = () => {
       setNodes(nds => nds.filter(nds => nds.id !== id));
       dispatch(removeNodeById(id));
+      dispatch(deleteNodeById(id));
     };
 
     return (
@@ -124,13 +126,9 @@ const GeneralJoinerNodes = memo(
               <h4 className="text-sm font-medium text-[#2DA771]">
                 {data?.label || ""}
               </h4>
-              {/* <span className="text-xs font-medium text-[#14171B]">
-                ({data?.descriptions || ""})
-              </span> */}
-
               <input
                 type="text"
-                value={data?.descriptions || ""}
+                // value={data?.descriptions || ""}
                 // onChange={handleDescriptionChange}
                 className="text-xs font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0"
                 placeholder="Enter description"

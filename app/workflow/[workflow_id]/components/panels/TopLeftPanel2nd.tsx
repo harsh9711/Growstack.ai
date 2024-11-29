@@ -30,11 +30,10 @@ const TopLeftPanel2nd = ({ setNodes }: any): React.ReactElement => {
           key={index.toString()}
           className="h-[85px] w-[85px] p-[5px] bg-transparent rounded-[11px] flex justify-center items-center cursor-pointer"
           style={{
-            border: `1.20px solid ${
-              item.category === selectedCategory
-                ? item.color.content
-                : "#ffffff"
-            }`,
+            border: `1.20px solid ${item.category === selectedCategory
+              ? item.color.content
+              : "#ffffff"
+              }`,
           }}
           onClick={() => handleCategoryClick(item.category as CategoriesTypes)}
         >
@@ -42,9 +41,9 @@ const TopLeftPanel2nd = ({ setNodes }: any): React.ReactElement => {
             className="h-full w-full rounded-[10px] flex justify-center items-center flex-col"
             style={{
               backgroundColor: item.color.bg,
-              boxShadow: `${item.category === selectedCategory ? item.color.boxShadow: ""}`,
+              boxShadow: `${item.category === selectedCategory ? item.color.boxShadow : ""}`,
             }}
-            
+
           >
             <Image
               src={item.icon.src}
@@ -88,7 +87,7 @@ const TopLeftPanel2nd = ({ setNodes }: any): React.ReactElement => {
         <ToolsCategory setNodes={setNodes} />
       )}
     </div>
-    
+
   );
 };
 

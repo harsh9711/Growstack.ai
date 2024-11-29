@@ -4,14 +4,15 @@ import { FormNodeProps, type MarkdownNodeProps } from "./types";
 import Image from "next/image";
 import DynamicInput, { AddFieldDropdown } from "../inputsFields";
 import { SubNodeProps } from "@/types/workflows";
-import { removeNodeById } from "@/lib/features/workflow/node.slice";
-import { useAppDispatch } from "@/lib/hooks";
+import { addVariable, removeNodeById } from "@/lib/features/workflow/node.slice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
   const { parameters, subNodes } = data;
 
   const { setNodes } = useReactFlow();
   const dispatch = useAppDispatch();
+  const { workFlowData } = useAppSelector(state => state.workflows);
 
   const initialParameters =
     parameters &&
@@ -26,13 +27,11 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
       },
       {}
     );
-
   const [showAdvancedOptions, setShowAdvancedOptions] = useState<{
     [key: string]: boolean;
   }>({});
-  const [currentSubNodes, setCurrentSubNodes] = useState(
-    (subNodes ?? []).filter(node => node.isDefault)
-  );
+
+  const [currentSubNodes, setCurrentSubNodes] = useState<SubNodeProps[]>([]);
 
   const [currentParameter, setCurrentParameter] = useState(initialParameters);
   const [nextParameter, setNextParameter] = useState<{ [key: string]: any }>({
@@ -106,8 +105,8 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
       if (type === "text_input_label") {
         const variableNameKey = prevState
           ? Object.keys(prevState).find(
-              k => prevState[k].type === "text_variable_name"
-            )
+            k => prevState[k].type === "text_variable_name"
+          )
           : undefined;
         if (variableNameKey) {
           updatedState[variableNameKey] = {
@@ -119,7 +118,8 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
       }
 
       if (type === "text_variable_name" || type === "text_input_label") {
-        setVariableName(convertToUnderscore(value));
+        const variableValue = convertToUnderscore(value)
+        setVariableName(variableValue);
       }
       return updatedState;
     });
@@ -162,7 +162,7 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
         "add-option-icon.svg",
     }));
 
- 
+
 
   return (
     <div>
@@ -175,7 +175,7 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
             {/* <span className="text-xs font-medium text-[#14171B]">(Form)</span> */}
             <input
               type="text"
-              value={data?.descriptions || ""}
+              // value={data?.descriptions || ""}
               // onChange={handleDescriptionChange}
               className="form-control shadow-none bg-transparent border-0 text-[#14171B] text-sm font-medium text-center focus:outline-none"
               placeholder="Enter description"
@@ -252,41 +252,8 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
               <h5 className="text-sm text-[#14171B] font-medium">Form</h5>
             </div>
 
-            {/* <div className="short-text-heading mb-2">
-              <h3 className="text-sm text-[#14171B] font-medium">Short Text</h3>
-            </div> */}
-
             <div className="form-box max-h-[500px] overflow-y-scroll">
-              {/* {currentParameter &&
-                Object.entries(currentParameter)
-                  .filter(
-                    ([key, param]: any) => param.required || showAdvancedOptions
-                  )
-                  .map(([key, param]: any) => {
-                    return (
-                      <DynamicInput
-                        key={key}
-                        inputKey={key}
-                        param={param}
-                        handleInputChange={handleInputChange}
-                        toggleTooltip={toggleTooltip}
-                        visibleTooltip={visibleTooltip}
-                      />
-                    );
-                  })}
-
-              <div className="advance-option-button-box mb-3">
-                <button
-                  onClick={handleToggleAdvancedOptions}
-                  className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
-                >
-                  {showAdvancedOptions
-                    ? "Hide Advanced Options"
-                    : "Show Advanced Options"}
-                </button>
-              </div> */}
-
-              {currentSubNodes.map((subNode, index) => (
+              {currentSubNodes?.map((subNode, index) => (
                 <div key={index}>
                   <div className="short-text-heading mb-2">
                     <h3 className="text-sm text-[#14171B] font-medium">
@@ -307,8 +274,8 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
                               key={key}
                               inputKey={key}
                               param={param}
-                              handleInputChange={() => {}}
-                              toggleTooltip={() => {}}
+                              handleInputChange={() => { }}
+                              toggleTooltip={() => { }}
                               visibleTooltip={{}}
                             />
                           );
@@ -328,28 +295,6 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
                   </div>
                 </div>
               ))}
-
-              {/* <div className="non-default-subnodes-dropdown"> */}
-              {/* <select
-                  onChange={e => {
-                    const selectedNode = subNodes?.find(
-                      node => node.nodeMasterId === e.target.value
-                    );
-                    if (selectedNode) {
-                      handleAddSubNode(selectedNode);
-                    }
-                  }}
-                >
-                  <option value="">Add Subnode</option>
-                  {subNodes &&
-                    subNodes
-                      .filter(node => !node.isDefault)
-                      .map((node, index) => (
-                        <option key={index} value={node.nodeMasterId}>
-                          {node.name}
-                        </option>
-                      ))}
-                </select> */}
 
               <AddFieldDropdown
                 options={options}

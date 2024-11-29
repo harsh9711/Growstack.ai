@@ -800,6 +800,9 @@ export const AddFieldDropdown: React.FC<AddFieldDropdownProps> = ({
     onSelect(option);
   };
 
+  console.log('---options---', options)
+  console.log('---isOpen---', isOpen)
+
   return (
     <div key={inputKey} className="input-box mt-4 mb-3">
       <div className="custom-select-box relative bg-white w-full">
@@ -840,7 +843,7 @@ export const AddFieldDropdown: React.FC<AddFieldDropdownProps> = ({
           />
         </div>
         {isOpen && (
-          <div className="absolute left-0 w-full bg-white border-[0.5px] border-[#EBEBEB] rounded-[5px] shadow-xl z-10 p-3">
+          <div className="relative left-0 w-full bg-white border-[0.5px] border-[#EBEBEB] rounded-[5px] shadow-xl z-10 p-3">
             {options.map(option => (
               <div
                 key={option.value}

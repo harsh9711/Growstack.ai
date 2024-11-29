@@ -1,10 +1,5 @@
 import { CustomAxiosInstance } from "@/config/axios.config";
-import {
-  NodeDataState,
-  NodeState,
-  WorkflowNodeState,
-  WorkflowState,
-} from "@/types/workflows";
+import { NodeDataState, NodeState, WorkflowNodeState } from "@/types/workflows";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export const createNode = createAsyncThunk(
@@ -66,7 +61,13 @@ const nodeSlice = createSlice({
     isLoading: false,
     nodeData: {} as NodeState,
     nodes: [] as NodeState[],
-    variables: [] as { nodeID: string; variableName: string }[],
+    variables: [] as {
+      workflowID: string;
+      nodeID: string;
+      variableType: string;
+      variableName: string;
+      variableValue?: string;
+    }[],
   },
   reducers: {
     addNodeData: (state, action: PayloadAction<NodeState>) => {
@@ -79,9 +80,23 @@ const nodeSlice = createSlice({
 
     addVariable: (
       state,
-      action: PayloadAction<{ nodeID: string; variableName: string }>
+      action: PayloadAction<{
+        nodeID: string;
+        variableName: string;
+        workflowID: string;
+        variableValue?: string;
+        variableType: string;
+      }>
     ) => {
-      state.variables.push(action.payload);
+      const existingVariableIndex = state.variables.findIndex(
+        variable => variable.nodeID === action.payload.nodeID
+      );
+
+      if (existingVariableIndex !== -1) {
+        state.variables[existingVariableIndex] = action.payload;
+      } else {
+        state.variables.push(action.payload);
+      }
     },
 
     updateNode: (state, action: PayloadAction<NodeState>) => {
@@ -142,5 +157,11 @@ const nodeSlice = createSlice({
 
 export default nodeSlice.reducer;
 
-export const { addNodeData, addNode, removeNode, updateNode, removeNodeById } =
-  nodeSlice.actions;
+export const {
+  addNodeData,
+  addNode,
+  removeNode,
+  updateNode,
+  removeNodeById,
+  addVariable,
+} = nodeSlice.actions;

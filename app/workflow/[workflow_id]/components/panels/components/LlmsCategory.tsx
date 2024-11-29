@@ -11,7 +11,8 @@ import { unwrapResult } from "@reduxjs/toolkit";
 const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
     const dispatch = useAppDispatch();
     const { isLoading, masterNode } = useAppSelector(state => state.masterNode);
-    const { nodes, workflows } = useAppSelector(state => state);
+    const { workFlowData } = useAppSelector(state => state.workflows);
+    const { nodes } = useAppSelector(state => state.nodes);
     if ((masterNode && !masterNode.length) || !masterNode) {
         return <div>Data not found</div>;
     }
@@ -33,12 +34,12 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
 
     const handleClick = async (nodeData: NodeState) => {
         try {
-            const lastNode = nodes.nodes[nodes.nodes.length - 1];
+            const lastNode = nodes[nodes.length - 1];
             const { nextNodeX, nextNodeY } = calculateNextNodePosition(lastNode);
 
             const resultAction = await dispatch(
                 createNode({
-                    workflowId: workflows.workFlowData._id,
+                    workflowId: workFlowData._id,
                     nodeMasterId: nodeData.id,
                     name: nodeData.data?.label,
                     type: nodeData?.type,

@@ -43,11 +43,8 @@ interface PageProps {
     };
 }
 
-let id = 0;
-const getId = () => `dndnode_${id++}`;
 
 const Workflow = ({ workflow_id }: { workflow_id: string }) => {
-    console.log("workflow_id--------->", workflow_id);
     const route = useRouter();
 
     const dispatch = useAppDispatch();
@@ -58,22 +55,27 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
-
     useEffect(() => {
         dispatch(getMasterNodes());
         getWorkFlowDetails();
     }, [dispatch, workflow_id]);
 
-    console.log('---ege----', edges);
-
-
     useEffect(() => {
-        if (edges && !edges?.length) return
+        if (edges && !edges?.length) return;
 
-        dispatch(updateWorkFlowById({ id: workFlowData._id || "", data: { name: workFlowData.name, description: workFlowData.description, edges: edges } }))
+        dispatch(
+            updateWorkFlowById({
+                id: workFlowData._id || "",
+                data: {
+                    name: workFlowData.name,
+                    description: workFlowData.description,
+                    edges: edges,
+                },
+            })
+        );
 
-        return () => { }
-    }, [edges ?? []])
+        return () => { };
+    }, [edges ?? []]);
 
     const getWorkFlowDetails = () => {
         if (!workflow_id) return;
@@ -86,8 +88,6 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
         [setEdges]
     );
 
-
-
     const onDragOver = useCallback((event: DragEvent) => {
         event.preventDefault();
         event.dataTransfer.dropEffect = "move";
@@ -95,14 +95,14 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
 
     const handleAddNode = async (data: any) => {
         try {
-            const resultAction = await dispatch(createNode(data))
-            const result = unwrapResult(resultAction)
-            console.log("result", result)
-            return result._id
+            const resultAction = await dispatch(createNode(data));
+            const result = unwrapResult(resultAction);
+            console.log("result", result);
+            return result._id;
         } catch (error) {
-            console.log("error", error)
+            console.log("error", error);
         }
-    }
+    };
 
     const onDrop = useCallback(
         async (event: React.DragEvent<HTMLDivElement>) => {
@@ -129,9 +129,9 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
                 description: nodeData.data?.descriptions || "",
                 position,
                 parameters: {},
-            })
+            });
 
-            console.log("nodeId====>", nodeId)
+            console.log("nodeId====>", nodeId);
 
             const newNode: any = {
                 ...nodeData,
@@ -140,7 +140,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
             };
 
             setNodes(nds => nds.concat(newNode));
-            dispatch(addNode(newNode))
+            dispatch(addNode(newNode));
         },
         [screenToFlowPosition, nodeData]
     );
@@ -149,7 +149,10 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
         (event: any, connectionState: any) => {
             console.log("connectionState", connectionState);
 
-            if (connectionState.isValid === null || connectionState.isValid === undefined) {
+            if (
+                connectionState.isValid === null ||
+                connectionState.isValid === undefined
+            ) {
                 console.log("Invalid connection state, not adding edge");
                 return;
             }
@@ -159,7 +162,8 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
                 return;
             }
 
-            const fromNodeExists = connectionState.fromNode && connectionState.fromNode.id;
+            const fromNodeExists =
+                connectionState.fromNode && connectionState.fromNode.id;
             const toNodeExists = connectionState.toNode && connectionState.toNode.id;
 
             if (!fromNodeExists || !toNodeExists) {
@@ -179,24 +183,22 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
                 console.log("Edge already exists, not adding new one");
                 return;
             }
-            const edgeId = `${[connectionState.fromNode.id, connectionState.toNode.id].sort().join('_')}`;
+            const edgeId = `${[connectionState.fromNode.id, connectionState.toNode.id].sort().join("_")}`;
             const edge: any = {
                 id: edgeId,
                 source: connectionState.fromNode.id,
                 target: connectionState.toNode.id,
-                type: 'custom',
+                type: "custom",
                 sourceHandle: connectionState.fromHandle.id,
                 targetHandle: connectionState.toHandle.id,
             };
 
-            console.log("event------->", event);
             console.log("connectionState", connectionState);
 
-            setEdges((eds) => eds.concat(edge));
+            setEdges(eds => eds.concat(edge));
         },
         [edges, screenToFlowPosition]
     );
-
 
     return (
         <div

@@ -3,15 +3,28 @@ import { Handle, Position, useReactFlow, type NodeProps } from "@xyflow/react";
 import { type ShortTextNodeProps } from "./types";
 import DynamicInput from "../inputsFields";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { removeNodeById, updateNode, updateNodeById } from "@/lib/features/workflow/node.slice";
+import {
+    addVariable,
+    deleteNodeById,
+    removeNodeById,
+    updateNode,
+    updateNodeById,
+} from "@/lib/features/workflow/node.slice";
 import { extractParameterValues } from "@/utils/dataResolver";
 import { WorkflowNodeState } from "@/types/workflows";
 
 const LlmNodes = memo(
-    ({ data, isConnectable, id, positionAbsoluteX, positionAbsoluteY }: NodeProps<ShortTextNodeProps>) => {
+    ({
+        data,
+        isConnectable,
+        id,
+        positionAbsoluteX,
+        positionAbsoluteY,
+    }: NodeProps<ShortTextNodeProps>) => {
         const { parameters, nodeMasterId } = data;
         const dispatch = useAppDispatch();
-        const { nodes, workflows } = useAppSelector(state => state);
+        const { workFlowData } = useAppSelector(state => state.workflows);
+        const { nodes, isLoading, variables } = useAppSelector(state => state.nodes);
 
         const { setNodes } = useReactFlow();
 
@@ -41,7 +54,7 @@ const LlmNodes = memo(
                 error: "",
             },
         });
-        const [variableName, setVariableName] = useState<string | null>(null);
+        const [variableName, setVariableName] = useState<string>("");
         const [isNextBoxOpen, setIsNextBoxOpen] = useState(false);
         const [isDropdownOpen, setIsDropdownOpen] = useState(false);
         const [visibleTooltip, setVisibleTooltip] = useState<{
@@ -70,7 +83,7 @@ const LlmNodes = memo(
         };
 
         const handleUpdateParameter = (id: string) => {
-            let updatedData = nodes.nodes.find(node => node.id === id);
+            let updatedData = nodes.find(node => node.id === id);
 
             if (updatedData) {
                 updatedData = {
@@ -87,7 +100,6 @@ const LlmNodes = memo(
         };
 
         const handleNextClick = async () => {
-
             console.log("currentParameter-->", currentParameter);
             if (!currentParameter) return;
 
@@ -100,42 +112,43 @@ const LlmNodes = memo(
             );
 
             if (allRequiredParamsFilled) {
-                console.log("allRequiredParamsFilled-->", allRequiredParamsFilled);
+                // update variable
+                dispatch(
+                    addVariable({
+                        nodeID: id,
+                        variableName: variableName,
+                        workflowID: workFlowData._id || "",
+                        variableType: "llm"
+                    })
+                );
+
+                // update node with parameters value
                 handleUpdateParameter(id);
 
                 const updatedValue = extractParameterValues(currentParameter);
-                console.log("updatedValue-->", updatedValue);
 
-                const nodeIdsWithMatchingVariables = nodes.nodes
-                    ?.map((node) => {
-                        const nodeVariableName = (node.data.parameters?.variableName as any)?.value;
+                const nodeIdsWithMatchingVariables = variables
+                    .map(variable => {
+                        const nodeVariableName = variable.variableName;
 
-                        console.log("---nodeVariableName---", nodeVariableName);
-
-                        const matches = Object.values(updatedValue).some((value) => {
+                        const matches = Object.values(updatedValue).some(value => {
                             if (typeof value === "string") {
                                 const matchedVariable = value.match(/\$\{([^\}]+)\}/)?.[1];
                                 console.log(value, "---matchedVariable---", matchedVariable);
-
                                 return matchedVariable === nodeVariableName;
                             }
                             return false;
                         });
 
-                        console.log("---matches---", matches);
-
-                        return matches ? node.id : null;
+                        return matches && variable.nodeID !== id ? variable.nodeID : null;
                     })
                     ?.filter(Boolean);
 
                 console.log("Matching Node IDs:", nodeIdsWithMatchingVariables);
 
-
-                console.log("---nodeIdsWithMatchingVariables---", nodeIdsWithMatchingVariables)
-
                 try {
                     const bodyPayload = {
-                        workflowId: workflows.workFlowData._id,
+                        workflowId: workFlowData._id,
                         nodeMasterId,
                         dependencies: nodeIdsWithMatchingVariables,
                         position: { x: positionAbsoluteX, y: positionAbsoluteY },
@@ -150,7 +163,6 @@ const LlmNodes = memo(
                     );
                 } catch (error: any) {
                     console.error("error-->", error?.message);
-                } finally {
                 }
             } else {
                 setCurrentParameter(prevState => {
@@ -195,7 +207,10 @@ const LlmNodes = memo(
                     ...prevState,
                     [key]: {
                         ...(prevState?.[key] || {}),
-                        value: type === "text_variable_name" ? convertToUnderscore(value) : value,
+                        value:
+                            type === "text_variable_name"
+                                ? convertToUnderscore(value)
+                                : value,
                         error: "",
                     },
                 };
@@ -215,7 +230,8 @@ const LlmNodes = memo(
                     }
                 }
                 if (type === "text_variable_name" || type === "text_input_label") {
-                    setVariableName(convertToUnderscore(value));
+                    const variableValue = convertToUnderscore(value);
+                    setVariableName(variableValue);
                 }
                 return updatedState;
             });
@@ -224,6 +240,7 @@ const LlmNodes = memo(
         const handleDeleteNode = () => {
             setNodes(nds => nds.filter(nds => nds.id !== id));
             dispatch(removeNodeById(id));
+            dispatch(deleteNodeById(id));
         };
 
         return (
@@ -354,15 +371,14 @@ const LlmNodes = memo(
                                     <div className="submit-button">
                                         <button
                                             onClick={handleNextClick}
-                                            className="bg-[#2DA771] text-white text-sm font-medium p-3 w-full rounded-[10px]"
-                                            disabled={nodes.isLoading}
+                                            className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
                                         >
-                                            {nodes.isLoading ? (
+                                            {isLoading ? (
                                                 <div className="flex justify-center items-center">
                                                     <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
                                                 </div>
                                             ) : (
-                                                "Next"
+                                                "Save"
                                             )}
                                         </button>
                                     </div>

@@ -5,6 +5,8 @@ import DynamicInput from "../inputsFields";
 import { extractParameterValues } from "@/utils/dataResolver";
 import { convertToUnderscore } from "@/utils/helper";
 import {
+    addVariable,
+    deleteNodeById,
     removeNodeById,
     updateNode,
     updateNodeById,
@@ -24,9 +26,10 @@ const GeneralInputNodes = memo(
 
         const { setNodes } = useReactFlow();
         const dispatch = useAppDispatch();
-        const { workflows, nodes } = useAppSelector(state => state);
+        const { workFlowData } = useAppSelector(state => state.workflows);
+        const { nodes, variables, isLoading } = useAppSelector(state => state.nodes);
 
-        // console.log("---nodes---", nodes.nodes);
+        console.log("---nodes----", JSON.stringify(variables, null, 2));
 
         const initialParameters =
             parameters &&
@@ -55,13 +58,12 @@ const GeneralInputNodes = memo(
                 error: "",
             },
         });
-        const [variableName, setVariableName] = useState<string | null>(null);
+        const [variableName, setVariableName] = useState<string>("");
         const [isNextBoxOpen, setIsNextBoxOpen] = useState(false);
         const [isDropdownOpen, setIsDropdownOpen] = useState(false);
         const [visibleTooltip, setVisibleTooltip] = useState<{
             [key: string]: boolean;
         }>({});
-        const [isLoading, setIsLoading] = useState(false);
 
         const toggleTooltip = (index: string, isVisible: boolean) => {
             setVisibleTooltip(prevState => ({
@@ -89,9 +91,8 @@ const GeneralInputNodes = memo(
             }
         };
 
-
         const handleUpdateParameter = (id: string) => {
-            let updatedData = nodes.nodes.find(node => node.id === id);
+            let updatedData = nodes.find(node => node.id === id);
 
             if (updatedData) {
                 updatedData = {
@@ -104,83 +105,6 @@ const GeneralInputNodes = memo(
 
                 console.log("---updatedData---", updatedData);
                 dispatch(updateNode(updatedData));
-            }
-        };
-
-        const handleNextClick = async () => {
-            if (!currentParameter) return;
-
-            const requiredParams = currentParameter
-                ? Object.values(currentParameter).filter(param => param.required)
-                : [];
-
-            const allRequiredParamsFilled = requiredParams.every(
-                param => param.value
-            );
-
-            if (allRequiredParamsFilled) {
-                handleUpdateParameter(id);
-
-                const updatedValue = extractParameterValues(currentParameter);
-
-                console.log("updatedValue-->", updatedValue);
-
-                try {
-                    const bodyPayload = {
-                        workflowId: workflows.workFlowData._id,
-                        nodeMasterId,
-                        position: { x: positionAbsoluteX, y: positionAbsoluteY },
-                        dependencies: [],
-                        parameters: updatedValue,
-                    };
-
-                    await dispatch(
-                        updateNodeById({
-                            id,
-                            data: bodyPayload as unknown as WorkflowNodeState,
-                        })
-                    );
-
-                    setNextParameter({
-                        "6": {
-                            label: updatedValue.inputLabel,
-                            type: getInputType(data?.label),
-                            placeholder: updatedValue.placeholder,
-                            required: updatedValue.required,
-                            options: [],
-                            description: updatedValue.description,
-                            value:
-                                updatedValue.defaultValue ||
-                                updatedValue.fileType ||
-                                updatedValue.options,
-                            error: "",
-                        },
-                    });
-
-                    setIsNextBoxOpen(true);
-                } catch (error: any) {
-                    console.error("error-->", error?.message);
-                } finally {
-                    setIsLoading(false);
-                }
-            } else {
-                setCurrentParameter(prevState => {
-                    const updatedState = { ...prevState };
-
-                    requiredParams.forEach(param => {
-                        const key = prevState
-                            ? Object.keys(prevState).find(k => prevState[k] === param)
-                            : undefined;
-                        if (key && !param.value) {
-                            updatedState[key] = {
-                                ...(prevState?.[key] ?? {}),
-                                error: "This field is required",
-                            };
-                        }
-                    });
-
-                    return updatedState;
-                });
             }
         };
 
@@ -213,7 +137,10 @@ const GeneralInputNodes = memo(
                     ...prevState,
                     [key]: {
                         ...(prevState?.[key] || {}),
-                        value: type === "text_variable_name" ? convertToUnderscore(value) : value,
+                        value:
+                            type === "text_variable_name"
+                                ? convertToUnderscore(value)
+                                : value,
                         error: "",
                     },
                 };
@@ -233,18 +160,108 @@ const GeneralInputNodes = memo(
                     }
                 }
                 if (type === "text_variable_name" || type === "text_input_label") {
-                    setVariableName(convertToUnderscore(value));
+                    const variableValue = convertToUnderscore(value);
+                    setVariableName(variableValue);
                 }
                 return updatedState;
             });
         };
 
+        const handleNextClick = async () => {
+            if (!currentParameter) return;
+
+            const requiredParams = currentParameter
+                ? Object.values(currentParameter).filter(param => param.required)
+                : [];
+
+            const allRequiredParamsFilled = requiredParams.every(
+                param => param.value
+            );
+
+            if (allRequiredParamsFilled) {
+                // update variable
+
+                // update node with parameters value
+                handleUpdateParameter(id);
+
+                const updatedValue = extractParameterValues(currentParameter);
+
+                dispatch(
+                    addVariable({
+                        nodeID: id,
+                        variableName: variableName,
+                        workflowID: workFlowData._id || "",
+                        variableValue:
+                            updatedValue.defaultValue ||
+                            updatedValue.fileType ||
+                            updatedValue.options,
+                        variableType: "input",
+                    })
+                );
+                // console.log("updatedValue-->", updatedValue);
+
+                try {
+                    const bodyPayload = {
+                        workflowId: workFlowData._id,
+                        nodeMasterId,
+                        position: { x: positionAbsoluteX, y: positionAbsoluteY },
+                        dependencies: [],
+                        parameters: updatedValue,
+                    };
+
+                    await dispatch(
+                        updateNodeById({
+                            id,
+                            data: bodyPayload as unknown as WorkflowNodeState,
+                        })
+                    );
+
+                    setNextParameter({
+                        "6": {
+                            label: updatedValue.inputLabel,
+                            type: getInputType(data?.label),
+                            placeholder: updatedValue.placeholder,
+                            required: updatedValue.required,
+                            options: [],
+                            description: updatedValue.description,
+                            value:
+                                updatedValue.defaultValue ||
+                                updatedValue.fileType ||
+                                updatedValue.options,
+                            error: "",
+                        },
+                    });
+
+                    setIsNextBoxOpen(true);
+                } catch (error: any) {
+                    console.error("error-->", error?.message);
+                }
+            } else {
+                setCurrentParameter(prevState => {
+                    const updatedState = { ...prevState };
+
+                    requiredParams.forEach(param => {
+                        const key = prevState
+                            ? Object.keys(prevState).find(k => prevState[k] === param)
+                            : undefined;
+                        if (key && !param.value) {
+                            updatedState[key] = {
+                                ...(prevState?.[key] ?? {}),
+                                error: "This field is required",
+                            };
+                        }
+                    });
+
+                    return updatedState;
+                });
+            }
+        };
+
         const handleDeleteNode = () => {
             setNodes(nds => nds.filter(nds => nds.id !== id));
             dispatch(removeNodeById(id));
+            dispatch(deleteNodeById(id));
         };
-
-        console.log("currentParameter-->", nodes.nodes);
 
         return (
             <div>
@@ -254,13 +271,10 @@ const GeneralInputNodes = memo(
                             <h4 className="text-sm font-medium text-[#2DA771]">
                                 {data?.label || ""}
                             </h4>
-                            {/* <span className="text-xs font-medium text-[#14171B]">
-                ({data?.descriptions || ""})
-              </span> */}
 
                             <input
                                 type="text"
-                                value={data?.descriptions || ""}
+                                // value={data?.descriptions || ""}
                                 // onChange={handleDescriptionChange}
                                 className="text-xs font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0"
                                 placeholder="Enter description"
@@ -357,9 +371,9 @@ const GeneralInputNodes = memo(
                                         <button
                                             onClick={handleNextClick}
                                             className="bg-[#2DA771] text-white text-sm font-medium p-3 w-full rounded-[10px]"
-                                            disabled={nodes.isLoading}
+                                            disabled={isLoading}
                                         >
-                                            {nodes.isLoading ? (
+                                            {isLoading ? (
                                                 <div className="flex justify-center items-center">
                                                     <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
                                                 </div>
