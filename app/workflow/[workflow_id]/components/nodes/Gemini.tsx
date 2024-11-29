@@ -45,7 +45,7 @@ const Gemini = ({ data, id }: NodeProps<GeminiNodeProps>) => {
 
           <div className="toggle-switch-icon text-center absolute bottom-[-15px] left-0 right-0 mx-auto z-10">
             <button onClick={handleDropdownClick}>
-              <img
+              <img  
                 src="/assets/node_icon/toggle-switch.svg"
                 alt="toggle switch icon"
                 className="mx-auto"
