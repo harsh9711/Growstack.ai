@@ -75,7 +75,7 @@ export default function NewEmailDialog({
       <DialogContent className="max-w-[986px]">
         <main className="flex-1 h-full w-full flex flex-col justify-center items-center gap-6 mb-24">
           <Image
-            src="/logo/growstack.png"
+            src="/logo/growstack1.png"
             alt=""
             width={200}
             height={200}
@@ -91,7 +91,7 @@ export default function NewEmailDialog({
           </p>
           <div className="!bg-white shadow-box pl-4 pr-2 py-2 !rounded-2xl border border-[#E8E8E8] w-full max-w-3xl flex gap-4 shadow-xl shadow-gray-200/60">
             <Image
-              src="/logo/growstack-mini.png"
+              src="/logo/growstack-mini1.png"
               alt=""
               width={25}
               height={25}

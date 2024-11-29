@@ -36,38 +36,44 @@ const Pagination: React.FC<PaginationProps> = ({
 
   const pageNumbers = generatePageNumbers();
 
-  return (
+  return (<>{
+    totalPages>1 &&
+
     <div className="flex justify-center items-center mt-4">
-      <button
-        disabled={currentPage === 1}
-        onClick={() => onPageChange(currentPage - 1)}
-        className="px-3 py-1 mx-1 border rounded bg-[#2DA771] text-white  hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        Previous
-      </button>
-
-      {pageNumbers.map(page => (
+      {currentPage !== 1 &&
         <button
-          key={page}
-          onClick={() => onPageChange(page)}
-          className={`px-3 py-1 mx-1 border rounded ${
-            currentPage === page
-              ? "bg-blue-500 text-white"
-              : "hover:bg-gray-200"
-          }`}
+          disabled={currentPage === 1}
+          onClick={() => onPageChange(currentPage - 1)}
+          className="px-3 py-1 mx-1 border rounded bg-[#2DA771] text-white  hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {page}
+          Previous
         </button>
-      ))}
+      }
+      {/* <button
+        key={currentPage}
 
-      <button
-        disabled={currentPage === totalPages}
-        onClick={() => onPageChange(currentPage + 1)}
-        className="px-3 py-1 mx-1 border rounded bg-[#2DA771] text-white  hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        className={`px-3 py-1 mx-1 border rounded ${currentPage === currentPage
+            ? "bg-blue-500 text-white"
+            : "hover:bg-gray-200"
+          }`}
       >
-        Next
-      </button>
+        {currentPage}
+      </button> */}
+      {currentPage !== totalPages &&
+        <button
+          disabled={currentPage === totalPages}
+          onClick={() => onPageChange(currentPage + 1)}
+          className="px-3 py-1 mx-1 border rounded bg-[#2DA771] text-white  hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Next
+        </button>
+      }
+
     </div>
+  }
+
+  </>
+
   );
 };
 

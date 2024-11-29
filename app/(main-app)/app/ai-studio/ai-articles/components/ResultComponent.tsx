@@ -178,7 +178,7 @@ const ResultComponent: React.FC<ResultComponentProps> = ({
     <div className="mt-10">
       <div className="!bg-white shadow-box max-w-2xl mx-auto flex flex-col justify-center items-center p-12 space-y-6">
         <Image
-          src="/logo/growstack-mini.png"
+          src="/logo/growstack-mini1.png"
           alt="Growstack logo"
           width={40}
           height={40}

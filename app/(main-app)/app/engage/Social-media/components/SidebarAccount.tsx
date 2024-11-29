@@ -101,7 +101,7 @@ const MessageList = ({
             }
             imageUrl={
               dataItem.messages.messages[0]?.senderDetails.profileImage ||
-              "/logo/growstack-mini.png"
+              "/logo/growstack-mini1.png"
             }
             onClick={() =>
               onSelectMessage({
@@ -115,7 +115,7 @@ const MessageList = ({
                 message: dataItem.messages.messages,
                 imageUrl:
                   dataItem.messages.messages[0]?.senderDetails.profileImage ||
-                  "/logo/growstack-mini.png",
+                  "/logo/growstack-mini1.png",
               })
             }
           />

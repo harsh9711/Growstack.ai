@@ -20,9 +20,9 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
           src={
             imageUrl && !imageUrl.includes("ton.twitter.com")
               ? imageUrl
-              : "/logo/growstack-mini.png"
+              : "/logo/growstack-mini1.png"
           }
-          onError={e => (e.currentTarget.src = "/logo/growstack-mini.png")}
+          onError={e => (e.currentTarget.src = "/logo/growstack-mini1.png")}
           alt="contact"
           width={40}
           height={40}
