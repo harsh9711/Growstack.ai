@@ -106,8 +106,8 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
       if (type === "text_input_label") {
         const variableNameKey = prevState
           ? Object.keys(prevState).find(
-            k => prevState[k].type === "text_variable_name"
-          )
+              k => prevState[k].type === "text_variable_name"
+            )
           : undefined;
         if (variableNameKey) {
           updatedState[variableNameKey] = {
@@ -146,17 +146,23 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
   const imageMapping = {
     "Short Text": "short-single.svg",
     "Long Text": "long-single.svg",
-    "Boolean": "boolean-single.svg",
-    "Number": "number-single.svg",
+    Boolean: "boolean-single.svg",
+    Number: "number-single.svg",
     "File Upload": "uploadfile-single.svg",
-    "CheckList": "checklist-single.svg"
+    CheckList: "checklist-single.svg",
   };
 
-  const options = (subNodes ?? []).filter(node => !node.isDefault).map(node => ({
-    value: node.nodeMasterId,
-    label: node.name,
-    imageUrl: imageMapping[node.name as keyof typeof imageMapping] || 'add-option-icon.svg'
-  }));
+  const options = (subNodes ?? [])
+    .filter(node => !node.isDefault)
+    .map(node => ({
+      value: node.nodeMasterId,
+      label: node.name,
+      imageUrl:
+        imageMapping[node.name as keyof typeof imageMapping] ||
+        "add-option-icon.svg",
+    }));
+
+ 
 
   return (
     <div>
@@ -166,7 +172,14 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
             <h4 className="text-sm font-medium text-[#2DA771]">
               General input
             </h4>
-            <span className="text-xs font-medium text-[#14171B]">(Form)</span>
+            {/* <span className="text-xs font-medium text-[#14171B]">(Form)</span> */}
+            <input
+              type="text"
+              value={data?.descriptions || ""}
+              // onChange={handleDescriptionChange}
+              className="form-control shadow-none bg-transparent border-0 text-[#14171B] text-sm font-medium text-center focus:outline-none"
+              placeholder="Enter description"
+            />
           </div>
 
           <div className="text-image text-center">
@@ -179,31 +192,37 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
               </button>
             </div>
             <img
-              src="/assets/node_icon/form-img.svg"
+              src="/assets/node_icon/node-bg.svg"
               alt="form node image"
               className="w-[140px] mx-auto"
             />
 
-            <div
-              className="absolute top-1/2 transform -translate-y-1/2 right-[-60px] flex items-center"
-            >
-              <div
-                className="h-px border-t-2 border-dashed border-[#2DA771] w-14 mr-1"
-              />
+            <img
+              src="/assets/node_icon/form-single.svg"
+              alt="foreground icon"
+              className="w-[40px] mx-auto absolute top-[50%] left-0 right-0"
+            />
+
+            <div className="absolute top-[60%] transform -translate-y-1/2 right-[-42px] flex items-center">
+              <div className="h-px border-t-2 border-dashed border-[#2DA771] w-14 mr-1" />
               <Handle
                 type="source"
                 position={Position.Right}
-                className="w-5 h-5 bg-white border-2 border-[#2DA771] rounded-full flex items-center justify-center text-[#2DA771] text-lg font-bold transform translate-x-1/2 -translate-y-1/2 p-0 m-0 leading-none"
-                onConnect={(params) => console.log("handle onConnect", params)}
+                className="w-6 h-6 bg-white border-2 border-[#2DA771] rounded-full flex items-center justify-center text-[#2DA771] text-lg font-bold transform translate-x-1/2 -translate-y-1/2 p-0 m-0 leading-none"
+                onConnect={params => console.log("handle onConnect", params)}
                 isConnectable={isConnectable}
               >
-                +
+                <img
+                  src="/assets/node_icon/plus-icon.svg"
+                  alt="plus icon"
+                  className="w-[17px]"
+                />
               </Handle>
 
               <Handle
                 type="source"
                 position={Position.Left}
-                className="w-[10px] h-[10px] bg-[#2DA771]"
+                className="w-[10px] h-[10px] bg-[#2DA771] border-0"
                 isConnectable={false}
               />
             </div>
@@ -237,7 +256,7 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
               <h3 className="text-sm text-[#14171B] font-medium">Short Text</h3>
             </div> */}
 
-            <div className="form-box">
+            <div className="form-box max-h-[500px] overflow-y-scroll">
               {/* {currentParameter &&
                 Object.entries(currentParameter)
                   .filter(
@@ -288,8 +307,8 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
                               key={key}
                               inputKey={key}
                               param={param}
-                              handleInputChange={() => { }}
-                              toggleTooltip={() => { }}
+                              handleInputChange={() => {}}
+                              toggleTooltip={() => {}}
                               visibleTooltip={{}}
                             />
                           );
@@ -335,7 +354,9 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
               <AddFieldDropdown
                 options={options}
                 onSelect={option => {
-                  const selectedNode = subNodes?.find(node => node.nodeMasterId === option.value);
+                  const selectedNode = subNodes?.find(
+                    node => node.nodeMasterId === option.value
+                  );
                   if (selectedNode) {
                     handleAddSubNode(selectedNode);
                   }
@@ -344,13 +365,15 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
               />
               {/* </div> */}
 
-              <div className="topic-box">
+              {/* <div className="topic-box">
                 <div className="topic-text w-auto p-3 inline-block rounded-full bg-[#FFE6FF]">
                   <h5 className="text-[12px] font-medium text-[#14171B]">
                     topic
                   </h5>
                 </div>
-              </div>
+              </div> */}
+
+
             </div>
           </div>
         )}
