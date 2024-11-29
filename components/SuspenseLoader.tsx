@@ -6,7 +6,7 @@ export default function SuspenseLoader() {
   return (
     <div className={styles.loadingContainer}>
       <div className={styles.pulsate}>
-        <Image src="/logo/growstack.png" alt="" height="280" width="280" />
+        <Image src="/logo/growstack1.png" alt="" height="280" width="280" />
       </div>
     </div>
   );

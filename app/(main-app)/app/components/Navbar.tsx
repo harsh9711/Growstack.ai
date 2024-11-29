@@ -109,7 +109,7 @@ export default function Navbar() {
           onClick={() => router.push("/app")}
         >
           <Image
-            src="/logo/growstack.png"
+            src="/logo/growstack1.png"
             alt=""
             width={150}
             height={40}

@@ -68,7 +68,7 @@ export default function NewWebsite() {
 
   return (
     <main className="flex-1 h-full w-full flex flex-col justify-center items-center gap-6 mb-24">
-      <Image src="/logo/growstack-mini.png" alt="" width={60} height={60} />
+      <Image src="/logo/growstack-mini1.png" alt="" width={60} height={60} />
       <h1 className="text-3xl font-semibold text-center">
         Create landing page with AI
       </h1>
@@ -79,7 +79,7 @@ export default function NewWebsite() {
         single prompt.
       </p>
       <div className="bg-white pl-4 pr-2 py-2 rounded-2xl border border-[#E8E8E8] w-full max-w-3xl flex gap-4 shadow-xl shadow-gray-200/60">
-        <Image src="/logo/growstack-mini.png" alt="" width={25} height={25} />
+        <Image src="/logo/growstack-mini1.png" alt="" width={25} height={25} />
         <input
           className="h-11 w-full"
           placeholder="A landing page for cozy bakery"

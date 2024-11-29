@@ -28,6 +28,7 @@ import GlobalModal from "@/components/modal/global.modal";
 import SubscribePlan from "@/components/subscribePlan/subscribePlan";
 import { RootState } from "@/lib/store";
 import { useSelector } from "react-redux";
+import UpgradePlan from "@/components/upgradePlan/upgradePlan";
 
 interface ProductAI {
   img_url: string | null;
@@ -127,7 +128,7 @@ export default function Home() {
       const response = await instance.get(
         `/users/api/v1/docs?page=${page}&limit=${limit}&category=image&favourite=${favImage}`
       );
-      const { docs, totalPages } = response.data.data;
+      const { docs } = response.data.data;
       setHistory(
         docs.map((item: any) => ({
           id: item._id,
@@ -138,7 +139,7 @@ export default function Home() {
           updatedAt: item.updatedAt,
         }))
       );
-      setTotalPages(totalPages);
+      setTotalPages(response.data.data.metadata.totalPages);
       setCurrentPage(page);
     } catch (error) {
       console.error("Error fetching history:", error);
@@ -549,12 +550,20 @@ export default function Home() {
                   className="text-[16px] w-full h-12 flex justify-center items-center bg-[#2DA771] text-white rounded-xl"
                   onClick={e => {
                     if (
-                      currentPlan?.plan_type === "FREE" &&
-                      user?.user_type !== "ADMIN"
+                      user?.user_type !== "ADMIN" &&
+                      currentPlan?.plan_type === "FREE"
                     ) {
                       e.preventDefault();
                       e.stopPropagation();
                       setIsSubscriptionModalOpen(true);
+                      return;
+                    } else if (
+                      user?.user_type !== "ADMIN" &&
+                      currentPlan?.plan_name === "AI Essentials"
+                    ) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setIsUpgradeModalOpen(true);
                       return;
                     }
                   }}
@@ -622,7 +631,7 @@ export default function Home() {
                     <div>
                       <div
                         className="grid grid-cols-2 gap-2"
-                        style={{ width: "100%", height: "500px" }}
+                        style={{ width: "100%" }}
                       >
                         {finalUrl.map(image => (
                           <div
@@ -635,7 +644,7 @@ export default function Home() {
                           // onClick={() => toggleImageSelection(image)}
                           >
                             <img
-                              className="w-[300px] h-[300px] object-cover"
+                              className="w-[160px] h-[160px] object-cover"
                               alt="img-result"
                               src={image}
                             />
@@ -902,6 +911,19 @@ export default function Home() {
         <SubscribePlan
           goBackHandler={() => {
             setIsSubscriptionModalOpen(false);
+          }}
+        />
+      </GlobalModal>
+      <GlobalModal
+        showCloseButton
+        open={isUpgradeModalOpen}
+        setOpen={() => {
+          setIsUpgradeModalOpen(false);
+        }}
+      >
+        <UpgradePlan
+          goBackHandler={() => {
+            setIsUpgradeModalOpen(false);
           }}
         />
       </GlobalModal>

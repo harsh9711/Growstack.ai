@@ -83,7 +83,7 @@ const PasswordUpdate: React.FC<PasswordUpdateProps> = ({
           <div>
             <div
               className={clsx(
-                "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
+                "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-[#2DA771]",
                 errors["password"] &&
                   "border-rose-600 focus-within:border-rose-600"
               )}
@@ -122,7 +122,7 @@ const PasswordUpdate: React.FC<PasswordUpdateProps> = ({
           <div>
             <div
               className={clsx(
-                "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-primary-green",
+                "w-full h-full flex items-center gap-3 bg-white outline-none border border-[#00203056] rounded-xl px-4 transition-all focus-within:border-[#2DA771]",
                 errors["confirmPassword"] &&
                   "border-rose-600 focus-within:border-rose-600"
               )}
@@ -161,7 +161,7 @@ const PasswordUpdate: React.FC<PasswordUpdateProps> = ({
 
           <button
             type="submit"
-            className="bg-primary-green hover:bg-primary-green/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center"
+            className="bg-[#2DA771] hover:bg-[#2DA771]/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center"
           >
             {isPending ? <Spinner /> : "Update password"}
           </button>
