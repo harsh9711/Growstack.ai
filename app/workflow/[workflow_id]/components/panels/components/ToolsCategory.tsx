@@ -1,15 +1,39 @@
-import React from "react";
+import React, { useState, useRef, useCallback } from "react";
 import Image from "next/image";
-import { AllData, assistantHeader } from "../../data";
+import { AllData } from "../../data";
+import { useDispatch } from "react-redux";
+import {
+  addNode,
+  addNodeData,
+  createNode,
+  removeNode,
+} from "@/lib/features/workflow/node.slice";
+import { MasterNodeProps, NodeState } from "@/types/workflows";
+import "reactflow/dist/style.css";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { convertNodeData } from "@/utils/dataResolver";
+import { useNodesState } from "@xyflow/react";
+import { CustomAxiosInstance } from "@/config/axios.config";
+import { calculateNextNodePosition } from "@/utils/helper";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
-  const toolsData = AllData.filter(item => item.category === "tools");
+  const dispatch = useAppDispatch();
+  const { nodes, masterNode, workflows } = useAppSelector(state => state);
 
-  const [selectedSubCategory, setSelectedSubCategory] =
-    React.useState<string>("Image");
+  if ((masterNode.masterNode && !masterNode.masterNode.length) || !masterNode) {
+    return <div>Data not found</div>;
+  }
 
-  const groupedIntegrations = toolsData.reduce(
-    (acc: { [key: string]: typeof toolsData }, model) => {
+  const [selectedSubCategory, setSelectedSubCategory] =React.useState();
+
+  const generalData = masterNode.masterNode?.filter(
+    item => item.category.toLocaleLowerCase() === "tools"
+  );
+  const modifiedNodes = generalData?.map(convertNodeData);
+
+  const groupedIntegrations = modifiedNodes?.reduce(
+    (acc: { [key: string]: typeof modifiedNodes }, model) => {
       if (!acc[model.subCategory]) {
         acc[model.subCategory] = [];
       }
@@ -19,6 +43,41 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
     {}
   );
 
+  const handleClick = async (nodeData: NodeState) => {
+    try {
+      const lastNode = nodes.nodes[nodes.nodes.length - 1];
+      const { nextNodeX, nextNodeY } = calculateNextNodePosition(lastNode);
+
+      const resultAction = await dispatch(
+        createNode({
+          workflowId: workflows.workFlowData._id,
+          nodeMasterId: nodeData.id,
+          name: nodeData.data?.label,
+          type: nodeData?.type,
+          description: nodeData.data?.descriptions || "",
+          position: { x: nextNodeX, y: nextNodeY },
+          parameters: {},
+        })
+      );
+      const result = unwrapResult(resultAction);
+
+      const newNode = {
+        ...nodeData,
+        id: result._id,
+        position: { x: nextNodeX, y: nextNodeY },
+      };
+
+      setNodes((nds: NodeState[]) => nds.concat(newNode));
+      dispatch(addNode(newNode));
+    } catch (error) {
+      console.error("Error adding node:", error);
+    }
+  };
+
+  const handleDragStart = (event: React.DragEvent, item: NodeState) => {
+    dispatch(addNodeData(item));
+    event.dataTransfer.effectAllowed = "move";
+  };
   return (
     <div className="absolute bg-white w-4/5 h-[500px] top-[120px] rounded-2xl overflow-y-auto backdrop-blur-sm drop-shadow-2xl">
       <div className="bg-white p-5 pt-0">
@@ -55,24 +114,30 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
                     ? "bg-[#F1B916]"
                     : "bg-[#E9E9E9]"
                 }`}
-
                 onClick={() => setSelectedSubCategory(subCategory)}
               >
-                {/* Need to add the Images */}
-                {/* <Image
-                                    src={item.image.src}
-                                    alt="loading"
-                                    width={item.image.width}
-                                    height={item.image.height}
-                                    draggable={false}
-                                /> */}
                 <p
-                  className={`ml-2 text-sm font-normal leading-4 ${
+                  className={`ml-2 text-sm font-normal leading-4 flex items-center gap-2 ${
                     selectedSubCategory === subCategory
                       ? "text-white"
                       : "text-[#14171B]"
                   }`}
                 >
+                  <svg
+                    width="20"
+                    height="12"
+                    viewBox="0 0 20 12"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M19.1667 0.982619C18.9201 0.880441 18.6486 0.853702 18.3867 0.905784C18.1248 0.957865 17.8843 1.08643 17.6955 1.27522L15.1236 3.84729V2.27959C15.1236 1.16317 14.2184 0.257812 13.1018 0.257812H2.02188C0.90531 0.257812 0 1.16317 0 2.27959V9.7203C0 10.8367 0.90531 11.7421 2.02188 11.7421H13.1018C14.2184 11.7421 15.1236 10.8367 15.1236 9.7203V8.15255L17.6955 10.7246C17.8208 10.8501 17.9697 10.9496 18.1336 11.0175C18.2974 11.0854 18.4731 11.1203 18.6504 11.1203C18.8243 11.1203 18.9997 11.0864 19.1667 11.0173C19.4134 10.9151 19.6242 10.742 19.7725 10.52C19.9208 10.298 20 10.0371 20 9.77008V2.22976C20 1.96279 19.9208 1.70181 19.7725 1.47982C19.6242 1.25784 19.4134 1.08481 19.1667 0.982619ZM9.50243 6.52373L6.74666 8.64098C6.63127 8.72971 6.48977 8.77777 6.34421 8.77769C6.25747 8.77771 6.17158 8.76064 6.09144 8.72745C6.0113 8.69426 5.93849 8.64561 5.87716 8.58427C5.81583 8.52294 5.76719 8.45011 5.73401 8.36997C5.70084 8.28983 5.68378 8.20393 5.68381 8.1172V3.88265C5.68378 3.75934 5.71828 3.63849 5.78341 3.53379C5.84854 3.42909 5.94169 3.34473 6.05231 3.29026C6.1629 3.23571 6.28656 3.21323 6.40927 3.22536C6.53198 3.2375 6.64884 3.28376 6.74661 3.35891L9.50238 5.47611C9.58269 5.53779 9.64774 5.61711 9.6925 5.70793C9.73727 5.79875 9.76055 5.89865 9.76056 5.99991C9.76056 6.10117 9.73729 6.20107 9.69253 6.29189C9.64777 6.38272 9.58273 6.46204 9.50243 6.52373Z"
+                      fill={
+                        selectedSubCategory === subCategory ? "#fff" : "#F1B916"
+                      }
+                    />
+                  </svg>
+
                   {subCategory}
                 </p>
               </div>
@@ -80,30 +145,30 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
           </div>
 
           <div className="flex flex-col p-2.5">
-            {groupedIntegrations[selectedSubCategory].map(item => (
+            {groupedIntegrations[selectedSubCategory]?.map(item => (
               <div
-                key={item.id}
-                className="h-auto w-full bg-transparent m-1 rounded-lg flex justify-center items-center cursor-pointer border border-[#E5E5E5] p-3.5"
+                key={item.node.id}
+                className="h-auto w-full bg-transparent m-1 rounded-lg flex justify-center items-center cursor-pointer border border-[#E5E5E5] p-3"
               >
                 <div className="h-full w-full rounded-lg bg-white flex items-center">
-                  {item.image && (
+                  {item.logoUrl && (
                     <Image
-                      src={item.image.src}
-                      alt="loading"
-                      width={item.image.width}
-                      height={item.image.height}
+                      src={item.logoUrl}
+                      alt="Logo"
+                      width={50} // Adjust width and height as needed
+                      height={50}
                       draggable={false}
                       className="rounded-lg"
                     />
                   )}
 
                   <div className="ml-3.5 w-full">
-                    <p className="text-lg leading-7 font-medium text-[#020817]">
+                    <h3 className="text-[16px] leading-7 font-medium text-[#020817]">
                       {item.name}
-                    </p>
+                    </h3>
 
-                    {item?.description && (
-                      <p className="text-sm leading-6 font-normal text-[#5B5D60]">
+                    {item.description && (
+                      <p className="text-[14px] leading-6 font-normal text-[#5B5D60]">
                         {item.description.length > 40
                           ? `${item.description.substring(0, 40)}...`
                           : item.description}

@@ -21,6 +21,7 @@ import Form from "./Form";
 import LlmNodes from "./LlmNodes";
 import GeneralInputNodes from "./GeneralInputNodes";
 import GeneralJoinerNodes from "./GeneralJoinerNodes";
+import ToolsNode from "./ToolsNodes";
 
 export const initialNodes: AppNode[] = [
   {
@@ -42,6 +43,7 @@ export const nodeTypes = {
   "open-ai": OpenAi,
   "short-text": ShortText,
   inputType: GeneralInputNodes,
+  tools:ToolsNode,
   "long-text": LongText,
   boolean: Boolean,
   number: Number,
