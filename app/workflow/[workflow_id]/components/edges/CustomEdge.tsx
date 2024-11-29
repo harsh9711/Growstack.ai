@@ -1,5 +1,7 @@
 import React, { memo } from 'react';
 import { BaseEdge, EdgeLabelRenderer, getBezierPath, useReactFlow, EdgeProps } from '@xyflow/react';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { updateWorkFlowById } from '@/lib/features/workflow/workflow.slice';
 
 const CustomEdge = ({
     id,
@@ -12,6 +14,8 @@ const CustomEdge = ({
     style = {},
     markerEnd,
 }: EdgeProps) => {
+    const { workFlowData } = useAppSelector((state) => state.workflows);
+    const dispatch = useAppDispatch();
     const { setEdges } = useReactFlow();
 
     const [edgePath, labelX, labelY] = getBezierPath({
@@ -32,7 +36,21 @@ const CustomEdge = ({
     };
 
     const handleEdgeClick = () => {
-        setEdges((edges) => edges.filter((edge) => edge.id !== id));
+        setEdges((edges: any[]) => {
+            const updatedEdges = edges.filter((edge) => edge.id !== id);
+            dispatch(updateWorkFlowById({
+                id: workFlowData._id || "",
+                data: {
+                    edges: updatedEdges,
+                },
+            }));
+
+            console.log('updatedEdges', updatedEdges);
+
+            return updatedEdges;
+
+        });
+
     };
 
     return (

@@ -60,22 +60,6 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
         getWorkFlowDetails();
     }, [dispatch, workflow_id]);
 
-    useEffect(() => {
-        if (edges && !edges?.length) return;
-
-        dispatch(
-            updateWorkFlowById({
-                id: workFlowData._id || "",
-                data: {
-                    name: workFlowData.name,
-                    description: workFlowData.description,
-                    edges: edges,
-                },
-            })
-        );
-
-        return () => { };
-    }, [edges ?? []]);
 
     const getWorkFlowDetails = () => {
         if (!workflow_id) return;
@@ -192,6 +176,16 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
                 sourceHandle: connectionState.fromHandle.id,
                 targetHandle: connectionState.toHandle.id,
             };
+            const updatedEdge: any = [...edges, edge];
+
+            dispatch(
+                updateWorkFlowById({
+                    id: workFlowData._id || "",
+                    data: {
+                        edges: updatedEdge,
+                    },
+                })
+            );
 
             console.log("connectionState", connectionState);
 

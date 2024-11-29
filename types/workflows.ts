@@ -78,7 +78,7 @@ export interface MasterNodeProps {
   description: string;
   type: string;
   category: string;
-  path:string,
+  path: string;
   subCategory: string;
   functionToExecute: string;
   logoUrl?: string;
@@ -129,7 +129,7 @@ interface WorkflowEdgesState {
 
 export interface WorkflowDataState {
   _id?: string;
-  name: string;
+  name?: string;
   description?: string;
   nodes?: WorkflowNodeState[];
   status?: string;
