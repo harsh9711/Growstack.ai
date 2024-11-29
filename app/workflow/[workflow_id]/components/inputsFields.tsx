@@ -212,9 +212,9 @@ const DropDown = ({ param, inputKey, handleInputChange }: any) => {
           }
         >
           {param?.options &&
-            param.options.map((option: string, index: number) => (
-              <option key={index} value={option}>
-                {option}
+            param.options.map((option: any, index: number) => (
+              <option key={index} value={option.value}>
+                {option.key}
               </option>
             ))}
         </select>
@@ -291,7 +291,6 @@ const SelectOption = ({ param, inputKey }: any) => {
 };
 
 const CheckboxField = ({ param, inputKey, handleInputChange }: any) => {
-  console.log(param);
 
   return (
     <div key={inputKey} className="input-box mt-3 mb-3">
@@ -516,6 +515,39 @@ const MultiSelectDropdown = ({ param, inputKey, handleInputChange }: any) => {
   );
 };
 
+const OutputField = ({ param, inputKey, handleInputChange }: any) => {
+
+  return (
+    <div key={inputKey} className="input-box mt-3 mb-3">
+      <div className="label-box flex gap-2 items-center mb-1">
+        <label className="font-medium text-[#14171B] text-[12px]">
+          {param.label}
+          <span>
+            {param.required && <span className="text-[#CF0000]">*</span>}
+          </span>
+        </label>
+        <Tooltip
+          description={param.description}
+          position="bottom-full left-[-23px]"
+        />
+      </div>
+
+      {param?.options &&
+        param.options.map((option: string, index: number) => (
+          <div className="text-box mb-5">
+            <h4 className="text-[#14171B] flex items-center gap-2 font-medium text-sm">
+              <span className="bg-[#FCF4DD] text-[#14171B] text-[12px] rounded-[20px] font-medium pt-3 pb-3 pr-4 pl-4">
+                {option}
+              </span>
+            </h4>
+          </div>
+        ))}
+    </div>
+
+  )
+}
+
+
 export const AddFieldDropdown: React.FC<AddFieldDropdownProps> = ({
   options,
   onSelect,
@@ -609,6 +641,7 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
     case "text_default_value":
     case "text_description":
     case "text_variable_name":
+    case "text_variable_name2":
     case "text_topic":
     case "text_overview":
     case "text":
@@ -684,6 +717,14 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
     case "multiselect_dropdown":
       return (
         <MultiSelectDropdown
+          param={param}
+          inputKey={inputKey}
+          handleInputChange={handleInputChange}
+        />
+      );
+    case "type_output":
+      return (
+        <OutputField
           param={param}
           inputKey={inputKey}
           handleInputChange={handleInputChange}

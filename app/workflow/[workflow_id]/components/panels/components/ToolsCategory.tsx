@@ -1,19 +1,15 @@
-import React, { useState, useRef, useCallback } from "react";
+import React from "react";
 import Image from "next/image";
-import { AllData } from "../../data";
-import { useDispatch } from "react-redux";
 import {
   addNode,
   addNodeData,
   createNode,
   removeNode,
 } from "@/lib/features/workflow/node.slice";
-import { MasterNodeProps, NodeState } from "@/types/workflows";
+import { NodeState } from "@/types/workflows";
 import "reactflow/dist/style.css";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { convertNodeData } from "@/utils/dataResolver";
-import { useNodesState } from "@xyflow/react";
-import { CustomAxiosInstance } from "@/config/axios.config";
 import { calculateNextNodePosition } from "@/utils/helper";
 import { unwrapResult } from "@reduxjs/toolkit";
 
@@ -41,25 +37,21 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
     {}
   );
 
-  // Set up state for selected subcategory
   const [selectedSubCategory, setSelectedSubCategory] =
     React.useState<string>("");
 
-  // Dynamically update the selected subcategory on initial load
   React.useEffect(() => {
     if (
       Object.keys(groupedIntegrations || {}).length > 0 &&
       !selectedSubCategory
     ) {
-      // Set default subcategory (first one) when no subcategory is selected yet
       const firstSubCategory = Object.keys(groupedIntegrations)[0];
       setSelectedSubCategory(firstSubCategory);
     }
-  }, [groupedIntegrations, selectedSubCategory]); // Run on groupedIntegrations change or initial selection
+  }, [groupedIntegrations, selectedSubCategory]);
 
-  // Handle subcategory change (e.g., from dropdown or any other selector)
   const handleSubCategoryChange = (newSubCategory: string) => {
-    setSelectedSubCategory(newSubCategory); // Update selected subcategory
+    setSelectedSubCategory(newSubCategory);
   };
 
   const handleClick = async (nodeData: NodeState) => {
@@ -97,6 +89,8 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
     dispatch(addNodeData(item));
     event.dataTransfer.effectAllowed = "move";
   };
+
+
   return (
     <div className="absolute bg-white w-4/5 h-[500px] top-[120px] rounded-2xl overflow-y-auto backdrop-blur-sm drop-shadow-2xl">
       <div className="bg-white p-5 pt-0">
@@ -128,19 +122,17 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
             {Object.keys(groupedIntegrations).map((subCategory, index) => (
               <div
                 key={index}
-                className={`flex flex-row m-0.5 p-2.5 rounded-lg items-center cursor-pointer ${
-                  selectedSubCategory === subCategory
-                    ? "bg-[#F1B916]"
-                    : "bg-[#E9E9E9]"
-                }`}
+                className={`flex flex-row m-0.5 p-2.5 rounded-lg items-center cursor-pointer ${selectedSubCategory === subCategory
+                  ? "bg-[#F1B916]"
+                  : "bg-[#E9E9E9]"
+                  }`}
                 onClick={() => setSelectedSubCategory(subCategory)}
               >
                 <p
-                  className={`ml-2 text-sm font-normal leading-4 flex items-center gap-2 ${
-                    selectedSubCategory === subCategory
-                      ? "text-white"
-                      : "text-[#14171B]"
-                  }`}
+                  className={`ml-2 text-sm font-normal leading-4 flex items-center gap-2 ${selectedSubCategory === subCategory
+                    ? "text-white"
+                    : "text-[#14171B]"
+                    }`}
                 >
                   <svg
                     width="20"
@@ -168,13 +160,21 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
               <div
                 key={item.node.id}
                 className="h-auto w-full bg-transparent m-1 rounded-lg flex justify-center items-center cursor-pointer border border-[#E5E5E5] p-3"
+                onClick={() => handleClick(item.node)}
+                draggable
+                onDragStart={event => {
+                  handleDragStart(event, item.node);
+                }}
+                onDragEnd={() => {
+                  dispatch(removeNode());
+                }}
               >
                 <div className="h-full w-full rounded-lg bg-white flex items-center">
                   {item.logoUrl && (
                     <Image
                       src={item.logoUrl}
                       alt="Logo"
-                      width={50} // Adjust width and height as needed
+                      width={50}
                       height={50}
                       draggable={false}
                       className="rounded-lg"

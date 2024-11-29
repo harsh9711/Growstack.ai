@@ -1,19 +1,15 @@
-import React, { useState, useRef, useCallback } from "react";
+import React from "react";
 import Image from "next/image";
-import { AllData } from "../../data";
-import { useDispatch } from "react-redux";
 import {
   addNode,
   addNodeData,
   createNode,
   removeNode,
 } from "@/lib/features/workflow/node.slice";
-import { MasterNodeProps, NodeState } from "@/types/workflows";
+import { NodeState } from "@/types/workflows";
 import "reactflow/dist/style.css";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { convertNodeData } from "@/utils/dataResolver";
-import { useNodesState } from "@xyflow/react";
-import { CustomAxiosInstance } from "@/config/axios.config";
 import { calculateNextNodePosition } from "@/utils/helper";
 import { unwrapResult } from "@reduxjs/toolkit";
 
@@ -146,65 +142,6 @@ const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
           </div>
         </div>
       </div>
-
-      {/* <div className="node-main-box absolute top[150px] right-0 w-[500px] h-[500px] p-3 bg-gradient-to-b from-[#fff] to-33%  to-[#fff] to-0% backdrop-blur-md drop-shadow-2xl rounded-[20px]">
-        <div className="node-inner-warpper h-full w-full rounded-[20px] p-3">
-          <div className="node-name-heading-box flex items-center justify-between mb-4">
-            <div className="node-name">
-              <h3 className="text-[#14171B] text-[18px] font-medium">
-                General Node
-              </h3>
-            </div>
-
-            <div className="search-box w-[243px]">
-              <div className="w-full flex items-center gap-2 p-2 rounded-lg border border-[#EBEBEB] bg-[#F7F7F7]">
-                <Image
-                  src="/images/workflow/search-normal.svg"
-                  alt="Search"
-                  width={17}
-                  height={17}
-                  className="cursor-pointer"
-                />
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className="bg-[#F7F7F7] text-[14px] text-[#14171B]  font-medium placeholder-[#5A5963]"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="divider mb-4">
-            <hr className="bg-[#E5E5E5]" />
-          </div>
-
-          <div className="nodes-box">
-            <div className="node-subcategory-heading mb-2">
-              <h3 className="text-[16px] text-[#878787] font-medium">
-                Input Type
-              </h3>
-            </div>
-
-            <div className="nodes-box-wrapper flex items-center justify-between flex-wrap">
-              <div className="node-box w-[130px] bg-[#FFFFFF] border-[1px] border-[#E5E5E5] p-4 rounded-[10px] text-center">
-                <div className="node-image mb-2">
-                  <img
-                    src="/assets/node_icon/short-single.svg"
-                    alt="node icon"
-                    className="w-[20px] mx-auto"
-                  />
-                </div>
-
-                <div className="node-name-text mt-2">
-                  <h3 className="text-[14px] text-[#020817] font-medium">
-                    Short Text
-                  </h3>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
     </>
   );
 };

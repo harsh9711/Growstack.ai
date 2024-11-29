@@ -26,7 +26,6 @@ const ToolsNodes = memo(
     const dispatch = useAppDispatch();
     const { workflows, nodes } = useAppSelector(state => state);
 
-    // console.log("---nodes---", nodes.nodes);
 
     const initialParameters =
       parameters &&
@@ -223,8 +222,8 @@ const ToolsNodes = memo(
         if (type === "text_input_label") {
           const variableNameKey = prevState
             ? Object.keys(prevState).find(
-                k => prevState[k].type === "text_variable_name"
-              )
+              k => prevState[k].type === "text_variable_name"
+            )
             : undefined;
           if (variableNameKey) {
             updatedState[variableNameKey] = {
@@ -292,15 +291,18 @@ const ToolsNodes = memo(
                 </button>
               </div>
               <img
-                src="/assets/node_icon/node-bg.svg"
+                src="/assets/node_icon/tools-node.svg"
                 alt="background icon"
                 className="w-[140px] mx-auto"
               />
-              <img
-                src="/assets/node_icon/short-single.svg"
-                alt="foreground icon"
-                className="w-[30px] mx-auto absolute top-[55px] left-0 right-0"
-              />
+
+              {data?.icon && (
+                <img
+                  src={data.icon}
+                  alt={data.label}
+                  className="w-[30px] mx-auto absolute top-[55px] left-0 right-0"
+                />
+              )}
 
               <div className="absolute top-1/2 transform -translate-y-1/2 right-[-60px] flex items-center">
                 <div className="h-px border-t-2 border-dashed border-[#2DA771] w-[65px] mr-1" />
@@ -339,7 +341,7 @@ const ToolsNodes = memo(
 
           {isDropdownOpen && (
             <div className="short-text-form bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] absolute left-1/2 transform -translate-x-1/2">
-              <div className="short-text-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-2">
+              <div className="short-text-heading bg-[#FCF4DD] p-4 rounded-[16px] mb-2">
                 {data?.icon && (
                   <img
                     src={data.icon}
@@ -369,21 +371,6 @@ const ToolsNodes = memo(
                         );
                       }
                     )}
-                  <div className="submit-button">
-                    <button
-                      onClick={handleNextClick}
-                      className="bg-[#2DA771] text-white text-sm font-medium p-3 w-full rounded-[10px]"
-                      disabled={nodes.isLoading}
-                    >
-                      {nodes.isLoading ? (
-                        <div className="flex justify-center items-center">
-                          <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
-                        </div>
-                      ) : (
-                        "Next"
-                      )}
-                    </button>
-                  </div>
                 </div>
               ) : (
                 <div className="form-box">
