@@ -119,7 +119,17 @@ const TextAreaField = ({ param, inputKey, handleInputChange }: any) => {
           rows={5}
           placeholder={param.placeholder || ""}
           className="form-control outline-0 shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-[12px] font-medium focus:outline-none"
+          onChange={e =>
+            handleInputChange(inputKey, param.type, e.target.value)
+          }
         />
+        {/* {input.includes('$') && (
+          <ul>
+            {suggestions.map((suggestion, index) => (
+              <li key={index}>{suggestion}</li>
+            ))}
+          </ul>
+        )} */}
       </div>
     </div>
   );
@@ -225,13 +235,6 @@ const BooleanField = ({ param, inputKey, handleInputChange }: any) => {
 };
 
 const DropDown = ({ param, inputKey, handleInputChange }: any) => {
-  const [selectedOption, setSelectedOption] = useState<Option | null>(null);
-  const selectOption = (option: Option) => {
-    setSelectedOption(option);
-    // setIsOpen(false);
-    // onSelect(option);
-  };
-
   return (
     <div key={inputKey} className="input-box mb-3">
       <div className="label-box flex gap-2 items-center mb-1">

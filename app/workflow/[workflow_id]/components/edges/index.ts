@@ -8,5 +8,5 @@ export const initialEdges: Edge[] = [
 ];
 
 export const edgeTypes = {
-  // custom: CustomEdge,
+  custom: CustomEdge,
 } satisfies EdgeTypes;

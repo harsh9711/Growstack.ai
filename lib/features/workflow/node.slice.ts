@@ -1,5 +1,10 @@
 import { CustomAxiosInstance } from "@/config/axios.config";
-import { NodeDataState, NodeState } from "@/types/workflows";
+import {
+  NodeDataState,
+  NodeState,
+  WorkflowNodeState,
+  WorkflowState,
+} from "@/types/workflows";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export const createNode = createAsyncThunk(
@@ -19,12 +24,49 @@ export const createNode = createAsyncThunk(
   }
 );
 
+export const updateNodeById = createAsyncThunk(
+  "workflow/updateNodeById",
+  async (
+    { id, data }: { id: string; data: WorkflowNodeState },
+    { rejectWithValue }
+  ) => {
+    try {
+      const result = await CustomAxiosInstance("http://localhost:4500/").patch(
+        `node/${id}`,
+        data
+      );
+      return result.data;
+    } catch (error: any) {
+      return rejectWithValue(
+        error?.response?.data?.error_message || error?.message
+      );
+    }
+  }
+);
+
+export const deleteNodeById = createAsyncThunk(
+  "workflow/deleteNodeById",
+  async (id: string, { rejectWithValue }) => {
+    try {
+      const result = await CustomAxiosInstance("http://localhost:4500/").delete(
+        `node/${id}`
+      );
+      return result.data;
+    } catch (error: any) {
+      return rejectWithValue(
+        error?.response?.data?.error_message || error?.message
+      );
+    }
+  }
+);
+
 const nodeSlice = createSlice({
   name: "nodes",
   initialState: {
     isLoading: false,
     nodeData: {} as NodeState,
     nodes: [] as NodeState[],
+    variables: [] as { nodeID: string; variableName: string }[],
   },
   reducers: {
     addNodeData: (state, action: PayloadAction<NodeState>) => {
@@ -35,12 +77,26 @@ const nodeSlice = createSlice({
       state.nodes.push(action.payload);
     },
 
+    addVariable: (
+      state,
+      action: PayloadAction<{ nodeID: string; variableName: string }>
+    ) => {
+      state.variables.push(action.payload);
+    },
+
+    updateNode: (state, action: PayloadAction<NodeState>) => {
+      state.nodes = state.nodes.map(node =>
+        node.id === action.payload.id ? action.payload : node
+      );
+    },
     removeNode: state => {
       console.log("----remove---");
       state.nodeData = {} as NodeState;
     },
 
-    updateNode: (state, action: PayloadAction<NodeState[]>) => {},
+    removeNodeById: (state, action: PayloadAction<string>) => {
+      state.nodes = state.nodes.filter(node => node.id !== action.payload);
+    },
   },
 
   extraReducers(builder) {
@@ -56,11 +112,35 @@ const nodeSlice = createSlice({
       )
       .addCase(createNode.rejected, state => {
         state.isLoading = false;
+      })
+      .addCase(updateNodeById.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(
+        updateNodeById.fulfilled,
+        (state, action: PayloadAction<NodeDataState>) => {
+          state.isLoading = false;
+        }
+      )
+      .addCase(updateNodeById.rejected, state => {
+        state.isLoading = false;
+      })
+      .addCase(deleteNodeById.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(
+        deleteNodeById.fulfilled,
+        (state, action: PayloadAction<NodeDataState>) => {
+          state.isLoading = false;
+        }
+      )
+      .addCase(deleteNodeById.rejected, state => {
+        state.isLoading = false;
       });
   },
 });
 
 export default nodeSlice.reducer;
 
-export const { addNodeData, addNode, removeNode, updateNode } =
+export const { addNodeData, addNode, removeNode, updateNode, removeNodeById } =
   nodeSlice.actions;

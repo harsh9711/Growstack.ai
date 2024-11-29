@@ -30,6 +30,23 @@ export const getWorkFlowById = createAsyncThunk(
   }
 );
 
+export const updateWorkFlowById = createAsyncThunk(
+  "updateWorkFlowById",
+  async (
+    { id, data }: { id: string; data: WorkflowDataState },
+    { rejectWithValue }
+  ) => {
+    try {
+      const result = await CustomAxiosInstance().patch(`workflow/${id}`, data);
+      return result.data as WorkflowDataState;
+    } catch (error: any) {
+      return rejectWithValue(
+        error?.response?.data?.error_message || error?.message
+      );
+    }
+  }
+);
+
 const workflowSlice = createSlice({
   name: "workflow",
   initialState: {} as WorkflowState,

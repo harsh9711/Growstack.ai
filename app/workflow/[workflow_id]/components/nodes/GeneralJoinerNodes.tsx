@@ -1,15 +1,19 @@
 import React, { memo, useState } from "react";
-import { Handle, Position, type NodeProps } from "@xyflow/react";
+import { Handle, Position, useReactFlow, type NodeProps } from "@xyflow/react";
 import { GeneralInputNodeProps } from "./types";
 import DynamicInput from "../inputsFields";
 import { extractParameterValues } from "@/utils/dataResolver";
 import { convertToUnderscore } from "@/utils/helper";
+import { useAppDispatch } from "@/lib/hooks";
+import { removeNodeById } from "@/lib/features/workflow/node.slice";
 
 const GeneralJoinerNodes = memo(
   ({ data, isConnectable, id }: NodeProps<GeneralInputNodeProps>) => {
     const { parameters, nodeMasterId } = data;
 
-    console.log("----id----", id);
+    const { setNodes } = useReactFlow();
+    const dispatch = useAppDispatch();
+
 
     const initialParameters =
       parameters &&
@@ -107,6 +111,11 @@ const GeneralJoinerNodes = memo(
       });
     };
 
+    const handleDeleteNode = () => {
+      setNodes(nds => nds.filter(nds => nds.id !== id));
+      dispatch(removeNodeById(id));
+    };
+
     return (
       <div>
         <div className="short-text-box relative" id="small-box">
@@ -128,6 +137,14 @@ const GeneralJoinerNodes = memo(
               />
             </div>
             <div className="text-image text-center relative">
+              <div className="absolute pointer-events-auto border border-[#2DA771] h-[20px] w-[20px] rounded-full flex justify-center items-center bg-white">
+                <button
+                  onClick={handleDeleteNode}
+                  className="text-[#000] p-0 m-0 leading-none"
+                >
+                  ×
+                </button>
+              </div>
               <img
                 src="/assets/node_icon/node-bg.svg"
                 alt="background icon"

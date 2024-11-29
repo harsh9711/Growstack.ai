@@ -117,6 +117,15 @@ export interface SubNodeProps {
   };
 }
 
+interface WorkflowEdgesState {
+  id: string;
+  source: string;
+  sourceHandler: string;
+  target: string;
+  targetHandler: string;
+  type: string;
+}
+
 export interface WorkflowDataState {
   _id?: string;
   name: string;
@@ -125,7 +134,7 @@ export interface WorkflowDataState {
   status?: string;
   createdAt?: Date;
   updatedAt?: Date;
-  edges?: [];
+  edges?: WorkflowEdgesState[];
   __v?: number;
 }
 

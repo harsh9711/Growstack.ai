@@ -40,6 +40,9 @@ const LllmsCategory = ({ setNodes }: any): React.ReactElement => {
                 createNode({
                     workflowId: workflows.workFlowData._id,
                     nodeMasterId: nodeData.id,
+                    name: nodeData.data?.label,
+                    type: nodeData?.type,
+                    description: nodeData.data?.descriptions || "",
                     position: { x: nextNodeX, y: nextNodeY },
                     parameters: {},
                 })

@@ -15,10 +15,11 @@ import {
     Panel,
     useReactFlow,
     type OnConnect,
+    MarkerType,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { nodeTypes } from "./components/nodes";
-import { initialEdges, edgeTypes } from "./components/edges";
+import { edgeTypes } from "./components/edges";
 import TopLeftPanel2nd from "./components/panels/TopLeftPanel2nd";
 import TopRightPanel1st from "./components/panels/TopRightPanel1st";
 import TopRightPanel2nd from "./components/panels/TopRightPanel2nd";
@@ -28,6 +29,7 @@ import { getMasterNodes } from "@/lib/features/workflow/masterNode.slice";
 import {
     createWorkFlow,
     getWorkFlowById,
+    updateWorkFlowById,
 } from "@/lib/features/workflow/workflow.slice";
 import { useRouter } from "next/navigation";
 import ConnectionLine from "./components/edges/ConnectionLine";
@@ -54,13 +56,24 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
     const { nodeData } = useAppSelector(state => state.nodes);
     const { workFlowData } = useAppSelector(state => state.workflows);
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
-    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+    const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
 
     useEffect(() => {
         dispatch(getMasterNodes());
         getWorkFlowDetails();
     }, [dispatch, workflow_id]);
+
+    console.log('---ege----', edges);
+
+
+    useEffect(() => {
+        if (edges && !edges?.length) return
+
+        dispatch(updateWorkFlowById({ id: workFlowData._id || "", data: { name: workFlowData.name, description: workFlowData.description, edges: edges } }))
+
+        return () => { }
+    }, [edges ?? []])
 
     const getWorkFlowDetails = () => {
         if (!workflow_id) return;
@@ -72,6 +85,8 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
         connection => setEdges(edges => addEdge(connection, edges)),
         [setEdges]
     );
+
+
 
     const onDragOver = useCallback((event: DragEvent) => {
         event.preventDefault();
@@ -109,6 +124,9 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
             const nodeId = await handleAddNode({
                 workflowId: workFlowData._id,
                 nodeMasterId: nodeData.id,
+                name: nodeData.data?.label,
+                type: nodeData?.type,
+                description: nodeData.data?.descriptions || "",
                 position,
                 parameters: {},
             })
@@ -127,6 +145,59 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
         [screenToFlowPosition, nodeData]
     );
 
+    const onConnectEnd = useCallback(
+        (event: any, connectionState: any) => {
+            console.log("connectionState", connectionState);
+
+            if (connectionState.isValid === null || connectionState.isValid === undefined) {
+                console.log("Invalid connection state, not adding edge");
+                return;
+            }
+
+            if (connectionState.fromNode.id === connectionState.toNode.id) {
+                console.log("Source and target nodes are the same, not adding edge");
+                return;
+            }
+
+            const fromNodeExists = connectionState.fromNode && connectionState.fromNode.id;
+            const toNodeExists = connectionState.toNode && connectionState.toNode.id;
+
+            if (!fromNodeExists || !toNodeExists) {
+                console.log("One or both nodes do not exist, not adding edge");
+                return;
+            }
+
+            const existingEdge = edges?.find(
+                (edge: any) =>
+                    (edge.source === connectionState.fromNode.id &&
+                        edge.target === connectionState.toNode.id) ||
+                    (edge.source === connectionState.toNode.id &&
+                        edge.target === connectionState.fromNode.id)
+            );
+
+            if (existingEdge) {
+                console.log("Edge already exists, not adding new one");
+                return;
+            }
+            const edgeId = `${[connectionState.fromNode.id, connectionState.toNode.id].sort().join('_')}`;
+            const edge: any = {
+                id: edgeId,
+                source: connectionState.fromNode.id,
+                target: connectionState.toNode.id,
+                type: 'custom',
+                sourceHandle: connectionState.fromHandle.id,
+                targetHandle: connectionState.toHandle.id,
+            };
+
+            console.log("event------->", event);
+            console.log("connectionState", connectionState);
+
+            setEdges((eds) => eds.concat(edge));
+        },
+        [edges, screenToFlowPosition]
+    );
+
+
     return (
         <div
             style={{ height: "100vh", width: "100%" }}
@@ -142,6 +213,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
                 snapToGrid={true}
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
+                onConnectEnd={onConnectEnd}
                 onDrop={onDrop}
                 onDragOver={onDragOver}
                 connectionLineComponent={ConnectionLine}

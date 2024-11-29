@@ -2,7 +2,7 @@ import { useConnection } from '@xyflow/react';
 
 export default ({ fromX, fromY, toX, toY }: any) => {
     const { fromHandle } = useConnection();
-
+    // console.log('fromHandle----->', fromHandle);
 
     return (
         <g>

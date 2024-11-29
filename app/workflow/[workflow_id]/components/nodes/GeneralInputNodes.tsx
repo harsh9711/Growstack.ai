@@ -1,15 +1,32 @@
 import React, { memo, useState } from "react";
-import { Handle, Position, type NodeProps } from "@xyflow/react";
+import { Handle, Position, type NodeProps, useReactFlow } from "@xyflow/react";
 import { GeneralInputNodeProps } from "./types";
 import DynamicInput from "../inputsFields";
 import { extractParameterValues } from "@/utils/dataResolver";
 import { convertToUnderscore } from "@/utils/helper";
+import {
+    removeNodeById,
+    updateNode,
+    updateNodeById,
+} from "@/lib/features/workflow/node.slice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { WorkflowNodeState } from "@/types/workflows";
 
 const GeneralInputNodes = memo(
-    ({ data, isConnectable, id }: NodeProps<GeneralInputNodeProps>) => {
+    ({
+        data,
+        isConnectable,
+        id,
+        positionAbsoluteX,
+        positionAbsoluteY,
+    }: NodeProps<GeneralInputNodeProps>) => {
         const { parameters, nodeMasterId } = data;
 
-        console.log("----id----", id);
+        const { setNodes } = useReactFlow();
+        const dispatch = useAppDispatch();
+        const { workflows, nodes } = useAppSelector(state => state);
+
+        // console.log("---nodes---", nodes.nodes);
 
         const initialParameters =
             parameters &&
@@ -72,6 +89,24 @@ const GeneralInputNodes = memo(
             }
         };
 
+
+        const handleUpdateParameter = (id: string) => {
+            let updatedData = nodes.nodes.find(node => node.id === id);
+
+            if (updatedData) {
+                updatedData = {
+                    ...updatedData,
+                    data: {
+                        ...updatedData.data,
+                        parameters: currentParameter,
+                    },
+                };
+
+                console.log("---updatedData---", updatedData);
+                dispatch(updateNode(updatedData));
+            }
+        };
+
         const handleNextClick = async () => {
             if (!currentParameter) return;
 
@@ -84,33 +119,45 @@ const GeneralInputNodes = memo(
             );
 
             if (allRequiredParamsFilled) {
+                handleUpdateParameter(id);
+
                 const updatedValue = extractParameterValues(currentParameter);
 
                 console.log("updatedValue-->", updatedValue);
 
-                setNextParameter({
-                    "6": {
-                        label: updatedValue.inputLabel,
-                        type: getInputType(data?.label),
-                        placeholder: updatedValue.placeholder,
-                        required: updatedValue.required,
-                        options: [],
-                        description: updatedValue.description,
-                        value:
-                            updatedValue.defaultValue ||
-                            updatedValue.fileType ||
-                            updatedValue.options,
-                        error: "",
-                    },
-                });
-
-                setIsNextBoxOpen(true);
-
                 try {
-                    // setIsLoading(true);
-                    // const result = await CustomAxiosInstance().post("node", data);
-                    // console.log("result-->", result);
-                    // setIsNextBoxOpen(true);
+                    const bodyPayload = {
+                        workflowId: workflows.workFlowData._id,
+                        nodeMasterId,
+                        position: { x: positionAbsoluteX, y: positionAbsoluteY },
+                        dependencies: [],
+                        parameters: updatedValue,
+                    };
+
+                    await dispatch(
+                        updateNodeById({
+                            id,
+                            data: bodyPayload as unknown as WorkflowNodeState,
+                        })
+                    );
+
+                    setNextParameter({
+                        "6": {
+                            label: updatedValue.inputLabel,
+                            type: getInputType(data?.label),
+                            placeholder: updatedValue.placeholder,
+                            required: updatedValue.required,
+                            options: [],
+                            description: updatedValue.description,
+                            value:
+                                updatedValue.defaultValue ||
+                                updatedValue.fileType ||
+                                updatedValue.options,
+                            error: "",
+                        },
+                    });
+
+                    setIsNextBoxOpen(true);
                 } catch (error: any) {
                     console.error("error-->", error?.message);
                 } finally {
@@ -166,7 +213,7 @@ const GeneralInputNodes = memo(
                     ...prevState,
                     [key]: {
                         ...(prevState?.[key] || {}),
-                        value: value,
+                        value: type === "text_variable_name" ? convertToUnderscore(value) : value,
                         error: "",
                     },
                 };
@@ -192,6 +239,13 @@ const GeneralInputNodes = memo(
             });
         };
 
+        const handleDeleteNode = () => {
+            setNodes(nds => nds.filter(nds => nds.id !== id));
+            dispatch(removeNodeById(id));
+        };
+
+        console.log("currentParameter-->", nodes.nodes);
+
         return (
             <div>
                 <div className="short-text-box relative" id="small-box">
@@ -213,6 +267,14 @@ const GeneralInputNodes = memo(
                             />
                         </div>
                         <div className="text-image text-center relative">
+                            <div className="absolute pointer-events-auto border border-[#2DA771] h-[20px] w-[20px] rounded-full flex justify-center items-center bg-white">
+                                <button
+                                    onClick={handleDeleteNode}
+                                    className="text-[#000] p-0 m-0 leading-none"
+                                >
+                                    ×
+                                </button>
+                            </div>
                             <img
                                 src="/assets/node_icon/node-bg.svg"
                                 alt="background icon"
@@ -227,6 +289,7 @@ const GeneralInputNodes = memo(
                             <div className="absolute top-1/2 transform -translate-y-1/2 right-[-60px] flex items-center">
                                 <div className="h-px border-t-2 border-dashed border-[#2DA771] w-[65px] mr-1" />
                                 <Handle
+                                    id={`${id}-source`}
                                     type="source"
                                     position={Position.Right}
                                     className="w-5 h-5 bg-white border-2 border-[#2DA771] rounded-full flex items-center justify-center text-[#2DA771] text-lg font-bold transform translate-x-1/2 -translate-y-1/2 p-0 m-0 leading-none"
@@ -294,9 +357,9 @@ const GeneralInputNodes = memo(
                                         <button
                                             onClick={handleNextClick}
                                             className="bg-[#2DA771] text-white text-sm font-medium p-3 w-full rounded-[10px]"
-                                            disabled={isLoading}
+                                            disabled={nodes.isLoading}
                                         >
-                                            {isLoading ? (
+                                            {nodes.isLoading ? (
                                                 <div className="flex justify-center items-center">
                                                     <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
                                                 </div>

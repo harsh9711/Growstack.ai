@@ -1,12 +1,17 @@
 import React, { useState } from "react";
-import { Handle, Position, type NodeProps } from "@xyflow/react";
+import { Handle, Position, useReactFlow, type NodeProps } from "@xyflow/react";
 import { FormNodeProps, type MarkdownNodeProps } from "./types";
 import Image from "next/image";
 import DynamicInput, { AddFieldDropdown } from "../inputsFields";
 import { SubNodeProps } from "@/types/workflows";
+import { removeNodeById } from "@/lib/features/workflow/node.slice";
+import { useAppDispatch } from "@/lib/hooks";
 
 const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
   const { parameters, subNodes } = data;
+
+  const { setNodes } = useReactFlow();
+  const dispatch = useAppDispatch();
 
   const initialParameters =
     parameters &&
@@ -133,6 +138,11 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
     setCurrentSubNodes([...currentSubNodes, node]);
   };
 
+  const handleDeleteNode = () => {
+    setNodes(nds => nds.filter(nds => nds.id !== id));
+    dispatch(removeNodeById(id));
+  };
+
   const imageMapping = {
     "Short Text": "short-single.svg",
     "Long Text": "long-single.svg",
@@ -160,6 +170,14 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
           </div>
 
           <div className="text-image text-center">
+            <div className="absolute pointer-events-auto border border-[#2DA771] h-[20px] w-[20px] rounded-full flex justify-center items-center bg-white">
+              <button
+                onClick={handleDeleteNode}
+                className="text-[#000] p-0 m-0 leading-none"
+              >
+                ×
+              </button>
+            </div>
             <img
               src="/assets/node_icon/form-img.svg"
               alt="form node image"
