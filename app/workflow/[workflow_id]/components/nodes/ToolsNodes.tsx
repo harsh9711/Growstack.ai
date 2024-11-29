@@ -1,6 +1,6 @@
 import React, { memo, useState } from "react";
 import { Handle, Position, type NodeProps, useReactFlow } from "@xyflow/react";
-import { GeneralInputNodeProps } from "./types";
+import { ToolsNodeProps } from "./types";
 import DynamicInput from "../inputsFields";
 import { extractParameterValues } from "@/utils/dataResolver";
 import { convertToUnderscore } from "@/utils/helper";
@@ -12,14 +12,14 @@ import {
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { WorkflowNodeState } from "@/types/workflows";
 
-const GeneralInputNodes = memo(
+const ToolsNodes = memo(
   ({
     data,
     isConnectable,
     id,
     positionAbsoluteX,
     positionAbsoluteY,
-  }: NodeProps<GeneralInputNodeProps>) => {
+  }: NodeProps<ToolsNodeProps>) => {
     const { parameters, nodeMasterId } = data;
 
     const { setNodes } = useReactFlow();
@@ -430,4 +430,4 @@ const GeneralInputNodes = memo(
   }
 );
 
-export default GeneralInputNodes;
+export default ToolsNodes;

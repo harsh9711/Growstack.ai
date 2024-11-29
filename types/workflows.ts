@@ -78,6 +78,7 @@ export interface MasterNodeProps {
   description: string;
   type: string;
   category: string;
+  path:string,
   subCategory: string;
   functionToExecute: string;
   logoUrl?: string;

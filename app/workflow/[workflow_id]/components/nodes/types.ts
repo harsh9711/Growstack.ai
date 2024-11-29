@@ -1,4 +1,4 @@
-import { ImageProps, NodeDataState } from "@/types/workflows";
+import { ImageProps, NodeDataState, NodeState } from "@/types/workflows";
 import type { Node, BuiltInNode } from "@xyflow/react";
 
 export type PositionLoggerNode = Node<{ label: string }, "position-logger">;
@@ -64,6 +64,8 @@ export type GeneralInputNodeProps = Node<NodeDataState, "inputType">;
 
 export type GeneralJoinerNodeProps = Node<NodeDataState, "joiner">;
 
+export type ToolsNodeProps = Node<NodeDataState , "tools">;
+
 export type AppNode =
   | BuiltInNode
   | OpenAiNodeProps
@@ -85,4 +87,6 @@ export type AppNode =
   | FormNodeProps
   | LlmNodesNodeProps
   | GeneralInputNodeProps
-  | GeneralJoinerNodeProps;
+  | GeneralJoinerNodeProps
+  | ToolsNodeProps
+  ;
