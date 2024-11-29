@@ -91,7 +91,7 @@ export default function SocialMediaAnalyticsPage() {
               <h1 className="text-[17px] font-semibold">Account</h1>
               <div className="flex flex-col justify-center items-center space-y-4 mt-4">
                 <Image
-                  src={metaData.profileImageUrl || "/logo/growstack-mini.png"}
+                  src={metaData.profileImageUrl || "/logo/growstack-mini1.png"}
                   alt=""
                   width={50}
                   height={50}

@@ -636,7 +636,7 @@ const Layout = ({
               <div className="flex-1 flex flex-col justify-center items-center pb-40 space-y-4">
                 <div className="h-14 w-14 relative">
                   <Image
-                    src="/logo/growstack-mini.png"
+                    src="/logo/growstack-mini1.png"
                     alt="growstack_ai_chat"
                     fill
                   />

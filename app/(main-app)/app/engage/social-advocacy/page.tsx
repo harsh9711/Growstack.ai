@@ -57,7 +57,7 @@ export default function ComingSoon() {
   return (
     <div className="flex-1 h-full w-full flex flex-col items-center justify-center text-center">
       <Image
-        src="/logo/growstack-mini.png"
+        src="/logo/growstack-mini1.png"
         alt=""
         width={60}
         height={60}

@@ -28,6 +28,7 @@ import GlobalModal from "@/components/modal/global.modal";
 import SubscribePlan from "@/components/subscribePlan/subscribePlan";
 import { RootState } from "@/lib/store";
 import { useSelector } from "react-redux";
+import UpgradePlan from "@/components/upgradePlan/upgradePlan";
 
 interface ProductAI {
   img_url: string | null;
@@ -549,12 +550,20 @@ export default function Home() {
                   className="text-[16px] w-full h-12 flex justify-center items-center bg-[#2DA771] text-white rounded-xl"
                   onClick={e => {
                     if (
-                      currentPlan?.plan_type === "FREE" &&
-                      user?.user_type !== "ADMIN"
+                      user?.user_type !== "ADMIN" &&
+                      currentPlan?.plan_type === "FREE"
                     ) {
                       e.preventDefault();
                       e.stopPropagation();
                       setIsSubscriptionModalOpen(true);
+                      return;
+                    } else if (
+                      user?.user_type !== "ADMIN" &&
+                      currentPlan?.plan_name === "AI Essentials"
+                    ) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setIsUpgradeModalOpen(true);
                       return;
                     }
                   }}
@@ -902,6 +911,19 @@ export default function Home() {
         <SubscribePlan
           goBackHandler={() => {
             setIsSubscriptionModalOpen(false);
+          }}
+        />
+      </GlobalModal>
+      <GlobalModal
+        showCloseButton
+        open={isUpgradeModalOpen}
+        setOpen={() => {
+          setIsUpgradeModalOpen(false);
+        }}
+      >
+        <UpgradePlan
+          goBackHandler={() => {
+            setIsUpgradeModalOpen(false);
           }}
         />
       </GlobalModal>

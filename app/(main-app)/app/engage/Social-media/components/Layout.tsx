@@ -544,7 +544,7 @@ const Layout = () => {
         >
           <div className="flex flex-row gap-4 items-center">
             <Image
-              src="/logo/growstack-mini.png"
+              src="/logo/growstack-mini1.png"
               alt="facebook"
               width={50}
               height={50}
@@ -602,7 +602,7 @@ const Layout = () => {
                                               "ton.twitter.com"
                                             )
                                               ? attachment.url
-                                              : "/logo/growstack-mini.png"
+                                              : "/logo/growstack-mini1.png"
                                           }
                                           alt={`attachment-${attIndex}`}
                                           width={100}
@@ -610,7 +610,7 @@ const Layout = () => {
                                           className="rounded-xl border mt-2"
                                           onError={e => {
                                             e.currentTarget.src =
-                                              "/logo/growstack-mini.png";
+                                              "/logo/growstack-mini1.png";
                                           }}
                                         />
                                       </>
@@ -630,7 +630,7 @@ const Layout = () => {
                         }
                         imageUrl={
                           msg.senderDetails?.profileImage ||
-                          "/logo/growstack-mini.png"
+                          "/logo/growstack-mini1.png"
                         }
                         title={msg.senderDetails?.name || "Unknown"}
                         time={formatRelativeDate(msg.created)}
