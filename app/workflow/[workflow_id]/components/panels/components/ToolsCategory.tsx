@@ -25,8 +25,6 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
     return <div>Data not found</div>;
   }
 
-  const [selectedSubCategory, setSelectedSubCategory] =React.useState();
-
   const generalData = masterNode.masterNode?.filter(
     item => item.category.toLocaleLowerCase() === "tools"
   );
@@ -42,6 +40,27 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
     },
     {}
   );
+
+  // Set up state for selected subcategory
+  const [selectedSubCategory, setSelectedSubCategory] =
+    React.useState<string>("");
+
+  // Dynamically update the selected subcategory on initial load
+  React.useEffect(() => {
+    if (
+      Object.keys(groupedIntegrations || {}).length > 0 &&
+      !selectedSubCategory
+    ) {
+      // Set default subcategory (first one) when no subcategory is selected yet
+      const firstSubCategory = Object.keys(groupedIntegrations)[0];
+      setSelectedSubCategory(firstSubCategory);
+    }
+  }, [groupedIntegrations, selectedSubCategory]); // Run on groupedIntegrations change or initial selection
+
+  // Handle subcategory change (e.g., from dropdown or any other selector)
+  const handleSubCategoryChange = (newSubCategory: string) => {
+    setSelectedSubCategory(newSubCategory); // Update selected subcategory
+  };
 
   const handleClick = async (nodeData: NodeState) => {
     try {
