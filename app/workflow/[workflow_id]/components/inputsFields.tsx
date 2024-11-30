@@ -30,7 +30,6 @@ interface AddFieldDropdownProps {
   inputKey: string;
 }
 
-
 const getTypeFromParam = (paramType: string): string => {
   return paramType.split("_")[0];
 };
@@ -103,7 +102,20 @@ const TextAreaField = ({ param, inputKey, handleInputChange }: any) => {
   );
 };
 
-const Slider = ({ param, inputKey, handleInputChange }: any) => {
+const RangeSlider = ({ param, inputKey, handleInputChange }: any) => {
+  const [value, setValue] = useState(57.194); // Initial value as percentage
+
+  // Handle slider value change
+  const handleSliderChange = (e: { target: { value: any } }) => {
+    const newValue = e.target.value;
+    setValue(newValue);
+  };
+
+  // Prevent node dragging while interacting with the slider
+  const stopNodeDrag = (event: React.MouseEvent | React.TouchEvent) => {
+    event.stopPropagation();
+  };
+
   return (
     <div className="input-box mb-3" key={inputKey}>
       <div className="label-box flex items-center gap-2 relative mb-1">
@@ -123,12 +135,12 @@ const Slider = ({ param, inputKey, handleInputChange }: any) => {
             <div className="h-2 bg-[#F2F2F2] rounded-full">
               <div
                 className="absolute h-2 rounded-full bg-[#2DA771]"
-                style={{ width: "57.194%", left: "0" }}
+                style={{ width: `${value}%`, left: "0" }}
               ></div>
               <div
                 className="absolute h-4 w-4 bg-[#2DA771] shadow border border-[#2DA771] rounded-full cursor-pointer"
                 unselectable="on"
-                style={{ left: "53.571%", top: "0" }}
+                style={{ left: `${value}%`, top: "0" }}
               >
                 <span className="sr-only">Slider thumb</span>
               </div>
@@ -136,9 +148,19 @@ const Slider = ({ param, inputKey, handleInputChange }: any) => {
           </div>
         </div>
 
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value={value}
+          onChange={handleSliderChange}
+          onMouseDown={stopNodeDrag} // Prevent node movement
+          onTouchStart={stopNodeDrag} // Prevent node movement for touch devices
+          className="w-full"
+        />
+
         <div className="range-text flex items-center justify-between">
           <span className="text-[12px] font-medium text-[#5B5D60]">0</span>
-
           <span className="text-[12px] font-medium text-[#5B5D60]">1</span>
         </div>
       </div>
@@ -291,7 +313,6 @@ const SelectOption = ({ param, inputKey }: any) => {
 };
 
 const CheckboxField = ({ param, inputKey, handleInputChange }: any) => {
-
   return (
     <div key={inputKey} className="input-box mt-3 mb-3">
       <div className="label-box flex gap-2 items-center mb-1">
@@ -516,7 +537,6 @@ const MultiSelectDropdown = ({ param, inputKey, handleInputChange }: any) => {
 };
 
 const OutputField = ({ param, inputKey, handleInputChange }: any) => {
-
   return (
     <div key={inputKey} className="input-box mt-3 mb-3">
       <div className="label-box flex gap-2 items-center mb-1">
@@ -543,10 +563,8 @@ const OutputField = ({ param, inputKey, handleInputChange }: any) => {
           </div>
         ))}
     </div>
-
-  )
-}
-
+  );
+};
 
 export const AddFieldDropdown: React.FC<AddFieldDropdownProps> = ({
   options,
@@ -563,8 +581,8 @@ export const AddFieldDropdown: React.FC<AddFieldDropdownProps> = ({
     onSelect(option);
   };
 
-  console.log('---options---', options)
-  console.log('---isOpen---', isOpen)
+  console.log("---options---", options);
+  console.log("---isOpen---", isOpen);
 
   return (
     <div key={inputKey} className="input-box mt-4 mb-3">
@@ -700,7 +718,7 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
     case "slider":
     case "slider_creativity_level":
       return (
-        <Slider
+        <RangeSlider
           param={param}
           inputKey={inputKey}
           handleInputChange={handleInputChange}
