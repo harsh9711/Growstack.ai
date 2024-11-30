@@ -35,6 +35,7 @@ import { WorkFlowData } from "../types";
 import ApprovalsAccordion from "./ApprovalAccordion";
 import OutputDetails from "./OutputDetails";
 import RunSummary from "./RunSummary";
+import WorkFlowHeader from "@/components/workFlowHeader/WorkFlowHeader";
 
 type TempOutput = {
   variable_name: string;
@@ -312,6 +313,7 @@ const Run: React.FC<Props> = ({ workflowId, onTabChange }) => {
 
   return (
     <>
+      <WorkFlowHeader />
       <Motion
         transition={{ duration: 0.5 }}
         variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
