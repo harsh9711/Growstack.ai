@@ -164,7 +164,7 @@ const TimeLineTable = () => {
         </table>
 
         {/* Pagination */}
-        <div className="flex justify-between items-center mt-4">
+        <div className="flex justify-center items-center mt-4">
           <button
             onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
@@ -172,9 +172,19 @@ const TimeLineTable = () => {
           >
             Previous
           </button>
-          <span className="text-sm text-gray-600">
-            Page {currentPage} of {totalPages}
-          </span>
+          {Array.from({ length: totalPages }, (_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentPage(index + 1)}
+              className={`px-4 py-2 mx-1 text-sm rounded ${
+                currentPage === index + 1
+                  ? "bg-green-500 text-white"
+                  : "bg-gray-200 text-gray-600"
+              }`}
+            >
+              {index + 1}
+            </button>
+          ))}
           <button
             onClick={() =>
               setCurrentPage(prev => Math.min(prev + 1, totalPages))
