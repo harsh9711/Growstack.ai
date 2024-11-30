@@ -50,7 +50,10 @@ const OutputDetails = () => {
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto bg-white rounded-lg shadow-md p-4">
+    <div className="w-full bg-white rounded-lg shadow-md p-4 relative overflow-hidden">
+      {/* Green Left Side Accent */}
+      <div className="absolute inset-y-0 left-0 w-2 rounded-lg bg-[#27c9aa]"></div>
+
       <h2 className="text-lg font-bold mb-4">Output Details</h2>
       <div className="space-y-2">
         {data.map((item, index) => (

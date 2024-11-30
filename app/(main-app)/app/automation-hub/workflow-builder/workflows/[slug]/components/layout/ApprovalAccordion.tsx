@@ -37,18 +37,15 @@ const ApprovalsAccordion = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-4">
+    <div className="w-full bg-white rounded-lg shadow-lg p-4 mt-5">
       {/* Accordion Header */}
       <div
         className="flex justify-between items-center cursor-pointer"
         onClick={toggleAccordion}
       >
         <h2 className="text-lg font-semibold">Approvals</h2>
-        {isOpen ? (
-          <ChevronDown size={18} />
-        ) : (
-          <ChevronUp size={18} />
-        )}
+
+        {isOpen ? <ChevronDown size={18} /> : <ChevronUp size={18} />}
       </div>
 
       {/* Accordion Content */}

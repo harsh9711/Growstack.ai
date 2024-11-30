@@ -318,8 +318,9 @@ const Run: React.FC<Props> = ({ workflowId, onTabChange }) => {
         transition={{ duration: 0.5 }}
         variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">
-          <div className="flex flex-col gap-6">
+        {/* <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-5"> */}
+        <div className="flex h-screen mt-5 gap-6">
+          <div className="w-2/5">
             <div
               className={`border rounded-2xl w-[50%] flex flex-col gap-6 p-4 ${
                 isOpen ? "max-h-screen" : "max-h-[80px]"
@@ -525,7 +526,7 @@ const Run: React.FC<Props> = ({ workflowId, onTabChange }) => {
             </div>
             <ApprovalsAccordion />
           </div>
-          <div className="flex flex-col gap-6">
+          <div className="w-3/5">
             <OutputDetails />
             <RunSummary />
           </div>

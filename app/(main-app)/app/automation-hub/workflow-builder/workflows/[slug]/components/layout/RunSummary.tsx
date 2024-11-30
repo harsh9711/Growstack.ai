@@ -52,22 +52,32 @@ const RunSummary = () => {
   const pageData = data.slice((currentPage - 1) * 5, currentPage * 5);
 
   return (
-    <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-md space-y-6">
+    <div className="w-full bg-white rounded-lg shadow-md space-y-6 p-6 mt-5">
+
       {/* Header Section */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-lg font-bold">Run Summary</h2>
-          <div className="text-sm space-y-1">
-            <p>
-              <strong>Workflow Run ID:</strong> #154848
-            </p>
-            <p>
-              <strong>Start Time:</strong> 00:30 <span className="mx-2">|</span>{" "}
-              <strong>End Time:</strong> 00:30
-            </p>
-            <p>
-              <strong>Duration:</strong> 30 seconds
-            </p>
+          <h2 className="text-lg font-bold mb-1">Run Summary</h2>
+          <div className="grid grid-cols-5 text-sm text-gray-600 mb-4 space-x-5">
+            <div>
+              <span className="text-xs font text-gray-400">
+                Workflow Run Id
+              </span>{" "}
+              <div className="font-semibold">#154848</div>
+            </div>
+
+            <div>
+              <span className="text-xs font text-gray-400">Start Time:</span>{" "}
+              <div className="font-semibold">03.30</div>
+            </div>
+            <div>
+              <span className="text-xs font text-gray-400">End Time:</span>{" "}
+              <div className="font-semibold">01:00</div>
+            </div>
+            <div>
+              <span className="text-xs font text-gray-400">Duration:</span>{" "}
+              <div className="font-semibold">30 Seconds</div>
+            </div>
           </div>
         </div>
         <div>
