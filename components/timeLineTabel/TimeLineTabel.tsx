@@ -91,99 +91,100 @@ const TimeLineTable = () => {
   );
 
   return (
-    <div className="p-6 bg-gray-50">
-      <div className="w-full max-w-4xl flex justify-start mb-4">
-        <div className="flex space-x-8 text-gray-600 justify-center">
-          <button className="font-semibold text-green-600 border-b-2 border-green-600 pb-1">
-            History
-          </button>
-          <button className="font-semibold hover:text-green-600">
-            Schedule
-          </button>
+    <div className="w-full bg-white rounded-xl border border-1  p-4  overflow-hidden">
+      <div className="flex space-x-8 text-gray-600 justify-center border-b pb-2">
+        <button className="font-semibold text-green-600 border-b-2 border-green-600 pb-1">
+          History
+        </button>
+        <button className="font-semibold hover:text-green-600">Schedule</button>
+      </div>
+      <div className="p-6">
+        <div className="w-full max-w-4xl flex justify-start mb-4"></div>
+        {/* Search Bar */}
+        <div className="mb-4">
+          <input
+            type="text"
+            placeholder="Search"
+            className="w-full max-w-sm px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
         </div>
-      </div>
-      {/* Search Bar */}
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Search"
-          className="w-full max-w-sm px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-      </div>
 
-      {/* Table */}
-      <table className="w-full bg-white rounded-lg shadow-md">
-        <thead>
-          <tr className="border-b-2">
-            <th className="p-3 text-left text-xs font font-normal text-gray-400">
-              Workflow Run ID
-            </th>
-            <th className="p-3 text-left text-xs font font-normal text-gray-400">
-              Workflow Name
-            </th>
-            <th className="p-3 text-left text-xs font font-normal text-gray-400">
-              Status
-            </th>
-            <th className="p-3 text-left text-xs font font-normal text-gray-400">
-              Last Updated At
-            </th>
-            <th className="p-3 text-left text-xs font font-normal text-gray-400">
-              Action
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {paginatedData.map((item, index) => (
-            <tr
-              key={index}
-              className={`border-b ${
-                index % 2 === 0 ? "bg-white" : "bg-white"
-              }`}
-            >
-              <td className="p-3 text-black">{item.id}</td>
-              <td className="p-3 text-black">{item.name}</td>
-              <td
-                className={`p-3 font-medium ${
-                  item.status === "Completed"
-                    ? "inline-block text-green-600 bg-green-100 mt-1 rounded-md text-sm"
-                    : "inline-block text-yellow-600 bg-yellow-100 mt-1 rounded-md text-sm"
+        {/* Table */}
+        <table className="w-full bg-white rounded-lg shadow-md">
+          <thead>
+            <tr className="border-b-2">
+              <th className="p-3 text-left text-xs font font-normal text-gray-400">
+                Workflow Run ID
+              </th>
+              <th className="p-3 text-left text-xs font font-normal text-gray-400">
+                Workflow Name
+              </th>
+              <th className="p-3 text-left text-xs font font-normal text-gray-400">
+                Status
+              </th>
+              <th className="p-3 text-left text-xs font font-normal text-gray-400">
+                Last Updated At
+              </th>
+              <th className="p-3 text-left text-xs font font-normal text-gray-400">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {paginatedData.map((item, index) => (
+              <tr
+                key={index}
+                className={`border-b ${
+                  index % 2 === 0 ? "bg-white" : "bg-white"
                 }`}
               >
-                {item.status}
-              </td>
-              <td className="p-3 text-black">{item.date}</td>
-              <td className="p-3">
-                <button className="px-4 py-1 mr-2 text-sm text-green text-green-400 border border-[1px] border-green-400 rounded hover:bg-green-600">
-                  View Details
-                </button>
-                <button className="px-4 py-1 text-sm text-green text-green-400 border border-[1px] border-green-400  rounded hover:bg-green-600">
-                  Re-Run
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                <td className="p-3 text-black">{item.id}</td>
+                <td className="p-3 text-black">{item.name}</td>
+                <td
+                  className={`p-3 font-medium ${
+                    item.status === "Completed"
+                      ? "inline-block text-green-600 bg-green-100 mt-1 rounded-md text-sm"
+                      : "inline-block text-yellow-600 bg-yellow-100 mt-1 rounded-md text-sm"
+                  }`}
+                >
+                  {item.status}
+                </td>
+                <td className="p-3 text-black">{item.date}</td>
+                <td className="p-3">
+                  <button className="px-4 py-1 mr-2 text-sm text-green text-green-400 border border-[1px] border-green-400 rounded hover:bg-green-600">
+                    View Details
+                  </button>
+                  <button className="px-4 py-1 text-sm text-green text-green-400 border border-[1px] border-green-400  rounded hover:bg-green-600">
+                    Re-Run
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
 
-      {/* Pagination */}
-      <div className="flex justify-between items-center mt-4">
-        <button
-          onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-          className="px-4 py-2 text-sm bg-gray-200 rounded disabled:opacity-50"
-        >
-          Previous
-        </button>
-        <span className="text-sm text-gray-600">
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-          onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-          disabled={currentPage === totalPages}
-          className="px-4 py-2 text-sm bg-gray-200 rounded disabled:opacity-50"
-        >
-          Next
-        </button>
+        {/* Pagination */}
+        <div className="flex justify-between items-center mt-4">
+          <button
+            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className="px-4 py-2 text-sm bg-gray-200 rounded disabled:opacity-50"
+          >
+            Previous
+          </button>
+          <span className="text-sm text-gray-600">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={() =>
+              setCurrentPage(prev => Math.min(prev + 1, totalPages))
+            }
+            disabled={currentPage === totalPages}
+            className="px-4 py-2 text-sm bg-gray-200 rounded disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
       </div>
     </div>
   );
