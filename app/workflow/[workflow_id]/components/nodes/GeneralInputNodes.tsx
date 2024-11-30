@@ -1,5 +1,5 @@
 import React, { memo, useState } from "react";
-import { Handle, Position, type NodeProps, useReactFlow } from "@xyflow/react";
+import { Handle, Position, type NodeProps, useReactFlow,useNodes } from "@xyflow/react";
 import { GeneralInputNodeProps } from "./types";
 import DynamicInput from "../inputsFields";
 import { extractParameterValues } from "@/utils/dataResolver";

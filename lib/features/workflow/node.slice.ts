@@ -78,6 +78,46 @@ const nodeSlice = createSlice({
       state.nodes.push(action.payload);
     },
 
+    updateNodeParameter: (
+      state,
+      action: PayloadAction<{
+        nodeId: string;
+        key: string;
+        type: string;
+        value: string | boolean;
+      }>
+    ) => {
+      const { nodeId, key, type, value } = action.payload;
+      const node: any = state.nodes.find(node => node.id === nodeId);
+      if (node) {
+        const updatedValue =
+          typeof value === "boolean"
+            ? value
+            : type === "text_variable_name"
+              ? value.replace(/\s+/g, "_")
+              : value;
+        if (node.data.parameters) {
+          node.data.parameters[key].value = updatedValue;
+          node.data.parameters[key].error = "";
+        }
+
+        if (type === "text_input_label") {
+          if (node.data.parameters) {
+            const variableNameKey = Object.keys(node.data.parameters).find(
+              k =>
+                node.data.parameters &&
+                node.data.parameters[k].type === "text_variable_name"
+            );
+            if (variableNameKey) {
+              node.data.parameters[variableNameKey].value =
+                typeof value === "string" ? value.replace(/\s+/g, "_") : value;
+              node.data.parameters[variableNameKey].error = "";
+            }
+          }
+        }
+      }
+    },
+
     addVariable: (
       state,
       action: PayloadAction<{
@@ -164,4 +204,5 @@ export const {
   updateNode,
   removeNodeById,
   addVariable,
+  updateNodeParameter,
 } = nodeSlice.actions;

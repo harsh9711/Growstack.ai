@@ -214,7 +214,7 @@ const DropDown = ({ param, inputKey, handleInputChange }: any) => {
           {param?.options &&
             param.options.map((option: any, index: number) => (
               <option key={index} value={option.value}>
-                {option.key}
+                {option.label}
               </option>
             ))}
         </select>

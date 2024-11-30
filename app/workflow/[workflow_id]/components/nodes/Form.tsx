@@ -4,7 +4,10 @@ import { FormNodeProps, type MarkdownNodeProps } from "./types";
 import Image from "next/image";
 import DynamicInput, { AddFieldDropdown } from "../inputsFields";
 import { SubNodeProps } from "@/types/workflows";
-import { addVariable, removeNodeById } from "@/lib/features/workflow/node.slice";
+import {
+  addVariable,
+  removeNodeById,
+} from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 
 const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
@@ -105,8 +108,8 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
       if (type === "text_input_label") {
         const variableNameKey = prevState
           ? Object.keys(prevState).find(
-            k => prevState[k].type === "text_variable_name"
-          )
+              k => prevState[k].type === "text_variable_name"
+            )
           : undefined;
         if (variableNameKey) {
           updatedState[variableNameKey] = {
@@ -118,7 +121,7 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
       }
 
       if (type === "text_variable_name" || type === "text_input_label") {
-        const variableValue = convertToUnderscore(value)
+        const variableValue = convertToUnderscore(value);
         setVariableName(variableValue);
       }
       return updatedState;
@@ -136,6 +139,22 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
 
   const handleAddSubNode = (node: SubNodeProps) => {
     setCurrentSubNodes([...currentSubNodes, node]);
+  };
+
+  // Function to delete a sub-node
+  // const handleDeleteSubNode = (nodeName: string) => {
+  //   setCurrentSubNodes(
+  //     currentSubNodes.filter(subNode => subNode.name !== nodeName)
+  //   );
+  // };
+
+
+  const handleDeleteSubNode = (index: number) => {
+    console.log('Deleting node at index:', index); // Debugging to ensure the correct index is passed
+  
+    setCurrentSubNodes((prevSubNodes) =>
+      prevSubNodes.filter((_, i) => i !== index)  // Filter out the node at the specified index
+    );
   };
 
   const handleDeleteNode = () => {
@@ -162,8 +181,6 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
         "add-option-icon.svg",
     }));
 
-
-
   return (
     <div>
       <div className="long-text-box" id="large-box">
@@ -172,11 +189,9 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
             <h4 className="text-sm font-medium text-[#2DA771]">
               General input
             </h4>
-            {/* <span className="text-xs font-medium text-[#14171B]">(Form)</span> */}
+
             <input
               type="text"
-              // value={data?.descriptions || ""}
-              // onChange={handleDescriptionChange}
               className="form-control shadow-none bg-transparent border-0 text-[#14171B] text-sm font-medium text-center focus:outline-none"
               placeholder="Enter description"
             />
@@ -252,13 +267,19 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
               <h5 className="text-sm text-[#14171B] font-medium">Form</h5>
             </div>
 
-            <div className="form-box max-h-[500px] overflow-y-scroll">
+            <div className="form-box">
               {currentSubNodes?.map((subNode, index) => (
                 <div key={index}>
-                  <div className="short-text-heading mb-2">
+                  <div className="short-text-heading flex items-center gap-4 mb-2">
                     <h3 className="text-sm text-[#14171B] font-medium">
                       {subNode.name}
                     </h3>
+                    <button
+                      onClick={() => handleDeleteSubNode(index)}
+                      className="delete-button w-[16px] h-[16px] border-[#2DA771] border-[2px] rounded-full flex items-center justify-center"
+                    >
+                      ×
+                    </button>
                   </div>
                   <div className="form-box">
                     {subNode.parameters &&
@@ -274,8 +295,8 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
                               key={key}
                               inputKey={key}
                               param={param}
-                              handleInputChange={() => { }}
-                              toggleTooltip={() => { }}
+                              handleInputChange={() => {}}
+                              toggleTooltip={() => {}}
                               visibleTooltip={{}}
                             />
                           );
@@ -317,8 +338,6 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
                   </h5>
                 </div>
               </div> */}
-
-
             </div>
           </div>
         )}
