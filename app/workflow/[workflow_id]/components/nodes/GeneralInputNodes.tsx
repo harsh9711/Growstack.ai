@@ -1,20 +1,19 @@
 import React, { memo, useState } from "react";
-import { Handle, Position, type NodeProps, useReactFlow,useNodes } from "@xyflow/react";
+import { Handle, Position, type NodeProps, useReactFlow } from "@xyflow/react";
 import { GeneralInputNodeProps } from "./types";
 import DynamicInput from "../inputsFields";
 import { extractParameterValues } from "@/utils/dataResolver";
-import { convertToUnderscore } from "@/utils/helper";
 import {
     addVariable,
     deleteNodeById,
     removeNodeById,
-    updateNode,
     updateNodeById,
+    updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { WorkflowNodeState } from "@/types/workflows";
 
-const GeneralInputNodes = memo(
+const ShortText = memo(
     ({
         data,
         isConnectable,
@@ -22,55 +21,27 @@ const GeneralInputNodes = memo(
         positionAbsoluteX,
         positionAbsoluteY,
     }: NodeProps<GeneralInputNodeProps>) => {
-        const { parameters, nodeMasterId } = data;
+        // const { parameters, nodeMasterId } = data;
+
+
+        console.log("id-->", id);
 
         const { setNodes } = useReactFlow();
         const dispatch = useAppDispatch();
+
         const { workFlowData } = useAppSelector(state => state.workflows);
-        const { nodes, variables, isLoading } = useAppSelector(state => state.nodes);
+        const { isLoading } = useAppSelector(state => state.nodes);
+        const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
 
-        console.log("---nodes----", JSON.stringify(variables, null, 2));
+        const node = useAppSelector(state =>
+            state.nodes.nodes.find(node => node.id === id)
+        );
 
-        const initialParameters =
-            parameters &&
-            Object.entries(parameters).reduce(
-                (acc: { [key: string]: any }, [key, param]: [string, any]) => {
-                    acc[key] = {
-                        ...param,
-                        value: "",
-                        error: "",
-                    };
-                    return acc;
-                },
-                {}
-            );
+        console.log("node-->", JSON.stringify(node, null, 2));
 
-        const [currentParameter, setCurrentParameter] = useState(initialParameters);
-        const [nextParameter, setNextParameter] = useState<{ [key: string]: any }>({
-            "6": {
-                label: "Topic",
-                type: "text_topic",
-                placeholder: "Enter Topic",
-                required: false,
-                options: [],
-                description: `Add Topic`,
-                value: "",
-                error: "",
-            },
-        });
         const [variableName, setVariableName] = useState<string>("");
         const [isNextBoxOpen, setIsNextBoxOpen] = useState(false);
         const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-        const [visibleTooltip, setVisibleTooltip] = useState<{
-            [key: string]: boolean;
-        }>({});
-
-        const toggleTooltip = (index: string, isVisible: boolean) => {
-            setVisibleTooltip(prevState => ({
-                ...prevState,
-                [index]: isVisible,
-            }));
-        };
 
         const getInputType = (label: string) => {
             switch (label) {
@@ -91,119 +62,47 @@ const GeneralInputNodes = memo(
             }
         };
 
-        const handleUpdateParameter = (id: string) => {
-            let updatedData = nodes.find(node => node.id === id);
-
-            if (updatedData) {
-                updatedData = {
-                    ...updatedData,
-                    data: {
-                        ...updatedData.data,
-                        parameters: currentParameter,
-                    },
-                };
-
-                console.log("---updatedData---", updatedData);
-                dispatch(updateNode(updatedData));
-            }
-        };
-
         const handleDropdownClick = () => {
             setIsDropdownOpen(!isDropdownOpen);
         };
 
-        const handleInputChange = (
-            key: string,
-            type: string,
-            value: string | boolean
-        ) => {
-            // console.log("key-->", key, "type-->", type, "value-->", value);
-
-            if (typeof value === "boolean") {
-                setCurrentParameter(prevState => ({
-                    ...prevState,
-                    [key]: {
-                        ...(prevState?.[key] || {}),
-                        value: value,
-                        error: "",
-                    },
-                }));
-
-                return;
-            }
-
-            setCurrentParameter(prevState => {
-                const updatedState = {
-                    ...prevState,
-                    [key]: {
-                        ...(prevState?.[key] || {}),
-                        value:
-                            type === "text_variable_name"
-                                ? convertToUnderscore(value)
-                                : value,
-                        error: "",
-                    },
-                };
-
-                if (type === "text_input_label") {
-                    const variableNameKey = prevState
-                        ? Object.keys(prevState).find(
-                            k => prevState[k].type === "text_variable_name"
-                        )
-                        : undefined;
-                    if (variableNameKey) {
-                        updatedState[variableNameKey] = {
-                            ...(prevState?.[variableNameKey] || {}),
-                            value: convertToUnderscore(value),
-                            error: "",
-                        };
-                    }
-                }
-                if (type === "text_variable_name" || type === "text_input_label") {
-                    const variableValue = convertToUnderscore(value);
-                    setVariableName(variableValue);
-                }
-                return updatedState;
-            });
+        const handleInputChange = (key: any, type: any, value: any) => {
+            console.log("key-->", key, "type-->", type, "value-->", value);
+            dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
         };
 
         const handleNextClick = async () => {
-            if (!currentParameter) return;
+            if (!node?.data?.parameters) return;
 
-            const requiredParams = currentParameter
-                ? Object.values(currentParameter).filter(param => param.required)
-                : [];
-
+            const requiredParams = Object.values(node.data.parameters).filter(
+                param => param.required
+            );
             const allRequiredParamsFilled = requiredParams.every(
-                param => param.value
+                param => param?.value
             );
 
             if (allRequiredParamsFilled) {
-                // update variable
+                const updatedValue = extractParameterValues(node.data.parameters);
 
-                // update node with parameters value
-                handleUpdateParameter(id);
-
-                const updatedValue = extractParameterValues(currentParameter);
+                console.log("updatedValue-->", updatedValue);
 
                 dispatch(
                     addVariable({
                         nodeID: id,
-                        variableName: variableName,
+                        variableName: node?.data?.parameters?.variableName?.value || "",
                         workflowID: workFlowData._id || "",
                         variableValue:
                             updatedValue.defaultValue ||
                             updatedValue.fileType ||
                             updatedValue.options,
-                        variableType: "input",
+                        variableType: "inputType",
                     })
                 );
-                // console.log("updatedValue-->", updatedValue);
 
                 try {
                     const bodyPayload = {
                         workflowId: workFlowData._id,
-                        nodeMasterId,
+                        nodeMasterId: node.data.nodeMasterId,
                         position: { x: positionAbsoluteX, y: positionAbsoluteY },
                         dependencies: [],
                         parameters: updatedValue,
@@ -211,50 +110,55 @@ const GeneralInputNodes = memo(
 
                     await dispatch(
                         updateNodeById({
-                            id,
+                            id: id,
                             data: bodyPayload as unknown as WorkflowNodeState,
                         })
                     );
 
-                    setNextParameter({
-                        "6": {
+                    dispatch(
+                        updateNodeParameter({
+                            nodeId: id,
+                            key: "nextParameter",
                             label: updatedValue.inputLabel,
-                            type: getInputType(data?.label),
-                            placeholder: updatedValue.placeholder,
-                            required: updatedValue.required,
-                            options: [],
-                            description: updatedValue.description,
+                            type: getInputType(node?.data?.label),
                             value:
-                                updatedValue.defaultValue ||
+                                updatedValue?.defaultValue ||
                                 updatedValue.fileType ||
                                 updatedValue.options,
+                            placeholder: updatedValue?.placeholder,
+                            required: !!updatedValue?.required,
+                            description: updatedValue?.description,
                             error: "",
-                        },
-                    });
+                        })
+                    );
 
                     setIsNextBoxOpen(true);
                 } catch (error: any) {
                     console.error("error-->", error?.message);
                 }
             } else {
-                setCurrentParameter(prevState => {
-                    const updatedState = { ...prevState };
-
-                    requiredParams.forEach(param => {
-                        const key = prevState
-                            ? Object.keys(prevState).find(k => prevState[k] === param)
-                            : undefined;
-                        if (key && !param.value) {
-                            updatedState[key] = {
-                                ...(prevState?.[key] ?? {}),
-                                error: "This field is required",
-                            };
-                        }
-                    });
-
-                    return updatedState;
+                requiredParams.forEach(param => {
+                    const key = node?.data?.parameters
+                        ? Object.keys(node.data.parameters).find(
+                            k => node.data.parameters?.[k] === param
+                        )
+                        : undefined;
+                    if (key && !param.value) {
+                        dispatch(
+                            updateNodeParameter({
+                                nodeId: id,
+                                key: key,
+                                type: "error",
+                                value: "This field is required",
+                            })
+                        );
+                    }
                 });
             }
+        };
+
+        const handleToggleAdvancedOptions = () => {
+            setShowAdvancedOptions(!showAdvancedOptions);
         };
 
         const handleDeleteNode = () => {
@@ -274,8 +178,6 @@ const GeneralInputNodes = memo(
 
                             <input
                                 type="text"
-                                // value={data?.descriptions || ""}
-                                // onChange={handleDescriptionChange}
                                 className="text-xs font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0"
                                 placeholder="Enter description"
                             />
@@ -352,21 +254,35 @@ const GeneralInputNodes = memo(
                             </div>
                             {!isNextBoxOpen ? (
                                 <div className="form-box">
-                                    {currentParameter &&
-                                        Object.entries(currentParameter).map(
-                                            ([key, param]: any) => {
-                                                return (
-                                                    <DynamicInput
-                                                        key={key}
-                                                        inputKey={key}
-                                                        param={param}
-                                                        handleInputChange={handleInputChange}
-                                                        toggleTooltip={toggleTooltip}
-                                                        visibleTooltip={visibleTooltip}
-                                                    />
-                                                );
+                                    {node?.data?.parameters &&
+                                        Object.entries(node.data.parameters).filter(
+                                            ([key, param]: any) =>
+                                                param.required || showAdvancedOptions
+                                        ).map(([key, param]) => {
+                                            if (key === "nextParameter") {
+                                                return null;
                                             }
-                                        )}
+                                            return (
+                                                <DynamicInput
+                                                    key={key}
+                                                    inputKey={key}
+                                                    param={param}
+                                                    handleInputChange={handleInputChange}
+                                                    toggleTooltip={() => { }}
+                                                    visibleTooltip={{}}
+                                                />
+                                            );
+                                        })}
+                                    <div className="advance-option-button-box mb-3">
+                                        <button
+                                            onClick={handleToggleAdvancedOptions}
+                                            className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
+                                        >
+                                            {showAdvancedOptions
+                                                ? "Hide Advanced Options"
+                                                : "Show Advanced Options"}
+                                        </button>
+                                    </div>
                                     <div className="submit-button">
                                         <button
                                             onClick={handleNextClick}
@@ -385,24 +301,23 @@ const GeneralInputNodes = memo(
                                 </div>
                             ) : (
                                 <div className="form-box">
-                                    {nextParameter &&
-                                        Object.entries(nextParameter).map(([key, param]: any) => (
-                                            <DynamicInput
-                                                key={key}
-                                                inputKey={key}
-                                                param={param}
-                                                handleInputChange={handleInputChange}
-                                                toggleTooltip={toggleTooltip}
-                                                visibleTooltip={visibleTooltip}
-                                            />
-                                        ))}
+                                    {node?.data?.parameters?.nextParameter && (
+                                        <DynamicInput
+                                            key="nextParameter"
+                                            inputKey="nextParameter"
+                                            param={node.data.parameters.nextParameter}
+                                            handleInputChange={() => { }}
+                                            toggleTooltip={() => { }}
+                                            visibleTooltip={{}}
+                                        />
+                                    )}
 
-                                    {variableName && (
+                                    {node?.data?.parameters?.variableName?.value && (
                                         <div className="text-box mb-5">
                                             <h4 className="text-[#14171B] flex items-center gap-2 font-medium text-sm">
                                                 Variable name:{" "}
                                                 <span className="bg-[#FFE6FF] text-[#14171B] text-[12px] rounded-[20px] font-medium pt-3 pb-3 pr-4 pl-4">
-                                                    {variableName}
+                                                    {node.data.parameters.variableName.value}
                                                 </span>
                                             </h4>
                                         </div>
@@ -428,4 +343,4 @@ const GeneralInputNodes = memo(
     }
 );
 
-export default GeneralInputNodes;
+export default ShortText;

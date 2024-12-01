@@ -812,7 +812,7 @@ export const AllData: AllDataState[] = [
     name: "Short Text",
     category: "general",
     image: {
-      src: "/svgs/short-text.svg",
+      src: "/svgs/short_text.svg",
       alt: "Short Text",
       width: 35,
       height: 35,
@@ -1030,7 +1030,7 @@ export const AllData: AllDataState[] = [
     name: "Plain Text",
     category: "general",
     image: {
-      src: "/svgs/short-text.svg",
+      src: "/svgs/short_text.svg",
       alt: "Plain Text",
       width: 35,
       height: 35,

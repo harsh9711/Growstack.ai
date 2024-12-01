@@ -1,3 +1,5 @@
+
+// Previous code
 import React, { memo, useState } from "react";
 import { Handle, Position, type NodeProps, useReactFlow, useNodes } from "@xyflow/react";
 import { GeneralInputNodeProps } from "./types";
@@ -10,12 +12,11 @@ import {
   removeNodeById,
   updateNode,
   updateNodeById,
-  updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { WorkflowNodeState } from "@/types/workflows";
 
-const ShortText = memo(
+const GeneralInputNodes = memo(
   ({
     data,
     isConnectable,
@@ -26,24 +27,15 @@ const ShortText = memo(
     const { parameters, nodeMasterId } = data;
 
     const { setNodes } = useReactFlow();
-    const nodesss = useNodes();
     const dispatch = useAppDispatch();
-
-
     const { workFlowData } = useAppSelector(state => state.workflows);
     const { nodes, variables, isLoading } = useAppSelector(state => state.nodes);
 
-    console.log("---nodesss----", JSON.stringify(nodesss, null, 2));
-
-
-    const node = useAppSelector(state =>
-      state.nodes.nodes.find(node => node.id === id)
-    );
-
+    console.log("---nodes----", JSON.stringify(variables, null, 2));
 
     const initialParameters =
-      node?.data.parameters &&
-      Object.entries(node?.data.parameters).reduce(
+      parameters &&
+      Object.entries(parameters).reduce(
         (acc: { [key: string]: any }, [key, param]: [string, any]) => {
           acc[key] = {
             ...param,
@@ -55,10 +47,8 @@ const ShortText = memo(
         {}
       );
 
-
-    console.log("---initialParameters---", initialParameters);
-
     const [currentParameter, setCurrentParameter] = useState(initialParameters);
+    const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
     const [nextParameter, setNextParameter] = useState<{ [key: string]: any }>({
       "6": {
         label: "Topic",
@@ -125,67 +115,60 @@ const ShortText = memo(
       setIsDropdownOpen(!isDropdownOpen);
     };
 
-    // const handleInputChange = (
-    //   key: string,
-    //   type: string,
-    //   value: string | boolean
-    // ) => {
-    //   // console.log("key-->", key, "type-->", type, "value-->", value);
+    const handleInputChange = (
+      key: string,
+      type: string,
+      value: string | boolean
+    ) => {
+      // console.log("key-->", key, "type-->", type, "value-->", value);
 
-    //   if (typeof value === "boolean") {
-    //     setCurrentParameter(prevState => ({
-    //       ...prevState,
-    //       [key]: {
-    //         ...(prevState?.[key] || {}),
-    //         value: value,
-    //         error: "",
-    //       },
-    //     }));
+      if (typeof value === "boolean") {
+        setCurrentParameter(prevState => ({
+          ...prevState,
+          [key]: {
+            ...(prevState?.[key] || {}),
+            value: value,
+            error: "",
+          },
+        }));
 
-    //     return;
-    //   }
+        return;
+      }
 
-    //   setCurrentParameter(prevState => {
-    //     const updatedState = {
-    //       ...prevState,
-    //       [key]: {
-    //         ...(prevState?.[key] || {}),
-    //         value:
-    //           type === "text_variable_name"
-    //             ? convertToUnderscore(value)
-    //             : value,
-    //         error: "",
-    //       },
-    //     };
+      setCurrentParameter(prevState => {
+        const updatedState = {
+          ...prevState,
+          [key]: {
+            ...(prevState?.[key] || {}),
+            value:
+              type === "text_variable_name"
+                ? convertToUnderscore(value)
+                : value,
+            error: "",
+          },
+        };
 
-    //     if (type === "text_input_label") {
-    //       const variableNameKey = prevState
-    //         ? Object.keys(prevState).find(
-    //           k => prevState[k].type === "text_variable_name"
-    //         )
-    //         : undefined;
-    //       if (variableNameKey) {
-    //         updatedState[variableNameKey] = {
-    //           ...(prevState?.[variableNameKey] || {}),
-    //           value: convertToUnderscore(value),
-    //           error: "",
-    //         };
-    //       }
-    //     }
-    //     if (type === "text_variable_name" || type === "text_input_label") {
-    //       const variableValue = convertToUnderscore(value);
-    //       setVariableName(variableValue);
-    //     }
-    //     return updatedState;
-    //   });
-    // };
-
-
-
-    const handleInputChange = (key: any, type: any, value: any) => {
-      dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
+        if (type === "text_input_label") {
+          const variableNameKey = prevState
+            ? Object.keys(prevState).find(
+              k => prevState[k].type === "text_variable_name"
+            )
+            : undefined;
+          if (variableNameKey) {
+            updatedState[variableNameKey] = {
+              ...(prevState?.[variableNameKey] || {}),
+              value: convertToUnderscore(value),
+              error: "",
+            };
+          }
+        }
+        if (type === "text_variable_name" || type === "text_input_label") {
+          const variableValue = convertToUnderscore(value);
+          setVariableName(variableValue);
+        }
+        return updatedState;
+      });
     };
-
 
     const handleNextClick = async () => {
       if (!currentParameter) return;
@@ -275,6 +258,10 @@ const ShortText = memo(
           return updatedState;
         });
       }
+    };
+
+    const handleToggleAdvancedOptions = () => {
+      setShowAdvancedOptions(!showAdvancedOptions);
     };
 
     const handleDeleteNode = () => {
@@ -372,9 +359,13 @@ const ShortText = memo(
               </div>
               {!isNextBoxOpen ? (
                 <div className="form-box">
-                  {initialParameters &&
-                    Object.entries(initialParameters).map(
-                      ([key, param]: any) => {
+                  {currentParameter &&
+                    Object.entries(currentParameter)
+                      .filter(
+                        ([key, param]: any) =>
+                          param.required || showAdvancedOptions
+                      )
+                      .map(([key, param]: any) => {
                         return (
                           <DynamicInput
                             key={key}
@@ -385,8 +376,17 @@ const ShortText = memo(
                             visibleTooltip={visibleTooltip}
                           />
                         );
-                      }
-                    )}
+                      })}
+                  <div className="advance-option-button-box mb-3">
+                    <button
+                      onClick={handleToggleAdvancedOptions}
+                      className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
+                    >
+                      {showAdvancedOptions
+                        ? "Hide Advanced Options"
+                        : "Show Advanced Options"}
+                    </button>
+                  </div>
                   <div className="submit-button">
                     <button
                       onClick={handleNextClick}
@@ -448,4 +448,4 @@ const ShortText = memo(
   }
 );
 
-export default ShortText;
+export default GeneralInputNodes;

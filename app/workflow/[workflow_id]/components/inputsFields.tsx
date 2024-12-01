@@ -1,16 +1,11 @@
 import React, { useRef, useState, useEffect } from "react";
 import Tooltip from "./tooltip/Tooltip";
+import { NodeParameter } from "@/types/workflows";
+import { useAppSelector } from "@/lib/hooks";
 
-interface Parameter {
-  label: string;
-  type: string;
-  required: boolean;
-  options: any[];
-  description: string;
-}
 
 interface DynamicInputProps {
-  param: Parameter;
+  param: NodeParameter;
   key: string;
   inputKey: string;
   visibleTooltip: { [key: string]: boolean };
@@ -86,6 +81,7 @@ const TextAreaField = ({ param, inputKey, handleInputChange }: any) => {
         <textarea
           rows={5}
           placeholder={param.placeholder || ""}
+          value={param?.value || ""}
           className="form-control outline-0 shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-[12px] font-medium focus:outline-none"
           onChange={e =>
             handleInputChange(inputKey, param.type, e.target.value)
@@ -98,6 +94,10 @@ const TextAreaField = ({ param, inputKey, handleInputChange }: any) => {
             ))}
           </ul>
         )} */}
+
+        {param?.error && (
+          <p className="ml-2 text-red-500 mt-1">{param?.error}</p>
+        )}
       </div>
     </div>
   );
@@ -181,12 +181,11 @@ const BooleanField = ({ param, inputKey, handleInputChange }: any) => {
 };
 
 const DropDown = ({ param, inputKey, handleInputChange }: any) => {
-  const [selectedOption, setSelectedOption] = useState<Option | null>(null);
-  const selectOption = (option: Option) => {
-    setSelectedOption(option);
-    // setIsOpen(false);
-    // onSelect(option);
-  };
+  useEffect(() => {
+    if (!param.value && param.options && param.options.length > 0) {
+      handleInputChange(inputKey, param.type, param.options[0].value);
+    }
+  }, [param, inputKey, handleInputChange]);
 
   return (
     <div key={inputKey} className="input-box mb-3">
@@ -218,6 +217,9 @@ const DropDown = ({ param, inputKey, handleInputChange }: any) => {
               </option>
             ))}
         </select>
+        {param?.error && (
+          <p className="ml-2 text-red-500 mt-1">{param?.error}</p>
+        )}
       </div>
     </div>
   );
@@ -305,6 +307,9 @@ const CheckboxField = ({ param, inputKey, handleInputChange }: any) => {
           description={param.description}
           position="bottom-full left-[-23px]"
         />
+        {param?.error && (
+          <p className="ml-2 text-red-500 mt-1">{param?.error}</p>
+        )}
       </div>
 
       {param?.options &&
@@ -346,6 +351,9 @@ const UploadButton = ({ param, inputKey, handleInputChange }: any) => {
           description={param.description}
           position="bottom-full left-[-23px]"
         />
+        {param?.error && (
+          <p className="ml-2 text-red-500 mt-1">{param?.error}</p>
+        )}
       </div>
 
       <div className="upload-image-button">
@@ -368,6 +376,8 @@ const UploadButton = ({ param, inputKey, handleInputChange }: any) => {
 };
 
 const MultiSelectDropdown = ({ param, inputKey, handleInputChange }: any) => {
+
+  console.log('---param---', param)
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
@@ -389,7 +399,9 @@ const MultiSelectDropdown = ({ param, inputKey, handleInputChange }: any) => {
   // };
 
   const handleRemoveItem = (item: string) => {
-    setSelectedItems(selectedItems.filter(selected => selected !== item));
+    // setSelectedItems(selectedItems.filter(selected => selected !== item));
+    const value = Array.isArray(param.value) ? param.value.filter((selected: any) => selected !== item) : [];
+    handleInputChange(inputKey, param.type, value)
   };
 
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -398,30 +410,12 @@ const MultiSelectDropdown = ({ param, inputKey, handleInputChange }: any) => {
       inputValue.trim() &&
       !selectedItems.includes(inputValue.trim())
     ) {
-      setSelectedItems([...selectedItems, inputValue.trim()]);
+      const value = Array.isArray(param.value) ? [...param.value, inputValue.trim()] : [inputValue.trim()];
+      handleInputChange(inputKey, param.type, value)
+      // setSelectedItems([...selectedItems, inputValue.trim()]);
       setInputValue("");
       e.preventDefault();
     }
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(e.target as Node)
-      ) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
-  const handleInputClick = () => {
-    setIsOpen(!isOpen);
   };
 
   return (
@@ -439,7 +433,7 @@ const MultiSelectDropdown = ({ param, inputKey, handleInputChange }: any) => {
 
       <div ref={containerRef} className="relative w-full max-w-md mx-auto">
         <div className="flex flex-wrap gap-2 items-center p-3 rounded-[10px] bg-[#F2F2F2]">
-          {selectedItems.map((item, i) => (
+          {Array.isArray(param.value) && param?.value.map((item: any, i: any) => (
             <div
               key={i}
               className="flex items-center bg-[#2DA771] text-[#fff] px-3 py-1 rounded-full text-sm"
@@ -459,8 +453,8 @@ const MultiSelectDropdown = ({ param, inputKey, handleInputChange }: any) => {
             type="text"
             value={inputValue}
             onChange={handleInputSelectChange}
-            onClick={handleInputClick} // Toggle dropdown on input click
-            onFocus={() => setIsOpen(true)} // Open on focus
+            // onClick={handleInputClick}
+            onFocus={() => setIsOpen(true)}
             onKeyDown={handleInputKeyDown}
             placeholder="Add Option"
             className="flex-grow bg-transparent outline-none text-[#14171B] text-sm font-medium"
@@ -530,6 +524,9 @@ const OutputField = ({ param, inputKey, handleInputChange }: any) => {
           description={param.description}
           position="bottom-full left-[-23px]"
         />
+        {param?.error && (
+          <p className="ml-2 text-red-500 mt-1">{param?.error}</p>
+        )}
       </div>
 
       {param?.options &&
@@ -644,8 +641,8 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
     case "text_variable_name2":
     case "text_topic":
     case "text_overview":
-    case "text":
     case "number":
+    case "text":
       return (
         <InputFields
           param={param}
@@ -655,7 +652,8 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
       );
     case "checkbox_show_preview":
     case "checkbox_required":
-    case "checkbox":
+    // case "checkbox":
+    case "switch":
       return (
         <BooleanField
           param={param}
@@ -665,10 +663,10 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
       );
     case "dropdown_file_type":
     case "dropdown_model_selection":
-    case "dropdown":
     case "dropdownn_model":
     case "dropdown_quality":
     case "dropdown_options":
+    case "dropdown":
       return (
         <DropDown
           param={param}
@@ -690,6 +688,7 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
     case "textarea_system_prompt":
     case "textarea_input_prompt":
     case "textarea_prompt":
+    case "textarea":
       return (
         <TextAreaField
           param={param}
@@ -699,6 +698,7 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
       );
     case "slider":
     case "slider_creativity_level":
+    case "number_slider":
       return (
         <Slider
           param={param}
@@ -723,6 +723,7 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
         />
       );
     case "type_output":
+    case "outputs":
       return (
         <OutputField
           param={param}

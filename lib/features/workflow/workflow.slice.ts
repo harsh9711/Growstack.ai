@@ -73,8 +73,45 @@ const workflowSlice = createSlice({
       .addCase(
         getWorkFlowById.fulfilled,
         (state, action: PayloadAction<WorkflowDataState>) => {
+          console.log(
+            "action.payload---workFloe---->",
+            JSON.stringify(action.payload, null, 2)
+          );
           state.isLoading = false;
-          state.workFlowData = action.payload;
+          // state.workFlowData = action.payload;
+
+          const updatedNodes = action.payload.nodes?.map(node => {
+            const updatedParameters = Object.entries(
+              (node.nodeMasterId as any).parameters
+            ).reduce((acc: { [key: string]: any }, [key, param]) => {
+              acc[key] = {
+                ...(typeof param === "object" && param !== null ? param : {}),
+                value: node.parameters?.[key] || "",
+              };
+              return acc;
+            }, {});
+
+            return {
+              id: node._id,
+              position: node.position,
+              type: node.type,
+              data: {
+                nodeMasterId: node.nodeMasterId._id,
+                parameters: updatedParameters,
+                subNodes: node.subNodes || [],
+                dynamicParams: node.nodeMasterId.dynamicParams || [],
+                functionToExecute: node.nodeMasterId.functionToExecute,
+                label: node.nodeMasterId.name,
+                description: node.nodeMasterId.description,
+                icon: node.nodeMasterId.logoUrl,
+              },
+            };
+          });
+
+          state.workFlowData = {
+            ...action.payload,
+            nodes: updatedNodes,
+          };
         }
       )
       .addCase(getWorkFlowById.rejected, (state, action) => {

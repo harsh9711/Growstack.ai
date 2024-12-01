@@ -64,12 +64,19 @@ export interface AllDataState {
   node: NodeState;
 }
 
+export interface Option {
+  label: string;
+  key: string;
+}
+
 export interface NodeParameter {
   label: string;
   type: string;
   required: boolean;
-  options?: any[];
+  options?: Option[] | undefined;
   description?: string;
+  value?: string;
+  error?: string;
 }
 
 export interface MasterNodeProps {
@@ -100,6 +107,7 @@ export interface WorkflowNodeState {
   _id: string;
   workflowId: string;
   nodeMasterId: string;
+  position: PositionState;
   type: string;
   parameters: {
     [key: string]: NodeParameter;

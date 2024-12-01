@@ -33,7 +33,7 @@ import {
 } from "@/lib/features/workflow/workflow.slice";
 import { useRouter } from "next/navigation";
 import ConnectionLine from "./components/edges/ConnectionLine";
-import { addNode, createNode } from "@/lib/features/workflow/node.slice";
+import { addNode, addVariable, createNode } from "@/lib/features/workflow/node.slice";
 import { unwrapResult } from "@reduxjs/toolkit";
 
 interface DragEvent extends React.DragEvent<HTMLDivElement> { }
@@ -54,6 +54,35 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
     const { workFlowData } = useAppSelector(state => state.workflows);
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+
+
+    useEffect(() => {
+
+        if (workFlowData && workFlowData.nodes?.length) {
+            //@ts-ignore
+            setNodes(workFlowData?.nodes);
+            workFlowData.nodes?.forEach((node: any) => {
+                dispatch(
+                    addVariable({
+                        nodeID: node.id,
+                        variableName: node?.data?.parameters?.variableName?.value || "",
+                        workflowID: workFlowData._id || "",
+                        variableValue:
+                            node?.data?.parameters?.defaultValue ||
+                            node?.data?.parameters?.fileType ||
+                            node?.data?.parameters?.options,
+                        variableType: node.type,
+                    })
+                );
+                dispatch(addNode(node));
+            });
+
+        }
+
+    }, [dispatch, workFlowData]);
+
+
+    console.log("workFlowData----->", workFlowData?.nodes);
 
     useEffect(() => {
         dispatch(getMasterNodes());
@@ -133,6 +162,11 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
         (event: any, connectionState: any) => {
             console.log("connectionState", connectionState);
 
+            if (!workflow_id) {
+                console.log("Workflow ID not found, not adding edge");
+                return;
+            }
+
             if (
                 connectionState.isValid === null ||
                 connectionState.isValid === undefined
@@ -180,7 +214,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
 
             dispatch(
                 updateWorkFlowById({
-                    id: workFlowData._id || "",
+                    id: workflow_id || "",
                     data: {
                         edges: updatedEdge,
                     },

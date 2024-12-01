@@ -10,14 +10,16 @@ const TopRightPanel1st = (): React.ReactElement => {
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const { workFlowData } = useAppSelector(state => state.workflows);
     const { variables } = useAppSelector(state => state.nodes);
-
+    console.log("variables--->", variables);
 
     const runWorkFlow = async () => {
         try {
-            const data = variables?.map(variable => ({
-                variableName: variable.variableName,
-                variableValue: variable.variableValue,
-            }));
+            const data = variables
+                .filter((variable, index) => variable.variableType === "inputType")
+                ?.map(variable => ({
+                    variableName: variable.variableName,
+                    variableValue: variable.variableValue,
+                }));
 
             console.log("data", data);
 
@@ -44,7 +46,7 @@ const TopRightPanel1st = (): React.ReactElement => {
                 variableName,
                 variableValue,
                 workflowID,
-                variableType: "input",
+                variableType: "inputType",
             })
         );
     };
@@ -84,7 +86,7 @@ const TopRightPanel1st = (): React.ReactElement => {
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white p-4 rounded-lg shadow-lg flex justify-center items-center flex-col">
                         {variables
-                            .filter(variable => variable.variableType === "input")
+                            .filter(variable => variable.variableType === "inputType")
                             ?.map((variable, index) => (
                                 <div key={index} className="flex flex-col mx-2.5 my-2">
                                     <label className="text-sm text-gray-700">

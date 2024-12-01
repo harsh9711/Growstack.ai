@@ -1,5 +1,10 @@
 import { CustomAxiosInstance } from "@/config/axios.config";
-import { NodeDataState, NodeState, WorkflowNodeState } from "@/types/workflows";
+import {
+  NodeDataState,
+  NodeState,
+  Option,
+  WorkflowNodeState,
+} from "@/types/workflows";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export const createNode = createAsyncThunk(
@@ -84,38 +89,134 @@ const nodeSlice = createSlice({
         nodeId: string;
         key: string;
         type: string;
-        value: string | boolean;
+        value: any;
+        label?: string;
+        placeholder?: string;
+        required?: boolean;
+        options?: Option[];
+        description?: string;
+        error?: string;
       }>
     ) => {
-      const { nodeId, key, type, value } = action.payload;
-      const node: any = state.nodes.find(node => node.id === nodeId);
-      if (node) {
+      const {
+        nodeId,
+        key,
+        type,
+        value,
+        placeholder,
+        required,
+        options,
+        label,
+        description,
+        error,
+      } = action.payload;
+
+      console.log("---actionPayload----->", action.payload);
+      const nodeResult: any = state.nodes.find(node => node.id === nodeId);
+      if (nodeResult) {
         const updatedValue =
           typeof value === "boolean"
             ? value
             : type === "text_variable_name"
               ? value.replace(/\s+/g, "_")
               : value;
-        if (node.data.parameters) {
-          node.data.parameters[key].value = updatedValue;
-          node.data.parameters[key].error = "";
+        if (type === "error") {
+          nodeResult.data.parameters[key].error = value as string;
+          return;
+        }
+        if (!nodeResult.data.parameters[key]) {
+          nodeResult.data.parameters[key] = {
+            label: label,
+            type: type,
+            placeholder: placeholder,
+            required: required,
+            options: options,
+            description: description,
+            value: value,
+            error: error,
+          };
+          return;
         }
 
+        if (key === "nextParameter") {
+          nodeResult.data.parameters[key].label = label || "";
+          nodeResult.data.parameters[key].type = type;
+          nodeResult.data.parameters[key].placeholder = placeholder || "";
+          nodeResult.data.parameters[key].options = options || [];
+          nodeResult.data.parameters[key].description = description || "";
+          nodeResult.data.parameters[key].required = required || false;
+          nodeResult.data.parameters[key].value = updatedValue;
+          nodeResult.data.parameters[key].error = "";
+          return;
+        }
+
+        nodeResult.data.parameters[key].value = updatedValue;
+        nodeResult.data.parameters[key].error = "";
+
         if (type === "text_input_label") {
-          if (node.data.parameters) {
-            const variableNameKey = Object.keys(node.data.parameters).find(
-              k =>
-                node.data.parameters &&
-                node.data.parameters[k].type === "text_variable_name"
-            );
-            if (variableNameKey) {
-              node.data.parameters[variableNameKey].value =
-                typeof value === "string" ? value.replace(/\s+/g, "_") : value;
-              node.data.parameters[variableNameKey].error = "";
-            }
+          const variableNameKey = Object.keys(nodeResult.data.parameters).find(
+            k =>
+              nodeResult.data.parameters &&
+              nodeResult.data.parameters[k].type === "text_variable_name"
+          );
+          if (variableNameKey) {
+            nodeResult.data.parameters[variableNameKey].value =
+              typeof value === "string" ? value.replace(/\s+/g, "_") : value;
+            nodeResult.data.parameters[variableNameKey].error = "";
+          } else {
+            console.error(`Variable name key not found in node ${nodeId}`);
           }
         }
+      } else {
+        console.error(`Node with id ${nodeId} not found`);
       }
+    },
+
+    addDynamicParameterToNode: (
+      state,
+      action: PayloadAction<{
+        nodeId: string;
+        key: string;
+        label: string;
+        type: string;
+        value: any;
+        placeholder: string;
+        required: boolean;
+        options?: Option[];
+        description: string;
+        error?: string;
+      }>
+    ) => {
+      const {
+        nodeId,
+        key,
+        label,
+        type,
+        value,
+        placeholder,
+        required,
+        options,
+        description,
+        error,
+      } = action.payload;
+      const nodeResult: any = state.nodes.find(node => node.id === nodeId);
+
+      if (nodeResult) {
+        if (!nodeResult.data.parameters[key]) {
+          nodeResult.data.parameters[key] = {
+            label: label,
+            type: type,
+            placeholder: placeholder,
+            required: required,
+            options: options,
+            description: description,
+            value: value,
+            error: error,
+          };
+        }
+        return;
+      }
+      console.error(`Node with id ${nodeId} not found`);
     },
 
     addVariable: (
@@ -205,4 +306,5 @@ export const {
   removeNodeById,
   addVariable,
   updateNodeParameter,
+  addDynamicParameterToNode,
 } = nodeSlice.actions;
