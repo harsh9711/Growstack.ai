@@ -378,7 +378,6 @@ const ToolsNodes = memo(
                 className="resize-none text-xs text-center font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-none"
                 placeholder="Enter description"
                 rows={1}
-                cols={25}
               />
             </div>
             <div className="text-image text-center relative">

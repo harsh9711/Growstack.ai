@@ -13,7 +13,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { WorkflowNodeState } from "@/types/workflows";
 
-const ShortText = memo(
+const GeneralInputNodes = memo(
     ({
         data,
         isConnectable,
@@ -343,4 +343,4 @@ const ShortText = memo(
     }
 );
 
-export default ShortText;
+export default GeneralInputNodes;

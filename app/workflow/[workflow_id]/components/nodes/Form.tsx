@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Handle, Position, useReactFlow, type NodeProps } from "@xyflow/react";
 import { FormNodeProps, type MarkdownNodeProps } from "./types";
 import Image from "next/image";
@@ -141,20 +141,32 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
     setCurrentSubNodes([...currentSubNodes, node]);
   };
 
-  // Function to delete a sub-node
-  // const handleDeleteSubNode = (nodeName: string) => {
-  //   setCurrentSubNodes(
-  //     currentSubNodes.filter(subNode => subNode.name !== nodeName)
-  //   );
-  // };
-
-
   const handleDeleteSubNode = (index: number) => {
-    console.log('Deleting node at index:', index); // Debugging to ensure the correct index is passed
-  
-    setCurrentSubNodes((prevSubNodes) =>
-      prevSubNodes.filter((_, i) => i !== index)  // Filter out the node at the specified index
+    console.log("Deleting node at index:", index);
+
+    setIsOpenDeleteModal(prevState => ({
+      ...prevState,
+      [index]: false,
+    }));
+
+    setCurrentSubNodes(prevSubNodes =>
+      prevSubNodes.filter((_, i) => i !== index)
     );
+
+    if (subNodes?.length === 0) {
+    }
+
+    // if (currentSubNodes.length === 0) {
+    //   const options = (subNodes ?? [])
+    //     .filter(node => !node.isDefault)
+    //     .map(node => ({
+    //       value: node.nodeMasterId,
+    //       label: node.name,
+    //       imageUrl:
+    //         imageMapping[node.name as keyof typeof imageMapping] ||
+    //         "add-option-icon.svg",
+    //     }));
+    // }
   };
 
   const handleDeleteNode = () => {
@@ -181,23 +193,69 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
         "add-option-icon.svg",
     }));
 
+  //DESCRIPTION FIELD DYNAMIC JS CALL HERE
+
+  const [description, setDescription] = useState(data?.descriptions || "");
+
+  const handleChange = (event: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
+    setDescription(event.target.value);
+  };
+
+  const handleInput = (event: { target: any }) => {
+    const textarea = event.target;
+    textarea.style.height = "auto";
+    textarea.style.height = `${textarea.scrollHeight}px`;
+  };
+
+  // ONCLICK OPEN AND CLOSE DELETE MODAL JS CALL HERE
+
+  const [isOpenDeleteModal, setIsOpenDeleteModal] = useState<{
+    [index: number]: boolean;
+  }>({});
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  const toggleDropdown = (index: number) => {
+    setIsOpenDeleteModal(prevState => {
+      const newState = { [index]: !prevState[index] };
+      return newState;
+    });
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsOpenDeleteModal({});
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div>
       <div className="long-text-box" id="large-box">
         <div className="long-text-info-image relative">
           <div className="long-text text-center">
-            <h4 className="text-sm font-medium text-[#2DA771]">
-              General input
-            </h4>
-
-            <input
-              type="text"
-              className="form-control shadow-none bg-transparent border-0 text-[#14171B] text-sm font-medium text-center focus:outline-none"
+            <h4 className="text-sm font-medium text-[#2DA771]">Form</h4>
+            <textarea
+              value={description}
+              onChange={handleChange}
+              onInput={handleInput}
+              className="resize-none text-xs text-center font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-none"
               placeholder="Enter description"
+              rows={1}
             />
           </div>
 
-          <div className="text-image text-center">
+          <div className="text-image text-center relative">
             <div className="absolute pointer-events-auto border border-[#2DA771] h-[20px] w-[20px] rounded-full flex justify-center items-center bg-white">
               <button
                 onClick={handleDeleteNode}
@@ -215,10 +273,10 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
             <img
               src="/assets/node_icon/form-single.svg"
               alt="foreground icon"
-              className="w-[40px] mx-auto absolute top-[50%] left-0 right-0"
+              className="w-[40px] mx-auto absolute top-[35%] left-0 right-0"
             />
 
-            <div className="absolute top-[60%] transform -translate-y-1/2 right-[-42px] flex items-center">
+            <div className="absolute top-[65px] transform -translate-y-1/2 right-[-55px] flex items-center">
               <div className="h-px border-t-2 border-dashed border-[#2DA771] w-14 mr-1" />
               <Handle
                 type="source"
@@ -270,16 +328,38 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
             <div className="form-box">
               {currentSubNodes?.map((subNode, index) => (
                 <div key={index}>
-                  <div className="short-text-heading flex items-center gap-4 mb-2">
+                  <div className="short-text-heading flex items-center justify-between gap-4 mb-2">
                     <h3 className="text-sm text-[#14171B] font-medium">
                       {subNode.name}
                     </h3>
-                    <button
-                      onClick={() => handleDeleteSubNode(index)}
-                      className="delete-button w-[16px] h-[16px] border-[#2DA771] border-[2px] rounded-full flex items-center justify-center"
-                    >
-                      ×
-                    </button>
+
+                    <div className="relative inline-block" ref={dropdownRef}>
+                      <button onClick={() => toggleDropdown(index)}>
+                        <img
+                          src="/assets/node_icon/dots-vertical.svg"
+                          alt="dots icon"
+                        />
+                      </button>
+
+                      {isOpenDeleteModal[index] && (
+                        <div className="absolute right-0 mt-2 w-48 bg-white rounded-[15px] border-[1px] border-[#E8E8E8] shadow-2xl z-50">
+                          <ul className="py-2">
+                            <li className="px-4 py-2 cursor-pointer">
+                              <button
+                                onClick={() => handleDeleteSubNode(index)}
+                                className="delete-button flex items-center gap-2 text-[15px] text-[#212833] font-medium w-full cursor-pointer"
+                              >
+                                <img
+                                  src="/assets/node_icon/trash.svg"
+                                  alt="dots icon"
+                                />
+                                Delete
+                              </button>
+                            </li>
+                          </ul>
+                        </div>
+                      )}
+                    </div>
                   </div>
                   <div className="form-box">
                     {subNode.parameters &&
