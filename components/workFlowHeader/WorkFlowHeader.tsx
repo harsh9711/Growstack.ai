@@ -16,9 +16,7 @@ const workflowData = {
 
 function WorkFlowHeader() {
   return (
-    <div className="mt-6 w-full bg-white p-6 rounded-lg shadow-lg relative overflow-hidden">
-      <div className="absolute inset-y-0 left-0 w-2 rounded-lg bg-[#27c9aa]"></div>
-
+    <div className="border-l-4 border-[#27C9AA] mt-6 w-full bg-white p-6 rounded-lg shadow-lg relative overflow-hidden">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pl-4">
         {/* Left Section */}
         <div>

@@ -30,14 +30,14 @@ const dummyData = [
 ];
 
 const ApprovalsAccordion = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
   };
 
   return (
-    <div className="w-full bg-white rounded-lg shadow-lg p-4 mt-5">
+    <div className="border-l-4 border-[#69BFFF] w-full bg-white rounded-lg shadow-lg p-4 mt-5">
       {/* Accordion Header */}
       <div
         className="flex justify-between items-center cursor-pointer"

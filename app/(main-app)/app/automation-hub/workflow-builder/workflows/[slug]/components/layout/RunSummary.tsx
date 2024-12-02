@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const RunSummary = () => {
+const RunSummary = ({ runSummaryData }: any) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const data = [
@@ -44,16 +44,44 @@ const RunSummary = () => {
   ];
 
   const statuses: any = {
-    Completed: "text-green-600 bg-green-100",
-    Failed: "text-red-600 bg-red-100",
-    "In Progress": "text-yellow-600 bg-yellow-100",
+    completed: "text-green-600 bg-green-100",
+    failed: "text-red-600 bg-red-100",
+    "in-progress": "text-yellow-600 bg-yellow-100",
+    ready: "text-yellow-600 bg-yellow-100",
   };
+
+  function formatTimestamp(isoTimestamp:any, type:any) {
+    const date = new Date(isoTimestamp);
+
+    // Check for invalid date
+    if (isNaN(date.getTime())) {
+      return "In Progress";
+    }
+
+    if (type === "time") {
+      return date.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
+      });
+    }
+
+    if (type === "date") {
+      return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      });
+    }
+
+    throw new Error("Invalid format type. Use 'time' or 'date'.");
+  }
 
   const pageData = data.slice((currentPage - 1) * 5, currentPage * 5);
 
   return (
-    <div className="w-full bg-white rounded-lg shadow-md space-y-6 p-6 mt-5">
-
+    <div className="w-full border-l-4 border-[#B785FF] bg-white rounded-lg shadow-md space-y-6 p-6 mt-5">
       {/* Header Section */}
       <div className="flex justify-between items-center">
         <div>
@@ -63,20 +91,20 @@ const RunSummary = () => {
               <span className="text-xs font text-gray-400">
                 Workflow Run Id
               </span>{" "}
-              <div className="font-semibold">#154848</div>
+              <div className="font-semibold">{runSummaryData?.id}</div>
             </div>
 
             <div>
               <span className="text-xs font text-gray-400">Start Time:</span>{" "}
-              <div className="font-semibold">03.30</div>
+              <div className="font-semibold">{formatTimestamp(runSummaryData?.startTimestamp, "time")}</div>
             </div>
             <div>
               <span className="text-xs font text-gray-400">End Time:</span>{" "}
-              <div className="font-semibold">01:00</div>
+              <div className="font-semibold">{formatTimestamp(runSummaryData?.endTimeStamp, "time")}</div>
             </div>
             <div>
               <span className="text-xs font text-gray-400">Duration:</span>{" "}
-              <div className="font-semibold">30 Seconds</div>
+              <div className="font-semibold">{runSummaryData?.duration?.toFixed(2)}s</div>
             </div>
           </div>
         </div>
@@ -123,16 +151,17 @@ const RunSummary = () => {
               <th className="p-4">Step</th>
               <th className="p-4">Status</th>
               <th className="p-4">Date & Time</th>
-              <th className="p-4">Errors</th>
               <th className="p-4">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {pageData.map(row => (
+            {runSummaryData?.nodeExecutions?.map((row:any) => (
               <tr key={row.id} className="border-t">
                 <td className="p-4">
-                  <p className="font-medium">{row.step}</p>
-                  <p className="text-xs text-gray-500">{row.description}</p>
+                  <p className="font-medium">{row?.nodeId?.name}</p>
+                  <p className="text-xs text-gray-500">
+                    {row?.nodeId?.description}
+                  </p>
                 </td>
                 <td className="p-4">
                   <span
@@ -142,15 +171,17 @@ const RunSummary = () => {
                   </span>
                 </td>
                 <td className="p-4">
-                  {row.startTime} - {row.endTime} <br />
+                  {formatTimestamp(row.startTimeStamp, "time")} -{" "}
+                  {formatTimestamp(row.endTimeStamp, "time") ?? "-"} <br />
                   <span className="text-xs text-gray-500">
-                    {row.startDate} - {row.endDate}
+                    {formatTimestamp(row.startTimeStamp, "date")} -{" "}
+                    {formatTimestamp(row.endTimeStamp, "date")}
                   </span>
                 </td>
-                <td className="p-4">
+                {/* <td className="p-4">
                   <p className="font-medium">{row.error}</p>
                   <p className="text-xs text-gray-500">{row.description}</p>
-                </td>
+                </td> */}
                 <td className="p-4">
                   <button className="p-2 bg-gray-100 border border-gray-300 rounded-lg text-sm">
                     ⋮
@@ -163,7 +194,7 @@ const RunSummary = () => {
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-between items-center">
+      {/* <div className="flex justify-between items-center">
         <button
           className="p-2 bg-gray-100 border border-gray-300 rounded-lg text-sm"
           disabled={currentPage === 1}
@@ -193,7 +224,7 @@ const RunSummary = () => {
         >
           Next
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };
