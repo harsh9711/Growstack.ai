@@ -236,7 +236,7 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
                   dispatch(removeNode());
                 }}
               >
-                <div className="h-full w-full rounded-lg bg-white flex items-center">
+                <div className="h-full w-full rounded-lg bg-white flex items-center gap-3">
                   {item.logoUrl && (
                     <Image
                       src={item.logoUrl}
@@ -248,7 +248,7 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
                     />
                   )}
 
-                  <div className="ml-3.5 w-full">
+                  <div className="w-full">
                     <h3 className="text-[16px] leading-7 font-medium text-[#020817]">
                       {item.name}
                     </h3>

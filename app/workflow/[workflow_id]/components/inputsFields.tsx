@@ -387,6 +387,7 @@ const SelectOption = ({ param, inputKey }: any) => {
 };
 
 const CheckboxField = ({ param, inputKey, handleInputChange }: any) => {
+  console.log("---checkbox field param checking console---", param);
   return (
     <div key={inputKey} className="input-box mt-3 mb-3">
       <div className="label-box flex gap-2 items-center mb-1">
