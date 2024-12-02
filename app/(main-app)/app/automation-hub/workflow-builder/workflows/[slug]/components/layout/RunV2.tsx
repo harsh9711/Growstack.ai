@@ -18,6 +18,7 @@ import OutputDetails from "./OutputDetails";
 import RunSummary from "./RunSummary";
 import WorkFlowHeader from "@/components/workFlowHeader/WorkFlowHeader";
 import TimeLineTable from "@/components/timeLineTabel/TimeLineTabel";
+import axios from "axios";
 
 type TempOutput = {
   variable_name: string;
@@ -58,9 +59,7 @@ const Run: React.FC<Props> = ({ workflowId }) => {
   const fetchWorkflowData = async (id: string) => {
     setLoading(true);
     try {
-      const response = await instance.get(
-        `http://localhost:5000/workflow/${id}`
-      );
+      const response = await axios.get(`http://localhost:5000/workflow/${id}`);
       const apiData = response.data;
 
       // Filter and map `nodes` to `input_configs`
@@ -117,7 +116,7 @@ const Run: React.FC<Props> = ({ workflowId }) => {
     }));
     console.log(updatedWorkflowData, "updatedWorkflowData");
     try {
-      const response = await instance.post(
+      const response = await axios.post(
         `http://localhost:5000/workflow/${workflowId}/run`,
         updatedWorkflowData
       );
@@ -129,7 +128,7 @@ const Run: React.FC<Props> = ({ workflowId }) => {
 
   const pollingWorkflowExec = useCallback(async () => {
     try {
-      const getWorkFlowExecData = await instance.get(
+      const getWorkFlowExecData = await axios.get(
         `http://localhost:5000/workflow/${workflowId}/status/${executionId}`
       );
 
@@ -206,7 +205,6 @@ const Run: React.FC<Props> = ({ workflowId }) => {
           //   }
         })
         .finally(() => setLoading(false));
-      pollingWorkflowExec();
     }
   }, [workflowId]);
 

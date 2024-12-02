@@ -50,7 +50,7 @@ const RunSummary = ({ runSummaryData }: any) => {
     ready: "text-yellow-600 bg-yellow-100",
   };
 
-  function formatTimestamp(isoTimestamp:any, type:any) {
+  function formatTimestamp(isoTimestamp: any, type: any) {
     const date = new Date(isoTimestamp);
 
     // Check for invalid date
@@ -96,21 +96,29 @@ const RunSummary = ({ runSummaryData }: any) => {
 
             <div>
               <span className="text-xs font text-gray-400">Start Time:</span>{" "}
-              <div className="font-semibold">{formatTimestamp(runSummaryData?.startTimestamp, "time")}</div>
+              <div className="font-semibold">
+                {formatTimestamp(runSummaryData?.startTimestamp, "time")}
+              </div>
             </div>
             <div>
               <span className="text-xs font text-gray-400">End Time:</span>{" "}
-              <div className="font-semibold">{formatTimestamp(runSummaryData?.endTimeStamp, "time")}</div>
+              <div className="font-semibold">
+                {formatTimestamp(runSummaryData?.endTimeStamp, "time")}
+              </div>
             </div>
             <div>
               <span className="text-xs font text-gray-400">Duration:</span>{" "}
-              <div className="font-semibold">{runSummaryData?.duration?.toFixed(2)}s</div>
+              <div className="font-semibold">
+                {runSummaryData?.duration?.toFixed(2)}s
+              </div>
             </div>
           </div>
         </div>
         <div>
-          <span className="inline-block text-green-600 bg-green-100 px-4 py-1 rounded-full text-sm">
-            Completed
+          <span
+            className={`inline-block  px-4 py-1 rounded-full text-sm ${statuses[runSummaryData?.status]}`}
+          >
+            {runSummaryData?.status}
           </span>
         </div>
       </div>
@@ -155,7 +163,7 @@ const RunSummary = ({ runSummaryData }: any) => {
             </tr>
           </thead>
           <tbody>
-            {runSummaryData?.nodeExecutions?.map((row:any) => (
+            {runSummaryData?.nodeExecutions?.map((row: any) => (
               <tr key={row.id} className="border-t">
                 <td className="p-4">
                   <p className="font-medium">{row?.nodeId?.name}</p>
