@@ -52,10 +52,6 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
     }
   }, [groupedIntegrations, selectedSubCategory]);
 
-  const handleSubCategoryChange = (newSubCategory: string) => {
-    setSelectedSubCategory(newSubCategory);
-  };
-
   // const handleClick = async (nodeData: NodeState) => {
   //   try {
   //     const lastNode = nodes[nodes.length - 1];
