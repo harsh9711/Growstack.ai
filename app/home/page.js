@@ -39,7 +39,7 @@ function Page() {
       />
       <div className="bg-[#F5F5F5] w-full h-full">
         <AnimationStory />
-        <div className="relative mx-auto p-6 sm:p-0  -translate-y-20 items-center justify-center flex  flex-col sm:flex-row gap-4">
+        <div className="sm:flex hidden relative mx-auto p-6 sm:p-0  -translate-y-20 items-center justify-center flex-col sm:flex-row gap-4">
           <button className="flex items-center gap-2 text-primary-green rounded-xl">
             <Image
               className="w-full h-full"
