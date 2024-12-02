@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Handle, Position, type NodeProps } from "@xyflow/react";
 import { type PlainTextNodeProps } from "./types";
 import Image from "next/image";
-import DynamicInput from "../inputsFields";
+import DynamicInput from "../DynamicInputs";
 
 const PlainText = ({ data, id, isConnectable }: NodeProps<PlainTextNodeProps>) => {
   const { parameters } = data;
@@ -217,8 +217,6 @@ const PlainText = ({ data, id, isConnectable }: NodeProps<PlainTextNodeProps>) =
                       inputKey={key}
                       param={param}
                       handleInputChange={handleInputChange}
-                      toggleTooltip={toggleTooltip}
-                      visibleTooltip={visibleTooltip}
                     />
                   );
                 })}

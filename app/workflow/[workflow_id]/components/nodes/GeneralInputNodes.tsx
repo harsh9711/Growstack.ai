@@ -1,7 +1,7 @@
 import React, { memo, useState } from "react";
 import { Handle, Position, type NodeProps, useReactFlow } from "@xyflow/react";
 import { GeneralInputNodeProps } from "./types";
-import DynamicInput from "../inputsFields";
+import DynamicInput from "../DynamicInputs";
 import { extractParameterValues } from "@/utils/dataResolver";
 import {
     addVariable,
@@ -36,10 +36,7 @@ const GeneralInputNodes = memo(
         const node = useAppSelector(state =>
             state.nodes.nodes.find(node => node.id === id)
         );
-
-        console.log("node-->", JSON.stringify(node, null, 2));
-
-        const [variableName, setVariableName] = useState<string>("");
+        // console.log("node-->", JSON.stringify(node, null, 2));
         const [isNextBoxOpen, setIsNextBoxOpen] = useState(false);
         const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -268,8 +265,6 @@ const GeneralInputNodes = memo(
                                                     inputKey={key}
                                                     param={param}
                                                     handleInputChange={handleInputChange}
-                                                    toggleTooltip={() => { }}
-                                                    visibleTooltip={{}}
                                                 />
                                             );
                                         })}
@@ -307,8 +302,6 @@ const GeneralInputNodes = memo(
                                             inputKey="nextParameter"
                                             param={node.data.parameters.nextParameter}
                                             handleInputChange={() => { }}
-                                            toggleTooltip={() => { }}
-                                            visibleTooltip={{}}
                                         />
                                     )}
 

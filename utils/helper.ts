@@ -25,3 +25,24 @@ export const calculateNextNodePosition = (
 export const convertToUnderscore = (value: string): string => {
   return value.toLowerCase().replace(/\s+/g, "_");
 };
+
+export const getVariableName = (nodes: NodeState[], position: number) => {
+  if (!nodes.length || position < 0 || position >= nodes.length) return [];
+
+  const nodeVariables = nodes
+    .filter((_, index) => index !== position)
+    .map(nds => {
+      return {
+        nodeId: nds.id,
+        variableName: nds.data?.parameters?.variableName.value || "",
+      };
+    });
+
+  return nodeVariables;
+};
+
+export const isSpecialType = (type: string): boolean => {
+  const specialTypes = ["text_area", "textarea", "text_input_label", "text"];
+
+  return specialTypes.includes(type);
+};

@@ -2,7 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { Handle, Position, useReactFlow, type NodeProps } from "@xyflow/react";
 import { FormNodeProps, type MarkdownNodeProps } from "./types";
 import Image from "next/image";
-import DynamicInput, { AddFieldDropdown } from "../inputsFields";
+import { AddFieldDropdown } from "../inputsFields";
+import DynamicInput from "../DynamicInputs";
 import { SubNodeProps } from "@/types/workflows";
 import {
   addVariable,
@@ -108,8 +109,8 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
       if (type === "text_input_label") {
         const variableNameKey = prevState
           ? Object.keys(prevState).find(
-              k => prevState[k].type === "text_variable_name"
-            )
+            k => prevState[k].type === "text_variable_name"
+          )
           : undefined;
         if (variableNameKey) {
           updatedState[variableNameKey] = {
@@ -375,9 +376,7 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
                               key={key}
                               inputKey={key}
                               param={param}
-                              handleInputChange={() => {}}
-                              toggleTooltip={() => {}}
-                              visibleTooltip={{}}
+                              handleInputChange={() => { }}
                             />
                           );
                         })}

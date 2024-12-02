@@ -111,14 +111,14 @@ const nodeSlice = createSlice({
         error,
       } = action.payload;
 
-      console.log("---actionPayload----->", action.payload);
+      // console.log("---actionPayload----->", action.payload);
       const nodeResult: any = state.nodes.find(node => node.id === nodeId);
       if (nodeResult) {
         const updatedValue =
           typeof value === "boolean"
             ? value
             : type === "text_variable_name"
-              ? value.replace(/\s+/g, "_")
+              ? value.replace(/\s+/g, "_")?.toLowerCase()
               : value;
         if (type === "error") {
           nodeResult.data.parameters[key].error = value as string;
@@ -161,7 +161,9 @@ const nodeSlice = createSlice({
           );
           if (variableNameKey) {
             nodeResult.data.parameters[variableNameKey].value =
-              typeof value === "string" ? value.replace(/\s+/g, "_") : value;
+              typeof value === "string"
+                ? value.replace(/\s+/g, "_")?.toLowerCase()
+                : value;
             nodeResult.data.parameters[variableNameKey].error = "";
           } else {
             console.error(`Variable name key not found in node ${nodeId}`);

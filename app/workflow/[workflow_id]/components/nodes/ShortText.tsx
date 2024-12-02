@@ -3,7 +3,7 @@
 import React, { memo, useState } from "react";
 import { Handle, Position, type NodeProps, useReactFlow, useNodes } from "@xyflow/react";
 import { GeneralInputNodeProps } from "./types";
-import DynamicInput from "../inputsFields";
+import DynamicInput from "../DynamicInputs";
 import { extractParameterValues } from "@/utils/dataResolver";
 import { convertToUnderscore } from "@/utils/helper";
 import {
@@ -372,8 +372,6 @@ const GeneralInputNodes = memo(
                             inputKey={key}
                             param={param}
                             handleInputChange={handleInputChange}
-                            toggleTooltip={toggleTooltip}
-                            visibleTooltip={visibleTooltip}
                           />
                         );
                       })}
@@ -412,8 +410,6 @@ const GeneralInputNodes = memo(
                         inputKey={key}
                         param={param}
                         handleInputChange={handleInputChange}
-                        toggleTooltip={toggleTooltip}
-                        visibleTooltip={visibleTooltip}
                       />
                     ))}
 

@@ -1,7 +1,8 @@
 import React, { memo, useState } from "react";
 import { Handle, Position, useReactFlow, type NodeProps } from "@xyflow/react";
 import { GeneralInputNodeProps } from "./types";
-import DynamicInput from "../inputsFields";
+// import DynamicInput from "../inputsFields";
+import DynamicInput from "../DynamicInputs";
 import { extractParameterValues } from "@/utils/dataResolver";
 import { convertToUnderscore } from "@/utils/helper";
 import { useAppDispatch } from "@/lib/hooks";
@@ -213,8 +214,6 @@ const GeneralJoinerNodes = memo(
                           inputKey={key}
                           param={param}
                           handleInputChange={handleInputChange}
-                          toggleTooltip={toggleTooltip}
-                          visibleTooltip={visibleTooltip}
                         />
                       );
                     }

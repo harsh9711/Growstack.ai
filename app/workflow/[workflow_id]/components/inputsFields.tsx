@@ -1,16 +1,27 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, {
+  useRef,
+  useState,
+  useEffect,
+  Dispatch,
+  SetStateAction,
+} from "react";
 import Tooltip from "./tooltip/Tooltip";
-import { NodeParameter } from "@/types/workflows";
+import { NodeParameter, VariableNameProps } from "@/types/workflows";
 import { useAppSelector } from "@/lib/hooks";
-
 
 interface DynamicInputProps {
   param: NodeParameter;
   key: string;
   inputKey: string;
-  visibleTooltip: { [key: string]: boolean };
-  toggleTooltip: (key: string, isVisible: boolean) => void;
-  handleInputChange: (key: string, type: string, value: string) => void;
+  handleInputChange: (
+    key: string,
+    type: string,
+    value: string,
+    dependencies?: string
+  ) => void;
+  variableNames?: VariableNameProps[];
+  focusedInputKey?: string | null;
+  setFocusedInputKey?: Dispatch<SetStateAction<string | null>>;
 }
 
 interface Option {
@@ -29,7 +40,18 @@ const getTypeFromParam = (paramType: string): string => {
   return paramType.split("_")[0];
 };
 
-const InputFields = ({ param, inputKey, handleInputChange }: any) => {
+const InputFields = ({
+  param,
+  inputKey,
+  handleInputChange,
+  variableNames,
+  focusedInputKey,
+  setFocusedInputKey,
+}: any) => {
+  const handleInputFocus = () => {
+    if (!setFocusedInputKey) return;
+    setFocusedInputKey(inputKey);
+  };
   return (
     <div key={inputKey} className="input-box mb-3">
       <div className="label-box flex gap-2 items-center mb-1 relative">
@@ -53,7 +75,31 @@ const InputFields = ({ param, inputKey, handleInputChange }: any) => {
           onChange={e =>
             handleInputChange(inputKey, param.type, e.target.value)
           }
+          onFocus={handleInputFocus}
         />
+        {focusedInputKey === inputKey &&
+          variableNames &&
+          variableNames.length > 0 && (
+            <ul className="absolute top-full left-0 mt-1 w-full bg-white shadow-lg rounded-[10px] z-10 overflow-hidden border">
+              {variableNames.map((value: any, index: any) => (
+                <li
+                  key={index}
+                  className="p-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={e => {
+                    const variableName = e.currentTarget.textContent;
+                    handleInputChange(
+                      inputKey,
+                      param.type,
+                      `${param.value?.trim() || ""}{${variableName}}`,
+                      value.nodeId
+                    );
+                  }}
+                >
+                  {value.variableName}
+                </li>
+              ))}
+            </ul>
+          )}
         {param?.error && (
           <p className="ml-2 text-red-500 mt-1">{param?.error}</p>
         )}
@@ -62,7 +108,18 @@ const InputFields = ({ param, inputKey, handleInputChange }: any) => {
   );
 };
 
-const TextAreaField = ({ param, inputKey, handleInputChange }: any) => {
+const TextAreaField = ({
+  param,
+  inputKey,
+  handleInputChange,
+  variableNames,
+  focusedInputKey,
+  setFocusedInputKey,
+}: any) => {
+  const handleInputFocus = () => {
+    if (!setFocusedInputKey) return;
+    setFocusedInputKey(inputKey);
+  };
   return (
     <div className="input-box mb-3">
       <div className="label-box flex items-center gap-2 relative mb-1">
@@ -76,23 +133,40 @@ const TextAreaField = ({ param, inputKey, handleInputChange }: any) => {
         />
       </div>
 
-      <div className="input-group">
+      <div className="input-group relative">
         <textarea
           rows={5}
           placeholder={param.placeholder || ""}
           value={param?.value || ""}
           className="form-control outline-0 shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-[12px] font-medium focus:outline-none"
+          onFocus={handleInputFocus}
           onChange={e =>
             handleInputChange(inputKey, param.type, e.target.value)
           }
         />
-        {/* {input.includes('$') && (
-          <ul>
-            {suggestions.map((suggestion, index) => (
-              <li key={index}>{suggestion}</li>
-            ))}
-          </ul>
-        )} */}
+        {focusedInputKey === inputKey &&
+          variableNames &&
+          variableNames.length > 0 && (
+            <ul className="absolute top-full left-0 mt-1 w-full bg-white shadow-lg rounded-[10px] z-10 overflow-hidden border">
+              {variableNames.map((value: any, index: any) => (
+                <li
+                  key={index}
+                  className="p-2 hover:bg-gray-100 cursor-pointer"
+                  onClick={e => {
+                    const variableName = e.currentTarget.textContent;
+                    handleInputChange(
+                      inputKey,
+                      param.type,
+                      `${param.value?.trim() || ""}{${variableName}}`,
+                      value.nodeId
+                    );
+                  }}
+                >
+                  {value.variableName}
+                </li>
+              ))}
+            </ul>
+          )}
 
         {param?.error && (
           <p className="ml-2 text-red-500 mt-1">{param?.error}</p>
@@ -103,15 +177,13 @@ const TextAreaField = ({ param, inputKey, handleInputChange }: any) => {
 };
 
 const RangeSlider = ({ param, inputKey, handleInputChange }: any) => {
-  const [value, setValue] = useState(57.194); // Initial value as percentage
+  const [value, setValue] = useState(57.194);
 
-  // Handle slider value change
   const handleSliderChange = (e: { target: { value: any } }) => {
     const newValue = e.target.value;
     setValue(newValue);
   };
 
-  // Prevent node dragging while interacting with the slider
   const stopNodeDrag = (event: React.MouseEvent | React.TouchEvent) => {
     event.stopPropagation();
   };
@@ -154,8 +226,8 @@ const RangeSlider = ({ param, inputKey, handleInputChange }: any) => {
           max="100"
           value={value}
           onChange={handleSliderChange}
-          onMouseDown={stopNodeDrag} // Prevent node movement
-          onTouchStart={stopNodeDrag} // Prevent node movement for touch devices
+          onMouseDown={stopNodeDrag}
+          onTouchStart={stopNodeDrag}
           className="w-full"
         />
 
@@ -187,7 +259,7 @@ const BooleanField = ({ param, inputKey, handleInputChange }: any) => {
       <div className="flex items-center">
         <label className="relative inline-flex items-center cursor-pointer">
           <input
-            type={getTypeFromParam(param.type)}
+            type={"checkbox"}
             className="sr-only peer"
             checked={!!param.value}
             onChange={e =>
@@ -207,7 +279,7 @@ const DropDown = ({ param, inputKey, handleInputChange }: any) => {
     if (!param.value && param.options && param.options.length > 0) {
       handleInputChange(inputKey, param.type, param.options[0].value);
     }
-  }, [param, inputKey, handleInputChange]);
+  }, []);
 
   return (
     <div key={inputKey} className="input-box mb-3">
@@ -397,8 +469,7 @@ const UploadButton = ({ param, inputKey, handleInputChange }: any) => {
 };
 
 const MultiSelectDropdown = ({ param, inputKey, handleInputChange }: any) => {
-
-  console.log('---param---', param)
+  console.log("---param---", param);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
@@ -421,8 +492,10 @@ const MultiSelectDropdown = ({ param, inputKey, handleInputChange }: any) => {
 
   const handleRemoveItem = (item: string) => {
     // setSelectedItems(selectedItems.filter(selected => selected !== item));
-    const value = Array.isArray(param.value) ? param.value.filter((selected: any) => selected !== item) : [];
-    handleInputChange(inputKey, param.type, value)
+    const value = Array.isArray(param.value)
+      ? param.value.filter((selected: any) => selected !== item)
+      : [];
+    handleInputChange(inputKey, param.type, value);
   };
 
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -431,8 +504,10 @@ const MultiSelectDropdown = ({ param, inputKey, handleInputChange }: any) => {
       inputValue.trim() &&
       !selectedItems.includes(inputValue.trim())
     ) {
-      const value = Array.isArray(param.value) ? [...param.value, inputValue.trim()] : [inputValue.trim()];
-      handleInputChange(inputKey, param.type, value)
+      const value = Array.isArray(param.value)
+        ? [...param.value, inputValue.trim()]
+        : [inputValue.trim()];
+      handleInputChange(inputKey, param.type, value);
       // setSelectedItems([...selectedItems, inputValue.trim()]);
       setInputValue("");
       e.preventDefault();
@@ -454,20 +529,21 @@ const MultiSelectDropdown = ({ param, inputKey, handleInputChange }: any) => {
 
       <div ref={containerRef} className="relative w-full max-w-md mx-auto">
         <div className="flex flex-wrap gap-2 items-center p-3 rounded-[10px] bg-[#F2F2F2]">
-          {Array.isArray(param.value) && param?.value.map((item: any, i: any) => (
-            <div
-              key={i}
-              className="flex items-center bg-[#2DA771] text-[#fff] px-3 py-1 rounded-full text-sm"
-            >
-              {item}
-              <button
-                onClick={() => handleRemoveItem(item)}
-                className="ml-2 text-[#fff] hover:text-[#fff]"
+          {Array.isArray(param.value) &&
+            param?.value.map((item: any, i: any) => (
+              <div
+                key={i}
+                className="flex items-center bg-[#2DA771] text-[#fff] px-3 py-1 rounded-full text-sm"
               >
-                &times;
-              </button>
-            </div>
-          ))}
+                {item}
+                <button
+                  onClick={() => handleRemoveItem(item)}
+                  className="ml-2 text-[#fff] hover:text-[#fff]"
+                >
+                  &times;
+                </button>
+              </div>
+            ))}
 
           <input
             ref={inputRef}
@@ -643,115 +719,122 @@ export const AddFieldDropdown: React.FC<AddFieldDropdownProps> = ({
   );
 };
 
-const DynamicInput: React.FC<DynamicInputProps> = ({
-  param,
-  inputKey,
-  visibleTooltip,
-  toggleTooltip,
-  handleInputChange,
-}) => {
-  switch (param.type) {
-    case "text_input_label":
-    case "text_placeholder":
-    case "text_default_value":
-    case "text_description":
-    case "text_variable_name":
-    case "text_variable_name2":
-    case "text_topic":
-    case "text_overview":
-    case "number":
-    case "text":
-      return (
-        <InputFields
-          param={param}
-          inputKey={inputKey}
-          handleInputChange={handleInputChange}
-        />
-      );
-    case "checkbox_show_preview":
-    case "checkbox_required":
-    // case "checkbox":
-    case "switch":
-      return (
-        <BooleanField
-          param={param}
-          inputKey={inputKey}
-          handleInputChange={handleInputChange}
-        />
-      );
-    case "dropdown_file_type":
-    case "dropdown_model_selection":
-    case "dropdownn_model":
-    case "dropdown_quality":
-    case "dropdown_options":
-    case "dropdown":
-      return (
-        <DropDown
-          param={param}
-          inputKey={inputKey}
-          handleInputChange={handleInputChange}
-        />
-      );
-    case "select_option":
-      return (
-        <SelectOption
-          param={param}
-          inputKey={inputKey}
-          handleInputChange={handleInputChange}
-        />
-      );
-    case "checkbox_field":
-      return <CheckboxField param={param} inputKey={inputKey} />;
-    case "text_area":
-    case "textarea_system_prompt":
-    case "textarea_input_prompt":
-    case "textarea_prompt":
-    case "textarea":
-      return (
-        <TextAreaField
-          param={param}
-          inputKey={inputKey}
-          handleInputChange={handleInputChange}
-        />
-      );
-    case "slider":
-    case "slider_creativity_level":
-    case "number_slider":
-      return (
-        <RangeSlider
-          param={param}
-          inputKey={inputKey}
-          handleInputChange={handleInputChange}
-        />
-      );
-    case "button_upload":
-      return (
-        <UploadButton
-          param={param}
-          inputKey={inputKey}
-          handleInputChange={handleInputChange}
-        />
-      );
-    case "multiselect_dropdown":
-      return (
-        <MultiSelectDropdown
-          param={param}
-          inputKey={inputKey}
-          handleInputChange={handleInputChange}
-        />
-      );
-    case "type_output":
-    case "outputs":
-      return (
-        <OutputField
-          param={param}
-          inputKey={inputKey}
-          handleInputChange={handleInputChange}
-        />
-      );
-    default:
-      return null;
-  }
-};
+// const DynamicInput: React.FC<DynamicInputProps> = ({
+//   param,
+//   inputKey,
+//   variableNames,
+//   handleInputChange,
+//   focusedInputKey,
+//   setFocusedInputKey,
+// }) => {
+//   switch (param.type) {
+//     case "text_input_label":
+//     case "text_placeholder":
+//     case "text_default_value":
+//     case "text_description":
+//     case "text_variable_name":
+//     case "text_variable_name2":
+//     case "text_topic":
+//     case "text_overview":
+//     case "number":
+//     case "text":
+//       return (
+//         <InputFields
+//           param={param}
+//           inputKey={inputKey}
+//           handleInputChange={handleInputChange}
+//           variableNames={variableNames}
+//           focusedInputKey={focusedInputKey}
+//           setFocusedInputKey={setFocusedInputKey}
+//         />
+//       );
+//     case "checkbox_show_preview":
+//     case "checkbox_required":
+//     // case "checkbox":
+//     case "switch":
+//       return (
+//         <BooleanField
+//           param={param}
+//           inputKey={inputKey}
+//           handleInputChange={handleInputChange}
+//         />
+//       );
+//     case "dropdown_file_type":
+//     case "dropdown_model_selection":
+//     case "dropdownn_model":
+//     case "dropdown_quality":
+//     case "dropdown_options":
+//     case "dropdown":
+//       return (
+//         <DropDown
+//           param={param}
+//           inputKey={inputKey}
+//           handleInputChange={handleInputChange}
+//         />
+//       );
+//     case "select_option":
+//       return (
+//         <SelectOption
+//           param={param}
+//           inputKey={inputKey}
+//           handleInputChange={handleInputChange}
+//         />
+//       );
+//     case "checkbox_field":
+//       return <CheckboxField param={param} inputKey={inputKey} />;
+//     case "text_area":
+//     case "textarea_system_prompt":
+//     case "textarea_input_prompt":
+//     case "textarea_prompt":
+//     case "textarea":
+//       return (
+//         <TextAreaField
+//           param={param}
+//           inputKey={inputKey}
+//           handleInputChange={handleInputChange}
+//           variableNames={variableNames}
+//           focusedInputKey={focusedInputKey}
+//           setFocusedInputKey={setFocusedInputKey}
+//         />
+//       );
+//     case "slider":
+//     case "slider_creativity_level":
+//     case "number_slider":
+//       return (
+//         <RangeSlider
+//           param={param}
+//           inputKey={inputKey}
+//           handleInputChange={handleInputChange}
+//         />
+//       );
+//     case "button_upload":
+//       return (
+//         <UploadButton
+//           param={param}
+//           inputKey={inputKey}
+//           handleInputChange={handleInputChange}
+//         />
+//       );
+//     case "multiselect_dropdown":
+//       return (
+//         <MultiSelectDropdown
+//           param={param}
+//           inputKey={inputKey}
+//           handleInputChange={handleInputChange}
+//         />
+//       );
+//     case "type_output":
+//     case "outputs":
+//       return (
+//         <OutputField
+//           param={param}
+//           inputKey={inputKey}
+//           handleInputChange={handleInputChange}
+//         />
+//       );
+//     default:
+//       return null;
+//   }
+// };
 
-export default DynamicInput;
+// export default DynamicInput;

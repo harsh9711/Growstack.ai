@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Handle, Position, type NodeProps } from "@xyflow/react";
 import { BooleanNodeProps, } from "./types";
 import Image from "next/image";
-import DynamicInput from "../inputsFields";
+import DynamicInput from "../DynamicInputs";
 
 const Boolean = ({ data, id, isConnectable }: NodeProps<BooleanNodeProps>) => {
   const { parameters } = data;
@@ -223,8 +223,6 @@ const Boolean = ({ data, id, isConnectable }: NodeProps<BooleanNodeProps>) => {
                         inputKey={key}
                         param={param}
                         handleInputChange={handleInputChange}
-                        toggleTooltip={toggleTooltip}
-                        visibleTooltip={visibleTooltip}
                       />
                     );
                   })}
@@ -246,8 +244,6 @@ const Boolean = ({ data, id, isConnectable }: NodeProps<BooleanNodeProps>) => {
                       inputKey={key}
                       param={param}
                       handleInputChange={handleInputChange}
-                      toggleTooltip={toggleTooltip}
-                      visibleTooltip={visibleTooltip}
                     />
                   ))}
 

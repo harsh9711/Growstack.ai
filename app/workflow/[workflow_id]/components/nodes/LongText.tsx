@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { Handle, Position, type NodeProps } from "@xyflow/react";
 import { LongTextNodeProps } from "./types";
-import DynamicInput from "../inputsFields";
+import DynamicInput from "../DynamicInputs";
 
-const LongText = ({ data, id, isConnectable }: NodeProps<LongTextNodeProps>) => {
+const LongText = ({
+  data,
+  id,
+  isConnectable,
+}: NodeProps<LongTextNodeProps>) => {
   const { parameters } = data;
 
   const initialParameters =
@@ -98,7 +102,9 @@ const LongText = ({ data, id, isConnectable }: NodeProps<LongTextNodeProps>) => 
   // };
 
   const handleNextClick = () => {
-    const requiredParams = currentParameter ? Object.values(currentParameter).filter(param => param.required) : [];
+    const requiredParams = currentParameter
+      ? Object.values(currentParameter).filter(param => param.required)
+      : [];
 
     const allRequiredParamsFilled = requiredParams.every(param => param.value);
 
@@ -109,7 +115,9 @@ const LongText = ({ data, id, isConnectable }: NodeProps<LongTextNodeProps>) => 
         const updatedState = { ...prevState };
 
         requiredParams.forEach(param => {
-          const key = prevState ? Object.keys(prevState).find(k => prevState[k] === param) : undefined;
+          const key = prevState
+            ? Object.keys(prevState).find(k => prevState[k] === param)
+            : undefined;
           if (key && !param.value) {
             updatedState[key] = {
               ...(prevState?.[key] ?? {}),
@@ -122,8 +130,6 @@ const LongText = ({ data, id, isConnectable }: NodeProps<LongTextNodeProps>) => 
       });
     }
   };
-
-
 
   const handleDropdownClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -182,7 +188,6 @@ const LongText = ({ data, id, isConnectable }: NodeProps<LongTextNodeProps>) => 
           };
           setVariableName(convertToUnderscore(value));
         }
-
       }
       if (type === "text_variable_name" || type === "text_input_label") {
         setVariableName(convertToUnderscore(value));
@@ -190,9 +195,6 @@ const LongText = ({ data, id, isConnectable }: NodeProps<LongTextNodeProps>) => 
       return updatedState;
     });
   };
-
-
-
 
   return (
     <div>
@@ -213,17 +215,13 @@ const LongText = ({ data, id, isConnectable }: NodeProps<LongTextNodeProps>) => 
               alt="long text node image"
               className="w-[140px] mx-auto"
             />
-            <div
-              className="absolute top-1/2 transform -translate-y-1/2 right-[-60px] flex items-center"
-            >
-              <div
-                className="h-px border-t-2 border-dashed border-[#2DA771] w-14 mr-1"
-              />
+            <div className="absolute top-1/2 transform -translate-y-1/2 right-[-60px] flex items-center">
+              <div className="h-px border-t-2 border-dashed border-[#2DA771] w-14 mr-1" />
               <Handle
                 type="source"
                 position={Position.Right}
                 className="w-5 h-5 bg-white border-2 border-[#2DA771] rounded-full flex items-center justify-center text-[#2DA771] text-lg font-bold transform translate-x-1/2 -translate-y-1/2 p-0 m-0 leading-none"
-                onConnect={(params) => console.log("handle onConnect", params)}
+                onConnect={params => console.log("handle onConnect", params)}
                 isConnectable={isConnectable}
               >
                 +
@@ -260,9 +258,7 @@ const LongText = ({ data, id, isConnectable }: NodeProps<LongTextNodeProps>) => 
                 className="w-[20px] mb-2"
               />
 
-              <h5 className="text-sm text-[#14171B] font-medium">
-                Long Text
-              </h5>
+              <h5 className="text-sm text-[#14171B] font-medium">Long Text</h5>
             </div>
 
             {!isNextBoxOpen ? (
@@ -275,8 +271,6 @@ const LongText = ({ data, id, isConnectable }: NodeProps<LongTextNodeProps>) => 
                         inputKey={key}
                         param={param}
                         handleInputChange={handleInputChange}
-                        toggleTooltip={toggleTooltip}
-                        visibleTooltip={visibleTooltip}
                       />
                     );
                   })}
@@ -298,8 +292,6 @@ const LongText = ({ data, id, isConnectable }: NodeProps<LongTextNodeProps>) => 
                       inputKey={key}
                       param={param}
                       handleInputChange={handleInputChange}
-                      toggleTooltip={toggleTooltip}
-                      visibleTooltip={visibleTooltip}
                     />
                   ))}
 
@@ -326,9 +318,6 @@ const LongText = ({ data, id, isConnectable }: NodeProps<LongTextNodeProps>) => 
                 </div>
               </div>
             )}
-
-
-
           </div>
         )}
       </div>

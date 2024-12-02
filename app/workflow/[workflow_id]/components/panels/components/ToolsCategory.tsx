@@ -10,18 +10,20 @@ import { NodeState } from "@/types/workflows";
 import "reactflow/dist/style.css";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { convertNodeData } from "@/utils/dataResolver";
-import { calculateNextNodePosition } from "@/utils/helper";
+import { calculateNextNodePosition, convertToUnderscore } from "@/utils/helper";
 import { unwrapResult } from "@reduxjs/toolkit";
 
 const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
   const dispatch = useAppDispatch();
-  const { nodes, masterNode, workflows } = useAppSelector(state => state);
+  const { nodes } = useAppSelector(state => state.nodes);
+  const { masterNode } = useAppSelector(state => state.masterNode);
+  const { workFlowData } = useAppSelector(state => state.workflows);
 
-  if ((masterNode.masterNode && !masterNode.masterNode.length) || !masterNode) {
+  if ((masterNode && !masterNode.length) || !masterNode) {
     return <div>Data not found</div>;
   }
 
-  const generalData = masterNode.masterNode?.filter(
+  const generalData = masterNode?.filter(
     item => item.category.toLocaleLowerCase() === "tools"
   );
   const modifiedNodes = generalData?.map(convertNodeData);
@@ -54,18 +56,65 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
     setSelectedSubCategory(newSubCategory);
   };
 
+  // const handleClick = async (nodeData: NodeState) => {
+  //   try {
+  //     const lastNode = nodes[nodes.length - 1];
+  //     const { nextNodeX, nextNodeY } = calculateNextNodePosition(lastNode);
+  //     const toolsNodes = nodes?.filter(
+  //       nds => nds?.data?.label === nodeData?.data?.label
+  //     );
+
+  //     const resultAction = await dispatch(
+  //       createNode({
+  //         workflowId: workFlowData._id,
+  //         nodeMasterId: nodeData.id,
+  //         name: nodeData.data?.label,
+  //         type: nodeData?.type,
+  //         description: nodeData.data?.descriptions || "",
+  //         position: { x: nextNodeX, y: nextNodeY },
+  //         parameters: {},
+  //       })
+  //     );
+  //     const result = unwrapResult(resultAction);
+
+  //     const newNode = {
+  //       ...nodeData,
+  //       data: {
+  //         ...nodeData.data,
+  //         parameters: {
+  //           ...nodeData.data.parameters,
+  //           variableNames: {
+  //             ...nodeData.data.parameters.variableNames,
+  //             value: `${toolsNodes.length ? convertToUnderscore(nodeData.data.label) + toolsNodes.length : convertToUnderscore(nodeData.data.label)}`,
+  //           },
+  //         },
+  //       },
+  //       id: result._id,
+  //       position: { x: nextNodeX, y: nextNodeY },
+  //     };
+
+  //     setNodes((nds: NodeState[]) => nds.concat(newNode));
+  //     dispatch(addNode(newNode));
+  //     console.log("---nodeData----", JSON.stringify(nodeData, null, 2));
+  //   } catch (error) {
+  //     console.error("Error adding node:", error);
+  //   }
+  // };
+
+
   const handleClick = async (nodeData: NodeState) => {
     try {
-      const lastNode = nodes.nodes[nodes.nodes.length - 1];
+      const lastNode = nodes[nodes.length - 1];
       const { nextNodeX, nextNodeY } = calculateNextNodePosition(lastNode);
+      const toolsNodes = nodes.filter(nds => nds.data.label === nodeData.data.label);
 
       const resultAction = await dispatch(
         createNode({
-          workflowId: workflows.workFlowData._id,
+          workflowId: workFlowData._id,
           nodeMasterId: nodeData.id,
-          name: nodeData.data?.label,
-          type: nodeData?.type,
-          description: nodeData.data?.descriptions || "",
+          name: nodeData.data.label,
+          type: nodeData.type,
+          description: nodeData.data.description || "",
           position: { x: nextNodeX, y: nextNodeY },
           parameters: {},
         })
@@ -74,6 +123,25 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
 
       const newNode = {
         ...nodeData,
+        data: {
+          ...nodeData.data,
+          parameters: {
+            ...nodeData.data.parameters,
+            variableName: {
+              ...nodeData.data.parameters?.variableName ?? {},
+              value: toolsNodes?.length
+                ? `${convertToUnderscore(nodeData.data.label)}${toolsNodes.length}`
+                : convertToUnderscore(nodeData.data.label),
+              label: nodeData.data.parameters?.variableName?.label || "",
+              type: nodeData.data.parameters?.variableName?.type || "",
+              required: nodeData.data.parameters?.variableName?.required ?? true,
+              placeholder: nodeData.data.parameters?.variableName?.placeholder || "",
+              options: nodeData.data.parameters?.variableName?.options || [],
+              description: nodeData.data.parameters?.variableName?.description || "",
+              error: nodeData.data.parameters?.variableName?.error || "",
+            },
+          },
+        },
         id: result._id,
         position: { x: nextNodeX, y: nextNodeY },
       };
@@ -89,7 +157,6 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
     dispatch(addNodeData(item));
     event.dataTransfer.effectAllowed = "move";
   };
-
 
   return (
     <div className="absolute bg-white w-4/5 h-[500px] top-[120px] rounded-2xl overflow-y-auto backdrop-blur-sm drop-shadow-2xl">
@@ -119,7 +186,7 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
 
         <div className="overflow-y-auto">
           <div className="flex flex-wrap flex-row justify-evenly">
-            {Object.keys(groupedIntegrations).map((subCategory, index) => (
+            {Object?.keys(groupedIntegrations).map((subCategory, index) => (
               <div
                 key={index}
                 className={`flex flex-row m-0.5 p-2.5 rounded-lg items-center cursor-pointer ${selectedSubCategory === subCategory

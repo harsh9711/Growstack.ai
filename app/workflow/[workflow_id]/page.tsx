@@ -15,7 +15,6 @@ import {
     Panel,
     useReactFlow,
     type OnConnect,
-    MarkerType,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { nodeTypes } from "./components/nodes";
@@ -27,7 +26,6 @@ import BottomCenterPanel from "./components/panels/BottomCenterPanel";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { getMasterNodes } from "@/lib/features/workflow/masterNode.slice";
 import {
-    createWorkFlow,
     getWorkFlowById,
     updateWorkFlowById,
 } from "@/lib/features/workflow/workflow.slice";
@@ -35,6 +33,7 @@ import { useRouter } from "next/navigation";
 import ConnectionLine from "./components/edges/ConnectionLine";
 import { addNode, addVariable, createNode } from "@/lib/features/workflow/node.slice";
 import { unwrapResult } from "@reduxjs/toolkit";
+import { convertToUnderscore } from "@/utils/helper";
 
 interface DragEvent extends React.DragEvent<HTMLDivElement> { }
 interface PageProps {
@@ -82,7 +81,6 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
     }, [dispatch, workFlowData]);
 
 
-    console.log("workFlowData----->", workFlowData?.nodes);
 
     useEffect(() => {
         dispatch(getMasterNodes());
@@ -126,6 +124,8 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
             }
 
             if (!reactFlowWrapper.current) return;
+            //@ts-ignore
+            const toolsNodes = nodes.filter(nds => nds.data.label === nodeData.data.label);
 
             const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
 
@@ -144,15 +144,40 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
                 parameters: {},
             });
 
-            console.log("nodeId====>", nodeId);
 
-            const newNode: any = {
+            // const newNode: any = {
+            //     ...nodeData,
+            //     id: nodeId,
+            //     position,
+            // };
+
+            const newNode = {
                 ...nodeData,
+                data: {
+                    ...nodeData.data,
+                    parameters: {
+                        ...nodeData.data.parameters,
+                        variableName: {
+                            ...nodeData.data.parameters?.variableName ?? {},
+                            value: toolsNodes?.length
+                                ? `${convertToUnderscore(nodeData.data.label)}${toolsNodes.length}`
+                                : convertToUnderscore(nodeData.data.label),
+                            label: nodeData.data.parameters?.variableName?.label || "",
+                            type: nodeData.data.parameters?.variableName?.type || "",
+                            required: nodeData.data.parameters?.variableName?.required ?? true,
+                            placeholder: nodeData.data.parameters?.variableName?.placeholder || "",
+                            options: nodeData.data.parameters?.variableName?.options || [],
+                            description: nodeData.data.parameters?.variableName?.description || "",
+                            error: nodeData.data.parameters?.variableName?.error || "",
+                        },
+                    },
+                },
                 id: nodeId,
-                position,
+                position
             };
 
-            setNodes(nds => nds.concat(newNode));
+            //@ts-ignore
+            setNodes((nds) => nds.concat(newNode));
             dispatch(addNode(newNode));
         },
         [screenToFlowPosition, nodeData]
