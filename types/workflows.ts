@@ -76,7 +76,7 @@ export interface NodeParameter {
   placeholder?: string;
   options?: Option[] | undefined;
   description?: string;
-  value?: string;
+  value?: any;
   error?: string;
 }
 
