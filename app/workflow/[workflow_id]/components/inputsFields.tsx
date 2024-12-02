@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import Tooltip from "./tooltip/Tooltip";
 import { NodeParameter } from "@/types/workflows";
 import { useAppSelector } from "@/lib/hooks";
-
+import { options } from "marked";
 
 interface DynamicInputProps {
   param: NodeParameter;
@@ -315,6 +315,7 @@ const SelectOption = ({ param, inputKey }: any) => {
 };
 
 const CheckboxField = ({ param, inputKey, handleInputChange }: any) => {
+  console.log("---checkbox field param checking console---", param);
   return (
     <div key={inputKey} className="input-box mt-3 mb-3">
       <div className="label-box flex gap-2 items-center mb-1">
@@ -397,8 +398,7 @@ const UploadButton = ({ param, inputKey, handleInputChange }: any) => {
 };
 
 const MultiSelectDropdown = ({ param, inputKey, handleInputChange }: any) => {
-
-  console.log('---param---', param)
+  console.log("---param MULTISELECT DROPDOWN---", param);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState<string>("");
@@ -421,8 +421,10 @@ const MultiSelectDropdown = ({ param, inputKey, handleInputChange }: any) => {
 
   const handleRemoveItem = (item: string) => {
     // setSelectedItems(selectedItems.filter(selected => selected !== item));
-    const value = Array.isArray(param.value) ? param.value.filter((selected: any) => selected !== item) : [];
-    handleInputChange(inputKey, param.type, value)
+    const value = Array.isArray(param.value)
+      ? param.value.filter((selected: any) => selected !== item)
+      : [];
+    handleInputChange(inputKey, param.type, value);
   };
 
   const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -431,8 +433,10 @@ const MultiSelectDropdown = ({ param, inputKey, handleInputChange }: any) => {
       inputValue.trim() &&
       !selectedItems.includes(inputValue.trim())
     ) {
-      const value = Array.isArray(param.value) ? [...param.value, inputValue.trim()] : [inputValue.trim()];
-      handleInputChange(inputKey, param.type, value)
+      const value = Array.isArray(param.value)
+        ? [...param.value, inputValue.trim()]
+        : [inputValue.trim()];
+      handleInputChange(inputKey, param.type, value);
       // setSelectedItems([...selectedItems, inputValue.trim()]);
       setInputValue("");
       e.preventDefault();
@@ -454,20 +458,21 @@ const MultiSelectDropdown = ({ param, inputKey, handleInputChange }: any) => {
 
       <div ref={containerRef} className="relative w-full max-w-md mx-auto">
         <div className="flex flex-wrap gap-2 items-center p-3 rounded-[10px] bg-[#F2F2F2]">
-          {Array.isArray(param.value) && param?.value.map((item: any, i: any) => (
-            <div
-              key={i}
-              className="flex items-center bg-[#2DA771] text-[#fff] px-3 py-1 rounded-full text-sm"
-            >
-              {item}
-              <button
-                onClick={() => handleRemoveItem(item)}
-                className="ml-2 text-[#fff] hover:text-[#fff]"
+          {Array.isArray(param.value) &&
+            param?.value.map((item: any, i: any) => (
+              <div
+                key={i}
+                className="flex items-center bg-[#2DA771] text-[#fff] px-3 py-1 rounded-full text-sm"
               >
-                &times;
-              </button>
-            </div>
-          ))}
+                {item}
+                <button
+                  onClick={() => handleRemoveItem(item)}
+                  className="ml-2 text-[#fff] hover:text-[#fff]"
+                >
+                  &times;
+                </button>
+              </div>
+            ))}
 
           <input
             ref={inputRef}
@@ -661,6 +666,7 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
     case "text_overview":
     case "number":
     case "text":
+    case "checkbox_field":
       return (
         <InputFields
           param={param}
@@ -701,7 +707,13 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
         />
       );
     case "checkbox_field":
-      return <CheckboxField param={param} inputKey={inputKey} />;
+      return (
+        <CheckboxField
+          param={param}
+          inputKey={inputKey}
+          handleInputChange={handleInputChange}
+        />
+      );
     case "text_area":
     case "textarea_system_prompt":
     case "textarea_input_prompt":
