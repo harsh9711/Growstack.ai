@@ -64,7 +64,9 @@ export type GeneralInputNodeProps = Node<NodeDataState, "inputType">;
 
 export type GeneralJoinerNodeProps = Node<NodeDataState, "joiner">;
 
-export type ToolsNodeProps = Node<NodeDataState , "tools">;
+export type ToolsNodeProps = Node<NodeDataState, "tools">;
+
+export type GmailNodeProps = Node<NodeDataState, "gmail">;
 
 export type AppNode =
   | BuiltInNode
@@ -89,4 +91,4 @@ export type AppNode =
   | GeneralInputNodeProps
   | GeneralJoinerNodeProps
   | ToolsNodeProps
-  ;
+  | GmailNodeProps;

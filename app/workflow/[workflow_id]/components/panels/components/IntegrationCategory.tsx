@@ -82,18 +82,18 @@ const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
                 <li
                   className={`p-2.5 rounded-lg cursor-pointer ${
                     selectedSubCategory === subCategory
-                      ? "bg-[#F88390]"
-                      : "bg-[#E9E9E9]"
-                  }`}
+                    ? "bg-[#F88390]"
+                    : "bg-[#E9E9E9]"
+                    }`}
                   onClick={() => setSelectedSubCategory(subCategory)}
                   key={index.toString()}
                 >
                   <p
                     className={`text-[12px] leading-6 font-normal ${
                       selectedSubCategory === subCategory
-                        ? "text-[#ffffff]"
-                        : "text-[#14171B]"
-                    } font-weight-400`}
+                      ? "text-[#ffffff]"
+                      : "text-[#14171B]"
+                      } font-weight-400`}
                   >
                     {subCategory}
                   </p>
