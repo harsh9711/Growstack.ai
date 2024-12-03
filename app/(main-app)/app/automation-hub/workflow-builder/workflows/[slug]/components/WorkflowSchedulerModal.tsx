@@ -7,38 +7,30 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import Spinner from "@/public/svgs/spinner";
-import { useRouter } from "next/navigation";
-import instance from "@/config/axios.config";
 import { Edit } from "lucide-react";
 import Dropdown from "@/components/Dropdown";
 import toast from "react-hot-toast";
-import { API_URL } from "@/lib/api";
 import { useEffect, useState } from "react";
-import {
-  days_of_week,
-  frequency_options,
-  timezones,
-  days_of_month,
-} from "./constants/data";
+import { days_of_week, frequency_options, timezones } from "./constants/data";
 import { Input } from "@/components/ui/input";
 import { WorkFlowData } from "./types";
 import { Checkbox } from "@/components/ui/checkbox";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../../../../../../../styles/datepicker.css";
+import axios from "axios";
 
 interface SchedulerModalProps {
   show: boolean;
   setShow: (value: boolean) => void;
   workFlowData: WorkFlowData;
   setWorkFlowData: (workflow: WorkFlowData) => void;
-  onAddSchedule?: () => void;
 }
 
 type Fields = {
   frequency: string;
-  day_of_week: string[];
-  day_of_month: string;
+  dayOfWeek: string[];
+  dayOfMonth: string;
   time: string;
   timezone: string;
 };
@@ -47,17 +39,14 @@ function WorkflowSchedulerModal({
   show,
   setShow: onHide,
   workFlowData,
-  setWorkFlowData,
-  onAddSchedule,
 }: SchedulerModalProps) {
-  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const [fields, setFields] = useState<Fields>({
     frequency: "",
-    day_of_week: [],
-    day_of_month: "",
+    dayOfWeek: [],
+    dayOfMonth: "",
     time: "",
     timezone: "",
   });
@@ -66,38 +55,25 @@ function WorkflowSchedulerModal({
   const handleScheduleWorkflow = async () => {
     setIsPending(true);
 
-    if (fields.frequency === "weekly" && fields.day_of_week.length === 0) {
+    if (fields.frequency === "weekly" && fields.dayOfWeek.length === 0) {
       toast.error("Please select a day of the week for weekly frequency.");
       setIsPending(false);
       return;
     }
-    console.log({ fields });
+    const updatedWorkflowData = workFlowData.input_configs.map((data: any) => ({
+      variableName: data.variableName,
+      variableValue: data.default_value,
+    }));
     try {
-      const runner_payload = {
-        actions_with_runs: workFlowData.actions.map(action => ({
-          action: action._id,
-        })),
-        inputs: workFlowData.input_configs.map(input => ({
-          variable_name: input.variable_name,
-          variable_value: input.default_value,
-        })),
-        outputs: workFlowData.output_configs.map(output => ({
-          variable_name: output.display_name,
-          variable_value: output.value,
-          variable_type: output.type,
-        })),
-      };
-      const response = await instance.post(
-        `${API_URL}/workflow/api/v1/schedule`,
+      const response = await axios.post(
+        `http://localhost:5000/workflow/6745a1f9f7d11db833a2ad12/schedule`,
         {
-          workflow_id: workFlowData.workflow_id,
           ...fields,
-          runner_payload,
+          workflowPayload: updatedWorkflowData,
         }
       );
       toast.success(response.data.message);
       onHide(false);
-      // router.refresh();
     } catch (error: any) {
       console.error("Error running workflow:", error);
       if (error.response) {
@@ -107,8 +83,6 @@ function WorkflowSchedulerModal({
       }
     } finally {
       setIsPending(false);
-      onAddSchedule && onAddSchedule();
-      window.location.reload();
     }
   };
 
@@ -116,14 +90,15 @@ function WorkflowSchedulerModal({
     setFields(prevFields => ({
       ...prevFields,
       [field]: value || "-",
+      ...(field === "frequency" && {
+        dayOfWeek: [],
+        dayOfMonth: "",
+        time: "",
+        timezone: "",
+      }),
     }));
   };
 
-  const handleChangeInput = (value: string, idx: number) => {
-    const updatedInputs = [...workFlowData.input_configs];
-    updatedInputs[idx].default_value = value || "-";
-    setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
-  };
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const dropdownElement = document.getElementById("days-dropdown");
@@ -177,8 +152,8 @@ function WorkflowSchedulerModal({
                     onClick={() => setIsOpen(!isOpen)}
                   >
                     <span className="text-sm">
-                      {fields.day_of_week.length
-                        ? `${fields.day_of_week.length} days selected`
+                      {fields.dayOfWeek.length
+                        ? `${fields.dayOfWeek.length} days selected`
                         : "Select days of week"}
                     </span>
                     <svg
@@ -207,25 +182,21 @@ function WorkflowSchedulerModal({
                               e.stopPropagation();
                               setFields(prevFields => ({
                                 ...prevFields,
-                                day_of_week: prevFields.day_of_week.includes(
-                                  day
-                                )
-                                  ? prevFields.day_of_week.filter(
-                                      d => d !== day
-                                    )
-                                  : [...prevFields.day_of_week, day],
+                                dayOfWeek: prevFields.dayOfWeek.includes(day)
+                                  ? prevFields.dayOfWeek.filter(d => d !== day)
+                                  : [...prevFields.dayOfWeek, day],
                               }));
                             }}
                           >
                             <Checkbox
                               id={day}
-                              checked={fields.day_of_week.includes(day)}
+                              checked={fields.dayOfWeek.includes(day)}
                               onCheckedChange={checked => {
                                 setFields(prevFields => ({
                                   ...prevFields,
-                                  day_of_week: checked
-                                    ? [...prevFields.day_of_week, day]
-                                    : prevFields.day_of_week.filter(
+                                  dayOfWeek: checked
+                                    ? [...prevFields.dayOfWeek, day]
+                                    : prevFields.dayOfWeek.filter(
                                         d => d !== day
                                       ),
                                 }));
@@ -245,16 +216,6 @@ function WorkflowSchedulerModal({
                 </div>
               )}
               {fields.frequency === "monthly" && (
-                // <Dropdown
-                //   label="Select day of the month"
-                //   items={days_of_month}
-                //   showTitle
-                //   title="Day of the Month"
-                //   value={fields.day_of_month}
-                //   onChange={value => handleChangeField("day_of_month", value)}
-                //   required
-                // />
-
                 <div className="space-y-2">
                   <label className="text-[15px]">Days of the Month</label>
                   <div
@@ -263,9 +224,9 @@ function WorkflowSchedulerModal({
                   >
                     <div className="cursor-pointer flex justify-between items-center">
                       <span className="text-sm">
-                        {/* {fields.day_of_month || "Select day of the month"} */}
-                        {typeof fields.day_of_month === "string"
-                          ? fields.day_of_month
+                        {/* {fields.dayOfMonth || "Select day of the month"} */}
+                        {typeof fields.dayOfMonth === "string"
+                          ? fields.dayOfMonth
                           : "Select day of the month"}
                       </span>
                       <svg
@@ -294,7 +255,7 @@ function WorkflowSchedulerModal({
                                   onClick={e => {
                                     e.stopPropagation();
                                     handleChangeField(
-                                      "day_of_month",
+                                      "dayOfMonth",
                                       day.toString()
                                     );
                                     setIsOpen(false);
@@ -302,7 +263,7 @@ function WorkflowSchedulerModal({
                                   className={`
                                 h-8 w-8 rounded-full flex items-center justify-center text-sm
                                 ${
-                                  fields.day_of_month === day.toString()
+                                  fields.dayOfMonth === day.toString()
                                     ? "bg-primary-green text-white"
                                     : "hover:bg-gray-100"
                                 }
@@ -327,7 +288,7 @@ function WorkflowSchedulerModal({
                       selected={selectedDate}
                       onChange={(date: any) => {
                         setSelectedDate(date);
-                        handleChangeField("day_of_month", date);
+                        handleChangeField("dayOfMonth", date);
                       }}
                       timeIntervals={1}
                       dateFormat="MMMM d, yyyy"
@@ -349,21 +310,6 @@ function WorkflowSchedulerModal({
                 />
               </div>
             </div>
-            {workFlowData?.input_configs.map((input: any, idx: any) => (
-              <div key={idx}>
-                <h2 className="font-medium">{input.display_name}</h2>
-                <div className="font-light mt-3 mb-2 text-[14px]">
-                  {input.description}
-                </div>
-                <input
-                  type="text"
-                  placeholder={input.placeholder}
-                  className="w-full p-4 h-[46px] border border-gray-100 bg-[#F5F5F5] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
-                  value={input.default_value}
-                  onChange={e => handleChangeInput(e.target.value, idx)}
-                />
-              </div>
-            ))}
           </div>
           <div className="flex justify-end gap-3 w-full">
             <button
