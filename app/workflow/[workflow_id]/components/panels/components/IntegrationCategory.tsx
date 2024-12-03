@@ -1,9 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { AllData } from "../../data";
-import { useDispatch } from "react-redux";
-import { addNodeData } from "@/lib/features/workflow/node.slice";
-import { NodeDataState, NodeState } from "@/types/workflows";
+import { NodeState } from "@/types/workflows";
 
 const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
   const integrationData = AllData.filter(
@@ -80,8 +78,7 @@ const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
             <ul className="flex items-center flex-wrap gap-2">
               {Object.keys(groupedIntegrations).map((subCategory, index) => (
                 <li
-                  className={`p-2.5 rounded-lg cursor-pointer ${
-                    selectedSubCategory === subCategory
+                  className={`p-2.5 rounded-lg cursor-pointer ${selectedSubCategory === subCategory
                     ? "bg-[#F88390]"
                     : "bg-[#E9E9E9]"
                     }`}
@@ -89,8 +86,7 @@ const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
                   key={index.toString()}
                 >
                   <p
-                    className={`text-[12px] leading-6 font-normal ${
-                      selectedSubCategory === subCategory
+                    className={`text-[12px] leading-6 font-normal ${selectedSubCategory === subCategory
                       ? "text-[#ffffff]"
                       : "text-[#14171B]"
                       } font-weight-400`}
