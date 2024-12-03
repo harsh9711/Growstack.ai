@@ -1,20 +1,21 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useCallback } from "react";
 import Image from "next/image";
 import {
-    ReactFlowProvider,
-    ReactFlow,
-    Background,
-    BackgroundVariant,
-    Controls,
-    MiniMap,
-    addEdge,
-    useNodesState,
-    useEdgesState,
-    Panel,
-    useReactFlow,
-    type OnConnect,
+  ReactFlowProvider,
+  ReactFlow,
+  Background,
+  BackgroundVariant,
+  Controls,
+  MiniMap,
+  addEdge,
+  useNodesState,
+  useEdgesState,
+  Panel,
+  useReactFlow,
+  type OnConnect,
+  MarkerType
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { nodeTypes } from "./components/nodes";
@@ -26,20 +27,27 @@ import BottomCenterPanel from "./components/panels/BottomCenterPanel";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { getMasterNodes } from "@/lib/features/workflow/masterNode.slice";
 import {
-    getWorkFlowById,
-    updateWorkFlowById,
+  createWorkFlow,
+  getWorkFlowById,
+  updateWorkFlowById
 } from "@/lib/features/workflow/workflow.slice";
 import { useRouter } from "next/navigation";
 import ConnectionLine from "./components/edges/ConnectionLine";
-import { addNode, addVariable, createNode } from "@/lib/features/workflow/node.slice";
+import {
+  addNode,
+  addVariable,
+  createNode,
+} from "@/lib/features/workflow/node.slice";
 import { unwrapResult } from "@reduxjs/toolkit";
+import Run from "@/app/(main-app)/app/automation-hub/workflow-builder/workflows/[slug]/components/layout/RunV2";
+import TimeLineTable from "@/components/timeLineTabel/TimeLineTabel";
 import { convertToUnderscore } from "@/utils/helper";
 
-interface DragEvent extends React.DragEvent<HTMLDivElement> { }
+interface DragEvent extends React.DragEvent<HTMLDivElement> {}
 interface PageProps {
-    params: {
-        workflow_id: string;
-    };
+  params: {
+    workflow_id: string;
+  };
 }
 
 
@@ -332,11 +340,18 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
 };
 
 const WorkflowPage: React.FC<PageProps> = ({ params: { workflow_id } }) => {
-    return (
-        <ReactFlowProvider>
-            <Workflow workflow_id={workflow_id} />
-        </ReactFlowProvider>
-    );
+  const [activeTab, setActiveTab] = useState(0);
+
+  return (
+    <>
+      <TopRightPanel2nd setActiveTab={setActiveTab} />
+      <ReactFlowProvider>
+        {activeTab === 0 && <Workflow workflow_id={workflow_id} />}
+        {activeTab === 1 && <Run workflowId={workflow_id} />}
+        {activeTab === 2 && <TimeLineTable workflow_id={workflow_id}/>}
+      </ReactFlowProvider>
+    </>
+  );
 };
 
 export default WorkflowPage;

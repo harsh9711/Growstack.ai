@@ -127,22 +127,12 @@ export const dummyData3 = [
     text: "Build",
   },
   {
-    text: "History",
+    text: "Run",
     width: 24,
     height: 24,
   },
   {
-    text: "Test",
-    width: 24,
-    height: 24,
-  },
-  {
-    text: "Preview",
-    width: 24,
-    height: 24,
-  },
-  {
-    text: "Logs",
+    text: "Timeline",
     width: 24,
     height: 24,
   },
