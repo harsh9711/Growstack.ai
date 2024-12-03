@@ -1,58 +1,55 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { useCallback } from "react";
-import Image from "next/image";
 import {
-  ReactFlowProvider,
-  ReactFlow,
-  Background,
-  BackgroundVariant,
-  Controls,
-  MiniMap,
-  addEdge,
-  useNodesState,
-  useEdgesState,
-  Panel,
-  useReactFlow,
-  type OnConnect,
-  MarkerType
+    ReactFlowProvider,
+    ReactFlow,
+    Background,
+    BackgroundVariant,
+    Controls,
+    MiniMap,
+    addEdge,
+    useNodesState,
+    useEdgesState,
+    Panel,
+    useReactFlow,
+    type OnConnect,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { nodeTypes } from "./components/nodes";
 import { edgeTypes } from "./components/edges";
 import TopLeftPanel2nd from "./components/panels/TopLeftPanel2nd";
-import TopRightPanel1st from "./components/panels/TopRightPanel1st";
 import TopRightPanel2nd from "./components/panels/TopRightPanel2nd";
 import BottomCenterPanel from "./components/panels/BottomCenterPanel";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { getMasterNodes } from "@/lib/features/workflow/masterNode.slice";
 import {
-  createWorkFlow,
-  getWorkFlowById,
-  updateWorkFlowById
+    getWorkFlowById,
+    updateWorkFlowById,
 } from "@/lib/features/workflow/workflow.slice";
 import { useRouter } from "next/navigation";
 import ConnectionLine from "./components/edges/ConnectionLine";
 import {
-  addNode,
-  addVariable,
-  createNode,
+    addNode,
+    createNode,
 } from "@/lib/features/workflow/node.slice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import Run from "@/app/(main-app)/app/automation-hub/workflow-builder/workflows/[slug]/components/layout/RunV2";
 import TimeLineTable from "@/components/timeLineTabel/TimeLineTabel";
 import { convertToUnderscore } from "@/utils/helper";
+import { resolveWorkflowNodes } from "@/utils/dataResolver";
 
-interface DragEvent extends React.DragEvent<HTMLDivElement> {}
+interface DragEvent extends React.DragEvent<HTMLDivElement> { }
 interface PageProps {
-  params: {
-    workflow_id: string;
-  };
+    params: {
+        workflow_id: string;
+    };
 }
 
-
 const Workflow = ({ workflow_id }: { workflow_id: string }) => {
-    const route = useRouter();
+    // const route = useRouter();
+
+    // const nodesData = useAppSelector(state => state.nodes.nodes);
 
     const dispatch = useAppDispatch();
     const { screenToFlowPosition } = useReactFlow();
@@ -61,45 +58,33 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
     const { workFlowData } = useAppSelector(state => state.workflows);
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-
-
-    useEffect(() => {
-
-        if (workFlowData && workFlowData.nodes?.length) {
-            //@ts-ignore
-            setNodes(workFlowData?.nodes);
-            workFlowData.nodes?.forEach((node: any) => {
-                dispatch(
-                    addVariable({
-                        nodeID: node.id,
-                        variableName: node?.data?.parameters?.variableName?.value || "",
-                        workflowID: workFlowData._id || "",
-                        variableValue:
-                            node?.data?.parameters?.defaultValue ||
-                            node?.data?.parameters?.fileType ||
-                            node?.data?.parameters?.options,
-                        variableType: node.type,
-                    })
-                );
-                dispatch(addNode(node));
-            });
-
-        }
-
-    }, [dispatch, workFlowData]);
-
-
+    const [activeTab, setActiveTab] = useState(0);
 
     useEffect(() => {
         dispatch(getMasterNodes());
         getWorkFlowDetails();
     }, [dispatch, workflow_id]);
 
-
-    const getWorkFlowDetails = () => {
+    const getWorkFlowDetails = async () => {
         if (!workflow_id) return;
-        if (workFlowData && workFlowData._id) return;
-        dispatch(getWorkFlowById(workflow_id));
+        try {
+            const resultAction = await dispatch(getWorkFlowById(workflow_id));
+
+            const result = unwrapResult(resultAction);
+
+            const updatedNodes = resolveWorkflowNodes(result.nodes);
+
+            // @ts-ignore
+            setNodes(updatedNodes);
+            // @ts-ignore
+            setEdges(result.edges || []);
+            // @ts-ignore
+            dispatch(addNode(updatedNodes));
+
+            // console.log("Result--------------->", JSON.stringify(result, null, 2));
+        } catch (error) {
+            console.log("error", error);
+        }
     };
 
     const onConnect: OnConnect = useCallback(
@@ -132,8 +117,10 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
             }
 
             if (!reactFlowWrapper.current) return;
-            //@ts-ignore
-            const toolsNodes = nodes.filter(nds => nds.data.label === nodeData.data.label);
+            const toolsNodes = nodes?.filter(
+                //@ts-ignore
+                nds => nds?.data?.label === nodeData.data.label
+            );
 
             const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
 
@@ -152,13 +139,6 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
                 parameters: {},
             });
 
-
-            // const newNode: any = {
-            //     ...nodeData,
-            //     id: nodeId,
-            //     position,
-            // };
-
             const newNode = {
                 ...nodeData,
                 data: {
@@ -166,26 +146,29 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
                     parameters: {
                         ...nodeData.data.parameters,
                         variableName: {
-                            ...nodeData.data.parameters?.variableName ?? {},
+                            ...(nodeData.data.parameters?.variableName ?? {}),
                             value: toolsNodes?.length
                                 ? `${convertToUnderscore(nodeData.data.label)}${toolsNodes.length}`
                                 : convertToUnderscore(nodeData.data.label),
                             label: nodeData.data.parameters?.variableName?.label || "",
                             type: nodeData.data.parameters?.variableName?.type || "",
-                            required: nodeData.data.parameters?.variableName?.required ?? true,
-                            placeholder: nodeData.data.parameters?.variableName?.placeholder || "",
+                            required:
+                                nodeData.data.parameters?.variableName?.required ?? true,
+                            placeholder:
+                                nodeData.data.parameters?.variableName?.placeholder || "",
                             options: nodeData.data.parameters?.variableName?.options || [],
-                            description: nodeData.data.parameters?.variableName?.description || "",
+                            description:
+                                nodeData.data.parameters?.variableName?.description || "",
                             error: nodeData.data.parameters?.variableName?.error || "",
                         },
                     },
                 },
                 id: nodeId,
-                position
+                position,
             };
 
             //@ts-ignore
-            setNodes((nds) => nds.concat(newNode));
+            setNodes(nds => nds.concat(newNode));
             dispatch(addNode(newNode));
         },
         [screenToFlowPosition, nodeData]
@@ -262,37 +245,36 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
     );
 
     return (
-        <div
-            style={{ height: "100vh", width: "100%" }}
-            className="reactflow-wrapper"
-            ref={reactFlowWrapper}
-        >
-            <ReactFlow
-                nodes={nodes}
-                nodeTypes={nodeTypes}
-                onNodesChange={onNodesChange}
-                edges={edges}
-                edgeTypes={edgeTypes}
-                snapToGrid={true}
-                onEdgesChange={onEdgesChange}
-                onConnect={onConnect}
-                onConnectEnd={onConnectEnd}
-                onDrop={onDrop}
-                onDragOver={onDragOver}
-                connectionLineComponent={ConnectionLine}
-                defaultViewport={{ zoom: 0.9, x: 0, y: 0 }}
-            >
-                <Background
-                    variant={BackgroundVariant.Lines}
-                    style={{
-                        backgroundColor: "#F8F8FA",
-                        background:
-                            "linear-gradient(180deg, rgba(248, 248, 250, 1), rgba(248, 248, 250, 0))",
-                    }}
-                />
-                <MiniMap />
-                <Controls />
-                <Panel
+        <div className="reactflow-wrapper h-[100vh] w-full" ref={reactFlowWrapper}>
+            <TopRightPanel2nd setActiveTab={setActiveTab} />
+            {activeTab === 0 && (
+                <div className="reactflow-wrapper h-[calc(100vh-60px)] w-full">
+                    <ReactFlow
+                        nodes={nodes}
+                        nodeTypes={nodeTypes}
+                        onNodesChange={onNodesChange}
+                        edges={edges}
+                        edgeTypes={edgeTypes}
+                        snapToGrid={true}
+                        onEdgesChange={onEdgesChange}
+                        onConnect={onConnect}
+                        onConnectEnd={onConnectEnd}
+                        onDrop={onDrop}
+                        onDragOver={onDragOver}
+                        connectionLineComponent={ConnectionLine}
+                        defaultViewport={{ zoom: 0.9, x: 0, y: 0 }}
+                    >
+                        <Background
+                            variant={BackgroundVariant.Lines}
+                            style={{
+                                backgroundColor: "#F8F8FA",
+                                background:
+                                    "linear-gradient(180deg, rgba(248, 248, 250, 1), rgba(248, 248, 250, 0))",
+                            }}
+                        />
+                        <MiniMap />
+                        <Controls />
+                        {/* <Panel
                     position="top-left"
                     className="border-2 border-white rounded-lg p-1.5 bg-[#F8F8FA] left-[40px] cursor-pointer"
                 >
@@ -312,46 +294,84 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
                             {workFlowData?.name || ""}
                         </p>
                     </div>
-                </Panel>
+                </Panel> */}
 
-                <Panel
-                    position="top-left"
-                    className="absolute top-[75px] left-[40px] p-[1px] bg-gradient-to-b from-white from-10% via-[#FFFFFF] via-5% to-[#99999947] rounded-[20px] backdrop-blur-md"
-                >
-                    <div className="bg-white rounded-[20px] p-3">
-                        <TopLeftPanel2nd setNodes={setNodes} />
-                    </div>
-                </Panel>
+                        <Panel
+                            position="top-left"
+                            className="absolute top-[10px] left-[20px] p-[1px] bg-gradient-to-b from-white from-10% via-[#FFFFFF] via-5% to-[#99999947] rounded-[20px] backdrop-blur-md"
+                        >
+                            <div className="bg-white rounded-[20px] p-3">
+                                <TopLeftPanel2nd setNodes={setNodes} />
+                            </div>
+                        </Panel>
 
-                <Panel position="top-right" style={{ right: "40px" }}>
+                        {/* <Panel position="top-right" style={{ right: "40px" }}>
                     <TopRightPanel1st />
-                </Panel>
-
+                </Panel> */}
+                        {/* 
                 <Panel position="top-right" style={{ top: "60px", right: "40px" }}>
                     <TopRightPanel2nd />
-                </Panel>
+                </Panel> */}
 
-                <Panel position="bottom-center" style={{ bottom: "20px" }}>
-                    <BottomCenterPanel />
-                </Panel>
-            </ReactFlow>
+                        <Panel position="bottom-center" style={{ bottom: "20px" }}>
+                            <BottomCenterPanel />
+                        </Panel>
+                    </ReactFlow>
+                </div>
+            )}
+            {activeTab === 1 && <Run workflowId={workflow_id} />}
+            {activeTab === 2 && <TimeLineTable workflow_id={workflow_id} />}
         </div>
     );
 };
 
 const WorkflowPage: React.FC<PageProps> = ({ params: { workflow_id } }) => {
-  const [activeTab, setActiveTab] = useState(0);
+    console.log("workflow_id", workflow_id);
 
-  return (
-    <>
-      <TopRightPanel2nd setActiveTab={setActiveTab} />
-      <ReactFlowProvider>
-        {activeTab === 0 && <Workflow workflow_id={workflow_id} />}
-        {activeTab === 1 && <Run workflowId={workflow_id} />}
-        {activeTab === 2 && <TimeLineTable workflow_id={workflow_id}/>}
-      </ReactFlowProvider>
-    </>
-  );
+    // const dispatch = useAppDispatch();
+    // const [activeTab, setActiveTab] = useState(0);
+
+    // const { setNodes } = useReactFlow();
+
+    // useEffect(() => {
+    //     getWorkFlowDetails();
+    // }, [workflow_id]);
+
+    // const getWorkFlowDetails = async () => {
+    //     if (!workflow_id) return;
+    //     try {
+    //         const resultAction = await dispatch(getWorkFlowById(workflow_id));
+
+    //         const result = unwrapResult(resultAction);
+
+    //         const updatedNodes = resolveWorkflowNodes(result.nodes);
+
+    //         //@ts-ignore
+    //         setNodes(updatedNodes);
+    //         //@ts-ignore
+    //         setEdges(result.edges || []);
+    //         //@ts-ignore
+    //         dispatch(addNode(updatedNodes));
+
+    //         console.log("Result--------------->", JSON.stringify(result, null, 2));
+
+    //     } catch (error) {
+    //         console.log("error", error);
+    //     }
+    //
+    // };
+
+    return (
+        <div className="h-[calc(100vh-60px)] w-full">
+            {/* <TopRightPanel2nd setActiveTab={setActiveTab} /> */}
+            <ReactFlowProvider>
+                <Workflow workflow_id={workflow_id} />
+                {/* {activeTab === 0 && <Workflow workflow_id={workflow_id} />}
+                {activeTab === 1 && <Run workflowId={workflow_id} />}
+                {activeTab === 2 && <TimeLineTable workflow_id={workflow_id} />} */}
+            </ReactFlowProvider>
+        </div>
+    );
 };
 
 export default WorkflowPage;

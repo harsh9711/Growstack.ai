@@ -9,9 +9,9 @@ const AccordionComponent = ({ runSummaryData }: any) => {
   // Convert object to key-value pairs array
   const variables: any = runSummaryData?.variables
     ? Object.entries(runSummaryData.variables).map(([key, value]) => ({
-        title: key,
-        content: value,
-      }))
+      title: key,
+      content: value,
+    }))
     : [];
 
   const [openIndex, setOpenIndex] = useState(null);
@@ -21,13 +21,13 @@ const AccordionComponent = ({ runSummaryData }: any) => {
   };
   const formatToMarkdown = (text: string) => {
     // First remove the markdown code block syntax if present
-    let cleanText = text.replace(/^```markdown\n|\n```$/g, "");
+    let cleanText = text?.replace(/^```markdown\n|\n```$/g, "");
     // Convert escaped newlines to actual newlines
-    cleanText = cleanText.replace(/\\n/g, "\n");
+    cleanText = cleanText?.replace(/\\n/g, "\n");
     // Format lists as before
-    cleanText = cleanText.replace(/(-\s|\d+\.\s)/g, "\n$1");
-    cleanText = cleanText.replace(/(\n- |\n\d+\.\s)/g, "\n\n$1");
-    return cleanText.trim();
+    cleanText = cleanText?.replace(/(-\s|\d+\.\s)/g, "\n$1");
+    cleanText = cleanText?.replace(/(\n- |\n\d+\.\s)/g, "\n\n$1");
+    return cleanText?.trim();
   };
   return (
     <>
@@ -39,9 +39,8 @@ const AccordionComponent = ({ runSummaryData }: any) => {
             {variables.map((item: any, index: number) => (
               <div
                 key={index}
-                className={`border rounded-lg ${
-                  openIndex === index ? "border-blue-400" : "border-gray-200"
-                }`}
+                className={`border rounded-lg ${openIndex === index ? "border-blue-400" : "border-gray-200"
+                  }`}
               >
                 {/* Accordion Header */}
                 <div
@@ -60,14 +59,15 @@ const AccordionComponent = ({ runSummaryData }: any) => {
                 {openIndex === index && (
                   <div className="p-4 border-t border-gray-200">
                     <div className="prose prose-sm max-w-none">
-                        <ReactMarkdown
-                          remarkPlugins={[remarkGfm, remarkBreaks]}
-                          rehypePlugins={[rehypeRaw]}
-                          
-                        >
-                          {formatToMarkdown(item?.content)}
-                        </ReactMarkdown>
-                      </div>
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm, remarkBreaks]}
+                        rehypePlugins={[rehypeRaw]}
+
+                      >
+                        {formatToMarkdown(item?.content)}
+                        {/* {JSON.stringify(item?.content)} */}
+                      </ReactMarkdown>
+                    </div>
                   </div>
                 )}
               </div>

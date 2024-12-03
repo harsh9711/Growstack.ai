@@ -56,6 +56,18 @@ const Run: React.FC<Props> = ({ workflowId }) => {
   const [executionId, setExecutionId] = useState("");
   const [runSummaryData, setRunSummaryData] = useState<any>([]);
 
+  useEffect(() => {
+    if (workflowId) {
+      fetchWorkflowData(workflowId)
+        .then(data => {
+          //   if (tab && preFilled && runnerId) {
+          //     fetchRunnerData(runnerId);
+          //   }
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [workflowId]);
+
   const fetchWorkflowData = async (id: string) => {
     setLoading(true);
     try {
@@ -191,17 +203,7 @@ const Run: React.FC<Props> = ({ workflowId }) => {
     setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
   };
 
-  useEffect(() => {
-    if (workflowId) {
-      fetchWorkflowData(workflowId)
-        .then(data => {
-          //   if (tab && preFilled && runnerId) {
-          //     fetchRunnerData(runnerId);
-          //   }
-        })
-        .finally(() => setLoading(false));
-    }
-  }, [workflowId]);
+
 
   if (loading) {
     return (
@@ -227,9 +229,8 @@ const Run: React.FC<Props> = ({ workflowId }) => {
           <div className="flex h-screen mt-5 gap-6">
             <div className="w-2/5">
               <div
-                className={`border-l-4 border-[#F1B917] rounded-2xl w-[50%] flex flex-col gap-6 p-4 ${
-                  IsInputParameterOpen ? "max-h-screen" : "max-h-[80px]"
-                } overflow-hidden transition-all w-full bg-white rounded-lg shadow-md duration-500 ease-in-out`}
+                className={`border-l-4 border-[#F1B917] rounded-2xl w-[50%] flex flex-col gap-6 p-4 ${IsInputParameterOpen ? "max-h-screen" : "max-h-[80px]"
+                  } overflow-hidden transition-all w-full bg-white rounded-lg shadow-md duration-500 ease-in-out`}
               >
                 <div className="flex flex-row justify-between items-center gap-2">
                   <h2 className="font-semibold text-lg">Input Parameters</h2>
@@ -341,7 +342,7 @@ const Run: React.FC<Props> = ({ workflowId }) => {
                         className={clsx(
                           "bg-transparent border-2 border-green-200 flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 "
                         )}
-                        // onClick={() => setIsSchedulerModalOpen(true)}
+                      // onClick={() => setIsSchedulerModalOpen(true)}
                       >
                         <Clock size={20} color="#2DA771" />
                         <h2 className="text-primary-light-shade-green">

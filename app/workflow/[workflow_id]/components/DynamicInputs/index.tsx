@@ -10,6 +10,8 @@ import RangeSlider from "./RangeSlider";
 import UploadButton from "./UploadButton";
 import MultiSelectDropdown from "./MultiSelectDropdown";
 import OutputField from "./OutputField";
+import SmallCardFiled from "./SmallCard";
+import AdvanceDropDown from "./AdvanceDropDown";
 
 const DynamicInput: React.FC<DynamicInputProps> = ({
     param,
@@ -129,7 +131,25 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
                     handleInputChange={handleInputChange}
                 />
             );
+        case "small_card":
+        case "avatars":
+            return (
+                <SmallCardFiled
+                    param={param}
+                    inputKey={inputKey}
+                    handleInputChange={handleInputChange}
+                />
+            );
+        case "advance_dropdown":
+            return (
+                <AdvanceDropDown
+                    param={param}
+                    inputKey={inputKey}
+                    handleInputChange={handleInputChange}
+                />
+            );
         default:
+
             return null;
     }
 };

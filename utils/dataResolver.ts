@@ -1,4 +1,4 @@
-import { MasterNodeProps } from "@/types/workflows";
+import { MasterNodeProps, WorkflowNodeState } from "@/types/workflows";
 
 export const convertNodeData = (data: MasterNodeProps) => {
   const {
@@ -74,4 +74,38 @@ export const extractParameterValues = (parameters: { [key: string]: any }) => {
   });
 
   return result;
+};
+
+export const resolveWorkflowNodes = (nodes?: WorkflowNodeState[]) => {
+  if (!nodes) return [];
+
+  const updatedNodes = nodes?.map(node => {
+    const updatedParameters = Object.entries(
+      (node.nodeMasterId as any).parameters
+    ).reduce((acc: { [key: string]: any }, [key, param]) => {
+      acc[key] = {
+        ...(typeof param === "object" && param !== null ? param : {}),
+        value: node.parameters?.[key] || "",
+      };
+      return acc;
+    }, {});
+
+    return {
+      id: node._id,
+      position: node.position,
+      type: node.type,
+      data: {
+        nodeMasterId: (node.nodeMasterId as any)?._id,
+        parameters: updatedParameters,
+        subNodes: node.subNodes || [],
+        dynamicParams: (node.nodeMasterId as any)?.dynamicParams || [],
+        functionToExecute: (node.nodeMasterId as any)?.functionToExecute,
+        label: (node.nodeMasterId as any)?.name,
+        description: (node.nodeMasterId as any)?.description,
+        icon: (node.nodeMasterId as any)?.logoUrl,
+      },
+    };
+  });
+
+  return updatedNodes;
 };

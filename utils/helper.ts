@@ -1,4 +1,4 @@
-import { NodeState } from "@/types/workflows";
+import { NodeState, VariableNameProps } from "@/types/workflows";
 
 export const calculateNextNodePosition = (
   lastNode: NodeState | undefined,
@@ -39,7 +39,7 @@ export const getVariableName = (nodes: NodeState[], position: number) => {
     })
     .filter(Boolean);
 
-  if (!nodeVariables.length) return [];
+  if (!nodeVariables.length) return [] as VariableNameProps[];
 
   return nodeVariables;
 };
