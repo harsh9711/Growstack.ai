@@ -44,7 +44,9 @@ interface Props {
 const Run: React.FC<Props> = ({ workflowId }) => {
   const [loading, setLoading] = useState(true);
   const [fileUrl2, setFileUrl2] = useState<string>("");
-  // const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [isScheduleModalOpen, setIsSchedulerModalOpen] = useState(false);
+
+  const [outputDetailsData, setOutputDetailsData] = useState({});
   const [workFlowData, setWorkFlowData] = useState<any>({
     name: "",
     input_configs: [],
@@ -53,7 +55,6 @@ const Run: React.FC<Props> = ({ workflowId }) => {
     description: "",
   });
   const [IsInputParameterOpen, setIsInputParameterOpen] = useState(true);
-  const [activeTab, setActiveTab] = useState(0);
   const [executionId, setExecutionId] = useState("");
   const [runSummaryData, setRunSummaryData] = useState<any>([]);
 
@@ -113,7 +114,6 @@ const Run: React.FC<Props> = ({ workflowId }) => {
       variableName: data.variableName,
       variableValue: data.default_value,
     }));
-    console.log(updatedWorkflowData, "updatedWorkflowData");
     try {
       const response = await axios.post(
         `http://localhost:5000/workflow/${workflowId}/run`,
@@ -131,6 +131,25 @@ const Run: React.FC<Props> = ({ workflowId }) => {
         `http://localhost:5000/workflow/${workflowId}/status/${executionId}`
       );
 
+      const outputDetails = getWorkFlowExecData?.data?.nodeExecutions.map(
+        (nodeExecution: any) => {
+          const nodeId = nodeExecution.nodeId;
+          const variableName = nodeExecution.parameters.variableName;
+          const nodeMasterId = nodeId._id;
+          const value =
+            getWorkFlowExecData?.data?.variables[variableName] || "";
+
+          return {
+            nodeMasterId: nodeMasterId,
+            value: value,
+            title: variableName,
+          };
+        }
+      );
+      setOutputDetailsData({
+        status: getWorkFlowExecData?.data?.status,
+        outputDetails: outputDetails,
+      });
       setRunSummaryData(getWorkFlowExecData?.data);
 
       const status = getWorkFlowExecData?.data?.status;
@@ -341,7 +360,7 @@ const Run: React.FC<Props> = ({ workflowId }) => {
                       className={clsx(
                         "bg-transparent border-2 border-green-200 flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 "
                       )}
-                      // onClick={() => setIsSchedulerModalOpen(true)}
+                      onClick={() => setIsSchedulerModalOpen(true)}
                     >
                       <Clock size={20} color="#2DA771" />
                       <h2 className="text-primary-light-shade-green">
@@ -355,7 +374,11 @@ const Run: React.FC<Props> = ({ workflowId }) => {
             </div>
             <div className="w-3/5">
               {executionId?.length > 0 ? (
-                <OutputDetails runSummaryData={runSummaryData} />
+                <OutputDetails
+                  outputDetailsData={outputDetailsData}
+                  executionId={executionId}
+                  workflowId={workflowId}
+                />
               ) : (
                 <div className="w-full border-l-4 border-[#FB8491] bg-white rounded-lg shadow-md space-y-6 p-6 mt-5">
                   {/* Header Section */}
@@ -393,8 +416,10 @@ const Run: React.FC<Props> = ({ workflowId }) => {
 
       {/* Need for Scheduling workflow */}
       <WorkflowSchedulerModal
-        show={true}
-        setShow={() => {}}
+        show={isScheduleModalOpen}
+        setShow={() => {
+          setIsSchedulerModalOpen(false);
+        }}
         workFlowData={workFlowData}
         setWorkFlowData={setWorkFlowData}
       />
