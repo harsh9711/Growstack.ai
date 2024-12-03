@@ -1,7 +1,8 @@
-import React, { memo, useState } from "react";
+import React, { memo, useCallback, useState } from "react";
 import { Handle, Position, useReactFlow, type NodeProps } from "@xyflow/react";
 import { type ShortTextNodeProps } from "./types";
-import DynamicInput from "../inputsFields";
+// import DynamicInput from "../inputsFields";
+import DynamicInput from "../DynamicInputs";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import {
     addVariable,
@@ -11,7 +12,8 @@ import {
     updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { extractParameterValues } from "@/utils/dataResolver";
-import { WorkflowNodeState } from "@/types/workflows";
+import { VariableNameProps, WorkflowNodeState } from "@/types/workflows";
+import { getVariableName, isSpecialType } from "@/utils/helper";
 
 const LlmNodes = memo(
     ({
@@ -24,43 +26,20 @@ const LlmNodes = memo(
         // const { parameters, nodeMasterId } = data;
         const dispatch = useAppDispatch();
         const { workFlowData } = useAppSelector(state => state.workflows);
-        const { isLoading, variables } = useAppSelector(state => state.nodes);
+        const { isLoading, variables, nodes } = useAppSelector(state => state.nodes);
 
         const node = useAppSelector(state =>
             state.nodes.nodes.find(node => node.id === id)
         );
 
-
         const { setNodes } = useReactFlow();
 
-        // const initialParameters =
-        //     parameters &&
-        //     Object.entries(parameters).reduce(
-        //         (acc: { [key: string]: any }, [key, param]: [string, any]) => {
-        //             acc[key] = {
-        //                 ...param,
-        //                 value: "",
-        //                 error: "",
-        //             };
-        //             return acc;
-        //         },
-        //         {}
-        //     );
-
-        // const [currentParameter, setCurrentParameter] = useState(initialParameters);
-        // const [nextParameter, setNextParameter] = useState<{ [key: string]: any }>({
-        //     "6": {
-        //         label: "Topic",
-        //         type: "text_topic",
-        //         required: false,
-        //         options: [],
-        //         description: `Add Topic`,
-        //         value: "",
-        //         error: "",
-        //     },
-        // });
         const [isDropdownOpen, setIsDropdownOpen] = useState(false);
         const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
+        const [isEdit, setIsEdit] = useState(true);
+        const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
+        const [dependencies, setDependencies] = useState<string[]>([]);
+        const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
 
         const handleToggleAdvancedOptions = () => {
             setShowAdvancedOptions(!showAdvancedOptions);
@@ -70,172 +49,54 @@ const LlmNodes = memo(
             setIsDropdownOpen(!isDropdownOpen);
         };
 
-        // const convertToUnderscore = (value: string): string => {
-        //     return value.toLowerCase().replace(/\s+/g, "_");
-        // };
+        // const handleInputChange = (key: any, type: any, value: any) => {
+        //     console.log("key-->", key, "type-->", type, "value-->", value);
 
-
-        // const handleUpdateParameter = (id: string) => {
-        //     let updatedData = nodes.find(node => node.id === id);
-
-        //     if (updatedData) {
-        //         updatedData = {
-        //             ...updatedData,
-        //             data: {
-        //                 ...updatedData.data,
-        //                 parameters: currentParameter,
-        //             },
-        //         };
-
-        //         // console.log("---updatedData---", updatedData);
-        //         dispatch(updateNode(updatedData));
-        //     }
-        // };
-
-        // const handleNextClick = async () => {
-        //     console.log("currentParameter-->", currentParameter);
-        //     if (!currentParameter) return;
-
-        //     const requiredParams = currentParameter
-        //         ? Object.values(currentParameter).filter(param => param.required)
-        //         : [];
-
-        //     const allRequiredParamsFilled = requiredParams.every(
-        //         param => param.value
-        //     );
-
-        //     if (allRequiredParamsFilled) {
-        //         // update variable
-        //         dispatch(
-        //             addVariable({
-        //                 nodeID: id,
-        //                 variableName: variableName,
-        //                 workflowID: workFlowData._id || "",
-        //                 variableType: "llm"
-        //             })
-        //         );
-
-        //         // update node with parameters value
-        //         handleUpdateParameter(id);
-
-        //         const updatedValue = extractParameterValues(currentParameter);
-
-        //         const nodeIdsWithMatchingVariables = variables
-        //             .map(variable => {
-        //                 const nodeVariableName = variable.variableName;
-
-        //                 const matches = Object.values(updatedValue).some(value => {
-        //                     if (typeof value === "string") {
-        //                         const matchedVariable = value.match(/\$\{([^\}]+)\}/)?.[1];
-        //                         console.log(value, "---matchedVariable---", matchedVariable);
-        //                         return matchedVariable === nodeVariableName;
-        //                     }
-        //                     return false;
-        //                 });
-
-        //                 return matches && variable.nodeID !== id ? variable.nodeID : null;
-        //             })
-        //             ?.filter(Boolean);
-
-        //         console.log("Matching Node IDs:", nodeIdsWithMatchingVariables);
-
-        //         try {
-        //             const bodyPayload = {
-        //                 workflowId: workFlowData._id,
-        //                 nodeMasterId,
-        //                 dependencies: nodeIdsWithMatchingVariables,
-        //                 position: { x: positionAbsoluteX, y: positionAbsoluteY },
-        //                 parameters: updatedValue,
-        //             };
-
-        //             await dispatch(
-        //                 updateNodeById({
-        //                     id,
-        //                     data: bodyPayload as unknown as WorkflowNodeState,
-        //                 })
-        //             );
-        //         } catch (error: any) {
-        //             console.error("error-->", error?.message);
-        //         }
+        //     dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
+        //     if (value && value.includes("$")) {
+        //         const index = nodes.findIndex(nds => nds.id === id);
+        //         const variableName = getVariableName(nodes, index);
+        //         console.log('variableName-->', variableName);
+        //         setVariableNames(variableName);
         //     } else {
-        //         setCurrentParameter(prevState => {
-        //             const updatedState = { ...prevState };
-
-        //             requiredParams.forEach(param => {
-        //                 const key = prevState
-        //                     ? Object.keys(prevState).find(k => prevState[k] === param)
-        //                     : undefined;
-        //                 if (key && !param.value) {
-        //                     updatedState[key] = {
-        //                         ...(prevState?.[key] ?? {}),
-        //                         error: "This field is required",
-        //                     };
-        //                 }
-        //             });
-
-        //             return updatedState;
-        //         });
+        //         setVariableNames([]);
         //     }
         // };
 
-        // const handleInputChange = (
-        //     key: string,
-        //     type: string,
-        //     value: string | boolean
-        // ) => {
-        //     if (typeof value === "boolean") {
-        //         setCurrentParameter(prevState => ({
-        //             ...prevState,
-        //             [key]: {
-        //                 ...(prevState?.[key] || {}),
-        //                 value: value,
-        //                 error: "",
-        //             },
-        //         }));
-        //         return;
-        //     }
 
-        //     setCurrentParameter(prevState => {
-        //         const updatedState = {
-        //             ...prevState,
-        //             [key]: {
-        //                 ...(prevState?.[key] || {}),
-        //                 value:
-        //                     type === "text_variable_name"
-        //                         ? convertToUnderscore(value)
-        //                         : value,
-        //                 error: "",
-        //             },
-        //         };
-
-        //         if (type === "text_input_label") {
-        //             const variableNameKey = prevState
-        //                 ? Object.keys(prevState).find(
-        //                     k => prevState[k].type === "text_variable_name"
-        //                 )
-        //                 : undefined;
-        //             if (variableNameKey) {
-        //                 updatedState[variableNameKey] = {
-        //                     ...(prevState?.[variableNameKey] || {}),
-        //                     value: convertToUnderscore(value),
-        //                     error: "",
-        //                 };
-        //             }
-        //         }
-        //         if (type === "text_variable_name" || type === "text_input_label") {
-        //             const variableValue = convertToUnderscore(value);
-        //             setVariableName(variableValue);
-        //         }
-        //         return updatedState;
-        //     });
-        // };
-
-
-
-        const handleInputChange = (key: any, type: any, value: any) => {
+        const handleInputChange = useCallback((key: any, type: any, value: any, dependencies?: string) => {
             console.log("key-->", key, "type-->", type, "value-->", value);
+
             dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
-        };
+
+
+            if (!isSpecialType(type)) return;
+
+            if (value && value.includes("$")) {
+                const index = nodes.findIndex(nds => nds.id === id);
+                const variableName = getVariableName(nodes, index);
+                console.log('variableName-->', variableName);
+                const regex = /\$(?!\s*$).+/;
+                if (regex.test(value)) {
+                    setVariableNames([]);
+                } else {
+                    setVariableNames(variableName);
+                }
+            } else {
+                setVariableNames([]);
+            }
+
+            if (dependencies) {
+                setDependencies(prevDependencies => {
+                    const newDependencies = dependencies.split(",");
+                    const uniqueDependencies = newDependencies.filter(dep => !prevDependencies.includes(dep));
+                    return [...prevDependencies, ...uniqueDependencies];
+                });
+            }
+
+        }, [dispatch, id, nodes, dependencies, variableNames]);
+
+
 
         const handleNextClick = async () => {
             if (!node?.data?.parameters) return;
@@ -251,26 +112,24 @@ const LlmNodes = memo(
                 const updatedValue = extractParameterValues(node.data.parameters);
                 console.log("updatedValue-->", updatedValue);
 
+                // const nodeIdsWithMatchingVariables = variables
+                //     .map(variable => {
+                //         const nodeVariableName = variable.variableName;
 
+                //         const matches = Object.values(updatedValue).some(value => {
+                //             if (typeof value === "string") {
+                //                 const matchedVariable = value.match(/\$\{([^\}]+)\}/)?.[1];
+                //                 console.log(value, "---matchedVariable---", matchedVariable);
+                //                 return matchedVariable === nodeVariableName;
+                //             }
+                //             return false;
+                //         });
 
-                const nodeIdsWithMatchingVariables = variables
-                    .map(variable => {
-                        const nodeVariableName = variable.variableName;
+                //         return matches && variable.nodeID !== id ? variable.nodeID : null;
+                //     })
+                //     ?.filter(Boolean);
 
-                        const matches = Object.values(updatedValue).some(value => {
-                            if (typeof value === "string") {
-                                const matchedVariable = value.match(/\$\{([^\}]+)\}/)?.[1];
-                                console.log(value, "---matchedVariable---", matchedVariable);
-                                return matchedVariable === nodeVariableName;
-                            }
-                            return false;
-                        });
-
-                        return matches && variable.nodeID !== id ? variable.nodeID : null;
-                    })
-                    ?.filter(Boolean);
-
-                console.log("Matching Node IDs:", nodeIdsWithMatchingVariables);
+                // console.log("Matching Node IDs:", nodeIdsWithMatchingVariables);
 
                 dispatch(
                     addVariable({
@@ -290,7 +149,7 @@ const LlmNodes = memo(
                         workflowId: workFlowData._id,
                         nodeMasterId: node.data.nodeMasterId,
                         position: { x: positionAbsoluteX, y: positionAbsoluteY },
-                        dependencies: nodeIdsWithMatchingVariables,
+                        dependencies: dependencies,
                         parameters: updatedValue,
                     };
 
@@ -300,24 +159,7 @@ const LlmNodes = memo(
                             data: bodyPayload as unknown as WorkflowNodeState,
                         })
                     );
-                    // dispatch(
-                    //     updateNodeParameter({
-                    //         nodeId: id,
-                    //         key: "nextParameter",
-                    //         label: updatedValue.inputLabel,
-                    //         type: getInputType(node?.data?.label),
-                    //         value:
-                    //             updatedValue?.defaultValue ||
-                    //             updatedValue.fileType ||
-                    //             updatedValue.options,
-                    //         placeholder: updatedValue?.placeholder,
-                    //         required: !!updatedValue?.required,
-                    //         description: updatedValue?.description,
-                    //         error: "",
-                    //     })
-                    // );
-
-                    // setIsNextBoxOpen(true);
+                    setIsEdit(false);
                 } catch (error: any) {
                     console.error("error-->", error?.message);
                 }
@@ -342,12 +184,16 @@ const LlmNodes = memo(
             }
         };
 
+        const handleEditClick = () => {
+            setIsEdit(!isEdit);
+        }
 
         const handleDeleteNode = () => {
             setNodes(nds => nds.filter(nds => nds.id !== id));
             dispatch(removeNodeById(id));
             dispatch(deleteNodeById(id));
         };
+
 
 
         return (
@@ -436,21 +282,24 @@ const LlmNodes = memo(
                             </div>
                             <div className="form-box">
                                 {node?.data?.parameters &&
-                                    Object.entries(node.data.parameters).filter(
-                                        ([key, param]: any) =>
-                                            param.required || showAdvancedOptions
-                                    ).map(([key, param]) => {
-                                        return (
-                                            <DynamicInput
-                                                key={key}
-                                                inputKey={key}
-                                                param={param}
-                                                handleInputChange={handleInputChange}
-                                                toggleTooltip={() => { }}
-                                                visibleTooltip={{}}
-                                            />
-                                        );
-                                    })}
+                                    Object.entries(node.data.parameters)
+                                        .filter(
+                                            ([key, param]: any) =>
+                                                param.required || showAdvancedOptions
+                                        )
+                                        .map(([key, param]) => {
+                                            return (
+                                                <DynamicInput
+                                                    key={key}
+                                                    inputKey={key}
+                                                    param={param}
+                                                    handleInputChange={isEdit ? handleInputChange : () => { }}
+                                                    variableNames={variableNames}
+                                                    focusedInputKey={focusedInputKey}
+                                                    setFocusedInputKey={setFocusedInputKey}
+                                                />
+                                            );
+                                        })}
 
                                 <div className="advance-option-button-box mb-3">
                                     <button
@@ -462,15 +311,6 @@ const LlmNodes = memo(
                                             : "Show Advanced Options"}
                                     </button>
                                 </div>
-                                {/* {variableName && (
-                                        <div className="topic-box mb-3">
-                                            <div className="topic-text w-auto p-3 inline-block rounded-full bg-[#DAEAF6]">
-                                                <h5 className="text-[12px] font-medium text-[#14171B]">
-                                                    {variableName}
-                                                </h5>
-                                            </div>
-                                        </div>
-                                    )} */}
 
                                 {node?.data?.parameters?.variableName?.value && (
                                     <div className="text-box mb-5">
@@ -483,20 +323,31 @@ const LlmNodes = memo(
                                     </div>
                                 )}
 
-                                <div className="submit-button">
-                                    <button
-                                        onClick={handleNextClick}
-                                        className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
-                                    >
-                                        {isLoading ? (
-                                            <div className="flex justify-center items-center">
-                                                <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
-                                            </div>
-                                        ) : (
-                                            "Save"
-                                        )}
-                                    </button>
-                                </div>
+                                {isEdit ? (
+                                    <div className="submit-button">
+                                        <button
+                                            onClick={handleNextClick}
+                                            className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
+                                        >
+                                            {isLoading ? (
+                                                <div className="flex justify-center items-center">
+                                                    <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
+                                                </div>
+                                            ) : (
+                                                "Save"
+                                            )}
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className="submit-button">
+                                        <button
+                                            onClick={handleEditClick}
+                                            className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
+                                        >
+                                            Edit
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     )}

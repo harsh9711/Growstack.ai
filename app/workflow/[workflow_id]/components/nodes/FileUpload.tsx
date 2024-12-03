@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import { Handle, Position, type NodeProps } from "@xyflow/react";
 import { type FileUploadNodeProps } from "./types";
 import Image from "next/image";
-import DynamicInput from "../inputsFields";
+// import DynamicInput from "../inputsFields";
+import DynamicInput from "../DynamicInputs";
 
 const FileUploaded = ({ data, id, isConnectable }: NodeProps<FileUploadNodeProps>) => {
   const { parameters } = data;
@@ -225,8 +226,6 @@ const FileUploaded = ({ data, id, isConnectable }: NodeProps<FileUploadNodeProps
                         inputKey={key}
                         param={param}
                         handleInputChange={handleInputChange}
-                        toggleTooltip={toggleTooltip}
-                        visibleTooltip={visibleTooltip}
                       />
                     );
                   })}
@@ -248,8 +247,6 @@ const FileUploaded = ({ data, id, isConnectable }: NodeProps<FileUploadNodeProps
                       inputKey={key}
                       param={param}
                       handleInputChange={handleInputChange}
-                      toggleTooltip={toggleTooltip}
-                      visibleTooltip={visibleTooltip}
                     />
                   ))}
 

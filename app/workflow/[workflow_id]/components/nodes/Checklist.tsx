@@ -1,13 +1,16 @@
-
-
 import React, { useState } from "react";
 
 import { Handle, Position, type NodeProps } from "@xyflow/react";
 import { type ChecklistNodeProps } from "./types";
 import Image from "next/image";
-import DynamicInput from "../inputsFields";
+// import DynamicInput from "../inputsFields";
+import DynamicInput from "../DynamicInputs";
 
-const Checklist = ({ data, id, isConnectable }: NodeProps<ChecklistNodeProps>) => {
+const Checklist = ({
+  data,
+  id,
+  isConnectable,
+}: NodeProps<ChecklistNodeProps>) => {
   const { parameters } = data;
 
   const initialParameters =
@@ -30,9 +33,7 @@ const Checklist = ({ data, id, isConnectable }: NodeProps<ChecklistNodeProps>) =
       label: "Select Intrest",
       type: "checkbox_field",
       required: true,
-      options: [
-        "Sports", "Music", "Reading"
-      ],
+      options: ["Sports", "Music", "Reading"],
       description: `select intrest.`,
       value: "",
       error: "",
@@ -52,9 +53,10 @@ const Checklist = ({ data, id, isConnectable }: NodeProps<ChecklistNodeProps>) =
     }));
   };
 
-
   const handleNextClick = () => {
-    const requiredParams = currentParameter ? Object.values(currentParameter).filter(param => param.required) : [];
+    const requiredParams = currentParameter
+      ? Object.values(currentParameter).filter(param => param.required)
+      : [];
 
     const allRequiredParamsFilled = requiredParams.every(param => param.value);
 
@@ -65,7 +67,9 @@ const Checklist = ({ data, id, isConnectable }: NodeProps<ChecklistNodeProps>) =
         const updatedState = { ...prevState };
 
         requiredParams.forEach(param => {
-          const key = prevState ? Object.keys(prevState).find(k => prevState[k] === param) : undefined;
+          const key = prevState
+            ? Object.keys(prevState).find(k => prevState[k] === param)
+            : undefined;
           if (key && !param.value) {
             updatedState[key] = {
               ...(prevState?.[key] ?? {}),
@@ -78,7 +82,6 @@ const Checklist = ({ data, id, isConnectable }: NodeProps<ChecklistNodeProps>) =
       });
     }
   };
-
 
   const handleDropdownClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -145,7 +148,6 @@ const Checklist = ({ data, id, isConnectable }: NodeProps<ChecklistNodeProps>) =
     });
   };
 
-
   return (
     <div>
       <div className="long-text-box" id="large-box">
@@ -166,17 +168,13 @@ const Checklist = ({ data, id, isConnectable }: NodeProps<ChecklistNodeProps>) =
               className="w-[140px] mx-auto"
             />
 
-            <div
-              className="absolute top-1/2 transform -translate-y-1/2 right-[-60px] flex items-center"
-            >
-              <div
-                className="h-px border-t-2 border-dashed border-[#2DA771] w-14 mr-1"
-              />
+            <div className="absolute top-1/2 transform -translate-y-1/2 right-[-60px] flex items-center">
+              <div className="h-px border-t-2 border-dashed border-[#2DA771] w-14 mr-1" />
               <Handle
                 type="source"
                 position={Position.Right}
                 className="w-5 h-5 bg-white border-2 border-[#2DA771] rounded-full flex items-center justify-center text-[#2DA771] text-lg font-bold transform translate-x-1/2 -translate-y-1/2 p-0 m-0 leading-none"
-                onConnect={(params) => console.log("handle onConnect", params)}
+                onConnect={params => console.log("handle onConnect", params)}
                 isConnectable={isConnectable}
               >
                 +
@@ -203,9 +201,7 @@ const Checklist = ({ data, id, isConnectable }: NodeProps<ChecklistNodeProps>) =
           </div>
         </div>
 
-
         {isDropdownOpen && (
-
           <div className="long-text-form bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] absolute left-1/2 transform -translate-x-1/2">
             <div className="long-text-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-2">
               <img
@@ -214,9 +210,7 @@ const Checklist = ({ data, id, isConnectable }: NodeProps<ChecklistNodeProps>) =
                 className="w-[20px] mb-2"
               />
 
-              <h5 className="text-sm text-[#14171B] font-medium">
-                Checklist
-              </h5>
+              <h5 className="text-sm text-[#14171B] font-medium">Checklist</h5>
             </div>
 
             {!isNextBoxOpen ? (
@@ -229,8 +223,6 @@ const Checklist = ({ data, id, isConnectable }: NodeProps<ChecklistNodeProps>) =
                         inputKey={key}
                         param={param}
                         handleInputChange={handleInputChange}
-                        toggleTooltip={toggleTooltip}
-                        visibleTooltip={visibleTooltip}
                       />
                     );
                   })}
@@ -252,8 +244,6 @@ const Checklist = ({ data, id, isConnectable }: NodeProps<ChecklistNodeProps>) =
                       inputKey={key}
                       param={param}
                       handleInputChange={handleInputChange}
-                      toggleTooltip={toggleTooltip}
-                      visibleTooltip={visibleTooltip}
                     />
                   ))}
 

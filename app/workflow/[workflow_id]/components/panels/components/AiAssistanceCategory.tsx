@@ -46,7 +46,7 @@ const AiAssistanceCategory = ({ setNodes }: any): React.ReactElement => {
                 </div>
 
                 <div className="overflow-y-auto">
-                    <div className="flex flex-wrap flex-row justify-evenly">
+                    <div className="flex flex-wrap flex-row gap-2">
                         {assistantHeader.map((item, index) => (
                             <div
                                 key={index}

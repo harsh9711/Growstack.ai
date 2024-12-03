@@ -9,13 +9,13 @@ const TopRightPanel1st = (): React.ReactElement => {
     const dispatch = useAppDispatch();
     const [isPopupVisible, setIsPopupVisible] = useState(false);
     const { workFlowData } = useAppSelector(state => state.workflows);
-    const { variables } = useAppSelector(state => state.nodes);
-    console.log("variables--->", variables);
+    const { variables, nodes } = useAppSelector(state => state.nodes);
+    console.log("variables--->", nodes);
 
     const runWorkFlow = async () => {
         try {
             const data = variables
-                .filter((variable, index) => variable.variableType === "inputType")
+                .filter((variable, index) => variable.variableType === "inputType" && index === 0)
                 ?.map(variable => ({
                     variableName: variable.variableName,
                     variableValue: variable.variableValue,

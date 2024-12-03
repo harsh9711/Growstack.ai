@@ -1,19 +1,21 @@
+
 import React, { memo, useState } from "react";
 import { Handle, Position, type NodeProps, useReactFlow } from "@xyflow/react";
-import { GeneralInputNodeProps } from "./types";
-import DynamicInput from "../DynamicInputs";
+import { GeneralInputNodeProps } from "../types";
+import DynamicInput from "../../DynamicInputs";
 import { extractParameterValues } from "@/utils/dataResolver";
+import { convertToUnderscore } from "@/utils/helper";
 import {
     addVariable,
     deleteNodeById,
     removeNodeById,
+    updateNode,
     updateNodeById,
-    updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { WorkflowNodeState } from "@/types/workflows";
 
-const GeneralInputNodes = memo(
+const GmailNode = memo(
     ({
         data,
         isConnectable,
@@ -21,24 +23,56 @@ const GeneralInputNodes = memo(
         positionAbsoluteX,
         positionAbsoluteY,
     }: NodeProps<GeneralInputNodeProps>) => {
-        // const { parameters, nodeMasterId } = data;
-
-
-        console.log("id-->", id);
+        const { parameters, nodeMasterId } = data;
 
         const { setNodes } = useReactFlow();
         const dispatch = useAppDispatch();
-
         const { workFlowData } = useAppSelector(state => state.workflows);
-        const { isLoading } = useAppSelector(state => state.nodes);
-        const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
+        const { nodes, variables, isLoading } = useAppSelector(state => state.nodes);
 
-        const node = useAppSelector(state =>
-            state.nodes.nodes.find(node => node.id === id)
-        );
-        // console.log("node-->", JSON.stringify(node, null, 2));
+        // console.log("---nodes----", JSON.stringify(variables, null, 2));
+
+        const initialParameters =
+            parameters &&
+            Object.entries(parameters).reduce(
+                (acc: { [key: string]: any }, [key, param]: [string, any]) => {
+                    acc[key] = {
+                        ...param,
+                        value: "",
+                        error: "",
+                    };
+                    return acc;
+                },
+                {}
+            );
+
+        const [currentParameter, setCurrentParameter] = useState(initialParameters);
+        const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
+        const [nextParameter, setNextParameter] = useState<{ [key: string]: any }>({
+            "6": {
+                label: "Topic",
+                type: "text_topic",
+                placeholder: "Enter Topic",
+                required: false,
+                options: [],
+                description: `Add Topic`,
+                value: "",
+                error: "",
+            },
+        });
+        const [variableName, setVariableName] = useState<string>("");
         const [isNextBoxOpen, setIsNextBoxOpen] = useState(false);
         const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+        const [visibleTooltip, setVisibleTooltip] = useState<{
+            [key: string]: boolean;
+        }>({});
+
+        const toggleTooltip = (index: string, isVisible: boolean) => {
+            setVisibleTooltip(prevState => ({
+                ...prevState,
+                [index]: isVisible,
+            }));
+        };
 
         const getInputType = (label: string) => {
             switch (label) {
@@ -59,47 +93,119 @@ const GeneralInputNodes = memo(
             }
         };
 
+        const handleUpdateParameter = (id: string) => {
+            let updatedData = nodes.find(node => node.id === id);
+
+            if (updatedData) {
+                updatedData = {
+                    ...updatedData,
+                    data: {
+                        ...updatedData.data,
+                        parameters: currentParameter,
+                    },
+                };
+
+                console.log("---updatedData---", updatedData);
+                dispatch(updateNode(updatedData));
+            }
+        };
+
         const handleDropdownClick = () => {
             setIsDropdownOpen(!isDropdownOpen);
         };
 
-        const handleInputChange = (key: any, type: any, value: any) => {
-            console.log("key-->", key, "type-->", type, "value-->", value);
-            dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
+        const handleInputChange = (
+            key: string,
+            type: string,
+            value: string | boolean
+        ) => {
+            // console.log("key-->", key, "type-->", type, "value-->", value);
+
+            if (typeof value === "boolean") {
+                setCurrentParameter(prevState => ({
+                    ...prevState,
+                    [key]: {
+                        ...(prevState?.[key] || {}),
+                        value: value,
+                        error: "",
+                    },
+                }));
+
+                return;
+            }
+
+            setCurrentParameter(prevState => {
+                const updatedState = {
+                    ...prevState,
+                    [key]: {
+                        ...(prevState?.[key] || {}),
+                        value:
+                            type === "text_variable_name"
+                                ? convertToUnderscore(value)
+                                : value,
+                        error: "",
+                    },
+                };
+
+                if (type === "text_input_label") {
+                    const variableNameKey = prevState
+                        ? Object.keys(prevState).find(
+                            k => prevState[k].type === "text_variable_name"
+                        )
+                        : undefined;
+                    if (variableNameKey) {
+                        updatedState[variableNameKey] = {
+                            ...(prevState?.[variableNameKey] || {}),
+                            value: convertToUnderscore(value),
+                            error: "",
+                        };
+                    }
+                }
+                if (type === "text_variable_name" || type === "text_input_label") {
+                    const variableValue = convertToUnderscore(value);
+                    setVariableName(variableValue);
+                }
+                return updatedState;
+            });
         };
 
         const handleNextClick = async () => {
-            if (!node?.data?.parameters) return;
+            if (!currentParameter) return;
 
-            const requiredParams = Object.values(node.data.parameters).filter(
-                param => param.required
-            );
+            const requiredParams = currentParameter
+                ? Object.values(currentParameter).filter(param => param.required)
+                : [];
+
             const allRequiredParamsFilled = requiredParams.every(
-                param => param?.value
+                param => param.value
             );
 
             if (allRequiredParamsFilled) {
-                const updatedValue = extractParameterValues(node.data.parameters);
+                // update variable
 
-                console.log("updatedValue-->", updatedValue);
+                // update node with parameters value
+                handleUpdateParameter(id);
+
+                const updatedValue = extractParameterValues(currentParameter);
 
                 dispatch(
                     addVariable({
                         nodeID: id,
-                        variableName: node?.data?.parameters?.variableName?.value || "",
+                        variableName: variableName,
                         workflowID: workFlowData._id || "",
                         variableValue:
                             updatedValue.defaultValue ||
                             updatedValue.fileType ||
                             updatedValue.options,
-                        variableType: "inputType",
+                        variableType: "input",
                     })
                 );
+                // console.log("updatedValue-->", updatedValue);
 
                 try {
                     const bodyPayload = {
                         workflowId: workFlowData._id,
-                        nodeMasterId: node.data.nodeMasterId,
+                        nodeMasterId,
                         position: { x: positionAbsoluteX, y: positionAbsoluteY },
                         dependencies: [],
                         parameters: updatedValue,
@@ -107,49 +213,48 @@ const GeneralInputNodes = memo(
 
                     await dispatch(
                         updateNodeById({
-                            id: id,
+                            id,
                             data: bodyPayload as unknown as WorkflowNodeState,
                         })
                     );
 
-                    dispatch(
-                        updateNodeParameter({
-                            nodeId: id,
-                            key: "nextParameter",
+                    setNextParameter({
+                        "6": {
                             label: updatedValue.inputLabel,
-                            type: getInputType(node?.data?.label),
+                            type: getInputType(data?.label),
+                            placeholder: updatedValue.placeholder,
+                            required: updatedValue.required,
+                            options: [],
+                            description: updatedValue.description,
                             value:
-                                updatedValue?.defaultValue ||
+                                updatedValue.defaultValue ||
                                 updatedValue.fileType ||
                                 updatedValue.options,
-                            placeholder: updatedValue?.placeholder,
-                            required: !!updatedValue?.required,
-                            description: updatedValue?.description,
                             error: "",
-                        })
-                    );
+                        },
+                    });
 
                     setIsNextBoxOpen(true);
                 } catch (error: any) {
                     console.error("error-->", error?.message);
                 }
             } else {
-                requiredParams.forEach(param => {
-                    const key = node?.data?.parameters
-                        ? Object.keys(node.data.parameters).find(
-                            k => node.data.parameters?.[k] === param
-                        )
-                        : undefined;
-                    if (key && !param.value) {
-                        dispatch(
-                            updateNodeParameter({
-                                nodeId: id,
-                                key: key,
-                                type: "error",
-                                value: "This field is required",
-                            })
-                        );
-                    }
+                setCurrentParameter(prevState => {
+                    const updatedState = { ...prevState };
+
+                    requiredParams.forEach(param => {
+                        const key = prevState
+                            ? Object.keys(prevState).find(k => prevState[k] === param)
+                            : undefined;
+                        if (key && !param.value) {
+                            updatedState[key] = {
+                                ...(prevState?.[key] ?? {}),
+                                error: "This field is required",
+                            };
+                        }
+                    });
+
+                    return updatedState;
                 });
             }
         };
@@ -175,6 +280,8 @@ const GeneralInputNodes = memo(
 
                             <input
                                 type="text"
+                                // value={data?.descriptions || ""}
+                                // onChange={handleDescriptionChange}
                                 className="text-xs font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0"
                                 placeholder="Enter description"
                             />
@@ -251,23 +358,22 @@ const GeneralInputNodes = memo(
                             </div>
                             {!isNextBoxOpen ? (
                                 <div className="form-box">
-                                    {node?.data?.parameters &&
-                                        Object.entries(node.data.parameters).filter(
-                                            ([key, param]: any) =>
-                                                param.required || showAdvancedOptions
-                                        ).map(([key, param]) => {
-                                            if (key === "nextParameter") {
-                                                return null;
-                                            }
-                                            return (
-                                                <DynamicInput
-                                                    key={key}
-                                                    inputKey={key}
-                                                    param={param}
-                                                    handleInputChange={handleInputChange}
-                                                />
-                                            );
-                                        })}
+                                    {currentParameter &&
+                                        Object.entries(currentParameter)
+                                            .filter(
+                                                ([key, param]: any) =>
+                                                    param.required || showAdvancedOptions
+                                            )
+                                            .map(([key, param]: any) => {
+                                                return (
+                                                    <DynamicInput
+                                                        key={key}
+                                                        inputKey={key}
+                                                        param={param}
+                                                        handleInputChange={handleInputChange}
+                                                    />
+                                                );
+                                            })}
                                     <div className="advance-option-button-box mb-3">
                                         <button
                                             onClick={handleToggleAdvancedOptions}
@@ -296,21 +402,22 @@ const GeneralInputNodes = memo(
                                 </div>
                             ) : (
                                 <div className="form-box">
-                                    {node?.data?.parameters?.nextParameter && (
-                                        <DynamicInput
-                                            key="nextParameter"
-                                            inputKey="nextParameter"
-                                            param={node.data.parameters.nextParameter}
-                                            handleInputChange={() => { }}
-                                        />
-                                    )}
+                                    {nextParameter &&
+                                        Object.entries(nextParameter).map(([key, param]: any) => (
+                                            <DynamicInput
+                                                key={key}
+                                                inputKey={key}
+                                                param={param}
+                                                handleInputChange={handleInputChange}
+                                            />
+                                        ))}
 
-                                    {node?.data?.parameters?.variableName?.value && (
+                                    {variableName && (
                                         <div className="text-box mb-5">
                                             <h4 className="text-[#14171B] flex items-center gap-2 font-medium text-sm">
                                                 Variable name:{" "}
                                                 <span className="bg-[#FFE6FF] text-[#14171B] text-[12px] rounded-[20px] font-medium pt-3 pb-3 pr-4 pl-4">
-                                                    {node.data.parameters.variableName.value}
+                                                    {variableName}
                                                 </span>
                                             </h4>
                                         </div>
@@ -336,4 +443,4 @@ const GeneralInputNodes = memo(
     }
 );
 
-export default GeneralInputNodes;
+export default GmailNode;

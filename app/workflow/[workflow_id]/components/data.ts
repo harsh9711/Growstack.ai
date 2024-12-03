@@ -2807,6 +2807,36 @@ export const AllData: AllDataState[] = [
       type: "growstack-llm",
       position: { x: 0, y: 0 },
       data: {
+        nodeMasterId: "",
+        label: "growstack-llm",
+        inputs: [
+          {
+            variable_type: "VIDEO",
+            variable_label: "url",
+            variable_value: "",
+            variable_values: [],
+          },
+        ],
+      },
+    },
+  },
+  {
+    id: 661,
+    name: "Gmail",
+    category: "integrations",
+    subCategory: "Team Communication",
+    image: {
+      src: "/svgs/gmail.svg",
+      alt: "Slack",
+      width: 44,
+      height: 40,
+    },
+    node: {
+      id: Date.now().toString(),
+      type: "gmail",
+      position: { x: 0, y: 0 },
+      data: {
+        nodeMasterId: "",
         label: "growstack-llm",
         inputs: [
           {

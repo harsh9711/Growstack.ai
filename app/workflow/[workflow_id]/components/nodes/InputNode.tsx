@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { type NodeProps } from "@xyflow/react";
 import { type ShortTextNodeProps } from "./types";
-import DynamicInput from "../inputsFields";
 
 const InputNode = ({ data, id }: NodeProps<ShortTextNodeProps>) => {
     const { parameters, label, icon } = data as {

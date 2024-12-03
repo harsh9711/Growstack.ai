@@ -66,16 +66,17 @@ export interface AllDataState {
 
 export interface Option {
   label: string;
-  key: string;
+  value: string;
 }
 
 export interface NodeParameter {
   label: string;
   type: string;
   required: boolean;
+  placeholder?: string;
   options?: Option[] | undefined;
   description?: string;
-  value?: string;
+  value?: any;
   error?: string;
 }
 
@@ -151,4 +152,23 @@ export interface WorkflowState {
   workFlowData: WorkflowDataState;
   isLoading: boolean;
   error: any;
+}
+
+export interface VariableNameProps {
+  nodeId: string;
+  variableName: string;
+}
+
+export interface DynamicInputProps {
+  param: NodeParameter;
+  inputKey: string;
+  handleInputChange: (
+    key: string,
+    type: string,
+    value: any,
+    dependencies?: string
+  ) => void;
+  variableNames?: any[];
+  focusedInputKey?: string | null;
+  setFocusedInputKey?: React.Dispatch<React.SetStateAction<string | null>>;
 }
