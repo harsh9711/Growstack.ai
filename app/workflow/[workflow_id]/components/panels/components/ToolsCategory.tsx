@@ -18,6 +18,7 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
   const { nodes } = useAppSelector(state => state.nodes);
   const { masterNode } = useAppSelector(state => state.masterNode);
   const { workFlowData } = useAppSelector(state => state.workflows);
+  
 
   if ((masterNode && !masterNode.length) || !masterNode) {
     return <div>Data not found</div>;
@@ -97,12 +98,13 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
   //   }
   // };
 
-
   const handleClick = async (nodeData: NodeState) => {
     try {
       const lastNode = nodes[nodes.length - 1];
       const { nextNodeX, nextNodeY } = calculateNextNodePosition(lastNode);
-      const toolsNodes = nodes.filter(nds => nds.data.label === nodeData.data.label);
+      const toolsNodes = nodes.filter(
+        nds => nds.data.label === nodeData.data.label
+      );
 
       const resultAction = await dispatch(
         createNode({
@@ -124,16 +126,19 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
           parameters: {
             ...nodeData.data.parameters,
             variableName: {
-              ...nodeData.data.parameters?.variableName ?? {},
+              ...(nodeData.data.parameters?.variableName ?? {}),
               value: toolsNodes?.length
                 ? `${convertToUnderscore(nodeData.data.label)}${toolsNodes.length}`
                 : convertToUnderscore(nodeData.data.label),
               label: nodeData.data.parameters?.variableName?.label || "",
               type: nodeData.data.parameters?.variableName?.type || "",
-              required: nodeData.data.parameters?.variableName?.required ?? true,
-              placeholder: nodeData.data.parameters?.variableName?.placeholder || "",
+              required:
+                nodeData.data.parameters?.variableName?.required ?? true,
+              placeholder:
+                nodeData.data.parameters?.variableName?.placeholder || "",
               options: nodeData.data.parameters?.variableName?.options || [],
-              description: nodeData.data.parameters?.variableName?.description || "",
+              description:
+                nodeData.data.parameters?.variableName?.description || "",
               error: nodeData.data.parameters?.variableName?.error || "",
             },
           },
@@ -180,22 +185,24 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
           <hr className="border-none border-t border-[#E5E5E5] my-5" />
         </div>
 
-        <div className="overflow-y-auto">
-          <div className="flex flex-wrap flex-row justify-evenly">
+        <div className="main-box">
+          <div className="flex flex-wrap flex-row gap-2 mb-4">
             {Object?.keys(groupedIntegrations).map((subCategory, index) => (
               <div
                 key={index}
-                className={`flex flex-row m-0.5 p-2.5 rounded-lg items-center cursor-pointer ${selectedSubCategory === subCategory
-                  ? "bg-[#F1B916]"
-                  : "bg-[#E9E9E9]"
-                  }`}
+                className={`flex flex-row p-3 rounded-lg items-center cursor-pointer ${
+                  selectedSubCategory === subCategory
+                    ? "bg-[#F1B916]"
+                    : "bg-[#E9E9E9]"
+                }`}
                 onClick={() => setSelectedSubCategory(subCategory)}
               >
                 <p
-                  className={`ml-2 text-sm font-normal leading-4 flex items-center gap-2 ${selectedSubCategory === subCategory
-                    ? "text-white"
-                    : "text-[#14171B]"
-                    }`}
+                  className={`ml-2 text-sm font-normal leading-4 flex items-center gap-2 ${
+                    selectedSubCategory === subCategory
+                      ? "text-white"
+                      : "text-[#14171B]"
+                  }`}
                 >
                   <svg
                     width="20"
@@ -218,11 +225,11 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
             ))}
           </div>
 
-          <div className="flex flex-col p-2.5">
+          <div className="">
             {groupedIntegrations[selectedSubCategory]?.map(item => (
               <div
                 key={item.node.id}
-                className="h-auto w-full bg-transparent m-1 rounded-lg flex justify-center items-center cursor-pointer border border-[#E5E5E5] p-3"
+                className="h-auto w-full bg-transparent mb-2 rounded-lg flex justify-center items-center cursor-pointer border border-[#E5E5E5] p-3"
                 onClick={() => handleClick(item.node)}
                 draggable
                 onDragStart={event => {

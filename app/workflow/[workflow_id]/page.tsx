@@ -37,7 +37,11 @@ import { unwrapResult } from "@reduxjs/toolkit";
 import Run from "@/app/(main-app)/app/automation-hub/workflow-builder/workflows/[slug]/components/layout/RunV2";
 import TimeLineTable from "@/components/timeLineTabel/TimeLineTabel";
 import { convertToUnderscore } from "@/utils/helper";
+<<<<<<< HEAD
 import { resolveWorkflowNodes } from "@/utils/dataResolver";
+=======
+import { SnackbarProvider } from "./components/snackbar/SnackbarContext";
+>>>>>>> 0f9cf97fb18e243cf79c8125bafd4d54cbda43e3
 
 interface DragEvent extends React.DragEvent<HTMLDivElement> { }
 interface PageProps {
