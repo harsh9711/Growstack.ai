@@ -4,7 +4,7 @@ import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { llmComparisonModels } from "../ai-articles/constants/options";
+import { llmComparisonModels } from "../../components/options";
 import ChatArea from "./component/chatArea";
 import NewChatAlert from "./component/newChatArea";
 import { Message } from "./interface/playground";
@@ -46,8 +46,6 @@ export default function AiPlayground() {
   const [userPrompt, setUserPrompt] = useState<string>("");
   const [chatAreas, setChatAreas] = useState<ChatAreaType[]>(initialChat);
   const [responseLoading, isResponseLoading] = useState(false);
-
-  const [retainedMessage, setRetainedMessage] = useState<string>("");
 
   const getNextAvailableId = (): number => {
     const usedIds = chatAreas.map(area => area.id);
@@ -114,7 +112,6 @@ export default function AiPlayground() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    // renderConversation()
   };
 
   const renderConversation = async (chatMessage?: string) => {

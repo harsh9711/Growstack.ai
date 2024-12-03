@@ -126,18 +126,6 @@ const Animation = () => {
             }}
           >
             <div className="relative max-w-[95.78px] sm:flex hidden max-h-[53.45px]  sm:max-w-[250px] w-full sm:max-h-[150px] h-full border-none">
-              {/* <video
-                className="absolute top-0 left-0 w-full h-full object-cover border-none outline-none"
-                width="320"
-                height="240"
-                controls={false}
-                playsInline
-                muted
-                autoPlay
-                loop
-              >
-                <source src="/video.mp4" type="video/mp4" />
-              </video> */}
               <Image
                 src={`/landingpage/l${item.id}.svg`}
                 width={650}
@@ -158,13 +146,12 @@ const Animation = () => {
               </h2>
               <HoverVideoPlayer
                 className="w-full h-full rounded-md sm:rounded-2xl border-none outline-none"
-                videoSrc={`/landingpage/Box ${item.id}.mp4`}
+                videoSrc={item.videos}
                 pausedOverlay={
                   <img
                     src={`/landingpage/img${item.id}.svg`}
                     alt=""
                     className="rounded-2xl flex"
-                   
                   />
                 }
                 loadingOverlay={
@@ -208,7 +195,6 @@ const Animation = () => {
                     src={`/landingpage/img${item.id}.svg`}
                     alt=""
                     className="rounded-2xl flex"
-                   
                   />
                 }
                 loadingOverlay={
@@ -225,7 +211,7 @@ const Animation = () => {
           </div>
         </div>
       ))}
-      <div className="absolute  -translate-x-20 translate-y-[265px]  z-0 ">
+      <div className="absolute -translate-x-20 translate-y-[265px]  z-0 ">
         {/* <svg
           width="273"
           height="2498"

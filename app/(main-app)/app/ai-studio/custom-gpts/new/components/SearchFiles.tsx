@@ -122,7 +122,6 @@ const SearchFiles = ({
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
-            {/* <CircleAlert size={21} /> */}
           </span>
         </div>
         <FileUploadModal

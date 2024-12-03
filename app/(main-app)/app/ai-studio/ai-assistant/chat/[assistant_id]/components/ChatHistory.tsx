@@ -5,7 +5,6 @@ import { Plus } from "lucide-react";
 import { useState, useEffect } from "react";
 import instance from "@/config/axios.config";
 import { Chat } from "../../../components/types";
-import { API_URL } from "@/lib/api";
 
 interface IProps {
   isOpen: boolean;
@@ -13,8 +12,8 @@ interface IProps {
   assistant_id: string;
   newChat: boolean;
   setNewChat: (value: boolean) => void;
-  messages : Chat[];
-  convId:any
+  messages: Chat[];
+  convId: any;
   setConvId: (convoId: string) => void;
 }
 
@@ -26,7 +25,7 @@ export default function ChatHistory({
   setNewChat,
   setConvId,
   messages,
-  convId
+  convId,
 }: IProps) {
   const [chatHistory, setChatHistory] = useState<Chat[]>([]);
 
@@ -40,7 +39,9 @@ export default function ChatHistory({
             assistant_id: assistant_id,
           }
         );
-        const filteredChats = response.data.filter((item: any) => item.chats.length > 0);
+        const filteredChats = response.data.filter(
+          (item: any) => item.chats.length > 0
+        );
         setChatHistory(filteredChats);
       } catch (error) {
         console.error("Error fetching chat history:", error);
@@ -50,13 +51,9 @@ export default function ChatHistory({
     fetchChatHistory();
   }, [messages]);
 
-
   const handleSelectedConvo = (convoId: string) => {
-    console.log("===========================+++++++++++++++++++", convoId);
     setConvId(convoId);
   };
-
-
 
   return (
     <div
@@ -110,8 +107,6 @@ export default function ChatHistory({
                 convId === chat._id ? "bg-gray-200" : ""
               }`}
             >
-              {/* {chat._id} */}
-
               <div className="h-14 flex gap-4 w-full items-center relative overflow-hidden">
                 <MessageIcon2 className="group-hover:text-primary-green w-full max-w-fit" />
                 <span className="flex-1 whitespace-nowrap overflow-hidden text-ellipsis">

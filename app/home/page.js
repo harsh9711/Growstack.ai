@@ -137,9 +137,8 @@ function Page() {
           </div>
         </div>
       </div>
-     
       <SixCardVideo />
-      <Carousel/>
+      <Carousel />
       <Animation />
       {/* <Facts /> */}
       {/* <Carousel /> */}

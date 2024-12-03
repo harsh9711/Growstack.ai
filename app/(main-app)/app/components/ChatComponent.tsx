@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { aiModelOptions } from "../ai-studio/ai-articles/constants/options";
+import { aiModelOptions } from "./options";
 import clsx from "clsx";
 import ChatInput from "../ai-studio/ai-chat/components/ChatInput";
 import DashboardChatModal from "./DashboardchatModal";

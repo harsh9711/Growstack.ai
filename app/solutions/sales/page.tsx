@@ -15,7 +15,6 @@ import ImageGalleryResponsive from "./components/ZoomEffectrespopnsive";
 import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
 import { motion, inView } from "framer-motion";
 import MarketingTechnology from "../largeenterprise/components/marketingTechnology/MarketingTechnology";
-import Banner from "./banner/Banner";
 import Link from "next/link";
 import Footer from "@/components/footer/Footer";
 
@@ -86,31 +85,6 @@ const page = () => {
                       </button>{" "}
                     </Link>
                   </div>
-
-                  {/* <div
-                    data-aos="fade-right"
-                    data-aos-duration="1500"
-                    className="flex  flex-wrap gap-4"
-                  >
-                    <button className="flex items-center gap-2   text-primary-green rounded-xl">
-                      <Image
-                        className="w-full  h-full"
-                        src="/play2.png"
-                        alt="Apple"
-                        width={180}
-                        height={400}
-                      />
-                    </button>
-                    <button className="flex items-center gap-2   text-primary-green rounded-xl">
-                      <Image
-                        className="w-full  h-full "
-                        src="/apple2.png"
-                        alt="Apple"
-                        width={180}
-                        height={400}
-                      />
-                    </button>
-                  </div> */}
                 </div>
               </div>
             </div>
@@ -132,7 +106,6 @@ const page = () => {
             </div>
           </div>
         </div>
-        {/* <Banner /> */}
       </section>
 
       <section className="relative mx-auto items-center justify-center 2xl:py-20 bg-white overflow-hidden">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import ChatInput from "./ChatInput";
 import ChatMessages from "./ChatMessages";
 import { Assistant, Chat, Conversation } from "../../../components/types";
@@ -12,8 +12,8 @@ interface ChatSectionProps {
   newChat: boolean;
   setNewChat: (value: boolean) => void;
   convId: string;
-  setMessages:(value: any) => void;
-  messages:any
+  setMessages: (value: any) => void;
+  messages: any;
   setConvId: (value: string) => void;
 }
 
@@ -28,13 +28,11 @@ const ChatSection: React.FC<ChatSectionProps> = ({
   convId,
   messages,
   setConvId,
-  setMessages
+  setMessages,
 }) => {
-  // const [messages, setMessages] = useState<Chat[]>([]);
-
   useEffect(() => {
     if (conversation) {
-    setMessages(conversation.chats);
+      setMessages(conversation.chats);
     }
   }, [conversation]);
 
@@ -72,10 +70,6 @@ const ChatSection: React.FC<ChatSectionProps> = ({
         />
       </div>
       <div className="space-y-4">
-        {/* <ChatOptions
-          switchLanguage={switchLanguage}
-          selectedLanguage={selectedLanguage}
-        /> */}
         <ChatInput
           selectedModel={selectedAiModel}
           assistant_id={assistant.id}
@@ -85,7 +79,6 @@ const ChatSection: React.FC<ChatSectionProps> = ({
           newChat={newChat}
           setNewChat={setNewChat}
           convId={convId}
-
         />
       </div>
     </div>

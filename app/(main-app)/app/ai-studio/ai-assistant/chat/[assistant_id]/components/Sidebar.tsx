@@ -46,10 +46,6 @@ export default function Sidebar({ isOpen, onClose, assistant_id }: IProps) {
     fetchAssistants();
   }, [assistant_id]);
 
-  // const filteredAssistants = useMemo(() => {
-  //   return assistants.filter((assistant) => assistant.id !== assistant_id);
-  // }, [assistants, assistant_id]);
-
   const filteredAssistants = useMemo(() => {
     return assistants.filter(
       assistant =>
