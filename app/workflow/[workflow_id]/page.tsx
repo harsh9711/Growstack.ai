@@ -29,19 +29,13 @@ import {
 } from "@/lib/features/workflow/workflow.slice";
 import { useRouter } from "next/navigation";
 import ConnectionLine from "./components/edges/ConnectionLine";
-import {
-    addNode,
-    createNode,
-} from "@/lib/features/workflow/node.slice";
+import { addNode, createNode } from "@/lib/features/workflow/node.slice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import Run from "@/app/(main-app)/app/automation-hub/workflow-builder/workflows/[slug]/components/layout/RunV2";
 import TimeLineTable from "@/components/timeLineTabel/TimeLineTabel";
 import { convertToUnderscore } from "@/utils/helper";
-<<<<<<< HEAD
 import { resolveWorkflowNodes } from "@/utils/dataResolver";
-=======
 import { SnackbarProvider } from "./components/snackbar/SnackbarContext";
->>>>>>> 0f9cf97fb18e243cf79c8125bafd4d54cbda43e3
 
 interface DragEvent extends React.DragEvent<HTMLDivElement> { }
 interface PageProps {
@@ -368,12 +362,14 @@ const WorkflowPage: React.FC<PageProps> = ({ params: { workflow_id } }) => {
     return (
         <div className="h-[calc(100vh-60px)] w-full">
             {/* <TopRightPanel2nd setActiveTab={setActiveTab} /> */}
-            <ReactFlowProvider>
-                <Workflow workflow_id={workflow_id} />
-                {/* {activeTab === 0 && <Workflow workflow_id={workflow_id} />}
+            <SnackbarProvider>
+                <ReactFlowProvider>
+                    <Workflow workflow_id={workflow_id} />
+                    {/* {activeTab === 0 && <Workflow workflow_id={workflow_id} />}
                 {activeTab === 1 && <Run workflowId={workflow_id} />}
                 {activeTab === 2 && <TimeLineTable workflow_id={workflow_id} />} */}
-            </ReactFlowProvider>
+                </ReactFlowProvider>
+            </SnackbarProvider>
         </div>
     );
 };
