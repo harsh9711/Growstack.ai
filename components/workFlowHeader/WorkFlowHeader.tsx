@@ -1,6 +1,6 @@
 import React from "react";
 
-const workflowData = {
+const workflowDummyData = {
   workflowName: "Google Sheet post posting on Social media",
   description:
     "The Workflow streamlines project management by automating task assignments and tracking progress, ensuring efficient collaboration among team members.",
@@ -14,7 +14,7 @@ const workflowData = {
   },
 };
 
-function WorkFlowHeader() {
+function WorkFlowHeader({ workFlowData }: any) {
   return (
     <div className="border-l-4 border-[#27C9AA] mt-6 w-full bg-white p-6 rounded-lg shadow-lg relative overflow-hidden">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pl-4">
@@ -24,28 +24,28 @@ function WorkFlowHeader() {
             Workflow Name & Description:
           </h1>
           <h2 className="text-sm font-semibold text-gray-800 mb-2">
-            {workflowData.workflowName}
+            {workFlowData?.name ?? "Untitled Workflow"}
           </h2>
-          <p className="text-sm text-gray-600">{workflowData.description}</p>
+          <p className="text-sm text-gray-600">{workFlowData?.description}</p>
         </div>
 
         {/* Right Section */}
         <div>
-          <div className="grid grid-cols-6 text-sm text-gray-600 mb-4">
+          <div className="flex gap-6 text-sm text-gray-600 mb-4">
             <div>
               <span className="text-xs font text-gray-400">Workflow ID:</span>{" "}
-              <div className="font-semibold">{workflowData.workflowID}</div>
+              <div className="font-semibold">{workFlowData?.workflow_id}</div>
             </div>
             <div>
               <span className="text-xs font text-gray-400">Total Runs:</span>{" "}
-              <div className="font-semibold">{workflowData.totalRuns}</div>
+              <div className="font-semibold">{workflowDummyData.totalRuns}</div>
             </div>
             <div>
               <span className="text-xs font text-gray-400">
                 Avg Run Duration:
               </span>{" "}
               <div className="font-semibold">
-                {workflowData.averageRunDuration}
+                {workflowDummyData.averageRunDuration}
               </div>
             </div>
           </div>
@@ -56,13 +56,13 @@ function WorkFlowHeader() {
               Execution Status Summary :
             </p>
             <p className="text-green-600  text-[14px]">
-              Success: {workflowData.executionStatus.success}
+              Success: {workflowDummyData.executionStatus.success}
             </p>
             <p className="text-red-600  text-[14px]">
-              Failed: {workflowData.executionStatus.failed}
+              Failed: {workflowDummyData.executionStatus.failed}
             </p>
             <p className="text-yellow-600  text-[14px]">
-              In Progress: {workflowData.executionStatus.inProgress}
+              In Progress: {workflowDummyData.executionStatus.inProgress}
             </p>
           </div>
         </div>

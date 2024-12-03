@@ -1,6 +1,9 @@
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import rehypeRaw from "rehype-raw";
+import remarkGfm from "remark-gfm";
+import remarkBreaks from "remark-breaks";
 
 const AccordionComponent = ({ runSummaryData }: any) => {
   // Convert object to key-value pairs array
@@ -16,7 +19,16 @@ const AccordionComponent = ({ runSummaryData }: any) => {
   const toggleAccordion = (index: any) => {
     setOpenIndex(openIndex === index ? null : index);
   };
-
+  const formatToMarkdown = (text: string) => {
+    // First remove the markdown code block syntax if present
+    let cleanText = text.replace(/^```markdown\n|\n```$/g, "");
+    // Convert escaped newlines to actual newlines
+    cleanText = cleanText.replace(/\\n/g, "\n");
+    // Format lists as before
+    cleanText = cleanText.replace(/(-\s|\d+\.\s)/g, "\n$1");
+    cleanText = cleanText.replace(/(\n- |\n\d+\.\s)/g, "\n\n$1");
+    return cleanText.trim();
+  };
   return (
     <>
       {runSummaryData?.status === "completed" && (
@@ -47,9 +59,15 @@ const AccordionComponent = ({ runSummaryData }: any) => {
                 {/* Accordion Content */}
                 {openIndex === index && (
                   <div className="p-4 border-t border-gray-200">
-                    <ReactMarkdown>
-                      {item?.content}
-                    </ReactMarkdown>
+                    <div className="prose prose-sm max-w-none">
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm, remarkBreaks]}
+                          rehypePlugins={[rehypeRaw]}
+                          
+                        >
+                          {formatToMarkdown(item?.content)}
+                        </ReactMarkdown>
+                      </div>
                   </div>
                 )}
               </div>

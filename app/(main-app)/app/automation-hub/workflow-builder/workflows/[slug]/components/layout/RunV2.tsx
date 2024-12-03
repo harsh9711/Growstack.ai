@@ -107,8 +107,6 @@ const Run: React.FC<Props> = ({ workflowId }) => {
     }
   };
 
-  console.log("workflowData", workFlowData);
-
   const handleRunWorkFlow = useCallback(async () => {
     const updatedWorkflowData = workFlowData.input_configs.map((data: any) => ({
       variableName: data.variableName,
@@ -157,8 +155,6 @@ const Run: React.FC<Props> = ({ workflowId }) => {
     }
   }, [pollingWorkflowExec, executionId]);
 
-  console.log("runSummaryData", runSummaryData);
-
   const handleFileUploaded = (fileUrl: string, idx: number) => {
     setFileUrl2(fileUrl);
     const updatedInputs = [...workFlowData.input_configs];
@@ -199,7 +195,6 @@ const Run: React.FC<Props> = ({ workflowId }) => {
     if (workflowId) {
       fetchWorkflowData(workflowId)
         .then(data => {
-          console.log(data, "data");
           //   if (tab && preFilled && runnerId) {
           //     fetchRunnerData(runnerId);
           //   }
@@ -224,7 +219,7 @@ const Run: React.FC<Props> = ({ workflowId }) => {
   return (
     <div className="px-8 pb-8">
       <div>
-        <WorkFlowHeader />
+        <WorkFlowHeader workFlowData={workFlowData} />
         <Motion
           transition={{ duration: 0.5 }}
           variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
