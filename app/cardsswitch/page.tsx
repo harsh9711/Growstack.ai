@@ -35,7 +35,7 @@ export const cases = [
     id: 4,
     text: "Need content? GrowStack has it covered, as effortlessly as  ",
     imageUrl: "/landingpagerevamp/4.svg",
-    name: "MJ's moonwalkr",
+    name: "MJ's moonwalker",
     description: "",
   },
   {
