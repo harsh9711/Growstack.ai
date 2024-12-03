@@ -1,4 +1,4 @@
-export const frequency_options = ["daily", "weekly", "monthly", "custom"];
+export const frequency_options = ["daily", "weekly", "monthly"];
 export const days_of_week = [
   "Monday",
   "Tuesday",

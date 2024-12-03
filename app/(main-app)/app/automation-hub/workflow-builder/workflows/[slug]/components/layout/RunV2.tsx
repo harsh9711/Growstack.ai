@@ -377,6 +377,9 @@ const Run: React.FC<Props> = ({ workflowId }) => {
                 <OutputDetails
                   outputDetailsData={outputDetailsData}
                   executionId={executionId}
+                  onPollingWithNewId={(newExeId: string) =>
+                    setExecutionId(newExeId)
+                  }
                   workflowId={workflowId}
                 />
               ) : (

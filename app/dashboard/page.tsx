@@ -176,7 +176,8 @@ export default function Dashboard() {
                   <ChevronRight />
                 </button>
               </div>
-              <div className="pb-3">
+              {/* Will needed after */}
+              {/* <div className="pb-3">
                 <button className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 rounded-xl transition-all duration-300 w-[280px]">
                   <div className="flex items-center gap-3 px-3 py-2">
                     <Settings />
@@ -193,7 +194,7 @@ export default function Dashboard() {
                   </div>
                   <ChevronRight />
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
           <main>

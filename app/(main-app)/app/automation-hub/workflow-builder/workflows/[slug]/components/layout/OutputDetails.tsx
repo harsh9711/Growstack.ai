@@ -7,10 +7,11 @@ import remarkBreaks from "remark-breaks";
 import toast from "react-hot-toast";
 import axios from "axios";
 
-const AccordionComponent = ({
+const OutputDetails = ({
   outputDetailsData,
   executionId,
   workflowId,
+  onPollingWithNewId,
 }: any) => {
   const [openIndex, setOpenIndex] = useState(null);
 
@@ -45,6 +46,9 @@ const AccordionComponent = ({
       const rerunPartialWorkflow = await axios.post(
         `http://localhost:5000/workflow/${workflowId}/run?previousExecutionId=&${executionId}&startNodeId=${nodeMasterId}`
       );
+      if (rerunPartialWorkflow?.data?.executionId) {
+        onPollingWithNewId(rerunPartialWorkflow?.data?.executionId);
+      }
     } catch {
       // To:Do Error will handle here
     }
@@ -116,4 +120,4 @@ const AccordionComponent = ({
   );
 };
 
-export default AccordionComponent;
+export default OutputDetails;

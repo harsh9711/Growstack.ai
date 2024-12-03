@@ -15,7 +15,6 @@ import { days_of_week, frequency_options, timezones } from "./constants/data";
 import { Input } from "@/components/ui/input";
 import { WorkFlowData } from "./types";
 import { Checkbox } from "@/components/ui/checkbox";
-import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../../../../../../../styles/datepicker.css";
 import axios from "axios";
@@ -41,7 +40,7 @@ function WorkflowSchedulerModal({
   workFlowData,
 }: SchedulerModalProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  // const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   const [fields, setFields] = useState<Fields>({
     frequency: "",
@@ -280,7 +279,8 @@ function WorkflowSchedulerModal({
                   </div>
                 </div>
               )}
-              {fields.frequency === "custom" && (
+              {/* Needed if we integrate this one */}
+              {/* {fields.frequency === "custom" && (
                 <div className="space-y-2">
                   <label className="text-[15px]">Date</label>
                   <div className="relative w-full p-4 h-[50px] border border-gray-100 bg-[#F5F5F5] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition flex items-center">
@@ -299,7 +299,7 @@ function WorkflowSchedulerModal({
                     />
                   </div>
                 </div>
-              )}
+              )} */}
               <div className="space-y-2">
                 <label className="text-[15px]">Time</label>
                 <Input
