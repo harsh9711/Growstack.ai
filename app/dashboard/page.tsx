@@ -50,8 +50,10 @@ export default function Dashboard() {
   const getPreBuiltTemplates = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/workflow`);
-      setPreBuiltTemplates([]);
+      const response = await axios.get(
+        `http://localhost:5000/workflow/getAllTemplates`
+      );
+      setPreBuiltTemplates(response.data.results);
     } catch (error) {
       console.error("Error fetching pre-built templates:", error);
     } finally {
@@ -100,10 +102,13 @@ export default function Dashboard() {
   const fetchSearchResults = async (query: string): Promise<void> => {
     try {
       setLoading(true);
+      const queryParams =
+        activeTab === "templates" ? `${query}&isPrebuilt=true` : `${query}`;
       const response = await axios.get(
-        `http://localhost:5000/workflow/search?keyword=${query}`
+        `http://localhost:5000/workflow/search?keyword=${queryParams}`
       );
-      if (response.data?.length > 0) setPreBuiltTemplates(response.data); // Update results with API response
+
+      setPreBuiltTemplates(response.data.results);
     } catch (error) {
       console.error("Error fetching search results:", error);
     } finally {
@@ -112,15 +117,21 @@ export default function Dashboard() {
   };
 
   const debouncedFetchSearchResults = useCallback(
-    debounce(fetchSearchResults, 1500), // Debounce delay of 500ms
+    debounce(fetchSearchResults, 1500),
     []
   );
 
   const handleSearchInputChange = (e: any) => {
-    const query = e.target.value;
+    const query = e.target.value || "";
     setSearchQuery(query);
-    debouncedFetchSearchResults(query);
+    if (query.length > 0) {
+      debouncedFetchSearchResults(query);
+    } else {
+      if (activeTab === "templates") getPreBuiltTemplates();
+      if (activeTab === "workflows") getUserSavedWorkflows();
+    }
   };
+
   return (
     <>
       <Fragment>

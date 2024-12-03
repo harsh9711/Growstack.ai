@@ -19,6 +19,7 @@ import RunSummary from "./RunSummary";
 import WorkFlowHeader from "@/components/workFlowHeader/WorkFlowHeader";
 import TimeLineTable from "@/components/timeLineTabel/TimeLineTabel";
 import axios from "axios";
+import WorkflowSchedulerModal from "../WorkflowSchedulerModal";
 
 type TempOutput = {
   variable_name: string;
@@ -336,19 +337,17 @@ const Run: React.FC<Props> = ({ workflowId }) => {
                     >
                       <h2 className="text-white">Instant Run</h2>
                     </button>
-                    {workFlowData?.social_media_requirement && (
-                      <button
-                        className={clsx(
-                          "bg-transparent border-2 border-green-200 flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 "
-                        )}
-                        // onClick={() => setIsSchedulerModalOpen(true)}
-                      >
-                        <Clock size={20} color="#2DA771" />
-                        <h2 className="text-primary-light-shade-green">
-                          Schedule Workflow
-                        </h2>
-                      </button>
-                    )}
+                    <button
+                      className={clsx(
+                        "bg-transparent border-2 border-green-200 flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 "
+                      )}
+                      // onClick={() => setIsSchedulerModalOpen(true)}
+                    >
+                      <Clock size={20} color="#2DA771" />
+                      <h2 className="text-primary-light-shade-green">
+                        Schedule Workflow
+                      </h2>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -393,12 +392,12 @@ const Run: React.FC<Props> = ({ workflowId }) => {
       </div>
 
       {/* Need for Scheduling workflow */}
-      {/* <SchedulerModal
-        show={isSchedulerModalOpen}
-        setShow={setIsSchedulerModalOpen}
+      <WorkflowSchedulerModal
+        show={true}
+        setShow={() => {}}
         workFlowData={workFlowData}
         setWorkFlowData={setWorkFlowData}
-      /> */}
+      />
     </div>
   );
 };
