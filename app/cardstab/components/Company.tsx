@@ -172,7 +172,7 @@ export const cases = [
     ),
     name: "Large Enterprises",
     description:
-      "Lorem ipsum dolor sit amet consectetur. Habitant senectus volutpat varius turpis vulputate.",
+      "Streamline complex operation's with advance AI solutions",
     button: "Explore",
   },
   {
@@ -260,7 +260,7 @@ export const cases = [
     ),
     name: "Mid-Market Enterprises",
     description:
-      "Lorem ipsum dolor sit amet consectetur. Habitant senectus volutpat varius turpis vulputate.",
+      "Conquer resources constraints with AI tools",
     button: "Explore",
   },
   {
@@ -292,7 +292,7 @@ export const cases = [
     ),
     name: "Small Businesses",
     description:
-      "Lorem ipsum dolor sit amet consectetur. Habitant senectus volutpat varius turpis vulputate.",
+      "Maximize efficiency with all-in-one AI marketing",
     button: "Explore",
   },
   {
@@ -333,7 +333,7 @@ export const cases = [
     ),
     name: "Startups",
     description:
-      "Lorem ipsum dolor sit amet consectetur. Habitant senectus volutpat varius turpis vulputate.",
+      "Supercharge growth and market penetration with integrated AI Tools",
     button: "Explore",
   },
 ];
