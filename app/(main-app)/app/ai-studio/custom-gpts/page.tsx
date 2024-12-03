@@ -1,6 +1,6 @@
 "use client";
 
-import { DivideIcon, Plus, Search, Trash2 } from "lucide-react";
+import { Plus, Search, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { Fragment, useEffect, useState } from "react";
 import Image from "next/image";
@@ -9,7 +9,7 @@ import { API_URL } from "@/lib/api";
 import ContentLoader from "react-content-loader";
 import toast from "react-hot-toast";
 import { ALL_ROUTES } from "@/utils/constant";
-import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
 import { DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { FaEllipsisV, FaUser } from "react-icons/fa";
 import GlobalModal from "@/components/modal/global.modal";
@@ -31,6 +31,7 @@ export default function Customgpts() {
   const [isDeleting, setIsDeleting] = useState(false);
   const [deleteId, setDeleteId] = useState("");
   const [viewAll, setViewAll] = useState(false);
+
   const getCustomGpts = async () => {
     setLoading(true);
     try {
@@ -256,9 +257,6 @@ export default function Customgpts() {
                   GPTs by GrowStack Records Not Available
                 </h1>
               )}
-              {/* <div className="mt-8 mb-3">
-                <DropdownMenuSeparator />
-              </div> */}
               <h1 className="text-2xl font-semibold mt-4">
                 GPTs Created by users
               </h1>

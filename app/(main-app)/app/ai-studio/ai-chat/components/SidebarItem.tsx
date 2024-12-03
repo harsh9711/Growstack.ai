@@ -54,7 +54,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      handleRenameClick(); // Trigger rename when "Enter" key is pressed
+      handleRenameClick();
     }
   };
 
@@ -78,7 +78,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
   }, [newTitle, editing, title]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewTitle(e.target.value); // Update newTitle on input change
+    setNewTitle(e.target.value);
   };
 
   return (

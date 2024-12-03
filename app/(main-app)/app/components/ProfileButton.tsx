@@ -1,10 +1,6 @@
 "use client";
 import React from "react";
-import {
-  BrandVoiceIcon,
-  DocumentIcon,
-  PresentationAnalyticsIcon,
-} from "@/components/svgs";
+import { DocumentIcon, PresentationAnalyticsIcon } from "@/components/svgs";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -16,7 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { getCurrentUser } from "@/lib/features/auth/auth.selector";
 import { logout } from "@/lib/features/auth/auth.slice";
-import { Info, LogOut, Settings, User } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
@@ -84,15 +80,9 @@ export function ProfileButton() {
               Connect to social media profiles
             </DropdownMenuItem>
           </Link>
-          {/* <Link href="/account/saved-documents">
-            <DropdownMenuItem className="flex gap-3 px-4">
-              <Settings size={22} />
-              Posting Logs
-            </DropdownMenuItem>
-          </Link> */}
+
           <Link href="/account/saved-documents">
             <DropdownMenuItem className="flex gap-3 px-4">
-              {/* <Settings size={22} /> */}
               <DocumentIcon />
               Saved documents
             </DropdownMenuItem>
@@ -104,18 +94,7 @@ export function ProfileButton() {
               Billing
             </DropdownMenuItem>
           </Link>
-          {/* <Link href="/account/billings/settings">
-            <DropdownMenuItem className="flex gap-3 px-4">
-              <TbReportMoney size={22} />
-              Billing
-            </DropdownMenuItem>
-          </Link> */}
         </DropdownMenuGroup>
-        {/* <DropdownMenuSeparator /> */}
-        {/* <DropdownMenuItem className="flex gap-3 px-4" id="intercom-launcher">
-          <Info size={22} />
-          Help
-        </DropdownMenuItem> */}
         <DropdownMenuSeparator />
         <button
           onClick={handleLogout}

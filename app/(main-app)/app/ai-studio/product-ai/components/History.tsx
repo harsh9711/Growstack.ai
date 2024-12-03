@@ -1,6 +1,5 @@
 import Motion from "@/components/Motion";
 import React from "react";
-import { compositions } from "./data";
 import CompositionCard from "./cards/CompositionCard";
 import { historyProps } from "../interface/history";
 

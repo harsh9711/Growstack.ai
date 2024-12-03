@@ -192,6 +192,7 @@ export const companyemployees = [
     imageUrlbox: "/company/1.1.svg",
   },
 ];
+
 export const landingpage = [
   {
     id: 1,
@@ -266,6 +267,7 @@ export const landingpage = [
     videos: "/landingpage/box8.svg",
   },
 ];
+
 export const team = [
   {
     id: 1,

@@ -10,7 +10,6 @@ import React, {
   useState,
 } from "react";
 import toast from "react-hot-toast";
-import { Switch } from "@material-tailwind/react";
 
 type ChatMessageType = {
   thread_id: string;

@@ -11,9 +11,8 @@ import ChatHistory from "./components/ChatHistory";
 import {
   aiModelOptions,
   languageOptions,
-} from "@/app/(main-app)/app/ai-studio/ai-articles/constants/options";
+} from "@/app/(main-app)/app/components/options";
 import Spinner from "@/components/Spinner";
-import { API_URL } from "@/lib/api";
 
 interface PageProps {
   params: {
@@ -114,10 +113,10 @@ const AssistantsChats: React.FC<PageProps> = ({
 
   if (loading || !assistantData || !assistantConversation) {
     return (
-        <div className="flex-1 flex flex-col gap-5 justify-center items-center">
-          <Spinner color="black" size={100} />
-          Loading...
-        </div>
+      <div className="flex-1 flex flex-col gap-5 justify-center items-center">
+        <Spinner color="black" size={100} />
+        Loading...
+      </div>
     );
   }
 
@@ -143,7 +142,7 @@ const AssistantsChats: React.FC<PageProps> = ({
         assistant_id={assistant_id}
       />
       <ChatHistory
-      messages = {messages}
+        messages={messages}
         isOpen={isHistoryOpen}
         onClose={() => setHistoryOpen(false)}
         assistant_id={assistant_id}

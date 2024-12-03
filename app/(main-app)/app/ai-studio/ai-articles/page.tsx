@@ -115,18 +115,6 @@ export default function AiArticles() {
         <div className="flex justify-between items-center mt-10">
           <div className="space-y-2 w-full">
             <h1 className="text-2xl font-semibold">AI content wizard</h1>
-            {/* <p className="flex items-center gap-2 text-[#3D3D3D] text-opacity-50 text-[15px]"> */}
-            {/* <svg xmlns="http://www.w3.org/2000/svg" width="14" height="21" viewBox="0 0 14 21" fill="none">
-                <path
-                  d="M5.75349 1H12.4815L8.23221 7.01975H12.4815L2.3541 18.2802L5.8243 10.6316H2L5.75349 1Z"
-                  fill="#F9DE6F"
-                  stroke="#F9DE6F"
-                  strokeWidth="0.791016"
-                  strokeMiterlimit="10"
-                />
-              </svg>{" "} */}
-            {/* Your Balance is <span className="font-semibold text-primary-green">10,000 Words</span>{" "} */}
-            {/* </p> */}
           </div>
         </div>
         <div className="mx-auto p-4">

@@ -1,4 +1,4 @@
-import { MicrophoneIcon, SendIcon2 } from "@/components/svgs";
+import { SendIcon2 } from "@/components/svgs";
 import autosize from "autosize";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
@@ -138,8 +138,6 @@ const ChatInput: React.FC<ChatInputProps> = ({
 
       const chatId = response.data.data.chat_id;
       await streamResponse(chatId, prompt, fromMic);
-
-      // setNewChat(false);
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.message);
@@ -185,18 +183,14 @@ const ChatInput: React.FC<ChatInputProps> = ({
           value={input}
           onChange={e => {
             setInput(e.target.value);
-            isEmptyPrompt(""); // Clear error on input change
+            isEmptyPrompt("");
           }}
           onKeyDown={handleKeyDown}
           rows={1}
           className="w-full flex-1 p-2 bg-transparent resize-none overflow-hidden min-h-11 max-h-[300px]"
           placeholder="What's in your mind?"
         />
-        <button
-          // onClick={startRecognition}
-          className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
-        >
-          {/* <MicrophoneIcon /> */}
+        <button className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
           <Microphone
             open={open}
             isAnimating={isAnimating}

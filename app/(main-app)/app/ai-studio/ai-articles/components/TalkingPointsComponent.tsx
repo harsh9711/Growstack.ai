@@ -13,7 +13,7 @@ import {
 import AdvancedOptions from "./AdvancedOptions";
 import Motion from "@/components/Motion";
 import { IOutline, ISubtitleTalkingPoints } from "../types";
-import { Plus, X } from "lucide-react";
+import { Plus } from "lucide-react";
 import SubtitleList from "./SubtitleList";
 import TalkingPointsList from "./TalkingPointList";
 

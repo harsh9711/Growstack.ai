@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useRef } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -31,9 +31,8 @@ const AnimationStory = () => {
       const { innerWidth, innerHeight } = window;
       const xRotation = ((clientY - innerHeight / 2) / innerHeight) * 20;
       const yRotation = ((clientX - innerWidth / 2) / innerWidth) * -20;
-      (
-        videoRef.current as HTMLVideoElement
-      ).style.transform = `rotateX(${xRotation}deg) rotateY(${yRotation}deg) scale(1.05)`;
+      (videoRef.current as HTMLVideoElement).style.transform =
+        `rotateX(${xRotation}deg) rotateY(${yRotation}deg) scale(1.05)`;
     }
   };
 

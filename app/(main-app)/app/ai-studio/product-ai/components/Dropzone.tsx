@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useCallback, useState } from "react";
+import React, { useCallback } from "react";
 import { FileRejection, useDropzone } from "react-dropzone";
 import { toast } from "react-hot-toast";
 

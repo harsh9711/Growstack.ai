@@ -65,30 +65,6 @@ export default function ComingSoon() {
         height={60}
         className="mb-10"
       />
-      {/* <div className="text-6xl font-medium mb-12">
-        {timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0 ? (
-          <div>Time's up!</div>
-        ) : (
-          <div className="flex space-x-10 bg-white py-6 px-10 shadow-xl shadow-gray-100 rounded-3xl">
-            <div>
-              <span>{timeLeft.days}</span>
-              <span className="block text-sm">days</span>
-            </div>
-            <div>
-              <span>{timeLeft.hours}</span>
-              <span className="block text-sm">hours</span>
-            </div>
-            <div>
-              <span>{timeLeft.minutes}</span>
-              <span className="block text-sm">minutes</span>
-            </div>
-            <div>
-              <span>{timeLeft.seconds}</span>
-              <span className="block text-sm">seconds</span>
-            </div>
-          </div>
-        )}
-      </div> */}
       <h1 className="text-3xl uppercase font-semibold mb-4">Coming Soon</h1>
       <p className="mb-10 max-w-2xl leading-loose">
         We’re currently working on creating something fantastic. We’ll be here

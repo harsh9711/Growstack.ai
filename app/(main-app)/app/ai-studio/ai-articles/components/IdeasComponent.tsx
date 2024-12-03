@@ -337,13 +337,8 @@ export default function IdeasComponent({
                     Choose your keywords
                   </h1>
                   <div className="flex flex-wrap justify-center gap-2 mt-3">
-                    {/* {generatedKeywords&&JSON.stringify(generatedKeywords)} */}
                     {generatedKeywords.map(
                       (generatedKeyword: any, index: any) => (
-                        // <>
-                        // {JSON.stringify(generatedKeyword.keyword) && JSON.stringify(generatedKeyword.keyword)}
-                        // {JSON.stringify(generatedKeyword.score) && JSON.stringify(generatedKeyword.score)}
-                        // </>
                         <div
                           key={
                             generatedKeyword.keyword || generatedKeyword.score

@@ -2,7 +2,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
-import { ImageIcon, Minus, Plus, XIcon } from "lucide-react";
+import { ImageIcon, Minus, Plus } from "lucide-react";
 import { ChangeEventHandler, useState } from "react";
 import toast from "react-hot-toast";
 import CodeIntepreterFiles from "./CodeInterpretorFiles";
@@ -417,23 +417,6 @@ export default function ConfigureGPTSection({
                               Image
                             </label>
                           </div>
-                          {/* <div className="flex items-center space-x-2">
-                            <Checkbox
-                              id="WEB_BROWSING"
-                              onClick={() =>
-                                setCapabilities({
-                                  ...capabilities,
-                                  WEB_BROWSING: !capabilities.WEB_BROWSING,
-                                })
-                              }
-                            />
-                            <label
-                              htmlFor="WEB_BROWSING"
-                              className="text-sm font-medium leading-none cursor-pointer"
-                            >
-                              Web Browsing
-                            </label>
-                          </div> */}
                         </div>
                       </div>
 
