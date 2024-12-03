@@ -32,11 +32,14 @@ export const getVariableName = (nodes: NodeState[], position: number) => {
   const nodeVariables = nodes
     .filter((_, index) => index !== position)
     .map(nds => {
-      return {
-        nodeId: nds.id,
-        variableName: nds.data?.parameters?.variableName.value || "",
-      };
-    });
+      const variableValue = nds.data?.parameters?.variableName?.value;
+      return variableValue
+        ? { nodeId: nds.id, variableName: variableValue }
+        : null;
+    })
+    .filter(Boolean);
+
+  if (!nodeVariables.length) return [];
 
   return nodeVariables;
 };

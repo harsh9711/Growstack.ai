@@ -11,7 +11,7 @@ export const createNode = createAsyncThunk(
   "workflow/createNode",
   async (data: any, { rejectWithValue }) => {
     try {
-      const result = await CustomAxiosInstance("http://localhost:4500/").post(
+      const result = await CustomAxiosInstance("http://localhost:5000/").post(
         "node",
         data
       );
@@ -31,7 +31,7 @@ export const updateNodeById = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const result = await CustomAxiosInstance("http://localhost:4500/").patch(
+      const result = await CustomAxiosInstance("http://localhost:5000/").patch(
         `node/${id}`,
         data
       );
@@ -48,7 +48,7 @@ export const deleteNodeById = createAsyncThunk(
   "workflow/deleteNodeById",
   async (id: string, { rejectWithValue }) => {
     try {
-      const result = await CustomAxiosInstance("http://localhost:4500/").delete(
+      const result = await CustomAxiosInstance("http://localhost:5000/").delete(
         `node/${id}`
       );
       return result.data;

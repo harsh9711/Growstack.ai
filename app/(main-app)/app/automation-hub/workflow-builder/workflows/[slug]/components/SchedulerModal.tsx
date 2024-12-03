@@ -185,7 +185,7 @@ function SchedulerModal({
                 />
               </div>
             </div>
-            {workFlowData.input_configs.map((input, idx) => (
+            {workFlowData?.input_configs.map((input:any, idx:any) => (
               <div key={idx}>
                 <h2 className="font-medium">{input.display_name}</h2>
                 <div className="font-light mt-3 mb-2 text-[14px]">
