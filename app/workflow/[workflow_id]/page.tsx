@@ -42,6 +42,7 @@ import { unwrapResult } from "@reduxjs/toolkit";
 import Run from "@/app/(main-app)/app/automation-hub/workflow-builder/workflows/[slug]/components/layout/RunV2";
 import TimeLineTable from "@/components/timeLineTabel/TimeLineTabel";
 import { convertToUnderscore } from "@/utils/helper";
+import { SnackbarProvider } from "./components/snackbar/SnackbarContext";
 
 interface DragEvent extends React.DragEvent<HTMLDivElement> {}
 interface PageProps {
@@ -344,12 +345,14 @@ const WorkflowPage: React.FC<PageProps> = ({ params: { workflow_id } }) => {
 
   return (
     <>
+    <SnackbarProvider>
       <TopRightPanel2nd setActiveTab={setActiveTab} />
       <ReactFlowProvider>
         {activeTab === 0 && <Workflow workflow_id={workflow_id} />}
         {activeTab === 1 && <Run workflowId={workflow_id} />}
         {activeTab === 2 && <TimeLineTable workflow_id={workflow_id}/>}
       </ReactFlowProvider>
+      </SnackbarProvider>
     </>
   );
 };
