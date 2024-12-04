@@ -49,11 +49,13 @@ interface OutputDetailsData {
 interface Props {
   workflowId: string;
   executionId?: string;
+  timeline?: boolean;
 }
 
 const Run: React.FC<Props> = ({
   workflowId,
   executionId: initialExecutionId,
+  timeline,
 }) => {
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -338,12 +340,12 @@ const Run: React.FC<Props> = ({
                               </div>
                             )}
                           </div>
-                          {matchingOutput?.value && (
+                          {matchingOutput?.value && timeline && (
                             <p className="bg-gray-100 p-4 rounded-lg w-full">
                               {matchingOutput?.value}
                             </p>
                           )}
-                          {!matchingOutput &&
+                          {!timeline &&
                             (() => {
                               switch (input?.type) {
                                 case "switch":
@@ -420,28 +422,30 @@ const Run: React.FC<Props> = ({
                       );
                     }
                   )}
-                  <div className="flex justify-center mt-12 w-full gap-2">
-                    <button
-                      className={clsx(
-                        "bg-primary-light-shade-green flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 text-white"
-                      )}
-                      onClick={handleRunWorkFlow}
-                    >
-                      {isLoading && <Spinner />}
-                      <h2 className="text-white">Instant Run</h2>
-                    </button>
-                    <button
-                      className={clsx(
-                        "bg-transparent border-2 border-green-200 flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 "
-                      )}
-                      onClick={() => setIsSchedulerModalOpen(true)}
-                    >
-                      <Clock size={20} color="#2DA771" />
-                      <h2 className="text-primary-light-shade-green">
-                        Schedule Workflow
-                      </h2>
-                    </button>
-                  </div>
+                  {!timeline && (
+                    <div className="flex justify-center mt-12 w-full gap-2">
+                      <button
+                        className={clsx(
+                          "bg-primary-light-shade-green flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 text-white"
+                        )}
+                        onClick={handleRunWorkFlow}
+                      >
+                        {isLoading && <Spinner />}
+                        <h2 className="text-white">Instant Run</h2>
+                      </button>
+                      <button
+                        className={clsx(
+                          "bg-transparent border-2 border-green-200 flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 "
+                        )}
+                        onClick={() => setIsSchedulerModalOpen(true)}
+                      >
+                        <Clock size={20} color="#2DA771" />
+                        <h2 className="text-primary-light-shade-green">
+                          Schedule Workflow
+                        </h2>
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
               <ApprovalsAccordion />
