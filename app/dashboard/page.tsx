@@ -1,6 +1,6 @@
 "use client";
 
-import instance from "@/config/axios.config";
+import instance, { CustomAxiosInstance } from "@/config/axios.config";
 import Image from "next/image";
 import "aos/dist/aos.css";
 import { Fragment, useCallback, useEffect, useState } from "react";
@@ -50,8 +50,8 @@ export default function Dashboard() {
   const getPreBuiltTemplates = async () => {
     try {
       setLoading(true);
-      // const response = await axios.get(`http://localhost:5000/workflow`);
-      const response = await instance.get(`/workflows`);
+      const response = await CustomAxiosInstance().get(`workflow`);
+      // const response = await instance.get(`/workflows`);
       setPreBuiltTemplates([]);
     } catch (error) {
       console.error("Error fetching pre-built templates:", error);
@@ -63,8 +63,8 @@ export default function Dashboard() {
   const getUserSavedWorkflows = async () => {
     try {
       setLoading(true);
-      // const response = await axios.get(`http://localhost:5000/workflow`);
-      const response = await instance.get(`/workflows`);
+      const response = await CustomAxiosInstance().get(`workflow`);
+      // const response = await instance.get(`/workflows`);
       setPreBuiltTemplates(response.data);
     } catch (error) {
       console.error("Error fetching pre-built templates:", error);
@@ -102,12 +102,12 @@ export default function Dashboard() {
   const fetchSearchResults = async (query: string): Promise<void> => {
     try {
       setLoading(true);
-      // const response = await axios.get(
-      //   `http://localhost:5000/workflow/search?keyword=${query}`
-      // );
-      const response = await instance.get(
-        `/workflows/search?keyword=${query}`
+      const response = await CustomAxiosInstance().get(
+        `workflow/search?keyword=${query}`
       );
+      // const response = await instance.get(
+      //   `/workflows/search?keyword=${query}`
+      // );
       if (response.data?.length > 0) setPreBuiltTemplates(response.data); // Update results with API response
     } catch (error) {
       console.error("Error fetching search results:", error);
@@ -291,12 +291,12 @@ const Card: React.FC<CardProps> = ({
     setLoading(true);
     try {
       setLoading(true);
-      // const response = await instance.post(
-      //   `http://localhost:5000/workflow/${workflow_id}/duplicate`
-      // );
-      const response = await instance.post(
-        `/workflows/${workflow_id}/duplicate`
+      const response = await CustomAxiosInstance().post(
+        `workflow/${workflow_id}/duplicate`
       );
+      // const response = await instance.post(
+      //   `/workflows/${workflow_id}/duplicate`
+      // );
     } catch (error: any) {
       console.error("Error duplicating workflow:", error);
       toast.error(
@@ -322,13 +322,13 @@ const Card: React.FC<CardProps> = ({
   const handleDeleteClick = async () => {
     setLoading(true);
     try {
-      // const response = await axios.delete(
-      //   `http://localhost:5000/workflow/delete/${workflow_id}`
-      // );
-
-      const response = await instance.delete(
-        `/workflows/delete/${workflow_id}`
+      const response = await CustomAxiosInstance().delete(
+        `workflow/delete/${workflow_id}`
       );
+
+      // const response = await instance.delete(
+      //   `/workflows/delete/${workflow_id}`
+      // );
     } catch (error: any) {
       console.error("Error deleting workflow:", error);
     } finally {
@@ -340,13 +340,12 @@ const Card: React.FC<CardProps> = ({
   const handleUnpublishWorkflow = async () => {
     setLoading(true);
     try {
-      // const response = await axios.post(
-      //   `http://localhost:5000/workflow/unpublish/${workflow_id}`
-      // );
-      const response = await instance.post(
-        `/workflows/unpublish/${workflow_id}`
+      const response = await CustomAxiosInstance().post(
+        `workflow/unpublish/${workflow_id}`
       );
-
+      // const response = await instance.post(
+      //   `/workflows/unpublish/${workflow_id}`
+      // );
     } catch (error: any) {
       console.error("Error unpublish workflow:", error);
     } finally {

@@ -2,7 +2,7 @@
 
 import Motion from "@/components/Motion";
 import Spinner from "@/components/Spinner";
-import instance from "@/config/axios.config";
+import instance, { CustomAxiosInstance } from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import clsx from "clsx";
 import { Clock, ChevronDown, ChevronUp, Info } from "lucide-react";
@@ -71,8 +71,8 @@ const Run: React.FC<Props> = ({ workflowId }) => {
   const fetchWorkflowData = async (id: string) => {
     setLoading(true);
     try {
-      // const response = await axios.get(`http://localhost:5000/workflow/${id}`);
-      const response = await instance.get(`/workflows/${id}`);
+      const response = await CustomAxiosInstance().get(`workflow/${id}`);
+      // const response = await instance.get(`/workflows/${id}`);
       const apiData = response.data;
 
       // Filter and map `nodes` to `input_configs`
@@ -127,14 +127,14 @@ const Run: React.FC<Props> = ({ workflowId }) => {
     }));
     console.log(updatedWorkflowData, "updatedWorkflowData");
     try {
-      // const response = await axios.post(
-      //   `http://localhost:5000/workflow/${workflowId}/run`,
-      //   updatedWorkflowData
-      // );
-      const response = await instance.post(
-        `/workflows/${workflowId}/run`,
+      const response = await CustomAxiosInstance().post(
+        `workflow/${workflowId}/run`,
         updatedWorkflowData
       );
+      // const response = await instance.post(
+      //   `/workflows/${workflowId}/run`,
+      //   updatedWorkflowData
+      // );
       setExecutionId(response?.data?.executionId);
     } catch (error) {
       // To:Do Handle error
@@ -143,12 +143,12 @@ const Run: React.FC<Props> = ({ workflowId }) => {
 
   const pollingWorkflowExec = useCallback(async () => {
     try {
-      // const getWorkFlowExecData = await axios.get(
-      //   `http://localhost:5000/workflow/${workflowId}/status/${executionId}`
-      // );
-      const getWorkFlowExecData = await instance.get(
-        `/workflows/${workflowId}/status/${executionId}`
+      const getWorkFlowExecData = await CustomAxiosInstance().get(
+        `workflow/${workflowId}/status/${executionId}`
       );
+      // const getWorkFlowExecData = await instance.get(
+      //   `/workflows/${workflowId}/status/${executionId}`
+      // );
 
       setRunSummaryData(getWorkFlowExecData?.data);
 

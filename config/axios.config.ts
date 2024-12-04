@@ -33,7 +33,7 @@ instance.interceptors.response.use(
 export default instance;
 
 export const CustomAxiosInstance = (
-  customBaseURL = "http://192.168.1.28:5000/"
+  customBaseURL = "http://localhost:5000/"
 ) => {
   const customInstance = axios.create({
     baseURL: customBaseURL,

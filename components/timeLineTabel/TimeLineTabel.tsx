@@ -1,3 +1,4 @@
+import { CustomAxiosInstance } from "@/config/axios.config";
 import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 const scheduleData = [
@@ -51,12 +52,12 @@ const TimeLineTable = ({ workflow_id }: { workflow_id: string }) => {
 
   const getHistoryData = useCallback(async () => {
     try {
-      // const getHistory = await axios.get(
-      //   `http://localhost:5000/workflow/${workflow_id}/history`
-      // );
-      const getHistory = await axios.get(
-        `/workflows/${workflow_id}/history`
+      const getHistory = await CustomAxiosInstance().get(
+        `workflow/${workflow_id}/history`
       );
+      // const getHistory = await axios.get(
+      //   `/workflows/${workflow_id}/history`
+      // );
       setHistoryData(getHistory?.data);
     } catch { }
   }, []);

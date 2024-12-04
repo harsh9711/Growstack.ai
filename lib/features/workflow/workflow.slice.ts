@@ -8,9 +8,9 @@ export const createWorkFlow = createAsyncThunk(
   "createWorkflow",
   async (data: WorkflowDataState, { rejectWithValue }) => {
     try {
-      // const result = await CustomAxiosInstance().post("workflow", data);
+      const result = await CustomAxiosInstance().post("workflow", data);
 
-      const result = await instance.post("/workflows", data);
+      // const result = await instance.post("/workflows", data);
       return result.data as WorkflowDataState;
     } catch (error: any) {
       return rejectWithValue(
@@ -24,8 +24,8 @@ export const getWorkFlowById = createAsyncThunk(
   "getWorkFlowById",
   async (workFlowId: string, { rejectWithValue }) => {
     try {
-      // const result = await CustomAxiosInstance().get(`workflow/${workFlowId}`);
-      const result = await instance.get(`/workflows/${workFlowId}`);
+      const result = await CustomAxiosInstance().get(`workflow/${workFlowId}`);
+      // const result = await instance.get(`/workflows/${workFlowId}`);
       return result.data as WorkflowDataState;
     } catch (error: any) {
       return rejectWithValue(
@@ -42,8 +42,8 @@ export const updateWorkFlowById = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      // const result = await CustomAxiosInstance().patch(`workflow/${id}`, data);
-      const result = await instance.patch(`/workflows/${id}`, data);
+      const result = await CustomAxiosInstance().patch(`workflow/${id}`, data);
+      // const result = await instance.patch(`/workflows/${id}`, data);
       return result.data as WorkflowDataState;
     } catch (error: any) {
       return rejectWithValue(

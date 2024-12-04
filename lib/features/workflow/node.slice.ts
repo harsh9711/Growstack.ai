@@ -11,12 +11,9 @@ export const createNode = createAsyncThunk(
   "workflow/createNode",
   async (data: any, { rejectWithValue }) => {
     try {
-      // const result = await CustomAxiosInstance("http://localhost:5000/").post(
-      //   "node",
-      //   data
-      // );
+      const result = await CustomAxiosInstance().post("node", data);
 
-      const result = await instance.post("/workflows/nodes", data);
+      // const result = await instance.post("/workflows/nodes", data);
 
       return result.data;
     } catch (error: any) {
@@ -34,12 +31,9 @@ export const updateNodeById = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      // const result = await CustomAxiosInstance("http://localhost:5000/").patch(
-      //   `node/${id}`,
-      //   data
-      // );
+      const result = await CustomAxiosInstance().patch(`node/${id}`, data);
 
-      const result = await instance.patch(`/workflows/node/${id}`, data);
+      // const result = await instance.patch(`/workflows/node/${id}`, data);
       return result.data;
     } catch (error: any) {
       return rejectWithValue(
@@ -53,11 +47,9 @@ export const deleteNodeById = createAsyncThunk(
   "workflow/deleteNodeById",
   async (id: string, { rejectWithValue }) => {
     try {
-      // const result = await CustomAxiosInstance("http://localhost:5000/").delete(
-      //   `node/${id}`
-      // );
+      const result = await CustomAxiosInstance().delete(`node/${id}`);
 
-      const result = await instance.delete(`/workflows/node/${id}`);
+      // const result = await instance.delete(`/workflows/node/${id}`);
       return result.data;
     } catch (error: any) {
       return rejectWithValue(
