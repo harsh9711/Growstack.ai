@@ -1,0 +1,103 @@
+[
+  {
+    "name": "Short Text",
+    "description": "Takes prompts from the user to generate Image",
+    "category": "general",
+    "subCategory": "Input Type",
+    "functionToExecute": "processTextToImage",
+    "type": "short-text"
+  },
+  {
+    "name": "Long Text",
+    "description": "Takes prompts from the user to generate Image",
+    "category": "general",
+    "subCategory": "Input Type",
+    "functionToExecute": "processTextToImage",
+    "type": "long-text"
+  },
+  {
+    "name": "Number",
+    "description": "Takes prompts from the user to generate Image",
+    "category": "general",
+    "subCategory": "Input Type",
+    "functionToExecute": "processTextToImage",
+    "type": "number"
+  },
+  {
+    "name": "Boolean",
+    "description": "Takes prompts from the user to generate Image",
+    "category": "general",
+    "subCategory": "Input Type",
+    "functionToExecute": "processTextToImage",
+    "type": "boolean"
+  },
+  {
+    "name": "File Upload",
+    "description": "Takes prompts from the user to generate Image",
+    "category": "general",
+    "subCategory": "Input Type",
+    "functionToExecute": "processTextToImage",
+    "type": "file-upload"
+  },
+  {
+    "name": "File Upload",
+    "description": "Takes prompts from the user to generate Image",
+    "category": "general",
+    "subCategory": "Input Type",
+    "functionToExecute": "processTextToImage",
+    "type": "file-upload"
+  },
+  {
+    "name": "Checklist",
+    "description": "Takes prompts from the user to generate Image",
+    "category": "general",
+    "subCategory": "Input Type",
+    "functionToExecute": "processTextToImage",
+    "type": "checklist"
+  },
+  {
+    "name": "Checklist",
+    "description": "Takes prompts from the user to generate Image",
+    "category": "general",
+    "subCategory": "Input Type",
+    "functionToExecute": "processTextToImage",
+    "type": "checklist"
+  }
+]
+
+
+[
+    {
+      "name": "Plain text",
+      "description": "Takes prompts from the user to generate Image",
+      "category": "general",
+      "subCategory": "Joiner node",
+      "functionToExecute": "processTextToImage",
+      "type": "plain-text"
+    },
+    {
+      "name": "Mark Down",
+      "description": "Takes prompts from the user to generate Image",
+      "category": "general",
+      "subCategory": "Joiner node",
+      "functionToExecute": "processTextToImage",
+      "type": "mark-down"
+    },
+    {
+      "name": "Image",
+      "description": "Takes prompts from the user to generate Image",
+      "category": "general",
+      "subCategory": "Joiner node",
+      "functionToExecute": "processTextToImage",
+      "type": "image"
+    },
+    {
+      "name": "Video",
+      "description": "Takes prompts from the user to generate Image",
+      "category": "general",
+      "subCategory": "Joiner node",
+      "functionToExecute": "processTextToImage",
+      "type": "video"
+    }
+  ]
+  

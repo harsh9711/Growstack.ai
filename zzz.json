@@ -1,0 +1,283 @@
+{
+  "_id": "674021051cbd6d2a82e939f5",
+  "name": "Form",
+  "description": "",
+  "type": "form",
+  "category": "General",
+  "subCategory": "Input Type",
+  "functionToExecute": "processInput",
+  "logoUrl": "/svgs/form-img.svg",
+  "dynamicParams": [],
+  "isDeleted": false,
+  "subNodes": [
+    {
+      "nodeMasterId": "673f756328d5e72a65f0cd67",
+      "name": "Short Text",
+      "isDefault": true,
+      "parameters": {
+        "inputLabel": {
+          "label": "Input label",
+          "placeholder": "Enter field label",
+          "type": "text_input_label",
+          "required": "true",
+          "description": ""
+        },
+        "placeholder": {
+          "label": "Placeholder",
+          "placeholder": "Enter placeholder text",
+          "type": "text_placeholder",
+          "required": "false",
+          "description": ""
+        },
+        "defaultValue": {
+          "label": "Default value",
+          "placeholder": "Enter default value",
+          "type": "text_default_value",
+          "required": "false",
+          "description": ""
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Enter description",
+          "type": "textarea_description",
+          "required": "false",
+          "description": ""
+        },
+        "required": {
+          "label": "Required",
+          "type": "checkbox_required",
+          "required": "false",
+          "description": ""
+        },
+        "variableName": {
+          "label": "Variable name",
+          "placeholder": "Enter the variable name",
+          "type": "text_variable_name",
+          "required": "true",
+          "description": ""
+        }
+      }
+    },
+    {
+      "nodeMasterId": "673f75a3847495549354fe89",
+      "name": "Long Text",
+      "isDefault": false,
+      "parameters": {
+        "inputLabel": {
+          "label": "Input label",
+          "placeholder": "Enter field label",
+          "type": "text_input_label",
+          "required": "true",
+          "description": ""
+        },
+        "placeholder": {
+          "label": "Placeholder",
+          "placeholder": "Enter placeholder text",
+          "type": "text_placeholder",
+          "required": "false",
+          "description": ""
+        },
+        "defaultValue": {
+          "label": "Default value",
+          "placeholder": "Enter default value",
+          "type": "text_default_value",
+          "required": "false",
+          "description": ""
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Enter description",
+          "type": "textarea_description",
+          "required": "false",
+          "description": ""
+        },
+        "required": {
+          "label": "Required",
+          "type": "checkbox_required",
+          "required": "false",
+          "description": ""
+        },
+        "variableName": {
+          "label": "Variable name",
+          "placeholder": "Enter the variable name",
+          "type": "text_variable_name",
+          "required": "true",
+          "description": ""
+        }
+      }
+    },
+    {
+      "name": "Boolean",
+      "isDefault": false,
+      "nodeMasterId": "673f75b6847495549354fe8c",
+      "parameters": {
+        "inputLabel": {
+          "label": "Input label",
+          "placeholder": "Enter field label",
+          "type": "text_input_lable",
+          "required": "true",
+          "description": ""
+        },
+        "defaultValue": {
+          "label": "Default value",
+          "placeholder": "Enter default value",
+          "type": "text_default_value",
+          "description": ""
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Enter description",
+          "type": "textarea_description",
+          "required": "false",
+          "description": ""
+        },
+        "required": {
+          "label": "Required",
+          "type": "checkbox_required",
+          "required": "false",
+          "description": ""
+        },
+        "variableName": {
+          "label": "Variable name",
+          "placeholder": "Enter the variable name",
+          "type": "text_variable_name",
+          "required": "true",
+          "description": ""
+        }
+      }
+    },
+    {
+      "name": "Number",
+      "isDefault": false,
+      "nodeMasterId": "673f75c6847495549354fe8f",
+      "parameters": {
+        "inputLabel": {
+          "label": "Input label",
+          "placeholder": "Enter field label",
+          "type": "text_parameters",
+          "required": "true",
+          "description": ""
+        },
+        "placeholder": {
+          "label": "Placeholder",
+          "placeholder": "Enter placeholder text",
+          "type": "text_placeholder",
+          "required": "false",
+          "description": ""
+        },
+        "defaultValue": {
+          "label": "Default value",
+          "placeholder": "Enter default value",
+          "type": "text_default_value",
+          "required": "false",
+          "description": ""
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Enter description",
+          "type": "textarea_description",
+          "required": "false",
+          "description": ""
+        },
+        "required": {
+          "label": "Required",
+          "type": "checkbox",
+          "required": "false",
+          "description": ""
+        },
+        "variableName": {
+          "label": "Variable name",
+          "placeholder": "Enter the variable name",
+          "type": "text_variable_name",
+          "required": "true",
+          "description": ""
+        }
+      }
+    },
+    {
+      "name": "File Upload",
+      "isDefault": false,
+      "nodeMasterId": "673f75d1847495549354fe92",
+      "parameters": {
+        "inputLabel": {
+          "label": "Input label",
+          "placeholder": "Enter field label",
+          "type": "text_input_label",
+          "required": "true",
+          "description": ""
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Enter description",
+          "type": "textarea_description",
+          "required": "false",
+          "description": ""
+        },
+        "required": {
+          "label": "Required",
+          "type": "checkbox_required",
+          "required": "false",
+          "description": ""
+        },
+        "fileType": {
+          "label": "File Type",
+          "placeholder": "Select the allowed file type for upload.",
+          "type": "dropdown_file_type",
+          "required": "false",
+          "description": "",
+          "options": []
+        },
+        "variableName": {
+          "label": "Variable name",
+          "placeholder": "Enter the variable name",
+          "type": "text_variable_name",
+          "required": "true",
+          "description": ""
+        }
+      }
+    },
+    {
+      "name": "CheckList",
+      "isDefault": false,
+      "nodeMasterId": "673f75f0847495549354fe95",
+      "parameters": {
+        "inputLabel": {
+          "label": "Input label",
+          "placeholder": "Enter field label",
+          "type": "text_input_label",
+          "required": "true",
+          "description": ""
+        },
+        "options": {
+          "label": "Options",
+          "placeholder": "Add option",
+          "type": "dropdown_options",
+          "required": "true",
+          "description": "",
+          "options": []
+        },
+        "description": {
+          "label": "Description",
+          "placeholder": "Enter placeholder text",
+          "type": "textarea_description",
+          "required": "false",
+          "description": ""
+        },
+        "required": {
+          "label": "Required",
+          "type": "checkbox_required",
+          "required": "false",
+          "description": ""
+        },
+        "variableName": {
+          "label": "Variable name",
+          "placeholder": "Enter the variable name",
+          "type": "text_variable_name",
+          "required": "true",
+          "description": ""
+        }
+      }
+    }
+  ],
+  "parameters": {}
+}
