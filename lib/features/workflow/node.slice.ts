@@ -39,7 +39,7 @@ export const updateNodeById = createAsyncThunk(
       //   data
       // );
 
-      const result = await instance.patch(`/workflow/node/${id}`, data);
+      const result = await instance.patch(`/node/${id}`, data);
       return result.data;
     } catch (error: any) {
       return rejectWithValue(
@@ -57,7 +57,7 @@ export const deleteNodeById = createAsyncThunk(
       //   `node/${id}`
       // );
 
-      const result = await instance.delete(`/workflow/node/${id}`);
+      const result = await instance.delete(`/node/${id}`);
       return result.data;
     } catch (error: any) {
       return rejectWithValue(
