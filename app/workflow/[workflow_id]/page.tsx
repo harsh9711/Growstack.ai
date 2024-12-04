@@ -252,7 +252,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
     <div className="reactflow-wrapper h-[100vh] w-full" ref={reactFlowWrapper}>
       <TopRightPanel2nd
         activeTab={activeTab}
-        setActiveTab={activeTab => {
+        setActiveTab={(activeTab: number) => {
           setSelectedExecutionId("");
           setActiveTab(activeTab);
         }}
