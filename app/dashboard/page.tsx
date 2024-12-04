@@ -51,7 +51,7 @@ export default function Dashboard() {
     try {
       setLoading(true);
       // const response = await axios.get(`http://localhost:5000/workflow`);
-      const response = await instance.get(`/workflows`);
+      const response = await instance.get(`/workflow`);
       setPreBuiltTemplates([]);
     } catch (error) {
       console.error("Error fetching pre-built templates:", error);
@@ -64,7 +64,7 @@ export default function Dashboard() {
     try {
       setLoading(true);
       // const response = await axios.get(`http://localhost:5000/workflow`);
-      const response = await instance.get(`/workflows`);
+      const response = await instance.get(`/workflow`);
       setPreBuiltTemplates(response.data);
     } catch (error) {
       console.error("Error fetching pre-built templates:", error);
@@ -105,9 +105,7 @@ export default function Dashboard() {
       // const response = await axios.get(
       //   `http://localhost:5000/workflow/search?keyword=${query}`
       // );
-      const response = await instance.get(
-        `/workflows/search?keyword=${query}`
-      );
+      const response = await instance.get(`/workflow/search?keyword=${query}`);
       if (response.data?.length > 0) setPreBuiltTemplates(response.data); // Update results with API response
     } catch (error) {
       console.error("Error fetching search results:", error);
@@ -134,7 +132,11 @@ export default function Dashboard() {
             <div className="bg-white rounded-3xl border border-[#E8E8E8] h-[430px] px-5 py-8 ">
               <div className="pb-3">
                 <button
-                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px]  ${activeTab === "newWorkflows" ? "bg-[#2DA771] text-white" : "text-black"}`}
+                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px]  ${
+                    activeTab === "newWorkflows"
+                      ? "bg-[#2DA771] text-white"
+                      : "text-black"
+                  }`}
                   onClick={handleCreateWorkflow}
                 >
                   <div className="flex items-center gap-3 px-2 py-2">
@@ -146,7 +148,11 @@ export default function Dashboard() {
               </div>
               <div className="pb-3">
                 <button
-                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px] ${activeTab === "templates" ? "bg-[#2DA771] text-white" : "text-black"}`}
+                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px] ${
+                    activeTab === "templates"
+                      ? "bg-[#2DA771] text-white"
+                      : "text-black"
+                  }`}
                   onClick={() => setActiveTab("templates")}
                 >
                   <div className="flex items-center gap-3 px-3 py-2">
@@ -158,7 +164,11 @@ export default function Dashboard() {
               </div>
               <div className="pb-3">
                 <button
-                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px] ${activeTab === "workflows" ? "bg-[#2DA771] text-white" : "text-black"}`}
+                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px] ${
+                    activeTab === "workflows"
+                      ? "bg-[#2DA771] text-white"
+                      : "text-black"
+                  }`}
                 >
                   <div
                     className="flex items-center gap-3 px-3 py-2"
@@ -215,21 +225,21 @@ export default function Dashboard() {
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {preBuiltTemplates?.length > 0
                   ? preBuiltTemplates.map(template => (
-                    <Card
-                      key={template._id}
-                      title={template.name}
-                      description={template.description}
-                      imageSrc={template?.image}
-                      workflow_id={template._id}
-                      activeTab={activeTab}
-                      setLoading={setLoading}
-                      refetchWorkflow={getPreBuiltTemplates}
-                    />
-                  ))
+                      <Card
+                        key={template._id}
+                        title={template.name}
+                        description={template.description}
+                        imageSrc={template?.image}
+                        workflow_id={template._id}
+                        activeTab={activeTab}
+                        setLoading={setLoading}
+                        refetchWorkflow={getPreBuiltTemplates}
+                      />
+                    ))
                   : loading &&
-                  Array(5)
-                    .fill(null)
-                    .map((_, index) => <WorkflowLoader key={index} />)}
+                    Array(5)
+                      .fill(null)
+                      .map((_, index) => <WorkflowLoader key={index} />)}
               </div>
             </div>
             {loading && (
@@ -295,7 +305,7 @@ const Card: React.FC<CardProps> = ({
       //   `http://localhost:5000/workflow/${workflow_id}/duplicate`
       // );
       const response = await instance.post(
-        `/workflows/${workflow_id}/duplicate`
+        `/workflow/${workflow_id}/duplicate`
       );
     } catch (error: any) {
       console.error("Error duplicating workflow:", error);
@@ -326,9 +336,7 @@ const Card: React.FC<CardProps> = ({
       //   `http://localhost:5000/workflow/delete/${workflow_id}`
       // );
 
-      const response = await instance.delete(
-        `/workflows/delete/${workflow_id}`
-      );
+      const response = await instance.delete(`/workflow/delete/${workflow_id}`);
     } catch (error: any) {
       console.error("Error deleting workflow:", error);
     } finally {
@@ -344,9 +352,8 @@ const Card: React.FC<CardProps> = ({
       //   `http://localhost:5000/workflow/unpublish/${workflow_id}`
       // );
       const response = await instance.post(
-        `/workflows/unpublish/${workflow_id}`
+        `/workflow/unpublish/${workflow_id}`
       );
-
     } catch (error: any) {
       console.error("Error unpublish workflow:", error);
     } finally {

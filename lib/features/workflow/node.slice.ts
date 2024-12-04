@@ -16,7 +16,7 @@ export const createNode = createAsyncThunk(
       //   data
       // );
 
-      const result = await instance.post("/workflows/nodes", data);
+      const result = await instance.post("/workflow/nodes", data);
 
       return result.data;
     } catch (error: any) {
@@ -39,7 +39,7 @@ export const updateNodeById = createAsyncThunk(
       //   data
       // );
 
-      const result = await instance.patch(`/workflows/node/${id}`, data);
+      const result = await instance.patch(`/workflow/node/${id}`, data);
       return result.data;
     } catch (error: any) {
       return rejectWithValue(
@@ -57,7 +57,7 @@ export const deleteNodeById = createAsyncThunk(
       //   `node/${id}`
       // );
 
-      const result = await instance.delete(`/workflows/node/${id}`);
+      const result = await instance.delete(`/workflow/node/${id}`);
       return result.data;
     } catch (error: any) {
       return rejectWithValue(

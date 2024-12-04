@@ -54,11 +54,9 @@ const TimeLineTable = ({ workflow_id }: { workflow_id: string }) => {
       // const getHistory = await axios.get(
       //   `http://localhost:5000/workflow/${workflow_id}/history`
       // );
-      const getHistory = await axios.get(
-        `/workflows/${workflow_id}/history`
-      );
+      const getHistory = await axios.get(`/workflow/${workflow_id}/history`);
       setHistoryData(getHistory?.data);
-    } catch { }
+    } catch {}
   }, []);
 
   useEffect(() => {
@@ -69,13 +67,17 @@ const TimeLineTable = ({ workflow_id }: { workflow_id: string }) => {
     <div className="w-full bg-white rounded-xl border border-1  p-4  overflow-hidden">
       <div className="flex space-x-8 text-gray-600 justify-center border-b pb-2">
         <button
-          className={`font-semibold  pb-1 ${activeTab === 0 ? "text-green-600 border-b-2 border-green-600" : ""}`}
+          className={`font-semibold  pb-1 ${
+            activeTab === 0 ? "text-green-600 border-b-2 border-green-600" : ""
+          }`}
           onClick={() => setActiveTab(0)}
         >
           History
         </button>
         <button
-          className={`font-semibold hover:text-green-600 ${activeTab === 1 ? "text-green-600 border-b-2 border-green-600" : ""}`}
+          className={`font-semibold hover:text-green-600 ${
+            activeTab === 1 ? "text-green-600 border-b-2 border-green-600" : ""
+          }`}
           onClick={() => setActiveTab(1)}
         >
           Schedule
@@ -118,20 +120,22 @@ const TimeLineTable = ({ workflow_id }: { workflow_id: string }) => {
               {historyData.map((item: any, index: number) => (
                 <tr
                   key={index}
-                  className={`border-b ${index % 2 === 0 ? "bg-white" : "bg-white"
-                    }`}
+                  className={`border-b ${
+                    index % 2 === 0 ? "bg-white" : "bg-white"
+                  }`}
                 >
                   <td className="p-3 text-black">{item?._id}</td>
                   <td className="p-3 text-black">
                     {item?.name ?? "GrowStack"}
                   </td>
                   <td
-                    className={`p-3 font-medium ${item?.status === "completed"
-                      ? "inline-block text-green-600 bg-green-100 mt-1 rounded-md text-sm"
-                      : item?.status === "in-progress"
+                    className={`p-3 font-medium ${
+                      item?.status === "completed"
+                        ? "inline-block text-green-600 bg-green-100 mt-1 rounded-md text-sm"
+                        : item?.status === "in-progress"
                         ? "inline-block text-yellow-600 bg-yellow-100 mt-1 rounded-md text-sm"
                         : "inline-block text-red-600 bg-yellow-100 mt-1 rounded-md text-sm"
-                      }`}
+                    }`}
                   >
                     {item?.status}
                   </td>
@@ -181,8 +185,9 @@ const TimeLineTable = ({ workflow_id }: { workflow_id: string }) => {
               {scheduleData.map((item: any, index: number) => (
                 <tr
                   key={index}
-                  className={`border-b ${index % 2 === 0 ? "bg-white" : "bg-white"
-                    }`}
+                  className={`border-b ${
+                    index % 2 === 0 ? "bg-white" : "bg-white"
+                  }`}
                 >
                   <td className="p-3 text-black">{item?._id}</td>
                   <td className="p-3 text-black">

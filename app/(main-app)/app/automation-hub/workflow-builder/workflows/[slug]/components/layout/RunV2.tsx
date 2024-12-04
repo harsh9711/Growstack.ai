@@ -72,7 +72,7 @@ const Run: React.FC<Props> = ({ workflowId }) => {
     setLoading(true);
     try {
       // const response = await axios.get(`http://localhost:5000/workflow/${id}`);
-      const response = await instance.get(`/workflows/${id}`);
+      const response = await instance.get(`/workflow/${id}`);
       const apiData = response.data;
 
       // Filter and map `nodes` to `input_configs`
@@ -132,7 +132,7 @@ const Run: React.FC<Props> = ({ workflowId }) => {
       //   updatedWorkflowData
       // );
       const response = await instance.post(
-        `/workflows/${workflowId}/run`,
+        `/workflow/${workflowId}/run`,
         updatedWorkflowData
       );
       setExecutionId(response?.data?.executionId);
@@ -147,7 +147,7 @@ const Run: React.FC<Props> = ({ workflowId }) => {
       //   `http://localhost:5000/workflow/${workflowId}/status/${executionId}`
       // );
       const getWorkFlowExecData = await instance.get(
-        `/workflows/${workflowId}/status/${executionId}`
+        `/workflow/${workflowId}/status/${executionId}`
       );
 
       setRunSummaryData(getWorkFlowExecData?.data);
@@ -211,8 +211,6 @@ const Run: React.FC<Props> = ({ workflowId }) => {
     setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
   };
 
-
-
   if (loading) {
     return (
       <div className="flex-1 flex flex-col gap-5 justify-center items-center min-h-[30vh]">
@@ -237,8 +235,9 @@ const Run: React.FC<Props> = ({ workflowId }) => {
           <div className="flex h-screen mt-5 gap-6">
             <div className="w-2/5">
               <div
-                className={`border-l-4 border-[#F1B917] rounded-2xl w-[50%] flex flex-col gap-6 p-4 ${IsInputParameterOpen ? "max-h-screen" : "max-h-[80px]"
-                  } overflow-hidden transition-all w-full bg-white rounded-lg shadow-md duration-500 ease-in-out`}
+                className={`border-l-4 border-[#F1B917] rounded-2xl w-[50%] flex flex-col gap-6 p-4 ${
+                  IsInputParameterOpen ? "max-h-screen" : "max-h-[80px]"
+                } overflow-hidden transition-all w-full bg-white rounded-lg shadow-md duration-500 ease-in-out`}
               >
                 <div className="flex flex-row justify-between items-center gap-2">
                   <h2 className="font-semibold text-lg">Input Parameters</h2>
@@ -251,7 +250,9 @@ const Run: React.FC<Props> = ({ workflowId }) => {
                   </div>
                 </div>
                 <div
-                  className={`${IsInputParameterOpen ? "block" : "hidden"} transition-opacity`}
+                  className={`${
+                    IsInputParameterOpen ? "block" : "hidden"
+                  } transition-opacity`}
                 >
                   {workFlowData?.input_configs?.map(
                     (input: any, idx: number) => (
@@ -319,8 +320,8 @@ const Run: React.FC<Props> = ({ workflowId }) => {
                                     input.type === "number"
                                       ? "number"
                                       : input.type === "textarea"
-                                        ? "textarea"
-                                        : "text"
+                                      ? "textarea"
+                                      : "text"
                                   }
                                   placeholder={input.placeholder}
                                   className="w-full p-4 h-[46px] border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
@@ -350,7 +351,7 @@ const Run: React.FC<Props> = ({ workflowId }) => {
                         className={clsx(
                           "bg-transparent border-2 border-green-200 flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 "
                         )}
-                      // onClick={() => setIsSchedulerModalOpen(true)}
+                        // onClick={() => setIsSchedulerModalOpen(true)}
                       >
                         <Clock size={20} color="#2DA771" />
                         <h2 className="text-primary-light-shade-green">
