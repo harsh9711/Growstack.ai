@@ -13,17 +13,42 @@ import toast from "react-hot-toast";
 import { useEffect, useState } from "react";
 import { days_of_week, frequency_options, timezones } from "./constants/data";
 import { Input } from "@/components/ui/input";
-import { WorkFlowData } from "./types";
 import { Checkbox } from "@/components/ui/checkbox";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../../../../../../../styles/datepicker.css";
 import axios from "axios";
+import FileUpload from "./FileUpload";
+import { Switch } from "@/components/ui/switch";
 
 interface SchedulerModalProps {
-  show: boolean;
+  show?: boolean;
+  timeLineTable: string;
   setShow: (value: boolean) => void;
   workFlowData: WorkFlowData;
   setWorkFlowData: (workflow: WorkFlowData) => void;
+}
+
+export interface WorkFlowData {
+  workflow_id: string;
+  _id?: string;
+  name: string;
+  description: string;
+  status: string;
+  frequency?: string;
+  dayOfWeek?: string[];
+  dayOfMonth?: string;
+  time?: string;
+  timezone?: string;
+  input_configs: Array<{
+    display_name: string;
+    description: string;
+    placeholder: string;
+    default_value: string | boolean;
+    variableName: string;
+    type: string;
+    list_values?: string[];
+    selected_values?: string[];
+  }>;
 }
 
 type Fields = {
@@ -38,10 +63,10 @@ function WorkflowSchedulerModal({
   show,
   setShow: onHide,
   workFlowData,
+  setWorkFlowData,
+  timeLineTable,
 }: SchedulerModalProps) {
   const [isOpen, setIsOpen] = useState(false);
-  // const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-
   const [fields, setFields] = useState<Fields>({
     frequency: "",
     dayOfWeek: [],
@@ -59,26 +84,46 @@ function WorkflowSchedulerModal({
       setIsPending(false);
       return;
     }
-    const updatedWorkflowData = workFlowData.input_configs.map((data: any) => ({
-      variableName: data.variableName,
-      variableValue: data.default_value,
-    }));
+    const updatedWorkflowData = workFlowData?.input_configs?.map(
+      (data: any) => ({
+        variableName: data.variableName,
+        variableValue: data.default_value,
+      })
+    );
     try {
-      const response = await axios.post(
-        `http://localhost:5000/workflow/6745a1f9f7d11db833a2ad12/schedule`,
-        {
-          ...fields,
+      let payload = {};
+      let url = "";
+      let method = "post";
+
+      if (timeLineTable === "true") {
+        url = `http://localhost:5000/workflow/${workFlowData?.workflow_id}/schedule/${workFlowData?._id}`;
+        payload = {
+          frequency: fields.frequency,
+          time: fields.time,
+          dayOfWeek: fields.dayOfWeek,
+          dayOfMonth: fields.dayOfMonth,
+          timezone: fields.timezone,
           workflowPayload: updatedWorkflowData,
-        }
-      );
-      toast.success(response.data.message);
+        };
+        method = "patch";
+      } else {
+        url = `http://localhost:5000/workflow/${workFlowData?.workflow_id}/schedule`;
+        payload = { ...fields, workflowPayload: updatedWorkflowData };
+      }
+      const response = await axios({
+        method,
+        url,
+        data: payload,
+      });
+      toast.success("Schedule updated successfully");
+      window.dispatchEvent(new Event("schedule-updated"));
       onHide(false);
     } catch (error: any) {
       console.error("Error running workflow:", error);
       if (error.response) {
-        toast.error(error.response.data.message);
+        toast.error(error.response.data.message || "Something went wrong");
       } else {
-        toast.error(error.message);
+        toast.error(error.message || "Something went wrong");
       }
     } finally {
       setIsPending(false);
@@ -109,6 +154,53 @@ function WorkflowSchedulerModal({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  useEffect(() => {
+    if (timeLineTable === "true" && workFlowData) {
+      setFields({
+        frequency: workFlowData?.frequency?.toLowerCase() || "",
+        dayOfWeek: workFlowData?.dayOfWeek || [],
+        dayOfMonth: workFlowData?.dayOfMonth?.toString() || "",
+        time: workFlowData?.time || "",
+        timezone: workFlowData?.timezone || "",
+      });
+    }
+  }, [workFlowData, timeLineTable]);
+
+  const handleChangeInput = (value: string, idx: number) => {
+    const updatedInputs = [...workFlowData.input_configs];
+    updatedInputs[idx].default_value = value || "-";
+    setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
+  };
+
+  const handleFileUploaded = (fileUrl: string, idx: number) => {
+    const updatedInputs = [...workFlowData.input_configs];
+    updatedInputs[idx].default_value = fileUrl;
+    setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
+  };
+
+  const handleBooleanInput = (value: boolean, idx: number) => {
+    const updatedInputs = [...workFlowData.input_configs];
+    updatedInputs[idx].default_value = value.toString();
+    setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
+  };
+
+  const handleCheckListInput = (value: string, idx: number) => {
+    const updatedInputs = [...workFlowData.input_configs];
+    const selected_values = updatedInputs[idx]?.selected_values;
+    if (selected_values?.includes(value)) {
+      updatedInputs[idx].selected_values = selected_values.filter(
+        (item: string) => item !== value
+      );
+    } else {
+      if (selected_values === undefined) {
+        updatedInputs[idx].selected_values = [value];
+      } else {
+        updatedInputs[idx].selected_values = [...selected_values, value];
+      }
+    }
+    setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
+  };
   return (
     <Dialog open={show} onOpenChange={onHide}>
       <DialogContent className="max-w-[80%] pt-0 ">
@@ -116,12 +208,15 @@ function WorkflowSchedulerModal({
           <DialogTitle>Schedule a workflow runtime</DialogTitle>
         </DialogHeader>
         <div className="flex flex-col gap-2">
-          <div className="flex flex-row items-center gap-2">
-            <div className="bg-primary-green p-2.5 rounded-[10px] text-white">
-              <Edit size={18} />
+          {timeLineTable !== "true" && (
+            <div className="flex flex-row items-center gap-2">
+              <div className="bg-primary-green p-2.5 rounded-[10px] text-white">
+                <Edit size={18} />
+              </div>
+              <h2 className="font-medium text-lg">Input</h2>
             </div>
-            <h2 className="font-medium text-lg">Input</h2>
-          </div>
+          )}
+
           <div className="mt-6 space-y-6">
             <div className="grid grid-cols-2 gap-6">
               <Dropdown
@@ -309,6 +404,88 @@ function WorkflowSchedulerModal({
                   required
                 />
               </div>
+            </div>
+            {timeLineTable === "true" && workFlowData?.input_configs && (
+              <h2 className="font-medium text-lg">Input Parameters</h2>
+            )}
+            <div className="grid grid-cols-2 gap-6">
+              {timeLineTable === "true" &&
+                workFlowData?.input_configs &&
+                workFlowData?.input_configs.map((input: any, idx: any) => (
+                  <>
+                    <div key={idx}>
+                      <h2 className="font-medium">{input.display_name}</h2>
+                      <div className="font-light mt-3 mb-2 text-[14px]">
+                        {input.description}
+                      </div>
+                      {(() => {
+                        switch (input?.type) {
+                          case "switch":
+                            return (
+                              <Switch
+                                checked={input.default_value}
+                                onCheckedChange={(checked: any) =>
+                                  handleBooleanInput(checked, idx)
+                                }
+                              />
+                            );
+                          case "file":
+                            return (
+                              <FileUpload
+                                onFileUploaded={fileUrl =>
+                                  handleFileUploaded(fileUrl, idx)
+                                }
+                                acceptedFileTypes={input.file_type || "*/*"}
+                              />
+                            );
+                          case "checkbox":
+                            return (
+                              <div className="flex gap-4">
+                                {input.list_values.map((option: string) => (
+                                  <label
+                                    key={option}
+                                    className="flex items-center space-x-1.5"
+                                  >
+                                    <Checkbox
+                                      checked={
+                                        input?.selected_values?.includes(
+                                          option
+                                        ) || false
+                                      }
+                                      onCheckedChange={() =>
+                                        handleCheckListInput(option, idx)
+                                      }
+                                    />
+                                    <span className="text-sm capitalize font-medium text-gray-700">
+                                      {option}
+                                    </span>
+                                  </label>
+                                ))}
+                              </div>
+                            );
+                          default:
+                            return (
+                              <input
+                                type={
+                                  input.type === "number"
+                                    ? "number"
+                                    : input.type === "textarea"
+                                      ? "textarea"
+                                      : "text"
+                                }
+                                placeholder={input.placeholder}
+                                className="w-full p-4 h-[46px] border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
+                                value={input.default_value}
+                                onChange={e =>
+                                  handleChangeInput(e.target.value, idx)
+                                }
+                              />
+                            );
+                        }
+                      })()}
+                    </div>
+                  </>
+                ))}
             </div>
           </div>
           <div className="flex justify-end gap-3 w-full">

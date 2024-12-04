@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import { dummyData3 } from "../data";
 
-const TopRightPanel2nd = ({ setActiveTab }: any) => {
-  const [activeIndex, setActiveIndex] = useState(0);
+interface TopRightPanel2ndProps {
+  activeTab?: number;
+  setActiveTab: (index: number) => void;
+}
+const TopRightPanel2nd = ({
+  activeTab,
+  setActiveTab,
+}: TopRightPanel2ndProps) => {
 
   const handleClick = (index: number) => {
-    setActiveIndex(index);
     setActiveTab(index);
   };
 
@@ -15,7 +20,7 @@ const TopRightPanel2nd = ({ setActiveTab }: any) => {
         <button
           key={index.toString()}
           className={`flex justify-center items-center m-2 cursor-pointer px-2.5 py-1.5 rounded-md text-base font-normal ${
-            activeIndex === index
+            activeTab === index
               ? "text-white bg-[#2DA771]"
               : "text-black bg-transparent"
           }`}

@@ -52,303 +52,320 @@ interface PageProps {
 
 
 const Workflow = ({ workflow_id }: { workflow_id: string }) => {
-    const route = useRouter();
+  const route = useRouter();
 
-    const dispatch = useAppDispatch();
-    const { screenToFlowPosition } = useReactFlow();
-    const reactFlowWrapper = useRef<HTMLDivElement>(null);
-    const { nodeData } = useAppSelector(state => state.nodes);
-    const { workFlowData } = useAppSelector(state => state.workflows);
-    const [nodes, setNodes, onNodesChange] = useNodesState([]);
-    const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-
-
-    useEffect(() => {
-
-        if (workFlowData && workFlowData.nodes?.length) {
-            //@ts-ignore
-            setNodes(workFlowData?.nodes);
-            workFlowData.nodes?.forEach((node: any) => {
-                dispatch(
-                    addVariable({
-                        nodeID: node.id,
-                        variableName: node?.data?.parameters?.variableName?.value || "",
-                        workflowID: workFlowData._id || "",
-                        variableValue:
-                            node?.data?.parameters?.defaultValue ||
-                            node?.data?.parameters?.fileType ||
-                            node?.data?.parameters?.options,
-                        variableType: node.type,
-                    })
-                );
-                dispatch(addNode(node));
-            });
-
-        }
-
-    }, [dispatch, workFlowData]);
+  const dispatch = useAppDispatch();
+  const { screenToFlowPosition } = useReactFlow();
+  const reactFlowWrapper = useRef<HTMLDivElement>(null);
+  const { nodeData } = useAppSelector(state => state.nodes);
+  const { workFlowData } = useAppSelector(state => state.workflows);
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
 
+  useEffect(() => {
 
-    useEffect(() => {
-        dispatch(getMasterNodes());
-        getWorkFlowDetails();
-    }, [dispatch, workflow_id]);
+    if (workFlowData && workFlowData.nodes?.length) {
+      //@ts-ignore
+      setNodes(workFlowData?.nodes);
+      workFlowData.nodes?.forEach((node: any) => {
+        dispatch(
+          addVariable({
+            nodeID: node.id,
+            variableName: node?.data?.parameters?.variableName?.value || "",
+            workflowID: workFlowData._id || "",
+            variableValue:
+              node?.data?.parameters?.defaultValue ||
+              node?.data?.parameters?.fileType ||
+              node?.data?.parameters?.options,
+            variableType: node.type,
+          })
+        );
+        dispatch(addNode(node));
+      });
 
+    }
 
-    const getWorkFlowDetails = () => {
-        if (!workflow_id) return;
-        if (workFlowData && workFlowData._id) return;
-        dispatch(getWorkFlowById(workflow_id));
-    };
-
-    const onConnect: OnConnect = useCallback(
-        connection => setEdges(edges => addEdge(connection, edges)),
-        [setEdges]
-    );
-
-    const onDragOver = useCallback((event: DragEvent) => {
-        event.preventDefault();
-        event.dataTransfer.dropEffect = "move";
-    }, []);
-
-    const handleAddNode = async (data: any) => {
-        try {
-            const resultAction = await dispatch(createNode(data));
-            const result = unwrapResult(resultAction);
-            console.log("result", result);
-            return result._id;
-        } catch (error) {
-            console.log("error", error);
-        }
-    };
-
-    const onDrop = useCallback(
-        async (event: React.DragEvent<HTMLDivElement>) => {
-            event.preventDefault();
-
-            if (!nodeData) {
-                return;
-            }
-
-            if (!reactFlowWrapper.current) return;
-            //@ts-ignore
-            const toolsNodes = nodes.filter(nds => nds.data.label === nodeData.data.label);
-
-            const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-
-            const position = screenToFlowPosition({
-                x: event.clientX - reactFlowBounds.left,
-                y: event.clientY - reactFlowBounds.top,
-            });
-
-            const nodeId = await handleAddNode({
-                workflowId: workFlowData._id,
-                nodeMasterId: nodeData.id,
-                name: nodeData.data?.label,
-                type: nodeData?.type,
-                description: nodeData.data?.descriptions || "",
-                position,
-                parameters: {},
-            });
+  }, [dispatch, workFlowData]);
 
 
-            // const newNode: any = {
-            //     ...nodeData,
-            //     id: nodeId,
-            //     position,
-            // };
 
-            const newNode = {
-                ...nodeData,
-                data: {
-                    ...nodeData.data,
-                    parameters: {
-                        ...nodeData.data.parameters,
-                        variableName: {
-                            ...nodeData.data.parameters?.variableName ?? {},
-                            value: toolsNodes?.length
-                                ? `${convertToUnderscore(nodeData.data.label)}${toolsNodes.length}`
-                                : convertToUnderscore(nodeData.data.label),
-                            label: nodeData.data.parameters?.variableName?.label || "",
-                            type: nodeData.data.parameters?.variableName?.type || "",
-                            required: nodeData.data.parameters?.variableName?.required ?? true,
-                            placeholder: nodeData.data.parameters?.variableName?.placeholder || "",
-                            options: nodeData.data.parameters?.variableName?.options || [],
-                            description: nodeData.data.parameters?.variableName?.description || "",
-                            error: nodeData.data.parameters?.variableName?.error || "",
-                        },
-                    },
-                },
-                id: nodeId,
-                position
-            };
+  useEffect(() => {
+    dispatch(getMasterNodes());
+    getWorkFlowDetails();
+  }, [dispatch, workflow_id]);
 
-            //@ts-ignore
-            setNodes((nds) => nds.concat(newNode));
-            dispatch(addNode(newNode));
+
+  const getWorkFlowDetails = () => {
+    if (!workflow_id) return;
+    if (workFlowData && workFlowData._id) return;
+    dispatch(getWorkFlowById(workflow_id));
+  };
+
+  const onConnect: OnConnect = useCallback(
+    connection => setEdges(edges => addEdge(connection, edges)),
+    [setEdges]
+  );
+
+  const onDragOver = useCallback((event: DragEvent) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+  }, []);
+
+  const handleAddNode = async (data: any) => {
+    try {
+      const resultAction = await dispatch(createNode(data));
+      const result = unwrapResult(resultAction);
+      console.log("result", result);
+      return result._id;
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  const onDrop = useCallback(
+    async (event: React.DragEvent<HTMLDivElement>) => {
+      event.preventDefault();
+
+      if (!nodeData) {
+        return;
+      }
+
+      if (!reactFlowWrapper.current) return;
+      //@ts-ignore
+      const toolsNodes = nodes.filter(
+        (nds: any) => nds.data.label === nodeData.data.label
+      );
+
+      const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+
+      const position = screenToFlowPosition({
+        x: event.clientX - reactFlowBounds.left,
+        y: event.clientY - reactFlowBounds.top,
+      });
+
+      const nodeId = await handleAddNode({
+        workflowId: workFlowData._id,
+        nodeMasterId: nodeData.id,
+        name: nodeData.data?.label,
+        type: nodeData?.type,
+        description: nodeData.data?.descriptions || "",
+        position,
+        parameters: {},
+      });
+
+
+      // const newNode: any = {
+      //     ...nodeData,
+      //     id: nodeId,
+      //     position,
+      // };
+
+      const newNode = {
+        ...nodeData,
+        data: {
+          ...nodeData.data,
+          parameters: {
+            ...nodeData.data.parameters,
+            variableName: {
+              ...nodeData.data.parameters?.variableName ?? {},
+              value: toolsNodes?.length
+                ? `${convertToUnderscore(nodeData.data.label)}${toolsNodes.length}`
+                : convertToUnderscore(nodeData.data.label),
+              label: nodeData.data.parameters?.variableName?.label || "",
+              type: nodeData.data.parameters?.variableName?.type || "",
+              required: nodeData.data.parameters?.variableName?.required ?? true,
+              placeholder: nodeData.data.parameters?.variableName?.placeholder || "",
+              options: nodeData.data.parameters?.variableName?.options || [],
+              description: nodeData.data.parameters?.variableName?.description || "",
+              error: nodeData.data.parameters?.variableName?.error || "",
+            },
+          },
         },
-        [screenToFlowPosition, nodeData]
-    );
+        id: nodeId,
+        position
+      };
 
-    const onConnectEnd = useCallback(
-        (event: any, connectionState: any) => {
-            console.log("connectionState", connectionState);
+      //@ts-ignore
+      setNodes((nds) => nds.concat(newNode));
+      dispatch(addNode(newNode));
+    },
+    [screenToFlowPosition, nodeData]
+  );
 
-            if (!workflow_id) {
-                console.log("Workflow ID not found, not adding edge");
-                return;
-            }
+  const onConnectEnd = useCallback(
+    (event: any, connectionState: any) => {
+      console.log("connectionState", connectionState);
 
-            if (
-                connectionState.isValid === null ||
-                connectionState.isValid === undefined
-            ) {
-                console.log("Invalid connection state, not adding edge");
-                return;
-            }
+      if (!workflow_id) {
+        console.log("Workflow ID not found, not adding edge");
+        return;
+      }
 
-            if (connectionState.fromNode.id === connectionState.toNode.id) {
-                console.log("Source and target nodes are the same, not adding edge");
-                return;
-            }
+      if (
+        connectionState.isValid === null ||
+        connectionState.isValid === undefined
+      ) {
+        console.log("Invalid connection state, not adding edge");
+        return;
+      }
 
-            const fromNodeExists =
-                connectionState.fromNode && connectionState.fromNode.id;
-            const toNodeExists = connectionState.toNode && connectionState.toNode.id;
+      if (connectionState.fromNode.id === connectionState.toNode.id) {
+        console.log("Source and target nodes are the same, not adding edge");
+        return;
+      }
 
-            if (!fromNodeExists || !toNodeExists) {
-                console.log("One or both nodes do not exist, not adding edge");
-                return;
-            }
+      const fromNodeExists =
+        connectionState.fromNode && connectionState.fromNode.id;
+      const toNodeExists = connectionState.toNode && connectionState.toNode.id;
 
-            const existingEdge = edges?.find(
-                (edge: any) =>
-                    (edge.source === connectionState.fromNode.id &&
-                        edge.target === connectionState.toNode.id) ||
-                    (edge.source === connectionState.toNode.id &&
-                        edge.target === connectionState.fromNode.id)
-            );
+      if (!fromNodeExists || !toNodeExists) {
+        console.log("One or both nodes do not exist, not adding edge");
+        return;
+      }
 
-            if (existingEdge) {
-                console.log("Edge already exists, not adding new one");
-                return;
-            }
-            const edgeId = `${[connectionState.fromNode.id, connectionState.toNode.id].sort().join("_")}`;
-            const edge: any = {
-                id: edgeId,
-                source: connectionState.fromNode.id,
-                target: connectionState.toNode.id,
-                type: "custom",
-                sourceHandle: connectionState.fromHandle.id,
-                targetHandle: connectionState.toHandle.id,
-            };
-            const updatedEdge: any = [...edges, edge];
+      const existingEdge = edges?.find(
+        (edge: any) =>
+          (edge.source === connectionState.fromNode.id &&
+            edge.target === connectionState.toNode.id) ||
+          (edge.source === connectionState.toNode.id &&
+            edge.target === connectionState.fromNode.id)
+      );
 
-            dispatch(
-                updateWorkFlowById({
-                    id: workflow_id || "",
-                    data: {
-                        edges: updatedEdge,
-                    },
-                })
-            );
+      if (existingEdge) {
+        console.log("Edge already exists, not adding new one");
+        return;
+      }
+      const edgeId = `${[connectionState.fromNode.id, connectionState.toNode.id].sort().join("_")}`;
+      const edge: any = {
+        id: edgeId,
+        source: connectionState.fromNode.id,
+        target: connectionState.toNode.id,
+        type: "custom",
+        sourceHandle: connectionState.fromHandle.id,
+        targetHandle: connectionState.toHandle.id,
+      };
+      const updatedEdge: any = [...edges, edge];
 
-            console.log("connectionState", connectionState);
+      dispatch(
+        updateWorkFlowById({
+          id: workflow_id || "",
+          data: {
+            edges: updatedEdge,
+          },
+        })
+      );
 
-            setEdges(eds => eds.concat(edge));
-        },
-        [edges, screenToFlowPosition]
-    );
+      console.log("connectionState", connectionState);
 
-    return (
-        <div
-            style={{ height: "100vh", width: "100%" }}
-            className="reactflow-wrapper"
-            ref={reactFlowWrapper}
+      setEdges(eds => eds.concat(edge));
+    },
+    [edges, screenToFlowPosition]
+  );
+
+  return (
+    <div
+      style={{ height: "100vh", width: "100%" }}
+      className="reactflow-wrapper"
+      ref={reactFlowWrapper}
+    >
+      <ReactFlow
+        nodes={nodes}
+        nodeTypes={nodeTypes}
+        onNodesChange={onNodesChange}
+        edges={edges}
+        edgeTypes={edgeTypes}
+        snapToGrid={true}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+        onConnectEnd={onConnectEnd}
+        onDrop={onDrop}
+        onDragOver={onDragOver}
+        connectionLineComponent={ConnectionLine}
+        defaultViewport={{ zoom: 0.9, x: 0, y: 0 }}
+      >
+        <Background
+          variant={BackgroundVariant.Lines}
+          style={{
+            backgroundColor: "#F8F8FA",
+            background:
+              "linear-gradient(180deg, rgba(248, 248, 250, 1), rgba(248, 248, 250, 0))",
+          }}
+        />
+        <MiniMap />
+        <Controls />
+        <Panel
+          position="top-left"
+          className="border-2 border-white rounded-lg p-1.5 bg-[#F8F8FA] left-[40px] cursor-pointer"
         >
-            <ReactFlow
-                nodes={nodes}
-                nodeTypes={nodeTypes}
-                onNodesChange={onNodesChange}
-                edges={edges}
-                edgeTypes={edgeTypes}
-                snapToGrid={true}
-                onEdgesChange={onEdgesChange}
-                onConnect={onConnect}
-                onConnectEnd={onConnectEnd}
-                onDrop={onDrop}
-                onDragOver={onDragOver}
-                connectionLineComponent={ConnectionLine}
-                defaultViewport={{ zoom: 0.9, x: 0, y: 0 }}
-            >
-                <Background
-                    variant={BackgroundVariant.Lines}
-                    style={{
-                        backgroundColor: "#F8F8FA",
-                        background:
-                            "linear-gradient(180deg, rgba(248, 248, 250, 1), rgba(248, 248, 250, 0))",
-                    }}
-                />
-                <MiniMap />
-                <Controls />
-                <Panel
-                    position="top-left"
-                    className="border-2 border-white rounded-lg p-1.5 bg-[#F8F8FA] left-[40px] cursor-pointer"
-                >
-                    <div
-                        className="w-[198px] h-[44px] flex justify-center items-center"
-                        onClick={() => {
-                            route.back();
-                        }}
-                    >
-                        <Image
-                            src="/images/workflow/back.svg"
-                            alt="back"
-                            width={24}
-                            height={24}
-                        />
-                        <p className="text-[14px] font-semibold leading-[21px] font-poppins ml-2.5">
-                            {workFlowData?.name || ""}
-                        </p>
-                    </div>
-                </Panel>
+          <div
+            className="w-[198px] h-[44px] flex justify-center items-center"
+            onClick={() => {
+              route.back();
+            }}
+          >
+            <Image
+              src="/images/workflow/back.svg"
+              alt="back"
+              width={24}
+              height={24}
+            />
+            <p className="text-[14px] font-semibold leading-[21px] font-poppins ml-2.5">
+              {workFlowData?.name || ""}
+            </p>
+          </div>
+        </Panel>
 
-                <Panel
-                    position="top-left"
-                    className="absolute top-[75px] left-[40px] p-[1px] bg-gradient-to-b from-white from-10% via-[#FFFFFF] via-5% to-[#99999947] rounded-[20px] backdrop-blur-md"
-                >
-                    <div className="bg-white rounded-[20px] p-3">
-                        <TopLeftPanel2nd setNodes={setNodes} />
-                    </div>
-                </Panel>
+        <Panel
+          position="top-left"
+          className="absolute top-[75px] left-[40px] p-[1px] bg-gradient-to-b from-white from-10% via-[#FFFFFF] via-5% to-[#99999947] rounded-[20px] backdrop-blur-md"
+        >
+          <div className="bg-white rounded-[20px] p-3">
+            <TopLeftPanel2nd setNodes={setNodes} />
+          </div>
+        </Panel>
 
-                <Panel position="top-right" style={{ right: "40px" }}>
-                    <TopRightPanel1st />
-                </Panel>
+        <Panel position="top-right" style={{ right: "40px" }}>
+          <TopRightPanel1st />
+        </Panel>
 
-                <Panel position="top-right" style={{ top: "60px", right: "40px" }}>
-                    <TopRightPanel2nd />
-                </Panel>
-
-                <Panel position="bottom-center" style={{ bottom: "20px" }}>
-                    <BottomCenterPanel />
-                </Panel>
-            </ReactFlow>
-        </div>
-    );
+        <Panel position="bottom-center" style={{ bottom: "20px" }}>
+          <BottomCenterPanel />
+        </Panel>
+      </ReactFlow>
+    </div>
+  );
 };
 
 const WorkflowPage: React.FC<PageProps> = ({ params: { workflow_id } }) => {
   const [activeTab, setActiveTab] = useState(0);
+  const [selectedExecutionId, setSelectedExecutionId] = useState<string>("");
+
+  const handleViewDetails = (executionId: string) => {
+    setSelectedExecutionId(executionId);
+    setActiveTab(1);
+  };
 
   return (
     <>
-      <TopRightPanel2nd setActiveTab={setActiveTab} />
+      <TopRightPanel2nd
+        activeTab={activeTab}
+        setActiveTab={activeTab => {
+          setSelectedExecutionId("");
+          setActiveTab(activeTab);
+        }}
+      />
       <ReactFlowProvider>
         {activeTab === 0 && <Workflow workflow_id={workflow_id} />}
-        {activeTab === 1 && <Run workflowId={workflow_id} />}
-        {activeTab === 2 && <TimeLineTable workflow_id={workflow_id}/>}
+        {activeTab === 1 && (
+          <Run workflowId={workflow_id} executionId={selectedExecutionId} />
+        )}
+        {activeTab === 2 && (
+          <TimeLineTable
+            workflow_id={workflow_id}
+            onViewDetails={handleViewDetails}
+          />
+        )}
       </ReactFlowProvider>
     </>
   );

@@ -51,9 +51,10 @@ export default function Dashboard() {
     try {
       setLoading(true);
       const response = await axios.get(
-        `http://localhost:5000/workflow/getAllTemplates`
+        `http://localhost:5000/workflow?isPrebuilt=true`
       );
-      setPreBuiltTemplates(response.data.results);
+      console.log("response", response.data);
+      setPreBuiltTemplates(response.data);
     } catch (error) {
       console.error("Error fetching pre-built templates:", error);
     } finally {
@@ -108,7 +109,7 @@ export default function Dashboard() {
         `http://localhost:5000/workflow/search?keyword=${queryParams}`
       );
 
-      setPreBuiltTemplates(response.data.results);
+      setPreBuiltTemplates(response.data);
     } catch (error) {
       console.error("Error fetching search results:", error);
     } finally {

@@ -53,7 +53,26 @@ const OutputDetails = ({
       // To:Do Error will handle here
     }
   };
-
+  const handleReject = async () => {
+    try {
+      console.log("Reject");
+      // const rejectExecution = await axios.post(
+      //   `http://localhost:5000/workflow/${workflowId}/reject?executionId=${executionId}`
+      // );
+    } catch (err) {
+      console.log("err", err);
+    }
+  };
+  const handleApprove = async () => {
+    try {
+      console.log("Approve");
+      // const approveExecution = await axios.post(
+      //   `http://localhost:5000/workflow/${workflowId}/approve?executionId=${executionId}`
+      // );
+    } catch (err) {
+      console.log("err", err);
+    }
+  };
   return (
     <>
       {outputDetailsData?.status === "completed" && (
@@ -94,19 +113,39 @@ const OutputDetails = ({
                         </ReactMarkdown>
                       </div>
                       <hr className="mt-4" />
-                      <div className="flex gap-4 items-center px-4 py-6">
-                        <button
-                          className=""
-                          onClick={() => handleCopy(item?.content)}
-                        >
-                          <Copy color="#4B465C" />
-                        </button>
-                        <button
-                          className=""
-                          onClick={() => handleRerun(item?.nodeMasterId)}
-                        >
-                          <RefreshCw color="#4B465C" />
-                        </button>
+                      <div className="flex justify-between">
+                        <div className="flex gap-4 items-center px-4 py-6">
+                          <button
+                            className=""
+                            onClick={() => handleCopy(item?.value)}
+                          >
+                            <Copy color="#4B465C" />
+                          </button>
+                          <button
+                            className=""
+                            onClick={() => handleRerun(item?.nodeMasterId)}
+                          >
+                            <RefreshCw color="#4B465C" />
+                          </button>
+                        </div>
+                        <div className="flex gap-4 items-center px-4 py-4">
+                          <button
+                            className="text-red-500 p-5 rounded-xl border border-red-500"
+                            onClick={() => {
+                              handleReject();
+                            }}
+                          >
+                            Reject
+                          </button>
+                          <button
+                            className="text-[#2DA771] p-5 rounded-xl border border-[#2DA771]"
+                            onClick={() => {
+                              handleApprove();
+                            }}
+                          >
+                            Approve
+                          </button>
+                        </div>
                       </div>
                     </div>
                   )}
