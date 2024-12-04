@@ -16,7 +16,7 @@ export const createNode = createAsyncThunk(
       //   data
       // );
 
-      const result = await instance.post("/nodes", data);
+      const result = await instance.post("/node", data);
 
       return result.data;
     } catch (error: any) {
