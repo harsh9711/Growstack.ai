@@ -40,6 +40,8 @@ const Form = ({ data, id, isConnectable }: NodeProps<FormNodeProps>) => {
 
   const [currentSubNodes, setCurrentSubNodes] = useState<SubNodeProps[]>([]);
 
+  console.log("currentSubNodes------>", currentSubNodes);
+
   const [currentParameter, setCurrentParameter] = useState(initialParameters);
   const [nextParameter, setNextParameter] = useState<{ [key: string]: any }>({
     "6": {

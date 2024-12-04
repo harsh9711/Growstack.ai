@@ -13,6 +13,7 @@ import {
 import { extractParameterValues } from "@/utils/dataResolver";
 import { VariableNameProps, WorkflowNodeState } from "@/types/workflows";
 import { getVariableName, isSpecialType } from "@/utils/helper";
+import { useSnackbar } from "../snackbar/SnackbarContext";
 
 const LlmNodes = memo(
     ({
@@ -24,6 +25,7 @@ const LlmNodes = memo(
     }: NodeProps<ShortTextNodeProps>) => {
         // const { parameters, nodeMasterId } = data;
         const dispatch = useAppDispatch();
+        const { success } = useSnackbar();
         const { workFlowData } = useAppSelector(state => state.workflows);
         const { isLoading, variables, nodes } = useAppSelector(
             state => state.nodes
@@ -137,6 +139,7 @@ const LlmNodes = memo(
                             data: bodyPayload as unknown as WorkflowNodeState,
                         })
                     );
+                    success("Node updated successfully");
                     setIsEdit(false);
                 } catch (error: any) {
                     console.error("error-->", error?.message);

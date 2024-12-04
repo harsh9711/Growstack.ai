@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { VariableNameProps, WorkflowNodeState } from "@/types/workflows";
 import { getVariableName, isSpecialType } from "@/utils/helper";
 import SmallCardFiled from "../DynamicInputs/SmallCard";
+import { useSnackbar } from "../snackbar/SnackbarContext";
 
 const ToolsNodes = memo(
   ({
@@ -25,6 +26,7 @@ const ToolsNodes = memo(
   }: NodeProps<ToolsNodeProps>) => {
     // const { parameters, nodeMasterId } = data;
 
+    const { success } = useSnackbar();
     const node = useAppSelector(state =>
       state.nodes.nodes.find(node => node.id === id)
     );
@@ -146,6 +148,7 @@ const ToolsNodes = memo(
               data: bodyPayload as unknown as WorkflowNodeState,
             })
           );
+          success("Node updated successfully");
           setIsEdit(false);
         } catch (error: any) {
           console.error("error-->", error?.message);

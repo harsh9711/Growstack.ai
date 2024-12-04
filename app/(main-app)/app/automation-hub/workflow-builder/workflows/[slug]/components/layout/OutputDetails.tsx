@@ -64,8 +64,8 @@ const AccordionComponent = ({ runSummaryData }: any) => {
                         rehypePlugins={[rehypeRaw]}
 
                       >
-                        {formatToMarkdown(item?.content)}
-                        {/* {JSON.stringify(item?.content)} */}
+                        {/* {formatToMarkdown(item?.content)} */}
+                        {JSON.stringify(item?.content)}
                       </ReactMarkdown>
                     </div>
                   </div>

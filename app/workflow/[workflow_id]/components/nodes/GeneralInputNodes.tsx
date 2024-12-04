@@ -12,6 +12,7 @@ import {
 } from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { WorkflowNodeState } from "@/types/workflows";
+import { useSnackbar } from "../snackbar/SnackbarContext";
 
 const GeneralInputNodes = memo(
     ({
@@ -23,11 +24,11 @@ const GeneralInputNodes = memo(
     }: NodeProps<GeneralInputNodeProps>) => {
         // const { parameters, nodeMasterId } = data;
 
-
         console.log("id-->", id);
 
         const { setNodes } = useReactFlow();
         const dispatch = useAppDispatch();
+        const { success } = useSnackbar();
 
         const { workFlowData } = useAppSelector(state => state.workflows);
         const { isLoading } = useAppSelector(state => state.nodes);
@@ -128,6 +129,8 @@ const GeneralInputNodes = memo(
                             error: "",
                         })
                     );
+
+                    success("Node updated successfully");
 
                     setIsNextBoxOpen(true);
                 } catch (error: any) {
@@ -252,22 +255,24 @@ const GeneralInputNodes = memo(
                             {!isNextBoxOpen ? (
                                 <div className="form-box">
                                     {node?.data?.parameters &&
-                                        Object.entries(node.data.parameters).filter(
-                                            ([key, param]: any) =>
-                                                param.required || showAdvancedOptions
-                                        ).map(([key, param]) => {
-                                            if (key === "nextParameter") {
-                                                return null;
-                                            }
-                                            return (
-                                                <DynamicInput
-                                                    key={key}
-                                                    inputKey={key}
-                                                    param={param}
-                                                    handleInputChange={handleInputChange}
-                                                />
-                                            );
-                                        })}
+                                        Object.entries(node.data.parameters)
+                                            .filter(
+                                                ([key, param]: any) =>
+                                                    param.required || showAdvancedOptions
+                                            )
+                                            .map(([key, param]) => {
+                                                if (key === "nextParameter") {
+                                                    return null;
+                                                }
+                                                return (
+                                                    <DynamicInput
+                                                        key={key}
+                                                        inputKey={key}
+                                                        param={param}
+                                                        handleInputChange={handleInputChange}
+                                                    />
+                                                );
+                                            })}
                                     <div className="advance-option-button-box mb-3">
                                         <button
                                             onClick={handleToggleAdvancedOptions}
