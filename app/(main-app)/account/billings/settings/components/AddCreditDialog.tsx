@@ -70,9 +70,10 @@ export default function AddCreditDialog() {
         subscription_id: planUsage?.stripe_subscription_id,
         amount: amount,
       };
+      const currentPath = localStorage.getItem("currentPathname");
 
       const response = await instance.post(
-        `${API_URL}/users/api/v1/payments/adds-on`,
+        `${API_URL}/users/api/v1/payments/adds-on?currentPath=${currentPath}`,
         { product }
       );
       window.location.href = response.data.url;
