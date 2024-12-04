@@ -59,8 +59,6 @@ const HoverVideo = () => {
   );
 };
 
-
-
 function OurProcess() {
   useEffect(() => {
     AOS.init();
@@ -104,7 +102,10 @@ function OurProcess() {
                     playsInline
                     className="2xl:max-w-[720px] xl:max-w-[500px] lg:max-w-[400px] w-full"
                   >
-                    <source src="/landingpage/Funnel.mp4" type="video/mp4" />
+                    <source
+                      src="https://growstackai.s3.amazonaws.com/ocexjN/Funnel.mp4"
+                      type="video/mp4"
+                    />
                     <track
                       src="/path/to/captions.vtt"
                       kind="subtitles"
@@ -116,11 +117,14 @@ function OurProcess() {
               </div>
             </div>
             <div>
-              <div className="process sm:hidden flex" data-aos="flip-up"
-            data-aos-easing="ease-in-sine"
-            data-aos-duration="1000">
-            <img src="/images_growstack/home/process.svg" alt="process" />
-            </div>
+              <div
+                className="process sm:hidden flex"
+                data-aos="flip-up"
+                data-aos-easing="ease-in-sine"
+                data-aos-duration="1000"
+              >
+                <img src="/images_growstack/home/process.svg" alt="process" />
+              </div>
               {/* <HoverVideoPlayer
                 className="absolute  left-0 w-full h-full rounded-2xl border-none outline-none"
                 loop={false}
@@ -152,4 +156,4 @@ function OurProcess() {
   );
 }
 
-export default OurProcess
+export default OurProcess;
