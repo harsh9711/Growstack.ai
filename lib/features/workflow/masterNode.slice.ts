@@ -6,7 +6,7 @@ export const createMasterNode = createAsyncThunk(
   "workflow/createMasterNode",
   async (_, { rejectWithValue }) => {
     try {
-      const data = await CustomAxiosInstance("http://localhost:5000/").post(
+      const data = await CustomAxiosInstance().post(
         "nodemaster"
       );
       return data.data;
@@ -22,7 +22,7 @@ export const getMasterNodes = createAsyncThunk(
   "masterNodes/getMasterNodes",
   async (_, { rejectWithValue }) => {
     try {
-      const data = await CustomAxiosInstance("http://localhost:5000/").get(
+      const data = await CustomAxiosInstance().get(
         "nodemaster"
       );
       console.log("---data----", data);
