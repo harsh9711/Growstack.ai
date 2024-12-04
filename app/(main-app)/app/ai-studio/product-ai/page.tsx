@@ -182,10 +182,15 @@ export default function Home() {
       }
       fetchHistory();
       setLoading(false);
-    } catch (error) {
+    } catch (error:any) {
       console.error("Error removing background:", error);
       setLoading(false);
-      toast.error("Failed to process image");
+      if(error?.response?.data?.message){
+        toast.error("Failed to process image due to "+ error?.response?.data?.message);
+      }else{
+        toast.error("Failed to process image");
+        
+      }
     }
   };
 
@@ -214,10 +219,12 @@ export default function Home() {
       }
       fetchHistory();
       setLoading(false);
-    } catch (error) {
-      console.error("Error removing background:", error);
-      setLoading(false);
-      toast.error("Failed to process image");
+    } catch (error:any) {
+      if(error?.response?.data?.message){
+        toast.error("Failed to process image due to "+ error?.response?.data?.message);
+      }else{
+        toast.error("Failed to process image");
+      }
     }
   };
   const updateFavourite = async (imageID: any, booleanValue: boolean) => {
@@ -271,8 +278,8 @@ export default function Home() {
         user_prompt,
         remove_bg_toggle,
         numOfImages,
-        normalizedPosition, // Send normalized position
-        normalizedScale, // Send normalized scale
+        normalizedPosition,
+        normalizedScale,
       });
 
       const result_url = response.data.data.originalUrls;
@@ -283,10 +290,16 @@ export default function Home() {
       }
       fetchHistory();
       setLoading(false);
-    } catch (error) {
+    } catch (error:any) {
       console.error("Error removing background:", error);
+      console.log("error***********",error)
       setLoading(false);
-      toast.error("Failed to process image");
+      if(error?.response?.data?.message){
+        toast.error("Failed to process image due to "+ error?.response?.data?.message);
+      }else{
+        toast.error("Failed to process image");
+        
+      }
     }
   };
   const handleDownload = async (image: string) => {
