@@ -1,4 +1,5 @@
 import WorkflowSchedulerModal from "@/app/(main-app)/app/automation-hub/workflow-builder/workflows/[slug]/components/WorkflowSchedulerModal";
+import { CustomAxiosInstance } from "@/config/axios.config";
 import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 
@@ -25,11 +26,14 @@ const TimeLineTable = ({
 
   const getHistoryData = useCallback(async () => {
     try {
-      const getHistory = await axios.get(
-        `http://localhost:5000/workflow/${workflow_id}/history`
+      const getHistory = await CustomAxiosInstance().get(
+        `workflow/${workflow_id}/history`
       );
+      // const getHistory = await axios.get(
+      //   `/workflows/${workflow_id}/history`
+      // );
       setHistoryData(getHistory?.data);
-    } catch {}
+    } catch { }
   }, []);
 
   const getScheduleData = useCallback(async () => {
@@ -170,22 +174,20 @@ const TimeLineTable = ({
               {historyData.map((item: any, index: number) => (
                 <tr
                   key={index}
-                  className={`border-b ${
-                    index % 2 === 0 ? "bg-white" : "bg-white"
-                  }`}
+                  className={`border-b ${index % 2 === 0 ? "bg-white" : "bg-white"
+                    }`}
                 >
                   <td className="p-3 text-black">{item?._id}</td>
                   <td className="p-3 text-black">
                     {item?.name ?? "GrowStack"}
                   </td>
                   <td
-                    className={`p-3 font-medium ${
-                      item?.status === "completed"
-                        ? "inline-block text-green-600 bg-green-100 mt-1 rounded-md text-sm"
-                        : item?.status === "in-progress"
-                          ? "inline-block text-yellow-600 bg-yellow-100 mt-1 rounded-md text-sm"
-                          : "inline-block text-red-600 bg-yellow-100 mt-1 rounded-md text-sm"
-                    }`}
+                    className={`p-3 font-medium ${item?.status === "completed"
+                      ? "inline-block text-green-600 bg-green-100 mt-1 rounded-md text-sm"
+                      : item?.status === "in-progress"
+                        ? "inline-block text-yellow-600 bg-yellow-100 mt-1 rounded-md text-sm"
+                        : "inline-block text-red-600 bg-yellow-100 mt-1 rounded-md text-sm"
+                      }`}
                   >
                     {item?.status}
                   </td>
@@ -232,9 +234,8 @@ const TimeLineTable = ({
               {scheduleData.map((item: any, index: number) => (
                 <tr
                   key={index}
-                  className={`border-b ${
-                    index % 2 === 0 ? "bg-white" : "bg-white"
-                  }`}
+                  className={`border-b ${index % 2 === 0 ? "bg-white" : "bg-white"
+                    }`}
                 >
                   <td className="p-3 text-black">
                     {item?.name ?? "GrowStack"}

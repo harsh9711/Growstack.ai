@@ -2,7 +2,7 @@
 
 import Motion from "@/components/Motion";
 import Spinner from "@/components/Spinner";
-import instance from "@/config/axios.config";
+import instance, { CustomAxiosInstance } from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import clsx from "clsx";
 import { Clock, ChevronDown, ChevronUp, Info } from "lucide-react";
@@ -73,10 +73,23 @@ const Run: React.FC<Props> = ({
   const [IsInputParameterOpen, setIsInputParameterOpen] = useState(true);
   const [executionId, setExecutionId] = useState(initialExecutionId || "");
   const [runSummaryData, setRunSummaryData] = useState<any>([]);
+
+  useEffect(() => {
+    if (workflowId) {
+      fetchWorkflowData(workflowId)
+        .then(data => {
+          //   if (tab && preFilled && runnerId) {
+          //     fetchRunnerData(runnerId);
+          //   }
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [workflowId]);
   const fetchWorkflowData = async (id: string) => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:5000/workflow/${id}`);
+      const response = await CustomAxiosInstance().get(`workflow/${id}`);
+      // const response = await instance.get(`/workflows/${id}`);
       const apiData = response.data;
 
       // Filter and map `nodes` to `input_configs`
@@ -94,6 +107,7 @@ const Run: React.FC<Props> = ({
         })
         .map((node: any) => {
           const parameters = node.parameters || {};
+          console.log(parameters, "checking the parameter of runv2");
 
           return {
             display_name: parameters.inputLabel || "Untitled Field",
@@ -102,8 +116,15 @@ const Run: React.FC<Props> = ({
             default_value: parameters.defaultValue || "",
             variableName: parameters.variableName || "",
             type: node?.nodeMasterId?.inputType,
-            list_values:
-              parameters?.options?.map((opt: any) => opt.label) || [],
+            list_values: parameters?.options || [],
+            // list_values: parameters?.options?.map((opt: any) => opt.label) || [],
+
+            // list_values: (() => {
+            //   const values =
+            //     parameters?.options?.map((opt: any) => opt.label) || [];
+            //   console.log("checking the options value:", values);
+            //   return values;
+            // })(),
           };
         });
 
@@ -131,10 +152,14 @@ const Run: React.FC<Props> = ({
     }));
     setIsLoading(true);
     try {
-      const response = await axios.post(
-        `http://localhost:5000/workflow/${workflowId}/run`,
+      const response = await CustomAxiosInstance().post(
+        `workflow/${workflowId}/run`,
         updatedWorkflowData
       );
+      // const response = await instance.post(
+      //   `/workflows/${workflowId}/run`,
+      //   updatedWorkflowData
+      // );
       setExecutionId(response?.data?.executionId);
     } catch (error) {
       // To:Do Handle error
@@ -145,9 +170,12 @@ const Run: React.FC<Props> = ({
 
   const pollingWorkflowExec = useCallback(async () => {
     try {
-      const getWorkFlowExecData = await axios.get(
-        `http://localhost:5000/workflow/${workflowId}/status/${executionId}`
+      const getWorkFlowExecData = await CustomAxiosInstance().get(
+        `workflow/${workflowId}/status/${executionId}`
       );
+      // const getWorkFlowExecData = await instance.get(
+      //   `/workflows/${workflowId}/status/${executionId}`
+      // );
 
       const outputDetails = getWorkFlowExecData?.data?.nodeExecutions.map(
         (nodeExecution: any) => {

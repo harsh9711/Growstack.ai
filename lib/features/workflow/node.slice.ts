@@ -1,4 +1,4 @@
-import { CustomAxiosInstance } from "@/config/axios.config";
+import instance, { CustomAxiosInstance } from "@/config/axios.config";
 import {
   NodeDataState,
   NodeState,
@@ -11,10 +11,10 @@ export const createNode = createAsyncThunk(
   "workflow/createNode",
   async (data: any, { rejectWithValue }) => {
     try {
-      const result = await CustomAxiosInstance("http://localhost:5000/").post(
-        "node",
-        data
-      );
+      const result = await CustomAxiosInstance().post("node", data);
+
+      // const result = await instance.post("/workflows/nodes", data);
+
       return result.data;
     } catch (error: any) {
       return rejectWithValue(
@@ -31,10 +31,9 @@ export const updateNodeById = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const result = await CustomAxiosInstance("http://localhost:5000/").patch(
-        `node/${id}`,
-        data
-      );
+      const result = await CustomAxiosInstance().patch(`node/${id}`, data);
+
+      // const result = await instance.patch(`/workflows/node/${id}`, data);
       return result.data;
     } catch (error: any) {
       return rejectWithValue(
@@ -48,9 +47,9 @@ export const deleteNodeById = createAsyncThunk(
   "workflow/deleteNodeById",
   async (id: string, { rejectWithValue }) => {
     try {
-      const result = await CustomAxiosInstance("http://localhost:5000/").delete(
-        `node/${id}`
-      );
+      const result = await CustomAxiosInstance().delete(`node/${id}`);
+
+      // const result = await instance.delete(`/workflows/node/${id}`);
       return result.data;
     } catch (error: any) {
       return rejectWithValue(
@@ -80,6 +79,10 @@ const nodeSlice = createSlice({
     },
 
     addNode: (state, action: PayloadAction<NodeState>) => {
+      if (Array.isArray(action.payload) && action.payload.length > 0) {
+        state.nodes = action.payload;
+        return;
+      }
       state.nodes.push(action.payload);
     },
 
@@ -168,6 +171,158 @@ const nodeSlice = createSlice({
           } else {
             console.error(`Variable name key not found in node ${nodeId}`);
           }
+        }
+      } else {
+        console.error(`Node with id ${nodeId} not found`);
+      }
+    },
+
+    updateSubNodeParameter: (
+      state,
+      action: PayloadAction<{
+        nodeId: string;
+        nodeMasterId: string;
+        key: string;
+        type: string;
+        value: any;
+        label?: string;
+        placeholder?: string;
+        required?: boolean;
+        options?: Option[];
+        description?: string;
+        error?: string;
+      }>
+    ) => {
+      const {
+        nodeId,
+        nodeMasterId,
+        key,
+        type,
+        value,
+        placeholder,
+        required,
+        options,
+        label,
+        description,
+        error,
+      } = action.payload;
+
+      const nodeResult = state.nodes.find(node => node.id === nodeId);
+
+      if (nodeResult) {
+        const subNode = nodeResult.data.subNodes?.find(
+          subNode => subNode.nodeMasterId === nodeMasterId
+        );
+
+        if (subNode) {
+          const updatedValue =
+            typeof value === "boolean"
+              ? value
+              : type === "text_variable_name"
+                ? value.replace(/\s+/g, "_")?.toLowerCase()
+                : value;
+
+          if (type === "error") {
+            subNode.parameters[key].error = value as string;
+            return;
+          }
+
+          if (!subNode.parameters[key]) {
+            subNode.parameters[key] = {
+              label: label || "",
+              type: type,
+              placeholder: placeholder,
+              required: required || false,
+              options: options,
+              description: description,
+              value: value,
+              error: error,
+            };
+            return;
+          }
+
+          if (key === "nextParameter") {
+            subNode.parameters[key].label = label || "";
+            subNode.parameters[key].type = type;
+            subNode.parameters[key].placeholder = placeholder || "";
+            subNode.parameters[key].options = options || [];
+            subNode.parameters[key].description = description || "";
+            subNode.parameters[key].required = required || false;
+            subNode.parameters[key].value = updatedValue;
+            subNode.parameters[key].error = "";
+            return;
+          }
+
+          subNode.parameters[key].value = updatedValue;
+          subNode.parameters[key].error = "";
+
+          if (type === "text_input_label") {
+            const variableNameKey = Object.keys(subNode.parameters).find(
+              k =>
+                subNode.parameters &&
+                subNode.parameters[k].type === "text_variable_name"
+            );
+            if (variableNameKey) {
+              subNode.parameters[variableNameKey].value =
+                typeof value === "string"
+                  ? value.replace(/\s+/g, "_")?.toLowerCase()
+                  : value;
+              subNode.parameters[variableNameKey].error = "";
+            } else {
+              console.error(
+                `Variable name key not found in sub-node ${nodeMasterId}`
+              );
+            }
+          }
+        } else {
+          console.error(
+            `Sub-node with nodeMasterId ${nodeMasterId} not found in node ${nodeId}`
+          );
+        }
+      } else {
+        console.error(`Node with id ${nodeId} not found`);
+      }
+    },
+
+    resetSubNodeParameter: (
+      state,
+      action: PayloadAction<{
+        nodeId: string;
+        nodeMasterId: string;
+        key?: string;
+        type?: string;
+        value?: any;
+        label?: string;
+        placeholder?: string;
+        required?: boolean;
+        options?: Option[];
+        description?: string;
+        error?: string;
+      }>
+    ) => {
+      const { nodeId, nodeMasterId } = action.payload;
+
+      const nodeResult = state.nodes.find(node => node.id === nodeId);
+
+      if (nodeResult) {
+        const subNode = nodeResult.data.subNodes?.find(
+          subNode => subNode.nodeMasterId === nodeMasterId
+        );
+
+        if (subNode) {
+          Object.keys(subNode.parameters).forEach(key => {
+            Object.keys(subNode.parameters).forEach(key => {
+              delete subNode.parameters[key].value;
+            });
+          });
+
+          if (subNode.parameters.nextParameter) {
+            delete subNode.parameters.nextParameter;
+          }
+        } else {
+          console.error(
+            `Sub-node with nodeMasterId ${nodeMasterId} not found in node ${nodeId}`
+          );
         }
       } else {
         console.error(`Node with id ${nodeId} not found`);
@@ -308,5 +463,7 @@ export const {
   removeNodeById,
   addVariable,
   updateNodeParameter,
+  updateSubNodeParameter,
+  resetSubNodeParameter,
   addDynamicParameterToNode,
 } = nodeSlice.actions;

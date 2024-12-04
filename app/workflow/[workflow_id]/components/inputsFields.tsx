@@ -655,9 +655,6 @@ export const AddFieldDropdown: React.FC<AddFieldDropdownProps> = ({
     onSelect(option);
   };
 
-  console.log("---options---", options);
-  console.log("---isOpen---", isOpen);
-
   return (
     <div key={inputKey} className="input-box mt-4 mb-3">
       <div className="custom-select-box relative bg-white w-full">

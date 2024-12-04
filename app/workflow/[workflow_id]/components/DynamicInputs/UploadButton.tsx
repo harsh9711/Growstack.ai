@@ -17,6 +17,7 @@ const UploadButton: React.FC<DynamicInputProps> = ({ param, inputKey, handleInpu
             <div className="label-box flex items-center gap-2 relative mb-1">
                 <label className="font-medium text-[#14171B] text-[12px]">
                     {param.label}
+                    {param.required && <span className="text-[#CF0000]">*</span>}
                 </label>
                 <Tooltip
                     description={param?.description || ""}

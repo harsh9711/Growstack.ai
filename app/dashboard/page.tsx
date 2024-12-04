@@ -1,6 +1,6 @@
 "use client";
 
-import instance from "@/config/axios.config";
+import instance, { CustomAxiosInstance } from "@/config/axios.config";
 import Image from "next/image";
 import "aos/dist/aos.css";
 import { Fragment, useCallback, useEffect, useState } from "react";
@@ -65,7 +65,8 @@ export default function Dashboard() {
   const getUserSavedWorkflows = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:5000/workflow`);
+      const response = await CustomAxiosInstance().get(`workflow`);
+      // const response = await instance.get(`/workflows`);
       setPreBuiltTemplates(response.data);
     } catch (error) {
       console.error("Error fetching pre-built templates:", error);
@@ -108,7 +109,6 @@ export default function Dashboard() {
       const response = await axios.get(
         `http://localhost:5000/workflow/search?keyword=${queryParams}`
       );
-
       setPreBuiltTemplates(response.data);
     } catch (error) {
       console.error("Error fetching search results:", error);
@@ -223,21 +223,21 @@ export default function Dashboard() {
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {preBuiltTemplates?.length > 0
                   ? preBuiltTemplates.map(template => (
-                      <Card
-                        key={template._id}
-                        title={template.name}
-                        description={template.description}
-                        imageSrc={template?.image}
-                        workflow_id={template._id}
-                        activeTab={activeTab}
-                        setLoading={setLoading}
-                        refetchWorkflow={getPreBuiltTemplates}
-                      />
-                    ))
+                    <Card
+                      key={template._id}
+                      title={template.name}
+                      description={template.description}
+                      imageSrc={template?.image}
+                      workflow_id={template._id}
+                      activeTab={activeTab}
+                      setLoading={setLoading}
+                      refetchWorkflow={getPreBuiltTemplates}
+                    />
+                  ))
                   : loading &&
-                    Array(5)
-                      .fill(null)
-                      .map((_, index) => <WorkflowLoader key={index} />)}
+                  Array(5)
+                    .fill(null)
+                    .map((_, index) => <WorkflowLoader key={index} />)}
               </div>
             </div>
             {loading && (
@@ -299,9 +299,12 @@ const Card: React.FC<CardProps> = ({
     setLoading(true);
     try {
       setLoading(true);
-      const response = await instance.post(
-        `http://localhost:5000/workflow/${workflow_id}/duplicate`
+      const response = await CustomAxiosInstance().post(
+        `workflow/${workflow_id}/duplicate`
       );
+      // const response = await instance.post(
+      //   `/workflows/${workflow_id}/duplicate`
+      // );
     } catch (error: any) {
       console.error("Error duplicating workflow:", error);
       toast.error(
@@ -327,9 +330,13 @@ const Card: React.FC<CardProps> = ({
   const handleDeleteClick = async () => {
     setLoading(true);
     try {
-      const response = await axios.delete(
-        `http://localhost:5000/workflow/delete/${workflow_id}`
+      const response = await CustomAxiosInstance().delete(
+        `workflow/delete/${workflow_id}`
       );
+
+      // const response = await instance.delete(
+      //   `/workflows/delete/${workflow_id}`
+      // );
     } catch (error: any) {
       console.error("Error deleting workflow:", error);
     } finally {
@@ -341,9 +348,12 @@ const Card: React.FC<CardProps> = ({
   const handleUnpublishWorkflow = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(
-        `http://localhost:5000/workflow/unpublish/${workflow_id}`
+      const response = await CustomAxiosInstance().post(
+        `workflow/unpublish/${workflow_id}`
       );
+      // const response = await instance.post(
+      //   `/workflows/unpublish/${workflow_id}`
+      // );
     } catch (error: any) {
       console.error("Error unpublish workflow:", error);
     } finally {
