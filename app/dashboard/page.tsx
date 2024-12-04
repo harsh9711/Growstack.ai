@@ -50,9 +50,11 @@ export default function Dashboard() {
   const getPreBuiltTemplates = async () => {
     try {
       setLoading(true);
-      const response = await CustomAxiosInstance().get(`workflow`);
-      // const response = await instance.get(`/workflows`);
-      setPreBuiltTemplates([]);
+      const response = await axios.get(
+        `http://localhost:5000/workflow?isPrebuilt=true`
+      );
+      console.log("response", response.data);
+      setPreBuiltTemplates(response.data);
     } catch (error) {
       console.error("Error fetching pre-built templates:", error);
     } finally {
@@ -102,13 +104,12 @@ export default function Dashboard() {
   const fetchSearchResults = async (query: string): Promise<void> => {
     try {
       setLoading(true);
-      const response = await CustomAxiosInstance().get(
-        `workflow/search?keyword=${query}`
+      const queryParams =
+        activeTab === "templates" ? `${query}&isPrebuilt=true` : `${query}`;
+      const response = await axios.get(
+        `http://localhost:5000/workflow/search?keyword=${queryParams}`
       );
-      // const response = await instance.get(
-      //   `/workflows/search?keyword=${query}`
-      // );
-      if (response.data?.length > 0) setPreBuiltTemplates(response.data); // Update results with API response
+      setPreBuiltTemplates(response.data);
     } catch (error) {
       console.error("Error fetching search results:", error);
     } finally {
@@ -117,15 +118,21 @@ export default function Dashboard() {
   };
 
   const debouncedFetchSearchResults = useCallback(
-    debounce(fetchSearchResults, 1500), // Debounce delay of 500ms
+    debounce(fetchSearchResults, 1500),
     []
   );
 
   const handleSearchInputChange = (e: any) => {
-    const query = e.target.value;
+    const query = e.target.value || "";
     setSearchQuery(query);
-    debouncedFetchSearchResults(query);
+    if (query.length > 0) {
+      debouncedFetchSearchResults(query);
+    } else {
+      if (activeTab === "templates") getPreBuiltTemplates();
+      if (activeTab === "workflows") getUserSavedWorkflows();
+    }
   };
+
   return (
     <>
       <Fragment>
@@ -170,7 +177,8 @@ export default function Dashboard() {
                   <ChevronRight />
                 </button>
               </div>
-              <div className="pb-3">
+              {/* Will needed after */}
+              {/* <div className="pb-3">
                 <button className="flex items-center justify-between px-4 py-3 hover:bg-gray-50 rounded-xl transition-all duration-300 w-[280px]">
                   <div className="flex items-center gap-3 px-3 py-2">
                     <Settings />
@@ -187,7 +195,7 @@ export default function Dashboard() {
                   </div>
                   <ChevronRight />
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
           <main>

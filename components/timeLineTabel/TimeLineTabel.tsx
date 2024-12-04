@@ -1,54 +1,28 @@
+import WorkflowSchedulerModal from "@/app/(main-app)/app/automation-hub/workflow-builder/workflows/[slug]/components/WorkflowSchedulerModal";
 import { CustomAxiosInstance } from "@/config/axios.config";
 import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
-const scheduleData = [
-  {
-    _id: "#A1BC2",
-    name: "Data Backup",
-    frequency: "Daily",
-    startTimestamp: "2023-03-15T10:00:00Z",
-  },
-  {
-    _id: "#B2CD3",
-    name: "Report Generation",
-    frequency: "Daily",
-    startTimestamp: "2023-03-16T11:30:00Z",
-  },
-  {
-    _id: "#C3DE4",
-    name: "User Sync",
-    frequency: "Daily",
-    startTimestamp: "2023-03-15T12:00:00Z",
-  },
-  {
-    _id: "#D4EF5",
-    name: "Server Health Check",
-    frequency: "Daily",
-    startTimestamp: "2023-03-17T13:15:00Z",
-  },
-  {
-    _id: "#E5FG6",
-    name: "Email Campaign",
-    frequency: "Daily",
-    startTimestamp: "2023-04-01T14:45:00Z",
-  },
-  {
-    _id: "#F6GH7",
-    name: "Database Cleanup",
-    frequency: "Daily",
-    startTimestamp: "2023-03-19T15:30:00Z",
-  },
-  {
-    _id: "#G7HI8",
-    name: "Invoice Generation",
-    frequency: "Daily",
-    startTimestamp: "2023-04-10T16:00:00Z",
-  },
-];
-const TimeLineTable = ({ workflow_id }: { workflow_id: string }) => {
-  const [currentPage, setCurrentPage] = useState(1);
+
+const TimeLineTable = ({
+  workflow_id,
+  onViewDetails,
+}: {
+  workflow_id: string;
+  onViewDetails?: (executionId: string) => void;
+}) => {
   const [historyData, setHistoryData] = useState<any>([]);
+  const [scheduleData, setScheduleData] = useState<any>([]);
+  console.log("scheduleData", scheduleData);
   const [activeTab, setActiveTab] = useState(0);
+  const [showModal, setShowModal] = useState(false);
+  const [workFlowData, setWorkFlowData] = useState<any>({
+    name: "",
+    input_configs: [],
+    status: "",
+    workflow_id: "",
+    description: "",
+    input_values: "",
+  });
 
   const getHistoryData = useCallback(async () => {
     try {
@@ -62,9 +36,90 @@ const TimeLineTable = ({ workflow_id }: { workflow_id: string }) => {
     } catch { }
   }, []);
 
+  const getScheduleData = useCallback(async () => {
+    try {
+      const getSchedule = await axios.get(
+        `http://localhost:5000/workflow/${workflow_id}/schedules`
+      );
+      setScheduleData(getSchedule?.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
   useEffect(() => {
     getHistoryData();
-  }, [getHistoryData]);
+    getScheduleData();
+  }, [getHistoryData, getScheduleData]);
+
+  useEffect(() => {
+    const handleScheduleUpdate = () => {
+      getScheduleData();
+    };
+    window.addEventListener("schedule-updated", handleScheduleUpdate);
+    return () => {
+      window.removeEventListener("schedule-updated", handleScheduleUpdate);
+    };
+  }, [getScheduleData]);
+
+  const handleEditSchedule = async (item: any) => {
+    try {
+      // Fetch the workflow details to get input_configs
+      const workflowResponse = await axios.get(
+        `http://localhost:5000/workflow/${workflow_id}`
+      );
+
+      setWorkFlowData({
+        workflow_id: workflow_id,
+        frequency: item.frequency,
+        dayOfWeek: item.dayOfWeek || [],
+        dayOfMonth: item.dayOfMonth,
+        time: item.time,
+        timezone: item.timezone,
+        _id: item._id,
+
+        // Workflow-specific data
+        name: workflowResponse.data.name,
+        description: workflowResponse.data.description,
+        status: workflowResponse.data.status,
+
+        // Map the input configs with their values from the schedule
+        input_configs: workflowResponse.data.nodes
+          .filter((node: any) => {
+            const type = node?.nodeMasterId?.inputType;
+            return (
+              type === "text" ||
+              type === "textarea" ||
+              type === "checkbox" ||
+              type === "switch" ||
+              type === "number" ||
+              type === "file"
+            );
+          })
+          .map((node: any) => {
+            const parameters = node.parameters || {};
+            const scheduleValue = item.workflowPayload?.find(
+              (payload: any) => payload.variableName === parameters.variableName
+            )?.variableValue;
+
+            return {
+              display_name: parameters.inputLabel || "Untitled Field",
+              description: parameters?.description || "",
+              placeholder: parameters?.placeholder || "",
+              default_value: scheduleValue || parameters.defaultValue || "",
+              variableName: parameters.variableName || "",
+              type: node?.nodeMasterId?.inputType,
+              list_values:
+                parameters?.options?.map((opt: any) => opt.label) || [],
+            };
+          }),
+      });
+
+      setShowModal(true);
+    } catch (error) {
+      console.error("Error fetching workflow details:", error);
+    }
+  };
 
   return (
     <div className="w-full bg-white rounded-xl border border-1  p-4  overflow-hidden">
@@ -76,7 +131,7 @@ const TimeLineTable = ({ workflow_id }: { workflow_id: string }) => {
           History
         </button>
         <button
-          className={`font-semibold hover:text-green-600 ${activeTab === 1 ? "text-green-600 border-b-2 border-green-600" : ""}`}
+          className={`font-semibold pb-1  ${activeTab === 1 ? "text-green-600 border-b-2 border-green-600" : ""}`}
           onClick={() => setActiveTab(1)}
         >
           Schedule
@@ -144,11 +199,11 @@ const TimeLineTable = ({ workflow_id }: { workflow_id: string }) => {
                     })}
                   </td>
                   <td className="p-3">
-                    <button className="px-4 py-1 mr-2 text-sm text-green text-green-400 border border-[1px] border-green-400 rounded hover:bg-green-600">
+                    <button
+                      className="px-4 py-2 mr-2 text-sm text-green text-green-400 hover:text-white border border-green-400 rounded hover:bg-green-600"
+                      onClick={() => onViewDetails?.(item?._id)}
+                    >
                       View Details
-                    </button>
-                    <button className="px-4 py-1 text-sm text-green text-green-400 border border-[1px] border-green-400  rounded hover:bg-green-600">
-                      Re-Run
                     </button>
                   </td>
                 </tr>
@@ -162,16 +217,13 @@ const TimeLineTable = ({ workflow_id }: { workflow_id: string }) => {
             <thead>
               <tr className="border-b-2">
                 <th className="p-3 text-left text-xs font font-normal text-gray-400">
-                  Workflow Run ID
-                </th>
-                <th className="p-3 text-left text-xs font font-normal text-gray-400">
                   Workflow Name
                 </th>
                 <th className="p-3 text-left text-xs font font-normal text-gray-400">
                   Status
                 </th>
                 <th className="p-3 text-left text-xs font font-normal text-gray-400">
-                  Last Updated At
+                  Next Run At
                 </th>
                 <th className="p-3 text-left text-xs font font-normal text-gray-400">
                   Action
@@ -185,7 +237,6 @@ const TimeLineTable = ({ workflow_id }: { workflow_id: string }) => {
                   className={`border-b ${index % 2 === 0 ? "bg-white" : "bg-white"
                     }`}
                 >
-                  <td className="p-3 text-black">{item?._id}</td>
                   <td className="p-3 text-black">
                     {item?.name ?? "GrowStack"}
                   </td>
@@ -197,14 +248,17 @@ const TimeLineTable = ({ workflow_id }: { workflow_id: string }) => {
                     {item?.frequency}
                   </td>
                   <td className="p-3 text-black">
-                    {new Date(item?.startTimestamp).toLocaleString("en-US", {
+                    {new Date(item?.nextRun).toLocaleString("en-US", {
                       dateStyle: "medium", // Example: Nov 27, 2024
                       timeStyle: "short", // Example: 1:45 PM
                       timeZone: "UTC", // Adjust for UTC or any specific timezone
                     })}
                   </td>
                   <td className="p-3">
-                    <button className="px-4 py-1 mr-2 text-sm text-green text-green-400 border border-[1px] border-green-400 rounded hover:bg-green-600">
+                    <button
+                      className="px-4 py-1 mr-2 text-sm text-green text-green-400 hover:text-white border border-green-400 rounded hover:bg-green-600"
+                      onClick={() => handleEditSchedule(item)}
+                    >
                       View Details
                     </button>
                   </td>
@@ -246,6 +300,17 @@ const TimeLineTable = ({ workflow_id }: { workflow_id: string }) => {
             Next
           </button>
         </div> */}
+        {showModal && (
+          <WorkflowSchedulerModal
+            show={showModal}
+            setShow={() => {
+              setShowModal(false);
+            }}
+            workFlowData={workFlowData}
+            setWorkFlowData={setWorkFlowData}
+            timeLineTable="true"
+          />
+        )}
       </div>
     </div>
   );

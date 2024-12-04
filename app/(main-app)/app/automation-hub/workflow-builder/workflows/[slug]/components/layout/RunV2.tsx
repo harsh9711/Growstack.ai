@@ -19,6 +19,8 @@ import RunSummary from "./RunSummary";
 import WorkFlowHeader from "@/components/workFlowHeader/WorkFlowHeader";
 import TimeLineTable from "@/components/timeLineTabel/TimeLineTabel";
 import axios from "axios";
+import WorkflowSchedulerModal from "../WorkflowSchedulerModal";
+import { isPending } from "@reduxjs/toolkit";
 
 type TempOutput = {
   variable_name: string;
@@ -35,15 +37,32 @@ type WorkFlowResults = {
   temp_outputs: TempOutput[];
   workflow_runner_id: string;
 };
+interface OutputDetailsData {
+  status?: string;
+  outputDetails?: Array<{
+    nodeMasterId: string;
+    value: any;
+    title: string;
+  }>;
+}
 
 interface Props {
   workflowId: string;
+  executionId?: string;
 }
 
-const Run: React.FC<Props> = ({ workflowId }) => {
+const Run: React.FC<Props> = ({
+  workflowId,
+  executionId: initialExecutionId,
+}) => {
   const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [fileUrl2, setFileUrl2] = useState<string>("");
-  // const [selectedItems, setSelectedItems] = useState<string[]>([]);
+  const [isScheduleModalOpen, setIsSchedulerModalOpen] = useState(false);
+
+  const [outputDetailsData, setOutputDetailsData] = useState<OutputDetailsData>(
+    {}
+  );
   const [workFlowData, setWorkFlowData] = useState<any>({
     name: "",
     input_configs: [],
@@ -52,8 +71,7 @@ const Run: React.FC<Props> = ({ workflowId }) => {
     description: "",
   });
   const [IsInputParameterOpen, setIsInputParameterOpen] = useState(true);
-  const [activeTab, setActiveTab] = useState(0);
-  const [executionId, setExecutionId] = useState("");
+  const [executionId, setExecutionId] = useState(initialExecutionId || "");
   const [runSummaryData, setRunSummaryData] = useState<any>([]);
 
   useEffect(() => {
@@ -67,7 +85,6 @@ const Run: React.FC<Props> = ({ workflowId }) => {
         .finally(() => setLoading(false));
     }
   }, [workflowId]);
-
   const fetchWorkflowData = async (id: string) => {
     setLoading(true);
     try {
@@ -133,7 +150,7 @@ const Run: React.FC<Props> = ({ workflowId }) => {
       variableName: data.variableName,
       variableValue: data.default_value,
     }));
-    console.log(updatedWorkflowData, "updatedWorkflowData");
+    setIsLoading(true);
     try {
       const response = await CustomAxiosInstance().post(
         `workflow/${workflowId}/run`,
@@ -146,6 +163,8 @@ const Run: React.FC<Props> = ({ workflowId }) => {
       setExecutionId(response?.data?.executionId);
     } catch (error) {
       // To:Do Handle error
+    } finally {
+      setIsLoading(false);
     }
   }, [workFlowData]);
 
@@ -158,6 +177,25 @@ const Run: React.FC<Props> = ({ workflowId }) => {
       //   `/workflows/${workflowId}/status/${executionId}`
       // );
 
+      const outputDetails = getWorkFlowExecData?.data?.nodeExecutions.map(
+        (nodeExecution: any) => {
+          const nodeId = nodeExecution?.nodeId;
+          const variableName = nodeExecution?.parameters?.variableName;
+          const nodeMasterId = nodeId?._id;
+          const value =
+            getWorkFlowExecData?.data?.variables[variableName] || "";
+
+          return {
+            nodeMasterId: nodeMasterId,
+            value: value,
+            title: variableName,
+          };
+        }
+      );
+      setOutputDetailsData({
+        status: getWorkFlowExecData?.data?.status,
+        outputDetails: outputDetails,
+      });
       setRunSummaryData(getWorkFlowExecData?.data);
 
       const status = getWorkFlowExecData?.data?.status;
@@ -219,6 +257,24 @@ const Run: React.FC<Props> = ({ workflowId }) => {
     setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
   };
 
+  useEffect(() => {
+    if (workflowId) {
+      fetchWorkflowData(workflowId)
+        .then(data => {
+          //   if (tab && preFilled && runnerId) {
+          //     fetchRunnerData(runnerId);
+          //   }
+        })
+        .finally(() => setLoading(false));
+    }
+  }, [workflowId]);
+
+  useEffect(() => {
+    if (initialExecutionId) {
+      setExecutionId(initialExecutionId);
+    }
+  }, [initialExecutionId]);
+
   if (loading) {
     return (
       <div className="flex-1 flex flex-col gap-5 justify-center items-center min-h-[30vh]">
@@ -261,110 +317,130 @@ const Run: React.FC<Props> = ({ workflowId }) => {
                   className={`${IsInputParameterOpen ? "block" : "hidden"} transition-opacity`}
                 >
                   {workFlowData?.input_configs?.map(
-                    (input: any, idx: number) => (
-                      <div key={idx} className="relative group">
-                        <div className="flex items-center mb-4 mt-4 gap-2">
-                          <h2 className="font-medium">{input.display_name}</h2>
-                          {input?.description?.length > 0 && (
-                            <div className="relative">
-                              <Info className="cursor-pointer" />
-                              <div className="absolute left-0 top-full mt-2 w-max p-2 text-sm text-white bg-gray-800 rounded-md shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-                                {input.description}
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                        {(() => {
-                          switch (input?.type) {
-                            case "switch":
-                              return (
-                                <Switch
-                                  checked={input.default_value}
-                                  onCheckedChange={checked =>
-                                    handleBooleanInput(checked, idx)
-                                  }
-                                />
-                              );
-                            case "file":
-                              return (
-                                <FileUpload
-                                  onFileUploaded={fileUrl =>
-                                    handleFileUploaded(fileUrl, idx)
-                                  }
-                                  acceptedFileTypes={input.file_type || "*/*"}
-                                />
-                              );
-                            case "checkbox":
-                              return (
-                                <div className="flex gap-4">
-                                  {input.list_values.map((option: string) => (
-                                    <label
-                                      key={option}
-                                      className="flex items-center space-x-1.5"
-                                    >
-                                      <Checkbox
-                                        checked={
-                                          input?.selected_values?.includes(
-                                            option
-                                          ) || false
-                                        }
-                                        onCheckedChange={() =>
-                                          handleCheckListInput(option, idx)
-                                        }
-                                      />
-                                      <span className="text-sm capitalize font-medium text-gray-700">
-                                        {option}
-                                      </span>
-                                    </label>
-                                  ))}
+                    (input: any, idx: number) => {
+                      const matchingOutput =
+                        outputDetailsData?.outputDetails?.find(
+                          (output: any) => output.title === input.variableName
+                        );
+                      return (
+                        <div key={idx} className="relative group">
+                          <div className="flex items-center mb-4 mt-4 gap-2">
+                            <h2 className="font-medium">
+                              {input.display_name}
+                            </h2>
+
+                            {input?.description?.length > 0 && (
+                              <div className="relative">
+                                <Info className="cursor-pointer" />
+                                <div className="absolute left-0 top-full mt-2 w-max p-2 text-sm text-white bg-gray-800 rounded-md shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                                  {input.description}
                                 </div>
-                              );
-                            default:
-                              return (
-                                <input
-                                  type={
-                                    input.type === "number"
-                                      ? "number"
-                                      : input.type === "textarea"
-                                        ? "textarea"
-                                        : "text"
-                                  }
-                                  placeholder={input.placeholder}
-                                  className="w-full p-4 h-[46px] border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
-                                  value={input.default_value}
-                                  onChange={e =>
-                                    handleChangeInput(e.target.value, idx)
-                                  }
-                                />
-                              );
-                          }
-                        })()}
-                      </div>
-                    )
+                              </div>
+                            )}
+                          </div>
+                          {matchingOutput?.value && (
+                            <p className="bg-gray-100 p-4 rounded-lg w-full">
+                              {matchingOutput?.value}
+                            </p>
+                          )}
+                          {!matchingOutput &&
+                            (() => {
+                              switch (input?.type) {
+                                case "switch":
+                                  return (
+                                    <Switch
+                                      checked={input.default_value}
+                                      onCheckedChange={checked =>
+                                        handleBooleanInput(checked, idx)
+                                      }
+                                    />
+                                  );
+                                case "file":
+                                  return (
+                                    <FileUpload
+                                      onFileUploaded={fileUrl =>
+                                        handleFileUploaded(fileUrl, idx)
+                                      }
+                                      acceptedFileTypes={
+                                        input.file_type || "*/*"
+                                      }
+                                    />
+                                  );
+                                case "checkbox":
+                                  return (
+                                    <div className="flex gap-4">
+                                      {input.list_values.map(
+                                        (option: string) => (
+                                          <label
+                                            key={option}
+                                            className="flex items-center space-x-1.5"
+                                          >
+                                            <Checkbox
+                                              checked={
+                                                input?.selected_values?.includes(
+                                                  option
+                                                ) || false
+                                              }
+                                              onCheckedChange={() =>
+                                                handleCheckListInput(
+                                                  option,
+                                                  idx
+                                                )
+                                              }
+                                            />
+                                            <span className="text-sm capitalize font-medium text-gray-700">
+                                              {option}
+                                            </span>
+                                          </label>
+                                        )
+                                      )}
+                                    </div>
+                                  );
+                                default:
+                                  return (
+                                    <input
+                                      type={
+                                        input.type === "number"
+                                          ? "number"
+                                          : input.type === "textarea"
+                                            ? "textarea"
+                                            : "text"
+                                      }
+                                      placeholder={input.placeholder}
+                                      className="w-full p-4 h-[46px] border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
+                                      value={input.default_value}
+                                      onChange={e =>
+                                        handleChangeInput(e.target.value, idx)
+                                      }
+                                    />
+                                  );
+                              }
+                            })()}
+                        </div>
+                      );
+                    }
                   )}
                   <div className="flex justify-center mt-12 w-full gap-2">
                     <button
-                      // disabled={!isWorkFlowFetched || isSchedulerModalOpen}
                       className={clsx(
                         "bg-primary-light-shade-green flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 text-white"
                       )}
                       onClick={handleRunWorkFlow}
                     >
+                      {isLoading && <Spinner />}
                       <h2 className="text-white">Instant Run</h2>
                     </button>
-                    {workFlowData?.social_media_requirement && (
-                      <button
-                        className={clsx(
-                          "bg-transparent border-2 border-green-200 flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 "
-                        )}
-                        // onClick={() => setIsSchedulerModalOpen(true)}
-                      >
-                        <Clock size={20} color="#2DA771" />
-                        <h2 className="text-primary-light-shade-green">
-                          Schedule Workflow
-                        </h2>
-                      </button>
-                    )}
+                    <button
+                      className={clsx(
+                        "bg-transparent border-2 border-green-200 flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 "
+                      )}
+                      onClick={() => setIsSchedulerModalOpen(true)}
+                    >
+                      <Clock size={20} color="#2DA771" />
+                      <h2 className="text-primary-light-shade-green">
+                        Schedule Workflow
+                      </h2>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -372,7 +448,14 @@ const Run: React.FC<Props> = ({ workflowId }) => {
             </div>
             <div className="w-3/5">
               {executionId?.length > 0 ? (
-                <OutputDetails runSummaryData={runSummaryData} />
+                <OutputDetails
+                  outputDetailsData={outputDetailsData}
+                  executionId={executionId}
+                  onPollingWithNewId={(newExeId: string) =>
+                    setExecutionId(newExeId)
+                  }
+                  workflowId={workflowId}
+                />
               ) : (
                 <div className="w-full border-l-4 border-[#FB8491] bg-white rounded-lg shadow-md space-y-6 p-6 mt-5">
                   {/* Header Section */}
@@ -409,12 +492,15 @@ const Run: React.FC<Props> = ({ workflowId }) => {
       </div>
 
       {/* Need for Scheduling workflow */}
-      {/* <SchedulerModal
-        show={isSchedulerModalOpen}
-        setShow={setIsSchedulerModalOpen}
+      <WorkflowSchedulerModal
+        show={isScheduleModalOpen}
+        setShow={() => {
+          setIsSchedulerModalOpen(false);
+        }}
         workFlowData={workFlowData}
         setWorkFlowData={setWorkFlowData}
-      /> */}
+        timeLineTable="false"
+      />
     </div>
   );
 };
