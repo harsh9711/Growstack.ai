@@ -71,7 +71,9 @@ const Run: React.FC<Props> = ({ workflowId }) => {
   const fetchWorkflowData = async (id: string) => {
     setLoading(true);
     try {
-      const response = await axios.get(`http://localhost:5000/workflow/${id}`);
+      const response = await axios.get(
+        `http://192.168.1.28:5000/workflow/${id}`
+      );
       const apiData = response.data;
 
       // Filter and map `nodes` to `input_configs`
@@ -89,6 +91,7 @@ const Run: React.FC<Props> = ({ workflowId }) => {
         })
         .map((node: any) => {
           const parameters = node.parameters || {};
+          console.log(parameters, "checking the parameter of runv2");
 
           return {
             display_name: parameters.inputLabel || "Untitled Field",
@@ -97,8 +100,15 @@ const Run: React.FC<Props> = ({ workflowId }) => {
             default_value: parameters.defaultValue || "",
             variableName: parameters.variableName || "",
             type: node?.nodeMasterId?.inputType,
-            list_values:
-              parameters?.options?.map((opt: any) => opt.label) || [],
+            list_values: parameters?.options || [],
+            // list_values: parameters?.options?.map((opt: any) => opt.label) || [],
+
+            // list_values: (() => {
+            //   const values =
+            //     parameters?.options?.map((opt: any) => opt.label) || [];
+            //   console.log("checking the options value:", values);
+            //   return values;
+            // })(),
           };
         });
 
@@ -127,7 +137,7 @@ const Run: React.FC<Props> = ({ workflowId }) => {
     console.log(updatedWorkflowData, "updatedWorkflowData");
     try {
       const response = await axios.post(
-        `http://localhost:5000/workflow/${workflowId}/run`,
+        `http://192.168.1.28:5000/workflow/${workflowId}/run`,
         updatedWorkflowData
       );
       setExecutionId(response?.data?.executionId);
@@ -139,7 +149,7 @@ const Run: React.FC<Props> = ({ workflowId }) => {
   const pollingWorkflowExec = useCallback(async () => {
     try {
       const getWorkFlowExecData = await axios.get(
-        `http://localhost:5000/workflow/${workflowId}/status/${executionId}`
+        `http://192.168.1.28:5000/workflow/${workflowId}/status/${executionId}`
       );
 
       setRunSummaryData(getWorkFlowExecData?.data);
@@ -203,8 +213,6 @@ const Run: React.FC<Props> = ({ workflowId }) => {
     setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
   };
 
-
-
   if (loading) {
     return (
       <div className="flex-1 flex flex-col gap-5 justify-center items-center min-h-[30vh]">
@@ -229,8 +237,9 @@ const Run: React.FC<Props> = ({ workflowId }) => {
           <div className="flex h-screen mt-5 gap-6">
             <div className="w-2/5">
               <div
-                className={`border-l-4 border-[#F1B917] rounded-2xl w-[50%] flex flex-col gap-6 p-4 ${IsInputParameterOpen ? "max-h-screen" : "max-h-[80px]"
-                  } overflow-hidden transition-all w-full bg-white rounded-lg shadow-md duration-500 ease-in-out`}
+                className={`border-l-4 border-[#F1B917] rounded-2xl w-[50%] flex flex-col gap-6 p-4 ${
+                  IsInputParameterOpen ? "max-h-screen" : "max-h-[80px]"
+                } overflow-hidden transition-all w-full bg-white rounded-lg shadow-md duration-500 ease-in-out`}
               >
                 <div className="flex flex-row justify-between items-center gap-2">
                   <h2 className="font-semibold text-lg">Input Parameters</h2>
@@ -342,7 +351,7 @@ const Run: React.FC<Props> = ({ workflowId }) => {
                         className={clsx(
                           "bg-transparent border-2 border-green-200 flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 "
                         )}
-                      // onClick={() => setIsSchedulerModalOpen(true)}
+                        // onClick={() => setIsSchedulerModalOpen(true)}
                       >
                         <Clock size={20} color="#2DA771" />
                         <h2 className="text-primary-light-shade-green">

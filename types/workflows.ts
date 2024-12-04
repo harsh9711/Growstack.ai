@@ -70,6 +70,7 @@ export interface Option {
 }
 
 export interface NodeParameter {
+  [x: string]: any;
   label: string;
   type: string;
   required: boolean;
@@ -165,7 +166,7 @@ export interface DynamicInputProps {
   handleInputChange: (
     key: string,
     type: string,
-    value: any,
+    value: boolean | any,
     dependencies?: string
   ) => void;
   variableNames?: any[];
