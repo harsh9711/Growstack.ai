@@ -58,10 +58,12 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [activeTab, setActiveTab] = useState(0);
   const [selectedExecutionId, setSelectedExecutionId] = useState<string>("");
+  const [isFromTimeline, setFromTimeline] = useState(false);
 
   const handleViewDetails = (executionId: string) => {
     setSelectedExecutionId(executionId);
     setActiveTab(1);
+    setFromTimeline(true);
   };
 
   useEffect(() => {
@@ -255,6 +257,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
         setActiveTab={(activeTab: number) => {
           setSelectedExecutionId("");
           setActiveTab(activeTab);
+          setFromTimeline(false);
         }}
       />
       {activeTab === 0 && (
@@ -330,7 +333,11 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
         </div>
       )}
       {activeTab === 1 && (
-        <Run workflowId={workflow_id} executionId={selectedExecutionId} />
+        <Run
+          workflowId={workflow_id}
+          executionId={selectedExecutionId}
+          timeline={isFromTimeline}
+        />
       )}
       {activeTab === 2 && (
         <TimeLineTable
