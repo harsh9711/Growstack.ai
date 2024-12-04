@@ -49,7 +49,7 @@ const AnimationStory = () => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      <video
+      {/* <video
         ref={videoRef}
         autoPlay
         loop
@@ -57,9 +57,19 @@ const AnimationStory = () => {
         className="absolute border-none outline-none top-0 left-0 right-0 w-full h-full hidden sm:block transition-transform duration-500 ease-out"
         style={{ border: "none", outline: "none", perspective: "1000px" }}
       >
-        <source src="https://growstack-static-content.s3.us-east-1.amazonaws.com/234.mp4" type="video/mp4" className="w-full h-full" />
+        <source
+          src="https://growstack-static-content.s3.us-east-1.amazonaws.com/234.mp4"
+          type="video/mp4"
+          className="w-full h-full"
+        />
         Your browser does not support the video tag.
-      </video>
+      </video> */}
+      <img
+        src="/final2.gif"
+        alt="Animation"
+        className="absolute border-none outline-none md:top-10 md:h-[80%] md:top-10 md:mt-10 top-0 left-0 right-0 w-full h-full hidden sm:block transition-transform duration-500 ease-out"
+        style={{ border: "none", outline: "none", perspective: "1000px" }}
+      />
 
       <div className="relative z-10 mx-auto flex flex-col sm:mt-2 max-w-[1320px] p-4">
         <div className="flex w-full flex-col gap-6 sm:flex-row items-center justify-between">

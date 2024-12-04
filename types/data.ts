@@ -201,7 +201,7 @@ export const landingpage = [
     border: "#C1E0FF",
     background: "#F1F8FF",
     imageUrlbox: "/landingpage/l1.svg",
-    videos: "/landingpage/box1.mp4",
+    videos: "https://growstackai.s3.amazonaws.com/QyiyJB/Box+1.mp4",
   },
   {
     id: 2,
@@ -210,7 +210,7 @@ export const landingpage = [
     border: "#FFF4BD",
     background: "#FEFAE5",
     imageUrlbox: "/landingpage/l2.svg",
-    videos: "/landingpage/box2.svg",
+    videos: "https://growstackai.s3.amazonaws.com/3LZtFl/Box+2.mp4",
   },
   {
     id: 3,
@@ -219,7 +219,7 @@ export const landingpage = [
     border: "#FFC3E4",
     background: "#FCF1F7",
     imageUrlbox: "/landingpage/l3.svg",
-    videos: "/landingpage/box3.svg",
+    videos: "https://growstackai.s3.amazonaws.com/dqcGLk/Box+3.mp4",
   },
   {
     id: 4,
@@ -228,7 +228,7 @@ export const landingpage = [
     border: "#DBF8A8",
     background: "#EEF6E0",
     imageUrlbox: "/landingpage/l4.svg",
-    videos: "/landingpage/box4.svg",
+    videos: "https://growstackai.s3.amazonaws.com/nyF4Xq/Box+4.mp4",
   },
   {
     id: 5,
@@ -237,7 +237,7 @@ export const landingpage = [
     border: "#FFE0C3",
     background: "#FFF8F6",
     imageUrlbox: "/landingpage/l5.svg",
-    videos: "/landingpage/box5.svg",
+    videos: "https://growstackai.s3.amazonaws.com/MpQYLQ/Box+5.mp4",
   },
   {
     id: 6,
@@ -246,7 +246,7 @@ export const landingpage = [
     name: "Streamline your processes with AI workflow builder",
     background: "#F6FFF6",
     imageUrlbox: "/landingpage/l6.svg",
-    videos: "/landingpage/box6.svg",
+    videos: "https://growstackai.s3.amazonaws.com/pnzUIK/Box+6.mp4",
   },
   {
     id: 7,
@@ -255,7 +255,7 @@ export const landingpage = [
     name: "Effortless publishing with scheduler",
     background: "#FAF6FF",
     imageUrlbox: "/landingpage/l7.svg",
-    videos: "/landingpage/box7.svg",
+    videos: "",
   },
   {
     id: 8,
@@ -264,7 +264,7 @@ export const landingpage = [
     name: "Analyze your impact",
     background: "#FFF6F6",
     imageUrlbox: "/landingpage/l8.svg",
-    videos: "/landingpage/box8.svg",
+    videos: "https://growstackai.s3.amazonaws.com/TueE8F/Box%208.mp4",
   },
 ];
 
