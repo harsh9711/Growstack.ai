@@ -1,6 +1,6 @@
 "use client";
 
-import instance, { CustomAxiosInstance } from "@/config/axios.config";
+import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import Image from "next/image";
 import AOS from "aos";

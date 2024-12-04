@@ -1,13 +1,16 @@
-import { CustomAxiosInstance } from "@/config/axios.config";
+import instance, { CustomAxiosInstance } from "@/config/axios.config";
 import { WorkflowDataState, WorkflowState } from "@/types/workflows";
 import { resolveWorkflowNodes } from "@/utils/dataResolver";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { conforms } from "lodash";
 
 export const createWorkFlow = createAsyncThunk(
   "createWorkflow",
   async (data: WorkflowDataState, { rejectWithValue }) => {
     try {
-      const result = await CustomAxiosInstance().post("workflow", data);
+      // const result = await CustomAxiosInstance().post("workflow", data);
+
+      const result = await instance.post("/workflows", data);
       return result.data as WorkflowDataState;
     } catch (error: any) {
       return rejectWithValue(
@@ -21,7 +24,8 @@ export const getWorkFlowById = createAsyncThunk(
   "getWorkFlowById",
   async (workFlowId: string, { rejectWithValue }) => {
     try {
-      const result = await CustomAxiosInstance().get(`workflow/${workFlowId}`);
+      // const result = await CustomAxiosInstance().get(`workflow/${workFlowId}`);
+      const result = await instance.get(`/workflows/${workFlowId}`);
       return result.data as WorkflowDataState;
     } catch (error: any) {
       return rejectWithValue(
@@ -38,7 +42,8 @@ export const updateWorkFlowById = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const result = await CustomAxiosInstance().patch(`workflow/${id}`, data);
+      // const result = await CustomAxiosInstance().patch(`workflow/${id}`, data);
+      const result = await instance.patch(`/workflows/${id}`, data);
       return result.data as WorkflowDataState;
     } catch (error: any) {
       return rejectWithValue(
@@ -74,10 +79,10 @@ const workflowSlice = createSlice({
       .addCase(
         getWorkFlowById.fulfilled,
         (state, action: PayloadAction<WorkflowDataState>) => {
-          console.log(
-            "action.payload---workFloe---->",
-            JSON.stringify(action.payload, null, 2)
-          );
+          // console.log(
+          //   "action.payload---workFloe---->",
+          //   JSON.stringify(action.payload, null, 2)
+          // );
           state.isLoading = false;
           // state.workFlowData = action.payload;
 

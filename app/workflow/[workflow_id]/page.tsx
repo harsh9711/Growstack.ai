@@ -128,7 +128,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
             });
 
             const nodeId = await handleAddNode({
-                workflowId: workFlowData._id,
+                workflowId: workflow_id || workFlowData?._id,
                 nodeMasterId: nodeData.id,
                 name: nodeData.data?.label,
                 type: nodeData?.type,
