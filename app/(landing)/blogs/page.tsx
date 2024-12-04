@@ -101,13 +101,13 @@ export default function page() {
           </div>
         ))}
       </div>
-
+{/* final */}
       <div>
         <h1 className="text-[18px] sm:text-2xl md:text-3xl font-semibold">
           All articles
         </h1>
         {blogs.map((item, index) => (
-          <Link href="blogs/components/Blogpage">
+          <Link href={item.href || " "}>
             <div
               key={index}
               className="p-4 sm:p-6 md:p-0 mt-10 space-y-4 sm:space-y-6 flex flex-col sm:flex-row gap-4 sm:gap-6 md:gap-10 items-center shadow-box-sm bg-white rounded-3xl border border-[#E8E8E8]"

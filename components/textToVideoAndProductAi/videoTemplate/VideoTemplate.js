@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "./VideoTemplate.scss";
-import Link from "next/link";
 function VideoTemplate() {
   useEffect(() => {
     AOS.init();

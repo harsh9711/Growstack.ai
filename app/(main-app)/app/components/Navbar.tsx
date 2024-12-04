@@ -7,15 +7,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import clsx from "clsx";
-import { ChevronRight, Search } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
-import { IoIosNotificationsOutline, IoIosMenu } from "react-icons/io";
+import { IoIosMenu } from "react-icons/io";
 import navLinks from "./constants/nav";
 import { ProfileButton } from "./ProfileButton";
 import { useRouter } from "next-nprogress-bar";
+import { ALL_ROUTES } from "@/utils/constant";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -71,8 +72,7 @@ export default function Navbar() {
             inset
             className={clsx(
               "min-w-[300px] flex justify-between gap-8 items-center my-1",
-              pathname === item.href &&
-                "bg-primary-green hover:!bg-primary-green"
+              pathname === item.href && "bg-[#2DA771] hover:!bg-[#2DA771]"
             )}
           >
             <div className="flex gap-3">
@@ -109,7 +109,7 @@ export default function Navbar() {
           onClick={() => router.push("/app")}
         >
           <Image
-            src="/logo/growstack.png"
+            src="/logo/growstack1.png"
             alt=""
             width={150}
             height={40}
@@ -143,6 +143,17 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-5">
+          <button
+            className="blink-animation group relative inline-flex items-center h-12 gap-2 px-4 rounded-lg text-white font-semibold transition-all duration-800 overflow-hidden"
+            onClick={() => {
+              window.location.href = ALL_ROUTES.UPGRADE;
+            }}
+          >
+            <span className="text-md text-nowrap flex flex-row gap-x-2 font-medium">
+              Upgrade Your Plan
+            </span>
+            <div className="absolute inset-0 -z-10 bg-gradient-to-r from-emerald-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+          </button>
           <div className="lg:hidden">
             <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
               <IoIosMenu size={30} />
@@ -191,7 +202,7 @@ const NavLinkBtn = ({
       className={clsx(
         "flex justify-center items-center p-[9px] pr-6 rounded-2xl gap-4 text-[18px] transition-all duration-200",
         isActive
-          ? "bg-primary-green text-white !hover:bg-primary-green hover:bg-opacity-90"
+          ? "bg-[#2DA771] text-white !hover:bg-[#2DA771] hover:bg-opacity-90"
           : "hover:bg-[#F1F1F1]"
       )}
     >

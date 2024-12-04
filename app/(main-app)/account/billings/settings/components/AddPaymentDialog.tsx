@@ -18,7 +18,7 @@ export default function AddPaymentDialog() {
     <Dialog>
       <DialogTrigger asChild>
         <div className="flex justify-end mt-4">
-          <button className="font-medium flex items-center gap-3 px-3 py-4  bg-primary-green text-white sheen transition-all duration-300 rounded-lg">
+          <button className="font-medium flex items-center gap-3 px-3 py-4  bg-[#2DA771] text-white sheen transition-all duration-300 rounded-lg">
             {/* <Plus /> */}
             Pay
           </button>

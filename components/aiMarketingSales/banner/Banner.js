@@ -67,20 +67,6 @@ function Banner() {
                     alt="banner"
                   />
                 </div>
-                {/* <div className="store">
-                  <Link href="/auth/register">
-                    <img
-                      src="/images_growstack/banner/playStore.svg"
-                      alt="banner"
-                    />
-                  </Link>
-                  <Link href="/auth/register">
-                    <img
-                      src="/images_growstack/banner/apple.svg"
-                      alt="banner"
-                    />
-                  </Link>
-                </div> */}
               </div>
             </div>
           </div>

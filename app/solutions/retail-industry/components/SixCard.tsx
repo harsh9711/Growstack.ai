@@ -3,93 +3,71 @@ import Image from "next/image";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import {
-  Icon1,
-  Icon2,
-  Icon3,
-  Icon4,
-  Icon5,
-  Icon6,
+  Icon11,
+  Icon21,
+  Icon31,
+  Icon41,
+  Icon51,
 } from "@/components/svgs/icons";
-import ArrowRight from "@/components/home/drag-features/icons/ArrowRight";
-import Link from "next/link";
 
 export const cases = [
   {
     id: 1,
-    imageUrl: <Icon1 />,
-    name: "Innovative solutions",
-    description:
-      "Tailored AI tools designed to meet the unique needs of technology businesses.",
+    imageUrl: <Icon11 />,
+    name: "Tailored AI solutions",
+    description: "Custom tools designed to meet retail challenges.",
   },
   {
     id: 2,
-    imageUrl: <Icon2 />,
-    name: "Enhanced productivity ",
-    subname: "creativity",
+    imageUrl: <Icon21 />,
+    name: "Comprehensive Platform ",
     description:
-      "Streamlined processes that free up your team's time for what truly matters—innovation.",
+      "Integrates content creation, customer engagement, analytics, and automation in one place.",
   },
 
   {
     id: 3,
-    imageUrl: <Icon3 />,
-    name: "Robust security",
-    description:
-      "Protect your data and ensure compliance with industry standards.",
+    imageUrl: <Icon31 />,
+    name: "Scalability",
+    description: "Adapts to your business growth without constraints.",
   },
   {
     id: 4,
-    imageUrl: <Icon4 />,
-    name: "Start your free Trial",
+    imageUrl: <Icon41 />,
+    name: "Proven results",
     description:
-      "Experience the power of Growstack firsthand with our free trial.",
-    buttonclass: "Signup now",
-    link: "/auth/register",
+      "Demonstrated success in driving growth and enhancing customer satisfaction.",
+    // buttonclass: "Signup now",
+    // link: "/auth/register",
   },
   {
     id: 5,
-    imageUrl: <Icon5 />,
-    name: "Request a demo",
-    description: "See how Growstack can transform your operations with a demo.",
-    buttonclass: "Book a demo",
-    link: "/demo",
-  },
-  {
-    id: 6,
-    imageUrl: <Icon6 />,
-    name: "Contact us",
+    imageUrl: <Icon51 />,
+    name: "Expert support",
     description:
-      "Have questions or need more information? Reach out to our team!",
-    buttonclass: "Contact us",
-    link: "/contact",
+      "Dedicated team available to maximize your success with our platform.",
+    // buttonclass: "Book a demo",
+    // link: "/demo",
   },
 ];
 export const cases2 = [
   {
     id: 4,
-    imageUrl: <Icon4 />,
-    name: "Start your free Trial",
+    imageUrl: <Icon41 />,
+    name: "Proven results",
     description:
-      "Experience the power of Growstack firsthand with our free trial.",
-    buttonclass: "Signup now",
-    link: "/auth/register",
+      "Demonstrated success in driving growth and enhancing customer satisfaction.",
+    // buttonclass: "Signup now",
+    // link: "/auth/register",
   },
   {
     id: 5,
-    imageUrl: <Icon5 />,
-    name: "Request a demo",
-    description: "See how Growstack can transform your operations with a demo.",
-    buttonclass: "Book a demo",
-    link: "/demo",
-  },
-  {
-    id: 6,
-    imageUrl: <Icon6 />,
-    name: "Contact us",
+    imageUrl: <Icon51 />,
+    name: "Expert support",
     description:
-      "Have questions or need more information? Reach out to our team!",
-    buttonclass: "Contact us",
-    link: "/contact",
+      "Dedicated team available to maximize your success with our platform.",
+    // buttonclass: "Book a demo",
+    // link: "/demo",
   },
 ];
 const Box = () => {
@@ -109,16 +87,16 @@ const Box = () => {
         <div
           key={index}
           data-aos="fade-up"
-          className="relative text-black bg-white rounded-[20px] hover:shadow-lg p-8 text-center sm:text-start items-center sm:items-start  transition-transform duration-500 ease-in-out max-w-[400px]  max-h-[200px] sm:max-h-[300px] py-20  h-full flex flex-col gap-y-4  justify-center group overflow-hidden"
+          className="relative text-black bg-white rounded-[20px] hover:shadow-lg p-8 shadow-primary-green text-center sm:text-start items-center sm:items-start  transition-transform duration-500 ease-in-out max-w-[400px]  max-h-[200px] sm:max-h-[300px] py-20  h-full flex flex-col gap-y-4  justify-center group overflow-hidden"
         >
           <div className="relative z-10 fill-black  group-hover:fill-primary-green">
             {item.imageUrl}
           </div>
           <h2 className="sm:text-[24px] text-[16px] font-bold group-hover:text-[#13745D] transition-colors duration-300">
             {item.name}{" "}
-            <span className="sm:text-[24px] text-[16px] font-light group-hover:text-[#13745D] transition-colors duration-300">
+            {/* <span className="sm:text-[24px] text-[16px] font-light group-hover:text-[#13745D] transition-colors duration-300">
               {item.subname}
-            </span>
+            </span> */}
           </h2>
           <p className="text-[12px] sm:text-[16px] max-w-[320px] font-light text-black transition-colors duration-300">
             {item.description}
@@ -140,12 +118,12 @@ const Box2 = () => {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-2 gap-8">
       {cases2.map((item, index) => (
         <div
           key={index + 3}
           data-aos="fade-up"
-          className="relative text-black bg-white rounded-[20px] hover:shadow-lg p-8 text-center sm:text-start items-center sm:items-start  transition-transform duration-500 ease-in-out max-w-[400px]  max-h-[250px] sm:max-h-[300px] py-20  h-full flex flex-col gap-y-4  justify-center group overflow-hidden"
+          className="relative text-black bg-white rounded-[20px] hover:shadow-lg shadow-primary-green p-8 text-center sm:text-start items-center sm:items-start  transition-transform duration-500 ease-in-out max-w-[580px]  max-h-[250px] sm:max-h-[300px] py-20  h-full flex flex-col gap-y-4  justify-center group overflow-hidden"
         >
           <div className="relative z-10 fill-black  group-hover:fill-primary-green">
             {item.imageUrl}
@@ -156,15 +134,15 @@ const Box2 = () => {
               {item.subname}
             </span> */}
           </h2>
-          <p className="text-[12px] sm:text-[16px] max-w-[320px] font-light text-black transition-colors duration-300">
+          <p className="text-[12px] sm:text-[16px] max-w-[490px] font-light text-black transition-colors duration-300">
             {item.description}
           </p>
-          <Link href={item.link}>
+          {/* <Link href={item.link}>
             {" "}
             <button className=" font-medium   transition-transform duration-500  border-primary-green ease-in-out items-center gap-2 text-black  group-hover:text-white 2xl:py-4 2xl:px-7 border bg-white group-hover:bg-primary-green rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
               {item.buttonclass}
             </button>
-          </Link>
+          </Link> */}
         </div>
       ))}
     </div>
@@ -187,28 +165,30 @@ const SixCard = () => {
           data-aos="fade-right"
         >
           <h1 className="text-[26px] xl:text-[40px] w-full gap-2 leading-tight font-semibold  text-black">
-            Transform your technology
-            <span className="font-light"> business today! </span>
+            Transform your retail
+            <span className="font-light"> experience with Growstack</span>
           </h1>
-          <p className="sm:text-[18px] text-[16px] font-medium w-full">
-            Are you ready to overcome challenges and unlock the full potential
-            of your tech operations? Growstack is here to provide you with the
-            AI-powered tools and insights you need to thrive in a competitive
-            landscape.
-          </p>
+          <div className="flex flex-col gap-y-4">
+            {" "}
+            <h2 className="font-extrabold sm:text-[28px] text-[16px]">
+              Ready to elevate your retail business?
+            </h2>
+            <p className="sm:text-[18px] text-[16px] font-medium w-full">
+              Discover how Growstack's AI-powered solutions can transform your
+              operations, enhance customer engagement, and drive growth.
+            </p>
+          </div>
         </div>
         <div className="bg-[#FAFBFC] flex flex-col sm:items-start items-center gap-y-6 p-6 max-w-[1240px] w-full rounded-[30px] ">
           <h2 className=" font-extrabold sm:text-[28px] text-[16px] ">
             Why choose Growstack?
           </h2>
-          <Box />
+          <Box /> <Box2 />
         </div>
-        <div className="bg-[#FAFBFC] sm:items-start items-center  flex flex-col gap-y-6  p-6 max-w-[1240px] w-full rounded-[30px] ">
-          <h2 className=" font-extrabold sm:text-[28px] text-[16px] ">
-            Explore your options
-          </h2>{" "}
-          <Box2 />
-        </div>
+        {/* <div className="bg-[#FAFBFC] sm:items-start items-center  flex flex-col gap-y-6  p-6 max-w-[1240px] w-full rounded-[30px] ">
+         
+         
+        </div> */}
       </div>
     </div>
   );

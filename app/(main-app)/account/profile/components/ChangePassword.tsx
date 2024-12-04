@@ -115,13 +115,13 @@ const ChangePassword = () => {
         <div className="flex justify-end gap-4">
           <button
             type="button"
-            className="h-12 py-3 px-3 w-full max-w-[150px] uppercase border border-primary-green text-primary-green hover:bg-primary-green/10 rounded-xl mt-6"
+            className="h-12 py-3 px-3 w-full max-w-[150px] uppercase border border-[#2DA771] text-[#2DA771] hover:bg-primary-green/10 rounded-xl mt-6"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="h-12 py-3 px-3 w-full min-w-[200px] max-w-[200px] uppercase bg-primary-green sheen rounded-xl text-white mt-6"
+            className="h-12 py-3 px-3 w-full min-w-[200px] max-w-[200px] uppercase bg-[#2DA771] sheen rounded-xl text-white mt-6"
           >
             Change Password
           </button>

@@ -69,9 +69,11 @@ const Editor = ({ content, onChange, isLoading, streaming }: EditorProps) => {
   };
 
   return (
-    <div className="flex-1 h-full rounded-lg relative"> {/* Add relative positioning */}
+    <div className="flex-1 h-full rounded-lg relative">
+      {" "}
       {isLoading && (
-        <div className="absolute inset-0 z-10 flex justify-center items-center bg-white bg-opacity-50"> {/* Loader overlay */}
+        <div className="absolute inset-0 z-10 flex justify-center items-center bg-white bg-opacity-50">
+          {" "}
           <Spinner color="black" size={100} />
         </div>
       )}

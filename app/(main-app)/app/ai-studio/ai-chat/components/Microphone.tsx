@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { MicrophoneIcon, StopIcon } from "@/components/svgs";
-import useSpeechRecognition from "../../hooks/UseSpeechRecognition";
 import "../../../../../../styles/waveform.css";
 
 interface MicrophoneProps {
@@ -27,7 +26,7 @@ export default function Microphone({
         <button
           type="button"
           onClick={() => handleOpenChange(!open)}
-          className="h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
+          className="h-12 w-12 flex justify-center items-center bg-[#2DA771] hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl"
         >
           {isAnimating ? <StopIcon /> : <MicrophoneIcon />}
         </button>

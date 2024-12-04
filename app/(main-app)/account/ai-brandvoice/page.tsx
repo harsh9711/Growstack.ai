@@ -4,13 +4,23 @@ import DocumentsTable from "./DocumentsTable";
 import { Plus, Search } from "lucide-react";
 import CreateBrandVoice from "./components/createBrandVoice";
 import toast from "react-hot-toast";
+import SubscribePlan from "@/components/subscribePlan/subscribePlan";
+import GlobalModal from "@/components/modal/global.modal";
+import { RootState } from "@/lib/store";
+import { useSelector } from "react-redux";
 
 export default function BrandVoice() {
+  const { user, currentPlan } = useSelector(
+    (rootState: RootState) => rootState.auth
+  );
+
   const [search, setSearch] = useState<string>("");
   const [debouncedSearch, setDebouncedSearch] = useState<string>(search);
   const [openCreateBrandVoice, setOpenCreateBrandVoice] = useState(false);
   const [triggerFetchingBrandVoice, setTriggerFetchingBrandVoice] =
     useState<number>(0);
+  const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] =
+    useState<boolean>(false);
   const [totalBrandVoiceCount, setTotalBrandVoiceCount] = React.useState(0);
 
   useEffect(() => {
@@ -21,6 +31,12 @@ export default function BrandVoice() {
       clearTimeout(handler);
     };
   }, [search]);
+
+  // useEffect(() => {
+  //   if (currentPlan?.plan_type === "FREE") {
+  //     setIsSubscriptionModalOpen(true);
+  //   }
+  // }, [currentPlan]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
@@ -56,11 +72,13 @@ export default function BrandVoice() {
             onClick={() => {
               if (totalBrandVoiceCount >= 2) {
                 toast.error("Maximum 2 brand voice allowed.");
+              } else if (currentPlan?.plan_type === "FREE") {
+                setIsSubscriptionModalOpen(true);
               } else {
                 setOpenCreateBrandVoice(true);
               }
             }}
-            className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2"
+            className="bg-[#2DA771] text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2"
           >
             <Plus size={20} />
             Create brand voice
@@ -81,6 +99,33 @@ export default function BrandVoice() {
         setIsOpen={setOpenCreateBrandVoice}
         onSuccess={handleBrandVoiceCreation}
       />
+
+      {/* <GlobalModal
+        showCloseButton
+        open={isUpgradeModalOpen}
+        setOpen={() => {
+          setIsUpgradeModalOpen(false);
+        }}
+      >
+        <UpgradePlan
+          goBackHandler={() => {
+            setIsUpgradeModalOpen(false);
+          }}
+        />
+      </GlobalModal> */}
+      <GlobalModal
+        showCloseButton
+        open={isSubscriptionModalOpen}
+        setOpen={() => {
+          setIsSubscriptionModalOpen(false);
+        }}
+      >
+        <SubscribePlan
+          goBackHandler={() => {
+            setIsSubscriptionModalOpen(false);
+          }}
+        />
+      </GlobalModal>
     </div>
   );
 }

@@ -98,7 +98,7 @@ const OtpVerification: React.FC<OtpVerificationProps> = ({
 
           <button
             type="submit"
-            className="bg-primary-green hover:bg-primary-green/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center"
+            className="bg-[#2DA771] hover:bg-[#2DA771]/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center"
           >
             {isPending ? <Spinner /> : "Verify OTP"}
           </button>

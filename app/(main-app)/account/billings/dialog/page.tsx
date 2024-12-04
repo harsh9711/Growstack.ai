@@ -109,7 +109,7 @@ const AddCreditDialog2: React.FC<AddCreditDialog2Props> = () => {
       <DialogTrigger asChild>
         <button
           onClick={fetchPaymentMethods}
-          className="w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-primary-green text-white transition-all duration-300"
+          className="w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-[#2DA771] text-white transition-all duration-300"
         >
           Pay
         </button>
@@ -121,7 +121,7 @@ const AddCreditDialog2: React.FC<AddCreditDialog2Props> = () => {
         <div>
           <div className="space-y-2 mt-3">
             <label className="font-semibold">Amount to add</label>
-            <div className="border border-primary-green rounded-xl p-2 flex items-center gap-2">
+            <div className="border border-[#2DA771] rounded-xl p-2 flex items-center gap-2">
               <DollarSign className="text-primary-green" />
               {upcomingData?.amount_due}
             </div>
@@ -173,7 +173,7 @@ const AddCreditDialog2: React.FC<AddCreditDialog2Props> = () => {
           <div className="flex flex-col items-end">
             <button
               onClick={handlePay}
-              className="font-medium flex gap-3 px-3 py-4 bg-primary-green mt-4 justify-end text-white items-end transition-all duration-300 rounded-lg"
+              className="font-medium flex gap-3 px-3 py-4 bg-[#2DA771] mt-4 justify-end text-white items-end transition-all duration-300 rounded-lg"
             >
               Pay
             </button>

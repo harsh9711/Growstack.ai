@@ -8,6 +8,7 @@ export interface Assistant {
 }
 
 export interface Chat {
+  chats: any;
   prompt: string;
   response: string;
   _id: string;

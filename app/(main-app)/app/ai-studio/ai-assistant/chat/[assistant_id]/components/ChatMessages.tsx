@@ -121,7 +121,7 @@ const ChatMessages: React.FC<ChatMessagesProps> = ({
                     {currentUser?.email?.slice(0, 1)}
                   </AvatarFallback>
                 </Avatar>
-                <div className="max-w-5xl bg-primary-green text-white py-3 px-5 rounded-xl text-[14.5px] leading-relaxed">
+                <div className="max-w-5xl bg-[#2DA771] text-white py-3 px-5 rounded-xl text-[14.5px] leading-relaxed">
                   {chat.prompt}
                 </div>
               </div>

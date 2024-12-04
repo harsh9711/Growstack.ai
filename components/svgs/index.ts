@@ -84,7 +84,6 @@ export { default as GestureIcon } from "@/public/svgs/gesture.svg";
 export { default as MarkerIcon } from "@/public/svgs/marker.svg";
 export { default as ClockIcon } from "@/public/svgs/clock.svg";
 export { default as DictionIcon } from "@/public/svgs/diction.svg";
-export { default as AiPlaygroundIcon } from "@/public/svgs/ai-playground.svg";
 export { default as ProductAiIcon } from "@/public/svgs/product-ai.svg";
 export { default as BrandVoiceIcon } from "@/public/svgs/brand-voice.svg";
 export { default as StopIcon } from "@/public/svgs/stop.svg";
@@ -137,4 +136,4 @@ export { default as Rewrite } from "@/public/pencil.svg";
 export { default as Columns } from "@/public/columns.svg";
 export { default as TwitterIcon } from "@/public/TwitterIcon.svg";
 export { default as UserCircleIcon } from "@/public/UserCircleIcon.svg";
-export { default as CloseIcon } from "@/public/svgs/closeicon.svg"
+export { default as CloseIcon } from "@/public/svgs/closeicon.svg";

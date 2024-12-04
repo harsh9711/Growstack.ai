@@ -2,11 +2,7 @@
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { login } from "@/lib/features/auth/auth.slice";
-import { ArrowRight, StarIcon } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useLayoutEffect, useState } from "react";
-import ContentLoader from "react-content-loader";
 import toast from "react-hot-toast";
 import { getCurrentUser } from "@/lib/features/auth/auth.selector";
 import { useDispatch } from "react-redux";
@@ -15,14 +11,6 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import "@/styles/globals.css";
 import { useRouter } from "next/navigation";
-import { ALL_ROUTES } from "@/utils/constant";
-interface AiApp {
-  _id: string;
-  "ASSISTANT NAME": string;
-  "ASSISTANT DESCRIPTION": string;
-  icon: string;
-  category: string;
-}
 
 export interface Assistant {
   id: string;
@@ -142,7 +130,7 @@ export default function Dashboard() {
             </h1>
           </div>
         </div>
-        <div className="w-full mt-4 h-[95%]" >
+        <div className="w-full mt-4 h-[95%]">
           <div className="w-full space-y-6 h-full" data-aos="fade-left">
             <ChatComponent />
           </div>
@@ -151,39 +139,3 @@ export default function Dashboard() {
     </main>
   );
 }
-
-const AiAppSkeletonLoader: React.FC = () => {
-  return (
-    <ContentLoader
-      speed={2}
-      width="100%"
-      height="80px"
-      viewBox="0 0 600 80"
-      backgroundColor="#f3f3f3"
-      foregroundColor="#ecebeb"
-      className="w-full"
-    >
-      <rect x="0" y="0" rx="10" ry="10" width="70" height="70" />
-      <rect x="90" y="10" rx="8" ry="8" width="350" height="15" />
-      <rect x="90" y="35" rx="8" ry="8" width="420" height="15" />
-    </ContentLoader>
-  );
-};
-const AiAssistantSkeletonLoader: React.FC = () => {
-  return (
-    <ContentLoader
-      speed={2}
-      width="100%"
-      height="80px"
-      viewBox="0 0 600 80"
-      backgroundColor="#f3f3f3"
-      foregroundColor="#ecebeb"
-      className="w-full"
-    >
-      <rect x="0" y="0" rx="10" ry="10" width="70" height="70" />
-      <rect x="90" y="13" rx="8" ry="8" width="250" height="15" />
-      <rect x="90" y="38" rx="8" ry="8" width="200" height="15" />
-      <rect x="480" y="13" rx="10" ry="10" width="80" height="40" />
-    </ContentLoader>
-  );
-};

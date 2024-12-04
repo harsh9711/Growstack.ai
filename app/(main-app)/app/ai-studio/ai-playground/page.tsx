@@ -4,7 +4,7 @@ import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { llmComparisonModels } from "../ai-articles/constants/options";
+import { llmComparisonModels } from "../../components/options";
 import ChatArea from "./component/chatArea";
 import NewChatAlert from "./component/newChatArea";
 import { Message } from "./interface/playground";
@@ -46,8 +46,6 @@ export default function AiPlayground() {
   const [userPrompt, setUserPrompt] = useState<string>("");
   const [chatAreas, setChatAreas] = useState<ChatAreaType[]>(initialChat);
   const [responseLoading, isResponseLoading] = useState(false);
-
-  const [retainedMessage, setRetainedMessage] = useState<string>("");
 
   const getNextAvailableId = (): number => {
     const usedIds = chatAreas.map(area => area.id);
@@ -114,29 +112,28 @@ export default function AiPlayground() {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    // renderConversation()
   };
 
   const renderConversation = async (chatMessage?: string) => {
     const prompt = userPrompt?.trim() ?? "";
     const message = chatMessage?.trim() ?? "";
-  
+
     if (prompt === "" && message === "") return;
-  
+
     isResponseLoading(true);
-  
+
     const newMessage: Message = {
       content: prompt || message,
       role: "user",
       loading: false,
     };
-  
+
     const loadingAssistantMessage: Message = {
       content: "",
       role: "assistant",
       loading: true,
     };
-  
+
     setChatAreas(prevChatAreas =>
       prevChatAreas.map(chatArea => ({
         ...chatArea,
@@ -149,14 +146,14 @@ export default function AiPlayground() {
         messages: chatArea.messages,
       }))
     );
-  
+
     const concurrencyLimit = 3;
     let index = 0;
-  
+
     while (index < chatAreas.length) {
       // Get the current batch
       const batch = chatAreas.slice(index, index + concurrencyLimit);
-  
+
       await Promise.all(
         batch.map(async chatArea => {
           const payload = {
@@ -165,16 +162,16 @@ export default function AiPlayground() {
             provider: chatArea.provider,
             messages: chatArea.messages,
           };
-  
+
           try {
             const response = await instance.post(
               `${API_URL}/ai/api/v1/playground`,
               payload
             );
-  
+
             const initialText = response.data.data.response.text;
             const updatedMessages = response.data.data.response.updatedMessages;
-  
+
             // Update each chatArea as soon as the response is received
             setChatAreas(prevChatAreas =>
               prevChatAreas.map(prevChatArea => {
@@ -201,22 +198,28 @@ export default function AiPlayground() {
               })
             );
           } catch (error: any) {
-            toast.error(error?.response?.data?.message || "Something went wrong");
-            console.error("Error sending prompt for chat area:", chatArea.id, error);
+            toast.error(
+              error?.response?.data?.message || "Something went wrong"
+            );
+            console.error(
+              "Error sending prompt for chat area:",
+              chatArea.id,
+              error
+            );
           }
         })
       );
-  
+
       index += concurrencyLimit;
-  
+
       // Optional delay between batches
       await new Promise(resolve => setTimeout(resolve, 100)); // 100ms delay
     }
-  
+
     isResponseLoading(false);
     setUserPrompt("");
   };
-  
+
   return (
     <div className="flex-1 h-full flex flex-col mt-10 w-full justify-center overflow-x-auto">
       <form
