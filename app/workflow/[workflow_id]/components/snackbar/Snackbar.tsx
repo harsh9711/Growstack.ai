@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 type SnackbarProps = {
   message: string;
@@ -22,9 +22,8 @@ const Snackbar: React.FC<SnackbarProps> = ({
 
   return (
     <div
-      className={`fixed top-4 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded shadow-lg text-white text-sm transition-opacity ${
-        isVisible ? "opacity-100" : "opacity-0"
-      } ${type === "success" ? "bg-green-500" : "bg-red-500"}`}
+      className={`fixed top-4 right-4 px-4 py-2 rounded shadow-lg text-white text-sm transition-opacity ${isVisible ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        } ${type === "success" ? "bg-green-500" : "bg-red-500"}`}
     >
       {message}
     </div>

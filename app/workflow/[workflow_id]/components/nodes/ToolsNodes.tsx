@@ -13,6 +13,8 @@ import {
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { VariableNameProps, WorkflowNodeState } from "@/types/workflows";
 import { getVariableName, isSpecialType } from "@/utils/helper";
+import SmallCardFiled from "../DynamicInputs/SmallCard";
+import { useSnackbar } from "../snackbar/SnackbarContext";
 
 const ToolsNodes = memo(
   ({
@@ -24,6 +26,7 @@ const ToolsNodes = memo(
   }: NodeProps<ToolsNodeProps>) => {
     // const { parameters, nodeMasterId } = data;
 
+    const { success } = useSnackbar();
     const node = useAppSelector(state =>
       state.nodes.nodes.find(node => node.id === id)
     );
@@ -39,7 +42,9 @@ const ToolsNodes = memo(
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [description, setDescription] = useState(data?.descriptions || "");
     const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
-    const [dependencies, setDependencies] = useState<string[]>([]);
+    const [dependencies, setDependencies] = useState<
+      { key: string; nodeId: string }[]
+    >([]);
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
 
     const handleToggleAdvancedOptions = () => {
@@ -50,41 +55,50 @@ const ToolsNodes = memo(
       setIsDropdownOpen(!isDropdownOpen);
     };
 
-    // const handleInputChange = (key: any, type: any, value: any) => {
-    //   console.log("key-->", key, "type-->", type, "value-->", value);
-    //   dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
-    // };
-
     const handleInputChange = useCallback(
-      (key: any, type: any, value: any, dependencies?: string) => {
-        console.log("key-->", key, "type-->", type, "value-->", value, "dependencies--->", dependencies);
+      (key: any, type: any, value: any, dependency?: string) => {
+        console.log(
+          "key-->",
+          key,
+          "type-->",
+          type,
+          "value-->",
+          value,
+          "dependencies--->",
+          dependency
+        );
 
         dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
 
         if (!isSpecialType(type)) return;
+
         if (value && value.includes("$")) {
           const index = nodes.findIndex(nds => nds.id === id);
-          console.log("index-->", index);
           const variableName = getVariableName(nodes, index);
           console.log("variableName-->", variableName);
+          if (dependency) {
+            setDependencies(prevDependencies => {
+              const newDependency = { key, nodeId: dependency };
+              const uniqueDependencies = new Set([
+                ...prevDependencies,
+                newDependency,
+              ]);
+              return Array.from(uniqueDependencies);
+            });
+          }
           const regex = /\$(?!\s*$).+/;
           if (regex.test(value)) {
             setVariableNames([]);
           } else {
-            setVariableNames(variableName);
+            setVariableNames(
+              variableName.filter(
+                (name): name is VariableNameProps => name !== null
+              )
+            );
           }
         } else {
+          setDependencies(pre => pre.filter(dep => dep.key !== key));
           setVariableNames([]);
-        }
-
-        if (dependencies) {
-          setDependencies(prevDependencies => {
-            const newDependencies = dependencies.split(",");
-            const uniqueDependencies = newDependencies.filter(
-              dep => !prevDependencies.includes(dep)
-            );
-            return [...prevDependencies, ...uniqueDependencies];
-          });
         }
       },
       [dispatch, id, nodes, dependencies, variableNames]
@@ -124,7 +138,7 @@ const ToolsNodes = memo(
             workflowId: workFlowData._id,
             nodeMasterId: node.data.nodeMasterId,
             position: { x: positionAbsoluteX, y: positionAbsoluteY },
-            dependencies: dependencies,
+            dependencies: dependencies.map(dps => dps.nodeId),
             parameters: updatedValue,
           };
 
@@ -134,6 +148,7 @@ const ToolsNodes = memo(
               data: bodyPayload as unknown as WorkflowNodeState,
             })
           );
+          success("Node updated successfully");
           setIsEdit(false);
         } catch (error: any) {
           console.error("error-->", error?.message);

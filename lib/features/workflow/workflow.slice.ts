@@ -1,5 +1,6 @@
 import { CustomAxiosInstance } from "@/config/axios.config";
 import { WorkflowDataState, WorkflowState } from "@/types/workflows";
+import { resolveWorkflowNodes } from "@/utils/dataResolver";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export const createWorkFlow = createAsyncThunk(
@@ -80,36 +81,37 @@ const workflowSlice = createSlice({
           state.isLoading = false;
           // state.workFlowData = action.payload;
 
-          const updatedNodes = action.payload.nodes?.map(node => {
-            const updatedParameters = Object.entries(
-              (node.nodeMasterId as any).parameters
-            ).reduce((acc: { [key: string]: any }, [key, param]) => {
-              acc[key] = {
-                ...(typeof param === "object" && param !== null ? param : {}),
-                value: node.parameters?.[key] || "",
-              };
-              return acc;
-            }, {});
+          // const updatedNodes = action.payload.nodes?.map(node => {
+          //   const updatedParameters = Object.entries(
+          //     (node.nodeMasterId as any).parameters
+          //   ).reduce((acc: { [key: string]: any }, [key, param]) => {
+          //     acc[key] = {
+          //       ...(typeof param === "object" && param !== null ? param : {}),
+          //       value: node.parameters?.[key] || "",
+          //     };
+          //     return acc;
+          //   }, {});
 
-            return {
-              id: node._id,
-              position: node.position,
-              type: node.type,
-              data: {
-                nodeMasterId: node.nodeMasterId._id,
-                parameters: updatedParameters,
-                subNodes: node.subNodes || [],
-                dynamicParams: node.nodeMasterId.dynamicParams || [],
-                functionToExecute: node.nodeMasterId.functionToExecute,
-                label: node.nodeMasterId.name,
-                description: node.nodeMasterId.description,
-                icon: node.nodeMasterId.logoUrl,
-              },
-            };
-          });
-
+          //   return {
+          //     id: node._id,
+          //     position: node.position,
+          //     type: node.type,
+          //     data: {
+          //       nodeMasterId: node.nodeMasterId._id,
+          //       parameters: updatedParameters,
+          //       subNodes: node.subNodes || [],
+          //       dynamicParams: node.nodeMasterId.dynamicParams || [],
+          //       functionToExecute: node.nodeMasterId.functionToExecute,
+          //       label: node.nodeMasterId.name,
+          //       description: node.nodeMasterId.description,
+          //       icon: node.nodeMasterId.logoUrl,
+          //     },
+          //   };
+          // });
+          const updatedNodes = resolveWorkflowNodes(action.payload.nodes);
           state.workFlowData = {
             ...action.payload,
+            //@ts-ignore
             nodes: updatedNodes,
           };
         }

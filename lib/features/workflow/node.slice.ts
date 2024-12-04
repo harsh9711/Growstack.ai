@@ -80,6 +80,10 @@ const nodeSlice = createSlice({
     },
 
     addNode: (state, action: PayloadAction<NodeState>) => {
+      if (Array.isArray(action.payload) && action.payload.length > 0) {
+        state.nodes = action.payload;
+        return;
+      }
       state.nodes.push(action.payload);
     },
 
