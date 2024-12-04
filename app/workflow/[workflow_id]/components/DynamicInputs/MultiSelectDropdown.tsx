@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import Tooltip from "../tooltip/Tooltip";
 import { DynamicInputProps } from "@/types/workflows";
 
-
 const MultiSelectDropdown: React.FC<DynamicInputProps> = ({ param, inputKey, handleInputChange }) => {
     console.log("---param---", param);
     const [isOpen, setIsOpen] = useState(false);
@@ -17,11 +16,9 @@ const MultiSelectDropdown: React.FC<DynamicInputProps> = ({ param, inputKey, han
     const handleInputSelectChange = (e: React.ChangeEvent<HTMLInputElement>) =>
         setInputValue(e.target.value);
 
-
-
-    const handleRemoveItem = (item: string) => {
+    const handleRemoveItem = (index: number, item: string) => {
         const value = Array.isArray(param.value)
-            ? param.value.filter((selected: any) => selected !== item)
+            ? param.value.filter((selected: any, i: number) => i !== index) 
             : [];
         handleInputChange(inputKey, param.type, value);
     };
@@ -57,14 +54,14 @@ const MultiSelectDropdown: React.FC<DynamicInputProps> = ({ param, inputKey, han
             <div ref={containerRef} className="relative w-full max-w-md mx-auto">
                 <div className="flex flex-wrap gap-2 items-center p-3 rounded-[10px] bg-[#F2F2F2]">
                     {Array.isArray(param.value) &&
-                        param?.value.map((item: any, i: any) => (
+                        param?.value.map((item: any, i: number) => (
                             <div
                                 key={i}
                                 className="flex items-center bg-[#2DA771] text-[#fff] px-3 py-1 rounded-full text-sm"
                             >
                                 {item}
                                 <button
-                                    onClick={() => handleRemoveItem(item)}
+                                    onClick={() => handleRemoveItem(i, item)} 
                                     className="ml-2 text-[#fff] hover:text-[#fff]"
                                 >
                                     &times;
@@ -99,4 +96,4 @@ const MultiSelectDropdown: React.FC<DynamicInputProps> = ({ param, inputKey, han
     );
 };
 
-export default MultiSelectDropdown
+export default MultiSelectDropdown;
