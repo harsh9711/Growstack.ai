@@ -6,13 +6,14 @@ import React, { useCallback, useEffect, useState } from "react";
 const TimeLineTable = ({
   workflow_id,
   onViewDetails,
+  workflowName,
 }: {
+  workflowName?: string;
   workflow_id: string;
   onViewDetails?: (executionId: string) => void;
 }) => {
   const [historyData, setHistoryData] = useState<any>([]);
   const [scheduleData, setScheduleData] = useState<any>([]);
-  console.log("scheduleData", scheduleData);
   const [activeTab, setActiveTab] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [workFlowData, setWorkFlowData] = useState<any>({
@@ -53,8 +54,8 @@ const TimeLineTable = ({
 
   const getScheduleData = useCallback(async () => {
     try {
-      const getSchedule = await axios.get(
-        `http://localhost:5000/workflow/${workflow_id}/schedules`
+      const getSchedule = await CustomAxiosInstance().get(
+        `/workflow/${workflow_id}/schedules`
       );
       setScheduleData(getSchedule?.data);
     } catch (err) {
@@ -79,9 +80,8 @@ const TimeLineTable = ({
 
   const handleEditSchedule = async (item: any) => {
     try {
-      // Fetch the workflow details to get input_configs
-      const workflowResponse = await axios.get(
-        `http://localhost:5000/workflow/${workflow_id}`
+      const workflowResponse = await CustomAxiosInstance().get(
+        `/workflow/${workflow_id}`
       );
 
       setWorkFlowData({
@@ -197,7 +197,7 @@ const TimeLineTable = ({
                 >
                   <td className="p-3 text-black">{item?._id}</td>
                   <td className="p-3 text-black">
-                    {item?.name ?? "GrowStack"}
+                    {workflowName ?? "GrowStack"}
                   </td>
                   <td
                     className={`p-3 font-medium ${
