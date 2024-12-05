@@ -21,6 +21,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     return pathname.startsWith("/create");
   };
 
+  const fullWidthContainer = ["/app/workflow"]
   useEffect(() => {
     const fullPath = `${window.location.origin}${pathname}`;
     localStorage.setItem("currentPathname", fullPath);
@@ -50,7 +51,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <PageTransition
               classNames={clsx(
                 "w-full max-w-[90%] mx-auto flex-1 flex flex-col h-full mt-[70px]",
-                shouldHideNavbar() && "!max-w-none !mt-0"
+                shouldHideNavbar() && "!max-w-none !mt-0",
+                fullWidthContainer?.some(path => pathname.startsWith(path)) && "!max-w-[100%]"
               )}
             >
               {children}

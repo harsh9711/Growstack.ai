@@ -270,7 +270,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
         }}
       />
       {activeTab === 0 && (
-        <div className="reactflow-wrapper h-[calc(100vh-60px)] w-full">
+        <div className="reactflow-wrapper h-[calc(100vh-140px)] w-full">
           <ReactFlow
             nodes={nodes}
             nodeTypes={nodeTypes}
