@@ -8,8 +8,6 @@ export const createWorkFlow = createAsyncThunk(
   "createWorkflow",
   async (data: WorkflowDataState, { rejectWithValue }) => {
     try {
-      // const result = await CustomAxiosInstance().post("workflow", data);
-
       const result = await instance.post("/workflow", data);
       return result.data as WorkflowDataState;
     } catch (error: any) {
