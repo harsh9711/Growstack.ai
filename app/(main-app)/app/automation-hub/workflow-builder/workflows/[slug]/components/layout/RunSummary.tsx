@@ -159,7 +159,6 @@ const RunSummary = ({ runSummaryData }: any) => {
               <th className="p-4">Step</th>
               <th className="p-4">Status</th>
               <th className="p-4">Date & Time</th>
-              <th className="p-4">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -190,11 +189,6 @@ const RunSummary = ({ runSummaryData }: any) => {
                   <p className="font-medium">{row.error}</p>
                   <p className="text-xs text-gray-500">{row.description}</p>
                 </td> */}
-                <td className="p-4">
-                  <button className="p-2 bg-gray-100 border border-gray-300 rounded-lg text-sm">
-                    ⋮
-                  </button>
-                </td>
               </tr>
             ))}
           </tbody>

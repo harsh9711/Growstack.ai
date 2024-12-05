@@ -178,7 +178,7 @@ function WorkflowSchedulerModal({
         timezone: workFlowData?.timezone || "",
       });
     }
-  }, [workFlowData, timeLineTable]);
+  }, [timeLineTable]);
 
   const handleChangeInput = (value: string, idx: number) => {
     const updatedInputs = [...workFlowData.input_configs];

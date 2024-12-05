@@ -43,13 +43,13 @@ const TimeLineTable = ({
   const getHistoryData = useCallback(async () => {
     try {
       const getHistory = await CustomAxiosInstance().get(
-        `workflow/${workflow_id}/history`
+        `/workflow/${workflow_id}/history`
       );
       // const getHistory = await instance.get(
-      //   `workflow/${workflow_id}/history`
+      //   `/workflow/${workflow_id}/history`
       // );
       // const getHistory = await axios.get(
-      //   `/workflows/${workflow_id}/history`
+      //   `/workflow/${workflow_id}/history`
       // );
       setHistoryData(getHistory?.data);
     } catch {}
@@ -268,7 +268,7 @@ const TimeLineTable = ({
                   }`}
                 >
                   <td className="p-3 text-black">
-                    {item?.name ?? "GrowStack"}
+                    {workflowName ?? "GrowStack"}
                   </td>
                   <td
                     className={`py-2 font-medium bg-[#C4C4C429] text-black

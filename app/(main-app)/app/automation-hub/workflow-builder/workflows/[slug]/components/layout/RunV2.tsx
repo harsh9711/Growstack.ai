@@ -93,7 +93,10 @@ const Run: React.FC<Props> = ({
   const fetchWorkflowData = async (id: string) => {
     setLoading(true);
     try {
-      const response = await CustomAxiosInstance().get(`workflow/${id}`);
+      const response = await CustomAxiosInstance().get(`/workflow/${id}`);
+      // const response = await instance.get(
+      //   `/workflow/${id}`
+      // );
       const apiData = response.data;
 
       // Filter and map `nodes` to `input_configs`
@@ -177,7 +180,7 @@ const Run: React.FC<Props> = ({
         updatedWorkflowData
       );
       // const response = await instance.post(
-      //   `/workflows/${workflowId}/run`,
+      //   `/workflow/${workflowId}/run`,
       //   updatedWorkflowData
       // );
       setExecutionId(response?.data?.executionId);
@@ -191,11 +194,11 @@ const Run: React.FC<Props> = ({
   const pollingWorkflowExec = useCallback(async () => {
     try {
       const getWorkFlowExecData = await CustomAxiosInstance().get(
-        `workflow/${workflowId}/status/${executionId}`
+        `/workflow/${workflowId}/status/${executionId}`
       );
 
       // const getWorkFlowExecData = await instance.get(
-      //   `/workflows/${workflowId}/status/${executionId}`
+      //   `/workflow/${workflowId}/status/${executionId}`
       // );
       setRunSummaryData(getWorkFlowExecData?.data);
       const status = getWorkFlowExecData?.data?.status;
@@ -306,7 +309,7 @@ const Run: React.FC<Props> = ({
       const response = await CustomAxiosInstance().get(
         `/workflow/${workflowId}/stats`
       );
-      // const response = await instance.get(`/workflows/${workflowId}/stats`);
+      // const response = await instance.get(`/workflow/${workflowId}/stats`);
       setWorkflowStatsData(response?.data);
     } catch (error) {
       console.error("Error fetching workflow stats data", error);

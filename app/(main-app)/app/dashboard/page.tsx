@@ -54,8 +54,8 @@ export default function Dashboard() {
         `/workflow?isPrebuilt=true`
       );
       //   const response = await instance.get(
-    //     `/workflow?isPrebuilt=true`
-    //   );
+      //     `/workflow?isPrebuilt=true`
+      //   );
       setPreBuiltTemplates(response.data);
     } catch (error) {
       console.error("Error fetching pre-built templates:", error);
@@ -67,8 +67,8 @@ export default function Dashboard() {
   const getUserSavedWorkflows = async () => {
     try {
       setLoading(true);
-      const response = await CustomAxiosInstance().get(`workflow`);
-      // const response = await instance.get(`/workflows`);
+      const response = await CustomAxiosInstance().get(`/workflow`);
+      // const response = await instance.get(`/workflow`);
       setPreBuiltTemplates(response.data);
     } catch (error) {
       console.error("Error fetching pre-built templates:", error);
@@ -111,9 +111,9 @@ export default function Dashboard() {
       const response = await CustomAxiosInstance().get(
         `/workflow/search?keyword=${queryParams}`
       );
-    //   const response = await instance.get(
-    //     `/workflow/search?keyword=${queryParams}`
-    //   );
+      //   const response = await instance.get(
+      //     `/workflow/search?keyword=${queryParams}`
+      //   );
       setPreBuiltTemplates(response.data);
     } catch (error) {
       console.error("Error fetching search results:", error);
@@ -305,10 +305,10 @@ const Card: React.FC<CardProps> = ({
     try {
       setLoading(true);
       const response = await CustomAxiosInstance().post(
-        `workflow/${workflow_id}/duplicate`
+        `/workflow/${workflow_id}/duplicate`
       );
       // const response = await instance.post(
-      //   `/workflows/${workflow_id}/duplicate`
+      //   `/workflow/${workflow_id}/duplicate`
       // );
     } catch (error: any) {
       console.error("Error duplicating workflow:", error);
@@ -336,11 +336,11 @@ const Card: React.FC<CardProps> = ({
     setLoading(true);
     try {
       const response = await CustomAxiosInstance().delete(
-        `workflow/delete/${workflow_id}`
+        `/workflow/delete/${workflow_id}`
       );
 
       // const response = await instance.delete(
-      //   `/workflows/delete/${workflow_id}`
+      //   `/workflow/delete/${workflow_id}`
       // );
     } catch (error: any) {
       console.error("Error deleting workflow:", error);
@@ -354,10 +354,10 @@ const Card: React.FC<CardProps> = ({
     setLoading(true);
     try {
       const response = await CustomAxiosInstance().post(
-        `workflow/unpublish/${workflow_id}`
+        `/workflow/unpublish/${workflow_id}`
       );
       // const response = await instance.post(
-      //   `/workflows/unpublish/${workflow_id}`
+      //   `/workflow/unpublish/${workflow_id}`
       // );
     } catch (error: any) {
       console.error("Error unpublish workflow:", error);

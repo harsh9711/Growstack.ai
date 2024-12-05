@@ -65,10 +65,6 @@ const OutputDetails = ({
       // const rejectExecution = await instance.patch(
       //   `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=false`
       // );
-
-      // const rejectExecution = await axios.patch(
-      //   `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=false`
-      // );
       setApproveOutputDataId(rejectExecution?.data);
     } catch (err) {
       console.log("err", err);
@@ -79,14 +75,11 @@ const OutputDetails = ({
       const approveExecution = await CustomAxiosInstance().patch(
         `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=true`
       );
-      setApproveOutputDataId(approveExecution?.data);
-
       // const approveExecution = await instance.patch(
       //   `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=true`
       // );
-      // const approveExecution = await axios.post(
-      //   `http://localhost:5000/workflow/${workflowId}/approve?executionId=${executionId}`
-      // );
+      setApproveOutputDataId(approveExecution?.data);
+
     } catch (err) {
       console.log("err", err);
     }

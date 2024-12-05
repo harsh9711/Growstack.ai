@@ -29,13 +29,13 @@ const UploadButton: React.FC<DynamicInputProps> = ({
         formData.append("file", file);
 
         try {
-            const response = await CustomAxiosInstance().post("workflow/upload", formData, {
+            const response = await CustomAxiosInstance().post("/workflow/upload", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
             });
             
-            // const response = await instance.post("workflow/upload", formData, {
+            // const response = await instance.post("/workflow/upload", formData, {
             //     headers: {
             //         "Content-Type": "multipart/form-data",
             //     },

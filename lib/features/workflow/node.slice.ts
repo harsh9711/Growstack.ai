@@ -13,7 +13,7 @@ export const createNode = createAsyncThunk(
     try {
       const result = await CustomAxiosInstance().post("node", data);
 
-      // const result = await instance.post("/workflows/nodes", data);
+      // const result = await instance.post("node", data);
 
       return result.data;
     } catch (error: any) {
@@ -33,7 +33,7 @@ export const updateNodeById = createAsyncThunk(
     try {
       const result = await CustomAxiosInstance().patch(`node/${id}`, data);
 
-      // const result = await instance.patch(`/workflows/node/${id}`, data);
+      // const result = await instance.patch(`node/${id}`, data);
       return result.data;
     } catch (error: any) {
       return rejectWithValue(
@@ -49,7 +49,7 @@ export const deleteNodeById = createAsyncThunk(
     try {
       const result = await CustomAxiosInstance().delete(`node/${id}`);
 
-      // const result = await instance.delete(`/workflows/node/${id}`);
+      // const result = await instance.delete(`node/${id}`);
       return result.data;
     } catch (error: any) {
       return rejectWithValue(
