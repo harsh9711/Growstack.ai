@@ -56,7 +56,11 @@ export const updateWorkFlowById = createAsyncThunk(
 const workflowSlice = createSlice({
   name: "workflow",
   initialState: {} as WorkflowState,
-  reducers: {},
+  reducers: {
+    clearWorkFlowData: state => {
+      state.workFlowData = {} as WorkflowDataState;
+    },
+  },
   extraReducers(builder) {
     builder
       .addCase(createWorkFlow.pending, state => {
@@ -129,3 +133,4 @@ const workflowSlice = createSlice({
 });
 
 export default workflowSlice.reducer;
+export const { clearWorkFlowData } = workflowSlice.actions;

@@ -1,18 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { AllData } from "../../data";
 import { NodeState } from "@/types/workflows";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { convertNodeData } from "@/utils/dataResolver";
+import { addNodeData, removeNode } from "@/lib/features/workflow/node.slice";
 
 const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
-  const integrationData = AllData.filter(
-    item => item.category === "integrations"
+  const dispatch = useAppDispatch();
+
+  const { masterNode } = useAppSelector(state => state.masterNode);
+
+  if ((masterNode && !masterNode.length) || !masterNode) {
+    return <div>Data not found</div>;
+  }
+
+  const generalData = masterNode?.filter(
+    item =>
+      item.category.toLocaleLowerCase() === "integration" &&
+      (item.type === "gmail" || item.type === "linkdien")
   );
 
-  const [selectedSubCategory, setSelectedSubCategory] =
-    React.useState<string>("CRM");
+  console.log("generalData", generalData);
 
-  const groupedIntegrations = integrationData.reduce(
-    (acc: { [key: string]: typeof integrationData }, model) => {
+  const modifiedNodes = generalData?.map(convertNodeData);
+
+  const integrationData = modifiedNodes?.reduce(
+    (acc: { [key: string]: typeof modifiedNodes }, model) => {
       if (!acc[model.subCategory]) {
         acc[model.subCategory] = [];
       }
@@ -22,7 +35,17 @@ const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
     {}
   );
 
+  const [selectedSubCategory, setSelectedSubCategory] = useState<string>("");
+
+  useEffect(() => {
+    if (Object.keys(integrationData || {}).length > 0 && !selectedSubCategory) {
+      const firstSubCategory = Object.keys(integrationData)[0];
+      setSelectedSubCategory(firstSubCategory);
+    }
+  }, [integrationData, selectedSubCategory]);
+
   const handleClick = (nodeData: NodeState) => {
+    console.log("nodeData", nodeData);
     setNodes((prevNodes: NodeState[]) => {
       const lastNode = prevNodes[prevNodes.length - 1];
       let nextNodeX = 200;
@@ -46,6 +69,11 @@ const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
         },
       ];
     });
+  };
+
+  const handleDragStart = (event: React.DragEvent, item: NodeState) => {
+    dispatch(addNodeData(item));
+    event.dataTransfer.effectAllowed = "move";
   };
 
   return (
@@ -73,49 +101,109 @@ const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
           </div>
         </div>
 
-        <div className="h-full overflow-y-auto flex flex-col">
-          <div className="mb-4">
-            <ul className="flex items-center flex-wrap gap-2">
-              {Object.keys(groupedIntegrations).map((subCategory, index) => (
-                <li
-                  className={`p-2.5 rounded-lg cursor-pointer ${selectedSubCategory === subCategory
-                    ? "bg-[#F88390]"
-                    : "bg-[#E9E9E9]"
+        <div className="main-box">
+          <div className="flex flex-wrap flex-row gap-2 mb-4">
+            {Object?.keys(integrationData).map((subCategory, index) => (
+              <div
+                key={index}
+                className={`flex flex-row p-3 rounded-lg items-center cursor-pointer ${selectedSubCategory === subCategory
+                  ? "bg-[#FB8491]"
+                  : "bg-[#E9E9E9]"
+                  }`}
+                onClick={() => setSelectedSubCategory(subCategory)}
+              >
+                <p
+                  className={`ml-2 text-sm font-normal leading-4 flex items-center gap-2 ${selectedSubCategory === subCategory
+                    ? "text-white"
+                    : "text-[#14171B]"
                     }`}
-                  onClick={() => setSelectedSubCategory(subCategory)}
-                  key={index.toString()}
                 >
-                  <p
-                    className={`text-[12px] leading-6 font-normal ${selectedSubCategory === subCategory
-                      ? "text-[#ffffff]"
-                      : "text-[#14171B]"
-                      } font-weight-400`}
+                  <svg
+                    width="20"
+                    height="12"
+                    viewBox="0 0 20 12"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    {subCategory}
-                  </p>
-                </li>
-              ))}
-            </ul>
+                    <path
+                      d="M19.1667 0.982619C18.9201 0.880441 18.6486 0.853702 18.3867 0.905784C18.1248 0.957865 17.8843 1.08643 17.6955 1.27522L15.1236 3.84729V2.27959C15.1236 1.16317 14.2184 0.257812 13.1018 0.257812H2.02188C0.90531 0.257812 0 1.16317 0 2.27959V9.7203C0 10.8367 0.90531 11.7421 2.02188 11.7421H13.1018C14.2184 11.7421 15.1236 10.8367 15.1236 9.7203V8.15255L17.6955 10.7246C17.8208 10.8501 17.9697 10.9496 18.1336 11.0175C18.2974 11.0854 18.4731 11.1203 18.6504 11.1203C18.8243 11.1203 18.9997 11.0864 19.1667 11.0173C19.4134 10.9151 19.6242 10.742 19.7725 10.52C19.9208 10.298 20 10.0371 20 9.77008V2.22976C20 1.96279 19.9208 1.70181 19.7725 1.47982C19.6242 1.25784 19.4134 1.08481 19.1667 0.982619ZM9.50243 6.52373L6.74666 8.64098C6.63127 8.72971 6.48977 8.77777 6.34421 8.77769C6.25747 8.77771 6.17158 8.76064 6.09144 8.72745C6.0113 8.69426 5.93849 8.64561 5.87716 8.58427C5.81583 8.52294 5.76719 8.45011 5.73401 8.36997C5.70084 8.28983 5.68378 8.20393 5.68381 8.1172V3.88265C5.68378 3.75934 5.71828 3.63849 5.78341 3.53379C5.84854 3.42909 5.94169 3.34473 6.05231 3.29026C6.1629 3.23571 6.28656 3.21323 6.40927 3.22536C6.53198 3.2375 6.64884 3.28376 6.74661 3.35891L9.50238 5.47611C9.58269 5.53779 9.64774 5.61711 9.6925 5.70793C9.73727 5.79875 9.76055 5.89865 9.76056 5.99991C9.76056 6.10117 9.73729 6.20107 9.69253 6.29189C9.64777 6.38272 9.58273 6.46204 9.50243 6.52373Z"
+                      fill={
+                        selectedSubCategory === subCategory ? "#fff" : "#F1B916"
+                      }
+                    />
+                  </svg>
+
+                  {subCategory}
+                </p>
+              </div>
+            ))}
           </div>
 
-          <div className="flex flex-wrap">
-            {groupedIntegrations[selectedSubCategory].map((item, _) => (
+          <div className="flex flex-wrap pt-1">
+            {integrationData[selectedSubCategory]?.map((item, _) => (
+              // <div
+              //   key={item.node.id}
+              //   className="h-auto w-full bg-transparent mb-2 rounded-lg flex justify-center items-center cursor-pointer border border-[#E5E5E5] p-3"
+              //   onClick={() => handleClick(item.node)}
+              //   draggable
+              //   onDragStart={event => {
+              //     handleDragStart(event, item.node);
+              //   }}
+              //   onDragEnd={() => {
+              //     dispatch(removeNode());
+              //   }}
+              // >
+              //   <div className="h-full w-full rounded-lg bg-white flex items-center gap-3">
+              //     {item.logoUrl && (
+              //       <Image
+              //         src={item.logoUrl}
+              //         alt="Logo"
+              //         width={50}
+              //         height={50}
+              //         draggable={false}
+              //         className="rounded-lg"
+              //       />
+              //     )}
+
+              //     <div className="w-full">
+              //       <h3 className="text-[16px] leading-7 font-medium text-[#020817]">
+              //         {item.name}
+              //       </h3>
+
+              //       {item.description && (
+              //         <p className="text-[14px] leading-6 font-normal text-[#5B5D60]">
+              //           {item.description.length > 40
+              //             ? `${item.description.substring(0, 40)}...`
+              //             : item.description}
+              //         </p>
+              //       )}
+              //     </div>
+              //   </div>
+              // </div>
+
               <div
                 key={_.toString()}
+                className="h-[92px] w-[130px] bg-transparent m-1 rounded-lg flex justify-center items-center cursor-pointer border border-[#E5E5E5]"
                 onClick={() => handleClick(item.node)}
-                className="h-[118px] w-[116px] bg-transparent m-1 rounded-lg flex justify-center items-center cursor-pointer border border-[#E5E5E5]"
+                draggable
+                onDragStart={event => {
+                  handleDragStart(event, item.node);
+                }}
+                onDragEnd={() => {
+                  dispatch(removeNode());
+                }}
               >
                 <div className="h-full w-full rounded-lg bg-white flex justify-center items-center flex-col">
-                  {item.image && (
+                  {item?.logoUrl && (
                     <Image
-                      src={item.image.src}
-                      alt={item.image.alt}
-                      width={item.image.width}
-                      height={item.image.height}
+                      src={item.logoUrl}
+                      alt={item.name}
+                      width={26}
+                      height={17}
                       draggable={false}
                     />
                   )}
-                  <p className="text-sm leading-5 font-medium text-[#020817] mt-2 text-center">
+                  <p className="text-sm leading-5 font-medium text-[#020817] mt-2">
                     {item.name}
                   </p>
                 </div>

@@ -63,6 +63,7 @@ const nodeSlice = createSlice({
   name: "nodes",
   initialState: {
     isLoading: false,
+    isAddNodeLoading: false,
     nodeData: {} as NodeState,
     nodes: [] as NodeState[],
     variables: [] as {
@@ -407,6 +408,12 @@ const nodeSlice = createSlice({
       state.nodeData = {} as NodeState;
     },
 
+    clearNodeData: state => {
+      state.nodeData = {} as NodeState;
+      state.nodes = [] as NodeState[];
+      state.variables = [];
+    },
+
     removeNodeById: (state, action: PayloadAction<string>) => {
       state.nodes = state.nodes.filter(node => node.id !== action.payload);
     },
@@ -415,16 +422,16 @@ const nodeSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(createNode.pending, state => {
-        state.isLoading = true;
+        state.isAddNodeLoading = true;
       })
       .addCase(
         createNode.fulfilled,
         (state, action: PayloadAction<NodeDataState>) => {
-          state.isLoading = false;
+          state.isAddNodeLoading = false;
         }
       )
       .addCase(createNode.rejected, state => {
-        state.isLoading = false;
+        state.isAddNodeLoading = false;
       })
       .addCase(updateNodeById.pending, state => {
         state.isLoading = true;
@@ -458,6 +465,7 @@ export default nodeSlice.reducer;
 export const {
   addNodeData,
   addNode,
+  clearNodeData,
   removeNode,
   updateNode,
   removeNodeById,

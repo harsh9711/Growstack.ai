@@ -1,16 +1,58 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import Tooltip from "../tooltip/Tooltip";
 import { DynamicInputProps } from "@/types/workflows";
+import { CustomAxiosInstance } from "@/config/axios.config";
+
+const UploadButton: React.FC<DynamicInputProps> = ({
+    param,
+    inputKey,
+    handleInputChange,
+}) => {
 
 
-const UploadButton: React.FC<DynamicInputProps> = ({ param, inputKey, handleInputChange }) => {
+    // console.log(inputKey, '----param---', param)
+
     const fileInputRef = useRef<HTMLInputElement>(null);
-
     const handleButtonClick = () => {
         if (fileInputRef.current) {
             fileInputRef.current.click();
         }
     };
+
+    const handleFileUpload = async (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+            const response = await CustomAxiosInstance().post("workflow/upload", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            console.log("File uploaded successfully:", response.data);
+            // handleInputChange(inputKey, response.data, "");
+        } catch (error) {
+            console.error("Error uploading file:", error);
+        }
+    };
+
+    useEffect(() => {
+        const fileInput = fileInputRef.current;
+        if (fileInput) {
+            fileInput.addEventListener("change", (event) => handleFileUpload(event as unknown as React.ChangeEvent<HTMLInputElement>));
+        }
+
+        return () => {
+            if (fileInput) {
+                fileInput.removeEventListener("change", (event) => handleFileUpload(event as unknown as React.ChangeEvent<HTMLInputElement>));
+            }
+        };
+    }, []);
 
     return (
         <div className="input-box mb-3">
@@ -47,4 +89,4 @@ const UploadButton: React.FC<DynamicInputProps> = ({ param, inputKey, handleInpu
     );
 };
 
-export default UploadButton
+export default UploadButton;

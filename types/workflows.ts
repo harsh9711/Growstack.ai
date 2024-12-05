@@ -173,3 +173,64 @@ export interface DynamicInputProps {
   focusedInputKey?: string | null;
   setFocusedInputKey?: React.Dispatch<React.SetStateAction<string | null>>;
 }
+
+export interface IntegrationResultProps {
+  enabled: string;
+  allCredentials: [
+    {
+      id: string;
+      dateCreated: string;
+      dateUpdated: string;
+      projectId: string;
+      integrationId: string;
+      personaId: string;
+      isPreviewCredential: false;
+      providerId: string;
+      providerData: {};
+      status: string;
+      dateRefreshed: string;
+      dateValidUntil: string;
+      refreshTokenValidUntilDate: string | null;
+      refreshFailureCount: 0;
+      configurations: [
+        {
+          id: string;
+          dateCreated: string;
+          dateUpdated: string;
+          connectCredentialId: string;
+          workflowSettings: {};
+          sharedSettings: {};
+          configMeta: {
+            isIntegrationEnableTriggered: true;
+          };
+          isDefault: true;
+          externalId: null;
+        },
+      ];
+      config: {
+        id: string;
+        dateCreated: string;
+        dateUpdated: string;
+        connectCredentialId: string;
+        sharedSettings: {};
+        configMeta: {
+          isIntegrationEnableTriggered: boolean;
+        };
+        isDefault: boolean;
+        externalId: string | null;
+        configuredWorkflows: {};
+      };
+    },
+  ];
+  configMeta: {
+    isIntegrationEnableTriggered: boolean;
+  };
+  configuredWorkflows: {};
+  credentialId: string;
+  credentialStatus: string;
+  providerId: string;
+  providerData: {};
+  sharedSettings: {};
+  workflowSettings: {};
+  isIntegrationEnableTriggered: boolean;
+}
