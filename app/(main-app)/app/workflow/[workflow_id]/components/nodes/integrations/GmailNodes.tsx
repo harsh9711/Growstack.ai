@@ -68,8 +68,6 @@ const GmailNode = memo(
       state.nodes.nodes.find(node => node.id === id)
     );
 
-    console.log("---nodes----", JSON.stringify(variables, null, 2));
-
     const [isSignedUp, setIsSignedUp] = useState(false);
     const [isEdit, setIsEdit] = useState(true);
 
@@ -283,7 +281,7 @@ const GmailNode = memo(
         setConnectionLoading(true);
         const result = await authenticateUser("gmail");
         setConnectedEmail(result);
-          setIsSignedUp(true);
+        setIsSignedUp(true);
       } catch (error) {
         console.log("---error---", error);
       } finally {
@@ -502,10 +500,7 @@ const GmailNode = memo(
                   </div>
                 </div> */}
 
-
                 <div className="action-box">
-
-
                   {!activeAction ? (
                     <>
                       <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
@@ -539,7 +534,6 @@ const GmailNode = memo(
                           );
                         })}
                       </div>
-
                     </>
                   ) : (
                     <>

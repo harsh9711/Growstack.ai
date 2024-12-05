@@ -70,7 +70,7 @@ export type GmailNodeProps = Node<NodeDataState, "gmail">;
 
 export type LinkedInNodeProps = Node<NodeDataState, "linkedin">;
 
-
+export type FanOutNodeProps = Node<NodeDataState, "fanout">;
 
 export type AppNode =
   | BuiltInNode
@@ -97,4 +97,4 @@ export type AppNode =
   | ToolsNodeProps
   | GmailNodeProps
   | LinkedInNodeProps
-  ;
+  | FanOutNodeProps;

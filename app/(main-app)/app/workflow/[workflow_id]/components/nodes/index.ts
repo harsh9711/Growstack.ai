@@ -24,6 +24,7 @@ import GeneralJoinerNodes from "./GeneralJoinerNodes";
 import ToolsNode from "./ToolsNodes";
 import GmailNode from "./integrations/GmailNodes";
 import LinkedinNode from "./integrations/LinkedinNode";
+import FanOut from "./fanOut";
 
 export const initialNodes: AppNode[] = [
   {
@@ -65,4 +66,5 @@ export const nodeTypes = {
   llms: LlmNodes,
   gmail: GmailNode,
   linkedin: LinkedinNode,
+  fanout: FanOut,
 } satisfies NodeTypes;
