@@ -23,10 +23,6 @@ export const getMasterNodes = createAsyncThunk(
   "masterNodes/getMasterNodes",
   async (_, { rejectWithValue }) => {
     try {
-      // const data = await CustomAxiosInstance("http://localhost:5000/").get(
-      //   "nodemaster"
-      // );
-
       const result = await instance.get(`/nodemaster`);
       console.log("---data----", result);
       return result.data;

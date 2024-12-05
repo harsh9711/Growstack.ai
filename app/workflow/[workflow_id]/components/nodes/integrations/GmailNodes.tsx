@@ -272,7 +272,7 @@ const GmailNode = memo(
       setNodes(nds => nds.filter(nds => nds.id !== id));
       dispatch(removeNodeById(id));
       dispatch(deleteNodeById(id));
-      success("node delete successfully");
+      success("Node delete successfully");
     };
 
     const handleChange = (event: {
@@ -360,7 +360,7 @@ const GmailNode = memo(
 
     return (
       <div>
-        <div className="node-box relative">
+        <section className="node-box relative">
           <div className="node-top-box relative">
             <div className="node-name-text-description text-center mb-3">
               <h4 className="text-sm font-medium text-[#2DA771]">Gmail</h4>
@@ -594,7 +594,7 @@ const GmailNode = memo(
               </div>
             </div>
           )}
-        </div>
+        </section>
 
         <DeleteConfirmationModal
           openDeleteConfirmationModal={openDeleteConfirmationModal}
