@@ -180,10 +180,10 @@ export const resolveWorkflowNodes = (nodes?: WorkflowNodeState[]) => {
   const updatedNodes = nodes?.map(node => {
     const updatedParameters = Object.entries(
       (node.nodeMasterId as any).parameters
-    ).reduce((acc: { [key: string]: any }, [key, param]) => {
+    ).reduce((acc: { [key: string]: any }, [key, param]: [string, any]) => {
       acc[key] = {
         ...(typeof param === "object" && param !== null ? param : {}),
-        value: node.parameters?.[key] || "",
+        value: node.parameters?.[key] || param?.value || "",
       };
       return acc;
     }, {});

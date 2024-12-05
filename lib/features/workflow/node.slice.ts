@@ -11,11 +11,6 @@ export const createNode = createAsyncThunk(
   "workflow/createNode",
   async (data: any, { rejectWithValue }) => {
     try {
-      // const result = await CustomAxiosInstance("http://localhost:5000/").post(
-      //   "node",
-      //   data
-      // );
-
       const result = await instance.post("/node", data);
 
       return result.data;
@@ -71,6 +66,7 @@ const nodeSlice = createSlice({
   name: "nodes",
   initialState: {
     isLoading: false,
+    isAddNodeLoading: false,
     nodeData: {} as NodeState,
     nodes: [] as NodeState[],
     variables: [] as {
@@ -423,16 +419,16 @@ const nodeSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(createNode.pending, state => {
-        state.isLoading = true;
+        state.isAddNodeLoading = true;
       })
       .addCase(
         createNode.fulfilled,
         (state, action: PayloadAction<NodeDataState>) => {
-          state.isLoading = false;
+          state.isAddNodeLoading = false;
         }
       )
       .addCase(createNode.rejected, state => {
-        state.isLoading = false;
+        state.isAddNodeLoading = false;
       })
       .addCase(updateNodeById.pending, state => {
         state.isLoading = true;
