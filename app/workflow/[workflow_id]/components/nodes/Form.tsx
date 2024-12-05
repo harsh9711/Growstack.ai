@@ -15,6 +15,8 @@ import {
 } from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { extractParameterValues } from "@/utils/dataResolver";
+import DeleteConfirmationModal from "../deleteconfirmationmodal/DeleteConfirmationModal";
+import { useSnackbar } from "../snackbar/SnackbarContext";
 
 const Form = ({
   data,
@@ -41,11 +43,14 @@ const Form = ({
     Object.values(subNode.parameters).some(param => param.value)
   );
 
+  const { success } = useSnackbar();
+
   const [showAdvancedOptions, setShowAdvancedOptions] = useState<{
     [key: string]: boolean;
   }>({});
 
-  const [currentSubNodes, setCurrentSubNodes] = useState<SubNodeProps[]>(initialSubNodes);
+  const [currentSubNodes, setCurrentSubNodes] =
+    useState<SubNodeProps[]>(initialSubNodes);
 
   // console.log("currentSubNodes------>", currentSubNodes);
 
@@ -200,6 +205,7 @@ const Form = ({
     setNodes(nds => nds.filter(nds => nds.id !== id));
     dispatch(removeNodeById(id));
     dispatch(deleteNodeById(id));
+    success("Node delete successfully");
   };
 
   const handleDeleteSubNode = async (index: number, nodeMasterId: string) => {
@@ -379,12 +385,55 @@ const Form = ({
     }
   };
 
+  // ON CLICK OPEN & CLOSE ACTION MODAL
+  const [isActionModalShow, setIsActionModalShow] = useState(false);
+  // const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  const handleOpenActionModal = () => {
+    setIsActionModalShow(!isActionModalShow);
+  };
+
+  const handleClickOutside = useCallback(
+    (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsActionModalShow(false);
+      }
+    },
+    [dropdownRef]
+  );
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [handleClickOutside]);
+
+  //ONCLICK OPEN DELETE CONFIRMATION MODAL
+  const [openDeleteConfirmationModal, setopenDeleteConfirmationModal] =
+    React.useState(false);
+
+  const handleCloseDeleteConfirmationModal = () => {
+    setopenDeleteConfirmationModal(false);
+  };
+  const handleOpenDeleteConfimationModal = () => {
+    setopenDeleteConfirmationModal(true);
+    setIsActionModalShow(false);
+  };
+
   return (
     <div>
-      <div className="long-text-box" id="large-box">
-        <div className="long-text-info-image relative">
-          <div className="long-text text-center">
-            <h4 className="text-sm font-medium text-[#2DA771]">Form</h4>
+      <section className="node-box relative">
+        <div className="node-top-box relative">
+          <div className="node-name-text-description text-center mb-3">
+            <h4 className="text-sm font-medium text-[#2DA771]">
+              {" "}
+              {data?.label || ""}
+            </h4>
+
             <textarea
               value={description}
               onChange={handleChange}
@@ -395,67 +444,99 @@ const Form = ({
             />
           </div>
 
-          <div className="text-image text-center relative">
-            <div className="absolute pointer-events-auto border border-[#2DA771] h-[20px] w-[20px] rounded-full flex justify-center items-center bg-white">
-              <button
-                onClick={handleDeleteNode}
-                className="text-[#000] p-0 m-0 leading-none"
-              >
-                ×
-              </button>
+          <div className="node-image-action-box text-center relative">
+            <div className="node-image">
+              <img
+                src="/assets/node_icon/node-bg.svg"
+                alt="background icon"
+                className="w-[140px] mx-auto"
+              />
+
+              {data?.icon && (
+                <img
+                  src={data.icon}
+                  alt={data.label}
+                  className="w-[40px] mx-auto absolute top-[50px] left-0 right-0"
+                />
+              )}
             </div>
-            <img
-              src="/assets/node_icon/node-bg.svg"
-              alt="form node image"
-              className="w-[140px] mx-auto"
-            />
 
-            <img
-              src="/assets/node_icon/form-single.svg"
-              alt="foreground icon"
-              className="w-[40px] mx-auto absolute top-[35%] left-0 right-0"
-            />
+            <div className="node-delete-modal-box absolute left-0 rigt-0 top-[-8px] w-full mx-auto z-10">
+              <div className="action-modal-button">
+                <button
+                  className="cursor-pointer"
+                  onClick={handleOpenActionModal}
+                >
+                  <img
+                    src="/assets/node_icon/action-icon.svg"
+                    alt="action icon"
+                  />
+                </button>
+              </div>
 
-            <div className="absolute top-[65px] transform -translate-y-1/2 right-[-55px] flex items-center">
-              <div className="h-px border-t-2 border-dashed border-[#2DA771] w-14 mr-1" />
+              <div className="modal">
+                {isActionModalShow && (
+                  <div
+                    ref={dropdownRef}
+                    className="absolute right-[-126px] top-[0px] mt-2 w-48 bg-white rounded-[15px] border-[1px] border-[#E8E8E8] shadow-2xl z-50"
+                  >
+                    <ul className="py-2">
+                      <li className="px-4 py-2 cursor-pointer">
+                        <button
+                          onClick={handleOpenDeleteConfimationModal}
+                          className="delete-button flex items-center gap-2 text-[15px] text-[#212833] font-medium w-full cursor-pointer"
+                        >
+                          <img
+                            src="/assets/node_icon/trash.svg"
+                            alt="dots icon"
+                          />
+                          Delete
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            <div className="node-edge absolute top-1/2 transform -translate-y-1/2 right-[-60px] flex items-center">
+              <div className="h-px border-t-2 border-dashed border-[#2DA771] w-[65px] mr-1" />
               <Handle
+                id={`${id}-source`}
                 type="source"
                 position={Position.Right}
-                className="w-6 h-6 bg-white border-2 border-[#2DA771] rounded-full flex items-center justify-center text-[#2DA771] text-lg font-bold transform translate-x-1/2 -translate-y-1/2 p-0 m-0 leading-none"
+                className="w-5 h-5 bg-white border-2 border-[#2DA771] rounded-full flex items-center justify-center text-[#2DA771] text-lg font-bold transform translate-x-1/2 -translate-y-1/2 p-0 m-0 leading-none"
                 onConnect={params => console.log("handle onConnect", params)}
                 isConnectable={isConnectable}
               >
-                <img
-                  src="/assets/node_icon/plus-icon.svg"
-                  alt="plus icon"
-                  className="w-[17px]"
-                />
+                +
               </Handle>
 
               <Handle
                 type="source"
                 position={Position.Left}
-                className="w-[10px] h-[10px] bg-[#2DA771] border-0"
+                className="w-[10px] h-[10px] bg-[#2DA771]"
                 isConnectable={false}
               />
             </div>
-          </div>
-          <div
-            className="toggle-button-box absolute right-0 left-0 mx-auto bottom-[-10px] z-10 cursor-pointer"
-            onClick={handleDropdownClick}
-          >
-            <img
-              src="/assets/node_icon/toggle-switch.svg"
-              alt="toggle switch icon"
-              className="w-[25px] mx-auto"
-              style={{ transform: isDropdownOpen ? "rotate(180deg)" : "" }}
-            />
+
+            <div
+              className="toggle-button-box absolute right-0 left-0 mx-auto bottom-[-10px] z-10 cursor-pointer"
+              onClick={handleDropdownClick}
+            >
+              <img
+                src="/assets/node_icon/toggle-switch.svg"
+                alt="toggle switch"
+                className="w-[25px] mx-auto"
+                style={{ transform: isDropdownOpen ? "rotate(180deg)" : "" }}
+              />
+            </div>
           </div>
         </div>
 
         {isDropdownOpen && (
-          <div className="long-text-form bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] absolute left-1/2 transform -translate-x-1/2">
-            <div className="long-text-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-2">
+          <div className="node-inner-wrapper bg-white p-4 border-2 border-[#2DA771] rounded-[20px] w-[400px] absolute left-1/2 transform -translate-x-1/2">
+            <div className="node-text-heading bg-[#FFE6FF] p-4 rounded-[16px] mb-2">
               <img
                 src="/assets/node_icon/form-single.svg"
                 alt="form icon"
@@ -536,13 +617,13 @@ const Form = ({
                                   handleInputChange={
                                     isEdit
                                       ? (key, type, value) =>
-                                        handleInputChange(
-                                          key,
-                                          type,
-                                          value,
-                                          subNode.nodeMasterId
-                                        )
-                                      : () => { }
+                                          handleInputChange(
+                                            key,
+                                            type,
+                                            value,
+                                            subNode.nodeMasterId
+                                          )
+                                      : () => {}
                                   }
                                 />
                               );
@@ -640,7 +721,15 @@ const Form = ({
             </div>
           </div>
         )}
-      </div>
+      </section>
+
+      <DeleteConfirmationModal
+        openDeleteConfirmationModal={openDeleteConfirmationModal}
+        onCloseDeleteConfirmationModal={() =>
+          handleCloseDeleteConfirmationModal()
+        }
+        onDeleteNode={handleDeleteNode}
+      />
     </div>
   );
 };
