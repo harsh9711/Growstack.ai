@@ -53,6 +53,9 @@ export default function Dashboard() {
       const response = await CustomAxiosInstance().get(
         `/workflow?isPrebuilt=true`
       );
+      //   const response = await instance.get(
+    //     `/workflow?isPrebuilt=true`
+    //   );
       setPreBuiltTemplates(response.data);
     } catch (error) {
       console.error("Error fetching pre-built templates:", error);
@@ -108,6 +111,9 @@ export default function Dashboard() {
       const response = await CustomAxiosInstance().get(
         `/workflow/search?keyword=${queryParams}`
       );
+    //   const response = await instance.get(
+    //     `/workflow/search?keyword=${queryParams}`
+    //   );
       setPreBuiltTemplates(response.data);
     } catch (error) {
       console.error("Error fetching search results:", error);

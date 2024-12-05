@@ -45,6 +45,9 @@ const TimeLineTable = ({
       const getHistory = await CustomAxiosInstance().get(
         `workflow/${workflow_id}/history`
       );
+      // const getHistory = await instance.get(
+      //   `workflow/${workflow_id}/history`
+      // );
       // const getHistory = await axios.get(
       //   `/workflows/${workflow_id}/history`
       // );
@@ -57,6 +60,10 @@ const TimeLineTable = ({
       const getSchedule = await CustomAxiosInstance().get(
         `/workflow/${workflow_id}/schedules`
       );
+      // const getSchedule = await instance.get(
+      //   `/workflow/${workflow_id}/schedules`
+      // );
+      
       setScheduleData(getSchedule?.data);
     } catch (err) {
       console.log(err);
@@ -83,6 +90,9 @@ const TimeLineTable = ({
       const workflowResponse = await CustomAxiosInstance().get(
         `/workflow/${workflow_id}`
       );
+      // const workflowResponse = await instance.get(
+      //   `/workflow/${workflow_id}`
+      // );
 
       setWorkFlowData({
         workflow_id: workflow_id,
