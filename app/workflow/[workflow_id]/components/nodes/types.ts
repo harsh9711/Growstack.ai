@@ -68,6 +68,10 @@ export type ToolsNodeProps = Node<NodeDataState, "tools">;
 
 export type GmailNodeProps = Node<NodeDataState, "gmail">;
 
+export type LinkedInNodeProps = Node<NodeDataState, "linkedin">;
+
+
+
 export type AppNode =
   | BuiltInNode
   | OpenAiNodeProps
@@ -91,4 +95,6 @@ export type AppNode =
   | GeneralInputNodeProps
   | GeneralJoinerNodeProps
   | ToolsNodeProps
-  | GmailNodeProps;
+  | GmailNodeProps
+  | LinkedInNodeProps
+  ;

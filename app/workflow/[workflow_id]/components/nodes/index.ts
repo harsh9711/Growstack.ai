@@ -23,6 +23,7 @@ import GeneralInputNodes from "./GeneralInputNodes";
 import GeneralJoinerNodes from "./GeneralJoinerNodes";
 import ToolsNode from "./ToolsNodes";
 import GmailNode from "./integrations/GmailNodes";
+import LinkedinNode from "./integrations/LinkedInNode";
 
 export const initialNodes: AppNode[] = [
   {
@@ -63,4 +64,5 @@ export const nodeTypes = {
   form: Form,
   llms: LlmNodes,
   gmail: GmailNode,
+  linkedin: LinkedinNode
 } satisfies NodeTypes;

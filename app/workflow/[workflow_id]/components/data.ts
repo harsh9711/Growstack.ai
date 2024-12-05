@@ -2851,6 +2851,36 @@ export const AllData: AllDataState[] = [
   },
 
   {
+    id: 662,
+    name: "Linkedin",
+    category: "integrations",
+    subCategory: "Team Communication",
+    image: {
+      src: "/assets/node_icon/linkedin-single.svg",
+      alt: "Slack",
+      width: 44,
+      height: 40,
+    },
+    node: {
+      id: Date.now().toString(),
+      type: "linkedin",
+      position: { x: 0, y: 0 },
+      data: {
+        nodeMasterId: "",
+        label: "growstack-llm",
+        inputs: [
+          {
+            variable_type: "VIDEO",
+            variable_label: "url",
+            variable_value: "",
+            variable_values: [],
+          },
+        ],
+      },
+    },
+  },
+
+  {
     id: 64,
     name: "Text to image",
     description:
