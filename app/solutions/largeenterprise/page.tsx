@@ -60,7 +60,7 @@ const Home = () => {
 
                       <Link href="/demo" className="no-underline">
                         <button className="border border-[#D9D9D9] flex items-center gap-2 text-black hover:font-bold font-medium py-4 px-7 rounded-xl shadow-lg shadow-[#00000025]">
-                          Get demo <ArrowRight className="text-black" />
+                          Get a demo <ArrowRight className="text-black" />
                         </button>
                       </Link>
                     </div>

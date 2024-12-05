@@ -62,7 +62,7 @@ const HeroSection = () => {
                 <Link href="/demo" className="no-underline">
                   {" "}
                   <button className=" font-medium flex items-center gap-2 text-black 2xl:py-4 2xl:px-7 border border-black  rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
-                    Get demo
+                    Get a demo
                     <ArrowRight className="text-black" />
                   </button>
                 </Link>

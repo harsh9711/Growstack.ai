@@ -16,7 +16,7 @@ const Demo = () => {
         </p>
         <Link href="/demo" className="no-underline">
           <button className="bg-white font-bold flex items-center gap-2 text-[#034737] 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
-            Get demo <ArrowRight />
+            Get a demo <ArrowRight />
           </button>
         </Link>
       </div>

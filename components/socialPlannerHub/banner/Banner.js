@@ -38,7 +38,7 @@ function Banner() {
                   </Link>
                   <Link href="/demo" className="no-underline">
                     {" "}
-                    Get demo{" "}
+                    Get a demo{" "}
                     <svg
                       width="21"
                       height="16"
