@@ -37,7 +37,7 @@ import { convertToUnderscore } from "@/utils/helper";
 import { resolveWorkflowNodes } from "@/utils/dataResolver";
 import { SnackbarProvider } from "./components/snackbar/SnackbarContext";
 
-interface DragEvent extends React.DragEvent<HTMLDivElement> {}
+interface DragEvent extends React.DragEvent<HTMLDivElement> { }
 interface PageProps {
   params: {
     workflow_id: string;
@@ -52,7 +52,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
   const dispatch = useAppDispatch();
   const { screenToFlowPosition } = useReactFlow();
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
-  const { nodeData } = useAppSelector(state => state.nodes);
+  const { nodeData, isAddNodeLoading } = useAppSelector(state => state.nodes);
   const { workFlowData } = useAppSelector(state => state.workflows);
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -344,6 +344,16 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
           workflow_id={workflow_id}
           onViewDetails={handleViewDetails}
         />
+      )}
+      {isAddNodeLoading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="relative w-16 h-16">
+            {/* Outer ring */}
+            <div className="absolute inset-0 border-4 border-t-4 border-gray-300 rounded-full"></div>
+            {/* Inner ring with fill color */}
+            <div className="absolute inset-0 border-4 border-t-4 border-t-[#2da771] border-transparent rounded-full animate-spin"></div>
+          </div>
+        </div>
       )}
     </div>
   );
