@@ -77,6 +77,7 @@ const Run: React.FC<Props> = ({
   const [IsInputParameterOpen, setIsInputParameterOpen] = useState(true);
   const [executionId, setExecutionId] = useState(initialExecutionId || "");
   const [runSummaryData, setRunSummaryData] = useState<any>([]);
+  const [workflowStatsData, setWorkflowStatsData] = useState<any>([]);
 
   useEffect(() => {
     if (workflowId) {
@@ -300,6 +301,22 @@ const Run: React.FC<Props> = ({
     setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
   };
 
+  const getWorkflowStats = async () => {
+    try {
+      const response = await CustomAxiosInstance().get(
+        `/workflow/${workflowId}/stats`
+      );
+      // const response = await instance.get(`/workflows/${workflowId}/stats`);
+      setWorkflowStatsData(response?.data);
+    } catch (error) {
+      console.error("Error fetching workflow stats data", error);
+    }
+  };
+
+  useEffect(() => {
+    getWorkflowStats();
+  }, [workflowId]);
+
   useEffect(() => {
     if (workflowId) {
       fetchWorkflowData(workflowId)
@@ -331,12 +348,13 @@ const Run: React.FC<Props> = ({
     setIsInputParameterOpen(!IsInputParameterOpen);
   };
 
-  console.log("workflowData", workFlowData);
-
   return (
     <div className="px-8 pb-8">
       <div>
-        <WorkFlowHeader workFlowData={workFlowData} />
+        <WorkFlowHeader
+          workFlowData={workFlowData}
+          workflowStatsData={workflowStatsData}
+        />
         <Motion
           transition={{ duration: 0.5 }}
           variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
@@ -344,9 +362,7 @@ const Run: React.FC<Props> = ({
           <div className="flex h-screen mt-5 gap-6">
             <div className="w-2/5">
               <div
-                className={`border-l-4 border-[#F1B917] rounded-2xl w-[50%] flex flex-col gap-6 p-4 ${
-                  IsInputParameterOpen ? "max-h-screen" : "max-h-[80px]"
-                } overflow-hidden transition-all w-full bg-white rounded-lg shadow-md duration-500 ease-in-out`}
+                className={`border-l-4 border-[#F1B917] rounded-2xl w-full flex flex-col gap-6 p-4  max-h-[380px] overflow-y-scroll transition-all bg-white shadow-md duration-500 ease-in-out custom-scrollbar`}
               >
                 <div className="flex flex-row justify-between items-center gap-2">
                   <h2 className="font-semibold text-lg">Input Parameters</h2>
@@ -499,9 +515,10 @@ const Run: React.FC<Props> = ({
                   )}
                 </div>
               </div>
-              {approvalsData?.approvalDetails && approvalsData?.approvalDetails?.length > 0 &&
-                <ApprovalsAccordion approvalsData={approvalsData} />
-              }
+              {approvalsData?.approvalDetails &&
+                approvalsData?.approvalDetails?.length > 0 && (
+                  <ApprovalsAccordion approvalsData={approvalsData} />
+                )}
             </div>
             <div className="w-3/5">
               {executionId?.length > 0 ? (
