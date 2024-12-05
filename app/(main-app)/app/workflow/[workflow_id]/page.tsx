@@ -352,6 +352,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
         <TimeLineTable
           workflow_id={workflow_id}
           onViewDetails={handleViewDetails}
+          workflowName={workFlowData.name}
         />
       )}
       {isAddNodeLoading && (

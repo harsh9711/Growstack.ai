@@ -9,7 +9,7 @@ import { Clock, ChevronDown, ChevronUp, Info } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useSearchParams } from "next/navigation";
-import FileUpload from "../FileUpload";
+import FileUpload from "./FileUploadV2";
 import { Switch } from "@/components/ui/switch";
 import { WorkflowInputFieldType } from "@/types/enums";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -72,6 +72,8 @@ const Run: React.FC<Props> = ({
     workflow_id: "",
     description: "",
   });
+  const [approvalsData, setApprovalsData] = useState<any>({});
+  const [approveOutputDataId, setApproveOutputDataId] = useState("");
   const [IsInputParameterOpen, setIsInputParameterOpen] = useState(true);
   const [executionId, setExecutionId] = useState(initialExecutionId || "");
   const [runSummaryData, setRunSummaryData] = useState<any>([]);
@@ -119,6 +121,8 @@ const Run: React.FC<Props> = ({
             variableName: parameters.variableName || "",
             type: node?.nodeMasterId?.inputType,
             list_values: parameters?.options || [],
+            required: parameters?.required,
+            file_type: parameters?.fileType,
             // list_values: parameters?.options?.map((opt: any) => opt.label) || [],
 
             // list_values: (() => {
@@ -155,7 +159,7 @@ const Run: React.FC<Props> = ({
     setIsLoading(true);
     try {
       const response = await CustomAxiosInstance().post(
-        `workflow/${workflowId}/run`,
+        `/workflow/${workflowId}/run`,
         updatedWorkflowData
       );
       // const response = await instance.post(
@@ -184,19 +188,42 @@ const Run: React.FC<Props> = ({
           const nodeId = nodeExecution?.nodeId;
           const variableName = nodeExecution?.parameters?.variableName;
           const nodeMasterId = nodeId?._id;
+          const nodeExecutionId = nodeExecution?._id;
           const value =
             getWorkFlowExecData?.data?.variables[variableName] || "";
+          const approvalStatus = nodeExecution?.approvalStatus;
+          const approvalRequired = nodeExecution?.parameters?.approvalRequired;
 
           return {
             nodeMasterId: nodeMasterId,
             value: value,
             title: variableName,
+            approvalStatus: approvalStatus,
+            approvalRequired: approvalRequired,
+            nodeExecutionId: nodeExecutionId,
+          };
+        }
+      );
+
+      const approvals = getWorkFlowExecData?.data?.nodeExecutions.map(
+        (item: any) => {
+          const name = item?.nodeId?.name;
+          const description = item?.nodeId?.description;
+          const approvalRequired = item?.parameters?.approvalRequired;
+          return {
+            name: name,
+            description: description,
+            approvalRequired: approvalRequired,
           };
         }
       );
       setOutputDetailsData({
         status: getWorkFlowExecData?.data?.status,
         outputDetails: outputDetails,
+      });
+      setApprovalsData({
+        status: getWorkFlowExecData?.data?.status,
+        approvalDetails: approvals,
       });
       setRunSummaryData(getWorkFlowExecData?.data);
 
@@ -208,7 +235,7 @@ const Run: React.FC<Props> = ({
       console.error("Error fetching workflow execution data", error);
     }
     return false;
-  }, [executionId, workflowId]);
+  }, [executionId, workflowId, approveOutputDataId, approvalsData]);
 
   useEffect(() => {
     if (executionId?.length > 0) {
@@ -360,7 +387,7 @@ const Run: React.FC<Props> = ({
                                 case "file":
                                   return (
                                     <FileUpload
-                                      onFileUploaded={fileUrl =>
+                                      onFileUploaded={(fileUrl: any) =>
                                         handleFileUploaded(fileUrl, idx)
                                       }
                                       acceptedFileTypes={
@@ -414,6 +441,7 @@ const Run: React.FC<Props> = ({
                                       onChange={e =>
                                         handleChangeInput(e.target.value, idx)
                                       }
+                                      required={input.required}
                                     />
                                   );
                               }
@@ -428,6 +456,10 @@ const Run: React.FC<Props> = ({
                         className={clsx(
                           "bg-primary-light-shade-green flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 text-white"
                         )}
+                        disabled={workFlowData?.input_configs?.some(
+                          (data: any) =>
+                            data?.required && data?.default_value?.length === 0
+                        )}
                         onClick={handleRunWorkFlow}
                       >
                         {isLoading && <Spinner />}
@@ -438,6 +470,9 @@ const Run: React.FC<Props> = ({
                           "bg-transparent border-2 border-green-200 flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 "
                         )}
                         onClick={() => setIsSchedulerModalOpen(true)}
+                        disabled={workFlowData?.input_configs?.some(
+                          (data: any) => data?.default_value?.length === 0
+                        )}
                       >
                         <Clock size={20} color="#2DA771" />
                         <h2 className="text-primary-light-shade-green">
@@ -448,7 +483,7 @@ const Run: React.FC<Props> = ({
                   )}
                 </div>
               </div>
-              <ApprovalsAccordion />
+              <ApprovalsAccordion approvalsData={approvalsData} />
             </div>
             <div className="w-3/5">
               {executionId?.length > 0 ? (
@@ -458,6 +493,7 @@ const Run: React.FC<Props> = ({
                   onPollingWithNewId={(newExeId: string) =>
                     setExecutionId(newExeId)
                   }
+                  setApproveOutputDataId={setApproveOutputDataId}
                   workflowId={workflowId}
                 />
               ) : (
@@ -475,7 +511,13 @@ const Run: React.FC<Props> = ({
                 </div>
               )}
               {executionId?.length > 0 ? (
-                <RunSummary runSummaryData={runSummaryData} />
+                runSummaryData && runSummaryData.id ? (
+                  <RunSummary runSummaryData={runSummaryData} />
+                ) : (
+                  <div className="flex-1 flex flex-col gap-5 justify-center items-center min-h-[30vh]">
+                    <Spinner color="black" size={50} /> Loading...
+                  </div>
+                )
               ) : (
                 <div className="w-full border-l-4 border-[#B785FF] bg-white rounded-lg shadow-md space-y-6 p-6 mt-5">
                   {/* Header Section */}

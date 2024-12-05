@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useAppSelector } from "@/lib/hooks";
 import { useRouter } from "next/navigation";
 
-const TopRightPanel2nd = ({ setActiveTab }: any) => {
+const TopRightPanel2nd = ({ setActiveTab, activeTab }: any) => {
   const route = useRouter();
   const { workFlowData } = useAppSelector(state => state.workflows);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -37,7 +37,7 @@ const TopRightPanel2nd = ({ setActiveTab }: any) => {
       {dummyData3.map((item, index) => (
         <button
           key={index.toString()}
-          className={`flex justify-center items-center m-2 cursor-pointer px-2.5 py-1.5 rounded-md text-base font-normal ${activeIndex === index
+          className={`flex justify-center items-center m-2 cursor-pointer px-2.5 py-1.5 rounded-md text-base font-normal ${activeTab === index
             ? "text-white bg-[#2DA771]"
             : "text-black bg-transparent"
             } shadow-lg`}
