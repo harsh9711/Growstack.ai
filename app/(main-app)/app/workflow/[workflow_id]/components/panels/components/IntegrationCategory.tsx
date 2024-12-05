@@ -20,7 +20,7 @@ const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
       (item.type === "gmail" || item.type === "linkedin")
   );
 
-  console.log("generalData", generalData);
+  // console.log("generalData", generalData);
 
   const modifiedNodes = generalData?.map(convertNodeData);
 
