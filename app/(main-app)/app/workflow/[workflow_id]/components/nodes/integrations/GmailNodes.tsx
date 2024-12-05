@@ -283,7 +283,7 @@ const GmailNode = memo(
         setConnectionLoading(true);
         const result = await authenticateUser("gmail");
         setConnectedEmail(result);
-        setIsSignedUp(true);
+          setIsSignedUp(true);
       } catch (error) {
         console.log("---error---", error);
       } finally {
@@ -502,42 +502,45 @@ const GmailNode = memo(
                   </div>
                 </div> */}
 
-                <hr className="w-full mt-5 mb-5 border-[#EBEBEB] border-t-2" />
 
                 <div className="action-box">
-                  <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
-                    Actions
-                  </h3>
+
 
                   {!activeAction ? (
-                    <div className="action-data-box">
-                      {ActionData.map((value, index) => {
-                        return (
-                          <div
-                            className="action-info flex items-center gap-4 mb-5 cursor-pointer"
-                            key={index}
-                            onClick={() => handleActiveAction(value.nodeType)}
-                          >
-                            <div className="email-icon w-[50px] h-[50px] bg-[#FCE1E4] flex items-center justify-center rounded-full">
-                              <img
-                                src="/assets/node_icon/gmail-single.svg"
-                                alt="email icon"
-                                className="w-[25px]"
-                              />
-                            </div>
+                    <>
+                      <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
+                        Actions
+                      </h3>
+                      <div className="action-data-box">
+                        {ActionData.map((value, index) => {
+                          return (
+                            <div
+                              className="action-info flex items-center gap-4 mb-5 cursor-pointer"
+                              key={index}
+                              onClick={() => handleActiveAction(value.nodeType)}
+                            >
+                              <div className="email-icon w-[50px] h-[50px] bg-[#FCE1E4] flex items-center justify-center rounded-full">
+                                <img
+                                  src="/assets/node_icon/gmail-single.svg"
+                                  alt="email icon"
+                                  className="w-[25px]"
+                                />
+                              </div>
 
-                            <div className="content-box w-[80%]">
-                              <h3 className="text-[#14171B] text-[14px] ">
-                                {value.title}
-                              </h3>
-                              <p className="text-[12px] text-[#5A5963]">
-                                {value.info}
-                              </p>
+                              <div className="content-box w-[80%]">
+                                <h3 className="text-[#14171B] text-[14px] ">
+                                  {value.title}
+                                </h3>
+                                <p className="text-[12px] text-[#5A5963]">
+                                  {value.info}
+                                </p>
+                              </div>
                             </div>
-                          </div>
-                        );
-                      })}
-                    </div>
+                          );
+                        })}
+                      </div>
+
+                    </>
                   ) : (
                     <>
                       {node?.data?.parameters &&
