@@ -110,6 +110,10 @@ function WorkflowSchedulerModal({
           `/workflow/${workFlowData?.workflow_id}/schedule/${workFlowData?._id}`,
           payload
         );
+        // const response = await instance.patch(
+        //   `/workflow/${workFlowData?.workflow_id}/schedule/${workFlowData?._id}`,
+        //   payload
+        // );
         toast.success("Schedule updated successfully");
         window.dispatchEvent(new Event("schedule-updated"));
         onHide(false);
@@ -119,6 +123,10 @@ function WorkflowSchedulerModal({
           `/workflow/${workFlowData?.workflow_id}/schedule`,
           payload
         );
+        // const response = await instance.post(
+        //   `/workflow/${workFlowData?.workflow_id}/schedule`,
+        //   payload
+        // );
         toast.success("Schedule updated successfully");
         window.dispatchEvent(new Event("schedule-updated"));
         onHide(false);

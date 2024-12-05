@@ -1,6 +1,10 @@
+import { RootState } from "@/lib/store";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 const ApprovalsAccordion = ({approvalsData}:any) => {
+  const { user } = useSelector((rootState: RootState) => rootState.auth);
+
   const [isOpen, setIsOpen] = useState(true);
 
   const toggleAccordion = () => {
@@ -42,24 +46,26 @@ const ApprovalsAccordion = ({approvalsData}:any) => {
             </thead>
             <tbody className="divide-y divide-gray-200 max-h-[400px] overflow-y-auto">
               {/* Table Rows */}
-              {approvalsData?.approvalDetails?.map((item:any, idx:any) => (
-  item?.approvalRequired === "true" && (
+              {approvalsData?.approvalDetails?.map((item:any, idx:any) => 
+              {
+              return(
+                item?.approvalRequired === "true" && (
                 <tr key={idx}>
                   <td className="p-3 text-sm text-gray-700">{item.name} / {item.description}</td>
-                  <td className="p-3 text-sm text-gray-700">janedoe@gmail.com</td>
+                  <td className="p-3 text-sm text-gray-700">{user?.email}</td>
                   <td className="p-3 text-sm">
-                    {approvalsData?.status === "Approved" ? (
+                    {item?.approvalStatus === "approved" ? (
                       <span className="px-3 py-1 text-sm rounded-full bg-green-100 text-green-600">
-                        {approvalsData?.status}
+                        {item?.approvalStatus}
                       </span>
                     ) : (
                       <span className="px-3 py-1 text-sm rounded-full bg-orange-100 text-orange-600">
-                        {approvalsData?.status}
+                        {item?.approvalStatus}
                       </span>
                     )}
                   </td>
                 </tr>)
-              ))}
+              )})}
             </tbody>
           </table>
         </div>

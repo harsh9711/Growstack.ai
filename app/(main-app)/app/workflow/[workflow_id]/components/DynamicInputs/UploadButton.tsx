@@ -34,6 +34,13 @@ const UploadButton: React.FC<DynamicInputProps> = ({
                     "Content-Type": "multipart/form-data",
                 },
             });
+            
+            // const response = await instance.post("workflow/upload", formData, {
+            //     headers: {
+            //         "Content-Type": "multipart/form-data",
+            //     },
+            // });
+
             console.log("File uploaded successfully:", response.data);
             // handleInputChange(inputKey, response.data, "");
         } catch (error) {

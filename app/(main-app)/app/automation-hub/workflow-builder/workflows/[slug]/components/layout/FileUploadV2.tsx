@@ -85,6 +85,16 @@ const FileUpload: React.FC<any> = ({
           },
         }
       );
+      // const response = await instance.post(
+      //   `/workflow/upload`,
+      //   formData,
+      //   {
+      //     headers: {
+      //       "Content-Type": "multipart/form-data",
+      //     },
+      //   }
+      // );
+      
       const fileUrl = response?.data?.getS3URL;
       setUploadedFileUrl(fileUrl);
       onFileUploaded(fileUrl, fileExtension);
