@@ -27,7 +27,9 @@ export const authenticateUser = async (integrationType: string) => {
       });
 
       if (result.isConfirmed) {
-        await paragon.connect(integrationType, {});
+      const paragonResult =   await paragon.connect(integrationType, {});
+
+      console.log('-----paragonResult-----', paragonResult)
       }
     } else {
       return user?.integrations[integrationType];

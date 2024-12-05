@@ -1,6 +1,6 @@
 import React, { memo, useState, useEffect, useRef, useCallback } from "react";
 import { Handle, Position, type NodeProps, useReactFlow } from "@xyflow/react";
-import { GeneralInputNodeProps } from "../types";
+import { GeneralInputNodeProps, GmailNodeProps } from "../types";
 import DynamicInput from "../../DynamicInputs";
 import { extractParameterValues } from "@/utils/dataResolver";
 import { getVariableName, isSpecialType } from "@/utils/helper";
@@ -53,7 +53,7 @@ const GmailNode = memo(
     id,
     positionAbsoluteX,
     positionAbsoluteY,
-  }: NodeProps<GeneralInputNodeProps>) => {
+  }: NodeProps<GmailNodeProps>) => {
     // const { parameters, nodeMasterId } = data;
 
     const { success } = useSnackbar();
@@ -219,8 +219,8 @@ const GmailNode = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-              k => node.data.parameters?.[k] === param
-            )
+                k => node.data.parameters?.[k] === param
+              )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -280,8 +280,10 @@ const GmailNode = memo(
 
         setConnectionLoading(true);
         const result = await authenticateUser("gmail");
-        setConnectedEmail(result);
-        setIsSignedUp(true);
+        if (result && result.credentialStatus === "VALID") {
+          setConnectedEmail(result);
+          setIsSignedUp(true);
+        }
       } catch (error) {
         console.log("---error---", error);
       } finally {
@@ -416,11 +418,11 @@ const GmailNode = memo(
 
                 {isSignedUp ? (
                   <div className="user-connected-info relative">
-                    <span className="connected-text relative bg-[#2DA771] p-2 rounded-l-[20px]  w-[100px] inline-block translate-x-[45%] text-[12px] font-medium text-white">
+                    <span className="connected-text absolute top-[-17px] right-[-20px] bg-[#2DA771] p-2 rounded-l-[20px]  w-[100px] inline-block  text-[12px] font-medium text-white">
                       Connected
                     </span>
 
-                    <div className="user-mail relative mt-1">
+                    <div className="user-mail relative mt-1 translate-y-[20px]">
                       <div className="online-status-div absolute w-[6px] h-[6px] bg-[#2DA771] rounded-full left-[-14px] top-[5px]"></div>
                       <p className="text-[11px] text-[#5A5963]">
                         {connectedEmail?.providerId || "NO EMAIL"}
@@ -461,10 +463,11 @@ const GmailNode = memo(
               </div>
 
               <div
-                className={`node-content-wrapper relative ${!isSignedUp
-                  ? "before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-white before:opacity-[45%]"
-                  : ""
-                  }`}
+                className={`node-content-wrapper relative ${
+                  !isSignedUp
+                    ? "before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-white before:opacity-[45%]"
+                    : ""
+                }`}
               >
                 {/* <div className="trigger-box">
                   <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
@@ -550,7 +553,7 @@ const GmailNode = memo(
                                 inputKey={key}
                                 param={param}
                                 handleInputChange={
-                                  isEdit ? handleInputChange : () => { }
+                                  isEdit ? handleInputChange : () => {}
                                 }
                                 variableNames={variableNames}
                                 focusedInputKey={focusedInputKey}
