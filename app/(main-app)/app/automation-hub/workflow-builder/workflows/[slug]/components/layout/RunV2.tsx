@@ -196,12 +196,8 @@ const Run: React.FC<Props> = ({
       // const getWorkFlowExecData = await instance.get(
       //   `/workflows/${workflowId}/status/${executionId}`
       // );
-
+      setRunSummaryData(getWorkFlowExecData?.data);
       const status = getWorkFlowExecData?.data?.status;
-      if (status === "completed" || status === "awaiting-approval") {
-        return true;
-      }
-      
       const outputDetails = getWorkFlowExecData?.data?.nodeExecutions.map(
         (nodeExecution: any) => {
           const nodeId = nodeExecution?.nodeId;
@@ -239,14 +235,16 @@ const Run: React.FC<Props> = ({
         }
       );
       setOutputDetailsData({
-        status: getWorkFlowExecData?.data?.status,
+        status: status,
         outputDetails: outputDetails,
       });
       setApprovalsData({
-        status: getWorkFlowExecData?.data?.status,
+        status: status,
         approvalDetails: approvals,
       });
-      setRunSummaryData(getWorkFlowExecData?.data);
+      if (status === "completed" || status === "awaiting-approval") {
+        return true;
+      }
     } catch (error) {
       console.error("Error fetching workflow execution data", error);
     }
