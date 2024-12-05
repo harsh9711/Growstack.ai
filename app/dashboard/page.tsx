@@ -50,10 +50,9 @@ export default function Dashboard() {
   const getPreBuiltTemplates = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(
-        `http://localhost:5000/workflow?isPrebuilt=true`
+      const response = await CustomAxiosInstance().get(
+        `/workflow?isPrebuilt=true`
       );
-      console.log("response", response.data);
       setPreBuiltTemplates(response.data);
     } catch (error) {
       console.error("Error fetching pre-built templates:", error);
@@ -106,8 +105,8 @@ export default function Dashboard() {
       setLoading(true);
       const queryParams =
         activeTab === "templates" ? `${query}&isPrebuilt=true` : `${query}`;
-      const response = await axios.get(
-        `http://localhost:5000/workflow/search?keyword=${queryParams}`
+      const response = await CustomAxiosInstance().get(
+        `/workflow/search?keyword=${queryParams}`
       );
       setPreBuiltTemplates(response.data);
     } catch (error) {
@@ -223,21 +222,21 @@ export default function Dashboard() {
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {preBuiltTemplates?.length > 0
                   ? preBuiltTemplates.map(template => (
-                    <Card
-                      key={template._id}
-                      title={template.name}
-                      description={template.description}
-                      imageSrc={template?.image}
-                      workflow_id={template._id}
-                      activeTab={activeTab}
-                      setLoading={setLoading}
-                      refetchWorkflow={getPreBuiltTemplates}
-                    />
-                  ))
+                      <Card
+                        key={template._id}
+                        title={template.name}
+                        description={template.description}
+                        imageSrc={template?.image}
+                        workflow_id={template._id}
+                        activeTab={activeTab}
+                        setLoading={setLoading}
+                        refetchWorkflow={getPreBuiltTemplates}
+                      />
+                    ))
                   : loading &&
-                  Array(5)
-                    .fill(null)
-                    .map((_, index) => <WorkflowLoader key={index} />)}
+                    Array(5)
+                      .fill(null)
+                      .map((_, index) => <WorkflowLoader key={index} />)}
               </div>
             </div>
             {loading && (
