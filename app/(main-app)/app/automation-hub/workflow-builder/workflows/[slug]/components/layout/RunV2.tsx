@@ -93,45 +93,58 @@ const Run: React.FC<Props> = ({
     setLoading(true);
     try {
       const response = await CustomAxiosInstance().get(`workflow/${id}`);
-      // const response = await instance.get(`/workflows/${id}`);
       const apiData = response.data;
 
       // Filter and map `nodes` to `input_configs`
-      const inputConfigs = apiData.nodes
+      const inputConfigs = apiData?.nodes
         .filter((node: any) => {
           const type = node?.nodeMasterId?.inputType;
+          const formType = node?.nodeMasterId?.type;
           return (
             type === "text" ||
             type === "textarea" ||
             type === "checkbox" ||
             type === "switch" ||
             type === "number" ||
-            type === "file"
+            type === "file" ||
+            formType === "form"
           );
         })
-        .map((node: any) => {
-          const parameters = node.parameters || {};
-          console.log(parameters, "checking the parameter of runv2");
-
-          return {
-            display_name: parameters.inputLabel || "Untitled Field",
-            description: parameters?.description || "",
-            placeholder: parameters?.placeholder || "",
-            default_value: parameters.defaultValue || "",
-            variableName: parameters.variableName || "",
-            type: node?.nodeMasterId?.inputType,
-            list_values: parameters?.options || [],
-            required: parameters?.required,
-            file_type: parameters?.fileType,
-            // list_values: parameters?.options?.map((opt: any) => opt.label) || [],
-
-            // list_values: (() => {
-            //   const values =
-            //     parameters?.options?.map((opt: any) => opt.label) || [];
-            //   console.log("checking the options value:", values);
-            //   return values;
-            // })(),
-          };
+        .flatMap((node: any) => {
+          console.log("node", node);
+          if (node?.type !== "form") {
+            // Handle non-form nodes
+            const parameters = node.parameters || {};
+            return {
+              display_name: parameters.inputLabel || "Untitled Field",
+              description: parameters?.description || "",
+              placeholder: parameters?.placeholder || "",
+              default_value: parameters.defaultValue || "",
+              variableName: parameters.variableName || "",
+              type: node?.nodeMasterId?.inputType,
+              list_values: parameters?.options || [],
+              required: parameters?.required,
+              file_type: parameters?.fileType,
+            };
+          } else {
+            // Handle form nodes with subNodes
+            return (
+              node?.subNodes?.map((data: any) => {
+                const formParameters = data.parameters || {};
+                return {
+                  display_name: formParameters.inputLabel || "Untitled Field",
+                  description: formParameters?.description || "",
+                  placeholder: formParameters?.placeholder || "",
+                  default_value: formParameters.defaultValue || "",
+                  variableName: formParameters.variableName || "",
+                  type: data?.nodeMasterId?.inputType, // Form nodes may have different input types
+                  list_values: formParameters?.options || [],
+                  required: formParameters?.required,
+                  file_type: formParameters?.fileType,
+                };
+              }) || []
+            ); // Return empty array if subNodes are undefined
+          }
         });
 
       setWorkFlowData({
@@ -179,10 +192,16 @@ const Run: React.FC<Props> = ({
       const getWorkFlowExecData = await CustomAxiosInstance().get(
         `workflow/${workflowId}/status/${executionId}`
       );
+
       // const getWorkFlowExecData = await instance.get(
       //   `/workflows/${workflowId}/status/${executionId}`
       // );
 
+      const status = getWorkFlowExecData?.data?.status;
+      if (status === "completed" || status === "awaiting-approval") {
+        return true;
+      }
+      
       const outputDetails = getWorkFlowExecData?.data?.nodeExecutions.map(
         (nodeExecution: any) => {
           const nodeId = nodeExecution?.nodeId;
@@ -210,10 +229,12 @@ const Run: React.FC<Props> = ({
           const name = item?.nodeId?.name;
           const description = item?.nodeId?.description;
           const approvalRequired = item?.parameters?.approvalRequired;
+          const approvalStatus = item?.approvalStatus;
           return {
             name: name,
             description: description,
             approvalRequired: approvalRequired,
+            approvalStatus: approvalStatus,
           };
         }
       );
@@ -226,11 +247,6 @@ const Run: React.FC<Props> = ({
         approvalDetails: approvals,
       });
       setRunSummaryData(getWorkFlowExecData?.data);
-
-      const status = getWorkFlowExecData?.data?.status;
-      if (status === "completed" || status === "awaiting-approval") {
-        return true;
-      }
     } catch (error) {
       console.error("Error fetching workflow execution data", error);
     }
@@ -317,6 +333,8 @@ const Run: React.FC<Props> = ({
     setIsInputParameterOpen(!IsInputParameterOpen);
   };
 
+  console.log("workflowData", workFlowData);
+
   return (
     <div className="px-8 pb-8">
       <div>
@@ -355,14 +373,14 @@ const Run: React.FC<Props> = ({
                         <div key={idx} className="relative group">
                           <div className="flex items-center mb-4 mt-4 gap-2">
                             <h2 className="font-medium">
-                              {input.display_name}
+                              {input?.display_name}
                             </h2>
 
                             {input?.description?.length > 0 && (
                               <div className="relative">
                                 <Info className="cursor-pointer" />
                                 <div className="absolute left-0 top-full mt-2 w-max p-2 text-sm text-white bg-gray-800 rounded-md shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-                                  {input.description}
+                                  {input?.description}
                                 </div>
                               </div>
                             )}
@@ -429,19 +447,19 @@ const Run: React.FC<Props> = ({
                                   return (
                                     <input
                                       type={
-                                        input.type === "number"
+                                        input?.type === "number"
                                           ? "number"
-                                          : input.type === "textarea"
+                                          : input?.type === "textarea"
                                             ? "textarea"
                                             : "text"
                                       }
-                                      placeholder={input.placeholder}
+                                      placeholder={input?.placeholder}
                                       className="w-full p-4 h-[46px] border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
-                                      value={input.default_value}
+                                      value={input?.default_value}
                                       onChange={e =>
                                         handleChangeInput(e.target.value, idx)
                                       }
-                                      required={input.required}
+                                      required={input?.required}
                                     />
                                   );
                               }
@@ -483,7 +501,9 @@ const Run: React.FC<Props> = ({
                   )}
                 </div>
               </div>
-              <ApprovalsAccordion approvalsData={approvalsData} />
+              {approvalsData?.approvalDetails && approvalsData?.approvalDetails?.length > 0 &&
+                <ApprovalsAccordion approvalsData={approvalsData} />
+              }
             </div>
             <div className="w-3/5">
               {executionId?.length > 0 ? (
