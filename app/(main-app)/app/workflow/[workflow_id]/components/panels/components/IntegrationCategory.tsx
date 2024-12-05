@@ -17,7 +17,7 @@ const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
   const generalData = masterNode?.filter(
     item =>
       item.category.toLocaleLowerCase() === "integration" &&
-      (item.type === "gmail" || item.type === "linkdien")
+      (item.type === "gmail" || item.type === "linkedin")
   );
 
   console.log("generalData", generalData);
