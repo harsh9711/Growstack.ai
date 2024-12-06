@@ -63,6 +63,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
 
   const handleViewDetails = (executionId: string) => {
     setSelectedExecutionId(executionId);
+    localStorage.setItem("workflowActiveTab", "1");
     setActiveTab(1);
     setFromTimeline(true);
   };
