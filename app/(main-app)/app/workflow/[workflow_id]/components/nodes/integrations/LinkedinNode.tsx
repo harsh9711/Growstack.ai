@@ -31,12 +31,6 @@ const ActionData = [
     info: "A simple post containing only text, typically used for announcements, updates, or commentary.",
     nodeType: "create_text_post",
   },
-
-  {
-    title: "Create Mixed Media Post",
-    info: "A combination of text, images, and/or URLs in a single post, allowing for versatile storytelling.",
-    nodeType: "create_mixed_media_post",
-  },
 ];
 
 const LinkedinNode = memo(
