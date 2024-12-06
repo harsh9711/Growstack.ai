@@ -52,7 +52,7 @@ interface Props {
   timeline?: boolean;
 }
 
-const Run: React.FC<Props> = ({
+const Run: React.FC<any> = ({
   workflowId,
   executionId: initialExecutionId,
   timeline,
