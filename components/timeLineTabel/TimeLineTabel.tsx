@@ -91,7 +91,7 @@ const TimeLineTable = ({
     try {
       // Fetch the workflow details to get input_configs
 
-      const workflowResponse = await instance.post(
+      const workflowResponse = await instance.get(
         `/workflow/${workflow_id}`
       );
       // const workflowResponse = await instance.get(
