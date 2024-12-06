@@ -6,13 +6,14 @@ import React, { useCallback, useEffect, useState } from "react";
 const TimeLineTable = ({
   workflow_id,
   onViewDetails,
+  workflowName,
 }: {
+  workflowName?: string;
   workflow_id: string;
   onViewDetails?: (executionId: string) => void;
 }) => {
   const [historyData, setHistoryData] = useState<any>([]);
   const [scheduleData, setScheduleData] = useState<any>([]);
-  console.log("scheduleData", scheduleData);
   const [activeTab, setActiveTab] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [workFlowData, setWorkFlowData] = useState<any>({
@@ -50,7 +51,7 @@ const TimeLineTable = ({
       //   `workflow/${workflow_id}/history`
       // );
       // const getHistory = await axios.get(
-      //   `/workflows/${workflow_id}/history`
+      //   `/workflow/${workflow_id}/history`
       // );
       setHistoryData(getHistory?.data);
     } catch { }
@@ -93,6 +94,9 @@ const TimeLineTable = ({
       const workflowResponse = await instance.post(
         `/workflow/${workflow_id}`
       );
+      // const workflowResponse = await instance.get(
+      //   `/workflow/${workflow_id}`
+      // );
 
       // const workflowResponse = await axios.get(
       //   `http://localhost:5000/workflow/${workflow_id}`
@@ -211,7 +215,7 @@ const TimeLineTable = ({
                 >
                   <td className="p-3 text-black">{item?._id}</td>
                   <td className="p-3 text-black">
-                    {item?.name ?? "GrowStack"}
+                    {workflowName ?? "GrowStack"}
                   </td>
                   <td
                     className={`p-3 font-medium ${item?.status === "completed"
@@ -270,7 +274,7 @@ const TimeLineTable = ({
                     }`}
                 >
                   <td className="p-3 text-black">
-                    {item?.name ?? "GrowStack"}
+                    {workflowName ?? "GrowStack"}
                   </td>
                   <td
                     className={`py-2 font-medium bg-[#C4C4C429] text-black

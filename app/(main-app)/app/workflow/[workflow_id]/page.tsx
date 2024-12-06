@@ -24,12 +24,17 @@ import BottomCenterPanel from "./components/panels/BottomCenterPanel";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { getMasterNodes } from "@/lib/features/workflow/masterNode.slice";
 import {
+  clearWorkFlowData,
   getWorkFlowById,
   updateWorkFlowById,
 } from "@/lib/features/workflow/workflow.slice";
 import { useRouter } from "next/navigation";
 import ConnectionLine from "./components/edges/ConnectionLine";
-import { addNode, createNode } from "@/lib/features/workflow/node.slice";
+import {
+  addNode,
+  clearNodeData,
+  createNode,
+} from "@/lib/features/workflow/node.slice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import Run from "@/app/(main-app)/app/automation-hub/workflow-builder/workflows/[slug]/components/layout/RunV2";
 import TimeLineTable from "@/components/timeLineTabel/TimeLineTabel";
@@ -45,10 +50,6 @@ interface PageProps {
 }
 
 const Workflow = ({ workflow_id }: { workflow_id: string }) => {
-  // const route = useRouter();
-
-  // const nodesData = useAppSelector(state => state.nodes.nodes);
-
   const dispatch = useAppDispatch();
   const { screenToFlowPosition } = useReactFlow();
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
@@ -69,6 +70,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
   useEffect(() => {
     dispatch(getMasterNodes());
     getWorkFlowDetails();
+    return () => { };
   }, [dispatch, workflow_id]);
 
   const getWorkFlowDetails = async () => {
@@ -211,6 +213,13 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
         return;
       }
 
+      if (connectionState.fromHandle.type === connectionState.toHandle.type) {
+        console.log(
+          "Source and target handle types are the same, not adding edge"
+        );
+        return;
+      }
+
       const existingEdge = edges?.find(
         (edge: any) =>
           (edge.source === connectionState.fromNode.id &&
@@ -261,7 +270,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
         }}
       />
       {activeTab === 0 && (
-        <div className="reactflow-wrapper h-[calc(100vh-60px)] w-full">
+        <div className="reactflow-wrapper h-[calc(100vh-140px)] w-full">
           <ReactFlow
             nodes={nodes}
             nodeTypes={nodeTypes}
@@ -343,6 +352,7 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
         <TimeLineTable
           workflow_id={workflow_id}
           onViewDetails={handleViewDetails}
+          workflowName={workFlowData.name}
         />
       )}
       {isAddNodeLoading && (
@@ -360,40 +370,14 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
 };
 
 const WorkflowPage: React.FC<PageProps> = ({ params: { workflow_id } }) => {
-  console.log("workflow_id", workflow_id);
+  const dispatch = useAppDispatch();
 
-  // const dispatch = useAppDispatch();
-  // const [activeTab, setActiveTab] = useState(0);
-
-  // const { setNodes } = useReactFlow();
-
-  // useEffect(() => {
-  //     getWorkFlowDetails();
-  // }, [workflow_id]);
-
-  // const getWorkFlowDetails = async () => {
-  //     if (!workflow_id) return;
-  //     try {
-  //         const resultAction = await dispatch(getWorkFlowById(workflow_id));
-
-  //         const result = unwrapResult(resultAction);
-
-  //         const updatedNodes = resolveWorkflowNodes(result.nodes);
-
-  //         //@ts-ignore
-  //         setNodes(updatedNodes);
-  //         //@ts-ignore
-  //         setEdges(result.edges || []);
-  //         //@ts-ignore
-  //         dispatch(addNode(updatedNodes));
-
-  //         console.log("Result--------------->", JSON.stringify(result, null, 2));
-
-  //     } catch (error) {
-  //         console.log("error", error);
-  //     }
-  //
-  // };
+  useEffect(() => {
+    return () => {
+      dispatch(clearNodeData());
+      dispatch(clearWorkFlowData());
+    };
+  }, [workflow_id]);
 
   return (
     <div className="h-[calc(100vh-60px)] w-full">

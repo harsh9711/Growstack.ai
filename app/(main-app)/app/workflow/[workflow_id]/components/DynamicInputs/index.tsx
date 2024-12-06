@@ -12,6 +12,7 @@ import MultiSelectDropdown from "./MultiSelectDropdown";
 import OutputField from "./OutputField";
 import SmallCardFiled from "./SmallCard";
 import AdvanceDropDown from "./AdvanceDropDown";
+import VariableInputFields from "./VariableInputFiels";
 
 const DynamicInput: React.FC<DynamicInputProps> = ({
     param,
@@ -26,14 +27,26 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
         case "text_placeholder":
         case "text_default_value":
         case "text_description":
-        case "text_variable_name":
-        case "text_variable_name2":
+        // case "text_variable_name":
+        // case "text_variable_name2":
         case "text_topic":
         case "text_overview":
         case "number":
         case "text":
             return (
                 <InputFields
+                    param={param}
+                    inputKey={inputKey}
+                    handleInputChange={handleInputChange}
+                    variableNames={variableNames}
+                    focusedInputKey={focusedInputKey}
+                    setFocusedInputKey={setFocusedInputKey}
+                />
+            );
+        case "text_variable_name":
+        case "text_variable_name2":
+            return (
+                <VariableInputFields
                     param={param}
                     inputKey={inputKey}
                     handleInputChange={handleInputChange}
@@ -149,7 +162,6 @@ const DynamicInput: React.FC<DynamicInputProps> = ({
                 />
             );
         default:
-
             return null;
     }
 };

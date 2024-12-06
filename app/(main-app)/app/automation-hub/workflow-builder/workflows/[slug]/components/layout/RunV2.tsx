@@ -9,7 +9,7 @@ import { Clock, ChevronDown, ChevronUp, Info } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useSearchParams } from "next/navigation";
-import FileUpload from "../FileUpload";
+import FileUpload from "./FileUploadV2";
 import { Switch } from "@/components/ui/switch";
 import { WorkflowInputFieldType } from "@/types/enums";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -52,7 +52,7 @@ interface Props {
   timeline?: boolean;
 }
 
-const Run: React.FC<Props> = ({
+const Run: React.FC<any> = ({
   workflowId,
   executionId: initialExecutionId,
   timeline,
@@ -72,9 +72,13 @@ const Run: React.FC<Props> = ({
     workflow_id: "",
     description: "",
   });
+  const [isHovered, setIsHovered] = useState(false);
+  const [approvalsData, setApprovalsData] = useState<any>({});
+  const [approveOutputDataId, setApproveOutputDataId] = useState("");
   const [IsInputParameterOpen, setIsInputParameterOpen] = useState(true);
   const [executionId, setExecutionId] = useState(initialExecutionId || "");
   const [runSummaryData, setRunSummaryData] = useState<any>([]);
+  const [workflowStatsData, setWorkflowStatsData] = useState<any>([]);
 
   useEffect(() => {
     if (workflowId) {
@@ -95,39 +99,66 @@ const Run: React.FC<Props> = ({
       const apiData = response.data;
 
       // Filter and map `nodes` to `input_configs`
-      const inputConfigs = apiData.nodes
+      const inputConfigs = apiData?.nodes
         .filter((node: any) => {
           const type = node?.nodeMasterId?.inputType;
+          const formType = node?.nodeMasterId?.type;
           return (
             type === "text" ||
             type === "textarea" ||
             type === "checkbox" ||
             type === "switch" ||
             type === "number" ||
-            type === "file"
+            type === "file" ||
+            formType === "form"
           );
         })
-        .map((node: any) => {
-          const parameters = node.parameters || {};
-          console.log(parameters, "checking the parameter of runv2");
+        .flatMap((node: any) => {
+          if (node?.type !== "form") {
+            // Handle non-form nodes
+            const parameters = node?.parameters || {};
+            return {
+              display_name: parameters?.inputLabel || "Untitled Field",
+              description: parameters?.description || "",
+              placeholder: parameters?.placeholder || "",
+              default_value: parameters.defaultValue || "",
+              variableName: parameters?.variableName || "",
+              type: node?.nodeMasterId?.inputType,
+              list_values: parameters?.options || [],
+              required: parameters?.required,
+              file_type: parameters?.fileType,
+            };
+          } else {
+            // Handle form nodes with subNodes
+            return (
+              node?.subNodes?.map((data: any) => {
+                let inputType = "";
+                const getName = node?.nodeMasterId?.subNodes?.find(
+                  (subNode: any) => subNode?.nodeMasterId === data?.nodeMasterId
+                )?.name;
+                if (getName === "Short Text") inputType = "text";
+                else if (getName === "Long Text") inputType = "textarea";
+                else if (getName === "Boolean") inputType = "switch";
+                else if (getName === "Number") inputType = "number";
+                else if (getName === "File Upload") inputType = "file";
+                else if (getName === "CheckList") inputType = "checkbox";
+                else inputType = "text";
 
-          return {
-            display_name: parameters.inputLabel || "Untitled Field",
-            description: parameters?.description || "",
-            placeholder: parameters?.placeholder || "",
-            default_value: parameters.defaultValue || "",
-            variableName: parameters.variableName || "",
-            type: node?.nodeMasterId?.inputType,
-            list_values: parameters?.options || [],
-            // list_values: parameters?.options?.map((opt: any) => opt.label) || [],
-
-            // list_values: (() => {
-            //   const values =
-            //     parameters?.options?.map((opt: any) => opt.label) || [];
-            //   console.log("checking the options value:", values);
-            //   return values;
-            // })(),
-          };
+                const formParameters = data.parameters || {};
+                return {
+                  display_name: formParameters?.inputLabel || "Untitled Field",
+                  description: formParameters?.description || "",
+                  placeholder: formParameters?.placeholder || "",
+                  default_value: formParameters?.defaultValue || "",
+                  variableName: formParameters?.variableName || "",
+                  type: inputType,
+                  list_values: formParameters?.options || [],
+                  required: formParameters?.required,
+                  file_type: formParameters?.fileType,
+                };
+              }) || []
+            ); 
+          }
         });
 
       setWorkFlowData({
@@ -163,7 +194,7 @@ const Run: React.FC<Props> = ({
         updatedWorkflowData
       );
       // const response = await instance.post(
-      //   `/workflows/${workflowId}/run`,
+      //   `/workflow/${workflowId}/run`,
       //   updatedWorkflowData
       // );
       setExecutionId(response?.data?.executionId);
@@ -182,32 +213,56 @@ const Run: React.FC<Props> = ({
       const getWorkFlowExecData = await instance.get(
         `/workflow/${workflowId}/status/${executionId}`
       );
-      // const getWorkFlowExecData = await instance.get(
-      //   `/workflows/${workflowId}/status/${executionId}`
-      // );
 
+      // const getWorkFlowExecData = await instance.get(
+      //   `/workflow/${workflowId}/status/${executionId}`
+      // );
+      setRunSummaryData(getWorkFlowExecData?.data);
+      const status = getWorkFlowExecData?.data?.status;
       const outputDetails = getWorkFlowExecData?.data?.nodeExecutions.map(
         (nodeExecution: any) => {
           const nodeId = nodeExecution?.nodeId;
           const variableName = nodeExecution?.parameters?.variableName;
           const nodeMasterId = nodeId?._id;
+          const nodeExecutionId = nodeExecution?._id;
           const value =
             getWorkFlowExecData?.data?.variables[variableName] || "";
+          const approvalStatus = nodeExecution?.approvalStatus;
+          const approvalRequired = nodeExecution?.parameters?.approvalRequired;
 
           return {
             nodeMasterId: nodeMasterId,
             value: value,
             title: variableName,
+            approvalStatus: approvalStatus,
+            approvalRequired: approvalRequired,
+            nodeExecutionId: nodeExecutionId,
+          };
+        }
+      );
+
+      const approvals = getWorkFlowExecData?.data?.nodeExecutions.map(
+        (item: any) => {
+          const name = item?.nodeId?.name;
+          const description = item?.nodeId?.description;
+          const approvalRequired = item?.parameters?.approvalRequired;
+          const approvalStatus = item?.approvalStatus;
+          return {
+            name: name,
+            description: description,
+            approvalRequired: approvalRequired,
+            approvalStatus: approvalStatus,
           };
         }
       );
       setOutputDetailsData({
-        status: getWorkFlowExecData?.data?.status,
+        status: status,
         outputDetails: outputDetails,
       });
-      setRunSummaryData(getWorkFlowExecData?.data);
-
-      const status = getWorkFlowExecData?.data?.status;
+      setApprovalsData({
+        status: status,
+        approvalDetails: approvals,
+      });
       if (status === "completed" || status === "awaiting-approval") {
         return true;
       }
@@ -215,7 +270,7 @@ const Run: React.FC<Props> = ({
       console.error("Error fetching workflow execution data", error);
     }
     return false;
-  }, [executionId, workflowId]);
+  }, [executionId, workflowId, approveOutputDataId, approvalsData]);
 
   useEffect(() => {
     if (executionId?.length > 0) {
@@ -266,6 +321,22 @@ const Run: React.FC<Props> = ({
     setWorkFlowData({ ...workFlowData, input_configs: updatedInputs });
   };
 
+  const getWorkflowStats = async () => {
+    try {
+      const response = await CustomAxiosInstance().get(
+        `/workflow/${workflowId}/stats`
+      );
+      // const response = await instance.get(`/workflow/${workflowId}/stats`);
+      setWorkflowStatsData(response?.data);
+    } catch (error) {
+      console.error("Error fetching workflow stats data", error);
+    }
+  };
+
+  useEffect(() => {
+    getWorkflowStats();
+  }, [workflowId]);
+
   useEffect(() => {
     if (workflowId) {
       fetchWorkflowData(workflowId)
@@ -300,17 +371,18 @@ const Run: React.FC<Props> = ({
   return (
     <div className="px-8 pb-8">
       <div>
-        <WorkFlowHeader workFlowData={workFlowData} />
+        <WorkFlowHeader
+          workFlowData={workFlowData}
+          workflowStatsData={workflowStatsData}
+        />
         <Motion
           transition={{ duration: 0.5 }}
-          variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+          variants={{ visible: { opacity: 1 } }}
         >
           <div className="flex h-screen mt-5 gap-6">
             <div className="w-2/5">
               <div
-                className={`border-l-4 border-[#F1B917] rounded-2xl w-[50%] flex flex-col gap-6 p-4 ${
-                  IsInputParameterOpen ? "max-h-screen" : "max-h-[80px]"
-                } overflow-hidden transition-all w-full bg-white rounded-lg shadow-md duration-500 ease-in-out`}
+                className={`border-l-4 border-[#F1B917] rounded-2xl w-full flex flex-col gap-6 p-4  max-h-[380px] overflow-y-scroll transition-all bg-white shadow-md duration-500 ease-in-out custom-scrollbar`}
               >
                 <div className="flex flex-row justify-between items-center gap-2">
                   <h2 className="font-semibold text-lg">Input Parameters</h2>
@@ -337,15 +409,28 @@ const Run: React.FC<Props> = ({
                         <div key={idx} className="relative group">
                           <div className="flex items-center mb-4 mt-4 gap-2">
                             <h2 className="font-medium">
-                              {input.display_name}
+                              {input?.display_name}
                             </h2>
+                            {input?.required && (
+                              <span className="text-red-500">*</span>
+                            )}
 
                             {input?.description?.length > 0 && (
                               <div className="relative">
-                                <Info className="cursor-pointer" />
-                                <div className="absolute left-0 top-full mt-2 w-max p-2 text-sm text-white bg-gray-800 rounded-md shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-                                  {input.description}
+                                {/* Info icon */}
+                                <div
+                                  className="inline-block cursor-pointer"
+                                  onMouseEnter={() => setIsHovered(true)}
+                                  onMouseLeave={() => setIsHovered(false)}
+                                >
+                                  <Info className="hover:opacity-100" />
                                 </div>
+                                {/* Description box */}
+                                {isHovered && (
+                                  <div className="absolute left-0 top-full mt-2 w-max p-2 text-sm text-white bg-gray-800 rounded-md shadow-md z-10">
+                                    {input?.description}
+                                  </div>
+                                )}
                               </div>
                             )}
                           </div>
@@ -369,7 +454,7 @@ const Run: React.FC<Props> = ({
                                 case "file":
                                   return (
                                     <FileUpload
-                                      onFileUploaded={fileUrl =>
+                                      onFileUploaded={(fileUrl: any) =>
                                         handleFileUploaded(fileUrl, idx)
                                       }
                                       acceptedFileTypes={
@@ -409,21 +494,24 @@ const Run: React.FC<Props> = ({
                                   );
                                 default:
                                   return (
-                                    <input
-                                      type={
-                                        input.type === "number"
-                                          ? "number"
-                                          : input.type === "textarea"
-                                            ? "textarea"
-                                            : "text"
-                                      }
-                                      placeholder={input.placeholder}
-                                      className="w-full p-4 h-[46px] border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
-                                      value={input.default_value}
-                                      onChange={e =>
-                                        handleChangeInput(e.target.value, idx)
-                                      }
-                                    />
+                                    <>
+                                      <input
+                                        type={
+                                          input?.type === "number"
+                                            ? "number"
+                                            : input?.type === "textarea"
+                                              ? "textarea"
+                                              : "text"
+                                        }
+                                        placeholder={input?.placeholder}
+                                        className="w-full p-4 h-[46px] border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
+                                        value={input?.default_value}
+                                        onChange={e =>
+                                          handleChangeInput(e.target.value, idx)
+                                        }
+                                        required={input?.required}
+                                      />
+                                    </>
                                   );
                               }
                             })()}
@@ -437,6 +525,10 @@ const Run: React.FC<Props> = ({
                         className={clsx(
                           "bg-primary-light-shade-green flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 text-white"
                         )}
+                        disabled={workFlowData?.input_configs?.some(
+                          (data: any) =>
+                            data?.required && data?.default_value?.length === 0
+                        )}
                         onClick={handleRunWorkFlow}
                       >
                         {isLoading && <Spinner />}
@@ -447,6 +539,9 @@ const Run: React.FC<Props> = ({
                           "bg-transparent border-2 border-green-200 flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 "
                         )}
                         onClick={() => setIsSchedulerModalOpen(true)}
+                        disabled={workFlowData?.input_configs?.some(
+                          (data: any) => data?.default_value?.length === 0
+                        )}
                       >
                         <Clock size={20} color="#2DA771" />
                         <h2 className="text-primary-light-shade-green">
@@ -457,7 +552,10 @@ const Run: React.FC<Props> = ({
                   )}
                 </div>
               </div>
-              <ApprovalsAccordion />
+              {approvalsData?.approvalDetails &&
+                approvalsData?.approvalDetails?.length > 0 && (
+                  <ApprovalsAccordion approvalsData={approvalsData} />
+                )}
             </div>
             <div className="w-3/5">
               {executionId?.length > 0 ? (
@@ -467,6 +565,7 @@ const Run: React.FC<Props> = ({
                   onPollingWithNewId={(newExeId: string) =>
                     setExecutionId(newExeId)
                   }
+                  setApproveOutputDataId={setApproveOutputDataId}
                   workflowId={workflowId}
                 />
               ) : (
@@ -484,7 +583,13 @@ const Run: React.FC<Props> = ({
                 </div>
               )}
               {executionId?.length > 0 ? (
-                <RunSummary runSummaryData={runSummaryData} />
+                runSummaryData && runSummaryData.id ? (
+                  <RunSummary runSummaryData={runSummaryData} />
+                ) : (
+                  <div className="flex-1 flex flex-col gap-5 justify-center items-center min-h-[30vh]">
+                    <Spinner color="black" size={50} /> Loading...
+                  </div>
+                )
               ) : (
                 <div className="w-full border-l-4 border-[#B785FF] bg-white rounded-lg shadow-md space-y-6 p-6 mt-5">
                   {/* Header Section */}

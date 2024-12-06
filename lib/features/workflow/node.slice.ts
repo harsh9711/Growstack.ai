@@ -411,6 +411,12 @@ const nodeSlice = createSlice({
       state.nodeData = {} as NodeState;
     },
 
+    clearNodeData: state => {
+      state.nodeData = {} as NodeState;
+      state.nodes = [] as NodeState[];
+      state.variables = [];
+    },
+
     removeNodeById: (state, action: PayloadAction<string>) => {
       state.nodes = state.nodes.filter(node => node.id !== action.payload);
     },
@@ -462,6 +468,7 @@ export default nodeSlice.reducer;
 export const {
   addNodeData,
   addNode,
+  clearNodeData,
   removeNode,
   updateNode,
   removeNodeById,
