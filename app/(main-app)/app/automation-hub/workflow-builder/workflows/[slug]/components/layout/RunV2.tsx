@@ -116,16 +116,15 @@ const Run: React.FC<any> = ({
           );
         })
         .flatMap((node: any) => {
-          console.log("node", node);
           if (node?.type !== "form") {
             // Handle non-form nodes
-            const parameters = node.parameters || {};
+            const parameters = node?.parameters || {};
             return {
-              display_name: parameters.inputLabel || "Untitled Field",
+              display_name: parameters?.inputLabel || "Untitled Field",
               description: parameters?.description || "",
               placeholder: parameters?.placeholder || "",
               default_value: parameters.defaultValue || "",
-              variableName: parameters.variableName || "",
+              variableName: parameters?.variableName || "",
               type: node?.nodeMasterId?.inputType,
               list_values: parameters?.options || [],
               required: parameters?.required,
@@ -135,20 +134,32 @@ const Run: React.FC<any> = ({
             // Handle form nodes with subNodes
             return (
               node?.subNodes?.map((data: any) => {
+                let inputType = "";
+                const getName = node?.nodeMasterId?.subNodes?.find(
+                  (subNode: any) => subNode?.nodeMasterId === data?.nodeMasterId
+                )?.name;
+                if (getName === "Short Text") inputType = "text";
+                else if (getName === "Long Text") inputType = "textarea";
+                else if (getName === "Boolean") inputType = "switch";
+                else if (getName === "Number") inputType = "number";
+                else if (getName === "File Upload") inputType = "file";
+                else if (getName === "CheckList") inputType = "checkbox";
+                else inputType = "text";
+
                 const formParameters = data.parameters || {};
                 return {
-                  display_name: formParameters.inputLabel || "Untitled Field",
+                  display_name: formParameters?.inputLabel || "Untitled Field",
                   description: formParameters?.description || "",
                   placeholder: formParameters?.placeholder || "",
-                  default_value: formParameters.defaultValue || "",
-                  variableName: formParameters.variableName || "",
-                  type: data?.nodeMasterId?.inputType, // Form nodes may have different input types
+                  default_value: formParameters?.defaultValue || "",
+                  variableName: formParameters?.variableName || "",
+                  type: inputType,
                   list_values: formParameters?.options || [],
                   required: formParameters?.required,
                   file_type: formParameters?.fileType,
                 };
               }) || []
-            ); // Return empty array if subNodes are undefined
+            ); 
           }
         });
 
