@@ -335,7 +335,7 @@ const ToolsNodes = memo(
                 </div>
               </div>
 
-                     <Handle
+              <Handle
                 id={`${id}-target`}
                 type="target"
                 position={Position.Left}
