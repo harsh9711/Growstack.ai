@@ -51,8 +51,12 @@ export default function Dashboard() {
     try {
       setLoading(true);
       // const response = await axios.get(`http://localhost:5000/workflow`);
-      const response = await instance.get(`/workflow`);
-      setPreBuiltTemplates([]);
+      const response = await instance.get(`/workflow?isPrebuilt=true`);
+      // setPreBuiltTemplates([]);
+      // const response = await CustomAxiosInstance().get(
+      //   `/workflow?isPrebuilt=true`
+      // );
+      setPreBuiltTemplates(response.data);
     } catch (error) {
       console.error("Error fetching pre-built templates:", error);
     } finally {
@@ -314,7 +318,7 @@ const Card: React.FC<CardProps> = ({
         `/workflow/${workflow_id}/duplicate`
       );
       // const response = await instance.post(
-      //   `/workflows/${workflow_id}/duplicate`
+      //   `/workflow/${workflow_id}/duplicate`
       // );
     } catch (error: any) {
       console.error("Error duplicating workflow:", error);
@@ -341,8 +345,8 @@ const Card: React.FC<CardProps> = ({
   const handleDeleteClick = async () => {
     setLoading(true);
     try {
-      // const response = await axios.delete(
-      //   `http://localhost:5000/workflow/delete/${workflow_id}`
+      // const response = await CustomAxiosInstance().delete(
+      //   `/workflow/delete/${workflow_id}`
       // );
 
       const response = await instance.delete(`/workflow/delete/${workflow_id}`);
@@ -357,8 +361,8 @@ const Card: React.FC<CardProps> = ({
   const handleUnpublishWorkflow = async () => {
     setLoading(true);
     try {
-      // const response = await axios.post(
-      //   `http://localhost:5000/workflow/unpublish/${workflow_id}`
+      // const response = await CustomAxiosInstance().post(
+      //   `/workflow/unpublish/${workflow_id}`
       // );
       const response = await instance.post(
         `/workflow/unpublish/${workflow_id}`
