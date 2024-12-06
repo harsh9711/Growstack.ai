@@ -51,6 +51,8 @@ export interface NodeState {
   type: string;
   position: PositionState;
   data: NodeDataState;
+  parentId?: string;
+  extent?: string;
 }
 
 export interface AllDataState {

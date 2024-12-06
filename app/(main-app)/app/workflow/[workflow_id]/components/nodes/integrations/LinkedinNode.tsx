@@ -160,12 +160,6 @@ const LinkedinNode = memo(
     });
 
     const handleNextClick = async () => {
-      if (!isConnectable) {
-        dispatch(setLoading(false));
-        console.log("Not connected to LinkedIn. Stopping loading.");
-        return;
-      }
-
       if (!node?.data?.parameters) return;
 
       const requiredParams = Object.values(node.data.parameters).filter(
