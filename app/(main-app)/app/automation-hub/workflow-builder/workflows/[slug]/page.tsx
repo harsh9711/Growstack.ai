@@ -18,7 +18,7 @@ const Page = () => {
   const tabQueryParam = searchParams.get("tab");
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabDistanceFromLeft, setDistanceFromLeft] = useState(0);
-  const [workFlowData, setWorkFlowData] = useState<WorkFlowData>({
+  const [workFlowData, setWorkFlowData] = useState<any>({
     name: "",
     actions: [],
     input_configs: [],

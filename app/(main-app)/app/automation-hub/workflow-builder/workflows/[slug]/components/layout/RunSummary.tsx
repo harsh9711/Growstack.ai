@@ -48,6 +48,8 @@ const RunSummary = ({ runSummaryData }: any) => {
     failed: "text-red-600 bg-red-100",
     "in-progress": "text-yellow-600 bg-yellow-100",
     ready: "text-yellow-600 bg-yellow-100",
+    "awaiting-approval": "text-yellow-600 bg-yellow-100",
+    "approval-pending": "text-yellow-600 bg-yellow-100",
   };
 
   function formatTimestamp(isoTimestamp: any, type: any) {
@@ -116,7 +118,7 @@ const RunSummary = ({ runSummaryData }: any) => {
         </div>
         <div>
           <span
-            className={`inline-block  px-4 py-1 rounded-full text-sm ${statuses[runSummaryData?.status]}`}
+            className={`inline-block  px-4 py-1 rounded-full text-sm ${statuses[runSummaryData?.status] ? statuses[runSummaryData?.status] : "text-yellow-600 bg-yellow-100"}`}
           >
             {runSummaryData?.status}
           </span>
@@ -172,7 +174,7 @@ const RunSummary = ({ runSummaryData }: any) => {
                 </td>
                 <td className="p-4">
                   <span
-                    className={`px-4 py-1 rounded-full text-sm font-medium ${statuses[row.status]}`}
+                    className={`px-4 py-1 rounded-full text-sm font-medium ${statuses[row.status]? statuses[row?.status] : "text-yellow-600 bg-yellow-100"}`}
                   >
                     {row.status}
                   </span>

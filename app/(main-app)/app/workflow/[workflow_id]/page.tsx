@@ -370,7 +370,6 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
 };
 
 const WorkflowPage: React.FC<PageProps> = ({ params: { workflow_id } }) => {
-  console.log("workflow_id", workflow_id);
   const dispatch = useAppDispatch();
 
   useEffect(() => {

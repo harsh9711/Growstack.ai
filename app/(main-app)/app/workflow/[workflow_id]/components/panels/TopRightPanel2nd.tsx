@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { dummyData3 } from "../data";
 import Image from "next/image";
 import { useAppSelector } from "@/lib/hooks";
@@ -12,14 +12,24 @@ const TopRightPanel2nd = ({ setActiveTab, activeTab }: any) => {
   const handleClick = (index: number) => {
     setActiveIndex(index);
     setActiveTab(index);
+    localStorage.setItem('workflowActiveTab', index.toString());
   };
+ 
+  useEffect(() => {
+    const savedTab = localStorage.getItem('workflowActiveTab');
+    if (savedTab) {
+      setActiveTab(parseInt(savedTab));
+    }else{
+      setActiveTab(0);
+    }
+  }, [setActiveTab]);
 
   return (
     <div
-      className="flex items-center border-2 border-white rounded-lg bg-gradient-to-b from-[#F2F2F2] to-[#F8F8FA] justify-center relative shadow-lg p-1"
+      className="flex items-center  rounded-lg justify-center relative p-1"
     >
       <div
-        className="w-[198px] h-[44px] flex justify-center items-center bg-[#ffffff] rounded-lg cursor-pointer absolute left-[40px] shadow-lg"
+        className="w-[198px] h-[44px] flex justify-center items-center rounded-lg cursor-pointer absolute left-[40px]"
         onClick={() => {
           route.back();
         }}
@@ -35,6 +45,7 @@ const TopRightPanel2nd = ({ setActiveTab, activeTab }: any) => {
         </p>
       </div>
       {dummyData3.map((item, index) => (
+        <div className="bg-white">
         <button
           key={index.toString()}
           className={`flex justify-center items-center m-2 cursor-pointer px-2.5 py-1.5 rounded-md text-base font-normal ${activeTab === index
@@ -45,6 +56,7 @@ const TopRightPanel2nd = ({ setActiveTab, activeTab }: any) => {
         >
           {item.text}
         </button>
+        </div>
       ))}
     </div>
   );

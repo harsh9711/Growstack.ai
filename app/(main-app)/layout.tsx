@@ -50,9 +50,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             {!shouldHideNavbar() && <Navbar />}
             <PageTransition
               classNames={clsx(
-                "w-full max-w-[90%] mx-auto flex-1 flex flex-col h-full mt-[70px]",
+                "w-full mx-auto flex-1 flex flex-col h-full mt-[70px]",
                 shouldHideNavbar() && "!max-w-none !mt-0",
-                fullWidthContainer?.some(path => pathname.startsWith(path)) && "!max-w-[100%]"
+                fullWidthContainer?.some(path => pathname.startsWith(path)) ? "!max-w-[100%]" : "max-w-[90%]"
               )}
             >
               {children}
