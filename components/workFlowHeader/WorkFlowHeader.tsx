@@ -1,20 +1,6 @@
 import React from "react";
 
-const workflowDummyData = {
-  workflowName: "Google Sheet post posting on Social media",
-  description:
-    "The Workflow streamlines project management by automating task assignments and tracking progress, ensuring efficient collaboration among team members.",
-  workflowID: "#154848",
-  totalRuns: 23,
-  averageRunDuration: "12 minutes",
-  executionStatus: {
-    success: 15,
-    failed: 5,
-    inProgress: 3,
-  },
-};
-
-function WorkFlowHeader({ workFlowData }: any) {
+function WorkFlowHeader({ workFlowData, workflowStatsData }: any) {
   return (
     <div className="border-l-4 border-[#27C9AA] mt-6 w-full bg-white p-6 rounded-lg shadow-lg relative overflow-hidden">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pl-4">
@@ -38,14 +24,14 @@ function WorkFlowHeader({ workFlowData }: any) {
             </div>
             <div>
               <span className="text-xs font text-gray-400">Total Runs:</span>{" "}
-              <div className="font-semibold">{workflowDummyData.totalRuns}</div>
+              <div className="font-semibold">{workflowStatsData?.totalCount}</div>
             </div>
             <div>
               <span className="text-xs font text-gray-400">
                 Avg Run Duration:
               </span>{" "}
               <div className="font-semibold">
-                {workflowDummyData.averageRunDuration}
+                {workflowStatsData?.averageDuration?.toFixed(2)} Seconds
               </div>
             </div>
           </div>
@@ -56,13 +42,13 @@ function WorkFlowHeader({ workFlowData }: any) {
               Execution Status Summary :
             </p>
             <p className="text-green-600  text-[14px]">
-              Success: {workflowDummyData.executionStatus.success}
+              Success: {workflowStatsData?.completedCount}
             </p>
             <p className="text-red-600  text-[14px]">
-              Failed: {workflowDummyData.executionStatus.failed}
+              Failed: {workflowStatsData?.failedCount}
             </p>
             <p className="text-yellow-600  text-[14px]">
-              In Progress: {workflowDummyData.executionStatus.inProgress}
+              In Progress: {workflowStatsData?.scheduledCount}
             </p>
           </div>
         </div>

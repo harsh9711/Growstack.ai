@@ -65,10 +65,6 @@ const OutputDetails = ({
       // const rejectExecution = await instance.patch(
       //   `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=false`
       // );
-      
-      // const rejectExecution = await axios.patch(
-      //   `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=false`
-      // );
       setApproveOutputDataId(rejectExecution?.data);
     } catch (err) {
       console.log("err", err);
@@ -79,14 +75,11 @@ const OutputDetails = ({
       const approveExecution = await CustomAxiosInstance().patch(
         `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=true`
       );
-      setApproveOutputDataId(approveExecution?.data);
-
       // const approveExecution = await instance.patch(
       //   `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=true`
       // );
-      // const approveExecution = await axios.post(
-      //   `http://localhost:5000/workflow/${workflowId}/approve?executionId=${executionId}`
-      // );
+      setApproveOutputDataId(approveExecution?.data);
+
     } catch (err) {
       console.log("err", err);
     }
@@ -102,81 +95,83 @@ const OutputDetails = ({
             {outputDetailsData?.outputDetails?.map(
               (item: any, index: number) => {
                 return (
-                  <div
-                    key={index}
-                    className={`border rounded-lg ${
-                      openIndex === index
-                        ? "border-blue-400"
-                        : "border-gray-200"
-                    }`}
-                  >
-                    {/* Accordion Header */}
+                  item.title && (
                     <div
-                      className="flex justify-between items-center p-4 cursor-pointer"
-                      onClick={() => toggleAccordion(index)}
+                      key={index}
+                      className={`border rounded-lg ${
+                        openIndex === index
+                          ? "border-blue-400"
+                          : "border-gray-200"
+                      }`}
                     >
-                      <h3 className="text-sm font-medium">{item.title}</h3>
-                      {openIndex === index ? (
-                        <ChevronDown size={18} />
-                      ) : (
-                        <ChevronUp size={18} />
+                      {/* Accordion Header */}
+                      <div
+                        className="flex justify-between items-center p-4 cursor-pointer"
+                        onClick={() => toggleAccordion(index)}
+                      >
+                        <h3 className="text-sm font-medium">{item.title}</h3>
+                        {openIndex === index ? (
+                          <ChevronDown size={18} />
+                        ) : (
+                          <ChevronUp size={18} />
+                        )}
+                      </div>
+
+                      {/* Accordion Content */}
+                      {openIndex === index && (
+                        <div className=" border-t border-gray-200">
+                          <div className="p-4 prose prose-sm max-w-none">
+                            <ReactMarkdown
+                              remarkPlugins={[remarkGfm, remarkBreaks]}
+                              rehypePlugins={[rehypeRaw]}
+                            >
+                              {typeof item?.value === "string"
+                                ? formatToMarkdown(item?.value)
+                                : "Social Media Post"}
+                            </ReactMarkdown>
+                          </div>
+                          <hr className="mt-4" />
+                          <div className="flex justify-between">
+                            <div className="flex gap-4 items-center px-4 py-6">
+                              <button
+                                className=""
+                                onClick={() => handleCopy(item?.value)}
+                              >
+                                <Copy color="#4B465C" />
+                              </button>
+                              <button
+                                className=""
+                                onClick={() => handleRerun(item?.nodeMasterId)}
+                              >
+                                <RefreshCw color="#4B465C" />
+                              </button>
+                            </div>
+                            {item?.approvalRequired === "true" &&
+                              item?.approvalStatus === "pending" && (
+                                <div className="flex gap-4 items-center px-4 py-4">
+                                  <button
+                                    className="text-red-500 p-5 rounded-xl border border-red-500"
+                                    onClick={() => {
+                                      handleReject(item?.nodeExecutionId);
+                                    }}
+                                  >
+                                    Reject
+                                  </button>
+                                  <button
+                                    className="text-[#2DA771] p-5 rounded-xl border border-[#2DA771]"
+                                    onClick={() => {
+                                      handleApprove(item?.nodeExecutionId);
+                                    }}
+                                  >
+                                    Approve
+                                  </button>
+                                </div>
+                              )}
+                          </div>
+                        </div>
                       )}
                     </div>
-
-                    {/* Accordion Content */}
-                    {openIndex === index && (
-                      <div className=" border-t border-gray-200">
-                        <div className="p-4 prose prose-sm max-w-none">
-                          <ReactMarkdown
-                            remarkPlugins={[remarkGfm, remarkBreaks]}
-                            rehypePlugins={[rehypeRaw]}
-                          >
-                            {typeof item?.value === "string"
-                              ? formatToMarkdown(item?.value)
-                              : "Social Media Post"}
-                          </ReactMarkdown>
-                        </div>
-                        <hr className="mt-4" />
-                        <div className="flex justify-between">
-                          <div className="flex gap-4 items-center px-4 py-6">
-                            <button
-                              className=""
-                              onClick={() => handleCopy(item?.value)}
-                            >
-                              <Copy color="#4B465C" />
-                            </button>
-                            <button
-                              className=""
-                              onClick={() => handleRerun(item?.nodeMasterId)}
-                            >
-                              <RefreshCw color="#4B465C" />
-                            </button>
-                          </div>
-                          {item?.approvalRequired === "true" &&
-                            item?.approvalStatus === "pending" && (
-                              <div className="flex gap-4 items-center px-4 py-4">
-                                <button
-                                  className="text-red-500 p-5 rounded-xl border border-red-500"
-                                  onClick={() => {
-                                    handleReject(item?.nodeExecutionId);
-                                  }}
-                                >
-                                  Reject
-                                </button>
-                                <button
-                                  className="text-[#2DA771] p-5 rounded-xl border border-[#2DA771]"
-                                  onClick={() => {
-                                    handleApprove(item?.nodeExecutionId);
-                                  }}
-                                >
-                                  Approve
-                                </button>
-                              </div>
-                            )}
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                  )
                 );
               }
             )}
