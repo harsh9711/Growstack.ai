@@ -4,7 +4,6 @@ import { ToolsNodeProps } from "./types";
 import DynamicInput from "../DynamicInputs";
 import { extractParameterValues } from "@/utils/dataResolver";
 import {
-  addVariable,
   deleteNodeById,
   removeNodeById,
   updateNodeById,
@@ -13,7 +12,6 @@ import {
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { VariableNameProps, WorkflowNodeState } from "@/types/workflows";
 import { getVariableName, isSpecialType } from "@/utils/helper";
-import SmallCardFiled from "../DynamicInputs/SmallCard";
 import { useSnackbar } from "../snackbar/SnackbarContext";
 import DeleteConfirmationModal from "../deleteconfirmationmodal/DeleteConfirmationModal";
 
@@ -24,6 +22,7 @@ const ToolsNodes = memo(
     id,
     positionAbsoluteX,
     positionAbsoluteY,
+    parentId,
   }: NodeProps<ToolsNodeProps>) => {
     // const { parameters, nodeMasterId } = data;
 
@@ -46,7 +45,24 @@ const ToolsNodes = memo(
     const [dependencies, setDependencies] = useState<
       { key: string; nodeId: string }[]
     >([]);
+
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
+
+    // added a code to add parent node id in dependencies
+    useEffect(() => {
+      if (parentId) {
+        setDependencies(prevDependencies => {
+          const newDependency = { key: "parent", nodeId: parentId };
+          const exists = prevDependencies.some(dep => dep.nodeId === parentId);
+          if (exists) {
+            return prevDependencies;
+          }
+          return [...prevDependencies, newDependency];
+        });
+      }
+
+      return () => { };
+    }, [parentId]);
 
     const handleToggleAdvancedOptions = () => {
       setShowAdvancedOptions(!showAdvancedOptions);
@@ -121,18 +137,18 @@ const ToolsNodes = memo(
 
         console.log("Matching Node IDs:", dependencies);
 
-        dispatch(
-          addVariable({
-            nodeID: id,
-            variableName: node?.data?.parameters?.variableName?.value || "",
-            workflowID: workFlowData._id || "",
-            variableValue:
-              updatedValue.defaultValue ||
-              updatedValue.fileType ||
-              updatedValue.options,
-            variableType: "tools",
-          })
-        );
+        // dispatch(
+        //   addVariable({
+        //     nodeID: id,
+        //     variableName: node?.data?.parameters?.variableName?.value || "",
+        //     workflowID: workFlowData._id || "",
+        //     variableValue:
+        //       updatedValue.defaultValue ||
+        //       updatedValue.fileType ||
+        //       updatedValue.options,
+        //     variableType: "tools",
+        //   })
+        // );
 
         try {
           const bodyPayload = {
@@ -158,8 +174,8 @@ const ToolsNodes = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-                k => node.data.parameters?.[k] === param
-              )
+              k => node.data.parameters?.[k] === param
+            )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -387,7 +403,7 @@ const ToolsNodes = memo(
                           inputKey={key}
                           param={param}
                           handleInputChange={
-                            isEdit ? handleInputChange : () => {}
+                            isEdit ? handleInputChange : () => { }
                           }
                           variableNames={variableNames}
                           focusedInputKey={focusedInputKey}

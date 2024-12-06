@@ -8,14 +8,33 @@ import {
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { FanOutNodeProps } from "./types";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { NodeState } from "@/types/workflows";
-import { convertNodeData } from "@/utils/dataResolver";
-import { addNode, createNode, deleteNodeById, removeNodeById } from "@/lib/features/workflow/node.slice";
+import { NodeState, VariableNameProps, WorkflowNodeState } from "@/types/workflows";
+import { convertNodeData, extractParameterValues } from "@/utils/dataResolver";
+import {
+  addNode,
+  createNode,
+  deleteNodeById,
+  removeNodeById,
+  updateNodeById,
+  updateNodeParameter,
+} from "@/lib/features/workflow/node.slice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import DeleteConfirmationModal from "../deleteconfirmationmodal/DeleteConfirmationModal";
 import { useSnackbar } from "../snackbar/SnackbarContext";
+import DynamicInput from "../DynamicInputs";
+import { getVariableName, isSpecialType } from "@/utils/helper";
 
-const FanOut = ({ data, id, isConnectable }: NodeProps<FanOutNodeProps>) => {
+const FanOut = ({
+  data,
+  id,
+  isConnectable,
+  positionAbsoluteX,
+  positionAbsoluteY,
+}: NodeProps<FanOutNodeProps>) => {
+  const node = useAppSelector(state =>
+    state.nodes.nodes.find(node => node.id === id)
+  );
+
   const nodeMaster = useAppSelector(state =>
     state.masterNode.masterNode.filter(
       node =>
@@ -26,6 +45,7 @@ const FanOut = ({ data, id, isConnectable }: NodeProps<FanOutNodeProps>) => {
   );
 
   const { workFlowData } = useAppSelector(state => state.workflows);
+  const { isLoading, nodes } = useAppSelector(state => state.nodes);
 
   const dispatch = useAppDispatch();
 
@@ -48,8 +68,16 @@ const FanOut = ({ data, id, isConnectable }: NodeProps<FanOutNodeProps>) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isActionModalShow, setIsActionModalShow] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
+  const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
+  const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
+  const [isEdit, setIsEdit] = useState(true);
   const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] =
     React.useState(false);
+  const [dependencies, setDependencies] = useState<
+    { key: string; nodeId: string }[]
+  >([]);
 
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {
@@ -80,6 +108,7 @@ const FanOut = ({ data, id, isConnectable }: NodeProps<FanOutNodeProps>) => {
 
   const handleNodeClick = async (nodeData: NodeState) => {
     try {
+      console.log("nodeData-->", nodeData);
       const resultAction = await dispatch(
         createNode({
           workflowId: workFlowData._id,
@@ -99,6 +128,19 @@ const FanOut = ({ data, id, isConnectable }: NodeProps<FanOutNodeProps>) => {
 
       const subFlow = {
         ...nodeData,
+        data: {
+          ...nodeData.data,
+          parameters: {
+            ...nodeData.data.parameters,
+            url: {
+              ...(nodeData.data?.parameters?.url ?? {}),
+              value: "${instance}",
+              label: nodeData.data?.parameters?.url?.label || "",
+              type: nodeData.data?.parameters?.url?.type || "defaultType",
+              required: nodeData.data?.parameters?.url?.required || false,
+            },
+          },
+        },
         id: result._id,
         position: { x: 10, y: 90 },
         parentId: id,
@@ -112,12 +154,63 @@ const FanOut = ({ data, id, isConnectable }: NodeProps<FanOutNodeProps>) => {
     }
   };
 
-
   const handleOpenActionModal = () => {
     setIsActionModalShow(!isActionModalShow);
   };
 
+  // const handleInputChange = (key: any, type: any, value: any) => {
+  //   console.log("key-->", key, "type-->", type, "value-->", value);
+  //   dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
+  // };
 
+  const handleInputChange = useCallback(
+    (key: any, type: any, value: any, dependency?: string) => {
+      console.log(
+        "key-->",
+        key,
+        "type-->",
+        type,
+        "value-->",
+        value,
+        "dependencies--->",
+        dependency
+      );
+
+      dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
+
+      if (!isSpecialType(type)) return;
+
+      if (value && value.includes("$")) {
+        const index = nodes.findIndex(nds => nds.id === id);
+        const variableName = getVariableName(nodes, index);
+        console.log("variableName-->", variableName);
+        if (dependency) {
+          setDependencies(prevDependencies => {
+            const newDependency = { key, nodeId: dependency };
+            const uniqueDependencies = new Set([
+              ...prevDependencies,
+              newDependency,
+            ]);
+            return Array.from(uniqueDependencies);
+          });
+        }
+        const regex = /\$(?!\s*$).+/;
+        if (regex.test(value)) {
+          setVariableNames([]);
+        } else {
+          setVariableNames(
+            variableName.filter(
+              (name): name is VariableNameProps => name !== null
+            )
+          );
+        }
+      } else {
+        setDependencies(pre => pre.filter(dep => dep.key !== key));
+        setVariableNames([]);
+      }
+    },
+    [dispatch, id, nodes, dependencies, variableNames]
+  );
 
   const handleCloseDeleteConfirmationModal = () => {
     setOpenDeleteConfirmationModal(false);
@@ -135,6 +228,73 @@ const FanOut = ({ data, id, isConnectable }: NodeProps<FanOutNodeProps>) => {
     success("Node delete successfully");
   };
 
+  const handleToggleAdvancedOptions = () => {
+    setShowAdvancedOptions(!showAdvancedOptions);
+  };
+
+  const handleDropdownClick = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleNextClick = async () => {
+    if (!node?.data?.parameters) return;
+
+    const requiredParams = Object.values(node.data.parameters).filter(
+      param => param.required
+    );
+    const allRequiredParamsFilled = requiredParams.every(param => param?.value);
+
+    if (allRequiredParamsFilled) {
+      const updatedValue = extractParameterValues(node.data.parameters);
+
+      console.log("updatedValue-->", updatedValue);
+
+      try {
+        const bodyPayload = {
+          workflowId: workFlowData._id,
+          nodeMasterId: node.data.nodeMasterId,
+          position: { x: positionAbsoluteX, y: positionAbsoluteY },
+          dependencies: dependencies.map(dps => dps.nodeId),
+          parameters: updatedValue,
+        };
+
+        await dispatch(
+          updateNodeById({
+            id: id,
+            data: bodyPayload as unknown as WorkflowNodeState,
+          })
+        );
+
+        success("Node updated successfully");
+        setIsEdit(false);
+      } catch (error: any) {
+        console.error("error-->", error?.message);
+      }
+    } else {
+      requiredParams.forEach(param => {
+        const key = node?.data?.parameters
+          ? Object.keys(node.data.parameters).find(
+            k => node.data.parameters?.[k] === param
+          )
+          : undefined;
+        if (key && !param.value) {
+          dispatch(
+            updateNodeParameter({
+              nodeId: id,
+              key: key,
+              type: "error",
+              value: "This field is required",
+            })
+          );
+        }
+      });
+    }
+  };
+
+
+  const handleEditClick = () => {
+    setIsEdit(!isEdit);
+  };
 
   const filteredGroupedGenerals = Object.entries(groupedGenerals).reduce(
     (acc: { [key: string]: typeof modifiedNodes }, [category, nodes]) => {
@@ -150,7 +310,6 @@ const FanOut = ({ data, id, isConnectable }: NodeProps<FanOutNodeProps>) => {
     },
     {}
   );
-
 
   return (
     <div>
@@ -226,15 +385,74 @@ const FanOut = ({ data, id, isConnectable }: NodeProps<FanOutNodeProps>) => {
 
         <div
           className="toggle-button-box absolute left-[35%] mx-auto top-[-15px] z-10 cursor-pointer"
-        // onClick={handleDropdownClick}
+          onClick={handleDropdownClick}
         >
           <img
             src="/assets/node_icon/toggle-switch.svg"
             alt="toggle switch"
             className="w-[30px] mx-auto"
-          // style={{ transform: isDropdownOpen ? "rotate(180deg)" : "" }}
+            style={{ transform: isDropdownOpen ? "rotate(180deg)" : "" }}
           />
         </div>
+        {isDropdownOpen && (
+          <div className="node-inner-wrapper bg-white p-4 border-2 border-[#2DA771] top-[-330px] rounded-[20px] w-[400px] absolute left-1/2 transform -translate-x-1/2">
+            <div className="form-box">
+              {node?.data?.parameters &&
+                Object.entries(node.data.parameters)
+                  .filter(
+                    ([key, param]: any) => param.required || showAdvancedOptions
+                  )
+                  .map(([key, param]) => {
+                    return (
+                      <DynamicInput
+                        key={key}
+                        inputKey={key}
+                        param={param}
+                        handleInputChange={handleInputChange}
+                        variableNames={variableNames}
+                        focusedInputKey={focusedInputKey}
+                        setFocusedInputKey={setFocusedInputKey}
+                      />
+                    );
+                  })}
+              <div className="advance-option-button-box mb-3">
+                <button
+                  onClick={handleToggleAdvancedOptions}
+                  className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
+                >
+                  {showAdvancedOptions
+                    ? "Hide Advanced Options"
+                    : "Show Advanced Options"}
+                </button>
+              </div>
+              {isEdit ? (
+                <div className="submit-button">
+                  <button
+                    onClick={handleNextClick}
+                    className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
+                  >
+                    {!isLoading ? (
+                      <div className="flex justify-center items-center">
+                        <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
+                      </div>
+                    ) : (
+                      "Save"
+                    )}
+                  </button>
+                </div>
+              ) : (
+                <div className="submit-button">
+                  <button
+                    onClick={handleEditClick}
+                    className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
+                  >
+                    Edit
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
 
         <div className="node-delete-modal-box absolute left-[60%] top-[-15px] mx-auto z-10">
           <div className="action-modal-button">
@@ -279,7 +497,7 @@ const FanOut = ({ data, id, isConnectable }: NodeProps<FanOutNodeProps>) => {
               className="w-full bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none p-3 rounded-[10px]"
             />
 
-            <div className="absolute bg-white border-[1px] left-0 right-0 mx-auto shadow-lg top-full mt-2 w-full rounded-[15px]">
+            <div className="absolute bg-white border-[1px] left-0 right-0 mx-auto shadow-lg top-full mt-2 w-full rounded-[15px]  px-3">
               <ul className="mt-2 max-h-40 overflow-y-auto">
                 {Object.entries(filteredGroupedGenerals)?.map(
                   ([category, nodes]) =>

@@ -81,6 +81,7 @@ export interface NodeParameter {
   description?: string;
   value?: any;
   error?: string;
+  isEditable?: boolean;
 }
 
 export interface MasterNodeProps {
