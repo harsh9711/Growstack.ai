@@ -3,10 +3,35 @@ import React, { useState } from "react";
 import { FanOutNodeProps } from "./types";
 import { useAppSelector } from "@/lib/hooks";
 import { NodeState } from "@/types/workflows";
+import { convertNodeData } from "@/utils/dataResolver";
 
 const FanOut = ({ data, id, isConnectable }: NodeProps<FanOutNodeProps>) => {
+  const nodeMaster = useAppSelector(state =>
+    state.masterNode.masterNode.filter(
+      node =>
+        node.category?.toLowerCase() === "integration" ||
+        node.category?.toLowerCase() === "llms" ||
+        node.category?.toLowerCase() === "tools"
+    )
+  );
+
+  const modifiedNodes = nodeMaster?.map(convertNodeData);
+
+  const groupedGenerals = modifiedNodes?.reduce(
+    (acc: { [key: string]: typeof modifiedNodes }, model) => {
+      if (!acc[model.subCategory]) {
+        acc[model.subCategory] = [];
+      }
+      acc[model.subCategory].push(model);
+      return acc;
+    },
+    {}
+  );
+
+  console.log('---groupedGenerals---', JSON.stringify(groupedGenerals, null, 2));
+
   const { setNodes } = useReactFlow();
-  const { nodes } = useAppSelector(state => state.nodes);
+  // const { nodes } = useAppSelector(state => state.nodes);
   const [showSearch, setShowSearch] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -18,9 +43,10 @@ const FanOut = ({ data, id, isConnectable }: NodeProps<FanOutNodeProps>) => {
     setSearchTerm(event.target.value);
   };
 
-  const filteredNodes = nodes.filter(node =>
-    node.data.label.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredNodes = nodes?.filter(node =>
+  //   // node.data.label.toLowerCase().includes(searchTerm.toLowerCase())
+  //   []
+  // );
 
   const handleNodeClick = (node: NodeState) => {
     const subFlow = {
@@ -90,17 +116,30 @@ const FanOut = ({ data, id, isConnectable }: NodeProps<FanOutNodeProps>) => {
             />
 
             <div className="absolute bg-white border-[1px] shadow-lg bottom-[-60px] w-full rounded-[15px]">
-              <ul className="mt-2 max-h-40 overflow-y-auto">
-                {filteredNodes.map((node, index) => (
+              {/* <ul className="mt-2 max-h-40 overflow-y-auto">
+                {groupedGenerals.map((node, index) => (
                   <li
                     key={index}
                     className="p-2 mb-2 cursor-pointer"
                     onClick={() => handleNodeClick(node)}
                   >
                     {node.data.label}
-          
                   </li>
                 ))}
+              </ul> */}
+
+              <ul className="mt-2 max-h-40 overflow-y-auto">
+                {Object.entries(groupedGenerals)?.map(([category, nodes]) =>
+                  nodes.map((nodeWrapper, index) => (
+                    <li
+                      key={index}
+                      className="p-2 mb-2 cursor-pointer"
+                      onClick={() => handleNodeClick(nodeWrapper.node)}
+                    >
+                      {nodeWrapper.node.data.label}
+                    </li>
+                  ))
+                )}
               </ul>
             </div>
           </div>
