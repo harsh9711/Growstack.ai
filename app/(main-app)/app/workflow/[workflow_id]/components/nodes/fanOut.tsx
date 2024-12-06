@@ -48,6 +48,8 @@ const FanOut = ({ data, id, isConnectable }: NodeProps<FanOutNodeProps>) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isActionModalShow, setIsActionModalShow] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] =
+    React.useState(false);
 
   const handleClickOutside = useCallback(
     (event: MouseEvent) => {
@@ -115,12 +117,12 @@ const FanOut = ({ data, id, isConnectable }: NodeProps<FanOutNodeProps>) => {
     setIsActionModalShow(!isActionModalShow);
   };
 
-  const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] =
-    React.useState(false);
+
 
   const handleCloseDeleteConfirmationModal = () => {
     setOpenDeleteConfirmationModal(false);
   };
+
   const handleOpenDeleteConfirmationModal = () => {
     setOpenDeleteConfirmationModal(true);
     setIsActionModalShow(false);
