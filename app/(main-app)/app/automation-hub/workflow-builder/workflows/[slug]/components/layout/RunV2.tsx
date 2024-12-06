@@ -72,6 +72,7 @@ const Run: React.FC<Props> = ({
     workflow_id: "",
     description: "",
   });
+  const [isHovered, setIsHovered] = useState(false);
   const [approvalsData, setApprovalsData] = useState<any>({});
   const [approveOutputDataId, setApproveOutputDataId] = useState("");
   const [IsInputParameterOpen, setIsInputParameterOpen] = useState(true);
@@ -360,7 +361,7 @@ const Run: React.FC<Props> = ({
         />
         <Motion
           transition={{ duration: 0.5 }}
-          variants={{ hidden: { opacity: 0 }, visible: { opacity: 1 } }}
+          variants={{ visible: { opacity: 1 } }}
         >
           <div className="flex h-screen mt-5 gap-6">
             <div className="w-2/5">
@@ -392,13 +393,26 @@ const Run: React.FC<Props> = ({
                             <h2 className="font-medium">
                               {input?.display_name}
                             </h2>
+                            {input?.required && (
+                              <span className="text-red-500">*</span>
+                            )}
 
                             {input?.description?.length > 0 && (
                               <div className="relative">
-                                <Info className="cursor-pointer" />
-                                <div className="absolute left-0 top-full mt-2 w-max p-2 text-sm text-white bg-gray-800 rounded-md shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-                                  {input?.description}
+                                {/* Info icon */}
+                                <div
+                                  className="inline-block cursor-pointer"
+                                  onMouseEnter={() => setIsHovered(true)}
+                                  onMouseLeave={() => setIsHovered(false)}
+                                >
+                                  <Info className="hover:opacity-100" />
                                 </div>
+                                {/* Description box */}
+                                {isHovered && (
+                                  <div className="absolute left-0 top-full mt-2 w-max p-2 text-sm text-white bg-gray-800 rounded-md shadow-md z-10">
+                                    {input?.description}
+                                  </div>
+                                )}
                               </div>
                             )}
                           </div>
@@ -462,22 +476,24 @@ const Run: React.FC<Props> = ({
                                   );
                                 default:
                                   return (
-                                    <input
-                                      type={
-                                        input?.type === "number"
-                                          ? "number"
-                                          : input?.type === "textarea"
-                                            ? "textarea"
-                                            : "text"
-                                      }
-                                      placeholder={input?.placeholder}
-                                      className="w-full p-4 h-[46px] border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
-                                      value={input?.default_value}
-                                      onChange={e =>
-                                        handleChangeInput(e.target.value, idx)
-                                      }
-                                      required={input?.required}
-                                    />
+                                    <>
+                                      <input
+                                        type={
+                                          input?.type === "number"
+                                            ? "number"
+                                            : input?.type === "textarea"
+                                              ? "textarea"
+                                              : "text"
+                                        }
+                                        placeholder={input?.placeholder}
+                                        className="w-full p-4 h-[46px] border border-gray-100 bg-[#F9F9F9] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-green/60 transition"
+                                        value={input?.default_value}
+                                        onChange={e =>
+                                          handleChangeInput(e.target.value, idx)
+                                        }
+                                        required={input?.required}
+                                      />
+                                    </>
                                   );
                               }
                             })()}

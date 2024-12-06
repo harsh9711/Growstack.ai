@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { dummyData3 } from "../data";
 import Image from "next/image";
 import { useAppSelector } from "@/lib/hooks";
@@ -12,7 +12,17 @@ const TopRightPanel2nd = ({ setActiveTab, activeTab }: any) => {
   const handleClick = (index: number) => {
     setActiveIndex(index);
     setActiveTab(index);
+    localStorage.setItem('workflowActiveTab', index.toString());
   };
+ 
+  useEffect(() => {
+    const savedTab = localStorage.getItem('workflowActiveTab');
+    if (savedTab) {
+      setActiveTab(parseInt(savedTab));
+    }else{
+      setActiveTab(0);
+    }
+  }, [setActiveTab]);
 
   return (
     <div
