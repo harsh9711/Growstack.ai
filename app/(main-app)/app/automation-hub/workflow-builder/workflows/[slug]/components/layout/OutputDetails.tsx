@@ -6,7 +6,7 @@ import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { CustomAxiosInstance } from "@/config/axios.config";
+import instance, { CustomAxiosInstance } from "@/config/axios.config";
 
 const OutputDetails = ({
   outputDetailsData,
@@ -45,11 +45,11 @@ const OutputDetails = ({
 
   const handleRerun = async (nodeMasterId: string) => {
     try {
-      const rerunPartialWorkflow = await CustomAxiosInstance().post(
-        `/workflow/${workflowId}/run?previousExecutionId=&${executionId}&startNodeId=${nodeMasterId}`
-      );
-      // const rerunPartialWorkflow = await instance.post(`/workflow/${workflowId}/run?previousExecutionId=&${executionId}&startNodeId=${nodeMasterId}`
+      // const rerunPartialWorkflow = await CustomAxiosInstance().post(
+      //   `/workflow/${workflowId}/run?previousExecutionId=&${executionId}&startNodeId=${nodeMasterId}`
       // );
+      const rerunPartialWorkflow = await instance.post(`/workflow/${workflowId}/run?previousExecutionId=&${executionId}&startNodeId=${nodeMasterId}`
+      );
       if (rerunPartialWorkflow?.data?.executionId) {
         onPollingWithNewId(rerunPartialWorkflow?.data?.executionId);
       }
@@ -59,12 +59,12 @@ const OutputDetails = ({
   };
   const handleReject = async (nodeExecutionId: string) => {
     try {
-      const rejectExecution = await CustomAxiosInstance().patch(
-        `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=false`
-      );
-      // const rejectExecution = await instance.patch(
+      // const rejectExecution = await CustomAxiosInstance().patch(
       //   `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=false`
       // );
+      const rejectExecution = await instance.patch(
+        `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=false`
+      );
       setApproveOutputDataId(rejectExecution?.data);
     } catch (err) {
       console.log("err", err);
@@ -72,12 +72,12 @@ const OutputDetails = ({
   };
   const handleApprove = async (nodeExecutionId: string) => {
     try {
-      const approveExecution = await CustomAxiosInstance().patch(
-        `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=true`
-      );
-      // const approveExecution = await instance.patch(
+      // const approveExecution = await CustomAxiosInstance().patch(
       //   `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=true`
       // );
+      const approveExecution = await instance.patch(
+        `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=true`
+      );
       setApproveOutputDataId(approveExecution?.data);
 
     } catch (err) {

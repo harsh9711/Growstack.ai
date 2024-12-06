@@ -76,16 +76,7 @@ const FileUpload: React.FC<any> = ({
     formData.append("file", acceptedFiles[0]);
 
     try {
-      const response = await CustomAxiosInstance().post(
-        `/workflow/upload`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      // const response = await instance.post(
+      // const response = await CustomAxiosInstance().post(
       //   `/workflow/upload`,
       //   formData,
       //   {
@@ -94,6 +85,15 @@ const FileUpload: React.FC<any> = ({
       //     },
       //   }
       // );
+      const response = await instance.post(
+        `/workflow/upload`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       
       const fileUrl = response?.data?.getS3URL;
       setUploadedFileUrl(fileUrl);

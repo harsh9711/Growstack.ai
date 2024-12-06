@@ -323,10 +323,10 @@ const Run: React.FC<any> = ({
 
   const getWorkflowStats = async () => {
     try {
-      const response = await CustomAxiosInstance().get(
-        `/workflow/${workflowId}/stats`
-      );
-      // const response = await instance.get(`/workflow/${workflowId}/stats`);
+      // const response = await CustomAxiosInstance().get(
+      //   `/workflow/${workflowId}/stats`
+      // );
+      const response = await instance.get(`/workflow/${workflowId}/stats`);
       setWorkflowStatsData(response?.data);
     } catch (error) {
       console.error("Error fetching workflow stats data", error);

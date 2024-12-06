@@ -43,7 +43,7 @@ const TimeLineTable = ({
   const getHistoryData = useCallback(async () => {
     try {
 
-      const getHistory = await instance.post(
+      const getHistory = await instance.get(
         `/workflow/${workflow_id}/history`
       );
 
@@ -60,7 +60,7 @@ const TimeLineTable = ({
   const getScheduleData = useCallback(async () => {
     try {
 
-      const getHistory = await instance.post(
+      const getHistory = await instance.get(
         `/workflow/${workflow_id}/schedules`
       );
       // const getSchedule = await axios.get(
