@@ -2,10 +2,9 @@
 import React, { useEffect, useState } from "react";
 import "../../styles/animate.css";
 import Image from "next/image";
-import { Link, ArrowRight } from "lucide-react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { landingpage, testimonials } from "@/types/data";
+import { landingpage } from "@/types/data";
 import HoverVideoPlayer from "react-hover-video-player";
 
 const Animation = () => {
