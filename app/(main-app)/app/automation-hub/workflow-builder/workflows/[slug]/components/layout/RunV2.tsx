@@ -387,6 +387,19 @@ const Run: React.FC<any> = ({
     setIsInputParameterOpen(!IsInputParameterOpen);
   };
 
+  const isWorkflowDisabled = (inputConfigs: any[]) => {
+    return inputConfigs.some((config: any) => {
+      if (config.required) {
+        if (config.type === "checkbox") {
+          return !config.selected_values || config.selected_values.length === 0;
+        } else {
+          return !config.default_value || config.default_value.length === 0;
+        }
+      }
+      return false;
+    });
+  };
+
   return (
     <div className="px-8 pb-8">
       <div>
@@ -547,10 +560,7 @@ const Run: React.FC<any> = ({
                         className={clsx(
                           "bg-primary-light-shade-green flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 text-white"
                         )}
-                          // disabled={workFlowData?.input_configs?.some(
-                          //   (data: any) =>
-                          //     data?.required && (data?.default_value?.length === 0 || data?.selected_values?.length === 0)
-                          // )}  // Will be update 
+                        disabled={isWorkflowDisabled(workFlowData?.input_configs)}
                         onClick={handleRunWorkFlow}
                       >
                         {isLoading && <Spinner />}
@@ -561,9 +571,7 @@ const Run: React.FC<any> = ({
                           "bg-transparent border-2 border-green-200 flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 "
                         )}
                         onClick={() => setIsSchedulerModalOpen(true)}
-                        // disabled={workFlowData?.input_configs?.some(
-                        //   (data: any) => data?.default_value?.length === 0
-                        // )} // will be update 
+                        disabled={isWorkflowDisabled(workFlowData?.input_configs)}
                       >
                         <Clock size={20} color="#2DA771" />
                         <h2 className="text-primary-light-shade-green">
