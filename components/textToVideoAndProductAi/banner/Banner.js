@@ -18,7 +18,7 @@ function Banner() {
                   AI backdrop
                 </h2>
                 <p>
-                  Our innovative AI features seamlessly converts your written
+                  Our innovative AI features seamlessly convert your written
                   text into dynamic, engaging videos. Whether you're a marketer,
                   educator, blogger, or business owner, our tool helps you bring
                   your words to life, enhancing your communication and
@@ -26,7 +26,7 @@ function Banner() {
                 </p>
                 <div className="btns reverse">
                   <Link href="/auth/register" className="sheen">
-                    Get free trial{" "}
+                    Get a free trial{" "}
                     <svg
                       width="21"
                       height="16"

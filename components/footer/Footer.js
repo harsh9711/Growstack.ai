@@ -34,7 +34,7 @@ function Footer() {
                 href="/auth/register"
                 className="border border-primary-light-green px-4 py-2 rounded-lg text-lg transition-colors duration-300 text-[#2DA771] hover:bg-gradient-to-b from-[#2DA771] to-[#003F23] hover:text-white"
               >
-                Get 7-day free trial
+                Get a 7-day free trial
               </Link>
             </div>
           </div>
@@ -321,7 +321,7 @@ function Footer() {
                 href="/auth/register"
                 className="border border-primary-light-green px-4 py-2 rounded-lg text-lg transition-colors duration-300 text-[#2DA771] hover:bg-primary-light-green hover:text-white"
               >
-                Get 7-day free trial
+                Get a 7-day free trial
               </Link>
             </div>
           </div>

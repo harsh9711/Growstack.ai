@@ -26,7 +26,7 @@ function Footer() {
                 Get a demo
               </Link>
               <Link href="/auth/register" className="sheen">
-                Get 7-day free trial
+                Get a 7-day free trial
               </Link>
             </div>
           </div>
