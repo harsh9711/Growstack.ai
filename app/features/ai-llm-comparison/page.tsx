@@ -54,7 +54,7 @@ const page = () => {
                       <Link href="/demo" className="no-underline">
                         {" "}
                         <button className="border border-black flex items-center gap-2 text-black hover:font-bold font-medium sm:py-4 sm:px-7 p-2 rounded-xl shadow-md shadow-[#00000025]">
-                          Get demo
+                          Get a demo
                           <ArrowRight className="text-black" />
                         </button>
                       </Link>
