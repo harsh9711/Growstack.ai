@@ -30,6 +30,12 @@ import { RootState } from "@/lib/store";
 import { useSelector } from "react-redux";
 import UpgradePlan from "@/components/upgradePlan/upgradePlan";
 
+interface PlanUsage {
+  plan_id: string;
+  plan_type: string;
+  stripe_subscription_id: string;
+  usage_amount: number
+}
 interface ProductAI {
   img_url: string | null;
   remove_bg_toggle: boolean;
@@ -62,6 +68,8 @@ export default function Home() {
   const [openPostModel, setOpenPostModel] = useState(false);
   const [page, setPage] = useState(1);
   const limit = 10;
+  const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
+
   const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] =
     useState<boolean>(false);
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState<boolean>(false);
@@ -141,6 +149,8 @@ export default function Home() {
       );
       setTotalPages(response.data.data.metadata.totalPages);
       setCurrentPage(page);
+      fetchPlanUsage();
+
     } catch (error) {
       console.error("Error fetching history:", error);
       toast.error("Failed to fetch history");
@@ -160,7 +170,7 @@ export default function Home() {
     }));
     try {
       const { img_url, user_prompt, remove_bg_toggle, numOfImages } = productAI;
-      if(!user_prompt){
+      if (!user_prompt) {
         toast.error("Please Give a prompt");
         return
       }
@@ -182,14 +192,14 @@ export default function Home() {
       }
       fetchHistory();
       setLoading(false);
-    } catch (error:any) {
+    } catch (error: any) {
       console.error("Error removing background:", error);
       setLoading(false);
-      if(error?.response?.data?.message){
-        toast.error("Failed to process image due to "+ error?.response?.data?.message);
-      }else{
+      if (error?.response?.data?.message) {
+        toast.error("Failed to process image due to " + error?.response?.data?.message);
+      } else {
         toast.error("Failed to process image");
-        
+
       }
     }
   };
@@ -219,10 +229,10 @@ export default function Home() {
       }
       fetchHistory();
       setLoading(false);
-    } catch (error:any) {
-      if(error?.response?.data?.message){
-        toast.error("Failed to process image due to "+ error?.response?.data?.message);
-      }else{
+    } catch (error: any) {
+      if (error?.response?.data?.message) {
+        toast.error("Failed to process image due to " + error?.response?.data?.message);
+      } else {
         toast.error("Failed to process image");
       }
     }
@@ -290,15 +300,15 @@ export default function Home() {
       }
       fetchHistory();
       setLoading(false);
-    } catch (error:any) {
+    } catch (error: any) {
       console.error("Error removing background:", error);
-      console.log("error***********",error)
+      console.log("error***********", error)
       setLoading(false);
-      if(error?.response?.data?.message){
-        toast.error("Failed to process image due to "+ error?.response?.data?.message);
-      }else{
+      if (error?.response?.data?.message) {
+        toast.error("Failed to process image due to " + error?.response?.data?.message);
+      } else {
         toast.error("Failed to process image");
-        
+
       }
     }
   };
@@ -348,6 +358,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchHistory();
+    fetchPlanUsage();
   }, [favImage]);
   const handleNumOfImagesChange = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -450,12 +461,39 @@ export default function Home() {
     });
   };
 
+  const fetchPlanUsage = async () => {
+    try {
+      const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
+      const data: PlanUsage = response.data.data;
+      setPlanUsage(data);
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error("Error fetching plan usage:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const filteredImages = productAI.favorites_bg_toggle
     ? (result?.filter(image => likedImages[image]) ?? [])
     : result;
 
   return (
     <>
+      <div className="grid justify-items-end">
+        <div className="flex">
+          <svg width="14" height="21" viewBox="0 0 14 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5.75349 1H12.4815L8.23221 7.01975H12.4815L2.3541 18.2802L5.8243 10.6316H2L5.75349 1Z" fill="#F9DE6F" stroke="#F9DE6F" stroke-width="0.791016" stroke-miterlimit="10" />
+          </svg> &nbsp;<h1 className="text ">
+            Your Token Balance is :<strong style={{ color: "#2DA771" }}> {planUsage?.usage_amount ? planUsage.usage_amount * 100 : 0} </strong>
+          </h1>
+        </div>
+
+      </div>
       <div className="ml-1 mb-3 mt-3">
         <h2 className="text-m sm:text-lg font-semibold">AI backdrop</h2>
       </div>
@@ -864,13 +902,11 @@ export default function Home() {
                       className="w-full h-36 object-cover"
                     />
                     <button
-                      className={`absolute top-2 left-2 p-1 rounded-full shadow-md transition-colors duration-200 ${
-                        image.favourite ? "text-red-500" : "text-gray-500"
-                      } hover:bg-gray-100`}
+                      className={`absolute top-2 left-2 p-1 rounded-full shadow-md transition-colors duration-200 ${image.favourite ? "text-red-500" : "text-gray-500"
+                        } hover:bg-gray-100`}
                       onClick={() => updateFavourite(image, image.favourite)}
-                      aria-label={`${
-                        image.favourite ? "Unlike" : "Like"
-                      } image with ID ${image.id}`}
+                      aria-label={`${image.favourite ? "Unlike" : "Like"
+                        } image with ID ${image.id}`}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
