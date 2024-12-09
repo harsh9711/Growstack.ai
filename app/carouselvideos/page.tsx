@@ -6,41 +6,36 @@ import "swiper/css";
 import { teamvideos } from "@/types/data";
 
 function App() {
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(0);
-  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  const [manualHover, setManualHover] = useState(false);
-
+  const [playingVideoIndex, setPlayingVideoIndex] = useState<number | null>(
+    null
+  );
   const swiperRef = useRef<any>(null);
 
-  useEffect(() => {
-    if (!manualHover) {
-      const interval = setInterval(() => {
-        setHoveredIndex(prev => {
-          if (prev === null) return 0;
-          return (prev + 1) % teamvideos.length;
-        });
-      }, 4000);
-
-      return () => clearInterval(interval);
-    }
-  }, [manualHover]);
-
-  const handleVideoHover = (index: number) => {
-    setManualHover(true);
-    setHoveredIndex(index);
-  };
-
-  const handleVideoLeave = () => {
-    setManualHover(false);
-  };
-
   const handlePlayVideo = (index: number) => {
-    setHoveredIndex(index);
-    swiperRef.current?.autoplay.stop();
+    setPlayingVideoIndex(index);
+    swiperRef.current?.autoplay.stop(); // Stop Swiper autoplay
   };
+
+  const handleStopVideo = () => {
+    setPlayingVideoIndex(null);
+    swiperRef.current?.autoplay.start(); // Resume Swiper autoplay
+  };
+
+  useEffect(() => {
+    // Pause all videos except the one that should be playing
+    const videos = document.querySelectorAll("video");
+    videos.forEach((video, index) => {
+      if (playingVideoIndex === index) {
+        video.play();
+      } else {
+        video.pause();
+        video.currentTime = 0;
+      }
+    });
+  }, [playingVideoIndex]);
 
   return (
-    <div className=" bg-[url('/backd.svg')] bg-cover  bg-no-repeat py-12">
+    <div className="bg-[url('/backd.svg')] bg-cover bg-no-repeat py-12">
       <div className="max-w-6xl mx-auto px-4 mb-8">
         <div className="flex justify-between items-center mb-12">
           <div className="space-y-4">
@@ -52,8 +47,10 @@ function App() {
             </h1>
           </div>
           <div className="bg-emerald-900/30 text-emerald-400 rounded-full px-4 py-2">
-            <span>0{currentVideoIndex + 1}</span> /{" "}
-            <span>{teamvideos.length}</span>
+            <span>
+              0{playingVideoIndex !== null ? playingVideoIndex + 1 : 1}
+            </span>{" "}
+            / <span>{teamvideos.length}</span>
           </div>
         </div>
 
@@ -68,7 +65,7 @@ function App() {
           loop
           speed={1000}
           modules={[Autoplay]}
-          onSlideChange={({ activeIndex }) => setCurrentVideoIndex(activeIndex)}
+          onSwiper={swiper => (swiperRef.current = swiper)}
           breakpoints={{
             320: { slidesPerView: 3.5 },
             640: { slidesPerView: 2.5 },
@@ -76,34 +73,21 @@ function App() {
             1024: { slidesPerView: 3.5 },
           }}
           className="w-full"
-          onSwiper={swiper => (swiperRef.current = swiper)}
         >
           {teamvideos.map((item, index) => (
             <SwiperSlide key={index}>
               <div
                 className={`relative group transition-all duration-300 rounded-2xl ${
-                  hoveredIndex === index
-                    ? "ring-4 ring-red-500 ring-opacity-75 scale-105 animate-pulse-border"
+                  playingVideoIndex === index
+                    ? "ring-4 ring-red-500 ring-opacity-75 scale-105"
                     : ""
                 }`}
-                onMouseEnter={() => handleVideoHover(index)}
-                onMouseLeave={handleVideoLeave}
               >
                 <video
                   loop
                   muted
                   playsInline
                   className="w-full h-full sm:h-[500px] object-cover rounded-2xl"
-                  ref={el => {
-                    if (el) {
-                      if (hoveredIndex === index) {
-                        el.play();
-                      } else {
-                        el.pause();
-                        el.currentTime = 0;
-                      }
-                    }
-                  }}
                 >
                   <source src={item.videoUrl} type="video/mp4" />
                   Your browser does not support the video tag.
@@ -113,7 +97,7 @@ function App() {
                   className="absolute inset-0 flex items-center justify-center"
                   onClick={() => handlePlayVideo(index)}
                 >
-                  {hoveredIndex !== index && (
+                  {playingVideoIndex !== index && (
                     <div className="w-16 h-16 bg-[#2DA771] rounded-full ring-4 ring-white grid place-items-center hover:bg-[#2DA771]/90 transition-all duration-300">
                       <svg
                         className="ml-1 w-6 h-6"
@@ -130,19 +114,16 @@ function App() {
                   )}
                 </div>
 
-                {hoveredIndex === index && (
-                  <div className="absolute bottom-0 left-0 w-full h-1 bg-red-500/20">
-                    <div className="h-full bg-red-500 animate-progress-bar"></div>
+                {/* {playingVideoIndex === index && (
+                  <div
+                    className="absolute inset-0 flex items-center justify-center bg-black/50 cursor-pointer"
+                    onClick={handleStopVideo}
+                  >
+                    <span className="text-white text-lg font-semibold">
+                      Stop
+                    </span>
                   </div>
-                )}
-
-                <div
-                  className={`absolute inset-0 rounded-2xl transition-opacity duration-300 ${
-                    hoveredIndex === index
-                      ? "bg-gradient-to-t from-black/50 to-transparent opacity-100"
-                      : "opacity-0"
-                  }`}
-                ></div>
+                )} */}
               </div>
             </SwiperSlide>
           ))}
