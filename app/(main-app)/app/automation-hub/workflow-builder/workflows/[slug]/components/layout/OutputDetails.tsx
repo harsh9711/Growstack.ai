@@ -31,17 +31,6 @@ const OutputDetails = ({
     return cleanText?.trim();
   };
 
-  const handleCopy = (content: string) => {
-    navigator.clipboard
-      .writeText(content)
-      .then(() => {
-        toast.success("Content copied to clipboard");
-      })
-      .catch(err => {
-        toast.error("Failed to copy content");
-        console.error("Failed to copy content: ", err);
-      });
-  };
 
   const handleRerun = async (nodeMasterId: string) => {
     try {
@@ -84,6 +73,26 @@ const OutputDetails = ({
       console.log("err", err);
     }
   };
+
+  const handleCopy = (value: any) => {
+    if (value !== undefined && value !== null) {
+      const textToCopy =
+        typeof value === "object"
+          ? JSON.stringify(value, null, 2)
+          : String(value);
+      navigator.clipboard
+        .writeText(textToCopy)
+        .then(() => {
+          console.log("copied");
+        })
+        .catch(err => {
+          console.error("Failed to copy: ", err);
+        });
+    } else {
+      alert("Nothing to copy");
+    }
+  };
+
   return (
     <>
       <div className="w-full bg-white border-l-4 border-[#FB8491] rounded-lg shadow-md p-4 relative overflow-hidden">
@@ -131,7 +140,7 @@ const OutputDetails = ({
                           } else if (Array.isArray(item?.value)) {
                             if (
                               item?.value.every(
-                                (val:any) =>
+                                (val: any) =>
                                   typeof val === "string" &&
                                   val.startsWith("https://")
                               )
@@ -157,7 +166,8 @@ const OutputDetails = ({
                               );
                             } else if (
                               item?.value.every(
-                                (val:any) => typeof val === "object" && val !== null
+                                (val: any) =>
+                                  typeof val === "object" && val !== null
                               )
                             ) {
                               // Render array of objects as key-value pairs
@@ -166,7 +176,7 @@ const OutputDetails = ({
                                   {item?.value.map((obj: any, idx: number) => (
                                     <li key={idx} className="mb-2">
                                       {Object.entries(obj).map(
-                                        ([key, value]) => (
+                                        ([key, value]: any) => (
                                           <div key={key}>
                                             <strong>{key}:</strong>{" "}
                                             {JSON.stringify(value)}
@@ -195,10 +205,14 @@ const OutputDetails = ({
                             return (
                               <div>
                                 {Object.entries(item?.value).map(
-                                  ([key, value]) => (
+                                  ([key, value]: any) => (
                                     <div key={key}>
                                       <strong>{key}:</strong>{" "}
-                                      {JSON.stringify(value)}
+                                      {value?.startsWith(value) ? (
+                                        <a target="">{value}</a>
+                                      ) : (
+                                        JSON.stringify(value)
+                                      )}
                                     </div>
                                   )
                                 )}
