@@ -103,7 +103,7 @@ const TextArea = ({
   };
   return (
     <>
-      <div className="font-medium  text-xl mb-2 capitalize">
+      <div className="nodrag font-medium  text-xl mb-2 capitalize">
         {option.variable_label}
       </div>
       <textarea
@@ -119,7 +119,7 @@ const TextArea = ({
             ? option.input_placeholder
             : "Please write here"
         }
-        className=" w-full bg-[#F5F5F5] rounded-xl block resize-none p-4 text-[15px]"
+        className="w-full bg-[#F5F5F5] rounded-xl block resize-none p-4 text-[15px]"
       ></textarea>
       <SuggestionDropdown
         dropdownRef={dropdownRef}

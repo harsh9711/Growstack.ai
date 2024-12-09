@@ -23,30 +23,47 @@ const LlmNodes = memo(
     id,
     positionAbsoluteX,
     positionAbsoluteY,
+    parentId
   }: NodeProps<ShortTextNodeProps>) => {
     // const { parameters, nodeMasterId } = data;
     const dispatch = useAppDispatch();
     const { success } = useSnackbar();
     const { workFlowData } = useAppSelector(state => state.workflows);
-    const { isLoading, variables, nodes } = useAppSelector(
-      state => state.nodes
-    );
-
+    const { isLoading, nodes } = useAppSelector(state => state.nodes);
     const node = useAppSelector(state =>
       state.nodes.nodes.find(node => node.id === id)
     );
-
     const { setNodes } = useReactFlow();
-
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
     const [isEdit, setIsEdit] = useState(true);
+    const [shake, setShake] = useState(false);
     const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
     const [description, setDescription] = useState(data?.descriptions || "");
     const [dependencies, setDependencies] = useState<
       { key: string; nodeId: string }[]
-    >([]);
+    >(node?.data.dependencies || []);
+
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
+    const [isActionModalShow, setIsActionModalShow] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+
+    useEffect(() => {
+      if (parentId) {
+        setDependencies(prevDependencies => {
+          const newDependency = { key: "parent", nodeId: parentId };
+          const exists = prevDependencies.some(dep => dep.nodeId === parentId);
+          if (exists) {
+            return prevDependencies;
+          }
+          return [...prevDependencies, newDependency];
+        });
+      }
+
+      return () => { };
+    }, [parentId]);
+
 
     const handleToggleAdvancedOptions = () => {
       setShowAdvancedOptions(!showAdvancedOptions);
@@ -58,8 +75,13 @@ const LlmNodes = memo(
 
     const handleInputChange = useCallback(
       (key: any, type: any, value: any, dependency?: string) => {
-        console.log("key-->", key, "type-->", type, "value-->", value);
+        if (!isEdit) {
+          setShake(true);
+          setTimeout(() => setShake(false), 500);
+          return;
+        }
 
+        console.log("key-->", key, "type-->", type, "value-->", value);
         console.log("dependencies-->", dependency);
 
         dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
@@ -69,7 +91,6 @@ const LlmNodes = memo(
         if (value && value.includes("$")) {
           const index = nodes.findIndex(nds => nds.id === id);
           const variableName = getVariableName(nodes, index);
-          console.log("variableName-->", variableName);
           if (dependency) {
             setDependencies(prevDependencies => {
               const newDependency = { key, nodeId: dependency };
@@ -81,6 +102,7 @@ const LlmNodes = memo(
             });
           }
           const regex = /\$(?!\s*$).+/;
+          console.log("0000regex.test(value)000", regex.test(value));
           if (regex.test(value)) {
             setVariableNames([]);
           } else {
@@ -95,8 +117,10 @@ const LlmNodes = memo(
           setVariableNames([]);
         }
       },
-      [dispatch, id, nodes, dependencies, variableNames]
+      [dispatch, id, nodes, dependencies, variableNames, isEdit, shake]
     );
+
+    // console.log('----dependencies----', dependencies);
 
     const handleNextClick = async () => {
       if (!node?.data?.parameters) return;
@@ -149,8 +173,8 @@ const LlmNodes = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-                k => node.data.parameters?.[k] === param
-              )
+              k => node.data.parameters?.[k] === param
+            )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -177,10 +201,6 @@ const LlmNodes = memo(
       success("Node delete successfully");
     };
 
-    // ON CLICK OPEN & CLOSE ACTION MODAL
-    const [isActionModalShow, setIsActionModalShow] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement | null>(null);
-
     const handleOpenActionModal = () => {
       setIsActionModalShow(!isActionModalShow);
     };
@@ -205,14 +225,14 @@ const LlmNodes = memo(
     }, [handleClickOutside]);
 
     //ONCLICK OPEN DELETE CONFIRMATION MODAL
-    const [openDeleteConfirmationModal, setopenDeleteConfirmationModal] =
+    const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] =
       React.useState(false);
 
     const handleCloseDeleteConfirmationModal = () => {
-      setopenDeleteConfirmationModal(false);
+      setOpenDeleteConfirmationModal(false);
     };
-    const handleOpenDeleteConfimationModal = () => {
-      setopenDeleteConfirmationModal(true);
+    const handleOpenDeleteConfirmationModal = () => {
+      setOpenDeleteConfirmationModal(true);
       setIsActionModalShow(false);
     };
 
@@ -234,7 +254,6 @@ const LlmNodes = memo(
           <div className="node-top-box relative">
             <div className="node-name-text-description text-center mb-2">
               <h4 className="text-sm font-medium text-[#2DA771]">
-                {" "}
                 {data?.label || ""}
               </h4>
 
@@ -286,7 +305,7 @@ const LlmNodes = memo(
                       <ul className="py-2">
                         <li className="px-4 py-2 cursor-pointer">
                           <button
-                            onClick={handleOpenDeleteConfimationModal}
+                            onClick={handleOpenDeleteConfirmationModal}
                             className="delete-button flex items-center gap-2 text-[15px] text-[#212833] font-medium w-full cursor-pointer"
                           >
                             <img
@@ -375,9 +394,7 @@ const LlmNodes = memo(
                           key={key}
                           inputKey={key}
                           param={param}
-                          handleInputChange={
-                            isEdit ? handleInputChange : () => {}
-                          }
+                          handleInputChange={handleInputChange}
                           variableNames={variableNames}
                           focusedInputKey={focusedInputKey}
                           setFocusedInputKey={setFocusedInputKey}
@@ -415,7 +432,7 @@ const LlmNodes = memo(
                     >
                       {isLoading ? (
                         <div className="flex justify-center items-center">
-                          <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
+                          <div className="loader ease-linear rounded-full border-4 border-gray-200 border-t-4 border-t-[#2DA771] h-6 w-6" />
                         </div>
                       ) : (
                         "Save"
@@ -426,7 +443,8 @@ const LlmNodes = memo(
                   <div className="submit-button">
                     <button
                       onClick={handleEditClick}
-                      className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
+                      // className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
+                      className={`bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px] ${shake ? "shake" : ""}`}
                     >
                       Edit
                     </button>

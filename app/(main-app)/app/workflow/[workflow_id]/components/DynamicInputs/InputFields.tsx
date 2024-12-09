@@ -1,6 +1,6 @@
 import { DynamicInputProps } from "@/types/workflows";
 import { getTypeFromParam } from "@/utils/dataResolver";
-import React from "react";
+import React, { memo } from "react";
 import Tooltip from "../tooltip/Tooltip";
 
 const InputFields: React.FC<DynamicInputProps> = ({
@@ -15,6 +15,7 @@ const InputFields: React.FC<DynamicInputProps> = ({
         if (!setFocusedInputKey) return;
         setFocusedInputKey(inputKey);
     };
+
     return (
         <div key={inputKey} className="input-box mb-3">
             <div className="label-box flex gap-2 items-center mb-1 relative">
@@ -28,12 +29,12 @@ const InputFields: React.FC<DynamicInputProps> = ({
                     position="bottom-full left-[-23px]"
                 />
             </div>
-            <div className="input-group">
+            <div className="nodrag input-group">
                 <input
                     type={getTypeFromParam(param.type)}
                     value={param?.value || ""}
                     placeholder={param?.placeholder || ""}
-                    className="form-control shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
+                    className="nopan nodrag form-control shadow-none w-full p-4 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
                     required={!!param.required}
                     onChange={e =>
                         handleInputChange(inputKey, param.type, e.target.value)
@@ -63,6 +64,7 @@ const InputFields: React.FC<DynamicInputProps> = ({
                             ))}
                         </ul>
                     )}
+
                 {param?.error && (
                     <p className="ml-2 text-red-500 mt-1">{param?.error}</p>
                 )}
@@ -71,5 +73,4 @@ const InputFields: React.FC<DynamicInputProps> = ({
     );
 };
 
-
-export default InputFields
+export default memo(InputFields);

@@ -221,6 +221,28 @@ export const resolveWorkflowNodes = (nodes?: WorkflowNodeState[]) => {
           })
         : node.subNodes;
 
+    // const dependencies: { key: string; nodeId: string }[] = [];
+
+    // Object.entries(updatedParameters).forEach(([key, param]) => {
+    //   const value = param?.value;
+    //   if (typeof value === "string") {
+    //     const regex = /\$\{([^}]+)\}/;
+    //     const match = value.match(regex);
+    //     if (match) {
+    //       const variableName = match[1];
+    //       nodes.forEach(n => {
+    //         Object.entries(n.parameters || {}).forEach(([k, p]) => {
+    //           if (p.variableName === variableName) {
+    //             dependencies.push({ key, nodeId: n._id });
+    //           }
+    //         });
+    //       });
+    //     }
+    //   }
+    // });
+
+    // console.log("dependencies---from", dependencies);
+
     return {
       id: node._id,
       position: node.position,
@@ -234,6 +256,11 @@ export const resolveWorkflowNodes = (nodes?: WorkflowNodeState[]) => {
         label: (node.nodeMasterId as any)?.name,
         description: (node.nodeMasterId as any)?.description,
         icon: (node.nodeMasterId as any)?.logoUrl,
+        dependencies:
+          node?.dependencies?.map(item => ({
+            key: "",
+            nodeId: item,
+          })) || [],
       },
     };
   });

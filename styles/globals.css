@@ -36,6 +36,39 @@
   font-display: swap;
 }
 
+@keyframes blink-bg {
+  0%,
+  100% {
+    background-color: #2da771;
+    transform: scale(1);
+  }
+  50% {
+    background-color: rgba(45, 167, 113, 0.4); /* #2DA771 with 40% opacity */
+    transform: scale(0.98);
+  }
+}
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  50% { transform: translateX(5px); }
+  75% { transform: translateX(-5px); }
+  100% { transform: translateX(0); }
+}
+
+.shake {
+  animation: shake 0.5s;
+}
+
+.blink-animation {
+  animation: blink-bg 2s ease-in-out infinite;
+}
+
+.blink-animation:hover {
+  animation: none;
+  background-color: #2da771;
+}
+
 * {
   font-family: "PoppinsRegular" !important;
 }
