@@ -104,8 +104,8 @@ const CreateScript = () => {
             thumbnailUrl: item.thumbnailUrl,
           }))
         );
-      } catch (error) {
-        toast.error("Error fetching avatars");
+      } catch (error:any) {
+        toast.error("Error fetching avatars due to "+ error.message);
       } finally {
         setLoading(false);
       }
