@@ -221,27 +221,37 @@ export const resolveWorkflowNodes = (nodes?: WorkflowNodeState[]) => {
           })
         : node.subNodes;
 
-    // const dependencies: { key: string; nodeId: string }[] = [];
+    const dependencies: { key: string; nodeId: string }[] = [];
 
-    // Object.entries(updatedParameters).forEach(([key, param]) => {
-    //   const value = param?.value;
-    //   if (typeof value === "string") {
-    //     const regex = /\$\{([^}]+)\}/;
-    //     const match = value.match(regex);
-    //     if (match) {
-    //       const variableName = match[1];
-    //       nodes.forEach(n => {
-    //         Object.entries(n.parameters || {}).forEach(([k, p]) => {
-    //           if (p.variableName === variableName) {
-    //             dependencies.push({ key, nodeId: n._id });
-    //           }
-    //         });
-    //       });
-    //     }
-    //   }
-    // });
-
-    // console.log("dependencies---from", dependencies);
+    Object.entries(node.parameters).forEach(([key, param]) => {
+      // console.log("param----->value", param);
+      // console.log("param----->key", key);
+      const value = param;
+      if (typeof value === "string") {
+        const regex = /\$\{([^}]+)\}/;
+        const match = param?.match(regex);
+        // console.log("match----->", match);
+        if (match && match?.length > 0) {
+          const variableName = match[1];
+          // console.log("--variableName--", variableName);
+          const uniqueDependencies = new Set(
+            dependencies.map(dep => `${dep.key}-${dep.nodeId}`)
+          );
+          nodes.forEach(n => {
+            Object.entries(n.parameters || {}).forEach(([k, p]) => {
+              console.log("p.variableName", p);
+              if (p === variableName) {
+                const dependencyKey = `${key}-${n._id}`;
+                if (!uniqueDependencies.has(dependencyKey)) {
+                  dependencies.push({ key, nodeId: n._id });
+                  uniqueDependencies.add(dependencyKey);
+                }
+              }
+            });
+          });
+        }
+      }
+    });
 
     return {
       id: node._id,
@@ -256,11 +266,11 @@ export const resolveWorkflowNodes = (nodes?: WorkflowNodeState[]) => {
         label: (node.nodeMasterId as any)?.name,
         description: (node.nodeMasterId as any)?.description,
         icon: (node.nodeMasterId as any)?.logoUrl,
-        dependencies:
-          node?.dependencies?.map(item => ({
-            key: "",
-            nodeId: item,
-          })) || [],
+        dependencies: dependencies,
+        // node?.dependencies?.map(item => ({
+        //   key: "",
+        //   nodeId: item,
+        // })) || [],
       },
     };
   });

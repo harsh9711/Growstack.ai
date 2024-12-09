@@ -23,7 +23,7 @@ const LlmNodes = memo(
     id,
     positionAbsoluteX,
     positionAbsoluteY,
-    parentId
+    parentId,
   }: NodeProps<ShortTextNodeProps>) => {
     // const { parameters, nodeMasterId } = data;
     const dispatch = useAppDispatch();
@@ -48,7 +48,6 @@ const LlmNodes = memo(
     const [isActionModalShow, setIsActionModalShow] = useState(false);
     const dropdownRef = useRef<HTMLDivElement | null>(null);
 
-
     useEffect(() => {
       if (parentId) {
         setDependencies(prevDependencies => {
@@ -63,7 +62,6 @@ const LlmNodes = memo(
 
       return () => { };
     }, [parentId]);
-
 
     const handleToggleAdvancedOptions = () => {
       setShowAdvancedOptions(!showAdvancedOptions);
@@ -102,7 +100,6 @@ const LlmNodes = memo(
             });
           }
           const regex = /\$(?!\s*$).+/;
-          console.log("0000regex.test(value)000", regex.test(value));
           if (regex.test(value)) {
             setVariableNames([]);
           } else {
@@ -119,8 +116,6 @@ const LlmNodes = memo(
       },
       [dispatch, id, nodes, dependencies, variableNames, isEdit, shake]
     );
-
-    // console.log('----dependencies----', dependencies);
 
     const handleNextClick = async () => {
       if (!node?.data?.parameters) return;
