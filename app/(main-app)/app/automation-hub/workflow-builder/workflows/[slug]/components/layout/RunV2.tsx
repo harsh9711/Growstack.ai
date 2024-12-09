@@ -181,7 +181,7 @@ const Run: React.FC<any> = ({
   const handleRunWorkFlow = useCallback(async () => {
     const updatedWorkflowData = workFlowData.input_configs.map((data: any) => ({
       variableName: data.variableName,
-      variableValue: data.default_value,
+      variableValue: data.type === "checkbox" ? data.selected_values : data.default_value,
     }));
     setIsLoading(true);
     try {
@@ -197,6 +197,7 @@ const Run: React.FC<any> = ({
       //   `/workflow/${workflowId}/run`,
       //   updatedWorkflowData
       // );
+      getWorkflowStats()
       setExecutionId(response?.data?.executionId);
     } catch (error) {
       // To:Do Handle error
@@ -546,10 +547,10 @@ const Run: React.FC<any> = ({
                         className={clsx(
                           "bg-primary-light-shade-green flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 text-white"
                         )}
-                        disabled={workFlowData?.input_configs?.some(
-                          (data: any) =>
-                            data?.required && data?.default_value?.length === 0
-                        )}
+                          // disabled={workFlowData?.input_configs?.some(
+                          //   (data: any) =>
+                          //     data?.required && (data?.default_value?.length === 0 || data?.selected_values?.length === 0)
+                          // )}  // Will be update 
                         onClick={handleRunWorkFlow}
                       >
                         {isLoading && <Spinner />}
@@ -560,9 +561,9 @@ const Run: React.FC<any> = ({
                           "bg-transparent border-2 border-green-200 flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 "
                         )}
                         onClick={() => setIsSchedulerModalOpen(true)}
-                        disabled={workFlowData?.input_configs?.some(
-                          (data: any) => data?.default_value?.length === 0
-                        )}
+                        // disabled={workFlowData?.input_configs?.some(
+                        //   (data: any) => data?.default_value?.length === 0
+                        // )} // will be update 
                       >
                         <Clock size={20} color="#2DA771" />
                         <h2 className="text-primary-light-shade-green">
