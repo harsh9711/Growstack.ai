@@ -72,7 +72,7 @@ const Run: React.FC<any> = ({
     workflow_id: "",
     description: "",
   });
-  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered, setIsHovered] = useState<any>(null);
   const [approvalsData, setApprovalsData] = useState<any>({});
   const [approveOutputDataId, setApproveOutputDataId] = useState("");
   const [IsInputParameterOpen, setIsInputParameterOpen] = useState(true);
@@ -157,7 +157,7 @@ const Run: React.FC<any> = ({
                   file_type: formParameters?.fileType,
                 };
               }) || []
-            ); 
+            );
           }
         });
 
@@ -229,6 +229,7 @@ const Run: React.FC<any> = ({
             getWorkFlowExecData?.data?.variables[variableName] || "";
           const approvalStatus = nodeExecution?.approvalStatus;
           const approvalRequired = nodeExecution?.parameters?.approvalRequired;
+          const status = nodeExecution?.status;
 
           return {
             nodeMasterId: nodeMasterId,
@@ -237,6 +238,7 @@ const Run: React.FC<any> = ({
             approvalStatus: approvalStatus,
             approvalRequired: approvalRequired,
             nodeExecutionId: nodeExecutionId,
+            status: status,
           };
         }
       );
@@ -263,7 +265,11 @@ const Run: React.FC<any> = ({
         status: status,
         approvalDetails: approvals,
       });
-      if (status === "completed" || status === "awaiting-approval") {
+      if (
+        status === "completed" ||
+        status === "awaiting-approval" ||
+        status === "failed"
+      ) {
         return true;
       }
     } catch (error) {
@@ -271,17 +277,29 @@ const Run: React.FC<any> = ({
     }
     return false;
   }, [executionId, workflowId, approveOutputDataId, approvalsData]);
-
   useEffect(() => {
     if (executionId?.length > 0) {
-      const interval = setInterval(async () => {
-        const shouldStop = await pollingWorkflowExec();
-        if (shouldStop) {
-          clearInterval(interval);
-        }
-      }, 5000);
+      let interval: NodeJS.Timeout;
 
-      return () => clearInterval(interval);
+      const startPolling = async () => {
+        interval = setInterval(async () => {
+          try {
+            const shouldStop = await pollingWorkflowExec();
+            if (shouldStop) {
+              clearInterval(interval);
+            }
+          } catch (error) {
+            console.error("Error during polling:", error);
+            clearInterval(interval); // Clear on error as well, if needed.
+          }
+        }, 5000);
+      };
+
+      startPolling();
+
+      return () => {
+        if (interval) clearInterval(interval);
+      };
     }
   }, [pollingWorkflowExec, executionId]);
 
@@ -416,18 +434,21 @@ const Run: React.FC<any> = ({
                             )}
 
                             {input?.description?.length > 0 && (
-                              <div className="relative">
+                              <div className="relative" key={idx}>
                                 {/* Info icon */}
                                 <div
                                   className="inline-block cursor-pointer"
-                                  onMouseEnter={() => setIsHovered(true)}
-                                  onMouseLeave={() => setIsHovered(false)}
+                                  onMouseEnter={() => setIsHovered(idx)}
+                                  onMouseLeave={() => setIsHovered(null)}
                                 >
                                   <Info className="hover:opacity-100" />
                                 </div>
                                 {/* Description box */}
-                                {isHovered && (
-                                  <div className="absolute left-0 top-full mt-2 w-max p-2 text-sm text-white bg-gray-800 rounded-md shadow-md z-10">
+                                {isHovered === idx && (
+                                  <div
+                                    key={idx}
+                                    className="absolute left-0 top-full mt-2 w-max p-2 text-sm text-white bg-gray-800 rounded-md shadow-md z-10"
+                                  >
                                     {input?.description}
                                   </div>
                                 )}
