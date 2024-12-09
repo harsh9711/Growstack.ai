@@ -19,6 +19,7 @@ import "../../../../../../../../styles/datepicker.css";
 import axios from "axios";
 import FileUpload from "./FileUpload";
 import { Switch } from "@/components/ui/switch";
+import instance, { CustomAxiosInstance } from "@/config/axios.config";
 
 interface SchedulerModalProps {
   show?: boolean;
@@ -96,7 +97,6 @@ function WorkflowSchedulerModal({
       let method = "post";
 
       if (timeLineTable === "true") {
-        url = `http://localhost:5000/workflow/${workFlowData?.workflow_id}/schedule/${workFlowData?._id}`;
         payload = {
           frequency: fields.frequency,
           time: fields.time,
@@ -106,18 +106,31 @@ function WorkflowSchedulerModal({
           workflowPayload: updatedWorkflowData,
         };
         method = "patch";
+        // const response = await CustomAxiosInstance().patch(
+        //   `/workflow/${workFlowData?.workflow_id}/schedule/${workFlowData?._id}`,
+        //   payload
+        // );
+        const response = await instance.patch(
+          `/workflow/${workFlowData?.workflow_id}/schedule/${workFlowData?._id}`,
+          payload
+        );
+        toast.success("Schedule updated successfully");
+        window.dispatchEvent(new Event("schedule-updated"));
+        onHide(false);
       } else {
-        url = `http://localhost:5000/workflow/${workFlowData?.workflow_id}/schedule`;
         payload = { ...fields, workflowPayload: updatedWorkflowData };
+        // const response = await CustomAxiosInstance().post(
+        //   `/workflow/${workFlowData?.workflow_id}/schedule`,
+        //   payload
+        // );
+        const response = await instance.post(
+          `/workflow/${workFlowData?.workflow_id}/schedule`,
+          payload
+        );
+        toast.success("Schedule updated successfully");
+        window.dispatchEvent(new Event("schedule-updated"));
+        onHide(false);
       }
-      const response = await axios({
-        method,
-        url,
-        data: payload,
-      });
-      toast.success("Schedule updated successfully");
-      window.dispatchEvent(new Event("schedule-updated"));
-      onHide(false);
     } catch (error: any) {
       console.error("Error running workflow:", error);
       if (error.response) {
@@ -165,7 +178,7 @@ function WorkflowSchedulerModal({
         timezone: workFlowData?.timezone || "",
       });
     }
-  }, [workFlowData, timeLineTable]);
+  }, [timeLineTable]);
 
   const handleChangeInput = (value: string, idx: number) => {
     const updatedInputs = [...workFlowData.input_configs];
@@ -291,8 +304,8 @@ function WorkflowSchedulerModal({
                                   dayOfWeek: checked
                                     ? [...prevFields.dayOfWeek, day]
                                     : prevFields.dayOfWeek.filter(
-                                        d => d !== day
-                                      ),
+                                      d => d !== day
+                                    ),
                                 }));
                               }}
                             />
@@ -356,11 +369,10 @@ function WorkflowSchedulerModal({
                                   }}
                                   className={`
                                 h-8 w-8 rounded-full flex items-center justify-center text-sm
-                                ${
-                                  fields.dayOfMonth === day.toString()
-                                    ? "bg-primary-green text-white"
-                                    : "hover:bg-gray-100"
-                                }
+                                ${fields.dayOfMonth === day.toString()
+                                      ? "bg-primary-green text-white"
+                                      : "hover:bg-gray-100"
+                                    }
                               `}
                                 >
                                   {day}

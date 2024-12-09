@@ -25,12 +25,12 @@ const TopRightPanel1st = (): React.ReactElement => {
 
             if (!workFlowData._id) return;
 
-            const result = await CustomAxiosInstance().post(
-                `workflow/${workFlowData?._id}/run/`,
-                data
-            );
+            // const result = await CustomAxiosInstance().post(
+            //     `/workflow/${workFlowData?._id}/run/`,
+            //     data
+            // );
 
-            // const result = await instance.post(`/workflows/${workFlowData?._id}/run/`, data);
+            const result = await instance.post(`/workflow/${workFlowData?._id}/run/`, data);
             console.log("Run Workflow", result);
         } catch (error) {
             console.log("Run Workflow Error", error);
