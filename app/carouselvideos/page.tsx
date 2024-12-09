@@ -1,22 +1,21 @@
 "use client";
-import React, { useEffect, useState } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay } from 'swiper/modules';
-import 'swiper/css';
-import { teamvideos } from '@/types/data';
-
-// Mock data for videos
+import React, { useEffect, useRef, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
+import "swiper/css";
+import { teamvideos } from "@/types/data";
 
 function App() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(0);
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [manualHover, setManualHover] = useState(false);
 
-  // Auto cycle through videos every 4 seconds
+  const swiperRef = useRef<any>(null);
+
   useEffect(() => {
     if (!manualHover) {
       const interval = setInterval(() => {
-        setHoveredIndex((prev) => {
+        setHoveredIndex(prev => {
           if (prev === null) return 0;
           return (prev + 1) % teamvideos.length;
         });
@@ -35,9 +34,13 @@ function App() {
     setManualHover(false);
   };
 
+  const handlePlayVideo = (index: number) => {
+    setHoveredIndex(index);
+    swiperRef.current?.autoplay.stop();
+  };
+
   return (
     <div className=" bg-[url('/backd.svg')] bg-cover  bg-no-repeat py-12">
-      {/* Header Section */}
       <div className="max-w-6xl mx-auto px-4 mb-8">
         <div className="flex justify-between items-center mb-12">
           <div className="space-y-4">
@@ -49,7 +52,8 @@ function App() {
             </h1>
           </div>
           <div className="bg-emerald-900/30 text-emerald-400 rounded-full px-4 py-2">
-            <span>0{currentVideoIndex + 1}</span> / <span>{teamvideos.length}</span>
+            <span>0{currentVideoIndex + 1}</span> /{" "}
+            <span>{teamvideos.length}</span>
           </div>
         </div>
 
@@ -72,14 +76,15 @@ function App() {
             1024: { slidesPerView: 3.5 },
           }}
           className="w-full"
+          onSwiper={swiper => (swiperRef.current = swiper)}
         >
           {teamvideos.map((item, index) => (
             <SwiperSlide key={index}>
               <div
                 className={`relative group transition-all duration-300 rounded-2xl ${
                   hoveredIndex === index
-                    ? 'ring-4 ring-red-500 ring-opacity-75 scale-105 animate-pulse-border'
-                    : ''
+                    ? "ring-4 ring-red-500 ring-opacity-75 scale-105 animate-pulse-border"
+                    : ""
                 }`}
                 onMouseEnter={() => handleVideoHover(index)}
                 onMouseLeave={handleVideoLeave}
@@ -89,7 +94,7 @@ function App() {
                   muted
                   playsInline
                   className="w-full h-full sm:h-[500px] object-cover rounded-2xl"
-                  ref={(el) => {
+                  ref={el => {
                     if (el) {
                       if (hoveredIndex === index) {
                         el.play();
@@ -104,25 +109,40 @@ function App() {
                   Your browser does not support the video tag.
                 </video>
 
-                {/* Progress Bar */}
+                <div
+                  className="absolute inset-0 flex items-center justify-center"
+                  onClick={() => handlePlayVideo(index)}
+                >
+                  {hoveredIndex !== index && (
+                    <div className="w-16 h-16 bg-[#2DA771] rounded-full ring-4 ring-white grid place-items-center hover:bg-[#2DA771]/90 transition-all duration-300">
+                      <svg
+                        className="ml-1 w-6 h-6"
+                        viewBox="0 0 16 18"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M15 7.26795C16.3333 8.03775 16.3333 9.96225 15 10.7321L3 17.6603C1.66667 18.4301 1.01267e-06 17.4678 1.07997e-06 15.9282L1.68565e-06 2.0718C1.75295e-06 0.532196 1.66667 -0.430054 3 0.339746L15 7.26795Z"
+                          fill="white"
+                        />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+
                 {hoveredIndex === index && (
                   <div className="absolute bottom-0 left-0 w-full h-1 bg-red-500/20">
                     <div className="h-full bg-red-500 animate-progress-bar"></div>
                   </div>
                 )}
 
-                {/* Hover Overlay */}
                 <div
                   className={`absolute inset-0 rounded-2xl transition-opacity duration-300 ${
                     hoveredIndex === index
-                      ? 'bg-gradient-to-t from-black/50 to-transparent opacity-100'
-                      : 'opacity-0'
+                      ? "bg-gradient-to-t from-black/50 to-transparent opacity-100"
+                      : "opacity-0"
                   }`}
-                >
-                  {/* <div className="absolute top-4 left-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm backdrop-blur-sm">
-                    {index + 1}
-                  </div> */}
-                </div>
+                ></div>
               </div>
             </SwiperSlide>
           ))}

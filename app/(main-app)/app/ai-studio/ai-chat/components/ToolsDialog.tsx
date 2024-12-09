@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Search, ArrowLeft } from "lucide-react";
+import { Search } from "lucide-react";
 
 type MenuItemProps = {
   title: string;
@@ -123,7 +123,6 @@ export default function ToolsDialog({ setInput }: ToolsDialogProps) {
   const [editPromptOpen, setEditPromptOpen] = useState(false);
   const [currentEditTitle, setCurrentEditTitle] = useState<string | null>(null);
   const [showFavourites, setShowFavourites] = useState(false);
-  const [favouritePrompts, setFavouritePrompts] = useState<boolean[]>([]);
   const [errorMessage, setErrorMessage] = useState("");
 
   const [promptLib, setPromptLib] = useState<
@@ -170,7 +169,7 @@ export default function ToolsDialog({ setInput }: ToolsDialogProps) {
       setTitle("");
       setPrompt("");
       setAddPromptOpen(false);
-      setErrorMessage(""); // Clear error message on success
+      setErrorMessage("");
     }
   };
 
@@ -186,7 +185,7 @@ export default function ToolsDialog({ setInput }: ToolsDialogProps) {
       setCurrentEditTitle(selectedPrompt.title);
       setEditPromptOpen(true);
       setAddPromptOpen(false);
-      setErrorMessage(""); // Clear error message when opening the edit dialog
+      setErrorMessage("");
     }
   };
 
@@ -208,7 +207,7 @@ export default function ToolsDialog({ setInput }: ToolsDialogProps) {
       setTitle("");
       setPrompt("");
       setCurrentEditTitle(null);
-      setErrorMessage(""); // Clear error message on success
+      setErrorMessage("");
     }
   };
 
@@ -232,21 +231,12 @@ export default function ToolsDialog({ setInput }: ToolsDialogProps) {
       )
     : promptLib.filter(item => !showFavourites || item.isFavourite);
 
-  const handleCancelEditOrAdd = () => {
+  const handleOpenAddPrompt = () => {
     setEditPromptOpen(false);
-    setAddPromptOpen(false);
     setTitle("");
     setPrompt("");
-    setCurrentEditTitle(null);
-    setErrorMessage(""); // Clear error on cancel
-  };
-
-  const handleOpenAddPrompt = () => {
-    setEditPromptOpen(false); // Ensure edit mode is closed
-    setTitle(""); // Reset title
-    setPrompt(""); // Reset prompt
-    setAddPromptOpen(true); // Open add prompt dialog
-    setErrorMessage(""); // Clear any previous error
+    setAddPromptOpen(true);
+    setErrorMessage("");
   };
 
   return (

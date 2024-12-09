@@ -1,7 +1,7 @@
 import {
   aiModelOptions,
   languageOptions,
-} from "@/app/(main-app)/app/ai-studio/ai-articles/constants/options";
+} from "@/app/(main-app)/app/components/options";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,9 +17,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import clsx from "clsx";
-import { Download, Settings, Share2, UserCircle } from "lucide-react";
-import React, { useState } from "react";
-import { Assistant, Chat, Conversation } from "../../../components/types";
+import { Download, UserCircle } from "lucide-react";
+import React from "react";
+import { Assistant, Conversation } from "../../../components/types";
 import {
   downloadDocx,
   downloadPdf,
@@ -134,9 +134,6 @@ export default function Topbar({
             <h2 className="text-lg font-semibold sm:text-xl">
               {assistant.role}
             </h2>
-            {/* <p className="flex items-center gap-2 text-primary-black text-opacity-70">
-              <span className="h-2 w-2 rounded-full bg-[#68D391]"></span>Online
-            </p> */}
           </div>
         </div>
         <div className="flex items-center gap-2 sm:gap-3">
@@ -155,7 +152,7 @@ export default function Topbar({
               width="24"
               height="24"
               viewBox="0 0 94 84"
-              fill="currentColor" 
+              fill="currentColor"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path d="M66.1699 41.0721L53.2119 41.0691V18.8491C53.2119 17.0401 51.7449 15.5781 49.9409 15.5781C48.1369 15.5781 46.6699 17.0411 46.6699 18.8491V44.3411C46.6699 46.1491 48.1369 47.6121 49.9409 47.6121H49.9459H66.1689C67.9739 47.6121 69.4389 46.1491 69.4389 44.3421C69.4379 42.5381 67.9729 41.0721 66.1699 41.0721Z" />
@@ -164,7 +161,10 @@ export default function Topbar({
           </div>
 
           <div
-            onClick={() => {setHistoryOpen(false); setIsSidebarOpen(!isSidebarOpen);}}
+            onClick={() => {
+              setHistoryOpen(false);
+              setIsSidebarOpen(!isSidebarOpen);
+            }}
             className={`${
               isSidebarOpen
                 ? "bg-[#2DA771] text-white"

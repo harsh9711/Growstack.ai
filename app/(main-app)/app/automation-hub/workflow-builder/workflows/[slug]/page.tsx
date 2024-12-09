@@ -8,7 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import History from "./components/layout/History";
 import Schedules from "./components/layout/Schedules";
-import Run from "./components/layout/Run";
+import Run from "./components/layout/RunV2";
 import { ALL_ROUTES } from "@/utils/constant";
 
 const Page = () => {
@@ -18,7 +18,7 @@ const Page = () => {
   const tabQueryParam = searchParams.get("tab");
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [tabDistanceFromLeft, setDistanceFromLeft] = useState(0);
-  const [workFlowData, setWorkFlowData] = useState<WorkFlowData>({
+  const [workFlowData, setWorkFlowData] = useState<any>({
     name: "",
     actions: [],
     input_configs: [],

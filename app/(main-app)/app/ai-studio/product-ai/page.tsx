@@ -5,14 +5,11 @@ import Spinner from "@/components/Spinner";
 import Dropzone from "./components/Dropzone";
 import { Switch } from "@/components/ui/switch";
 import toast from "react-hot-toast";
-import { FileRejection } from "react-dropzone";
 import instance from "@/config/axios.config";
-import { API_URL } from "@/lib/api";
 import Pagination from "./Pagination";
-import { getCookie } from "cookies-next";
 
 import ResizableRotatableImage from "./dragmove"; // Import the new component
-import { CloseIcon, MessageIcon2, Regenerate } from "@/components/svgs";
+import { Regenerate } from "@/components/svgs";
 
 import {
   Dialog,
@@ -22,13 +19,12 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { DialogTitle } from "@radix-ui/react-dialog";
-import { GenAi, ImgVector } from "@/components/svgs";
-import { parseJsonString } from "@/lib/utils";
 import GlobalModal from "@/components/modal/global.modal";
 import SubscribePlan from "@/components/subscribePlan/subscribePlan";
 import { RootState } from "@/lib/store";
 import { useSelector } from "react-redux";
 import UpgradePlan from "@/components/upgradePlan/upgradePlan";
+import { API_URL } from "@/lib/api";
 
 interface PlanUsage {
   plan_id: string;
@@ -62,7 +58,6 @@ export default function Home() {
   const [numOfImages, setNumOfImages] = useState(1);
   const [result, setResult] = useState<string[] | null>(null);
   const [finalUrl, setFinalUrl] = useState<string[]>([]);
-  const [scale, setScale] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [openPostModel, setOpenPostModel] = useState(false);
@@ -101,7 +96,6 @@ export default function Home() {
     numOfImages: numOfImages | 1,
   };
   const [loading, setLoading] = useState(false);
-  const [generatedText, setGeneratedText] = useState<string>("");
 
   const generatePrompt = async () => {
     try {
@@ -111,7 +105,6 @@ export default function Home() {
       }));
       setIsGenerating(true);
 
-      // Send request to API
       const response: any = await instance.post(
         `/ai/api/v1/generate/aibackdropregenerate`,
         {
@@ -172,7 +165,7 @@ export default function Home() {
       const { img_url, user_prompt, remove_bg_toggle, numOfImages } = productAI;
       if (!user_prompt) {
         toast.error("Please Give a prompt");
-        return
+        return;
       }
       setLoading(true);
       const response = await instance.post(`/ai/api/v1/products/bg-remover`, {
@@ -262,11 +255,9 @@ export default function Home() {
       remove_bg_toggle,
       numOfImages
     );
-    // Log the normalized position and scale in the submit function
     console.log("Normalized Position:", normalizedPosition);
     console.log("Normalized Scale:", normalizedScale);
     if (!remove_bg_toggle) {
-      // Open dialog if remove_bg_toggle is false
       setOpenPostModel(true);
       return;
     }
@@ -342,20 +333,6 @@ export default function Home() {
     }
   };
 
-  const handleDownloadAll = async () => {
-    setLoading(true);
-
-    try {
-      for (const image of selectedImages) {
-        handleDownload(image);
-      }
-    } catch (error) {
-      console.error("Download error:", error);
-    } finally {
-      setLoading(false); // Set loading to false after all downloads
-    }
-  };
-
   useEffect(() => {
     fetchHistory();
     fetchPlanUsage();
@@ -367,22 +344,11 @@ export default function Home() {
     setNumOfImages(Number(event.target.value));
   };
 
-  const handleLikeDislike = (imageId: any) => {
-    setLikedImages(prevState => ({
-      ...prevState,
-      [imageId]: !prevState[imageId],
-    }));
-  };
-
   const handleSwitchChange = () => {
     setProductAI(prevState => ({
       ...prevState,
       remove_bg_toggle: !prevState.remove_bg_toggle,
     }));
-  };
-
-  const handleFavoritesSwitchChange = () => {
-    setFavImage(favImage ? false : true);
   };
 
   const handlePromptChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -689,15 +655,7 @@ export default function Home() {
                         style={{ width: "100%" }}
                       >
                         {finalUrl.map(image => (
-                          <div
-                          // key={image}
-                          // className={`relative group border-2 p-1 cursor-pointer ${
-                          //   selectedImages.includes(image)
-                          //     ? "border-blue-500"
-                          //     : "border-transparent"
-                          // }`}
-                          // onClick={() => toggleImageSelection(image)}
-                          >
+                          <div>
                             <img
                               className="w-[160px] h-[160px] object-cover"
                               alt="img-result"
@@ -712,14 +670,6 @@ export default function Home() {
                     </div>
                     <div className="flex justify-end items-center mb-8 mt-4">
                       <div className="flex flex-col items-end">
-                        {/* Message displayed when no images are selected */}
-                        {/* {selectedImages.length === 0 && (
-                        <p className="text-red-500 mb-2 mr-4">
-                          Please select at least one image to download.
-                        </p>
-                      )} */}
-
-                        {/* Buttons */}
                         <div className="flex">
                           <button
                             onClick={() => {
@@ -742,7 +692,6 @@ export default function Home() {
                   </>
                 ) : (
                   <div className="relative z-[1] flex-1 flex flex-col justify-between  bg-white rounded-lg shadow-md w-full max-w-md sm:max-w-lg lg:max-w-xl h-auto">
-                    {/* Upload Section */}
                     <div className="p-4 ">
                       <div className="flex flex-col items-center ">
                         {fileUploadLoading ? (
@@ -785,7 +734,6 @@ export default function Home() {
                       </div>
                     </div>
 
-                    {/* Remove Background Section */}
                     <div className="border-t border-gray-300 flex items-center justify-between w-full mt-2">
                       <div className="space-y-1 m-4">
                         <h1 className="text-sm sm:text-m mt-2 font-semibold">
@@ -806,7 +754,6 @@ export default function Home() {
                 )}
               </section>
 
-              {/* Sample Images Section */}
               {finalUrl.length < 1 && (
                 <div className="text-center mt-5">
                   <p className="text-gray-600">

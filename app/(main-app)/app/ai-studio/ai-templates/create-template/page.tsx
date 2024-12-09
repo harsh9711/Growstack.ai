@@ -11,13 +11,11 @@ import {
 } from "@/components/ui/select";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Minus, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { z } from "zod";
 import TemplatesTable from "../components/TemplatesDataTable";
 import { useDropzone } from "react-dropzone";
 import React from "react";
@@ -59,8 +57,6 @@ export default function CreateTemplatePage() {
   });
 
   const [category, setCategory] = useState("");
-  const svgPattern = /^<svg.*<\/svg>$/;
-  const fontAwesomePattern = /^<i class=['"]fa[a-zA-Z0-9\- ]+['"]><\/i>$/;
 
   const [isPending, setIsPending] = useState(false);
   const [refreshTemplatesTable, setRefreshTemplatesTable] = useState(true);
@@ -357,14 +353,6 @@ export default function CreateTemplatePage() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="My Templates">My Templates</SelectItem>
-                    {/* <SelectItem value="Articles And Contents">Articles And Contents</SelectItem>
-                    <SelectItem value="Blogs Posts">Blogs Posts</SelectItem>
-                    <SelectItem value="Commerce"> Ecommerce</SelectItem>
-                    <SelectItem value="Emails">Emails</SelectItem>
-                    <SelectItem value="Frameworks">Frameworks</SelectItem>
-                    <SelectItem value="Marketing">Marketing</SelectItem>
-                    <SelectItem value="Social Media">Social Media</SelectItem>
-                    <SelectItem value="Websites">Websites</SelectItem> */}
                   </SelectContent>
                 </Select>
                 {formErrors?.category && (

@@ -2,7 +2,6 @@
 import { useState, useEffect, Fragment } from "react";
 import AssistantCard from "./components/AssistantCard";
 import instance from "@/config/axios.config";
-import { API_URL } from "@/lib/api";
 import { Assistant } from "./components/types";
 import toast from "react-hot-toast";
 import ContentLoader from "react-content-loader";
@@ -121,10 +120,8 @@ export default function AiAssistants() {
   return (
     <Fragment>
       <main className="flex-1 h-full flex flex-col">
-        {/* <div className="flex justify-between items-center mt-8"> */}
         <div className="flex flex-col lg:flex-row lg:justify-end mt-8">
           <div className="space-y-2 w-full">
-            {/* <h1 className="text-2xl font-semibold">AI assistant</h1> */}
             <h1 className="lg:text-2xl md:text-xl font-semibold">
               AI assistant
             </h1>
@@ -132,7 +129,6 @@ export default function AiAssistants() {
               Chat with our AI team
             </p>
           </div>
-          {/* <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md"> */}
           <div className="bg-white border border-[#EBEBEB] px-4 py-1 rounded-xl flex gap-3 items-center w-full max-w-md mt-4 lg:mt-0 lg">
             <Search className="text-gray-500" size={20} />
             <input
@@ -144,7 +140,6 @@ export default function AiAssistants() {
             />
           </div>
         </div>
-        {/* <div className="flex flex-wrap gap-2 mt-10"> */}
         <div className="flex flex-row overflow-x-auto lg:flex-wrap gap-2 mt-10">
           {groups.map((group, index) => (
             <div
@@ -166,7 +161,6 @@ export default function AiAssistants() {
           ))}
         </div>
         {loading ? (
-          // <div className="grid grid-cols-6 gap-6 mt-6">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6 mt-6">
             {Array(15)
               .fill(null)
@@ -177,10 +171,6 @@ export default function AiAssistants() {
         ) : assistants.length < 1 ? (
           <div className="flex flex-col items-center justify-center mt-20 space-y-3">
             <h1 className="text-xl font-semibold">Oops!</h1>
-            {/* <h2>
-              No assistants with the selected category{" "}
-              <span className="font-semibold">"{selectedGroup}"</span> found
-            </h2> */}
             <h2>No assistants found</h2>
             <button
               onClick={clearSearchHandle}
@@ -190,7 +180,6 @@ export default function AiAssistants() {
             </button>
           </div>
         ) : (
-          // <div className="grid grid-cols-6 gap-3 mt-6">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 mt-6">
             {assistants.map((assistant, index) => (
               <AssistantCard {...assistant} key={index} />

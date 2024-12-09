@@ -12,10 +12,9 @@ import "@/styles/editor.css";
 import clsx from "clsx";
 import { MoreHorizontal, Plus, Trash2Icon } from "lucide-react";
 import React, { useState, useRef, useEffect } from "react";
-import { llmComparisonModels } from "../../ai-articles/constants/options";
+import { llmComparisonModels } from "../../../components/options";
 import { Message } from "../interface/playground";
 import ChatMessages from "./chatMessage";
-import AOS from "aos";
 import "aos/dist/aos.css";
 import autosize from "autosize";
 import toast from "react-hot-toast";
@@ -60,7 +59,6 @@ const ChatArea = ({
       })
     | null
   >(null); // Updated here
-  const initialHeight = 32;
   const [emptyPrompt, isEmptyPrompt] = useState("");
   const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputValue(event.target.value);
@@ -227,7 +225,6 @@ const AIModel = ({
   setSelectedOption,
   selectedOptionLabel,
 }: AIModelProps) => {
-  // const allModels = modelData.flatMap((provider) => provider.models);
   const { user, currentPlan } = useSelector(
     (rootState: RootState) => rootState.auth
   );
@@ -322,78 +319,5 @@ const AIModel = ({
         </SelectGroup>
       </SelectContent>
     </Select>
-  );
-};
-
-interface InitialMsgProps {
-  selectedOption: string;
-  selectedOptionLabel: string | undefined;
-}
-
-const InitialMsg = ({
-  selectedOption,
-  selectedOptionLabel,
-}: InitialMsgProps) => {
-  // const selectedOptionModel = modelData
-  //   .flatMap((provider) => provider.models)
-  //   .find((model) => model.value === selectedOption);
-  const selectedOptionModel = llmComparisonModels
-    .flatMap(option => option.models)
-    .find(model => model.value === selectedOption);
-  return (
-    <div className="bg-[#F5F5F5] border border-[#E8E8E8] rounded-3xl space-y-5">
-      <div className="space-y-5 px-7 pt-7 pb-4">
-        <h1 className="flex items-center gap-2">
-          {selectedOptionModel && (
-            <div className="flex items-center gap-2">
-              <span className="min-w-fit">{selectedOptionModel?.icon}</span>
-              {selectedOptionLabel}
-            </div>
-          )}
-        </h1>
-        <p className="text-primary-black text-opacity-70 leading-relaxed">
-          Llama is a 70 billion parameter open source model by Meta fine-tuned
-          for instruction following purposes served by Groq on their LPU
-          hardware.
-        </p>
-        <div className="space-y-4 divide-y-[1px]">
-          <p className="flex pt-4">
-            <span className="font-semibold w-full max-w-[150px]">Context</span>
-            <span className=" w-full text-primary-black text-opacity-70">
-              8,192 tokens
-            </span>
-          </p>
-          <p className="flex pt-4">
-            <span className="font-semibold w-full max-w-[150px]">
-              Input pricing
-            </span>
-            <span className=" w-full text-primary-black text-opacity-70">
-              $0.70 / million tokens
-            </span>
-          </p>
-          <p className="flex pt-4">
-            <span className="font-semibold w-full max-w-[150px]">
-              Output pricing
-            </span>
-            <span className=" w-full text-primary-black text-opacity-70">
-              $0.80 / million tokens
-            </span>
-          </p>
-        </div>
-      </div>
-      <div className="flex justify-between bg-white p-5 rounded-b-3xl">
-        <div className="flex items-center gap-10">
-          <span className="flex items-center gap-2 text-primary-black text-opacity-70 cursor-pointer">
-            Model Page <OpenTabIcon className="w-5 h-5" />
-          </span>
-          <span className="flex items-center gap-2 text-primary-black text-opacity-70 cursor-pointer">
-            Pricing <OpenTabIcon className="w-5 h-5" />
-          </span>
-        </div>
-        <span className="flex items-center gap-2 text-[#2DA771] cursor-pointer">
-          Website <OpenTabIcon className="w-5 h-5" />
-        </span>
-      </div>
-    </div>
   );
 };

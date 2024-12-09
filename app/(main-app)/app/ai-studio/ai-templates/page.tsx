@@ -11,7 +11,6 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import ContentLoader from "react-content-loader";
 import { debounce } from "@/lib/utils";
-import { ALL } from "node:dns";
 import { ALL_ROUTES } from "@/utils/constant";
 interface Assistant {
   _id: string;
@@ -129,27 +128,6 @@ export default function AiAppTemplatesPage() {
     } catch (error: any) {
       console.error("Error:", error);
     }
-  };
-
-  // const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   const newSearchTerm = e.target.value.toLowerCase();
-  //   setSearchTerm(newSearchTerm);
-
-  //   // If the search term is empty, reset the careers to the initial list
-  //   if (newSearchTerm.trim() === "") {
-  //     setAssistants(allAssistantsData);
-  //   } else {
-  //     // Otherwise, filter the careers based on the search term
-  //     setAssistants(
-  //       assistants.filter((assistant: any) =>
-  //         assistant["ASSISTANT NAME"].toLowerCase().includes(newSearchTerm)
-  //       )
-  //     );
-  //   }
-  // };
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value.toLowerCase());
   };
 
   const fetchSearchResults = async (query: string) => {
