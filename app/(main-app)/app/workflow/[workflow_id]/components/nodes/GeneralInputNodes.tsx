@@ -55,16 +55,25 @@ const GeneralInputNodes = memo(
     };
 
     const handleNextClick = async () => {
+      console.log('--step1---')
       if (!node?.data?.parameters) return;
+      console.log('--step2---')
+      // const requiredParams = Object.values(node.data.parameters).filter(
+      //   param => param.required
+      // );
+      const requiredParams = Object.entries(node.data.parameters)
+        .filter(([key, param]) => key !== "nextParameter" && param.required)
+        .map(([key, param]) => param);
 
-      const requiredParams = Object.values(node.data.parameters).filter(
-        param => param.required
-      );
       const allRequiredParamsFilled = requiredParams.every(
         param => param?.value
       );
 
+      console.log('--allRequiredParamsFilled----', allRequiredParamsFilled)
+      console.log('--requiredParams----', requiredParams)
+
       if (allRequiredParamsFilled) {
+        console.log('--step1---3')
         const updatedValue = extractParameterValues(node.data.parameters);
 
         console.log("updatedValue-->", updatedValue);
