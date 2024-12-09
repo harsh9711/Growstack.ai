@@ -27,7 +27,7 @@ function Banner() {
                 </p>
                 <div className="btns mbtn">
                   <Link href="/auth/register" className="sheen">
-                    Get free trial{" "}
+                    Get a free trial{" "}
                     <svg
                       width="21"
                       height="16"

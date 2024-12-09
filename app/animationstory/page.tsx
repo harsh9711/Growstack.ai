@@ -8,12 +8,12 @@ const KeyPoints = () => {
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-10 p-4 sm:p-8">
       {[
         "Spot Social Trends and Generate Content Instantly",
-        "Launch Campaigns in Clicks—Create, Publish, Manage",
-        "SAI Agents for Smart Lead Gen and Engagement",
+        "Launch Campaigns in just a few Clicks Create, Publish, Manage",
+        "AI Agents for Smart Lead Gen and Engagement",
         "Streamline Sales and Marketing with AI Automation",
       ].map((point, index) => (
         <div key={index} className="flex flex-row items-start space-x-2">
-          <span className="w-3 h-3 mt-2 bg-green-500 rounded-full" />
+          <span className="w-3 h-3 mt-1 bg-green-500 rounded-full" />
           <h2 className="text-sm sm:text-md md:text-lg font-semibold text-black">
             {point}
           </h2>
@@ -49,7 +49,7 @@ const AnimationStory = () => {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
     >
-      {/* <video
+      <video
         ref={videoRef}
         autoPlay
         loop
@@ -63,13 +63,13 @@ const AnimationStory = () => {
           className="w-full h-full"
         />
         Your browser does not support the video tag.
-      </video> */}
-      <img
+      </video>
+      {/* <img
         src="/final2.gif"
         alt="Animation"
         className="absolute border-none outline-none md:top-10 md:h-[80%] md:top-10 md:mt-10 top-0 left-0 right-0 w-full h-full hidden sm:block transition-transform duration-500 ease-out"
         style={{ border: "none", outline: "none", perspective: "1000px" }}
-      />
+      /> */}
 
       <div className="relative z-10 mx-auto flex flex-col sm:mt-2 max-w-[1320px] p-4">
         <div className="flex w-full flex-col gap-6 sm:flex-row items-center justify-between">
@@ -92,7 +92,7 @@ const AnimationStory = () => {
             <div className="mt-2">
               <Link href="/demo">
                 <button className="border border-[#D9D9D9] flex bg-[#2DA771] items-center gap-2 text-white hover:font-bold font-medium py-3 sm:py-4 px-5 sm:px-7 rounded-xl shadow-lg shadow-[#00000025]">
-                  Get demo <ArrowRight className="text-white" />
+                  Get a demo <ArrowRight className="text-white" />
                 </button>
               </Link>
             </div>
