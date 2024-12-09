@@ -40,6 +40,7 @@ const LinkedinNode = memo(
     id,
     positionAbsoluteX,
     positionAbsoluteY,
+    parentId,
   }: NodeProps<LinkedInNodeProps>) => {
     // const { parameters, nodeMasterId } = data;
 
@@ -79,6 +80,21 @@ const LinkedinNode = memo(
     const [dependencies, setDependencies] = useState<
       { key: string; nodeId: string }[]
     >([]);
+
+    useEffect(() => {
+      if (parentId) {
+        setDependencies(prevDependencies => {
+          const newDependency = { key: "parent", nodeId: parentId };
+          const exists = prevDependencies.some(dep => dep.nodeId === parentId);
+          if (exists) {
+            return prevDependencies;
+          }
+          return [...prevDependencies, newDependency];
+        });
+      }
+
+      return () => { };
+    }, [parentId]);
 
     const handleClickOutside = useCallback(
       (event: MouseEvent) => {
@@ -154,11 +170,6 @@ const LinkedinNode = memo(
       [dispatch, id, nodes, dependencies, variableNames]
     );
 
-    const setLoading = (isLoading: boolean) => ({
-      type: "SET_LOADING",
-      payload: isLoading,
-    });
-
     const handleNextClick = async () => {
       if (!node?.data?.parameters) return;
 
@@ -174,20 +185,6 @@ const LinkedinNode = memo(
         console.log("updatedValue-->", updatedValue);
 
         console.log("Matching Node IDs:", dependencies);
-
-        // dispatch(
-        //   addVariable({
-        //     nodeID: id,
-        //     variableName: node?.data?.parameters?.variableName?.value || "",
-        //     workflowID: workFlowData._id || "",
-        //     variableValue:
-        //       updatedValue.defaultValue ||
-        //       updatedValue.fileType ||
-        //       updatedValue.options,
-        //     variableType: "tools",
-        //   })
-        // );
-
         try {
           const bodyPayload = {
             workflowId: workFlowData._id,
@@ -546,7 +543,7 @@ const LinkedinNode = memo(
                             onClick={handleNextClick}
                             className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
                           >
-                            {!isLoading ? (
+                            {isLoading ? (
                               <div className="flex justify-center items-center">
                                 <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
                               </div>

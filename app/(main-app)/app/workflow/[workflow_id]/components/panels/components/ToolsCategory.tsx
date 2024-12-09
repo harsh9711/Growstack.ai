@@ -18,7 +18,7 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
   const { nodes } = useAppSelector(state => state.nodes);
   const { masterNode } = useAppSelector(state => state.masterNode);
   const { workFlowData } = useAppSelector(state => state.workflows);
-  
+
 
   if ((masterNode && !masterNode.length) || !masterNode) {
     return <div>Data not found</div>;
@@ -160,7 +160,7 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
   };
 
   return (
-    <div className="absolute bg-white w-4/5 h-[500px] top-[120px] rounded-2xl overflow-y-auto backdrop-blur-sm drop-shadow-2xl">
+    <div className="absolute bg-white w-[470px] h-[500px] top-[120px] rounded-2xl overflow-y-auto backdrop-blur-sm drop-shadow-2xl">
       <div className="bg-white p-5 pt-0">
         <div className="sticky top-0 z-10 bg-white ">
           <div className="flex items-center justify-between pt-5">
@@ -190,19 +190,17 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
             {Object?.keys(groupedIntegrations).map((subCategory, index) => (
               <div
                 key={index}
-                className={`flex flex-row p-3 rounded-lg items-center cursor-pointer ${
-                  selectedSubCategory === subCategory
+                className={`flex flex-row p-3 rounded-lg items-center cursor-pointer ${selectedSubCategory === subCategory
                     ? "bg-[#F1B916]"
                     : "bg-[#E9E9E9]"
-                }`}
+                  }`}
                 onClick={() => setSelectedSubCategory(subCategory)}
               >
                 <p
-                  className={`ml-2 text-sm font-normal leading-4 flex items-center gap-2 ${
-                    selectedSubCategory === subCategory
+                  className={`ml-2 text-sm font-normal leading-4 flex items-center gap-2 ${selectedSubCategory === subCategory
                       ? "text-white"
                       : "text-[#14171B]"
-                  }`}
+                    }`}
                 >
                   <svg
                     width="20"

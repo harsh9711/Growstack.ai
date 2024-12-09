@@ -1,34 +1,39 @@
-import React, { useRef, useState } from "react";
+import React, { memo, useRef, useState } from "react";
 import Tooltip from "../tooltip/Tooltip";
 import { DynamicInputProps } from "@/types/workflows";
 
-const MultiSelectDropdown: React.FC<DynamicInputProps> = ({ param, inputKey, handleInputChange }) => {
-    console.log("---param---", param);
-    const [isOpen, setIsOpen] = useState(false);
-    const [selectedItems, setSelectedItems] = useState<string[]>([]);
+const MultiSelectDropdown: React.FC<DynamicInputProps> = ({
+    param,
+    inputKey,
+    handleInputChange,
+}) => {
     const [inputValue, setInputValue] = useState<string>("");
 
     const inputRef = useRef<HTMLInputElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const toggleDropdown = () => setIsOpen(!isOpen);
+    const toggleDropdown = () => {
+        if (inputValue.trim()) {
+            const value = Array.isArray(param.value)
+                ? [...param.value, inputValue.trim()]
+                : [inputValue.trim()];
+            handleInputChange(inputKey, param.type, value);
+            setInputValue("");
+        }
+    };
 
     const handleInputSelectChange = (e: React.ChangeEvent<HTMLInputElement>) =>
         setInputValue(e.target.value);
 
     const handleRemoveItem = (index: number, item: string) => {
         const value = Array.isArray(param.value)
-            ? param.value.filter((selected: any, i: number) => i !== index) 
+            ? param.value.filter((selected: any, i: number) => i !== index)
             : [];
         handleInputChange(inputKey, param.type, value);
     };
 
     const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (
-            e.key === "Enter" &&
-            inputValue.trim() &&
-            !selectedItems.includes(inputValue.trim())
-        ) {
+        if (e.key === "Enter" && inputValue.trim()) {
             const value = Array.isArray(param.value)
                 ? [...param.value, inputValue.trim()]
                 : [inputValue.trim()];
@@ -61,7 +66,7 @@ const MultiSelectDropdown: React.FC<DynamicInputProps> = ({ param, inputKey, han
                             >
                                 {item}
                                 <button
-                                    onClick={() => handleRemoveItem(i, item)} 
+                                    onClick={() => handleRemoveItem(i, item)}
                                     className="ml-2 text-[#fff] hover:text-[#fff]"
                                 >
                                     &times;
@@ -74,7 +79,7 @@ const MultiSelectDropdown: React.FC<DynamicInputProps> = ({ param, inputKey, han
                         type="text"
                         value={inputValue}
                         onChange={handleInputSelectChange}
-                        onFocus={() => setIsOpen(true)}
+                        // onFocus={() => setIsOpen(true)}
                         onKeyDown={handleInputKeyDown}
                         placeholder="Add Option"
                         className="flex-grow bg-transparent outline-none text-[#14171B] text-sm font-medium"
@@ -96,4 +101,4 @@ const MultiSelectDropdown: React.FC<DynamicInputProps> = ({ param, inputKey, han
     );
 };
 
-export default MultiSelectDropdown;
+export default memo(MultiSelectDropdown);

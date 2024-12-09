@@ -27,7 +27,7 @@ const TextAreaField: React.FC<DynamicInputProps> = ({
                 />
             </div>
 
-            <div className="input-group relative">
+            <div className="nodrag input-group relative">
                 <textarea
                     rows={5}
                     placeholder={param.placeholder || ""}

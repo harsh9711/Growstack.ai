@@ -103,38 +103,46 @@ export default function Dashboard() {
     };
   };
 
-  const fetchSearchResults = async (query: string): Promise<void> => {
-    try {
-      setLoading(true);
-      const queryParams =
-        activeTab === "templates" ? `${query}&isPrebuilt=true` : `${query}`;
-      // const response = await axios.get(
-      //   `http://localhost:5000/workflow/search?keyword=${query}`
-      // );
-      const response = await instance.get(`/workflow/search?keyword=${queryParams}`);
-      if (response.data?.length > 0) setPreBuiltTemplates(response.data); // Update results with API response
-    } catch (error) {
-      console.error("Error fetching search results:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const fetchSearchResults = useCallback(
+    async (query: string): Promise<void> => {
+      try {
+        setLoading(true);
+        const queryParams =
+          activeTab === "templates" ? `${query}&isPrebuilt=true` : `${query}`;
+        // const response = await axios.get(
+        //   `http://localhost:5000/workflow/search?keyword=${query}`
+        // );
+        const response = await instance.get(
+          `/workflow/search?keyword=${queryParams}`
+        );
+        if (response.data?.length > 0) setPreBuiltTemplates(response.data); // Update results with API response
+      } catch (error) {
+        console.error("Error fetching search results:", error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [activeTab]
+  );
 
   const debouncedFetchSearchResults = useCallback(
     debounce(fetchSearchResults, 1500),
-    []
+    [activeTab]
   );
 
-  const handleSearchInputChange = (e: any) => {
-    const query = e.target.value || "";
-    setSearchQuery(query);
-    if (query.length > 0) {
-      debouncedFetchSearchResults(query);
-    } else {
-      if (activeTab === "templates") getPreBuiltTemplates();
-      if (activeTab === "workflows") getUserSavedWorkflows();
-    }
-  };
+  const handleSearchInputChange = useCallback(
+    (e: any) => {
+      const query = e.target.value || "";
+      setSearchQuery(query);
+      if (query.length > 0) {
+        debouncedFetchSearchResults(query);
+      } else {
+        if (activeTab === "templates") getPreBuiltTemplates();
+        if (activeTab === "workflows") getUserSavedWorkflows();
+      }
+    },
+    [activeTab]
+  );
 
   return (
     <>
@@ -144,10 +152,11 @@ export default function Dashboard() {
             <div className="bg-white rounded-3xl border border-[#E8E8E8] h-[430px] px-5 py-8 ">
               <div className="pb-3">
                 <button
-                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px]  ${activeTab === "newWorkflows"
-                    ? "bg-[#2DA771] text-white"
-                    : "text-black"
-                    }`}
+                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px]  ${
+                    activeTab === "newWorkflows"
+                      ? "bg-[#2DA771] text-white"
+                      : "text-black"
+                  }`}
                   onClick={handleCreateWorkflow}
                 >
                   <div className="flex items-center gap-3 px-2 py-2">
@@ -159,11 +168,15 @@ export default function Dashboard() {
               </div>
               <div className="pb-3">
                 <button
-                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px] ${activeTab === "templates"
-                    ? "bg-[#2DA771] text-white"
-                    : "text-black"
-                    }`}
-                  onClick={() => setActiveTab("templates")}
+                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px] ${
+                    activeTab === "templates"
+                      ? "bg-[#2DA771] text-white"
+                      : "text-black"
+                  }`}
+                  onClick={() => {
+                    setActiveTab("templates");
+                    setSearchQuery("");
+                  }}
                 >
                   <div className="flex items-center gap-3 px-3 py-2">
                     <LayoutDashboard />
@@ -174,14 +187,18 @@ export default function Dashboard() {
               </div>
               <div className="pb-3">
                 <button
-                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px] ${activeTab === "workflows"
-                    ? "bg-[#2DA771] text-white"
-                    : "text-black"
-                    }`}
+                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px] ${
+                    activeTab === "workflows"
+                      ? "bg-[#2DA771] text-white"
+                      : "text-black"
+                  }`}
                 >
                   <div
                     className="flex items-center gap-3 px-3 py-2"
-                    onClick={() => setActiveTab("workflows")}
+                    onClick={() => {
+                      setActiveTab("workflows");
+                      setSearchQuery("");
+                    }}
                   >
                     <Waypoints />
                     <span>My workflows</span>
@@ -235,21 +252,21 @@ export default function Dashboard() {
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {preBuiltTemplates?.length > 0
                   ? preBuiltTemplates.map(template => (
-                    <Card
-                      key={template._id}
-                      title={template.name}
-                      description={template.description}
-                      imageSrc={template?.image}
-                      workflow_id={template._id}
-                      activeTab={activeTab}
-                      setLoading={setLoading}
-                      refetchWorkflow={getPreBuiltTemplates}
-                    />
-                  ))
+                      <Card
+                        key={template._id}
+                        title={template.name}
+                        description={template.description}
+                        imageSrc={template?.image}
+                        workflow_id={template._id}
+                        activeTab={activeTab}
+                        setLoading={setLoading}
+                        refetchWorkflow={getPreBuiltTemplates}
+                      />
+                    ))
                   : loading &&
-                  Array(5)
-                    .fill(null)
-                    .map((_, index) => <WorkflowLoader key={index} />)}
+                    Array(5)
+                      .fill(null)
+                      .map((_, index) => <WorkflowLoader key={index} />)}
               </div>
             </div>
             {loading && (

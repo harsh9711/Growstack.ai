@@ -37,7 +37,7 @@ const VariableInputFields: React.FC<DynamicInputProps> = ({
                     </h4>
                 </div>
             ) : (
-                <div className="input-group">
+                <div className="nodrag input-group">
                     <input
                         type={getTypeFromParam(param.type)}
                         value={param?.value || ""}

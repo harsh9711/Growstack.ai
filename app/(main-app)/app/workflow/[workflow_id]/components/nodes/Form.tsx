@@ -63,6 +63,7 @@ const Form = ({
     [index: number]: boolean;
   }>({});
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const [isActionModalShow, setIsActionModalShow] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -83,66 +84,6 @@ const Form = ({
   const handleDropdownClick = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-
-  // const handleInputChange = (
-  //   key: string,
-  //   type: string,
-  //   value: string | boolean
-  // ) => {
-  //   if (typeof value === "boolean") {
-  //     setCurrentParameter(prevState => ({
-  //       ...prevState,
-  //       [key]: {
-  //         ...(prevState?.[key] || {}),
-  //         value: value,
-  //         error: "",
-  //       },
-  //     }));
-
-  //     setNextParameter(prevState => ({
-  //       ...prevState,
-  //       "6": {
-  //         ...prevState["6"],
-  //         required: value,
-  //       },
-  //     }));
-  //     return;
-  //   }
-
-  //   setCurrentParameter(prevState => {
-  //     const updatedState = {
-  //       ...prevState,
-  //       [key]: {
-  //         ...(prevState?.[key] || {}),
-  //         value: value,
-  //         error: "",
-  //       },
-  //     };
-
-  //     if (type === "text_input_label") {
-  //       const variableNameKey = prevState
-  //         ? Object.keys(prevState).find(
-  //           k => prevState[k].type === "text_variable_name"
-  //         )
-  //         : undefined;
-  //       if (variableNameKey) {
-  //         updatedState[variableNameKey] = {
-  //           ...(prevState?.[variableNameKey] || {}),
-  //           value: convertToUnderscore(value),
-  //           error: "",
-  //         };
-  //       }
-  //     }
-
-  //     if (type === "text_variable_name" || type === "text_input_label") {
-  //       const variableValue = convertToUnderscore(value);
-  //       setVariableName(variableValue);
-  //     }
-  //     return updatedState;
-  //   });
-  // };
-
-  //SHOW ADVANCE INPUT FIELDS STATE CALL HERE
 
   const handleInputChange = useCallback(
     (key: any, type: any, value: any, nodeMasterId: any) => {
@@ -228,76 +169,10 @@ const Form = ({
         nodeMasterId: nodeMasterId,
       })
     );
-
-    // const currentSubNodesData = currentSubNodes.filter(
-    //   subNode => subNode.nodeMasterId !== nodeMasterId
-    // );
-
-    // const subNodesToValidate = node.data.subNodes.filter(subNode =>
-    //   currentSubNodesData.some(cs => cs.nodeMasterId === subNode.nodeMasterId)
-    // );
-
-    // const subNodes = subNodesToValidate.map(subNode => ({
-    //   nodeMasterId: subNode.nodeMasterId,
-    //   parameters: extractParameterValues(subNode.parameters),
-    // }));
-
-    // console.log("subNodes-->", subNodes);
-
-    // const bodyPayload = {
-    //   workflowId: workFlowData._id,
-    //   nodeMasterId: node.data.nodeMasterId,
-    //   position: { x: positionAbsoluteX, y: positionAbsoluteY },
-    //   dependencies: [],
-    //   subNodes,
-    // };
-
-    // try {
-    //   dispatch(
-    //     resetSubNodeParameter({
-    //       nodeId: id,
-    //       nodeMasterId: nodeMasterId,
-    //     })
-    //   );
-
-    //   // await dispatch(
-    //   //   updateNodeById({
-    //   //     id: id,
-    //   //     data: bodyPayload as unknown as WorkflowNodeState,
-    //   //   })
-    //   // );
-
-    //   console.log("subNodes-->", subNodes);
-    // } catch (error: any) {
-    //   console.error("error-->", error?.message);
-    // }
-  };
-
-  const getInputType = (label: string) => {
-    switch (label) {
-      case "Short Text":
-        return "text";
-      case "Long Text":
-        return "text_area";
-      case "Number":
-        return "number";
-      case "Boolean":
-        return "checkbox";
-      case "File Upload":
-        return "button_upload";
-      case "Checklist":
-        return "select_option";
-      default:
-        return "text";
-    }
   };
 
   const handleNextClick = async () => {
     if (!node?.data?.subNodes) return;
-
-    // const subNodesToValidate = node.data.subNodes.filter(
-    //   subNode => subNode.nodeMasterId === nodeMasterId
-    // );
 
     const subNodesToValidate = node.data.subNodes.filter(subNode =>
       currentSubNodes.some(cs => cs.nodeMasterId === subNode.nodeMasterId)
@@ -339,29 +214,6 @@ const Form = ({
           })
         );
 
-        console.log("subNodes-->", subNodes);
-
-        // subNodes.forEach(subNode => {
-        //   console.log("value-->", subNode);
-        //   dispatch(
-        //     updateSubNodeParameter({
-        //       nodeId: id,
-        //       nodeMasterId: subNode.nodeMasterId,
-        //       key: "nextParameter",
-        //       type: getInputType(subNodeName),
-        //       value:
-        //         subNode.parameters?.defaultValue ||
-        //         subNode.parameters.fileType ||
-        //         subNode.parameters.options,
-        //       label: subNode.parameters.inputLabel,
-        //       placeholder: subNode.parameters.placeholder,
-        //       required: !!subNode.parameters.required,
-        //       description: subNode.parameters.description,
-        //       error: "",
-        //     })
-        //   );
-        // });
-
         setIsEdit(false);
       } catch (error: any) {
         console.error("error-->", error?.message);
@@ -384,10 +236,6 @@ const Form = ({
       });
     }
   };
-
-  // ON CLICK OPEN & CLOSE ACTION MODAL
-  const [isActionModalShow, setIsActionModalShow] = useState(false);
-  // const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   const handleOpenActionModal = () => {
     setIsActionModalShow(!isActionModalShow);
@@ -617,13 +465,13 @@ const Form = ({
                                   handleInputChange={
                                     isEdit
                                       ? (key, type, value) =>
-                                          handleInputChange(
-                                            key,
-                                            type,
-                                            value,
-                                            subNode.nodeMasterId
-                                          )
-                                      : () => {}
+                                        handleInputChange(
+                                          key,
+                                          type,
+                                          value,
+                                          subNode.nodeMasterId
+                                        )
+                                      : () => { }
                                   }
                                 />
                               );
@@ -652,21 +500,6 @@ const Form = ({
                             : "Show Advanced Options"}
                         </button>
                       </div>
-                      {/* <div className="submit-button">
-                        <button
-                          onClick={() => handleNextClick(subNode.nodeMasterId, subNode.name)}
-                          className="bg-[#2DA771] text-white text-sm font-medium p-3 w-full rounded-[10px]"
-                          disabled={isLoading}
-                        >
-                          {isLoading ? (
-                            <div className="flex justify-center items-center">
-                              <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
-                            </div>
-                          ) : (
-                            "Next"
-                          )}
-                        </button>
-                      </div> */}
                     </div>
                   ))}
               {currentSubNodes.length > 0 && (
