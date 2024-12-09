@@ -8,7 +8,7 @@ export default function SectionHeader() {
       <div className="lg:flex items-center justify-center space-y-4 md:space-y-8 lg:space-y-0 lg:space-x-5">
         <div className="items-center justify-center">
           <div className="w-full items-center justify-center">
-            <h1 className="text-[26px] sm:flex flex-col  text-center text-white xl:text-[32px] 2xl:text-[48px] font-medium ">
+            <h1 className="text-[20px] sm:flex flex-col  text-center text-white xl:text-[32px] 2xl:text-[48px] font-medium ">
               <span className="font-extrabold sm:flex  text-white px-2">
                 AI-powered revenue playground
               </span>{" "}
