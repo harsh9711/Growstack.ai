@@ -14,6 +14,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { WorkflowNodeState } from "@/types/workflows";
 import { useSnackbar } from "../snackbar/SnackbarContext";
+import { getInputType } from "@/utils/helper";
 
 const GeneralInputNodes = memo(
   ({
@@ -35,6 +36,7 @@ const GeneralInputNodes = memo(
     const { isLoading } = useAppSelector(state => state.nodes);
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
     const [description, setDescription] = useState(data?.descriptions || "");
+    const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] = useState(false);
 
     const node = useAppSelector(state =>
       state.nodes.nodes.find(node => node.id === id)
@@ -42,25 +44,6 @@ const GeneralInputNodes = memo(
     // console.log("node-->", JSON.stringify(node, null, 2));
     const [isNextBoxOpen, setIsNextBoxOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-    const getInputType = (label: string) => {
-      switch (label) {
-        case "Short Text":
-          return "text";
-        case "Long Text":
-          return "text_area";
-        case "Number":
-          return "number";
-        case "Boolean":
-          return "checkbox";
-        case "File Upload":
-          return "button_upload";
-        case "Checklist":
-          return "checkbox_field";
-        default:
-          return "text";
-      }
-    };
 
     const handleDropdownClick = () => {
       setIsDropdownOpen(!isDropdownOpen);
@@ -142,8 +125,8 @@ const GeneralInputNodes = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-                k => node.data.parameters?.[k] === param
-              )
+              k => node.data.parameters?.[k] === param
+            )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -210,15 +193,12 @@ const GeneralInputNodes = memo(
       };
     }, [handleClickOutside]);
 
-    //ONCLICK OPEN DELETE CONFIRMATION MODAL
-    const [openDeleteConfirmationModal, setopenDeleteConfirmationModal] =
-      React.useState(false);
 
     const handleCloseDeleteConfirmationModal = () => {
-      setopenDeleteConfirmationModal(false);
+      setOpenDeleteConfirmationModal(false);
     };
-    const handleOpenDeleteConfimationModal = () => {
-      setopenDeleteConfirmationModal(true);
+    const handleOpenDeleteConfirmationModal = () => {
+      setOpenDeleteConfirmationModal(true);
       setIsActionModalShow(false);
     };
 
@@ -281,7 +261,7 @@ const GeneralInputNodes = memo(
                       <ul className="py-2">
                         <li className="px-4 py-2 cursor-pointer">
                           <button
-                            onClick={handleOpenDeleteConfimationModal}
+                            onClick={handleOpenDeleteConfirmationModal}
                             className="delete-button flex items-center gap-2 text-[15px] text-[#212833] font-medium w-full cursor-pointer"
                           >
                             <img
@@ -386,7 +366,7 @@ const GeneralInputNodes = memo(
                     >
                       {isLoading ? (
                         <div className="flex justify-center items-center">
-                          <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
+                          <div className="loader ease-linear rounded-full border-4 border-gray-200 border-t-4 border-t-[#2DA771] h-6 w-6" />
                         </div>
                       ) : (
                         "Next"
@@ -401,7 +381,7 @@ const GeneralInputNodes = memo(
                       key="nextParameter"
                       inputKey="nextParameter"
                       param={node.data.parameters.nextParameter}
-                      handleInputChange={() => {}}
+                      handleInputChange={() => { }}
                     />
                   )}
 
