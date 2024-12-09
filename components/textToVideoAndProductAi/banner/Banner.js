@@ -24,6 +24,8 @@ function Banner() {
                   your words to life, enhancing your communication and
                   engagement with your audience.
                 </p>
+
+                
                 <div className="btns reverse">
                   <Link href="/auth/register" className="sheen">
                     Get a free trial{" "}
