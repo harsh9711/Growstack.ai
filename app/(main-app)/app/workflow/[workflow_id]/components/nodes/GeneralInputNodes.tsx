@@ -36,7 +36,8 @@ const GeneralInputNodes = memo(
     const { isLoading } = useAppSelector(state => state.nodes);
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
     const [description, setDescription] = useState(data?.descriptions || "");
-    const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] = useState(false);
+    const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] =
+      useState(false);
 
     const node = useAppSelector(state =>
       state.nodes.nodes.find(node => node.id === id)
@@ -55,9 +56,7 @@ const GeneralInputNodes = memo(
     };
 
     const handleNextClick = async () => {
-      console.log('--step1---')
       if (!node?.data?.parameters) return;
-      console.log('--step2---')
       // const requiredParams = Object.values(node.data.parameters).filter(
       //   param => param.required
       // );
@@ -69,14 +68,8 @@ const GeneralInputNodes = memo(
         param => param?.value
       );
 
-      console.log('--allRequiredParamsFilled----', allRequiredParamsFilled)
-      console.log('--requiredParams----', requiredParams)
-
       if (allRequiredParamsFilled) {
-        console.log('--step1---3')
         const updatedValue = extractParameterValues(node.data.parameters);
-
-        console.log("updatedValue-->", updatedValue);
 
         dispatch(
           addVariable({
@@ -201,7 +194,6 @@ const GeneralInputNodes = memo(
         document.removeEventListener("mousedown", handleClickOutside);
       };
     }, [handleClickOutside]);
-
 
     const handleCloseDeleteConfirmationModal = () => {
       setOpenDeleteConfirmationModal(false);
