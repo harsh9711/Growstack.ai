@@ -53,6 +53,7 @@ const GmailNode = memo(
     id,
     positionAbsoluteX,
     positionAbsoluteY,
+    parentId,
   }: NodeProps<GmailNodeProps>) => {
     // const { parameters, nodeMasterId } = data;
 
@@ -92,6 +93,21 @@ const GmailNode = memo(
     const [dependencies, setDependencies] = useState<
       { key: string; nodeId: string }[]
     >([]);
+
+    useEffect(() => {
+      if (parentId) {
+        setDependencies(prevDependencies => {
+          const newDependency = { key: "parent", nodeId: parentId };
+          const exists = prevDependencies.some(dep => dep.nodeId === parentId);
+          if (exists) {
+            return prevDependencies;
+          }
+          return [...prevDependencies, newDependency];
+        });
+      }
+
+      return () => { };
+    }, [parentId]);
 
     const handleClickOutside = useCallback(
       (event: MouseEvent) => {

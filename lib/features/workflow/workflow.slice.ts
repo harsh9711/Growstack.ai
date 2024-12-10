@@ -116,6 +116,7 @@ const workflowSlice = createSlice({
           //   };
           // });
           const updatedNodes = resolveWorkflowNodes(action.payload.nodes);
+
           state.workFlowData = {
             ...action.payload,
             //@ts-ignore

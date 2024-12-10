@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Tooltip from "../tooltip/Tooltip";
 import { DynamicInputProps } from "@/types/workflows";
 
@@ -7,15 +7,12 @@ const RangeSlider: React.FC<DynamicInputProps> = ({
   inputKey,
   handleInputChange,
 }) => {
-  const [sliderValue, setSliderValue] = useState(0);
-
   const stopNodeDrag = (event: React.MouseEvent | React.TouchEvent) => {
     event.stopPropagation();
   };
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = e.target.value === "0" ? 0 : 1;
-    setSliderValue(newValue);
+    const newValue = parseFloat(e.target.value);
     handleInputChange(inputKey, param.type, newValue);
   };
 
@@ -33,30 +30,12 @@ const RangeSlider: React.FC<DynamicInputProps> = ({
       </div>
 
       <div className="input-group">
-        {/* <div className="range-slider-box flex w-full mx-auto items-center justify-center">
-          <div className="py-1 relative w-full">
-            <div className="h-2 bg-[#F2F2F2] rounded-full">
-              <div
-                className="absolute h-2 rounded-full bg-[#2DA771]"
-                style={{ width: `${sliderValue * 100}%`, left: "0" }}
-              ></div>
-              <div
-                className="absolute h-4 w-4 bg-[#2DA771] shadow border border-[#2DA771] rounded-full cursor-pointer"
-                unselectable="on"
-                style={{ left: `${sliderValue * 100}%`, top: "0" }}
-              >
-                <span className="sr-only">Slider thumb</span>
-              </div>
-            </div>
-          </div>
-        </div> */}
-
         <input
           type="range"
           min="0"
           max="1"
-          step="1"
-          value={sliderValue}
+          step="0.1"
+          value={param?.value || 0}
           onChange={handleSliderChange}
           onMouseDown={stopNodeDrag}
           onTouchStart={stopNodeDrag}
