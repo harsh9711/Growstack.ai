@@ -73,7 +73,6 @@ const GmailNode = memo(
     const [isEdit, setIsEdit] = useState(true);
 
     const [isActionModalShow, setIsActionModalShow] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement | null>(null);
 
     const [description, setDescription] = useState(data?.descriptions || "");
 
@@ -94,6 +93,13 @@ const GmailNode = memo(
       { key: string; nodeId: string }[]
     >([]);
 
+    // ON OUTSIDE CLICK CLOSE ACTION MODAL
+    const handleOutsideClick = (e: MouseEvent) => {
+      const modal = document.getElementById("node-action-modal");
+      if (modal && !modal.contains(e.target as Node)) {
+        setIsActionModalShow(false);
+      }
+    };
     useEffect(() => {
       if (parentId) {
         setDependencies(prevDependencies => {
@@ -109,25 +115,17 @@ const GmailNode = memo(
       return () => { };
     }, [parentId]);
 
-    const handleClickOutside = useCallback(
-      (event: MouseEvent) => {
-        if (
-          dropdownRef.current &&
-          !dropdownRef.current.contains(event.target as Node)
-        ) {
-          setIsActionModalShow(false);
-        }
-      },
-      [dropdownRef]
-    );
+
 
     useEffect(() => {
-      handleGmailSignIn();
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [handleClickOutside]);
+      if (isActionModalShow) {
+        document.addEventListener("click", handleOutsideClick);
+      } else {
+        document.removeEventListener("click", handleOutsideClick);
+      }
+
+      return () => document.removeEventListener("click", handleOutsideClick);
+    }, [isActionModalShow]);
 
     const handleDropdownClick = () => {
       setIsDropdownOpen(!isDropdownOpen);
@@ -235,8 +233,8 @@ const GmailNode = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-              k => node.data.parameters?.[k] === param
-            )
+                k => node.data.parameters?.[k] === param
+              )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -370,7 +368,7 @@ const GmailNode = memo(
                 <div className="modal">
                   {isActionModalShow && (
                     <div
-                      ref={dropdownRef}
+                      id="node-action-modal"
                       className="absolute right-[-126px] top-[0px] mt-2 w-48 bg-white rounded-[15px] border-[1px] border-[#E8E8E8] shadow-2xl z-50"
                     >
                       <ul className="py-2">
@@ -487,10 +485,11 @@ const GmailNode = memo(
               </div>
 
               <div
-                className={`node-content-wrapper relative ${!isSignedUp
-                  ? "before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-white before:opacity-[45%]"
-                  : ""
-                  }`}
+                className={`node-content-wrapper relative ${
+                  !isSignedUp
+                    ? "before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-white before:opacity-[45%]"
+                    : ""
+                }`}
               >
                 {/* <div className="trigger-box">
                   <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
@@ -576,7 +575,7 @@ const GmailNode = memo(
                                 inputKey={key}
                                 param={param}
                                 handleInputChange={
-                                  isEdit ? handleInputChange : () => { }
+                                  isEdit ? handleInputChange : () => {}
                                 }
                                 variableNames={variableNames}
                                 focusedInputKey={focusedInputKey}

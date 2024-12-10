@@ -223,35 +223,37 @@ export const resolveWorkflowNodes = (nodes?: WorkflowNodeState[]) => {
 
     const dependencies: { key: string; nodeId: string }[] = [];
 
-    Object.entries(node.parameters).forEach(([key, param]) => {
-      // console.log("param----->value", param);
-      // console.log("param----->key", key);
-      const value = param;
-      if (typeof value === "string") {
-        const regex = /\$\{([^}]+)\}/;
-        const match = param?.match(regex);
-        // console.log("match----->", match);
-        if (match && match?.length > 0) {
-          const variableName = match[1];
-          // console.log("--variableName--", variableName);
-          const uniqueDependencies = new Set(
-            dependencies.map(dep => `${dep.key}-${dep.nodeId}`)
-          );
-          nodes.forEach(n => {
-            Object.entries(n.parameters || {}).forEach(([k, p]) => {
-              console.log("p.variableName", p);
-              if (p === variableName) {
-                const dependencyKey = `${key}-${n._id}`;
-                if (!uniqueDependencies.has(dependencyKey)) {
-                  dependencies.push({ key, nodeId: n._id });
-                  uniqueDependencies.add(dependencyKey);
+    if (node?.parameters) {
+      Object.entries(node?.parameters)?.forEach(([key, param]) => {
+        // console.log("param----->value", param);
+        // console.log("param----->key", key);
+        const value = param;
+        if (typeof value === "string") {
+          const regex = /\$\{([^}]+)\}/;
+          const match = param?.match(regex);
+          // console.log("match----->", match);
+          if (match && match?.length > 0) {
+            const variableName = match[1];
+            // console.log("--variableName--", variableName);
+            const uniqueDependencies = new Set(
+              dependencies.map(dep => `${dep.key}-${dep.nodeId}`)
+            );
+            nodes.forEach(n => {
+              Object.entries(n.parameters || {}).forEach(([k, p]) => {
+                console.log("p.variableName", p);
+                if (p === variableName) {
+                  const dependencyKey = `${key}-${n._id}`;
+                  if (!uniqueDependencies.has(dependencyKey)) {
+                    dependencies.push({ key, nodeId: n._id });
+                    uniqueDependencies.add(dependencyKey);
+                  }
                 }
-              }
+              });
             });
-          });
+          }
         }
-      }
-    });
+      });
+    }
 
     return {
       id: node._id,
