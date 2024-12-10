@@ -186,8 +186,13 @@ const CreateScript = () => {
         } else {
           toast.error("Failed to generate script");
         }
-      } catch (error) {
-        toast.error("Error submitting the form");
+      } catch (error:any) {
+        if (error?.response?.data?.message) {
+          toast.error("Failed to process generate script due to " + error?.response?.data?.message);
+        }else{
+          toast.error("Error submitting the form");
+
+        }
       } finally {
         setIsSubmitted(false);
         setProgress(0);
@@ -606,8 +611,13 @@ const PreviewScriptPage: React.FC<PreviewScriptPageProps> = ({
         formattedData
       );
       toast.success("Video creation started successfully!");
-    } catch (error) {
+    } catch (error:any) {
+      if (error?.response?.data?.message) {
+        toast.error("Failed to create video due to " + error?.response?.data?.message);
+      }else{
       toast.error("Failed to create video. Please try again.");
+
+      }
     } finally {
       isVideoLoading(false);
       setIsModalOpen(true);

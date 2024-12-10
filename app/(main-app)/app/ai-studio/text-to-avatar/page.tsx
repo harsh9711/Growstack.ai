@@ -31,7 +31,8 @@ interface PlanUsage {
   plan_id: string;
   plan_type: string;
   stripe_subscription_id: string;
-  usage_amount: number
+  usage_amount: number;
+  usage:any
 }
 const VideoTable: React.FC<{
   videos: Array<{
@@ -264,7 +265,6 @@ export default function TextToVideoPage() {
     (rootState: RootState) => rootState.auth
   );
   const isSubscribed = user?.isSubscribed || false;
-  console.log("=====", currentPlan);
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -291,7 +291,7 @@ export default function TextToVideoPage() {
   };
   useEffect(() => {
     fetchPlanUsage()
-  },[planUsage])
+  },[])
   useEffect(() => {
     fetchData();
 
@@ -361,41 +361,41 @@ export default function TextToVideoPage() {
       }
     };
   const handleNavigation = async () => {
-    // try {
-    //   console.log("=====", currentPlan);
-    //   if (
-    //     user?.user_type !== "ADMIN" &&
-    //     (currentPlan?.plan_type === "FREE" ||
-    //       currentPlan?.plan_name === "AI Essentials")
-    //   ) {
-    //     setIsSubscriptionModalOpen(true);
-    //     return;
-    //   } else if (
-    //     user?.user_type !== "ADMIN" &&
-    //     (currentPlan?.usage?.no_of_text_to_avatar ?? 0) <= 0
-    //   ) {
-    //     toast.error("Text to Avatar Credits Are Over");
-    //     setIsUpgradeModalOpen(true);
-    //     return;
-    //   } else {
-    //     router.push("/app/ai-studio/text-to-avatar/create-avatar");
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    try {
+      if (
+        user?.user_type !== "ADMIN" &&
+        (currentPlan?.plan_type === "FREE" ||
+          currentPlan?.plan_name === "AI Essentials")
+      ) {
+        setIsSubscriptionModalOpen(true);
+        return;
+      } else if (
+        user?.user_type !== "ADMIN" &&
+        (currentPlan?.usage?.no_of_text_to_avatar ?? 0) <= 0 && (planUsage?.usage_amount ?? 0) <= 0
+      ) {
+        toast.error("Text to Avatar Credits Are Over");
+        setIsUpgradeModalOpen(true);
+        return;
+      } else {
+        router.push("/app/ai-studio/text-to-avatar/create-avatar");
+      }
+    } catch (error) {
+      console.log(error);
+    }
 
-    router.push("/app/ai-studio/text-to-avatar/create-avatar");
 
   };
 
   return (
     <Fragment>
+      
       <div className="grid justify-items-end">
         <div className="flex">
         <svg width="14" height="21" viewBox="0 0 14 21" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M5.75349 1H12.4815L8.23221 7.01975H12.4815L2.3541 18.2802L5.8243 10.6316H2L5.75349 1Z" fill="#F9DE6F" stroke="#F9DE6F" stroke-width="0.791016" stroke-miterlimit="10"/>
 </svg> &nbsp;<h1 className="text ">
-Your Token Balance is :<strong style={{color:"#2DA771"}}> {planUsage?.usage_amount ? planUsage.usage_amount * 100 : 0} </strong>
+Your Token Balance is :<strong style={{color:"#2DA771"}}> {((Number(planUsage?.usage_amount) || 0) + (Number(planUsage?.usage?.no_of_text_to_avatar) || 0)) * 100}
+</strong>
         </h1>
         </div>
    
