@@ -94,7 +94,7 @@ export default function WorkflowBuilder() {
             ) : "Create a new workflow"}
           </button>
           <Link href={ALL_ROUTES.ALL_WORKFLOW_BUILDER}>
-            <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
+            <button className="bg-[#2DA771] text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
               Explore your workflows
             </button>
           </Link>
@@ -124,7 +124,7 @@ export default function WorkflowBuilder() {
               {/* Outer ring */}
               <div className="absolute inset-0 border-4 border-t-4 border-gray-300 rounded-full"></div>
               {/* Inner ring with fill color */}
-              <div className="absolute inset-0 border-4 border-t-4 border-t-primary-green border-transparent rounded-full animate-spin"></div>
+              <div className="absolute inset-0 border-4 border-t-4 border-t-[#2DA771] border-transparent rounded-full animate-spin"></div>
             </div>
           </div>
         )}
@@ -302,7 +302,7 @@ const Card: React.FC<CardProps> = ({
                   Cancel
                 </button>
                 <button
-                  className="bg-primary-green px-4 py-2 rounded-md text-white"
+                  className="bg-[#2DA771] px-4 py-2 rounded-md text-white"
                   onClick={handleConfirmDuplicate}
                 >
                   Confirm
@@ -337,7 +337,7 @@ const Card: React.FC<CardProps> = ({
               Cancel
             </button>
             <Link
-              className="bg-primary-green text-white text-nowrap py-2 px-6 rounded-md transition duration-300 hover:bg-green-600"
+              className="bg-[#2DA771] text-white text-nowrap py-2 px-6 rounded-md transition duration-300 hover:bg-green-600"
               href="/account/billings/settings"
             >
               Add Credit

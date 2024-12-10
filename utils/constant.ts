@@ -13,7 +13,7 @@ export enum ALL_ROUTES {
   SINGLE_AI_ASSISTANT_CHAT = "/app/ai-studio/ai-assistant/chat/:id",
   AI_CHAT = "/app/ai-studio/ai-chat",
   AI_CUSTOM_GPT = "/app/ai-studio/custom-gpts",
-  TEXT_TO_AVATAR = "/app/social-portal/text-to-avatar",
+  TEXT_TO_AVATAR = "/app/ai-studio/text-to-avatar",
   TEXT_TO_AVATAR_MY_AVATARS = "/app/social-portal/text-to-avatar/my-avatars",
   AI_CUSTOM_GPT_NEW = "/app/ai-studio/custom-gpts/new",
   AI_CUSTOM_GPTS = "/app/ai-studio/custom-gpts/gpt",

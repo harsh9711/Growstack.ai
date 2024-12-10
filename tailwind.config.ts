@@ -45,6 +45,7 @@ const config = {
       },
       colors: {
         "primary-green": "#034737",
+        "primary-lightgreen":"#2DA771",
         "primary-light-gray": "#F4F4F4",
         "primary-light-green": "#A9FF9B",
         "primary-light-shade-green": "#2DA771",

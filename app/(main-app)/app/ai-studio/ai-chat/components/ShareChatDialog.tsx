@@ -6,7 +6,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Select,
@@ -18,7 +17,6 @@ import {
 } from "@/components/ui/select";
 import { Search } from "lucide-react";
 import { useState } from "react";
-import { IoIosShareAlt, IoIosArrowBack } from "react-icons/io";
 import { ISidebarItem } from "../interface/chat.interface";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
@@ -41,7 +39,6 @@ export default function ShareChatDialog({
   onClose,
 }: ShareChatDialogProps) {
   const [activeIds, setActiveIds] = useState<string[]>([]);
-  const [nextStep, setNextStep] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedOutputType, setSelectedOutputType] = useState(
     outputType[0].value
@@ -219,7 +216,7 @@ export default function ShareChatDialog({
           </div>
           <button
             onClick={handleDownload}
-            className="!mt-8 bg-primary-green w-full h-14 rounded-xl hover:bg-primary-green/90 flex justify-center items-center text-white"
+            className="!mt-8 bg-[#2DA771] w-full h-14 rounded-xl hover:bg-[#2DA771]/90 flex justify-center items-center text-white"
           >
             {loading ? <Spinner /> : "Download"}
           </button>

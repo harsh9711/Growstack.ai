@@ -1,0 +1,21 @@
+@keyframes fadeBackground {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  .fade-in-background {
+    animation: fadeBackground 2s ease-in forwards; 
+  }
+  .zoom-background {
+    background-size: 150%; 
+    background-position: center;
+  }
+
+  .zoom-background2 {
+    background-size: 190%; 
+    background-position: center;
+  }

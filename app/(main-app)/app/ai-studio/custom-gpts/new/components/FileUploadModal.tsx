@@ -12,7 +12,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import clsx from "clsx";
 
 type CustomFile = File & { id?: string; name?: string };
 
@@ -121,7 +120,7 @@ const FileUploadModal: React.FC<UploadFileModalProps> = ({
               />
               <label
                 htmlFor="file-input"
-                className="flex gap-2 px-4 py-2 h-12 items-center justify-center bg-primary-green text-white font-semibold text-sm rounded-xl cursor-pointer sheen"
+                className="flex gap-2 px-4 py-2 h-12 items-center justify-center bg-[#2DA771] text-white font-semibold text-sm rounded-xl cursor-pointer sheen"
               >
                 <PlusIcon size={20} /> Add files
               </label>
@@ -137,7 +136,7 @@ const FileUploadModal: React.FC<UploadFileModalProps> = ({
           </button>
           <button
             onClick={() => handleAttachSearchFiles && handleAttachSearchFiles()}
-            className="flex rounded-xl border border-transparent shadow-sm px-6 py-2 h-12 items-center justify-center bg-primary-green text-base font-medium text-white sheen"
+            className="flex rounded-xl border border-transparent shadow-sm px-6 py-2 h-12 items-center justify-center bg-[#2DA771] text-base font-medium text-white sheen"
           >
             Attach
           </button>

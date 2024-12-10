@@ -21,7 +21,6 @@ instance.interceptors.request.use(
 );
 instance.interceptors.response.use(
   res => {
-    // console.log(res);
     return res;
   },
   error => {

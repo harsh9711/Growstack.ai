@@ -11,13 +11,11 @@ import {
 } from "@/components/ui/select";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Minus, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { z } from "zod";
 import TemplatesTable from "../components/TemplatesDataTable";
 import { useDropzone } from "react-dropzone";
 import React from "react";
@@ -59,8 +57,6 @@ export default function CreateTemplatePage() {
   });
 
   const [category, setCategory] = useState("");
-  const svgPattern = /^<svg.*<\/svg>$/;
-  const fontAwesomePattern = /^<i class=['"]fa[a-zA-Z0-9\- ]+['"]><\/i>$/;
 
   const [isPending, setIsPending] = useState(false);
   const [refreshTemplatesTable, setRefreshTemplatesTable] = useState(true);
@@ -294,7 +290,7 @@ export default function CreateTemplatePage() {
         </h1>
         <button
           onClick={() => router.back()}
-          className="text-[#212833] hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-1.5 rounded-full font-medium lg:font-medium md:font-small items-center  transition-all duration-300"
+          className="text-[#212833] hover:bg-[#2DA771]/10 sheen flex gap-2 px-3.5 py-1.5 rounded-full font-medium lg:font-medium md:font-small items-center  transition-all duration-300"
         >
           <ArrowBack />
           Back
@@ -357,14 +353,6 @@ export default function CreateTemplatePage() {
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="My Templates">My Templates</SelectItem>
-                    {/* <SelectItem value="Articles And Contents">Articles And Contents</SelectItem>
-                    <SelectItem value="Blogs Posts">Blogs Posts</SelectItem>
-                    <SelectItem value="Commerce"> Ecommerce</SelectItem>
-                    <SelectItem value="Emails">Emails</SelectItem>
-                    <SelectItem value="Frameworks">Frameworks</SelectItem>
-                    <SelectItem value="Marketing">Marketing</SelectItem>
-                    <SelectItem value="Social Media">Social Media</SelectItem>
-                    <SelectItem value="Websites">Websites</SelectItem> */}
                   </SelectContent>
                 </Select>
                 {formErrors?.category && (
@@ -552,7 +540,7 @@ export default function CreateTemplatePage() {
                   {index === userInputs.length - 1 && index > 0 && (
                     <button
                       type="button"
-                      className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                      className="bg-[#2DA771] text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
                       onClick={addUserInput}
                     >
                       <Plus />
@@ -561,7 +549,7 @@ export default function CreateTemplatePage() {
                   {userInputs.length === 1 && (
                     <button
                       type="button"
-                      className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                      className="bg-[#2DA771] text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
                       onClick={addUserInput}
                     >
                       <Plus />
@@ -597,7 +585,7 @@ export default function CreateTemplatePage() {
           </div>
           <div className="flex justify-end gap-4">
             <button
-              className="min-w-[200px] py-3.5 px-6 bg-primary-green sheen rounded-xl text-white mt-6 flex justify-center items-center"
+              className="min-w-[200px] py-3.5 px-6 bg-[#2DA771] sheen rounded-xl text-white mt-6 flex justify-center items-center"
               type="submit"
             >
               {isPending ? <Spinner /> : "Create your own AI template"}

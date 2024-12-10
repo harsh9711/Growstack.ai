@@ -6,7 +6,7 @@ import remarkGfm from "remark-gfm";
 import remarkBreaks from "remark-breaks";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { CustomAxiosInstance } from "@/config/axios.config";
+import instance, { CustomAxiosInstance } from "@/config/axios.config";
 
 const OutputDetails = ({
   outputDetailsData,
@@ -31,25 +31,15 @@ const OutputDetails = ({
     return cleanText?.trim();
   };
 
-  const handleCopy = (content: string) => {
-    navigator.clipboard
-      .writeText(content)
-      .then(() => {
-        toast.success("Content copied to clipboard");
-      })
-      .catch(err => {
-        toast.error("Failed to copy content");
-        console.error("Failed to copy content: ", err);
-      });
-  };
 
   const handleRerun = async (nodeMasterId: string) => {
     try {
-      const rerunPartialWorkflow = await CustomAxiosInstance().post(
+      // const rerunPartialWorkflow = await CustomAxiosInstance().post(
+      //   `/workflow/${workflowId}/run?previousExecutionId=&${executionId}&startNodeId=${nodeMasterId}`
+      // );
+      const rerunPartialWorkflow = await instance.post(
         `/workflow/${workflowId}/run?previousExecutionId=&${executionId}&startNodeId=${nodeMasterId}`
       );
-      // const rerunPartialWorkflow = await instance.post(`/workflow/${workflowId}/run?previousExecutionId=&${executionId}&startNodeId=${nodeMasterId}`
-      // );
       if (rerunPartialWorkflow?.data?.executionId) {
         onPollingWithNewId(rerunPartialWorkflow?.data?.executionId);
       }
@@ -59,12 +49,12 @@ const OutputDetails = ({
   };
   const handleReject = async (nodeExecutionId: string) => {
     try {
-      const rejectExecution = await CustomAxiosInstance().patch(
-        `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=false`
-      );
-      // const rejectExecution = await instance.patch(
+      // const rejectExecution = await CustomAxiosInstance().patch(
       //   `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=false`
       // );
+      const rejectExecution = await instance.patch(
+        `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=false`
+      );
       setApproveOutputDataId(rejectExecution?.data);
     } catch (err) {
       console.log("err", err);
@@ -72,112 +62,216 @@ const OutputDetails = ({
   };
   const handleApprove = async (nodeExecutionId: string) => {
     try {
-      const approveExecution = await CustomAxiosInstance().patch(
-        `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=true`
-      );
-      // const approveExecution = await instance.patch(
+      // const approveExecution = await CustomAxiosInstance().patch(
       //   `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=true`
       // );
+      const approveExecution = await instance.patch(
+        `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=true`
+      );
       setApproveOutputDataId(approveExecution?.data);
-
     } catch (err) {
       console.log("err", err);
     }
   };
+
+  const handleCopy = (value: any) => {
+    if (value !== undefined && value !== null) {
+      const textToCopy =
+        typeof value === "object"
+          ? JSON.stringify(value, null, 2)
+          : String(value);
+      navigator.clipboard
+        .writeText(textToCopy)
+        .then(() => {
+          console.log("copied");
+        })
+        .catch(err => {
+          console.error("Failed to copy: ", err);
+        });
+    } else {
+      alert("Nothing to copy");
+    }
+  };
+
   return (
     <>
-      {(outputDetailsData?.status === "completed" ||
-        outputDetailsData?.status === "awaiting-approval") && (
-        <div className="w-full bg-white border-l-4 border-[#FB8491] rounded-lg shadow-md p-4 relative overflow-hidden">
-          {/* Green Left Side Accent */}
-          <h2 className="text-lg font-bold mb-4">Output Details</h2>
-          <div className="space-y-2">
-            {outputDetailsData?.outputDetails?.map(
-              (item: any, index: number) => {
-                return (
-                  item.title && (
-                    <div
-                      key={index}
-                      className={`border rounded-lg ${
-                        openIndex === index
-                          ? "border-blue-400"
-                          : "border-gray-200"
-                      }`}
-                    >
-                      {/* Accordion Header */}
-                      <div
-                        className="flex justify-between items-center p-4 cursor-pointer"
-                        onClick={() => toggleAccordion(index)}
-                      >
-                        <h3 className="text-sm font-medium">{item.title}</h3>
-                        {openIndex === index ? (
-                          <ChevronDown size={18} />
-                        ) : (
-                          <ChevronUp size={18} />
-                        )}
-                      </div>
+      <div className="w-full bg-white border-l-4 border-[#FB8491] rounded-lg shadow-md p-4 relative overflow-hidden">
+        {/* Green Left Side Accent */}
+        <h2 className="text-lg font-bold mb-4">Output Details</h2>
+        <div className="space-y-2">
+          {outputDetailsData?.outputDetails?.map((item: any, index: number) => {
+            return (
+              item.title &&
+              item?.status === "completed" && (
+                <div
+                  key={index}
+                  className={`border rounded-lg ${
+                    openIndex === index ? "border-blue-400" : "border-gray-200"
+                  }`}
+                >
+                  {/* Accordion Header */}
+                  <div
+                    className="flex justify-between items-center p-4 cursor-pointer"
+                    onClick={() => toggleAccordion(index)}
+                  >
+                    <h3 className="text-sm font-medium">{item.title}</h3>
+                    {openIndex === index ? (
+                      <ChevronDown size={18} />
+                    ) : (
+                      <ChevronUp size={18} />
+                    )}
+                  </div>
 
-                      {/* Accordion Content */}
-                      {openIndex === index && (
-                        <div className=" border-t border-gray-200">
-                          <div className="p-4 prose prose-sm max-w-none">
-                            <ReactMarkdown
-                              remarkPlugins={[remarkGfm, remarkBreaks]}
-                              rehypePlugins={[rehypeRaw]}
-                            >
-                              {typeof item?.value === "string"
-                                ? formatToMarkdown(item?.value)
-                                : "Social Media Post"}
-                            </ReactMarkdown>
-                          </div>
-                          <hr className="mt-4" />
-                          <div className="flex justify-between">
-                            <div className="flex gap-4 items-center px-4 py-6">
-                              <button
-                                className=""
-                                onClick={() => handleCopy(item?.value)}
+                  {/* Accordion Content */}
+                  {openIndex === index && (
+                    <div className=" border-t border-gray-200">
+                      <div className="p-4 prose prose-sm max-w-none">
+                        {(() => {
+                          if (typeof item?.value === "string") {
+                            // Render string using ReactMarkdown
+                            return (
+                              <ReactMarkdown
+                                remarkPlugins={[remarkGfm, remarkBreaks]}
+                                rehypePlugins={[rehypeRaw]}
                               >
-                                <Copy color="#4B465C" />
+                                {formatToMarkdown(item?.value)}
+                              </ReactMarkdown>
+                            );
+                          } else if (Array.isArray(item?.value)) {
+                            if (
+                              item?.value.every(
+                                (val: any) =>
+                                  typeof val === "string" &&
+                                  val.startsWith("https://")
+                              )
+                            ) {
+                              // Render array of URLs
+                              return (
+                                <ul>
+                                  {item?.value.map(
+                                    (url: string, idx: number) => (
+                                      <li key={idx}>
+                                        <a
+                                          href={url}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="text-blue-500 underline"
+                                        >
+                                          {url}
+                                        </a>
+                                      </li>
+                                    )
+                                  )}
+                                </ul>
+                              );
+                            } else if (
+                              item?.value.every(
+                                (val: any) =>
+                                  typeof val === "object" && val !== null
+                              )
+                            ) {
+                              // Render array of objects as key-value pairs
+                              return (
+                                <ul>
+                                  {item?.value.map((obj: any, idx: number) => (
+                                    <li key={idx} className="mb-2">
+                                      {Object.entries(obj).map(
+                                        ([key, value]: any) => (
+                                          <div key={key}>
+                                            <strong>{key}:</strong>{" "}
+                                            {JSON.stringify(value)}
+                                          </div>
+                                        )
+                                      )}
+                                    </li>
+                                  ))}
+                                </ul>
+                              );
+                            } else {
+                              // Fallback for mixed content arrays
+                              return (
+                                <ul>
+                                  {item?.value.map((val: any, idx: number) => (
+                                    <li key={idx}>{JSON.stringify(val)}</li>
+                                  ))}
+                                </ul>
+                              );
+                            }
+                          } else if (
+                            typeof item?.value === "object" &&
+                            item?.value !== null
+                          ) {
+                            // Render single object as key-value pairs
+                            return (
+                              <div>
+                                {Object.entries(item?.value).map(
+                                  ([key, value]: any) => (
+                                    <div key={key}>
+                                      <strong>{key}:</strong>{" "}
+                                      {value?.startsWith(value) ? (
+                                        <a target="">{value}</a>
+                                      ) : (
+                                        JSON.stringify(value)
+                                      )}
+                                    </div>
+                                  )
+                                )}
+                              </div>
+                            );
+                          } else {
+                            // Fallback: Display JSON stringified value
+                            return (
+                              <pre>{JSON.stringify(item?.value, null, 2)}</pre>
+                            );
+                          }
+                        })()}
+                      </div>
+                      <hr className="mt-4" />
+                      <div className="flex justify-between">
+                        <div className="flex gap-4 items-center px-4 py-6">
+                          <button
+                            className=""
+                            onClick={() => handleCopy(item?.value)}
+                          >
+                            <Copy color="#4B465C" />
+                          </button>
+                          <button
+                            className=""
+                            onClick={() => handleRerun(item?.nodeMasterId)}
+                          >
+                            <RefreshCw color="#4B465C" />
+                          </button>
+                        </div>
+                        {item?.approvalRequired === "true" &&
+                          item?.approvalStatus === "pending" && (
+                            <div className="flex gap-4 items-center px-4 py-4">
+                              <button
+                                className="text-red-500 p-5 rounded-xl border border-red-500"
+                                onClick={() => {
+                                  handleReject(item?.nodeExecutionId);
+                                }}
+                              >
+                                Reject
                               </button>
                               <button
-                                className=""
-                                onClick={() => handleRerun(item?.nodeMasterId)}
+                                className="text-[#2DA771] p-5 rounded-xl border border-[#2DA771]"
+                                onClick={() => {
+                                  handleApprove(item?.nodeExecutionId);
+                                }}
                               >
-                                <RefreshCw color="#4B465C" />
+                                Approve
                               </button>
                             </div>
-                            {item?.approvalRequired === "true" &&
-                              item?.approvalStatus === "pending" && (
-                                <div className="flex gap-4 items-center px-4 py-4">
-                                  <button
-                                    className="text-red-500 p-5 rounded-xl border border-red-500"
-                                    onClick={() => {
-                                      handleReject(item?.nodeExecutionId);
-                                    }}
-                                  >
-                                    Reject
-                                  </button>
-                                  <button
-                                    className="text-[#2DA771] p-5 rounded-xl border border-[#2DA771]"
-                                    onClick={() => {
-                                      handleApprove(item?.nodeExecutionId);
-                                    }}
-                                  >
-                                    Approve
-                                  </button>
-                                </div>
-                              )}
-                          </div>
-                        </div>
-                      )}
+                          )}
+                      </div>
                     </div>
-                  )
-                );
-              }
-            )}
-          </div>
+                  )}
+                </div>
+              )
+            );
+          })}
         </div>
-      )}
+      </div>
     </>
   );
 };

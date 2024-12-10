@@ -11,12 +11,12 @@ import {
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import clsx from "clsx";
-import { Download, MoreVertical, Plus, Search } from "lucide-react";
+import { Download, Plus, Search } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { planIdsMap } from "@/lib/utils";
-import { aiModelOptions } from "../../ai-articles/constants/options";
+import { aiModelOptions } from "../../../components/options";
 import { ISidebarItem } from "../interface/chat.interface";
 import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
@@ -73,19 +73,6 @@ const groupByDate = (items: ISidebarItem[]) => {
 
   return grouped;
 };
-
-const outputType = [
-  // {
-  //   icon: <Share2 size={20} />,
-  //   label: "Share",
-  //   value: "share_chat",
-  // },
-  {
-    icon: <Download size={20} />,
-    label: "Download",
-    value: "download_chat",
-  },
-];
 
 const Layout = ({
   sidebarItems,
@@ -145,8 +132,7 @@ const Layout = ({
     [date: string]: ISidebarItem[];
   }>({});
   const [searchTerm, setSearchTerm] = useState("");
-  const [toggleSearch, setToggleSearch] = useState<boolean>(false);
-  const [inputRef, setInputRef] = useState<() => void | null>();
+
   const fetchMessages = async (_id: string) => {
     try {
       const response = await instance.get(
@@ -157,7 +143,12 @@ const Layout = ({
         (acc: Message[], chats: any) => {
           const flattenedThreads = chats.thread.flatMap((thread: any) => [
             { role: "user", content: thread.user_prompt, loading: false },
-            { role: "assistant", content: thread.response, loading: false },
+            {
+              role: "assistant",
+              content:
+                thread.response !== "[object Object]" ? thread.response : "",
+              loading: false,
+            },
           ]);
           return acc.concat(flattenedThreads);
         },
@@ -206,7 +197,6 @@ const Layout = ({
     }
   };
 
-  // delete chat functions
   const [deleteRequestPending, setDeleteRequestPending] = useState(false);
   const handleDelete = async (_id: string) => {
     setDeleteRequestPending(true);
@@ -229,8 +219,6 @@ const Layout = ({
       setDeleteRequestPending(false);
     }
   };
-
-  const [openModel, setOpenModel] = useState(false);
 
   const addMessage = (role: string, content: string, loading: boolean) => {
     setMessages(prevMessages => [
@@ -546,35 +534,6 @@ const Layout = ({
               </SelectGroup>
             </SelectContent>
           </Select>
-          <div className="remove-caret">
-            <Select>
-              <SelectTrigger
-                showChevronDownIcon={false}
-                className="px-1 py-[5px] bg-white border-0 h-fit hover:bg-gray-100 rounded-lg"
-              >
-                <MoreVertical size={20} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  {outputType.map(({ label, value, icon }) => (
-                    <div
-                      onClick={e => {
-                        e.stopPropagation();
-                        setDialogOpen(true);
-                      }}
-                      key={value}
-                      className=" cursor-pointer hover:bg-gray-100 items-center rounded-sm py-2.5 pr-2 pl-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
-                    >
-                      <div className="flex gap-x-2">
-                        {icon}
-                        {label}
-                      </div>
-                    </div>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
         </div>
       </div>
       <div className="flex-1 flex gap-4">
@@ -633,7 +592,7 @@ const Layout = ({
               <div className="flex-1 flex flex-col justify-center items-center pb-40 space-y-4">
                 <div className="h-14 w-14 relative">
                   <Image
-                    src="/logo/growstack-mini.png"
+                    src="/logo/growstack-mini1.png"
                     alt="growstack_ai_chat"
                     fill
                   />

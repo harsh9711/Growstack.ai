@@ -72,7 +72,7 @@ const Run: React.FC<any> = ({
     workflow_id: "",
     description: "",
   });
-  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered, setIsHovered] = useState<any>(null);
   const [approvalsData, setApprovalsData] = useState<any>({});
   const [approveOutputDataId, setApproveOutputDataId] = useState("");
   const [IsInputParameterOpen, setIsInputParameterOpen] = useState(true);
@@ -94,10 +94,8 @@ const Run: React.FC<any> = ({
   const fetchWorkflowData = async (id: string) => {
     setLoading(true);
     try {
-      const response = await CustomAxiosInstance().get(`/workflow/${id}`);
-      // const response = await instance.get(
-      //   `/workflow/${id}`
-      // );
+      // const response = await axios.get(`http://localhost:5000/workflow/${id}`);
+      const response = await instance.get(`/workflow/${id}`);
       const apiData = response.data;
 
       // Filter and map `nodes` to `input_configs`
@@ -159,7 +157,7 @@ const Run: React.FC<any> = ({
                   file_type: formParameters?.fileType,
                 };
               }) || []
-            ); 
+            );
           }
         });
 
@@ -183,11 +181,15 @@ const Run: React.FC<any> = ({
   const handleRunWorkFlow = useCallback(async () => {
     const updatedWorkflowData = workFlowData.input_configs.map((data: any) => ({
       variableName: data.variableName,
-      variableValue: data.default_value,
+      variableValue: data.type === "checkbox" ? data.selected_values : data.default_value,
     }));
     setIsLoading(true);
     try {
-      const response = await CustomAxiosInstance().post(
+      // const response = await axios.post(
+      //   `http://localhost:5000/workflow/${workflowId}/run`,
+      //   updatedWorkflowData
+      // );
+      const response = await instance.post(
         `/workflow/${workflowId}/run`,
         updatedWorkflowData
       );
@@ -195,6 +197,7 @@ const Run: React.FC<any> = ({
       //   `/workflow/${workflowId}/run`,
       //   updatedWorkflowData
       // );
+      getWorkflowStats()
       setExecutionId(response?.data?.executionId);
     } catch (error) {
       // To:Do Handle error
@@ -205,7 +208,10 @@ const Run: React.FC<any> = ({
 
   const pollingWorkflowExec = useCallback(async () => {
     try {
-      const getWorkFlowExecData = await CustomAxiosInstance().get(
+      // const getWorkFlowExecData = await axios.get(
+      //   `http://localhost:5000/workflow/${workflowId}/status/${executionId}`
+      // );
+      const getWorkFlowExecData = await instance.get(
         `/workflow/${workflowId}/status/${executionId}`
       );
 
@@ -224,6 +230,7 @@ const Run: React.FC<any> = ({
             getWorkFlowExecData?.data?.variables[variableName] || "";
           const approvalStatus = nodeExecution?.approvalStatus;
           const approvalRequired = nodeExecution?.parameters?.approvalRequired;
+          const status = nodeExecution?.status;
 
           return {
             nodeMasterId: nodeMasterId,
@@ -232,6 +239,7 @@ const Run: React.FC<any> = ({
             approvalStatus: approvalStatus,
             approvalRequired: approvalRequired,
             nodeExecutionId: nodeExecutionId,
+            status: status,
           };
         }
       );
@@ -258,7 +266,11 @@ const Run: React.FC<any> = ({
         status: status,
         approvalDetails: approvals,
       });
-      if (status === "completed" || status === "awaiting-approval") {
+      if (
+        status === "completed" ||
+        status === "awaiting-approval" ||
+        status === "failed"
+      ) {
         return true;
       }
     } catch (error) {
@@ -266,17 +278,29 @@ const Run: React.FC<any> = ({
     }
     return false;
   }, [executionId, workflowId, approveOutputDataId, approvalsData]);
-
   useEffect(() => {
     if (executionId?.length > 0) {
-      const interval = setInterval(async () => {
-        const shouldStop = await pollingWorkflowExec();
-        if (shouldStop) {
-          clearInterval(interval);
-        }
-      }, 5000);
+      let interval: NodeJS.Timeout;
 
-      return () => clearInterval(interval);
+      const startPolling = async () => {
+        interval = setInterval(async () => {
+          try {
+            const shouldStop = await pollingWorkflowExec();
+            if (shouldStop) {
+              clearInterval(interval);
+            }
+          } catch (error) {
+            console.error("Error during polling:", error);
+            clearInterval(interval); // Clear on error as well, if needed.
+          }
+        }, 5000);
+      };
+
+      startPolling();
+
+      return () => {
+        if (interval) clearInterval(interval);
+      };
     }
   }, [pollingWorkflowExec, executionId]);
 
@@ -318,10 +342,10 @@ const Run: React.FC<any> = ({
 
   const getWorkflowStats = async () => {
     try {
-      const response = await CustomAxiosInstance().get(
-        `/workflow/${workflowId}/stats`
-      );
-      // const response = await instance.get(`/workflow/${workflowId}/stats`);
+      // const response = await CustomAxiosInstance().get(
+      //   `/workflow/${workflowId}/stats`
+      // );
+      const response = await instance.get(`/workflow/${workflowId}/stats`);
       setWorkflowStatsData(response?.data);
     } catch (error) {
       console.error("Error fetching workflow stats data", error);
@@ -363,6 +387,19 @@ const Run: React.FC<any> = ({
     setIsInputParameterOpen(!IsInputParameterOpen);
   };
 
+  const isWorkflowDisabled = (inputConfigs: any[]) => {
+    return inputConfigs.some((config: any) => {
+      if (config.required) {
+        if (config.type === "checkbox") {
+          return !config.selected_values || config.selected_values.length === 0;
+        } else {
+          return !config.default_value || config.default_value.length === 0;
+        }
+      }
+      return false;
+    });
+  };
+
   return (
     <div className="px-8 pb-8">
       <div>
@@ -390,7 +427,9 @@ const Run: React.FC<any> = ({
                   </div>
                 </div>
                 <div
-                  className={`${IsInputParameterOpen ? "block" : "hidden"} transition-opacity`}
+                  className={`${
+                    IsInputParameterOpen ? "block" : "hidden"
+                  } transition-opacity`}
                 >
                   {workFlowData?.input_configs?.map(
                     (input: any, idx: number) => {
@@ -409,18 +448,21 @@ const Run: React.FC<any> = ({
                             )}
 
                             {input?.description?.length > 0 && (
-                              <div className="relative">
+                              <div className="relative" key={idx}>
                                 {/* Info icon */}
                                 <div
                                   className="inline-block cursor-pointer"
-                                  onMouseEnter={() => setIsHovered(true)}
-                                  onMouseLeave={() => setIsHovered(false)}
+                                  onMouseEnter={() => setIsHovered(idx)}
+                                  onMouseLeave={() => setIsHovered(null)}
                                 >
                                   <Info className="hover:opacity-100" />
                                 </div>
                                 {/* Description box */}
-                                {isHovered && (
-                                  <div className="absolute left-0 top-full mt-2 w-max p-2 text-sm text-white bg-gray-800 rounded-md shadow-md z-10">
+                                {isHovered === idx && (
+                                  <div
+                                    key={idx}
+                                    className="absolute left-0 top-full mt-2 w-max p-2 text-sm text-white bg-gray-800 rounded-md shadow-md z-10"
+                                  >
                                     {input?.description}
                                   </div>
                                 )}
@@ -518,10 +560,7 @@ const Run: React.FC<any> = ({
                         className={clsx(
                           "bg-primary-light-shade-green flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 text-white"
                         )}
-                        disabled={workFlowData?.input_configs?.some(
-                          (data: any) =>
-                            data?.required && data?.default_value?.length === 0
-                        )}
+                        disabled={isWorkflowDisabled(workFlowData?.input_configs)}
                         onClick={handleRunWorkFlow}
                       >
                         {isLoading && <Spinner />}
@@ -532,9 +571,7 @@ const Run: React.FC<any> = ({
                           "bg-transparent border-2 border-green-200 flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 "
                         )}
                         onClick={() => setIsSchedulerModalOpen(true)}
-                        disabled={workFlowData?.input_configs?.some(
-                          (data: any) => data?.default_value?.length === 0
-                        )}
+                        disabled={isWorkflowDisabled(workFlowData?.input_configs)}
                       >
                         <Clock size={20} color="#2DA771" />
                         <h2 className="text-primary-light-shade-green">

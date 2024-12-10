@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import ConfirmDialog from "@/app/(main-app)/app/social-portal/text-to-avatar/components/ConfirmDialog";
+import ConfirmDialog from "./ConfirmDialog";
 
 interface Props {
   workflowId: string;

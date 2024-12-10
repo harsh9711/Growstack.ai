@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRef, useEffect } from "react";
 import "./navLink.scss";
 
-const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
+const   NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
   const pathName = usePathname();
   const hasSubmenu = item.submenu && item.submenu.length > 0;
   const navbarRef = useRef(null);
@@ -33,9 +33,15 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
   const renderNestedNav = list => (
     <div className="flex justify-between rounded-xl">
       <div className="flex flex-row ">
-        <div className="border-b rounded-tl-[20px] rounded-bl-[20px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white w-full max-w-[60px] flex items-center justify-center">
-          <h3 className="font-extrabold whitespace-nowrap text-sm -rotate-90">BY TEAM</h3>
-        </div>
+      <div
+  className="border-b rounded-tl-[20px] rounded-bl-[20px] rounded-r-[40px] bg-gradient-to-r from-[#2DA771]/100  to-[#008F50]/100 text-white w-full max-w-[60px] flex items-center justify-center shadow-lg shadow-indigo-500/40 hover:shadow-sm hover:shadow-indigo-500/70 transition-all duration-300 transform scale-105"
+  style={{
+    backdropFilter: 'blur(3px)', // Additional blur to enhance the fog effect
+  }}
+>
+  <h3 className="font-extrabold whitespace-nowrap text-sm -rotate-90">BY TEAM</h3>
+</div>
+
         <div className="grid grid-cols-3 m-4 border-gray-300">
           {list.slice(0, 9).map((nav, index) => (
             nav && (
@@ -60,8 +66,12 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
       </div>
 
       <div className="flex flex-row">
-        <div className="border-b rounded-tl-[20px] rounded-bl-[20px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white w-full max-w-[60px] flex items-center justify-center">
-          <div className="-rotate-90 flex flex-row">
+      <div
+  className="border-b rounded-tl-[20px] rounded-bl-[20px] rounded-r-[40px] bg-gradient-to-r from-[#2DA771]/100  to-[#008F50]/100 text-white w-full max-w-[60px] flex items-center justify-center shadow-lg shadow-indigo-500/40 hover:shadow-sm hover:shadow-indigo-500/70 transition-all duration-300 transform scale-105"
+  style={{
+    backdropFilter: 'blur(3px)', // Additional blur to enhance the fog effect
+  }}
+>          <div className="-rotate-90 flex flex-row">
             <h3 className="font-extrabold whitespace-nowrap text-sm">BY INDUSTRY</h3>
             <div className="border border-gray-300 w-full h-6 mx-4"></div>
             <h3 className="font-extrabold whitespace-nowrap text-sm">BY COMPANY</h3>
@@ -95,8 +105,12 @@ const NavLink = ({ item, onToggleSubmenu, onCloseMobileMenu }) => {
     return (
       <div className="flex justify-between rounded-xl">
         <div className="flex flex-row">
-          <div className="border-b rounded-tl-[20px] rounded-bl-[20px] bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white w-full max-w-[60px] flex items-center justify-center">
-            <h3 className="font-extrabold whitespace-nowrap text-sm -rotate-90">FEATURES</h3>
+        <div
+  className="border-b rounded-tl-[20px] rounded-bl-[20px] rounded-r-[40px] bg-gradient-to-r from-[#2DA771]/100  to-[#008F50]/100 text-white w-full max-w-[60px] flex items-center justify-center shadow-lg shadow-indigo-500/40 hover:shadow-sm hover:shadow-indigo-500/70 transition-all duration-300 transform scale-105"
+  style={{
+    backdropFilter: 'blur(3px)', // Additional blur to enhance the fog effect
+  }}
+>            <h3 className="font-extrabold whitespace-nowrap text-sm -rotate-90">FEATURES</h3>
           </div>
           <div className="grid grid-cols-3 m-4 border-gray-300">
             {list.slice(0, 9).map((nav, index) => (

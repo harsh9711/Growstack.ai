@@ -50,12 +50,12 @@ export default function Dashboard() {
   const getPreBuiltTemplates = async () => {
     try {
       setLoading(true);
-      const response = await CustomAxiosInstance().get(
-        `/workflow?isPrebuilt=true`
-      );
-      //   const response = await instance.get(
-      //     `/workflow?isPrebuilt=true`
-      //   );
+      // const response = await axios.get(`http://localhost:5000/workflow`);
+      const response = await instance.get(`/workflow?isPrebuilt=true`);
+      // setPreBuiltTemplates([]);
+      // const response = await CustomAxiosInstance().get(
+      //   `/workflow?isPrebuilt=true`
+      // );
       setPreBuiltTemplates(response.data);
     } catch (error) {
       console.error("Error fetching pre-built templates:", error);
@@ -67,8 +67,8 @@ export default function Dashboard() {
   const getUserSavedWorkflows = async () => {
     try {
       setLoading(true);
-      const response = await CustomAxiosInstance().get(`/workflow`);
-      // const response = await instance.get(`/workflow`);
+      // const response = await axios.get(`http://localhost:5000/workflow`);
+      const response = await instance.get(`/workflow`);
       setPreBuiltTemplates(response.data);
     } catch (error) {
       console.error("Error fetching pre-built templates:", error);
@@ -103,40 +103,46 @@ export default function Dashboard() {
     };
   };
 
-  const fetchSearchResults = async (query: string): Promise<void> => {
-    try {
-      setLoading(true);
-      const queryParams =
-        activeTab === "templates" ? `${query}&isPrebuilt=true` : `${query}`;
-      const response = await CustomAxiosInstance().get(
-        `/workflow/search?keyword=${queryParams}`
-      );
-      //   const response = await instance.get(
-      //     `/workflow/search?keyword=${queryParams}`
-      //   );
-      setPreBuiltTemplates(response.data);
-    } catch (error) {
-      console.error("Error fetching search results:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const fetchSearchResults = useCallback(
+    async (query: string): Promise<void> => {
+      try {
+        setLoading(true);
+        const queryParams =
+          activeTab === "templates" ? `${query}&isPrebuilt=true` : `${query}`;
+        // const response = await axios.get(
+        //   `http://localhost:5000/workflow/search?keyword=${query}`
+        // );
+        const response = await instance.get(
+          `/workflow/search?keyword=${queryParams}`
+        );
+        if (response.data?.length > 0) setPreBuiltTemplates(response.data); // Update results with API response
+      } catch (error) {
+        console.error("Error fetching search results:", error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [activeTab]
+  );
 
   const debouncedFetchSearchResults = useCallback(
     debounce(fetchSearchResults, 1500),
-    []
+    [activeTab]
   );
 
-  const handleSearchInputChange = (e: any) => {
-    const query = e.target.value || "";
-    setSearchQuery(query);
-    if (query.length > 0) {
-      debouncedFetchSearchResults(query);
-    } else {
-      if (activeTab === "templates") getPreBuiltTemplates();
-      if (activeTab === "workflows") getUserSavedWorkflows();
-    }
-  };
+  const handleSearchInputChange = useCallback(
+    (e: any) => {
+      const query = e.target.value || "";
+      setSearchQuery(query);
+      if (query.length > 0) {
+        debouncedFetchSearchResults(query);
+      } else {
+        if (activeTab === "templates") getPreBuiltTemplates();
+        if (activeTab === "workflows") getUserSavedWorkflows();
+      }
+    },
+    [activeTab]
+  );
 
   return (
     <>
@@ -146,7 +152,11 @@ export default function Dashboard() {
             <div className="bg-white rounded-3xl border border-[#E8E8E8] h-[430px] px-5 py-8 ">
               <div className="pb-3">
                 <button
-                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px]  ${activeTab === "newWorkflows" ? "bg-[#2DA771] text-white" : "text-black"}`}
+                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px]  ${
+                    activeTab === "newWorkflows"
+                      ? "bg-[#2DA771] text-white"
+                      : "text-black"
+                  }`}
                   onClick={handleCreateWorkflow}
                 >
                   <div className="flex items-center gap-3 px-2 py-2">
@@ -158,8 +168,15 @@ export default function Dashboard() {
               </div>
               <div className="pb-3">
                 <button
-                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px] ${activeTab === "templates" ? "bg-[#2DA771] text-white" : "text-black"}`}
-                  onClick={() => setActiveTab("templates")}
+                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px] ${
+                    activeTab === "templates"
+                      ? "bg-[#2DA771] text-white"
+                      : "text-black"
+                  }`}
+                  onClick={() => {
+                    setActiveTab("templates");
+                    setSearchQuery("");
+                  }}
                 >
                   <div className="flex items-center gap-3 px-3 py-2">
                     <LayoutDashboard />
@@ -170,11 +187,18 @@ export default function Dashboard() {
               </div>
               <div className="pb-3">
                 <button
-                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px] ${activeTab === "workflows" ? "bg-[#2DA771] text-white" : "text-black"}`}
+                  className={`flex items-center justify-between px-4 py-3 rounded-xl transition-all duration-300 w-[280px] ${
+                    activeTab === "workflows"
+                      ? "bg-[#2DA771] text-white"
+                      : "text-black"
+                  }`}
                 >
                   <div
                     className="flex items-center gap-3 px-3 py-2"
-                    onClick={() => setActiveTab("workflows")}
+                    onClick={() => {
+                      setActiveTab("workflows");
+                      setSearchQuery("");
+                    }}
                   >
                     <Waypoints />
                     <span>My workflows</span>
@@ -304,7 +328,10 @@ const Card: React.FC<CardProps> = ({
     setLoading(true);
     try {
       setLoading(true);
-      const response = await CustomAxiosInstance().post(
+      // const response = await instance.post(
+      //   `http://localhost:5000/workflow/${workflow_id}/duplicate`
+      // );
+      const response = await instance.post(
         `/workflow/${workflow_id}/duplicate`
       );
       // const response = await instance.post(
@@ -335,13 +362,11 @@ const Card: React.FC<CardProps> = ({
   const handleDeleteClick = async () => {
     setLoading(true);
     try {
-      const response = await CustomAxiosInstance().delete(
-        `/workflow/delete/${workflow_id}`
-      );
-
-      // const response = await instance.delete(
+      // const response = await CustomAxiosInstance().delete(
       //   `/workflow/delete/${workflow_id}`
       // );
+
+      const response = await instance.delete(`/workflow/delete/${workflow_id}`);
     } catch (error: any) {
       console.error("Error deleting workflow:", error);
     } finally {
@@ -353,12 +378,12 @@ const Card: React.FC<CardProps> = ({
   const handleUnpublishWorkflow = async () => {
     setLoading(true);
     try {
-      const response = await CustomAxiosInstance().post(
-        `/workflow/unpublish/${workflow_id}`
-      );
-      // const response = await instance.post(
+      // const response = await CustomAxiosInstance().post(
       //   `/workflow/unpublish/${workflow_id}`
       // );
+      const response = await instance.post(
+        `/workflow/unpublish/${workflow_id}`
+      );
     } catch (error: any) {
       console.error("Error unpublish workflow:", error);
     } finally {

@@ -29,7 +29,7 @@ const SubscribePlan = ({ goBackHandler }: Props) => {
           Go back
         </button>
         <Link
-          className="w-full py-2 px-6 rounded-md flex gap-3 bg-primary-green text-white sheen transition-all duration-300"
+          className="w-full py-2 px-6 rounded-md flex gap-3 bg-[#2DA771] text-white sheen transition-all duration-300"
           href={ALL_ROUTES.PAYMENT}
         >
           Subscribe Now

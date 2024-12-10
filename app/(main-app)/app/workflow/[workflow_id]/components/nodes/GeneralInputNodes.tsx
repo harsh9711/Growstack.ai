@@ -36,7 +36,8 @@ const GeneralInputNodes = memo(
     const { isLoading } = useAppSelector(state => state.nodes);
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
     const [description, setDescription] = useState(data?.descriptions || "");
-    const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] = useState(false);
+    const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] =
+      useState(false);
 
     const node = useAppSelector(state =>
       state.nodes.nodes.find(node => node.id === id)
@@ -56,18 +57,19 @@ const GeneralInputNodes = memo(
 
     const handleNextClick = async () => {
       if (!node?.data?.parameters) return;
+      // const requiredParams = Object.values(node.data.parameters).filter(
+      //   param => param.required
+      // );
+      const requiredParams = Object.entries(node.data.parameters)
+        .filter(([key, param]) => key !== "nextParameter" && param.required)
+        .map(([key, param]) => param);
 
-      const requiredParams = Object.values(node.data.parameters).filter(
-        param => param.required
-      );
       const allRequiredParamsFilled = requiredParams.every(
         param => param?.value
       );
 
       if (allRequiredParamsFilled) {
         const updatedValue = extractParameterValues(node.data.parameters);
-
-        console.log("updatedValue-->", updatedValue);
 
         dispatch(
           addVariable({
@@ -190,7 +192,6 @@ const GeneralInputNodes = memo(
 
       return () => document.removeEventListener("click", handleOutsideClick);
     }, [isActionModalShow]);
-
 
     const handleCloseDeleteConfirmationModal = () => {
       setOpenDeleteConfirmationModal(false);

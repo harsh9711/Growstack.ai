@@ -23,10 +23,9 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import clsx from "clsx";
-import { Check, Edit, Heart, Search, XCircleIcon } from "lucide-react";
+import { Edit, Search } from "lucide-react";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { BsHeartFill } from "react-icons/bs";
 import "react-toastify/dist/ReactToastify.css";
 import DeleteAssistantDialog from "./DeleteTemplateDialog";
 import EditAssistantDialog from "./EditDialogTemplateDialog";
@@ -106,20 +105,6 @@ const TemplatesTable: React.FC<TemplatesTableProps> = ({
         </div>
       ),
     },
-    // {
-    //   accessorKey: "status",
-    //   header: () => <div className="uppercase">Status</div>,
-    //   cell: ({ row }) => {
-    //     const status = row.getValue("status") as "Active" | "Inactive" | "Disabled";
-    //     const statusClasses = {
-    //       Active: "text-green-500",
-    //       Inactive: "text-yellow-500",
-    //       Disabled: "text-red-500",
-    //     };
-
-    //     return <div className={`text-left font-medium capitalize ${statusClasses[status] || ""}`}>{status}</div>;
-    //   },
-    // },
     {
       accessorKey: "created",
       header: () => <div className="uppercase">Created</div>,
@@ -149,27 +134,6 @@ const TemplatesTable: React.FC<TemplatesTableProps> = ({
             handleDelete={handleDelete}
             fetchAssistants={fetchAssistants}
           />
-          {/* <button
-              className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300"
-              onClick={() => {
-                row.original.handleStatusChange(row.original._id, "inactive");
-              }}>
-              <XCircleIcon size={20} />
-            </button>
-            <button
-              className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300"
-              onClick={() => {
-                row.original.handleStatusChange(row.original._id, "active");
-              }}>
-              <Check size={20} />
-            </button>
-            <button className="p-1.5 hover:bg-gray-100 rounded-lg transition-all duration-300">
-              {row.original.favorite ? (
-                <BsHeartFill size={20} className="text-rose-300" onClick={() => handleFavorite("remove", row.original._id)} />
-              ) : (
-                <Heart size={20} onClick={() => handleFavorite("add", row.original._id)} />
-              )}
-            </button> */}
         </div>
       ),
     },
@@ -191,7 +155,6 @@ const TemplatesTable: React.FC<TemplatesTableProps> = ({
             category: assistant["category"],
             favorite: assistant["favorite"],
             created: assistant["CREATED"],
-            //status: assistant["STATUS"],
             handleStatusChange: async (id: string, status: string) => {
               const updateAssistantStatus = async () => {
                 try {
@@ -290,7 +253,7 @@ const TemplatesTable: React.FC<TemplatesTableProps> = ({
         className={clsx(
           "w-12 h-[45px] rounded-lg mx-1 bg-[#4B465C14] transition-all duration-300",
           i === table.getState().pagination.pageIndex
-            ? "!bg-primary-green hover:bg-opacity-50 text-white"
+            ? "!bg-[#2DA771] hover:bg-opacity-50 text-white"
             : "hover:bg-[#4B465C29]"
         )}
       >

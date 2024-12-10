@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import ChatInput from "./ChatInput";
-import ChatOptions from "./ChatOptions";
 import ChatMessages from "./ChatMessages";
 import { Assistant, Chat, Conversation } from "../../../components/types";
-import { languageOptions } from "@/app/(main-app)/app/ai-studio/ai-articles/constants/options";
 
 interface ChatSectionProps {
-  conversation: Conversation;
+  conversation: Conversation | any;
   assistant: Assistant;
   selectedLanguage: string;
   selectedAiModel: string;
   setMessagesData: any;
+  newChat: boolean;
+  setNewChat: (value: boolean) => void;
+  convId: string;
+  setMessages: (value: any) => void;
+  messages: any;
+  setConvId: (value: string) => void;
 }
 
 const ChatSection: React.FC<ChatSectionProps> = ({
@@ -19,12 +23,18 @@ const ChatSection: React.FC<ChatSectionProps> = ({
   selectedLanguage,
   selectedAiModel,
   setMessagesData,
+  newChat,
+  setNewChat,
+  convId,
+  messages,
+  setConvId,
+  setMessages,
 }) => {
-  const [messages, setMessages] = useState<Chat[]>([]);
-
   useEffect(() => {
-    setMessages(conversation.chats);
-  }, [conversation.chats]);
+    if (conversation) {
+      setMessages(conversation.chats);
+    }
+  }, [conversation]);
 
   useEffect(() => {
     setMessagesData(messages);
@@ -37,12 +47,13 @@ const ChatSection: React.FC<ChatSectionProps> = ({
       _id: new Date().toISOString(),
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      chats: undefined,
     };
-    setMessages(prevMessages => [...prevMessages, newMessage]);
+    setMessages((prevMessages: any) => [...prevMessages, newMessage]);
   };
 
   const updateMessage = (prompt: string, response: string) => {
-    setMessages(prevMessages => {
+    setMessages((prevMessages: any) => {
       const messageIndex = prevMessages.length - 1;
       const updatedMessages = [...prevMessages];
       updatedMessages[messageIndex].response = response;
@@ -59,16 +70,15 @@ const ChatSection: React.FC<ChatSectionProps> = ({
         />
       </div>
       <div className="space-y-4">
-        {/* <ChatOptions
-          switchLanguage={switchLanguage}
-          selectedLanguage={selectedLanguage}
-        /> */}
         <ChatInput
           selectedModel={selectedAiModel}
           assistant_id={assistant.id}
           addMessage={addMessage}
           updateMessage={updateMessage}
           selectedLanguage={selectedLanguage}
+          newChat={newChat}
+          setNewChat={setNewChat}
+          convId={convId}
         />
       </div>
     </div>

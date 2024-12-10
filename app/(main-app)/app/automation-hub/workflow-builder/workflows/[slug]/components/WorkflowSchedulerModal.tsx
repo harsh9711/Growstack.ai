@@ -19,7 +19,7 @@ import "../../../../../../../../styles/datepicker.css";
 import axios from "axios";
 import FileUpload from "./FileUpload";
 import { Switch } from "@/components/ui/switch";
-import { CustomAxiosInstance } from "@/config/axios.config";
+import instance, { CustomAxiosInstance } from "@/config/axios.config";
 
 interface SchedulerModalProps {
   show?: boolean;
@@ -106,27 +106,27 @@ function WorkflowSchedulerModal({
           workflowPayload: updatedWorkflowData,
         };
         method = "patch";
-        const response = await CustomAxiosInstance().patch(
-          `/workflow/${workFlowData?.workflow_id}/schedule/${workFlowData?._id}`,
-          payload
-        );
-        // const response = await instance.patch(
+        // const response = await CustomAxiosInstance().patch(
         //   `/workflow/${workFlowData?.workflow_id}/schedule/${workFlowData?._id}`,
         //   payload
         // );
+        const response = await instance.patch(
+          `/workflow/${workFlowData?.workflow_id}/schedule/${workFlowData?._id}`,
+          payload
+        );
         toast.success("Schedule updated successfully");
         window.dispatchEvent(new Event("schedule-updated"));
         onHide(false);
       } else {
         payload = { ...fields, workflowPayload: updatedWorkflowData };
-        const response = await CustomAxiosInstance().post(
-          `/workflow/${workFlowData?.workflow_id}/schedule`,
-          payload
-        );
-        // const response = await instance.post(
+        // const response = await CustomAxiosInstance().post(
         //   `/workflow/${workFlowData?.workflow_id}/schedule`,
         //   payload
         // );
+        const response = await instance.post(
+          `/workflow/${workFlowData?.workflow_id}/schedule`,
+          payload
+        );
         toast.success("Schedule updated successfully");
         window.dispatchEvent(new Event("schedule-updated"));
         onHide(false);
@@ -304,8 +304,8 @@ function WorkflowSchedulerModal({
                                   dayOfWeek: checked
                                     ? [...prevFields.dayOfWeek, day]
                                     : prevFields.dayOfWeek.filter(
-                                        d => d !== day
-                                      ),
+                                      d => d !== day
+                                    ),
                                 }));
                               }}
                             />
@@ -369,11 +369,10 @@ function WorkflowSchedulerModal({
                                   }}
                                   className={`
                                 h-8 w-8 rounded-full flex items-center justify-center text-sm
-                                ${
-                                  fields.dayOfMonth === day.toString()
-                                    ? "bg-primary-green text-white"
-                                    : "hover:bg-gray-100"
-                                }
+                                ${fields.dayOfMonth === day.toString()
+                                      ? "bg-primary-green text-white"
+                                      : "hover:bg-gray-100"
+                                    }
                               `}
                                 >
                                   {day}

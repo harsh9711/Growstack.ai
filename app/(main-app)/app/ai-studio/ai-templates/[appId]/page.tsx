@@ -4,9 +4,8 @@ import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import { EditorState, convertToRaw } from "draft-js";
 import { saveAs } from "file-saver";
-import { jsPDF } from "jspdf";
 import "jspdf-autotable";
-import { ArrowLeft, ChevronRight, Save, StarIcon } from "lucide-react";
+import { ArrowLeft, ChevronRight, StarIcon } from "lucide-react";
 import Link from "next/link";
 import React, { Fragment, useEffect, useState } from "react";
 import { BsStarFill } from "react-icons/bs";
@@ -14,11 +13,9 @@ import Editor from "./components/Editor";
 import Spinner from "@/components/Spinner";
 import { Switch } from "@/components/ui/switch";
 import { Info } from "lucide-react";
-import axios from "axios";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -42,7 +39,7 @@ import { useDispatch } from "react-redux";
 import {
   aiModelOptionsTemplate,
   languageOptions,
-} from "../../ai-articles/constants/options";
+} from "../../../components/options";
 import Dropdown from "./components/Dropdown";
 import { Plus } from "lucide-react";
 import { getCookie } from "cookies-next";
@@ -64,13 +61,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { planIdsMap } from "@/lib/utils";
 import clsx from "clsx";
-import {
-  Menu,
-  MenuHandler,
-  MenuList,
-  MenuItem,
-  Button,
-} from "@material-tailwind/react";
 export default function AiAppPage({
   params: { appTemplateId },
 }: {
@@ -196,7 +186,6 @@ export default function AiAppPage({
     if (isEdit) {
       setFileName(editDocumentData?.doc_name);
       setUserInput1(editDocumentData?.doc_language);
-      // setWorkbook(editDocumentData?.workbook);
       setGeneratedContent(editDocumentData?.doc_content);
       dispatch(editDocument(false));
       dispatch(savedDecument(null));
@@ -204,8 +193,6 @@ export default function AiAppPage({
   }, [editDocumentData]);
 
   const handleDownload = async (selectedOption: string) => {
-    const contentState = editorState.getCurrentContent();
-    const rawContentState = convertToRaw(contentState);
     const formattedContent = generatedContent;
     const plainTextContent = stripHtmlTags(formattedContent);
 
@@ -268,75 +255,6 @@ export default function AiAppPage({
     }
   };
 
-  // const handleDownload = (selectedOption: string) => {
-  //   const contentState = editorState.getCurrentContent();
-  //   const rawContentState = convertToRaw(contentState);
-  //   const formattedContent = generatedContent;
-  //   let plainTextContent = stripHtmlTags(formattedContent);
-
-  //   // Prepare different formats
-  //   const formats = {
-  //     "Copy as Text": generatedContent,
-  //     "Copy as HTML": formattedContent,
-  //     "Download as DOC": plainTextContent,
-  //     "Download as TXT": plainTextContent,
-  //     "Download as PDF": plainTextContent,
-  //   };
-
-  //   const addTextToPdf = (content: string) => {
-  //     const pdfDoc = new jsPDF();
-
-  //     // Add the font to the PDF document
-  //     pdfDoc.addFont('fonts/NotoSans-Regular.ttf', 'NotoSans', 'normal');
-  //     pdfDoc.setFont('NotoSans');
-
-  //     let yPos = 10;
-  //     const pageHeight = pdfDoc.internal.pageSize.height;
-  //     const lines = pdfDoc.splitTextToSize(content, 180);
-
-  //     lines.forEach((line: string | string[]) => {
-  //       if (yPos + 10 > pageHeight) {
-  //         pdfDoc.addPage();
-  //         yPos = 10;
-  //       }
-  //       pdfDoc.text(line, 10, yPos);
-  //       yPos += 10;
-  //     });
-
-  //     return pdfDoc;
-  //   };
-
-  //   switch (selectedOption) {
-  //     case "Copy as Text":
-  //       navigator.clipboard.writeText(formats["Copy as Text"]);
-  //       alert("Text copied to clipboard!");
-  //       break;
-  //     case "Copy as HTML":
-  //       navigator.clipboard.writeText(formats["Copy as HTML"]);
-  //       alert("HTML copied to clipboard!");
-  //       break;
-  //     case "Download as DOC":
-  //       const docContent = formats["Download as DOC"];
-  //       const docBlob = new Blob([docContent], {
-  //         type: "application/msword;charset=utf-8",
-  //       });
-  //       saveAs(docBlob, `${fileName}.doc`);
-  //       break;
-  //     case "Download as TXT":
-  //       const txtBlob = new Blob([formats["Download as TXT"]], {
-  //         type: "text/plain;charset=utf-8",
-  //       });
-  //       saveAs(txtBlob, `${fileName}.txt`);
-  //       break;
-  //     case "Download as PDF":
-  //       const pdfDoc = addTextToPdf(formats["Download as PDF"]);
-  //       pdfDoc.save(`${fileName}.pdf`);
-  //       break;
-  //     default:
-  //       console.error("Unsupported download option");
-  //   }
-  // };
-
   const [isStreaming, setIsStreaming] = useState(false);
 
   const streamResponse = async (chatId: string) => {
@@ -387,7 +305,6 @@ export default function AiAppPage({
     } else {
       setUserInput1Error("");
     }
-
 
     // Validate prompts
     const errors = userPrompts.map(prompt =>
@@ -539,35 +456,6 @@ export default function AiAppPage({
     }
   };
 
-  const handleEditDocument = async () => {
-    try {
-      const payload = {
-        doc_name: fileName,
-        doc_language: userInput1,
-        doc_type: "TEXT",
-        category: "text",
-        doc_content: generatedContent,
-      };
-      const response = await instance.put(
-        API_URL + `/users/api/v1/docs/${editDocumentData?._id}`,
-        payload
-      );
-      if (response.data.success) {
-        dispatch(editDocument(false));
-        router.push(`/account/saved-documents`);
-      }
-      toast.success(response.data.message);
-    } catch (error: any) {
-      if (error.response) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error(error.message);
-      }
-      console.error("Document Save failed:", error);
-    } finally {
-    }
-  };
-
   const validateImageUrl = (url: string) => {
     const imageRegex = /^(https?:\/\/.*\.(?:png|jpg|jpeg|gif))$/i;
     return imageRegex.test(url);
@@ -677,7 +565,7 @@ export default function AiAppPage({
           <span className="text-[#3D817B] font-medium">{appTemplate.name}</span>
         </p>
         <Link href={ALL_ROUTES.AI_TEMPLATE}>
-          <button className="text-primary-green hover:bg-primary-green/10 sheen flex gap-2 px-3.5 py-2.5 rounded-full font-semibold items-center">
+          <button className="text-[#2DA771] hover:bg-[#2DA771]/10 sheen flex gap-2 px-3.5 py-2.5 rounded-full font-semibold items-center">
             <ArrowLeft size={20} /> Back
           </button>
         </Link>
@@ -737,19 +625,6 @@ export default function AiAppPage({
               Include your brand
             </label>
           </div>
-          {/* {isChecked && (
-            <div>
-              <Dropdown
-                label="Select Company / Brand"
-                placeholder="Select your Company / Brand"
-                items={brandNames}
-                value={brandName}
-                onChange={(value: any) => {
-                  setBrandName(value);
-                }}
-              />
-            </div>
-          )} */}
 
           {isChecked && (
             <div>
@@ -877,10 +752,14 @@ export default function AiAppPage({
                     ></textarea>
                   )}
                 {userPromptError && (
-                  <p style={{ color: "red", marginLeft:"5px" }}>{userPromptError}</p>
+                  <p style={{ color: "red", marginLeft: "5px" }}>
+                    {userPromptError}
+                  </p>
                 )}
                 {promptErrors[index] && (
-                  <div className="text-red-500 mt-1 ml-[5px]">{promptErrors[index]}</div>
+                  <div className="text-red-500 mt-1 ml-[5px]">
+                    {promptErrors[index]}
+                  </div>
                 )}
               </div>
             ))}
@@ -928,7 +807,7 @@ export default function AiAppPage({
                               className={clsx(
                                 "flex items-center gap-2",
                                 selectedModel === value &&
-                                  "text-primary-green font-medium"
+                                  "text-[#2DA771] font-medium"
                               )}
                             >
                               <span className="min-w-fit">{icon}</span>
@@ -945,22 +824,6 @@ export default function AiAppPage({
 
             {/* new design drop down */}
           </div>
-          {/* <div>
-            <Dropdown
-            label="AI Model"
-              items={[
-                "gpt-3.5-turbo",
-                "gpt-4",
-                "gpt-4o",
-                "claude-3-sonnet-20240229",
-                "claude-3-haiku-20240307",
-                "gemini-1.5-flash",
-                "gemini-1.5-pro",
-              ]}
-              value={userInput.model}
-              onChange={(value: any) => handleDropdownChange("model", value)}
-            />
-          </div> */}
           <div className="grid grid-cols-2 gap-2">
             <Dropdown
               label="Creativity"
@@ -1045,7 +908,7 @@ export default function AiAppPage({
             </div>
           </div>
           <button
-            className="w-full h-14 py-2 text-white bg-primary-green rounded-xl !mt-7 flex items-center justify-center"
+            className="w-full h-14 py-2 text-white bg-[#2DA771] rounded-xl !mt-7 flex items-center justify-center"
             disabled={isStreaming}
             onClick={generateResult}
           >
@@ -1229,37 +1092,7 @@ export default function AiAppPage({
                   ))}
                 </DropdownMenuContent>
               </DropdownMenu>
-              <div className="flex items-center gap-2">
-                {/* <Dropdown
-                  label="Download"
-                  items={[
-                    "Copy as Text",
-                    "Copy as HTML",
-                    "Download as DOC",
-                    "Download as TXT",
-                    "Download as PDF",
-                    "Download as HTML",
-                    "Save as DOC",
-                    "Save as TXT",
-                    "Save as PDF",
-                    "Save as HTML",
-                  ]}
-                  hideLabel
-                  value="Copy as Text"
-                  onChange={(value: any) => handleDownload(value)}
-                /> */}
-
-                {/* <button
-                  className='h-11 w-11 grid place-content-center p-2 bg-gray-100 rounded-lg'
-                  onClick={isEdit ? handleEditDocument : handleSaveDocument}
-                >
-                  {isDocumentSavePending ? (
-                    <Spinner color="black" />
-                  ) : (
-                    <Save size={24} className="text-gray-600" />
-                  )}
-                </button> */}
-              </div>
+              <div className="flex items-center gap-2"></div>
             </div>
           </div>
           <div className="flex-1">

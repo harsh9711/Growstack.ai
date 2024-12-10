@@ -1,5 +1,5 @@
 import WorkflowSchedulerModal from "@/app/(main-app)/app/automation-hub/workflow-builder/workflows/[slug]/components/WorkflowSchedulerModal";
-import { CustomAxiosInstance } from "@/config/axios.config";
+import instance, { CustomAxiosInstance } from "@/config/axios.config";
 import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 
@@ -42,29 +42,31 @@ const TimeLineTable = ({
 
   const getHistoryData = useCallback(async () => {
     try {
-      const getHistory = await CustomAxiosInstance().get(
+
+      const getHistory = await instance.get(
         `/workflow/${workflow_id}/history`
       );
-      // const getHistory = await instance.get(
-      //   `/workflow/${workflow_id}/history`
+
+      // const getHistory = await CustomAxiosInstance().get(
+      //   `workflow/${workflow_id}/history`
       // );
       // const getHistory = await axios.get(
       //   `/workflow/${workflow_id}/history`
       // );
       setHistoryData(getHistory?.data);
-    } catch {}
+    } catch { }
   }, []);
 
   const getScheduleData = useCallback(async () => {
     try {
-      const getSchedule = await CustomAxiosInstance().get(
+
+      const getHistory = await instance.get(
         `/workflow/${workflow_id}/schedules`
       );
-      // const getSchedule = await instance.get(
-      //   `/workflow/${workflow_id}/schedules`
+      // const getSchedule = await axios.get(
+      //   `http://localhost:5000/workflow/${workflow_id}/schedules`
       // );
-      
-      setScheduleData(getSchedule?.data);
+      setScheduleData(getHistory?.data);
     } catch (err) {
       console.log(err);
     }
@@ -87,11 +89,17 @@ const TimeLineTable = ({
 
   const handleEditSchedule = async (item: any) => {
     try {
-      const workflowResponse = await CustomAxiosInstance().get(
+      // Fetch the workflow details to get input_configs
+
+      const workflowResponse = await instance.get(
         `/workflow/${workflow_id}`
       );
       // const workflowResponse = await instance.get(
       //   `/workflow/${workflow_id}`
+      // );
+
+      // const workflowResponse = await axios.get(
+      //   `http://localhost:5000/workflow/${workflow_id}`
       // );
 
       setWorkFlowData({
@@ -150,7 +158,8 @@ const TimeLineTable = ({
     <div className="w-full bg-white rounded-xl border border-1  p-4  overflow-hidden">
       <div className="flex space-x-8 text-gray-600 justify-center border-b pb-2">
         <button
-          className={`font-semibold  pb-1 ${activeTab === 0 ? "text-green-600 border-b-2 border-green-600" : ""}`}
+          className={`font-semibold  pb-1 ${activeTab === 0 ? "text-green-600 border-b-2 border-green-600" : ""
+            }`}
           onClick={() => setActiveTab(0)}
         >
           History
@@ -201,22 +210,20 @@ const TimeLineTable = ({
               {filteredHistoryData?.map((item: any, index: number) => (
                 <tr
                   key={index}
-                  className={`border-b ${
-                    index % 2 === 0 ? "bg-white" : "bg-white"
-                  }`}
+                  className={`border-b ${index % 2 === 0 ? "bg-white" : "bg-white"
+                    }`}
                 >
                   <td className="p-3 text-black">{item?._id}</td>
                   <td className="p-3 text-black">
                     {workflowName ?? "GrowStack"}
                   </td>
                   <td
-                    className={`p-3 font-medium ${
-                      item?.status === "completed"
-                        ? "inline-block text-green-600 bg-green-100 mt-1 rounded-md text-sm"
-                        : item?.status === "in-progress"
-                          ? "inline-block text-yellow-600 bg-yellow-100 mt-1 rounded-md text-sm"
-                          : "inline-block text-red-600 bg-yellow-100 mt-1 rounded-md text-sm"
-                    }`}
+                    className={`p-3 font-medium ${item?.status === "completed"
+                      ? "inline-block text-green-600 bg-green-100 mt-1 rounded-md text-sm"
+                      : item?.status === "in-progress"
+                        ? "inline-block text-yellow-600 bg-yellow-100 mt-1 rounded-md text-sm"
+                        : "inline-block text-red-600 bg-yellow-100 mt-1 rounded-md text-sm"
+                      }`}
                   >
                     {item?.status}
                   </td>
@@ -263,9 +270,8 @@ const TimeLineTable = ({
               {filteredScheduleData?.map((item: any, index: number) => (
                 <tr
                   key={index}
-                  className={`border-b ${
-                    index % 2 === 0 ? "bg-white" : "bg-white"
-                  }`}
+                  className={`border-b ${index % 2 === 0 ? "bg-white" : "bg-white"
+                    }`}
                 >
                   <td className="p-3 text-black">
                     {workflowName ?? "GrowStack"}

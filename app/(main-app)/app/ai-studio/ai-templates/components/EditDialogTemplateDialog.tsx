@@ -15,15 +15,10 @@ import {
   SelectContent,
   SelectItem,
 } from "@/components/ui/select";
-import { Edit, Edit2, Minus, Plus } from "lucide-react";
+import { Minus, Plus } from "lucide-react";
 import { Assistant } from "@/types/assistants";
 import { useRouter } from "next/navigation";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogClose,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogClose } from "@/components/ui/dialog";
 import { useDropzone } from "react-dropzone";
 import { InputFieldType } from "@/types/enums";
 
@@ -64,7 +59,6 @@ const EditAssistantDialog = ({
   selectedRowId,
   setSelectedRowId,
 }: EditAssistantDialogProps) => {
-  const router = useRouter();
   const [assistant, setAssistant] = useState<Assistant | null>(null);
   const [inputs, setinputs] = useState<UserInput[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -81,40 +75,6 @@ const EditAssistantDialog = ({
   } = useForm<ValidationSchemaType>({
     resolver: zodResolver(ValidationSchema),
   });
-
-  // const { getRootProps, getInputProps } = useDropzone({
-  //   accept: {
-  //     "image/*": [],
-  //   },
-  //   onDrop: (acceptedFiles) => {
-  //     const file = acceptedFiles[0];
-  //     if (file) {
-  //       if (file.size > 3.5 * 1024 * 1024) {
-  //         // 3.5 MB in bytes
-  //         toast.error("File size should be less than 3.5 MB");
-  //       } else {
-  //         const reader = new FileReader();
-  //         reader.onloadend = () => {
-  //           setIconPreview(reader.result as string);
-  //         };
-  //         reader.readAsDataURL(file);
-  //       }
-  //     }
-  //   },
-  // });
-
-  const extractImageSrc = (imgTag: any) => {
-    // Regular expression to extract the src value
-    const srcMatch = imgTag.match(/src="([^"]*)"/);
-
-    // If a match is found, return the src value
-    if (srcMatch && srcMatch[1]) {
-      return srcMatch[1];
-    }
-
-    // Return null or an empty string if no match is found
-    return null;
-  };
 
   useEffect(() => {
     console.log("selectedRowId:", selectedRowId);
@@ -258,16 +218,6 @@ const EditAssistantDialog = ({
       }
     },
   });
-
-  // Rest of your component
-
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
-  };
-
-  const handleIdescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIdescription(e.target.value);
-  };
 
   return (
     <Dialog open={!!selectedRowId} onOpenChange={() => setSelectedRowId(null)}>
@@ -444,35 +394,6 @@ const EditAssistantDialog = ({
                             className="md:placeholder:text-sm"
                           />
                         </div>
-                        {/* <div className="w-full space-y-2">
-                          <Select
-                            value={input.type}
-                            onValueChange={(value) =>
-                              handleInputChange(index, "type", value)
-                            }
-                          >
-                            <SelectTrigger className="w-full border-none h-14">
-                              <SelectValue placeholder={InputFieldType.SHORT_TEXT} />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value={InputFieldType.SHORT_TEXT}>
-                                Input field
-                              </SelectItem>
-                              <SelectItem value={InputFieldType.LONG_TEXT}>
-                                Textarea field
-                              </SelectItem>
-                              <SelectItem value={InputFieldType.SELECT_LIST}>
-                                Select list field
-                              </SelectItem>
-                              <SelectItem value={InputFieldType.CHECKBOX}>
-                                Checkbox list field
-                              </SelectItem>
-                              <SelectItem value={InputFieldType.RADIO}>
-                                Radio buttons field
-                              </SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div> */}
                         <div className="w-full space-y-2">
                           <Select
                             value={input.required}
@@ -511,7 +432,7 @@ const EditAssistantDialog = ({
                         {index === inputs.length - 1 && index > 0 && (
                           <button
                             type="button"
-                            className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                            className="bg-[#2DA771] text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
                             onClick={addUserInput}
                           >
                             <Plus />
@@ -520,7 +441,7 @@ const EditAssistantDialog = ({
                         {inputs.length === 1 && (
                           <button
                             type="button"
-                            className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                            className="bg-[#2DA771] text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
                             onClick={addUserInput}
                           >
                             <Plus />
@@ -551,7 +472,7 @@ const EditAssistantDialog = ({
                       </button>
                     </DialogClose>
                     <button
-                      className="bg-primary-green text-white sheen transition duration-500 px-8 py-4 rounded-xl flex items-center gap-2 md:px-6 md:py-3 md:text-sm"
+                      className="bg-[#2DA771] text-white sheen transition duration-500 px-8 py-4 rounded-xl flex items-center gap-2 md:px-6 md:py-3 md:text-sm"
                       disabled={isPending}
                     >
                       {isPending ? "Updating..." : "Update Assistant"}

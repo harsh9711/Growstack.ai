@@ -10,7 +10,6 @@ import React, {
   useState,
 } from "react";
 import toast from "react-hot-toast";
-import { Switch } from "@material-tailwind/react";
 
 type ChatMessageType = {
   thread_id: string;
@@ -193,7 +192,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
         />
         <label
           htmlFor="fileUpload"
-          className={`h-11 w-11 rounded-full flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white ${
+          className={`h-11 w-11 rounded-full flex justify-center items-center bg-[#2DA771] hover:bg-opacity-90 transition-all duration-300 text-white ${
             isApiCall ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
           }`}
         >
@@ -273,7 +272,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
       </div>
 
       <button
-        className={`h-12 w-12 flex justify-center items-center bg-primary-green hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl ${
+        className={`h-12 w-12 flex justify-center items-center bg-[#2DA771] hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl ${
           isApiCall || input === "" ? "opacity-70 cursor-not-allowed" : ""
         }`}
         onClick={handleSend}

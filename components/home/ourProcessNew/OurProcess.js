@@ -3,6 +3,7 @@ import "./OurProcess.scss";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import HoverVideoPlayer from "react-hover-video-player";
+
 const HoverVideo = () => {
   const videoRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -25,13 +26,16 @@ const HoverVideo = () => {
 
       setTimeout(() => {
         stopAndFreezeVideo();
-      }, 12000);
+      }, 16000);
     }
   };
 
+  useEffect(() => {
+    playVideo();
+  }, []);
+
   return (
     <div
-      onMouseEnter={playVideo}
       className="sm:flex hidden"
       style={{
         width: "100%",
@@ -47,7 +51,7 @@ const HoverVideo = () => {
         muted
         loop={false}
         preload="metadata"
-        className=" rounded-2xl border-none outline-none"
+        className="rounded-2xl border-none outline-none"
       >
         <source src="/workflow_fast.mp4" type="video/mp4" />
       </video>
@@ -98,7 +102,10 @@ function OurProcess() {
                     playsInline
                     className="2xl:max-w-[720px] xl:max-w-[500px] lg:max-w-[400px] w-full"
                   >
-                    <source src="/landingpage/Funnel.mp4" type="video/mp4" />
+                    <source
+                      src="https://growstackai.s3.amazonaws.com/ocexjN/Funnel.mp4"
+                      type="video/mp4"
+                    />
                     <track
                       src="/path/to/captions.vtt"
                       kind="subtitles"
@@ -110,11 +117,14 @@ function OurProcess() {
               </div>
             </div>
             <div>
-              <div className="process sm:hidden flex" data-aos="flip-up"
-            data-aos-easing="ease-in-sine"
-            data-aos-duration="1000">
-            <img src="/images_growstack/home/process.svg" alt="process" />
-            </div>
+              <div
+                className="process sm:hidden flex"
+                data-aos="flip-up"
+                data-aos-easing="ease-in-sine"
+                data-aos-duration="1000"
+              >
+                <img src="/images_growstack/home/process.svg" alt="process" />
+              </div>
               {/* <HoverVideoPlayer
                 className="absolute  left-0 w-full h-full rounded-2xl border-none outline-none"
                 loop={false}

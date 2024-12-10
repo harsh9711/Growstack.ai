@@ -63,6 +63,8 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
 
   const handleViewDetails = (executionId: string) => {
     setSelectedExecutionId(executionId);
+    localStorage.setItem("workflowActiveTab", "1");
+    localStorage.setItem('isFromTimeline', 'true');
     setActiveTab(1);
     setFromTimeline(true);
   };
@@ -268,6 +270,8 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
           setActiveTab(activeTab);
           setFromTimeline(false);
         }}
+        timeline={isFromTimeline}
+        setIsFromTimeline={setFromTimeline}
       />
       {activeTab === 0 && (
         <div className="reactflow-wrapper h-[calc(100vh-140px)] w-full">

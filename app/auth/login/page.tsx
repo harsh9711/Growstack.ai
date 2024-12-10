@@ -127,7 +127,7 @@ const Login = () => {
           <div className="w-full max-w-2xl max-h-[840px] h-full p-14 bg-[#F7FAFC] rounded-[30px]">
             <div className="slide-reveal w-full h-full max-w-[460px] mx-auto flex flex-col justify-between items-center md:items-start space-y-10">
               <Image
-                src="/logo/growstack.png"
+                src="/logo/growstack1.png"
                 alt="growstack"
                 height={180}
                 width={180}
@@ -210,6 +210,13 @@ const Login = () => {
                         />
                       </svg>
                       <div className="relative w-full">
+                        <style jsx>{`
+                          input[type="password"]::-ms-reveal,
+                          input[type="password"]::-ms-clear,
+                          input[type="password"]::-webkit-inner-spin-button {
+                            display: none;
+                          }
+                        `}</style>
                         <input
                           type={passwordVisible ? "text" : "password"}
                           id="password"
@@ -254,14 +261,14 @@ const Login = () => {
                     </div>
                     <Link
                       href="/auth/forgot-password"
-                      className="text-primary-green"
+                      className="text-[#2DA771]"
                     >
                       Forgot password?
                     </Link>
                   </div>
                   <button
                     type="submit"
-                    className="bg-primary-green hover:bg-primary-green/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center"
+                    className="bg-[#2DA771] hover:bg-[#2DA771]/90 text-white h-[60px] w-full rounded-xl flex justify-center items-center"
                   >
                     {isPending ? <Spinner /> : "Login"}
                   </button>
@@ -303,7 +310,7 @@ const Login = () => {
                   Do not have an account?{" "}
                   <Link
                     href="/auth/register"
-                    className="text-primary-green font-semibold"
+                    className="text-[#2DA771] font-semibold"
                   >
                     Register Now
                   </Link>

@@ -2,7 +2,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
-import { ImageIcon, Minus, Plus, XIcon } from "lucide-react";
+import { ImageIcon, Minus, Plus } from "lucide-react";
 import { ChangeEventHandler, useState } from "react";
 import toast from "react-hot-toast";
 import CodeIntepreterFiles from "./CodeInterpretorFiles";
@@ -317,265 +317,235 @@ export default function ConfigureGPTSection({
   };
 
   return (
-    <div className="flex h-[calc(100vh-248px)]">
-      <div className="w-full h-full overflow-auto bg-white rounded-3xl border relative">
-        <div className="w-full flex flex-col items-center">
-          <div className="w-80 flex relative bg-white border shadow-2xl translate-y-10 rounded-2xl overflow-hidden">
-            <div className="w-full h-[48px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 bg-primary-green !text-white font-medium">
-              Configure
-            </div>
+    <>
+      <div className="flex h-[calc(100vh-248px)]">
+        <div className="w-full h-full overflow-auto bg-white rounded-3xl border relative">
+          <div
+            className="w-[20%] h-[58px] flex gap-x-2 justify-center items-center relative cursor-pointer z-[1] transition-all duration-500 bg-[#2DA771] !text-white font-medium"
+            style={{ borderBottomRightRadius: "30px" }}
+          >
+            <h1>Configure</h1>
           </div>
-          <div className="w-full p-4 px-8 mt-4">
-            <div className="mt-10 flex flex-col gap-y-4 ">
-              <div className="flex flex-col gap-y-4">
-                <div className="mx-auto">
-                  <UploadImageSVG />
-                </div>
-                <div className="w-full mx-auto p-4">
-                  <form onSubmit={handleSubmit}>
-                    {/* Form Fields */}
-                    <div className="mb-4 space-y-2">
-                      <label
-                        htmlFor="name"
-                        className="block text-[14px] text-gray-700"
-                      >
-                        Name
-                      </label>
-                      <Input
-                        type="text"
-                        placeholder="Name your GPT"
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                      />
-                    </div>
-
-                    <div className="mb-4 space-y-2">
-                      <label
-                        htmlFor="description"
-                        className="block text-[14px] text-gray-700"
-                      >
-                        Description
-                      </label>
-                      <Input
-                        type="text"
-                        id="description"
-                        name="description"
-                        placeholder="Add a short description about what this GPT does"
-                        value={formData.description}
-                        onChange={handleChange}
-                      />
-                    </div>
-
-                    <div className="mb-4 space-y-2">
-                      <label
-                        htmlFor="instructions"
-                        className="block text-[14px] text-gray-700"
-                      >
-                        Instructions
-                      </label>
-                      <textarea
-                        id="instructions"
-                        placeholder="What does this GPT do? How does it behave? What should it avoid doing?"
-                        name="instructions"
-                        value={formData.instructions}
-                        onChange={handleChange}
-                        className="mt-1 block w-full p-4 h-40 text-black bg-[#F2F2F2] border-gray-300 rounded-xl resize-none"
-                      ></textarea>
-                    </div>
-
-                    <div className="mb-4 space-y-2">
-                      <p className="block text-[14px] text-gray-700">Tools</p>
-                      <div className="border-b border-gray-200 pr-4 mt-2 mb-2"></div>
-
-                      <FileUploadComponent />
-                    </div>
-
-                    <div className="mb-4 space-y-4">
-                      <div className="border-b border-gray-200 mt-2 pb-2">
-                        <p className="block text-[14px] text-gray-700">
-                          Capabilities
-                        </p>
+          <div className="w-full flex flex-col items-center">
+            <div className="w-full p-2 px-8">
+              <div className="mt-10 flex flex-col gap-y-4 ">
+                <div className="flex flex-col gap-y-4">
+                  <div className="mx-auto">
+                    <UploadImageSVG />
+                  </div>
+                  <div className="w-full mx-auto p-4">
+                    <form onSubmit={handleSubmit}>
+                      <div className="mb-4 space-y-2">
+                        <label
+                          htmlFor="name"
+                          className="block text-[14px] text-gray-700"
+                        >
+                          Name
+                        </label>
+                        <Input
+                          type="text"
+                          placeholder="Name your GPT"
+                          id="name"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleChange}
+                        />
                       </div>
-                      <div className="flex gap-8">
-                        <div className="flex items-center space-x-2">
-                          <Checkbox
-                            id="IMAGE"
-                            onClick={() =>
-                              setCapabilities({
-                                ...capabilities,
-                                IMAGE: !capabilities.IMAGE,
-                              })
-                            }
-                          />
-                          <label
-                            htmlFor="IMAGE"
-                            className="text-sm font-medium leading-none cursor-pointer"
-                          >
-                            Image
-                          </label>
+
+                      <div className="mb-4 space-y-2">
+                        <label
+                          htmlFor="description"
+                          className="block text-[14px] text-gray-700"
+                        >
+                          Description
+                        </label>
+                        <Input
+                          type="text"
+                          id="description"
+                          name="description"
+                          placeholder="Add a short description about what this GPT does"
+                          value={formData.description}
+                          onChange={handleChange}
+                        />
+                      </div>
+
+                      <div className="mb-4 space-y-2">
+                        <label
+                          htmlFor="instructions"
+                          className="block text-[14px] text-gray-700"
+                        >
+                          Instructions
+                        </label>
+                        <textarea
+                          id="instructions"
+                          placeholder="What does this GPT do? How does it behave? What should it avoid doing?"
+                          name="instructions"
+                          value={formData.instructions}
+                          onChange={handleChange}
+                          className="mt-1 block w-full p-4 h-40 text-black bg-[#F2F2F2] border-gray-300 rounded-xl resize-none"
+                        ></textarea>
+                      </div>
+
+                      <div className="mb-4 space-y-2">
+                        <p className="block text-[14px] text-gray-700">Tools</p>
+                        <div className="border-b border-gray-200 pr-4 mt-2 mb-2"></div>
+
+                        <FileUploadComponent />
+                      </div>
+
+                      <div className="mb-4 space-y-4">
+                        <div className="border-b border-gray-200 mt-2 pb-2">
+                          <p className="block text-[14px] text-gray-700">
+                            Capabilities
+                          </p>
                         </div>
-                        <div className="flex items-center space-x-2">
-                          <Checkbox
-                            id="WEB_BROWSING"
-                            onClick={() =>
-                              setCapabilities({
-                                ...capabilities,
-                                WEB_BROWSING: !capabilities.WEB_BROWSING,
-                              })
-                            }
-                          />
-                          <label
-                            htmlFor="WEB_BROWSING"
-                            className="text-sm font-medium leading-none cursor-pointer"
-                          >
-                            Web Browsing
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="relative !mt-8">
-                      <div className="border-b border-gray-200 mt-2 pb-2 mb-4">
-                        <p className="block text-[14px] text-gray-700">
-                          Conversation Starters
-                        </p>
-                      </div>
-                      {conversationStarters.map((starter, index) => (
-                        <div key={index} className="relative gap-2 mt-2 flex">
-                          <div className="mb-2 w-full rounded-xl bg-[#F2F2F2] items-center flex">
-                            <Input
-                              type="text"
-                              placeholder="Add conversation starters"
-                              id={`name${index}`}
-                              name={`name${index}`}
-                              value={starter}
-                              onChange={e => handleStartersChange(index, e)}
-                              className="w-full p-3 bg-transparent h-[50px]"
+                        <div className="flex gap-8">
+                          <div className="flex items-center space-x-2">
+                            <Checkbox
+                              id="IMAGE"
+                              onClick={() =>
+                                setCapabilities({
+                                  ...capabilities,
+                                  IMAGE: !capabilities.IMAGE,
+                                })
+                              }
                             />
-                            {/* {conversationStarters.length > 1 && (
-                              <div className="flex justify-end">
-                                <button type="button" onClick={() => handleRemoveStarterField(index)} className="bg-white p-1 rounded-xl mr-2">
-                                  <XIcon size={20} className="text-rose-500" />
-                                </button>
-                              </div>
-                            )} */}
-                          </div>
-                          {conversationStarters.length > 1 && (
-                            <button
-                              type="button"
-                              className="bg-red-500 text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
-                              onClick={() => handleRemoveStarterField(index)}
+                            <label
+                              htmlFor="IMAGE"
+                              className="text-sm font-medium leading-none cursor-pointer"
                             >
-                              <Minus />
-                            </button>
-                          )}
-                          {index === conversationStarters.length - 1 &&
-                            index > 0 && (
+                              Image
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="relative !mt-8">
+                        <div className="border-b border-gray-200 mt-2 pb-2 mb-4">
+                          <p className="block text-[14px] text-gray-700">
+                            Conversation Starters
+                          </p>
+                        </div>
+                        {conversationStarters.map((starter, index) => (
+                          <div key={index} className="relative gap-2 mt-2 flex">
+                            <div className="mb-2 w-full rounded-xl bg-[#F2F2F2] items-center flex">
+                              <Input
+                                type="text"
+                                placeholder="Add conversation starters"
+                                id={`name${index}`}
+                                name={`name${index}`}
+                                value={starter}
+                                onChange={e => handleStartersChange(index, e)}
+                                className="w-full p-3 bg-transparent h-[50px]"
+                              />
+                            </div>
+                            {conversationStarters.length > 1 && (
                               <button
                                 type="button"
-                                className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                                className="bg-red-500 text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                                onClick={() => handleRemoveStarterField(index)}
+                              >
+                                <Minus />
+                              </button>
+                            )}
+                            {index === conversationStarters.length - 1 &&
+                              index > 0 && (
+                                <button
+                                  type="button"
+                                  className="bg-[#2DA771] text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
+                                  onClick={handleAddStarterField}
+                                >
+                                  <Plus />
+                                </button>
+                              )}
+                            {conversationStarters.length === 1 && (
+                              <button
+                                type="button"
+                                className="bg-[#2DA771] text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
                                 onClick={handleAddStarterField}
                               >
                                 <Plus />
                               </button>
                             )}
-                          {conversationStarters.length === 1 && (
-                            <button
-                              type="button"
-                              className="bg-primary-green text-white py-3 px-4 hover:bg-opacity-90 rounded-l-3xl rounded-r-lg"
-                              onClick={handleAddStarterField}
-                            >
-                              <Plus />
-                            </button>
-                          )}
+                          </div>
+                        ))}
+                        <div className="flex gap-2 justify-end items-cente mt-5">
+                          <CreateForm
+                            handleCreateConversation={handleCreateConversation}
+                            isAPICalled={isAPICalled}
+                            from="CREATE"
+                          />
                         </div>
-                      ))}
-                      <div className="flex gap-2 justify-end items-cente mt-5">
-                        {/* <div
-                          onClick={handleAddStarterField}
-                          className="sheen h-12 px-6 rounded-xl bg-primary-green text-white flex gap-x-2 items-center justify-center hover:bg-primary-green transition-colors cursor-pointer">
-                          <Plus />
-                          Add Conversation Starter
-                        </div> */}
-
-                        <CreateForm
-                          handleCreateConversation={handleCreateConversation}
-                          isAPICalled={isAPICalled}
-                          from="CREATE"
-                        />
                       </div>
-                    </div>
-                  </form>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Preview Section */}
-      <div className="w-full bg-gray-100 rounded-2xl relative flex flex-col">
-        <div className="mt-4 flex-1 flex flex-col px-8 pb-8">
-          <h2 className="font-semibold text-xl text-center">Preview</h2>
-          <div className="flex-1 flex flex-col justify-center items-center mb-48">
-            <div className="flex justify-center items-center flex-col mb-7">
-              {iconImage ? (
-                <Image
-                  src={iconImage}
-                  alt="cookie"
-                  width={112}
-                  height={112}
-                  className="rounded-full w-28 h-28"
-                />
-              ) : (
-                <div className="w-28 h-28 rounded-full bg-white grid place-content-center">
-                  <ImageIcon size={30} className="text-gray-400" />
+        <div className="w-full bg-gray-100 rounded-2xl relative flex flex-col">
+          <div className="mt-4 flex-1 flex flex-col px-8 pb-8">
+            <h2 className="font-semibold text-xl text-center">Preview</h2>
+            <div className="flex-1 flex flex-col justify-center items-center mb-48">
+              <div className="flex justify-center items-center flex-col mb-7">
+                {iconImage ? (
+                  <Image
+                    src={iconImage}
+                    alt="cookie"
+                    width={112}
+                    height={112}
+                    className="rounded-full w-28 h-28"
+                  />
+                ) : (
+                  <div className="w-28 h-28 rounded-full bg-white grid place-content-center">
+                    <ImageIcon size={30} className="text-gray-400" />
+                  </div>
+                )}
+                <div className="mt-5 space-y-3">
+                  <h2 className="font-bold text-[18px] text-center">
+                    {formData.name ? formData.name : "[Your GPT Name]"}
+                  </h2>
+                  <p className="text-[14px] text-center">
+                    {formData.description
+                      ? formData.description
+                      : "[Your custom GPT description ie Short & Concise]"}
+                  </p>
+                </div>
+              </div>
+              {conversationStarters.some(starter => starter.length > 0) && (
+                <div className="w-full">
+                  <h2 className="font-bold text-xl text-center">
+                    Your Conversation Starters
+                  </h2>
+                  <div
+                    className={clsx(
+                      "w-full grid gap-4 mt-6",
+                      conversationStarters.length === 1
+                        ? "grid-cols-1"
+                        : conversationStarters.length === 2
+                          ? "grid-cols-2"
+                          : conversationStarters.length === 3
+                            ? "grid-cols-3"
+                            : "grid-cols-4"
+                    )}
+                  >
+                    {conversationStarters.map((starter, index) => (
+                      <div
+                        key={index}
+                        className="text-sm whitespace-pre-line bg-white p-4 border rounded-2xl shadow-md break-words"
+                      >
+                        {starter}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
-              <div className="mt-5 space-y-3">
-                <h2 className="font-bold text-[18px] text-center">
-                  {formData.name ? formData.name : "[Your GPT Name]"}
-                </h2>
-                <p className="text-[14px] text-center">
-                  {formData.description
-                    ? formData.description
-                    : "[Your custom GPT description ie Short & Concise]"}
-                </p>
-              </div>
             </div>
-            {conversationStarters.some(starter => starter.length > 0) && (
-              <div className="w-full">
-                <h2 className="font-bold text-xl text-center">
-                  Your Conversation Starters
-                </h2>
-                <div
-                  className={clsx(
-                    "w-full grid gap-4 mt-6",
-                    conversationStarters.length === 1
-                      ? "grid-cols-1"
-                      : conversationStarters.length === 2
-                        ? "grid-cols-2"
-                        : conversationStarters.length === 3
-                          ? "grid-cols-3"
-                          : "grid-cols-4"
-                  )}
-                >
-                  {conversationStarters.map((starter, index) => (
-                    <div
-                      key={index}
-                      className="text-sm whitespace-pre-line bg-white p-4 border rounded-2xl shadow-md break-words"
-                    >
-                      {starter}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
