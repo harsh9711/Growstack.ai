@@ -8,7 +8,11 @@ import {
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { FanOutNodeProps } from "./types";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { NodeState, VariableNameProps, WorkflowNodeState } from "@/types/workflows";
+import {
+  NodeState,
+  VariableNameProps,
+  WorkflowNodeState,
+} from "@/types/workflows";
 import { convertNodeData, extractParameterValues } from "@/utils/dataResolver";
 import {
   addNode,
@@ -79,24 +83,23 @@ const FanOut = ({
     { key: string; nodeId: string }[]
   >([]);
 
-  const handleClickOutside = useCallback(
-    (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsActionModalShow(false);
-      }
-    },
-    [dropdownRef]
-  );
+  // ON OUTSIDE CLICK CLOSE ACTION MODAL
+  const handleOutsideClick = (e: MouseEvent) => {
+    const modal = document.getElementById("node-action-modal");
+    if (modal && !modal.contains(e.target as Node)) {
+      setIsActionModalShow(false);
+    }
+  };
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [handleClickOutside]);
+    if (isActionModalShow) {
+      document.addEventListener("click", handleOutsideClick);
+    } else {
+      document.removeEventListener("click", handleOutsideClick);
+    }
+
+    return () => document.removeEventListener("click", handleOutsideClick);
+  }, [isActionModalShow]);
 
   const handleButtonClick = () => {
     setShowSearch(!showSearch);
@@ -274,8 +277,8 @@ const FanOut = ({
       requiredParams.forEach(param => {
         const key = node?.data?.parameters
           ? Object.keys(node.data.parameters).find(
-            k => node.data.parameters?.[k] === param
-          )
+              k => node.data.parameters?.[k] === param
+            )
           : undefined;
         if (key && !param.value) {
           dispatch(
@@ -290,7 +293,6 @@ const FanOut = ({
       });
     }
   };
-
 
   const handleEditClick = () => {
     setIsEdit(!isEdit);
@@ -468,7 +470,8 @@ const FanOut = ({
           <div className="modal">
             {isActionModalShow && (
               <div
-                ref={dropdownRef}
+           
+                id="node-action-modal"
                 className="absolute right-[-126px] top-[26px] mt-2 w-48 bg-white rounded-[15px] border-[1px] border-[#E8E8E8] shadow-2xl z-50"
               >
                 <ul className="py-2">
