@@ -231,6 +231,8 @@ const Run: React.FC<any> = ({
           const approvalStatus = nodeExecution?.approvalStatus;
           const approvalRequired = nodeExecution?.parameters?.approvalRequired;
           const status = nodeExecution?.status;
+          const nodeType = nodeExecution?.nodeId?.type;
+          const socialMediaContent = nodeExecution?.socialMediaContent
 
           return {
             nodeMasterId: nodeMasterId,
@@ -240,6 +242,8 @@ const Run: React.FC<any> = ({
             approvalRequired: approvalRequired,
             nodeExecutionId: nodeExecutionId,
             status: status,
+            nodeType: nodeType,
+            socialMediaContent: socialMediaContent
           };
         }
       );

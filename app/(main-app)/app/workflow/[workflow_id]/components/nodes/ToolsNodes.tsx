@@ -62,7 +62,7 @@ const ToolsNodes = memo(
         });
       }
 
-      return () => { };
+      return () => {};
     }, [parentId]);
 
     const handleToggleAdvancedOptions = () => {
@@ -183,8 +183,8 @@ const ToolsNodes = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-              k => node.data.parameters?.[k] === param
-            )
+                k => node.data.parameters?.[k] === param
+              )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -225,30 +225,28 @@ const ToolsNodes = memo(
 
     // ON CLICK OPEN & CLOSE ACTION MODAL
     const [isActionModalShow, setIsActionModalShow] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement | null>(null);
 
     const handleOpenActionModal = () => {
       setIsActionModalShow(!isActionModalShow);
     };
 
-    const handleClickOutside = useCallback(
-      (event: MouseEvent) => {
-        if (
-          dropdownRef.current &&
-          !dropdownRef.current.contains(event.target as Node)
-        ) {
-          setIsActionModalShow(false);
-        }
-      },
-      [dropdownRef]
-    );
+    // ON OUTSIDE CLICK CLOSE ACTION MODAL
+    const handleOutsideClick = (e: MouseEvent) => {
+      const modal = document.getElementById("node-action-modal");
+      if (modal && !modal.contains(e.target as Node)) {
+        setIsActionModalShow(false);
+      }
+    };
 
     useEffect(() => {
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [handleClickOutside]);
+      if (isActionModalShow) {
+        document.addEventListener("click", handleOutsideClick);
+      } else {
+        document.removeEventListener("click", handleOutsideClick);
+      }
+
+      return () => document.removeEventListener("click", handleOutsideClick);
+    }, [isActionModalShow]);
 
     //ONCLICK OPEN DELETE CONFIRMATION MODAL
     const [openDeleteConfirmationModal, setopenDeleteConfirmationModal] =
@@ -314,7 +312,7 @@ const ToolsNodes = memo(
                 <div className="modal">
                   {isActionModalShow && (
                     <div
-                      ref={dropdownRef}
+                      id="node-action-modal"
                       className="absolute right-[-126px] top-[0px] mt-2 w-48 bg-white rounded-[15px] border-[1px] border-[#E8E8E8] shadow-2xl z-50"
                     >
                       <ul className="py-2">

@@ -43,6 +43,10 @@ const GeneralJoinerNodes = memo(
       useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isActionModalShow, setIsActionModalShow] = useState(false);
+
+    // const handleOpenActionModal = () => {
+    //   setIsActionModalShow(!isActionModalShow);
+    // };
     const dropdownRef = useRef<HTMLDivElement | null>(null);
     const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
@@ -50,24 +54,23 @@ const GeneralJoinerNodes = memo(
       { key: string; nodeId: string }[]
     >(node?.data.dependencies || []);
 
-    const handleClickOutside = useCallback(
-      (event: MouseEvent) => {
-        if (
-          dropdownRef.current &&
-          !dropdownRef.current.contains(event.target as Node)
-        ) {
-          setIsActionModalShow(false);
-        }
-      },
-      [dropdownRef]
-    );
+    // ON OUTSIDE CLICK CLOSE ACTION MODAL
+    const handleOutsideClick = (e: MouseEvent) => {
+      const modal = document.getElementById("node-action-modal");
+      if (modal && !modal.contains(e.target as Node)) {
+        setIsActionModalShow(false);
+      }
+    };
 
     useEffect(() => {
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [handleClickOutside]);
+      if (isActionModalShow) {
+        document.addEventListener("click", handleOutsideClick);
+      } else {
+        document.removeEventListener("click", handleOutsideClick);
+      }
+
+      return () => document.removeEventListener("click", handleOutsideClick);
+    }, [isActionModalShow]);
 
     const handleDropdownClick = () => {
       setIsDropdownOpen(!isDropdownOpen);
@@ -267,7 +270,7 @@ const GeneralJoinerNodes = memo(
                 <div className="modal">
                   {isActionModalShow && (
                     <div
-                      ref={dropdownRef}
+                      id="node-action-modal"
                       className="absolute right-[-126px] top-[0px] mt-2 w-48 bg-white rounded-[15px] border-[1px] border-[#E8E8E8] shadow-2xl z-50"
                     >
                       <ul className="py-2">

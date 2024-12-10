@@ -115,7 +115,8 @@ export default function Dashboard() {
         const response = await instance.get(
           `/workflow/search?keyword=${queryParams}`
         );
-        if (response.data?.length > 0) setPreBuiltTemplates(response.data); // Update results with API response
+         
+          setPreBuiltTemplates(response.data); // Update results with API response
       } catch (error) {
         console.error("Error fetching search results:", error);
       } finally {
@@ -227,7 +228,7 @@ export default function Dashboard() {
               </div> */}
             </div>
           </div>
-          <main>
+          <main className="w-full">
             <div className="flex justify-between items-center ">
               <div className="space-y-2">
                 <h1 className="text-2xl font-semibold">Get started</h1>

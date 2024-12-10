@@ -48,7 +48,7 @@ function WorkFlowHeader({ workFlowData, workflowStatsData }: any) {
               Failed: {workflowStatsData?.failedCount}
             </p>
             <p className="text-yellow-600  text-[14px]">
-              In Progress: {workflowStatsData?.scheduledCount}
+              In Progress: {workflowStatsData?.inProgressCount}
             </p>
           </div>
         </div>
