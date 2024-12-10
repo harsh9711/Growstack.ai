@@ -61,8 +61,8 @@ function Page() {
               className="w-full h-full"
               src="/badge2.png"
               alt="Apple Store"
-              width={280}
-              height={600}
+              width={180}
+              height={400}
             />
           </button>
         </div>
