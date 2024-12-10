@@ -157,7 +157,7 @@ const OutputDetails = ({
                     <div className=" border-t border-gray-200">
                       <div className="p-4 prose prose-sm max-w-none">
                         {(() => {
-                          if(item?.nodeType === "linkedin") {
+                          if(item?.nodeType === "linkedin" || item?.nodeType === "gmail") {
                             return <div>{renderSocialMediaContent(item?.socialMediaContent)}</div>;
                           }
                           if (typeof item?.value === "string") {
