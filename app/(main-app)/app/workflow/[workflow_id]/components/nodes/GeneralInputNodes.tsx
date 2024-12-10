@@ -36,8 +36,8 @@ const GeneralInputNodes = memo(
     const { isLoading } = useAppSelector(state => state.nodes);
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
     const [description, setDescription] = useState(data?.descriptions || "");
-    const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] =
-      useState(false);
+    const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] = useState(false);
+    const [loadingNode, setLoadingNode] = useState<boolean>(false);
 
     const node = useAppSelector(state =>
       state.nodes.nodes.find(node => node.id === id)
@@ -70,6 +70,8 @@ const GeneralInputNodes = memo(
 
       if (allRequiredParamsFilled) {
         const updatedValue = extractParameterValues(node.data.parameters);
+        setLoadingNode(true);
+        console.log("updatedValue-->", updatedValue);
 
         dispatch(
           addVariable({
@@ -120,8 +122,12 @@ const GeneralInputNodes = memo(
           success("Node updated successfully");
 
           setIsNextBoxOpen(true);
+
+          setLoadingNode(false);
+
         } catch (error: any) {
           console.error("error-->", error?.message);
+          setLoadingNode(false);
         }
       } else {
         requiredParams.forEach(param => {
@@ -362,9 +368,9 @@ const GeneralInputNodes = memo(
                     <button
                       onClick={handleNextClick}
                       className="bg-[#2DA771] text-white text-sm font-medium p-3 w-full rounded-[10px]"
-                      disabled={isLoading}
+                      disabled={loadingNode}
                     >
-                      {isLoading ? (
+                      {loadingNode ? (
                         <div className="flex justify-center items-center">
                           <div className="loader ease-linear rounded-full border-4 border-gray-200 border-t-4 border-t-[#2DA771] h-6 w-6" />
                         </div>
