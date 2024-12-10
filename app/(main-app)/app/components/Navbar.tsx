@@ -19,6 +19,8 @@ import { useRouter } from "next-nprogress-bar";
 import { ALL_ROUTES } from "@/utils/constant";
 import { RootState } from "@/lib/store";
 import { useSelector } from "react-redux";
+import { getUserFriendlyPlanName } from "@/lib/utils";
+import { PlanName } from "@/types/enums";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -153,9 +155,14 @@ export default function Navbar() {
             }}
           >
             <span className="text-md text-nowrap flex flex-row gap-x-2 font-medium">
-              Upgrade Your Plan ({currentPlan?.plan_type})
+              Upgrade
             </span>
           </button>
+          <div>
+            <span className="text-md">
+              {getUserFriendlyPlanName(currentPlan?.plan_name as PlanName)}
+            </span>
+          </div>
           <div className="lg:hidden">
             <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
               <IoIosMenu size={30} />

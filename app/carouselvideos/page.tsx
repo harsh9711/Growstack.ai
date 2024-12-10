@@ -1,10 +1,10 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import { teamvideos } from "@/types/data";
 import { Pause } from "lucide-react";
+import { Autoplay } from "swiper/modules";
 
 function App() {
   const [playingVideoIndex, setPlayingVideoIndex] = useState<number | null>(
@@ -12,12 +12,17 @@ function App() {
   );
   const swiperRef = useRef<any>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   const handlePlayVideo = (index: number) => {
     setPlayingVideoIndex(index);
-    swiperRef.current?.autoplay.stop(); // Stop Swiper autoplay
 
-    // Play the selected video
+    // Stop Swiper autoplay when a video is played
+    if (swiperRef.current) {
+      swiperRef.current.autoplay.stop();
+    }
+
+    // Play the selected video and stop others
     videoRefs.current.forEach((video, idx) => {
       if (video) {
         if (idx === index) {
@@ -34,7 +39,11 @@ function App() {
 
   const handleStopVideo = () => {
     setPlayingVideoIndex(null);
-    swiperRef.current?.autoplay.start(); // Resume Swiper autoplay
+
+    // Resume Swiper autoplay when video is stopped
+    if (swiperRef.current) {
+      swiperRef.current.autoplay.start();
+    }
 
     // Pause all videos
     videoRefs.current.forEach(video => {
@@ -73,13 +82,18 @@ function App() {
             delay: 4000,
             disableOnInteraction: false,
           }}
-          breakpoints={{
-            320: { slidesPerView: 2 },
-            640: { slidesPerView: 3 },
-            768: { slidesPerView: 4 },
-            1024: { slidesPerView: 4.5 },
+          speed={1000}
+          modules={[Autoplay]}
+          onSwiper={swiper => {
+            swiperRef.current = swiper;
           }}
-          onSwiper={swiper => (swiperRef.current = swiper)}
+          onSlideChange={({ activeIndex }) => setCurrentVideoIndex(activeIndex)}
+          breakpoints={{
+            320: { slidesPerView: 3.5 },
+            640: { slidesPerView: 2.5 },
+            768: { slidesPerView: 1.5 },
+            1024: { slidesPerView: 3.5 },
+          }}
           className="w-full"
         >
           {teamvideos.map((item, index) => (
