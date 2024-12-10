@@ -57,7 +57,7 @@ function Page() {
               height={400}
             />
           </button>
-          <button className="flex  w-full h-full  max-w-[330px] max-h-[159px] items-center gap-2 text-primary-green rounded-xl">
+          <button className="flex w-full h-full max-w-[330px] max-h-[159px] items-center gap-2 text-primary-green rounded-xl">
             <Image
               className="w-full h-full"
               src="/badge2.png"
