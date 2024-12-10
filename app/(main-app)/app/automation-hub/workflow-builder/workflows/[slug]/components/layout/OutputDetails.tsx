@@ -16,6 +16,7 @@ const OutputDetails = ({
   setApproveOutputDataId,
 }: any) => {
   const [openIndex, setOpenIndex] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const toggleAccordion = (index: any) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -31,20 +32,22 @@ const OutputDetails = ({
     return cleanText?.trim();
   };
 
-
   const handleRerun = async (nodeMasterId: string) => {
+    setIsLoading(true);
     try {
       // const rerunPartialWorkflow = await CustomAxiosInstance().post(
       //   `/workflow/${workflowId}/run?previousExecutionId=&${executionId}&startNodeId=${nodeMasterId}`
       // );
       const rerunPartialWorkflow = await instance.post(
-        `/workflow/${workflowId}/run?previousExecutionId=&${executionId}&startNodeId=${nodeMasterId}`
+        `/workflow/${workflowId}/run?previousExecutionId=${executionId}&startNodeId=${nodeMasterId}`
       );
       if (rerunPartialWorkflow?.data?.executionId) {
         onPollingWithNewId(rerunPartialWorkflow?.data?.executionId);
       }
     } catch {
       // To:Do Error will handle here
+    } finally {
+      setIsLoading(false);
     }
   };
   const handleReject = async (nodeExecutionId: string) => {
@@ -88,8 +91,9 @@ const OutputDetails = ({
         .catch(err => {
           console.error("Failed to copy: ", err);
         });
+      toast.success("Copied to clipboard");
     } else {
-      alert("Nothing to copy");
+      toast.error("Nothing to copy");
     }
   };
 
@@ -102,7 +106,7 @@ const OutputDetails = ({
           {outputDetailsData?.outputDetails?.map((item: any, index: number) => {
             return (
               item.title &&
-              item?.status === "completed" && (
+              (item?.status === "completed" || item?.status === "approval-pending")  && (
                 <div
                   key={index}
                   className={`border rounded-lg ${
@@ -236,7 +240,15 @@ const OutputDetails = ({
                             <Copy color="#4B465C" />
                           </button>
                           <button
-                            className=""
+                            className={isLoading ? "animate-spin" : ""}
+                            style={
+                              isLoading
+                                ? {
+                                    animationDuration: "infinite",
+                                    animationTimingFunction: "linear",
+                                  }
+                                : {}
+                            }
                             onClick={() => handleRerun(item?.nodeMasterId)}
                           >
                             <RefreshCw color="#4B465C" />

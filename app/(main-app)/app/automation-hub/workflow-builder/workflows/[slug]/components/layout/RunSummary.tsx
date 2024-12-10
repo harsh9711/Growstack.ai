@@ -40,7 +40,6 @@ const RunSummary = ({ runSummaryData }: any) => {
       endDate: "02-12-2024",
       error: "Name",
     },
-    // Add more rows as needed
   ];
 
   const statuses: any = {
@@ -88,14 +87,13 @@ const RunSummary = ({ runSummaryData }: any) => {
       <div className="flex justify-between items-center">
         <div>
           <h2 className="text-lg font-bold mb-1">Run Summary</h2>
-          <div className="grid grid-cols-5 text-sm text-gray-600 mb-4 space-x-5">
+          <div className="grid grid-cols-4 text-sm text-gray-600 mb-4 space-x-10">
             <div>
               <span className="text-xs font text-gray-400">
                 Workflow Run Id
               </span>{" "}
               <div className="font-semibold">{runSummaryData?.id}</div>
             </div>
-
             <div>
               <span className="text-xs font text-gray-400">Start Time:</span>{" "}
               <div className="font-semibold">
@@ -105,7 +103,7 @@ const RunSummary = ({ runSummaryData }: any) => {
             <div>
               <span className="text-xs font text-gray-400">End Time:</span>{" "}
               <div className="font-semibold">
-                {formatTimestamp(runSummaryData?.endTimeStamp, "time")}
+                {formatTimestamp(runSummaryData?.endTimestamp, "time")}
               </div>
             </div>
             <div>

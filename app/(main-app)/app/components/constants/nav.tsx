@@ -66,7 +66,7 @@ const navLinks: NavLink[] = [
       {
         icon: <ShapeIcon />,
         name: "AI workflow builder",
-        href: ALL_ROUTES.WORKFLOW_BUILDER,
+        href: ALL_ROUTES.WORKFLOW_DASHBOARD,
       },
     ],
     title: "Automation Hub",
