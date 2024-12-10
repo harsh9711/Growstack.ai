@@ -17,21 +17,6 @@ export const dummyData1 = [
     },
   },
   {
-    title: "AI Templates",
-    category: "ai-templates",
-    icon: {
-      src: "/images/workflow/template.svg",
-      alt: "AI Templates",
-      width: 18,
-      height: 24,
-    },
-    color: {
-      bg: "#E8DFF5",
-      content: "#B785FF",
-      boxShadow: "0px 9.642px 18.079px 0px rgba(183, 133, 255, 0.25)",
-    },
-  },
-  {
     title: "Integrations",
     category: "integrations",
     icon: {
@@ -59,21 +44,6 @@ export const dummyData1 = [
       bg: "#FCF4DD",
       content: "#F1B917",
       boxShadow: "0px 9.642px 18.079px 0px rgba(241, 185, 22, 0.25)",
-    },
-  },
-  {
-    title: "AI Assistant",
-    category: "ai-assistant",
-    icon: {
-      src: "/images/workflow/assistants.svg",
-      alt: "Integrations",
-      width: 24.77,
-      height: 24,
-    },
-    color: {
-      bg: "#DDEDEA",
-      content: "#27C9AA",
-      boxShadow: "0px 9.642px 18.079px 0px rgba(39, 201, 170, 0.25)",
     },
   },
   {

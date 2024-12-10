@@ -1,150 +1,58 @@
 import React, { memo, useState, useEffect, useRef, useCallback } from "react";
-import { Handle, Position, useReactFlow, type NodeProps } from "@xyflow/react";
-import { GeneralInputNodeProps } from "./types";
-// import DynamicInput from "../inputsFields";
+import { Handle, Position, type NodeProps, useReactFlow } from "@xyflow/react";
+import { GeneralJoinerNodeProps } from "./types";
 import DynamicInput from "../DynamicInputs";
-import { extractParameterValues } from "@/utils/dataResolver";
-import { convertToUnderscore } from "@/utils/helper";
-import { useAppDispatch } from "@/lib/hooks";
 import DeleteConfirmationModal from "../deleteconfirmationmodal/DeleteConfirmationModal";
+import { extractParameterValues } from "@/utils/dataResolver";
 import {
   deleteNodeById,
   removeNodeById,
+  updateNodeById,
+  updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { VariableNameProps, WorkflowNodeState } from "@/types/workflows";
 import { useSnackbar } from "../snackbar/SnackbarContext";
+import { getVariableName, isSpecialType } from "@/utils/helper";
 
 const GeneralJoinerNodes = memo(
-  ({ data, isConnectable, id }: NodeProps<GeneralInputNodeProps>) => {
-    const { parameters, nodeMasterId } = data;
+  ({
+    data,
+    isConnectable,
+    id,
+    positionAbsoluteX,
+    positionAbsoluteY,
+  }: NodeProps<GeneralJoinerNodeProps>) => {
+
 
     const { setNodes } = useReactFlow();
     const dispatch = useAppDispatch();
     const { success } = useSnackbar();
 
-    const initialParameters =
-      parameters &&
-      Object.entries(parameters).reduce(
-        (acc: { [key: string]: any }, [key, param]: [string, any]) => {
-          acc[key] = {
-            ...param,
-            value: "",
-            error: "",
-          };
-          return acc;
-        },
-        {}
-      );
+    const node = useAppSelector(state =>
+      state.nodes.nodes.find(node => node.id === id)
+    );
 
-    const [currentParameter, setCurrentParameter] = useState(initialParameters);
-    const [nextParameter, setNextParameter] = useState<{ [key: string]: any }>({
-      "6": {
-        label: "Topic",
-        type: "text_topic",
-        placeholder: "Enter Topic",
-        required: false,
-        options: [],
-        description: `Add Topic`,
-        value: "",
-        error: "",
-      },
-    });
-    const [variableName, setVariableName] = useState<string | null>(null);
-    const [isNextBoxOpen, setIsNextBoxOpen] = useState(false);
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [visibleTooltip, setVisibleTooltip] = useState<{
-      [key: string]: boolean;
-    }>({});
+    const { workFlowData } = useAppSelector(state => state.workflows);
+    const { isLoading, nodes } = useAppSelector(state => state.nodes);
+    const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
     const [description, setDescription] = useState(data?.descriptions || "");
-
-    const toggleTooltip = (index: string, isVisible: boolean) => {
-      setVisibleTooltip(prevState => ({
-        ...prevState,
-        [index]: isVisible,
-      }));
-    };
-
-    const handleDropdownClick = () => {
-      setIsDropdownOpen(!isDropdownOpen);
-    };
-
-    const handleInputChange = (
-      key: string,
-      type: string,
-      value: string | boolean
-    ) => {
-      // console.log("key-->", key, "type-->", type, "value-->", value);
-
-      if (typeof value === "boolean") {
-        setCurrentParameter(prevState => ({
-          ...prevState,
-          [key]: {
-            ...(prevState?.[key] || {}),
-            value: value,
-            error: "",
-          },
-        }));
-
-        return;
-      }
-
-      setCurrentParameter(prevState => {
-        const updatedState = {
-          ...prevState,
-          [key]: {
-            ...(prevState?.[key] || {}),
-            value: value,
-            error: "",
-          },
-        };
-
-        if (type === "text_input_label") {
-          const variableNameKey = prevState
-            ? Object.keys(prevState).find(
-                k => prevState[k].type === "text_variable_name"
-              )
-            : undefined;
-          if (variableNameKey) {
-            updatedState[variableNameKey] = {
-              ...(prevState?.[variableNameKey] || {}),
-              value: convertToUnderscore(value),
-              error: "",
-            };
-          }
-        }
-        if (type === "text_variable_name" || type === "text_input_label") {
-          setVariableName(convertToUnderscore(value));
-        }
-        return updatedState;
-      });
-    };
-
-    // Move this function on the Global level.
-    const handleDeleteNode = () => {
-      setNodes(nds => nds.filter(nds => nds.id !== id));
-      dispatch(removeNodeById(id));
-      dispatch(deleteNodeById(id));
-      success("Node delete successfully");
-    };
-
-    //DESCRIPTION FIELD DYNAMIC
-    const handleChange = (event: {
-      target: { value: React.SetStateAction<string> };
-    }) => {
-      setDescription(event.target.value);
-    };
-
-    const handleInput = (event: { target: any }) => {
-      const textarea = event.target;
-      textarea.style.height = "auto";
-      textarea.style.height = `${textarea.scrollHeight}px`;
-    };
-
-    // ON CLICK OPEN & CLOSE ACTION MODAL
+    const [isEdit, setIsEdit] = useState(true);
+    const [shake, setShake] = useState(false);
+    const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] =
+      useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isActionModalShow, setIsActionModalShow] = useState(false);
 
-    const handleOpenActionModal = () => {
-      setIsActionModalShow(!isActionModalShow);
-    };
+    // const handleOpenActionModal = () => {
+    //   setIsActionModalShow(!isActionModalShow);
+    // };
+    const dropdownRef = useRef<HTMLDivElement | null>(null);
+    const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
+    const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
+    const [dependencies, setDependencies] = useState<
+      { key: string; nodeId: string }[]
+    >(node?.data.dependencies || []);
 
     // ON OUTSIDE CLICK CLOSE ACTION MODAL
     const handleOutsideClick = (e: MouseEvent) => {
@@ -164,16 +72,149 @@ const GeneralJoinerNodes = memo(
       return () => document.removeEventListener("click", handleOutsideClick);
     }, [isActionModalShow]);
 
-    //ONCLICK OPEN DELETE CONFIRMATION MODAL
-    const [openDeleteConfirmationModal, setopenDeleteConfirmationModal] =
-      React.useState(false);
+    const handleDropdownClick = () => {
+      setIsDropdownOpen(!isDropdownOpen);
+    };
+
+    const handleInputChange = useCallback(
+      (key: any, type: any, value: any, dependency?: string) => {
+        console.log("key-->", key, "type-->", type, "value-->", value);
+        if (!isEdit) {
+          setShake(true);
+          setTimeout(() => setShake(false), 500);
+          return;
+        }
+
+        console.log("dependencies-->", dependency);
+
+        dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
+
+        if (!isSpecialType(type)) return;
+
+        if (value && value.includes("$")) {
+          const index = nodes.findIndex(nds => nds.id === id);
+          const variableName = getVariableName(nodes, index);
+          console.log("variableName-->", variableName);
+          if (dependency) {
+            setDependencies(prevDependencies => {
+              const newDependency = { key, nodeId: dependency };
+              const uniqueDependencies = new Set([
+                ...prevDependencies,
+                newDependency,
+              ]);
+              return Array.from(uniqueDependencies);
+            });
+          }
+          const regex = /\$(?!\s*$).+/;
+          if (regex.test(value)) {
+            setVariableNames([]);
+          } else {
+            setVariableNames(
+              variableName.filter(
+                (name): name is VariableNameProps => name !== null
+              )
+            );
+          }
+        } else {
+          setDependencies(pre => pre.filter(dep => dep.key !== key));
+          setVariableNames([]);
+        }
+      },
+      [dispatch, id, nodes, dependencies, variableNames, isEdit]
+    );
+
+    const handleNextClick = async () => {
+      if (!node?.data?.parameters) return;
+
+      const requiredParams = Object.values(node.data.parameters).filter(
+        param => param.required
+      );
+      const allRequiredParamsFilled = requiredParams.every(
+        param => param?.value
+      );
+
+      if (allRequiredParamsFilled) {
+        const updatedValue = extractParameterValues(node.data.parameters);
+        console.log("updatedValue-->", updatedValue);
+
+        try {
+          const bodyPayload = {
+            workflowId: workFlowData._id,
+            nodeMasterId: node.data.nodeMasterId,
+            position: { x: positionAbsoluteX, y: positionAbsoluteY },
+            dependencies: dependencies.map(dps => dps.nodeId),
+            parameters: updatedValue,
+          };
+
+          await dispatch(
+            updateNodeById({
+              id: id,
+              data: bodyPayload as unknown as WorkflowNodeState,
+            })
+          );
+          success("Node updated successfully");
+          setIsEdit(false);
+        } catch (error: any) {
+          console.error("error-->", error?.message);
+        }
+      } else {
+        requiredParams.forEach(param => {
+          const key = node?.data?.parameters
+            ? Object.keys(node.data.parameters).find(
+              k => node.data.parameters?.[k] === param
+            )
+            : undefined;
+          if (key && !param.value) {
+            dispatch(
+              updateNodeParameter({
+                nodeId: id,
+                key: key,
+                type: "error",
+                value: "This field is required",
+              })
+            );
+          }
+        });
+      }
+    };
+
+    const handleToggleAdvancedOptions = () => {
+      setShowAdvancedOptions(!showAdvancedOptions);
+    };
+
+    const handleDeleteNode = () => {
+      setNodes(nds => nds.filter(nds => nds.id !== id));
+      dispatch(removeNodeById(id));
+      dispatch(deleteNodeById(id));
+      success("Node delete successfully");
+    };
+
+    const handleChange = (event: {
+      target: { value: React.SetStateAction<string> };
+    }) => {
+      setDescription(event.target.value);
+    };
+
+    const handleInput = (event: { target: any }) => {
+      const textarea = event.target;
+      textarea.style.height = "auto";
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    };
+
+    const handleOpenActionModal = () => {
+      setIsActionModalShow(!isActionModalShow);
+    };
 
     const handleCloseDeleteConfirmationModal = () => {
-      setopenDeleteConfirmationModal(false);
+      setOpenDeleteConfirmationModal(false);
     };
-    const handleOpenDeleteConfimationModal = () => {
-      setopenDeleteConfirmationModal(true);
+    const handleOpenDeleteConfirmationModal = () => {
+      setOpenDeleteConfirmationModal(true);
       setIsActionModalShow(false);
+    };
+
+    const handleEditClick = () => {
+      setIsEdit(!isEdit);
     };
 
     return (
@@ -235,7 +276,7 @@ const GeneralJoinerNodes = memo(
                       <ul className="py-2">
                         <li className="px-4 py-2 cursor-pointer">
                           <button
-                            onClick={handleOpenDeleteConfimationModal}
+                            onClick={handleOpenDeleteConfirmationModal}
                             className="delete-button flex items-center gap-2 text-[15px] text-[#212833] font-medium w-full cursor-pointer"
                           >
                             <img
@@ -251,26 +292,37 @@ const GeneralJoinerNodes = memo(
                 </div>
               </div>
 
-              <div className="node-edge absolute top-1/2 transform -translate-y-1/2 right-[-60px] flex items-center">
-                <div className="h-px border-t-2 border-dashed border-[#2DA771] w-[65px] mr-1" />
-                <Handle
-                  id={`${id}-source`}
-                  type="source"
-                  position={Position.Right}
-                  className="w-5 h-5 bg-white border-2 border-[#2DA771] rounded-full flex items-center justify-center text-[#2DA771] text-lg font-bold transform translate-x-1/2 -translate-y-1/2 p-0 m-0 leading-none"
-                  onConnect={params => console.log("handle onConnect", params)}
-                  isConnectable={isConnectable}
-                >
-                  +
-                </Handle>
+              <div className="node-edge absolute top-1/2 transform -translate-y-1/2 right-[-65px] flex items-center">
+                <div className="h-px border-t-2 border-dashed border-[#2DA771] w-[65px] mr-1">
+                  <Handle
+                    id={`${id}-source`}
+                    type="source"
+                    position={Position.Right}
+                    className="w-5 h-5 bg-white border-2 border-[#2DA771] rounded-full flex items-center justify-center text-[#2DA771] text-lg font-bold transform translate-x-1/2 -translate-y-1/2 p-0 m-0 leading-none"
+                    onConnect={params =>
+                      console.log("handle onConnect", params)
+                    }
+                    isConnectable={isConnectable}
+                  >
+                    +
+                  </Handle>
 
-                <Handle
-                  type="source"
-                  position={Position.Left}
-                  className="w-[10px] h-[10px] bg-[#2DA771]"
-                  isConnectable={false}
-                />
+                  <Handle
+                    type="source"
+                    position={Position.Left}
+                    className="w-[10px] h-[10px] bg-[#2DA771]"
+                    isConnectable={false}
+                  />
+                </div>
               </div>
+
+              <Handle
+                id={`${id}-target`}
+                type="target"
+                position={Position.Left}
+                className="w-[10px] h-[10px] bg-[#2DA771]"
+                isConnectable={false}
+              />
 
               <div
                 className="toggle-button-box absolute right-0 left-0 mx-auto bottom-[-10px] z-10 cursor-pointer"
@@ -301,25 +353,72 @@ const GeneralJoinerNodes = memo(
                   {data?.label || ""}
                 </h4>
               </div>
-
               <div className="form-box">
-                {currentParameter &&
-                  Object.entries(currentParameter).map(([key, param]: any) => {
-                    return (
-                      <DynamicInput
-                        key={key}
-                        inputKey={key}
-                        param={param}
-                        handleInputChange={handleInputChange}
-                      />
-                    );
-                  })}
+                {node?.data?.parameters &&
+                  Object.entries(node.data.parameters)
+                    .filter(
+                      ([key, param]: any) =>
+                        param.required || showAdvancedOptions
+                    )
+                    .map(([key, param]) => {
+                      return (
+                        <DynamicInput
+                          key={key}
+                          inputKey={key}
+                          param={param}
+                          handleInputChange={handleInputChange}
+                          variableNames={variableNames}
+                          focusedInputKey={focusedInputKey}
+                          setFocusedInputKey={setFocusedInputKey}
+                        />
+                      );
+                    })}
+                <div className="advance-option-button-box mb-3">
+                  <button
+                    onClick={handleToggleAdvancedOptions}
+                    className="w-full text-center bg-transparent border-0 underline text-[12px] text-[#2DA771]"
+                  >
+                    {showAdvancedOptions
+                      ? "Hide Advanced Options"
+                      : "Show Advanced Options"}
+                  </button>
+                </div>
 
-                {variableName && (
-                  <div className="text-box mb-5 mt-5">
-                    <span className="bg-[#FFE6FF] text-[#14171B] text-[12px] rounded-[20px] font-medium pt-3 pb-3 pr-4 pl-4">
-                      {variableName}
-                    </span>
+                {node?.data?.parameters?.variableName?.value && (
+                  <div className="text-box mb-5">
+                    <h4 className="text-[#14171B] flex items-center gap-2 font-medium text-sm">
+                      Variable name:{" "}
+                      <span className="bg-[#FFE6FF] text-[#14171B] text-[12px] rounded-[20px] font-medium pt-3 pb-3 pr-4 pl-4">
+                        {node.data.parameters.variableName.value}
+                      </span>
+                    </h4>
+                  </div>
+                )}
+
+                {isEdit ? (
+                  <div className="submit-button">
+                    <button
+                      onClick={handleNextClick}
+                      className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
+                    >
+                      {isLoading ? (
+                        <div className="flex justify-center items-center">
+                          <div className="loader ease-linear rounded-full border-4 border-gray-200 border-t-4 border-t-[#2DA771] h-6 w-6" />
+                        </div>
+                      ) : (
+                        "Save"
+                      )}
+                    </button>
+                  </div>
+                ) : (
+                  <div className="submit-button">
+                    <button
+                      onClick={handleEditClick}
+                      // className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
+                      className={`bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px] ${shake ? "shake" : ""}`}
+                    >
+                      Edit
+                    </button>
                   </div>
                 )}
               </div>

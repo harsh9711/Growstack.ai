@@ -41,10 +41,11 @@ const ToolsNodes = memo(
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [description, setDescription] = useState(data?.descriptions || "");
+    const [shake, setShake] = useState(false);
     const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
     const [dependencies, setDependencies] = useState<
       { key: string; nodeId: string }[]
-    >([]);
+    >(node?.data.dependencies || []);
 
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
 
@@ -74,6 +75,14 @@ const ToolsNodes = memo(
 
     const handleInputChange = useCallback(
       (key: any, type: any, value: any, dependency?: string) => {
+
+
+        if (!isEdit) {
+          setShake(true);
+          setTimeout(() => setShake(false), 500);
+          return;
+        }
+
         console.log(
           "key-->",
           key,
@@ -118,7 +127,7 @@ const ToolsNodes = memo(
           setVariableNames([]);
         }
       },
-      [dispatch, id, nodes, dependencies, variableNames]
+      [dispatch, id, nodes, dependencies, variableNames, isEdit]
     );
 
     const handleNextClick = async () => {
@@ -400,9 +409,7 @@ const ToolsNodes = memo(
                           key={key}
                           inputKey={key}
                           param={param}
-                          handleInputChange={
-                            isEdit ? handleInputChange : () => {}
-                          }
+                          handleInputChange={handleInputChange}
                           variableNames={variableNames}
                           focusedInputKey={focusedInputKey}
                           setFocusedInputKey={setFocusedInputKey}
@@ -428,7 +435,7 @@ const ToolsNodes = memo(
                     >
                       {isLoading ? (
                         <div className="flex justify-center items-center">
-                          <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
+                          <div className="loader ease-linear rounded-full border-4 border-gray-200 border-t-4 border-t-[#2DA771] h-6 w-6" />
                         </div>
                       ) : (
                         "Save"
@@ -439,7 +446,8 @@ const ToolsNodes = memo(
                   <div className="submit-button">
                     <button
                       onClick={handleEditClick}
-                      className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
+                      // className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
+                      className={`bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px] ${shake ? "shake" : ""}`}
                     >
                       Edit
                     </button>

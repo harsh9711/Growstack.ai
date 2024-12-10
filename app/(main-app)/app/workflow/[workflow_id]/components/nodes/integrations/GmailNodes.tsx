@@ -53,6 +53,7 @@ const GmailNode = memo(
     id,
     positionAbsoluteX,
     positionAbsoluteY,
+    parentId,
   }: NodeProps<GmailNodeProps>) => {
     // const { parameters, nodeMasterId } = data;
 
@@ -99,6 +100,22 @@ const GmailNode = memo(
         setIsActionModalShow(false);
       }
     };
+    useEffect(() => {
+      if (parentId) {
+        setDependencies(prevDependencies => {
+          const newDependency = { key: "parent", nodeId: parentId };
+          const exists = prevDependencies.some(dep => dep.nodeId === parentId);
+          if (exists) {
+            return prevDependencies;
+          }
+          return [...prevDependencies, newDependency];
+        });
+      }
+
+      return () => { };
+    }, [parentId]);
+
+
 
     useEffect(() => {
       if (isActionModalShow) {

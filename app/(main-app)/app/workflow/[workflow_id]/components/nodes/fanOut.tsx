@@ -77,6 +77,7 @@ const FanOut = ({
   const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
   const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
   const [isEdit, setIsEdit] = useState(true);
+  const [shake, setShake] = useState(false);
   const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] =
     React.useState(false);
   const [dependencies, setDependencies] = useState<
@@ -131,24 +132,13 @@ const FanOut = ({
 
       const subFlow = {
         ...nodeData,
-        data: {
-          ...nodeData.data,
-          parameters: {
-            ...nodeData.data.parameters,
-            url: {
-              ...(nodeData.data?.parameters?.url ?? {}),
-              value: "${instance}",
-              label: nodeData.data?.parameters?.url?.label || "",
-              type: nodeData.data?.parameters?.url?.type || "defaultType",
-              required: nodeData.data?.parameters?.url?.required || false,
-            },
-          },
-        },
         id: result._id,
         position: { x: 10, y: 90 },
         parentId: id,
         extent: "parent",
       };
+
+      console.log('---subFlow---', subFlow);
 
       setNodes((nds: FlowNode[]) => nds.concat(subFlow as unknown as FlowNode));
       dispatch(addNode(subFlow));
@@ -160,11 +150,6 @@ const FanOut = ({
   const handleOpenActionModal = () => {
     setIsActionModalShow(!isActionModalShow);
   };
-
-  // const handleInputChange = (key: any, type: any, value: any) => {
-  //   console.log("key-->", key, "type-->", type, "value-->", value);
-  //   dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
-  // };
 
   const handleInputChange = useCallback(
     (key: any, type: any, value: any, dependency?: string) => {
@@ -178,6 +163,13 @@ const FanOut = ({
         "dependencies--->",
         dependency
       );
+
+      if (!isEdit) {
+        setShake(true);
+        setTimeout(() => setShake(false), 500);
+        return;
+      }
+
 
       dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
 
@@ -433,9 +425,9 @@ const FanOut = ({
                     onClick={handleNextClick}
                     className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
                   >
-                    {!isLoading ? (
+                    {isLoading ? (
                       <div className="flex justify-center items-center">
-                        <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
+                        <div className="loader ease-linear rounded-full border-4 border-gray-200 border-t-4 border-t-[#2DA771] h-6 w-6" />
                       </div>
                     ) : (
                       "Save"
@@ -446,7 +438,7 @@ const FanOut = ({
                 <div className="submit-button">
                   <button
                     onClick={handleEditClick}
-                    className=" bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px]"
+                    className={`bg-transparent border-2 border-[#2DA771] text-[#2DA771] text-sm font-medium p-3 w-full rounded-[10px] ${shake ? "shake" : ""}`}
                   >
                     Edit
                   </button>

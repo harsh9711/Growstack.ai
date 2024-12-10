@@ -49,3 +49,22 @@ export const isSpecialType = (type: string): boolean => {
 
   return specialTypes.includes(type);
 };
+
+export const getInputType = (label: string) => {
+  switch (label) {
+    case "Short Text":
+      return "text";
+    case "Long Text":
+      return "text_area";
+    case "Number":
+      return "number";
+    case "Boolean":
+      return "switch";
+    case "File Upload":
+      return "button_upload";
+    case "Checklist":
+      return "checkbox_field";
+    default:
+      return "text";
+  }
+};
