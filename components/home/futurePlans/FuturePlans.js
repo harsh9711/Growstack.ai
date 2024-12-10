@@ -10,7 +10,7 @@ function FuturePlans() {
   return (
     <React.Fragment>
       <div className="futurePlans pb-3">
-        <div className="container">
+        <div className="w-full xl:container">
           <div className="row">
             <div
               className="title"
@@ -40,7 +40,7 @@ function FuturePlans() {
                     <div className="meta-date">
                       <span className="text-[#00B783] ">May 25</span>
                     </div>
-                    <div className="content-box1">
+                    <div className="content-box1 ml-0">
                       <h3 className="px-4 py-2">May 2025</h3>
                       <div className="text-white w-full px-6 p-2 bg-[#8CBD3B]">
                         GTM Verticals
@@ -86,7 +86,7 @@ function FuturePlans() {
                     <div className="meta-date">
                       <span>Oct 24</span>
                     </div>
-                    <div className="content-box3">
+                    <div className="content-box3 ml-0">
                       <h3 className="text-[#00B783] p-4">October 2024</h3>{" "}
                       <div className="text-white w-full px-6 p-2 bg-[#D75395]">
                         GTM Sales
@@ -129,8 +129,8 @@ function FuturePlans() {
                     <div className="meta-date">
                       <span>May 24</span>
                     </div>
-                    <div className="content-box5">
-                    <h3 className="text-[#00B783] p-4">May 2024</h3>{" "}
+                    <div className="content-box5 ml-0">
+                      <h3 className="text-[#00B783] p-4">May 2024</h3>{" "}
                       <div className="text-white w-full px-6 p-2 bg-[#00B783]">
                         GTM Marketing
                       </div>

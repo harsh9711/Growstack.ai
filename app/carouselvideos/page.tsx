@@ -1,38 +1,58 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import { teamvideos } from "@/types/data";
+import { Pause } from "lucide-react";
+import { Autoplay } from "swiper/modules";
 
 function App() {
   const [playingVideoIndex, setPlayingVideoIndex] = useState<number | null>(
     null
   );
   const swiperRef = useRef<any>(null);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   const handlePlayVideo = (index: number) => {
     setPlayingVideoIndex(index);
-    swiperRef.current?.autoplay.stop(); // Stop Swiper autoplay
+
+    // Stop Swiper autoplay when a video is played
+    if (swiperRef.current) {
+      swiperRef.current.autoplay.stop();
+    }
+
+    // Play the selected video and stop others
+    videoRefs.current.forEach((video, idx) => {
+      if (video) {
+        if (idx === index) {
+          video
+            .play()
+            .catch(error => console.error("Video play error:", error));
+        } else {
+          video.pause();
+          video.currentTime = 0; // Reset other videos
+        }
+      }
+    });
   };
 
   const handleStopVideo = () => {
     setPlayingVideoIndex(null);
-    swiperRef.current?.autoplay.start(); // Resume Swiper autoplay
-  };
 
-  useEffect(() => {
-    // Pause all videos except the one that should be playing
-    const videos = document.querySelectorAll("video");
-    videos.forEach((video, index) => {
-      if (playingVideoIndex === index) {
-        video.play();
-      } else {
+    // Resume Swiper autoplay when video is stopped
+    if (swiperRef.current) {
+      swiperRef.current.autoplay.start();
+    }
+
+    // Pause all videos
+    videoRefs.current.forEach(video => {
+      if (video) {
         video.pause();
-        video.currentTime = 0;
+        video.currentTime = 0; // Reset video
       }
     });
-  }, [playingVideoIndex]);
+  };
 
   return (
     <div className="bg-[url('/backd.svg')] bg-cover bg-no-repeat py-12">
@@ -54,18 +74,20 @@ function App() {
           </div>
         </div>
 
-        {/* Carousel Section */}
         <Swiper
           slidesPerView={4.5}
+          loop
           spaceBetween={20}
           autoplay={{
             delay: 4000,
             disableOnInteraction: false,
           }}
-          loop
           speed={1000}
           modules={[Autoplay]}
-          onSwiper={swiper => (swiperRef.current = swiper)}
+          onSwiper={swiper => {
+            swiperRef.current = swiper;
+          }}
+          onSlideChange={({ activeIndex }) => setCurrentVideoIndex(activeIndex)}
           breakpoints={{
             320: { slidesPerView: 3.5 },
             640: { slidesPerView: 2.5 },
@@ -84,8 +106,10 @@ function App() {
                 }`}
               >
                 <video
+                  ref={el => {
+                    videoRefs.current[index] = el;
+                  }}
                   loop
-                  muted
                   playsInline
                   className="w-full h-full sm:h-[500px] object-cover rounded-2xl"
                 >
@@ -94,7 +118,7 @@ function App() {
                 </video>
 
                 <div
-                  className="absolute inset-0 flex items-center justify-center"
+                  className="absolute inset-0 flex items-center justify-center cursor-pointer"
                   onClick={() => handlePlayVideo(index)}
                 >
                   {playingVideoIndex !== index && (
@@ -114,16 +138,18 @@ function App() {
                   )}
                 </div>
 
-                {/* {playingVideoIndex === index && (
+                {playingVideoIndex === index && (
                   <div
-                    className="absolute inset-0 flex items-center justify-center bg-black/50 cursor-pointer"
+                    className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
                     onClick={handleStopVideo}
                   >
-                    <span className="text-white text-lg font-semibold">
-                      Stop
-                    </span>
+                    <Pause
+                      size={20}
+                      color="white"
+                      className="w-16 h-16 bg-[#2DA771] rounded-full ring-4 ring-white grid place-items-center hover:bg-[#2DA771]/90 transition-all duration-300"
+                    />
                   </div>
-                )} */}
+                )}
               </div>
             </SwiperSlide>
           ))}

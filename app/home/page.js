@@ -6,7 +6,6 @@ import Banner from "@/components/home/banner/Banner";
 import Capability from "@/components/home/capability/Capability";
 import DragFeatures from "@/components/home/drag-features/DragFeatures";
 import Faqs from "@/components/home/faq/Faqs";
-import Features from "@/components/home/featuresNew/Features";
 import FuturePlans from "@/components/home/futurePlans/FuturePlans";
 import Marketing from "@/components/home/marketing/Marketing";
 import OurProcess from "@/components/home/ourProcessNew/OurProcess";
@@ -57,7 +56,7 @@ function Page() {
               height={400}
             />
           </button>
-          <button className="flex  w-full h-full  max-w-[330px] max-h-[159px] items-center gap-2 text-primary-green rounded-xl">
+          <button className="flex w-full h-full max-w-[330px] max-h-[159px] items-center gap-2 text-primary-green rounded-xl">
             <Image
               className="w-full h-full"
               src="/badge2.png"

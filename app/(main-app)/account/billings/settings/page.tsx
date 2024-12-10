@@ -1,12 +1,10 @@
 "use client";
-import OverviewSection from "./sections/OverViewSection";
 import React, { useEffect, useState } from "react";
 import instance from "@/config/axios.config";
 import toast from "react-hot-toast";
 import "../../../../../styles/loading.css";
 import AddCreditDialog from "./components/AddCreditDialog";
 import Motion from "@/components/Motion";
-import { Button } from "@/components/ui/button";
 import {
   Tooltip,
   TooltipContent,
@@ -14,18 +12,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Info } from "lucide-react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { ReactNode } from "react";
 import { API_URL } from "@/lib/api";
-// import { BillHistory } from "@/types/billHistory";
-import clsx from "clsx";
 import { PlanUsage } from "@/types/common";
 import {
   Dialog,
@@ -44,16 +31,6 @@ import GlobalModal from "@/components/modal/global.modal";
 import UpgradePlan from "@/components/upgradePlan/upgradePlan";
 import { useRouter } from "next/navigation";
 import { ALL_ROUTES } from "@/utils/constant";
-
-interface BillingHistoryItem {
-  amount: ReactNode;
-  payment_id: ReactNode;
-  updatedAt: string | number | Date;
-  plan_id: string;
-  status: string;
-  created_at: string;
-  invoice: string;
-}
 
 const OverViewSection = () => {
   const { currentPlan } = useSelector((rootState: RootState) => rootState.auth);
@@ -183,15 +160,16 @@ const OverViewSection = () => {
           <h2 className="text-primary-black text-opacity-50">Credit balance</h2>
           <div className=" flex gap-3 items-center">
             <div className="flex flex-col">
-            <h1 className="text-4xl font-semibold">
-              <strong>Tokens : </strong> {planUsage?.usage_amount ? planUsage.usage_amount * 100 : 0}
-            </h1>
+              <h1 className="text-4xl font-semibold">
+                <strong>Tokens : </strong>{" "}
+                {planUsage?.usage_amount ? planUsage.usage_amount * 100 : 0}
+              </h1>
             </div>
-        
 
             <button
-              className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-[#2DA771] text-white sheen transition-all duration-300 ${isCreditLoading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+              className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-[#2DA771] text-white sheen transition-all duration-300 ${
+                isCreditLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
               onClick={() => {
                 const isBasicPlan = planIdsMap[PlanName.AI_ESSENTIALS].some(
                   val => val === currentPlan?.plan_id
@@ -216,26 +194,27 @@ const OverViewSection = () => {
           <DialogContent className="max-w-[584px]">
             <DialogHeader>
               <DialogTitle>Add to credit balance</DialogTitle>
-           
             </DialogHeader>
             <div>
               <div className="space-y-2 mt-3">
                 <div className="flex">
-                <label className="font-semibold">Amount to add</label>
+                  <label className="font-semibold">Amount to add</label>
 
-                <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Info
-                    size={21}
-                    className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
-                  />
-                </TooltipTrigger>
-                <TooltipContent className="bg-white">
-                  <p>1$ = 100 <strong>Tokens</strong></p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Info
+                          size={21}
+                          className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent className="bg-white">
+                        <p>
+                          1$ = 100 <strong>Tokens</strong>
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </div>
                 <div className="border border-[#2DA771] rounded-xl p-2 flex items-center gap-2">
                   <DollarSign className="text-primary-green" />
@@ -247,8 +226,9 @@ const OverViewSection = () => {
                   />
                 </div>
                 <p
-                  className={` text-opacity-50 ${isAmountError ? "text-destructive" : "text-primary-black"
-                    }`}
+                  className={` text-opacity-50 ${
+                    isAmountError ? "text-destructive" : "text-primary-black"
+                  }`}
                 >
                   Enter an amount between <span>$</span>5 and <span>$</span>100
                 </p>
@@ -367,8 +347,9 @@ export default function SettingsPage() {
           <AddCreditDialog />
           {user?.isSubscribed && !planUsage?.isFreeCouponApplied && (
             <button
-              className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-white border-red-500 border hover:font-semibold hover:border-2 text-red-500 sheen transition-all duration-300 ${cancelLoading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
+              className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-white border-red-500 border hover:font-semibold hover:border-2 text-red-500 sheen transition-all duration-300 ${
+                cancelLoading ? "opacity-50 cursor-not-allowed" : ""
+              }`}
               onClick={handleCancelSubscription}
               disabled={cancelLoading}
             >
