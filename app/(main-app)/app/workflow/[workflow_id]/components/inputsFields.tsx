@@ -644,13 +644,14 @@ export const AddFieldDropdown: React.FC<AddFieldDropdownProps> = ({
   options,
   onSelect,
   inputKey,
+  
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<Option | null>(null);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
   const selectOption = (option: Option) => {
-    setSelectedOption(option);
+    // setSelectedOption(option);
     setIsOpen(false);
     onSelect(option);
   };
