@@ -65,8 +65,8 @@ const OutputDetails = ({
   };
   const handleApprove = async (nodeExecutionId: string) => {
     try {
-      // const approveExecution = await CustomAxiosInstance().patch(
-      //   `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=true`
+      // const approveExecution = await axios.patch(
+      //   `http://localhost:5000/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=true`
       // );
       const approveExecution = await instance.patch(
         `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=true`
@@ -97,6 +97,32 @@ const OutputDetails = ({
     }
   };
 
+  const renderSocialMediaContent = (content: any) => {
+    if (typeof content === "string") {
+      return <div>{content}</div>;
+    } else if (Array.isArray(content)) {
+      return (
+        <div>
+          {content.map((item, index) => (
+            <div key={index}>{renderSocialMediaContent(item)}</div>
+          ))}
+        </div>
+      );
+    } else if (typeof content === "object" && content !== null) {
+      return (
+        <div>
+          {Object.entries(content).map(([key, value]) => (
+            <div key={key}>
+              <strong>{key}: </strong>
+              {renderSocialMediaContent(value)}
+            </div>
+          ))}
+        </div>
+      );
+    } else {
+      return <div>Unsupported content type</div>;
+    }
+  };
   return (
     <>
       <div className="w-full bg-white border-l-4 border-[#FB8491] rounded-lg shadow-md p-4 relative overflow-hidden">
@@ -131,6 +157,9 @@ const OutputDetails = ({
                     <div className=" border-t border-gray-200">
                       <div className="p-4 prose prose-sm max-w-none">
                         {(() => {
+                          if(item?.nodeType === "linkedin") {
+                            return <div>{renderSocialMediaContent(item?.socialMediaContent)}</div>;
+                          }
                           if (typeof item?.value === "string") {
                             // Render string using ReactMarkdown
                             return (
