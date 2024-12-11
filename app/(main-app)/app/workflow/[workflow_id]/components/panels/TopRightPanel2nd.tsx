@@ -3,6 +3,7 @@ import { dummyData3 } from "../data";
 import Image from "next/image";
 import { useAppSelector } from "@/lib/hooks";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 const TopRightPanel2nd = ({
   setActiveTab,
@@ -18,21 +19,12 @@ const TopRightPanel2nd = ({
     setActiveTab(index);
     localStorage.setItem("workflowActiveTab", index.toString());
   };
+
   useEffect(() => {
     const savedTab = localStorage.getItem("workflowActiveTab");
-    const isFromTimeline = localStorage.getItem("isFromTimeline");
     if (savedTab) {
       setActiveTab(parseInt(savedTab));
-      if (isFromTimeline) {
-        setIsFromTimeline(true);
-        setTimeout(() => {
-          localStorage.removeItem("isFromTimeline");
-        }, 5000);
-      } else {
-        setIsFromTimeline(false);
-      }
     } else {
-      // setIsFromTimeline(false);
       setActiveTab(0);
     }
   }, [setActiveTab]);
@@ -70,6 +62,19 @@ const TopRightPanel2nd = ({
           </button>
         </div>
       ))}
+
+      <div>
+        <Button variant="outline" className="w-32 h-[44px] bg-[#2DA771]">
+          Save
+        </Button>
+        <Button
+          variant="default"
+          className="w-32 h-[44px] bg-[#2DA771]"
+          title="Publish"
+        >
+          Publish
+        </Button>
+      </div>
     </div>
   );
 };
