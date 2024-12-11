@@ -56,29 +56,54 @@ const TopRightPanel2nd = ({
     <div>
       <div className="flex items-center  rounded-lg justify-between w-full max-w-[90%] mx-auto relative p-1">
         <div className="flex justify-center items-center rounded-lg cursor-pointer gap-3">
-          <button
-            className="back-btn bg-white h-[40px] w-[50px] shadow-md rounded-[5px] flex items-center justify-center"
-            onClick={() => {
-              route.back();
-            }}
-          >
-            <Image
-              src="/images/workflow/back.svg"
-              alt="back"
-              width={22}
-              height={22}
-            />
-          </button>
+          <div className="back-btn-box">
+            <button
+              className="back-btn bg-white h-[40px] w-[50px] shadow-md rounded-[5px] flex items-center justify-center"
+              onClick={() => {
+                route.back();
+              }}
+            >
+              <Image
+                src="/images/workflow/back.svg"
+                alt="back"
+                width={22}
+                height={22}
+              />
+            </button>
+          </div>
 
-          <input
-            type="text"
-            value={workFlowData?.name || ""}
-            placeholder="Enter Workflow Name"
-            className="nopan nodrag form-control shadow-none w-full p-3 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
-          />
-          {/* <p className="text-[14px] font-semibold leading-[21px] font-poppins ml-2.5">
+          <div className="workflow-name-box relative">
+            <input
+              type="text"
+              value={workFlowData?.name || ""}
+              placeholder="Enter Workflow Name"
+              className="nopan nodrag form-control shadow-none w-full p-3 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
+            />
+            {/* <p className="text-[14px] font-semibold leading-[21px] font-poppins ml-2.5">
             {workFlowData?.name || ""}
           </p> */}
+
+            <button
+              className="check-button absolute top-[14px] right-[10px]"
+              style={{ display: "block" }}
+            >
+              <img
+                src="/assets/node_icon/single-check.svg"
+                alt="single check"
+                className="w-[20px]"
+              />
+            </button>
+            <button
+              className="cross-button absolute top-[7px] right-[10px]"
+              style={{ display: "none" }}
+            >
+              <img
+                src="/assets/node_icon/close-icon.svg"
+                alt="single check"
+                className="w-[30px]"
+              />
+            </button>
+          </div>
         </div>
 
         <div className="run-btn flex items-center justify-center gap-1">
