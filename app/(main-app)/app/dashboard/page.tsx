@@ -377,12 +377,12 @@ const Card: React.FC<CardProps> = ({
   const handleDeleteClick = async () => {
     setLoading(true);
     try {
-      const response = await axios.delete(
-        `/workflow/${workflow_id}`
-      );
+      // const response = await axios.delete(
+      //   `/workflow/${workflow_id}`
+      // );
+      const response = await instance.delete(`/workflow/${workflow_id}`);
       setIsModalOpen({ isOpen: false, type: "delete" });
 
-      // const response = await instance.delete(`/workflow/${workflow_id}`);
     } catch (error: any) {
       console.error("Error deleting workflow:", error);
     } finally {
