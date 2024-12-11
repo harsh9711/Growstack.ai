@@ -43,7 +43,7 @@ const page = () => {
                   Growstack's versatile Al tools and integrated solutions
                   empower mid-market organizations to overcome resource
                   limitations. By streamlining marketing operations, enhancing
-                  customer engagement, and providing actionable insights,
+                  customer engagement and providing actionable insights,
                   Growstack ensures mid-market businesses can compete
                   effectively and scale efficiently.
                 </p>
@@ -58,7 +58,7 @@ const page = () => {
                     <Link href="/demo" className="no-underline">
                       {" "}
                       <button className="border border-white flex items-center gap-2 text-white hover:font-bold font-medium sm:py-4 sm:px-7 p-2 rounded-xl shadow-md shadow-[#00000025]">
-                        Get demo
+                        Get a demo
                         <ArrowRight className="text-white" />
                       </button>
                     </Link>
@@ -384,7 +384,7 @@ const page = () => {
         </h2>
 
         <p className="mt-2 text-white mb-4 text-center">
-          Explore how GrowStacks innovative AI tools empower mid-market
+          Explore how GrowStack's innovative AI tools empower mid-market
           organizations to overcome challenges
         </p>
       </div>

@@ -39,7 +39,7 @@ export const cases = [
     name: "Versatile ",
     subname: "applications",
     description:
-      "Perfect for blogs, marketing, product descriptions, and more.",
+      "Perfect for blogs, marketing, product descriptions and more.",
   },
   {
     id: 5,

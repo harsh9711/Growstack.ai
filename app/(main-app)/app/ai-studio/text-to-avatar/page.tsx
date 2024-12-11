@@ -25,7 +25,15 @@ import DownloadCircle from "@/components/svgs/download";
 import GlobalModal from "@/components/modal/global.modal";
 import SubscribePlan from "@/components/subscribePlan/subscribePlan";
 import UpgradePlan from "@/components/upgradePlan/upgradePlan";
+import { API_URL } from "@/lib/api";
 
+interface PlanUsage {
+  plan_id: string;
+  plan_type: string;
+  stripe_subscription_id: string;
+  usage_amount: number;
+  usage:any
+}
 const VideoTable: React.FC<{
   videos: Array<{
     _id: string;
@@ -250,12 +258,13 @@ export default function TextToVideoPage() {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] =
     useState<boolean>(false);
+  const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
+
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState<boolean>(false);
   const { user, currentPlan } = useSelector(
     (rootState: RootState) => rootState.auth
   );
   const isSubscribed = user?.isSubscribed || false;
-  console.log("=====", currentPlan);
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -280,7 +289,9 @@ export default function TextToVideoPage() {
       setLoading(false);
     }
   };
-
+  useEffect(() => {
+    fetchPlanUsage()
+  },[])
   useEffect(() => {
     fetchData();
 
@@ -333,10 +344,24 @@ export default function TextToVideoPage() {
       editedAt: template.updatedAt,
       videoUrl: template.doc_content.video_url,
     }));
-
+    const fetchPlanUsage = async () => {
+      try {
+        const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
+        const data: PlanUsage = response.data.data;
+        setPlanUsage(data);
+      } catch (error: any) {
+        if (error.response) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error(error.message);
+        }
+        console.error("Error fetching plan usage:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
   const handleNavigation = async () => {
     try {
-      console.log("=====", currentPlan);
       if (
         user?.user_type !== "ADMIN" &&
         (currentPlan?.plan_type === "FREE" ||
@@ -346,7 +371,7 @@ export default function TextToVideoPage() {
         return;
       } else if (
         user?.user_type !== "ADMIN" &&
-        (currentPlan?.usage?.no_of_text_to_avatar ?? 0) <= 0
+        (currentPlan?.usage?.no_of_text_to_avatar ?? 0) <= 0 && (planUsage?.usage_amount ?? 0) <= 0
       ) {
         toast.error("Text to Avatar Credits Are Over");
         setIsUpgradeModalOpen(true);
@@ -357,10 +382,24 @@ export default function TextToVideoPage() {
     } catch (error) {
       console.log(error);
     }
+
+
   };
 
   return (
     <Fragment>
+      
+      <div className="grid justify-items-end">
+        <div className="flex">
+        <svg width="14" height="21" viewBox="0 0 14 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5.75349 1H12.4815L8.23221 7.01975H12.4815L2.3541 18.2802L5.8243 10.6316H2L5.75349 1Z" fill="#F9DE6F" stroke="#F9DE6F" stroke-width="0.791016" stroke-miterlimit="10"/>
+</svg> &nbsp;<h1 className="text ">
+Your Credits Balance is :<strong style={{color:"#2DA771"}}> {(((Number(planUsage?.usage_amount) || 0)* 100) + (Number(planUsage?.usage?.no_of_text_to_avatar) || 0)) }
+</strong>
+        </h1>
+        </div>
+   
+      </div>
       <main>
         <div className="grid grid-cols-1 gap-5 mt-8">
           {loading ? (

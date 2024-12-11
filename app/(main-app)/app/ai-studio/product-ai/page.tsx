@@ -5,14 +5,11 @@ import Spinner from "@/components/Spinner";
 import Dropzone from "./components/Dropzone";
 import { Switch } from "@/components/ui/switch";
 import toast from "react-hot-toast";
-import { FileRejection } from "react-dropzone";
 import instance from "@/config/axios.config";
-import { API_URL } from "@/lib/api";
 import Pagination from "./Pagination";
-import { getCookie } from "cookies-next";
 
 import ResizableRotatableImage from "./dragmove"; // Import the new component
-import { CloseIcon, MessageIcon2, Regenerate } from "@/components/svgs";
+import { Regenerate } from "@/components/svgs";
 
 import {
   Dialog,
@@ -22,14 +19,20 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { DialogTitle } from "@radix-ui/react-dialog";
-import { GenAi, ImgVector } from "@/components/svgs";
-import { parseJsonString } from "@/lib/utils";
 import GlobalModal from "@/components/modal/global.modal";
 import SubscribePlan from "@/components/subscribePlan/subscribePlan";
 import { RootState } from "@/lib/store";
 import { useSelector } from "react-redux";
 import UpgradePlan from "@/components/upgradePlan/upgradePlan";
+import { API_URL } from "@/lib/api";
 
+interface PlanUsage {
+  plan_id: string;
+  plan_type: string;
+  stripe_subscription_id: string;
+  usage_amount: number;
+  usage:any
+}
 interface ProductAI {
   img_url: string | null;
   remove_bg_toggle: boolean;
@@ -56,12 +59,13 @@ export default function Home() {
   const [numOfImages, setNumOfImages] = useState(1);
   const [result, setResult] = useState<string[] | null>(null);
   const [finalUrl, setFinalUrl] = useState<string[]>([]);
-  const [scale, setScale] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [openPostModel, setOpenPostModel] = useState(false);
   const [page, setPage] = useState(1);
   const limit = 10;
+  const [planUsage, setPlanUsage] = useState<PlanUsage | null>(null);
+
   const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] =
     useState<boolean>(false);
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState<boolean>(false);
@@ -93,7 +97,6 @@ export default function Home() {
     numOfImages: numOfImages | 1,
   };
   const [loading, setLoading] = useState(false);
-  const [generatedText, setGeneratedText] = useState<string>("");
 
   const generatePrompt = async () => {
     try {
@@ -103,7 +106,6 @@ export default function Home() {
       }));
       setIsGenerating(true);
 
-      // Send request to API
       const response: any = await instance.post(
         `/ai/api/v1/generate/aibackdropregenerate`,
         {
@@ -141,6 +143,8 @@ export default function Home() {
       );
       setTotalPages(response.data.data.metadata.totalPages);
       setCurrentPage(page);
+      fetchPlanUsage();
+
     } catch (error) {
       console.error("Error fetching history:", error);
       toast.error("Failed to fetch history");
@@ -160,9 +164,9 @@ export default function Home() {
     }));
     try {
       const { img_url, user_prompt, remove_bg_toggle, numOfImages } = productAI;
-      if(!user_prompt){
+      if (!user_prompt) {
         toast.error("Please Give a prompt");
-        return
+        return;
       }
       setLoading(true);
       const response = await instance.post(`/ai/api/v1/products/bg-remover`, {
@@ -182,10 +186,15 @@ export default function Home() {
       }
       fetchHistory();
       setLoading(false);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error removing background:", error);
       setLoading(false);
-      toast.error("Failed to process image");
+      if (error?.response?.data?.message) {
+        toast.error("Failed to process image due to " + error?.response?.data?.message);
+      } else {
+        toast.error("Failed to process image");
+
+      }
     }
   };
 
@@ -214,10 +223,12 @@ export default function Home() {
       }
       fetchHistory();
       setLoading(false);
-    } catch (error) {
-      console.error("Error removing background:", error);
-      setLoading(false);
-      toast.error("Failed to process image");
+    } catch (error: any) {
+      if (error?.response?.data?.message) {
+        toast.error("Failed to process image due to " + error?.response?.data?.message);
+      } else {
+        toast.error("Failed to process image");
+      }
     }
   };
   const updateFavourite = async (imageID: any, booleanValue: boolean) => {
@@ -245,11 +256,9 @@ export default function Home() {
       remove_bg_toggle,
       numOfImages
     );
-    // Log the normalized position and scale in the submit function
     console.log("Normalized Position:", normalizedPosition);
     console.log("Normalized Scale:", normalizedScale);
     if (!remove_bg_toggle) {
-      // Open dialog if remove_bg_toggle is false
       setOpenPostModel(true);
       return;
     }
@@ -271,8 +280,8 @@ export default function Home() {
         user_prompt,
         remove_bg_toggle,
         numOfImages,
-        normalizedPosition, // Send normalized position
-        normalizedScale, // Send normalized scale
+        normalizedPosition,
+        normalizedScale,
       });
 
       const result_url = response.data.data.originalUrls;
@@ -283,10 +292,16 @@ export default function Home() {
       }
       fetchHistory();
       setLoading(false);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error removing background:", error);
+      console.log("error***********", error)
       setLoading(false);
-      toast.error("Failed to process image");
+      if (error?.response?.data?.message) {
+        toast.error("Failed to process image due to " + error?.response?.data?.message);
+      } else {
+        toast.error("Failed to process image");
+
+      }
     }
   };
   const handleDownload = async (image: string) => {
@@ -319,22 +334,9 @@ export default function Home() {
     }
   };
 
-  const handleDownloadAll = async () => {
-    setLoading(true);
-
-    try {
-      for (const image of selectedImages) {
-        handleDownload(image);
-      }
-    } catch (error) {
-      console.error("Download error:", error);
-    } finally {
-      setLoading(false); // Set loading to false after all downloads
-    }
-  };
-
   useEffect(() => {
     fetchHistory();
+    fetchPlanUsage();
   }, [favImage]);
   const handleNumOfImagesChange = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -343,22 +345,11 @@ export default function Home() {
     setNumOfImages(Number(event.target.value));
   };
 
-  const handleLikeDislike = (imageId: any) => {
-    setLikedImages(prevState => ({
-      ...prevState,
-      [imageId]: !prevState[imageId],
-    }));
-  };
-
   const handleSwitchChange = () => {
     setProductAI(prevState => ({
       ...prevState,
       remove_bg_toggle: !prevState.remove_bg_toggle,
     }));
-  };
-
-  const handleFavoritesSwitchChange = () => {
-    setFavImage(favImage ? false : true);
   };
 
   const handlePromptChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -437,12 +428,41 @@ export default function Home() {
     });
   };
 
+  const fetchPlanUsage = async () => {
+    try {
+      const response = await instance.get(`${API_URL}/users/api/v1/plan-usage`);
+      const data: PlanUsage = response.data.data;
+      setPlanUsage(data);
+    } catch (error: any) {
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error.message);
+      }
+      console.error("Error fetching plan usage:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const filteredImages = productAI.favorites_bg_toggle
     ? (result?.filter(image => likedImages[image]) ?? [])
     : result;
 
   return (
     <>
+      <div className="grid justify-items-end">
+        <div className="flex">
+          <svg width="14" height="21" viewBox="0 0 14 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M5.75349 1H12.4815L8.23221 7.01975H12.4815L2.3541 18.2802L5.8243 10.6316H2L5.75349 1Z" fill="#F9DE6F" stroke="#F9DE6F" stroke-width="0.791016" stroke-miterlimit="10" />
+          </svg> &nbsp;<h1 className="text ">
+            Your Credits Balance is :<strong style={{ color: "#2DA771" }}> 
+            {((Number(planUsage?.usage_amount) || 0) * 100 + (Number(planUsage?.usage?.ai_background_generator_credits) || 0))}
+            </strong>
+          </h1>
+        </div>
+
+      </div>
       <div className="ml-1 mb-3 mt-3">
         <h2 className="text-m sm:text-lg font-semibold">AI backdrop</h2>
       </div>
@@ -638,15 +658,7 @@ export default function Home() {
                         style={{ width: "100%" }}
                       >
                         {finalUrl.map(image => (
-                          <div
-                          // key={image}
-                          // className={`relative group border-2 p-1 cursor-pointer ${
-                          //   selectedImages.includes(image)
-                          //     ? "border-blue-500"
-                          //     : "border-transparent"
-                          // }`}
-                          // onClick={() => toggleImageSelection(image)}
-                          >
+                          <div>
                             <img
                               className="w-[160px] h-[160px] object-cover"
                               alt="img-result"
@@ -661,14 +673,6 @@ export default function Home() {
                     </div>
                     <div className="flex justify-end items-center mb-8 mt-4">
                       <div className="flex flex-col items-end">
-                        {/* Message displayed when no images are selected */}
-                        {/* {selectedImages.length === 0 && (
-                        <p className="text-red-500 mb-2 mr-4">
-                          Please select at least one image to download.
-                        </p>
-                      )} */}
-
-                        {/* Buttons */}
                         <div className="flex">
                           <button
                             onClick={() => {
@@ -691,7 +695,6 @@ export default function Home() {
                   </>
                 ) : (
                   <div className="relative z-[1] flex-1 flex flex-col justify-between  bg-white rounded-lg shadow-md w-full max-w-md sm:max-w-lg lg:max-w-xl h-auto">
-                    {/* Upload Section */}
                     <div className="p-4 ">
                       <div className="flex flex-col items-center ">
                         {fileUploadLoading ? (
@@ -734,7 +737,6 @@ export default function Home() {
                       </div>
                     </div>
 
-                    {/* Remove Background Section */}
                     <div className="border-t border-gray-300 flex items-center justify-between w-full mt-2">
                       <div className="space-y-1 m-4">
                         <h1 className="text-sm sm:text-m mt-2 font-semibold">
@@ -755,7 +757,6 @@ export default function Home() {
                 )}
               </section>
 
-              {/* Sample Images Section */}
               {finalUrl.length < 1 && (
                 <div className="text-center mt-5">
                   <p className="text-gray-600">
@@ -851,13 +852,11 @@ export default function Home() {
                       className="w-full h-36 object-cover"
                     />
                     <button
-                      className={`absolute top-2 left-2 p-1 rounded-full shadow-md transition-colors duration-200 ${
-                        image.favourite ? "text-red-500" : "text-gray-500"
-                      } hover:bg-gray-100`}
+                      className={`absolute top-2 left-2 p-1 rounded-full shadow-md transition-colors duration-200 ${image.favourite ? "text-red-500" : "text-gray-500"
+                        } hover:bg-gray-100`}
                       onClick={() => updateFavourite(image, image.favourite)}
-                      aria-label={`${
-                        image.favourite ? "Unlike" : "Like"
-                      } image with ID ${image.id}`}
+                      aria-label={`${image.favourite ? "Unlike" : "Like"
+                        } image with ID ${image.id}`}
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

@@ -26,6 +26,7 @@ export interface PlanUsage {
   createdAt: string;
   updatedAt: string;
   isFreeCouponApplied: boolean;
+  plan_name:string
 }
 
 export interface Plan {

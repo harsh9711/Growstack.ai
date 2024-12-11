@@ -15,7 +15,6 @@ import ImageGalleryResponsive from "./components/ZoomEffectrespopnsive";
 import MarketingStreamline from "./components/marketingStreamline/MarketingStreamline";
 import { motion, inView } from "framer-motion";
 import MarketingTechnology from "../largeenterprise/components/marketingTechnology/MarketingTechnology";
-import Banner from "./banner/Banner";
 import Link from "next/link";
 import Footer from "@/components/footer/Footer";
 
@@ -75,42 +74,17 @@ const page = () => {
                     <Link href="/auth/register" className="no-underline">
                       {" "}
                       <button className="bg-white font-medium flex items-center gap-2 text-[#034737] 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
-                        Get free trial <ArrowRight />
+                        Get a free trial <ArrowRight />
                       </button>
                     </Link>
                     <Link href="/demo" className="no-underline">
                       {" "}
                       <button className="border border-black flex items-center gap-2 text-black hover:font-bold font-medium 2xl:py-4 py-2 px-2  2xl:px-7 rounded-xl shadow-md shadow-[#00000025]">
-                        Get demo
+                        Get a demo
                         <ArrowRight className="text-black" />
                       </button>{" "}
                     </Link>
                   </div>
-
-                  {/* <div
-                    data-aos="fade-right"
-                    data-aos-duration="1500"
-                    className="flex  flex-wrap gap-4"
-                  >
-                    <button className="flex items-center gap-2   text-primary-green rounded-xl">
-                      <Image
-                        className="w-full  h-full"
-                        src="/play2.png"
-                        alt="Apple"
-                        width={180}
-                        height={400}
-                      />
-                    </button>
-                    <button className="flex items-center gap-2   text-primary-green rounded-xl">
-                      <Image
-                        className="w-full  h-full "
-                        src="/apple2.png"
-                        alt="Apple"
-                        width={180}
-                        height={400}
-                      />
-                    </button>
-                  </div> */}
                 </div>
               </div>
             </div>
@@ -132,7 +106,6 @@ const page = () => {
             </div>
           </div>
         </div>
-        {/* <Banner /> */}
       </section>
 
       <section className="relative mx-auto items-center justify-center 2xl:py-20 bg-white overflow-hidden">

@@ -6,7 +6,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import {
   Select,
@@ -18,7 +17,6 @@ import {
 } from "@/components/ui/select";
 import { Search } from "lucide-react";
 import { useState } from "react";
-import { IoIosShareAlt, IoIosArrowBack } from "react-icons/io";
 import { ISidebarItem } from "../interface/chat.interface";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
@@ -41,7 +39,6 @@ export default function ShareChatDialog({
   onClose,
 }: ShareChatDialogProps) {
   const [activeIds, setActiveIds] = useState<string[]>([]);
-  const [nextStep, setNextStep] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedOutputType, setSelectedOutputType] = useState(
     outputType[0].value

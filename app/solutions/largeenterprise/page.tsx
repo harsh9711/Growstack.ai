@@ -47,7 +47,7 @@ const Home = () => {
                     Growstack's advanced Al tools and scalable solutions address
                     the unique challenges of large enterprises by ensuring
                     global alignment, consistent marketing and sales, effective
-                    personalization, and seamless data integration.{" "}
+                    personalization and seamless data integration.{" "}
                   </p>
                   <div className="flex flex-col gap-24 mt-4 pb-10 sm:pb-0 items-center justify-center ">
                     <div className="flex flex-row gap-8 ">
@@ -60,7 +60,7 @@ const Home = () => {
 
                       <Link href="/demo" className="no-underline">
                         <button className="border border-[#D9D9D9] flex items-center gap-2 text-black hover:font-bold font-medium py-4 px-7 rounded-xl shadow-lg shadow-[#00000025]">
-                          Get demo <ArrowRight className="text-black" />
+                          Get a demo <ArrowRight className="text-black" />
                         </button>
                       </Link>
                     </div>
@@ -129,7 +129,7 @@ const Home = () => {
                   {" "}
                   <p className="text-left leading-normal items-center justify-center w-full sm:max-w-[1026px]">
                     In large enterprises, various teams collaborate to manage
-                    operations, develop strategies, and handle day-to-day
+                    operations, develop strategies and handle day-to-day
                     functions. By using Growstack, you can ensure that your
                     teams stay connected and seamlessly share information,
                     effectively preventing data silos and fostering

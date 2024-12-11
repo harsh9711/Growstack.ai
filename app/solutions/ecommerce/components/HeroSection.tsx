@@ -34,7 +34,7 @@ const HeroSection = () => {
               data-aos-duration="1500"
               className="text-[16px] 2xl:text-[18px] sm:text-start text-center text-white mt-4 w-full max-w-[600px] leading-normal font-light"
             >
-              Optimize operations, enhance customer experience, and drive sales
+              Optimize operations, enhance customer experience and drive sales
               with Growstack{" "}
             </p>
 
@@ -47,13 +47,13 @@ const HeroSection = () => {
                 <Link href="/auth/register" className="no-underline">
                   {" "}
                   <button className="bg-white font-medium flex items-center gap-2 text-[#034737] 2xl:py-4 2xl:px-7  rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
-                    Get free trial <ArrowRight />
+                    Get a free trial <ArrowRight />
                   </button>
                 </Link>
                 <Link href="/demo" className="no-underline">
                   {" "}
                   <button className=" font-medium flex items-center gap-2 text-white 2xl:py-4 2xl:px-7 border border-white  rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
-                    Get demo
+                    Get a demo
                     <ArrowRight className="text-white" />
                   </button>
                 </Link>

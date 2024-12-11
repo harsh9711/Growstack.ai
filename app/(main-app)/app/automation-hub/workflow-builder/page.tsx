@@ -18,6 +18,9 @@ import Lock from "@/components/svgs/lock";
 import { useSelector } from "react-redux";
 import { RootState } from "@/lib/store";
 import { ALL_ROUTES } from "@/utils/constant";
+import { createWorkFlow } from "@/lib/features/workflow/workflow.slice";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 type PreBuiltTemplate = {
   _id: number;
@@ -29,12 +32,17 @@ type PreBuiltTemplate = {
 };
 
 export default function WorkflowBuilder() {
+
+  const dispatch = useAppDispatch()
+  const router = useRouter();
+
   const [preBuiltTemplates, setPreBuiltTemplates] = useState<
     PreBuiltTemplate[]
   >([]);
   const { isCurrentPlanFetching } = useSelector(
     (rootState: RootState) => rootState.auth
   );
+  const { isLoading } = useAppSelector(state => state.workflows)
 
   const [loading, setLoading] = useState<boolean>(false);
   const getPreBuiltTemplates = async () => {
@@ -52,6 +60,19 @@ export default function WorkflowBuilder() {
     getPreBuiltTemplates();
   }, []);
 
+
+  const handleCreateWorkflow = async () => {
+    try {
+      const resultAction = await dispatch(createWorkFlow({ name: "Untitled workflow" }))
+      const result = unwrapResult(resultAction)
+      const workflowId = result._id;
+      router.push(`${ALL_ROUTES.WORKFLOW_CANVAS_CREATE}/${workflowId}`)
+    } catch (error) {
+      console.log('---error---', error)
+    }
+
+  }
+
   return (
     <Fragment>
       <main className="">
@@ -63,6 +84,15 @@ export default function WorkflowBuilder() {
               existing one.
             </p>
           </div>
+          <button className="bg-primary-green text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2"
+            onClick={handleCreateWorkflow}
+          >
+            {isLoading ? (
+              <div className="flex justify-center items-center">
+                <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
+              </div>
+            ) : "Create a new workflow"}
+          </button>
           <Link href={ALL_ROUTES.ALL_WORKFLOW_BUILDER}>
             <button className="bg-[#2DA771] text-white sheen transition duration-500 px-5 py-4 rounded-xl flex items-center gap-2">
               Explore your workflows
@@ -73,19 +103,19 @@ export default function WorkflowBuilder() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {isCurrentPlanFetching || preBuiltTemplates.length > 0
               ? preBuiltTemplates.map(template => (
-                  <Card
-                    key={template._id}
-                    title={template.name}
-                    description={template.description}
-                    imageSrc={template.image}
-                    slug={template.slug}
-                    workflow_id={template.workflow_id}
-                    setLoading={setLoading}
-                  />
-                ))
+                <Card
+                  key={template._id}
+                  title={template.name}
+                  description={template.description}
+                  imageSrc={template.image}
+                  slug={template.slug}
+                  workflow_id={template.workflow_id}
+                  setLoading={setLoading}
+                />
+              ))
               : Array(5)
-                  .fill(null)
-                  .map((_, index) => <WorkflowLoader key={index} />)}
+                .fill(null)
+                .map((_, index) => <WorkflowLoader key={index} />)}
           </div>
         </div>
         {loading && (
@@ -318,3 +348,4 @@ const Card: React.FC<CardProps> = ({
     </>
   );
 };
+

@@ -7,21 +7,26 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import clsx from "clsx";
-import { ChevronRight, Search } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState } from "react";
-import { IoIosNotificationsOutline, IoIosMenu } from "react-icons/io";
+import { IoIosMenu } from "react-icons/io";
 import navLinks from "./constants/nav";
 import { ProfileButton } from "./ProfileButton";
 import { useRouter } from "next-nprogress-bar";
 import { ALL_ROUTES } from "@/utils/constant";
+import { RootState } from "@/lib/store";
+import { useSelector } from "react-redux";
+import { getUserFriendlyPlanName } from "@/lib/utils";
+import { PlanName } from "@/types/enums";
 
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { currentPlan } = useSelector((rootState: RootState) => rootState.auth);
 
   const isLinkActive = (link: NavLink): boolean => {
     if (link.href && pathname === link.href) {
@@ -144,16 +149,20 @@ export default function Navbar() {
 
         <div className="flex items-center gap-5">
           <button
-            className="blink-animation group relative inline-flex items-center h-12 gap-2 px-4 rounded-lg text-white font-semibold transition-all duration-800 overflow-hidden"
+            className="group relative inline-flex items-center bg-[#2DA771] h-12 gap-2 px-4 rounded-lg text-white font-semibold overflow-hidden"
             onClick={() => {
               window.location.href = ALL_ROUTES.UPGRADE;
             }}
           >
             <span className="text-md text-nowrap flex flex-row gap-x-2 font-medium">
-              Upgrade Your Plan
+              Upgrade
             </span>
-            <div className="absolute inset-0 -z-10 bg-gradient-to-r from-emerald-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
           </button>
+          <div>
+            <span className="text-md">
+              {getUserFriendlyPlanName(currentPlan?.plan_name as PlanName)}
+            </span>
+          </div>
           <div className="lg:hidden">
             <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
               <IoIosMenu size={30} />

@@ -3157,6 +3157,10 @@ export const tools: Tool[] = [
     socialMediaRequirement: false,
   },
 
+
+
+
+
   {
     id: 58,
     description:
@@ -3407,6 +3411,9 @@ export const tools: Tool[] = [
     event_execute: "processLLM",
     socialMediaRequirement: false,
   },
+
+
+  
   {
     id: 63,
     description:
@@ -3657,6 +3664,10 @@ export const tools: Tool[] = [
     event_execute: "processLLM",
     socialMediaRequirement: false,
   },
+
+
+
+
   {
     id: 68,
     description:
@@ -6412,7 +6423,7 @@ export const tools: Tool[] = [
     description:
       "As a CRM integration specialist, your task is to integrate our current CRM system with other tools we use to improve workflow and data management. You will review current systems, develop a detailed integration plan, execute the integration, and ensure continuous improvement.",
     name: "Vivienne Greer",
-    role: "CRMIntegrator AI",
+    role: "CRM Integrator AI",
     category: "Assistant",
     icon: "https://growstackai.s3.amazonaws.com/avatars/Ai+Images/CRMIntegrator+Ai.jpeg",
     provider: "Openai",
@@ -6457,6 +6468,11 @@ export const tools: Tool[] = [
     event_execute: "processLLM",
     socialMediaRequirement: false,
   },
+
+
+
+
+
   {
     id: 124,
     description: "Generate a image through a text",

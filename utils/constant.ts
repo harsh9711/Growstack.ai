@@ -35,6 +35,8 @@ export enum ALL_ROUTES {
   WORKFLOW_BUILDER_CREATE = "/app/automation-hub/workflow-builder/create-workflow",
   ALL_WORKFLOW_BUILDER = "/app/automation-hub/workflow-builder/workflows",
   AI_BACKGROUND_GENERATOR = "/app/ai-studio/product-ai",
+  WORKFLOW_CANVAS_CREATE = "/app/workflow/",
+  WORKFLOW_DASHBOARD = "/app/dashboard",
 }
 
 export const featureRouteMap: FeatureRouteMap = {

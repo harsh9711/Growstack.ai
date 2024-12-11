@@ -1,7 +1,7 @@
 "use client";
 
 import Spinner from "@/components/Spinner";
-import { ArrowBack, Switch } from "@/components/svgs";
+import { ArrowBack } from "@/components/svgs";
 import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import Image from "next/image";
@@ -41,7 +41,6 @@ type Conversation = {
 };
 
 const Page = () => {
-  const [isAPICalled, setIsAPICalled] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const searchParams = useSearchParams();
   const [isToggleEnabled, setIsToggleEnabled] = useState<boolean>(false);
@@ -152,13 +151,6 @@ const Page = () => {
     }
   };
 
-  // useEffect(() => {
-  //   const check = localStorage.getItem("image");
-  //   if (check === "false") {
-  //     console.log("it is false");
-  //     setImage(false);
-  //   }
-  // }, []);
   return (
     <div className="flex-1 flex flex-col h-full w-full bg-gray-100 mt-10 border rounded-3xl">
       {loading ? (

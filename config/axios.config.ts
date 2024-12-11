@@ -30,3 +30,36 @@ instance.interceptors.response.use(
 );
 
 export default instance;
+
+export const CustomAxiosInstance = (
+  customBaseURL = "http://localhost:5000/"
+) => {
+  const customInstance = axios.create({
+    baseURL: customBaseURL,
+    withCredentials: false,
+    timeout: 600000,
+  });
+
+  customInstance.interceptors.request.use(
+    config => {
+      // const token = getCookie("token");
+      // config.headers["platform"] = "web";
+      // config.headers["Authorization"] = `Bearer ${token}`;
+      return config;
+    },
+    error => {
+      return Promise.reject(error);
+    }
+  );
+
+  customInstance.interceptors.response.use(
+    res => {
+      return res;
+    },
+    error => {
+      return Promise.reject(error);
+    }
+  );
+
+  return customInstance;
+};

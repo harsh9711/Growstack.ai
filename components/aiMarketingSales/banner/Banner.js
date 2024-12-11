@@ -27,7 +27,7 @@ function Banner() {
                   </p>
                   <div className="btns btn">
                     <Link href="/auth/register" className="sheen">
-                      Get free trial{" "}
+                      Get a free trial{" "}
                       <svg
                         width="21"
                         height="16"
@@ -43,7 +43,7 @@ function Banner() {
                     </Link>
                     <Link href="/demo" className="no-underline">
                       {" "}
-                      Get demo{" "}
+                      Get a demo{" "}
                       <svg
                         width="21"
                         height="16"
@@ -67,20 +67,6 @@ function Banner() {
                     alt="banner"
                   />
                 </div>
-                {/* <div className="store">
-                  <Link href="/auth/register">
-                    <img
-                      src="/images_growstack/banner/playStore.svg"
-                      alt="banner"
-                    />
-                  </Link>
-                  <Link href="/auth/register">
-                    <img
-                      src="/images_growstack/banner/apple.svg"
-                      alt="banner"
-                    />
-                  </Link>
-                </div> */}
               </div>
             </div>
           </div>

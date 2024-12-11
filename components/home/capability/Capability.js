@@ -145,7 +145,7 @@ function Capability() {
                     </h5>
                     <p className="card-text">
                       Utilize our apps to automate messaging workflows, maintain
-                      engagement, and boost customer satisfaction.
+                      engagement  and boost customer satisfaction.
                     </p>
                   </div>
                   <div className="text-center">

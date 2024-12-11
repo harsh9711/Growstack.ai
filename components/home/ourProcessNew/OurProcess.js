@@ -2,36 +2,34 @@ import React, { useRef, useState, useEffect } from "react";
 import "./OurProcess.scss";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import HoverVideoPlayer from "react-hover-video-player";
 
 const HoverVideo = () => {
   const videoRef = useRef(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [hoverDisabled, setHoverDisabled] = useState(false);
-
-  const stopAndFreezeVideo = () => {
-    if (videoRef.current) {
-      videoRef.current.pause();
-      setIsPlaying(false);
-      setHoverDisabled(true);
-    }
-  };
-
-  const playVideo = () => {
-    if (hoverDisabled || isPlaying) return;
-
-    if (videoRef.current) {
-      videoRef.current.play();
-      setIsPlaying(true);
-
-      setTimeout(() => {
-        stopAndFreezeVideo();
-      }, 16000);
-    }
-  };
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
   useEffect(() => {
-    playVideo();
+    const videoElement = videoRef.current;
+
+    const handleCanPlay = () => {
+      setIsVideoLoaded(true);
+
+      // Ensure video plays automatically
+      if (videoElement) {
+        videoElement.play().catch(error => {
+          console.error("Autoplay was prevented:", error);
+        });
+      }
+    };
+
+    if (videoRef.current) {
+      videoRef.current.addEventListener("canplaythrough", handleCanPlay);
+    }
+
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.removeEventListener("canplaythrough", handleCanPlay);
+      }
+    };
   }, []);
 
   return (
@@ -41,7 +39,6 @@ const HoverVideo = () => {
         width: "100%",
         height: "100%",
         overflow: "hidden",
-        cursor: hoverDisabled ? "not-allowed" : "pointer",
       }}
     >
       <video
@@ -49,21 +46,36 @@ const HoverVideo = () => {
         width="100%"
         height="100%"
         muted
-        loop={false}
-        preload="metadata"
-        className="rounded-2xl border-none outline-none"
+        autoPlay
+        playsInline
+        preload="auto"
+        className={`rounded-2xl border-none outline-none transition-opacity duration-700 ${
+          isVideoLoaded ? "opacity-100" : "opacity-0"
+        }`}
       >
-        <source src="/workflow_fast.mp4" type="video/mp4" />
+        <source
+          src="https://growstack-static-content.s3.us-east-1.amazonaws.com/workflowshort.mp4"
+          type="video/mp4"
+        />
       </video>
     </div>
   );
 };
 
-
-
 function OurProcess() {
+  const videoRef = useRef(null);
+
   useEffect(() => {
+    // Initialize AOS
     AOS.init();
+
+    // Handle video autoplay and looping
+    const videoElement = videoRef.current;
+    if (videoElement) {
+      videoElement.play().catch(error => {
+        console.log("Auto-play was prevented:", error);
+      });
+    }
   }, []);
 
   return (
@@ -71,9 +83,9 @@ function OurProcess() {
       <div className="ourProcess">
         <div className="container">
           <div className="content">
-            <div className="flex flex-row py-10 lg:py-0 xl:py-0   w-full items-center justify-center">
+            <div className="flex flex-row py-10 lg:py-0 xl:py-0 w-full items-center justify-center">
               <div
-                className=" max-w-[480px] xl:max-w-[440px] 2xl:max-w-[420px] lg:ml-4 w-full"
+                className="max-w-[480px] xl:max-w-[440px] 2xl:max-w-[420px] lg:ml-4 w-full"
                 data-aos="fade-right"
                 data-aos-easing="ease-in-sine"
                 data-aos-duration="1000"
@@ -95,54 +107,35 @@ function OurProcess() {
                   data-aos-duration="1000"
                 >
                   <video
+                    ref={videoRef}
                     width="720"
                     height="640"
-                    preload="none"
+                    preload="metadata"
                     autoPlay
                     loop
                     muted
                     playsInline
                     className="2xl:max-w-[720px] xl:max-w-[500px] lg:max-w-[400px] w-full"
                   >
-                    <source src="/landingpage/Funnel.mp4" type="video/mp4" />
-                    <track
-                      src="/path/to/captions.vtt"
-                      kind="subtitles"
-                      srcLang="en"
-                      label="English"
+                    <source
+                      src="https://growstack-static-content.s3.us-east-1.amazonaws.com/Funnel+(1).mp4"
+                      type="video/mp4"
                     />
+                    Your browser does not support the video tag.
                   </video>
                 </div>
               </div>
             </div>
             <div>
-              <div className="process sm:hidden flex" data-aos="flip-up"
-            data-aos-easing="ease-in-sine"
-            data-aos-duration="1000">
-            <img src="/images_growstack/home/process.svg" alt="process" />
-            </div>
-              {/* <HoverVideoPlayer
-                className="absolute  left-0 w-full h-full rounded-2xl border-none outline-none"
-                loop={false}
-                videoSrc="/workflowshort.mp4"
-                // pausedOverlay={
-                //   <img
-                //     src="/images_growstack/home/process.svg"
-                //     alt=""
-                //     className="rounded-2xl flex"
-                //     style={{
-                //       width: "100%",
-                //       height: "100%",
-                //       objectFit: "fill", // Ensures the image fits well
-                //     }}
-                //   />
-                // }
-               
-                videoClassName="rounded-2xl" // Add this to make the video corners rounded
-                style={{
-                  objectFit: "cover", // Ensures the video fits without distortion
-                }}
-              /> */}
+              <div
+                className="process sm:hidden flex"
+                data-aos="flip-up"
+                data-aos-easing="ease-in-sine"
+                data-aos-duration="1000"
+              >
+                <img src="/images_growstack/home/process.svg" alt="process" />
+              </div>
+
               <HoverVideo />
             </div>
           </div>
@@ -152,4 +145,4 @@ function OurProcess() {
   );
 }
 
-export default OurProcess
+export default OurProcess;

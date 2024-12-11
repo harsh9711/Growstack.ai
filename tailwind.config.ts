@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
+
 const config = {
   important: true,
   darkMode: ["class"],
@@ -47,6 +48,7 @@ const config = {
         "primary-lightgreen":"#2DA771",
         "primary-light-gray": "#F4F4F4",
         "primary-light-green": "#A9FF9B",
+        "primary-light-shade-green": "#2DA771",
         "primary-black": "#14171B",
         "primary-neutral": "#343434",
         "primary-grey": "#918EA4",
@@ -122,11 +124,16 @@ const config = {
           "0%,70%,100%": { opacity: "1" },
           "20%,50%": { opacity: "0" },
         },
+        increaseWidth: {
+          "0%": { width: "0" },
+          "100%": { width: "100px" }, // Adjust the final width as needed
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "caret-blink": "caret-blink 1.25s ease-out infinite",
+        increaseWidth: "increaseWidth 2s forwards",
       },
       borderColor: {
         "custom-gray": "#EAEAEA",
@@ -136,7 +143,10 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
-} satisfies Config;
+  plugins: [
+    require("tailwindcss-animate"),
+    require("@tailwindcss/typography"),
+  ],
+};
 
 export default config;

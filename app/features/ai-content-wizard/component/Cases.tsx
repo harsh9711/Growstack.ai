@@ -60,7 +60,7 @@ export const cases = [
     name: "Multilingual Support",
     subname: "05",
     description:
-      "Generate content in multiple languages including English, Spanish, French, and more. Why it's valuable: Expand your content's reach by easily creating material for diverse global audiences.",
+      "Generate content in multiple languages including English, Spanish, French  and more. Why it's valuable: Expand your content's reach by easily creating material for diverse global audiences.",
   },
   {
     id: 6,
@@ -68,7 +68,7 @@ export const cases = [
     name: "Seamless Content Integration",
     subname: "06",
     description:
-      "Edit, export, and publish your content with ease across platforms. Why it's valuable: Finish your content in one place and easily transfer it to your preferred CMS, saving you time and effort.",
+      "Edit, export  and publish your content with ease across platforms. Why it's valuable: Finish your content in one place and easily transfer it to your preferred CMS, saving you time and effort.",
   },
 ];
 const Box = () => {

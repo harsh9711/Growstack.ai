@@ -1,6 +1,5 @@
 "use client";
 
-// components/ScrollToTopButton.tsx
 import { useEffect, useState } from "react";
 import { RiArrowUpDoubleLine } from "react-icons/ri";
 

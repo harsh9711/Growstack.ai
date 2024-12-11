@@ -43,7 +43,7 @@ const HeroSection: React.FC = () => {
                     Growstack's all-in-one AI marketing platform is designed for
                     small businesses facing tight budgets and limited manpower.
                     Our suite of AI-powered tools automates content creation,
-                    optimizes marketing workflows, and enhances customer
+                    optimizes marketing workflows  and enhances customer
                     interactions, enabling small businesses to achieve
                     significant marketing efficiency and drive growth.
                   </p>
@@ -77,7 +77,7 @@ const HeroSection: React.FC = () => {
                             className="bg-white text-[#034737] font-medium flex items-center gap-2 sm:py-4 sm:px-7 p-3.5 rounded-xl hover:font-bold shadow-md shadow-[#00000025]"
                             data-aos="fade-left"
                           >
-                            Get demo <ArrowRight className="text-[#14171B]" />
+                            Get a demo <ArrowRight className="text-[#14171B]" />
                           </button>{" "}
                         </Link>
                       </div>

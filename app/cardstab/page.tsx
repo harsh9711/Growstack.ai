@@ -40,7 +40,7 @@ const Layout2 = ({ children }: { children: React.ReactNode }) => {
           className="bg-white p-4 flex flex-row shadow-lg items-center justify-center mx-auto rounded-3xl w-full max-w-[653px] transition duration-500"
           data-aos="zoom-in"
         >
-          {["company", "team", "industry"].map((tab) => (
+          {["company", "team", "industry"].map(tab => (
             <div
               key={tab}
               onClick={() => setActiveTab(tab)}

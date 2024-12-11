@@ -12,7 +12,7 @@ import instance from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
 import useSpeechRecognition from "../../hooks/UseSpeechRecognition";
-import { languageOptions } from "../../ai-articles/constants/options";
+import { languageOptions } from "../../../components/options";
 import Microphone from "./Microphone";
 import Link from "next/link";
 import { BrandVoice, ChatResponse } from "@/types/common";
@@ -200,8 +200,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
 
         if (errorMsg === "Please upgrade your plan") {
           setIsDailyLimitExceeded(true);
-        }
-        else if (
+        } else if (
           (errorMsg.includes("Your request has been blocked") ||
             errorMsg.includes("Inappropiate Language")) &&
           enableSecure
@@ -399,34 +398,6 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
       }
     };
 
-    // const handleFileUpload = async (
-    //   event: React.ChangeEvent<HTMLInputElement>
-    // ) => {
-    //   const file = event.target.files?.[0];
-    //   if (!file) return;
-
-    //   const formData = new FormData();
-    //   formData.append("file", file);
-    //   addMessage("user", `Uploading file: ${file.name}`, false);
-    //   addMessage("assistant", "", true);
-
-    //   try {
-    //     const conversation = await instance.post(
-    //       `${API_URL}/ai/api/v1/conversation/upload?conversation_id=${selectedConversation}&model=${selectedModel}&enableSecure=${enableSecure}`,
-    //       formData
-    //     );
-    //     const { response, conversation_id } = conversation.data
-    //       .data as ChatResponse;
-
-    //     setSelectedConversation(conversation_id);
-    //     onSend(response, "assistant", "");
-    //   } catch (error: any) {
-    //     const errorMsg = error.response?.data.error ?? error.message;
-    //     toast.error(errorMsg);
-    //     removeMessage();
-    //   }
-    // };
-
     const handleRegenerate = (chartMessage: string) => {
       if (chartMessage) {
         handleSend(chartMessage);
@@ -458,33 +429,19 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
       }
     };
 
-    // const promptInput = (description: string) => {
-    //   const trimmedDescription = description.replace(/\s+/g, " ").trim();
-    //   const newInput = `${input} ${trimmedDescription}`;
-    //   setInput(newInput);
-    //   setTimeout(() => {
-    //     if (textareaRef.current) {
-    //       textareaRef.current.value = newInput;
-    //       textareaRef.current.focus();
-    //       textareaRef.current.selectionStart =
-    //         textareaRef.current.selectionEnd = newInput.length;
-    //     }
-    //   }, 500);
-    // };
-
     const { startRecognition, stopRecognition, textToSpeech } =
-    useSpeechRecognition(
-      "en-us",
-      open,
-      (transcript: string) => {
-        setInput(transcript);
-        handleSend(transcript, true);
-      },
-      () => {
-        setOpen(false);
-        setIsAnimating(false);
-      }
-    );
+      useSpeechRecognition(
+        selectedLanguage,
+        open,
+        (transcript: string) => {
+          setInput(transcript);
+          handleSend(transcript, true);
+        },
+        () => {
+          setOpen(false);
+          setIsAnimating(false);
+        }
+      );
 
     if (isDailyLimitExceeded) {
       return (
@@ -507,8 +464,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
           </Link>
         </div>
       );
-    }
-    else {
+    } else {
       return (
         <>
           <div className="flex p-2 border gap-2 rounded-xl items-end">
@@ -608,14 +564,12 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
                   <button
                     className="bg-gey right-1 top-1 -translate-y-1/2 translate-x-1/2 rounded-full border"
                     onClick={() => setFilename(null)}
-                    // style={{color:"red",height:"10px",width:"10px",marginTop:"-8px",borderRadius:"100%",borderColor:"black"}}
                   >
-                    {/* <X size={10} /> */}
                     <X size={18} />
                   </button>
                 </div>
               )}
-  
+
               <textarea
                 ref={textareaRef}
                 value={input}
@@ -649,7 +603,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
                       <path d="M443.6,387.1L312.4,255.4l131.5-130c5.4-5.4,5.4-14.2,0-19.6l-37.4-37.6c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4  L256,197.8L124.9,68.3c-2.6-2.6-6.1-4-9.8-4c-3.7,0-7.2,1.5-9.8,4L68,105.9c-5.4,5.4-5.4,14.2,0,19.6l131.5,130L68.4,387.1  c-2.6,2.6-4.1,6.1-4.1,9.8c0,3.7,1.4,7.2,4.1,9.8l37.4,37.6c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1L256,313.1l130.7,131.1  c2.7,2.7,6.2,4.1,9.8,4.1c3.5,0,7.1-1.3,9.8-4.1l37.4-37.6c2.6-2.6,4.1-6.1,4.1-9.8C447.7,393.2,446.2,389.7,443.6,387.1z" />
                     </svg>
                   </button>
-  
+
                   <div className="flex flex-col items-center p-2 gap-5 justify-center w-full h-full border-2 border-dashed rounded-lg">
                     <div className="flex items-center justify-center bg-gray-100 w-[45px] h-[45px] rounded-sm">
                       <svg
@@ -743,8 +697,7 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
                 </div>
               </div>
             )}
-  
-            {/* <ToolsDialog setInput={(description: string) => promptInput(description)} /> */}
+
             <div className="h-12 w-9 flex justify-center items-center bg-[#2DA771] hover:bg-opacity-90 transition-all duration-300 text-white rounded-xl">
               <Microphone
                 open={open}
@@ -777,7 +730,6 @@ const ChatInput = forwardRef<ChatInputRef, ChatInputProps>(
         </>
       );
     }
-
   }
 );
 

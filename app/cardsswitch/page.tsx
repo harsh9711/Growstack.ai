@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -35,7 +35,7 @@ export const cases = [
     id: 4,
     text: "Need content? GrowStack has it covered, as effortlessly as  ",
     imageUrl: "/landingpagerevamp/4.svg",
-    name: "MJ's moonwalkr",
+    name: "MJ's moonwalker",
     description: "",
   },
   {
@@ -90,7 +90,6 @@ const Box = () => {
               src=""
               srcSet="/switch2.svg"
               alt="Image two"
-            
             />
           }
           handle={
@@ -163,7 +162,7 @@ const SixCardSwitch = () => {
           data-aos="fade-right"
         >
           <h1 className="text-[28px] xl:text-[40px] w-full leading-tight font-semibold text-black">
-            Integrations that we use in our platform{" "}
+            Integrations that we use in our platform{" "} are 
             <span className="font-light"> in our platform </span>
           </h1>
         </div>

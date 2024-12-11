@@ -59,7 +59,7 @@ const page = () => {
                   </h1>
                   <p className="text-[12px] sm:text-[18px] text-black mt-4 w-full lg:max-w-[600px] sm:!text-left !text-center gap-4 flex flex-col leading-tight font-light">
                     <span>
-                      Whether it's for blogs, marketing, or reports, create
+                      Whether it's for blogs, marketing or reports, create
                       engaging content faster than ever.
                     </span>
                   </p>
@@ -81,7 +81,7 @@ const page = () => {
                       </Link>
                       <Link href="/demo" className="no-underline">
                         <button className="border border-black flex items-center gap-2 text-black hover:font-bold font-medium sm:py-4 sm:px-7 p-2 rounded-xl shadow-md shadow-[#00000025]">
-                          Get demo
+                          Get a demo
                           <ArrowRight className="text-black" />
                         </button>
                       </Link>

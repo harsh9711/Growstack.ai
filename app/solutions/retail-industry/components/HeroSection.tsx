@@ -34,7 +34,7 @@ const HeroSection = () => {
               className="text-[16px] 2xl:text-[18px] text-white mt-4 w-full max-w-[600px] leading-normal font-light"
             >
               Empower your retail operations with AI-driven solutions for
-              enhanced customer engagement, streamlined processes, and
+              enhanced customer engagement, streamlined processesand
               data-driven insights.{" "}
             </p>
 
@@ -46,12 +46,12 @@ const HeroSection = () => {
               >
                 <Link href="/auth/register" className="no-underline">
                   <button className="bg-white font-medium flex items-center gap-2 text-[#034737] 2xl:py-4 2xl:px-7 rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
-                    Get free trial <ArrowRight />
+                    Get a free trial <ArrowRight />
                   </button>
                 </Link>
                 <Link href="/demo" className="no-underline">
                   <button className="font-medium flex items-center gap-2 text-white 2xl:py-4 2xl:px-7 border border-white rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
-                    Get demo
+                    Get a demo
                     <ArrowRight className="text-white" />
                   </button>
                 </Link>

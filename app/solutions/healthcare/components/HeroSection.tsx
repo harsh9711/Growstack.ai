@@ -7,8 +7,8 @@ import "../../../../styles/retail.css";
 
 const HeroSection = () => {
   return (
-<div className="bg-black sm:bg-white sm:bg-[url('/greenwhite.svg')] zoom-background rounded-b-[100px] sm:rounded-none bg-cover bg-no-repeat relative flex items-center fade-in-background 2xl:p-0 p-4 w-full h-full justify-center mx-auto">
-<div className="w-full max-w-[1220px] 2xl:max-w-[1350px]  flex flex-row justify-between brightness-110 relative gap-x-20  items-center mt-2 mb-6 2xl:mt-32 2xl:mb-40">
+    <div className="bg-black sm:bg-white sm:bg-[url('/greenwhite.svg')] zoom-background rounded-b-[100px] sm:rounded-none bg-cover bg-no-repeat relative flex items-center fade-in-background 2xl:p-0 p-4 w-full h-full justify-center mx-auto">
+      <div className="w-full max-w-[1220px] 2xl:max-w-[1350px]  flex flex-row justify-between brightness-110 relative gap-x-20  items-center mt-2 mb-6 2xl:mt-32 2xl:mb-40">
         <div className="w-full max-w-[700px] gap-y-4 sm:items-start items-center  flex flex-col">
           <div
             data-aos="fade-right"
@@ -26,7 +26,7 @@ const HeroSection = () => {
             >
               <span className="font-semibold">
                 Unlock the future of media & publishing
-                <span className="font-light">with AI solutions</span>
+                <span className="font-light"> with AI solutions</span>
               </span>{" "}
             </h1>
             <p
@@ -47,13 +47,13 @@ const HeroSection = () => {
                 <Link href="/auth/register" className="no-underline">
                   {" "}
                   <button className="bg-white font-medium flex items-center gap-2 text-[#034737] 2xl:py-4 2xl:px-7  rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
-                     Free trial <ArrowRight />
+                    Free trial <ArrowRight />
                   </button>
                 </Link>
                 <Link href="/demo" className="no-underline">
                   {" "}
                   <button className=" font-medium flex items-center gap-2 text-black 2xl:py-4 2xl:px-7 border border-black  rounded-xl py-2 px-2 group-hover:font-bold shadow-md hover:shadow-">
-                    Get demo
+                    Get a demo
                     <ArrowRight className="text-primary-green" />
                   </button>
                 </Link>

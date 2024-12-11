@@ -6,7 +6,6 @@ import Banner from "@/components/home/banner/Banner";
 import Capability from "@/components/home/capability/Capability";
 import DragFeatures from "@/components/home/drag-features/DragFeatures";
 import Faqs from "@/components/home/faq/Faqs";
-import Features from "@/components/home/featuresNew/Features";
 import FuturePlans from "@/components/home/futurePlans/FuturePlans";
 import Marketing from "@/components/home/marketing/Marketing";
 import OurProcess from "@/components/home/ourProcessNew/OurProcess";
@@ -28,7 +27,6 @@ import Carousel from "../carouselvideos/page";
 
 // I commented this bootstrapp CDN because of conflicting styles with tailwindcss, NB: I'll uncomment it as soon as reliable solution is found
 function Page() {
-  const [isFormFocused, setIsFormFocused] = useState(true);
   // floating components
   return (
     <React.Fragment>
@@ -39,7 +37,7 @@ function Page() {
       />
       <div className="bg-[#F5F5F5] w-full h-full">
         <AnimationStory />
-        <div className="relative mx-auto p-6 sm:p-0  -translate-y-20 items-center justify-center flex  flex-col sm:flex-row gap-4">
+        <div className="sm:flex hidden relative mx-auto p-6 sm:p-0  -translate-y-20 items-center justify-center flex-col sm:flex-row gap-4">
           <button className="flex items-center gap-2 text-primary-green rounded-xl">
             <Image
               className="w-full h-full"
@@ -58,13 +56,13 @@ function Page() {
               height={400}
             />
           </button>
-          <button className="flex  w-full h-full  max-w-[330px] max-h-[159px] items-center gap-2 text-primary-green rounded-xl">
+          <button className="flex w-full h-full max-w-[330px] max-h-[159px] items-center gap-2 text-primary-green rounded-xl">
             <Image
               className="w-full h-full"
               src="/badge2.png"
               alt="Apple Store"
-              width={280}
-              height={600}
+              width={180}
+              height={400}
             />
           </button>
         </div>
@@ -137,9 +135,8 @@ function Page() {
           </div>
         </div>
       </div>
-     
       <SixCardVideo />
-      <Carousel/>
+      <Carousel />
       <Animation />
       {/* <Facts /> */}
       {/* <Carousel /> */}

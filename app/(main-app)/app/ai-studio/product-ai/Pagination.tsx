@@ -11,69 +11,31 @@ const Pagination: React.FC<PaginationProps> = ({
   totalPages,
   onPageChange,
 }) => {
-  const generatePageNumbers = () => {
-    const pageNumbers: number[] = [];
-    const maxVisiblePages = 5; // Number of visible pages in the pagination
-    const halfRange = Math.floor(maxVisiblePages / 2);
-
-    let startPage = Math.max(1, currentPage - halfRange);
-    let endPage = Math.min(totalPages, currentPage + halfRange);
-
-    if (endPage - startPage < maxVisiblePages - 1) {
-      if (startPage === 1) {
-        endPage = Math.min(startPage + maxVisiblePages - 1, totalPages);
-      } else if (endPage === totalPages) {
-        startPage = Math.max(1, endPage - maxVisiblePages + 1);
-      }
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-      pageNumbers.push(i);
-    }
-
-    return pageNumbers;
-  };
-
-  const pageNumbers = generatePageNumbers();
-
-  return (<>{
-    totalPages>1 &&
-
-    <div className="flex justify-center items-center mt-4">
-      {currentPage !== 1 &&
-        <button
-          disabled={currentPage === 1}
-          onClick={() => onPageChange(currentPage - 1)}
-          className="px-3 py-1 mx-1 border rounded bg-[#2DA771] text-white  hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          Previous
-        </button>
-      }
-      {/* <button
-        key={currentPage}
-
-        className={`px-3 py-1 mx-1 border rounded ${currentPage === currentPage
-            ? "bg-blue-500 text-white"
-            : "hover:bg-gray-200"
-          }`}
-      >
-        {currentPage}
-      </button> */}
-      {currentPage !== totalPages &&
-        <button
-          disabled={currentPage === totalPages}
-          onClick={() => onPageChange(currentPage + 1)}
-          className="px-3 py-1 mx-1 border rounded bg-[#2DA771] text-white  hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          Next
-        </button>
-      }
-
-    </div>
-  }
-
-  </>
-
+  return (
+    <>
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center mt-4">
+          {currentPage !== 1 && (
+            <button
+              disabled={currentPage === 1}
+              onClick={() => onPageChange(currentPage - 1)}
+              className="px-3 py-1 mx-1 border rounded bg-[#2DA771] text-white  hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Previous
+            </button>
+          )}
+          {currentPage !== totalPages && (
+            <button
+              disabled={currentPage === totalPages}
+              onClick={() => onPageChange(currentPage + 1)}
+              className="px-3 py-1 mx-1 border rounded bg-[#2DA771] text-white  hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Next
+            </button>
+          )}
+        </div>
+      )}
+    </>
   );
 };
 

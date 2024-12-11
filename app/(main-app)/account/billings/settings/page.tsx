@@ -1,24 +1,18 @@
 "use client";
-import OverviewSection from "./sections/OverViewSection";
 import React, { useEffect, useState } from "react";
 import instance from "@/config/axios.config";
 import toast from "react-hot-toast";
 import "../../../../../styles/loading.css";
 import AddCreditDialog from "./components/AddCreditDialog";
 import Motion from "@/components/Motion";
-import { Button } from "@/components/ui/button";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { ReactNode } from "react";
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Info } from "lucide-react";
 import { API_URL } from "@/lib/api";
-// import { BillHistory } from "@/types/billHistory";
-import clsx from "clsx";
 import { PlanUsage } from "@/types/common";
 import {
   Dialog,
@@ -37,16 +31,6 @@ import GlobalModal from "@/components/modal/global.modal";
 import UpgradePlan from "@/components/upgradePlan/upgradePlan";
 import { useRouter } from "next/navigation";
 import { ALL_ROUTES } from "@/utils/constant";
-
-interface BillingHistoryItem {
-  amount: ReactNode;
-  payment_id: ReactNode;
-  updatedAt: string | number | Date;
-  plan_id: string;
-  status: string;
-  created_at: string;
-  invoice: string;
-}
 
 const OverViewSection = () => {
   const { currentPlan } = useSelector((rootState: RootState) => rootState.auth);
@@ -91,8 +75,9 @@ const OverViewSection = () => {
         subscription_id: planUsage?.stripe_subscription_id,
         amount: amount,
       };
+      const currentPath = localStorage.getItem("currentPathname");
       const response = await instance.post(
-        `${API_URL}/users/api/v1/payments/adds-on`,
+        `${API_URL}/users/api/v1/payments/adds-on?currentPath=${currentPath}`,
         { product, currency: "usd" }
       );
       window.location.href = response.data.url;
@@ -174,9 +159,20 @@ const OverViewSection = () => {
         <div className="space-y-2">
           <h2 className="text-primary-black text-opacity-50">Credit balance</h2>
           <div className=" flex gap-3 items-center">
-            <h1 className="text-4xl font-semibold">
-              ${planUsage?.usage_amount}
-            </h1>
+            <div className="flex flex-col">
+              <h1 className="text-4xl font-semibold">
+                <strong>Credits : </strong>{" "}
+                {planUsage?.usage_amount ? planUsage.usage_amount * 100 : 0}
+              </h1>
+            </div>
+            {/* <div>
+              <strong>subscription Plan is :</strong>{planUsage?.plan_name}
+              <strong>ai Backdrop Credits :</strong> {planUsage?.usage.ai_background_generator_credits}
+              <strong>Text to Avatar Credits :</strong> {planUsage?.usage.no_of_text_to_avatar}
+
+            </div> */}
+ 
+
             <button
               className={`w-full max-w-fit h-12 px-4 py-3 rounded-xl flex gap-3 bg-[#2DA771] text-white sheen transition-all duration-300 ${
                 isCreditLoading ? "opacity-50 cursor-not-allowed" : ""
@@ -198,6 +194,7 @@ const OverViewSection = () => {
             </button>
           </div>
         </div>
+      
         <Dialog
           open={isCreditInputDialogBoxOpen}
           onOpenChange={closeInputDialogModal}
@@ -208,7 +205,25 @@ const OverViewSection = () => {
             </DialogHeader>
             <div>
               <div className="space-y-2 mt-3">
-                <label className="font-semibold">Amount to add</label>
+                <div className="flex">
+                  <label className="font-semibold">Amount to add</label>
+
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Info
+                          size={21}
+                          className="ml-2 text-primary-black text-opacity-50 cursor-pointer"
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent className="bg-white">
+                        <p>
+                          1$ = 100 <strong>Tokens</strong>
+                        </p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                </div>
                 <div className="border border-[#2DA771] rounded-xl p-2 flex items-center gap-2">
                   <DollarSign className="text-primary-green" />
                   <input
@@ -246,6 +261,37 @@ const OverViewSection = () => {
           <UpgradePlan />
         </GlobalModal>
       </div>
+      <div className="bg-gray-100 p-6 rounded-lg shadow-lg mt-5 w-[50%]">
+      <h2 className="text-xl font-semibold mb-4">Subscription Details</h2>
+      <table className="w-full table-auto border-collapse border border-gray-300">
+        <thead>
+          <tr className="bg-white">
+            <th className="px-4 py-2 border border-gray-300 text-left">Feature</th>
+            <th className="px-4 py-2 border border-gray-300 text-left">Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr className="bg-white hover:bg-gray-100">
+            <td className="px-4 py-2 border border-gray-300">Subscription Plan</td>
+            <td className="px-4 py-2 border border-gray-300">
+              {planUsage?.plan_name || "N/A"}
+            </td>
+          </tr>
+          <tr className="bg-gray-50 hover:bg-gray-100">
+            <td className="px-4 py-2 border border-gray-300">AI Backdrop Credits</td>
+            <td className="px-4 py-2 border border-gray-300">
+              {planUsage?.usage.ai_background_generator_credits || 0}
+            </td>
+          </tr>
+          <tr className="bg-white hover:bg-gray-100">
+            <td className="px-4 py-2 border border-gray-300">Text to Avatar Credits</td>
+            <td className="px-4 py-2 border border-gray-300">
+              {planUsage?.usage.no_of_text_to_avatar || 0}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     </Motion>
   );
 };

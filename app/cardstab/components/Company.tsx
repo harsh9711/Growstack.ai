@@ -171,9 +171,9 @@ export const cases = [
       </svg>
     ),
     name: "Large Enterprises",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Habitant senectus volutpat varius turpis vulputate.",
+    description: "Streamline complex operation's with advance AI solutions",
     button: "Explore",
+    href: "/solutions/largeenterprise",
   },
   {
     id: 2,
@@ -259,9 +259,9 @@ export const cases = [
       </svg>
     ),
     name: "Mid-Market Enterprises",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Habitant senectus volutpat varius turpis vulputate.",
+    description: "Conquer resources constraints with AI tools",
     button: "Explore",
+    href: "/solutions/midmarketenterprise",
   },
   {
     id: 3,
@@ -291,9 +291,9 @@ export const cases = [
       </svg>
     ),
     name: "Small Businesses",
-    description:
-      "Lorem ipsum dolor sit amet consectetur. Habitant senectus volutpat varius turpis vulputate.",
+    description: "Maximize efficiency with all-in-one AI marketing",
     button: "Explore",
+    href: "/solutions/smallbusinesses",
   },
   {
     id: 4,
@@ -333,8 +333,9 @@ export const cases = [
     ),
     name: "Startups",
     description:
-      "Lorem ipsum dolor sit amet consectetur. Habitant senectus volutpat varius turpis vulputate.",
+      "Supercharge growth and market penetration with integrated AI Tools",
     button: "Explore",
+    href: "/solutions/startup",
   },
 ];
 
@@ -373,7 +374,7 @@ const Box = () => {
             data-aos-duration="1500"
             className="flex flex-row items-start justify-center sm:items-start sm:justify-start gap-8 group text-[12px] 2xl:text-[18px] transition-opacity duration-300 "
           >
-            <Link href="/demo" className="no-underline">
+            <Link href={item.href} className="no-underline">
               <button className="font-medium flex items-center gap-2 bg-transparent  text-black group-hover:text-primary-lightgreen  group-hover:font-bold ">
                 {item.button}
                 <ArrowRight className="text-black group-hover:text-primary-lightgreen" />
