@@ -83,11 +83,54 @@ const nodeSlice = createSlice({
     },
 
     addNode: (state, action: PayloadAction<NodeState>) => {
+      if (Array.isArray(action.payload) && !action.payload.length) return;
       if (Array.isArray(action.payload) && action.payload.length > 0) {
         state.nodes = action.payload;
         return;
       }
       state.nodes.push(action.payload);
+    },
+
+    updateNodeDependency: (
+      state,
+      action: PayloadAction<{
+        nodeId: string;
+        data: { key: string; nodeId: string };
+      }>
+    ) => {
+      const { nodeId, data } = action.payload;
+      const nodeResult = state.nodes.find(node => node.id === nodeId);
+
+      if (nodeResult) {
+        const dependencyExists =
+          nodeResult.data.dependencies?.some(
+            dep => dep.nodeId === data.nodeId
+          ) ?? false;
+
+        if (!dependencyExists) {
+          if (!nodeResult.data.dependencies) {
+            nodeResult.data.dependencies = [];
+          }
+          nodeResult.data.dependencies.push(data);
+        }
+      }
+    },
+
+    removeNodeDependency: (
+      state,
+      action: PayloadAction<{
+        nodeId: string;
+        key: string;
+      }>
+    ) => {
+      const { nodeId, key } = action.payload;
+      const nodeResult = state.nodes.find(node => node.id === nodeId);
+
+      if (nodeResult && nodeResult.data?.dependencies) {
+        nodeResult.data.dependencies = nodeResult.data.dependencies.filter(
+          dep => dep.key !== key
+        );
+      }
     },
 
     updateNodeParameter: (
@@ -471,6 +514,8 @@ export const {
   clearNodeData,
   removeNode,
   updateNode,
+  updateNodeDependency,
+  removeNodeDependency,
   removeNodeById,
   addVariable,
   updateNodeParameter,

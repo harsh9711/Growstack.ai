@@ -5,23 +5,28 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { onChangeWorkFlowData } from "@/lib/features/workflow/workflow.slice";
 
 interface SaveFormModalProps {
   openSaveFormModal: boolean;
   onCloseSaveFormModal: () => void;
-  // onSaveFormNode: () => void;
+  onHandleSave: () => void;
 }
 
 const SaveFormModal: React.FC<SaveFormModalProps> = ({
   openSaveFormModal,
   onCloseSaveFormModal,
-  // onSaveFormNode,
+  onHandleSave,
 }) => {
+  const dispatch = useAppDispatch()
+  const { workFlowData } = useAppSelector(state => state.workflows);
+
   return (
     <div>
       <Dialog
         open={openSaveFormModal}
-        onClose={() => {}}
+        onClose={() => { }}
         className="relative z-10 bg-white overflow-hidden"
       >
         <DialogBackdrop
@@ -69,7 +74,16 @@ const SaveFormModal: React.FC<SaveFormModalProps> = ({
                       <input
                         type="text"
                         placeholder="Enter Title"
+                        value={workFlowData?.name || ""}
                         className="nopan nodrag form-control shadow-none w-full p-3 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
+                        onChange={e => {
+                          dispatch(
+                            onChangeWorkFlowData({
+                              key: "name",
+                              value: e.target.value,
+                            })
+                          );
+                        }}
                       />
                     </div>
                   </div>
@@ -83,9 +97,18 @@ const SaveFormModal: React.FC<SaveFormModalProps> = ({
 
                     <div className="input-group">
                       <textarea
+                        value={workFlowData?.description || ""}
                         placeholder="Enter Description"
                         className="nopan nodrag form-control shadow-none w-full p-3 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
                         rows={5}
+                        onChange={e => {
+                          dispatch(
+                            onChangeWorkFlowData({
+                              key: "description",
+                              value: e.target.value,
+                            })
+                          );
+                        }}
                       />
                     </div>
                   </div>
@@ -103,7 +126,7 @@ const SaveFormModal: React.FC<SaveFormModalProps> = ({
                     <button
                       type="button"
                       className="inline-flex items-center w-[150px] h-[45px] justify-center rounded-[10px] bg-[#2DA771] text-sm font-medium text-white"
-                      // onClick={() => onSaveFormNode()}
+                      onClick={onHandleSave}
                     >
                       Save
                     </button>

@@ -7,7 +7,9 @@ import {
   addVariable,
   deleteNodeById,
   removeNodeById,
+  removeNodeDependency,
   updateNodeById,
+  updateNodeDependency,
   updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { extractParameterValues } from "@/utils/dataResolver";
@@ -90,14 +92,15 @@ const LlmNodes = memo(
           const index = nodes.findIndex(nds => nds.id === id);
           const variableName = getVariableName(nodes, index);
           if (dependency) {
-            setDependencies(prevDependencies => {
-              const newDependency = { key, nodeId: dependency };
-              const uniqueDependencies = new Set([
-                ...prevDependencies,
-                newDependency,
-              ]);
-              return Array.from(uniqueDependencies);
-            });
+            dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
+            // setDependencies(prevDependencies => {
+            //   const newDependency = { key, nodeId: dependency };
+            //   const uniqueDependencies = new Set([
+            //     ...prevDependencies,
+            //     newDependency,
+            //   ]);
+            //   return Array.from(uniqueDependencies);
+            // });
           }
           const regex = /\$(?!\s*$).+/;
           if (regex.test(value)) {
@@ -110,7 +113,8 @@ const LlmNodes = memo(
             );
           }
         } else {
-          setDependencies(pre => pre.filter(dep => dep.key !== key));
+          dispatch(removeNodeDependency({ nodeId: id, key }));
+          // setDependencies(pre => pre.filter(dep => dep.key !== key));
           setVariableNames([]);
         }
       },
@@ -149,7 +153,8 @@ const LlmNodes = memo(
             workflowId: workFlowData._id,
             nodeMasterId: node.data.nodeMasterId,
             position: { x: positionAbsoluteX, y: positionAbsoluteY },
-            dependencies: dependencies.map(dps => dps.nodeId),
+            // dependencies: dependencies.map(dps => dps.nodeId),
+            dependencies: node.data?.dependencies ? node.data.dependencies?.map(dps => dps.nodeId) : [],
             parameters: updatedValue,
           };
 

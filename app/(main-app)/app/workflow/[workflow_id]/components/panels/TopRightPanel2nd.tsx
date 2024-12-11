@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { dummyData3 } from "../data";
 import Image from "next/image";
-import { useAppSelector } from "@/lib/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { prepareNodesPayload } from "@/utils/helper";
 import { useEdges } from "@xyflow/react";
 import PublishConfirmationModal from "../modals/publishmodal/PublishModal";
 import SaveFormModal from "../modals/saveformmodal/SaveFormModal";
+import { onChangeWorkFlowData, updateWorkFlowById } from "@/lib/features/workflow/workflow.slice";
+import { useSnackbar } from "../snackbar/SnackbarContext";
 
 const TopRightPanel2nd = ({
   setActiveTab,
@@ -15,15 +17,15 @@ const TopRightPanel2nd = ({
   setIsFromTimeline,
 }: any) => {
   const route = useRouter();
+  const dispatch = useAppDispatch();
   const { workFlowData } = useAppSelector(state => state.workflows);
   const { nodes } = useAppSelector(state => state.nodes);
   const edges = useEdges();
+  const { success, error } = useSnackbar();
 
   // console.log('---edges---', edges)
 
-  // console.log("-----JsonNOdes----", JSON.stringify(nodes, null, 2));
-
-  // const [activeIndex, setActiveIndex] = useState(0);
+  // console.log("-----JsonNOdes----", nodes);
 
   // console.log("---workFlowData----", workFlowData);
   const [openPublishConfirmationModal, setOpenPublishConfirmationModal] =
@@ -47,6 +49,7 @@ const TopRightPanel2nd = ({
   const handleClosePublishConfirmationModal = () => {
     setOpenPublishConfirmationModal(false);
   };
+
   const handleOpenPublishConfirmationModal = () => {
     setOpenPublishConfirmationModal(true);
   };
@@ -54,6 +57,7 @@ const TopRightPanel2nd = ({
   const handleCloseSaveFormModal = () => {
     setOpenSaveFormModal(false);
   };
+
   const handleOpenSaveFormModal = () => {
     setOpenSaveFormModal(true);
   };
@@ -61,16 +65,25 @@ const TopRightPanel2nd = ({
   const handleSaveWorkFlow = async () => {
     try {
       const bodyPayload = {
-        name: workFlowData.name,
-        description: workFlowData.description || "",
+        name: workFlowData?.name,
+        description: workFlowData?.description || "",
+        // userId: workFlowData?.userId,
         nodes: prepareNodesPayload(nodes, workFlowData._id || ""),
         edges: edges,
       };
 
-      console.log('----bodyPayload---', bodyPayload)
 
-    } catch (error) {
-      console.log('----error---', error)
+      await dispatch(updateWorkFlowById({
+        id: workFlowData._id || "",
+        // @ts-ignore
+        data: bodyPayload,
+      }))
+      success("Workflow saved successfully");
+      setOpenSaveFormModal(false);
+      console.log("----bodyPayload---", bodyPayload);
+    } catch (e: any) {
+      console.log("----error---", e?.message);
+      error("Failed to save workflow" + e?.message);
     }
   };
 
@@ -81,7 +94,7 @@ const TopRightPanel2nd = ({
           <button
             className="back-btn bg-white h-[40px] w-[50px] shadow-md rounded-[5px] flex items-center justify-center"
             onClick={() => {
-              route.back();
+              route.push("/app/dashboard");
             }}
           >
             <Image
@@ -94,9 +107,18 @@ const TopRightPanel2nd = ({
 
           <input
             type="text"
+            key="name"
             value={workFlowData?.name || ""}
             placeholder="Enter Workflow Name"
             className="nopan nodrag form-control shadow-none w-full p-3 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
+            onChange={e => {
+              dispatch(
+                onChangeWorkFlowData({
+                  key: "name",
+                  value: e.target.value,
+                })
+              );
+            }}
           />
           {/* <p className="text-[14px] font-semibold leading-[21px] font-poppins ml-2.5">
             {workFlowData?.name || ""}
@@ -122,7 +144,8 @@ const TopRightPanel2nd = ({
           <div className="action-button-box flex items-center gap-2">
             <Button
               className="w-auto h-auto bg-[#2DA771] shadow-md hover:bg-[#2DA771]"
-              onClick={handleOpenSaveFormModal}
+              // onClick={handleOpenSaveFormModal}
+              onClick={handleSaveWorkFlow}
             >
               Save
             </Button>
@@ -147,7 +170,7 @@ const TopRightPanel2nd = ({
       <SaveFormModal
         openSaveFormModal={openSaveFormModal}
         onCloseSaveFormModal={() => handleCloseSaveFormModal()}
-      // onSaveFormNode={handleDeleteNode}
+        onHandleSave={handleSaveWorkFlow}
       />
     </div>
   );

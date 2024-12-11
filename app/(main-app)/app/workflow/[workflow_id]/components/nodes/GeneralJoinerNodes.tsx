@@ -7,7 +7,9 @@ import { extractParameterValues } from "@/utils/dataResolver";
 import {
   deleteNodeById,
   removeNodeById,
+  removeNodeDependency,
   updateNodeById,
+  updateNodeDependency,
   updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -90,14 +92,16 @@ const GeneralJoinerNodes = memo(
           const variableName = getVariableName(nodes, index);
           console.log("variableName-->", variableName);
           if (dependency) {
-            setDependencies(prevDependencies => {
-              const newDependency = { key, nodeId: dependency };
-              const uniqueDependencies = new Set([
-                ...prevDependencies,
-                newDependency,
-              ]);
-              return Array.from(uniqueDependencies);
-            });
+            // setDependencies(prevDependencies => {
+            //   const newDependency = { key, nodeId: dependency };
+            //   const uniqueDependencies = new Set([
+            //     ...prevDependencies,
+            //     newDependency,
+            //   ]);
+            //   return Array.from(uniqueDependencies);
+            // });
+
+            dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
           }
           const regex = /\$(?!\s*$).+/;
           if (regex.test(value)) {
@@ -110,7 +114,8 @@ const GeneralJoinerNodes = memo(
             );
           }
         } else {
-          setDependencies(pre => pre.filter(dep => dep.key !== key));
+          // setDependencies(pre => pre.filter(dep => dep.key !== key));
+          dispatch(removeNodeDependency({ nodeId: id, key }));
           setVariableNames([]);
         }
       },
@@ -136,7 +141,8 @@ const GeneralJoinerNodes = memo(
             workflowId: workFlowData._id,
             nodeMasterId: node.data.nodeMasterId,
             position: { x: positionAbsoluteX, y: positionAbsoluteY },
-            dependencies: dependencies.map(dps => dps.nodeId),
+            // dependencies: dependencies.map(dps => dps.nodeId),
+            dependencies: node.data?.dependencies ? node.data.dependencies?.map(dps => dps.nodeId) : [],
             parameters: updatedValue,
           };
 
@@ -155,8 +161,8 @@ const GeneralJoinerNodes = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-                k => node.data.parameters?.[k] === param
-              )
+              k => node.data.parameters?.[k] === param
+            )
             : undefined;
           if (key && !param.value) {
             dispatch(

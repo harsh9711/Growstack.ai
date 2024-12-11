@@ -80,7 +80,7 @@ const workflowSlice = createSlice({
       )
       .addCase(createWorkFlow.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.payload;
+        // state.error = action.payload;
       })
       .addCase(getWorkFlowById.pending, state => {
         state.isLoading = true;

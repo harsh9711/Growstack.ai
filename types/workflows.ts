@@ -145,6 +145,7 @@ export interface WorkflowDataState {
   _id?: string;
   name?: string;
   description?: string;
+  userId?: string;
   nodes?: WorkflowNodeState[];
   status?: string;
   createdAt?: Date;

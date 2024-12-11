@@ -8,7 +8,9 @@ import Image from "next/image";
 import {
   deleteNodeById,
   removeNodeById,
+  removeNodeDependency,
   updateNodeById,
+  updateNodeDependency,
   updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -153,14 +155,15 @@ const GmailNode = memo(
           const variableName = getVariableName(nodes, index);
           console.log("variableName-->", variableName);
           if (dependency) {
-            setDependencies(prevDependencies => {
-              const newDependency = { key, nodeId: dependency };
-              const uniqueDependencies = new Set([
-                ...prevDependencies,
-                newDependency,
-              ]);
-              return Array.from(uniqueDependencies);
-            });
+            // setDependencies(prevDependencies => {
+            //   const newDependency = { key, nodeId: dependency };
+            //   const uniqueDependencies = new Set([
+            //     ...prevDependencies,
+            //     newDependency,
+            //   ]);
+            //   return Array.from(uniqueDependencies);
+            // });
+            dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
           }
           const regex = /\$(?!\s*$).+/;
           if (regex.test(value)) {
@@ -173,7 +176,8 @@ const GmailNode = memo(
             );
           }
         } else {
-          setDependencies(pre => pre.filter(dep => dep.key !== key));
+          // setDependencies(pre => pre.filter(dep => dep.key !== key));
+          dispatch(removeNodeDependency({ nodeId: id, key }));
           setVariableNames([]);
         }
       },
@@ -214,7 +218,8 @@ const GmailNode = memo(
             workflowId: workFlowData._id,
             nodeMasterId: node.data.nodeMasterId,
             position: { x: positionAbsoluteX, y: positionAbsoluteY },
-            dependencies: dependencies.map(dps => dps.nodeId),
+            // dependencies: dependencies.map(dps => dps.nodeId),
+            dependencies: node.data?.dependencies ? node.data.dependencies?.map(dps => dps.nodeId) : [],
             parameters: updatedValue,
           };
 
@@ -233,8 +238,8 @@ const GmailNode = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-                k => node.data.parameters?.[k] === param
-              )
+              k => node.data.parameters?.[k] === param
+            )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -486,11 +491,10 @@ const GmailNode = memo(
               </div>
 
               <div
-                className={`node-content-wrapper relative ${
-                  !isSignedUp
-                    ? "before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-white before:opacity-[45%]"
-                    : ""
-                }`}
+                className={`node-content-wrapper relative ${!isSignedUp
+                  ? "before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-white before:opacity-[45%]"
+                  : ""
+                  }`}
               >
                 {/* <div className="trigger-box">
                   <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
@@ -576,7 +580,7 @@ const GmailNode = memo(
                                 inputKey={key}
                                 param={param}
                                 handleInputChange={
-                                  isEdit ? handleInputChange : () => {}
+                                  isEdit ? handleInputChange : () => { }
                                 }
                                 variableNames={variableNames}
                                 focusedInputKey={focusedInputKey}
