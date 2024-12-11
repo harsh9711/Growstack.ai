@@ -2,7 +2,7 @@ import React, { memo, useState, useEffect, useRef, useCallback } from "react";
 import { Handle, Position, type NodeProps, useReactFlow } from "@xyflow/react";
 import { GeneralInputNodeProps } from "./types";
 import DynamicInput from "../DynamicInputs";
-import DeleteConfirmationModal from "../deleteconfirmationmodal/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../modals/deletemodal/DeleteModal";
 import { extractParameterValues } from "@/utils/dataResolver";
 import {
   addVariable,
@@ -158,7 +158,8 @@ const GeneralInputNodes = memo(
       setNodes(nds => nds.filter(nds => nds.id !== id));
       dispatch(removeNodeById(id));
       dispatch(deleteNodeById(id));
-      success("Node delete successfully");
+      // success("The node has been successfully deleted");
+      success(`The ${data?.label} node has been successfully deleted`);
     };
 
     //DESCRIPTION FIELD DYNAMIC

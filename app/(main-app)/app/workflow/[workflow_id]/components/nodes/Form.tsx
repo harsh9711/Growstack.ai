@@ -15,7 +15,7 @@ import {
 } from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { extractParameterValues } from "@/utils/dataResolver";
-import DeleteConfirmationModal from "../deleteconfirmationmodal/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../modals/deletemodal/DeleteModal";
 import { useSnackbar } from "../snackbar/SnackbarContext";
 
 interface OptionsProps {
@@ -156,7 +156,8 @@ const Form = ({
     setNodes(nds => nds.filter(nds => nds.id !== id));
     dispatch(removeNodeById(id));
     dispatch(deleteNodeById(id));
-    success("Node delete successfully");
+    // success("The node has been successfully deleted");
+    success(`The ${data?.label} node has been successfully deleted`);
   };
 
   const handleDeleteSubNode = async (index: number, nodeMasterId: string) => {

@@ -21,7 +21,7 @@ import {
   VariableNameProps,
   WorkflowNodeState,
 } from "@/types/workflows";
-import DeleteConfirmationModal from "../../deleteconfirmationmodal/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../../modals/deletemodal/DeleteModal";
 import { useSnackbar } from "../../snackbar/SnackbarContext";
 import { authenticateUser } from "@/utils/paraGonAuth";
 
@@ -231,7 +231,8 @@ const LinkedinNode = memo(
       setNodes(nds => nds.filter(nds => nds.id !== id));
       dispatch(removeNodeById(id));
       dispatch(deleteNodeById(id));
-      success("Node delete successfully");
+      // success("The node has been successfully deleted");
+      success(`The ${data?.label} node has been successfully deleted`);
     };
 
     const handleChange = (event: {
