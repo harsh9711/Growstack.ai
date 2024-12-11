@@ -13,7 +13,7 @@ import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { VariableNameProps, WorkflowNodeState } from "@/types/workflows";
 import { getVariableName, isSpecialType } from "@/utils/helper";
 import { useSnackbar } from "../snackbar/SnackbarContext";
-import DeleteConfirmationModal from "../deleteconfirmationmodal/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../modals/deletemodal/DeleteModal";
 
 const ToolsNodes = memo(
   ({
@@ -220,7 +220,8 @@ const ToolsNodes = memo(
       setNodes(nds => nds.filter(nds => nds.id !== id));
       dispatch(removeNodeById(id));
       dispatch(deleteNodeById(id));
-      success("Node delete successfully");
+      // success("The node has been successfully deleted");
+      success(`The ${data?.label} node has been successfully deleted`);
     };
 
     // ON CLICK OPEN & CLOSE ACTION MODAL

@@ -2,7 +2,7 @@ import React, { memo, useState, useEffect, useRef, useCallback } from "react";
 import { Handle, Position, type NodeProps, useReactFlow } from "@xyflow/react";
 import { GeneralJoinerNodeProps } from "./types";
 import DynamicInput from "../DynamicInputs";
-import DeleteConfirmationModal from "../deleteconfirmationmodal/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../modals/deletemodal/DeleteModal";
 import { extractParameterValues } from "@/utils/dataResolver";
 import {
   deleteNodeById,
@@ -23,8 +23,6 @@ const GeneralJoinerNodes = memo(
     positionAbsoluteX,
     positionAbsoluteY,
   }: NodeProps<GeneralJoinerNodeProps>) => {
-
-
     const { setNodes } = useReactFlow();
     const dispatch = useAppDispatch();
     const { success } = useSnackbar();
@@ -44,10 +42,6 @@ const GeneralJoinerNodes = memo(
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isActionModalShow, setIsActionModalShow] = useState(false);
 
-    // const handleOpenActionModal = () => {
-    //   setIsActionModalShow(!isActionModalShow);
-    // };
-    const dropdownRef = useRef<HTMLDivElement | null>(null);
     const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
     const [dependencies, setDependencies] = useState<
@@ -161,8 +155,8 @@ const GeneralJoinerNodes = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-              k => node.data.parameters?.[k] === param
-            )
+                k => node.data.parameters?.[k] === param
+              )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -186,7 +180,8 @@ const GeneralJoinerNodes = memo(
       setNodes(nds => nds.filter(nds => nds.id !== id));
       dispatch(removeNodeById(id));
       dispatch(deleteNodeById(id));
-      success("Node delete successfully");
+      // success("The node has been successfully deleted");
+      success(`The ${data?.label} node has been successfully deleted`);
     };
 
     const handleChange = (event: {

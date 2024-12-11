@@ -23,7 +23,7 @@ import {
   updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { unwrapResult } from "@reduxjs/toolkit";
-import DeleteConfirmationModal from "../deleteconfirmationmodal/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../modals/deletemodal/DeleteModal";
 import { useSnackbar } from "../snackbar/SnackbarContext";
 import DynamicInput from "../DynamicInputs";
 import { getVariableName, isSpecialType } from "@/utils/helper";
@@ -220,7 +220,8 @@ const FanOut = ({
     setNodes(nds => nds.filter(nds => nds.id !== id));
     dispatch(removeNodeById(id));
     dispatch(deleteNodeById(id));
-    success("Node delete successfully");
+    // success("The node has been successfully deleted");
+    success(`The ${data?.label} node has been successfully deleted`);
   };
 
   const handleToggleAdvancedOptions = () => {
