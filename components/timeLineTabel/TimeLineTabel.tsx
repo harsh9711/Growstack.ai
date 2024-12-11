@@ -42,10 +42,7 @@ const TimeLineTable = ({
 
   const getHistoryData = useCallback(async () => {
     try {
-
-      const getHistory = await instance.get(
-        `/workflow/${workflow_id}/history`
-      );
+      const getHistory = await instance.get(`/workflow/${workflow_id}/history`);
 
       // const getHistory = await CustomAxiosInstance().get(
       //   `workflow/${workflow_id}/history`
@@ -54,12 +51,11 @@ const TimeLineTable = ({
       //   `/workflow/${workflow_id}/history`
       // );
       setHistoryData(getHistory?.data);
-    } catch { }
+    } catch {}
   }, []);
 
   const getScheduleData = useCallback(async () => {
     try {
-
       const getHistory = await instance.get(
         `/workflow/${workflow_id}/schedules`
       );
@@ -91,9 +87,7 @@ const TimeLineTable = ({
     try {
       // Fetch the workflow details to get input_configs
 
-      const workflowResponse = await instance.get(
-        `/workflow/${workflow_id}`
-      );
+      const workflowResponse = await instance.get(`/workflow/${workflow_id}`);
       // const workflowResponse = await instance.get(
       //   `/workflow/${workflow_id}`
       // );
@@ -120,32 +114,77 @@ const TimeLineTable = ({
         input_configs: workflowResponse.data.nodes
           .filter((node: any) => {
             const type = node?.nodeMasterId?.inputType;
+            const formType = node?.nodeMasterId?.type;
             return (
               type === "text" ||
               type === "textarea" ||
               type === "checkbox" ||
               type === "switch" ||
               type === "number" ||
-              type === "file"
+              type === "file" ||
+              formType === "form"
             );
           })
           .map((node: any) => {
-            const parameters = node.parameters || {};
-            const scheduleValue = item.workflowPayload?.find(
-              (payload: any) => payload.variableName === parameters.variableName
-            )?.variableValue;
+            if (node?.type !== "form") {
+              const parameters = node.parameters || {};
+              const scheduleValue = item.workflowPayload?.find(
+                (payload: any) =>
+                  payload.variableName === parameters.variableName
+              )?.variableValue;
+              return {
+                display_name: parameters?.inputLabel || "Untitled Field",
+                description: parameters?.description || "",
+                placeholder: parameters?.placeholder || "",
+                default_value: scheduleValue || "",
+                variableName: parameters?.variableName || "",
+                type: node?.nodeMasterId?.inputType,
+                list_values: parameters?.options || [],
+                selected_values: scheduleValue || [],
+                required: parameters?.required,
+                file_type: parameters?.fileType,
+              };
+            } else {
+              return (
+                node?.subNodes?.map((data: any) => {
+                  let inputType = "";
+                  const getName = node?.nodeMasterId?.subNodes?.find(
+                    (subNode: any) =>
+                      subNode?.nodeMasterId === data?.nodeMasterId
+                  )?.name;
 
-            return {
-              display_name: parameters.inputLabel || "Untitled Field",
-              description: parameters?.description || "",
-              placeholder: parameters?.placeholder || "",
-              default_value: scheduleValue || parameters.defaultValue || "",
-              variableName: parameters.variableName || "",
-              type: node?.nodeMasterId?.inputType,
-              list_values:
-                parameters?.options?.map((opt: any) => opt.label) || [],
-            };
-          }),
+                  if (getName === "Short Text") inputType = "text";
+                  else if (getName === "Long Text") inputType = "textarea";
+                  else if (getName === "Boolean") inputType = "switch";
+                  else if (getName === "Number") inputType = "number";
+                  else if (getName === "File Upload") inputType = "file";
+                  else if (getName === "CheckList") inputType = "checkbox";
+                  else inputType = "text";
+
+                  const formParameters = data.parameters || {};
+
+                  const scheduleValue = item.workflowPayload?.find(
+                    (payload: any) =>
+                      payload.variableName === formParameters?.variableName
+                  )?.variableValue;
+                  return {
+                    display_name:
+                      formParameters?.inputLabel || "Untitled Field",
+                    description: formParameters?.description || "",
+                    placeholder: formParameters?.placeholder || "",
+                    default_value: scheduleValue || "",
+                    variableName: formParameters?.variableName || "",
+                    type: inputType,
+                    selected_values: scheduleValue || [],
+                    list_values: formParameters?.options || [],
+                    required: formParameters?.required,
+                    file_type: formParameters?.fileType,
+                  };
+                }) || []
+              );
+            }
+          })
+          .flat(Infinity),
       });
 
       setShowModal(true);
@@ -158,8 +197,9 @@ const TimeLineTable = ({
     <div className="w-full bg-white rounded-xl border border-1  p-4  overflow-hidden">
       <div className="flex space-x-8 text-gray-600 justify-center border-b pb-2">
         <button
-          className={`font-semibold  pb-1 ${activeTab === 0 ? "text-green-600 border-b-2 border-green-600" : ""
-            }`}
+          className={`font-semibold  pb-1 ${
+            activeTab === 0 ? "text-green-600 border-b-2 border-green-600" : ""
+          }`}
           onClick={() => setActiveTab(0)}
         >
           History
@@ -210,20 +250,22 @@ const TimeLineTable = ({
               {filteredHistoryData?.map((item: any, index: number) => (
                 <tr
                   key={index}
-                  className={`border-b ${index % 2 === 0 ? "bg-white" : "bg-white"
-                    }`}
+                  className={`border-b ${
+                    index % 2 === 0 ? "bg-white" : "bg-white"
+                  }`}
                 >
                   <td className="p-3 text-black">{item?._id}</td>
                   <td className="p-3 text-black">
                     {workflowName ?? "GrowStack"}
                   </td>
                   <td
-                    className={`p-3 font-medium ${item?.status === "completed"
-                      ? "inline-block text-green-600 bg-green-100 mt-1 rounded-md text-sm"
-                      : item?.status === "in-progress"
-                        ? "inline-block text-yellow-600 bg-yellow-100 mt-1 rounded-md text-sm"
-                        : "inline-block text-red-600 bg-yellow-100 mt-1 rounded-md text-sm"
-                      }`}
+                    className={`p-3 font-medium ${
+                      item?.status === "completed"
+                        ? "inline-block text-green-600 bg-green-100 mt-1 rounded-md text-sm"
+                        : item?.status === "in-progress"
+                          ? "inline-block text-yellow-600 bg-yellow-100 mt-1 rounded-md text-sm"
+                          : "inline-block text-red-600 bg-yellow-100 mt-1 rounded-md text-sm"
+                    }`}
                   >
                     {item?.status}
                   </td>
@@ -270,8 +312,9 @@ const TimeLineTable = ({
               {filteredScheduleData?.map((item: any, index: number) => (
                 <tr
                   key={index}
-                  className={`border-b ${index % 2 === 0 ? "bg-white" : "bg-white"
-                    }`}
+                  className={`border-b ${
+                    index % 2 === 0 ? "bg-white" : "bg-white"
+                  }`}
                 >
                   <td className="p-3 text-black">
                     {workflowName ?? "GrowStack"}

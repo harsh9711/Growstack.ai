@@ -18,6 +18,12 @@ import { extractParameterValues } from "@/utils/dataResolver";
 import DeleteConfirmationModal from "../deleteconfirmationmodal/DeleteConfirmationModal";
 import { useSnackbar } from "../snackbar/SnackbarContext";
 
+interface OptionsProps {
+  value: string;
+  label: string;
+  imageUrl: string;
+}
+
 const Form = ({
   data,
   id,
@@ -64,6 +70,10 @@ const Form = ({
   }>({});
   const dropdownRef = useRef<HTMLDivElement | null>(null);
   const [isActionModalShow, setIsActionModalShow] = useState(false);
+  const [updatedOptions, setUpdatedOptions] = useState<OptionsProps[]>([]);
+  const [loadingNodes, setLoadingNodes] = useState<Record<string, any>>({});
+
+  console.log("loadingNodes", loadingNodes);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -189,6 +199,12 @@ const Form = ({
     console.log("subNodesToValidate-->", subNodesToValidate);
 
     if (allSubNodesValid) {
+
+      setLoadingNodes(prevState => ({
+        ...prevState,
+        [node.data.nodeMasterId]: true,
+      }));
+
       const updatedData = node.data.subNodes.filter(subNode =>
         currentSubNodes.some(cs => cs.nodeMasterId === subNode.nodeMasterId)
       );
@@ -215,8 +231,18 @@ const Form = ({
         );
 
         setIsEdit(false);
+
+        setLoadingNodes(prevState => ({
+          ...prevState,
+          [node.data.nodeMasterId]: false,
+        }));
+
       } catch (error: any) {
         console.error("error-->", error?.message);
+        setLoadingNodes(prevState => ({
+          ...prevState,
+          [node.data.nodeMasterId]: false,
+        }));
       }
     } else {
       subNodesToValidate.forEach(subNode => {
@@ -236,6 +262,8 @@ const Form = ({
       });
     }
   };
+
+  console.log("loadingnodes", loadingNodes);
 
   const handleOpenActionModal = () => {
     setIsActionModalShow(!isActionModalShow);
@@ -271,6 +299,22 @@ const Form = ({
     setopenDeleteConfirmationModal(true);
     setIsActionModalShow(false);
   };
+
+  const handleUpdateOptions = useCallback(() => {
+    setUpdatedOptions(
+      options?.filter((subNode: any) =>
+        !currentSubNodes.some(
+          cs => cs.nodeMasterId === subNode.value
+        )
+      ) || []
+    );
+  }, [currentSubNodes]);
+
+  useEffect(() => {
+    handleUpdateOptions();
+  }, [currentSubNodes]);
+
+  console.log("updatedOptions", updatedOptions)
 
   return (
     <div>
@@ -488,6 +532,7 @@ const Form = ({
                           </div>
                         )}
                       </div>
+                      
                       <div className="advance-option-button-box mb-3">
                         <button
                           onClick={() =>
@@ -502,15 +547,16 @@ const Form = ({
                       </div>
                     </div>
                   ))}
+
               {currentSubNodes.length > 0 && (
                 <div className="submit-button">
                   {isEdit ? (
                     <button
                       onClick={handleNextClick}
                       className="bg-[#2DA771] text-white text-sm font-medium p-3 w-full rounded-[10px]"
-                      disabled={isLoading}
-                    >
-                      {isLoading ? (
+                      disabled={node ? loadingNodes[node.data.nodeMasterId] : false}
+                      >
+                      { node && loadingNodes[node.data.nodeMasterId]? (
                         <div className="flex justify-center items-center">
                           <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
                         </div>
@@ -522,7 +568,7 @@ const Form = ({
                     <button
                       onClick={() => setIsEdit(!isEdit)}
                       className="bg-[#2DA771] text-white text-sm font-medium p-3 w-full rounded-[10px]"
-                      disabled={isLoading}
+                      disabled={node ? loadingNodes[node.data.nodeMasterId] : false}
                     >
                       Edit
                     </button>
@@ -531,7 +577,7 @@ const Form = ({
               )}
 
               <AddFieldDropdown
-                options={options}
+                options={updatedOptions}
                 onSelect={option => {
                   const selectedNode = subNodes?.find(
                     node => node.nodeMasterId === option.value

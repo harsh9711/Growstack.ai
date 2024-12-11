@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import instance, { CustomAxiosInstance } from "@/config/axios.config";
 import { API_URL } from "@/lib/api";
 import Spinner from "@/components/Spinner";
 import { FaFileUpload } from "react-icons/fa";
+import axios from "axios";
 
 interface FileUploadProps {
   onFileUploaded: (fileUrl: string, fileExtension: string) => void;
@@ -47,12 +48,17 @@ const fileTypeMappings: { [key: string]: string[] } = {
 const FileUpload: React.FC<any> = ({
   onFileUploaded,
   acceptedFileTypes,
+  isUploadedFileUrl,
 }) => {
   const [loading, setLoading] = useState(false);
   const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const onDrop = async (acceptedFiles: File[]) => {
+  useEffect(() => {
+    if (isUploadedFileUrl?.length > 0) setUploadedFileUrl(isUploadedFileUrl);
+  }, [isUploadedFileUrl]);
+
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
     setError(null);
     const fileExtension = `${acceptedFiles[0].name.split(".").pop()?.toLowerCase()}`;
 
@@ -60,13 +66,12 @@ const FileUpload: React.FC<any> = ({
 
     const acceptedTypesArray = acceptedFileTypes
       .split(",")
-      .map((type:any) => type.trim().toLowerCase());
+      .map((type: any) => type.trim().toLowerCase());
 
-    console.log("acceptedTypesArray", acceptedTypesArray);
 
     if (!acceptedTypesArray.includes(fileExtension)) {
       setError(
-        `File type not supported. Please upload one of the following types: ${acceptedFileTypes?.join(",")}`
+        `File type not supported. Please upload one of the following types: ${acceptedTypesArray?.join(",")}`
       );
       return;
     }
@@ -94,7 +99,6 @@ const FileUpload: React.FC<any> = ({
           },
         }
       );
-      
       const fileUrl = response?.data?.getS3URL;
       setUploadedFileUrl(fileUrl);
       onFileUploaded(fileUrl, fileExtension);
@@ -103,7 +107,7 @@ const FileUpload: React.FC<any> = ({
     } finally {
       setLoading(false);
     }
-  };
+  },[acceptedFileTypes]);
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,

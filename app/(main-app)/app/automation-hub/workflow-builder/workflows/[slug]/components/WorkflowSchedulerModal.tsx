@@ -16,49 +16,9 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../../../../../../../styles/datepicker.css";
-import axios from "axios";
-import FileUpload from "./FileUpload";
 import { Switch } from "@/components/ui/switch";
 import instance, { CustomAxiosInstance } from "@/config/axios.config";
-
-interface SchedulerModalProps {
-  show?: boolean;
-  timeLineTable: string;
-  setShow: (value: boolean) => void;
-  workFlowData: WorkFlowData;
-  setWorkFlowData: (workflow: WorkFlowData) => void;
-}
-
-export interface WorkFlowData {
-  workflow_id: string;
-  _id?: string;
-  name: string;
-  description: string;
-  status: string;
-  frequency?: string;
-  dayOfWeek?: string[];
-  dayOfMonth?: string;
-  time?: string;
-  timezone?: string;
-  input_configs: Array<{
-    display_name: string;
-    description: string;
-    placeholder: string;
-    default_value: string | boolean;
-    variableName: string;
-    type: string;
-    list_values?: string[];
-    selected_values?: string[];
-  }>;
-}
-
-type Fields = {
-  frequency: string;
-  dayOfWeek: string[];
-  dayOfMonth: string;
-  time: string;
-  timezone: string;
-};
+import FileUpload from "./layout/FileUploadV2";
 
 function WorkflowSchedulerModal({
   show,
@@ -66,9 +26,9 @@ function WorkflowSchedulerModal({
   workFlowData,
   setWorkFlowData,
   timeLineTable,
-}: SchedulerModalProps) {
+}: any) {
   const [isOpen, setIsOpen] = useState(false);
-  const [fields, setFields] = useState<Fields>({
+  const [fields, setFields] = useState<any>({
     frequency: "",
     dayOfWeek: [],
     dayOfMonth: "",
@@ -88,7 +48,7 @@ function WorkflowSchedulerModal({
     const updatedWorkflowData = workFlowData?.input_configs?.map(
       (data: any) => ({
         variableName: data.variableName,
-        variableValue: data.default_value,
+        variableValue: data?.type === "checkbox" ? data?.selected_values : data?.default_value,
       })
     );
     try {
@@ -143,8 +103,8 @@ function WorkflowSchedulerModal({
     }
   };
 
-  const handleChangeField = (field: keyof Fields, value: string) => {
-    setFields(prevFields => ({
+  const handleChangeField = (field: keyof any, value: string) => {
+    setFields((prevFields: any) => ({
       ...prevFields,
       [field]: value || "-",
       ...(field === "frequency" && {
@@ -216,7 +176,7 @@ function WorkflowSchedulerModal({
   };
   return (
     <Dialog open={show} onOpenChange={onHide}>
-      <DialogContent className="max-w-[80%] pt-0 ">
+      <DialogContent className="pt-0 ">
         <DialogHeader className="py-4 border-b">
           <DialogTitle>Schedule a workflow runtime</DialogTitle>
         </DialogHeader>
@@ -287,10 +247,10 @@ function WorkflowSchedulerModal({
                             className="flex items-center space-x-2 hover:bg-gray-100 p-2 rounded cursor-pointer"
                             onClick={e => {
                               e.stopPropagation();
-                              setFields(prevFields => ({
+                              setFields((prevFields: any) => ({
                                 ...prevFields,
                                 dayOfWeek: prevFields.dayOfWeek.includes(day)
-                                  ? prevFields.dayOfWeek.filter(d => d !== day)
+                                  ? prevFields.dayOfWeek.filter((d:any) => d !== day)
                                   : [...prevFields.dayOfWeek, day],
                               }));
                             }}
@@ -299,13 +259,13 @@ function WorkflowSchedulerModal({
                               id={day}
                               checked={fields.dayOfWeek.includes(day)}
                               onCheckedChange={checked => {
-                                setFields(prevFields => ({
+                                setFields((prevFields: any) => ({
                                   ...prevFields,
                                   dayOfWeek: checked
                                     ? [...prevFields.dayOfWeek, day]
                                     : prevFields.dayOfWeek.filter(
-                                      d => d !== day
-                                    ),
+                                        (d:any) => d !== day
+                                      ),
                                 }));
                               }}
                             />
@@ -369,10 +329,11 @@ function WorkflowSchedulerModal({
                                   }}
                                   className={`
                                 h-8 w-8 rounded-full flex items-center justify-center text-sm
-                                ${fields.dayOfMonth === day.toString()
-                                      ? "bg-primary-green text-white"
-                                      : "hover:bg-gray-100"
-                                    }
+                                ${
+                                  fields.dayOfMonth === day.toString()
+                                    ? "bg-primary-green text-white"
+                                    : "hover:bg-gray-100"
+                                }
                               `}
                                 >
                                   {day}
@@ -444,10 +405,11 @@ function WorkflowSchedulerModal({
                           case "file":
                             return (
                               <FileUpload
-                                onFileUploaded={fileUrl =>
+                                onFileUploaded={(fileUrl: any) =>
                                   handleFileUploaded(fileUrl, idx)
                                 }
                                 acceptedFileTypes={input.file_type || "*/*"}
+                                isUploadedFileUrl={input.default_value}
                               />
                             );
                           case "checkbox":
