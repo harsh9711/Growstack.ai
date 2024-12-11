@@ -288,17 +288,17 @@ const Run: React.FC<any> = ({
           try {
             const shouldStop = await pollingWorkflowExec();
             if (shouldStop) {
-              isStoppedInternal(true)
+              setIsStoppedInternal(true)
               clearInterval(interval);
             }
           } catch (error) {
-            isStoppedInternal(true)
+            setIsStoppedInternal(true)
             console.error("Error during polling:", error);
             clearInterval(interval); // Clear on error as well, if needed.
           }
         }, 5000);
         if(isStoppedInternal) {
-          isStoppedInternal(false)
+          setIsStoppedInternal(false)
           clearInterval(interval); // Clear on error as well, if needed.
         }
       };
