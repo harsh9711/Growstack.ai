@@ -348,6 +348,8 @@ const Card: React.FC<CardProps> = ({
         `/workflow/${workflow_id}/duplicate`
       );
       setIsModalOpen({ isOpen: false, type: "duplicate" });
+      localStorage.removeItem("workflowActiveTab");
+      router.push(`/app/workflow/${response?.data?._id}`)
 
       // const response = await instance.post(
       //   `/workflow/${workflow_id}/duplicate`
