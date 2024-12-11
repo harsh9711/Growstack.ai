@@ -52,6 +52,7 @@ const OutputDetails = ({
   };
   const handleReject = async (nodeExecutionId: string) => {
     try {
+      setIsLoading(true);
       // const rejectExecution = await CustomAxiosInstance().patch(
       //   `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=false`
       // );
@@ -61,10 +62,12 @@ const OutputDetails = ({
       setApproveOutputDataId(rejectExecution?.data);
     } catch (err) {
       console.log("err", err);
+      setIsLoading(false);
     }
   };
   const handleApprove = async (nodeExecutionId: string) => {
     try {
+      setIsLoading(true);
       // const approveExecution = await axios.patch(
       //   `http://localhost:5000/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=true`
       // );
@@ -74,6 +77,8 @@ const OutputDetails = ({
       setApproveOutputDataId(approveExecution?.data);
     } catch (err) {
       console.log("err", err);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -132,7 +137,8 @@ const OutputDetails = ({
           {outputDetailsData?.outputDetails?.map((item: any, index: number) => {
             return (
               item.title &&
-              (item?.status === "completed" || item?.status === "approval-pending")  && (
+              (item?.status === "completed" ||
+                item?.status === "approval-pending") && (
                 <div
                   key={index}
                   className={`border rounded-lg ${
@@ -157,8 +163,17 @@ const OutputDetails = ({
                     <div className=" border-t border-gray-200">
                       <div className="p-4 prose prose-sm max-w-none">
                         {(() => {
-                          if(item?.nodeType === "linkedin" || item?.nodeType === "gmail") {
-                            return <div>{renderSocialMediaContent(item?.socialMediaContent)}</div>;
+                          if (
+                            item?.nodeType === "linkedin" ||
+                            item?.nodeType === "gmail"
+                          ) {
+                            return (
+                              <div>
+                                {renderSocialMediaContent(
+                                  item?.socialMediaContent
+                                )}
+                              </div>
+                            );
                           }
                           if (typeof item?.value === "string") {
                             // Render string using ReactMarkdown
@@ -237,19 +252,46 @@ const OutputDetails = ({
                             // Render single object as key-value pairs
                             return (
                               <div>
-                                {Object.entries(item?.value).map(
-                                  ([key, value]: any) => (
-                                    <div key={key}>
-                                      <strong>{key}:</strong>{" "}
-                                      {value?.startsWith(value) ? (
-                                        <a target="">{value}</a>
-                                      ) : (
-                                        JSON.stringify(value)
-                                      )}
+                              {Object.entries(item?.value).map(([key, value]: any) => (
+                                <div key={key}>
+                                  <strong>{key}:</strong>{" "}
+                                  {typeof value === "string" ? (
+                                    value.startsWith("http") ? (
+                                      <a href={value} target="_blank" rel="noopener noreferrer">
+                                        {value}
+                                      </a>
+                                    ) : (
+                                      value
+                                    )
+                                  ) : typeof value === "object" ? (
+                                    <div className="ml-4">
+                                      {Object.entries(value).map(([nestedKey, nestedValue]: any) => (
+                                        <div key={nestedKey}>
+                                          <strong>{nestedKey}:</strong>{" "}
+                                          {typeof nestedValue === "string" ? (
+                                            nestedValue.startsWith("http") ? (
+                                              <a
+                                                href={nestedValue}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                              >
+                                                {nestedValue}
+                                              </a>
+                                            ) : (
+                                              nestedValue
+                                            )
+                                          ) : (
+                                            JSON.stringify(nestedValue, null, 2)
+                                          )}
+                                        </div>
+                                      ))}
                                     </div>
-                                  )
-                                )}
-                              </div>
+                                  ) : (
+                                    JSON.stringify(value, null, 2)
+                                  )}
+                                </div>
+                              ))}
+                            </div>
                             );
                           } else {
                             // Fallback: Display JSON stringified value
@@ -287,20 +329,31 @@ const OutputDetails = ({
                           item?.approvalStatus === "pending" && (
                             <div className="flex gap-4 items-center px-4 py-4">
                               <button
-                                className="text-red-500 p-5 rounded-xl border border-red-500"
                                 onClick={() => {
                                   handleReject(item?.nodeExecutionId);
                                 }}
+                                className="text-red-500 p-5 rounded-xl border border-red-500 flex items-center justify-center"
+                                disabled={isLoading} // Disable button during loading
                               >
-                                Reject
+                                {isLoading ? (
+                                  <div className="w-5 h-5 border-2 border-red-500 border-t-transparent rounded-full animate-spin"></div>
+                                ) : (
+                                  "Reject"
+                                )}
                               </button>
+
                               <button
-                                className="text-[#2DA771] p-5 rounded-xl border border-[#2DA771]"
                                 onClick={() => {
                                   handleApprove(item?.nodeExecutionId);
                                 }}
+                                className="text-[#2DA771] p-5 rounded-xl border border-[#2DA771] flex items-center justify-center"
+                                disabled={isLoading} // Disable button during loading
                               >
-                                Approve
+                                {isLoading ? (
+                                  <div className="w-5 h-5 border-2 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+                                ) : (
+                                  "Approve"
+                                )}
                               </button>
                             </div>
                           )}

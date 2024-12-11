@@ -56,7 +56,7 @@ const RunSummary = ({ runSummaryData }: any) => {
 
     // Check for invalid date
     if (isNaN(date.getTime())) {
-      return "In Progress";
+      return "-";
     }
 
     if (type === "time") {
@@ -106,12 +106,14 @@ const RunSummary = ({ runSummaryData }: any) => {
                 {formatTimestamp(runSummaryData?.endTimestamp, "time")}
               </div>
             </div>
-            <div>
-              <span className="text-xs font text-gray-400">Duration:</span>{" "}
-              <div className="font-semibold">
-                {runSummaryData?.duration?.toFixed(2)}s
+            {runSummaryData?.duration && (
+              <div>
+                <span className="text-xs font text-gray-400">Duration:</span>{" "}
+                <div className="font-semibold">
+                  {runSummaryData?.duration?.toFixed(2)}s
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
         <div>
@@ -159,6 +161,7 @@ const RunSummary = ({ runSummaryData }: any) => {
               <th className="p-4">Step</th>
               <th className="p-4">Status</th>
               <th className="p-4">Date & Time</th>
+              <th className="p-4">Errors</th>
             </tr>
           </thead>
           <tbody>
@@ -172,7 +175,7 @@ const RunSummary = ({ runSummaryData }: any) => {
                 </td>
                 <td className="p-4">
                   <span
-                    className={`px-4 py-1 rounded-full text-sm font-medium ${statuses[row.status]? statuses[row?.status] : "text-yellow-600 bg-yellow-100"}`}
+                    className={`px-4 py-1 rounded-full text-sm font-medium ${statuses[row.status] ? statuses[row?.status] : "text-yellow-600 bg-yellow-100"}`}
                   >
                     {row.status}
                   </span>
@@ -184,6 +187,9 @@ const RunSummary = ({ runSummaryData }: any) => {
                     {formatTimestamp(row.startTimeStamp, "date")} -{" "}
                     {formatTimestamp(row.endTimeStamp, "date")}
                   </span>
+                </td>
+                <td className="p-4">
+                  <span>{row?.errorMessage ?? "-"}</span>
                 </td>
                 {/* <td className="p-4">
                   <p className="font-medium">{row.error}</p>

@@ -17,6 +17,7 @@ import {
   ChevronRight,
   CircleHelp,
   Copy,
+  Edit,
   LayoutDashboard,
   MessageSquareOff,
   Plus,
@@ -43,9 +44,19 @@ export default function Dashboard() {
   const [preBuiltTemplates, setPreBuiltTemplates] = useState<
     PreBuiltTemplate[]
   >([]);
-  const [activeTab, setActiveTab] = useState<string>("templates");
+  const [activeTab, setActiveTab] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    const activeTabName = localStorage.getItem("activeTab");
+    if (activeTabName) {
+      setActiveTab(activeTabName);
+      localStorage.removeItem("activeTab");
+    } else {
+      setActiveTab("templates");
+    }
+  }, []);
 
   const getPreBuiltTemplates = async () => {
     try {
@@ -84,6 +95,7 @@ export default function Dashboard() {
 
   const handleCreateWorkflow = async () => {
     try {
+      localStorage.removeItem("workflowActiveTab")
       const resultAction = await dispatch(
         createWorkFlow({ name: "Untitled workflow" })
       );
@@ -261,7 +273,7 @@ export default function Dashboard() {
                         workflow_id={template._id}
                         activeTab={activeTab}
                         setLoading={setLoading}
-                        refetchWorkflow={getPreBuiltTemplates}
+                        refetchWorkflow={getUserSavedWorkflows}
                       />
                     ))
                   : loading &&
@@ -335,6 +347,8 @@ const Card: React.FC<CardProps> = ({
       const response = await instance.post(
         `/workflow/${workflow_id}/duplicate`
       );
+      setIsModalOpen({ isOpen: false, type: "duplicate" });
+
       // const response = await instance.post(
       //   `/workflow/${workflow_id}/duplicate`
       // );
@@ -363,17 +377,18 @@ const Card: React.FC<CardProps> = ({
   const handleDeleteClick = async () => {
     setLoading(true);
     try {
-      // const response = await CustomAxiosInstance().delete(
-      //   `/workflow/delete/${workflow_id}`
-      // );
+      const response = await axios.delete(
+        `/workflow/${workflow_id}`
+      );
+      setIsModalOpen({ isOpen: false, type: "delete" });
 
-      const response = await instance.delete(`/workflow/delete/${workflow_id}`);
+      // const response = await instance.delete(`/workflow/${workflow_id}`);
     } catch (error: any) {
       console.error("Error deleting workflow:", error);
     } finally {
       setLoading(false);
       refetchWorkflow();
-    }
+    } 
   };
 
   const handleUnpublishWorkflow = async () => {
@@ -429,7 +444,7 @@ const Card: React.FC<CardProps> = ({
                         handleEditClick();
                       }}
                     >
-                      <Copy size={16} color="#9e9e9e" />
+                      <Edit size={16} color="#9e9e9e" />
                       Edit
                     </button>
                   </MenuItem>
