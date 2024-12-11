@@ -91,98 +91,103 @@ const TopRightPanel2nd = ({
     }
   };
 
+
   return (
     <div>
       <div className="flex items-center  rounded-lg justify-between w-full max-w-[90%] mx-auto relative p-1">
         <div className="flex justify-center items-center rounded-lg cursor-pointer gap-3">
-          <button
-            className="back-btn bg-white h-[40px] w-[50px] shadow-md rounded-[5px] flex items-center justify-center"
-            onClick={() => {
-              route.push("/app/dashboard");
-            }}
-          >
-            <Image
-              src="/images/workflow/back.svg"
-              alt="back"
-              width={22}
-              height={22}
-            />
-          </button>
+          <div className="back-btn-box">
+            <button
+              className="back-btn bg-white h-[40px] w-[50px] shadow-md rounded-[5px] flex items-center justify-center"
+              onClick={() => {
+                route.back();
+              }}
+            >
+              <Image
+                src="/images/workflow/back.svg"
+                alt="back"
+                width={22}
+                height={22}
+              />
+            </button>
+          </div>
 
-          <input
-            type="text"
-            key="name"
-            value={workFlowData?.name || ""}
-            placeholder="Enter Workflow Name"
-            className="nopan nodrag form-control shadow-none w-full p-3 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
-            onChange={e => {
-              dispatch(
-                onChangeWorkFlowData({
-                  key: "name",
-                  value: e.target.value,
-                })
-              );
-            }}
-          />
-          {/* <p className="text-[14px] font-semibold leading-[21px] font-poppins ml-2.5">
-            {workFlowData?.name || ""}
-          </p> */}
+          <div className="workflow-name-box relative">
+            <input
+              type="text"
+              key="name"
+              value={workFlowData?.name || ""}
+              placeholder="Enter Workflow Name"
+              className="nopan nodrag form-control shadow-none w-full p-3 rounded-[10px] bg-[#F2F2F2] text-[#14171B] text-sm font-medium focus:outline-none"
+              onChange={e => {
+                dispatch(
+                  onChangeWorkFlowData({
+                    key: "name",
+                    value: e.target.value,
+                  })
+                );
+              }}
+            />
+            {/* <p className="text-[14px] font-semibold leading-[21px] font-poppins ml-2.5">
+          {workFlowData?.name || ""}
+        </p> */}
 
-          <button
-            className="check-button absolute top-[14px] right-[10px]"
-            style={{ display: "block" }}
-          >
-            <img
-              src="/assets/node_icon/single-check.svg"
-              alt="single check"
-              className="w-[20px]"
-            />
-          </button>
-          <button
-            className="cross-button absolute top-[7px] right-[10px]"
-            style={{ display: "none" }}
-          >
-            <img
-              src="/assets/node_icon/close-icon.svg"
-              alt="single check"
-              className="w-[30px]"
-            />
-          </button>
+            <button
+              className="check-button absolute top-[14px] right-[10px]"
+              style={{ display: "block" }}
+            >
+              <img
+                src="/assets/node_icon/single-check.svg"
+                alt="single check"
+                className="w-[20px]"
+              />
+            </button>
+            <button
+              className="cross-button absolute top-[7px] right-[10px]"
+              style={{ display: "none" }}
+            >
+              <img
+                src="/assets/node_icon/close-icon.svg"
+                alt="single check"
+                className="w-[30px]"
+              />
+            </button>
+          </div>
+        </div>
+
+        <div className="run-btn flex items-center justify-center gap-1">
+          {dummyData3.map((item, index) => (
+            <button
+              key={index.toString()}
+              className={`flex justify-center items-center m-2 cursor-pointer px-2.5 py-1.5 rounded-md text-base font-normal ${activeTab === index
+                ? "text-white bg-[#2DA771]"
+                : "text-black bg-transparent"
+                } shadow-lg`}
+              onClick={() => handleClick(index)}
+            >
+              {item.text}
+            </button>
+          ))}
+        </div>
+
+        <div className="">
+          <div className="action-button-box flex items-center gap-2">
+            <Button
+              className="w-auto h-auto bg-[#2DA771] shadow-md hover:bg-[#2DA771]"
+              onClick={handleSaveWorkFlow}
+            >
+              Save
+            </Button>
+            <Button
+              className="w-auto h-auto bg-[#2DA771] shadow-md hover:bg-[#2DA771]"
+              onClick={handleOpenPublishConfirmationModal}
+            >
+              Publish
+            </Button>
+          </div>
         </div>
       </div>
 
-      <div className="run-btn flex items-center justify-center gap-1">
-        {dummyData3.map((item, index) => (
-          <button
-            key={index.toString()}
-            className={`flex justify-center items-center m-2 cursor-pointer px-2.5 py-1.5 rounded-md text-base font-normal ${activeTab === index
-              ? "text-white bg-[#2DA771]"
-              : "text-black bg-transparent"
-              } shadow-lg`}
-            onClick={() => handleClick(index)}
-          >
-            {item.text}
-          </button>
-        ))}
-      </div>
-
-      <div className="">
-        <div className="action-button-box flex items-center gap-2">
-          <Button
-            className="w-auto h-auto bg-[#2DA771] shadow-md hover:bg-[#2DA771]"
-            // onClick={handleOpenSaveFormModal}
-            onClick={handleSaveWorkFlow}
-          >
-            Save
-          </Button>
-          <Button
-            className="w-auto h-auto bg-[#2DA771] shadow-md hover:bg-[#2DA771]"
-            onClick={handleOpenPublishConfirmationModal}
-          >
-            Publish
-          </Button>
-        </div>
-      </div>
       <PublishConfirmationModal
         openPublishConfirmationModal={openPublishConfirmationModal}
         onClosePublishConfirmationModal={() =>
@@ -194,10 +199,12 @@ const TopRightPanel2nd = ({
       <SaveFormModal
         openSaveFormModal={openSaveFormModal}
         onCloseSaveFormModal={() => handleCloseSaveFormModal()}
-        onHandleSave={handleSaveWorkFlow}
+        onHandleSave={() => { }}      // onSaveFormNode={handleDeleteNode}
       />
     </div>
   );
 };
 
 export default TopRightPanel2nd;
+
+
