@@ -463,7 +463,7 @@ const ToolsNodes = memo(
 
               <div className="form-box">
                 {node?.data?.parameters &&
-                  Object.entries(node.data.parameters)
+                  Object.entries(node?.data?.parameters)
                     .filter(
                       ([key, param]: any) =>
                         param.required || showAdvancedOptions

@@ -36,8 +36,17 @@ const TopRightPanel2nd = ({
 
   useEffect(() => {
     const savedTab = localStorage.getItem("workflowActiveTab");
+    const isFromTimeline = localStorage.getItem("isFromTimeline");
     if (savedTab) {
       setActiveTab(parseInt(savedTab));
+      if (isFromTimeline) {
+        setIsFromTimeline(true);
+        setTimeout(() => {
+          localStorage.removeItem("isFromTimeline");
+        }, 5000);
+      } else {
+        setIsFromTimeline(false);
+      }
     } else {
       setActiveTab(0);
     }
@@ -120,7 +129,8 @@ const TopRightPanel2nd = ({
             <button
               className="back-btn bg-white h-[40px] w-[50px] shadow-md rounded-[5px] flex items-center justify-center"
               onClick={() => {
-                route.back();
+                localStorage.setItem('activeTab', "workflows")
+                route.push("/app/dashboard");
               }}
             >
               <Image

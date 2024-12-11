@@ -416,7 +416,13 @@ const GmailNode = memo(
                   isConnectable={false}
                 />
               </div>
-
+              <Handle
+                  id={`${id}-target`}
+                  type="target"
+                  position={Position.Left}
+                  className="w-[10px] h-[10px] bg-[#2DA771]"
+                  isConnectable={false}
+                />
               <div
                 className="toggle-button-box absolute right-0 left-0 mx-auto bottom-[-10px] z-10 cursor-pointer"
                 onClick={handleDropdownClick}
@@ -475,7 +481,8 @@ const GmailNode = memo(
                 )}
               </div>
 
-              <div className="mb-2 search-box flex items-center p-2 rounded-lg border border-[#EBEBEB]  bg-[#F7F7F7]">
+              {/* Not needed now */}
+              {/* <div className="mb-2 search-box flex items-center p-2 rounded-lg border border-[#EBEBEB]  bg-[#F7F7F7]">
                 <Image
                   src="/images/workflow/search-normal.svg"
                   alt="Search"
@@ -488,7 +495,7 @@ const GmailNode = memo(
                   placeholder="Search"
                   className="bg-[#F7F7F7] w-full focus:outline-none"
                 />
-              </div>
+              </div> */}
 
               <div
                 className={`node-content-wrapper relative ${!isSignedUp
