@@ -42,7 +42,7 @@ export interface NodeDataState {
   subNodes?: SubNodeProps[];
   descriptions?: string;
   dependencies?: { key: string; nodeId: string }[];
-  parameters?: {
+  parameters: {
     [key: string]: NodeParameter;
   };
 }

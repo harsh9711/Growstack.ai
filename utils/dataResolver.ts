@@ -67,9 +67,10 @@ export const getTypeFromParam = (paramType: string): string => {
 export const extractParameterValues = (parameters: { [key: string]: any }) => {
   const result: { [key: string]: string } = {};
 
-  console.log(parameters, "extractParameterValues");
-
-  Object.entries(parameters).forEach(([key, param]) => {
+  Object?.entries(parameters).forEach(([key, param]) => {
+    // if (param.vale) {
+    //   result[key] = param.value;
+    // }
     result[key] = param.value;
   });
 
