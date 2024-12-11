@@ -394,7 +394,7 @@ export default function TextToVideoPage() {
         <svg width="14" height="21" viewBox="0 0 14 21" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M5.75349 1H12.4815L8.23221 7.01975H12.4815L2.3541 18.2802L5.8243 10.6316H2L5.75349 1Z" fill="#F9DE6F" stroke="#F9DE6F" stroke-width="0.791016" stroke-miterlimit="10"/>
 </svg> &nbsp;<h1 className="text ">
-Your Token Balance is :<strong style={{color:"#2DA771"}}> {((Number(planUsage?.usage_amount) || 0) + (Number(planUsage?.usage?.no_of_text_to_avatar) || 0)) * 100}
+Your Token Balance is :<strong style={{color:"#2DA771"}}> {(((Number(planUsage?.usage_amount) || 0)* 100) + (Number(planUsage?.usage?.no_of_text_to_avatar) || 0)) }
 </strong>
         </h1>
         </div>
