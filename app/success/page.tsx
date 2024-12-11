@@ -67,7 +67,8 @@ const PricingPage: React.FC = () => {
       setSeconds(prev => {
         if (prev <= 1) {
           clearInterval(timer);
-          router.push("/app");
+          // router.push("/app");
+           handleLogout()
           return 0;
         }
         return prev - 1;
