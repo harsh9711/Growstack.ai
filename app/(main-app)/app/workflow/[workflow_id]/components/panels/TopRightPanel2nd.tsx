@@ -4,6 +4,10 @@ import Image from "next/image";
 import { useAppSelector } from "@/lib/hooks";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { extractParameterValues } from "@/utils/dataResolver";
+import { NodeState } from "@/types/workflows";
+import { prepareNodesPayload } from "@/utils/helper";
+import { useEdges } from "@xyflow/react";
 
 const TopRightPanel2nd = ({
   setActiveTab,
@@ -12,10 +16,18 @@ const TopRightPanel2nd = ({
 }: any) => {
   const route = useRouter();
   const { workFlowData } = useAppSelector(state => state.workflows);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const { nodes } = useAppSelector(state => state.nodes);
+  const edges = useEdges();
+
+  // console.log('---edges---', edges)
+
+  // console.log("-----JsonNOdes----", JSON.stringify(nodes, null, 2));
+
+  // const [activeIndex, setActiveIndex] = useState(0);
+
+  // console.log("---workFlowData----", workFlowData);
 
   const handleClick = (index: number) => {
-    setActiveIndex(index);
     setActiveTab(index);
     localStorage.setItem("workflowActiveTab", index.toString());
   };
@@ -28,6 +40,22 @@ const TopRightPanel2nd = ({
       setActiveTab(0);
     }
   }, [setActiveTab]);
+
+  const handleSaveWorkFlow = async () => {
+    try {
+      const bodyPayload = {
+        name: workFlowData.name,
+        description: workFlowData.description || "",
+        nodes: prepareNodesPayload(nodes, workFlowData._id || ""),
+        edges: edges,
+      };
+
+      console.log('----bodyPayload---', bodyPayload)
+
+    } catch (error) {
+      console.log('----error---', error)
+    }
+  };
 
   return (
     <div className="flex items-center  rounded-lg justify-center relative p-1">
@@ -48,14 +76,13 @@ const TopRightPanel2nd = ({
         </p>
       </div>
       {dummyData3.map((item, index) => (
-        <div className="bg-white">
+        <div className="bg-white" key={index.toString()}>
           <button
             key={index.toString()}
-            className={`flex justify-center items-center m-2 cursor-pointer px-2.5 py-1.5 rounded-md text-base font-normal ${
-              activeTab === index
-                ? "text-white bg-[#2DA771]"
-                : "text-black bg-transparent"
-            } shadow-lg`}
+            className={`flex justify-center items-center m-2 cursor-pointer px-2.5 py-1.5 rounded-md text-base font-normal ${activeTab === index
+              ? "text-white bg-[#2DA771]"
+              : "text-black bg-transparent"
+              } shadow-lg`}
             onClick={() => handleClick(index)}
           >
             {item.text}
@@ -64,7 +91,7 @@ const TopRightPanel2nd = ({
       ))}
 
       <div>
-        <Button variant="outline" className="w-32 h-[44px] bg-[#2DA771]">
+        <Button variant="outline" className="w-32 h-[44px] bg-[#2DA771]" onClick={handleSaveWorkFlow}>
           Save
         </Button>
         <Button

@@ -1,4 +1,5 @@
 import { NodeState, VariableNameProps } from "@/types/workflows";
+import { extractParameterValues } from "./dataResolver";
 
 export const calculateNextNodePosition = (
   lastNode: NodeState | undefined,
@@ -67,4 +68,22 @@ export const getInputType = (label: string) => {
     default:
       return "text";
   }
+};
+
+export const prepareNodesPayload = (
+  nodes: NodeState[],
+  workFlowDataId: string
+) => {
+  return nodes.map(node => {
+    const updatedValue = extractParameterValues(node?.data?.parameters || {});
+    const dependencies = node.data.dependencies || [];
+
+    return {
+      workflowId: workFlowDataId,
+      nodeMasterId: node.data.nodeMasterId,
+      position: node.position,
+      dependencies: dependencies.map(dps => dps.nodeId),
+      parameters: updatedValue,
+    };
+  });
 };
