@@ -175,7 +175,7 @@ const SixCard = () => {
             </h2>
             <p className="sm:text-[18px] text-[16px] font-medium w-full">
               Discover how Growstack's AI-powered solutions can transform your
-              operations, enhance customer engagement, and drive growth.
+              operations, enhance customer engagement and drive growth.
             </p>
           </div>
         </div>

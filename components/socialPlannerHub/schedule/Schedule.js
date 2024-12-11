@@ -47,7 +47,7 @@ function Schedule() {
                       <p className="card-text">
                         Get to know your audience’s demographic details and
                         analyze the segmentation of your followers by age,
-                        gender, country, and language.
+                        gender,country and language.
                       </p>
                     </div>
                   </div>

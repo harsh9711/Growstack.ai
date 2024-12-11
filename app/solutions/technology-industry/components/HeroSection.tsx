@@ -32,7 +32,7 @@ const HeroSection = () => {
               data-aos-duration="1500"
               className="text-[16px] 2xl:text-[18px] sm:text-start text-center text-white mt-4 w-full max-w-[600px] leading-normal font-light"
             >
-              Transform your operations, enhance security, and unlock innovation
+              Transform your operations, enhance security  and unlock innovation
               with Growstack's advanced AI tools tailored for the technology
               industry.
             </p>

@@ -1,7 +1,6 @@
 "use client";
 import React, { useRef, useState, useEffect } from "react";
-import "react-loading-skeleton/dist/skeleton.css";
-import Link from "next/link";
+ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
 const KeyPoints = () => {
@@ -57,7 +56,7 @@ const AnimationStory = () => {
     <div className="relative w-full h-screen max-h-[550px] sm:max-h-[1000px] border-none outline-none overflow-hidden bg-[#F5F5F5] text-white">
       <video
         ref={videoRef}
-        src="https://growstack-static-content.s3.us-east-1.amazonaws.com/final.mp4"
+        src="https://growstack-static-content.s3.us-east-1.amazonaws.com/landingpagevideos.mp4"
         autoPlay
         playsInline
         loop
@@ -75,7 +74,7 @@ const AnimationStory = () => {
           <h1 className="text-black text-[16px] sm:text-[24px] md:text-[36px] lg:text-[42px] text-center sm:text-start max-w-[620px] w-full font-medium mb-1">
             AI for
             <span className="font-extrabold text-[#2DA771] px-2">
-              Smarter Writing, Engagement, & Automation
+              Smarter Writing, Engagement  & Automation
             </span>
           </h1>
           <div className="flex flex-col text-center sm:text-start sm:text-[16px] md:text-[20px] font-semibold">
