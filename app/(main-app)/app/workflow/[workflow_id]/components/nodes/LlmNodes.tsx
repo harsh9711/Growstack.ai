@@ -7,14 +7,16 @@ import {
   addVariable,
   deleteNodeById,
   removeNodeById,
+  removeNodeDependency,
   updateNodeById,
+  updateNodeDependency,
   updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { extractParameterValues } from "@/utils/dataResolver";
 import { VariableNameProps, WorkflowNodeState } from "@/types/workflows";
 import { getVariableName, isSpecialType } from "@/utils/helper";
 import { useSnackbar } from "../snackbar/SnackbarContext";
-import DeleteConfirmationModal from "../deleteconfirmationmodal/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../modals/deletemodal/DeleteModal";
 
 const LlmNodes = memo(
   ({
@@ -71,8 +73,63 @@ const LlmNodes = memo(
       setIsDropdownOpen(!isDropdownOpen);
     };
 
+    // const handleInputChange = useCallback(
+    //   (key: any, type: any, value: any, dependency?: string) => {
+    //     if (!isEdit) {
+    //       setShake(true);
+    //       setTimeout(() => setShake(false), 500);
+    //       return;
+    //     }
+
+    //     console.log("key-->", key, "type-->", type, "value-->", value);
+    //     console.log("dependencies-->", dependency);
+
+    //     dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
+
+    //     if (!isSpecialType(type)) return;
+
+    //     if (value && value.includes("$")) {
+    //       const index = nodes.findIndex(nds => nds.id === id);
+    //       const variableName = getVariableName(nodes, index);
+    //       if (dependency) {
+    //         dispatch(
+    //           updateNodeDependency({
+    //             nodeId: id,
+    //             data: { key, nodeId: dependency },
+    //           })
+    //         );
+    //         // setDependencies(prevDependencies => {
+    //         //   const newDependency = { key, nodeId: dependency };
+    //         //   const uniqueDependencies = new Set([
+    //         //     ...prevDependencies,
+    //         //     newDependency,
+    //         //   ]);
+    //         //   return Array.from(uniqueDependencies);
+    //         // });
+    //       }
+    //       const regex = /\$(?!\s*$).+/;
+    //       if (regex.test(value)) {
+    //         console.log("value-->", value);
+    //         setVariableNames([]);
+    //       } else {
+    //         setVariableNames(
+    //           variableName.filter(
+    //             (name): name is VariableNameProps => name !== null
+    //           )
+    //         );
+    //       }
+    //     } else {
+    //       dispatch(removeNodeDependency({ nodeId: id, key }));
+    //       // setDependencies(pre => pre.filter(dep => dep.key !== key));
+    //       setVariableNames([]);
+    //     }
+    //   },
+    //   [dispatch, id, nodes, dependencies, variableNames, isEdit, shake]
+    // );
+
+
     const handleInputChange = useCallback(
-      (key: any, type: any, value: any, dependency?: string) => {
+      (key: any, type: any, value: any, dependency: any) => {
         if (!isEdit) {
           setShake(true);
           setTimeout(() => setShake(false), 500);
@@ -86,36 +143,51 @@ const LlmNodes = memo(
 
         if (!isSpecialType(type)) return;
 
-        if (value && value.includes("$")) {
+        const singleDollarRegex = /^\$$/;
+        const validSequenceRegex = /.*\$$/;
+        const invalidPatternRegex = /\$(.*?)\$.*\S/;
+
+        if (singleDollarRegex.test(value)) {
           const index = nodes.findIndex(nds => nds.id === id);
           const variableName = getVariableName(nodes, index);
-          if (dependency) {
-            setDependencies(prevDependencies => {
-              const newDependency = { key, nodeId: dependency };
-              const uniqueDependencies = new Set([
-                ...prevDependencies,
-                newDependency,
-              ]);
-              return Array.from(uniqueDependencies);
-            });
-          }
-          const regex = /\$(?!\s*$).+/;
-          if (regex.test(value)) {
-            setVariableNames([]);
-          } else {
-            setVariableNames(
-              variableName.filter(
-                (name): name is VariableNameProps => name !== null
-              )
-            );
-          }
+          setVariableNames(
+            variableName.filter(
+              (name): name is VariableNameProps => name !== null
+            )
+          );
+        } else if (
+          validSequenceRegex.test(value) &&
+          !invalidPatternRegex.test(value)
+        ) {
+          const index = nodes.findIndex(nds => nds.id === id);
+          const variableName = getVariableName(nodes, index);
+
+          setVariableNames(
+            variableName.filter(
+              (name): name is VariableNameProps => name !== null
+            )
+          );
         } else {
+          // dispatch(removeNodeDependency({ nodeId: id, key }));
           setDependencies(pre => pre.filter(dep => dep.key !== key));
           setVariableNames([]);
+        }
+        if (dependency) {
+          // dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
+          setDependencies(prevDependencies => {
+            const newDependency = { key, nodeId: dependency };
+            const uniqueDependencies = new Set([
+              ...prevDependencies,
+              newDependency,
+            ]);
+            return Array.from(uniqueDependencies);
+          });
         }
       },
       [dispatch, id, nodes, dependencies, variableNames, isEdit, shake]
     );
+
+
 
     const handleNextClick = async () => {
       if (!node?.data?.parameters) return;
@@ -150,6 +222,9 @@ const LlmNodes = memo(
             nodeMasterId: node.data.nodeMasterId,
             position: { x: positionAbsoluteX, y: positionAbsoluteY },
             dependencies: dependencies.map(dps => dps.nodeId),
+            // dependencies: node.data?.dependencies
+            //   ? node.data.dependencies?.map(dps => dps.nodeId)
+            //   : [],
             parameters: updatedValue,
           };
 
@@ -193,7 +268,8 @@ const LlmNodes = memo(
       setNodes(nds => nds.filter(nds => nds.id !== id));
       dispatch(removeNodeById(id));
       dispatch(deleteNodeById(id));
-      success("Node delete successfully");
+      // success("The node has been successfully deleted");
+      success(`The ${data?.label} node has been successfully deleted`);
     };
 
     const handleOpenActionModal = () => {

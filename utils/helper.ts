@@ -1,4 +1,5 @@
 import { NodeState, VariableNameProps } from "@/types/workflows";
+import { extractParameterValues } from "./dataResolver";
 
 export const calculateNextNodePosition = (
   lastNode: NodeState | undefined,
@@ -67,4 +68,45 @@ export const getInputType = (label: string) => {
     default:
       return "text";
   }
+};
+
+export const prepareNodesPayload = (
+  nodes: NodeState[],
+  workFlowDataId: string
+) => {
+  if (!nodes.length) return [];
+
+  return nodes?.map(node => {
+    const updatedValue = extractParameterValues(node?.data?.parameters);
+    const dependencies = node.data?.dependencies || [];
+
+    const nodePayload: any = {
+      workflowId: workFlowDataId,
+      nodeMasterId: node.data.nodeMasterId,
+      position: node.position,
+      dependencies: dependencies?.map(dps => dps.nodeId),
+      parameters: updatedValue,
+      name: node.data.label || "",
+      description: node.data.descriptions || "",
+      type: node.type,
+    };
+
+    if (node.data?.subNodes && node.data.subNodes?.length > 0) {
+      const filteredSubNodes = node.data.subNodes
+        .map(subNode => ({
+          nodeMasterId: subNode.nodeMasterId,
+          parameters: extractParameterValues(subNode.parameters),
+        }))
+        .filter(subNode =>
+          Object.values(subNode.parameters).some((param: any) => {
+            return param;
+          })
+        );
+
+      nodePayload.subNodes =
+        filteredSubNodes.length > 0 ? filteredSubNodes : [];
+    }
+
+    return nodePayload;
+  });
 };

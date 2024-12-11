@@ -6,22 +6,22 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 
-interface DeleteConfirmationModalProps {
-  openDeleteConfirmationModal: boolean;
-  onCloseDeleteConfirmationModal: () => void;
-  onDeleteNode: () => void;
+interface PublishConfirmationModalProps {
+  openPublishConfirmationModal: boolean;
+  onClosePublishConfirmationModal: () => void;
+  onPublishNode: () => void;
 }
 
-const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
-  openDeleteConfirmationModal,
-  onCloseDeleteConfirmationModal,
-  onDeleteNode,
+const PublishConfirmationModal: React.FC<PublishConfirmationModalProps> = ({
+  openPublishConfirmationModal,
+  onClosePublishConfirmationModal,
+  onPublishNode,
 }) => {
   return (
     <div>
       <Dialog
-        open={openDeleteConfirmationModal}
-        onClose={() => onCloseDeleteConfirmationModal()}
+        open={openPublishConfirmationModal}
+        onClose={() => { }}
         className="relative z-10 bg-white"
       >
         <DialogBackdrop
@@ -37,10 +37,10 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
             >
               <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                 <div className="text-center">
-                  <div className="delete_icon_image">
+                  <div className="publish_icon_image">
                     <img
-                      src="/assets/node_icon/delete_icon.svg"
-                      alt="delete icon"
+                      src="/assets/node_icon/publish_icon.svg"
+                      alt="publish icon"
                       className="mx-auto w-[50px]"
                     />
                   </div>
@@ -49,12 +49,12 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
                       as="h3"
                       className="text-[20px] font-semibold text-[#14171B]"
                     >
-                      Are you sure you want to <br /> delete this node?
+                      Are you sure you want to publish?
                     </DialogTitle>
                     <div className="mt-2">
                       <p className="text-[14px] text-[#14171B] font-normal">
-                        Deleting this node will permanently remove it from your
-                        system
+                        You can still edit the workflow after publishing, but
+                        make sure everything is ready before proceeding.
                       </p>
                     </div>
                   </div>
@@ -64,18 +64,18 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
                 <button
                   type="button"
                   data-autofocus
-                  onClick={() => onCloseDeleteConfirmationModal()}
-                  className="inline-flex items-center w-[180px] h-[45px] justify-center rounded-[10px] bg-white text-sm font-medium text-[#878787] border-[1px]
-                border-[#878787]"
+                  onClick={() => onClosePublishConfirmationModal()}
+                  className="inline-flex items-center w-[180px] h-[45px] justify-center rounded-[10px] bg-white text-sm font-medium text-[#F6828F] border-[1px]
+                border-[#F6828F]"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
-                  className="inline-flex items-center w-[180px] h-[45px] justify-center rounded-[10px] bg-[#FF2147] text-sm font-medium text-white"
-                  onClick={() => onDeleteNode()}
+                  className="inline-flex items-center w-[180px] h-[45px] justify-center rounded-[10px] bg-[#2DA771] text-sm font-medium text-white"
+                  onClick={onPublishNode}
                 >
-                  Delete
+                  Publish
                 </button>
               </div>
             </DialogPanel>
@@ -86,4 +86,4 @@ const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
   );
 };
 
-export default DeleteConfirmationModal;
+export default PublishConfirmationModal;

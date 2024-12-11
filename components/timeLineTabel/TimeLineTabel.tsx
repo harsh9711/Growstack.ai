@@ -330,7 +330,7 @@ const TimeLineTable = ({
                     {new Date(item?.nextRun).toLocaleString("en-US", {
                       dateStyle: "medium", // Example: Nov 27, 2024
                       timeStyle: "short", // Example: 1:45 PM
-                      timeZone: "UTC", // Adjust for UTC or any specific timezone
+                      timeZone: item?.timezone || "UTC", // Use dynamic timezone or default to UTC
                     })}
                   </td>
                   <td className="p-3">

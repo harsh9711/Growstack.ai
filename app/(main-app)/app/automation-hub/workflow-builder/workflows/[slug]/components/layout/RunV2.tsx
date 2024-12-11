@@ -79,6 +79,7 @@ const Run: React.FC<any> = ({
   const [executionId, setExecutionId] = useState(initialExecutionId || "");
   const [runSummaryData, setRunSummaryData] = useState<any>([]);
   const [workflowStatsData, setWorkflowStatsData] = useState<any>([]);
+  const [isStoppedInternal, setIsStoppedInternal] = useState<any>(false);
 
   useEffect(() => {
     if (workflowId) {
@@ -270,11 +271,7 @@ const Run: React.FC<any> = ({
         status: status,
         approvalDetails: approvals,
       });
-      if (
-        status === "completed" ||
-        status === "awaiting-approval" ||
-        status === "failed"
-      ) {
+      if (status === "completed" || status === "failed") {
         return true;
       }
     } catch (error) {
@@ -291,13 +288,19 @@ const Run: React.FC<any> = ({
           try {
             const shouldStop = await pollingWorkflowExec();
             if (shouldStop) {
+              setIsStoppedInternal(true)
               clearInterval(interval);
             }
           } catch (error) {
+            setIsStoppedInternal(true)
             console.error("Error during polling:", error);
             clearInterval(interval); // Clear on error as well, if needed.
           }
         }, 5000);
+        if(isStoppedInternal) {
+          setIsStoppedInternal(false)
+          clearInterval(interval); // Clear on error as well, if needed.
+        }
       };
 
       startPolling();
@@ -564,7 +567,9 @@ const Run: React.FC<any> = ({
                         className={clsx(
                           "bg-primary-light-shade-green flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 text-white"
                         )}
-                        disabled={isWorkflowDisabled(workFlowData?.input_configs)}
+                        disabled={isWorkflowDisabled(
+                          workFlowData?.input_configs
+                        )}
                         onClick={handleRunWorkFlow}
                       >
                         {isLoading && <Spinner />}
@@ -575,7 +580,9 @@ const Run: React.FC<any> = ({
                           "bg-transparent border-2 border-green-200 flex flex-row items-center justify-center rounded-lg p-4 h-[46px] gap-3 "
                         )}
                         onClick={() => setIsSchedulerModalOpen(true)}
-                        disabled={isWorkflowDisabled(workFlowData?.input_configs)}
+                        disabled={isWorkflowDisabled(
+                          workFlowData?.input_configs
+                        )}
                       >
                         <Clock size={20} color="#2DA771" />
                         <h2 className="text-primary-light-shade-green">

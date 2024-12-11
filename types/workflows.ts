@@ -42,7 +42,7 @@ export interface NodeDataState {
   subNodes?: SubNodeProps[];
   descriptions?: string;
   dependencies?: { key: string; nodeId: string }[];
-  parameters?: {
+  parameters: {
     [key: string]: NodeParameter;
   };
 }
@@ -145,6 +145,7 @@ export interface WorkflowDataState {
   _id?: string;
   name?: string;
   description?: string;
+  userId?: string;
   nodes?: WorkflowNodeState[];
   status?: string;
   createdAt?: Date;

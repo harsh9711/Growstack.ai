@@ -8,7 +8,9 @@ import Image from "next/image";
 import {
   deleteNodeById,
   removeNodeById,
+  removeNodeDependency,
   updateNodeById,
+  updateNodeDependency,
   updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -17,7 +19,7 @@ import {
   VariableNameProps,
   WorkflowNodeState,
 } from "@/types/workflows";
-import DeleteConfirmationModal from "../../deleteconfirmationmodal/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../../modals/deletemodal/DeleteModal";
 import { useSnackbar } from "../../snackbar/SnackbarContext";
 import { authenticateUser } from "@/utils/paraGonAuth";
 
@@ -153,14 +155,15 @@ const GmailNode = memo(
           const variableName = getVariableName(nodes, index);
           console.log("variableName-->", variableName);
           if (dependency) {
-            setDependencies(prevDependencies => {
-              const newDependency = { key, nodeId: dependency };
-              const uniqueDependencies = new Set([
-                ...prevDependencies,
-                newDependency,
-              ]);
-              return Array.from(uniqueDependencies);
-            });
+            // setDependencies(prevDependencies => {
+            //   const newDependency = { key, nodeId: dependency };
+            //   const uniqueDependencies = new Set([
+            //     ...prevDependencies,
+            //     newDependency,
+            //   ]);
+            //   return Array.from(uniqueDependencies);
+            // });
+            dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
           }
           const regex = /\$(?!\s*$).+/;
           if (regex.test(value)) {
@@ -173,7 +176,8 @@ const GmailNode = memo(
             );
           }
         } else {
-          setDependencies(pre => pre.filter(dep => dep.key !== key));
+          // setDependencies(pre => pre.filter(dep => dep.key !== key));
+          dispatch(removeNodeDependency({ nodeId: id, key }));
           setVariableNames([]);
         }
       },
@@ -214,7 +218,8 @@ const GmailNode = memo(
             workflowId: workFlowData._id,
             nodeMasterId: node.data.nodeMasterId,
             position: { x: positionAbsoluteX, y: positionAbsoluteY },
-            dependencies: dependencies.map(dps => dps.nodeId),
+            // dependencies: dependencies.map(dps => dps.nodeId),
+            dependencies: node.data?.dependencies ? node.data.dependencies?.map(dps => dps.nodeId) : [],
             parameters: updatedValue,
           };
 
@@ -233,8 +238,8 @@ const GmailNode = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-                k => node.data.parameters?.[k] === param
-              )
+              k => node.data.parameters?.[k] === param
+            )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -258,7 +263,8 @@ const GmailNode = memo(
       setNodes(nds => nds.filter(nds => nds.id !== id));
       dispatch(removeNodeById(id));
       dispatch(deleteNodeById(id));
-      success("Node delete successfully");
+      // success("The node has been successfully deleted");
+      success(`The ${data?.label} node has been successfully deleted`);
     };
 
     const handleChange = (event: {
@@ -410,7 +416,13 @@ const GmailNode = memo(
                   isConnectable={false}
                 />
               </div>
-
+              <Handle
+                  id={`${id}-target`}
+                  type="target"
+                  position={Position.Left}
+                  className="w-[10px] h-[10px] bg-[#2DA771]"
+                  isConnectable={false}
+                />
               <div
                 className="toggle-button-box absolute right-0 left-0 mx-auto bottom-[-10px] z-10 cursor-pointer"
                 onClick={handleDropdownClick}
@@ -469,7 +481,8 @@ const GmailNode = memo(
                 )}
               </div>
 
-              <div className="mb-2 search-box flex items-center p-2 rounded-lg border border-[#EBEBEB]  bg-[#F7F7F7]">
+              {/* Not needed now */}
+              {/* <div className="mb-2 search-box flex items-center p-2 rounded-lg border border-[#EBEBEB]  bg-[#F7F7F7]">
                 <Image
                   src="/images/workflow/search-normal.svg"
                   alt="Search"
@@ -482,14 +495,13 @@ const GmailNode = memo(
                   placeholder="Search"
                   className="bg-[#F7F7F7] w-full focus:outline-none"
                 />
-              </div>
+              </div> */}
 
               <div
-                className={`node-content-wrapper relative ${
-                  !isSignedUp
-                    ? "before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-white before:opacity-[45%]"
-                    : ""
-                }`}
+                className={`node-content-wrapper relative ${!isSignedUp
+                  ? "before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-white before:opacity-[45%]"
+                  : ""
+                  }`}
               >
                 {/* <div className="trigger-box">
                   <h3 className="text-[16px] font-medium text-[#14171B] mb-4">
@@ -575,7 +587,7 @@ const GmailNode = memo(
                                 inputKey={key}
                                 param={param}
                                 handleInputChange={
-                                  isEdit ? handleInputChange : () => {}
+                                  isEdit ? handleInputChange : () => { }
                                 }
                                 variableNames={variableNames}
                                 focusedInputKey={focusedInputKey}

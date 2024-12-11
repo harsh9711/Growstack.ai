@@ -139,9 +139,9 @@ const FileUpload: React.FC<any> = ({
           <p className="mt-2 text-sm text-gray-500">
             Drag & drop your file here, or click to select a file
           </p>
-          {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
         </>
       )}
+      {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
     </div>
   );
 };

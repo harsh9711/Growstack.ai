@@ -84,6 +84,8 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
 
       const updatedNodes = resolveWorkflowNodes(result.nodes);
 
+      console.log("Result--------------->", updatedNodes);
+
       // @ts-ignore
       setNodes(updatedNodes);
       // @ts-ignore
