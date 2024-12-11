@@ -8,7 +8,7 @@
   }
   .timeLine {
     padding: 150px 0 220px;
-    @media screen and (max-width: $breakpoint_tablet) {
+    @media screen and (max-width: $breakpoint_mini_laptop2) {
       padding: 0px 0 80px;
     }
     @media screen and (max-width: $breakpoint_mobile_portrait) {
@@ -31,7 +31,7 @@
     top: 50%;
     transform: translateY(-50%) translateX(-50%);
     background: #00b783;
-    @media screen and (max-width: $breakpoint_tablet) {
+    @media screen and (max-width: $breakpoint_mini_laptop2) {
       display: none;
     }
   }
@@ -104,7 +104,7 @@
         }
       }
     }
-    @media screen and (max-width: $breakpoint_tablet) {
+    @media screen and (max-width: $breakpoint_mini_laptop2) {
       width: 45%;
       margin: 0;
       min-height: auto;
@@ -140,7 +140,7 @@
     padding: 20px;
     text-align: center;
     font-weight: 700;
-    @media screen and (max-width: $breakpoint_tablet) {
+    @media screen and (max-width: $breakpoint_mini_laptop2) {
       display: none;
     }
     &::after {
@@ -176,7 +176,7 @@
     position: absolute;
     top: 85%;
     left: -40px;
-    @media screen and (max-width: $breakpoint_tablet) {
+    @media screen and (max-width: $breakpoint_mini_laptop2) {
       width: 100%;
 
       min-height: 100%;
@@ -193,7 +193,7 @@
     position: absolute;
     top: 85%;
     left: -40px;
-    @media screen and (max-width: $breakpoint_tablet) {
+    @media screen and (max-width: $breakpoint_mini_laptop2) {
       width: 100%;
 
       min-height: 100%;
@@ -210,7 +210,7 @@
     position: absolute;
     top: 85%;
     left: -40px;
-    @media screen and (max-width: $breakpoint_tablet) {
+    @media screen and (max-width: $breakpoint_mini_laptop2) {
       width: 100%;
 
       min-height: 100%;
@@ -228,7 +228,7 @@
     top: 85%;
     left: -40px;
 
-    @media screen and (max-width: $breakpoint_tablet) {
+    @media screen and (max-width: $breakpoint_mini_laptop2) {
       width: 100%;
 
       min-height: 100%;
@@ -246,7 +246,7 @@
     top: 85%;
     left: -40px;
 
-    @media screen and (max-width: $breakpoint_tablet) {
+    @media screen and (max-width: $breakpoint_mini_laptop2) {
       width: 100%;
 
       min-height: 100%;
@@ -356,7 +356,7 @@
   }
   .conference-timeline-content {
     width: 100%;
-    @media screen and (max-width: $breakpoint_tablet) {
+    @media screen and (max-width: $breakpoint_mini_laptop2) {
       display: flex;
       flex-wrap: wrap;
       gap: 25px;

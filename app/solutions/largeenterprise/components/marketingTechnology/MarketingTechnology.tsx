@@ -21,7 +21,7 @@ const MarketingTechnology: React.FC = () => {
       subtitle: "Reduce decision-making time by 40% increase efficiency",
       tags: ["AI chat"],
       description:
-        "Offers advanced market research capabilities and industry insights through top LLMs for in-depth, multi- region market analysis, competitive intelligence, and strategic global decision- making.",
+        "Offers advanced market research capabilities and industry insights through top LLMs for in-depth, multi- region market analysis, competitive intelligence  and strategic global decision- making.",
       icon: "/solutionsmarketing/contacts.svg",
     },
     {
@@ -30,7 +30,7 @@ const MarketingTechnology: React.FC = () => {
       subtitle: "Boost productivity Optimize Return Of Invest by 20%",
       tags: ["AI APPS"],
       description:
-        "Offers a broad suite of over 60 AI-powered applications with multi-modal functionality and advanced features for high-level content creation, lead generation, and sales forecasting.",
+        "Offers a broad suite of over 60 AI-powered applications with multi-modal functionality and advanced features for high-level content creation, lead generation  and sales forecasting.",
       icon: "/solutionsmarketing/aiPlay.svg",
     },
     {
@@ -48,7 +48,7 @@ const MarketingTechnology: React.FC = () => {
       subtitle: "Reduce decision-making time by 40% increase efficiency",
       tags: ["AI chat"],
       description:
-        "Offers advanced market research capabilities and industry insights through top LLMs for in-depth, multi- region market analysis, competitive intelligence, and strategic global decision- making.",
+        "Offers advanced market research capabilities and industry insights through top LLMs for in-depth, multi- region market analysis, competitive intelligence   and strategic global decision- making.",
       icon: "/solutionsmarketing/contacts.svg",
     },
     {
@@ -57,7 +57,7 @@ const MarketingTechnology: React.FC = () => {
       subtitle: "Boost productivity Optimize Return Of Invest by 20%",
       tags: ["AI APPS"],
       description:
-        "Offers a broad suite of over 60 AI-powered applications with multi-modal functionality and advanced features for high-level content creation, lead generation, and sales forecasting.",
+        "Offers a broad suite of over 60 AI-powered applications with multi-modal functionality and advanced features for high-level content creation, lead generation  and sales forecasting.",
       icon: "/solutionsmarketing/aiPlay.svg",
     },
     {
@@ -66,7 +66,7 @@ const MarketingTechnology: React.FC = () => {
       subtitle: "Automate routine tasks Save employees time by 50%",
       tags: ["AI assistant"],
       description:
-        "Customizable AI assistants for automating high-level research, routine tasks, data analysis, and operational efficiency, tailored to support various departments and scalable for enterprise-wide operations.",
+        "Customizable AI assistants for automating high-level research, routine tasks, data analysis  and operational efficiency, tailored to support various departments and scalable for enterprise-wide operations.",
       icon: "/solutionsmarketing/aiaWizard.svg",
     },
   ];

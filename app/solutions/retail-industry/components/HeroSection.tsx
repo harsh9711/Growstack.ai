@@ -34,7 +34,7 @@ const HeroSection = () => {
               className="text-[16px] 2xl:text-[18px] text-white mt-4 w-full max-w-[600px] leading-normal font-light"
             >
               Empower your retail operations with AI-driven solutions for
-              enhanced customer engagement, streamlined processes, and
+              enhanced customer engagement, streamlined processesand
               data-driven insights.{" "}
             </p>
 

@@ -24,7 +24,7 @@ const MarketingAutomate: React.FC = () => {
             </h2>
             <p>
               Marketing workflows, ensuring consistency and efficiency across
-              all marketing activates and helping you manage both daily tasks
+              all marketing activ and helping you manage both daily tasks
               and strategic initiatives.
             </p>
           </div>

@@ -26,7 +26,7 @@ export const testimonials = [
     id: 4,
     imageUrl: "/carousel/c4.svg",
     name: "Engagement and performance monitoring",
-    role: "Centralize social media interactions with the Social Media Conversation Hub, monitor performance with Social Media Analytics, and maintain brand reputation.",
+    role: "Centralize social media interactions with the Social Media Conversation Hub, monitor performance with Social Media Analytics and maintain brand reputation.",
     companyImage: "No doubt, Spend.In is the best!",
   },
   {

@@ -137,7 +137,7 @@ const Capability2 = () => {
                     </h5>
                     <p className="text-sm mt-4">
                       Utilize our apps to automate messaging workflows, maintain
-                      engagement, and boost customer satisfaction.
+                      engagement  and boost customer satisfaction.
                     </p>
                   </div>
                   <div className="text-center mt-6">

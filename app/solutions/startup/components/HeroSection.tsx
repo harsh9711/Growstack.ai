@@ -47,7 +47,7 @@ const HeroSection = () => {
               >
                 Growstack's integrated AI tools and dynamic solutions address
                 the rapid growth needs of startups. By providing robust market
-                analysis, automated content generation, and targeted customer
+                analysis, automated content generation and targeted customer
                 engagement, Growstack enables startups to establish a strong
                 market presence and accelerate their growth trajectory.
               </p>
@@ -128,7 +128,7 @@ const HeroSection = () => {
           </h1>
           <p className="text-[16px] 2xl:text-[18px] text-white mt-4 w-full  leading-tight font-light">
             Explore how Growstack's innovative AI solutions empower startups to
-            overcome challenges, streamline operations, and achieve rapid
+            overcome challenges, streamline operations and achieve rapid
             growth.
           </p>
         </div>

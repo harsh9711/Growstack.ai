@@ -59,7 +59,7 @@ const Benefits = () => {
     {
       firsttext: "AI templates:",
       secondtext:
-        "Streamlines content creation by providing pre-designed templates for articles, social media posts, and newsletters. This reduces the time spent on formatting and allows teams to focus on quality content.",
+        "Streamlines content creation by providing pre-designed templates for articles, social media posts and newsletters. This reduces the time spent on formatting and allows teams to focus on quality content.",
         imgsrc1: "/media/f2.svg",
       },
     {
