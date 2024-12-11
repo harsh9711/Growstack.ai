@@ -100,12 +100,12 @@ const RunSummary = ({ runSummaryData }: any) => {
                 {formatTimestamp(runSummaryData?.startTimestamp, "time")}
               </div>
             </div>
-            <div>
+           {runSummaryData?.endTimestamp && <div>
               <span className="text-xs font text-gray-400">End Time:</span>{" "}
               <div className="font-semibold">
                 {formatTimestamp(runSummaryData?.endTimestamp, "time")}
               </div>
-            </div>
+            </div>}
             {runSummaryData?.duration && (
               <div>
                 <span className="text-xs font text-gray-400">Duration:</span>{" "}
