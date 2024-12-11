@@ -650,7 +650,7 @@ export const AddFieldDropdown: React.FC<AddFieldDropdownProps> = ({
 
   const toggleDropdown = () => setIsOpen(!isOpen);
   const selectOption = (option: Option) => {
-    setSelectedOption(option);
+    // setSelectedOption(option);
     setIsOpen(false);
     onSelect(option);
   };

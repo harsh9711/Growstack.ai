@@ -43,7 +43,7 @@ const HeroSection: React.FC = () => {
                     Growstack's all-in-one AI marketing platform is designed for
                     small businesses facing tight budgets and limited manpower.
                     Our suite of AI-powered tools automates content creation,
-                    optimizes marketing workflows, and enhances customer
+                    optimizes marketing workflows  and enhances customer
                     interactions, enabling small businesses to achieve
                     significant marketing efficiency and drive growth.
                   </p>

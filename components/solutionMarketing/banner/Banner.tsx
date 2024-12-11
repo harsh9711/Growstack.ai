@@ -28,7 +28,7 @@ const Banner: React.FC = () => {
                   />
                 </h2>
                 <p className="font-medium">
-                  Streamline your process, enahnce your campaigns, and maximize
+                  Streamline your process, enahnce your campaigns and maximize
                   your results with All-in-One AI powered Marketing solutions.
                 </p>
 

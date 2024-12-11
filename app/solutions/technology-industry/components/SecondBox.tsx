@@ -87,7 +87,7 @@ const props = [
       {
         pbolddiscription: "Lead Tracking & Follow-ups",
         subpdiscription:
-          "Simplifies lead tracking, follow-ups, and customer interactions for sales teams",
+          "Simplifies lead tracking, follow-ups and customer interactions for sales teams",
       },
     ],
     Subsubsubpoints: [
@@ -108,7 +108,7 @@ const props = [
 
     subpointspheading: "Challenge",
     subpointspdiscription:
-      "Launching new tech products requires content creation for websites, marketing, and product documentation.",
+      "Launching new tech products requires content creation for websites, marketing and product documentation.",
 
     subpheading: "Growstack solution",
     Subsubpoints: [
@@ -119,7 +119,7 @@ const props = [
       {
         pbolddiscription: "AI Content Wizard",
         subpdiscription:
-          "Quickly generates optimized website copy, marketing materials, and user guides for new products",
+          "Quickly generates optimized website copy, marketing materials and user guides for new products",
       },
     ],
     Subsubsubpoints: [

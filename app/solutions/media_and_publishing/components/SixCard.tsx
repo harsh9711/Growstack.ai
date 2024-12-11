@@ -25,7 +25,7 @@ export const cases = [
     imageUrl: <Icon111 />,
     name: "All-in-one platform for media professionals",
     description:
-      "Growstack offers a wide range of AI-driven tools that streamline content production, enhance audience engagement, and optimize monetization strategies, making it an all-in-one platform for media professionals.",
+      "Growstack offers a wide range of AI-driven tools that streamline content production, enhance audience engagement and optimize monetization strategies, making it an all-in-one platform for media professionals.",
   },
   {
     id: 2,

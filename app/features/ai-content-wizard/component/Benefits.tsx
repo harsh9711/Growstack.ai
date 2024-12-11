@@ -53,7 +53,7 @@ const boxes = [
   },
   {
     heading: "Language",
-    para: "Available in English, Spanish, French, Hindi, and more.",
+    para: "Available in English, Spanish, French, Hindi and more.",
   },
 ];
 

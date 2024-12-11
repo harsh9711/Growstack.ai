@@ -34,7 +34,7 @@ const HeroSection = () => {
               data-aos-duration="1500"
               className="text-[16px] 2xl:text-[18px] sm:text-start text-center text-white mt-4 w-full max-w-[600px] leading-normal font-light"
             >
-              Optimize operations, enhance customer experience, and drive sales
+              Optimize operations, enhance customer experience and drive sales
               with Growstack{" "}
             </p>
 

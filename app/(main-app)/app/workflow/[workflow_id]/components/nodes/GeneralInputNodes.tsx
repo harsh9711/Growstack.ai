@@ -36,8 +36,8 @@ const GeneralInputNodes = memo(
     const { isLoading } = useAppSelector(state => state.nodes);
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
     const [description, setDescription] = useState(data?.descriptions || "");
-    const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] =
-      useState(false);
+    const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] = useState(false);
+    const [loadingNode, setLoadingNode] = useState<boolean>(false);
 
     const node = useAppSelector(state =>
       state.nodes.nodes.find(node => node.id === id)
@@ -70,6 +70,8 @@ const GeneralInputNodes = memo(
 
       if (allRequiredParamsFilled) {
         const updatedValue = extractParameterValues(node.data.parameters);
+        setLoadingNode(true);
+        console.log("updatedValue-->", updatedValue);
 
         dispatch(
           addVariable({
@@ -120,8 +122,12 @@ const GeneralInputNodes = memo(
           success("Node updated successfully");
 
           setIsNextBoxOpen(true);
+
+          setLoadingNode(false);
+
         } catch (error: any) {
           console.error("error-->", error?.message);
+          setLoadingNode(false);
         }
       } else {
         requiredParams.forEach(param => {
@@ -170,30 +176,28 @@ const GeneralInputNodes = memo(
 
     // ON CLICK OPEN & CLOSE ACTION MODAL
     const [isActionModalShow, setIsActionModalShow] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement | null>(null);
 
     const handleOpenActionModal = () => {
       setIsActionModalShow(!isActionModalShow);
     };
 
-    const handleClickOutside = useCallback(
-      (event: MouseEvent) => {
-        if (
-          dropdownRef.current &&
-          !dropdownRef.current.contains(event.target as Node)
-        ) {
-          setIsActionModalShow(false);
-        }
-      },
-      [dropdownRef]
-    );
+    // ON OUTSIDE CLICK CLOSE ACTION MODAL
+    const handleOutsideClick = (e: MouseEvent) => {
+      const modal = document.getElementById("node-action-modal");
+      if (modal && !modal.contains(e.target as Node)) {
+        setIsActionModalShow(false);
+      }
+    };
 
     useEffect(() => {
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [handleClickOutside]);
+      if (isActionModalShow) {
+        document.addEventListener("click", handleOutsideClick);
+      } else {
+        document.removeEventListener("click", handleOutsideClick);
+      }
+
+      return () => document.removeEventListener("click", handleOutsideClick);
+    }, [isActionModalShow]);
 
     const handleCloseDeleteConfirmationModal = () => {
       setOpenDeleteConfirmationModal(false);
@@ -256,8 +260,9 @@ const GeneralInputNodes = memo(
                 <div className="modal">
                   {isActionModalShow && (
                     <div
-                      ref={dropdownRef}
+                      // ref={dropdownRef}
                       className="absolute right-[-126px] top-[0px] mt-2 w-48 bg-white rounded-[15px] border-[1px] border-[#E8E8E8] shadow-2xl z-50"
+                      id="node-action-modal"
                     >
                       <ul className="py-2">
                         <li className="px-4 py-2 cursor-pointer">
@@ -363,9 +368,9 @@ const GeneralInputNodes = memo(
                     <button
                       onClick={handleNextClick}
                       className="bg-[#2DA771] text-white text-sm font-medium p-3 w-full rounded-[10px]"
-                      disabled={isLoading}
+                      disabled={loadingNode}
                     >
-                      {isLoading ? (
+                      {loadingNode ? (
                         <div className="flex justify-center items-center">
                           <div className="loader ease-linear rounded-full border-4 border-gray-200 border-t-4 border-t-[#2DA771] h-6 w-6" />
                         </div>

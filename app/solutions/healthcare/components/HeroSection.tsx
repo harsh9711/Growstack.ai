@@ -26,7 +26,7 @@ const HeroSection = () => {
             >
               <span className="font-semibold">
                 Unlock the future of media & publishing
-                <span className="font-light">with AI solutions</span>
+                <span className="font-light"> with AI solutions</span>
               </span>{" "}
             </h1>
             <p

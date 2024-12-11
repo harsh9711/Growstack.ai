@@ -23,7 +23,7 @@ const Boxpage = () => {
           <p className="sm:text-[16px] text-[12px] sm:text-start text-center font-medium">
             Growstack is an AI-powered platform that streamlines operations and
             boosts productivity for technology businesses. Our intelligent tools
-            automate tasks, provide valuable insights, and enhance security,
+            automate tasks, provide valuable insights and enhance security,
             allowing you to focus on innovation.
           </p>
           <h2 className="sm:text-[24px] text-[16px] font-bold text-[#034737]">
@@ -31,7 +31,7 @@ const Boxpage = () => {
           </h2>
           <p className="sm:text-[16px] text-[12px] sm:text-start text-center font-medium">
             In today's fast-paced tech landscape, leveraging AI is essential. It
-            optimizes workflows, improves customer engagement, and safeguards
+            optimizes workflows, improves customer engagement and safeguards
             data, giving your business a competitive edge.
           </p>
         </div>

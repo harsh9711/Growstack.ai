@@ -34,7 +34,7 @@ const CustomAccordion = () => {
 
     {
       header: "What languages are supported?",
-      body: "We support multiple languages including English, Spanish, French, Hindi, and more, allowing you to create content for a global audience",
+      body: "We support multiple languages including English, Spanish, French, Hindi and more, allowing you to create content for a global audience",
     },
   ];
 
