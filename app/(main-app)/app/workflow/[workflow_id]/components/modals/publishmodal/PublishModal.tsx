@@ -9,19 +9,19 @@ import {
 interface PublishConfirmationModalProps {
   openPublishConfirmationModal: boolean;
   onClosePublishConfirmationModal: () => void;
-  // onPublishNode: () => void;
+  onPublishNode: () => void;
 }
 
 const PublishConfirmationModal: React.FC<PublishConfirmationModalProps> = ({
   openPublishConfirmationModal,
   onClosePublishConfirmationModal,
-  // onPublishNode,
+  onPublishNode,
 }) => {
   return (
     <div>
       <Dialog
         open={openPublishConfirmationModal}
-        onClose={() => {}}
+        onClose={() => { }}
         className="relative z-10 bg-white"
       >
         <DialogBackdrop
@@ -73,7 +73,7 @@ const PublishConfirmationModal: React.FC<PublishConfirmationModalProps> = ({
                 <button
                   type="button"
                   className="inline-flex items-center w-[180px] h-[45px] justify-center rounded-[10px] bg-[#2DA771] text-sm font-medium text-white"
-                  // onClick={() => onPublishNode()}
+                  onClick={onPublishNode}
                 >
                   Publish
                 </button>

@@ -77,7 +77,7 @@ export const prepareNodesPayload = (
   if (!nodes.length) return [];
 
   return nodes?.map(node => {
-    const updatedValue = extractParameterValues(node?.data?.parameters || {});
+    const updatedValue = extractParameterValues(node?.data?.parameters);
     const dependencies = node.data?.dependencies || [];
 
     const nodePayload: any = {
@@ -95,10 +95,12 @@ export const prepareNodesPayload = (
       const filteredSubNodes = node.data.subNodes
         .map(subNode => ({
           nodeMasterId: subNode.nodeMasterId,
-          parameters: extractParameterValues(subNode.parameters || {}),
+          parameters: extractParameterValues(subNode.parameters),
         }))
         .filter(subNode =>
-          Object.values(subNode.parameters).some((param: any) => param?.value)
+          Object.values(subNode.parameters).some((param: any) => {
+            return param;
+          })
         );
 
       nodePayload.subNodes =

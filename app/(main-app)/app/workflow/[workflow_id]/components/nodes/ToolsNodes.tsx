@@ -75,64 +75,123 @@ const ToolsNodes = memo(
       setIsDropdownOpen(!isDropdownOpen);
     };
 
+    // const handleInputChange = useCallback(
+    //   (key: any, type: any, value: any, dependency?: string) => {
+
+
+    //     if (!isEdit) {
+    //       setShake(true);
+    //       setTimeout(() => setShake(false), 500);
+    //       return;
+    //     }
+
+    //     console.log(
+    //       "key-->",
+    //       key,
+    //       "type-->",
+    //       type,
+    //       "value-->",
+    //       value,
+    //       "dependencies--->",
+    //       dependency
+    //     );
+
+    //     dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
+
+    //     if (!isSpecialType(type)) return;
+
+    //     if (value && value.includes("$")) {
+    //       const index = nodes.findIndex(nds => nds.id === id);
+    //       const variableName = getVariableName(nodes, index);
+    //       console.log("variableName-->", variableName);
+    //       if (dependency) {
+    //         dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
+    //         // setDependencies(prevDependencies => {
+    //         //   const newDependency = { key, nodeId: dependency };
+    //         //   const uniqueDependencies = new Set([
+    //         //     ...prevDependencies,
+    //         //     newDependency,
+    //         //   ]);
+    //         //   return Array.from(uniqueDependencies);
+    //         // });
+    //       }
+    //       const regex = /\$(?!\s*$).+/;
+    //       if (regex.test(value)) {
+    //         setVariableNames([]);
+    //       } else {
+    //         setVariableNames(
+    //           variableName.filter(
+    //             (name): name is VariableNameProps => name !== null
+    //           )
+    //         );
+    //       }
+    //     } else {
+    //       dispatch(removeNodeDependency({ nodeId: id, key }));
+    //       // setDependencies(pre => pre.filter(dep => dep.key !== key));
+    //       setVariableNames([]);
+    //     }
+    //   },
+    //   [dispatch, id, nodes, dependencies, variableNames, isEdit]
+    // );
+
     const handleInputChange = useCallback(
-      (key: any, type: any, value: any, dependency?: string) => {
-
-
+      (key: any, type: any, value: any, dependency: any) => {
         if (!isEdit) {
           setShake(true);
           setTimeout(() => setShake(false), 500);
           return;
         }
 
-        console.log(
-          "key-->",
-          key,
-          "type-->",
-          type,
-          "value-->",
-          value,
-          "dependencies--->",
-          dependency
-        );
+        console.log("key-->", key, "type-->", type, "value-->", value);
+        console.log("dependencies-->", dependency);
 
         dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
 
         if (!isSpecialType(type)) return;
 
-        if (value && value.includes("$")) {
+        const singleDollarRegex = /^\$$/;
+        const validSequenceRegex = /.*\$$/;
+        const invalidPatternRegex = /\$(.*?)\$.*\S/;
+
+        if (singleDollarRegex.test(value)) {
           const index = nodes.findIndex(nds => nds.id === id);
           const variableName = getVariableName(nodes, index);
-          console.log("variableName-->", variableName);
-          if (dependency) {
-            dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
-            // setDependencies(prevDependencies => {
-            //   const newDependency = { key, nodeId: dependency };
-            //   const uniqueDependencies = new Set([
-            //     ...prevDependencies,
-            //     newDependency,
-            //   ]);
-            //   return Array.from(uniqueDependencies);
-            // });
-          }
-          const regex = /\$(?!\s*$).+/;
-          if (regex.test(value)) {
-            setVariableNames([]);
-          } else {
-            setVariableNames(
-              variableName.filter(
-                (name): name is VariableNameProps => name !== null
-              )
-            );
-          }
+          setVariableNames(
+            variableName.filter(
+              (name): name is VariableNameProps => name !== null
+            )
+          );
+        } else if (validSequenceRegex.test(value) && !invalidPatternRegex.test(value)) {
+          const index = nodes.findIndex(nds => nds.id === id);
+          const variableName = getVariableName(nodes, index);
+
+
+
+          setVariableNames(
+            variableName.filter(
+              (name): name is VariableNameProps => name !== null
+            )
+          );
         } else {
-          dispatch(removeNodeDependency({ nodeId: id, key }));
-          // setDependencies(pre => pre.filter(dep => dep.key !== key));
+          // dispatch(removeNodeDependency({ nodeId: id, key }));
+          setDependencies(pre => pre.filter(dep => dep.key !== key));
           setVariableNames([]);
         }
+        if (dependency) {
+          // dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
+          setDependencies(prevDependencies => {
+            const newDependency = { key, nodeId: dependency };
+            const uniqueDependencies = new Set([
+              ...prevDependencies,
+              newDependency,
+            ]);
+            return Array.from(uniqueDependencies);
+          });
+        }
       },
-      [dispatch, id, nodes, dependencies, variableNames, isEdit]
+      [dispatch, id, nodes, dependencies, variableNames, isEdit, shake]
     );
+
 
     const handleNextClick = async () => {
       if (!node?.data?.parameters) return;
@@ -168,8 +227,8 @@ const ToolsNodes = memo(
             workflowId: workFlowData._id,
             nodeMasterId: node.data.nodeMasterId,
             position: { x: positionAbsoluteX, y: positionAbsoluteY },
-            // dependencies: dependencies.map(dps => dps.nodeId),
-            dependencies: node.data?.dependencies ? node.data.dependencies?.map(dps => dps.nodeId) : [],
+            dependencies: dependencies.map(dps => dps.nodeId),
+            // dependencies: node.data?.dependencies ? node.data.dependencies?.map(dps => dps.nodeId) : [],
             parameters: updatedValue,
           };
 

@@ -100,19 +100,33 @@ const nodeSlice = createSlice({
     ) => {
       const { nodeId, data } = action.payload;
       const nodeResult = state.nodes.find(node => node.id === nodeId);
+      // if (nodeResult) {
+      //   if (!nodeResult.data.dependencies) {
+      //     nodeResult.data.dependencies = [];
+      //   }
+
+      //   const dependencyExists = nodeResult.data.dependencies.some(
+      //     dep => dep.nodeId === data.nodeId && dep.key === data.key
+      //   );
+
+      //   if (!dependencyExists) {
+      //     nodeResult.data.dependencies.push(data);
+      //   }
+      // }
 
       if (nodeResult) {
-        const dependencyExists =
-          nodeResult.data.dependencies?.some(
-            dep => dep.nodeId === data.nodeId
-          ) ?? false;
-
-        if (!dependencyExists) {
-          if (!nodeResult.data.dependencies) {
-            nodeResult.data.dependencies = [];
-          }
-          nodeResult.data.dependencies.push(data);
+        if (!nodeResult.data.dependencies) {
+          nodeResult.data.dependencies = [];
         }
+
+        const newDependency = { key: data.key, nodeId: data.nodeId };
+
+        const uniqueDependencies = new Set([
+          ...nodeResult.data.dependencies,
+          newDependency,
+        ]);
+
+        nodeResult.data.dependencies = Array.from(uniqueDependencies);
       }
     },
 

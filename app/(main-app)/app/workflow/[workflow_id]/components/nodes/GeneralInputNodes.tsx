@@ -214,7 +214,6 @@ const GeneralInputNodes = memo(
           <div className="node-top-box relative">
             <div className="node-name-text-description text-center mb-3">
               <h4 className="text-sm font-medium text-[#2DA771]">
-                {" "}
                 {data?.label || ""}
               </h4>
 

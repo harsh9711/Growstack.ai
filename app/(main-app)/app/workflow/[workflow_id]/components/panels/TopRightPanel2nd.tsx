@@ -25,12 +25,6 @@ const TopRightPanel2nd = ({
   const { nodes } = useAppSelector(state => state.nodes);
   const edges = useEdges();
   const { success, error } = useSnackbar();
-
-  // console.log('---edges---', edges)
-
-  // console.log("-----JsonNOdes----", nodes);
-
-  // console.log("---workFlowData----", workFlowData);
   const [openPublishConfirmationModal, setOpenPublishConfirmationModal] =
     useState(false);
   const [openSaveFormModal, setOpenSaveFormModal] = useState(false);
@@ -75,6 +69,8 @@ const TopRightPanel2nd = ({
         edges: edges,
       };
 
+      console.log("----bodyPayload---", bodyPayload);
+
       await dispatch(
         updateWorkFlowById({
           id: workFlowData._id || "",
@@ -84,13 +80,37 @@ const TopRightPanel2nd = ({
       );
       success("Workflow saved successfully");
       setOpenSaveFormModal(false);
-      console.log("----bodyPayload---", bodyPayload);
     } catch (e: any) {
       console.log("----error---", e?.message);
       error("Failed to save workflow" + e?.message);
     }
   };
 
+  const handlePublishWorkFlow = async () => {
+    try {
+      const bodyPayload = {
+        name: workFlowData?.name,
+        description: workFlowData?.description || "",
+        // userId: workFlowData?.userId,
+        nodes: prepareNodesPayload(nodes, workFlowData._id || ""),
+        edges: edges,
+        status: "published",
+      };
+
+      await dispatch(
+        updateWorkFlowById({
+          id: workFlowData._id || "",
+          // @ts-ignore
+          data: bodyPayload,
+        })
+      );
+      success("Workflow published successfully");
+      setOpenPublishConfirmationModal(false);
+    } catch (e: any) {
+      console.log("----error---", e?.message);
+      error("Failed to save workflow" + e?.message);
+    }
+  };
 
   return (
     <div>
@@ -132,7 +152,7 @@ const TopRightPanel2nd = ({
           {workFlowData?.name || ""}
         </p> */}
 
-            <button
+            {/* <button
               className="check-button absolute top-[14px] right-[10px]"
               style={{ display: "block" }}
             >
@@ -151,7 +171,7 @@ const TopRightPanel2nd = ({
                 alt="single check"
                 className="w-[30px]"
               />
-            </button>
+            </button> */}
           </div>
         </div>
 
@@ -193,18 +213,16 @@ const TopRightPanel2nd = ({
         onClosePublishConfirmationModal={() =>
           handleClosePublishConfirmationModal()
         }
-      // onPublishNode={handleDeleteNode}
+        onPublishNode={handlePublishWorkFlow}
       />
 
       <SaveFormModal
         openSaveFormModal={openSaveFormModal}
         onCloseSaveFormModal={() => handleCloseSaveFormModal()}
-        onHandleSave={() => { }}      // onSaveFormNode={handleDeleteNode}
+        onHandleSave={() => { }} // onSaveFormNode={handleDeleteNode}
       />
     </div>
   );
 };
 
 export default TopRightPanel2nd;
-
-

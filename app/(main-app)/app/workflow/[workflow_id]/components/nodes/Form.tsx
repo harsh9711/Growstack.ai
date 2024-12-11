@@ -315,7 +315,6 @@ const Form = ({
     handleUpdateOptions();
   }, [currentSubNodes]);
 
-  console.log("updatedOptions", updatedOptions)
 
   return (
     <div>
@@ -533,7 +532,7 @@ const Form = ({
                           </div>
                         )}
                       </div>
-                      
+
                       <div className="advance-option-button-box mb-3">
                         <button
                           onClick={() =>
@@ -556,8 +555,8 @@ const Form = ({
                       onClick={handleNextClick}
                       className="bg-[#2DA771] text-white text-sm font-medium p-3 w-full rounded-[10px]"
                       disabled={node ? loadingNodes[node.data.nodeMasterId] : false}
-                      >
-                      { node && loadingNodes[node.data.nodeMasterId]? (
+                    >
+                      {node && loadingNodes[node.data.nodeMasterId] ? (
                         <div className="flex justify-center items-center">
                           <div className="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 h-6 w-6"></div>
                         </div>
