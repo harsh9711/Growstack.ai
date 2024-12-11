@@ -8,7 +8,10 @@ import { prepareNodesPayload } from "@/utils/helper";
 import { useEdges } from "@xyflow/react";
 import PublishConfirmationModal from "../modals/publishmodal/PublishModal";
 import SaveFormModal from "../modals/saveformmodal/SaveFormModal";
-import { onChangeWorkFlowData, updateWorkFlowById } from "@/lib/features/workflow/workflow.slice";
+import {
+  onChangeWorkFlowData,
+  updateWorkFlowById,
+} from "@/lib/features/workflow/workflow.slice";
 import { useSnackbar } from "../snackbar/SnackbarContext";
 
 const TopRightPanel2nd = ({
@@ -72,12 +75,13 @@ const TopRightPanel2nd = ({
         edges: edges,
       };
 
-
-      await dispatch(updateWorkFlowById({
-        id: workFlowData._id || "",
-        // @ts-ignore
-        data: bodyPayload,
-      }))
+      await dispatch(
+        updateWorkFlowById({
+          id: workFlowData._id || "",
+          // @ts-ignore
+          data: bodyPayload,
+        })
+      );
       success("Workflow saved successfully");
       setOpenSaveFormModal(false);
       console.log("----bodyPayload---", bodyPayload);
@@ -123,42 +127,62 @@ const TopRightPanel2nd = ({
           {/* <p className="text-[14px] font-semibold leading-[21px] font-poppins ml-2.5">
             {workFlowData?.name || ""}
           </p> */}
-        </div>
 
-        <div className="run-btn flex items-center justify-center gap-1">
-          {dummyData3.map((item, index) => (
-            <button
-              key={index.toString()}
-              className={`flex justify-center items-center m-2 cursor-pointer px-2.5 py-1.5 rounded-md text-base font-normal ${activeTab === index
-                ? "text-white bg-[#2DA771]"
-                : "text-black bg-transparent"
-                } shadow-lg`}
-              onClick={() => handleClick(index)}
-            >
-              {item.text}
-            </button>
-          ))}
-        </div>
-
-        <div className="">
-          <div className="action-button-box flex items-center gap-2">
-            <Button
-              className="w-auto h-auto bg-[#2DA771] shadow-md hover:bg-[#2DA771]"
-              // onClick={handleOpenSaveFormModal}
-              onClick={handleSaveWorkFlow}
-            >
-              Save
-            </Button>
-            <Button
-              className="w-auto h-auto bg-[#2DA771] shadow-md hover:bg-[#2DA771]"
-              onClick={handleOpenPublishConfirmationModal}
-            >
-              Publish
-            </Button>
-          </div>
+          <button
+            className="check-button absolute top-[14px] right-[10px]"
+            style={{ display: "block" }}
+          >
+            <img
+              src="/assets/node_icon/single-check.svg"
+              alt="single check"
+              className="w-[20px]"
+            />
+          </button>
+          <button
+            className="cross-button absolute top-[7px] right-[10px]"
+            style={{ display: "none" }}
+          >
+            <img
+              src="/assets/node_icon/close-icon.svg"
+              alt="single check"
+              className="w-[30px]"
+            />
+          </button>
         </div>
       </div>
 
+      <div className="run-btn flex items-center justify-center gap-1">
+        {dummyData3.map((item, index) => (
+          <button
+            key={index.toString()}
+            className={`flex justify-center items-center m-2 cursor-pointer px-2.5 py-1.5 rounded-md text-base font-normal ${activeTab === index
+              ? "text-white bg-[#2DA771]"
+              : "text-black bg-transparent"
+              } shadow-lg`}
+            onClick={() => handleClick(index)}
+          >
+            {item.text}
+          </button>
+        ))}
+      </div>
+
+      <div className="">
+        <div className="action-button-box flex items-center gap-2">
+          <Button
+            className="w-auto h-auto bg-[#2DA771] shadow-md hover:bg-[#2DA771]"
+            // onClick={handleOpenSaveFormModal}
+            onClick={handleSaveWorkFlow}
+          >
+            Save
+          </Button>
+          <Button
+            className="w-auto h-auto bg-[#2DA771] shadow-md hover:bg-[#2DA771]"
+            onClick={handleOpenPublishConfirmationModal}
+          >
+            Publish
+          </Button>
+        </div>
+      </div>
       <PublishConfirmationModal
         openPublishConfirmationModal={openPublishConfirmationModal}
         onClosePublishConfirmationModal={() =>
