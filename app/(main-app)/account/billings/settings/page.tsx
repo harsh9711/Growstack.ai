@@ -165,7 +165,6 @@ const OverViewSection = () => {
                 {planUsage?.usage_amount ? planUsage.usage_amount * 100 : 0}
               </h1>
             </div>
-
             {/* <div>
               <strong>subscription Plan is :</strong>{planUsage?.plan_name}
               <strong>ai Backdrop Credits :</strong> {planUsage?.usage.ai_background_generator_credits}
