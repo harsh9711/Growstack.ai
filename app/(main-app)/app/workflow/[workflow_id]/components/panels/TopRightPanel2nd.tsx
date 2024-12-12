@@ -204,23 +204,24 @@ const TopRightPanel2nd = ({
             </button>
           ))}
         </div>
-
-        <div className="">
-          <div className="action-button-box flex items-center gap-2">
-            <Button
-              className="w-auto h-auto bg-[#2DA771] shadow-md hover:bg-[#2DA771]"
-              onClick={handleSaveWorkFlow}
-            >
-              Save
-            </Button>
-            <Button
-              className="w-auto h-auto bg-[#2DA771] shadow-md hover:bg-[#2DA771]"
-              onClick={handleOpenPublishConfirmationModal}
-            >
-              Publish
-            </Button>
+        {activeTab === 0 ? (
+          <div className="">
+            <div className="action-button-box flex items-center gap-2">
+              <Button
+                className="w-auto h-auto bg-[#2DA771] shadow-md hover:bg-[#2DA771]"
+                onClick={handleSaveWorkFlow}
+              >
+                Save
+              </Button>
+              <Button
+                className="w-auto h-auto bg-[#2DA771] shadow-md hover:bg-[#2DA771]"
+                onClick={handleOpenPublishConfirmationModal}
+              >
+                Publish
+              </Button>
+            </div>
           </div>
-        </div>
+        ): <div className="w-[156px]" />}
       </div>
 
       <PublishConfirmationModal

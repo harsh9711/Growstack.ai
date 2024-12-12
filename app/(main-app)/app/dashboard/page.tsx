@@ -80,7 +80,14 @@ export default function Dashboard() {
         ...response?.data?.data,
       ]);
       setHasPreviousPage(response?.data?.pagination?.hasPreviousPage);
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Something went wrong");
+      }
       console.error("Error fetching pre-built templates:", error);
     } finally {
       setLoading(false);
@@ -100,7 +107,14 @@ export default function Dashboard() {
         ]);
         setHasPreviousPage(response?.data?.pagination?.hasPreviousPage);
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Something went wrong");
+      }
       console.error("Error fetching pre-built templates:", error);
     } finally {
       setLoading(false);
@@ -183,9 +197,16 @@ export default function Dashboard() {
         const response = await instance.get(
           `/workflow/search?keyword=${queryParams}`
         );
-         
-          setPreBuiltTemplates(response.data); // Update results with API response
-      } catch (error) {
+
+        setPreBuiltTemplates(response.data); // Update results with API response
+      } catch (error: any) {
+        if (error?.response) {
+          toast.error(error?.response?.data?.error);
+        } else if (error?.message) {
+          toast.error(error?.message);
+        } else {
+          toast.error("Something went wrong");
+        }
         console.error("Error fetching search results:", error);
       } finally {
         setLoading(false);
@@ -322,7 +343,7 @@ export default function Dashboard() {
             <div className="mt-10">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {preBuiltTemplates?.length > 0
-                  ? preBuiltTemplates.map(template => (
+                  ? preBuiltTemplates?.map(template => (
                       <Card
                         key={template._id}
                         title={template.name}
@@ -407,16 +428,20 @@ const Card: React.FC<CardProps> = ({
       );
       setIsModalOpen({ isOpen: false, type: "duplicate" });
       localStorage.removeItem("workflowActiveTab");
-      router.push(`/app/workflow/${response?.data?._id}`)
+      router.push(`/app/workflow/${response?.data?._id}`);
 
       // const response = await instance.post(
       //   `/workflow/${workflow_id}/duplicate`
       // );
     } catch (error: any) {
       console.error("Error duplicating workflow:", error);
-      toast.error(
-        error?.response?.data?.error || "Failed to duplicate workflow"
-      );
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Failed to duplicate workflow");
+      }
     } finally {
       setLoading(false);
     }
@@ -442,13 +467,19 @@ const Card: React.FC<CardProps> = ({
       // );
       const response = await instance.delete(`/workflow/${workflow_id}`);
       setIsModalOpen({ isOpen: false, type: "delete" });
-
     } catch (error: any) {
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Something went wrong");
+      }
       console.error("Error deleting workflow:", error);
     } finally {
       setLoading(false);
       refetchWorkflow();
-    } 
+    }
   };
 
   const handleUnpublishWorkflow = async () => {
@@ -461,6 +492,13 @@ const Card: React.FC<CardProps> = ({
         `/workflow/unpublish/${workflow_id}`
       );
     } catch (error: any) {
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Something went wrong");
+      }
       console.error("Error unpublish workflow:", error);
     } finally {
       setLoading(false);
