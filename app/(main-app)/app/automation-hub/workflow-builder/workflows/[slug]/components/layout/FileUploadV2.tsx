@@ -5,6 +5,7 @@ import { API_URL } from "@/lib/api";
 import Spinner from "@/components/Spinner";
 import { FaFileUpload } from "react-icons/fa";
 import axios from "axios";
+import { X } from "lucide-react";
 
 interface FileUploadProps {
   onFileUploaded: (fileUrl: string, fileExtension: string) => void;
@@ -58,11 +59,10 @@ const FileUpload: React.FC<any> = ({
     if (isUploadedFileUrl?.length > 0) setUploadedFileUrl(isUploadedFileUrl);
   }, [isUploadedFileUrl]);
 
-  const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    setError(null);
-    const fileExtension = `${acceptedFiles[0].name.split(".").pop()?.toLowerCase()}`;
-
-    console.log("fileExtension", fileExtension);
+  const onDrop = useCallback(
+    async (acceptedFiles: File[]) => {
+      setError(null);
+      const fileExtension = `${acceptedFiles[0].name.split(".").pop()?.toLowerCase()}`;
 
     const acceptedTypesArray = acceptedFileTypes
       .split(",")
@@ -114,34 +114,48 @@ const FileUpload: React.FC<any> = ({
     multiple: false,
   });
 
+  const onClearImage = () => {
+    setUploadedFileUrl(null);
+    setError(null);
+    onFileUploaded("", "");
+    setLoading(false);
+  };
+
   return (
-    <div
-      {...getRootProps()}
-      className="flex flex-col items-center justify-center w-full p-4 border-2 border-dashed rounded-lg cursor-pointer hover:border-primary-green transition"
-    >
-      <input {...getInputProps()} />
-      {loading ? (
-        <Spinner color="black" size={30} />
-      ) : uploadedFileUrl ? (
-        <div className="flex flex-col items-center">
-          <img
-            src={uploadedFileUrl}
-            alt="Uploaded File"
-            className="w-24 h-24 object-cover rounded"
-          />
-          <span className="mt-2 px-2 py-1 text-xs font-semibold text-white bg-green-500 rounded-full">
-            Uploaded
-          </span>
-        </div>
-      ) : (
-        <>
-          <FaFileUpload size={40} className="text-primary-green" />
-          <p className="mt-2 text-sm text-gray-500">
-            Drag & drop your file here, or click to select a file
-          </p>
-        </>
+    <div>
+      {uploadedFileUrl && uploadedFileUrl?.length > 0 && (
+        <X onClick={onClearImage} className="ml-auto mb-4 cursor-pointer" />
       )}
-      {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
+
+      <div
+        {...getRootProps()}
+        className="flex flex-col items-center justify-center w-full p-4 border-2 border-dashed rounded-lg cursor-pointer hover:border-primary-green transition"
+      >
+        <input {...getInputProps()} />
+        {loading ? (
+          <Spinner color="black" size={30} />
+        ) : uploadedFileUrl ? (
+          <div className="flex flex-col items-center">
+            <img
+              src={uploadedFileUrl}
+              alt="Uploaded File"
+              className="w-24 h-24 object-cover rounded"
+            />
+            <span className="mt-2 px-2 py-1 text-xs font-semibold text-white bg-green-500 rounded-full">
+              Uploaded
+            </span>
+          </div>
+        ) : (
+          <>
+            <FaFileUpload size={40} className="text-primary-green" />
+            <p className="mt-2 text-sm text-gray-500">
+              Drag & drop your file here, or click to select a file
+            </p>
+          </>
+        )}
+
+        {error && <p className="mt-2 text-sm text-red-500">{error}</p>}
+      </div>
     </div>
   );
 };
