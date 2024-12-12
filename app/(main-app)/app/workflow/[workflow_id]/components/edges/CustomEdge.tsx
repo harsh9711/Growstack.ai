@@ -3,6 +3,7 @@ import { BaseEdge, EdgeLabelRenderer, getBezierPath, useReactFlow, EdgeProps } f
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { updateWorkFlowById } from '@/lib/features/workflow/workflow.slice';
 import { removeNodeDependency } from '@/lib/features/workflow/node.slice';
+import { prepareNodesPayload } from '@/utils/helper';
 
 const CustomEdge = ({
     id,
@@ -18,6 +19,7 @@ const CustomEdge = ({
     markerEnd,
 }: EdgeProps) => {
     const { workFlowData } = useAppSelector((state) => state.workflows);
+    const { nodes } = useAppSelector((state) => state.nodes);
     const dispatch = useAppDispatch();
     const { setEdges } = useReactFlow();
 
@@ -43,16 +45,23 @@ const CustomEdge = ({
 
     const handleEdgeClick = () => {
         setEdges((edges: any[]) => {
-            const updatedEdges = edges.filter((edge) => edge.id !== id);
             console.log('source====>', source);
             console.log('target====>', target);
-            dispatch(updateWorkFlowById({
-                id: workFlowData._id || "",
-                data: {
-                    edges: updatedEdges,
-                },
-            }));
+            const updatedEdges = edges.filter((edge) => edge.id !== id);
             dispatch(removeNodeDependency({ sourceId: source, targetId: target }));
+
+            // const bodyPayload = {
+            //     name: workFlowData?.name,
+            //     description: workFlowData?.description || "",
+            //     nodes: prepareNodesPayload(nodes, workFlowData._id || ""),
+            //     edges: updatedEdges,
+            // };
+
+            // dispatch(updateWorkFlowById({
+            //     id: workFlowData._id || "",
+            //     data: bodyPayload,
+            // }));
+
             console.log('updatedEdges', updatedEdges);
 
             return updatedEdges;

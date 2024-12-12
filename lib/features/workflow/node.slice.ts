@@ -105,6 +105,9 @@ const nodeSlice = createSlice({
           nodeResult.data.dependencies = [];
         }
         nodeResult.data.dependencies.push(sourceId);
+        nodeResult.data.dependencies = [
+          ...Array.from(new Set(nodeResult.data.dependencies)),
+        ];
         console.log(
           "----nodeResultAdd---->",
           JSON.stringify(nodeResult, null, 2)
