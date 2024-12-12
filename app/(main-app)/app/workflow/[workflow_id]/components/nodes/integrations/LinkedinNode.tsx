@@ -421,7 +421,7 @@ const LinkedinNode = memo(
                 </div>
               </div>
 
-              <div className="node-edge absolute top-1/2 transform -translate-y-1/2 right-[-60px] flex items-center">
+              <div className="node-edge absolute top-1/2 transform -translate-y-1/2 right-[-68px] flex items-center">
                 <div className="h-px border-t-2 border-dashed border-[#2DA771] w-[65px] mr-1" />
                 <Handle
                   id={`${id}-source`}
@@ -508,7 +508,7 @@ const LinkedinNode = memo(
                 )}
               </div>
 
-              <div className="mb-2 search-box flex items-center p-2 rounded-lg border border-[#EBEBEB]  bg-[#F7F7F7]">
+              {/* <div className="mb-2 search-box flex items-center p-2 rounded-lg border border-[#EBEBEB]  bg-[#F7F7F7]">
                 <Image
                   src="/images/workflow/search-normal.svg"
                   alt="Search"
@@ -521,7 +521,7 @@ const LinkedinNode = memo(
                   placeholder="Search"
                   className="bg-[#F7F7F7] w-full focus:outline-none"
                 />
-              </div>
+              </div> */}
 
               <div
                 className={`node-content-wrapper relative ${!isSignedUp

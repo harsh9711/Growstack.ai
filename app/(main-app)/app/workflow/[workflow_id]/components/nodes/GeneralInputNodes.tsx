@@ -37,7 +37,8 @@ const GeneralInputNodes = memo(
     const { isLoading } = useAppSelector(state => state.nodes);
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
     const [description, setDescription] = useState(data?.descriptions || "");
-    const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] = useState(false);
+    const [openDeleteConfirmationModal, setOpenDeleteConfirmationModal] =
+      useState(false);
     const [loadingNode, setLoadingNode] = useState<boolean>(false);
 
     const node = useAppSelector(state =>
@@ -125,7 +126,6 @@ const GeneralInputNodes = memo(
           setIsNextBoxOpen(true);
 
           setLoadingNode(false);
-
         } catch (error: any) {
           console.error("error-->", error?.message);
           setLoadingNode(false);
@@ -134,8 +134,8 @@ const GeneralInputNodes = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-              k => node.data.parameters?.[k] === param
-            )
+                k => node.data.parameters?.[k] === param
+              )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -244,7 +244,7 @@ const GeneralInputNodes = memo(
                   <img
                     src={data.icon}
                     alt={data.label}
-                    className="w-[40px] mx-auto absolute top-[50px] left-0 right-0"
+                    className="w-[30px] absolute left-0 right-0 mx-auto top-1/2 transform  -translate-y-1/2"
                   />
                 )}
               </div>
@@ -265,7 +265,6 @@ const GeneralInputNodes = memo(
                 <div className="modal">
                   {isActionModalShow && (
                     <div
-                      // ref={dropdownRef}
                       className="absolute right-[-126px] top-[0px] mt-2 w-48 bg-white rounded-[15px] border-[1px] border-[#E8E8E8] shadow-2xl z-50"
                       id="node-action-modal"
                     >
@@ -288,7 +287,7 @@ const GeneralInputNodes = memo(
                 </div>
               </div>
 
-              <div className="node-edge absolute top-1/2 transform -translate-y-1/2 right-[-60px] flex items-center">
+              <div className="node-edge absolute top-1/2 transform -translate-y-1/2 right-[-70px] flex items-center">
                 <div className="h-px border-t-2 border-dashed border-[#2DA771] w-[65px] mr-1" />
                 <Handle
                   id={`${id}-source`}
@@ -392,7 +391,7 @@ const GeneralInputNodes = memo(
                       key="nextParameter"
                       inputKey="nextParameter"
                       param={node.data.parameters.nextParameter}
-                      handleInputChange={() => { }}
+                      handleInputChange={() => {}}
                     />
                   )}
 

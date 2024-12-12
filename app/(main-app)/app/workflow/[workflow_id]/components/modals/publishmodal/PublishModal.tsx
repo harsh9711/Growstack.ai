@@ -128,9 +128,9 @@ const PublishConfirmationModal: React.FC<PublishConfirmationModalProps> = ({
                 </button>
                 <button
                   type="button"
-                  className="inline-flex items-center w-[180px] h-[45px] justify-center rounded-[10px] bg-[#2DA771] text-sm font-medium text-white"
+                  className="inline-flex items-center w-[180px] h-[45px] justify-center rounded-[10px] bg-[#2DA771] text-sm font-medium text-white disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={onPublishNode}
-                  disabled={isLoading}
+                  disabled={isLoading || !workFlowData?.name}
                 >
                   Publish
                 </button>

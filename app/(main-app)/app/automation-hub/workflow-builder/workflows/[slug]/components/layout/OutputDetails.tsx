@@ -17,6 +17,8 @@ const OutputDetails = ({
 }: any) => {
   const [openIndex, setOpenIndex] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isRejectLoading, setIsRejectLoading] = useState(false);
+  const [isApproveLoading, setIsApproveLoading] = useState(false);
 
   const toggleAccordion = (index: any) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -44,15 +46,21 @@ const OutputDetails = ({
       if (rerunPartialWorkflow?.data?.executionId) {
         onPollingWithNewId(rerunPartialWorkflow?.data?.executionId);
       }
-    } catch {
-      // To:Do Error will handle here
+    } catch (error: any) {
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Something went wrong");
+      }
     } finally {
       setIsLoading(false);
     }
   };
   const handleReject = async (nodeExecutionId: string) => {
     try {
-      setIsLoading(true);
+      setIsRejectLoading(true);
       // const rejectExecution = await CustomAxiosInstance().patch(
       //   `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=false`
       // );
@@ -60,14 +68,21 @@ const OutputDetails = ({
         `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=false`
       );
       setApproveOutputDataId(rejectExecution?.data);
-    } catch (err) {
-      console.log("err", err);
-      setIsLoading(false);
+    } catch (error: any) {
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Something went wrong");
+      }
+    } finally {
+      setIsRejectLoading(false);
     }
   };
   const handleApprove = async (nodeExecutionId: string) => {
     try {
-      setIsLoading(true);
+      setIsApproveLoading(true);
       // const approveExecution = await axios.patch(
       //   `http://localhost:5000/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=true`
       // );
@@ -75,10 +90,16 @@ const OutputDetails = ({
         `/workflow/${workflowId}/post/status?nodeExecutionId=${nodeExecutionId}&isApproved=true`
       );
       setApproveOutputDataId(approveExecution?.data);
-    } catch (err) {
-      console.log("err", err);
+    } catch (error: any) {
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Something went wrong");
+      }
     } finally {
-      setIsLoading(false);
+      setIsApproveLoading(false);
     }
   };
 
@@ -346,6 +367,9 @@ const OutputDetails = ({
                                   }
                                 : {}
                             }
+                            disabled={
+                              isRejectLoading || isLoading || isApproveLoading
+                            }
                             onClick={() => handleRerun(item?.nodeMasterId)}
                           >
                             <RefreshCw color="#4B465C" />
@@ -359,9 +383,13 @@ const OutputDetails = ({
                                   handleReject(item?.nodeExecutionId);
                                 }}
                                 className="text-red-500 p-5 rounded-xl border border-red-500 flex items-center justify-center"
-                                disabled={isLoading} // Disable button during loading
+                                disabled={
+                                  isRejectLoading ||
+                                  isLoading ||
+                                  isApproveLoading
+                                }
                               >
-                                {isLoading ? (
+                                {isRejectLoading ? (
                                   <div className="w-5 h-5 border-2 border-red-500 border-t-transparent rounded-full animate-spin"></div>
                                 ) : (
                                   "Reject"
@@ -373,9 +401,13 @@ const OutputDetails = ({
                                   handleApprove(item?.nodeExecutionId);
                                 }}
                                 className="text-[#2DA771] p-5 rounded-xl border border-[#2DA771] flex items-center justify-center"
-                                disabled={isLoading} // Disable button during loading
+                                disabled={
+                                  isRejectLoading ||
+                                  isLoading ||
+                                  isApproveLoading
+                                }
                               >
-                                {isLoading ? (
+                                {isApproveLoading ? (
                                   <div className="w-5 h-5 border-2 border-green-500 border-t-transparent rounded-full animate-spin"></div>
                                 ) : (
                                   "Approve"

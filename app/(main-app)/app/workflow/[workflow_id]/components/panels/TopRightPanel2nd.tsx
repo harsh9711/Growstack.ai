@@ -195,10 +195,11 @@ const TopRightPanel2nd = ({
           {dummyData3.map((item, index) => (
             <button
               key={index.toString()}
-              className={`flex justify-center items-center m-2 cursor-pointer px-2.5 py-1.5 rounded-md text-base font-normal ${activeTab === index
-                ? "text-white bg-[#2DA771]"
-                : "text-black bg-transparent"
-                } shadow-lg disabled:opacity-60 disabled:cursor-not-allowed`}
+              className={`flex justify-center items-center m-2 cursor-pointer px-2.5 py-1.5 rounded-md text-base font-normal ${
+                activeTab === index
+                  ? "text-white bg-[#2DA771]"
+                  : "text-black bg-transparent"
+              } shadow-lg disabled:opacity-60 disabled:cursor-not-allowed`}
               onClick={() => handleClick(index)}
               disabled={
                 workFlowData?.status !== "published" && item?.text !== "Build"
@@ -208,23 +209,29 @@ const TopRightPanel2nd = ({
             </button>
           ))}
         </div>
-
-        <div className="">
-          <div className="action-button-box flex items-center gap-2">
-            <Button
-              className="w-auto h-auto bg-[#2DA771] shadow-md hover:bg-[#2DA771]"
-              onClick={handleSaveWorkFlow}
-            >
-              Save
-            </Button>
-            <Button
-              className="w-auto h-auto bg-[#2DA771] shadow-md hover:bg-[#2DA771]"
-              onClick={handleOpenPublishConfirmationModal}
-            >
-              Publish
-            </Button>
+        {activeTab === 0 ? (
+          <div className="">
+            <div className="action-button-box flex items-center gap-2">
+              <h3 className="text-[#878787] text-[16px] font-medium capitalize mr-3">
+                {workFlowData?.status}
+              </h3>
+              <Button
+                className="w-auto h-auto bg-[#2DA771] shadow-md hover:bg-[#2DA771]"
+                onClick={handleSaveWorkFlow}
+              >
+                Save
+              </Button>
+              <Button
+                className="w-auto h-auto bg-[#2DA771] shadow-md hover:bg-[#2DA771]"
+                onClick={handleOpenPublishConfirmationModal}
+              >
+                Publish
+              </Button>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="w-[156px]" />
+        )}
       </div>
 
       <PublishConfirmationModal

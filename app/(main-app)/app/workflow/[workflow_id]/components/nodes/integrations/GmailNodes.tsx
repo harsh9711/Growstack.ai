@@ -437,7 +437,7 @@ const GmailNode = memo(
                 </div>
               </div>
 
-              <div className="node-edge absolute top-1/2 transform -translate-y-1/2 right-[-60px] flex items-center">
+              <div className="node-edge absolute top-1/2 transform -translate-y-1/2 right-[-68px] flex items-center">
                 <div className="h-px border-t-2 border-dashed border-[#2DA771] w-[65px] mr-1" />
                 <Handle
                   id={`${id}-source`}

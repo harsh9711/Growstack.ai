@@ -79,7 +79,6 @@ const MultiSelectDropdown: React.FC<DynamicInputProps> = ({
                         type="text"
                         value={inputValue}
                         onChange={handleInputSelectChange}
-                        // onFocus={() => setIsOpen(true)}
                         onKeyDown={handleInputKeyDown}
                         placeholder="Add Option"
                         className="flex-grow bg-transparent outline-none text-[#14171B] text-sm font-medium"

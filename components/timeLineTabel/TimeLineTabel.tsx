@@ -2,6 +2,7 @@ import WorkflowSchedulerModal from "@/app/(main-app)/app/automation-hub/workflow
 import instance, { CustomAxiosInstance } from "@/config/axios.config";
 import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const TimeLineTable = ({
   workflow_id,
@@ -51,7 +52,15 @@ const TimeLineTable = ({
       //   `/workflow/${workflow_id}/history`
       // );
       setHistoryData(getHistory?.data);
-    } catch {}
+    } catch (error: any) {
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Something went wrong");
+      }
+    }
   }, []);
 
   const getScheduleData = useCallback(async () => {
@@ -63,8 +72,14 @@ const TimeLineTable = ({
       //   `http://localhost:5000/workflow/${workflow_id}/schedules`
       // );
       setScheduleData(getHistory?.data);
-    } catch (err) {
-      console.log(err);
+    } catch (error: any) {
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Something went wrong");
+      }
     }
   }, []);
 
@@ -106,13 +121,13 @@ const TimeLineTable = ({
         _id: item._id,
 
         // Workflow-specific data
-        name: workflowResponse.data.name,
-        description: workflowResponse.data.description,
-        status: workflowResponse.data.status,
+        name: workflowResponse?.data?.name,
+        description: workflowResponse?.data?.description,
+        status: workflowResponse?.data?.status,
 
         // Map the input configs with their values from the schedule
-        input_configs: workflowResponse.data.nodes
-          .filter((node: any) => {
+        input_configs: workflowResponse?.data?.nodes
+          ?.filter((node: any) => {
             const type = node?.nodeMasterId?.inputType;
             const formType = node?.nodeMasterId?.type;
             return (
@@ -125,7 +140,7 @@ const TimeLineTable = ({
               formType === "form"
             );
           })
-          .map((node: any) => {
+          ?.map((node: any) => {
             if (node?.type !== "form") {
               const parameters = node.parameters || {};
               const scheduleValue = item.workflowPayload?.find(
@@ -188,7 +203,14 @@ const TimeLineTable = ({
       });
 
       setShowModal(true);
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Something went wrong");
+      }
       console.error("Error fetching workflow details:", error);
     }
   };
