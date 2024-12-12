@@ -64,7 +64,7 @@ const ToolsNodes = memo(
         });
       }
 
-      return () => { };
+      return () => {};
     }, [parentId]);
 
     const handleToggleAdvancedOptions = () => {
@@ -77,7 +77,6 @@ const ToolsNodes = memo(
 
     // const handleInputChange = useCallback(
     //   (key: any, type: any, value: any, dependency?: string) => {
-
 
     //     if (!isEdit) {
     //       setShake(true);
@@ -161,11 +160,12 @@ const ToolsNodes = memo(
               (name): name is VariableNameProps => name !== null
             )
           );
-        } else if (validSequenceRegex.test(value) && !invalidPatternRegex.test(value)) {
+        } else if (
+          validSequenceRegex.test(value) &&
+          !invalidPatternRegex.test(value)
+        ) {
           const index = nodes.findIndex(nds => nds.id === id);
           const variableName = getVariableName(nodes, index);
-
-
 
           setVariableNames(
             variableName.filter(
@@ -191,7 +191,6 @@ const ToolsNodes = memo(
       },
       [dispatch, id, nodes, dependencies, variableNames, isEdit, shake]
     );
-
 
     const handleNextClick = async () => {
       if (!node?.data?.parameters) return;
@@ -247,8 +246,8 @@ const ToolsNodes = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-              k => node.data.parameters?.[k] === param
-            )
+                k => node.data.parameters?.[k] === param
+              )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -330,7 +329,7 @@ const ToolsNodes = memo(
         <section className="node-box relative">
           <div className="node-top-box relative">
             <div className="node-name-text-description text-center mb-5">
-              <h4 className="text-sm font-medium text-[#2DA771]">
+              <h4 className="text-sm font-medium text-[#2DA771] w-[150px]">
                 {" "}
                 {data?.label || ""}
               </h4>
@@ -356,7 +355,7 @@ const ToolsNodes = memo(
                   <img
                     src={data.icon}
                     alt={data.label}
-                    className="w-[30px] mx-auto absolute top-[55px] left-0 right-0"
+                    className="w-[30px] absolute left-0 right-0 mx-auto top-1/2 transform  -translate-y-1/2"
                   />
                 )}
               </div>
@@ -399,7 +398,7 @@ const ToolsNodes = memo(
                 </div>
               </div>
 
-              <div className="node-edge absolute top-1/2 transform -translate-y-1/2 right-[-65px] flex items-center">
+              <div className="node-edge absolute top-1/2 transform -translate-y-1/2 right-[-70px] flex items-center">
                 <div className="h-px border-t-2 border-dashed border-[#2DA771] w-[65px] mr-1">
                   <Handle
                     id={`${id}-source`}

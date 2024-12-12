@@ -15,8 +15,15 @@ const SmallCardFiled: React.FC<DynamicInputProps> = ({
   }
 
   const [avatars, setAvatars] = React.useState<Avatar[]>([]);
+  const [selectedAvatar, setSelectedAvatar] = React.useState<Avatar | null>(
+    null
+  );
 
   useEffect(() => {
+    const savedAvatar = localStorage.getItem("selectedAvatar");
+    if (savedAvatar) {
+      setSelectedAvatar(JSON.parse(savedAvatar));
+    }
     getAvatar();
   }, []);
 
@@ -24,10 +31,19 @@ const SmallCardFiled: React.FC<DynamicInputProps> = ({
     try {
       const result = await instance.get("/ai/api/v1/video/avatars");
       setAvatars(result.data.data);
-
       console.log("----result---->", result);
     } catch (error) {
       console.log("----error---->", error);
+    }
+  };
+
+  const selectAvatar = (avatar: Avatar) => {
+    if (selectedAvatar?.name === avatar.name) {
+      setSelectedAvatar(null);
+      localStorage.removeItem("selectedAvatar");
+    } else {
+      setSelectedAvatar(avatar);
+      localStorage.setItem("selectedAvatar", JSON.stringify(avatar));
     }
   };
 
@@ -49,31 +65,17 @@ const SmallCardFiled: React.FC<DynamicInputProps> = ({
         )}
       </div>
 
-      <div
-        className="avatar-main-box nowheel  max-h-[250px] overflow-y-scroll overflow-x-hidden"
-
-        // onScroll={e => {
-        //     const scrollContainer = e.currentTarget;
-        //     const indicator = scrollContainer.querySelector(
-        //         ".scroll-indicator"
-        //     ) as HTMLElement;
-        //     const scrollHeight =
-        //         scrollContainer.scrollHeight - scrollContainer.clientHeight;
-        //     const scrollTop = scrollContainer.scrollTop;
-
-        //     if (indicator) {
-        //         const progress = (scrollTop / scrollHeight) * 100;
-        //         (indicator as HTMLElement).style.height =
-        //             `${(scrollContainer.clientHeight / scrollContainer.scrollHeight) * 100}%`;
-        //         indicator.style.top = `${progress}%`;
-        //     }
-        // }}
-      >
+      <div className="avatar-main-box nowheel max-h-[250px] overflow-y-scroll overflow-x-hidden">
         <div className="grid grid-cols-4 gap-2">
           {avatars?.map((item, index) => (
             <div
               key={index}
-              className="flex flex-col items-center bg-[#F8F8FA] rounded-[10px] shadow-sm p-2 relative"
+              className={`flex flex-col items-center rounded-[10px] shadow-sm p-2 relative cursor-pointer ${
+                selectedAvatar?.name === item.name
+                  ? "bg-[#2DA7711A]"
+                  : "bg-[#F8F8FA]"
+              }`}
+              onClick={() => selectAvatar(item)}
             >
               <img
                 src={item.thumbnailUrl}
@@ -86,10 +88,6 @@ const SmallCardFiled: React.FC<DynamicInputProps> = ({
             </div>
           ))}
         </div>
-        {/* <div
-          className="scroll-indicator absolute right-0 top-0 w-[3px] bg-[#2DA771] rounded-lg cursor-pointer"
-          style={{ height: "10%", top: "0%" }}
-        ></div> */}
       </div>
     </div>
   );

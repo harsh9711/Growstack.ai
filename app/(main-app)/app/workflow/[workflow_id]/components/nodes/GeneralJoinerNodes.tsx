@@ -308,7 +308,7 @@ const GeneralJoinerNodes = memo(
                   <img
                     src={data.icon}
                     alt={data.label}
-                    className="w-[40px] mx-auto absolute top-[50px] left-0 right-0"
+                    className="w-[30px] absolute left-0 right-0 mx-auto top-1/2 transform  -translate-y-1/2"
                   />
                 )}
               </div>

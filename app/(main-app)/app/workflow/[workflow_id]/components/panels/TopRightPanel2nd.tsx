@@ -129,7 +129,7 @@ const TopRightPanel2nd = ({
             <button
               className="back-btn bg-white h-[40px] w-[50px] shadow-md rounded-[5px] flex items-center justify-center"
               onClick={() => {
-                localStorage.setItem('activeTab', "workflows")
+                localStorage.setItem("activeTab", "workflows");
                 route.push("/app/dashboard");
               }}
             >
@@ -189,10 +189,11 @@ const TopRightPanel2nd = ({
           {dummyData3.map((item, index) => (
             <button
               key={index.toString()}
-              className={`flex justify-center items-center m-2 cursor-pointer px-2.5 py-1.5 rounded-md text-base font-normal ${activeTab === index
-                ? "text-white bg-[#2DA771]"
-                : "text-black bg-transparent"
-                } shadow-lg`}
+              className={`flex justify-center items-center m-2 cursor-pointer px-2.5 py-1.5 rounded-md text-base font-normal ${
+                activeTab === index
+                  ? "text-white bg-[#2DA771]"
+                  : "text-black bg-transparent"
+              } shadow-lg`}
               onClick={() => handleClick(index)}
             >
               {item.text}
@@ -202,6 +203,9 @@ const TopRightPanel2nd = ({
 
         <div className="">
           <div className="action-button-box flex items-center gap-2">
+            <h3 className="text-[#878787] text-[16px] font-medium capitalize mr-3">
+              {workFlowData?.status}
+            </h3>
             <Button
               className="w-auto h-auto bg-[#2DA771] shadow-md hover:bg-[#2DA771]"
               onClick={handleSaveWorkFlow}
@@ -229,7 +233,7 @@ const TopRightPanel2nd = ({
       <SaveFormModal
         openSaveFormModal={openSaveFormModal}
         onCloseSaveFormModal={() => handleCloseSaveFormModal()}
-        onHandleSave={() => { }} // onSaveFormNode={handleDeleteNode}
+        onHandleSave={() => {}} // onSaveFormNode={handleDeleteNode}
       />
     </div>
   );
