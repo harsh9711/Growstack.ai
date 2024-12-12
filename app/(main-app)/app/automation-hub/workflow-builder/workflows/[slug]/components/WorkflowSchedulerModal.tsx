@@ -93,10 +93,12 @@ function WorkflowSchedulerModal({
       }
     } catch (error: any) {
       console.error("Error running workflow:", error);
-      if (error.response) {
-        toast.error(error.response.data.message || "Something went wrong");
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
       } else {
-        toast.error(error.message || "Something went wrong");
+        toast.error("Something went wrong");
       }
     } finally {
       setIsPending(false);

@@ -3,12 +3,16 @@ import Image from "next/image";
 import { NodeState } from "@/types/workflows";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { convertNodeData } from "@/utils/dataResolver";
-import { addNodeData, removeNode } from "@/lib/features/workflow/node.slice";
+import { addNode, addNodeData, createNode, removeNode } from "@/lib/features/workflow/node.slice";
+import { calculateNextNodePosition } from "@/utils/helper";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
   const dispatch = useAppDispatch();
 
   const { masterNode } = useAppSelector(state => state.masterNode);
+  const { workFlowData } = useAppSelector(state => state.workflows);
+  const { nodes } = useAppSelector(state => state.nodes);
 
   if ((masterNode && !masterNode.length) || !masterNode) {
     return <div>Data not found</div>;
@@ -44,32 +48,68 @@ const IntegrationCategory = ({ setNodes }: any): React.ReactElement => {
     }
   }, [integrationData, selectedSubCategory]);
 
-  const handleClick = (nodeData: NodeState) => {
-    console.log("nodeData", nodeData);
-    setNodes((prevNodes: NodeState[]) => {
-      const lastNode = prevNodes[prevNodes.length - 1];
-      let nextNodeX = 200;
-      let nextNodeY = 0;
-      if (lastNode) {
-        nextNodeX = lastNode.position.x + 200;
-        nextNodeY = lastNode.position.y;
+  // const handleClick = (nodeData: NodeState) => {
+  //   console.log("nodeData", nodeData);
+  //   setNodes((prevNodes: NodeState[]) => {
+  //     const lastNode = prevNodes[prevNodes.length - 1];
+  //     let nextNodeX = 200;
+  //     let nextNodeY = 0;
+  //     if (lastNode) {
+  //       nextNodeX = lastNode.position.x + 200;
+  //       nextNodeY = lastNode.position.y;
 
-        if (nextNodeX > 1600) {
-          nextNodeX = 200;
-          nextNodeY += 200;
-        }
-      }
+  //       if (nextNodeX > 1600) {
+  //         nextNodeX = 200;
+  //         nextNodeY += 200;
+  //       }
+  //     }
 
-      return [
-        ...prevNodes,
-        {
-          ...nodeData,
-          id: Date.now().toString(),
+  //     return [
+  //       ...prevNodes,
+  //       {
+  //         ...nodeData,
+  //         id: Date.now().toString(),
+  //         position: { x: nextNodeX, y: nextNodeY },
+  //       },
+  //     ];
+  //   });
+  // };
+
+
+  const handleClick = async (nodeData: NodeState) => {
+    try {
+      const lastNode = nodes[nodes.length - 1];
+      const { nextNodeX, nextNodeY } = calculateNextNodePosition(lastNode);
+
+      const resultAction = await dispatch(
+        createNode({
+          workflowId: workFlowData._id,
+          nodeMasterId: nodeData.id,
+          name: nodeData.data?.label,
+          type: nodeData?.type,
+          description: nodeData.data?.descriptions || "",
           position: { x: nextNodeX, y: nextNodeY },
-        },
-      ];
-    });
+          parameters: {},
+        })
+      );
+      const result = unwrapResult(resultAction);
+
+      if (!result._id) return;
+
+      const newNode = {
+        ...nodeData,
+        id: result._id,
+        position: { x: nextNodeX, y: nextNodeY },
+      };
+
+      setNodes((nds: NodeState[]) => nds.concat(newNode));
+      dispatch(addNode(newNode));
+    } catch (error) {
+      console.error("Error adding node:", error);
+    }
   };
+
+
 
   const handleDragStart = (event: React.DragEvent, item: NodeState) => {
     dispatch(addNodeData(item));

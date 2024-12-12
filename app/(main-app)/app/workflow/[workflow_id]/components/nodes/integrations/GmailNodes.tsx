@@ -11,6 +11,7 @@ import {
   removeNodeDependency,
   updateNodeById,
   updateNodeDependency,
+  updateNodeDescription,
   updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -102,22 +103,20 @@ const GmailNode = memo(
         setIsActionModalShow(false);
       }
     };
-    useEffect(() => {
-      if (parentId) {
-        setDependencies(prevDependencies => {
-          const newDependency = { key: "parent", nodeId: parentId };
-          const exists = prevDependencies.some(dep => dep.nodeId === parentId);
-          if (exists) {
-            return prevDependencies;
-          }
-          return [...prevDependencies, newDependency];
-        });
-      }
+    // useEffect(() => {
+    //   if (parentId) {
+    //     setDependencies(prevDependencies => {
+    //       const newDependency = { key: "parent", nodeId: parentId };
+    //       const exists = prevDependencies.some(dep => dep.nodeId === parentId);
+    //       if (exists) {
+    //         return prevDependencies;
+    //       }
+    //       return [...prevDependencies, newDependency];
+    //     });
+    //   }
 
-      return () => { };
-    }, [parentId]);
-
-
+    //   return () => { };
+    // }, [parentId]);
 
     useEffect(() => {
       if (isActionModalShow) {
@@ -133,55 +132,108 @@ const GmailNode = memo(
       setIsDropdownOpen(!isDropdownOpen);
     };
 
+    // const handleInputChange = useCallback(
+    //   (key: any, type: any, value: any, dependency?: string) => {
+    //     console.log(
+    //       "key-->",
+    //       key,
+    //       "type-->",
+    //       type,
+    //       "value-->",
+    //       value,
+    //       "dependencies--->",
+    //       dependency
+    //     );
+
+    //     dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
+
+    //     if (!isSpecialType(type)) return;
+
+    //     if (value && value.includes("$")) {
+    //       const index = nodes.findIndex(nds => nds.id === id);
+    //       const variableName = getVariableName(nodes, index);
+    //       console.log("variableName-->", variableName);
+    //       if (dependency) {
+    //         // setDependencies(prevDependencies => {
+    //         //   const newDependency = { key, nodeId: dependency };
+    //         //   const uniqueDependencies = new Set([
+    //         //     ...prevDependencies,
+    //         //     newDependency,
+    //         //   ]);
+    //         //   return Array.from(uniqueDependencies);
+    //         // });
+    //         dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
+    //       }
+    //       const regex = /\$(?!\s*$).+/;
+    //       if (regex.test(value)) {
+    //         setVariableNames([]);
+    //       } else {
+    //         setVariableNames(
+    //           variableName.filter(
+    //             (name): name is VariableNameProps => name !== null
+    //           )
+    //         );
+    //       }
+    //     } else {
+    //       // setDependencies(pre => pre.filter(dep => dep.key !== key));
+    //       dispatch(removeNodeDependency({ nodeId: id, key }));
+    //       setVariableNames([]);
+    //     }
+    //   },
+    //   [dispatch, id, nodes, dependencies, variableNames]
+    // );
+
     const handleInputChange = useCallback(
-      (key: any, type: any, value: any, dependency?: string) => {
-        console.log(
-          "key-->",
-          key,
-          "type-->",
-          type,
-          "value-->",
-          value,
-          "dependencies--->",
-          dependency
-        );
+      (key: any, type: any, value: any, dependency: any) => {
+        console.log("key-->", key, "type-->", type, "value-->", value);
+        console.log("dependencies-->", dependency);
 
         dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
 
         if (!isSpecialType(type)) return;
 
-        if (value && value.includes("$")) {
+        const singleDollarRegex = /^\$$/;
+        const validSequenceRegex = /.*\$$/;
+        const invalidPatternRegex = /\$(.*?)\$.*\S/;
+
+        if (singleDollarRegex.test(value)) {
           const index = nodes.findIndex(nds => nds.id === id);
           const variableName = getVariableName(nodes, index);
-          console.log("variableName-->", variableName);
-          if (dependency) {
-            // setDependencies(prevDependencies => {
-            //   const newDependency = { key, nodeId: dependency };
-            //   const uniqueDependencies = new Set([
-            //     ...prevDependencies,
-            //     newDependency,
-            //   ]);
-            //   return Array.from(uniqueDependencies);
-            // });
-            dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
-          }
-          const regex = /\$(?!\s*$).+/;
-          if (regex.test(value)) {
-            setVariableNames([]);
-          } else {
-            setVariableNames(
-              variableName.filter(
-                (name): name is VariableNameProps => name !== null
-              )
-            );
-          }
+          setVariableNames(
+            variableName.filter(
+              (name): name is VariableNameProps => name !== null
+            )
+          );
+        } else if (
+          validSequenceRegex.test(value) &&
+          !invalidPatternRegex.test(value)
+        ) {
+          const index = nodes.findIndex(nds => nds.id === id);
+          const variableName = getVariableName(nodes, index);
+
+          setVariableNames(
+            variableName.filter(
+              (name): name is VariableNameProps => name !== null
+            )
+          );
         } else {
+          // dispatch(removeNodeDependency({ nodeId: id, key }));
           // setDependencies(pre => pre.filter(dep => dep.key !== key));
-          dispatch(removeNodeDependency({ nodeId: id, key }));
           setVariableNames([]);
         }
+        // if (dependency) {
+        //   // dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
+        //   setDependencies(prevDependencies => {
+        //     const newDependency = { key, nodeId: dependency };
+        //     const uniqueDependencies = new Set([
+        //       ...prevDependencies,
+        //       newDependency,
+        //     ]);
+        //     return Array.from(uniqueDependencies);
+        //   });
+        // }
       },
-      [dispatch, id, nodes, dependencies, variableNames]
+      [dispatch, id, nodes, variableNames, isEdit]
     );
 
     const handleNextClick = async () => {
@@ -198,20 +250,6 @@ const GmailNode = memo(
         const updatedValue = extractParameterValues(node.data.parameters);
         console.log("updatedValue-->", updatedValue);
 
-        console.log("Matching Node IDs:", dependencies);
-
-        // dispatch(
-        //   addVariable({
-        //     nodeID: id,
-        //     variableName: node?.data?.parameters?.variableName?.value || "",
-        //     workflowID: workFlowData._id || "",
-        //     variableValue:
-        //       updatedValue.defaultValue ||
-        //       updatedValue.fileType ||
-        //       updatedValue.options,
-        //     variableType: "tools",
-        //   })
-        // );
 
         try {
           const bodyPayload = {
@@ -219,7 +257,7 @@ const GmailNode = memo(
             nodeMasterId: node.data.nodeMasterId,
             position: { x: positionAbsoluteX, y: positionAbsoluteY },
             // dependencies: dependencies.map(dps => dps.nodeId),
-            dependencies: node.data?.dependencies ? node.data.dependencies?.map(dps => dps.nodeId) : [],
+            dependencies: node.data?.dependencies || [],
             parameters: updatedValue,
           };
 
@@ -267,11 +305,7 @@ const GmailNode = memo(
       success(`The ${data?.label} node has been successfully deleted`);
     };
 
-    const handleChange = (event: {
-      target: { value: React.SetStateAction<string> };
-    }) => {
-      setDescription(event.target.value);
-    };
+
 
     const handleInput = (event: { target: any }) => {
       const textarea = event.target;
@@ -335,12 +369,19 @@ const GmailNode = memo(
               <h4 className="text-sm font-medium text-[#2DA771]">Gmail</h4>
 
               <textarea
-                value={description}
-                onChange={handleChange}
+                value={node?.data?.description || ""}
                 onInput={handleInput}
                 className="resize-none text-xs text-center font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-none"
                 placeholder="Enter description"
                 rows={1}
+                onChange={e => {
+                  dispatch(
+                    updateNodeDescription({
+                      nodeId: id,
+                      value: e.target.value,
+                    })
+                  );
+                }}
               />
             </div>
 
@@ -396,7 +437,7 @@ const GmailNode = memo(
                 </div>
               </div>
 
-              <div className="node-edge absolute top-1/2 transform -translate-y-1/2 right-[-60px] flex items-center">
+              <div className="node-edge absolute top-1/2 transform -translate-y-1/2 right-[-68px] flex items-center">
                 <div className="h-px border-t-2 border-dashed border-[#2DA771] w-[65px] mr-1" />
                 <Handle
                   id={`${id}-source`}
@@ -417,12 +458,12 @@ const GmailNode = memo(
                 />
               </div>
               <Handle
-                  id={`${id}-target`}
-                  type="target"
-                  position={Position.Left}
-                  className="w-[10px] h-[10px] bg-[#2DA771]"
-                  isConnectable={false}
-                />
+                id={`${id}-target`}
+                type="target"
+                position={Position.Left}
+                className="w-[10px] h-[10px] bg-[#2DA771]"
+                isConnectable={false}
+              />
               <div
                 className="toggle-button-box absolute right-0 left-0 mx-auto bottom-[-10px] z-10 cursor-pointer"
                 onClick={handleDropdownClick}

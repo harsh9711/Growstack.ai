@@ -57,6 +57,7 @@ const GeneralCategory = ({ setNodes }: any): React.ReactElement => {
       );
       const result = unwrapResult(resultAction);
 
+      if (!result._id) return;
       const newNode = {
         ...nodeData,
         id: result._id,

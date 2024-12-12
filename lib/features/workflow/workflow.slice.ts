@@ -62,6 +62,10 @@ const workflowSlice = createSlice({
       state.workFlowData[action.payload.key] = action.payload.value;
     },
 
+    updateWorkflowStatus: (state, action) => {
+      state.workFlowData.status = action.payload;
+    },
+
     clearWorkFlowData: state => {
       state.workFlowData = {} as WorkflowDataState;
     },
@@ -80,7 +84,18 @@ const workflowSlice = createSlice({
       )
       .addCase(createWorkFlow.rejected, (state, action) => {
         state.isLoading = false;
-        // state.error = action.payload;
+      })
+      .addCase(updateWorkFlowById.pending, state => {
+        state.isLoading = true;
+      })
+      .addCase(
+        updateWorkFlowById.fulfilled,
+        (state, action: PayloadAction<WorkflowDataState>) => {
+          state.isLoading = false;
+        }
+      )
+      .addCase(updateWorkFlowById.rejected, (state, action) => {
+        state.isLoading = false;
       })
       .addCase(getWorkFlowById.pending, state => {
         state.isLoading = true;
@@ -88,10 +103,6 @@ const workflowSlice = createSlice({
       .addCase(
         getWorkFlowById.fulfilled,
         (state, action: PayloadAction<WorkflowDataState>) => {
-          // console.log(
-          //   "action.payload---workFloe---->",
-          //   JSON.stringify(action.payload, null, 2)
-          // );
           state.isLoading = false;
           const updatedNodes = resolveWorkflowNodes(action.payload.nodes);
 
@@ -111,5 +122,5 @@ const workflowSlice = createSlice({
 });
 
 export default workflowSlice.reducer;
-export const { clearWorkFlowData, onChangeWorkFlowData } =
+export const { clearWorkFlowData, onChangeWorkFlowData, updateWorkflowStatus } =
   workflowSlice.actions;

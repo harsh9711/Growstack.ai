@@ -81,13 +81,14 @@ export const prepareNodesPayload = (
     const dependencies = node.data?.dependencies || [];
 
     const nodePayload: any = {
+      _id: node.id,
       workflowId: workFlowDataId,
       nodeMasterId: node.data.nodeMasterId,
       position: node.position,
-      dependencies: dependencies?.map(dps => dps.nodeId),
+      dependencies: dependencies,
       parameters: updatedValue,
       name: node.data.label || "",
-      description: node.data.descriptions || "",
+      description: node.data.description || "",
       type: node.type,
     };
 
@@ -109,4 +110,62 @@ export const prepareNodesPayload = (
 
     return nodePayload;
   });
+};
+
+export const isValidEdges = (
+  nodes: NodeState[],
+  sourceId: string,
+  targetId: string
+): boolean => {
+  console.log("sourceId", sourceId);
+  console.log("targetId", targetId);
+
+  const visited = new Set<string>();
+
+  const checkDependencies = (currentId: string): boolean => {
+    // console.log("--step1---", currentId);
+    if (visited.has(currentId)) return true;
+    visited.add(currentId);
+    // console.log("--step2---", currentId);
+    const currentNode = nodes.find(node => node.id === currentId);
+    if (!currentNode) return true;
+    // console.log("--step3---");
+    if (
+      !currentNode.data.dependencies ||
+      currentNode.data.dependencies.length === 0
+    ) {
+      // console.log("--step4---");
+      return true;
+    }
+
+    if (currentNode.data.dependencies.some(dep => dep === targetId)) {
+      return false;
+    }
+    // console.log("--step5---");
+    for (const dep of currentNode.data.dependencies) {
+      // console.log("dep--->", dep);
+      if (!checkDependencies(dep)) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
+  return checkDependencies(sourceId);
+};
+
+export const validateNodes = (nodes: NodeState[]): boolean => {
+  for (const node of nodes) {
+    const requiredParams = Object.entries(node.data.parameters)
+      .filter(([key, param]) => key !== "nextParameter" && param.required)
+      .map(([key, param]) => param);
+
+    const allRequiredParamsFilled = requiredParams.every(param => param?.value);
+
+    if (!allRequiredParamsFilled) {
+      return false;
+    }
+  }
+  return true;
 };

@@ -9,6 +9,7 @@ import {
   removeNodeDependency,
   updateNodeById,
   updateNodeDependency,
+  updateNodeDescription,
   updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
@@ -35,37 +36,36 @@ const ToolsNodes = memo(
 
     const { setNodes } = useReactFlow();
     const dispatch = useAppDispatch();
-    const { variables, isLoading, nodes } = useAppSelector(
+    const { isLoading, nodes } = useAppSelector(
       state => state.nodes
     );
     const { workFlowData } = useAppSelector(state => state.workflows);
     const [isEdit, setIsEdit] = useState(true);
     const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [description, setDescription] = useState(data?.descriptions || "");
     const [shake, setShake] = useState(false);
     const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
     const [dependencies, setDependencies] = useState<
       { key: string; nodeId: string }[]
-    >(node?.data.dependencies || []);
+    >([]);
 
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
 
     // added a code to add parent node id in dependencies
-    useEffect(() => {
-      if (parentId) {
-        setDependencies(prevDependencies => {
-          const newDependency = { key: "parent", nodeId: parentId };
-          const exists = prevDependencies.some(dep => dep.nodeId === parentId);
-          if (exists) {
-            return prevDependencies;
-          }
-          return [...prevDependencies, newDependency];
-        });
-      }
+    // useEffect(() => {
+    //   if (parentId) {
+    //     setDependencies(prevDependencies => {
+    //       const newDependency = { key: "parent", nodeId: parentId };
+    //       const exists = prevDependencies.some(dep => dep.nodeId === parentId);
+    //       if (exists) {
+    //         return prevDependencies;
+    //       }
+    //       return [...prevDependencies, newDependency];
+    //     });
+    //   }
 
-      return () => { };
-    }, [parentId]);
+    //   return () => { };
+    // }, [parentId]);
 
     const handleToggleAdvancedOptions = () => {
       setShowAdvancedOptions(!showAdvancedOptions);
@@ -77,7 +77,6 @@ const ToolsNodes = memo(
 
     // const handleInputChange = useCallback(
     //   (key: any, type: any, value: any, dependency?: string) => {
-
 
     //     if (!isEdit) {
     //       setShake(true);
@@ -161,11 +160,12 @@ const ToolsNodes = memo(
               (name): name is VariableNameProps => name !== null
             )
           );
-        } else if (validSequenceRegex.test(value) && !invalidPatternRegex.test(value)) {
+        } else if (
+          validSequenceRegex.test(value) &&
+          !invalidPatternRegex.test(value)
+        ) {
           const index = nodes.findIndex(nds => nds.id === id);
           const variableName = getVariableName(nodes, index);
-
-
 
           setVariableNames(
             variableName.filter(
@@ -174,24 +174,23 @@ const ToolsNodes = memo(
           );
         } else {
           // dispatch(removeNodeDependency({ nodeId: id, key }));
-          setDependencies(pre => pre.filter(dep => dep.key !== key));
+          // setDependencies(pre => pre.filter(dep => dep.key !== key));
           setVariableNames([]);
         }
-        if (dependency) {
-          // dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
-          setDependencies(prevDependencies => {
-            const newDependency = { key, nodeId: dependency };
-            const uniqueDependencies = new Set([
-              ...prevDependencies,
-              newDependency,
-            ]);
-            return Array.from(uniqueDependencies);
-          });
-        }
+        // if (dependency) {
+        //   // dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
+        //   setDependencies(prevDependencies => {
+        //     const newDependency = { key, nodeId: dependency };
+        //     const uniqueDependencies = new Set([
+        //       ...prevDependencies,
+        //       newDependency,
+        //     ]);
+        //     return Array.from(uniqueDependencies);
+        //   });
+        // }
       },
-      [dispatch, id, nodes, dependencies, variableNames, isEdit, shake]
+      [dispatch, id, nodes, variableNames, isEdit, shake]
     );
-
 
     const handleNextClick = async () => {
       if (!node?.data?.parameters) return;
@@ -227,8 +226,8 @@ const ToolsNodes = memo(
             workflowId: workFlowData._id,
             nodeMasterId: node.data.nodeMasterId,
             position: { x: positionAbsoluteX, y: positionAbsoluteY },
-            dependencies: dependencies.map(dps => dps.nodeId),
-            // dependencies: node.data?.dependencies ? node.data.dependencies?.map(dps => dps.nodeId) : [],
+            // dependencies: dependencies.map(dps => dps.nodeId),
+            dependencies: node.data?.dependencies || [],
             parameters: updatedValue,
           };
 
@@ -247,8 +246,8 @@ const ToolsNodes = memo(
         requiredParams.forEach(param => {
           const key = node?.data?.parameters
             ? Object.keys(node.data.parameters).find(
-              k => node.data.parameters?.[k] === param
-            )
+                k => node.data.parameters?.[k] === param
+              )
             : undefined;
           if (key && !param.value) {
             dispatch(
@@ -262,12 +261,6 @@ const ToolsNodes = memo(
           }
         });
       }
-    };
-
-    const handleChange = (event: {
-      target: { value: React.SetStateAction<string> };
-    }) => {
-      setDescription(event.target.value);
     };
 
     const handleInput = (event: { target: any }) => {
@@ -330,18 +323,24 @@ const ToolsNodes = memo(
         <section className="node-box relative">
           <div className="node-top-box relative">
             <div className="node-name-text-description text-center mb-5">
-              <h4 className="text-sm font-medium text-[#2DA771]">
+              <h4 className="text-sm font-medium text-[#2DA771] w-[150px]">
                 {" "}
                 {data?.label || ""}
               </h4>
-
               <textarea
-                value={description}
-                onChange={handleChange}
+                value={node?.data?.description || ""}
                 onInput={handleInput}
                 className="resize-none text-xs text-center font-medium text-[#14171B] bg-transparent border-transparent focus:border-transparent focus:ring-0 focus:outline-none"
                 placeholder="Enter description"
                 rows={1}
+                onChange={e => {
+                  dispatch(
+                    updateNodeDescription({
+                      nodeId: id,
+                      value: e.target.value,
+                    })
+                  );
+                }}
               />
             </div>
 
@@ -356,7 +355,7 @@ const ToolsNodes = memo(
                   <img
                     src={data.icon}
                     alt={data.label}
-                    className="w-[30px] mx-auto absolute top-[55px] left-0 right-0"
+                    className="w-[30px] absolute left-0 right-0 mx-auto top-1/2 transform  -translate-y-1/2"
                   />
                 )}
               </div>
@@ -399,7 +398,7 @@ const ToolsNodes = memo(
                 </div>
               </div>
 
-              <div className="node-edge absolute top-1/2 transform -translate-y-1/2 right-[-65px] flex items-center">
+              <div className="node-edge absolute top-1/2 transform -translate-y-1/2 right-[-70px] flex items-center">
                 <div className="h-px border-t-2 border-dashed border-[#2DA771] w-[65px] mr-1">
                   <Handle
                     id={`${id}-source`}
