@@ -122,7 +122,7 @@ function App() {
                   onClick={() => handlePlayVideo(index)}
                 >
                   {playingVideoIndex !== index && (
-                    <div className="w-16 h-16 bg-[#2DA771] rounded-full ring-4 ring-white grid place-items-center hover:bg-[#2DA771]/90 transition-all duration-300">
+                    <div className="w-10 h-10 bg-[#2DA771] rounded-full ring-4 ring-white grid place-items-center hover:bg-[#2DA771]/90 transition-all duration-300">
                       <svg
                         className="ml-1 w-6 h-6"
                         viewBox="0 0 16 18"
