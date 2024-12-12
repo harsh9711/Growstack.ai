@@ -81,6 +81,7 @@ export const prepareNodesPayload = (
     const dependencies = node.data?.dependencies || [];
 
     const nodePayload: any = {
+      _id: node.id,
       workflowId: workFlowDataId,
       nodeMasterId: node.data.nodeMasterId,
       position: node.position,
