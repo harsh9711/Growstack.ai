@@ -119,6 +119,8 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
       );
       const result = unwrapResult(resultAction);
 
+      if (!result._id) return;
+
       const newNode = {
         ...nodeData,
         data: {
@@ -191,15 +193,15 @@ const ToolsCategory = ({ setNodes }: any): React.ReactElement => {
               <div
                 key={index}
                 className={`flex flex-row p-3 rounded-lg items-center cursor-pointer ${selectedSubCategory === subCategory
-                    ? "bg-[#F1B916]"
-                    : "bg-[#E9E9E9]"
+                  ? "bg-[#F1B916]"
+                  : "bg-[#E9E9E9]"
                   }`}
                 onClick={() => setSelectedSubCategory(subCategory)}
               >
                 <p
                   className={`ml-2 text-sm font-normal leading-4 flex items-center gap-2 ${selectedSubCategory === subCategory
-                      ? "text-white"
-                      : "text-[#14171B]"
+                    ? "text-white"
+                    : "text-[#14171B]"
                     }`}
                 >
                   <svg

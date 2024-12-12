@@ -4,13 +4,14 @@ import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "@/lib/hooks";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { prepareNodesPayload } from "@/utils/helper";
+import { prepareNodesPayload, validateNodes } from "@/utils/helper";
 import { useEdges } from "@xyflow/react";
 import PublishConfirmationModal from "../modals/publishmodal/PublishModal";
 import SaveFormModal from "../modals/saveformmodal/SaveFormModal";
 import {
   onChangeWorkFlowData,
   updateWorkFlowById,
+  updateWorkflowStatus,
 } from "@/lib/features/workflow/workflow.slice";
 import { useSnackbar } from "../snackbar/SnackbarContext";
 
@@ -27,7 +28,6 @@ const TopRightPanel2nd = ({
   const { success, error } = useSnackbar();
   const [openPublishConfirmationModal, setOpenPublishConfirmationModal] =
     useState(false);
-  const [openSaveFormModal, setOpenSaveFormModal] = useState(false);
 
   const handleClick = (index: number) => {
     setActiveTab(index);
@@ -60,20 +60,11 @@ const TopRightPanel2nd = ({
     setOpenPublishConfirmationModal(true);
   };
 
-  const handleCloseSaveFormModal = () => {
-    setOpenSaveFormModal(false);
-  };
-
-  const handleOpenSaveFormModal = () => {
-    setOpenSaveFormModal(true);
-  };
-
   const handleSaveWorkFlow = async () => {
     try {
       const bodyPayload = {
         name: workFlowData?.name,
         description: workFlowData?.description || "",
-        // userId: workFlowData?.userId,
         nodes: prepareNodesPayload(nodes, workFlowData._id || ""),
         edges: edges,
       };
@@ -88,7 +79,6 @@ const TopRightPanel2nd = ({
         })
       );
       success("Workflow saved successfully");
-      setOpenSaveFormModal(false);
     } catch (e: any) {
       console.log("----error---", e?.message);
       error("Failed to save workflow" + e?.message);
@@ -97,10 +87,21 @@ const TopRightPanel2nd = ({
 
   const handlePublishWorkFlow = async () => {
     try {
+      const isValidNode = validateNodes(nodes);
+
+      if (!isValidNode) {
+        setOpenPublishConfirmationModal(false);
+        error(
+          "Please fill all the required fields of Node, before publishing the Workflow"
+        );
+        return;
+      }
+
+      console.log("----validateNode---", isValidNode);
+
       const bodyPayload = {
         name: workFlowData?.name,
         description: workFlowData?.description || "",
-        // userId: workFlowData?.userId,
         nodes: prepareNodesPayload(nodes, workFlowData._id || ""),
         edges: edges,
         status: "published",
@@ -113,8 +114,9 @@ const TopRightPanel2nd = ({
           data: bodyPayload,
         })
       );
-      success("Workflow published successfully");
+      dispatch(updateWorkflowStatus("published"));
       setOpenPublishConfirmationModal(false);
+      success("Workflow published successfully");
     } catch (e: any) {
       console.log("----error---", e?.message);
       error("Failed to save workflow" + e?.message);
@@ -193,33 +195,39 @@ const TopRightPanel2nd = ({
                 activeTab === index
                   ? "text-white bg-[#2DA771]"
                   : "text-black bg-transparent"
-              } shadow-lg`}
+              } shadow-lg disabled:opacity-60 disabled:cursor-not-allowed`}
               onClick={() => handleClick(index)}
+              disabled={
+                workFlowData?.status !== "published" && item?.text !== "Build"
+              }
             >
               {item.text}
             </button>
           ))}
         </div>
-
-        <div className="">
-          <div className="action-button-box flex items-center gap-2">
-            <h3 className="text-[#878787] text-[16px] font-medium capitalize mr-3">
-              {workFlowData?.status}
-            </h3>
-            <Button
-              className="w-auto h-auto bg-[#2DA771] shadow-md hover:bg-[#2DA771]"
-              onClick={handleSaveWorkFlow}
-            >
-              Save
-            </Button>
-            <Button
-              className="w-auto h-auto bg-[#2DA771] shadow-md hover:bg-[#2DA771]"
-              onClick={handleOpenPublishConfirmationModal}
-            >
-              Publish
-            </Button>
+        {activeTab === 0 ? (
+          <div className="">
+            <div className="action-button-box flex items-center gap-2">
+              <h3 className="text-[#878787] text-[16px] font-medium capitalize mr-3">
+                {workFlowData?.status}
+              </h3>
+              <Button
+                className="w-auto h-auto bg-[#2DA771] shadow-md hover:bg-[#2DA771]"
+                onClick={handleSaveWorkFlow}
+              >
+                Save
+              </Button>
+              <Button
+                className="w-auto h-auto bg-[#2DA771] shadow-md hover:bg-[#2DA771]"
+                onClick={handleOpenPublishConfirmationModal}
+              >
+                Publish
+              </Button>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="w-[156px]" />
+        )}
       </div>
 
       <PublishConfirmationModal
@@ -228,12 +236,6 @@ const TopRightPanel2nd = ({
           handleClosePublishConfirmationModal()
         }
         onPublishNode={handlePublishWorkFlow}
-      />
-
-      <SaveFormModal
-        openSaveFormModal={openSaveFormModal}
-        onCloseSaveFormModal={() => handleCloseSaveFormModal()}
-        onHandleSave={() => {}} // onSaveFormNode={handleDeleteNode}
       />
     </div>
   );

@@ -2,6 +2,7 @@ import WorkflowSchedulerModal from "@/app/(main-app)/app/automation-hub/workflow
 import instance, { CustomAxiosInstance } from "@/config/axios.config";
 import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const TimeLineTable = ({
   workflow_id,
@@ -51,7 +52,15 @@ const TimeLineTable = ({
       //   `/workflow/${workflow_id}/history`
       // );
       setHistoryData(getHistory?.data);
-    } catch {}
+    } catch (error: any) {
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Something went wrong");
+      }
+    }
   }, []);
 
   const getScheduleData = useCallback(async () => {
@@ -63,8 +72,14 @@ const TimeLineTable = ({
       //   `http://localhost:5000/workflow/${workflow_id}/schedules`
       // );
       setScheduleData(getHistory?.data);
-    } catch (err) {
-      console.log(err);
+    } catch (error: any) {
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Something went wrong");
+      }
     }
   }, []);
 
@@ -106,13 +121,13 @@ const TimeLineTable = ({
         _id: item._id,
 
         // Workflow-specific data
-        name: workflowResponse.data.name,
-        description: workflowResponse.data.description,
-        status: workflowResponse.data.status,
+        name: workflowResponse?.data?.name,
+        description: workflowResponse?.data?.description,
+        status: workflowResponse?.data?.status,
 
         // Map the input configs with their values from the schedule
-        input_configs: workflowResponse.data.nodes
-          .filter((node: any) => {
+        input_configs: workflowResponse?.data?.nodes
+          ?.filter((node: any) => {
             const type = node?.nodeMasterId?.inputType;
             const formType = node?.nodeMasterId?.type;
             return (
@@ -125,7 +140,7 @@ const TimeLineTable = ({
               formType === "form"
             );
           })
-          .map((node: any) => {
+          ?.map((node: any) => {
             if (node?.type !== "form") {
               const parameters = node.parameters || {};
               const scheduleValue = item.workflowPayload?.find(
@@ -188,7 +203,14 @@ const TimeLineTable = ({
       });
 
       setShowModal(true);
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response) {
+        toast.error(error?.response?.data?.error);
+      } else if (error?.message) {
+        toast.error(error?.message);
+      } else {
+        toast.error("Something went wrong");
+      }
       console.error("Error fetching workflow details:", error);
     }
   };
@@ -247,45 +269,53 @@ const TimeLineTable = ({
               </tr>
             </thead>
             <tbody>
-              {filteredHistoryData?.map((item: any, index: number) => (
-                <tr
-                  key={index}
-                  className={`border-b ${
-                    index % 2 === 0 ? "bg-white" : "bg-white"
-                  }`}
-                >
-                  <td className="p-3 text-black">{item?._id}</td>
-                  <td className="p-3 text-black">
-                    {workflowName ?? "GrowStack"}
-                  </td>
-                  <td
-                    className={`p-3 font-medium ${
-                      item?.status === "completed"
-                        ? "inline-block text-green-600 bg-green-100 mt-1 rounded-md text-sm"
-                        : item?.status === "in-progress"
-                          ? "inline-block text-yellow-600 bg-yellow-100 mt-1 rounded-md text-sm"
-                          : "inline-block text-red-600 bg-yellow-100 mt-1 rounded-md text-sm"
+              {filteredHistoryData?.length > 0 ? (
+                filteredHistoryData?.map((item: any, index: number) => (
+                  <tr
+                    key={index}
+                    className={`border-b ${
+                      index % 2 === 0 ? "bg-white" : "bg-white"
                     }`}
                   >
-                    {item?.status}
-                  </td>
-                  <td className="p-3 text-black">
-                    {new Date(item?.startTimestamp).toLocaleString("en-US", {
-                      dateStyle: "medium", // Example: Nov 27, 2024
-                      timeStyle: "short", // Example: 1:45 PM
-                      timeZone: "UTC", // Adjust for UTC or any specific timezone
-                    })}
-                  </td>
-                  <td className="p-3">
-                    <button
-                      className="px-4 py-2 mr-2 text-sm text-green text-green-400 hover:text-white border border-green-400 rounded hover:bg-green-600"
-                      onClick={() => onViewDetails?.(item?._id)}
+                    <td className="p-3 text-black">{item?._id}</td>
+                    <td className="p-3 text-black">
+                      {workflowName ?? "GrowStack"}
+                    </td>
+                    <td
+                      className={`p-3 font-medium ${
+                        item?.status === "completed"
+                          ? "inline-block text-green-600 bg-green-100 mt-1 rounded-md text-sm"
+                          : item?.status === "in-progress"
+                            ? "inline-block text-yellow-600 bg-yellow-100 mt-1 rounded-md text-sm"
+                            : "inline-block text-red-600 bg-yellow-100 mt-1 rounded-md text-sm"
+                      }`}
                     >
-                      View Details
-                    </button>
+                      {item?.status}
+                    </td>
+                    <td className="p-3 text-black">
+                      {new Date(item?.startTimestamp).toLocaleString("en-US", {
+                        dateStyle: "medium", // Example: Nov 27, 2024
+                        timeStyle: "short", // Example: 1:45 PM
+                        timeZone: "UTC", // Adjust for UTC or any specific timezone
+                      })}
+                    </td>
+                    <td className="p-3">
+                      <button
+                        className="px-4 py-2 mr-2 text-sm text-green text-green-400 hover:text-white border border-green-400 rounded hover:bg-green-600"
+                        onClick={() => onViewDetails?.(item?._id)}
+                      >
+                        View Details
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr className="border-b">
+                  <td colSpan={5} className="p-3 text-center text-gray-600 h-96">
+                    No Data Found.
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         )}
@@ -309,40 +339,48 @@ const TimeLineTable = ({
               </tr>
             </thead>
             <tbody>
-              {filteredScheduleData?.map((item: any, index: number) => (
-                <tr
-                  key={index}
-                  className={`border-b ${
-                    index % 2 === 0 ? "bg-white" : "bg-white"
-                  }`}
-                >
-                  <td className="p-3 text-black">
-                    {workflowName ?? "GrowStack"}
-                  </td>
-                  <td
-                    className={`py-2 font-medium bg-[#C4C4C429] text-black
+              {filteredScheduleData?.length > 0 ? (
+                filteredScheduleData?.map((item: any, index: number) => (
+                  <tr
+                    key={index}
+                    className={`border-b ${
+                      index % 2 === 0 ? "bg-white" : "bg-white"
+                    }`}
+                  >
+                    <td className="p-3 text-black">
+                      {workflowName ?? "GrowStack"}
+                    </td>
+                    <td
+                      className={`py-2 font-medium bg-[#C4C4C429] text-black
                         inline-block px-6 mt-2 rounded-md text-sm  
                     `}
-                  >
-                    {item?.frequency}
-                  </td>
-                  <td className="p-3 text-black">
-                    {new Date(item?.nextRun).toLocaleString("en-US", {
-                      dateStyle: "medium", // Example: Nov 27, 2024
-                      timeStyle: "short", // Example: 1:45 PM
-                      timeZone: item?.timezone || "UTC", // Use dynamic timezone or default to UTC
-                    })}
-                  </td>
-                  <td className="p-3">
-                    <button
-                      className="px-4 py-1 mr-2 text-sm text-green text-green-400 hover:text-white border border-green-400 rounded hover:bg-green-600"
-                      onClick={() => handleEditSchedule(item)}
                     >
-                      View Details
-                    </button>
+                      {item?.frequency}
+                    </td>
+                    <td className="p-3 text-black">
+                      {new Date(item?.nextRun).toLocaleString("en-US", {
+                        dateStyle: "medium", // Example: Nov 27, 2024
+                        timeStyle: "short", // Example: 1:45 PM
+                        timeZone: item?.timezone || "UTC", // Use dynamic timezone or default to UTC
+                      })}
+                    </td>
+                    <td className="p-3">
+                      <button
+                        className="px-4 py-1 mr-2 text-sm text-green text-green-400 hover:text-white border border-green-400 rounded hover:bg-green-600"
+                        onClick={() => handleEditSchedule(item)}
+                      >
+                        View Details
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr className="border-b">
+                  <td colSpan={4} className="p-3 text-center text-gray-600 h-96 ">
+                    No Data Found.
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         )}

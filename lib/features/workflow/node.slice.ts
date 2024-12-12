@@ -94,55 +94,44 @@ const nodeSlice = createSlice({
     updateNodeDependency: (
       state,
       action: PayloadAction<{
-        nodeId: string;
-        data: { key: string; nodeId: string };
+        sourceId: string;
+        targetId: string;
       }>
     ) => {
-      const { nodeId, data } = action.payload;
-      const nodeResult = state.nodes.find(node => node.id === nodeId);
-      // if (nodeResult) {
-      //   if (!nodeResult.data.dependencies) {
-      //     nodeResult.data.dependencies = [];
-      //   }
-
-      //   const dependencyExists = nodeResult.data.dependencies.some(
-      //     dep => dep.nodeId === data.nodeId && dep.key === data.key
-      //   );
-
-      //   if (!dependencyExists) {
-      //     nodeResult.data.dependencies.push(data);
-      //   }
-      // }
-
+      const { sourceId, targetId } = action.payload;
+      const nodeResult = state.nodes.find(node => node.id === targetId);
       if (nodeResult) {
         if (!nodeResult.data.dependencies) {
           nodeResult.data.dependencies = [];
         }
-
-        const newDependency = { key: data.key, nodeId: data.nodeId };
-
-        const uniqueDependencies = new Set([
-          ...nodeResult.data.dependencies,
-          newDependency,
-        ]);
-
-        nodeResult.data.dependencies = Array.from(uniqueDependencies);
+        nodeResult.data.dependencies.push(sourceId);
+        nodeResult.data.dependencies = [
+          ...Array.from(new Set(nodeResult.data.dependencies)),
+        ];
+        console.log(
+          "----nodeResultAdd---->",
+          JSON.stringify(nodeResult, null, 2)
+        );
       }
     },
 
     removeNodeDependency: (
       state,
       action: PayloadAction<{
-        nodeId: string;
-        key: string;
+        sourceId: string;
+        targetId: string;
       }>
     ) => {
-      const { nodeId, key } = action.payload;
-      const nodeResult = state.nodes.find(node => node.id === nodeId);
+      const { sourceId, targetId } = action.payload;
+      const nodeResult = state.nodes.find(node => node.id === targetId);
 
       if (nodeResult && nodeResult.data?.dependencies) {
         nodeResult.data.dependencies = nodeResult.data.dependencies.filter(
-          dep => dep.key !== key
+          dep => dep !== sourceId
+        );
+        console.log(
+          "----nodeResultRemove---->",
+          JSON.stringify(nodeResult, null, 2)
         );
       }
     },
@@ -476,6 +465,16 @@ const nodeSlice = createSlice({
 
     removeNodeById: (state, action: PayloadAction<string>) => {
       state.nodes = state.nodes.filter(node => node.id !== action.payload);
+
+      state.nodes?.forEach(node => {
+        if (node.data.dependencies) {
+          node.data.dependencies = node.data?.dependencies?.filter(
+            dep => dep !== action.payload
+          );
+        }
+      });
+
+      console.log("----state.nodes----", JSON.stringify(state.nodes, null, 2));
     },
   },
 
