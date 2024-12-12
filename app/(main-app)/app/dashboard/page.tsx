@@ -540,6 +540,7 @@ const Card: React.FC<CardProps> = ({
                         e.preventDefault();
                         e.stopPropagation();
                         handleEditClick();
+                        localStorage.removeItem("workflowActiveTab")
                       }}
                     >
                       <Edit size={16} color="#9e9e9e" />
