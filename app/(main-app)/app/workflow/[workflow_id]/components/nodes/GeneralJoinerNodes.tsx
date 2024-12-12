@@ -48,7 +48,7 @@ const GeneralJoinerNodes = memo(
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
     const [dependencies, setDependencies] = useState<
       { key: string; nodeId: string }[]
-    >(node?.data.dependencies || []);
+    >([]);
 
     const handleOutsideClick = (e: MouseEvent) => {
       const modal = document.getElementById("node-action-modal");
@@ -162,23 +162,24 @@ const GeneralJoinerNodes = memo(
           );
         } else {
           // dispatch(removeNodeDependency({ nodeId: id, key }));
-          setDependencies(pre => pre.filter(dep => dep.key !== key));
+          // setDependencies(pre => pre.filter(dep => dep.key !== key));
           setVariableNames([]);
         }
-        if (dependency) {
-          // dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
-          setDependencies(prevDependencies => {
-            const newDependency = { key, nodeId: dependency };
-            const uniqueDependencies = new Set([
-              ...prevDependencies,
-              newDependency,
-            ]);
-            return Array.from(uniqueDependencies);
-          });
-        }
+        // if (dependency) {
+        //   // dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
+        //   setDependencies(prevDependencies => {
+        //     const newDependency = { key, nodeId: dependency };
+        //     const uniqueDependencies = new Set([
+        //       ...prevDependencies,
+        //       newDependency,
+        //     ]);
+        //     return Array.from(uniqueDependencies);
+        //   });
+        // }
       },
-      [dispatch, id, nodes, dependencies, variableNames, isEdit, shake]
+      [dispatch, id, nodes, variableNames, isEdit, shake]
     );
+
 
     const handleNextClick = async () => {
       if (!node?.data?.parameters) return;
@@ -199,8 +200,8 @@ const GeneralJoinerNodes = memo(
             workflowId: workFlowData._id,
             nodeMasterId: node.data.nodeMasterId,
             position: { x: positionAbsoluteX, y: positionAbsoluteY },
-            dependencies: dependencies.map(dps => dps.nodeId),
-            // dependencies: node.data?.dependencies ? node.data.dependencies?.map(dps => dps.nodeId) : [],
+            // dependencies: dependencies.map(dps => dps.nodeId),
+            dependencies: node.data?.dependencies || [],
             parameters: updatedValue,
           };
 

@@ -20,6 +20,7 @@ import {
   deleteNodeById,
   removeNodeById,
   updateNodeById,
+  updateNodeDependency,
   updateNodeParameter,
 } from "@/lib/features/workflow/node.slice";
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -142,6 +143,7 @@ const FanOut = ({
 
       setNodes((nds: FlowNode[]) => nds.concat(subFlow as unknown as FlowNode));
       dispatch(addNode(subFlow));
+      dispatch(updateNodeDependency({ sourceId: id, targetId: result._id }));
     } catch (error) {
       console.error("Error adding node:", error);
     }
@@ -270,8 +272,8 @@ const FanOut = ({
       requiredParams.forEach(param => {
         const key = node?.data?.parameters
           ? Object.keys(node.data.parameters).find(
-              k => node.data.parameters?.[k] === param
-            )
+            k => node.data.parameters?.[k] === param
+          )
           : undefined;
         if (key && !param.value) {
           dispatch(
@@ -463,7 +465,7 @@ const FanOut = ({
           <div className="modal">
             {isActionModalShow && (
               <div
-           
+
                 id="node-action-modal"
                 className="absolute right-[-126px] top-[26px] mt-2 w-48 bg-white rounded-[15px] border-[1px] border-[#E8E8E8] shadow-2xl z-50"
               >

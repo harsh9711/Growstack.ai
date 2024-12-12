@@ -44,7 +44,7 @@ const LlmNodes = memo(
     const [description, setDescription] = useState(data?.descriptions || "");
     const [dependencies, setDependencies] = useState<
       { key: string; nodeId: string }[]
-    >(node?.data.dependencies || []);
+    >([]);
 
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
     const [isActionModalShow, setIsActionModalShow] = useState(false);
@@ -169,23 +169,80 @@ const LlmNodes = memo(
           );
         } else {
           // dispatch(removeNodeDependency({ nodeId: id, key }));
-          setDependencies(pre => pre.filter(dep => dep.key !== key));
+          // setDependencies(pre => pre.filter(dep => dep.key !== key));
           setVariableNames([]);
         }
-        if (dependency) {
-          // dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
-          setDependencies(prevDependencies => {
-            const newDependency = { key, nodeId: dependency };
-            const uniqueDependencies = new Set([
-              ...prevDependencies,
-              newDependency,
-            ]);
-            return Array.from(uniqueDependencies);
-          });
-        }
+        // if (dependency) {
+        //   // dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
+        //   setDependencies(prevDependencies => {
+        //     const newDependency = { key, nodeId: dependency };
+        //     const uniqueDependencies = new Set([
+        //       ...prevDependencies,
+        //       newDependency,
+        //     ]);
+        //     return Array.from(uniqueDependencies);
+        //   });
+        // }
       },
-      [dispatch, id, nodes, dependencies, variableNames, isEdit, shake]
+      [dispatch, id, nodes, variableNames, isEdit, shake]
     );
+
+
+
+    // const handleInputChange = useCallback(
+    //   (key: any, type: any, value: any, dependency: any) => {
+    //     if (!isEdit) {
+    //       setShake(true);
+    //       setTimeout(() => setShake(false), 500);
+    //       return;
+    //     }
+
+    //     console.log("key-->", key, "type-->", type, "value-->", value);
+    //     console.log("dependencies-->", dependency);
+
+    //     dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
+
+    //     if (!isSpecialType(type)) return;
+
+    //     // Regex definitions
+    //     const containsDollarSignRegex = /\$/; // Matches any occurrence of "$"
+    //     const invalidAfterDollarRegex = /\$(\s*[^\s$])/; // "$text" or "$ text"
+    //     const invalidCompleteRegex = /\$(.*?)\$.*\S/; // "$ ... $ text"
+
+    //     if (containsDollarSignRegex.test(value)) {
+    //       if (invalidAfterDollarRegex.test(value) || invalidCompleteRegex.test(value)) {
+    //         // Case 1: Invalid patterns
+    //         setDependencies(pre => pre.filter(dep => dep.key !== key));
+    //         setVariableNames([]);
+    //       } else {
+    //         // Case 2: Valid patterns (any "$" without invalid characters following)
+    //         const index = nodes.findIndex(nds => nds.id === id);
+    //         const variableName = getVariableName(nodes, index);
+
+    //         setVariableNames(
+    //           variableName.filter(
+    //             (name): name is VariableNameProps => name !== null
+    //           )
+    //         );
+    //       }
+    //     } else {
+    //       // Case 3: No "$" in value
+    //       setDependencies(pre => pre.filter(dep => dep.key !== key));
+    //       setVariableNames([]);
+    //     }
+
+    //     // Dependency logic
+    //     if (dependency) {
+    //       setDependencies(prevDependencies => {
+    //         const newDependency = { key, nodeId: dependency };
+    //         const uniqueDependencies = new Set([...prevDependencies, newDependency]);
+    //         return Array.from(uniqueDependencies);
+    //       });
+    //     }
+    //   },
+    //   [dispatch, id, nodes, dependencies, variableNames, isEdit, shake]
+    // );
+
 
 
 
@@ -221,10 +278,8 @@ const LlmNodes = memo(
             workflowId: workFlowData._id,
             nodeMasterId: node.data.nodeMasterId,
             position: { x: positionAbsoluteX, y: positionAbsoluteY },
-            dependencies: dependencies.map(dps => dps.nodeId),
-            // dependencies: node.data?.dependencies
-            //   ? node.data.dependencies?.map(dps => dps.nodeId)
-            //   : [],
+            // dependencies: dependencies.map(dps => dps.nodeId),
+            dependencies: node.data?.dependencies || [],
             parameters: updatedValue,
           };
 

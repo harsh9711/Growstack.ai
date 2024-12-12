@@ -120,56 +120,110 @@ const LinkedinNode = memo(
       setIsDropdownOpen(!isDropdownOpen);
     };
 
+    // const handleInputChange = useCallback(
+    //   (key: any, type: any, value: any, dependency?: string) => {
+    //     console.log(
+    //       "key-->",
+    //       key,
+    //       "type-->",
+    //       type,
+    //       "value-->",
+    //       value,
+    //       "dependencies--->",
+    //       dependency
+    //     );
+
+    //     dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
+
+    //     if (!isSpecialType(type)) return;
+
+    //     if (value && value.includes("$")) {
+    //       const index = nodes.findIndex(nds => nds.id === id);
+    //       const variableName = getVariableName(nodes, index);
+    //       console.log("variableName-->", variableName);
+    //       if (dependency) {
+    //         // setDependencies(prevDependencies => {
+    //         //   const newDependency = { key, nodeId: dependency };
+    //         //   const uniqueDependencies = new Set([
+    //         //     ...prevDependencies,
+    //         //     newDependency,
+    //         //   ]);
+    //         //   return Array.from(uniqueDependencies);
+    //         // });
+
+    //         dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
+    //       }
+    //       const regex = /\$(?!\s*$).+/;
+    //       if (regex.test(value)) {
+    //         setVariableNames([]);
+    //       } else {
+    //         setVariableNames(
+    //           variableName.filter(
+    //             (name): name is VariableNameProps => name !== null
+    //           )
+    //         );
+    //       }
+    //     } else {
+    //       // setDependencies(pre => pre.filter(dep => dep.key !== key));
+    //       dispatch(removeNodeDependency({ nodeId: id, key }));
+    //       setVariableNames([]);
+    //     }
+    //   },
+    //   [dispatch, id, nodes, dependencies, variableNames]
+    // );
+
+
     const handleInputChange = useCallback(
-      (key: any, type: any, value: any, dependency?: string) => {
-        console.log(
-          "key-->",
-          key,
-          "type-->",
-          type,
-          "value-->",
-          value,
-          "dependencies--->",
-          dependency
-        );
+      (key: any, type: any, value: any, dependency: any) => {
+        console.log("key-->", key, "type-->", type, "value-->", value);
+        console.log("dependencies-->", dependency);
 
         dispatch(updateNodeParameter({ nodeId: id, key, type, value }));
 
         if (!isSpecialType(type)) return;
 
-        if (value && value.includes("$")) {
+        const singleDollarRegex = /^\$$/;
+        const validSequenceRegex = /.*\$$/;
+        const invalidPatternRegex = /\$(.*?)\$.*\S/;
+
+        if (singleDollarRegex.test(value)) {
           const index = nodes.findIndex(nds => nds.id === id);
           const variableName = getVariableName(nodes, index);
-          console.log("variableName-->", variableName);
-          if (dependency) {
-            // setDependencies(prevDependencies => {
-            //   const newDependency = { key, nodeId: dependency };
-            //   const uniqueDependencies = new Set([
-            //     ...prevDependencies,
-            //     newDependency,
-            //   ]);
-            //   return Array.from(uniqueDependencies);
-            // });
+          setVariableNames(
+            variableName.filter(
+              (name): name is VariableNameProps => name !== null
+            )
+          );
+        } else if (
+          validSequenceRegex.test(value) &&
+          !invalidPatternRegex.test(value)
+        ) {
+          const index = nodes.findIndex(nds => nds.id === id);
+          const variableName = getVariableName(nodes, index);
 
-            dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
-          }
-          const regex = /\$(?!\s*$).+/;
-          if (regex.test(value)) {
-            setVariableNames([]);
-          } else {
-            setVariableNames(
-              variableName.filter(
-                (name): name is VariableNameProps => name !== null
-              )
-            );
-          }
+          setVariableNames(
+            variableName.filter(
+              (name): name is VariableNameProps => name !== null
+            )
+          );
         } else {
+          // dispatch(removeNodeDependency({ nodeId: id, key }));
           // setDependencies(pre => pre.filter(dep => dep.key !== key));
-          dispatch(removeNodeDependency({ nodeId: id, key }));
           setVariableNames([]);
         }
+        // if (dependency) {
+        //   // dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
+        //   setDependencies(prevDependencies => {
+        //     const newDependency = { key, nodeId: dependency };
+        //     const uniqueDependencies = new Set([
+        //       ...prevDependencies,
+        //       newDependency,
+        //     ]);
+        //     return Array.from(uniqueDependencies);
+        //   });
+        // }
       },
-      [dispatch, id, nodes, dependencies, variableNames]
+      [dispatch, id, nodes, variableNames, isEdit]
     );
 
     const handleNextClick = async () => {
@@ -193,7 +247,7 @@ const LinkedinNode = memo(
             nodeMasterId: node.data.nodeMasterId,
             position: { x: positionAbsoluteX, y: positionAbsoluteY },
             // dependencies: dependencies.map(dps => dps.nodeId),
-            dependencies: node.data?.dependencies ? node.data.dependencies?.map(dps => dps.nodeId) : [],
+            dependencies: node.data?.dependencies || [],
             parameters: updatedValue,
           };
 
@@ -392,12 +446,12 @@ const LinkedinNode = memo(
                 />
               </div>
               <Handle
-                  id={`${id}-target`}
-                  type="target"
-                  position={Position.Left}
-                  className="w-[10px] h-[10px] bg-[#2DA771]"
-                  isConnectable={false}
-                />
+                id={`${id}-target`}
+                type="target"
+                position={Position.Left}
+                className="w-[10px] h-[10px] bg-[#2DA771]"
+                isConnectable={false}
+              />
               <div
                 className="toggle-button-box absolute right-0 left-0 mx-auto bottom-[-10px] z-10 cursor-pointer"
                 onClick={handleDropdownClick}

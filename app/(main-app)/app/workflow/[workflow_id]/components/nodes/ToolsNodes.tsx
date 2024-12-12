@@ -47,7 +47,7 @@ const ToolsNodes = memo(
     const [variableNames, setVariableNames] = useState<VariableNameProps[]>([]);
     const [dependencies, setDependencies] = useState<
       { key: string; nodeId: string }[]
-    >(node?.data.dependencies || []);
+    >([]);
 
     const [focusedInputKey, setFocusedInputKey] = useState<string | null>(null);
 
@@ -161,11 +161,12 @@ const ToolsNodes = memo(
               (name): name is VariableNameProps => name !== null
             )
           );
-        } else if (validSequenceRegex.test(value) && !invalidPatternRegex.test(value)) {
+        } else if (
+          validSequenceRegex.test(value) &&
+          !invalidPatternRegex.test(value)
+        ) {
           const index = nodes.findIndex(nds => nds.id === id);
           const variableName = getVariableName(nodes, index);
-
-
 
           setVariableNames(
             variableName.filter(
@@ -174,22 +175,22 @@ const ToolsNodes = memo(
           );
         } else {
           // dispatch(removeNodeDependency({ nodeId: id, key }));
-          setDependencies(pre => pre.filter(dep => dep.key !== key));
+          // setDependencies(pre => pre.filter(dep => dep.key !== key));
           setVariableNames([]);
         }
-        if (dependency) {
-          // dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
-          setDependencies(prevDependencies => {
-            const newDependency = { key, nodeId: dependency };
-            const uniqueDependencies = new Set([
-              ...prevDependencies,
-              newDependency,
-            ]);
-            return Array.from(uniqueDependencies);
-          });
-        }
+        // if (dependency) {
+        //   // dispatch(updateNodeDependency({ nodeId: id, data: { key, nodeId: dependency } }));
+        //   setDependencies(prevDependencies => {
+        //     const newDependency = { key, nodeId: dependency };
+        //     const uniqueDependencies = new Set([
+        //       ...prevDependencies,
+        //       newDependency,
+        //     ]);
+        //     return Array.from(uniqueDependencies);
+        //   });
+        // }
       },
-      [dispatch, id, nodes, dependencies, variableNames, isEdit, shake]
+      [dispatch, id, nodes, variableNames, isEdit, shake]
     );
 
 
@@ -227,8 +228,8 @@ const ToolsNodes = memo(
             workflowId: workFlowData._id,
             nodeMasterId: node.data.nodeMasterId,
             position: { x: positionAbsoluteX, y: positionAbsoluteY },
-            dependencies: dependencies.map(dps => dps.nodeId),
-            // dependencies: node.data?.dependencies ? node.data.dependencies?.map(dps => dps.nodeId) : [],
+            // dependencies: dependencies.map(dps => dps.nodeId),
+            dependencies: node.data?.dependencies || [],
             parameters: updatedValue,
           };
 

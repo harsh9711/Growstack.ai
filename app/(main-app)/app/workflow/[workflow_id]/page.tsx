@@ -34,6 +34,7 @@ import {
   addNode,
   clearNodeData,
   createNode,
+  updateNodeDependency,
 } from "@/lib/features/workflow/node.slice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import Run from "@/app/(main-app)/app/automation-hub/workflow-builder/workflows/[slug]/components/layout/RunV2";
@@ -256,7 +257,8 @@ const Workflow = ({ workflow_id }: { workflow_id: string }) => {
         })
       );
 
-      console.log("connectionState", connectionState);
+      console.log("connectionState--->", connectionState);
+      dispatch(updateNodeDependency({ sourceId: connectionState.fromNode.id, targetId: connectionState.toNode.id }));
 
       setEdges(eds => eds.concat(edge));
     },

@@ -85,7 +85,7 @@ export const prepareNodesPayload = (
       workflowId: workFlowDataId,
       nodeMasterId: node.data.nodeMasterId,
       position: node.position,
-      dependencies: dependencies?.map(dps => dps.nodeId),
+      dependencies: dependencies,
       parameters: updatedValue,
       name: node.data.label || "",
       description: node.data.descriptions || "",

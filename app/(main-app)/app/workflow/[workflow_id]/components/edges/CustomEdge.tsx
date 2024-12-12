@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { BaseEdge, EdgeLabelRenderer, getBezierPath, useReactFlow, EdgeProps } from '@xyflow/react';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { updateWorkFlowById } from '@/lib/features/workflow/workflow.slice';
+import { removeNodeDependency } from '@/lib/features/workflow/node.slice';
 
 const CustomEdge = ({
     id,
@@ -11,6 +12,8 @@ const CustomEdge = ({
     targetY,
     sourcePosition,
     targetPosition,
+    source,
+    target,
     style = {},
     markerEnd,
 }: EdgeProps) => {
@@ -27,6 +30,9 @@ const CustomEdge = ({
         targetPosition,
     });
 
+
+
+
     const customStyle = {
         ...style,
         stroke: '#2DA771',
@@ -38,13 +44,15 @@ const CustomEdge = ({
     const handleEdgeClick = () => {
         setEdges((edges: any[]) => {
             const updatedEdges = edges.filter((edge) => edge.id !== id);
+            console.log('source====>', source);
+            console.log('target====>', target);
             dispatch(updateWorkFlowById({
                 id: workFlowData._id || "",
                 data: {
                     edges: updatedEdges,
                 },
             }));
-
+            dispatch(removeNodeDependency({ sourceId: source, targetId: target }));
             console.log('updatedEdges', updatedEdges);
 
             return updatedEdges;
