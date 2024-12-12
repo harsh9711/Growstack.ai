@@ -3,7 +3,7 @@
 import instance, { CustomAxiosInstance } from "@/config/axios.config";
 import Image from "next/image";
 import "aos/dist/aos.css";
-import { Fragment, useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react"; // Headless UI for dropdown
 import { useRouter } from "next/navigation";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -48,6 +48,14 @@ export default function Dashboard() {
   const [loading, setLoading] = useState<boolean>(false);
   const [searchQuery, setSearchQuery] = useState("");
 
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [hasPreviousPage, setHasPreviousPage] = useState(false);
+  const isLoadingRef = useRef(isLoading);
+  const hasMoreRef = useRef(hasMore);
+  const throttleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   useEffect(() => {
     const activeTabName = localStorage.getItem("activeTab");
     if (activeTabName) {
@@ -67,7 +75,11 @@ export default function Dashboard() {
       // const response = await CustomAxiosInstance().get(
       //   `/workflow?isPrebuilt=true`
       // );
-      setPreBuiltTemplates(response.data);
+      setPreBuiltTemplates(prevItems => [
+        ...(Array.isArray(prevItems) ? prevItems : []),
+        ...response?.data?.data,
+      ]);
+      setHasPreviousPage(response?.data?.pagination?.hasPreviousPage);
     } catch (error) {
       console.error("Error fetching pre-built templates:", error);
     } finally {
@@ -75,12 +87,19 @@ export default function Dashboard() {
     }
   };
 
-  const getUserSavedWorkflows = async () => {
+  const getUserSavedWorkflows = async (page: number = 1) => {
     try {
       setLoading(true);
-      // const response = await axios.get(`http://localhost:5000/workflow`);
-      const response = await instance.get(`/workflow`);
-      setPreBuiltTemplates(response.data);
+      const response = await instance.get(`/workflow?page=${page}&limit=20`);
+      if (response.data.length === 0) {
+        setHasMore(false);
+      } else {
+        setPreBuiltTemplates(prevItems => [
+          ...(Array.isArray(prevItems) ? prevItems : []),
+          ...response?.data?.data,
+        ]);
+        setHasPreviousPage(response?.data?.pagination?.hasPreviousPage);
+      }
     } catch (error) {
       console.error("Error fetching pre-built templates:", error);
     } finally {
@@ -89,13 +108,50 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    if (activeTab === "templates") getPreBuiltTemplates();
-    if (activeTab === "workflows") getUserSavedWorkflows();
-  }, [activeTab]);
+    isLoadingRef.current = isLoading;
+    hasMoreRef.current = hasMore;
+  }, [isLoading, hasMore]);
+
+  useEffect(() => {
+    const loadItems = async () => {
+      setIsLoading(true);
+      if (activeTab === "templates") {
+        await getPreBuiltTemplates();
+      }
+      if (activeTab === "workflows") {
+        await getUserSavedWorkflows(page);
+      }
+      setIsLoading(false);
+    };
+
+    loadItems();
+  }, [page, activeTab]);
+
+  const handleScroll = () => {
+    if (throttleTimer.current) {
+      return;
+    }
+
+    throttleTimer.current = setTimeout(() => {
+      throttleTimer.current = null; // Reset throttle after delay
+      const { scrollTop, scrollHeight, clientHeight } =
+        document.documentElement;
+      if (scrollTop + clientHeight >= scrollHeight - 100) {
+        if (!isLoadingRef.current && hasMoreRef.current && !hasPreviousPage) {
+          setPage(prevPage => prevPage + 1);
+        }
+      }
+    }, 300);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleCreateWorkflow = async () => {
     try {
-      localStorage.removeItem("workflowActiveTab")
+      localStorage.removeItem("workflowActiveTab");
       const resultAction = await dispatch(
         createWorkFlow({ name: "Untitled workflow" })
       );
@@ -189,6 +245,7 @@ export default function Dashboard() {
                   onClick={() => {
                     setActiveTab("templates");
                     setSearchQuery("");
+                    setPreBuiltTemplates([]);
                   }}
                 >
                   <div className="flex items-center gap-3 px-3 py-2">
@@ -211,6 +268,7 @@ export default function Dashboard() {
                     onClick={() => {
                       setActiveTab("workflows");
                       setSearchQuery("");
+                      setPreBuiltTemplates([]);
                     }}
                   >
                     <Waypoints />

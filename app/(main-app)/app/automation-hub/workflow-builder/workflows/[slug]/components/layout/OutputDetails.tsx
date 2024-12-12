@@ -252,46 +252,72 @@ const OutputDetails = ({
                             // Render single object as key-value pairs
                             return (
                               <div>
-                              {Object.entries(item?.value).map(([key, value]: any) => (
-                                <div key={key}>
-                                  <strong>{key}:</strong>{" "}
-                                  {typeof value === "string" ? (
-                                    value.startsWith("http") ? (
-                                      <a href={value} target="_blank" rel="noopener noreferrer">
-                                        {value}
-                                      </a>
-                                    ) : (
-                                      value
-                                    )
-                                  ) : typeof value === "object" ? (
-                                    <div className="ml-4">
-                                      {Object.entries(value).map(([nestedKey, nestedValue]: any) => (
-                                        <div key={nestedKey}>
-                                          <strong>{nestedKey}:</strong>{" "}
-                                          {typeof nestedValue === "string" ? (
-                                            nestedValue.startsWith("http") ? (
+                                {item?.value &&
+                                Object?.keys(item?.value)?.length > 0
+                                  ? Object?.entries(item?.value)?.map(
+                                      ([key, value]: any) => (
+                                        <div key={key}>
+                                          <strong>{key}:</strong>{" "}
+                                          {typeof value === "string" ? (
+                                            value.startsWith("http") ? (
                                               <a
-                                                href={nestedValue}
+                                                href={value}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                               >
-                                                {nestedValue}
+                                                {value}
                                               </a>
                                             ) : (
-                                              nestedValue
+                                              value
                                             )
+                                          ) : typeof value === "object" ? (
+                                            <div className="ml-4">
+                                              {value &&
+                                              Object?.keys(value)?.length > 0
+                                                ? Object?.entries(value)?.map(
+                                                    ([
+                                                      nestedKey,
+                                                      nestedValue,
+                                                    ]: any) => (
+                                                      <div key={nestedKey}>
+                                                        <strong>
+                                                          {nestedKey}:
+                                                        </strong>{" "}
+                                                        {typeof nestedValue ===
+                                                        "string" ? (
+                                                          nestedValue.startsWith(
+                                                            "http"
+                                                          ) ? (
+                                                            <a
+                                                              href={nestedValue}
+                                                              target="_blank"
+                                                              rel="noopener noreferrer"
+                                                            >
+                                                              {nestedValue}
+                                                            </a>
+                                                          ) : (
+                                                            nestedValue
+                                                          )
+                                                        ) : (
+                                                          JSON.stringify(
+                                                            nestedValue,
+                                                            null,
+                                                            2
+                                                          )
+                                                        )}
+                                                      </div>
+                                                    )
+                                                  )
+                                                : null}
+                                            </div>
                                           ) : (
-                                            JSON.stringify(nestedValue, null, 2)
+                                            JSON.stringify(value, null, 2)
                                           )}
                                         </div>
-                                      ))}
-                                    </div>
-                                  ) : (
-                                    JSON.stringify(value, null, 2)
-                                  )}
-                                </div>
-                              ))}
-                            </div>
+                                      )
+                                    )
+                                  : null}
+                              </div>
                             );
                           } else {
                             // Fallback: Display JSON stringified value

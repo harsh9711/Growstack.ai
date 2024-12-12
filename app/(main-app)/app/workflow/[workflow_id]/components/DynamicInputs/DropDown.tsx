@@ -5,7 +5,7 @@ import { DynamicInputProps } from "@/types/workflows";
 const DropDown: React.FC<DynamicInputProps> = ({ param, inputKey, handleInputChange }) => {
     useEffect(() => {
         if (!param.value && param.options && param.options.length > 0) {
-            handleInputChange(inputKey, param.type, param.options[0].value);
+            handleInputChange(inputKey, param.type, param.required?  param.options[0].value : "");
         }
     }, []);
 

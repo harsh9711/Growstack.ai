@@ -196,8 +196,9 @@ const TopRightPanel2nd = ({
               className={`flex justify-center items-center m-2 cursor-pointer px-2.5 py-1.5 rounded-md text-base font-normal ${activeTab === index
                 ? "text-white bg-[#2DA771]"
                 : "text-black bg-transparent"
-                } shadow-lg`}
+                } shadow-lg disabled:opacity-60 disabled:cursor-not-allowed`}
               onClick={() => handleClick(index)}
+              disabled={workFlowData?.status !== "published" && item?.text !== "Build" }
             >
               {item.text}
             </button>
